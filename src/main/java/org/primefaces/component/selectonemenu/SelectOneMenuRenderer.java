@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -42,9 +42,12 @@ import javax.faces.render.Renderer;
 import org.primefaces.component.column.Column;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
 public class SelectOneMenuRenderer extends SelectOneRenderer {
@@ -64,12 +67,14 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             menu.setSubmittedValue(editorInput);
 
             // #2862 check if it matches a label and if so use the value
-            List<SelectItem> selectItems = getSelectItems(context, menu);
-            for (int i = 0; i < selectItems.size(); i++) {
-                SelectItem item = selectItems.get(i);
-                if (item.getLabel().equalsIgnoreCase(editorInput)) {
-                    menu.setSubmittedValue(getOptionAsString(context, menu, menu.getConverter(), item.getValue()));
-                    break;
+            if (!LangUtils.isValueBlank(editorInput)) {
+                List<SelectItem> selectItems = getSelectItems(context, menu);
+                for (int i = 0; i < selectItems.size(); i++) {
+                    SelectItem item = selectItems.get(i);
+                    if (item.getLabel().equalsIgnoreCase(editorInput)) {
+                        menu.setSubmittedValue(getOptionAsString(context, menu, menu.getConverter(), item.getValue()));
+                        break;
+                    }
                 }
             }
 
@@ -120,10 +125,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         String title = menu.getTitle();
 
         String style = menu.getStyle();
-        String styleClass = menu.getStyleClass();
-        styleClass = styleClass == null ? SelectOneMenu.STYLE_CLASS : SelectOneMenu.STYLE_CLASS + " " + styleClass;
-        styleClass = !valid ? styleClass + " ui-state-error" : styleClass;
-        styleClass = menu.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
+        String styleClass = createStyleClass(menu, SelectOneMenu.STYLE_CLASS);
 
         if (ComponentUtils.isRTL(context, menu)) {
             styleClass = styleClass + " " + SelectOneMenu.RTL_CLASS;
@@ -222,6 +224,9 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             writer.writeAttribute("type", "text", null);
             writer.writeAttribute("name", menu.getClientId(context) + "_editableInput", null);
             writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS, null);
+
+            String ariaLabel = LangUtils.isValueBlank(menu.getLabel()) ? menu.getPlaceholder() : menu.getLabel();
+            writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
 
             if (menu.getTabindex() != null) {
                 writer.writeAttribute("tabindex", menu.getTabindex(), null);
@@ -539,7 +544,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 .attr("syncTooltip", menu.isSyncTooltip(), false)
                 .attr("labelTemplate", menu.getLabelTemplate(), null)
                 .attr("autoWidth", menu.isAutoWidth(), true)
-                .attr("dynamic", menu.isDynamic(), false);
+                .attr("dynamic", menu.isDynamic(), false)
+                .attr("touchable", ComponentUtils.isTouchable(context, menu),  true);
 
         if (menu.isFilter()) {
             wb.attr("filter", true)
@@ -646,6 +652,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute(HTML.ARIA_AUTOCOMPLETE, "list", null);
         writer.writeAttribute(HTML.ARIA_CONTROLS, menu.getClientId(context) + "_table", null);
+        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER, null), null);
 
         if (menu.getFilterPlaceholder() != null) {
             writer.writeAttribute("placeholder", menu.getFilterPlaceholder(), null);

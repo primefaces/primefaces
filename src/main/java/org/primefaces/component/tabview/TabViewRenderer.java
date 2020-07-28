@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,6 +47,11 @@ public class TabViewRenderer extends CoreRenderer {
 
         if (!LangUtils.isValueBlank(activeIndexValue)) {
             tabView.setActiveIndex(Integer.parseInt(activeIndexValue));
+
+            if (tabView.isMultiViewState()) {
+                TabViewState ts = tabView.getMultiViewState(true);
+                ts.setActiveIndex(tabView.getActiveIndex());
+            }
         }
 
         decodeBehaviors(context, component);
@@ -78,6 +83,10 @@ public class TabViewRenderer extends CoreRenderer {
             }
         }
         else {
+            if (tabView.isMultiViewState()) {
+                tabView.restoreMultiViewState();
+            }
+
             tabView.resetLoadedTabsState();
 
             encodeMarkup(context, tabView);
@@ -103,7 +112,9 @@ public class TabViewRenderer extends CoreRenderer {
         wb.attr("effect", tabView.getEffect(), null)
                 .attr("effectDuration", tabView.getEffectDuration(), null)
                 .attr("scrollable", tabView.isScrollable())
-                .attr("tabindex", tabView.getTabindex(), null);
+                .attr("tabindex", tabView.getTabindex(), null)
+                .attr("touchable", ComponentUtils.isTouchable(context, tabView),  true)
+                .attr("multiViewState", tabView.isMultiViewState(), false);
 
         encodeClientBehaviors(context, tabView);
 

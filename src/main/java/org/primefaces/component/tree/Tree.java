@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,6 @@ import java.util.*;
 
 import javax.el.MethodExpression;
 import javax.faces.FacesException;
-import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -47,13 +46,11 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.MapBuilder;
 
-@ResourceDependencies({
-        @ResourceDependency(library = "primefaces", name = "components.css"),
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
-        @ResourceDependency(library = "primefaces", name = "core.js"),
-        @ResourceDependency(library = "primefaces", name = "components.js")
-})
+@ResourceDependency(library = "primefaces", name = "components.css")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
+@ResourceDependency(library = "primefaces", name = "core.js")
+@ResourceDependency(library = "primefaces", name = "components.js")
 public class Tree extends TreeBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Tree";
@@ -169,28 +166,29 @@ public class Tree extends TreeBase {
             String clientId = getClientId(context);
             FacesEvent wrapperEvent = null;
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
+            TreeNode root = getValue();
 
             if (eventName.equals("expand")) {
-                setRowKey(params.get(clientId + "_expandNode"));
+                setRowKey(root, params.get(clientId + "_expandNode"));
                 TreeNode expandedNode = getRowNode();
                 expandedNode.setExpanded(true);
 
                 wrapperEvent = new NodeExpandEvent(this, behaviorEvent.getBehavior(), expandedNode);
             }
             else if (eventName.equals("collapse")) {
-                setRowKey(params.get(clientId + "_collapseNode"));
+                setRowKey(root, params.get(clientId + "_collapseNode"));
                 TreeNode collapsedNode = getRowNode();
                 collapsedNode.setExpanded(false);
 
                 wrapperEvent = new NodeCollapseEvent(this, behaviorEvent.getBehavior(), collapsedNode);
             }
             else if (eventName.equals("select")) {
-                setRowKey(params.get(clientId + "_instantSelection"));
+                setRowKey(root, params.get(clientId + "_instantSelection"));
 
                 wrapperEvent = new NodeSelectEvent(this, behaviorEvent.getBehavior(), getRowNode());
             }
             else if (eventName.equals("unselect")) {
-                setRowKey(params.get(clientId + "_instantUnselection"));
+                setRowKey(root, params.get(clientId + "_instantUnselection"));
 
                 wrapperEvent = new NodeUnselectEvent(this, behaviorEvent.getBehavior(), getRowNode());
             }
@@ -210,7 +208,7 @@ public class Tree extends TreeBase {
                 }
             }
             else if (eventName.equals("contextMenu")) {
-                setRowKey(params.get(clientId + "_contextMenuNode"));
+                setRowKey(root, params.get(clientId + "_contextMenuNode"));
 
                 wrapperEvent = new NodeSelectEvent(this, behaviorEvent.getBehavior(), getRowNode(), true);
             }
@@ -226,7 +224,7 @@ public class Tree extends TreeBase {
 
             super.queueEvent(wrapperEvent);
 
-            setRowKey(null);
+            setRowKey(root, null);
         }
         else {
             super.queueEvent(event);
@@ -254,6 +252,9 @@ public class Tree extends TreeBase {
 
     @Override
     public void processDecodes(FacesContext context) {
+        if (!isRendered() || isDisabled()) {
+            return;
+        }
         if (shouldSkipNodes(context)) {
             decode(context);
         }
@@ -315,8 +316,8 @@ public class Tree extends TreeBase {
     }
 
     @Override
-    protected void processColumnChildren(FacesContext context, PhaseId phaseId, String nodeKey) {
-        setRowKey(nodeKey);
+    protected void processColumnChildren(FacesContext context, PhaseId phaseId, TreeNode root, String nodeKey) {
+        setRowKey(root, nodeKey);
         TreeNode treeNode = getRowNode();
 
         if (treeNode == null) {

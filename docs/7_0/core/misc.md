@@ -163,7 +163,7 @@ Authorization function use HttpServletRequest API for the backend information.
 ifGranted(String role) | Returns true if user has the given role, else false.
 ifAllGranted(String roles) | Returns true if user has all of the given roles, else false.
 ifAnyGranted(String roles) | Returns true if user has any of the given roles, else false.
-ifNotGranted(String roles) | Returns true if user has none of the given roles, else false.
+ifNoneGranted(String roles) | Returns true if user has none of the given roles, else false. e.g `p:ifNoneGranted('ROLE_ADMIN,ROLE_OPERATOR')`
 remoteUser() | Returns the name of the logged in user.
 userPrincipal() | Returns the principal instance of the logged in user.
 
@@ -216,6 +216,8 @@ Side Validation, messages property is used as the bundle for the locale.
     week : 'week',
     day : 'Day',
     allDayText : 'All Day',
+    today: 'Today',
+    clear : 'Clear',
     messages : {
         'javax.faces.component.UIInput.REQUIRED' : '{0}: Validation Error: Value is required.',
         'javax.faces.converter.IntegerConverter.INTEGER' : '{2}: \'{0}\' must be a number consisting of one or more digits.',

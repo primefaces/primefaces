@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,8 @@ package org.primefaces.component.clock;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
+import java.util.Date;
 import java.util.Locale;
 
 import javax.faces.component.UIComponent;
@@ -101,14 +103,23 @@ public class ClockRenderer extends CoreRenderer {
     }
 
     protected String getValueWithTimeZone(Locale locale, Clock clock) {
-        String value = Constants.EMPTY_STRING;
-
-        if (locale != null) {
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss", locale)
-                        .withZone(CalendarUtils.calculateZoneId(clock.getTimeZone()));
-            value = dateTimeFormatter.format(LocalDateTime.now());
+        if (locale == null) {
+            return Constants.EMPTY_STRING;
         }
 
-        return value;
+        TemporalAccessor time = LocalDateTime.now();
+        Object value = clock.getValue();
+        if (value != null) {
+            if (value instanceof Date) {
+                time = CalendarUtils.convertDate2LocalDateTime((Date) value);
+            }
+            else if (value instanceof TemporalAccessor) {
+                time = (TemporalAccessor) value;
+            }
+        }
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss", locale)
+                    .withZone(CalendarUtils.calculateZoneId(clock.getTimeZone()));
+        return dateTimeFormatter.format(time);
     }
 }

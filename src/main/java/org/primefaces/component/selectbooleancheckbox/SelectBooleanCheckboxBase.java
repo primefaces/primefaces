@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,7 +38,8 @@ public abstract class SelectBooleanCheckboxBase extends HtmlSelectBooleanCheckbo
 
         widgetVar,
         itemLabel,
-        escape;
+        escape,
+        ariaLabel;
     }
 
     public SelectBooleanCheckboxBase() {
@@ -72,5 +73,13 @@ public abstract class SelectBooleanCheckboxBase extends HtmlSelectBooleanCheckbo
 
     public void setEscape(boolean escape) {
         getStateHelper().put(SelectBooleanCheckboxBase.PropertyKeys.escape, escape);
+    }
+
+    public String getAriaLabel() {
+        return (String) getStateHelper().eval(SelectBooleanCheckboxBase.PropertyKeys.ariaLabel, null);
+    }
+
+    public void setAriaLabel(String ariaLabel) {
+        getStateHelper().put(SelectBooleanCheckboxBase.PropertyKeys.ariaLabel, ariaLabel);
     }
 }

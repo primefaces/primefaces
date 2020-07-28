@@ -1,8 +1,31 @@
 /**
- * PrimeFaces Dashboard Widget
+ * __PrimeFaces Dashboard Widget__
+ * 
+ * Dashboard provides a portal like layout with drag & drop based reorder capabilities.
+ * 
+ * Currently this uses the JQueryUI sortable widget. You can use `$.fn.sortable` to interact with the dashboard
+ * programmatically.
+ * 
+ * ```javascript
+ * const widget = PF("MyDashboardWidget");
+ * 
+ * // When dragged outside the dashboard: Have the items revert to their new positions using a smooth animation
+ * widget.jq.find(".ui-dashboard-column").sortable("option", "revert", true);
+ * ```
+ * 
+ * @interface {PrimeFaces.widget.DashboardCfg} cfg The configuration for the {@link  Dashboard| Dashboard widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * @extends {JQueryUI.SortableOptions} cfg
  */
 PrimeFaces.widget.Dashboard = PrimeFaces.widget.BaseWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
 
@@ -12,6 +35,16 @@ PrimeFaces.widget.Dashboard = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.revert=false;
         this.cfg.handle='.ui-panel-titlebar';
 
+        this.bindEvents();
+
+        $(this.jqId + ' .ui-dashboard-column').sortable(this.cfg);
+    },
+
+    /**
+     * Sets up all event listeners required by this widget.
+     * @private
+     */
+    bindEvents: function() {
         var $this = this;
 
         if(this.hasBehavior('reorder')) {
@@ -37,8 +70,20 @@ PrimeFaces.widget.Dashboard = PrimeFaces.widget.BaseWidget.extend({
                 }
             };
         }
+    },
 
-        $(this.jqId + ' .ui-dashboard-column').sortable(this.cfg);
+    /**
+     * Disables this dashboard so that it cannot be modified.
+     */
+    disable: function () {
+        this.jq.addClass('ui-state-disabled');
+    },
+
+    /**
+     * Enables this dashboard so that it can be modified.
+     */
+    enable: function () {
+        this.jq.removeClass('ui-state-disabled');
     }
 
 });

@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -59,7 +59,7 @@ public class PrimeExceptionHandlerELResolver extends ELResolver {
 
     @Override
     public void setValue(ELContext context, Object base, Object property, Object value) {
-
+        // readonly
     }
 
     @Override

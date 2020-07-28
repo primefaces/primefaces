@@ -86,6 +86,7 @@ Widget: _PrimeFaces.widget.SelectManyMenu_
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 
 selectAll() | - | void | Selects all the options.
+unselectAll() | - | void | Unselects all the options.
 
 ## Skinning
 SelectManyMenu resides in a container that _style_ and _styleClass_ attributes apply. As skinning style

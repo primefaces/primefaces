@@ -24,17 +24,16 @@
 package org.primefaces.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.time.temporal.Temporal;
+import java.util.*;
 
 import javax.el.ELContext;
 import javax.faces.context.ExternalContext;
@@ -78,6 +77,7 @@ public class CalendarUtilsTest {
         when(datePicker.calculatePattern()).thenCallRealMethod();
         when(datePicker.calculateTimeOnlyPattern()).thenCallRealMethod();
         when(datePicker.calculateWidgetPattern()).thenCallRealMethod();
+        when(datePicker.calculateLocalizedPattern()).thenCallRealMethod();
         when(datePicker.calculateLocale(any())).thenReturn(locale);
     }
 
@@ -87,7 +87,7 @@ public class CalendarUtilsTest {
         setupValues(localDate, Locale.ENGLISH);
 
         String value = CalendarUtils.getValueAsString (context, datePicker);
-        assertEquals("7/23/19", value);
+        assertEquals("7/23/2019", value);
     }
 
     @Test
@@ -96,7 +96,7 @@ public class CalendarUtilsTest {
         setupValues(localDate, Locale.GERMAN);
 
         String value = CalendarUtils.getValueAsString (context, datePicker);
-        assertEquals("23.07.19", value);
+        assertEquals("23.07.2019", value);
     }
 
     @Test
@@ -107,7 +107,7 @@ public class CalendarUtilsTest {
         setupValues(date, Locale.ENGLISH);
 
         String value = CalendarUtils.getValueAsString (context, datePicker);
-        assertEquals("7/23/19", value);
+        assertEquals("7/23/2019", value);
     }
 
     @Test
@@ -118,7 +118,7 @@ public class CalendarUtilsTest {
         setupValues(date, Locale.GERMAN);
 
         String value = CalendarUtils.getValueAsString (context, datePicker);
-        assertEquals("23.07.19", value);
+        assertEquals("23.07.2019", value);
     }
 
     @Test
@@ -161,4 +161,44 @@ public class CalendarUtilsTest {
         assertEquals(cleanedPattern, "");
     }
 
+    @Test
+    public void now_LocalDate() {
+        when(datePicker.hasTime()).thenReturn(false);
+        when(datePicker.getTimeZone()).thenReturn(ZoneId.systemDefault());
+        Temporal now = CalendarUtils.now(datePicker);
+        assertEquals(LocalDate.now(), now);
+    }
+
+    @Test
+    public void now_LocalDateTime() {
+        when(datePicker.hasTime()).thenReturn(true);
+        when(datePicker.getTimeZone()).thenReturn(ZoneId.systemDefault());
+        LocalDateTime now = (LocalDateTime) CalendarUtils.now(datePicker);
+        assertTrue(LocalDateTime.now().compareTo(now) >= 0);
+    }
+
+    @Test
+    public void now_DateTime() {
+        when(datePicker.hasTime()).thenReturn(true);
+        when(datePicker.getTimeZone()).thenReturn(ZoneId.systemDefault());
+        Date now = (Date) CalendarUtils.now(datePicker, java.util.Date.class);
+        assertTrue(new Date().compareTo(now) >= 0);
+    }
+
+    @Test
+    public void now_Date() {
+        when(datePicker.hasTime()).thenReturn(false);
+        when(datePicker.getTimeZone()).thenReturn(ZoneId.systemDefault());
+        Date now = (Date) CalendarUtils.now(datePicker, java.util.Date.class);
+        assertTrue(new Date().compareTo(now) >= 0);
+    }
+
+    @Test
+    public void now_Time() {
+        when(datePicker.hasTime()).thenReturn(true);
+        when(datePicker.isTimeOnly()).thenReturn(true);
+        when(datePicker.getTimeZone()).thenReturn(ZoneId.systemDefault());
+        Date now = (Date) CalendarUtils.now(datePicker, java.util.Date.class);
+        assertTrue(new Date().compareTo(now) >= 0);
+    }
 }

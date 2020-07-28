@@ -67,6 +67,7 @@ CommandLink extends standard JSF commandLink with Ajax capabilities.
 | title | null | String | Advisory tooltip information.
 | type | null | String | Type of resource referenced by the link.
 | form | null | String | Form to serialize for an ajax request. Default is the enclosing form.
+| validateClient | false | Boolean | When set to true client side validation is enabled, global setting is required to be enabled as a prerequisite.
 
 ## Getting Started with CommandLink
 CommandLink is used just like the standard h:commandLink, difference is form is submitted with

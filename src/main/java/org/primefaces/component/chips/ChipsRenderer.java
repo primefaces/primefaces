@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -90,7 +90,6 @@ public class ChipsRenderer extends InputRenderer {
         String inputId = clientId + "_input";
         List values = (List) chips.getValue();
         List<String> stringValues = new ArrayList<>();
-        boolean disabled = chips.isDisabled();
         String title = chips.getTitle();
 
         String style = chips.getStyle();
@@ -98,11 +97,7 @@ public class ChipsRenderer extends InputRenderer {
         styleClass = styleClass == null ? Chips.STYLE_CLASS : Chips.STYLE_CLASS + " " + styleClass;
 
         String inputStyle = chips.getInputStyle();
-        String inputStyleClass = chips.getInputStyleClass();
-
-        String listClass = disabled ? Chips.CONTAINER_CLASS + " ui-state-disabled" : Chips.CONTAINER_CLASS;
-        listClass = (inputStyleClass == null) ? listClass : listClass + " " + inputStyleClass;
-        listClass = chips.isValid() ? listClass : listClass + " ui-state-error";
+        String listClass = createStyleClass(chips, Chips.PropertyKeys.inputStyleClass.name(), Chips.CONTAINER_CLASS);
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);

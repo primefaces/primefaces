@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,12 +25,11 @@ package org.primefaces.component.datagrid;
 
 import javax.faces.component.behavior.ClientBehaviorHolder;
 
-import org.primefaces.component.api.Pageable;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
-import org.primefaces.component.api.UIData;
-import org.primefaces.component.api.Widget;
+import org.primefaces.component.api.*;
+import org.primefaces.component.datalist.DataListBase;
 
-public abstract class DataGridBase extends UIData implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable {
+public abstract class DataGridBase extends UIData
+        implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable, MultiViewStateAware<DataGridState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -101,5 +100,14 @@ public abstract class DataGridBase extends UIData implements Widget, ClientBehav
 
     public void setLayout(String layout) {
         getStateHelper().put(PropertyKeys.layout, layout);
+    }
+
+    @Override
+    public boolean isMultiViewState() {
+        return (Boolean) getStateHelper().eval(DataListBase.PropertyKeys.multiViewState, false);
+    }
+
+    public void setMultiViewState(boolean multiViewState) {
+        getStateHelper().put(DataListBase.PropertyKeys.multiViewState, multiViewState);
     }
 }

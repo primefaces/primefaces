@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -61,7 +61,8 @@ public abstract class CommandButtonBase extends HtmlCommandButton implements Aja
         partialSubmitFilter,
         form,
         renderDisabledClick,
-        ariaLabel
+        ariaLabel,
+        ignoreComponentNotFound
     }
 
     public CommandButtonBase() {
@@ -278,5 +279,14 @@ public abstract class CommandButtonBase extends HtmlCommandButton implements Aja
 
     public void setAriaLabel(String ariaLabel) {
         getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
+    }
+
+    @Override
+    public boolean isIgnoreComponentNotFound() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.ignoreComponentNotFound, false);
+    }
+
+    public void setIgnoreComponentNotFound(boolean ignoreComponentNotFound) {
+        getStateHelper().put(PropertyKeys.ignoreComponentNotFound, ignoreComponentNotFound);
     }
 }

@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -52,7 +52,9 @@ public abstract class RemoteCommandBase extends UICommand implements AjaxSource 
         resetValues,
         ignoreAutoUpdate,
         partialSubmitFilter,
-        form
+        form,
+        validateClient,
+        ignoreComponentNotFound
     }
 
     public RemoteCommandBase() {
@@ -215,4 +217,20 @@ public abstract class RemoteCommandBase extends UICommand implements AjaxSource 
         getStateHelper().put(PropertyKeys.form, form);
     }
 
+    public boolean isValidateClient() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.validateClient, false);
+    }
+
+    public void setValidateClient(boolean validateClient) {
+        getStateHelper().put(PropertyKeys.validateClient, validateClient);
+    }
+
+    @Override
+    public boolean isIgnoreComponentNotFound() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.ignoreComponentNotFound, false);
+    }
+
+    public void setIgnoreComponentNotFound(boolean ignoreComponentNotFound) {
+        getStateHelper().put(PropertyKeys.ignoreComponentNotFound, ignoreComponentNotFound);
+    }
 }

@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -54,8 +54,18 @@ public class DataGridRenderer extends DataRenderer {
             }
 
             encodeContent(context, grid);
+
+            if (grid.isMultiViewState()) {
+                DataGridState gs = grid.getMultiViewState(true);
+                gs.setFirst(grid.getFirst());
+                gs.setRows(grid.getRows());
+            }
         }
         else {
+            if (grid.isMultiViewState()) {
+                grid.restoreMultiViewState();
+            }
+
             encodeMarkup(context, grid);
             encodeScript(context, grid);
         }

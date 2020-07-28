@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -48,9 +48,31 @@ public interface ScheduleEvent<T> {
 
     boolean isAllDay();
 
+    void setAllDay(boolean allDay);
+
     String getStyleClass();
 
-    boolean isEditable();
+    /**
+     * @deprecated Use {@link #isResizable()} or {@link #isDraggable()} instead.
+     */
+    @Deprecated
+    default boolean isEditable() {
+        return isDraggable() != null && isResizable() != null && (isDraggable() || isResizable());
+    }
+
+    /**
+     * @return Whether the event should be draggable. Returning {@code null}
+     * means that the default of the schedule is applied. Otherwise, this
+     * setting overrides the default of the schedule.
+     */
+    Boolean isDraggable();
+
+    /**
+     * @return Whether the event should be resizable. Returning {@code null}
+     * means that the default of the schedule is applied. Otherwise, this
+     * setting overrides the default of the schedule.
+     */
+    Boolean isResizable();
 
     boolean isOverlapAllowed();
 

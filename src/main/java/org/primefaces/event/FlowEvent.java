@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,6 @@ public class FlowEvent extends FacesEvent {
     private static final long serialVersionUID = 1L;
 
     private String oldStep;
-
     private String newStep;
 
     public FlowEvent(UIComponent component, String oldStep, String newStep) {

@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
@@ -43,13 +42,11 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.MapBuilder;
 
-@ResourceDependencies({
-        @ResourceDependency(library = "primefaces", name = "components.css"),
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
-        @ResourceDependency(library = "primefaces", name = "core.js"),
-        @ResourceDependency(library = "primefaces", name = "components.js")
-})
+@ResourceDependency(library = "primefaces", name = "components.css")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
+@ResourceDependency(library = "primefaces", name = "core.js")
+@ResourceDependency(library = "primefaces", name = "components.js")
 public class DataGrid extends DataGridBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataGrid";
@@ -87,7 +84,7 @@ public class DataGrid extends DataGridBase {
         if (model instanceof LazyDataModel) {
             LazyDataModel lazyModel = (LazyDataModel) model;
 
-            List<?> data = lazyModel.load(getFirst(), getRows(), null, null, Collections.emptyList());
+            List<?> data = lazyModel.load(getFirst(), getRows(), null, null, Collections.emptyMap());
 
             lazyModel.setPageSize(getRows());
             lazyModel.setWrappedData(data);
@@ -136,5 +133,29 @@ public class DataGrid extends DataGridBase {
         else {
             return params.containsKey(getClientId(context) + "_skipChildren");
         }
+    }
+
+    @Override
+    public void restoreMultiViewState() {
+        DataGridState ls = getMultiViewState(false);
+        if (ls != null && isPaginator()) {
+            setFirst(ls.getFirst());
+            int rows = (ls.getRows() == 0) ? getRows() : ls.getRows();
+            setRows(rows);
+        }
+    }
+
+    @Override
+    public DataGridState getMultiViewState(boolean create) {
+        FacesContext fc = getFacesContext();
+        String viewId = fc.getViewRoot().getViewId();
+
+        return PrimeFaces.current().multiViewState()
+                .get(viewId, getClientId(fc), create, DataGridState::new);
+    }
+
+    @Override
+    public void resetMultiViewState() {
+        setFirst(0);
     }
 }

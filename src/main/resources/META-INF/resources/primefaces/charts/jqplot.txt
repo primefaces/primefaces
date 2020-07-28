@@ -26,3 +26,4 @@ Extensions
 - It throws an JS error with Jqplot 1.0.9; https://github.com/primefaces/primefaces/issues/3821 (Line 20768)
 - Device Ratio Issues; https://github.com/primefaces/primefaces/issues/4655 (Line 9319)
 - Fixed 'disable series' for stacked series; https://github.com/primefaces/primefaces/issues/5198 (Line 14909, 14910, 14979, 15013-15024)
+- Legend Export As Image (https://github.com/primefaces/primefaces/issues/5789) Line 9287-9309

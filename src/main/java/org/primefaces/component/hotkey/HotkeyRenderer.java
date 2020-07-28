@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -55,22 +55,27 @@ public class HotkeyRenderer extends CoreRenderer {
         writer.writeAttribute("type", "text/javascript", null);
 
         String event = "keydown." + clientId;
-
         writer.write("$(function(){");
-        writer.write("$(document).off('" + event + "').on('" + event + "',null,'" + hotkey.getBind() + "',function(){");
 
-        if (hotkey.isAjaxified()) {
-            String request = preConfiguredAjaxRequestBuilder(context, hotkey)
-                    .params(hotkey)
-                    .build();
+        if (!hotkey.isDisabled()) {
+            writer.write("$(document).off('" + event + "').on('" + event + "',null,'" + hotkey.getBind()
+                + "',function(){");
 
-            writer.write(request);
+            if (hotkey.isAjaxified()) {
+                String request = preConfiguredAjaxRequestBuilder(context, hotkey)
+                        .params(hotkey)
+                        .build();
+
+                writer.write(request);
+            }
+            else {
+                writer.write(hotkey.getHandler());
+            }
+            writer.write(";return false;});});");
         }
         else {
-            writer.write(hotkey.getHandler());
+            writer.write("$(document).off('" + event + "')});");
         }
-
-        writer.write(";return false;});});");
 
         writer.endElement("script");
     }

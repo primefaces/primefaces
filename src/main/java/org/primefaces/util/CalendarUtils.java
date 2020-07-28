@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,16 @@
  */
 package org.primefaces.util;
 
-import org.primefaces.component.api.UICalendar;
-import org.primefaces.convert.DatePatternConverter;
-import org.primefaces.convert.PatternConverter;
-import org.primefaces.convert.TimePatternConverter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.Temporal;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -34,15 +40,11 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.time.*;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
+
+import org.primefaces.component.api.UICalendar;
+import org.primefaces.convert.DatePatternConverter;
+import org.primefaces.convert.PatternConverter;
+import org.primefaces.convert.TimePatternConverter;
 
 public class CalendarUtils {
 
@@ -235,10 +237,22 @@ public class CalendarUtils {
 
     public static final String getValue(FacesContext context, UICalendar calendar, Object value, String pattern) {
         //first ask the converter
-        if (calendar.getConverter() != null) {
-            return calendar.getConverter().getAsString(context, calendar, value);
+        Converter converter = calendar.getConverter();
+        if (converter != null) {
+            if (converter instanceof javax.faces.convert.DateTimeConverter) {
+                javax.faces.convert.DateTimeConverter nativeConverter = (javax.faces.convert.DateTimeConverter) converter;
+                String dateType = nativeConverter.getType();
+                // only run converter if type for dates match
+                if (value.getClass().getSimpleName().equalsIgnoreCase(dateType)) {
+                    return converter.getAsString(context, calendar, value);
+                }
+            }
+            else {
+                return converter.getAsString(context, calendar, value);
+            }
         }
-        else if (value instanceof String) {
+
+        if (value instanceof String) {
             return (String) value;
         }
         //Use built-in converter
@@ -273,7 +287,7 @@ public class CalendarUtils {
                 Class<?> type = ve.getType(context.getELContext());
                 if (type != null && type != Object.class && type != Date.class &&
                         type != LocalDate.class && type != LocalDateTime.class && type != LocalTime.class && type != YearMonth.class) {
-                    Converter converter = context.getApplication().createConverter(type);
+                    converter = context.getApplication().createConverter(type);
                     if (converter != null) {
                         return converter.getAsString(context, calendar, value);
                     }
@@ -502,6 +516,15 @@ public class CalendarUtils {
         return pattern.trim();
     }
 
+    public static final boolean hasTime(String pattern) {
+        for (String timeChar : TIME_CHARS) {
+            if (pattern.contains(timeChar)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Convert ISO-String (@see <a href="https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString">https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString</a>)
      * to LocalDateTime.
@@ -515,7 +538,49 @@ public class CalendarUtils {
         }
 
         Instant instant = Instant.parse(isoDateString);
-        LocalDateTime result = LocalDateTime.ofInstant(instant, zoneId);
-        return result;
+        ZonedDateTime utc = ZonedDateTime.ofInstant(instant, ZoneId.of("UTC"));
+        return utc.withZoneSameLocal(zoneId).toLocalDateTime();
+    }
+
+    /**
+     * Calculates NOW based on the calendar's current timezone or will default to system timezone if none set.
+     * It will return a LocalDateTime if time units needed else just a LocalDate if no time is needed.
+     *
+     * @param uicalendar the base calendar to calculate NOW for
+     * @return a Temporal representing either a Date or DateTime
+     */
+    public static Temporal now(UICalendar uicalendar) {
+        boolean timeOnly = uicalendar.isTimeOnly();
+        ZoneId zone = calculateZoneId(uicalendar.getTimeZone());
+        if (timeOnly) {
+            return LocalTime.now(zone);
+        }
+        boolean hasTime = uicalendar.hasTime();
+        return hasTime ? LocalDateTime.now(zone) : LocalDate.now(zone);
+    }
+
+    /**
+     * Calculates NOW based on the calendar's current timezone or will default to system timezone if none set.
+     *
+     * @param uicalendar the base calendar to calculate NOW for
+     * @return an Object representing either a Date or Temporal
+     */
+    public static Object now(UICalendar uicalendar, Class<?> dateType) {
+        Temporal now = now(uicalendar);
+        if (dateType.isAssignableFrom(java.util.Date.class)) {
+            ZoneId zone = calculateZoneId(uicalendar.getTimeZone());
+            java.util.Date date;
+            if (now instanceof LocalDate) {
+                date = java.util.Date.from(((LocalDate) now).atStartOfDay(zone).toInstant());
+            }
+            else if (now instanceof LocalTime) {
+                date = java.util.Date.from(((LocalTime) now).atDate(LocalDate.now(zone)).atZone(zone).toInstant());
+            }
+            else {
+                date = java.util.Date.from(((LocalDateTime) now).atZone(zone).toInstant());
+            }
+            return date;
+        }
+        return now;
     }
 }

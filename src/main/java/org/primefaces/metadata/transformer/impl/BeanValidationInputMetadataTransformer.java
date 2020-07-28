@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,9 +29,14 @@ import org.primefaces.component.spinner.Spinner;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.metadata.BeanValidationMetadataExtractor;
 import org.primefaces.metadata.transformer.AbstractInputMetadataTransformer;
+import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.validate.bean.FutureOrPresentClientValidationConstraint;
+import org.primefaces.validate.bean.NegativeClientValidationConstraint;
+import org.primefaces.validate.bean.NegativeOrZeroClientValidationConstraint;
 import org.primefaces.validate.bean.PastOrPresentClientValidationConstraint;
+import org.primefaces.validate.bean.PositiveClientValidationConstraint;
+import org.primefaces.validate.bean.PositiveOrZeroClientValidationConstraint;
 
 import javax.el.PropertyNotFoundException;
 import javax.faces.component.UIInput;
@@ -40,8 +45,8 @@ import javax.validation.constraints.*;
 import javax.validation.metadata.ConstraintDescriptor;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.Temporal;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -77,6 +82,8 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
 
         Annotation constraint = constraintDescriptor.getAnnotation();
         Class<? extends Annotation> annotationType = constraint.annotationType();
+        // for BeanValidation 2.0
+        String annotationClassName = annotationType.getSimpleName();
 
         if (!isMaxlenghtSet(input)) {
             if (annotationType.equals(Size.class)) {
@@ -121,22 +128,40 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
         if (input instanceof InputNumber) {
             InputNumber inputNumber = (InputNumber) input;
 
-            if (annotationType.equals(Max.class) && LangUtils.isValueBlank(inputNumber.getMaxValue())) {
-                Max max = (Max) constraint;
-                inputNumber.setMaxValue(String.valueOf(max.value()));
+            if (LangUtils.isValueBlank(inputNumber.getMaxValue())) {
+                if (annotationType.equals(Max.class)) {
+                    Max max = (Max) constraint;
+                    inputNumber.setMaxValue(String.valueOf(max.value()));
+                }
+                if (annotationType.equals(DecimalMax.class)) {
+                    DecimalMax max = (DecimalMax) constraint;
+                    inputNumber.setMaxValue(max.value());
+                }
+                if (annotationClassName.equals(NegativeClientValidationConstraint.CONSTRAINT_ID)) {
+                    inputNumber.setMaxValue("-0.0000001");
+                }
+                if (annotationClassName.equals(NegativeOrZeroClientValidationConstraint.CONSTRAINT_ID)) {
+                    inputNumber.setMaxValue("0");
+                }
             }
-            if (annotationType.equals(Min.class) && LangUtils.isValueBlank(inputNumber.getMinValue())) {
-                Min min = (Min) constraint;
-                inputNumber.setMinValue(String.valueOf(min.value()));
+
+            if (LangUtils.isValueBlank(inputNumber.getMinValue())) {
+                if (annotationType.equals(Min.class)) {
+                    Min min = (Min) constraint;
+                    inputNumber.setMinValue(String.valueOf(min.value()));
+                }
+                if (annotationType.equals(DecimalMin.class)) {
+                    DecimalMin min = (DecimalMin) constraint;
+                    inputNumber.setMinValue(min.value());
+                }
+                if (annotationClassName.equals(PositiveClientValidationConstraint.CONSTRAINT_ID)) {
+                    inputNumber.setMinValue("0.0000001");
+                }
+                if (annotationClassName.equals(PositiveOrZeroClientValidationConstraint.CONSTRAINT_ID)) {
+                    inputNumber.setMinValue("0");
+                }
             }
-            if (annotationType.equals(DecimalMax.class) && LangUtils.isValueBlank(inputNumber.getMaxValue())) {
-                DecimalMax max = (DecimalMax) constraint;
-                inputNumber.setMaxValue(max.value());
-            }
-            if (annotationType.equals(DecimalMin.class) && LangUtils.isValueBlank(inputNumber.getMinValue())) {
-                DecimalMin min = (DecimalMin) constraint;
-                inputNumber.setMinValue(min.value());
-            }
+
             if (annotationType.equals(Digits.class) && LangUtils.isValueBlank(inputNumber.getDecimalPlaces())) {
                 Digits digits = (Digits) constraint;
                 inputNumber.setDecimalPlaces(String.valueOf(digits.fraction()));
@@ -146,20 +171,19 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
         if (input instanceof UICalendar) {
             UICalendar uicalendar = (UICalendar) input;
             boolean hasTime = uicalendar.hasTime();
-            // for BeanValidation 2.0
-            String annotationClassName = annotationType.getSimpleName();
+            Temporal now = CalendarUtils.now(uicalendar);
 
             if (annotationType.equals(Past.class) && uicalendar.getMaxdate() == null) {
-                uicalendar.setMaxdate(hasTime ? LocalDateTime.now() : LocalDate.now().minusDays(1));
+                uicalendar.setMaxdate(hasTime ? now : now.minus(1, ChronoUnit.DAYS));
             }
             if (annotationClassName.equals(PastOrPresentClientValidationConstraint.CONSTRAINT_ID) && uicalendar.getMaxdate() == null) {
-                uicalendar.setMaxdate(hasTime ? LocalDateTime.now() : LocalDate.now());
+                uicalendar.setMaxdate(now);
             }
             if (annotationType.equals(Future.class) && uicalendar.getMindate() == null) {
-                uicalendar.setMindate(hasTime ? LocalDateTime.now() : LocalDate.now().plusDays(1));
+                uicalendar.setMindate(hasTime ? now : now.plus(1, ChronoUnit.DAYS));
             }
             if (annotationClassName.equals(FutureOrPresentClientValidationConstraint.CONSTRAINT_ID) && uicalendar.getMindate() == null) {
-                uicalendar.setMindate(hasTime ? LocalDateTime.now() : LocalDate.now());
+                uicalendar.setMindate(now);
             }
         }
     }

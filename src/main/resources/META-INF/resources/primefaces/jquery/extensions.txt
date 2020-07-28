@@ -5,7 +5,7 @@ List of Plugins
 - jQuery UI Effects
 - Timepicker (https://github.com/trentrichardson/jQuery-Timepicker-Addon)
 - MouseWheel (https://github.com/jquery/jquery-mousewheel)
-- Masked Input (https://github.com/digitalBush/jquery.maskedinput/)
+- Input Mask (https://github.com/RobinHerbots/Inputmask)
 - Rangy Text (https://github.com/timdown/rangy)
 - Cursor Position (https://github.com/beviz/jquery-caret-position-getter)
 - Browser (https://github.com/gabceb/jquery-browser-plugin/releases)
@@ -22,9 +22,6 @@ jquery.autosize.js:
 jquery.ui.timepicker.js:
 - Added fix to timepicker from https://github.com/trentrichardson/jQuery-Timepicker-Addon/issues/848
 - Fix timeOnlyTitle XSS (https://github.com/primefaces/primefaces/issues/4385)
-
-jquery.maskedinput.js:
-- line 116: Added arrow keys fix to mask (https://github.com/primefaces/primefaces/issues/1481)
 
 jquery.ui.pfextensions:
 - Added gotoToday selection fix (https://github.com/primefaces/primefaces/issues/1420)

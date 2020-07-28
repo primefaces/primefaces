@@ -349,7 +349,6 @@
     cursor: pointer; 
     position: relative; 
     margin: 0;
-    zoom: 1; 
 }
 
 .ui-panelmenu .ui-panelmenu-header a { 
@@ -371,7 +370,6 @@
     position: relative; 
     top: 1px; 
     overflow: auto; 
-    zoom: 1; 
     outline: none;
 }
 
@@ -438,7 +436,6 @@
 /** TabMenu **/
 .ui-tabmenu { 
     position: relative; 
-    zoom: 1; 
 }
 
 .ui-tabmenu .ui-tabmenu-nav { 

@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -44,13 +43,11 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.MapBuilder;
 
-@ResourceDependencies({
-        @ResourceDependency(library = "primefaces", name = "components.css"),
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
-        @ResourceDependency(library = "primefaces", name = "core.js"),
-        @ResourceDependency(library = "primefaces", name = "components.js")
-})
+@ResourceDependency(library = "primefaces", name = "components.css")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
+@ResourceDependency(library = "primefaces", name = "core.js")
+@ResourceDependency(library = "primefaces", name = "components.js")
 public class DataView extends DataViewBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataView";
@@ -148,7 +145,7 @@ public class DataView extends DataViewBase {
         DataModel model = getDataModel();
         if (model instanceof LazyDataModel) {
             LazyDataModel lazyModel = (LazyDataModel) model;
-            List<?> data = lazyModel.load(getFirst(), getRows(), null, null, Collections.emptyList());
+            List<?> data = lazyModel.load(getFirst(), getRows(), null, null, Collections.emptyMap());
 
             lazyModel.setPageSize(getRows());
             lazyModel.setWrappedData(data);
@@ -167,5 +164,41 @@ public class DataView extends DataViewBase {
         listItem = null;
 
         return super.saveState(context);
+    }
+
+    public void reset() {
+        setFirst(0);
+        //resetRows(); //TODO: do resetRows the "right" way
+        setLayout(null);
+    }
+
+    @Override
+    public void resetMultiViewState() {
+        reset();
+    }
+
+    @Override
+    public void restoreMultiViewState() {
+        DataViewState viewState = getMultiViewState(false);
+        if (viewState != null) {
+            if (viewState.getLayout() != null && viewState.getLayout().length() > 0) {
+                setLayout(viewState.getLayout());
+            }
+
+            if (isPaginator()) {
+                setFirst(viewState.getFirst());
+                int rows = (viewState.getRows() == 0) ? getRows() : viewState.getRows();
+                setRows(rows);
+            }
+        }
+    }
+
+    @Override
+    public DataViewState getMultiViewState(boolean create) {
+        FacesContext fc = getFacesContext();
+        String viewId = fc.getViewRoot().getViewId();
+
+        return PrimeFaces.current().multiViewState()
+                .get(viewId, getClientId(fc), create, DataViewState::new);
     }
 }

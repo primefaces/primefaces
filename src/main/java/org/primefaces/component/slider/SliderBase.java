@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,9 +27,10 @@ import javax.faces.component.UIInput;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.TouchAware;
 import org.primefaces.component.api.Widget;
 
-public abstract class SliderBase extends UIInput implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+public abstract class SliderBase extends UIInput implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, TouchAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -52,7 +53,8 @@ public abstract class SliderBase extends UIInput implements Widget, ClientBehavi
         onSlide,
         onSlideEnd,
         range,
-        displayTemplate;
+        displayTemplate,
+        touchable;
 
         private String toString;
 
@@ -204,5 +206,15 @@ public abstract class SliderBase extends UIInput implements Widget, ClientBehavi
 
     public void setDisplayTemplate(String displayTemplate) {
         getStateHelper().put(PropertyKeys.displayTemplate, displayTemplate);
+    }
+
+    @Override
+    public boolean isTouchable() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, true);
+    }
+
+    @Override
+    public void setTouchable(boolean touchable) {
+        getStateHelper().put(PropertyKeys.touchable, touchable);
     }
 }

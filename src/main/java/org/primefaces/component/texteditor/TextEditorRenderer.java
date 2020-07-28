@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -101,6 +101,7 @@ public class TextEditorRenderer extends InputRenderer {
         String style = editor.getStyle();
         String styleClass = editor.getStyleClass();
         styleClass = (styleClass != null) ? TextEditor.EDITOR_CLASS + " " + styleClass : TextEditor.EDITOR_CLASS;
+        styleClass = !editor.isDisabled() ? styleClass : styleClass + " ui-state-disabled";
 
         writer.startElement("div", editor);
         writer.writeAttribute("id", clientId, null);
@@ -142,6 +143,7 @@ public class TextEditorRenderer extends InputRenderer {
         wb.init("TextEditor", editor.resolveWidgetVar(context), clientId)
                 .attr("toolbarVisible", editor.isToolbarVisible())
                 .attr("readOnly", editor.isReadonly(), false)
+                .attr("disabled", editor.isDisabled(), false)
                 .attr("placeholder", editor.getPlaceholder(), null)
                 .attr("height", editor.getHeight(), Integer.MIN_VALUE);
 
@@ -164,8 +166,7 @@ public class TextEditorRenderer extends InputRenderer {
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-        String value = (String) submittedValue;
-        return ComponentUtils.getConvertedValue(context, component, value);
+        return ComponentUtils.getConvertedValue(context, component, submittedValue);
     }
 
     /**

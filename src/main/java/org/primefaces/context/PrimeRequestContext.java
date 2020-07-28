@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -52,7 +52,8 @@ public class PrimeRequestContext {
     public static final String INSTANCE_KEY = PrimeRequestContext.class.getName();
 
     private static final String CALLBACK_PARAMS_KEY = "CALLBACK_PARAMS";
-    private static final String EXECUTE_SCRIPT_KEY = "EXECUTE_SCRIPT";
+    private static final String EXECUTE_INIT_SCRIPTS_KEY = "EXECUTE_INIT_SCRIPTS";
+    private static final String EXECUTE_SCRIPTS_KEY = "EXECUTE_SCRIPTS";
     private static final Class<?>[] EMPTY_PARAMS = new Class<?>[0];
 
     private WidgetBuilder widgetBuilder;
@@ -62,6 +63,8 @@ public class PrimeRequestContext {
     private PrimeApplicationContext applicationContext;
     private Boolean ignoreAutoUpdate;
     private Boolean rtl;
+    private Boolean touchable;
+    private Boolean secure;
 
     public PrimeRequestContext(FacesContext context) {
         this.context = context;
@@ -114,16 +117,32 @@ public class PrimeRequestContext {
     }
 
     /**
+     * @return all scripts added in the current request and called first before other scripts are executed.
+     */
+    @SuppressWarnings("unchecked")
+    public List<String> getInitScriptsToExecute() {
+        List<String> initScriptsToExecute =
+            (List<String>) context.getAttributes().get(EXECUTE_INIT_SCRIPTS_KEY);
+
+        if (initScriptsToExecute == null) {
+            initScriptsToExecute = new ArrayList<>(5);
+            context.getAttributes().put(EXECUTE_INIT_SCRIPTS_KEY, initScriptsToExecute);
+        }
+
+        return initScriptsToExecute;
+    }
+
+    /**
      * @return all scripts added in the current request.
      */
     @SuppressWarnings("unchecked")
     public List<String> getScriptsToExecute() {
         List<String> scriptsToExecute =
-            (List<String>) context.getAttributes().get(EXECUTE_SCRIPT_KEY);
+            (List<String>) context.getAttributes().get(EXECUTE_SCRIPTS_KEY);
 
         if (scriptsToExecute == null) {
             scriptsToExecute = new ArrayList<>();
-            context.getAttributes().put(EXECUTE_SCRIPT_KEY, scriptsToExecute);
+            context.getAttributes().put(EXECUTE_SCRIPTS_KEY, scriptsToExecute);
         }
 
         return scriptsToExecute;
@@ -189,22 +208,24 @@ public class PrimeRequestContext {
      * @return if secure or not.
      */
     public boolean isSecure() {
-        // currently called once per request - later we might cache the result per request
-        // and even the method lookup
-        Object request = context.getExternalContext().getRequest();
+        if (secure == null) {
+            Object request = context.getExternalContext().getRequest();
 
-        if (request instanceof HttpServletRequest) {
-            return ((HttpServletRequest) request).isSecure();
-        }
-        else {
-            try {
-                Method method = request.getClass().getDeclaredMethod("isSecure", EMPTY_PARAMS);
-                return (Boolean) method.invoke(request, (Object[]) null);
+            if (request instanceof HttpServletRequest) {
+                secure = ((HttpServletRequest) request).isSecure();
             }
-            catch (Exception e) {
-                return false;
+            else {
+                try {
+                    Method method = request.getClass().getDeclaredMethod("isSecure", EMPTY_PARAMS);
+                    secure = (Boolean) method.invoke(request, (Object[]) null);
+                }
+                catch (Exception e) {
+                    secure = false;
+                }
             }
         }
+
+        return secure;
     }
 
     /**
@@ -236,5 +257,23 @@ public class PrimeRequestContext {
         }
 
         return rtl;
+    }
+
+    public boolean isTouchable() {
+        if (touchable == null) {
+            String param = context.getExternalContext().getInitParameter(Constants.ContextParams.TOUCHABLE);
+            if (param == null) {
+                touchable = true;
+            }
+            else {
+                ELContext elContext = context.getELContext();
+                ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
+                ValueExpression expression = expressionFactory.createValueExpression(elContext, param, String.class);
+                String expressionValue = (String) expression.getValue(elContext);
+                touchable = expressionValue == null || Boolean.parseBoolean(expressionValue);
+            }
+        }
+
+        return touchable;
     }
 }

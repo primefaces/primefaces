@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -186,15 +186,11 @@ public class AutoCompleteRenderer extends InputRenderer {
 
     protected void encodeInput(FacesContext context, AutoComplete ac, String clientId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        boolean disabled = ac.isDisabled();
         String var = ac.getVar();
         String itemLabel;
-        String defaultStyleClass = ac.isDropdown() ? AutoComplete.INPUT_WITH_DROPDOWN_CLASS : AutoComplete.INPUT_CLASS;
-        String styleClass = disabled ? defaultStyleClass + " ui-state-disabled" : defaultStyleClass;
-        styleClass = ac.isValid() ? styleClass : styleClass + " ui-state-error";
         String inputStyle = ac.getInputStyle();
-        String inputStyleClass = ac.getInputStyleClass();
-        inputStyleClass = (inputStyleClass == null) ? styleClass : styleClass + " " + inputStyleClass;
+        String defaultStyleClass = ac.isDropdown() ? AutoComplete.INPUT_WITH_DROPDOWN_CLASS : AutoComplete.INPUT_CLASS;
+        String inputStyleClass = createStyleClass(ac, AutoComplete.PropertyKeys.inputStyleClass.name(), defaultStyleClass);
         String autocompleteProp = (ac.getAutocomplete() != null) ? ac.getAutocomplete() : "off";
 
         writer.startElement("input", null);
@@ -275,6 +271,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("name", clientId + "_hinput", null);
         writer.writeAttribute("type", "hidden", null);
         writer.writeAttribute("autocomplete", autocompleteProp, null);
+        writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
         if (valueToRender != null) {
             writer.writeAttribute("value", valueToRender, null);
         }
@@ -291,6 +288,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("multiple", "multiple", null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
         writer.writeAttribute("tabindex", "-1", null);
+        writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
 
         if (ac.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", "disabled");
@@ -348,6 +346,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("id", ac.getClientId(context) + "_panel", null);
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("role", "listbox", null);
+        writer.writeAttribute("tabindex", "-1", null);
 
         if (ac.getPanelStyle() != null) {
             writer.writeAttribute("style", ac.getPanelStyle(), null);
@@ -387,8 +386,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         String styleClass = ac.getStyleClass();
         styleClass = styleClass == null ? AutoComplete.MULTIPLE_STYLE_CLASS : AutoComplete.MULTIPLE_STYLE_CLASS + " " + styleClass;
         String listClass = ac.isDropdown() ? AutoComplete.MULTIPLE_CONTAINER_WITH_DROPDOWN_CLASS : AutoComplete.MULTIPLE_CONTAINER_CLASS;
-        listClass = disabled ? listClass + " ui-state-disabled" : listClass;
-        listClass = ac.isValid() ? listClass : listClass + " ui-state-error";
+        listClass = createStyleClass(ac, null, listClass);
         String autocompleteProp = (ac.getAutocomplete() != null) ? ac.getAutocomplete() : "off";
 
         writer.startElement("div", null);

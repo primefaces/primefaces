@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,6 @@ import java.util.*;
 import javax.faces.FacesException;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -45,13 +44,11 @@ import org.primefaces.util.LangUtils;
 import org.primefaces.util.MapBuilder;
 import org.primefaces.util.MessageFactory;
 
-@ResourceDependencies({
-        @ResourceDependency(library = "primefaces", name = "components.css"),
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
-        @ResourceDependency(library = "primefaces", name = "core.js"),
-        @ResourceDependency(library = "primefaces", name = "components.js")
-})
+@ResourceDependency(library = "primefaces", name = "components.css")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
+@ResourceDependency(library = "primefaces", name = "core.js")
+@ResourceDependency(library = "primefaces", name = "components.js")
 public class PickList extends PickListBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.PickList";
@@ -132,7 +129,7 @@ public class PickList extends PickListBase {
                 message = new FacesMessage(FacesMessage.SEVERITY_ERROR, requiredMessage, requiredMessage);
             }
             else {
-                message = MessageFactory.getMessage(REQUIRED_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, new Object[] {label});
+                message = MessageFactory.getFacesMessage(REQUIRED_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, new Object[] {label});
             }
             facesContext.addMessage(clientId, message);
             setValid(false);
@@ -166,7 +163,7 @@ public class PickList extends PickListBase {
             boolean itemDisabled = isItemDisabled();
             // Check if disabled item has been moved from its former/original list
             if (itemDisabled && !oldEntries.contains(item)) {
-                FacesMessage message = MessageFactory.getMessage(UPDATE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, new Object[] {label});
+                FacesMessage message = MessageFactory.getFacesMessage(UPDATE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, new Object[] {label});
                 facesContext.addMessage(clientId, message);
                 setValid(false);
                 break;

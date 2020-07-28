@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,7 @@ public class MenuActionEvent extends ActionEvent {
 
     private static final long serialVersionUID = 1L;
 
-    private MenuItem menuItem;
+    private transient MenuItem menuItem;
 
     public MenuActionEvent(UIComponent component, MenuItem menuItem) {
         super(component);

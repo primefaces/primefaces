@@ -152,7 +152,7 @@ uses a new request for each file.
 However, in simple mode, it is possible to get all updated files at once via the `UploadedFiles` model:
 ```xhtml
 <p:fileUpload value="#{fileUploadView.files}" multiple="true" mode="simple" />
-<p:commandButton value="Submit" action="#{fileUploadView.upload}" />
+<p:commandButton value="Submit" action="#{fileUploadView.upload}" ajax="false"/>
 ```
 
 ```java
@@ -312,7 +312,7 @@ Here are some measures that can be taken into account when using PrimeFaces's `f
             }
 
             @Override
-            public void performVirusScan(InputStream inputStream) throws VirusException {
+            public void performVirusScan(InputStream stream) throws VirusException {
                 // call the virus scanner's API here
                 if (virusDetected) {
                     throw new VirusException();

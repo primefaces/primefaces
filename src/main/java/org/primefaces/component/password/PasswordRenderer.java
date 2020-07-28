@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -71,6 +71,8 @@ public class PasswordRenderer extends InputRenderer {
         if (feedback) {
             wb.attr("feedback", true)
                     .attr("inline", password.isInline())
+                    .attr("showEvent", password.getShowEvent(), null)
+                    .attr("hideEvent", password.getHideEvent(), null)
                     .attr("promptLabel", password.getPromptLabel())
                     .attr("weakLabel", password.getWeakLabel())
                     .attr("goodLabel", password.getGoodLabel())
@@ -83,12 +85,7 @@ public class PasswordRenderer extends InputRenderer {
     protected void encodeMarkup(FacesContext context, Password password) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = password.getClientId(context);
-        boolean disabled = password.isDisabled();
-
-        String inputClass = Password.STYLE_CLASS;
-        inputClass = password.isValid() ? inputClass : inputClass + " ui-state-error";
-        inputClass = !disabled ? inputClass : inputClass + " ui-state-disabled";
-        String styleClass = password.getStyleClass() == null ? inputClass : inputClass + " " + password.getStyleClass();
+        String styleClass = createStyleClass(password, Password.STYLE_CLASS) ;
 
         writer.startElement("input", password);
         writer.writeAttribute("id", clientId, "id");

@@ -1,10 +1,30 @@
 if (!PrimeFaces.csp) {
 
+    /**
+     * The object with functionality related to handling the `script-src` directive of the HTTP Content-Security-Policy
+     * (CSP) policy. This makes use of a nonce (number used once). The server must generate a unique nonce value each
+     * time it transmits a policy. 
+     * @namespace
+     */
     PrimeFaces.csp = {
 
+        /**
+         * Name of the POST parameter for transmitting the nonce.
+         * @type {string}
+         * @readonly
+         */
         NONCE_INPUT : "primefaces.nonce",
+
+        /**
+         * The value of the nonce to be used.
+         * @type {string}
+         */
         NONCE_VALUE : "",
 
+        /**
+         * Sets the given nonce to all forms on the current page.
+         * @param {string} nonce Nonce to set. This value is usually supplied by the server.
+         */
         init : function(nonce) {
             PrimeFaces.csp.NONCE_VALUE = nonce;
 
@@ -22,11 +42,17 @@ if (!PrimeFaces.csp) {
             }
         },
 
+        /**
+         * Registers an event listener for the given element.
+         * @param {string} id ID of an element
+         * @param {string} [event] Event to listen to, with the `on` prefix, such as `onclick` or `onblur`.
+         * @param {() => boolean} [js] Callback that may return `false` to prevent the default behavior of the event.
+         */
         register: function(id, event, js){
             if (event) {
-                var shortenedEvent = event.substring(2, event.length);
-
-                var element = document.getElementById(id);
+                var shortenedEvent = event.substring(2, event.length),
+                    element = document.getElementById(id),
+                    jqEvent = shortenedEvent + '.' + id;
 
                 // if the eventhandler return false, we must use preventDefault
                 var jsWrapper = function(event) {
@@ -36,34 +62,50 @@ if (!PrimeFaces.csp) {
                     }
                 };
 
-                $(element).on(shortenedEvent, jsWrapper);
+                $(element).off(jqEvent).on(jqEvent, jsWrapper);
             }
         },
 
         /**
-         * Perform a CSP safe eval().
+         * Perform a CSP safe `eval()`.
          *
-         * @param js the Javascript to evaluate
-         * @param nonceValue nonce value or null if not using CSP
+         * @param {string} js The JavaScript code to evaluate.
+         * @param {string} [nonceValue] Nonce value. Leave out if not using CSP.
          */
         eval: function (js, nonceValue) {
             // assign the NONCE if necessary
             var options = {};
             if (nonceValue) {
                 options = {nonce: nonceValue};
+            } else if (PrimeFaces.csp.NONCE_VALUE) {
+                options = {nonce: PrimeFaces.csp.NONCE_VALUE};
             }
 
             // evaluate the script
             $.globalEval(js, options);
         },
+        
+        /**
+         * Perform a CSP safe `eval()` with a return result value.
+         *
+         * @param {string} js The JavaScript code to evaluate.
+         * @return {unknown} The result of the evaluated JavaScript code.
+         * @see https://stackoverflow.com/a/33945236/502366
+         */
+        evalResult: function (js) {
+            var executeJs = "var cspResult = " + js;
+            PrimeFaces.csp.eval(executeJs);
+            return cspResult;
+        },
 
         /**
-         * CSP won't allow  string-to-JavaScript methods like eval() and new Function().
+         * CSP won't allow string-to-JavaScript methods like eval() and new Function().
          * This method uses JQuery globalEval to safely evaluate the function if CSP enabled.
          *
-         * @param id the element executing the function (aka this)
-         * @param js the Javascript to evaluate
-         * @param e the event from the caller to pass through
+         * @param {any} id The element executing the function (aka `this`).
+         * @param {string} js The JavaScript code to evaluate. Two variables will be in scope for the code: (a) the
+         * `this` context, which is set to the given `id`, and (b) the `event` variable, which is set to the given `e`.
+         * @param {JQuery.Event} e The event from the caller to pass through.
          */
         executeEvent: function(id, js, e) {
             // create the wrapper function
@@ -74,6 +116,20 @@ if (!PrimeFaces.csp) {
 
             // call the function
             cspFunction.call(id, e);
+        },
+
+        /**
+         * GitHub #5790: When using jQuery to trigger a click event on a button while using CSP
+         * we must set preventDefault or else it will trigger a non-ajax button click.
+         * 
+         * @return {JQuery.Event} the JQuery click event
+         */
+        clickEvent: function() {
+            var clickEvent = $.Event( "click" );
+            if (PrimeFaces.csp.NONCE_VALUE) {
+                clickEvent.preventDefault();
+            }
+            return clickEvent;
         }
 
     };

@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,19 +23,9 @@
  */
 package org.primefaces.component.splitbutton;
 
-import org.primefaces.component.menu.AbstractMenu;
-import org.primefaces.component.menu.Menu;
-import org.primefaces.component.menubutton.MenuButton;
-import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.model.menu.MenuItem;
-import org.primefaces.model.menu.MenuModel;
-import org.primefaces.model.menu.Separator;
-import org.primefaces.model.menu.Submenu;
-import org.primefaces.renderkit.MenuItemAwareRenderer;
-import org.primefaces.util.ComponentTraversalUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.SharedStringBuilder;
-import org.primefaces.util.WidgetBuilder;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -43,10 +33,19 @@ import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
+
+import org.primefaces.component.menu.AbstractMenu;
+import org.primefaces.component.menu.Menu;
+import org.primefaces.component.menubutton.MenuButton;
+import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.model.menu.MenuItem;
+import org.primefaces.model.menu.MenuModel;
+import org.primefaces.model.menu.Separator;
+import org.primefaces.model.menu.Submenu;
+import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.renderkit.MenuItemAwareRenderer;
+import org.primefaces.util.*;
 
 public class SplitButtonRenderer extends MenuItemAwareRenderer {
 
@@ -137,7 +136,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
             }
         }
 
-        renderPassThruAttributes(context, button, HTML.BUTTON_ATTRS, HTML.CLICK_EVENT);
+        renderPassThruAttributes(context, button, HTML.BUTTON_WITH_CLICK_ATTRS);
 
         if (button.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", "disabled");
@@ -250,7 +249,6 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", menuId, null);
         writer.writeAttribute("class", menuStyleClass, "styleClass");
-        writer.writeAttribute("role", "menu", null);
         writer.writeAttribute(HTML.ARIA_LABELLEDBY, button.getClientId(context), null);
         writer.writeAttribute("tabindex", "-1", null);
 
@@ -263,6 +261,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", MenuButton.LIST_CLASS, "styleClass");
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
 
         encodeElements(context, button, button.getElements(), false);
 
@@ -289,7 +288,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
 
                     writer.startElement("li", null);
                     writer.writeAttribute("class", containerStyleClass, null);
-                    writer.writeAttribute("role", "menuitem", null);
+                    writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
                     if (containerStyle != null) {
                         writer.writeAttribute("style", containerStyle, null);
                     }
@@ -320,6 +319,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
             writer.startElement("a", null);
             writer.writeAttribute("id", menuitem.getClientId(), null);
             writer.writeAttribute("tabindex", "-1", null);
+            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM, null);
             if (title != null) {
                 writer.writeAttribute("title", title, null);
             }
@@ -403,6 +403,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
+        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER, null), null);
 
         if (button.getFilterPlaceholder() != null) {
             writer.writeAttribute("placeholder", button.getFilterPlaceholder(), null);

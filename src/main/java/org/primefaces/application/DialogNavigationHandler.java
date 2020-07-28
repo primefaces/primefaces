@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -87,9 +87,10 @@ public class DialogNavigationHandler extends ConfigurableNavigationHandler {
 
             sb.append(",options:{");
             if (options != null && !options.isEmpty()) {
-                for (Iterator<String> it = options.keySet().iterator(); it.hasNext();) {
-                    String optionName = it.next();
-                    Object optionValue = options.get(optionName);
+                for (Iterator<Map.Entry<String, Object>> it = options.entrySet().iterator(); it.hasNext();) {
+                    Map.Entry<String, Object> entry = it.next();
+                    String optionName = entry.getKey();
+                    Object optionValue = entry.getValue();
 
                     sb.append(optionName).append(":");
                     if (optionValue instanceof String) {

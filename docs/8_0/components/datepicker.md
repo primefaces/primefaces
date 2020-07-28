@@ -109,6 +109,7 @@ ajax selection and more.
 | tabindex | null | Integer | Position of the input element in the tabbing order.
 | title | null | String | Advisory tooltip informaton.
 | rangeSeparator | - | String | Separator for joining start and end dates on range selection mode.
+| resolverStyle | smart | String | Relevant when parsing to a Java 8 Date/Time object. lenient, smart or strict. See [ResolverStyle](https://docs.oracle.com/javase/8/docs/api/java/time/format/ResolverStyle.html).
 
 ## Getting Started with DatePicker
 Value of the DatePicker should be a java.time.LocalDate in single selection mode which is the default.
@@ -160,7 +161,7 @@ Translation is a simple javascript object, we suggest adding the code to a javas
 in your application. Following is a Turkish DatePicker.
 
 ```xhtml
-<h:outputScript name=”path_to_your_translations.js” />
+<h:outputScript name="path_to_your_translations.js" />
 <p:datePicker value="#{dateController.date}" locale="tr" />
 ```
 
@@ -186,7 +187,7 @@ _org.primefaces.event.SelectEvent_ instance.
 
 ```xhtml
 <p:datePicker value="#{DatePickerBean.date}">
-    <p:ajax event=”dateSelect” listener=”#{bean.handleDateSelect}” update=”msg” />
+    <p:ajax event="dateSelect" listener="#{bean.handleDateSelect}" update="msg" />
 </p:datePicker>
 <p:messages id="msg" />
 ```
@@ -256,6 +257,14 @@ The TimePicker pattern can be modified with the properties _hourFormat_ and _sho
 ```xhtml
 <p:datePicker value="#{dateBean.time}" timeOnly="true" hourFormat="12" showSeconds="true" />
 ```
+
+## Client Side API
+Widget: _PrimeFaces.widget.Calendar_
+
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
+| getDate() | - | Date | Return selected date
+| setDate(date) | date: Date to display | void | Sets display date
 
 ## Skinning
 DatePicker resides in a container element which _style_ and _styleClass_ options apply.

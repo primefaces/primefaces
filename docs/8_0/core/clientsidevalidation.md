@@ -19,7 +19,7 @@ experience difference behaviors on client side and server side.
 
 ## Configuration
 
-CVS is disabled by default and a global parameter is required to turn it on.
+CSV is disabled by default and a global parameter is required to turn it on.
 
 ```xml
 <context-param>
@@ -45,7 +45,7 @@ CSV works for PrimeFaces components only, standard h: * components are not suppo
 ## Ajax vs Non-Ajax
 
 CSV works differently depending on the request type of the trigger component to be compatible
-with cases where CVS is not enabled.
+with cases where CSV is not enabled.
 
 
 **Non-Ajax**

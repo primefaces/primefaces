@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,15 +23,16 @@
  */
 package org.primefaces.component.selectonelistbox;
 
-import javax.faces.application.ResourceDependencies;
+import java.util.List;
+
 import javax.faces.application.ResourceDependency;
 
-@ResourceDependencies({
-        @ResourceDependency(library = "primefaces", name = "components.css"),
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
-        @ResourceDependency(library = "primefaces", name = "core.js"),
-        @ResourceDependency(library = "primefaces", name = "components.js")
-})
+import org.primefaces.util.LangUtils;
+
+@ResourceDependency(library = "primefaces", name = "components.css")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
+@ResourceDependency(library = "primefaces", name = "core.js")
+@ResourceDependency(library = "primefaces", name = "components.js")
 public class SelectOneListbox extends SelectOneListboxBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectOneListbox";
@@ -43,7 +44,7 @@ public class SelectOneListbox extends SelectOneListboxBase {
     public static final String FILTER_CONTAINER_CLASS = "ui-selectlistbox-filter-container";
     public static final String FILTER_CLASS = "ui-selectlistbox-filter ui-inputfield ui-widget ui-state-default ui-corner-all";
     public static final String FILTER_ICON_CLASS = "ui-icon ui-icon-search";
-    public static final String[] DOM_EVENTS = {"onchange", "onclick", "ondblclick"};
+    public static final List<String> DOM_EVENTS = LangUtils.unmodifiableList("onchange", "onclick", "ondblclick");
 
     @Override
     public String getInputClientId() {

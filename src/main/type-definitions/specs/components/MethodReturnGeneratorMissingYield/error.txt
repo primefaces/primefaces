@@ -1,0 +1,2 @@
+Error: [tagMissingYield] Found explicit yield expression in method, but no @yield tag was specified in the doc comments
+at method foo (${PROJECT_BASEDIR}/src/main/type-definitions/specs/components/MethodReturnGeneratorMissingYield/input.js:9:8)

@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,6 @@ import java.util.Map;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
-import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
@@ -44,21 +43,22 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.util.*;
 
-@ResourceDependencies({
-        @ResourceDependency(library = "primefaces", name = "schedule/schedule.css"),
-        @ResourceDependency(library = "primefaces", name = "components.css"),
-        @ResourceDependency(library = "primefaces", name = "moment/moment.js"),
-        @ResourceDependency(library = "primefaces", name = "moment/moment-timezone-with-data.js"),
-        @ResourceDependency(library = "primefaces", name = "core.js"),
-        @ResourceDependency(library = "primefaces", name = "components.js"),
-        @ResourceDependency(library = "primefaces", name = "schedule/schedule.js")
-})
+@ResourceDependency(library = "primefaces", name = "schedule/schedule.css")
+@ResourceDependency(library = "primefaces", name = "components.css")
+@ResourceDependency(library = "primefaces", name = "moment/moment.js")
+@ResourceDependency(library = "primefaces", name = "moment/moment-timezone-with-data.js")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
+@ResourceDependency(library = "primefaces", name = "core.js")
+@ResourceDependency(library = "primefaces", name = "components.js")
+@ResourceDependency(library = "primefaces", name = "schedule/schedule.js")
 public class Schedule extends ScheduleBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Schedule";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("dateSelect", SelectEvent.class)
+            .put("dateDblSelect", SelectEvent.class)
             .put("eventSelect", SelectEvent.class)
             .put("eventMove", ScheduleEntryMoveEvent.class)
             .put("eventResize", ScheduleEntryResizeEvent.class)
@@ -77,7 +77,7 @@ public class Schedule extends ScheduleBase {
     }
 
     Locale calculateLocale(FacesContext facesContext) {
-        return LocaleUtils.resolveLocale(getLocale(), getClientId(facesContext));
+        return LocaleUtils.resolveLocale(facesContext, getLocale(), getClientId(facesContext));
     }
 
     @Override
@@ -86,15 +86,15 @@ public class Schedule extends ScheduleBase {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
         String clientId = getClientId(context);
-        ZoneId zoneId = CalendarUtils.calculateZoneId(this.getTimeZone());
 
         if (ComponentUtils.isRequestSource(this, context)) {
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
             FacesEvent wrapperEvent = null;
 
-            if (eventName.equals("dateSelect")) {
+            if (eventName.equals("dateSelect") || eventName.equals("dateDblSelect")) {
                 String selectedDateStr = params.get(clientId + "_selectedDate");
+                ZoneId zoneId = CalendarUtils.calculateZoneId(this.getTimeZone());
                 LocalDateTime selectedDate =  CalendarUtils.toLocalDateTime(zoneId, selectedDateStr);
                 SelectEvent<?> selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), selectedDate);
                 selectEvent.setPhaseId(behaviorEvent.getPhaseId());
@@ -114,11 +114,13 @@ public class Schedule extends ScheduleBase {
                 int monthDelta = Double.valueOf(params.get(clientId + "_monthDelta")).intValue();
                 int dayDelta = Double.valueOf(params.get(clientId + "_dayDelta")).intValue();
                 int minuteDelta = Double.valueOf(params.get(clientId + "_minuteDelta")).intValue();
+                boolean allDay = Boolean.parseBoolean(params.get(clientId + "_allDay"));
 
                 LocalDateTime startDate = movedEvent.getStartDate();
                 LocalDateTime endDate = movedEvent.getEndDate();
                 startDate = startDate.plusYears(yearDelta).plusMonths(monthDelta).plusDays(dayDelta).plusMinutes(minuteDelta);
                 endDate = endDate.plusYears(yearDelta).plusMonths(monthDelta).plusDays(dayDelta).plusMinutes(minuteDelta);
+                movedEvent.setAllDay(allDay);
                 movedEvent.setStartDate(startDate);
                 movedEvent.setEndDate(endDate);
 

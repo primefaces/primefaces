@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,8 +25,8 @@ package org.primefaces.component.wizard;
 
 import java.util.Collection;
 import java.util.Map;
+
 import javax.el.MethodExpression;
-import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -37,14 +37,13 @@ import javax.faces.event.FacesEvent;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.MapBuilder;
 
-@ResourceDependencies({
-        @ResourceDependency(library = "primefaces", name = "components.css"),
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
-        @ResourceDependency(library = "primefaces", name = "core.js"),
-        @ResourceDependency(library = "primefaces", name = "components.js")
-})
+@ResourceDependency(library = "primefaces", name = "components.css")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
+@ResourceDependency(library = "primefaces", name = "core.js")
+@ResourceDependency(library = "primefaces", name = "components.js")
 public class Wizard extends WizardBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Wizard";
@@ -77,26 +76,39 @@ public class Wizard extends WizardBase {
         decode(context);
 
         if (!isBackRequest(context) || (isUpdateModelOnPrev() && isBackRequest(context))) {
-            getStepToProcess().processDecodes(context);
+            Tab step = getStepToProcess();
+            if (step != null) {
+                step.processDecodes(context);
+            }
         }
     }
 
     @Override
     public void processValidators(FacesContext context) {
         if (!isBackRequest(context) || (isUpdateModelOnPrev() && isBackRequest(context))) {
-            getStepToProcess().processValidators(context);
+            Tab step = getStepToProcess();
+            if (step != null) {
+                step.processValidators(context);
+            }
         }
     }
 
     @Override
     public void processUpdates(FacesContext context) {
         if (!isBackRequest(context) || (isUpdateModelOnPrev() && isBackRequest(context))) {
-            getStepToProcess().processUpdates(context);
+            Tab step = getStepToProcess();
+            if (step != null) {
+                step.processUpdates(context);
+            }
         }
     }
 
     public Tab getStepToProcess() {
         String currentStepId = getStep();
+        if (LangUtils.isValueBlank(currentStepId)) {
+            return null;
+        }
+
         for (int i = 0; i < getChildCount(); i++) {
             UIComponent child = getChildren().get(i);
             if (child.getId().equals(currentStepId)) {

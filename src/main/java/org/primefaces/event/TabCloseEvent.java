@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,7 @@ public class TabCloseEvent<T> extends AbstractAjaxBehaviorEvent implements TabEv
 
     private static final long serialVersionUID = 1L;
 
-    private Tab tab;
+    private transient Tab tab;
     private T data;
 
     public TabCloseEvent(UIComponent component, Behavior behavior, Tab tab) {

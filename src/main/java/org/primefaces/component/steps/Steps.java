@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,15 +23,13 @@
  */
 package org.primefaces.component.steps;
 
-import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
+import javax.faces.context.FacesContext;
 
-@ResourceDependencies({
-        @ResourceDependency(library = "primefaces", name = "components.css"),
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
-        @ResourceDependency(library = "primefaces", name = "core.js"),
-        @ResourceDependency(library = "primefaces", name = "components.js")
-})
+@ResourceDependency(library = "primefaces", name = "components.css")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
+@ResourceDependency(library = "primefaces", name = "core.js")
+@ResourceDependency(library = "primefaces", name = "components.js")
 public class Steps extends StepsBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Steps";
@@ -43,4 +41,12 @@ public class Steps extends StepsBase {
     public static final String VISITED_ITEM_CLASS = "ui-steps-item ui-state-default ui-corner-all";
     public static final String STEP_NUMBER_CLASS = "ui-steps-number";
     public static final String STEP_TITLE_CLASS = "ui-steps-title";
+
+    @Override
+    public void processDecodes(FacesContext context) {
+        if (!isRendered() || isReadonly()) {
+            return;
+        }
+        super.processDecodes(context);
+    }
 }

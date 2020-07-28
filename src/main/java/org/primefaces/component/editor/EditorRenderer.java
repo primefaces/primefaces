@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -126,7 +126,6 @@ public class EditorRenderer extends InputRenderer {
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-        String value = (String) submittedValue;
-        return ComponentUtils.getConvertedValue(context, component, value);
+        return ComponentUtils.getConvertedValue(context, component, submittedValue);
     }
 }

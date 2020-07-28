@@ -2,6 +2,8 @@
 
 DataTable displays data in tabular format.
 
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.datatable.html)
+
 ## Info
 
 | Name | Value |
@@ -40,8 +42,7 @@ DataTable displays data in tabular format.
 | escapeText                | true               | Boolean          | Defines if headerText and footerText values on columns are escaped or not. Default is true.
 | expandableRowGroups       | false              | Boolean          | Makes row groups toggleable, default is false.
 | expandedRow               | false              | Boolean          | Defines if row should be rendered as expanded by default.
-| filterMeta                | null               | List             | List of FilterMeta objects to filter the table by default.
-| sortMeta                  | null               | List             | List of SortMeta objects to filter the table by default.
+| filterBy                  | null               | Map              | Map of filters; This also allows to filter the table by default.
 | filterDelay               | 300                | Integer          | Delay in milliseconds before sending an ajax filter query.
 | filterEvent               | keyup              | String           | Event to invoke filtering for input filters.
 | filteredValue             | null               | List             | List to keep filtered data.
@@ -56,7 +57,6 @@ DataTable displays data in tabular format.
 | liveResize                | false              | Boolean          | Columns are resized live in this mode without using a resize helper.
 | liveScroll                | false              | Boolean          | Enables live scrolling.
 | liveScrollBuffer          | 0                  | Integer          | Percentage height of the buffer between the bottom of the page and the scroll position to initiate the load for the new chunk. Value is defined in integer and default is 0.
-| meaning                   | null               | String           | Values are placed at the end in ascending mode and at beginning in descending mode. Set to "-1" for the opposite behavior.
 | multiViewState            | false              | Boolean          | Whether to keep table state across views, defaults to false.
 | nativeElements            | false              | Boolean          | Uses native radio-checkbox elements for row selection.
 | nullSortOrder             | 1                  | Integer          | Defines where the null values are placed in ascending sort order. Default value is "1"
@@ -91,11 +91,13 @@ DataTable displays data in tabular format.
 | scrollable                | false              | Boolean          | Makes data scrollable with fixed header.
 | selection                 | null               | Object           | Reference to the selection data.
 | selectionMode             | null               | String           | Enables row selection, valid values are “single” and “multiple”.
-| skipChildren              | false              | Boolean          | Ignores processing of children during lifecycle, improves performance if table only has output components.
-| sortBy                    | null               | Object           | Property to be used for default sorting.
-| sortField                 | null               | String           | Name of the field to pass lazy load method for sorting. If not specified, sortBy expression is used to extract the name.
 | sortMode                  | single             | String           | Defines sorting mode, valid values are _single_ and _multiple_.
-| sortOrder                 | ascending          | String           | “ascending” or “descending”.
+| sortMeta                  | null               | Map              | Ordered map of sort information in _multiple_ sortMode; This also allows to sort the table by default.
+| sortBy                    | null               | Object           | Property to be used for default sorting in _single_ sortMode.
+| sortField                 | null               | String           | Name of the field to pass lazy load method for sorting. If not specified, sortBy expression is used to extract the name.
+| sortOrder                 | ascending          | String           | Sets sorting order in 'single' sortMode. Default is "ascending"
+| sortFunction              | null               |                  | Custom pluggable sortFunction for default sorting in 'single' sortMode.
+| skipChildren              | false              | Boolean          | Ignores processing of children during lifecycle, improves performance if table only has output components.
 | stickyHeader              | false              | Boolean          | Sticky header stays in window viewport during scrolling.
 | stickyTopAt               | null               | String           | Selector to position on the page according to other fixing elements on the top of the table. Default is null.
 | style                     | null               | String           | Inline style of the component.
@@ -769,7 +771,7 @@ public class CarBean {
     public CarBean() {
         model = new LazyDataModel() {
             @Override
-            public void load(int first, int pageSize, List<SortMeta> sortMeta, List<FilterMeta> filterMeta) {
+            public void load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
                 //load physical data
             }
         };

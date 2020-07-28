@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,9 +25,10 @@ package org.primefaces.component.galleria;
 
 import javax.faces.component.UIOutput;
 
+import org.primefaces.component.api.TouchAware;
 import org.primefaces.component.api.Widget;
 
-public abstract class GalleriaBase extends UIOutput implements Widget {
+public abstract class GalleriaBase extends UIOutput implements Widget, TouchAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -50,7 +51,8 @@ public abstract class GalleriaBase extends UIOutput implements Widget {
         transitionInterval,
         panelWidth,
         panelHeight,
-        showCaption
+        showCaption,
+        touchable
     }
 
     public GalleriaBase() {
@@ -190,5 +192,15 @@ public abstract class GalleriaBase extends UIOutput implements Widget {
 
     public void setTabindex(String tabindex) {
         getStateHelper().put(PropertyKeys.tabindex, tabindex);
+    }
+
+    @Override
+    public boolean isTouchable() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, true);
+    }
+
+    @Override
+    public void setTouchable(boolean touchable) {
+        getStateHelper().put(PropertyKeys.touchable, touchable);
     }
 }

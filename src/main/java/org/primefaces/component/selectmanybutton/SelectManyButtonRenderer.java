@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -67,10 +67,8 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         List<SelectItem> selectItems = getSelectItems(context, button);
         int selectItemsSize = selectItems.size();
         String style = button.getStyle();
-        String styleClass = button.getStyleClass();
-        styleClass = styleClass == null ? SelectManyButton.STYLE_CLASS : SelectManyButton.STYLE_CLASS + " " + styleClass;
+        String styleClass = createStyleClass(button, SelectManyButton.STYLE_CLASS);
         styleClass = styleClass + " ui-buttonset-" + selectItemsSize;
-        styleClass = !button.isValid() ? styleClass + " ui-state-error" : styleClass;
 
         writer.startElement("div", button);
         writer.writeAttribute("id", clientId, "id");
@@ -150,6 +148,7 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         writer.writeAttribute("type", "checkbox", null);
         writer.writeAttribute("value", itemValueAsString, null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        writer.writeAttribute(HTML.ARIA_LABEL, option.getLabel(), null);
 
         renderOnchange(context, button);
 

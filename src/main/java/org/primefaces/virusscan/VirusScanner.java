@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
  */
 package org.primefaces.virusscan;
 
-import java.io.InputStream;
+import org.primefaces.model.file.UploadedFile;
 
 /**
  * Service provider interface for virus scanning that might be used in file upload component for example when dealing with untrusted files.
@@ -39,9 +39,8 @@ public interface VirusScanner {
 
     /**
      * Perform virus scan and throw exception if a virus has been detected.
-     * @param inputStream input stream to perform virus scan on
-     * @throws VirusException if a virus has been detected by the scanner
+     * @param file file to perform virus scan on
      */
-    void performVirusScan(InputStream inputStream) throws VirusException;
+    void scan(UploadedFile file);
 
 }

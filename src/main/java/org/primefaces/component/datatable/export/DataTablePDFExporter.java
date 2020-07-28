@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,7 +34,6 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.ExporterOptions;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 
 import javax.faces.component.UIComponent;
@@ -45,7 +44,6 @@ import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Collections;
 import java.util.List;
 
 public class DataTablePDFExporter extends DataTableExporter {
@@ -56,9 +54,17 @@ public class DataTablePDFExporter extends DataTableExporter {
     private Document document;
     private ByteArrayOutputStream baos;
 
+    protected Document createDocument() {
+        return new Document();
+    }
+
+    protected Document getDocument() {
+        return document;
+    }
+
     @Override
     protected void preExport(FacesContext context, ExportConfiguration config) throws IOException {
-        document = new Document();
+        document = createDocument();
         baos = new ByteArrayOutputStream();
 
         try {
@@ -84,10 +90,10 @@ public class DataTablePDFExporter extends DataTableExporter {
             if (index > 0) {
                 Paragraph preface = new Paragraph();
                 addEmptyLine(preface, 3);
-                document.add(preface);
+                getDocument().add(preface);
             }
 
-            document.add(exportTable(context, table, config));
+            getDocument().add(exportTable(context, table, config));
         }
         catch (DocumentException e) {
             throw new IOException(e.getMessage());
@@ -100,7 +106,7 @@ public class DataTablePDFExporter extends DataTableExporter {
             config.getPostProcessor().invoke(context.getELContext(), new Object[]{document});
         }
 
-        writePDFToResponse(context.getExternalContext(), baos, config.getOutputFileName());
+        writePDFToResponse(context, baos, config.getOutputFileName());
 
         reset();
     }
@@ -280,20 +286,16 @@ public class DataTablePDFExporter extends DataTableExporter {
         }
     }
 
-    protected void writePDFToResponse(ExternalContext externalContext, ByteArrayOutputStream baos, String fileName) throws IOException {
-        document.close();
-
-        OutputStream out = externalContext.getResponseOutputStream();
-        baos.writeTo(out);
+    protected void writePDFToResponse(FacesContext context, ByteArrayOutputStream baos, String fileName) throws IOException {
+        ExternalContext externalContext = context.getExternalContext();
+        getDocument().close();
 
         externalContext.setResponseContentType("application/pdf");
-        externalContext.setResponseHeader("Expires", "0");
-        externalContext.setResponseHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
-        externalContext.setResponseHeader("Pragma", "public");
-        externalContext.setResponseHeader("Content-disposition", ComponentUtils.createContentDisposition("attachment", fileName + ".pdf"));
+        setResponseHeader(externalContext, ComponentUtils.createContentDisposition("attachment", fileName + ".pdf"));
         externalContext.setResponseContentLength(baos.size());
-        externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
-
+        addResponseCookie(context);
+        OutputStream out = externalContext.getResponseOutputStream();
+        baos.writeTo(out);
         externalContext.responseFlushBuffer();
     }
 

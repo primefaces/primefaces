@@ -38,13 +38,9 @@ import static org.mockito.Mockito.when;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.ResolverStyle;
 import java.time.temporal.Temporal;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
@@ -125,6 +121,7 @@ public class DatePickerTest {
         when(renderer.resolveDateType(context, datePicker)).thenCallRealMethod();
         when(renderer.convertToJava8DateTimeAPI(eq(context), eq(datePicker), any(), any())).thenCallRealMethod();
         when(renderer.convertToLegacyDateAPI(eq(context), eq(datePicker), any())).thenCallRealMethod();
+        when(renderer.createConverterException(eq(context), any(), anyString(), any())).thenAnswer(invocation -> new ConverterException());
         when(datePicker.validateDateValue(eq(context), any())).thenCallRealMethod();
         when(datePicker.validateDateValue(eq(context), any(), any())).thenCallRealMethod();
         when(datePicker.validateTimeOnlyValue(eq(context), any())).thenCallRealMethod();
@@ -152,6 +149,7 @@ public class DatePickerTest {
     private void setupValues(Class type, Locale locale) {
         when(datePicker.calculateLocale(any())).thenReturn(locale);
         when(valueExpression.getType(elContext)).thenReturn(type);
+        when(datePicker.calculateLocalizedPattern()).thenCallRealMethod();
     }
 
     @Test
@@ -235,7 +233,7 @@ public class DatePickerTest {
     public void convertToJava8DateTimeAPI_LocalDate() {
         Class<?> type = LocalDate.class;
         setupValues(type, Locale.ENGLISH);
-        Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "7/23/19");
+        Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "7/23/2019");
         assertEquals(type, temporal.getClass());
         assertEquals(LocalDate.of(2019, 07, 23), temporal);
     }
@@ -244,7 +242,7 @@ public class DatePickerTest {
     public void convertToJava8DateTimeAPI_LocalDate_German() {
         Class<?> type = LocalDate.class;
         setupValues(type, Locale.GERMAN);
-        Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "23.07.19");
+        Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "23.07.2019");
         assertEquals(type, temporal.getClass());
         assertEquals(LocalDate.of(2019, 07, 23), temporal);
     }
@@ -309,7 +307,7 @@ public class DatePickerTest {
          Class<?> type = LocalDateTime.class;
         setupValues(type, Locale.ENGLISH);
         when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
-        Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "7/23/19 21:31");
+        Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "7/23/2019 21:31");
         assertEquals(type, temporal.getClass());
         assertEquals(LocalDateTime.of(2019, 7, 23,  21, 31), temporal);
     }
@@ -321,7 +319,7 @@ public class DatePickerTest {
         when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
         when(datePicker.getHourFormat()).thenReturn("12");
         when(datePicker.isShowSeconds()).thenReturn(Boolean.TRUE);
-        Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "7/23/19 09:31:48 PM");
+        Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "7/23/2019 09:31:48 PM");
         assertEquals(type, temporal.getClass());
         assertEquals(LocalDateTime.of(2019, 7, 23,  21, 31, 48), temporal);
     }
@@ -341,7 +339,7 @@ public class DatePickerTest {
             assertEquals(type, temporal.getClass());
             assertEquals(LocalDate.of(2019, 07, 23), temporal);
         });
-        
+
         assertEquals("dummy", thrown.getMessage());
     }
 
@@ -360,6 +358,125 @@ public class DatePickerTest {
         assertEquals("Unknown pattern letter: b", thrown.getMessage());
     }
 
+    /**
+     * {@link ResolverStyle} == SMART (default value). The date 02/30/2019 is silently parsed to 02/28/2019.
+     */
+    @Test
+    public void convertToJava8DateTimeAPI_ResolveStyle_Smart_implicit() {
+        Class<?> type = LocalDate.class;
+        setupValues(type, Locale.ENGLISH);
+        Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "2/30/2019");
+        assertEquals(type, temporal.getClass());
+        assertEquals(LocalDate.of(2019, 02, 28), temporal);
+    }
+
+    /**
+     * {@link ResolverStyle} == SMART (explicitly set). The date 02/30/2019 is silently parsed to 02/28/2019.
+     */
+    @Test
+    public void convertToJava8DateTimeAPI_ResolveStyle_Smart_explicit() {
+        Class<?> type = LocalDate.class;
+        setupValues(type, Locale.ENGLISH);
+        when(datePicker.getResolverStyle()).thenReturn("SMART");
+        Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "2/30/2019");
+        assertEquals(type, temporal.getClass());
+        assertEquals(LocalDate.of(2019, 02, 28), temporal);
+    }
+
+    /**
+     * {@link ResolverStyle} == STRICT. The date 02/30/2019 should lead to a thrown ConverterException.
+     */
+    @Test
+    public void convertToJava8DateTimeAPI_ResolveStyle_Strict() {
+        Class<?> type = LocalDate.class;
+        setupValues(type, Locale.ENGLISH);
+        when(datePicker.getResolverStyle()).thenReturn("STRICT");
+
+        Assertions.assertThrows(ConverterException.class, () -> renderer.convertToJava8DateTimeAPI(context, datePicker, type, "2/30/2019"));
+    }
+
+    /**
+     * {@link ResolverStyle} == STRICT. The date 02/30/2019 should lead to a thrown ConverterException.
+     */
+    @Test
+    public void convertToJava8DateTimeAPI_ResolveStyle_Strict_differentCase() {
+        Class<?> type = LocalDate.class;
+        setupValues(type, Locale.ENGLISH);
+        when(datePicker.getResolverStyle()).thenReturn("strict");
+
+        Assertions.assertThrows(ConverterException.class, () -> renderer.convertToJava8DateTimeAPI(context, datePicker, type, "2/30/2019"));
+    }
+
+    /**
+     * {@link ResolverStyle} == STRICT. The valid date 02/20/2019 should be correctly parsed.
+     */
+    @Test
+    public void convertToJava8DateTimeAPI_ResolveStyle_Strict_ValidDate() {
+        Class<?> type = LocalDate.class;
+        setupValues(type, Locale.ENGLISH);
+        when(datePicker.getResolverStyle()).thenReturn("STRICT");
+
+        Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "2/20/2019");
+        assertEquals(type, temporal.getClass());
+        assertEquals(LocalDate.of(2019, 02, 20), temporal);
+    }
+
+    /**
+     * {@link ResolverStyle} == STRICT. The valid time 10:11 should be correctly parsed.
+     */
+    @Test
+    public void convertToJava8DateTimeAPI_ResolveStyle_Strict_ValidTime() {
+        Class<?> type = LocalTime.class;
+        setupValues(type, Locale.ENGLISH);
+        when(datePicker.getResolverStyle()).thenReturn("STRICT");
+
+        Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "10:11");
+        assertEquals(type, temporal.getClass());
+        assertEquals(LocalTime.of(10, 11), temporal);
+    }
+
+    /**
+     * {@link ResolverStyle} == LENIENT. The time 10:65 should leniently parsed.
+     */
+    @Test
+    public void convertToJava8DateTimeAPI_ResolveStyle_Lenient_Time() {
+        Class<?> type = LocalTime.class;
+        setupValues(type, Locale.ENGLISH);
+        when(datePicker.getResolverStyle()).thenReturn("LENIENT");
+
+        Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "10:65");
+        assertEquals(type, temporal.getClass());
+        assertEquals(LocalTime.of(11, 05), temporal);
+    }
+
+    /**
+     * {@link ResolverStyle} == LENIENT. The date 02/30/2019 is silently parsed to 03/02/2019.
+     */
+    @Test
+    public void convertToJava8DateTimeAPI_ResolveStyle_Lenient() {
+        Class<?> type = LocalDate.class;
+        setupValues(type, Locale.ENGLISH);
+        when(datePicker.getResolverStyle()).thenReturn("LENIENT");
+
+        Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "2/30/2019");
+        assertEquals(type, temporal.getClass());
+        assertEquals(LocalDate.of(2019, 03, 02), temporal);
+    }
+
+    /**
+     * Invalid {@link ResolverStyle}. The date 02/30/2019 is silently parsed to 02/28/2019 as default value 'SMART' is used.
+     */
+    @Test
+    public void convertToJava8DateTimeAPI_ResolveStyle_Invalid() {
+        Class<?> type = LocalDate.class;
+        setupValues(type, Locale.ENGLISH);
+        when(datePicker.getResolverStyle()).thenReturn("what?");
+
+        Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "2/30/2019");
+        assertEquals(type, temporal.getClass());
+        assertEquals(LocalDate.of(2019, 02, 28), temporal);
+    }
+
     @Test
     public void getConvertedValue_Date() {
          Class<?> type = Date.class;
@@ -367,7 +484,7 @@ public class DatePickerTest {
 
         when(renderer.getConvertedValue(eq(context), eq(datePicker), any())).thenCallRealMethod();
 
-        Object object = renderer.getConvertedValue(context, datePicker, "7/23/19");
+        Object object = renderer.getConvertedValue(context, datePicker, "7/23/2019");
         assertEquals(type, object.getClass());
         Date date = (Date)object;
         java.util.Calendar calendar = new GregorianCalendar();
@@ -384,7 +501,7 @@ public class DatePickerTest {
 
         when(renderer.getConvertedValue(eq(context), eq(datePicker), any())).thenCallRealMethod();
 
-        Object object = renderer.getConvertedValue(context, datePicker, "7/23/19");
+        Object object = renderer.getConvertedValue(context, datePicker, "7/23/2019");
         assertEquals(type, object.getClass());
         LocalDate localDate = (LocalDate)object;
         assertEquals(LocalDate.of(2019, 07, 23), localDate);
@@ -416,7 +533,7 @@ public class DatePickerTest {
     @Test
     public void validateValueInternal_minDate_String() {
         setupValues(null, Locale.ENGLISH);
-        when(datePicker.getMindate()).thenReturn("1/1/19");
+        when(datePicker.getMindate()).thenReturn("1/1/2019");
         DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 23));
         assertTrue(datePicker.isValid());
         assertEquals(DatePicker.ValidationResult.OK, validationResult);
@@ -425,7 +542,7 @@ public class DatePickerTest {
     @Test
     public void validateValueInternal_minDate_String_wrong() {
         setupValues(null, Locale.ENGLISH);
-        when(datePicker.getMindate()).thenReturn("1/1/19");
+        when(datePicker.getMindate()).thenReturn("1/1/2019");
         DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDate.of(2018, 7, 23));
         assertFalse(datePicker.isValid());
         assertEquals(DatePicker.ValidationResult.INVALID_MIN_DATE, validationResult);
@@ -462,7 +579,7 @@ public class DatePickerTest {
     @Test
     public void validateValueInternal_maxDate_String() {
         setupValues(null, Locale.ENGLISH);
-        when(datePicker.getMaxdate()).thenReturn("12/31/19");
+        when(datePicker.getMaxdate()).thenReturn("12/31/2019");
         DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 23));
         assertTrue(datePicker.isValid());
         assertEquals(DatePicker.ValidationResult.OK, validationResult);
@@ -471,7 +588,7 @@ public class DatePickerTest {
     @Test
     public void validateValueInternal_maxDate_String_wrong() {
         setupValues(null, Locale.ENGLISH);
-        when(datePicker.getMaxdate()).thenReturn("12/31/19");
+        when(datePicker.getMaxdate()).thenReturn("12/31/2019");
         DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDate.of(2020, 7, 23));
         assertFalse(datePicker.isValid());
         assertEquals(DatePicker.ValidationResult.INVALID_MAX_DATE, validationResult);
@@ -738,7 +855,7 @@ public class DatePickerTest {
     public void validateValueInternal_minDateTime_String() {
         setupValues(null, Locale.ENGLISH);
         when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
-        when(datePicker.getMindate()).thenReturn("1/1/19 00:00");
+        when(datePicker.getMindate()).thenReturn("1/1/2019 00:00");
         DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDateTime.of(2019, 1, 1, 02, 00));
         assertTrue(datePicker.isValid());
         assertEquals(DatePicker.ValidationResult.OK, validationResult);
@@ -748,7 +865,7 @@ public class DatePickerTest {
     public void validateValueInternal_minDateTime_String_wrong() {
         setupValues(null, Locale.ENGLISH);
         when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
-        when(datePicker.getMindate()).thenReturn("1/1/19 12:00");
+        when(datePicker.getMindate()).thenReturn("1/1/2019 12:00");
         DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDateTime.of(2019, 1, 1, 11, 59));
         assertFalse(datePicker.isValid());
         assertEquals(DatePicker.ValidationResult.INVALID_MIN_DATE, validationResult);
@@ -813,7 +930,7 @@ public class DatePickerTest {
     public void validateValueInternal_maxDateTime_String() {
         setupValues(null, Locale.ENGLISH);
         when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
-        when(datePicker.getMaxdate()).thenReturn("12/1/19 20:00");
+        when(datePicker.getMaxdate()).thenReturn("12/1/2019 20:00");
         DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDateTime.of(2019, 11, 30, 16, 00));
         assertTrue(datePicker.isValid());
         assertEquals(DatePicker.ValidationResult.OK, validationResult);
@@ -823,7 +940,7 @@ public class DatePickerTest {
     public void validateValueInternal_maxDateTime_String_wrong() {
         setupValues(null, Locale.ENGLISH);
         when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
-        when(datePicker.getMaxdate()).thenReturn("12/1/19 15:00");
+        when(datePicker.getMaxdate()).thenReturn("12/1/2019 15:00");
         DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDateTime.of(2019, 12, 31, 18, 00));
         assertFalse(datePicker.isValid());
         assertEquals(DatePicker.ValidationResult.INVALID_MAX_DATE, validationResult);
@@ -859,14 +976,14 @@ public class DatePickerTest {
     @Test
     public void calculatePatternDefault() {
         setupValues(null, Locale.ENGLISH);
-        assertEquals(datePicker.calculatePattern(), "M/d/yy");
+        assertEquals("M/d/yyyy", datePicker.calculatePattern());
     }
 
     @Test
     public void calculatePatternWithTime() {
         setupValues(null, Locale.ENGLISH);
         when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
-        assertEquals(datePicker.calculatePattern(), "M/d/yy HH:mm");
+        assertEquals("M/d/yyyy HH:mm", datePicker.calculatePattern());
     }
 
     @Test
@@ -874,7 +991,7 @@ public class DatePickerTest {
         setupValues(null, Locale.ENGLISH);
         when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
         when(datePicker.isShowSeconds()).thenReturn(Boolean.TRUE);
-        assertEquals(datePicker.calculatePattern(), "M/d/yy HH:mm:ss");
+        assertEquals("M/d/yyyy HH:mm:ss", datePicker.calculatePattern());
     }
 
     @Test
@@ -883,7 +1000,7 @@ public class DatePickerTest {
         when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
         when(datePicker.isShowSeconds()).thenReturn(Boolean.TRUE);
         when(datePicker.getHourFormat()).thenReturn("12");
-        assertEquals(datePicker.calculatePattern(), "M/d/yy KK:mm:ss a");
+        assertEquals("M/d/yyyy hh:mm:ss a", datePicker.calculatePattern());
     }
 
     @Test
@@ -891,7 +1008,7 @@ public class DatePickerTest {
         setupValues(null, Locale.ENGLISH);
         when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
         when(datePicker.getHourFormat()).thenReturn("12");
-        assertEquals(datePicker.calculatePattern(), "M/d/yy KK:mm a");
+        assertEquals("M/d/yyyy hh:mm a", datePicker.calculatePattern());
     }
 
 
@@ -900,7 +1017,7 @@ public class DatePickerTest {
         setupValues(null, Locale.ENGLISH);
         when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
         when(datePicker.getPattern()).thenReturn("yyyy-MM-dd KK:mm:ss a");
-        assertEquals(datePicker.calculatePattern(), "yyyy-MM-dd HH:mm");
+        assertEquals("yyyy-MM-dd HH:mm", datePicker.calculatePattern());
     }
 
 }

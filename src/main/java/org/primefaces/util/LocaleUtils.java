@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,8 @@ package org.primefaces.util;
 
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
+
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 
 public class LocaleUtils {
@@ -80,10 +82,12 @@ public class LocaleUtils {
      * <p>
      * If NULL is passed the view root default locale is used.
      *
+     * @param context the {@link FacesContext}
      * @param locale given locale
+     * @param clientId the component clientId
      * @return resolved Locale
      */
-    public static Locale resolveLocale(Object locale, String clientId) {
+    public static Locale resolveLocale(FacesContext context, Object locale, String clientId) {
         Locale result = null;
 
         if (locale != null) {
@@ -99,23 +103,46 @@ public class LocaleUtils {
         }
         else {
             // default to the view local
-            result = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+            result = context.getViewRoot().getLocale();
         }
 
         return result;
     }
 
+    /**
+     * Some JS libraries like FullCalendar used by Schedule require the locale for "pt_BR" to be "pt-br".
+     *
+     * @param locale the Locale to convert
+     * @return the Javascript string locale
+     */
+    public static String toJavascriptLocale(Locale locale) {
+        return locale.toString().toLowerCase().replace('_', '-');
+    }
+
     public static Locale getCurrentLocale(FacesContext context) {
         Locale locale = null;
 
-        if (context != null && context.getViewRoot() != null) {
-            locale = context.getViewRoot().getLocale();
+        if (context != null) {
+            UIViewRoot viewRoot = context.getViewRoot();
 
+            // Prefer the locale set in the view.
+            if (viewRoot != null) {
+                locale = viewRoot.getLocale();
+            }
+
+            // Then the client preferred locale.
             if (locale == null) {
-                locale = Locale.getDefault();
+                locale = context.getExternalContext().getRequestLocale();
+            }
+
+            // Then the JSF default locale.
+            if (locale == null) {
+                locale = context.getApplication().getDefaultLocale();
             }
         }
-        else {
+
+        // Finally the system default locale.
+        if (locale == null) {
             locale = Locale.getDefault();
         }
 
@@ -136,5 +163,25 @@ public class LocaleUtils {
         Locale locale = getCurrentLocale(context);
         DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(locale);
         return Character.toString(decimalFormatSymbols.getGroupingSeparator());
+    }
+
+    /**
+     * Gets ISO 639-1 Language Code from current Locale so 'pt_BR' becomes 'pt'.
+     *
+     * @return the ISO 639-1 Language Code
+     * @see https://www.w3schools.com/tags/ref_language_codes.asp
+     */
+    public static String getCurrentLanguage() {
+        return calculateLanguage(getCurrentLocale());
+    }
+
+    /**
+     * Gets ISO 639-1 Language Code from Locale so 'pt_BR' becomes 'pt'.
+     *
+     * @param locale the Locale to calculate the language for
+     * @return the ISO 639-1 Language Code
+     */
+    public static String calculateLanguage(Locale locale) {
+        return locale.getLanguage();
     }
 }

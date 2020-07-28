@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,16 +23,13 @@
  */
 package org.primefaces.component.imagecropper;
 
-import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
-@ResourceDependencies({
-        @ResourceDependency(library = "primefaces", name = "imagecropper/imagecropper.css"),
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
-        @ResourceDependency(library = "primefaces", name = "core.js"),
-        @ResourceDependency(library = "primefaces", name = "components.js"),
-        @ResourceDependency(library = "primefaces", name = "imagecropper/imagecropper.js")
-})
+@ResourceDependency(library = "primefaces", name = "imagecropper/imagecropper.css")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
+@ResourceDependency(library = "primefaces", name = "core.js")
+@ResourceDependency(library = "primefaces", name = "components.js")
+@ResourceDependency(library = "primefaces", name = "imagecropper/imagecropper.js")
 public class ImageCropper extends ImageCropperBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ImageCropper";

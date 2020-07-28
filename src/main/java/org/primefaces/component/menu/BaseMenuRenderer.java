@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -73,6 +73,7 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
 
         writer.startElement("a", null);
         writer.writeAttribute("tabindex", tabindex, null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM, null);
         if (shouldRenderId(menuitem)) {
             writer.writeAttribute("id", menuitem.getClientId(), null);
         }

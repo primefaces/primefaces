@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -136,7 +136,8 @@ public class GalleriaRenderer extends CoreRenderer {
                 .attr("showCaption", galleria.isShowCaption(), false)
                 .attr("panelWidth", galleria.getPanelWidth(), Integer.MIN_VALUE)
                 .attr("panelHeight", galleria.getPanelHeight(), Integer.MIN_VALUE)
-                .attr("custom", (galleria.getFacet("content") != null));
+                .attr("custom", (galleria.getFacet("content") != null))
+                .attr("touchable", ComponentUtils.isTouchable(context, galleria),  true);
 
         wb.finish();
     }

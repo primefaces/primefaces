@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,34 +23,39 @@
  */
 package org.primefaces.util;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PushbackInputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import javax.faces.FacesException;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.primefaces.component.fileupload.FileUpload;
+import org.primefaces.component.fileupload.FileUploadChunkDecoder;
+import org.primefaces.component.fileupload.FileUploadDecoder;
 import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.model.file.UploadedFile;
 import org.primefaces.shaded.owasp.SafeFile;
 import org.primefaces.shaded.owasp.ValidationException;
 import org.primefaces.virusscan.VirusException;
-import org.primefaces.model.file.UploadedFile;
 
 /**
  * Utilities for FileUpload components.
@@ -139,9 +144,9 @@ public class FileUploadUtils {
      */
     public static boolean isValidType(PrimeApplicationContext context, FileUpload fileUpload, UploadedFile uploadedFile) {
         String fileName = uploadedFile.getFileName();
-        try {
+        try (InputStream input = uploadedFile.getInputStream()) {
             boolean validType = isValidFileName(fileUpload, uploadedFile)
-                        && isValidFileContent(context, fileUpload, fileName, uploadedFile.getInputStream());
+                        && isValidFileContent(context, fileUpload, fileName, input);
             if (validType) {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine(String.format("The uploaded file %s meets the filename and content type specifications", fileName));
@@ -212,6 +217,7 @@ public class FileUploadUtils {
         String tempFileSuffix = tika ? null : "." + FilenameUtils.getExtension(fileName);
         String tempFilePrefix = UUID.randomUUID().toString();
         Path tempFile = Files.createTempFile(tempFilePrefix, tempFileSuffix);
+
         try {
             try (InputStream in = new PushbackInputStream(new BufferedInputStream(stream))) {
                 try (OutputStream out = new FileOutputStream(tempFile.toFile())) {
@@ -234,6 +240,7 @@ public class FileUploadUtils {
                 }
                 return false;
             }
+
             //Comma-separated values: file_extension|audio/*|video/*|image/*|media_type (see https://www.w3schools.com/tags/att_input_accept.asp)
             String[] accepts = fileUpload.getAccept().split(",");
             boolean accepted = false;
@@ -286,50 +293,55 @@ public class FileUploadUtils {
         return true;
     }
 
-    public static void performVirusScan(FacesContext facesContext, FileUpload fileUpload, InputStream inputStream) throws VirusException {
-        if (fileUpload.isPerformVirusScan()) {
-            PrimeApplicationContext.getCurrentInstance(facesContext).getVirusScannerService().performVirusScan(inputStream);
-        }
+    public static void performVirusScan(FacesContext facesContext, UploadedFile file) throws VirusException {
+        PrimeApplicationContext.getCurrentInstance(facesContext).getVirusScannerService().performVirusScan(file);
     }
 
-    public static boolean isValidFile(FacesContext context, FileUpload fileUpload, UploadedFile uploadedFile) throws IOException {
+    public static void tryValidateFile(FacesContext context, FileUpload fileUpload, UploadedFile uploadedFile) throws ValidatorException {
         Long sizeLimit = fileUpload.getSizeLimit();
         PrimeApplicationContext appContext = PrimeApplicationContext.getCurrentInstance(context);
-        boolean valid = (sizeLimit == null || uploadedFile.getSize() <= sizeLimit)
-                && FileUploadUtils.isValidType(appContext, fileUpload, uploadedFile);
-        if (valid) {
-            try {
-                FileUploadUtils.performVirusScan(context, fileUpload, uploadedFile.getInputStream());
-            }
-            catch (VirusException ex) {
-                return false;
-            }
+
+        if (sizeLimit != null && uploadedFile.getSize() > sizeLimit) {
+            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileUpload.getInvalidSizeMessage(), ""));
         }
-        return valid;
+
+        if (!isValidType(appContext, fileUpload, uploadedFile)) {
+            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileUpload.getInvalidFileMessage(), ""));
+        }
+
+        if (fileUpload.isVirusScan()) {
+            performVirusScan(context, uploadedFile);
+        }
     }
 
-    public static boolean areValidFiles(FacesContext context, FileUpload fileUpload, List<UploadedFile> files) throws IOException {
+    public static void tryValidateFiles(FacesContext context, FileUpload fileUpload, List<UploadedFile> files) {
         long totalPartSize = 0;
         Long sizeLimit = fileUpload.getSizeLimit();
         for (UploadedFile file : files) {
             totalPartSize += file.getSize();
-            if (!isValidFile(context, fileUpload, file)) {
-                return false;
-            }
+            tryValidateFile(context, fileUpload, file);
         }
 
-        return sizeLimit == null || totalPartSize <= sizeLimit;
+        if (sizeLimit != null && totalPartSize > sizeLimit) {
+            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileUpload.getInvalidFileMessage(), ""));
+        }
     }
 
     /**
      * OWASP prevent directory path traversal of "../../image.png".
      *
-     * @see https://www.owasp.org/index.php/Path_Traversal
+     * @see <a href="https://owasp.org/www-community/attacks/Path_Traversal">https://owasp.org/www-community/attacks/Path_Traversal</a>
      * @param relativePath the relative path to check for path traversal
      * @return the relative path
      * @throws FacesException if any error is detected
      */
     public static String checkPathTraversal(String relativePath) {
+        // Unix systems can start with / but Windows cannot
+        String os = System.getProperty("os.name").toLowerCase();
+        if (!os.contains("win")) {
+            relativePath = relativePath.startsWith("/") ? relativePath.substring(1) : relativePath;
+        }
+
         File file = new File(relativePath);
 
         if (file.isAbsolute()) {
@@ -351,5 +363,42 @@ public class FileUploadUtils {
             throw new FacesException("Path traversal - unexpected exception.", ex);
         }
         return relativePath;
+    }
+
+    public static List<Path> listChunks(Path path) {
+        try (Stream<Path> walk = Files.walk(path)) {
+            return walk
+                    .filter(p -> Files.isRegularFile(p) && p.getFileName().toString().matches("\\d+"))
+                    .sorted(Comparator.comparing(p -> Long.parseLong(p.getFileName().toString())))
+                    .collect(Collectors.toList());
+        }
+        catch (IOException | SecurityException e) {
+            throw new FacesException(e);
+        }
+    }
+
+    public static <T extends HttpServletRequest> List<Path> listChunks(T request) {
+        Path chunkDir = getChunkDir(request);
+        if (!Files.exists(chunkDir)) {
+            return Collections.emptyList();
+        }
+
+        return listChunks(chunkDir);
+    }
+
+    public static <T extends HttpServletRequest> FileUploadChunkDecoder<T> getFileUploadChunkDecoder(T request) {
+        PrimeApplicationContext pfContext = PrimeApplicationContext.getCurrentInstance(request.getServletContext());
+        FileUploadDecoder decoder = pfContext.getFileUploadDecoder();
+        if (!(decoder instanceof FileUploadChunkDecoder)) {
+            throw new FacesException("Chunk decoder not supported");
+        }
+
+        return (FileUploadChunkDecoder<T>) decoder;
+    }
+
+    public static <T extends HttpServletRequest> Path getChunkDir(T request) {
+        FileUploadChunkDecoder<T> chunkDecoder = getFileUploadChunkDecoder(request);
+        String fileKey = chunkDecoder.generateFileInfoKey(request);
+        return Paths.get(chunkDecoder.getUploadDirectory(request), fileKey);
     }
 }

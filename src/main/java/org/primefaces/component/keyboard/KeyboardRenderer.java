@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -96,11 +96,7 @@ public class KeyboardRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = keyboard.getClientId(context);
         String type = keyboard.isPassword() ? "password" : "text";
-        String defaultClass = Keyboard.STYLE_CLASS;
-        defaultClass = !keyboard.isValid() ? defaultClass + " ui-state-error" : defaultClass;
-        defaultClass = keyboard.isDisabled() ? defaultClass + " ui-state-disabled" : defaultClass;
-        String styleClass = keyboard.getStyleClass();
-        styleClass = styleClass == null ? defaultClass : defaultClass + " " + styleClass;
+        String styleClass = createStyleClass(keyboard, Keyboard.STYLE_CLASS) ;
         String valueToRender = ComponentUtils.getValueToRender(context, keyboard);
 
         writer.startElement("input", keyboard);

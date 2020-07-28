@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,6 @@ import java.util.Collection;
 import java.util.Map;
 
 import javax.el.ValueExpression;
-import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -35,6 +34,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 
+import org.primefaces.PrimeFaces;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.event.TabCloseEvent;
 import org.primefaces.util.ComponentUtils;
@@ -42,14 +42,12 @@ import org.primefaces.util.Constants;
 import org.primefaces.util.ConsumerThree;
 import org.primefaces.util.MapBuilder;
 
-@ResourceDependencies({
-        @ResourceDependency(library = "primefaces", name = "components.css"),
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
-        @ResourceDependency(library = "primefaces", name = "core.js"),
-        @ResourceDependency(library = "primefaces", name = "components.js"),
-        @ResourceDependency(library = "primefaces", name = "touch/touchswipe.js")
-})
+@ResourceDependency(library = "primefaces", name = "components.css")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
+@ResourceDependency(library = "primefaces", name = "core.js")
+@ResourceDependency(library = "primefaces", name = "components.js")
+@ResourceDependency(library = "primefaces", name = "touch/touchswipe.js")
 public class TabView extends TabViewBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.TabView";
@@ -220,4 +218,27 @@ public class TabView extends TabViewBase {
             setIndex(-1);
         }
     }
+
+    @Override
+    public void restoreMultiViewState() {
+        TabViewState ts = getMultiViewState(false);
+        if (ts != null) {
+            setActiveIndex(ts.getActiveIndex());
+        }
+    }
+
+    @Override
+    public TabViewState getMultiViewState(boolean create) {
+        FacesContext fc = getFacesContext();
+        String viewId = fc.getViewRoot().getViewId();
+
+        return PrimeFaces.current().multiViewState()
+                .get(viewId, getClientId(fc), create, TabViewState::new);
+    }
+
+    @Override
+    public void resetMultiViewState() {
+        setActiveIndex(0);
+    }
+
 }

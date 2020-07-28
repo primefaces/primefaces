@@ -13,14 +13,15 @@ pattern of JavaEE. Here is the list of all configuration options defined with a 
 
 | Name | Default | Description |
 | --- | --- | --- |
-| THEME | omega | Theme of the application. |
+| THEME | aristo | Theme of the application. |
 | SUBMIT | full | Defines ajax submit mode, full or partial. |
 | DIR | ltr | Defines orientation, ltr or rtl. |
 | RESET_VALUES | false | When enabled, ajax updated inputs are reset. |
-| CLIENT_SIDE_VALIDATION | false | Controls client side validatation. |
+| CLIENT_SIDE_VALIDATION | false | Controls client side validation. |
 | UPLOADER | auto | Defines uploader mode; auto , native or commons. |
 | TRANSFORM_METADATA | false | Transforms bean validation metadata to html attributes. |
 | LEGACY_WIDGET_NAMESPACE | false | Enables window scope so that widgets can be accessed using widgetVar.method() in addition to default PF namespace approach like PF('widgetVar').method(). |
-| FONT_AWESOME | false | Enabled font-awesome icons. |
+| FONT_AWESOME | false | Auto includes Font-Awesome 4.7 icons. |
 | INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES | false | Whether to load the CSV messages from server. |
 | MOVE_SCRIPTS_TO_BOTTOM | false | Moves all inline scripts to end of body tag for better performance and smaller html output. |
+| EARLY_POST_PARAM_EVALUATION | false | Make p:ajax behave like f:ajax for queued AJAX requests. See: https://github.com/primefaces/primefaces/issues/109 |

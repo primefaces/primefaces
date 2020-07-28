@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -100,6 +100,10 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void preRender(FacesContext context, DataTable table) {
+        if (table.isMultiViewState()) {
+            table.restoreMultiViewState();
+        }
+
         boolean defaultSorted = (table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()) != null
                 || table.getSortBy() != null
                 || !table.getSortMeta().isEmpty());
@@ -110,11 +114,8 @@ public class DataTableRenderer extends DataRenderer {
             table.setDefaultSortFunction(table.getSortFunction());
         }
 
-        FilterFeature filterFeature = (FilterFeature) DataTable.FEATURES.get(DataTableFeatureKey.FILTER);
-        filterFeature.decode(context, table);
-
-        if (table.isMultiViewState()) {
-            table.restoreTableState();
+        if (table.isLiveScroll()) {
+            table.setScrollOffset(0);
         }
 
         if (table.isLazy()) {
@@ -147,8 +148,8 @@ public class DataTableRenderer extends DataRenderer {
                 table.setRowIndex(-1);
             }
 
-            List<FilterMeta> filterMeta = table.getFilterMeta();
-            if (!filterMeta.isEmpty()) {
+            Map<String, FilterMeta> filterBy = table.getFilterBy();
+            if (!filterBy.isEmpty()) {
                 String globalFilter = table.getGlobalFilter();
                 if (globalFilter != null) {
                     UIComponent globalFilterComponent = SearchExpressionFacade.resolveComponent(context, table,
@@ -156,18 +157,19 @@ public class DataTableRenderer extends DataRenderer {
                     if (globalFilterComponent != null) {
                         ((ValueHolder) globalFilterComponent).setValue(globalFilter);
                     }
-                    filterMeta.add(new FilterMeta("globalFilter", globalFilter));
+                    filterBy.put("globalFilter", new FilterMeta("globalFilter", globalFilter));
                 }
 
-                filterFeature.filter(context, table, filterMeta);
+                FilterFeature filterFeature = (FilterFeature) table.getFeature(DataTableFeatureKey.FILTER);
+                filterFeature.filter(context, table, filterBy);
             }
         }
 
         if (defaultSorted && table.isMultiViewState() && table.isDefaultSort()) {
             ValueExpression sortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
-            List<SortMeta> multiSortState = table.isMultiSort() ? table.getSortMeta() : null;
+            Map<String, SortMeta> multiSortState = table.isMultiSort() ? table.getSortMeta() : null;
             if (sortByVE != null || (multiSortState != null && !multiSortState.isEmpty())) {
-                TableState ts = table.getTableState(true);
+                DataTableState ts = table.getMultiViewState(true);
                 ts.setSortBy(sortByVE);
                 ts.setSortMeta(multiSortState);
                 ts.setSortOrder(table.getSortOrder());
@@ -250,7 +252,12 @@ public class DataTableRenderer extends DataRenderer {
                     .attr("scrollHeight", table.getScrollHeight(), null)
                     .attr("frozenColumns", table.getFrozenColumns(), 0)
                     .attr("liveScrollBuffer", table.getLiveScrollBuffer())
-                    .attr("virtualScroll", table.isVirtualScroll());
+                    .attr("virtualScroll", table.isVirtualScroll())
+                    .attr("touchable", false,  true);
+        }
+        else {
+            // only allow swipe if not scrollable
+            wb.attr("touchable", ComponentUtils.isTouchable(context, table),  true);
         }
 
         //Resizable/Draggable Columns
@@ -278,6 +285,11 @@ public class DataTableRenderer extends DataRenderer {
         if (table.isMultiSort()) {
             wb.attr("multiSort", true)
                     .nativeAttr("sortMetaOrder", table.getSortMetaAsString(context), null);
+        }
+
+        // by default cycling through sorting includes unsort, an attribute is needed when unsort should not be included
+        if (!table.getAllowUnsorting()) {
+            wb.attr("allowUnsorting", false);
         }
 
         if (table.isStickyHeader()) {
@@ -655,13 +667,13 @@ public class DataTableRenderer extends DataRenderer {
         if (sortable) {
             ValueExpression tableSortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
             Object tableSortBy = table.getSortBy();
-            List<SortMeta> sortMeta = table.getSortMeta();
+            Map<String, SortMeta> sortMeta = table.getSortMeta();
             boolean defaultSorted = (tableSortByVE != null || tableSortBy != null || !sortMeta.isEmpty());
 
             if (defaultSorted) {
                 if (table.isMultiSort()) {
                     if (sortMeta != null) {
-                        for (SortMeta meta : sortMeta) {
+                        for (SortMeta meta : sortMeta.values()) {
                             sortIcon = resolveDefaultSortIcon(column, meta);
 
                             if (sortIcon != null) {
@@ -710,6 +722,9 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("role", "columnheader", null);
         writer.writeAttribute(HTML.ARIA_LABEL, ariaHeaderLabel, null);
         writer.writeAttribute("scope", "col", null);
+        if (component != null) {
+            renderDynamicPassThruAttributes(context, component);
+        }
         if (style != null) {
             writer.writeAttribute("style", style, null);
         }
@@ -749,11 +764,11 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected Object findFilterValue(DataTable table, UIColumn column) {
-        List<FilterMeta> filters = table.getFilterMeta();
-        if (!filters.isEmpty()) {
-            for (FilterMeta filterState : filters) {
-                if (Objects.equals(filterState.getColumnKey(), column.getColumnKey())) {
-                    return filterState.getFilterValue();
+        Map<String, FilterMeta> filterBy = table.getFilterBy();
+        if (!filterBy.isEmpty()) {
+            for (FilterMeta filter : filterBy.values()) {
+                if (Objects.equals(filter.getColumnKey(), column.getColumnKey())) {
+                    return filter.getFilterValue();
                 }
             }
         }
@@ -766,10 +781,10 @@ public class DataTableRenderer extends DataRenderer {
         String sortIcon = null;
 
         if (Objects.equals(column.getColumnKey(), sortMeta.getColumnKey())) {
-            if (sortOrder.equals(SortOrder.ASCENDING)) {
+            if (sortOrder == SortOrder.ASCENDING) {
                 sortIcon = DataTable.SORTABLE_COLUMN_ASCENDING_ICON_CLASS;
             }
-            else if (sortOrder.equals(SortOrder.DESCENDING)) {
+            else if (sortOrder == SortOrder.DESCENDING) {
                 sortIcon = DataTable.SORTABLE_COLUMN_DESCENDING_ICON_CLASS;
             }
         }
@@ -1445,6 +1460,10 @@ public class DataTableRenderer extends DataRenderer {
         if (styleClass != null) {
             writer.writeAttribute("class", styleClass, null);
         }
+        UIComponent component = (column instanceof UIComponent) ? (UIComponent) column : null;
+        if (component != null) {
+            renderDynamicPassThruAttributes(context, component);
+        }
 
         if (selectionEnabled) {
             encodeColumnSelection(context, table, clientId, column, selected);
@@ -1650,26 +1669,40 @@ public class DataTableRenderer extends DataRenderer {
             encodeNativeCheckbox(context, table, checked, disabled, isHeaderCheckbox);
         }
         else {
+            String ariaRowLabel = table.getAriaRowLabel();
+            Object rowKey = table.getRowKey();
             String boxClass = HTML.CHECKBOX_BOX_CLASS;
             boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
             boxClass = checked ? boxClass + " ui-state-active" : boxClass;
             String iconClass = checked ? HTML.CHECKBOX_CHECKED_ICON_CLASS : HTML.CHECKBOX_UNCHECKED_ICON_CLASS;
 
+            if (isHeaderCheckbox) {
+                rowKey = "head";
+                ariaRowLabel = MessageFactory.getMessage(DataTable.ARIA_HEADER_CHECKBOX_ALL, new Object[]{});
+            }
+
             writer.startElement("div", null);
             writer.writeAttribute("class", styleClass, "styleClass");
 
             writer.startElement("div", null);
-            writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
-            encodeNativeCheckbox(context, table, checked, disabled, isHeaderCheckbox);
-            writer.endElement("div");
 
-            writer.startElement("div", null);
+            writer.writeAttribute("id", table.getClientId(context) + "_" + rowKey + "_checkbox", null);
+            writer.writeAttribute("role", "checkbox", null);
+            writer.writeAttribute("tabindex", "0", null);
+            writer.writeAttribute(HTML.ARIA_LABEL, ariaRowLabel, null);
+            writer.writeAttribute(HTML.ARIA_CHECKED, String.valueOf(checked), null);
+
+            if (disabled) {
+                writer.writeAttribute("aria-disabled", "true", null);
+            }
+
             writer.writeAttribute("class", boxClass, null);
+
             writer.startElement("span", null);
             writer.writeAttribute("class", iconClass, null);
             writer.endElement("span");
-            writer.endElement("div");
 
+            writer.endElement("div");
             writer.endElement("div");
         }
     }

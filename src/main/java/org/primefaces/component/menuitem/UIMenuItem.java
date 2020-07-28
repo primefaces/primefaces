@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,6 @@ import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 import org.primefaces.component.api.DialogReturnAware;
 import org.primefaces.event.SelectEvent;
-
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.MapBuilder;
 
@@ -72,6 +71,10 @@ public class UIMenuItem extends UIMenuItemBase implements DialogReturnAware {
 
     @Override
     public void decode(FacesContext facesContext) {
+        if (isDisabled()) {
+            return;
+        }
+
         Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
         String clientId = getClientId(facesContext);
 

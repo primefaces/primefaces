@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,8 +31,8 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.PrimeFaces;
 
+import org.primefaces.PrimeFaces;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -176,22 +176,30 @@ public class DataScrollerRenderer extends CoreRenderer {
                 .attr("mode", ds.getMode(), "document")
                 .attr("buffer", ds.getBuffer())
                 .attr("virtualScroll", ds.isVirtualScroll())
-                .attr("startAtBottom", ds.isStartAtBottom())
-                .finish();
+                .attr("startAtBottom", ds.isStartAtBottom());
+
+        encodeClientBehaviors(context, ds);
+
+        wb.finish();
     }
 
     protected void loadChunk(FacesContext context, DataScroller ds, int start, int size) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean isLazy = ds.isLazy();
+        int _start = start < 0 ? 0 : start;
 
         if (isLazy) {
-            loadLazyData(context, ds, start, size);
+            loadLazyData(context, ds, _start, size);
         }
 
         String rowIndexVar = ds.getRowIndexVar();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
 
-        for (int i = start; i < (start + size); i++) {
+        int lastIndex = (_start + size);
+
+        lastIndex = start < 0 ? lastIndex + start : lastIndex;
+
+        for (int i = _start; i < lastIndex; i++) {
             ds.setRowIndex(i);
 
             if (rowIndexVar != null) {
@@ -218,7 +226,7 @@ public class DataScrollerRenderer extends CoreRenderer {
         LazyDataModel lazyModel = (LazyDataModel) ds.getValue();
 
         if (lazyModel != null) {
-            List<?> data = lazyModel.load(start, size, null, null, Collections.emptyList());
+            List<?> data = lazyModel.load(start, size, null, null, Collections.emptyMap());
             lazyModel.setPageSize(size);
             lazyModel.setWrappedData(data);
 

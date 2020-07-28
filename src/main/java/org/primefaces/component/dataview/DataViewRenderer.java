@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -59,14 +59,26 @@ public class DataViewRenderer extends DataRenderer {
             }
 
             encodeLayout(context, dataview);
+
+            if (dataview.isMultiViewState()) {
+                saveMultiViewState(dataview);
+            }
         }
         else if (dataview.isLayoutRequest(context)) {
             String layout = params.get(clientId + "_layout");
             dataview.setLayout(layout);
 
             encodeLayout(context, dataview);
+
+            if (dataview.isMultiViewState()) {
+                saveMultiViewState(dataview);
+            }
         }
         else {
+            if (dataview.isMultiViewState()) {
+                dataview.restoreMultiViewState();
+            }
+
             encodeMarkup(context, dataview);
             encodeScript(context, dataview);
         }
@@ -323,5 +335,14 @@ public class DataViewRenderer extends DataRenderer {
     @Override
     public boolean getRendersChildren() {
         return true;
+    }
+
+    private void saveMultiViewState(DataView dataview) {
+        if (dataview.isMultiViewState()) {
+            DataViewState viewState = dataview.getMultiViewState(true);
+            viewState.setFirst(dataview.getFirst());
+            viewState.setRows(dataview.getRows());
+            viewState.setLayout(dataview.getLayout());
+        }
     }
 }

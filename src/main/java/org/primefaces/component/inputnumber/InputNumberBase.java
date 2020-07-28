@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -53,7 +53,9 @@ public abstract class InputNumberBase extends HtmlInputText implements Widget, I
         inputStyle,
         inputStyleClass,
         padControl,
-        leadingZero
+        leadingZero,
+        decimalSeparatorAlternative,
+        modifyValueOnWheel
     }
 
     public InputNumberBase() {
@@ -193,5 +195,21 @@ public abstract class InputNumberBase extends HtmlInputText implements Widget, I
 
     public void setLeadingZero(String leadingZero) {
         getStateHelper().put(PropertyKeys.leadingZero, leadingZero);
+    }
+
+    public String getDecimalSeparatorAlternative() {
+        return (String) getStateHelper().eval(PropertyKeys.decimalSeparatorAlternative, null);
+    }
+
+    public void setDecimalSeparatorAlternative(String decimalSeparatorAlternative) {
+        getStateHelper().put(PropertyKeys.decimalSeparatorAlternative, decimalSeparatorAlternative);
+    }
+
+    public boolean isModifyValueOnWheel() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.modifyValueOnWheel, true);
+    }
+
+    public void setModifyValueOnWheel(boolean modifyValueOnWheel) {
+        getStateHelper().put(PropertyKeys.modifyValueOnWheel, modifyValueOnWheel);
     }
 }

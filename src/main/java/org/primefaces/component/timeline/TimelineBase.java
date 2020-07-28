@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -169,7 +169,7 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
     }
 
     public Locale calculateLocale(FacesContext facesContext) {
-        return LocaleUtils.resolveLocale(getLocale(), getClientId(facesContext));
+        return LocaleUtils.resolveLocale(facesContext, getLocale(), getClientId(facesContext));
     }
 
     public Object getTimeZone() {

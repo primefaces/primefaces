@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -175,9 +175,10 @@ public class PrimePartialResponseWriter extends PartialResponseWriterWrapper {
             startExtension(CALLBACK_EXTENSION_PARAMS);
             getWrapped().write("{");
 
-            for (Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
-                String paramName = it.next();
-                Object paramValue = params.get(paramName);
+            for (Iterator<Map.Entry<String, Object>> it = params.entrySet().iterator(); it.hasNext();) {
+                Map.Entry<String, Object> entry = it.next();
+                String paramName = entry.getKey();
+                Object paramValue = entry.getValue();
 
                 if (paramValue == null) {
                     encodeJSONValue(paramName, null);
@@ -208,9 +209,16 @@ public class PrimePartialResponseWriter extends PartialResponseWriterWrapper {
     }
 
     protected void encodeScripts(PrimeRequestContext requestContext) throws IOException {
+        List<String> initScripts = requestContext.getInitScriptsToExecute();
         List<String> scripts = requestContext.getScriptsToExecute();
-        if (!scripts.isEmpty()) {
+
+        if (!initScripts.isEmpty() || !scripts.isEmpty()) {
             startEval();
+
+            for (int i = 0; i < initScripts.size(); i++) {
+                getWrapped().write(initScripts.get(i));
+                getWrapped().write(';');
+            }
 
             for (int i = 0; i < scripts.size(); i++) {
                 getWrapped().write(scripts.get(i));

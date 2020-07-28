@@ -60,10 +60,11 @@ var Webcam = {
 		swfURL: '',            // URI to webcam.swf movie (defaults to the js location)
 		flashNotDetectedText: 'ERROR: No Adobe Flash Player detected.  Webcam.js relies on Flash for browsers that do not support getUserMedia (like yours).',
 		noInterfaceFoundText: 'No supported webcam interface found.',
-		unfreeze_snap: true,    // Whether to unfreeze the camera after snap (defaults to true)
+		unfreeze_snap: true,   // Whether to unfreeze the camera after snap (defaults to true)
 		iosPlaceholderText: 'Click here to open camera.',
-		user_callback: null,    // callback function for snapshot (used if no user_callback parameter given to snap function)
-		user_canvas: null       // user provided canvas for snapshot (used if no user_canvas parameter given to snap function)
+		user_callback: null,   // callback function for snapshot (used if no user_callback parameter given to snap function)
+		user_canvas: null,     // user provided canvas for snapshot (used if no user_canvas parameter given to snap function)
+		device: null           // selected device to grab images from
 	},
 
 	errors: {
@@ -294,14 +295,24 @@ var Webcam = {
 			
 			// ask user for access to their camera
 			var self = this;
+			
+			var constraints = this.params.constraints;
+			
+			if (!constraints) {
+			    constraints = new Object();
+			    constraints = {
+                    width: { min: this.params.dest_width },
+                    height: { min: this.params.dest_height }
+                };
+			    if(this.params.device === "user" || this.params.device === "environment") {
+			        constraints.facingMode = this.params.device;
+                } else if (this.params.device) {
+                    constraints.deviceId = this.params.device;
+                }
+			}
 			this.mediaDevices.getUserMedia({
 				"audio": false,
-				"video": this.params.constraints || {
-					mandatory: {
-						minWidth: this.params.dest_width,
-						minHeight: this.params.dest_height
-					}
-				}
+				"video": constraints
 			})
 			.then( function(stream) {
 				// got access, attach stream to video
@@ -663,7 +674,7 @@ var Webcam = {
 		}
 		
 		// construct object/embed tag
-		html += '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" type="application/x-shockwave-flash" codebase="'+this.protocol+'://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="'+this.params.width+'" height="'+this.params.height+'" id="webcam_movie_obj" align="middle"><param name="wmode" value="opaque" /><param name="allowScriptAccess" value="always" /><param name="allowFullScreen" value="false" /><param name="movie" value="'+swfURL+'" /><param name="loop" value="false" /><param name="menu" value="false" /><param name="quality" value="best" /><param name="bgcolor" value="#ffffff" /><param name="flashvars" value="'+flashvars+'"/><embed id="webcam_movie_embed" src="'+swfURL+'" wmode="opaque" loop="false" menu="false" quality="best" bgcolor="#ffffff" width="'+this.params.width+'" height="'+this.params.height+'" name="webcam_movie_embed" align="middle" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="'+flashvars+'"></embed></object>';
+		html += '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" type="application/x-shockwave-flash" codebase="'+this.protocol+'://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="'+this.params.width+'" height="'+this.params.height+'" id="webcam_movie_obj" align="middle"><param name="wmode" value="opaque"></param><param name="allowScriptAccess" value="always" ></param><param name="allowFullScreen" value="false" ></param><param name="movie" value="'+swfURL+'" ></param><param name="loop" value="false" ></param><param name="menu" value="false" ></param><param name="quality" value="best" ></param><param name="bgcolor" value="#ffffff" ></param><param name="flashvars" value="'+flashvars+'"></param><embed id="webcam_movie_embed" src="'+swfURL+'" wmode="opaque" loop="false" menu="false" quality="best" bgcolor="#ffffff" width="'+this.params.width+'" height="'+this.params.height+'" name="webcam_movie_embed" align="middle" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="'+flashvars+'"></embed></object>';
 		
 		return html;
 	},
@@ -1049,11 +1060,46 @@ else {
 }(window));
 
 /**
- * PrimeFaces PhotoCam Widget
+ * __PrimeFaces PhotoCam Widget__
+ * 
+ * PhotoCam is used to take photos with webcam and send them to the JSF backend model.
+ * 
+ * @typedef PrimeFaces.widget.PhotoCam.onCameraError Callback invoked when an error is caught by the Webcam.js engine.
+ * See also {@link PhotoCamCfg.onCameraError}.
+ * @this {PrimeFaces.widget.PhotoCam} PrimeFaces.widget.PhotoCam.onCameraError
+ * @param {Error} PrimeFaces.widget.PhotoCam.onCameraError.errorObj The error object containing the error information.
+ * 
+ * @interface {PrimeFaces.widget.PhotoCamCfg} cfg The configuration for the {@link  PhotoCam| PhotoCam widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * 
+ * @prop {boolean} cfg.autoStart Whether access to the camera should be requested automatically upon page load.
+ * @prop {string} cfg.camera URL to the `swf` flash fallback.
+ * @prop {boolean} cfg.forceFlash Enables always using flash fallback even in an HTML5 environment.
+ * @prop {Webcam.ImageFormat} cfg.format Format of the image file.
+ * @prop {number} cfg.height Height of the camera viewport in pixels.
+ * @prop {number} cfg.jpegQuality Quality of the image between `0` and `100` when the format is `jpeg`, default value is `90`.
+ * @prop {number} cfg.photoHeight Height of the captured photo in pixels, defaults to height.
+ * @prop {number} cfg.photoWidth Width of the captured photo in pixels, defaults to width.
+ * @prop {string} cfg.process Identifiers of components to process during capture.
+ * @prop {string} cfg.update Identifiers of components to update during capture.
+ * @prop {number} cfg.width Width of the camera viewport in pixels.
+ * @prop {string} cfg.device The id of device to retrieve images
+ * @prop {PrimeFaces.widget.PhotoCam.onCameraError} cfg.onCameraError Custom Webcam.js error handler
  */
 PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
+    /**
+     * Whether the camera is currently attached and can take photos.
+     * @type {boolean} 
+     */
     attached: false,
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
         this.cfg.width = this.cfg.width||320;
@@ -1064,21 +1110,34 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
         if (!("autoStart" in this.cfg)) {
             this.cfg.autoStart = true;
         }
+        
+        if(this.cfg.onCameraError) {
+            this.onCameraError = this.cfg.onCameraError;
+        }
+        
+        this.device = this.cfg.device;
 
         Webcam.setSWFLocation(this.cfg.camera);
 
         if (this.cfg.autoStart) {
             this.attach();
         }
+
     },
 
-    //@Override
+    /**
+     * @override
+     * @inheritdoc
+     */
     destroy: function() {
         this._super();
 
         this.dettach();
     },
 
+    /**
+     * Attaches the web camera, requesting access to the camera of the user.
+     */
     attach: function() {
         if (!this.attached) {
             Webcam.reset();
@@ -1091,6 +1150,7 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
                 image_format: this.cfg.format,
                 jpeg_quality: this.cfg.jpegQuality,
                 force_flash: this.cfg.forceFlash,
+                device: this.device,
                 user_callback: function(data) {
                     var options = {
                         source: $this.id,
@@ -1103,11 +1163,35 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
                     PrimeFaces.ajax.Request.handle(options);
                 }
             });
+            
+            $this = this;
+            Webcam.on("error", this.onCameraError);
 
             Webcam.attach(this.id);
             this.attached = true;
         }
     },
+    
+    /**
+     * Default error handler for webcam events
+     * @private
+     * @param {Error} errorObj Error object containing message, stacktrace and so on.
+     */
+    onCameraError: function(errorObj) {
+        var message;
+        if ((errorObj instanceof Webcam.errors.FlashError) || (errorObj instanceof Webcam.errors.WebcamError)) {
+            message = errorObj.message;
+        } else {
+            message = "Could not access webcam: " + errorObj.name + ": " + 
+            errorObj.message + " " + errorObj.toString();
+        }
+
+        alert("Webcam.js caught an error: " + message);
+    },
+
+    /**
+     * Detaches the web camera so that no more photos can be taken.
+     */
     dettach: function() {
         if (this.attached) {
             Webcam.reset();
@@ -1115,11 +1199,42 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Takes a photo with the web cam. Logs an error if no photo can be takes, such as when the user does not have
+     * a camera or did not allow access to the camera.
+     */
     capture: function() {
         if (this.attached) {
             Webcam.snap();
         } else {
             PrimeFaces.error('Capture error: AdvancedPhotoCam not attached to the camera');
+        }
+    },
+    
+    /**
+     *  Retrieves the available video input device list 
+     *  @return {Promise<InputDeviceInfo[]> | null} Returns a promise to resolve the enumeration or `null` if the browser doesn't support media devices enumeration.
+     */
+    getAvailableDevices: function() {
+        var result = null;
+        if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+            result = navigator.mediaDevices.enumerateDevices().then(function (devices) {
+                return devices.filter(
+                        function (device) {
+                            return device.kind === "videoinput";
+                        });
+              });
+        }
+        return result;
+    },
+    
+    /**
+     * Utility to detach and attach the video again.
+     */
+    reload: function () {
+        if (this.attached) {
+            this.dettach();
+            this.attach();
         }
     }
 

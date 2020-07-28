@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,7 +34,6 @@ import org.primefaces.component.export.ExcelOptions;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.ExporterOptions;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 
 import javax.faces.component.UIComponent;
@@ -44,7 +43,6 @@ import javax.faces.context.FacesContext;
 import java.awt.Color;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Collections;
 import java.util.List;
 
 public class DataTableExcelExporter extends DataTableExporter {
@@ -81,8 +79,16 @@ public class DataTableExcelExporter extends DataTableExporter {
         exportTable(context, table, sheet, config.isPageOnly(), config.isSelectionOnly());
 
         if (options == null || options.isAutoSizeColumn()) {
-            for (int j = 0; j < table.getColumnsCount(); j++) {
-                sheet.autoSizeColumn((short) j);
+            short colIndex = 0;
+            for (UIColumn col : table.getColumns()) {
+                if (col instanceof DynamicColumn) {
+                    ((DynamicColumn) col).applyStatelessModel();
+                }
+
+                if (col.isRendered() && col.isExportable()) {
+                    sheet.autoSizeColumn(colIndex);
+                    colIndex++;
+                }
             }
         }
     }
@@ -93,7 +99,7 @@ public class DataTableExcelExporter extends DataTableExporter {
             config.getPostProcessor().invoke(context.getELContext(), new Object[]{wb});
         }
 
-        writeExcelToResponse(context.getExternalContext(), wb, config.getOutputFileName());
+        writeExcelToResponse(context, wb, config.getOutputFileName());
 
         reset();
     }
@@ -121,7 +127,9 @@ public class DataTableExcelExporter extends DataTableExporter {
     }
 
     protected void addColumnFacets(DataTable table, Sheet sheet, DataTableExporter.ColumnType columnType) {
-        int sheetRowIndex = columnType.equals(DataTableExporter.ColumnType.HEADER) ? 0 : (sheet.getLastRowNum() + 1);
+        int sheetRowIndex = columnType == DataTableExporter.ColumnType.HEADER
+                ? 0
+                : sheet.getLastRowNum() + 1;
         Row rowHeader = sheet.createRow(sheetRowIndex);
 
         for (UIColumn col : table.getColumns()) {
@@ -211,17 +219,19 @@ public class DataTableExcelExporter extends DataTableExporter {
         return new HSSFWorkbook();
     }
 
+    protected Workbook getWorkBook() {
+        return wb;
+    }
+
     protected Sheet createSheet(Workbook wb, String sheetName, ExcelOptions options) {
         return wb.createSheet(sheetName);
     }
 
-    protected void writeExcelToResponse(ExternalContext externalContext, Workbook generatedExcel, String filename) throws IOException {
+    protected void writeExcelToResponse(FacesContext context, Workbook generatedExcel, String filename) throws IOException {
+        ExternalContext externalContext = context.getExternalContext();
         externalContext.setResponseContentType(getContentType());
-        externalContext.setResponseHeader("Expires", "0");
-        externalContext.setResponseHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
-        externalContext.setResponseHeader("Pragma", "public");
-        externalContext.setResponseHeader("Content-disposition", getContentDisposition(filename));
-        externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
+        setResponseHeader(externalContext, getContentDisposition(filename));
+        addResponseCookie(context);
 
         OutputStream out = externalContext.getResponseOutputStream();
         generatedExcel.write(out);

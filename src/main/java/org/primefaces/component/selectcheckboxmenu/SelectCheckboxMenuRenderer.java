@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -43,6 +43,7 @@ import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
@@ -72,10 +73,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         String title = menu.getTitle();
 
         String style = menu.getStyle();
-        String styleclass = menu.getStyleClass();
-        styleclass = styleclass == null ? SelectCheckboxMenu.STYLE_CLASS : SelectCheckboxMenu.STYLE_CLASS + " " + styleclass;
-        styleclass = menu.isDisabled() ? styleclass + " ui-state-disabled" : styleclass;
-        styleclass = !valid ? styleclass + " ui-state-error" : styleclass;
+        String styleclass =  createStyleClass(menu, SelectCheckboxMenu.STYLE_CLASS);
         styleclass = menu.isMultiple() ? SelectCheckboxMenu.MULTIPLE_CLASS + " " + styleclass : styleclass;
 
         writer.startElement("div", menu);
@@ -92,7 +90,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         encodeKeyboardTarget(context, menu);
         encodeInputs(context, menu, selectItems);
         if (menu.isMultiple()) {
-            encodeMultipleLabel(context, menu, selectItems, valid);
+            encodeMultipleLabel(context, menu, selectItems);
         }
         else {
             encodeLabel(context, menu, selectItems, valid);
@@ -169,6 +167,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", name, null);
         writer.writeAttribute("type", "checkbox", null);
+        writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute("value", itemValueAsString, null);
         writer.writeAttribute("data-escaped", String.valueOf(escaped), null);
         if (selectItemGroupLabel != null) {
@@ -227,16 +226,14 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.endElement("span");
     }
 
-    protected void encodeMultipleLabel(FacesContext context, SelectCheckboxMenu menu, List<SelectItem> selectItems, boolean valid)
+    protected void encodeMultipleLabel(FacesContext context, SelectCheckboxMenu menu, List<SelectItem> selectItems)
             throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Converter converter = menu.getConverter();
         Object values = getValues(menu);
         Object submittedValues = getSubmittedValues(menu);
         Object valuesArray = (submittedValues != null) ? submittedValues : values;
-        String listClass = menu.isDisabled() ?
-                           SelectCheckboxMenu.MULTIPLE_CONTAINER_CLASS + " ui-state-disabled" : SelectCheckboxMenu.MULTIPLE_CONTAINER_CLASS;
-        listClass = valid ? listClass : listClass + " ui-state-error";
+        String listClass = createStyleClass(menu, null, SelectCheckboxMenu.MULTIPLE_CONTAINER_CLASS);
 
         writer.startElement("ul", null);
         writer.writeAttribute("label", menu.getLabel(), null);
@@ -246,12 +243,6 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             for (int i = 0; i < length; i++) {
                 Object value = Array.get(valuesArray, i);
                 String itemValueAsString = getOptionAsString(context, menu, converter, value);
-                writer.startElement("li", null);
-                writer.writeAttribute("class", SelectCheckboxMenu.TOKEN_DISPLAY_CLASS, null);
-                writer.writeAttribute("data-item-value", itemValueAsString, null);
-
-                writer.startElement("span", null);
-                writer.writeAttribute("class", SelectCheckboxMenu.TOKEN_LABEL_CLASS, null);
 
                 SelectItem selectedItem = null;
                 for (SelectItem item : selectItems) {
@@ -270,25 +261,35 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                     }
                 }
 
-                if (selectedItem != null && selectedItem.getLabel() != null) {
-                    if (selectedItem.isEscape()) {
-                        writer.writeText(selectedItem.getLabel(), null);
+                // #5956 Do not render a chip for the value if no matching option exists
+                if (selectedItem != null) {
+                    writer.startElement("li", null);
+                    writer.writeAttribute("class", SelectCheckboxMenu.TOKEN_DISPLAY_CLASS, null);
+                    writer.writeAttribute("data-item-value", itemValueAsString, null);
+
+                    writer.startElement("span", null);
+                    writer.writeAttribute("class", SelectCheckboxMenu.TOKEN_LABEL_CLASS, null);
+
+                    if (selectedItem.getLabel() != null) {
+                        if (selectedItem.isEscape()) {
+                            writer.writeText(selectedItem.getLabel(), null);
+                        }
+                        else {
+                            writer.write(selectedItem.getLabel());
+                        }
                     }
                     else {
-                        writer.write(selectedItem.getLabel());
+                        writer.writeText(value, null);
                     }
+
+                    writer.endElement("span");
+
+                    writer.startElement("span", null);
+                    writer.writeAttribute("class", SelectCheckboxMenu.TOKEN_ICON_CLASS, null);
+                    writer.endElement("span");
+
+                    writer.endElement("li");
                 }
-                else {
-                    writer.writeText(value, null);
-                }
-
-                writer.endElement("span");
-
-                writer.startElement("span", null);
-                writer.writeAttribute("class", SelectCheckboxMenu.TOKEN_ICON_CLASS, null);
-                writer.endElement("span");
-
-                writer.endElement("li");
             }
         }
 
@@ -359,6 +360,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("readonly", "readonly", null);
+        writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
         if (tabindex != null) {
             writer.writeAttribute("tabindex", tabindex, null);
         }

@@ -54,7 +54,17 @@ can override the default policy.
 ```xml
 <context-param>
     <param-name>primefaces.CSP_POLICY</param-name>
-    <param-value>script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google-analytics.com</param-value>
+    <param-value>script-src 'self' https://www.google-analytics.com</param-value>
+</context-param>
+```
+
+## Google reCaptcha
+If you use the PrimeFaces Captcha component you must use a custom policy as follows:
+
+```xml
+<context-param>
+    <param-name>primefaces.CSP_POLICY</param-name>
+    <param-value>script-src 'self' https: *.googleapis.com</param-value>
 </context-param>
 ```
 
@@ -80,10 +90,15 @@ $('#btnHello').on('click', sayHello());
 ## Known Limitations
 Currently CSP in combination with `<f:ajax>` cannot be used with all Faces implementations / versions.
 
-MyFaces supports it since 3.0.0,
+MyFaces supports it since 2.3-next (which will be 4.0 in the future),
 Mojarra doesn't support it in general: https://github.com/eclipse-ee4j/mojarra/issues/4542
 
 As workaround, you can always use `<p:ajax>` instead.
+
+Currently CSP in combination with `<h:commandLink onclick="">` cannot be used with all Faces implementations / versions. 
+This is due to the native jsf.js being used for the onClick which uses Javascript `new Function()` and is not allowed by CSP.
+
+As workaround, you can always use `<p:commandLink>` instead.
 
 ## Troubleshooting
 

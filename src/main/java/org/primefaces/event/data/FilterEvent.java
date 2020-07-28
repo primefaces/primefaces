@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,7 @@
 package org.primefaces.event.data;
 
 import java.util.List;
+import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 import org.primefaces.component.datatable.DataTable;
@@ -46,7 +47,7 @@ public class FilterEvent extends AbstractAjaxBehaviorEvent {
         return this.data;
     }
 
-    public List<FilterMeta> getFilterMeta() {
-        return ((DataTable) this.source).getFilterMeta();
+    public Map<String, FilterMeta> getFilterBy() {
+        return ((DataTable) this.source).getFilterBy();
     }
 }

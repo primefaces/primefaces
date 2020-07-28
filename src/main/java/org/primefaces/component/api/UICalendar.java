@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,17 +26,21 @@ package org.primefaces.component.api;
 import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
+import java.time.format.ResolverStyle;
 import java.util.Locale;
 
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.MessageFactory;
 
-public abstract class UICalendar extends HtmlInputText implements InputHolder {
+public abstract class UICalendar extends HtmlInputText implements InputHolder, TouchAware {
 
     public static final String CONTAINER_CLASS = "ui-calendar";
     public static final String INPUT_STYLE_CLASS = "ui-inputfield ui-widget ui-state-default ui-corner-all";
@@ -61,7 +65,12 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder {
         inputStyle,
         inputStyleClass,
         type,
-        rangeSeparator
+        rangeSeparator,
+        resolverStyle,
+        touchable,
+        mask,
+        maskSlotChar,
+        maskAutoClear
     }
 
     public Object getLocale() {
@@ -108,6 +117,10 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder {
         return (Boolean) getStateHelper().eval(PropertyKeys.timeOnly, false);
     }
 
+    public Boolean isTimeOnlyWithoutDefault() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.timeOnly);
+    }
+
     public void setTimeOnly(boolean timeOnly) {
         getStateHelper().put(PropertyKeys.timeOnly, timeOnly);
     }
@@ -149,7 +162,7 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder {
     }
 
     public Locale calculateLocale(FacesContext facesContext) {
-        return LocaleUtils.resolveLocale(getLocale(), getClientId(facesContext));
+        return LocaleUtils.resolveLocale(facesContext, getLocale(), getClientId(facesContext));
     }
 
     public boolean hasTime() {
@@ -162,41 +175,66 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder {
         String pattern = getPattern();
 
         if (pattern == null) {
-            Locale locale = calculateLocale(getFacesContext());
-            return DateTimeFormatterBuilder.getLocalizedDateTimePattern(FormatStyle.SHORT, null, IsoChronology.INSTANCE, locale);
+            return calculateLocalizedPattern();
         }
         else return pattern;
     }
 
     public String calculateTimeOnlyPattern() {
         if (timeOnlyPattern == null) {
-            Locale locale = calculateLocale(getFacesContext());
-            String localePattern = DateTimeFormatterBuilder.getLocalizedDateTimePattern(FormatStyle.SHORT, null, IsoChronology.INSTANCE, locale);
+            String localePattern = calculateLocalizedPattern();
             String userTimePattern = getPattern();
-
             timeOnlyPattern = localePattern + " " + userTimePattern;
         }
 
         return timeOnlyPattern;
     }
 
+    public String calculateLocalizedPattern() {
+        Locale locale = calculateLocale(getFacesContext());
+        String localePattern = DateTimeFormatterBuilder.getLocalizedDateTimePattern(FormatStyle.SHORT, null, IsoChronology.INSTANCE, locale);
+
+        // #6170 default to 4 digit year
+        if (LangUtils.countMatches(localePattern, 'y') == 2) {
+            localePattern = localePattern.replace("yy", "yyyy");
+        }
+        return localePattern;
+    }
+
     public abstract String calculateWidgetPattern();
 
+    /**
+     * @see https://github.com/RobinHerbots/Inputmask/blob/5.x/README_date.md
+     * @param patternTemplate the date pattern
+     * @return the value converted for InputMask plugin
+     */
     public String convertPattern(String patternTemplate) {
-        String pattern = patternTemplate.replace("MMM", "###");
-        int patternLen = pattern.length();
-        int countM = patternLen - pattern.replace("M", "").length();
-        int countD = patternLen - pattern.replace("d", "").length();
-        if (countM == 1) {
-            pattern = pattern.replace("M", "mm");
+        // switch capital and lower M's for InputMask
+        char[] chars = patternTemplate.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            char c = chars[i];
+            if (c == 'm' || c == 'M') {
+                if (Character.isUpperCase(c)) {
+                    chars[i] = Character.toLowerCase(c);
+                }
+                else if (Character.isLowerCase(c)) {
+                    chars[i] = Character.toUpperCase(c);
+                }
+            }
         }
-
+        String pattern = new String(chars);
+        int countY = LangUtils.countMatches(pattern, 'y');
+        int countM = LangUtils.countMatches(pattern, 'm');
+        int countD = LangUtils.countMatches(pattern, 'd');
         if (countD == 1) {
             pattern = pattern.replace("d", "dd");
         }
-
-        pattern = pattern.replaceAll("[a-zA-Z]", "9");
-        pattern = pattern.replace("###", "aaa");
+        if (countM == 1) {
+            pattern = pattern.replace("m", "mm");
+        }
+        if (countY == 1) {
+            pattern = pattern.replace("y", "yy");
+        }
         return pattern;
     }
 
@@ -236,6 +274,48 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder {
         getStateHelper().put(PropertyKeys.rangeSeparator, _rangeSeparator);
     }
 
+    public String getResolverStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.resolverStyle, ResolverStyle.SMART.name());
+    }
+
+    public void setResolverStyle(String resolverStyle) {
+        getStateHelper().put(PropertyKeys.resolverStyle, resolverStyle);
+    }
+
+    @Override
+    public boolean isTouchable() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, true);
+    }
+
+    @Override
+    public void setTouchable(boolean touchable) {
+        getStateHelper().put(PropertyKeys.touchable, touchable);
+    }
+
+    public String getMask() {
+        return (String) getStateHelper().eval(PropertyKeys.mask, "false");
+    }
+
+    public void setMask(String mask) {
+        getStateHelper().put(PropertyKeys.mask, mask);
+    }
+
+    public String getMaskSlotChar() {
+        return (String) getStateHelper().eval(PropertyKeys.maskSlotChar, "_");
+    }
+
+    public void setMaskSlotChar(String maskSlotChar) {
+        getStateHelper().put(PropertyKeys.maskSlotChar, maskSlotChar);
+    }
+
+    public boolean isMaskAutoClear() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.maskAutoClear, true);
+    }
+
+    public void setMaskAutoClear(boolean maskAutoClear) {
+        getStateHelper().put(PropertyKeys.maskAutoClear, maskAutoClear);
+    }
+
     public enum ValidationResult {
         OK, INVALID_DISABLED_DATE, INVALID_RANGE_DATES_SEQUENTIAL, INVALID_MIN_DATE, INVALID_MAX_DATE, INVALID_OUT_OF_RANGE
     }
@@ -254,41 +334,47 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder {
                 case OK:
                     break;
                 case INVALID_DISABLED_DATE:
-                    msg = MessageFactory.getMessage(DATE_INVALID_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
+                    msg = MessageFactory.getFacesMessage(DATE_INVALID_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
                     break;
                 case INVALID_RANGE_DATES_SEQUENTIAL:
-                    msg = MessageFactory.getMessage(DATE_INVALID_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
+                    msg = MessageFactory.getFacesMessage(DATE_INVALID_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
                     break;
                 case INVALID_MIN_DATE:
-                    msg = MessageFactory.getMessage(DATE_MIN_DATE_ID, FacesMessage.SEVERITY_ERROR, params);
+                    msg = MessageFactory.getFacesMessage(DATE_MIN_DATE_ID, FacesMessage.SEVERITY_ERROR, params);
                     break;
                 case INVALID_MAX_DATE:
-                    msg = MessageFactory.getMessage(DATE_MAX_DATE_ID, FacesMessage.SEVERITY_ERROR, params);
+                    msg = MessageFactory.getFacesMessage(DATE_MAX_DATE_ID, FacesMessage.SEVERITY_ERROR, params);
                     break;
                 case INVALID_OUT_OF_RANGE:
-                    msg = MessageFactory.getMessage(DATE_OUT_OF_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
+                    msg = MessageFactory.getFacesMessage(DATE_OUT_OF_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
                     break;
             }
         }
         context.addMessage(getClientId(context), msg);
     }
 
-    /*
-    @Override
-    public Converter getConverter() {
-        Converter converter = super.getConverter();
-
-        //TODO: Why does it matter whether Client-Side-Validation is enabled?
-        if (converter == null && PrimeApplicationContext.getCurrentInstance(getFacesContext()).getConfig().isClientSideValidationEnabled()) {
-            DateTimeConverter con = new DateTimeConverter();
-            con.setPattern(calculatePattern());
-            con.setTimeZone(TimeZone.getTimeZone(CalendarUtils.calculateZoneId(this.getTimeZone())));
-            con.setLocale(calculateLocale(getFacesContext()));
-
-            return con;
+    /**
+     * Only for internal usage within PrimeFaces.
+     * @return Type of the value bound via value expression. May return null when no value is bound.
+     */
+    public Class<?> getTypeFromValueByValueExpression(FacesContext context) {
+        ValueExpression ve = getValueExpression("value");
+        if (ve != null) {
+            return ve.getType(context.getELContext());
         }
-
-        return converter;
+        else {
+            return null;
+        }
     }
-    */
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public void validateMinMax(FacesContext context) {
+        Comparable minDate = (Comparable) getMindate();
+        Comparable maxDate = (Comparable) getMaxdate();
+        if (minDate != null && maxDate != null && maxDate.compareTo(minDate) < 0) {
+            String id = getClientId(context);
+            String component = this.getClass().getSimpleName();
+            throw new FacesException(component + " : \"" + id + "\" minimum date must be less than maximum date.");
+        }
+    }
 }

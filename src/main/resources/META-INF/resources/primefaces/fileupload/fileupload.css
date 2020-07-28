@@ -135,6 +135,10 @@
     margin-left: 0.5em;
 }
 
+/* GitHub #5431 */
+.ui-fileupload-choose input {
+    pointer-events: none;
+}
 
 /* ui-fluid */
 .ui-fluid .ui-fileupload .ui-button {

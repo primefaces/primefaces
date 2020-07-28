@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -73,7 +73,8 @@ public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UI
         partialSubmitFilter,
         form,
         escape,
-        rel
+        rel,
+        ignoreComponentNotFound
     }
 
     public UIMenuItemBase() {
@@ -386,5 +387,14 @@ public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UI
     @Override
     public SerializableFunction<MenuItem, String> getFunction() {
         return null;
+    }
+
+    @Override
+    public boolean isIgnoreComponentNotFound() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.ignoreComponentNotFound, false);
+    }
+
+    public void setIgnoreComponentNotFound(boolean ignoreComponentNotFound) {
+        getStateHelper().put(PropertyKeys.ignoreComponentNotFound, ignoreComponentNotFound);
     }
 }

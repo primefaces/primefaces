@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -135,7 +135,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         }
         writer.writeAttribute("id", menuId, null);
         writer.writeAttribute("class", menuStyleClass, "styleClass");
-        writer.writeAttribute("role", "menu", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", MenuButton.LIST_CLASS, "styleClass");
@@ -148,7 +148,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
                     if (element instanceof MenuItem) {
                         writer.startElement("li", null);
                         writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
-                        writer.writeAttribute("role", "menuitem", null);
+                        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM, null);
                         encodeMenuItem(context, button, (MenuItem) element, "-1");
                         writer.endElement("li");
                     }

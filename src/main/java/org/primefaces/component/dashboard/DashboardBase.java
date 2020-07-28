@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,6 +40,7 @@ public abstract class DashboardBase extends UIPanel implements Widget, ClientBeh
         widgetVar,
         model,
         disabled,
+        reordering,
         style,
         styleClass
     }
@@ -71,6 +72,14 @@ public abstract class DashboardBase extends UIPanel implements Widget, ClientBeh
 
     public boolean isDisabled() {
         return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+    }
+
+    public void setReordering(boolean reordering) {
+        getStateHelper().put(PropertyKeys.reordering, reordering);
+    }
+
+    public boolean isReordering() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.reordering, true);
     }
 
     public void setDisabled(boolean disabled) {

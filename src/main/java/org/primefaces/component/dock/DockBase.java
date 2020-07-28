@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,11 @@
  */
 package org.primefaces.component.dock;
 
+import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
 
-public abstract class DockBase extends AbstractMenu implements Widget {
+public abstract class DockBase extends AbstractMenu implements Widget, RTLAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -37,11 +38,11 @@ public abstract class DockBase extends AbstractMenu implements Widget {
         widgetVar,
         model,
         position,
-        itemWidth,
-        maxWidth,
-        proximity,
         halign,
-        blockScroll
+        blockScroll,
+        animate,
+        animationDuration,
+        dir
     }
 
     public DockBase() {
@@ -78,30 +79,6 @@ public abstract class DockBase extends AbstractMenu implements Widget {
         getStateHelper().put(PropertyKeys.position, position);
     }
 
-    public int getItemWidth() {
-        return (Integer) getStateHelper().eval(PropertyKeys.itemWidth, 40);
-    }
-
-    public void setItemWidth(int itemWidth) {
-        getStateHelper().put(PropertyKeys.itemWidth, itemWidth);
-    }
-
-    public int getMaxWidth() {
-        return (Integer) getStateHelper().eval(PropertyKeys.maxWidth, 50);
-    }
-
-    public void setMaxWidth(int maxWidth) {
-        getStateHelper().put(PropertyKeys.maxWidth, maxWidth);
-    }
-
-    public int getProximity() {
-        return (Integer) getStateHelper().eval(PropertyKeys.proximity, 90);
-    }
-
-    public void setProximity(int proximity) {
-        getStateHelper().put(PropertyKeys.proximity, proximity);
-    }
-
     public String getHalign() {
         return (String) getStateHelper().eval(PropertyKeys.halign, "center");
     }
@@ -111,10 +88,35 @@ public abstract class DockBase extends AbstractMenu implements Widget {
     }
 
     public boolean isBlockScroll() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.blockScroll, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.blockScroll, false);
     }
 
     public void setBlockScroll(boolean blockScroll) {
         getStateHelper().put(PropertyKeys.blockScroll, blockScroll);
+    }
+
+    public boolean isAnimate() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.animate, true);
+    }
+
+    public void setAnimate(boolean animate) {
+        getStateHelper().put(PropertyKeys.animate, animate);
+    }
+
+    public int getAnimationDuration() {
+        return (Integer) getStateHelper().eval(PropertyKeys.animationDuration, 1600);
+    }
+
+    public void setAnimationDuration(int animationDuration) {
+        getStateHelper().put(PropertyKeys.animationDuration, animationDuration);
+    }
+
+    @Override
+    public String getDir() {
+        return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
+    }
+
+    public void setDir(String dir) {
+        getStateHelper().put(PropertyKeys.dir, dir);
     }
 }

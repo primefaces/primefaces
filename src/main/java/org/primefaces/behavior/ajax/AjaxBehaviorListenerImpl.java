@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -70,7 +70,11 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
         try {
             listener.invoke(elContext, new Object[]{});
         }
-        catch (MethodNotFoundException | IllegalArgumentException | ArrayIndexOutOfBoundsException mnfe) {
+        catch (MethodNotFoundException | IllegalArgumentException e) {
+            processArgListener(context, elContext, event);
+        }
+        // JBoss hack, see #1375
+        catch (ArrayIndexOutOfBoundsException e) {
             processArgListener(context, elContext, event);
         }
     }
@@ -83,7 +87,11 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
         try {
             listenerWithArg.invoke(elContext, new Object[]{event});
         }
-        catch (MethodNotFoundException | IllegalArgumentException mnfe) {
+        catch (MethodNotFoundException | IllegalArgumentException e) {
+            processCustomArgListener(context, elContext, event);
+        }
+        // JBoss hack, see #1375
+        catch (ArrayIndexOutOfBoundsException e) {
             processCustomArgListener(context, elContext, event);
         }
     }

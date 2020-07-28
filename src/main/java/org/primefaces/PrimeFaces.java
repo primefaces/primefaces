@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,8 @@
  */
 package org.primefaces;
 
+import org.primefaces.component.api.MultiViewStateAware;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.expression.ComponentNotFoundException;
 import org.primefaces.expression.SearchExpressionFacade;
@@ -32,14 +34,20 @@ import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.visit.ResetInputVisitCallback;
 
+import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.visit.VisitContext;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialViewContext;
+import javax.faces.lifecycle.ClientWindow;
+import java.io.Serializable;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.logging.Level;
@@ -47,7 +55,6 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import javax.faces.application.ProjectStage;
 
 public class PrimeFaces {
 
@@ -55,7 +62,7 @@ public class PrimeFaces {
 
     // There are 2 possible solutions
     // 1) the current static solution + use Faces/RequestContext#getCurrentInstance each time
-    // 2) make PrimeFaces requestScoped and receive Faces/RequestContext only once
+    // 2) make PrimeFaces requestScoped and receive Faces/RequestContext only once (more complex and requires cleanup)
     private static PrimeFaces instance = new PrimeFaces();
 
     private final Dialog dialog;
@@ -88,12 +95,36 @@ public class PrimeFaces {
     }
 
     /**
+     * Checks if the current request is a Faces request.
+     *
+     * @return <code>true</code> if the current request is a Faces request.
+     */
+    public boolean isFacesRequest() {
+        return getFacesContext() != null;
+    }
+
+    /**
      * Shortcut for {@link PartialViewContext#isAjaxRequest()}.
      *
      * @return <code>true</code> if the current request is a AJAX request.
      */
     public boolean isAjaxRequest() {
-        return getFacesContext().getPartialViewContext().isAjaxRequest();
+        FacesContext context = getFacesContext();
+        if (context == null) {
+            return false;
+        }
+
+        return context.getPartialViewContext().isAjaxRequest();
+    }
+
+    /**
+     * Executes a JavaScript statement before all other PrimeFaces scripts are executed.
+     * Useful when you need to do some initialization.
+     *
+     * @param statement the JavaScript statement.
+     */
+    public void executeInitScript(String statement) {
+        getRequestContext().getInitScriptsToExecute().add(statement);
     }
 
     /**
@@ -190,7 +221,7 @@ public class PrimeFaces {
 
     /**
      * Removes the multiViewState for one specific DataTable within the current session.
-     * @param key Key of the DataTable. See {@link org.primefaces.component.datatable.DataTable#getTableState(boolean)} for the namebuild of this key.
+     * @param key Key of the DataTable. See {@link org.primefaces.component.datatable.DataTable#getMultiViewState(boolean)} for the namebuild of this key.
      *
      * @deprecated Use {@link MultiViewState#clear(String, String)} instead
      */
@@ -211,7 +242,7 @@ public class PrimeFaces {
 
     /**
      * Removes the multiViewState for one specific DataList within the current session.
-     * @param key Key of the DataList. See {@link org.primefaces.component.datalist.DataList#getDataListState(boolean)}} for the namebuild of this key.
+     * @param key Key of the DataList. See {@link org.primefaces.component.datalist.DataList#getMultiViewState(boolean)}} for the namebuild of this key.
      *
      * @deprecated Use {@link MultiViewState#clear(String, String)} instead
      */
@@ -366,7 +397,7 @@ public class PrimeFaces {
                     if (facesContext.isProjectStage(ProjectStage.Development)) {
                         LOGGER.log(Level.WARNING,
                                 "PrimeFaces.current().ajax().update() called but component can't be resolved!"
-                                + " Expression will just be added to the renderIds: " + expression);
+                                + " Expression will just be added to the renderIds: {0}", expression);
                     }
 
                     facesContext.getPartialViewContext().getRenderIds().add(expression);
@@ -390,12 +421,34 @@ public class PrimeFaces {
 
     public class MultiViewState {
 
-        private static final String SEPARATOR = "_";
-
         /**
          * Removes all multiViewState within the current session.
          */
         public void clearAll() {
+            clearAll(true, null);
+        }
+
+        /**
+         * Removes all multiViewState within the current session.
+         *
+         * @param reset indicates whether or not the component should be reset, if it is in the current view
+         */
+        public void clearAll(boolean reset) {
+            clearAll(reset, null);
+        }
+
+        /**
+         * Removes all multiViewState within the current session.
+         *
+         * @param reset indicates whether or not the component should be reset, if it is in the current view
+         * @param clientIdConsumer Callback for each removed clientId
+         */
+        public void clearAll(boolean reset, Consumer<String> clientIdConsumer) {
+            if (reset || clientIdConsumer != null) {
+                Set<MVSKey> keys = Collections.unmodifiableSet(getMVSKeys());
+                clearMVSKeys(keys, reset, clientIdConsumer);
+            }
+
             getFacesContext().getExternalContext().getSessionMap().remove(Constants.MULTI_VIEW_STATES);
         }
 
@@ -403,31 +456,25 @@ public class PrimeFaces {
          * Removes all multiViewState in specific view within the current session.
          *
          * @param viewId viewId in which multiview state should be cleared
+         * @param reset indicates whether or not the component should be reset, if it is in the current view
          */
-        public void clearAll(String viewId) {
-            clear(viewId, (Consumer<String>) null);
+        public void clearAll(String viewId, boolean reset) {
+            clearAll(viewId, reset, null);
         }
 
         /**
          * Removes all multiViewState in specific view within the current session.
          *
          * @param viewId viewId in which multiview state should be cleared
+         * @param reset indicates whether or not the component should be reset, if it is in the current view
          * @param clientIdConsumer operation to execute for every clientId after multiview state has been cleared
          */
-        public void clear(String viewId, Consumer<String> clientIdConsumer) {
-            String stateKey = createMVSViewId(viewId);
-            Map<String, Object> multiViewStates = getMVSSessionMap();
-            Set<String> states = multiViewStates.keySet().stream()
-                    .filter(s -> s.startsWith(stateKey))
+        public void clearAll(String viewId, boolean reset, Consumer<String> clientIdConsumer) {
+            Set<MVSKey> keys = getMVSKeys().stream()
+                    .filter(k -> Objects.equals(k.viewId, viewId))
                     .collect(Collectors.toSet());
-            if (!states.isEmpty()) {
-                multiViewStates.keySet().removeAll(states);
-
-                if (clientIdConsumer != null) {
-                    states.stream()
-                            .map(s -> s.replace(stateKey + SEPARATOR, Constants.EMPTY_STRING))
-                            .forEach(clientIdConsumer);
-                }
+            if (!keys.isEmpty()) {
+                clearMVSKeys(keys, reset, clientIdConsumer);
             }
         }
 
@@ -438,13 +485,19 @@ public class PrimeFaces {
          * @param clientId clientId of a component for which multiview state should be cleared
          */
         public void clear(String viewId, String clientId) {
-            String stateKey = createMVSKey(viewId, clientId);
-            Map<String, Object> multiViewStates = getMVSSessionMap();
-            if (multiViewStates.remove(stateKey) == null) {
-                LOGGER.log(Level.WARNING,
-                        "Multiview state for viewId: \"{0}\" and clientId \"{1}\" not found",
-                        new Object[]{viewId, clientId});
-            }
+            clear(viewId, clientId, true);
+        }
+
+        /**
+         * Removes multiViewState of a component in specific view within the current session.
+         *
+         * @param viewId viewId of a page
+         * @param clientId clientId of a component for which multiview state should be cleared, if it is in the current view
+         * @param reset indicates whether or not the component should be reset
+         */
+        public void clear(String viewId, String clientId, boolean reset) {
+            MVSKey key = MVSKey.of(viewId, clientId);
+            clearMVSKeys(Collections.singleton(key), reset, null);
         }
 
         /**
@@ -459,42 +512,133 @@ public class PrimeFaces {
          * @return multiview state bean attached to a component
          */
         public <T> T get(String viewId, String clientId, boolean create, Supplier<T> supplier) {
-            FacesContext fc = getFacesContext();
-            Map<String, Object> sessionMap = fc.getExternalContext().getSessionMap();
-            Map<String, Object> states =  getMVSSessionMap();
-            String stateKey = createMVSKey(viewId, clientId);
+            Map<MVSKey, Object> mvsMap = getMVSStore(create);
+            MVSKey mvsKey = MVSKey.of(viewId, clientId);
 
-            if (states == null) {
-                states = new HashMap<>();
-                sessionMap.put(Constants.MULTI_VIEW_STATES, states);
-            }
-
-            T state = (T) states.get(stateKey);
+            T state = (T) mvsMap.get(mvsKey);
             if (state == null && create) {
                 state = supplier.get();
-                states.put(stateKey, state);
+                mvsMap.put(mvsKey, state);
             }
 
             return state;
         }
 
-        private String createMVSKey(String viewId, String clientId) {
-            String stateKey = createMVSViewId(viewId);
-            if (clientId != null) {
-                stateKey += SEPARATOR + clientId;
-            }
-            return stateKey;
+        private Set<MVSKey> getMVSKeys() {
+            return getMVSStore(false).keySet();
         }
 
-        private String createMVSViewId(String viewId) {
-            // LEGACY: The reason to remove the first / is unknown
-            return viewId.replaceFirst("^/*", Constants.EMPTY_STRING);
-        }
-
-        private Map<String, Object> getMVSSessionMap() {
+        private Map<MVSKey, Object> getMVSStore(boolean create) {
             FacesContext fc = getFacesContext();
             Map<String, Object> sessionMap = fc.getExternalContext().getSessionMap();
-            return (Map) sessionMap.get(Constants.MULTI_VIEW_STATES);
+
+            PrimeApplicationContext primeApplicationContext = PrimeApplicationContext.getCurrentInstance(fc);
+            String clientWindowId = "session";
+            if (primeApplicationContext.getEnvironment().isAtLeastJsf22() &&
+                    "client-window".equals(primeApplicationContext.getConfig().getMultiViewStateStore())) {
+                ExternalContext externalContext = fc.getExternalContext();
+                ClientWindow clientWindow = externalContext.getClientWindow();
+                if (clientWindow != null && !LangUtils.isValueBlank(clientWindow.getId())) {
+                    clientWindowId = clientWindow.getId();
+                }
+            }
+
+            Map<String, Map<MVSKey, Object>> clientWindowMap = (Map) sessionMap.get(Constants.MULTI_VIEW_STATES);
+            if (clientWindowMap == null) {
+                clientWindowMap = new ConcurrentHashMap<>();
+                sessionMap.put(Constants.MULTI_VIEW_STATES, clientWindowMap);
+            }
+
+            Map<MVSKey, Object> mvsMap = clientWindowMap.get(clientWindowId);
+
+            if (mvsMap == null) {
+                if (create) {
+                    mvsMap = new ConcurrentHashMap<>();
+                    clientWindowMap.put(clientWindowId, mvsMap);
+                }
+                else {
+                    mvsMap = Collections.emptyMap();
+                }
+            }
+
+            return mvsMap;
+        }
+
+        private void reset(String clientId) {
+            FacesContext context = getFacesContext();
+            context.getViewRoot().invokeOnComponent(context, clientId, (fc, component) -> {
+                if (!(component instanceof MultiViewStateAware)) {
+                    throw new FacesException("Multi view state not supported for: " + component.getClass().getSimpleName());
+                }
+                ((MultiViewStateAware) component).resetMultiViewState();
+            });
+        }
+
+        private void clearMVSKeys(Set<MVSKey> keysToRemove, boolean reset, Consumer<String> clientIdConsumer) {
+            Set<MVSKey> mvsKeys = getMVSKeys();
+            for (MVSKey mvsKey : keysToRemove) {
+                if (!mvsKeys.remove(mvsKey)) {
+                    LOGGER.log(Level.WARNING,
+                            "Multiview state for viewId: \"{0}\" and clientId \"{1}\" not found",
+                            new Object[]{mvsKey.viewId, mvsKey.clientId});
+                    continue;
+                }
+
+                if (reset) {
+                    reset(mvsKey.clientId);
+                }
+
+                if (clientIdConsumer != null) {
+                    clientIdConsumer.accept(mvsKey.clientId);
+                }
+            }
+        }
+    }
+
+    private static class MVSKey implements Serializable {
+
+        private static final long serialVersionUID = 1L;
+
+        private String viewId;
+        private String clientId;
+
+        // serialization
+        private MVSKey() {
+            // NOOP
+        }
+
+        private MVSKey(String viewId, String clientId) {
+            this.viewId = viewId;
+            this.clientId = clientId;
+        }
+
+        public static MVSKey of(String viewId, String clientId) {
+            return new MVSKey(viewId, clientId);
+        }
+
+        @Override
+        public int hashCode() {
+            int hash = 7;
+            hash = 23 * hash + Objects.hashCode(viewId);
+            hash = 23 * hash + Objects.hashCode(clientId);
+            return hash;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (obj == null || getClass() != obj.getClass()) return false;
+            MVSKey other = (MVSKey) obj;
+            return Objects.equals(viewId, other.viewId) &&
+                    Objects.equals(clientId, other.clientId);
+        }
+
+        @Override
+        public String toString() {
+            return "MVSKey{" +
+                    "viewId='" + viewId + '\'' +
+                    ", clientId='" + clientId + '\'' +
+                    '}';
         }
     }
 }

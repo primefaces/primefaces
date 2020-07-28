@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,6 +28,8 @@ import javax.el.ValueExpression;
 import org.primefaces.component.api.UIColumn;
 
 public class FilterMeta implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private String filterField;
     private String columnKey;
@@ -88,5 +90,11 @@ public class FilterMeta implements Serializable {
 
     public void setColumn(UIColumn column) {
         this.column = column;
+    }
+
+    @Override
+    public String toString() {
+        return "FilterMeta [filterField=" + filterField + ", columnKey=" + columnKey + ", filterByVE=" + filterByVE + ", filterMatchMode=" + filterMatchMode
+                    + ", filterValue=" + filterValue + "]";
     }
 }

@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -129,9 +129,8 @@ public class CheckboxRenderer extends InputRenderer {
 
     protected void encodeOptionOutput(FacesContext context, boolean disabled, SelectManyCheckbox selectManyCheckbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String boxClass = HTML.CHECKBOX_BOX_CLASS;
+        String boxClass = createStyleClass(selectManyCheckbox, null, HTML.CHECKBOX_BOX_CLASS) ;
         boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
-        boxClass = !selectManyCheckbox.isValid() ? boxClass + " ui-state-error" : boxClass;
 
         writer.startElement("div", null);
         writer.writeAttribute("class", boxClass, null);

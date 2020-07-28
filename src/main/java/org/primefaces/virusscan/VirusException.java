@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,8 +23,25 @@
  */
 package org.primefaces.virusscan;
 
-public class VirusException extends Exception {
+import javax.faces.FacesException;
+
+public class VirusException extends FacesException {
 
     private static final long serialVersionUID = 1L;
 
+    public VirusException() {
+        // NOOP
+    }
+
+    public VirusException(String message) {
+        super(message);
+    }
+
+    public VirusException(Throwable cause) {
+        super(cause);
+    }
+
+    public VirusException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

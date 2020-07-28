@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,26 +23,7 @@
  */
 package org.primefaces.component.calendar;
 
-import org.primefaces.component.api.UICalendar;
-import org.primefaces.el.ValueExpressionAnalyzer;
-import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.util.CalendarUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.MessageFactory;
-
-import javax.el.ValueExpression;
-import javax.el.ValueReference;
-import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -52,11 +33,29 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import java.time.temporal.ChronoField;
 import java.time.temporal.Temporal;
 import java.util.Collection;
 import java.util.Date;
 import java.util.TimeZone;
+
+import javax.el.ValueExpression;
+import javax.el.ValueReference;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
+
+import org.primefaces.component.api.UICalendar;
+import org.primefaces.el.ValueExpressionAnalyzer;
+import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.MessageFactory;
 
 public abstract class BaseCalendarRenderer extends InputRenderer {
 
@@ -84,6 +83,9 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         String markupValue = CalendarUtils.getValueAsString(context, uicalendar);
         String widgetValue = uicalendar.isTimeOnly() ? CalendarUtils.getTimeOnlyValueAsString(context, uicalendar) : markupValue;
 
+        // #6068 ensure min is before max
+        uicalendar.validateMinMax(context);
+
         encodeMarkup(context, uicalendar, markupValue);
         encodeScript(context, uicalendar, widgetValue);
     }
@@ -96,7 +98,6 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String type = popup ? uicalendar.getType() : "hidden";
         String inputStyle = uicalendar.getInputStyle();
-        String inputStyleClass = uicalendar.getInputStyleClass();
 
         writer.startElement("input", null);
         writer.writeAttribute("id", id, null);
@@ -111,17 +112,9 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         boolean disabled = false;
 
         if (popup) {
-            inputStyleClass = (inputStyleClass == null) ? UICalendar.INPUT_STYLE_CLASS
-                                                        : UICalendar.INPUT_STYLE_CLASS + " " + inputStyleClass;
+            String inputStyleClass = createStyleClass(uicalendar, UICalendar.PropertyKeys.inputStyleClass.name(), UICalendar.INPUT_STYLE_CLASS);
             readonly = uicalendar.isReadonly() || uicalendar.isReadonlyInput();
-
-            if (uicalendar.isDisabled()) {
-                inputStyleClass = inputStyleClass + " ui-state-disabled";
-                disabled = true;
-            }
-            if (!uicalendar.isValid()) {
-                inputStyleClass = inputStyleClass + " ui-state-error";
-            }
+            disabled = uicalendar.isDisabled();
 
             writer.writeAttribute("class", inputStyleClass, null);
 
@@ -197,8 +190,10 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
                     .parseCaseInsensitive()
                     .appendPattern(calendar.calculatePattern())
                     .parseDefaulting(ChronoField.DAY_OF_MONTH, 1) //because of Month Picker which does not contain day of month
+                    .parseDefaulting(ChronoField.ERA, 1)
                     .toFormatter(calendar.calculateLocale(context))
-                    .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()));
+                    .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()))
+                    .withResolverStyle(resolveResolverStyle(calendar.getResolverStyle()));
 
             try {
                 return type == LocalDate.class
@@ -213,7 +208,8 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
             String pattern = calendar instanceof Calendar ? calendar.calculatePattern() : calendar.calculateTimeOnlyPattern();
             DateTimeFormatter formatter = DateTimeFormatter
                     .ofPattern(pattern, calendar.calculateLocale(context))
-                    .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()));
+                    .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()))
+                    .withResolverStyle(resolveResolverStyle(calendar.getResolverStyle()));
 
             try {
                 return LocalTime.parse(submittedValue, formatter);
@@ -226,8 +222,10 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
             DateTimeFormatter formatter = new DateTimeFormatterBuilder()
                     .parseCaseInsensitive()
                     .appendPattern(calendar.calculatePattern())
+                    .parseDefaulting(ChronoField.ERA, 1)
                     .toFormatter(calendar.calculateLocale(context))
-                    .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()));
+                    .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()))
+                    .withResolverStyle(resolveResolverStyle(calendar.getResolverStyle()));
 
             try {
                 return LocalDateTime.parse(submittedValue, formatter);
@@ -240,6 +238,15 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         //TODO: implement if necessary
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, type.getName() + " not supported", null);
         throw new ConverterException(message);
+    }
+
+    private ResolverStyle resolveResolverStyle(String passedResolverStyle) {
+        for (ResolverStyle resolverStyle : ResolverStyle.values()) {
+            if (resolverStyle.name().equalsIgnoreCase(passedResolverStyle)) {
+                return resolverStyle;
+            }
+        }
+        return ResolverStyle.SMART;
     }
 
     protected ConverterException createConverterException(FacesContext context,
@@ -255,13 +262,13 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         params[2] = MessageFactory.getLabel(context, calendar);
 
         if (calendar.isTimeOnly()) {
-            message = MessageFactory.getMessage("javax.faces.converter.DateTimeConverter.TIME", FacesMessage.SEVERITY_ERROR, params);
+            message = MessageFactory.getFacesMessage("javax.faces.converter.DateTimeConverter.TIME", FacesMessage.SEVERITY_ERROR, params);
         }
         else if (calendar.hasTime()) {
-            message = MessageFactory.getMessage("javax.faces.converter.DateTimeConverter.DATETIME", FacesMessage.SEVERITY_ERROR, params);
+            message = MessageFactory.getFacesMessage("javax.faces.converter.DateTimeConverter.DATETIME", FacesMessage.SEVERITY_ERROR, params);
         }
         else {
-            message = MessageFactory.getMessage("javax.faces.converter.DateTimeConverter.DATE", FacesMessage.SEVERITY_ERROR, params);
+            message = MessageFactory.getFacesMessage("javax.faces.converter.DateTimeConverter.DATE", FacesMessage.SEVERITY_ERROR, params);
         }
 
         return new ConverterException(message);
@@ -270,14 +277,17 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
     protected Class<?> resolveDateType(FacesContext context, UICalendar calendar) {
         ValueExpression ve = calendar.getValueExpression("value");
 
-        if (ve == null) {
-            return LocalDate.class;
+        Class<?> type = null;
+        if (ve != null) {
+            type = ve.getType(context.getELContext());
         }
 
-        Class<?> type = ve.getType(context.getELContext());
-
-        // If type could not be determined via value-expression try it this way. (Very unlikely, this happens in real world.)
-        if (type == null) {
+        /*
+        If type could not be determined via value-expression try it this way.
+        a) Required for e.g. usage in custom dataTable filters
+        b) some Usecases with generics - see https://github.com/primefaces/primefaces/issues/5913
+        */
+        if (type == null || type.equals(Object.class)) {
             if (calendar.isTimeOnly()) {
                 type = LocalTime.class;
             }
@@ -294,15 +304,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
             Object base = valueReference.getBase();
             Object property = valueReference.getProperty();
 
-            try {
-                Field field = LangUtils.getUnproxiedClass(base.getClass()).getDeclaredField((String) property);
-                ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
-                Type listType = parameterizedType.getActualTypeArguments()[0];
-                type = Class.forName(listType.getTypeName());
-            }
-            catch (ReflectiveOperationException ex) {
-                //NOOP
-            }
+            type = LangUtils.getTypeFromCollectionProperty(base, (String) property);
         }
 
         return type;

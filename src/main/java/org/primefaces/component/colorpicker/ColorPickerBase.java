@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,6 +41,7 @@ public abstract class ColorPickerBase extends UIInput implements Widget, ClientB
         mode,
         style,
         styleClass,
+        disabled,
         onchange;
     }
 
@@ -91,5 +92,13 @@ public abstract class ColorPickerBase extends UIInput implements Widget, ClientB
 
     public void setOnchange(String onchange) {
         getStateHelper().put(PropertyKeys.onchange, onchange);
+    }
+
+    public boolean isDisabled() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+    }
+
+    public void setDisabled(boolean disabled) {
+        getStateHelper().put(PropertyKeys.disabled, disabled);
     }
 }

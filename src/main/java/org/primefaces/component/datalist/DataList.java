@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,6 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import javax.faces.FacesException;
-import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -49,13 +48,11 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.MapBuilder;
 
-@ResourceDependencies({
-        @ResourceDependency(library = "primefaces", name = "components.css"),
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
-        @ResourceDependency(library = "primefaces", name = "core.js"),
-        @ResourceDependency(library = "primefaces", name = "components.js")
-})
+@ResourceDependency(library = "primefaces", name = "components.css")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
+@ResourceDependency(library = "primefaces", name = "core.js")
+@ResourceDependency(library = "primefaces", name = "components.js")
 public class DataList extends DataListBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataList";
@@ -117,7 +114,7 @@ public class DataList extends DataListBase {
         if (model instanceof LazyDataModel) {
             LazyDataModel<?> lazyModel = (LazyDataModel) model;
 
-            List<?> data = lazyModel.load(getFirst(), getRows(), null, null, Collections.emptyList());
+            List<?> data = lazyModel.load(getFirst(), getRows(), null, null, Collections.emptyMap());
 
             lazyModel.setPageSize(getRows());
             lazyModel.setWrappedData(data);
@@ -268,8 +265,9 @@ public class DataList extends DataListBase {
         }
     }
 
-    public void restoreDataListState() {
-        DataListState ls = getDataListState(false);
+    @Override
+    public void restoreMultiViewState() {
+        DataListState ls = getMultiViewState(false);
         if (ls != null && isPaginator()) {
             setFirst(ls.getFirst());
             int rows = (ls.getRows() == 0) ? getRows() : ls.getRows();
@@ -277,11 +275,17 @@ public class DataList extends DataListBase {
         }
     }
 
-    public DataListState getDataListState(boolean create) {
+    @Override
+    public DataListState getMultiViewState(boolean create) {
         FacesContext fc = getFacesContext();
         String viewId = fc.getViewRoot().getViewId();
 
         return PrimeFaces.current().multiViewState()
                 .get(viewId, getClientId(fc), create, DataListState::new);
+    }
+
+    @Override
+    public void resetMultiViewState() {
+        setFirst(0);
     }
 }

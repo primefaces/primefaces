@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -50,9 +50,10 @@ public class DonutRenderer extends BasePlotRenderer {
 
             writer.write("[");
             Map<String, Number> map = (Map) data.get(i);
-            for (Iterator<String> it = map.keySet().iterator(); it.hasNext(); ) {
-                String key = it.next();
-                Number value = map.get(key);
+            for (Iterator<Map.Entry<String, Number>> it = map.entrySet().iterator(); it.hasNext(); ) {
+                Map.Entry<String, Number> entry = it.next();
+                String key = entry.getKey();
+                Number value = entry.getValue();
 
                 writer.write("[" + escapeChartData(key) + "," + value + "]");
 

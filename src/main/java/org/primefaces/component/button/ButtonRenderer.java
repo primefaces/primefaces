@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -57,7 +57,7 @@ public class ButtonRenderer extends OutcomeTargetRenderer {
         writer.writeAttribute("type", "button", null);
         writer.writeAttribute("class", button.resolveStyleClass(), "styleClass");
 
-        renderPassThruAttributes(context, button, HTML.BUTTON_ATTRS, HTML.CLICK_EVENT);
+        renderPassThruAttributes(context, button, HTML.BUTTON_WITH_CLICK_ATTRS);
 
         if (button.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", "disabled");

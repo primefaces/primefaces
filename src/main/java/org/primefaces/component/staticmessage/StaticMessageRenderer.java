@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -44,6 +44,9 @@ public class StaticMessageRenderer extends UINotificationRenderer {
         severity = severity == null ? "info" : severity.toLowerCase();
 
         String styleClass = "ui-message ui-staticmessage ui-message-" + severity + " ui-widget ui-corner-all";
+        if (staticMessage.getStyleClass() != null) {
+            styleClass += " " + staticMessage.getStyleClass();
+        }
         String style = staticMessage.getStyle();
 
         writer.startElement("div", staticMessage);

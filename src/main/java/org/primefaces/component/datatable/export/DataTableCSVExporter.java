@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,6 @@ package org.primefaces.component.datatable.export;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -46,6 +45,15 @@ import org.primefaces.util.Constants;
 public class DataTableCSVExporter extends DataTableExporter {
 
     private CSVOptions csvOptions;
+    private StringBuilder sb;
+
+    protected StringBuilder createStringBuilder() {
+        return new StringBuilder();
+    }
+
+    protected StringBuilder getStringBuilder() {
+        return sb;
+    }
 
     @Override
     protected void preExport(FacesContext context, ExportConfiguration config) throws IOException {
@@ -64,35 +72,35 @@ public class DataTableCSVExporter extends DataTableExporter {
     @Override
     public void doExport(FacesContext context, DataTable table, ExportConfiguration config, int index) throws IOException {
         ExternalContext externalContext = context.getExternalContext();
-        configureResponse(externalContext, config.getOutputFileName(), config.getEncodingType());
-        StringBuilder builder = new StringBuilder();
+        configureResponse(context, config.getOutputFileName(), config.getEncodingType());
+        sb = createStringBuilder();
 
         if (config.getPreProcessor() != null) {
-            config.getPreProcessor().invoke(context.getELContext(), new Object[]{builder});
+            config.getPreProcessor().invoke(context.getELContext(), new Object[]{sb});
         }
 
-        addColumnFacets(builder, table, ColumnType.HEADER);
+        addColumnFacets(sb, table, ColumnType.HEADER);
 
         if (config.isPageOnly()) {
-            exportPageOnly(context, table, builder);
+            exportPageOnly(context, table, sb);
         }
         else if (config.isSelectionOnly()) {
-            exportSelectionOnly(context, table, builder);
+            exportSelectionOnly(context, table, sb);
         }
         else {
-            exportAll(context, table, builder);
+            exportAll(context, table, sb);
         }
 
         if (table.hasFooterColumn()) {
-            addColumnFacets(builder, table, ColumnType.FOOTER);
+            addColumnFacets(sb, table, ColumnType.FOOTER);
         }
 
         if (config.getPostProcessor() != null) {
-            config.getPostProcessor().invoke(context.getELContext(), new Object[]{builder});
+            config.getPostProcessor().invoke(context.getELContext(), new Object[]{sb});
         }
 
         Writer writer = externalContext.getResponseOutputWriter();
-        writer.write(builder.toString());
+        writer.write(sb.toString());
         writer.flush();
         writer.close();
     }
@@ -168,13 +176,11 @@ public class DataTableCSVExporter extends DataTableExporter {
         }
     }
 
-    protected void configureResponse(ExternalContext externalContext, String filename, String encodingType) {
+    protected void configureResponse(FacesContext context, String filename, String encodingType) {
+        ExternalContext externalContext = context.getExternalContext();
         externalContext.setResponseContentType("text/csv; charset=" + encodingType);
-        externalContext.setResponseHeader("Expires", "0");
-        externalContext.setResponseHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
-        externalContext.setResponseHeader("Pragma", "public");
-        externalContext.setResponseHeader("Content-disposition", ComponentUtils.createContentDisposition("attachment", filename + ".csv"));
-        externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
+        setResponseHeader(externalContext, ComponentUtils.createContentDisposition("attachment", filename + ".csv"));
+        addResponseCookie(context);
     }
 
     protected void addColumnValues(StringBuilder builder, List<UIColumn> columns) throws IOException {
@@ -231,5 +237,11 @@ public class DataTableCSVExporter extends DataTableExporter {
     @Override
     protected void postRowExport(DataTable table, Object document) {
         ((StringBuilder) document).append(csvOptions.getEndOfLineSymbols());
+    }
+
+    @Override
+    protected void postExport(FacesContext context, ExportConfiguration config) throws IOException {
+        super.postExport(context, config);
+        sb = null;
     }
 }

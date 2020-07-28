@@ -1,8 +1,28 @@
-/*
- * PrimeFaces MultiSelectListbox Widget
+/**
+ * __PrimeFaces MultiSelectListbox Widget__
+ * 
+ * MultiSelectListbox is used to select an item from a collection of listboxes that are in parent-child relationship.
+ * 
+ * @prop {JQuery} root The DOM element for the root box with no children.
+ * @prop {JQuery} items The DOM elements in all boxes that can be selected.
+ * @prop {JQuery} input The hidden input field storing the selected value.
+ * 
+ * @interface {PrimeFaces.widget.MultiSelectListboxCfg} cfg The configuration for the {@link  MultiSelectListbox| MultiSelectListbox widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * 
+ * @prop {boolean} cfg.disabled If true, disables the component.
+ * @prop {boolean} cfg.showHeaders Displays label of a group at header section of the children items.
+ * @prop {string} cfg.effect Effect to use when showing a group of items.
  */
 PrimeFaces.widget.MultiSelectListbox = PrimeFaces.widget.BaseWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function(cfg) {
        this._super(cfg);
 
@@ -21,6 +41,10 @@ PrimeFaces.widget.MultiSelectListbox = PrimeFaces.widget.BaseWidget.extend({
        }
     },
 
+    /**
+     * Sets up all event listeners that are required by this widget.
+     * @private
+     */
     bindEvents: function() {
        var $this = this;
 
@@ -45,10 +69,19 @@ PrimeFaces.widget.MultiSelectListbox = PrimeFaces.widget.BaseWidget.extend({
        });
     },
 
+    /**
+     * Removes some of the event listener that were registered by `bindEvents`. Called when this widget is disabled.
+     * @private
+     */
     unbindEvents: function() {
        this.items.off('mouseover.multiSelectListbox mouseout.multiSelectListbox click.multiSelectListbox');
     },
 
+    /**
+     * Shows the given box with a group of options.
+     * @private
+     * @param {JQuery} item The box to be shown.
+     */
     showOptionGroup: function(item) {
        item.addClass('ui-state-highlight').removeClass('ui-state-hover').siblings().filter('.ui-state-highlight').removeClass('ui-state-highlight');
        item.closest('.ui-multiselectlistbox-listcontainer').nextAll().remove();
@@ -79,6 +112,9 @@ PrimeFaces.widget.MultiSelectListbox = PrimeFaces.widget.BaseWidget.extend({
        }
     },
 
+    /**
+     * Enables this list box so that the user can select an item.
+     */
     enable: function() {
        if(this.cfg.disabled) {
            this.cfg.disabled = false;
@@ -88,6 +124,9 @@ PrimeFaces.widget.MultiSelectListbox = PrimeFaces.widget.BaseWidget.extend({
 
     },
 
+    /**
+     * Disabled this list box so that the user cannot select items anymore.
+     */
     disable: function() {
        if(!this.cfg.disabled) {
            this.cfg.disabled = true;
@@ -97,6 +136,10 @@ PrimeFaces.widget.MultiSelectListbox = PrimeFaces.widget.BaseWidget.extend({
        }
     },
 
+    /**
+     * Selects the item with the given value, expanding and showing all parent boxes as neccessary.
+     * @param {string} value Value of the item to be shown. 
+     */
     preselect: function(value) {
         var $this = this,
         item = this.items.filter('[data-value="' + $.escapeSelector(value)+'"]');
@@ -140,6 +183,10 @@ PrimeFaces.widget.MultiSelectListbox = PrimeFaces.widget.BaseWidget.extend({
         $this.jq.children('div.ui-multiselectlistbox-listcontainer:hidden').show();
     },
 
+    /**
+     * Triggers the change behavior, invoked after an item was selected or deselected.
+     * @private
+     */
     triggerChange: function () {
         this.callBehavior('change');
     }

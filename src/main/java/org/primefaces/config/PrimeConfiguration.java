@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +30,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 
 /**
  * Container for all config parameters.
@@ -52,6 +53,8 @@ public class PrimeConfiguration {
     private final boolean moveScriptsToBottom;
     private boolean csp;
     private String cspPolicy;
+    private String[] exceptionTypesToIgnoreInLogging;
+    private final String multiViewStateStore;
 
     // internal config
     private final boolean stringConverterAvailable;
@@ -76,7 +79,7 @@ public class PrimeConfiguration {
         interpretEmptyStringAsNull = Boolean.parseBoolean(value);
 
         value = externalContext.getInitParameter(Constants.ContextParams.SUBMIT);
-        partialSubmitEnabled = (value != null) && value.equalsIgnoreCase("partial");
+        partialSubmitEnabled = "partial".equalsIgnoreCase(value);
 
         value = externalContext.getInitParameter(Constants.ContextParams.RESET_VALUES);
         resetValuesEnabled = Boolean.parseBoolean(value);
@@ -98,13 +101,8 @@ public class PrimeConfiguration {
         value = externalContext.getInitParameter(Constants.ContextParams.LEGACY_WIDGET_NAMESPACE);
         legacyWidgetNamespace = Boolean.parseBoolean(value);
 
-        if (environment.isBeanValidationAvailable()) {
-            value = externalContext.getInitParameter(Constants.ContextParams.BEAN_VALIDATION_DISABLED);
-            beanValidationEnabled = Boolean.parseBoolean(value);
-        }
-        else {
-            beanValidationEnabled = false;
-        }
+        value = externalContext.getInitParameter(Constants.ContextParams.BEAN_VALIDATION_DISABLED);
+        beanValidationEnabled = environment.isBeanValidationAvailable() && !Boolean.parseBoolean(value);
 
         value = externalContext.getInitParameter(Constants.ContextParams.INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES);
         interpolateClientSideValidationMessages = Boolean.parseBoolean(value);
@@ -120,6 +118,16 @@ public class PrimeConfiguration {
         if (csp) {
             cspPolicy = externalContext.getInitParameter(Constants.ContextParams.CSP_POLICY);
         }
+
+        value = externalContext.getInitParameter(Constants.ContextParams.EXCEPTION_TYPES_TO_IGNORE_IN_LOGGING);
+        if (LangUtils.isValueBlank(value)) {
+            exceptionTypesToIgnoreInLogging = new String[0];
+        }
+        else {
+            exceptionTypesToIgnoreInLogging = value.split(",");
+        }
+
+        multiViewStateStore = externalContext.getInitParameter(Constants.ContextParams.MULTI_VIEW_STATE_STORE);
     }
 
     protected boolean resolveValidateEmptyFields(FacesContext context, PrimeEnvironment environment) {
@@ -219,5 +227,13 @@ public class PrimeConfiguration {
 
     public String getCspPolicy() {
         return cspPolicy;
+    }
+
+    public String[] getExceptionTypesToIgnoreInLogging() {
+        return exceptionTypesToIgnoreInLogging;
+    }
+
+    public String getMultiViewStateStore() {
+        return multiViewStateStore;
     }
 }

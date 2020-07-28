@@ -9,16 +9,21 @@
   font-style: normal; }
 
 .pi {
-  font-family: 'primeicons';
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-  display: inline-block;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    font-family: 'primeicons';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    display: inline-block;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.pi:before {
+    --webkit-backface-visibility:hidden;
+    backface-visibility: hidden;
 }
 
 .pi-fw {
@@ -51,6 +56,18 @@
         -webkit-transform: rotate(359deg);
         transform: rotate(359deg);
     }
+}
+
+.pi-facebook:before {
+    content: "\e9b4";
+}
+
+.pi-github:before {
+    content: "\e9b5";
+}
+
+.pi-twitter:before {
+    content: "\e9b6";
 }
 
 .pi-step-backward-alt:before {

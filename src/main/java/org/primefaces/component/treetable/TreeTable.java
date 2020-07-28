@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,6 @@ import java.util.*;
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
-import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
@@ -57,13 +56,11 @@ import org.primefaces.util.Constants;
 import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.MapBuilder;
 
-@ResourceDependencies({
-        @ResourceDependency(library = "primefaces", name = "components.css"),
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
-        @ResourceDependency(library = "primefaces", name = "core.js"),
-        @ResourceDependency(library = "primefaces", name = "components.js")
-})
+@ResourceDependency(library = "primefaces", name = "components.css")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
+@ResourceDependency(library = "primefaces", name = "core.js")
+@ResourceDependency(library = "primefaces", name = "components.js")
 public class TreeTable extends TreeTableBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.TreeTable";
@@ -152,6 +149,14 @@ public class TreeTable extends TreeTableBase {
         return EVENT_NAMES;
     }
 
+    public boolean isExpandRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_expand");
+    }
+
+    public boolean isCollapseRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_collapse");
+    }
+
     public boolean isSelectionRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_instantSelection");
     }
@@ -193,12 +198,13 @@ public class TreeTable extends TreeTableBase {
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = getClientId(context);
             FacesEvent wrapperEvent = null;
+            TreeNode root = getValue();
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
             if (eventName.equals("expand")) {
                 String nodeKey = params.get(clientId + "_expand");
-                setRowKey(nodeKey);
+                setRowKey(root, nodeKey);
                 TreeNode node = getRowNode();
 
                 wrapperEvent = new NodeExpandEvent(this, behaviorEvent.getBehavior(), node);
@@ -206,7 +212,7 @@ public class TreeTable extends TreeTableBase {
             }
             else if (eventName.equals("collapse")) {
                 String nodeKey = params.get(clientId + "_collapse");
-                setRowKey(nodeKey);
+                setRowKey(root, nodeKey);
                 TreeNode node = getRowNode();
                 node.setExpanded(false);
 
@@ -215,7 +221,7 @@ public class TreeTable extends TreeTableBase {
             }
             else if (eventName.equals("select")) {
                 String nodeKey = params.get(clientId + "_instantSelection");
-                setRowKey(nodeKey);
+                setRowKey(root, nodeKey);
                 TreeNode node = getRowNode();
 
                 wrapperEvent = new NodeSelectEvent(this, behaviorEvent.getBehavior(), node);
@@ -223,7 +229,7 @@ public class TreeTable extends TreeTableBase {
             }
             else if (eventName.equals("unselect")) {
                 String nodeKey = params.get(clientId + "_instantUnselection");
-                setRowKey(nodeKey);
+                setRowKey(root, nodeKey);
                 TreeNode node = getRowNode();
 
                 wrapperEvent = new NodeUnselectEvent(this, behaviorEvent.getBehavior(), node);
@@ -244,7 +250,7 @@ public class TreeTable extends TreeTableBase {
             }
             else if (eventName.equals("rowEdit") || eventName.equals("rowEditCancel") || eventName.equals("rowEditInit")) {
                 String nodeKey = params.get(clientId + "_rowEditIndex");
-                setRowKey(nodeKey);
+                setRowKey(root, nodeKey);
                 wrapperEvent = new RowEditEvent(this, behaviorEvent.getBehavior(), getRowNode());
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
@@ -300,13 +306,13 @@ public class TreeTable extends TreeTableBase {
         super.processValidators(context);
 
         if (isFilterRequest(context)) {
-            List<FilterMeta> filterMetadata = populateFilterMetaData(context, this);
-            setFilterMetadata(filterMetadata);
+            List<FilterMeta> filterBy = populateFilterBy(context, this);
+            setFilterMetadata(filterBy);
         }
     }
 
-    public List<FilterMeta> populateFilterMetaData(FacesContext context, TreeTable tt) {
-        List<FilterMeta> filterMetadata = new ArrayList<>();
+    public List<FilterMeta> populateFilterBy(FacesContext context, TreeTable tt) {
+        List<FilterMeta> filterBy = new ArrayList<>();
         String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
@@ -334,7 +340,7 @@ public class TreeTable extends TreeTableBase {
                     dynamicColumn.cleanModel();
                 }
 
-                filterMetadata.add(new FilterMeta(null,
+                filterBy.add(new FilterMeta(null,
                         column.getColumnKey(),
                         filterByVE,
                         MatchMode.byName(filterMatchMode),
@@ -342,7 +348,7 @@ public class TreeTable extends TreeTableBase {
             }
         }
 
-        return filterMetadata;
+        return filterBy;
     }
 
     public UIColumn findColumn(String columnKey) {
@@ -443,7 +449,7 @@ public class TreeTable extends TreeTableBase {
 
     public Locale resolveDataLocale() {
         FacesContext context = getFacesContext();
-        return LocaleUtils.resolveLocale(getDataLocale(), getClientId(context));
+        return LocaleUtils.resolveLocale(context, getDataLocale(), getClientId(context));
     }
 
     public ColumnGroup getColumnGroup(String target) {

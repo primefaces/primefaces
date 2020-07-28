@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,8 @@
 package org.primefaces.component.spinner;
 
 import java.io.IOException;
+import java.math.BigInteger;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -46,19 +48,23 @@ public class SpinnerRenderer extends InputRenderer {
         decodeBehaviors(context, spinner);
 
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(spinner.getClientId(context) + "_input");
-        String prefix = spinner.getPrefix();
-        String suffix = spinner.getSuffix();
 
-        if (prefix != null && submittedValue.startsWith(prefix)) {
-            submittedValue = submittedValue.substring(prefix.length());
+        if (submittedValue != null) {
+            String prefix = spinner.getPrefix();
+            String suffix = spinner.getSuffix();
+
+            if (prefix != null && submittedValue.startsWith(prefix)) {
+                submittedValue = submittedValue.substring(prefix.length());
+            }
+            if (suffix != null && submittedValue.endsWith(suffix)) {
+                submittedValue = submittedValue.substring(0, (submittedValue.length() - suffix.length()));
+            }
+            if (!LangUtils.isValueEmpty(spinner.getThousandSeparator())) {
+                submittedValue = submittedValue.replace(spinner.getThousandSeparator(), "");
+            }
+            submittedValue = submittedValue.replace(spinner.getDecimalSeparator(), ".");
         }
-        if (suffix != null && submittedValue.endsWith(suffix)) {
-            submittedValue = submittedValue.substring(0, (submittedValue.length() - suffix.length()));
-        }
-        if (!LangUtils.isValueEmpty(spinner.getThousandSeparator())) {
-            submittedValue = submittedValue.replace(spinner.getThousandSeparator(), "");
-        }
-        submittedValue = submittedValue.replace(spinner.getDecimalSeparator(), ".");
+
         spinner.setSubmittedValue(submittedValue);
     }
 
@@ -73,6 +79,16 @@ public class SpinnerRenderer extends InputRenderer {
     protected void encodeScript(FacesContext context, Spinner spinner) throws IOException {
         String clientId = spinner.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
+
+        Object value = spinner.getValue();
+        String defaultDecimalPlaces = null;
+        if (value instanceof Long || value instanceof Integer || value instanceof Short || value instanceof BigInteger) {
+            defaultDecimalPlaces = "0";
+        }
+        String decimalPlaces = isValueBlank(spinner.getDecimalPlaces())
+                ? defaultDecimalPlaces
+                : spinner.getDecimalPlaces();
+
         wb.init("Spinner", spinner.resolveWidgetVar(context), clientId)
                 .attr("step", spinner.getStepFactor(), 1.0)
                 .attr("min", spinner.getMin(), Double.MIN_VALUE)
@@ -81,7 +97,7 @@ public class SpinnerRenderer extends InputRenderer {
                 .attr("suffix", spinner.getSuffix(), null)
                 .attr("required", spinner.isRequired(), false)
                 .attr("rotate", spinner.isRotate(), false)
-                .attr("decimalPlaces", spinner.getDecimalPlaces(), null)
+                .attr("decimalPlaces", decimalPlaces, null)
                 .attr(SpinnerBase.PropertyKeys.thousandSeparator.name(), spinner.getThousandSeparator())
                 .attr(SpinnerBase.PropertyKeys.decimalSeparator.name(), spinner.getDecimalSeparator());
 
@@ -91,11 +107,8 @@ public class SpinnerRenderer extends InputRenderer {
     protected void encodeMarkup(FacesContext context, Spinner spinner) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = spinner.getClientId(context);
-        String styleClass = spinner.getStyleClass();
+        String styleClass = createStyleClass(spinner, Spinner.CONTAINER_CLASS);
         boolean valid = spinner.isValid();
-        styleClass = styleClass == null ? Spinner.CONTAINER_CLASS : Spinner.CONTAINER_CLASS + " " + styleClass;
-        styleClass = spinner.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
-        styleClass = !spinner.isValid() ? styleClass + " ui-state-error" : styleClass;
         String upButtonClass = (valid) ? Spinner.UP_BUTTON_CLASS : Spinner.UP_BUTTON_CLASS + " ui-state-error";
         String downButtonClass = (valid) ? Spinner.DOWN_BUTTON_CLASS : Spinner.DOWN_BUTTON_CLASS + " ui-state-error";
 
@@ -117,7 +130,7 @@ public class SpinnerRenderer extends InputRenderer {
     protected void encodeInput(FacesContext context, Spinner spinner) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = spinner.getClientId(context) + "_input";
-        String inputClass = spinner.isValid() ? Spinner.INPUT_CLASS : Spinner.INPUT_CLASS + " ui-state-error";
+        String inputClass = createStyleClass(spinner, null, Spinner.INPUT_CLASS);
 
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, null);

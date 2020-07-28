@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -60,21 +60,14 @@ public class DataListRenderer extends DataRenderer {
             }
 
             if (list.isMultiViewState()) {
-                DataListState ls = list.getDataListState(true);
+                DataListState ls = list.getMultiViewState(true);
                 ls.setFirst(list.getFirst());
                 ls.setRows(list.getRows());
             }
         }
         else {
-            if (list.isMultiViewState() && list.isPaginator()) {
-                int firstOld = list.getFirst();
-                int rowsOld = list.getRows();
-
-                list.restoreDataListState();
-
-                if (list.isLazy() && (firstOld != list.getFirst() || rowsOld != list.getRows())) {
-                    list.loadLazyData();
-                }
+            if (list.isMultiViewState()) {
+                list.restoreMultiViewState();
             }
 
             encodeMarkup(context, list);

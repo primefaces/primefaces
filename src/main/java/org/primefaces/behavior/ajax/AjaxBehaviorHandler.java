@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -55,6 +55,9 @@ public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior> {
 
         if (listener != null) {
 
+            // see https://github.com/primefaces/primefaces/issues/1098
+            // we need to check for custom events on buildtime
+            // if we would do it lazy later, we would loose the FaceletContext and the method can't be resolved
             Class<? extends BehaviorEvent> eventMappingClass = null;
 
             if (parent instanceof PrimeClientBehaviorHolder) {

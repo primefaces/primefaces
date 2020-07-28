@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -43,7 +43,8 @@ public abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements W
         filterMatchMode,
         filterFunction,
         caseSensitive,
-        scrollHeight;
+        scrollHeight,
+        metaKeySelection;
     }
 
     public SelectManyMenuBase() {
@@ -117,5 +118,13 @@ public abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements W
 
     public void setScrollHeight(int scrollHeight) {
         getStateHelper().put(PropertyKeys.scrollHeight, scrollHeight);
+    }
+
+    public boolean isMetaKeySelection() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.metaKeySelection, true);
+    }
+
+    public void setMetaKeySelection(boolean metaKeySelection) {
+        getStateHelper().put(PropertyKeys.metaKeySelection, metaKeySelection);
     }
 }

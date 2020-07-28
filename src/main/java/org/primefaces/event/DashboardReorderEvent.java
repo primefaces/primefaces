@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,11 +31,8 @@ public class DashboardReorderEvent extends AbstractAjaxBehaviorEvent {
     private static final long serialVersionUID = 1L;
 
     private String widgetId;
-
     private Integer itemIndex;
-
     private Integer columnIndex;
-
     private Integer senderColumnIndex;
 
     public DashboardReorderEvent(UIComponent component, Behavior behavior, String widgetId, Integer itemIndex, Integer columnIndex, Integer senderColumnIndex) {

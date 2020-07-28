@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -57,6 +57,8 @@ public interface AjaxSource {
     boolean isIgnoreAutoUpdate();
 
     boolean isAjaxified();
+
+    boolean isIgnoreComponentNotFound();
 
     String getDelay();
 

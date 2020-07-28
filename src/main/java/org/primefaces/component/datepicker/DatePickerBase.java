@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,7 @@
 package org.primefaces.component.datepicker;
 
 import java.util.List;
+
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.component.api.UICalendar;
@@ -75,7 +76,10 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         disabledDates,
         disabledDays,
         onMonthChange,
-        onYearChange
+        onYearChange,
+        timeInput,
+        showWeek,
+        weekCalculator
     }
 
     public DatePickerBase() {
@@ -212,6 +216,10 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         return (Boolean) getStateHelper().eval(PropertyKeys.showTime, false);
     }
 
+    public Boolean isShowTimeWithoutDefault() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showTime);
+    }
+
     public void setShowTime(boolean showTime) {
         getStateHelper().put(PropertyKeys.showTime, showTime);
     }
@@ -226,6 +234,10 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     public boolean isShowSeconds() {
         return (Boolean) getStateHelper().eval(PropertyKeys.showSeconds, false);
+    }
+
+    public Boolean isShowSecondsWithoutDefault() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showSeconds);
     }
 
     public void setShowSeconds(boolean showSeconds) {
@@ -384,6 +396,30 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         getStateHelper().put(PropertyKeys.onYearChange, onYearChange);
     }
 
+    public boolean isTimeInput() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.timeInput, false);
+    }
+
+    public void setTimeInput(boolean timeInput) {
+        getStateHelper().put(PropertyKeys.timeInput, timeInput);
+    }
+
+    public boolean isShowWeek() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showWeek, false);
+    }
+
+    public void setShowWeek(boolean showWeek) {
+        getStateHelper().put(PropertyKeys.showWeek, showWeek);
+    }
+
+    public String getWeekCalculator() {
+        return (String) getStateHelper().eval(PropertyKeys.weekCalculator, null);
+    }
+
+    public void setWeekCalculator(String weekCalculator) {
+        getStateHelper().put(PropertyKeys.weekCalculator, weekCalculator);
+    }
+
     @Override
     public boolean hasTime() {
         return this.isShowTime() || this.isTimeOnly();
@@ -409,7 +445,7 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
     public String calculateTimeOnlyPattern() {
         if (timeOnlyPattern == null) {
             boolean ampm = "12".equals(getHourFormat());
-            timeOnlyPattern = ampm ? "KK" : "HH";
+            timeOnlyPattern = ampm ? "hh" : "HH";
             timeOnlyPattern += ":mm";
             if (isShowSeconds()) {
                 timeOnlyPattern += ":ss";

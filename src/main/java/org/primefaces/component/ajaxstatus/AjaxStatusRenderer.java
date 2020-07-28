@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -71,7 +71,8 @@ public class AjaxStatusRenderer extends CoreRenderer {
             writer.writeAttribute("class", status.getStyleClass(), "styleClass");
         }
 
-        for (String event : AjaxStatus.EVENTS) {
+        for (int i = 0; i < AjaxStatus.EVENTS.size(); i++) {
+            String event = AjaxStatus.EVENTS.get(i);
             UIComponent facet = status.getFacet(event);
 
             if (ComponentUtils.shouldRenderFacet(facet)) {

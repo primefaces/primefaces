@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -64,10 +64,7 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
         String clientId = listbox.getClientId(context);
         List<SelectItem> selectItems = getSelectItems(context, listbox);
         String style = listbox.getStyle();
-        String styleClass = listbox.getStyleClass();
-        styleClass = styleClass == null ? MultiSelectListbox.CONTAINER_CLASS : MultiSelectListbox.CONTAINER_CLASS + " " + styleClass;
-        styleClass = listbox.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
-        styleClass = !listbox.isValid() ? styleClass + " ui-state-error" : styleClass;
+        String styleClass = createStyleClass(listbox, MultiSelectListbox.CONTAINER_CLASS);
 
         writer.startElement("div", listbox);
         writer.writeAttribute("id", clientId, "id");

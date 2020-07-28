@@ -41,6 +41,7 @@ rowIndexVar | null | String | Name of the iterator to refer each row index.
 lazy | false | Boolean | Defines if lazy loading is enabled for the data component. 
 emptyMessage | No records found. | String | Text to display when there is no data to display.
 layout | tabular | String | Layout approach to use, valid values are "tabular" and "grid" for responsive grid.
+multiViewState | false | Boolean | Whether to keep DataGrid state across views, defaults to false.
 
 ## Getting started with the DataGrid
 A list of cars will be used throughout the datagrid, datalist and datatable examples.

@@ -16,7 +16,6 @@
         factory(jQuery);
     }
 }(function ($) {
-
     $.widget("prime.datePicker", {
 
         options: {
@@ -44,6 +43,8 @@
             numberOfMonths: 1,
             view: 'date',
             touchUI: false,
+            showWeek: false,
+            weekCalculator: null,
             showTime: false,
             timeOnly: false,
             showSeconds: false,
@@ -82,6 +83,7 @@
             clearButtonStyleClass: 'ui-priority-secondary',
             appendTo: null,
             dateTemplate: null,
+            timeInput: false,
             onFocus: null,
             onBlur: null,
             onInput: null,
@@ -109,16 +111,81 @@
                 $.extend(this.options.locale, this.options.userLocale);
             }
 
+            if (this.options.showWeek && !this.options.weekCalculator) {
+                this.options.weekCalculator = this.calculateWeekNumber.bind(this);
+
+                // initialize the potentially missing firstDayWeekOffset option
+                // based on the firstDay(OfWeek) option:
+                //  - firstDay = saturday => firstDayWeekOffset = 12
+                //  - firstDay = sunday => firstDayWeekOffset = 6
+                //  - firstDay = monday (ISO8601) => firstDayWeekOffset = 4
+                //
+                // those defaults are based on the locales on the library
+                // moment.js and won't be correct for _all_ locales.
+                var sundayIndex = this.getSundayIndex();
+                if (this.options.locale.firstDayWeekOffset === undefined) {
+                    if (sundayIndex == 0) {
+                        this.options.locale.firstDayWeekOffset = 6;
+                    }
+                    else if (sundayIndex == 1) {
+                        this.options.locale.firstDayWeekOffset = 12;
+                    }
+                    else if (sundayIndex == 6) {
+                        this.options.locale.firstDayWeekOffset = 4;
+                    }
+                    else {
+                        this.options.showWeek = false;
+                    }
+                }
+            }
+
             var parsedDefaultDate = this.parseValue(this.options.defaultDate);
 
+            var viewDateDefaultsToNow=false;
+
             this.value = parsedDefaultDate;
-            this.viewDate = this.options.viewDate ?
-                this.parseValue(this.options.viewDate)
-                :
-                ((((this.isMultipleSelection() || this.isRangeSelection()) && parsedDefaultDate instanceof Array) ? parsedDefaultDate[0] : parsedDefaultDate) || this.parseValue(new Date()));
+            if (this.options.viewDate) {
+                this.viewDate = this.parseValue(this.options.viewDate);
+            }
+            else {
+                if ((this.isMultipleSelection() || this.isRangeSelection()) && parsedDefaultDate instanceof Array) {
+                    this.viewDate = parsedDefaultDate[0];
+                }
+                else {
+                    this.viewDate = parsedDefaultDate;
+                }
+                if (this.viewDate === null) {
+                    this.viewDate = new Date();
+                    if (!this.options.showSeconds) {
+                        this.viewDate.setSeconds(0);
+                    }
+                    this.viewDate.setMilliseconds(0);
+                    viewDateDefaultsToNow = true;
+                }
+            }
+
+            // #6047 round to nearest stepMinute on even if editing using keyboard
+            this.viewDate.setMinutes(this.stepMinute(this.viewDate.getMinutes()));
+            if (!this.options.viewDate) {
+                this.options.viewDate = this.viewDate;
+            }
+
             this.options.minDate = this.parseMinMaxValue(this.options.minDate);
             this.options.maxDate = this.parseMinMaxValue(this.options.maxDate);
             this.ticksTo1970 = (((1970 - 1) * 365 + Math.floor(1970 / 4) - Math.floor(1970 / 100) + Math.floor(1970 / 400)) * 24 * 60 * 60 * 10000000);
+
+            if (this.options.timeOnly && viewDateDefaultsToNow) {
+                if (this.options.minDate) {
+                    if (this.viewDate < this.options.minDate) {
+                        this.viewDate = new Date(this.options.minDate.getTime());
+                    }
+                }
+                if (this.options.maxDate) {
+                    if (this.viewDate > this.options.maxDate) {
+                        this.viewDate = new Date(this.options.maxDate.getTime());
+                    }
+                }
+            }
 
             if (this.options.yearRange === null && this.options.yearNavigator) {
                 var viewYear = this.viewDate.getFullYear();
@@ -157,11 +224,17 @@
         },
 
         setDate: function(date) {
-            this.value = this.parseValue(date);
+            if (!date) {
+                this.updateModel(null, null);
+                return;
+            }
+
+            var newDate = this.parseValue(date);
+            var newDateMeta = { day: newDate.getDate(), month: newDate.getMonth(), year: newDate.getFullYear(), selectable: true /*, today: true*/ };
 
             /* set changes */
-            this.panel.get(0).innerHTML = this.renderPanelElements();
-            this.inputfield.val(this.value);
+            this.updateViewDate(null, newDate);
+            this.onDateSelect(null, newDateMeta);
         },
 
         getDate: function() {
@@ -715,6 +788,11 @@
                         minSize = (match === "y" ? size : 1),
                         digits = new RegExp("^\\d{" + minSize + "," + size + "}"),
                         num = value.substring(iValue).match(digits);
+                    if (!num && match === "y" && isDoubled) {
+                        //allow 2 digit-inputs for 4-digit-year-pattern (gets reformated to 4 digits onBlur)
+                        digits = new RegExp("^\\d{" + 2 + "," + size + "}"),
+                            num = value.substring(iValue).match(digits);
+                    }
                     if (!num) {
                         throw "Missing number at position " + iValue;
                     }
@@ -884,8 +962,11 @@
             }
             else {
                 if (this.options.showTime) {
-                    date = this.parseDate(parts[0], this.options.dateFormat);
-                    this.populateTime(date, parts[1], parts[2]);
+                    var ampm = this.options.hourFormat == '12' ? parts.pop() : null;
+                    var timeString = parts.pop();
+
+                    date = this.parseDate(parts.join(' '), this.options.dateFormat);
+                    this.populateTime(date, timeString, ampm);
                 }
                 else {
                     date = this.parseDate(text, this.options.dateFormat);
@@ -902,8 +983,14 @@
 
             var time = this.parseTime(timeString, ampm);
             value.setHours(time.hour);
-            value.setMinutes(time.minute);
-            value.setSeconds(time.second);
+            value.setMinutes(this.stepMinute(time.minute));
+            if (this.options.showSeconds) {
+                value.setSeconds(time.second);
+            }
+            else {
+                value.setSeconds(0);
+            }
+            value.setMilliseconds(0);
         },
 
         isInMinYear: function() {
@@ -919,6 +1006,10 @@
             this.onOverlayHide();
         },
 
+        /**
+         * @override
+         * @protected
+         */
         _render: function () {
             if (this.options.styleClass) {
                 this.container.addClass(this.options.styleClass);
@@ -966,6 +1057,13 @@
             }
 
             if (!this.options.inline && this.options.appendTo) {
+                // remove old overlay first
+                // See PrimeFaces.utils.appendDynamicOverlay
+                $(this.options.appendTo)
+                        .children("[id='" + $(this.container).attr('id') + "_panel']")
+                        .not(this.panel)
+                        .remove();
+
                 this.panel.appendTo(this.options.appendTo);
             }
             else {
@@ -979,11 +1077,31 @@
 
         _setInitOptionValues: function () {
             if (this.options.yearNavigator) {
-                this.panel.find('.ui-datepicker-header > .ui-datepicker-title > .ui-datepicker-year').val(this.viewDate.getFullYear());
+                var year = this.viewDate.getFullYear();
+                var month = this.viewDate.getMonth();
+                var yearElts = this.panel.find('.ui-datepicker-header > .ui-datepicker-title > .ui-datepicker-year');
+
+                yearElts.each(function( index, yearElt ) {
+                    $(yearElt).val(year);
+                    month = month + 1;
+                    if (month === 12) {
+                        month = 0;
+                        year = year + 1;
+                    }
+                });
             }
 
             if (this.options.monthNavigator && this.options.view !== 'month') {
-                this.panel.find('.ui-datepicker-header > .ui-datepicker-title > .ui-datepicker-month').val(this.viewDate.getMonth());
+                var month = this.viewDate.getMonth();
+                var monthElts = this.panel.find('.ui-datepicker-header > .ui-datepicker-title > .ui-datepicker-month');
+
+                monthElts.each(function( index, monthElt ) {
+                    $(monthElt).val(month);
+                    month = month + 1;
+                    if (month === 12) {
+                        month = 0;
+                    }
+                });
             }
         },
 
@@ -1064,7 +1182,7 @@
         },
 
         renderTimePicker: function () {
-            var timepicker = '<div class="ui-timepicker ui-widget-header ui-corner-all">';
+            var timepicker = '<div class="ui-timepicker ui-widget-header ui-corner-all' + (this.options.timeInput ? ' ui-timepicker-timeinput' : '') + '">';
 
             //hour
             timepicker += this.renderHourPicker();
@@ -1100,9 +1218,26 @@
 
         renderMonthViewMonth: function (index) {
             var monthName = this.options.locale.monthNamesShort[index],
-                content = this.options.dateTemplate ? this.options.dateTemplate.call(this, monthName) : this.escapeHTML(monthName);
+                content = this.options.dateTemplate ? this.options.dateTemplate.call(this, monthName) : this.escapeHTML(monthName),
+                compareDate = new Date(this.viewDate.getFullYear(), index, 1),
+                minDate = this.options.minDate,
+                maxDate = this.options.maxDate,
+                disabled = false;
 
-            return '<a tabindex="0" class="ui-monthpicker-month' + this.getClassesToAdd({ 'ui-state-active': this.isMonthSelected(index) }) + '">' + content + '</a>';
+            if (minDate && minDate > compareDate) {
+                disabled = true;
+            }
+
+            if (maxDate && maxDate < compareDate) {
+                disabled = true;
+            }
+
+            var monthClass = this.getClassesToAdd({
+                'ui-state-active': this.isMonthSelected(index),
+                'ui-state-disabled': disabled
+            });
+
+            return '<a tabindex="0" class="ui-monthpicker-month' + monthClass + '">' + content + '</a>';
         },
 
         renderMonthViewMonths: function () {
@@ -1219,6 +1354,15 @@
 
         renderDayNames: function (weekDaysMin, weekDays) {
             var dayNamesHtml = '';
+
+            if(this.options.showWeek) {
+                dayNamesHtml += '<th scope="col">' +
+                    '<span>' +
+                    this.options.locale.weekHeader +
+                    '</span>' +
+                    '</th>';
+            }
+
             for (var i = 0; i < weekDaysMin.length; i++) {
                 dayNamesHtml += '<th scope="col">' +
                     '<span title="' + this.escapeHTML(weekDays[i]) + '">' +
@@ -1230,8 +1374,64 @@
             return dayNamesHtml;
         },
 
+        // utility methods for calculateWeekNumber. Based on the implementation from moment.js
+        // start-of-first-week - start-of-year
+        firstWeekOffset: function(year, dow, doy) {
+                // first-week day -- which january is always in the first week (4 for iso, 1 for other)
+            var fwd = 7 + dow - doy,
+                // first-week day local weekday -- which local weekday is fwd
+                fwdlw = (7 + new Date(Date.UTC(year, 0, fwd)).getUTCDay() - dow) % 7;
+
+            return -fwdlw + fwd - 1;
+        },
+
+        dayOfYear: function(d) {
+            return Math.round( ( new Date( d.year, d.month, d.day ).getTime() - new Date( d.year, 0, 0 ).getTime() ) / 86400000 );
+        },
+
+        daysInYear: function(year) {
+            if((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0) {
+                return 366;
+            }
+            return 365;
+        },
+
+        weeksInYear: function(year, dow, doy) {
+            var weekOffset = this.firstWeekOffset(year, dow, doy),
+                weekOffsetNext = this.firstWeekOffset(year + 1, dow, doy);
+
+            return (this.daysInYear(year) - weekOffset + weekOffsetNext) / 7;
+        },
+
+        calculateWeekNumber: function(d) {
+            var dow = this.options.locale.firstDay !== undefined ? this.options.locale.firstDay : this.options.locale.firstDayOfWeek,
+                doy = this.options.locale.firstDayWeekOffset,
+                weekOffset = this.firstWeekOffset(d.year, dow, doy),
+                week = Math.floor((this.dayOfYear(d) - weekOffset - 1) / 7) + 1;
+
+            if(week < 1) {
+                return week + this.weeksInYear(resYear, dow, doy);
+            }
+            else if(week > this.weeksInYear(d.year, dow, doy)) {
+                return  week - this.weeksInYear(d.year, dow, doy);
+            }
+            else {
+                return  week;
+            }
+        },
+
         renderWeek: function (weekDates) {
             var weekHtml = '';
+
+            if(this.options.showWeek) {
+                var firstDate = weekDates[0],
+                    lastDate = weekDates[6],
+                    cellClass = firstDate.otherMonth && lastDate.otherMonth && !this.options.showOtherMonths ? ' ui-datepicker-other-month-hidden' : '';
+
+                weekHtml += '<td class="ui-datepicker-weeknumber' + cellClass + '"><span class="ui-state-disabled">' +
+                    this.options.weekCalculator(firstDate) +
+                    '</span></td>';
+            }
 
             for (var i = 0; i < weekDates.length; i++) {
                 var date = weekDates[i],
@@ -1314,14 +1514,18 @@
 
             var hourDisplay = hour < 10 ? '0' + hour : hour;
 
-            return this.renderTimeElements("ui-hour-picker", '<span>' + hourDisplay + '</span>', 0);
+            //type="number" min="' + minHour + '" max="' + maxHour + '" - does not work well on Firefox 70, so we don´t use it
+            var html = this.options.timeInput ? '<input value="' + hourDisplay + '" size="2" maxlength="2" tabindex="1"></input>' : '<span>' + hourDisplay + '</span>';
+            return this.renderTimeElements("ui-hour-picker", html, 0);
         },
 
         renderMinutePicker: function () {
             var minute = (this.value && this.value instanceof Date) ? this.value.getMinutes() : this.viewDate.getMinutes(),
                 minuteDisplay = minute < 10 ? '0' + minute : minute;
 
-            return this.renderTimeElements("ui-minute-picker", '<span>' + minuteDisplay + '</span>', 1);
+            //type="number" min="0" max="59" does not work well on Firefox 70, so we don´t use it
+            var html = this.options.timeInput ? '<input value="' + minuteDisplay + '" size="2" maxlength="2" tabindex="2"></input>' : '<span>' + minuteDisplay + '</span>';
+            return this.renderTimeElements("ui-minute-picker", html, 1);
         },
 
         renderSecondPicker: function () {
@@ -1329,7 +1533,9 @@
                 var second = (this.value && this.value instanceof Date) ? this.value.getSeconds() : this.viewDate.getSeconds(),
                     secondDisplay = second < 10 ? '0' + second : second;
 
-                return this.renderTimeElements("ui-second-picker", '<span>' + secondDisplay + '</span>', 2);
+                //type="number" min="0" max="59" does not work well on Firefox 70, so we don´t use it
+                var html =  this.options.timeInput ? '<input value="' + secondDisplay + '" size="2" maxlength="2" tabindex="3"></input>' : '<span>' + secondDisplay + '</span>';
+                return this.renderTimeElements("ui-second-picker", html, 2);
             }
 
             return '';
@@ -1392,7 +1598,7 @@
         _bindEvents: function () {
             var $this = this;
             if (!this.options.inline) {
-                this.inputfield.off('focus.datePicker blur.datePicker keydown.datePicker change.datePicker click.datePicker')
+                this.inputfield.off('focus.datePicker blur.datePicker keydown.datePicker input.datePicker click.datePicker')
                     .on('focus.datePicker', this.onInputFocus.bind($this))
                     .on('blur.datePicker', this.onInputBlur.bind($this))
                     .on('keydown.datePicker', this.onInputKeyDown.bind($this))
@@ -1423,7 +1629,7 @@
 
             var timeSelector = '.ui-hour-picker > a,  .ui-minute-picker > a, .ui-second-picker > a',
                 ampmSelector = '.ui-ampm-picker > a';
-            this.panel.off('mousedown.datePicker-time mouseup.datePicker-time', timeSelector).off('click.datePicker-ampm', ampmSelector)
+            this.panel.off('mousedown.datePicker-time mouseup.datePicker-time mouseleave.datePicker-time', timeSelector).off('click.datePicker-ampm', ampmSelector)
                 .on('mousedown.datePicker-time', timeSelector, null, function (event) {
                     var button = $(this),
                         parentEl = button.parent();
@@ -1433,12 +1639,30 @@
                 .on('mouseup.datePicker-time', timeSelector, null, function (event) {
                     $this.onTimePickerElementMouseUp(event);
                 })
-                .on('mouseleave.datePicker-time', timeSelector, null, function () {
-                    $this.clearTimePickerTimer();
+                .on('mouseleave.datePicker-time', timeSelector, null, function (event) {
+                    if ($this.timePickerTimer) {
+                        $this.onTimePickerElementMouseUp(event);
+                    }
                 })
                 .on('click.datePicker-ampm', ampmSelector, null, function (event) {
                     $this.toggleAmPm(event);
                 });
+
+            if (this.options.timeInput) {
+                this.panel.off('focus', '.ui-hour-picker input').on('focus', '.ui-hour-picker input', null, function (event) {
+                    $this.oldHours = this.value;
+                }).off('focus', '.ui-minute-picker input').on('focus', '.ui-minute-picker input', null, function (event) {
+                    $this.oldMinutes = this.value;
+                }).off('focus', '.ui-second-picker input').on('focus', '.ui-second-picker input', null, function (event) {
+                    $this.oldSeconds = this.value;
+                }).off('change', '.ui-hour-picker input').on('change', '.ui-hour-picker input', null, function (event) {
+                    $this.handleHoursInput(this, event);
+                }).off('change', '.ui-minute-picker input').on('change', '.ui-minute-picker input', null, function (event) {
+                    $this.handleMinutesInput(this, event);
+                }).off('change', '.ui-second-picker input').on('change', '.ui-second-picker input', null, function (event) {
+                    $this.handleSecondsInput(this, event);
+                });
+            }
 
             var todayButtonSelector = '.ui-datepicker-buttonbar .ui-today-button',
                 clearButtonSelector = '.ui-datepicker-buttonbar .ui-clear-button';
@@ -1451,7 +1675,7 @@
                     var dayEl = $(this),
                         calendarIndex = dayEl.closest('.ui-datepicker-group').index(),
                         weekIndex = dayEl.closest('tr').index(),
-                        dayIndex = dayEl.closest('td').index();
+                        dayIndex = dayEl.closest('td').index() - ($this.options.showWeek ? 1 : 0);
                     $this.onDateSelect(event, $this.monthsMetaData[calendarIndex].dates[weekIndex][dayIndex]);
                 }
             });
@@ -1485,13 +1709,20 @@
                 this.options.onBlur.call(this, event);
             }
 
+            this.inputfield.val(this.getValueToRender());
+
             this.inputfield.removeClass('ui-state-focus');
             this.container.removeClass('ui-inputwrapper-focus');
         },
 
         onInputKeyDown: function (event) {
             this.isKeydown = true;
-            if (event.keyCode === 9) {
+            if (event.keyCode === 27) {
+                //put the focus back to the inputfield
+                this.inputfield.trigger('focus');
+            }
+
+            if (event.keyCode === 9 || event.keyCode === 27) {
                 if (this.options.touchUI) {
                     this.disableModality();
                 }
@@ -1511,11 +1742,13 @@
 
             try {
                 var value = this.parseValueFromString(rawValue);
-                this.updateModel(event, value);
+                this.updateModel(event, value, false);
                 this.updateViewDate(event, value.length ? value[0] : value);
             }
             catch (err) {
-                this.updateModel(event, rawValue);
+                if (!this.options.mask) {
+                    this.updateModel(event, rawValue, false);
+                }
             }
 
             if (this.options.onInput) {
@@ -1525,7 +1758,7 @@
 
         onButtonClick: function (event) {
             if (!this.panel.is(':visible')) {
-                this.inputfield.focus();
+                this.inputfield.trigger('focus');
                 this.showOverlay();
             }
             else {
@@ -1576,11 +1809,20 @@
 
             if (this.options.view === 'date') {
                 if (newViewDate.getMonth() === 0) {
-                    newViewDate.setMonth(11);
+                    newViewDate.setMonth(11, 1);
                     newViewDate.setFullYear(newViewDate.getFullYear() - 1);
                 }
                 else {
-                    newViewDate.setMonth(newViewDate.getMonth() - 1);
+                    newViewDate.setMonth(newViewDate.getMonth() - 1, 1);
+                }
+
+                // #5967 check if month can be navigated to by checking last day in month
+                var testDate = new Date(newViewDate.getTime()),
+                    minDate = this.options.minDate;
+                testDate.setMonth(testDate.getMonth()+1)
+                testDate.setHours(-1);
+                if (minDate && minDate > testDate) {
+                    return;
                 }
 
                 if (this.options.onMonthChange) {
@@ -1621,11 +1863,17 @@
 
             if (this.options.view === 'date') {
                 if (newViewDate.getMonth() === 11) {
-                    newViewDate.setMonth(0);
+                    newViewDate.setMonth(0, 1);
                     newViewDate.setFullYear(newViewDate.getFullYear() + 1);
                 }
                 else {
-                    newViewDate.setMonth(newViewDate.getMonth() + 1);
+                    newViewDate.setMonth(newViewDate.getMonth() + 1, 1);
+                }
+
+                // #5967 check if month can be navigated to by checking first day next month
+                var maxDate = this.options.maxDate;
+                if (maxDate && maxDate < newViewDate) {
+                    return;
                 }
 
                 if (this.options.onMonthChange) {
@@ -1666,6 +1914,10 @@
         onTimePickerElementMouseUp: function (event) {
             if (!this.options.disabled) {
                 this.clearTimePickerTimer();
+
+                if (this.options.onSelect) {
+                    this.options.onSelect.call(this, event, this.value);
+                }
             }
         },
 
@@ -1705,6 +1957,7 @@
         clearTimePickerTimer: function () {
             if (this.timePickerTimer) {
                 clearTimeout(this.timePickerTimer);
+                this.timePickerTimer = null;
             }
         },
 
@@ -1715,7 +1968,18 @@
 
             this.panel.show();
             this.alignPanel();
-            this.bindDocumentClickListener();
+
+            if (!this.options.touchUI) {
+                var $this = this;
+                setTimeout(function () {
+                    $this.bindDocumentClickListener();
+                    $this.bindWindowResizeListener();
+                }, 10);
+            }
+
+            if ((this.options.showTime || this.options.timeOnly) && this.options.timeInput) {
+                this.panel.find('.ui-hour-picker input').trigger('focus');
+            }
         },
 
         hideOverlay: function () {
@@ -1725,6 +1989,7 @@
                 }
 
                 this.unbindDocumentClickListener();
+                this.unbindWindowResizeListener();
                 this.datepickerClick = false;
 
                 this.panel.hide();
@@ -1734,7 +1999,9 @@
                     :
                     ((((this.isMultipleSelection() || this.isRangeSelection()) && this.value instanceof Array) ? this.value[0] : this.value) || this.parseValue(new Date()));
 
-                this.updateViewDate(null, viewDate);
+                if(viewDate instanceof Date) {
+                    this.updateViewDate(null, viewDate);
+                }
             }
         },
 
@@ -1760,7 +2027,25 @@
             }
         },
 
+        bindWindowResizeListener: function () {
+            if (this.options.inline) {
+                return;
+            }
+            var $this = this;
+            $(window).on('resize.' + this.options.id, function() {
+                $this.alignPanel();
+            });
+        },
+
+        unbindWindowResizeListener: function () {
+            $(window).off('resize.'+ this.options.id);
+        },
+
         alignPanel: function () {
+            if (!this.panel || !this.panel.is(":visible")) {
+               return;
+            }
+
             if (this.options.touchUI) {
                 this.enableModality();
             }
@@ -1771,8 +2056,8 @@
 
                 if (this.panel.parent().is(this.container)) {
                     this.panel.css({
-                        left: 0,
-                        top: this.container.innerHeight()
+                        left: '0px',
+                        top: String(this.container.innerHeight())
                     });
                 }
                 else {
@@ -1818,7 +2103,9 @@
 
         onDateSelect: function (event, dateMeta) {
             if (this.options.disabled || !dateMeta.selectable) {
-                event.preventDefault();
+                if(event) {
+                    event.preventDefault();
+                }
                 return;
             }
 
@@ -1840,6 +2127,9 @@
             }
 
             if (!this.options.inline && this.isSingleSelection() && (!this.options.showTime || this.options.hideOnDateTimeSelect)) {
+                //put the focus back to the inputfield
+                this.inputfield.trigger('focus');
+
                 setTimeout(function () {
                     $this.hideOverlay();
                 }, 100);
@@ -1849,7 +2139,9 @@
                 }
             }
 
-            event.preventDefault();
+            if(event) {
+                event.preventDefault();
+            }
         },
 
         selectDate: function (event, dateMeta) {
@@ -1858,8 +2150,9 @@
             if (this.options.showTime) {
                 var time = (this.value && this.value instanceof Date) ? this.value : new Date();
                 date.setHours(time.getHours());
-                date.setMinutes(time.getMinutes());
+                date.setMinutes(this.stepMinute(time.getMinutes()));
                 date.setSeconds(time.getSeconds());
+                date.setMilliseconds(0);
             }
 
             if (this.options.minDate && this.options.minDate > date) {
@@ -1907,7 +2200,7 @@
                 newHour = currentHour + this.options.stepHour;
             newHour = (newHour >= 24) ? (newHour - 24) : newHour;
 
-            if (this.validateHour(newHour, currentTime)) {
+            if (this.validateTime(newHour, currentTime.getMinutes(), currentTime.getSeconds(), currentTime, "INCREMENT")) {
                 this.updateTime(event, newHour, currentTime.getMinutes(), currentTime.getSeconds());
             }
 
@@ -1920,7 +2213,7 @@
                 newHour = currentHour - this.options.stepHour;
             newHour = (newHour < 0) ? (newHour + 24) : newHour;
 
-            if (this.validateHour(newHour, currentTime)) {
+            if (this.validateTime(newHour, currentTime.getMinutes(), currentTime.getSeconds(), currentTime, "DECREMENT")) {
                 this.updateTime(event, newHour, currentTime.getMinutes(), currentTime.getSeconds());
             }
 
@@ -1930,10 +2223,10 @@
         incrementMinute: function (event) {
             var currentTime = (this.value && this.value instanceof Date) ? this.value : this.viewDate,
                 currentMinute = currentTime.getMinutes(),
-                newMinute = currentMinute + this.options.stepMinute;
+                newMinute = this.stepMinute(currentMinute, this.options.stepMinute);
             newMinute = (newMinute > 59) ? (newMinute - 60) : newMinute;
 
-            if (this.validateMinute(newMinute, currentTime)) {
+            if (this.validateTime(currentTime.getHours(), newMinute, currentTime.getSeconds(), currentTime, "INCREMENT")) {
                 this.updateTime(event, currentTime.getHours(), newMinute, currentTime.getSeconds());
             }
 
@@ -1943,14 +2236,34 @@
         decrementMinute: function (event) {
             var currentTime = (this.value && this.value instanceof Date) ? this.value : this.viewDate,
                 currentMinute = currentTime.getMinutes(),
-                newMinute = currentMinute - this.options.stepMinute;
+                newMinute = this.stepMinute(currentMinute, -this.options.stepMinute);
             newMinute = (newMinute < 0) ? (newMinute + 60) : newMinute;
 
-            if (this.validateMinute(newMinute, currentTime)) {
+            if (this.validateTime(currentTime.getHours(), newMinute, currentTime.getSeconds(), currentTime, "DECREMENT")) {
                 this.updateTime(event, currentTime.getHours(), newMinute, currentTime.getSeconds());
             }
 
             event.preventDefault();
+        },
+
+        stepMinute: function(currentMinute, step) {
+            if (this.options.stepMinute <= 1) {
+                if (!step) {
+                    return currentMinute;
+                } else {
+                    return currentMinute + step;
+                }
+            }
+            if (!step) {
+                step = this.options.stepMinute;
+                if (currentMinute % step === 0) {
+                    return currentMinute;
+                }
+            }
+
+            var newMinute = currentMinute + step;
+            newMinute = Math.floor(newMinute / step) * step;
+            return newMinute;
         },
 
         incrementSecond: function (event) {
@@ -1959,7 +2272,7 @@
                 newSecond = currentSecond + this.options.stepSecond;
             newSecond = (newSecond > 59) ? (newSecond - 60) : newSecond;
 
-            if (this.validateSecond(newSecond, currentTime)) {
+            if (this.validateTime(currentTime.getHours(), currentTime.getMinutes(), newSecond, currentTime, "INCREMENT")) {
                 this.updateTime(event, currentTime.getHours(), currentTime.getMinutes(), newSecond);
             }
 
@@ -1972,7 +2285,7 @@
                 newSecond = currentSecond - this.options.stepSecond;
             newSecond = (newSecond < 0) ? (newSecond + 60) : newSecond;
 
-            if (this.validateSecond(newSecond, currentTime)) {
+            if (this.validateTime(currentTime.getHours(), currentTime.getMinutes(), newSecond, currentTime, "DECREMENT")) {
                 this.updateTime(event, currentTime.getHours(), currentTime.getMinutes(), newSecond);
             }
 
@@ -1988,63 +2301,111 @@
             event.preventDefault();
         },
 
-        validateHour: function (hour, value) {
-            var valid = true,
-                valueDateString = value ? value.toDateString() : null;
+        handleHoursInput: function(input, event) {
+            var currentTime = (this.value && this.value instanceof Date) ? this.value : this.viewDate,
+                value = input.value,
+                valid = false,
+                newHours;
 
-            if (this.options.minDate && valueDateString && this.options.minDate.toDateString() === valueDateString) {
-                if (this.options.minDate.getHours() > hour) {
-                    valid = false;
+            var reg = new RegExp('^([0-9]){1,2}$');
+            if (reg.test(value)) {
+                newHours = parseInt(value);
+                if (this.options.hourFormat === '12') {
+                    if (newHours >= 1 || newHours <= 12) {
+                        valid = this.validateTime(newHours, currentTime.getMinutes(), currentTime.getSeconds(), currentTime);
+                    }
+                } else {
+                    if (newHours >= 0 || newHours <= 23) {
+                        valid = this.validateTime(newHours, currentTime.getMinutes(), currentTime.getSeconds(), currentTime);
+                    }
                 }
             }
 
-            if (this.options.maxDate && valueDateString && this.options.maxDate.toDateString() === valueDateString) {
-                if (this.options.maxDate.getHours() < hour) {
-                    valid = false;
-                }
+            if (!valid) {
+                event.preventDefault();
+                input.value = this.oldHours;
+                return;
             }
 
-            return valid;
+            var newDateTime = (this.value && this.value instanceof Date) ? new Date(this.value) : new Date();
+            newDateTime.setHours(newHours);
+
+            this.updateTimeAfterInput(event, newDateTime);
         },
 
-        validateMinute: function (minute, value) {
-            var valid = true,
-                valueDateString = value ? value.toDateString() : null;
+        handleMinutesInput: function(input, event) {
+            var currentTime = (this.value && this.value instanceof Date) ? this.value : this.viewDate,
+                value = input.value,
+                valid = false,
+                newMinutes;
 
-            if (this.options.minDate && valueDateString && this.options.minDate.toDateString() === valueDateString) {
-                if (value.getHours() === this.options.minDate.getHours()) {
-                    if (this.options.minDate.getMinutes() > minute) {
-                        valid = false;
-                    }
+            var reg = new RegExp('^([0-9]){1,2}$');
+            if (reg.test(value)) {
+                newMinutes = parseInt(value);
+                if (newMinutes >= 0 || newMinutes <= 59) {
+                    valid = this.validateTime(currentTime.getHours(), newMinutes, currentTime.getSeconds(), currentTime);
                 }
             }
 
-            if (this.options.maxDate && valueDateString && this.options.maxDate.toDateString() === valueDateString) {
-                if (value.getHours() === this.options.maxDate.getHours()) {
-                    if (this.options.maxDate.getMinutes() < minute) {
-                        valid = false;
-                    }
-                }
+            if (!valid) {
+                event.preventDefault();
+                input.value = this.oldMinutes;
+                return;
             }
 
-            return valid;
+            var newDateTime = (this.value && this.value instanceof Date) ? new Date(this.value) : new Date();
+            newDateTime.setMinutes(newMinutes);
+
+            this.updateTimeAfterInput(event, newDateTime);
         },
 
-        validateSecond: function (second, value) {
-            var valid = true,
-                valueDateString = value ? value.toDateString() : null;
+        handleSecondsInput: function(input, event) {
+            var currentTime = (this.value && this.value instanceof Date) ? this.value : this.viewDate,
+                value = input.value,
+                valid = false,
+                newSeconds;
 
-            if (this.options.minDate && valueDateString && this.options.minDate.toDateString() === valueDateString) {
-                if (value.getHours() === this.options.minDate.getHours() && value.getMinutes() === this.options.minDate.getMinutes()) {
-                    if (this.options.minDate.getMinutes() > second) {
+            var reg = new RegExp('^([0-9]){1,2}$');
+            if (reg.test(value)) {
+                newSeconds = parseInt(value);
+                if (newSeconds >= 0 || newSeconds <= 59) {
+                    valid = this.validateTime(currentTime.getHours(), currentTime.getMinutes(), newSeconds, currentTime);
+                }
+            }
+
+            if (!valid) {
+                event.preventDefault();
+                input.value = this.oldSeconds;
+                return;
+            }
+
+            var newDateTime = (this.value && this.value instanceof Date) ? new Date(this.value) : new Date();
+            newDateTime.setSeconds(newSeconds);
+
+            this.updateTimeAfterInput(event, newDateTime);
+        },
+
+        validateTime: function(hour, minute, second, value, direction) {
+            var valid = true;
+            var dateNew = new Date(value.getFullYear(), value.getMonth(), value.getDate(), hour, minute, second, 0);
+
+            if (this.options.minDate && value) {
+                if (this.options.minDate > dateNew) {
+                    if (direction === "INCREMENT" && this.options.minDate > value)  {
+                        ; //the new time is still outside the allowed range, but we come nearer to it
+                    }
+                    else {
                         valid = false;
                     }
                 }
             }
 
-            if (this.options.maxDate && valueDateString && this.options.maxDate.toDateString() === valueDateString) {
-                if (value.getHours() === this.options.maxDate.getHours() && value.getMinutes() === this.options.maxDate.getMinutes()) {
-                    if (this.options.maxDate.getMinutes() < second) {
+            if (this.options.maxDate && value) {
+                if (this.options.maxDate < dateNew) {
+                    if (direction === "DECREMENT" && this.options.maxDate < value) {
+                        ; //the new time is still outside the allowed range, but we come nearer to it
+                    }
+                    else {
                         valid = false;
                     }
                 }
@@ -2059,8 +2420,20 @@
             newDateTime.setHours(hour);
             newDateTime.setMinutes(minute);
             newDateTime.setSeconds(second);
+            newDateTime.setMilliseconds(0);
 
             this.updateModel(event, newDateTime);
+
+            if (this.options.onSelect) {
+                if (this.timePickerTimer === 'undefined' || this.timePickerTimer === null) {
+                    this.options.onSelect.call(this, event, newDateTime);
+                }
+            }
+        },
+
+        updateTimeAfterInput: function (event, newDateTime) {
+            this.value = newDateTime;
+            this.inputfield.val(this.getValueToRender());
 
             if (this.options.onSelect) {
                 this.options.onSelect.call(this, event, newDateTime);
@@ -2122,9 +2495,11 @@
             this._setInitOptionValues();
         },
 
-        updateModel: function (event, value) {
-            this.value = value;
-            this.inputfield.val(this.getValueToRender());
+        updateModel: function (event, value, updateInput) {
+            this.value = (value === '' ? null : value);
+            if (updateInput != false) {
+                this.inputfield.val(this.getValueToRender());
+            }
 
             this.panel.get(0).innerHTML = this.renderPanelElements();
 

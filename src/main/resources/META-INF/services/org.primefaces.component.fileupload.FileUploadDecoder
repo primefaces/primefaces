@@ -1,0 +1,2 @@
+org.primefaces.component.fileupload.NativeFileUploadDecoder
+org.primefaces.component.fileupload.CommonsFileUploadDecoder

@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +35,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.ProjectStage;
 
 public class StreamedContentHandler extends BaseDynamicContentHandler {
 
@@ -66,6 +68,13 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
                         streamedContent = (StreamedContent) ve.getValue(eLContext);
 
                         if (streamedContent == null || streamedContent.getStream() == null) {
+
+                            if (context.isProjectStage(ProjectStage.Development)) {
+                                LOGGER.log(Level.WARNING,
+                                        "StreamedContent resolved to null - skip streaming resource for ValueExpression: {0}",
+                                        dynamicContentEL);
+                            }
+
                             if (externalContext.getRequest() instanceof HttpServletRequest) {
                                 externalContext.responseSendError(HttpServletResponse.SC_NOT_FOUND,
                                         ((HttpServletRequest) externalContext.getRequest()).getRequestURI());

@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,7 +47,8 @@ public abstract class ImageCropperBase extends UIInput implements Widget {
         sizeLimit,
         responsive,
         guides,
-        viewMode
+        viewMode,
+        cache
     }
 
     public ImageCropperBase() {
@@ -67,11 +68,11 @@ public abstract class ImageCropperBase extends UIInput implements Widget {
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public String getImage() {
-        return (String) getStateHelper().eval(PropertyKeys.image, null);
+    public Object getImage() {
+        return getStateHelper().eval(PropertyKeys.image, null);
     }
 
-    public void setImage(String image) {
+    public void setImage(Object image) {
         getStateHelper().put(PropertyKeys.image, image);
     }
 
@@ -162,4 +163,13 @@ public abstract class ImageCropperBase extends UIInput implements Widget {
     public int getViewMode() {
         return (Integer) getStateHelper().eval(PropertyKeys.viewMode, 1);
     }
+
+    public boolean isCache() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.cache, true);
+    }
+
+    public void setCache(boolean cache) {
+        getStateHelper().put(PropertyKeys.cache, cache);
+    }
+
 }

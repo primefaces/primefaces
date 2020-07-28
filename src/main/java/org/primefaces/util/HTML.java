@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,25 +23,27 @@
  */
 package org.primefaces.util;
 
+import java.util.List;
+
 public class HTML {
 
-    public static final String[] CLICK_EVENT = {"onclick"};
+    public static final List<String> CLICK_EVENT = LangUtils.unmodifiableList("onclick");
 
-    public static final String[] TAB_INDEX = {"tabindex"};
+    public static final List<String> TAB_INDEX = LangUtils.unmodifiableList("tabindex");
 
-    public static final String[] TITLE = {"title"};
+    public static final List<String> TITLE = LangUtils.unmodifiableList("title");
 
-    public static final String[] BLUR_FOCUS_EVENTS = {
+    public static final List<String> BLUR_FOCUS_EVENTS = LangUtils.unmodifiableList(
         "onblur",
         "onfocus"
-    };
+    );
 
-    public static final String[] CHANGE_SELECT_EVENTS = {
+    public static final List<String> CHANGE_SELECT_EVENTS = LangUtils.unmodifiableList(
         "onchange",
         "onselect"
-    };
+    );
 
-    public static final String[] COMMON_EVENTS_WITHOUT_CLICK = {
+    public static final List<String> COMMON_EVENTS_WITHOUT_CLICK = LangUtils.unmodifiableList(
         "ondblclick",
         "onkeydown",
         "onkeypress",
@@ -51,10 +53,10 @@ public class HTML {
         "onmouseout",
         "onmouseover",
         "onmouseup"
-    };
+    );
 
     //StyleClass is omitted
-    public static final String[] IMG_ATTRS_WITHOUT_EVENTS = {
+    public static final List<String> IMG_ATTRS_WITHOUT_EVENTS = LangUtils.unmodifiableList(
         "alt",
         "width",
         "height",
@@ -64,10 +66,10 @@ public class HTML {
         "ismap",
         "usemap",
         "style"
-    };
+    );
 
     //StyleClass is omitted
-    public static final String[] LINK_ATTRS_WITHOUT_EVENTS = {
+    public static final List<String> LINK_ATTRS_WITHOUT_EVENTS = LangUtils.unmodifiableList(
         "accesskey",
         "charset",
         "coords",
@@ -82,9 +84,9 @@ public class HTML {
         "target",
         "title",
         "type"
-    };
+    );
 
-    public static final String[] LINK_ATTRS_WITHOUT_EVENTS_AND_STYLE = {
+    public static final List<String> LINK_ATTRS_WITHOUT_EVENTS_AND_STYLE = LangUtils.unmodifiableList(
         "accesskey",
         "charset",
         "coords",
@@ -98,10 +100,10 @@ public class HTML {
         "target",
         "title",
         "type"
-    };
+    );
 
     //StyleClass is omitted
-    public static final String[] BUTTON_ATTRS_WITHOUT_EVENTS = {
+    public static final List<String> BUTTON_ATTRS_WITHOUT_EVENTS = LangUtils.unmodifiableList(
         "accesskey",
         "alt",
         "dir",
@@ -111,17 +113,17 @@ public class HTML {
         "tabindex",
         "title",
         "type"
-    };
+    );
 
     //StyleClass is omitted
-    public static final String[] MEDIA_ATTRS = {
+    public static final List<String> MEDIA_ATTRS = LangUtils.unmodifiableList(
         "height",
         "width",
         "style"
-    };
+    );
 
     //disabled, readonly, style, styleClass handles by component renderer
-    public static final String[] INPUT_TEXT_ATTRS_WITHOUT_EVENTS = {
+    public static final List<String> INPUT_TEXT_ATTRS_WITHOUT_EVENTS = LangUtils.unmodifiableList(
         "accesskey",
         "alt",
         "autocomplete",
@@ -132,9 +134,9 @@ public class HTML {
         "size",
         "tabindex",
         "title"
-    };
+    );
 
-    public static final String[] SELECT_ATTRS_WITHOUT_EVENTS = {
+    public static final List<String> SELECT_ATTRS_WITHOUT_EVENTS = LangUtils.unmodifiableList(
         "accesskey",
         "dir",
         "disabled",
@@ -143,9 +145,9 @@ public class HTML {
         "style",
         "tabindex",
         "title"
-    };
+    );
 
-    public static final String[] TEXTAREA_ATTRS_WITHOUT_EVENTS = {
+    public static final List<String> TEXTAREA_ATTRS_WITHOUT_EVENTS = LangUtils.unmodifiableList(
         "cols",
         "rows",
         "accesskey",
@@ -158,53 +160,54 @@ public class HTML {
         "tabindex",
         "title",
         "maxlength"
-    };
+    );
 
     //StyleClass is omitted
-    public static final String[] LABEL_ATTRS_WITHOUT_EVENTS = {
+    public static final List<String> LABEL_ATTRS_WITHOUT_EVENTS = LangUtils.unmodifiableList(
         "accesskey",
         "dir",
         "lang",
         "style",
         "tabindex",
         "title"
-    };
+    );
 
-    public static final String[] BODY_ATTRS = LangUtils.concat(COMMON_EVENTS_WITHOUT_CLICK, CLICK_EVENT, new String[]{
+    public static final List<String> BODY_ATTRS = LangUtils.concat(COMMON_EVENTS_WITHOUT_CLICK, CLICK_EVENT, LangUtils.unmodifiableList(
         "dir",
         "lang",
         "style",
         "title",
         "onload",
         "onunload"
-    });
+    ));
 
-    public static final String[] COMMON_EVENTS = LangUtils.concat(COMMON_EVENTS_WITHOUT_CLICK, CLICK_EVENT);
+    public static final List<String> COMMON_EVENTS = LangUtils.concat(COMMON_EVENTS_WITHOUT_CLICK, CLICK_EVENT);
 
-    public static final String[] OUTPUT_EVENTS = LangUtils.concat(COMMON_EVENTS, BLUR_FOCUS_EVENTS);
+    public static final List<String> OUTPUT_EVENTS = LangUtils.concat(COMMON_EVENTS, BLUR_FOCUS_EVENTS);
 
-    public static final String[] OUTPUT_EVENTS_WITHOUT_CLICK = LangUtils.concat(COMMON_EVENTS_WITHOUT_CLICK, BLUR_FOCUS_EVENTS);
+    public static final List<String> OUTPUT_EVENTS_WITHOUT_CLICK = LangUtils.concat(COMMON_EVENTS_WITHOUT_CLICK, BLUR_FOCUS_EVENTS);
 
-    public static final String[] BUTTON_EVENTS = LangUtils.concat(OUTPUT_EVENTS, CHANGE_SELECT_EVENTS);
+    public static final List<String> BUTTON_EVENTS = LangUtils.concat(OUTPUT_EVENTS, CHANGE_SELECT_EVENTS);
 
-    public static final String[] BUTTON_EVENTS_WITHOUT_CLICK = LangUtils.concat(OUTPUT_EVENTS_WITHOUT_CLICK, CHANGE_SELECT_EVENTS);
+    public static final List<String> BUTTON_EVENTS_WITHOUT_CLICK = LangUtils.concat(OUTPUT_EVENTS_WITHOUT_CLICK, CHANGE_SELECT_EVENTS);
 
-    public static final String[] IMG_ATTRS = LangUtils.concat(IMG_ATTRS_WITHOUT_EVENTS, COMMON_EVENTS);
+    public static final List<String> IMG_ATTRS = LangUtils.concat(IMG_ATTRS_WITHOUT_EVENTS, COMMON_EVENTS);
 
-    public static final String[] LINK_ATTRS = LangUtils.concat(LINK_ATTRS_WITHOUT_EVENTS, OUTPUT_EVENTS);
+    public static final List<String> LINK_ATTRS = LangUtils.concat(LINK_ATTRS_WITHOUT_EVENTS, OUTPUT_EVENTS);
 
-    public static final String[] LABEL_ATTRS = LangUtils.concat(LABEL_ATTRS_WITHOUT_EVENTS, OUTPUT_EVENTS);
-    public static final String[] LABEL_EVENTS = OUTPUT_EVENTS;
+    public static final List<String> LABEL_ATTRS = LangUtils.concat(LABEL_ATTRS_WITHOUT_EVENTS, OUTPUT_EVENTS);
+    public static final List<String> LABEL_EVENTS = OUTPUT_EVENTS;
 
-    public static final String[] BUTTON_ATTRS = LangUtils.concat(BUTTON_ATTRS_WITHOUT_EVENTS, BUTTON_EVENTS);
+    public static final List<String> BUTTON_ATTRS = LangUtils.concat(BUTTON_ATTRS_WITHOUT_EVENTS, BUTTON_EVENTS);
+    public static final List<String> BUTTON_WITH_CLICK_ATTRS = LangUtils.concat(HTML.BUTTON_ATTRS, HTML.CLICK_EVENT);
 
-    public static final String[] INPUT_TEXT_EVENTS = LangUtils.concat(COMMON_EVENTS, CHANGE_SELECT_EVENTS, BLUR_FOCUS_EVENTS);
-    public static final String[] INPUT_TEXT_ATTRS = LangUtils.concat(INPUT_TEXT_ATTRS_WITHOUT_EVENTS, INPUT_TEXT_EVENTS);
+    public static final List<String> INPUT_TEXT_EVENTS = LangUtils.concat(COMMON_EVENTS, CHANGE_SELECT_EVENTS, BLUR_FOCUS_EVENTS);
+    public static final List<String> INPUT_TEXT_ATTRS = LangUtils.concat(INPUT_TEXT_ATTRS_WITHOUT_EVENTS, INPUT_TEXT_EVENTS);
 
-    public static final String[] INPUT_TEXTAREA_ATTRS = LangUtils.concat(
+    public static final List<String> INPUT_TEXTAREA_ATTRS = LangUtils.concat(
             TEXTAREA_ATTRS_WITHOUT_EVENTS, COMMON_EVENTS, CHANGE_SELECT_EVENTS, BLUR_FOCUS_EVENTS);
 
-    public static final String[] SELECT_ATTRS = LangUtils.concat(
+    public static final List<String> SELECT_ATTRS = LangUtils.concat(
             SELECT_ATTRS_WITHOUT_EVENTS, COMMON_EVENTS, CHANGE_SELECT_EVENTS, BLUR_FOCUS_EVENTS);
 
     public static final String ARIA_ACTIVEDESCENDANT = "aria-activedescendant";
@@ -226,6 +229,11 @@ public class HTML {
     public static final String ARIA_READONLY = "aria-readonly";
     public static final String ARIA_REQUIRED = "aria-required";
     public static final String ARIA_SELECTED = "aria-selected";
+    public static final String ARIA_ROLE = "role";
+    public static final String ARIA_ROLE_NONE = "none";
+    public static final String ARIA_ROLE_MENU = "menu";
+    public static final String ARIA_ROLE_MENUITEM = "menuitem";
+    public static final String ARIA_ROLE_MENUBAR = "menubar";
 
     public static final String BUTTON_TEXT_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only";
     public static final String BUTTON_ICON_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only";

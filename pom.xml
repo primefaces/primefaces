@@ -12,7 +12,7 @@
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces</artifactId>
     <packaging>jar</packaging>
-    <version>8.0-SNAPSHOT</version>
+    <version>9.0-SNAPSHOT</version>
 
     <name>PrimeFaces</name>
     <url>https://www.primefaces.org</url>
@@ -72,31 +72,38 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <npm.token></npm.token>
+        <npm.username></npm.username>
+        <npm.password></npm.password>
+        <npm.email></npm.email>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.glassfish</groupId>
-            <artifactId>javax.faces</artifactId>
-            <version>2.3.2</version>
+            <artifactId>jakarta.faces</artifactId>
+            <version>2.3.14</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>javax.servlet</artifactId>
             <version>3.0</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>1.1.0.Final</version>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <version>2.0.2</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
-            <groupId>javax.el</groupId>
-            <artifactId>el-api</artifactId>
-            <version>2.2</version>
+            <groupId>jakarta.el</groupId>
+            <artifactId>jakarta.el-api</artifactId>
+            <version>3.0.3</version>
             <scope>provided</scope>
         </dependency>
 
@@ -114,9 +121,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.lowagie</groupId>
-            <artifactId>itext</artifactId>
-            <version>2.1.7</version>
+            <groupId>com.github.librepdf</groupId>
+            <artifactId>openpdf</artifactId>
+            <version>1.3.14</version>
             <scope>provided</scope>
         </dependency>
 
@@ -124,7 +131,7 @@
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
-            <version>1.3.3</version>
+            <version>1.4</version>
             <scope>provided</scope>
         </dependency>
 
@@ -132,15 +139,15 @@
         <dependency>
             <groupId>com.rometools</groupId>
             <artifactId>rome</artifactId>
-            <version>1.9.0</version>
+            <version>1.13.0</version>
             <scope>provided</scope>
         </dependency>
 
-        <!-- PhotoCam for Java5 -->
+        <!-- JAXB for JDK11+-->
         <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <version>2.0</version>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>2.3.3</version>
             <scope>provided</scope>
         </dependency>
 
@@ -166,10 +173,10 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-             <groupId>org.junit.jupiter</groupId>
-             <artifactId>junit-jupiter-params</artifactId>
-             <version>5.5.2</version>
-             <scope>test</scope>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>5.5.2</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
@@ -183,11 +190,17 @@
             <version>2.2.7</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.el</artifactId>
+            <version>3.0.1-b11</version>
+            <scope>test</scope>
+        </dependency>
         <!-- Content type validation in FileUploadUtilsTest -->
         <dependency>
             <groupId>org.apache.tika</groupId>
             <artifactId>tika-java7</artifactId>
-            <version>1.22</version>
+            <version>1.24.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -208,7 +221,7 @@
         <dependency>
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast</artifactId>
-            <version>3.12</version>
+            <version>4.0.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -238,6 +251,7 @@
             <version>20180813</version>
             <optional>true</optional>
         </dependency>
+
         <dependency>
             <groupId>org.owasp.encoder</groupId>
             <artifactId>encoder</artifactId>
@@ -248,7 +262,7 @@
         <dependency>
             <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
             <artifactId>owasp-java-html-sanitizer</artifactId>
-            <version>20190503.1</version>
+            <version>20200615.1</version>
             <scope>provided</scope>
         </dependency>
 
@@ -262,12 +276,91 @@
     </dependencies>
 
     <build>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.github.eirslett</groupId>
+                    <artifactId>frontend-maven-plugin</artifactId>
+                    <version>1.9.1</version>
+                    <configuration>
+                        <installDirectory>${project.build.directory}</installDirectory>
+                        <nodeVersion>v13.13.0</nodeVersion>
+                        <npmVersion>6.14.4</npmVersion>
+                        <workingDirectory>${basedir}/src/main/type-definitions</workingDirectory>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>install node and npm</id>
+                            <goals>
+                                <goal>install-node-and-npm</goal>
+                            </goals>
+                            <phase>initialize</phase>
+                        </execution>
+                        <execution>
+                            <id>npm install</id>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <phase>initialize</phase>
+                            <configuration>
+                                <arguments>install</arguments>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>validate-tool</id>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <phase>test</phase>
+                            <configuration>
+                                <arguments>run validate</arguments>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>test-tool</id>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <phase>test</phase>
+                            <configuration>
+                                <arguments>run test</arguments>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>generate-type-declaration</id>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <phase>prepare-package</phase>
+                            <configuration>
+                                <arguments>run generate-d-ts -- --packagejson src/main/type-definitions/package.json</arguments>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>publish-to-npm</id>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <phase>deploy</phase>
+                            <configuration>
+                                <arguments>run npm-publish -- --major ${parsedVersion.majorVersion} --minor ${parsedVersion.minorVersion} --readme src/main/type-definitions/NPM.md --extrafiles LICENSE --prompt false --username ${npm.username} --password ${npm.password} --email ${npm.email} --token ${npm.token}</arguments>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
         <defaultGoal>install</defaultGoal>
 
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
+                <excludes>
+                    <exclude>META-INF/resources/primefaces/schedule/build/**/*</exclude>
+                </excludes>
             </resource>
         </resources>
 
@@ -277,11 +370,44 @@
             </testResource>
         </testResources>
 
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh</artifactId>
+                <version>3.0.0</version>
+            </extension>
+        </extensions>
+
         <plugins>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>src/main/type-definitions/node_modules</directory>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                  <execution>
+                    <id>parse-version</id>
+                    <goals>
+                      <goal>parse-version</goal>
+                    </goals>
+                  </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-                <version>3.5.0</version>
+                <version>4.2.1</version>
                 <extensions>true</extensions>
                 <configuration>
                     <supportedProjectTypes>
@@ -339,7 +465,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.7.0</version>
+                <version>3.8.1</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
@@ -365,10 +491,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>2.17</version>
+                <version>3.1.0</version>
                 <configuration>
                     <consoleOutput>true</consoleOutput>
-                    <configLocation>./checkstyle.xml</configLocation>
+                    <configLocation>${project.basedir}/src/conf/checkstyle.xml</configLocation>
                 </configuration>
                 <executions>
                     <execution>
@@ -386,7 +512,7 @@
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>8.18</version>
+                        <version>8.29</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -394,7 +520,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.0.2</version>
+                <version>3.2.0</version>
                 <configuration>
                     <archive>
                         <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
@@ -409,9 +535,9 @@
             <plugin>
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
-                <version>3.0</version>
+                <version>4.0.rc1</version>
                 <configuration>
-                    <header>./header.txt</header>
+                    <header>src/conf/header.txt</header>
                     <includes>
                         <include>src/main/java/**</include>
                     </includes>
@@ -432,7 +558,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>license-maven-plugin</artifactId>
-                <version>1.16</version>
+                <version>1.18</version>
                 <executions>
                     <execution>
                         <id>aggregate-download-licenses</id>
@@ -450,6 +576,19 @@
                 </executions>
                 <configuration>
                     <excludedScopes>test,provided</excludedScopes>
+                    <outputDirectory>${project.basedir}/target/classes/META-INF/licenses/</outputDirectory>
+                    <licensesOutputFile>${project.basedir}/target/classes/META-INF/licenses/licenses-generated.xml</licensesOutputFile>
+                    <licensesOutputDirectory>${project.basedir}/target/classes/META-INF/licenses/</licensesOutputDirectory>
+                    <licenseUrlReplacements>
+                        <licenseUrlReplacement>
+                            <regexp>.*BSD-3.*</regexp>
+                            <replacement>https://raw.githubusercontent.com/teamdigitale/licenses/master/BSD-3-Clause</replacement>
+                        </licenseUrlReplacement>
+                        <licenseUrlReplacement>
+                            <regexp>.*json.*</regexp>
+                            <replacement>https://raw.githubusercontent.com/stleary/JSON-java/master/LICENSE</replacement>
+                        </licenseUrlReplacement>
+                    </licenseUrlReplacements>
                 </configuration>
             </plugin>
 
@@ -565,6 +704,7 @@
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/core.js</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.browser.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/js.cookie.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.env.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.ajax.js</include>
@@ -573,6 +713,8 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.utils.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.widget.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.resources.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.clientwindow.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.polyfills.js</include>
 
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/ajaxstatus/ajaxstatus.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/poll/poll.js</include>
@@ -615,7 +757,6 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectonebutton.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectbooleanbutton.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectcheckboxmenu.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.inputmask.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.password.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.defaultcommand.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.splitbutton.js</include>
@@ -676,6 +817,15 @@
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
                             <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/inputmask/inputmask.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/inputmask/0-jquery.inputmask.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/inputmask/1-inputmask.js</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/inputnumber/inputnumber.js</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/inputnumber/0-autoNumeric.js</include>
@@ -730,6 +880,24 @@
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
                             <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/signature/signature.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/signature/0-signature.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/signature/1-widget.js</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/scrollpanel/scrollpanel.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/scrollpanel/0-jquery.jscrollpane.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/scrollpanel/1-scrollpanel.js</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/timeline/timeline.js</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/timeline/0-timeline.min.js</include>
@@ -761,10 +929,8 @@
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.ui.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.ui.timepicker.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.maskedinput.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.caretposition.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.autosize.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.cookie.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.mousewheel.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.rangy.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.ui.touch-punch.js</include>
@@ -795,14 +961,7 @@
                             <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/schedule.js</output>
                             <includes>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-core.min.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-locales-all.min.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-interaction.min.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-daygrid.min.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-timegrid.min.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-list.min.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-moment.min.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-moment-timezone.min.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar.min.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/1-schedule.js</include>
                             </includes>
                         </aggregation>
@@ -811,10 +970,7 @@
                             <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/schedule.css</output>
                             <includes>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-core.css</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-daygrid.css</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-timegrid.css</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-list.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar.min.css</include>
                             </includes>
                         </aggregation>
                         <aggregation>
@@ -842,7 +998,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.2.2</version>
                 <configuration>
                     <shadedArtifactAttached>false</shadedArtifactAttached>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
@@ -882,16 +1038,81 @@
                                 <include>org/apache/commons/io/input/BoundedInputStream.class</include>
                             </includes>
                         </filter>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <excludes>
+                                <exclude>META-INF/MANIFEST.MF</exclude>
+                                <exclude>META-INF/*.SF</exclude>
+                                <exclude>META-INF/*.DSA</exclude>
+                                <exclude>META-INF/*.RSA</exclude>
+                            </excludes>
+                        </filter>
                     </filters>
                 </configuration>
                 <executions>
                     <execution>
+                        <id>shade-dependencies</id>
                         <phase>package</phase>
                         <goals>
                             <goal>shade</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>jakarta</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <shadedClassifierName>jakarta</shadedClassifierName>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                                <transformer implementation="io.yupiik.maven.shade.transformer.RelocationTransformer">
+                                    <delegates>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
+                                            <resource>META-INF/faces-config.xml</resource>
+                                        </transformer>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
+                                            <resource>META-INF/primefaces-p.taglib.xml</resource>
+                                        </transformer>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                            <resource>META-INF/resources/primefaces/core.js</resource>
+                                        </transformer>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                            <resource>META-INF/resources/primefaces/validation/validation.js</resource>
+                                        </transformer>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                            <resource>META-INF/resources/primefaces/validation/beanvalidation.js</resource>
+                                        </transformer>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                            <resource>META-INF/resources/primefaces/fileupload/fileupload.js</resource>
+                                        </transformer>
+                                    </delegates>
+                                </transformer>
+                            </transformers>
+                            <artifactSet>
+                                <includes>
+                                    <include>${project.groupId}:${project.artifactId}</include>
+                                </includes>
+                            </artifactSet>
+                            <relocations>
+                                <relocation>
+                                    <pattern>javax.faces</pattern>
+                                    <shadedPattern>jakarta.faces</shadedPattern>
+                                </relocation>
+                            </relocations>
+                        </configuration>
+                    </execution>
                 </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>io.yupiik.maven</groupId>
+                        <artifactId>maven-shade-transformers</artifactId>
+                        <version>0.0.1</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -901,6 +1122,21 @@
         </plugins>
     </build>
 
+    <distributionManagement>
+        <repository>
+            <id>prime-repo</id>
+            <name>PrimeFaces Maven Repository</name>
+            <url>sftp://primefaces.org/var/www/repository</url>
+        </repository>
+    </distributionManagement>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>apache-snapshots</id>
+            <url>https://repository.apache.org/snapshots/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
     <profiles>
         <profile>
             <id>security-checks</id>
@@ -909,7 +1145,7 @@
                     <plugin>
                         <groupId>org.owasp</groupId>
                         <artifactId>dependency-check-maven</artifactId>
-                        <version>5.0.0-M3</version>
+                        <version>5.3.2</version>
                         <configuration>
                             <skipProvidedScope>false</skipProvidedScope>
                             <skipRuntimeScope>false</skipRuntimeScope>
@@ -926,6 +1162,48 @@
                 </plugins>
             </build>
         </profile>
+        <!-- Generates the JavaScript Api docs in the target directory -->
+        <!-- Use "-Djsdoc.skip.typedoc=true" if you only want to check and lint the declarations file -->
+        <profile>
+            <id>jsdoc</id>
+            <properties>
+                <jsdoc.skip.typedoc>false</jsdoc.skip.typedoc>
+            </properties>
+            <build>
+                <plugins>
+                    <!-- Write docs and *.d.ts file to the target dir -->
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>generate-type-declaration</id>
+                                <configuration>
+                                    <arguments>run generate-d-ts -- --packagejson src/main/type-definitions/package.json --declarationoutputdir target/type-declaration/ --typedocoutputdir target/type-declaration/jsdocs --skiptypedocgenerate ${jsdoc.skip.typedoc}</arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>jsdoc-publish</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>publish-to-npm</id>
+                                <phase>package</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
         <profile>
             <id>release</id>
             <build>
@@ -933,7 +1211,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
-                        <version>2.1</version>
+                        <version>3.2.0</version>
                         <executions>
                             <execution>
                                 <id>attach-sources</id>
@@ -948,10 +1226,11 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>2.10.4</version>
+                        <version>3.1.1</version>
                         <configuration>
                             <sourcepath>${basedir}/src/main/java</sourcepath>
-                            <additionalparam>-Xdoclint:none</additionalparam>
+                            <failOnError>false</failOnError>
+                            <doclint>none</doclint>
                         </configuration>
                         <executions>
                             <execution>
@@ -999,16 +1278,10 @@
                                 <exclude>**/photocam.js</exclude>
                                 <exclude>**/0-quill.min.js</exclude>
                                 <exclude>**/jquery.js</exclude>
-                                <exclude>**/fullcalendar-core.min.js</exclude>
-                                <exclude>**/fullcalendar-locales-all.min.js</exclude>
-                                <exclude>**/fullcalendar-interaction.min.js</exclude>
-                                <exclude>**/fullcalendar-daygrid.min.js</exclude>
-                                <exclude>**/fullcalendar-timegrid.min.js</exclude>
-                                <exclude>**/fullcalendar-list.min.js</exclude>
-                                <exclude>**/fullcalendar-moment.min.js</exclude>
-                                <exclude>**/fullcalendar-moment-timezone.min.js</exclude>
+                                <exclude>**/fullcalendar.min.js</exclude>
                                 <exclude>**/0-timeline.min.js</exclude>
                                 <exclude>**/0-chartjs.js</exclude>
+                                <exclude>**/0-jquery.inputmask.js</exclude>
                                 <exclude>**/raphael.js</exclude>
                                 <exclude>**/theme.css</exclude>
                             </excludes>
@@ -1017,6 +1290,20 @@
                                 <include>**/*.css</include>
                             </includes>
                         </configuration>
+                    </plugin>
+
+                    <!-- Write docs and *.d.ts file to the current documentation directory docs/jsdocs -->
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>generate-type-declaration</id>
+                            </execution>
+                            <execution>
+                                <id>publish-to-npm</id>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>

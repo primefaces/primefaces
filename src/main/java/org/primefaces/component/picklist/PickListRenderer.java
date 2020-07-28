@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,6 +40,7 @@ import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
 public class PickListRenderer extends InputRenderer {
@@ -241,7 +242,7 @@ public class PickListRenderer extends InputRenderer {
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", styleClass, null);
-        writer.writeAttribute("role", "menu", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
 
         encodeOptions(context, pickList, model);
 
@@ -284,11 +285,11 @@ public class PickListRenderer extends InputRenderer {
             writer.writeAttribute("class", itemClass, null);
             writer.writeAttribute("data-item-value", itemValue, null);
             writer.writeAttribute("data-item-label", itemLabel, null);
-            writer.writeAttribute("role", "menuitem", null);
+            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM, null);
 
             if (pickList.getChildCount() > 0) {
                 writer.startElement("table", null);
-                writer.writeAttribute("role", "presentation", null);
+                writer.writeAttribute(HTML.ARIA_ROLE, "presentation", null);
 
                 writer.startElement("tbody", null);
                 writer.startElement("tr", null);
@@ -372,6 +373,7 @@ public class PickListRenderer extends InputRenderer {
         writer.writeAttribute("name", name, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("class", styleClass, null);
+        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER, null), null);
         writer.endElement("input");
 
         writer.startElement("span", null);
@@ -387,7 +389,7 @@ public class PickListRenderer extends InputRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId + "_ariaRegion", null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
-        writer.writeAttribute("role", "region", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, "region", null);
         writer.writeAttribute(HTML.ARIA_LIVE, "polite", null);
         writer.writeAttribute(HTML.ARIA_ATOMIC, "true", null);
         writer.endElement("div");

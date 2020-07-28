@@ -21,10 +21,10 @@ $(function() {
 			'overflow-y': 'auto'
 		},
 
-		simulator : $('<div id="textarea_simulator"/>').css({
+		simulator : $('<div id="textarea_simulator"></div>').css({
 				position: 'absolute',
-				top: 0,
-				left: 0,
+				top: '0px',
+				left: '0px',
 				visibility: 'hidden'
 			}).appendTo(document.body),
 
@@ -56,17 +56,17 @@ $(function() {
 
 			// caculate width and height
 			cal.simulator.css($.extend({
-				'width': self.width(),
-				'height': self.height()
+				'width': self.width() + 'px',
+				'height': self.height() + 'px'
 			}, cal.specificStyle));
 
 			var value = self.val(), cursorPosition = self.getCursorPosition();
 			var beforeText = value.substring(0, cursorPosition),
 				afterText = value.substring(cursorPosition);
 
-			var before = $('<span class="before"/>').html(cal.toHtml(beforeText)),
-				focus = $('<span class="focus"/>'),
-				after = $('<span class="after"/>').html(cal.toHtml(afterText));
+			var before = $('<span class="before"></span>').html(cal.toHtml(beforeText)),
+				focus = $('<span class="focus"></span>'),
+				after = $('<span class="after"></span>').html(cal.toHtml(afterText));
 
 			cal.simulator.append(before).append(focus).append(after);
 			var focusOffset = focus.offset(), simulatorOffset = cal.simulator.offset();

@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +35,7 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
-import org.primefaces.component.datatable.TableState;
+import org.primefaces.component.datatable.DataTableState;
 import org.primefaces.util.LangUtils;
 
 public class SelectionFeature implements DataTableFeature {
@@ -67,7 +67,7 @@ public class SelectionFeature implements DataTableFeature {
         }
 
         if (table.isMultiViewState()) {
-            TableState ts = table.getTableState(true);
+            DataTableState ts = table.getMultiViewState(true);
             table.findSelectedRowKeys();
             ts.setRowKeys(table.getSelectedRowKeys());
         }

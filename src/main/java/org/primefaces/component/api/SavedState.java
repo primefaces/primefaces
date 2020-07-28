@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -56,11 +56,6 @@ public class SavedState implements Serializable {
         valid = evh.isValid();
         submittedValue = evh.getSubmittedValue();
         localValueSet = evh.isLocalValueSet();
-    }
-
-    @Deprecated
-    public void restoreState(EditableValueHolder evh) {
-        apply(evh);
     }
 
     public void apply(EditableValueHolder evh) {

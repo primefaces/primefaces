@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,6 +40,7 @@ public abstract class TextEditorBase extends UIInput implements Widget, ClientBe
         widgetVar,
         height,
         readonly,
+        disabled,
         style,
         styleClass,
         placeholder,
@@ -172,5 +173,13 @@ public abstract class TextEditorBase extends UIInput implements Widget, ClientBe
 
     public void setSecure(boolean secure) {
         getStateHelper().put(PropertyKeys.secure, secure);
+    }
+
+    public boolean isDisabled() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+    }
+
+    public void setDisabled(boolean disabled) {
+        getStateHelper().put(PropertyKeys.disabled, disabled);
     }
 }

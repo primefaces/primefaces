@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,9 +30,10 @@ import org.primefaces.model.SortMeta;
 import javax.el.MethodExpression;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import java.util.Collections;
-import java.util.List;
+import java.util.Map;
 
-public abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable {
+public abstract class DataTableBase extends UIData
+        implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable, MultiViewStateAware<DataTableState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -56,6 +57,8 @@ public abstract class DataTableBase extends UIData implements Widget, RTLAware, 
         sortBy,
         sortOrder,
         sortFunction,
+        sortMode,
+        allowUnsorting,
         scrollRows,
         rowKey,
         filterEvent,
@@ -65,7 +68,6 @@ public abstract class DataTableBase extends UIData implements Widget, RTLAware, 
         draggableColumns,
         editable,
         filteredValue,
-        sortMode,
         editMode,
         editingRow,
         cellSeparator,
@@ -97,7 +99,7 @@ public abstract class DataTableBase extends UIData implements Widget, RTLAware, 
         saveOnCellBlur,
         clientCache,
         multiViewState,
-        filterMeta,
+        filterBy,
         sortMeta,
         globalFilter,
         cellEditMode,
@@ -330,6 +332,14 @@ public abstract class DataTableBase extends UIData implements Widget, RTLAware, 
 
     public void setSortMode(String sortMode) {
         getStateHelper().put(PropertyKeys.sortMode, sortMode);
+    }
+
+    public boolean getAllowUnsorting() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.allowUnsorting, true);
+    }
+
+    public void setAllowUnsorting(boolean allowUnsorting) {
+        getStateHelper().put(PropertyKeys.allowUnsorting, allowUnsorting);
     }
 
     public String getEditMode() {
@@ -573,6 +583,7 @@ public abstract class DataTableBase extends UIData implements Widget, RTLAware, 
         getStateHelper().put(PropertyKeys.clientCache, clientCache);
     }
 
+    @Override
     public boolean isMultiViewState() {
         return (Boolean) getStateHelper().eval(PropertyKeys.multiViewState, false);
     }
@@ -581,19 +592,19 @@ public abstract class DataTableBase extends UIData implements Widget, RTLAware, 
         getStateHelper().put(PropertyKeys.multiViewState, multiViewState);
     }
 
-    public List<FilterMeta> getFilterMeta() {
-        return (List<FilterMeta>) getStateHelper().eval(PropertyKeys.filterMeta, Collections.emptyList());
+    public Map<String, FilterMeta> getFilterBy() {
+        return (Map<String, FilterMeta>) getStateHelper().eval(PropertyKeys.filterBy, Collections.emptyMap());
     }
 
-    public void setFilterMeta(java.util.List<FilterMeta> filterMeta) {
-        getStateHelper().put(PropertyKeys.filterMeta, filterMeta);
+    public void setFilterBy(Map<String, FilterMeta> filterBy) {
+        getStateHelper().put(PropertyKeys.filterBy, filterBy);
     }
 
-    public List<SortMeta> getSortMeta() {
-        return (List<SortMeta>) getStateHelper().eval(PropertyKeys.sortMeta, Collections.emptyList());
+    public Map<String, SortMeta> getSortMeta() {
+        return (Map<String, SortMeta>) getStateHelper().eval(PropertyKeys.sortMeta, Collections.emptyMap());
     }
 
-    public void setSortMeta(java.util.List<SortMeta> sortMeta) {
+    public void setSortMeta(Map<String, SortMeta> sortMeta) {
         getStateHelper().put(PropertyKeys.sortMeta, sortMeta);
     }
 

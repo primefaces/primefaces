@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -65,7 +65,8 @@ public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxS
         filter,
         filterMatchMode,
         filterFunction,
-        filterPlaceholder
+        filterPlaceholder,
+        ignoreComponentNotFound
     }
 
     public SplitButtonBase() {
@@ -306,5 +307,14 @@ public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxS
 
     public void setFilterPlaceholder(String filterPlaceholder) {
         getStateHelper().put(PropertyKeys.filterPlaceholder, filterPlaceholder);
+    }
+
+    @Override
+    public boolean isIgnoreComponentNotFound() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.ignoreComponentNotFound, false);
+    }
+
+    public void setIgnoreComponentNotFound(boolean ignoreComponentNotFound) {
+        getStateHelper().put(PropertyKeys.ignoreComponentNotFound, ignoreComponentNotFound);
     }
 }

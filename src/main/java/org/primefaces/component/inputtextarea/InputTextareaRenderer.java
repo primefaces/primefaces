@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,6 +38,7 @@ import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class InputTextareaRenderer extends InputRenderer {
@@ -59,8 +60,9 @@ public class InputTextareaRenderer extends InputRenderer {
         if (submittedValue != null) {
             // #5381: normalize new lines to match JavaScript
             submittedValue = submittedValue.replaceAll("\\r\\n?", "\n");
-            if (submittedValue.length() > inputTextarea.getMaxlength()) {
-                return;
+            int maxlength = inputTextarea.getMaxlength();
+            if (submittedValue.length() > maxlength) {
+                submittedValue = LangUtils.substring(submittedValue, 0, maxlength);
             }
         }
 
@@ -172,12 +174,7 @@ public class InputTextareaRenderer extends InputRenderer {
     }
 
     protected String createStyleClass(InputTextarea inputTextarea) {
-        String defaultClass = InputTextarea.STYLE_CLASS;
-        defaultClass = inputTextarea.isValid() ? defaultClass : defaultClass + " ui-state-error";
-        defaultClass = !inputTextarea.isDisabled() ? defaultClass : defaultClass + " ui-state-disabled";
-
-        String styleClass = inputTextarea.getStyleClass();
-        styleClass = styleClass == null ? defaultClass : defaultClass + " " + styleClass;
+        String styleClass = createStyleClass(inputTextarea, InputTextarea.STYLE_CLASS) ;
 
         if (inputTextarea.isAutoResize()) {
             styleClass = styleClass + " ui-inputtextarea-resizable";

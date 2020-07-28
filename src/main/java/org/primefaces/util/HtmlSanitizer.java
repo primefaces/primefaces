@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,9 +47,9 @@ public class HtmlSanitizer {
 
     private static final PolicyFactory HTML_STYLES_SANITIZER = Sanitizers.STYLES
             .and(new HtmlPolicyBuilder()
-            .allowElements("span", "li")
+            .allowElements("span", "li", "p")
             .allowAttributes("class")
-            .onElements("span", "li")
+            .onElements("span", "li", "p")
             .toFactory());
 
     private static final PolicyFactory HTML_DENY_ALL_SANITIZER = new HtmlPolicyBuilder().toFactory();

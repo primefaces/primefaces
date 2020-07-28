@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,6 @@ import java.net.URLEncoder;
 
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
-import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 
@@ -41,12 +40,10 @@ import org.primefaces.PrimeFaces;
 import org.json.JSONObject;
 import org.primefaces.util.MessageFactory;
 
-@ResourceDependencies({
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
-        @ResourceDependency(library = "primefaces", name = "core.js"),
-        @ResourceDependency(library = "primefaces", name = "components.js"),
-        @ResourceDependency(library = "primefaces", name = "captcha/captcha.js")
-})
+@ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
+@ResourceDependency(library = "primefaces", name = "core.js")
+@ResourceDependency(library = "primefaces", name = "components.js")
+@ResourceDependency(library = "primefaces", name = "captcha/captcha.js")
 public class Captcha extends CaptchaBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Captcha";
@@ -114,7 +111,7 @@ public class Captcha extends CaptchaBase {
                     params[0] = MessageFactory.getLabel(context, this);
                     params[1] = value;
 
-                    msg = MessageFactory.getMessage(Captcha.INVALID_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
+                    msg = MessageFactory.getFacesMessage(Captcha.INVALID_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
                 }
 
                 context.addMessage(getClientId(context), msg);

@@ -21,9 +21,11 @@ Clock displays server or client datetime live.
 | rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
 | pattern | null | String | Datetime format.
-| mode | client | String | Mode value, valid values are client and server.
+| mode | client | String | Mode value, valid values are 'client' and 'server'.
 | autoSync | false | Boolean | Syncs time periodically in server mode.
 | syncInterval | 60000 | Integer | Defines the sync in ms interval in autoSync setting.
+| timeZone | TimeZone.getDefault() | Object | String or a java.util.TimeZone instance to specify the timezone used for date conversion in 'server' mode.
+| displayMode | digital | String | Display mode, valid values are 'digital' and 'analog'.
 
 ## Getting Started with Clock
 Clock has two modes, _client_ (default) and _server_. In simples mode, datetime is displayed by just

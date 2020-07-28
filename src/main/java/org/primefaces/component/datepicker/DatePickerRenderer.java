@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,6 +41,7 @@ import org.primefaces.component.calendar.BaseCalendarRenderer;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class DatePickerRenderer extends BaseCalendarRenderer {
@@ -48,6 +49,31 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
     @Override
     protected void encodeMarkup(FacesContext context, UICalendar uicalendar, String value) throws IOException {
         DatePicker datepicker = (DatePicker) uicalendar;
+        String pattern = datepicker.calculatePattern();
+
+        if (datepicker.isShowTimeWithoutDefault() == null) {
+            Class<?> type = datepicker.getTypeFromValueByValueExpression(context);
+
+            if (type != null) {
+                datepicker.setShowTime(LocalDateTime.class.isAssignableFrom(type));
+            }
+            else {
+                datepicker.setShowTime(CalendarUtils.hasTime(pattern));
+            }
+        }
+
+        if (datepicker.isTimeOnlyWithoutDefault() == null) {
+            Class<?> type = datepicker.getTypeFromValueByValueExpression(context);
+
+            if (type != null) {
+                datepicker.setTimeOnly(LocalTime.class.isAssignableFrom(type));
+            }
+        }
+
+        if (datepicker.isShowSecondsWithoutDefault() == null) {
+            datepicker.setShowSeconds(pattern.contains("s"));
+        }
+
         ResponseWriter writer = context.getResponseWriter();
         String clientId = datepicker.getClientId(context);
         String styleClass = datepicker.getStyleClass();
@@ -83,7 +109,8 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         String defaultDate = null;
 
         if (datepicker.isConversionFailed()) {
-            defaultDate = CalendarUtils.getValueAsString(context, datepicker, LocalDateTime.now());
+            Class<?> dateType = resolveDateType(context, datepicker);
+            defaultDate = CalendarUtils.getValueAsString(context, datepicker, CalendarUtils.now(uicalendar, dateType));
         }
         else if (!isValueBlank(value)) {
             defaultDate = value;
@@ -113,10 +140,13 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("numberOfMonths", datepicker.getNumberOfMonths(), 1)
             .attr("view", datepicker.getView(), null)
             .attr("touchUI", datepicker.isTouchUI(), false)
+            .attr("showWeek", datepicker.isShowWeek(), false)
             .attr("appendTo", SearchExpressionFacade.resolveClientId(context, datepicker, datepicker.getAppendTo(),
                             SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
             .attr("icon", datepicker.getTriggerButtonIcon(), null)
-            .attr("rangeSeparator", datepicker.getRangeSeparator(), null);
+            .attr("rangeSeparator", datepicker.getRangeSeparator(), null)
+            .attr("timeInput", datepicker.isTimeInput())
+            .attr("touchable", ComponentUtils.isTouchable(context, datepicker),  true);
 
         List<Integer> disabledDays = datepicker.getDisabledDays();
         if (disabledDays != null) {
@@ -148,6 +178,11 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             wb.nativeAttr("onYearChange", onYearChange);
         }
 
+        String weekCalculator = datepicker.getWeekCalculator();
+        if (weekCalculator != null) {
+            wb.nativeAttr("weekCalculator", weekCalculator);
+        }
+
         if (datepicker.isShowOtherMonths()) {
             wb.attr("showOtherMonths", true).attr("selectOtherMonths", datepicker.isSelectOtherMonths());
         }
@@ -161,6 +196,15 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
                 .attr("stepMinute", datepicker.getStepMinute(), 1)
                 .attr("stepSecond", datepicker.getStepSecond(), 1)
                 .attr("hideOnDateTimeSelect", datepicker.isHideOnDateTimeSelect(), false);
+        }
+
+        String mask = datepicker.getMask();
+        if (mask != null && !mask.equals("false")) {
+            String patternTemplate = datepicker.calculatePattern();
+            String maskTemplate = (mask.equals("true")) ? datepicker.convertPattern(patternTemplate) : mask;
+            wb.attr("mask", maskTemplate)
+                .attr("maskSlotChar", datepicker.getMaskSlotChar(), "_")
+                .attr("maskAutoClear", datepicker.isMaskAutoClear(), true);
         }
 
         encodeClientBehaviors(context, datepicker);

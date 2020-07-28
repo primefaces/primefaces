@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,9 +36,11 @@ import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
 
 import org.primefaces.component.column.Column;
+import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
 public class SelectOneListboxRenderer extends SelectOneRenderer {
@@ -66,10 +68,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         List<SelectItem> selectItems = getSelectItems(context, listbox);
 
         String style = listbox.getStyle();
-        String styleClass = listbox.getStyleClass();
-        styleClass = styleClass == null ? SelectOneListbox.CONTAINER_CLASS : SelectOneListbox.CONTAINER_CLASS + " " + styleClass;
-        styleClass = listbox.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
-        styleClass = !listbox.isValid() ? styleClass + " ui-state-error" : styleClass;
+        String styleClass = createStyleClass(listbox, SelectOneListbox.CONTAINER_CLASS);
 
         writer.startElement("div", listbox);
         writer.writeAttribute("id", clientId, "id");
@@ -307,6 +306,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
+        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER, null), null);
         if (disabled) {
             writer.writeAttribute("disabled", "disabled", null);
         }

@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -90,7 +90,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
 
         encodeInput(context, checkbox, clientId, checked);
         encodeOutput(context, checkbox, checked, disabled);
-        encodeItemLabel(context, checkbox, clientId);
+        encodeItemLabel(context, checkbox, clientId, disabled);
 
         writer.endElement("div");
     }
@@ -98,6 +98,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
     protected void encodeInput(FacesContext context, SelectBooleanCheckbox checkbox, String clientId, boolean checked) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = clientId + "_input";
+        String ariaLabel = checkbox.getAriaLabel() != null ? checkbox.getAriaLabel() : checkbox.getItemLabel();
 
         writer.startElement("div", checkbox);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
@@ -107,7 +108,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "checkbox", null);
         writer.writeAttribute("autocomplete", "off", null);
-        writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
+        writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
 
         if (checked) {
             writer.writeAttribute("checked", "checked", null);
@@ -130,9 +131,8 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
 
     protected void encodeOutput(FacesContext context, SelectBooleanCheckbox checkbox, boolean checked, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String styleClass = HTML.CHECKBOX_BOX_CLASS;
+        String styleClass = createStyleClass(checkbox, null, HTML.CHECKBOX_BOX_CLASS);
         styleClass = checked ? styleClass + " ui-state-active" : styleClass;
-        styleClass = !checkbox.isValid() ? styleClass + " ui-state-error" : styleClass;
         styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
 
         String iconClass = checked ? HTML.CHECKBOX_CHECKED_ICON_CLASS : HTML.CHECKBOX_UNCHECKED_ICON_CLASS;
@@ -147,14 +147,16 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeItemLabel(FacesContext context, SelectBooleanCheckbox checkbox, String clientId) throws IOException {
+    protected void encodeItemLabel(FacesContext context, SelectBooleanCheckbox checkbox, String clientId, boolean disabled) throws IOException {
         String label = checkbox.getItemLabel();
 
         if (label != null) {
             ResponseWriter writer = context.getResponseWriter();
 
             writer.startElement("span", null);
-            writer.writeAttribute("class", HTML.CHECKBOX_LABEL_CLASS, null);
+            String styleClass = HTML.CHECKBOX_LABEL_CLASS;
+            styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
+            writer.writeAttribute("class", styleClass, null);
 
             if (checkbox.isEscape()) {
                 writer.writeText(label, "itemLabel");

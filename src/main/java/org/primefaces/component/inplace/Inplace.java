@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
@@ -36,12 +35,10 @@ import javax.faces.event.BehaviorEvent;
 
 import org.primefaces.util.MapBuilder;
 
-@ResourceDependencies({
-        @ResourceDependency(library = "primefaces", name = "components.css"),
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
-        @ResourceDependency(library = "primefaces", name = "core.js"),
-        @ResourceDependency(library = "primefaces", name = "components.js")
-})
+@ResourceDependency(library = "primefaces", name = "components.css")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
+@ResourceDependency(library = "primefaces", name = "core.js")
+@ResourceDependency(library = "primefaces", name = "components.js")
 public class Inplace extends InplaceBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Inplace";
@@ -76,6 +73,9 @@ public class Inplace extends InplaceBase {
 
     @Override
     public void processDecodes(FacesContext context) {
+        if (!isRendered() || isDisabled()) {
+            return;
+        }
         if (shouldSkipChildren(context)) {
             decode(context);
         }
@@ -110,6 +110,17 @@ public class Inplace extends InplaceBase {
             if (component instanceof EditableValueHolder && !((EditableValueHolder) component).isValid()) {
                 valid = false;
                 break;
+            }
+
+            int childCount = component.getChildCount();
+            if (childCount > 0) {
+                for (int i = 0; i < childCount; i++) {
+                    UIComponent child = component.getChildren().get(i);
+                    if (child instanceof EditableValueHolder && !((EditableValueHolder) child).isValid()) {
+                        valid = false;
+                        break;
+                    }
+                }
             }
         }
 

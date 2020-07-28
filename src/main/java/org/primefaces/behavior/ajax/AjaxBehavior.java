@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,6 @@ import java.util.EnumSet;
 import java.util.Set;
 
 import javax.el.MethodExpression;
-import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.behavior.ClientBehaviorHint;
 import javax.faces.event.AjaxBehaviorListener;
@@ -37,11 +36,9 @@ import org.primefaces.behavior.base.AbstractBehavior;
 import org.primefaces.behavior.base.BehaviorAttribute;
 import org.primefaces.component.api.AjaxSource;
 
-@ResourceDependencies({
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
-        @ResourceDependency(library = "primefaces", name = "core.js")
-    })
+@ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
+@ResourceDependency(library = "primefaces", name = "core.js")
 public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
 
     public static final String BEHAVIOR_ID = "org.primefaces.component.AjaxBehavior";
@@ -67,7 +64,8 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
         timeout(Integer.class),
         partialSubmitFilter(String.class),
         form(String.class),
-        skipChildren(Boolean.class);
+        skipChildren(Boolean.class),
+        ignoreComponentNotFound(Boolean.class);
 
         private final Class<?> expectedType;
 
@@ -281,6 +279,10 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
         return true;
     }
 
+    @Override
+    public boolean isIgnoreComponentNotFound() {
+        return eval(PropertyKeys.ignoreComponentNotFound, Boolean.FALSE);
+    }
 
     @Override
     protected BehaviorAttribute[] getAllAttributes() {

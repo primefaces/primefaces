@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -122,7 +122,7 @@ public class FileUploadFilter implements Filter {
     protected FileItemFactory createFileItemFactory(HttpServletRequest httpServletRequest) {
         DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory();
         if (thresholdSize != null) {
-            diskFileItemFactory.setSizeThreshold(Integer.valueOf(thresholdSize));
+            diskFileItemFactory.setSizeThreshold(Integer.parseInt(thresholdSize));
         }
         if (uploadDir != null) {
             diskFileItemFactory.setRepository(new File(uploadDir));

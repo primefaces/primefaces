@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -130,9 +130,8 @@ public class RadioButtonRenderer extends InputRenderer {
 
     protected void encodeOptionOutput(FacesContext context, boolean disabled, SelectOneRadio selectOneRadio) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String boxClass = HTML.RADIOBUTTON_BOX_CLASS;
+        String boxClass = createStyleClass(selectOneRadio, null, HTML.RADIOBUTTON_BOX_CLASS) ;
         boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
-        boxClass = !selectOneRadio.isValid() ? boxClass + " ui-state-error" : boxClass;
 
         writer.startElement("div", null);
         writer.writeAttribute("class", boxClass, null);

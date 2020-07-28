@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,22 +23,23 @@
  */
 package org.primefaces.component.selectoneradio;
 
-import javax.faces.application.ResourceDependencies;
+import java.util.List;
+
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 
-@ResourceDependencies({
-        @ResourceDependency(library = "primefaces", name = "components.css"),
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
-        @ResourceDependency(library = "primefaces", name = "core.js"),
-        @ResourceDependency(library = "primefaces", name = "components.js")
-})
+import org.primefaces.util.LangUtils;
+
+@ResourceDependency(library = "primefaces", name = "components.css")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
+@ResourceDependency(library = "primefaces", name = "core.js")
+@ResourceDependency(library = "primefaces", name = "components.js")
 public class SelectOneRadio extends SelectOneRadioBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectOneRadio";
 
-    public static final String[] SUPPORTED_EVENTS = new String[]{"onchange", "onclick"};
+    public static final List<String> DOM_EVENTS = LangUtils.unmodifiableList("onchange", "onclick");
 
     public static final String STYLE_CLASS = "ui-selectoneradio ui-widget";
     public static final String NATIVE_STYLE_CLASS = "ui-selectoneradio ui-selectoneradio-native ui-widget";
