@@ -2134,7 +2134,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Advisory tooltip informaton.]]>
+                <![CDATA[Advisory tooltip information.]]>
             </description>
             <name>title</name>
             <required>false</required>
@@ -5348,7 +5348,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Advisory tooltip informaton.]]>
+                <![CDATA[Advisory tooltip information.]]>
             </description>
             <name>title</name>
             <required>false</required>
@@ -5840,7 +5840,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Advisory tooltip informaton.]]>
+                <![CDATA[Advisory tooltip information.]]>
             </description>
             <name>title</name>
             <required>false</required>
@@ -14844,7 +14844,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Advisory tooltip informaton.]]>
+                <![CDATA[Advisory tooltip information.]]>
             </description>
             <name>title</name>
             <required>false</required>
@@ -15159,7 +15159,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Advisory tooltip informaton.]]>
+                <![CDATA[Advisory tooltip information.]]>
             </description>
             <name>title</name>
             <required>false</required>
@@ -17390,7 +17390,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Advisory tooltip informaton.]]>
+                <![CDATA[Advisory tooltip information.]]>
             </description>
             <name>title</name>
             <required>false</required>
@@ -19437,6 +19437,14 @@
                 <![CDATA[Name of the client side widget.]]>
             </description>
             <name>widgetVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Advisory tooltip information.]]>
+            </description>
+            <name>title</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -23459,7 +23467,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Advisory tooltip informaton.]]>
+                <![CDATA[Advisory tooltip information.]]>
             </description>
             <name>title</name>
             <required>false</required>
@@ -24160,7 +24168,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Advisory tooltip informaton.]]>
+                <![CDATA[Advisory tooltip information.]]>
             </description>
             <name>title</name>
             <required>false</required>
@@ -24822,7 +24830,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Advisory tooltip informaton.]]>
+                <![CDATA[Advisory tooltip information.]]>
             </description>
             <name>title</name>
             <required>false</required>
