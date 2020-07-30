@@ -23,13 +23,13 @@
  */
 package org.primefaces.util;
 
-import org.primefaces.component.api.RTLAware;
-import org.primefaces.component.api.TouchAware;
-import org.primefaces.component.api.UITabPanel;
-import org.primefaces.component.api.Widget;
-import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.context.PrimeRequestContext;
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -44,13 +44,14 @@ import javax.faces.component.visit.VisitHint;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.render.Renderer;
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
+
+import org.primefaces.component.api.RTLAware;
+import org.primefaces.component.api.TouchAware;
+import org.primefaces.component.api.UITabPanel;
+import org.primefaces.component.api.Widget;
+import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
 
 public class ComponentUtils {
 
@@ -58,8 +59,6 @@ public class ComponentUtils {
             EnumSet.of(VisitHint.SKIP_UNRENDERED));
 
     public static final String SKIP_ITERATION_HINT = "javax.faces.visit.SKIP_ITERATION";
-
-    private static final String SB_ESCAPE = ComponentUtils.class.getName() + "#escape";
 
     // marker for a undefined value when a null check is not reliable enough
     private static final Object UNDEFINED_VALUE = new Object();
@@ -337,95 +336,19 @@ public class ComponentUtils {
     /**
      * Duplicate code from json-simple project under apache license
      * http://code.google.com/p/json-simple/source/browse/trunk/src/org/json/simple/JSONValue.java
-     * @deprecated Use {@link EscapeUtils}
+     * @deprecated Use {@link EscapeUtils.forJavaScript}
      */
     @Deprecated
     public static String escapeText(String text) {
-        if (text == null) {
-            return null;
-        }
-
-        StringBuilder sb = SharedStringBuilder.get(SB_ESCAPE);
-
-        for (int i = 0; i < text.length(); i++) {
-            char ch = text.charAt(i);
-            switch (ch) {
-                case '"':
-                    sb.append("\\\"");
-                    break;
-                case '\\':
-                    sb.append("\\\\");
-                    break;
-                case '\b':
-                    sb.append("\\b");
-                    break;
-                case '\f':
-                    sb.append("\\f");
-                    break;
-                case '\n':
-                    sb.append("\\n");
-                    break;
-                case '\r':
-                    sb.append("\\r");
-                    break;
-                case '\t':
-                    sb.append("\\t");
-                    break;
-                case '/':
-                    sb.append("\\/");
-                    break;
-                default:
-                    //Reference: http://www.unicode.org/versions/Unicode5.1.0/
-                    if ((ch >= '\u0000' && ch <= '\u001F') || (ch >= '\u007F' && ch <= '\u009F') || (ch >= '\u2000' && ch <= '\u20FF')) {
-                        String ss = Integer.toHexString(ch);
-                        sb.append("\\u");
-                        for (int k = 0; k < 4 - ss.length(); k++) {
-                            sb.append('0');
-                        }
-                        sb.append(ss.toUpperCase());
-                    }
-                    else {
-                        sb.append(ch);
-                    }
-            }
-        }
-
-        return sb.toString();
+        return EscapeUtils.forJavaScript(text);
     }
 
     /**
-     * @deprecated Use {@link EscapeUtils}
+     * @deprecated Use {@link EscapeUtils.forJavaScript}
      */
     @Deprecated
     public static String escapeEcmaScriptText(String text) {
-        if (text == null) {
-            return null;
-        }
-
-        StringBuilder sb = SharedStringBuilder.get(SB_ESCAPE);
-
-        for (int i = 0; i < text.length(); i++) {
-            char ch = text.charAt(i);
-            switch (ch) {
-                case '"':
-                    sb.append("\\\"");
-                    break;
-                case '\'':
-                    sb.append("\\'");
-                    break;
-                case '\\':
-                    sb.append("\\\\");
-                    break;
-                case '/':
-                    sb.append("\\/");
-                    break;
-                default:
-                    sb.append(ch);
-                    break;
-            }
-        }
-
-        return sb.toString();
+        return EscapeUtils.forJavaScript(text);
     }
 
     /**
@@ -439,31 +362,11 @@ public class ComponentUtils {
      *
      * @param string The string to be escaped.
      * @return The escaped string.
-     * @deprecated Use {@link EscapeUtils}
+     * @deprecated Use {@link EscapeUtils.forXml}
      */
     @Deprecated
     public static String escapeXml(String string) {
-        StringBuilder sb = SharedStringBuilder.get(SB_ESCAPE, string.length());
-        for (int i = 0, length = string.length(); i < length; i++) {
-            char c = string.charAt(i);
-            switch (c) {
-                case '&':
-                    sb.append("&amp;");
-                    break;
-                case '<':
-                    sb.append("&lt;");
-                    break;
-                case '>':
-                    sb.append("&gt;");
-                    break;
-                case '\'':
-                    sb.append("&apos;");
-                    break;
-                default:
-                    sb.append(c);
-            }
-        }
-        return sb.toString();
+        return EscapeUtils.forXml(string);
     }
 
     /**
