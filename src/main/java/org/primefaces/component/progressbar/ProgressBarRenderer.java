@@ -65,6 +65,7 @@ public class ProgressBarRenderer extends CoreRenderer {
         String mode = progressBar.getMode();
         int value = progressBar.getValue();
         String labelTemplate = progressBar.getLabelTemplate();
+        String title = progressBar.getTitle();
         String style = progressBar.getStyle();
         String styleClass = progressBar.getStyleClass();
         styleClass = styleClass == null ? ProgressBar.CONTAINER_CLASS : ProgressBar.CONTAINER_CLASS + " " + styleClass;
@@ -79,6 +80,9 @@ public class ProgressBarRenderer extends CoreRenderer {
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
             writer.writeAttribute("style", style, "style");
+        }
+        if (title != null) {
+            writer.writeAttribute("title", title, null);
         }
 
         //value
