@@ -60,8 +60,6 @@ public class ComponentUtils {
 
     public static final String SKIP_ITERATION_HINT = "javax.faces.visit.SKIP_ITERATION";
 
-    private static final String SB_ESCAPE = ComponentUtils.class.getName() + "#escape";
-
     // marker for a undefined value when a null check is not reliable enough
     private static final Object UNDEFINED_VALUE = new Object();
 
