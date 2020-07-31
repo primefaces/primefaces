@@ -24,6 +24,7 @@
 package org.primefaces.component.treetable;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -1301,19 +1302,17 @@ public class TreeTableRenderer extends DataRenderer {
     }
 
     protected TreeNode createNewNode(TreeNode node, TreeNode parent) {
-        TreeNode newNode = null;
+        try {
+            Constructor<? extends TreeNode> ctor = node.getClass().getConstructor(String.class, Object.class, TreeNode.class);
+            TreeNode newNode = ctor.newInstance(node.getType(), node.getData(), parent);
 
-        if (node instanceof CheckboxTreeNode) {
-            newNode = new CheckboxTreeNode(node.getType(), node.getData(), parent);
+            newNode.setSelected(node.isSelected());
+            newNode.setExpanded(node.isExpanded());
+            return newNode;
         }
-        else {
-            newNode = new DefaultTreeNode(node.getType(), node.getData(), parent);
+        catch (ReflectiveOperationException e) {
+            throw new FacesException(e);
         }
-
-        newNode.setSelected(node.isSelected());
-        newNode.setExpanded(node.isExpanded());
-
-        return newNode;
     }
 
     public FilterConstraint getFilterConstraint(UIColumn column) {
