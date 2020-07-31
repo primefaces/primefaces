@@ -9,7 +9,7 @@ experience difference behaviors on client side and server side.
 
 - Compatible with Server Side Implementation.
 - Conversion and Validation happens at client side.
-- Partial Process&Update support for Ajax.
+- Partial Process & Update support for AJAX.
 - I18n support along with component specific messages.
 - Client side Renderers for message components.
 - Easy to write custom client converters and validators.
@@ -42,17 +42,17 @@ using messages component.
 
 CSV works for PrimeFaces components only, standard h: * components are not supported.
 
-## Ajax vs Non-Ajax
+## AJAX vs Non-AJAX
 
 CSV works differently depending on the request type of the trigger component to be compatible
 with cases where CSV is not enabled.
 
 
-**Non-Ajax**
-In non-ajax case, all visible and editable input components in the form are validated and message
+**Non-AJAX**
+In non-AJAX case, all visible and editable input components in the form are validated and message
 components must be placed inside the form.
 
-**Ajax**
+**AJAX**
 CSV supports partial processing and updates on client side as well, if process attribute is enabled,
 the components that would be processed at server side gets validated at client side. Similary if
 update attribute is defined, only message components inside the updated parts gets rendered. Whole
@@ -105,8 +105,8 @@ p:messages and p:growl. Component options like showSummary, showDetail, globalOn
 all implemented by client side renderer for compatibility.
 
 **MyFaces vs Mojarra**
-Bean validation messages between implementations have a slight difference regarding labels,
-mojarra do not the label of the field but myfaces does. For example;
+Bean Validation messages between implementations have a slight difference regarding labels,
+Mojarra do not the label of the field but MyFaces does. For example;
 
 ```js
 Mojarra:
