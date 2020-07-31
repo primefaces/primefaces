@@ -807,6 +807,17 @@
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
                             <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/validation/validation.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/validation/validation.common.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/validation/validation.converters.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/validation/validation.validators.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/validation/validation.highlighters.js</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/imagecropper/imagecropper.js</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/imagecropper/0-cropper.js</include>
@@ -1084,7 +1095,7 @@
                                             <resource>META-INF/resources/primefaces/validation/validation.js</resource>
                                         </transformer>
                                         <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/validation/beanvalidation.js</resource>
+                                            <resource>META-INF/resources/primefaces/validation/validation.bv.js</resource>
                                         </transformer>
                                         <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                             <resource>META-INF/resources/primefaces/fileupload/fileupload.js</resource>
