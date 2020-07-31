@@ -124,6 +124,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("buttonTabindex", datepicker.getButtonTabindex())
             .attr("focusOnSelect", datepicker.isFocusOnSelect(), false)
             .attr("disabled", datepicker.isDisabled(), false)
+            .attr("valid", datepicker.isValid(), true)
             .attr("yearRange", datepicker.getYearRange(), null)
             .attr("minDate", getMinMaxDate(context, datepicker, datepicker.getMindate(), false), null)
             .attr("maxDate", getMinMaxDate(context, datepicker, datepicker.getMaxdate(), true), null)
