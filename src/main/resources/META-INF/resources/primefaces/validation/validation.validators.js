@@ -11,7 +11,7 @@ if (window.PrimeFaces) {
             var length = element.val().length,
             min = element.data('p-minlength'),
             max = element.data('p-maxlength'),
-            vc = PrimeFaces.util.ValidationContext;
+            vc = PrimeFaces.validation.ValidationContext;
 
             if(max !== undefined && length > max) {
                 throw vc.getMessage(this.MAXIMUM_MESSAGE_ID, max, vc.getLabel(element));
@@ -34,7 +34,7 @@ if (window.PrimeFaces) {
             if(value !== null) {
                 var min = element.data('p-minvalue'),
                 max = element.data('p-maxvalue'),
-                vc = PrimeFaces.util.ValidationContext;
+                vc = PrimeFaces.validation.ValidationContext;
 
                 if(!this.regex.test(element.val())) {
                     throw vc.getMessage(this.TYPE_MESSAGE_ID, vc.getLabel(element));
@@ -64,7 +64,7 @@ if (window.PrimeFaces) {
             if(value !== null) {
                 var min = element.data('p-minvalue'),
                 max = element.data('p-maxvalue'),
-                vc = PrimeFaces.util.ValidationContext;
+                vc = PrimeFaces.validation.ValidationContext;
 
                 if(!this.regex.test(element.val())) {
                     throw vc.getMessage(this.TYPE_MESSAGE_ID, vc.getLabel(element));
@@ -91,7 +91,7 @@ if (window.PrimeFaces) {
         validate: function(element, value) {
             if(value !== null) {
                 var pattern = element.data('p-regex'),
-                vc = PrimeFaces.util.ValidationContext;
+                vc = PrimeFaces.validation.ValidationContext;
 
                 if(!pattern) {
                     throw vc.getMessage(this.PATTERN_NOT_SET_MESSAGE_ID);

@@ -35,7 +35,7 @@ if (window.PrimeFaces) {
 
         validate: function(element, value) {
             if(value === true) {
-                var vc = PrimeFaces.util.ValidationContext;
+                var vc = PrimeFaces.validation.ValidationContext;
                 throw vc.getMessageBV(element, this.MESSAGE_ID, element.data('p-afalse-msg'));
             }
         }
@@ -47,7 +47,7 @@ if (window.PrimeFaces) {
 
         validate: function(element, value) {
             if(value === false) {
-                var vc = PrimeFaces.util.ValidationContext;
+                var vc = PrimeFaces.validation.ValidationContext;
                 throw vc.getMessageBV(element, this.MESSAGE_ID, element.data('p-atrue-msg'));
             }
         }
@@ -60,7 +60,7 @@ if (window.PrimeFaces) {
         validate: function(element, value) {
             if(value !== null) {
                 var max = element.data('p-maxvalue'),
-                vc = PrimeFaces.util.ValidationContext;
+                vc = PrimeFaces.validation.ValidationContext;
 
                 if(value > max) {
                     throw vc.getMessageBV(element, this.MESSAGE_ID, element.data('p-decimalmax-msg'), max);
@@ -76,7 +76,7 @@ if (window.PrimeFaces) {
         validate: function(element, value) {
             if(value !== null) {
                 var min = element.data('p-minvalue'),
-                vc = PrimeFaces.util.ValidationContext;
+                vc = PrimeFaces.validation.ValidationContext;
 
                 if(value < min) {
                     throw vc.getMessageBV(element, this.MESSAGE_ID, element.data('p-decimalmin-msg'), min);
@@ -93,7 +93,7 @@ if (window.PrimeFaces) {
             if(value !== null) {
                 var digitsInteger = element.data('p-dintvalue'),
                 digitsFraction = element.data('p-dfracvalue'),
-                vc = PrimeFaces.util.ValidationContext,
+                vc = PrimeFaces.validation.ValidationContext,
                 locale = vc.getLocaleSettings();
 
                 var tokens = value.toString().split(locale.decimalSeparator),
@@ -117,7 +117,7 @@ if (window.PrimeFaces) {
 
         validate: function(element, value) {
             if(value !== null && !EMAIL_ADDRESS_REGEX.test(value)) {
-                var vc = PrimeFaces.util.ValidationContext;
+                var vc = PrimeFaces.validation.ValidationContext;
                 return vc.getMessageBV(element, this.MESSAGE_ID, element.data('p-email-msg'));
             }
         }
@@ -129,7 +129,7 @@ if (window.PrimeFaces) {
 
         validate: function(element, value) {
             if(value !== null && value <= new Date()) {
-                var vc = PrimeFaces.util.ValidationContext;
+                var vc = PrimeFaces.validation.ValidationContext;
                 throw vc.getMessageBV(element, this.MESSAGE_ID, element.data('p-future-msg'));
             }
         }
@@ -141,7 +141,7 @@ if (window.PrimeFaces) {
 
         validate: function(element, value) {
             if(value !== null && value < new Date()) {
-                var vc = PrimeFaces.util.ValidationContext;
+                var vc = PrimeFaces.validation.ValidationContext;
                 throw vc.getMessageBV(element, this.MESSAGE_ID, element.data('p-futureorpresent-msg'));
             }
         }
@@ -154,7 +154,7 @@ if (window.PrimeFaces) {
         validate: function(element, value) {
             if(value !== null) {
                 var max = element.data('p-maxvalue'),
-                vc = PrimeFaces.util.ValidationContext;
+                vc = PrimeFaces.validation.ValidationContext;
 
                 if(value > max) {
                     throw vc.getMessageBV(element, this.MESSAGE_ID, element.data('p-max-msg'), max);
@@ -170,7 +170,7 @@ if (window.PrimeFaces) {
         validate: function(element, value) {
             if(value !== null) {
                 var min = element.data('p-minvalue'),
-                vc = PrimeFaces.util.ValidationContext;
+                vc = PrimeFaces.validation.ValidationContext;
 
                 if(value < min) {
                     throw vc.getMessageBV(element, this.MESSAGE_ID, element.data('p-min-msg'), min);
@@ -185,7 +185,7 @@ if (window.PrimeFaces) {
 
         validate: function(element, value) {
             if(value !== null && value >= 0) {
-                var vc = PrimeFaces.util.ValidationContext;
+                var vc = PrimeFaces.validation.ValidationContext;
                 throw vc.getMessageBV(element, this.MESSAGE_ID, element.data('p-negative-msg'), min);
             }
         }
@@ -197,7 +197,7 @@ if (window.PrimeFaces) {
 
         validate: function(element, value) {
             if(value !== null && value > 0) {
-                var vc = PrimeFaces.util.ValidationContext;
+                var vc = PrimeFaces.validation.ValidationContext;
                 throw vc.getMessageBV(element, this.MESSAGE_ID, element.data('p-negativeorzero-msg'), min);
             }
         }
@@ -209,7 +209,7 @@ if (window.PrimeFaces) {
 
         validate: function(element, value) {
             if(value === null || value === undefined || 0 === value.trim().length) {
-                var vc = PrimeFaces.util.ValidationContext;
+                var vc = PrimeFaces.validation.ValidationContext;
                 throw vc.getMessageBV(element, this.MESSAGE_ID, element.data('p-notblank-msg'));
             }
         }
@@ -221,7 +221,7 @@ if (window.PrimeFaces) {
 
         validate: function(element, value) {
             if(value === null || value === undefined || 0 === value.length) {
-                var vc = PrimeFaces.util.ValidationContext;
+                var vc = PrimeFaces.validation.ValidationContext;
                 throw vc.getMessageBV(element, this.MESSAGE_ID, element.data('p-notempty-msg'));
             }
         }
@@ -233,7 +233,7 @@ if (window.PrimeFaces) {
 
         validate: function(element, value) {
             if(value === null || value === undefined) {
-                var vc = PrimeFaces.util.ValidationContext;
+                var vc = PrimeFaces.validation.ValidationContext;
                 throw vc.getMessageBV(element, this.MESSAGE_ID, element.data('p-notnull-msg'));
             }
         }
@@ -245,7 +245,7 @@ if (window.PrimeFaces) {
 
         validate: function(element, value) {
             if(value !== null) {
-                var vc = PrimeFaces.util.ValidationContext;
+                var vc = PrimeFaces.validation.ValidationContext;
                 throw vc.getMessageBV(element, this.MESSAGE_ID, element.data('p-null-msg'));
             }
         }
@@ -257,7 +257,7 @@ if (window.PrimeFaces) {
 
         validate: function(element, value) {
             if(value !== null && value >= new Date()) {
-                var vc = PrimeFaces.util.ValidationContext;
+                var vc = PrimeFaces.validation.ValidationContext;
                 throw vc.getMessageBV(element, this.MESSAGE_ID, element.data('p-past-msg'));
             }
         }
@@ -269,7 +269,7 @@ if (window.PrimeFaces) {
 
         validate: function(element, value) {
             if(value !== null && value > new Date()) {
-                var vc = PrimeFaces.util.ValidationContext;
+                var vc = PrimeFaces.validation.ValidationContext;
                 throw vc.getMessageBV(element, this.MESSAGE_ID, element.data('p-pastorpresent-msg'));
             }
         }
@@ -282,7 +282,7 @@ if (window.PrimeFaces) {
         validate: function(element, value) {
             if(value !== null) {
                 var pattern = element.data('p-pattern'),
-                vc = PrimeFaces.util.ValidationContext,
+                vc = PrimeFaces.validation.ValidationContext,
                 regex = new RegExp(pattern);
 
                 if(!regex.test(value)) {
@@ -298,7 +298,7 @@ if (window.PrimeFaces) {
 
         validate: function(element, value) {
             if(value !== null && value <= 0) {
-                var vc = PrimeFaces.util.ValidationContext;
+                var vc = PrimeFaces.validation.ValidationContext;
                 throw vc.getMessageBV(element, this.MESSAGE_ID, element.data('p-positive-msg'), min);
             }
         }
@@ -310,7 +310,7 @@ if (window.PrimeFaces) {
 
         validate: function(element, value) {
             if(value !== null && value < 0) {
-                var vc = PrimeFaces.util.ValidationContext;
+                var vc = PrimeFaces.validation.ValidationContext;
                 throw vc.getMessageBV(element, this.MESSAGE_ID, element.data('p-positiveorzero-msg'), min);
             }
         }
@@ -325,7 +325,7 @@ if (window.PrimeFaces) {
                 var length = element.val().length,
                 min = element.data('p-minlength'),
                 max = element.data('p-maxlength'),
-                vc = PrimeFaces.util.ValidationContext;
+                vc = PrimeFaces.validation.ValidationContext;
 
                 if(length < min || length > max) {
                     throw vc.getMessageBV(element, this.MESSAGE_ID, element.data('p-size-msg'), min, max);
@@ -343,7 +343,7 @@ if (window.PrimeFaces) {
      * @param {string} [msg] Default message to show. May be used to find the key of the message.
      * @return {PrimeFaces.FacesMessageBase} A faces message with the given key for the given element.
      */
-    PrimeFaces.util.ValidationContext.getMessageBV = function(element, defaultKey, msg) {
+    PrimeFaces.validation.ValidationContext.getMessageBV = function(element, defaultKey, msg) {
         if (msg && msg.charAt(0) !== '{') {
             return { summary : msg, detail : msg };
         }
@@ -353,7 +353,7 @@ if (window.PrimeFaces) {
                 key = msg.substring(1, msg.length - 1);
             }
 
-            var locale = PrimeFaces.util.ValidationContext.getLocaleSettings();
+            var locale = PrimeFaces.validation.ValidationContext.getLocaleSettings();
             var bundle = (locale.messages && locale.messages[key]) ? locale : PrimeFaces.locales['en_US'];
 
             var summary = bundle.messages[key];
@@ -367,7 +367,7 @@ if (window.PrimeFaces) {
                 // simulate the message handling of the server side BeanValidator
                 var wrapperBundle = (locale.messages && locale.messages['javax.faces.validator.BeanValidator.MESSAGE']) ? locale : PrimeFaces.locales['en_US'];
                 var wrapper = wrapperBundle.messages['javax.faces.validator.BeanValidator.MESSAGE'];
-                var label = PrimeFaces.util.ValidationContext.getLabel(element);
+                var label = PrimeFaces.validation.ValidationContext.getLabel(element);
                 summary = wrapper.replace("{0}", summary).replace("{1}", label);
                 detail = wrapper.replace("{0}", detail).replace("{1}", label);
 
@@ -392,7 +392,7 @@ if (window.PrimeFaces) {
      * at index `i` corresponds to the placeholder `{i-3}`.
      * @return {string} The string, with the placeholders replaced by the given params.
      */
-    PrimeFaces.util.ValidationContext.formatBV = function(str, params) {
+    PrimeFaces.validation.ValidationContext.formatBV = function(str, params) {
         var s = str;
         for(var i = 3; i < params.length; i++) {       
             var reg = new RegExp('\\{' + (i - 3) + '\\}', 'gm');             

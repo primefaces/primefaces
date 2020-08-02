@@ -18,7 +18,7 @@ if (window.PrimeFaces) {
                 return null;
             }
 
-            var vc = PrimeFaces.util.ValidationContext;
+            var vc = PrimeFaces.validation.ValidationContext;
 
             if(!this.regex.test(submittedValue)) {
                 throw vc.getMessage(this.MESSAGE_ID, submittedValue, 9346, vc.getLabel(element));
@@ -43,7 +43,7 @@ if (window.PrimeFaces) {
                 return null;
             }
 
-            var vc = PrimeFaces.util.ValidationContext;
+            var vc = PrimeFaces.validation.ValidationContext;
 
             if(!this.regex.test(submittedValue)) {
                 throw vc.getMessage(this.MESSAGE_ID, submittedValue, 98765432, vc.getLabel(element));
@@ -68,7 +68,7 @@ if (window.PrimeFaces) {
                 return null;
             }
 
-            var vc = PrimeFaces.util.ValidationContext;
+            var vc = PrimeFaces.validation.ValidationContext;
 
             if(!this.regex.test(submittedValue)) {
                 throw vc.getMessage(this.MESSAGE_ID, submittedValue, 1999999, vc.getLabel(element));
@@ -93,7 +93,7 @@ if (window.PrimeFaces) {
                 return null;
             }
 
-            var vc = PrimeFaces.util.ValidationContext;
+            var vc = PrimeFaces.validation.ValidationContext;
 
             if(!this.regex.test(submittedValue)) {
                 throw vc.getMessage(this.MESSAGE_ID, submittedValue, 2000000000, vc.getLabel(element));
@@ -118,7 +118,7 @@ if (window.PrimeFaces) {
                 return null;
             }
 
-            var vc = PrimeFaces.util.ValidationContext;
+            var vc = PrimeFaces.validation.ValidationContext;
 
             if(!this.regex.test(submittedValue)) {
                 throw vc.getMessage(this.MESSAGE_ID, submittedValue, 32456, vc.getLabel(element));
@@ -143,7 +143,7 @@ if (window.PrimeFaces) {
                 return null;
             }
 
-            var vc = PrimeFaces.util.ValidationContext;
+            var vc = PrimeFaces.validation.ValidationContext;
 
             if(!this.regex.test(submittedValue)) {
                 throw vc.getMessage(this.MESSAGE_ID, submittedValue, 9876, vc.getLabel(element));
@@ -168,7 +168,7 @@ if (window.PrimeFaces) {
                 return null;
             }
 
-            var vc = PrimeFaces.util.ValidationContext;
+            var vc = PrimeFaces.validation.ValidationContext;
 
             if(!this.regex.test(submittedValue)) {
                 throw vc.getMessage(this.MESSAGE_ID, submittedValue, 198.23, vc.getLabel(element));
@@ -193,7 +193,7 @@ if (window.PrimeFaces) {
                 return null;
             }
 
-            var vc = PrimeFaces.util.ValidationContext;
+            var vc = PrimeFaces.validation.ValidationContext;
 
             if(!this.regex.test(submittedValue)) {
                 throw vc.getMessage(this.MESSAGE_ID, submittedValue, -12, vc.getLabel(element));
@@ -222,7 +222,7 @@ if (window.PrimeFaces) {
                 return null;
             }
 
-            var vc = PrimeFaces.util.ValidationContext;
+            var vc = PrimeFaces.validation.ValidationContext;
 
             try {
                 return submittedValue.charAt(0);
@@ -248,7 +248,7 @@ if (window.PrimeFaces) {
                 return null;
             }
 
-            var vc = PrimeFaces.util.ValidationContext;
+            var vc = PrimeFaces.validation.ValidationContext;
 
             try {
                 return ((submittedValue === 'true' || submittedValue === 'on' || submittedValue === 'yes') ? true : false);
@@ -274,7 +274,7 @@ if (window.PrimeFaces) {
                 return null;
             }
 
-            var vc = PrimeFaces.util.ValidationContext,
+            var vc = PrimeFaces.validation.ValidationContext,
             pattern = element.data('p-pattern'),
             type = element.data('p-dttype'),
             datePattern = null,
@@ -342,7 +342,7 @@ if (window.PrimeFaces) {
                 return null;
             }
 
-            var vc = PrimeFaces.util.ValidationContext,
+            var vc = PrimeFaces.validation.ValidationContext,
             locale = vc.getLocaleSettings(),
             type = element.data('p-notype'),
             maxIntegerDigits = element.data('p-maxint'),

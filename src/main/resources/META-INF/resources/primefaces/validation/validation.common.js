@@ -78,6 +78,8 @@ if (window.PrimeFaces) {
      */
     PrimeFaces.converter = { };
 
+    PrimeFaces.validation = { };
+
     /**
      * A shortcut for `PrimeFaces.validate`.
      * @function
@@ -86,7 +88,7 @@ if (window.PrimeFaces) {
      * @return {boolean} `true` if the request would not result in validation errors, or `false` otherwise.
      */
     PrimeFaces.vb = function(cfg) {
-        return this.validate(cfg);
+        return PrimeFaces.validation.validate(cfg);
     };
 
     /**
@@ -96,7 +98,7 @@ if (window.PrimeFaces) {
      * @return {boolean} `true` if the element is valid, or `false` otherwise.
      */
     PrimeFaces.vi = function(element) {
-        return this.validateInstant(element);
+        return PrimeFaces.validation.validateInstant(element);
     };
 
     /**
@@ -109,8 +111,8 @@ if (window.PrimeFaces) {
      * source (`s`) attribute set.
      * @return {boolean} `true` if the request would not result in validation errors, or `false` otherwise.
      */
-    PrimeFaces.validate = function(cfg) {
-        var vc = PrimeFaces.util.ValidationContext,
+    PrimeFaces.validation.validate = function(cfg) {
+        var vc = PrimeFaces.validation.ValidationContext,
         form = $(cfg.s).closest('form');
 
         if(cfg.a && cfg.p) {
@@ -127,38 +129,40 @@ if (window.PrimeFaces) {
                 }
             }
 
-            this.validateInputs(inputs);
+            PrimeFaces.validation.validateInputs(inputs);
         }
         else {
             var inputs = form.find(':input:visible:enabled:not(:button)[name]');
-            this.validateInputs(inputs);
+            PrimeFaces.validation.validateInputs(inputs);
         }
 
-        if(vc.isEmpty()) {
+        if (vc.isEmpty()) {
             return true;
         }
         else {
-            if(cfg.a && cfg.u) {
+            if (cfg.a && cfg.u) {
                 var updateIds = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(cfg.u);
-                for(var i = 0; i < updateIds.length; i++) {
-                    if(updateIds[i]) {
+                for (var i = 0; i < updateIds.length; i++) {
+                    if (updateIds[i]) {
                         var component = $(PrimeFaces.escapeClientId(updateIds[i]));
-                        vc.renderMessages(component);
+                        PrimeFaces.validation.Utils.renderMessages(vc.messages, component);
                     }
                 }
             }
             else {
-                vc.renderMessages(form);
+                PrimeFaces.validation.Utils.renderMessages(vc.messages, form);
             }
 
             //focus first element
-            for(var key in vc.messages) {
-                if(vc.messages.hasOwnProperty(key)) {
+            for (var key in vc.messages) {
+                if (vc.messages.hasOwnProperty(key)) {
                     var el = $(PrimeFaces.escapeClientId(key));
-                    if(!el.is(':focusable'))
+                    if (!el.is(':focusable')) {
                         el.find(':focusable:first').trigger('focus');
-                    else
+                    }
+                    else {
                         el.trigger('focus');
+                    }
                     break;
                 }
             }
@@ -174,9 +178,9 @@ if (window.PrimeFaces) {
      * @function
      * @param {JQuery} inputs A JQuery instance with one or more input elements.
      */
-    PrimeFaces.validateInputs = function(inputs) {
-        for(var i = 0; i < inputs.length; i++) {
-            this.validateInput(inputs.eq(i));
+    PrimeFaces.validation.validateInputs = function(inputs) {
+        for (var i = 0; i < inputs.length; i++) {
+            PrimeFaces.validation.validateInput(inputs.eq(i));
         }
     };
 
@@ -187,13 +191,13 @@ if (window.PrimeFaces) {
      * @function
      * @param {JQuery} element A JQuery instance with a single input element to validate.
      */
-    PrimeFaces.validateInput = function(element) {
-        var vc = PrimeFaces.util.ValidationContext;
+    PrimeFaces.validation.validateInput = function(element) {
+        var vc = PrimeFaces.validation.ValidationContext;
 
-        if(element.is(':checkbox,:radio') && element.data('p-grouped')) {
+        if (element.is(':checkbox,:radio') && element.data('p-grouped')) {
             var groupName = element.attr('name');
 
-            if(!vc.isGroupValidated(groupName)) {
+            if (!vc.isGroupValidated(groupName)) {
                 vc.addElementGroup(groupName);
             } else {
                 return;
@@ -204,20 +208,20 @@ if (window.PrimeFaces) {
             element = element.parent().children('input:hidden');
         }
 
-        var submittedValue = vc.getSubmittedValue(element),
+        var submittedValue = PrimeFaces.validation.Utils.getSubmittedValue(element),
         valid = true,
         converterId = element.data('p-con');
 
-        if(PrimeFaces.settings.considerEmptyStringNull && ((!submittedValue) || submittedValue.length === 0)) {
+        if (PrimeFaces.settings.considerEmptyStringNull && ((!submittedValue) || submittedValue.length === 0)) {
             submittedValue = null;
         }
 
         var newValue = null;
-        if(converterId) {
+        if (converterId) {
             try {
                 newValue = PrimeFaces.converter[converterId].convert(element, submittedValue);
             }
-            catch(ce) {
+            catch (ce) {
                 var converterMessageStr = element.data('p-cmsg'),
                 converterMsg = (converterMessageStr) ? {summary:converterMessageStr,detail:converterMessageStr} : ce;
                 valid = false;
@@ -233,7 +237,7 @@ if (window.PrimeFaces) {
            element.attr('aria-required', true);
         }
 
-        if(valid && required && (newValue === null || newValue === '')) {
+        if (valid && required && (newValue === null || newValue === '')) {
             var requiredMessageStr = element.data('p-rmsg'),
             requiredMsg = (requiredMessageStr) ? {summary:requiredMessageStr,detail:requiredMessageStr} : vc.getMessage('javax.faces.component.UIInput.REQUIRED', vc.getLabel(element));
             vc.addMessage(element, requiredMsg);
@@ -241,16 +245,16 @@ if (window.PrimeFaces) {
             valid = false;
         }
 
-        if(valid && ((submittedValue !== null && PrimeFaces.trim(submittedValue).length > 0)||PrimeFaces.settings.validateEmptyFields)) {
+        if (valid && ((submittedValue !== null && PrimeFaces.trim(submittedValue).length > 0)||PrimeFaces.settings.validateEmptyFields)) {
             var validatorIds = element.data('p-val');
-            if(validatorIds) {
+            if (validatorIds) {
                 validatorIds = validatorIds.split(',');
 
-                for(var j = 0; j < validatorIds.length; j++) {
+                for (var j = 0; j < validatorIds.length; j++) {
                     var validatorId = validatorIds[j],
                     validator = PrimeFaces.validator[validatorId];
 
-                    if(validator) {
+                    if (validator) {
                         try {
                             validator.validate(element, newValue);
                         }
@@ -268,7 +272,7 @@ if (window.PrimeFaces) {
         var highlighterType = element.data('p-hl')||'default',
         highlighter = PrimeFaces.validator.Highlighter.types[highlighterType];
 
-        if(valid) {
+        if (valid) {
             highlighter.unhighlight(element);
             element.attr('aria-invalid', false);
         }
@@ -286,20 +290,20 @@ if (window.PrimeFaces) {
      * @param {string | HTMLElement | JQuery} el The ID of an element to validate, or the element itself.
      * @return {boolean} `true` if the element is valid, or `false` otherwise.
      */
-    PrimeFaces.validateInstant = function(el) {
-        var vc = PrimeFaces.util.ValidationContext,
+    PrimeFaces.validation.validateInstant = function(el) {
+        var vc = PrimeFaces.validation.ValidationContext,
         element = (typeof el === 'string') ? $(PrimeFaces.escapeClientId(el)) : $(el),
-        clientId = element.data(PrimeFaces.CLIENT_ID_DATA)||element.attr('id'),
+        clientId = element.data(PrimeFaces.CLIENT_ID_DATA) || element.attr('id'),
         uiMessageId = element.data('uimessageid'),
         uiMessage = null;
 
-        if(uiMessageId) {
+        if (uiMessageId) {
             uiMessage = (uiMessageId === 'p-nouimessage') ? null: $(PrimeFaces.escapeClientId(uiMessageId));
         }
         else {
-            uiMessage = vc.findUIMessage(clientId, element.closest('form').find('div.ui-message'));
+            uiMessage = PrimeFaces.validation.Utils.findUIMessage(clientId, element.closest('form').find('div.ui-message'));
 
-            if(uiMessage)
+            if (uiMessage)
                 element.data('uimessageid', uiMessage.attr('id'));
             else
                 element.data('uimessageid', 'p-nouimessage');
@@ -309,11 +313,11 @@ if (window.PrimeFaces) {
             uiMessage.html('').removeClass('ui-message-error ui-message-icon-only ui-widget ui-corner-all ui-helper-clearfix');
         }
 
-        this.validateInput(element);
+        PrimeFaces.validation.validateInput(element);
 
-        if(!vc.isEmpty()) {
-            if(uiMessage) {
-                vc.renderUIMessage(uiMessage, vc.messages[clientId][0]);
+        if (!vc.isEmpty()) {
+            if (uiMessage) {
+                PrimeFaces.validation.Utils.renderUIMessage(uiMessage, vc.messages[clientId][0]);
             }
 
             vc.clear();
@@ -330,7 +334,7 @@ if (window.PrimeFaces) {
      * Contains methods for clearing message of an element or adding messages to an element.
      * @namespace
      */
-    PrimeFaces.util.ValidationContext = {
+    PrimeFaces.validation.ValidationContext = {
 
         /**
          * A map between the client ID of an element and a list of faces message for that element.
@@ -361,6 +365,109 @@ if (window.PrimeFaces) {
         },
 
         /**
+         * Reports how many messages were added to this validation context. Note that each component may have several
+         * messages.
+         * @return {number} The number of messages added to this validation context.
+         */
+        getMessagesLength: function() {
+            var length = 0, key;
+
+            for (key in this.messages) {
+                if (this.messages.hasOwnProperty(key)) {
+                    length++;
+                }
+            }
+
+            return length;
+        },
+
+        /**
+         * Checks whether this validation context contains any messages at all.
+         * @return {boolean} `true` if this validation context contains zero messages, or `false` otherwise.
+         */
+        isEmpty: function() {
+            return this.getMessagesLength() === 0;
+        },
+
+        /**
+         * Removes all messages from this validation context.
+         */
+        clear: function() {
+            this.messages = {};
+            this.elementGroups = [];
+        },
+
+        // backward compatiblity, remove later
+        getMessage: function(key) {
+            return PrimeFaces.validation.Utils.getMessage(key, arguments);
+        },
+        
+        // backward compatiblity, remove later
+        getLabel: function(element) {
+            return PrimeFaces.validation.Utils.getLabel(element);
+        },
+
+        /**
+         * Checks whether the given element group is in the list of groups to be validated. An element group is often
+         * just the name of a single INPUT, TEXTAREA or SELECT element, but may also consist of multiple DOM elements,
+         * such as in the case of a select list of checkboxes. 
+         * @param {string} name Name of an element group to check.
+         * @return {boolean} `true` if the given group is to be validated, or `false` otherwise.
+         */
+        isGroupValidated: function(name) {
+            for (var i = 0; i < this.elementGroups.length; i++) {
+                if (this.elementGroups[i] === name) {
+                    return true;
+                }
+            }
+            return false;
+        },
+
+        /**
+         * Adds a group to the list of element groups to validate. An element group is often just the name of a single
+         * INPUT, TEXTAREA or SELECT element, but may also consist of multiple DOM elements, such as in the case of
+         * select list of checkboxes. 
+         * @param {string} name Name of an element group to add.
+         */
+        addElementGroup: function(name) {
+            this.elementGroups.push(name);
+        }
+    };
+
+    // backward compatiblity, remove later
+    PrimeFaces.util.ValidationContext = PrimeFaces.validation.ValidationContext;
+
+    PrimeFaces.validation.Utils = {
+
+        /**
+         * Given the container element of a ui message, renders the given message to that element.
+         * @param {JQuery} uiMessage The container element of the message, usually with the class `ui-message`.
+         * @param {PrimeFaces.FacesMessageBase} msg Message to render to the given element. 
+         */
+        renderUIMessage: function(uiMessage, msg) {
+            var display = uiMessage.data('display');
+
+            if (display !== 'tooltip') {
+                uiMessage.addClass('ui-message-error ui-widget ui-corner-all ui-helper-clearfix');
+
+                if (display === 'both') {
+                    uiMessage.append('<div><span class="ui-message-error-icon"></span><span class="ui-message-error-detail">' + PrimeFaces.escapeHTML(msg.detail) + '</span></div>');
+                }
+                else if (display === 'text') {
+                    uiMessage.append('<span class="ui-message-error-detail">' + PrimeFaces.escapeHTML(msg.detail) + '</span>');
+                }
+                else if (display === 'icon') {
+                    uiMessage.addClass('ui-message-icon-only')
+                            .append('<span class="ui-message-error-icon" title="' + PrimeFaces.escapeHTML(msg.detail) + '"></span>');
+                }
+            }
+            else {
+                uiMessage.hide();
+                $(PrimeFaces.escapeClientId(uiMessage.data('target'))).attr('title', PrimeFaces.escapeHTML(msg.detail));
+            }
+        },
+
+        /**
          * Finds the localized text of the given message key. When the current locale does not contain a translation,
          * falls back to the default English locale.
          * @param {string} key The i18n key of a message, such as `javax.faces.component.UIInput.REQUIRED` or
@@ -368,25 +475,25 @@ if (window.PrimeFaces) {
          * @return {PrimeFaces.FacesMessageBase | null} The localized faces message for the given key, or `null` if no
          * translation was found for the key.
          */
-        getMessage: function(key) {
-            var locale = this.getLocaleSettings(),
-            bundle = (locale.messages && locale.messages[key]) ? locale : PrimeFaces.locales['en_US'];
+        getMessage: function(key, params) {
+            var locale = PrimeFaces.validation.Utils.getLocaleSettings();
+            var bundle = (locale.messages && locale.messages[key]) ? locale : PrimeFaces.locales['en_US'];
 
-            var s = bundle.messages[key],
-            d = bundle.messages[key + '_detail'];
-
-            if(s) {
-                s = this.format(s, arguments);
-                d = (d) ? this.format(d, arguments) : s;
+            var summary = bundle.messages[key];
+            if (summary) {
+                summary = PrimeFaces.validation.Utils.format(summary, params);
+                
+                var detail = bundle.messages[key + '_detail'];
+                detail = (detail) ? PrimeFaces.validation.Utils.format(detail, params) : summary;
 
                 return {
-                    summary: s,
-                    detail: d
+                    summary: summary,
+                    detail: detail
                 };
             }
-            else {
-                return null;
-            }
+ 
+            return null;
+   
         },
 
         /**
@@ -418,16 +525,78 @@ if (window.PrimeFaces) {
          * @return {string} The label of the given element.
          */
         getLabel: function(element) {
-            return (element.data('p-label')||element.attr('id'));
+            return element.data('p-label') || element.attr('id');
         },
 
+        /**
+         * Given a form element (such as input, textarea, select), finds the value that would be sent when the form is
+         * submitted.
+         * @param {JQuery} element A form element for which to find its value.
+         * @return {string} The value of the form element, or the empty string when it does not have a value.
+         */
+        getSubmittedValue: function(element) {
+            var value;
+
+            if (element.is(':radio')) {
+                value = $('input:radio[name="' + $.escapeSelector(element.attr('name')) + '"]:checked').val();
+            }
+            else if (element.is(':checkbox')) {
+                value = element.data('p-grouped') ? $('input:checkbox[name="' + $.escapeSelector(element.attr('name')) + '"]:checked').val(): element.prop('checked').toString();
+            }
+            else {
+                value = element.val();
+            }
+
+            return value === undefined ? '': value;
+        },
+
+        /**
+         * Finds the current locale with the i18n keys and the associated translations. Uses the current language key
+         * as specified by `PrimeFaces.settings.locale`. When no locale was found for the given locale, falls back to
+         * the default English locale.
+         * @return {PrimeFaces.Locale} The current locale with the key-value pairs.
+         */
+        getLocaleSettings: function() {
+            var localeKey = PrimeFaces.settings.locale;
+            var localeSettings = PrimeFaces.locales[localeKey];
+
+            if (!localeSettings) {
+                localeSettings = PrimeFaces.locales[localeKey.split('_')[0]];
+
+                if(!localeSettings) {
+                    localeSettings = PrimeFaces.locales['en_US'];
+                }
+            }
+
+            return localeSettings;
+        },
+
+        /**
+         * For a given ID of a component, finds the DOM element with the message for that component.
+         * @param {string} clientId ID of a component for which to find the ui message.
+         * @param {JQuery} uiMessageCollection A JQuery instance with a list of `ui-message`s, or `null` if no
+         * such element exists.
+         * @return {JQuery | null} The DOM element with the messages for the given component, or `null` when no such 
+         * element could be found.
+         */
+        findUIMessage: function(clientId, uiMessageCollection) {
+            for(var i = 0; i < uiMessageCollection.length; i++) {
+                var uiMessage = uiMessageCollection.eq(i);
+                if (uiMessage.data('target') === clientId) {
+                    return uiMessage;
+                }
+            }
+
+            return null;
+        },
+        
 
         /**
          * Renders all messages that were added to this validation context.
          * @param {JQuery} container The container for the messages. Either the element with the class `ui-messages`, or
          * a parent of such an element.
          */
-        renderMessages: function(container) {
+        renderMessages: function(messages, container) {
             var uiMessagesAll = container.is('div.ui-messages') ? container : container.find('div.ui-messages:not(.ui-fileupload-messages)'),
                 uiMessages = uiMessagesAll.filter(function(idx) { return $(uiMessagesAll[idx]).data('severity').indexOf('error') !== -1; }),
                 uiMessageCollection = container.find('div.ui-message'),
@@ -445,8 +614,8 @@ if (window.PrimeFaces) {
 
                 uiMessagesComponent.html('');
 
-                for(var clientId in this.messages) {
-                    var msgs = this.messages[clientId];
+                for(var clientId in messages) {
+                    var msgs = messages[clientId];
 
                     for(var j = 0; j < msgs.length; j++) {
                         var msg = msgs[j];
@@ -475,7 +644,7 @@ if (window.PrimeFaces) {
                 }
             }
 
-            for(var i = 0; i < growlComponents.length; i++) {
+            for (var i = 0; i < growlComponents.length; i++) {
                 var growl = growlComponents.eq(i),
                 redisplay = growl.data('redisplay'),
                 globalOnly = growl.data('global'),
@@ -485,10 +654,10 @@ if (window.PrimeFaces) {
 
                 growlWidget.removeAll();
 
-                for(var clientId in this.messages) {
-                    var msgs = this.messages[clientId];
+                for (var clientId in messages) {
+                    var msgs = messages[clientId];
 
-                    for(var j = 0; j < msgs.length; j++) {
+                    for (var j = 0; j < msgs.length; j++) {
                         var msg = msgs[j];
 
                         if(globalOnly || (msg.rendered && !redisplay)) {
@@ -514,9 +683,9 @@ if (window.PrimeFaces) {
                 target = uiMessage.data('target'),
                 redisplay = uiMessage.data('redisplay');
 
-                for(var clientId in this.messages) {
+                for (var clientId in messages) {
                     if(target === clientId) {
-                        var msgs = this.messages[clientId];
+                        var msgs = messages[clientId];
 
                         for(var j = 0; j < msgs.length; j++) {
                             var msg = msgs[j];
@@ -524,159 +693,14 @@ if (window.PrimeFaces) {
                                 continue;
                             }
 
-                            this.renderUIMessage(uiMessage, msg);
+                            PrimeFaces.validation.Utils.renderUIMessage(uiMessage, msg);
                             msg.rendered = true;
                         }
                     }
                 }
             }
         },
-
-        /**
-         * Given the container element of a ui message, renders the given message to that element.
-         * @param {JQuery} uiMessage The container element of the message, usually with the class `ui-message`.
-         * @param {PrimeFaces.FacesMessageBase} msg Message to render to the given element. 
-         */
-        renderUIMessage: function(uiMessage, msg) {
-            var display = uiMessage.data('display');
-
-            if(display !== 'tooltip') {
-                uiMessage.addClass('ui-message-error ui-widget ui-corner-all ui-helper-clearfix');
-
-                if(display === 'both') {
-                    uiMessage.append('<div><span class="ui-message-error-icon"></span><span class="ui-message-error-detail">' + PrimeFaces.escapeHTML(msg.detail) + '</span></div>');
-                }
-                else if(display === 'text') {
-                    uiMessage.append('<span class="ui-message-error-detail">' + PrimeFaces.escapeHTML(msg.detail) + '</span>');
-                }
-                else if(display === 'icon') {
-                    uiMessage.addClass('ui-message-icon-only')
-                            .append('<span class="ui-message-error-icon" title="' + PrimeFaces.escapeHTML(msg.detail) + '"></span>');
-                }
-            }
-            else {
-                uiMessage.hide();
-                $(PrimeFaces.escapeClientId(uiMessage.data('target'))).attr('title', PrimeFaces.escapeHTML(msg.detail));
-            }
-        },
-
-        /**
-         * For a given ID of a component, finds the DOM element with the message for that component.
-         * @param {string} clientId ID of a component for which to find the ui message.
-         * @param {JQuery} uiMessageCollection A JQuery instance with a list of `ui-message`s, or `null` if no
-         * such element exists.
-         * @return {JQuery | null} The DOM element with the messages for the given component, or `null` when no such 
-         * element could be found.
-         */
-        findUIMessage: function(clientId, uiMessageCollection) {
-            for(var i = 0; i < uiMessageCollection.length; i++) {
-                var uiMessage = uiMessageCollection.eq(i);
-                if(uiMessage.data('target') === clientId)
-                    return uiMessage;
-            }
-
-            return null;
-        },
-
-        /**
-         * Reports how many messages were added to this validation context. Note that each component may have several
-         * messages.
-         * @return {number} The number of messages added to this validation context.
-         */
-        getMessagesLength: function() {
-            var length = 0, key;
-
-            for(key in this.messages) {
-                if(this.messages.hasOwnProperty(key))
-                    length++;
-            }
-
-            return length;
-        },
-
-        /**
-         * Checks whether this validation context contains any messages at all.
-         * @return {boolean} `true` if this validation context contains zero messages, or `false` otherwise.
-         */
-        isEmpty: function() {
-            return this.getMessagesLength() === 0;
-        },
-
-        /**
-         * Removes all messages from this validation context.
-         */
-        clear: function() {
-            this.messages = {};
-            this.elementGroups = [];
-        },
-
-        /**
-         * Finds the current locale with the i18n keys and the associated translations. Uses the current language key
-         * as specified by `PrimeFaces.settings.locale`. When no locale was found for the given locale, falls back to
-         * the default English locale.
-         * @return {PrimeFaces.Locale} The current locale with the key-value pairs.
-         */
-        getLocaleSettings: function() {
-            var localeKey = PrimeFaces.settings.locale,
-            localeSettings = PrimeFaces.locales[localeKey];
-
-            if(!localeSettings) {
-                localeSettings = PrimeFaces.locales[localeKey.split('_')[0]];
-
-                if(!localeSettings)
-                    localeSettings = PrimeFaces.locales['en_US'];
-            }
-
-            return localeSettings;
-        },
-
-        /**
-         * Checks whether the given element group is in the list of groups to be validated. An element group is often
-         * just the name of a single INPUT, TEXTAREA or SELECT element, but may also consist of multiple DOM elements,
-         * such as in the case of a select list of checkboxes. 
-         * @param {string} name Name of an element group to check.
-         * @return {boolean} `true` if the given group is to be validated, or `false` otherwise.
-         */
-        isGroupValidated: function(name) {
-            for(var i = 0; i < this.elementGroups.length; i++) {
-                if(this.elementGroups[i] === name) {
-                    return true;
-                }
-            }
-            return false;
-        },
-
-        /**
-         * Adds a group to the list of element groups to validate. An element group is often just the name of a single
-         * INPUT, TEXTAREA or SELECT element, but may also consist of multiple DOM elements, such as in the case of
-         * select list of checkboxes. 
-         * @param {string} name Name of an element group to add.
-         */
-        addElementGroup: function(name) {
-            this.elementGroups.push(name);
-        },
-
-        /**
-         * Given a form element (such as input, textarea, select), finds the value that would be sent when the form is
-         * submitted.
-         * @param {JQuery} element A form element for which to find its value.
-         * @return {string} The value of the form element, or the empty string when it does not have a value.
-         */
-        getSubmittedValue: function(element) {
-            var value;
-
-            if(element.is(':radio')) {
-                value = $('input:radio[name="' + $.escapeSelector(element.attr('name')) + '"]:checked').val();
-            }
-            else if(element.is(':checkbox')) {
-                value = element.data('p-grouped') ? $('input:checkbox[name="' + $.escapeSelector(element.attr('name')) + '"]:checked').val(): element.prop('checked').toString();
-            }
-            else {
-                value = element.val();
-            }
-
-            return (value === undefined) ? '': value;
-        }
     };
+
 
 }
