@@ -469,7 +469,12 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
                     case keyCode.BACKSPACE:
                         if ($this.cfg.multiple && !$this.input.val().length) {
-                            $this.removeItem(e, $(this).parent().prev());
+                            
+                            if (e.metaKey||e.ctrlKey||e.shiftKey) {
+                                $this.removeAllItems();
+                            } else {
+                                $this.removeItem(e, $(this).parent().prev());
+                            }
 
                             e.preventDefault();
                         }
@@ -989,6 +994,18 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         // if empty return placeholder
         if (this.placeholder && this.hinput.children('option').length === 0) {
             this.input.attr('placeholder', this.placeholder);
+        }
+    },
+    
+    /**
+     * Removes all items if in multiple mode.
+     */
+    removeAllItems: function() {
+        var $this = this;
+        if (this.cfg.multiple && !this.input.val().length) {
+            this.multiItemContainer.find('.ui-autocomplete-token').each(function( index ) {
+                $this.removeItem(null, $(this));
+            });
         }
     },
 

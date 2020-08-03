@@ -208,8 +208,9 @@ empty query or search with the current value in input.
 ```
 ## Multiple Selection
 AutoComplete supports multiple selection as well, to use this feature set multiple option to true and
-define a list as your backend model. Following example demonstrates multiple selection with
-custom content support.
+define a list as your back-end model. Use BACKSPACE key to remove a selected item and CTRL or SHIFT+BACKSPACE 
+to remove all items at once.
+Following example demonstrates multiple selection with custom content support.
 
 ```xhtml
 <p:autoComplete id="advanced" value="#{autoCompleteBean.selectedPlayers}" completeMethod="#{autoCompleteBean.completePlayer}"
@@ -308,6 +309,7 @@ Widget: _PrimeFaces.widget.AutoComplete_
 | enable() | - | void | Enables the input field |
 | deactivate() | - | void | Deactivates search behavior |
 | activate() | - | void | Activates search behavior |
+| removeAllItems() | - | void | In multiple mode removes all selected items |
 
 ## Skinning
 Following is the list of structural style classes;
