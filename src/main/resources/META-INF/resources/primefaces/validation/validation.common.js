@@ -397,12 +397,24 @@ if (window.PrimeFaces) {
             this.elementGroups = [];
         },
 
-        // backward compatiblity, remove later
+        /**
+         * Deprecated...use PrimeFaces.validation.Utils.getMessage.
+         * @deprecated backward compatibility, remove later
+         * @param {string} key The i18n key of a message, such as `javax.faces.component.UIInput.REQUIRED` or
+         * `javax.faces.validator.LengthValidator.MINIMUM`.
+         * @return {PrimeFaces.FacesMessageBase | null} The localized faces message for the given key, or `null` if no
+         * translation was found for the key.
+         */
         getMessage: function(key) {
             return PrimeFaces.validation.Utils.getMessage(key, arguments);
         },
-        
-        // backward compatiblity, remove later
+
+        /**
+         * Deprecated...use PrimeFaces.validation.Utils.getLabel.
+         * @deprecated backward compatibility, remove later
+         * @param {JQuery} element A DOM element for which to find the label.
+         * @return {string} The label of the given element.
+         */
         getLabel: function(element) {
             return PrimeFaces.validation.Utils.getLabel(element);
         },
