@@ -4670,7 +4670,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             orderIndex = sortOrder > 0 ? 0 : 1;
 
             options.filter(':selected').prop('selected', false);
-            options.filter('[value="' + $.escapeSelector(columnHeader.index() + '_' + orderIndex) + '"]').prop('selected', true);
+            options.filter(':contains("' + $.escapeSelector(columnHeader.text()) + '")').filter('[value$="_' + orderIndex + '"]').prop("selected", true);
         }
     },
 
