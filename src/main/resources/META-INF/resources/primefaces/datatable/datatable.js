@@ -4671,7 +4671,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
             options.filter(':selected').prop('selected', false);
             options.filter(function(idx, element) {
-                return element.text.startsWith(columnHeader.text()) && element.value.endsWith("_" + orderIndex);
+                var header = $.escapeSelector(columnHeader.text());
+                return element.text.startsWith(header) && element.value.endsWith("_" + orderIndex);
             }).prop("selected", true);
         }
     },
