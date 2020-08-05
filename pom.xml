@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-    <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>7</version>
-    </parent>
+<!--    <parent>-->
+<!--        <groupId>org.sonatype.oss</groupId>-->
+<!--        <artifactId>oss-parent</artifactId>-->
+<!--        <version>7</version>-->
+<!--    </parent>-->
 
     <modelVersion>4.0.0</modelVersion>
 
@@ -1135,10 +1135,15 @@
 
     <distributionManagement>
         <repository>
-            <id>prime-repo</id>
-            <name>PrimeFaces Maven Repository</name>
-            <url>sftp://primefaces.org/var/www/repository</url>
+            <id>maven.jonker.nl</id>
+            <name>maven.jonker.nl-releases</name>
+            <url>http://maven.jonker.nl:8081/artifactory/nl-jonker</url>
         </repository>
+        <snapshotRepository>
+            <id>maven.jonker.nl</id>
+            <name>maven.jonker.nl-snapshots</name>
+            <url>http://maven.jonker.nl:8081/artifactory/nl-jonker-snapshots</url>
+        </snapshotRepository>
     </distributionManagement>
 
     <pluginRepositories>
