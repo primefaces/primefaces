@@ -198,7 +198,6 @@ public class DataTable extends DataTableBase {
     private Map<String, Boolean> togglableColsMap;
     private String resizableColumnsAsString;
     private Map<String, String> resizableColsMap;
-    private List<UIComponent> iterableChildren;
 
     public DataTableFeature getFeature(DataTableFeatureKey key) {
         return FEATURES.get(key);
@@ -976,26 +975,34 @@ public class DataTable extends DataTableBase {
     }
 
     public List<UIColumn> getColumns() {
-        if (columns == null) {
-            columns = new ArrayList<>();
-            FacesContext context = getFacesContext();
-            char separator = UINamingContainer.getSeparatorChar(context);
+        if (this.columns != null) {
+            return this.columns;
+        }
 
-            for (UIComponent child : getChildren()) {
-                if (child instanceof Column) {
-                    columns.add((Column) child);
-                }
-                else if (child instanceof Columns) {
-                    Columns uiColumns = (Columns) child;
-                    String uiColumnsClientId = uiColumns.getClientId(context);
+        List<UIColumn> columns = new ArrayList<>();
+        FacesContext context = getFacesContext();
+        char separator = UINamingContainer.getSeparatorChar(context);
 
-                    for (int i = 0; i < uiColumns.getRowCount(); i++) {
-                        DynamicColumn dynaColumn = new DynamicColumn(i, uiColumns);
-                        dynaColumn.setColumnKey(uiColumnsClientId + separator + i);
-                        columns.add(dynaColumn);
-                    }
+        for (UIComponent child : getChildren()) {
+            if (child instanceof Column) {
+                columns.add((Column) child);
+            }
+            else if (child instanceof Columns) {
+                Columns uiColumns = (Columns) child;
+                String uiColumnsClientId = uiColumns.getClientId(context);
+
+                for (int i = 0; i < uiColumns.getRowCount(); i++) {
+                    DynamicColumn dynaColumn = new DynamicColumn(i, uiColumns);
+                    dynaColumn.setColumnKey(uiColumnsClientId + separator + i);
+                    columns.add(dynaColumn);
                 }
             }
+        }
+
+        // lets cache it only when RENDER_RESPONSE is reached, the columns might change before reaching that phase
+        // see https://github.com/primefaces/primefaces/issues/2110
+        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            this.columns = columns;
         }
 
         return columns;
@@ -1345,12 +1352,12 @@ public class DataTable extends DataTableBase {
 
     @Override
     protected List<UIComponent> getIterableChildren() {
-        if (iterableChildren == null) {
-            iterableChildren = new ArrayList<>();
-            for (UIComponent child : getChildren()) {
-                if (!(child instanceof ColumnGroup)) {
-                    iterableChildren.add(child);
-                }
+        ArrayList iterableChildren = new ArrayList<>(getChildCount());
+
+        for (int i = 0; i < getChildCount(); i++) {
+            UIComponent child = getChildren().get(i);
+            if (!(child instanceof ColumnGroup)) {
+                iterableChildren.add(child);
             }
         }
 
@@ -1409,7 +1416,6 @@ public class DataTable extends DataTableBase {
         togglableColsMap = null;
         resizableColumnsAsString = null;
         resizableColsMap = null;
-        iterableChildren = null;
 
         return super.saveState(context);
     }
