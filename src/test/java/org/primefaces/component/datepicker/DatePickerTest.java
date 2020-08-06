@@ -112,6 +112,7 @@ public class DatePickerTest {
         when(datePicker.calculatePattern()).thenCallRealMethod();
         when(datePicker.calculateTimeOnlyPattern()).thenCallRealMethod();
         when(datePicker.calculateWidgetPattern()).thenCallRealMethod();
+        when(datePicker.getTimeSeparator()).thenCallRealMethod();
         when(datePicker.isValid()).thenCallRealMethod();
         doCallRealMethod().when(datePicker).setValid(anyBoolean());
         when(datePicker.getSelectionMode()).thenReturn("single");
