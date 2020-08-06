@@ -398,8 +398,7 @@ if (window.PrimeFaces) {
         },
 
         /**
-         * Deprecated...use PrimeFaces.validation.Utils.getMessage.
-         * @deprecated backward compatibility, remove later
+         * Shortcut for PrimeFaces.validation.Utils.getMessage.
          * @param {string} key The i18n key of a message, such as `javax.faces.component.UIInput.REQUIRED` or
          * `javax.faces.validator.LengthValidator.MINIMUM`.
          * @return {PrimeFaces.FacesMessageBase | null} The localized faces message for the given key, or `null` if no
@@ -410,8 +409,7 @@ if (window.PrimeFaces) {
         },
 
         /**
-         * Deprecated...use PrimeFaces.validation.Utils.getLabel.
-         * @deprecated backward compatibility, remove later
+         * Shortcut for PrimeFaces.validation.Utils.getLabel.
          * @param {JQuery} element A DOM element for which to find the label.
          * @return {string} The label of the given element.
          */
@@ -592,7 +590,7 @@ if (window.PrimeFaces) {
          * element could be found.
          */
         findUIMessage: function(clientId, uiMessageCollection) {
-            for(var i = 0; i < uiMessageCollection.length; i++) {
+            for (var i = 0; i < uiMessageCollection.length; i++) {
                 var uiMessage = uiMessageCollection.eq(i);
                 if (uiMessage.data('target') === clientId) {
                     return uiMessage;
@@ -604,7 +602,8 @@ if (window.PrimeFaces) {
         
 
         /**
-         * Renders all messages that were added to this validation context.
+         * Renders all given messages in the given container.
+         * @param {Record<string, PrimeFaces.FacesMessageBase[]>} messages The messages to render.
          * @param {JQuery} container The container for the messages. Either the element with the class `ui-messages`, or
          * a parent of such an element.
          */
@@ -617,7 +616,7 @@ if (window.PrimeFaces) {
 
             uiMessageCollection.html('').removeClass('ui-message-error ui-message-icon-only ui-widget ui-corner-all ui-helper-clearfix');
 
-            for(var i = 0; i < uiMessages.length; i++) {
+            for (var i = 0; i < uiMessages.length; i++) {
                 var uiMessagesComponent = uiMessages.eq(i),
                 globalOnly = uiMessagesComponent.data('global'),
                 redisplay = uiMessagesComponent.data('redisplay'),
@@ -626,27 +625,27 @@ if (window.PrimeFaces) {
 
                 uiMessagesComponent.html('');
 
-                for(var clientId in messages) {
+                for (var clientId in messages) {
                     var msgs = messages[clientId];
 
-                    for(var j = 0; j < msgs.length; j++) {
+                    for (var j = 0; j < msgs.length; j++) {
                         var msg = msgs[j];
 
-                        if(globalOnly || (msg.rendered && !redisplay)) {
+                        if (globalOnly || (msg.rendered && !redisplay)) {
                             continue;
                         }
 
-                        if(uiMessagesComponent.children().length === 0) {
+                        if (uiMessagesComponent.children().length === 0) {
                             uiMessagesComponent.append('<div class="ui-messages-error ui-corner-all"><span class="ui-messages-error-icon"></span><ul></ul></div>');
                         }
 
                         var msgItem = $('<li></li>');
 
-                        if(showSummary) {
+                        if (showSummary) {
                             msgItem.append('<span class="ui-messages-error-summary">' + PrimeFaces.escapeHTML(msg.summary) + '</span>');
                         }
 
-                        if(showDetail) {
+                        if (showDetail) {
                             msgItem.append('<span class="ui-messages-error-detail">' + PrimeFaces.escapeHTML(msg.detail) + '</span>');
                         }
 
@@ -696,12 +695,12 @@ if (window.PrimeFaces) {
                 redisplay = uiMessage.data('redisplay');
 
                 for (var clientId in messages) {
-                    if(target === clientId) {
+                    if (target === clientId) {
                         var msgs = messages[clientId];
 
-                        for(var j = 0; j < msgs.length; j++) {
+                        for (var j = 0; j < msgs.length; j++) {
                             var msg = msgs[j];
-                            if(msg.rendered && !redisplay) {
+                            if (msg.rendered && !redisplay) {
                                 continue;
                             }
 
@@ -711,7 +710,7 @@ if (window.PrimeFaces) {
                     }
                 }
             }
-        },
+        }
     };
 
 
