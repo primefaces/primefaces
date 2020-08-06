@@ -435,6 +435,8 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
         int rows = getRows();
         int last = rows == 0 ? getRowCount() : (first + rows);
 
+        List<UIComponent> iterableChildren = null;
+
         for (int rowIndex = first; rowIndex < last; rowIndex++) {
             setRowIndex(rowIndex);
 
@@ -442,7 +444,12 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
                 break;
             }
 
-            for (UIComponent child : getIterableChildren()) {
+            if (iterableChildren == null) {
+                iterableChildren = getIterableChildren();
+            }
+
+            for (int i = 0; i < iterableChildren.size(); i++) {
+                UIComponent child = iterableChildren.get(i);
                 if (child.isRendered()) {
                     if (child instanceof Column) {
                         for (UIComponent grandkid : child.getChildren()) {

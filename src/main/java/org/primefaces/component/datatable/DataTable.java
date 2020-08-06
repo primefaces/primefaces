@@ -464,9 +464,11 @@ public class DataTable extends DataTableBase {
             return null;
         }
 
+        List<UIColumn> columns = getColumns();
+
         //body columns
-        for (int i = 0; i < getColumns().size(); i++) {
-            UIColumn column = getColumns().get(i);
+        for (int i = 0; i < columns.size(); i++) {
+            UIColumn column = columns.get(i);
             if (Objects.equals(column.getColumnKey(), columnKey)) {
                 return column;
             }
@@ -1168,6 +1170,8 @@ public class DataTable extends DataTableBase {
             last = first + rows;
         }
 
+        List<UIComponent> iterableChildren = null;
+
         for (int rowIndex = first; rowIndex < last; rowIndex++) {
             setRowIndex(rowIndex);
 
@@ -1175,10 +1179,16 @@ public class DataTable extends DataTableBase {
                 break;
             }
 
-            for (UIComponent child : getIterableChildren()) {
+            if (iterableChildren == null) {
+                iterableChildren = getIterableChildren();
+            }
+
+            for (int i = 0; i < iterableChildren.size(); i++) {
+                UIComponent child = iterableChildren.get(i);
                 if (child.isRendered()) {
                     if (child instanceof Column) {
-                        for (UIComponent grandkid : child.getChildren()) {
+                        for (int j = 0; j < child.getChildCount(); j++) {
+                            UIComponent grandkid = child.getChildren().get(j);
                             process(context, grandkid, phaseId);
                         }
                     }
