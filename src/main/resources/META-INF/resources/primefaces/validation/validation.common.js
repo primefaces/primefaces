@@ -122,10 +122,12 @@ if (window.PrimeFaces) {
             for (var i = 0; i < processIds.length; i++) {
                 if (processIds[i]) {
                     var component = $(PrimeFaces.escapeClientId(processIds[i]));
-                    if (component.is(':input'))
+                    if (component.is(':input')) {
                         inputs = inputs.add(component);
-                    else
+                    }
+                    else {
                         inputs = inputs.add(component.find(':input:visible:enabled:not(:button)[name]'));
+                    }
                 }
             }
 
@@ -170,6 +172,58 @@ if (window.PrimeFaces) {
             vc.clear();
 
             return false;
+        }
+    };
+
+    /**
+     * Performs a client-side validation of (the value of) the given element. If the element is valid, removes old
+     * messages from the element. If the value of the element is invalid, adds the appropriate validation failure
+     * messages.
+     * @function
+     * @param {string | HTMLElement | JQuery} el The ID of an element to validate, or the element itself.
+     * @return {boolean} `true` if the element is valid, or `false` otherwise.
+     */
+    PrimeFaces.validation.validateInstant = function(el) {
+        var vc = PrimeFaces.validation.ValidationContext;
+
+        var element = typeof el === 'string'
+            ? $(PrimeFaces.escapeClientId(el))
+            : $(el);
+        var clientId = element.data(PrimeFaces.CLIENT_ID_DATA) || element.attr('id');
+        var uiMessageId = element.data('uimessageid');
+
+        var uiMessage = null;
+        if (uiMessageId) {
+            uiMessage = uiMessageId === 'p-nouimessage'
+                ? null
+                : $(PrimeFaces.escapeClientId(uiMessageId));
+        }
+        else {
+            uiMessage = PrimeFaces.validation.Utils.findUIMessage(clientId, element.closest('form').find('div.ui-message'));
+
+            if (uiMessage)
+                element.data('uimessageid', uiMessage.attr('id'));
+            else
+                element.data('uimessageid', 'p-nouimessage');
+        }
+
+        if (uiMessage) {
+            uiMessage.html('').removeClass('ui-message-error ui-message-icon-only ui-widget ui-corner-all ui-helper-clearfix');
+        }
+
+        PrimeFaces.validation.validateInput(element);
+
+        if (!vc.isEmpty()) {
+            if (uiMessage) {
+                PrimeFaces.validation.Utils.renderUIMessage(uiMessage, vc.messages[clientId][0]);
+            }
+
+            vc.clear();
+            return false;
+        }
+        else {
+            vc.clear();
+            return true;
         }
     };
 
@@ -234,12 +288,15 @@ if (window.PrimeFaces) {
 
         var required = element.data('p-required');
         if (required) {
-           element.attr('aria-required', true);
+            element.attr('aria-required', true);
         }
 
         if (valid && required && (newValue === null || newValue === '')) {
-            var requiredMessageStr = element.data('p-rmsg'),
-            requiredMsg = (requiredMessageStr) ? {summary:requiredMessageStr,detail:requiredMessageStr} : vc.getMessage('javax.faces.component.UIInput.REQUIRED', vc.getLabel(element));
+            var requiredMessageStr = element.data('p-rmsg');
+            var requiredMsg = requiredMessageStr
+                ? { summary: requiredMessageStr, detail: requiredMessageStr }
+                : vc.getMessage('javax.faces.component.UIInput.REQUIRED', vc.getLabel(element));
+
             vc.addMessage(element, requiredMsg);
 
             valid = false;
@@ -260,17 +317,21 @@ if (window.PrimeFaces) {
                             validator.validate(element, newValue);
                         }
                         catch (ve) {
-                            var validatorMessageStr = element.data('p-vmsg'),
-                            validatorMsg = (validatorMessageStr) ? {summary:validatorMessageStr,detail:validatorMessageStr} : ve;
-                            valid = false;
+                            var validatorMessageStr = element.data('p-vmsg');
+                            var validatorMsg = validatorMessageStr
+                                ? {summary: validatorMessageStr, detail: validatorMessageStr}
+                                : ve;
+
                             vc.addMessage(element, validatorMsg);
+                            
+                            valid = false;
                         }
                     }
                 }
             }
         }
 
-        var highlighterType = element.data('p-hl')||'default',
+        var highlighterType = element.data('p-hl') || 'default',
         highlighter = PrimeFaces.validator.Highlighter.types[highlighterType];
 
         if (valid) {
@@ -280,53 +341,6 @@ if (window.PrimeFaces) {
         else {
             highlighter.highlight(element);
             element.attr('aria-invalid', true);
-        }
-    };
-
-    /**
-     * Performs a client-side validation of (the value of) the given element. If the element is valid, removes old
-     * messages from the element. If the value of the element is invalid, adds the appropriate validation failure
-     * messages.
-     * @function
-     * @param {string | HTMLElement | JQuery} el The ID of an element to validate, or the element itself.
-     * @return {boolean} `true` if the element is valid, or `false` otherwise.
-     */
-    PrimeFaces.validation.validateInstant = function(el) {
-        var vc = PrimeFaces.validation.ValidationContext,
-        element = (typeof el === 'string') ? $(PrimeFaces.escapeClientId(el)) : $(el),
-        clientId = element.data(PrimeFaces.CLIENT_ID_DATA) || element.attr('id'),
-        uiMessageId = element.data('uimessageid'),
-        uiMessage = null;
-
-        if (uiMessageId) {
-            uiMessage = (uiMessageId === 'p-nouimessage') ? null: $(PrimeFaces.escapeClientId(uiMessageId));
-        }
-        else {
-            uiMessage = PrimeFaces.validation.Utils.findUIMessage(clientId, element.closest('form').find('div.ui-message'));
-
-            if (uiMessage)
-                element.data('uimessageid', uiMessage.attr('id'));
-            else
-                element.data('uimessageid', 'p-nouimessage');
-        }
-
-        if (uiMessage) {
-            uiMessage.html('').removeClass('ui-message-error ui-message-icon-only ui-widget ui-corner-all ui-helper-clearfix');
-        }
-
-        PrimeFaces.validation.validateInput(element);
-
-        if (!vc.isEmpty()) {
-            if (uiMessage) {
-                PrimeFaces.validation.Utils.renderUIMessage(uiMessage, vc.messages[clientId][0]);
-            }
-
-            vc.clear();
-            return false;
-        }
-        else {
-            vc.clear();
-            return true;
         }
     };
 
