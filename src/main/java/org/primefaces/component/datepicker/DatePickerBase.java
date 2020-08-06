@@ -23,7 +23,11 @@
  */
 package org.primefaces.component.datepicker;
 
+import java.time.chrono.IsoChronology;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.FormatStyle;
 import java.util.List;
+import java.util.Locale;
 
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
@@ -444,11 +448,16 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
     @Override
     public String calculateTimeOnlyPattern() {
         if (timeOnlyPattern == null) {
+            // #5528 Determine separator for locale
+            Locale locale = calculateLocale(getFacesContext());
+            String localePattern = DateTimeFormatterBuilder.getLocalizedDateTimePattern(null, FormatStyle.SHORT, IsoChronology.INSTANCE, locale);
+            String separator = localePattern.contains(":") ? ":" : ".";
+
             boolean ampm = "12".equals(getHourFormat());
             timeOnlyPattern = ampm ? "hh" : "HH";
-            timeOnlyPattern += ":mm";
+            timeOnlyPattern += (separator + "mm");
             if (isShowSeconds()) {
-                timeOnlyPattern += ":ss";
+                timeOnlyPattern += (separator + "ss");
             }
             if (ampm) {
                 timeOnlyPattern += " a";
