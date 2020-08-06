@@ -39,6 +39,11 @@ import org.primefaces.util.WidgetBuilder;
 public class TerminalRenderer extends CoreRenderer {
 
     @Override
+    public void decode(FacesContext context, UIComponent component) {
+        decodeBehaviors(context, component);
+    }
+
+    @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Terminal terminal = (Terminal) component;
 
@@ -114,6 +119,7 @@ public class TerminalRenderer extends CoreRenderer {
         String clientId = terminal.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Terminal", terminal.resolveWidgetVar(context), clientId);
+        encodeClientBehaviors(context, terminal);
         wb.finish();
     }
 
