@@ -1,33 +1,6 @@
 if (!PrimeFaces.ajax) {
 
     /**
-     * AJAX parameter shortcut mapping for the method `PrimeFaces.ab` that sends an AJAX request.
-     * @type {Record<string, string>}
-     */
-    PrimeFaces.AB_MAPPING = {
-        's': 'source',
-        'f': 'formId',
-        'p': 'process',
-        'u': 'update',
-        'e': 'event',
-        'a': 'async',
-        'g': 'global',
-        'd': 'delay',
-        't': 'timeout',
-        'sc': 'skipChildren',
-        'iau': 'ignoreAutoUpdate',
-        'ps': 'partialSubmit',
-        'psf': 'partialSubmitFilter',
-        'rv': 'resetValues',
-        'fi': 'fragmentId',
-        'pa': 'params',
-        'onst': 'onstart',
-        'oner': 'onerror',
-        'onsu': 'onsuccess',
-        'onco': 'oncomplete'
-    };
-
-    /**
      * A shortcut for `PrimeFaces.ajax.Request.handle(cfg, ext)`, with shorter option names. Sends an AJAX request to
      * the server and processes the response. You can use this method if you need more fine-grained control over which
      * components you want to update or process, or if you need to change some other AJAX options.
@@ -48,8 +21,8 @@ if (!PrimeFaces.ajax) {
             }
 
             // just pass though if no mapping is available
-            if (this.AB_MAPPING[option]) {
-                cfg[this.AB_MAPPING[option]] = cfg[option];
+            if (PrimeFaces.ajax.CFG_SHORTCUTS[option]) {
+                cfg[PrimeFaces.ajax.CFG_SHORTCUTS[option]] = cfg[option];
                 delete cfg[option];
             }
         }
@@ -84,6 +57,33 @@ if (!PrimeFaces.ajax) {
          * @readonly
          */
         RESOURCE : "javax.faces.Resource",
+
+        /**
+         * Parameter shortcut mapping for the method `PrimeFaces.ab`.
+         * @type {Record<string, string>}
+         */
+        CFG_SHORTCUTS : {
+            's': 'source',
+            'f': 'formId',
+            'p': 'process',
+            'u': 'update',
+            'e': 'event',
+            'a': 'async',
+            'g': 'global',
+            'd': 'delay',
+            't': 'timeout',
+            'sc': 'skipChildren',
+            'iau': 'ignoreAutoUpdate',
+            'ps': 'partialSubmit',
+            'psf': 'partialSubmitFilter',
+            'rv': 'resetValues',
+            'fi': 'fragmentId',
+            'pa': 'params',
+            'onst': 'onstart',
+            'oner': 'onerror',
+            'onsu': 'onsuccess',
+            'onco': 'oncomplete'
+        },
 
         /**
          * This object contains utility methods for AJAX requests, primarily used internally.

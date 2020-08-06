@@ -78,21 +78,45 @@ if (window.PrimeFaces) {
      */
     PrimeFaces.converter = { };
 
-    PrimeFaces.validation = { };
+    PrimeFaces.validation = {
+
+        /**
+         * Parameter shortcut mapping for the method `PrimeFaces.vb`.
+         * @type {Record<string, string>}
+         */
+        CFG_SHORTCUTS : {
+            's': 'source',
+            'p': 'process',
+            'u': 'update',
+            'a': 'ajax'
+        }    
+    };
 
     /**
-     * A shortcut for `PrimeFaces.validate`.
+     * A shortcut for `PrimeFaces.validation.validate`.
      * @function
-     * @param {Partial<PrimeFaces.ajax.ShorthandConfiguration>} cfg An AJAX configuration. It should have at least the
+     * @param {Partial<PrimeFaces.validation.ShorthandConfiguration>} cfg An configuration. It should have at least the
      * source (`s`) attribute set.
      * @return {boolean} `true` if the request would not result in validation errors, or `false` otherwise.
      */
     PrimeFaces.vb = function(cfg) {
+        for (var option in cfg) {
+            if (!cfg.hasOwnProperty(option)) {
+                continue;
+            }
+
+            // just pass though if no mapping is available
+            if (PrimeFaces.validation.CFG_SHORTCUTS[option]) {
+                cfg[PrimeFaces.validation.CFG_SHORTCUTS[option]] = cfg[option];
+                delete cfg[option];
+            }
+        }
+        
         return PrimeFaces.validation.validate(cfg);
     };
 
     /**
-     * A shortcut for `PrimeFaces.validateInstant`.
+     * A shortcut for `PrimeFaces.validation.validateInstant`.
      * @function
      * @param {string | HTMLElement | JQuery} element The ID of an element to validate, or the element itself.
      * @return {boolean} `true` if the element is valid, or `false` otherwise.
@@ -102,21 +126,21 @@ if (window.PrimeFaces) {
     };
 
     /**
-     * When an AJAX request (with a specified `process` and/or `update`) is sent, the submitted form values are
-     * validated by the server. Given the configuration of such an AJAX request, this function checks whether it would
-     * result in any validation errors. It does this on the client via JavaScript, without sending any requests. This
-     * can be used for client-side validation that provides quick feedback to the user.
+     * Triggers client-side-validation.
+     * If the `ajax` attribute is set to `true` (the default is `false`), all inputs configured by the `process` attribute are validated
+     * and all messages for the inputs configured by the `update` attribute are rendered.
+     * Otherwise, if the `ajax` attribute is set to the `false`, all inputs of the the parent form, of the `source` attribute, are processed and updated.
      * @function
-     * @param {Partial<PrimeFaces.ajax.ShorthandConfiguration>} cfg An AJAX configuration. It should have at least the
+     * @param {Partial<PrimeFaces.validation.Configuration>} cfg The validation configuration. It should have at least the
      * source (`s`) attribute set.
      * @return {boolean} `true` if the request would not result in validation errors, or `false` otherwise.
      */
     PrimeFaces.validation.validate = function(cfg) {
         var vc = PrimeFaces.validation.ValidationContext,
-        form = $(cfg.s).closest('form');
+        form = $(cfg.source).closest('form');
 
-        if (cfg.a && cfg.p) {
-            var processIds = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(cfg.p),
+        if (cfg.ajax && cfg.process) {
+            var processIds = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(cfg.process),
             inputs = $();
 
             for (var i = 0; i < processIds.length; i++) {
@@ -142,8 +166,8 @@ if (window.PrimeFaces) {
             return true;
         }
         else {
-            if (cfg.a && cfg.u) {
-                var updateIds = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(cfg.u);
+            if (cfg.ajax && cfg.update) {
+                var updateIds = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(cfg.update);
                 for (var i = 0; i < updateIds.length; i++) {
                     if (updateIds[i]) {
                         var component = $(PrimeFaces.escapeClientId(updateIds[i]));

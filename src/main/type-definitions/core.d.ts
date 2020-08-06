@@ -905,6 +905,49 @@ declare namespace PrimeFaces.ajax {
     }>;
 }
 
+declare namespace PrimeFaces.validation {
+
+   /**
+     * The options that can be passed to the Validation method. Note that you do not have to provide a value
+     * for all these property. Most methods methods such as `PrimeFaces.vb` have got sensible defaults in case you
+     * do not. 
+     */
+    export interface Configuration {
+
+        /**
+         * The source that triggered the validationt.
+         */
+        source: string | JQuery | HTMLElement;
+
+        /**
+         * `true` if the validation is triggered by AJAXified compoment. Defaults to `false`.
+         */
+        ajax: boolean;
+
+        /**
+         * A (client-side) PrimeFaces search expression for the components to process in the validation.
+         */
+        process: string;
+
+        /**
+         * A (client-side) PrimeFaces search expression for the components to update in the validation.
+         */
+        update: string;
+    }
+
+    /**
+     * Options passed to `PrimeFaces.vb` as shortcut. This is the same as `Configuration`, but with shorter
+     * option names and is used mainly by the method `PrimeFaces.vb`. See `Configuration` for a detailed description
+     * of these options.
+     */
+    export type ShorthandConfiguration = RenameKeys<Configuration, {
+        source: "s",
+        ajax: "a",
+        process: "p",
+        update: "u";
+    }>;
+}
+
 // JQuery extensions
 
 /**

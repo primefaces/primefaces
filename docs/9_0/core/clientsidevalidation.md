@@ -354,12 +354,10 @@ BeanValidationMetadataMapper.removeConstraintMapping(Class<? extends Annotation>
 
 
 
+## Manual usage via JS API
 
 
+### PrimeFaces.vb / PrimeFaces.validation.validate
 
 
-
-validateInstant
-    p-nouimessage
-    uimessageid
-
+### PrimeFaces.vi / PrimeFaces.validation.validateInstant
