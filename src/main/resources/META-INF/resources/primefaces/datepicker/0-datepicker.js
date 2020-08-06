@@ -28,6 +28,7 @@
             inline: false,
             selectionMode: 'single',
             rangeSeparator: '-',
+            timeSeparator: ':',
             inputId: null,
             inputStyle: null,
             inputStyleClass: null,
@@ -716,11 +717,11 @@
             } else {
                 output += (hours < 10) ? '0' + hours : hours;
             }
-            output += ':';
+            output += this.options.timeSeparator;
             output += (minutes < 10) ? '0' + minutes : minutes;
 
             if (this.options.showSeconds) {
-                output += ':';
+                output += this.options.timeSeparator;
                 output += (seconds < 10) ? '0' + seconds : seconds;
             }
 
@@ -732,7 +733,7 @@
         },
 
         parseTime: function (value, ampm) {
-            var tokens = value.split(':'),
+            var tokens = value.split(this.options.timeSeparator),
                 validTokenLength = this.options.showSeconds ? 3 : 2;
 
             if (tokens.length !== validTokenLength) {

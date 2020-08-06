@@ -41,6 +41,8 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.DatePickerRenderer";
 
+    protected String timeSeparator = null;
+
     public enum PropertyKeys {
 
         placeholder,
@@ -448,11 +450,7 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
     @Override
     public String calculateTimeOnlyPattern() {
         if (timeOnlyPattern == null) {
-            // #5528 Determine separator for locale
-            Locale locale = calculateLocale(getFacesContext());
-            String localePattern = DateTimeFormatterBuilder.getLocalizedDateTimePattern(null, FormatStyle.SHORT, IsoChronology.INSTANCE, locale);
-            String separator = localePattern.contains(":") ? ":" : ".";
-
+            String separator = getTimeSeparator();
             boolean ampm = "12".equals(getHourFormat());
             timeOnlyPattern = ampm ? "hh" : "HH";
             timeOnlyPattern += (separator + "mm");
@@ -465,5 +463,17 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         }
         return timeOnlyPattern;
     }
+
+    public String getTimeSeparator() {
+        if (timeSeparator == null) {
+            // #5528 Determine separator for locale
+            Locale locale = calculateLocale(getFacesContext());
+            String localePattern = DateTimeFormatterBuilder.getLocalizedDateTimePattern(null, FormatStyle.SHORT, IsoChronology.INSTANCE, locale);
+            timeSeparator = localePattern.contains(":") ? ":" : ".";
+        }
+        return timeSeparator;
+    }
+
+
 
 }
