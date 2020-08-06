@@ -115,14 +115,14 @@ if (window.PrimeFaces) {
         var vc = PrimeFaces.validation.ValidationContext,
         form = $(cfg.s).closest('form');
 
-        if(cfg.a && cfg.p) {
+        if (cfg.a && cfg.p) {
             var processIds = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(cfg.p),
             inputs = $();
 
-            for(var i = 0; i < processIds.length; i++) {
-                if(processIds[i]) {
+            for (var i = 0; i < processIds.length; i++) {
+                if (processIds[i]) {
                     var component = $(PrimeFaces.escapeClientId(processIds[i]));
-                    if(component.is(':input'))
+                    if (component.is(':input'))
                         inputs = inputs.add(component);
                     else
                         inputs = inputs.add(component.find(':input:visible:enabled:not(:button)[name]'));
@@ -245,7 +245,8 @@ if (window.PrimeFaces) {
             valid = false;
         }
 
-        if (valid && ((submittedValue !== null && PrimeFaces.trim(submittedValue).length > 0)||PrimeFaces.settings.validateEmptyFields)) {
+        if (valid 
+                && ((submittedValue !== null && PrimeFaces.trim(submittedValue).length > 0) || PrimeFaces.settings.validateEmptyFields)) {
             var validatorIds = element.data('p-val');
             if (validatorIds) {
                 validatorIds = validatorIds.split(',');
@@ -258,7 +259,7 @@ if (window.PrimeFaces) {
                         try {
                             validator.validate(element, newValue);
                         }
-                        catch(ve) {
+                        catch (ve) {
                             var validatorMessageStr = element.data('p-vmsg'),
                             validatorMsg = (validatorMessageStr) ? {summary:validatorMessageStr,detail:validatorMessageStr} : ve;
                             valid = false;
@@ -309,7 +310,7 @@ if (window.PrimeFaces) {
                 element.data('uimessageid', 'p-nouimessage');
         }
 
-        if(uiMessage) {
+        if (uiMessage) {
             uiMessage.html('').removeClass('ui-message-error ui-message-icon-only ui-widget ui-corner-all ui-helper-clearfix');
         }
 
