@@ -151,7 +151,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
      */
     initSize: function() {
         this.jq.css({
-            'width': this.cfg.width + 'px',
+            'width': String(this.cfg.width),
             'height': 'auto'
         });
 
@@ -176,7 +176,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
         var maxHeight = windowHeight - (margin + headerHeight + contentPadding + footerHeight);
 
-        this.content.css('max-height', maxHeight + 'px');
+        this.content.css('max-height', String(maxHeight));
     },
 
 
@@ -236,7 +236,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         //offset
         if(this.cfg.absolutePositioned) {
             var winScrollTop = $(window).scrollTop();
-            this.jq.css('top', parseFloat(this.jq.css('top')) + (winScrollTop - this.lastScrollTop) + 'px');
+            this.jq.css('top', String(parseFloat(this.jq.css('top')) + (winScrollTop - this.lastScrollTop)));
             this.lastScrollTop = winScrollTop;
         }
 
@@ -496,8 +496,8 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
                             }
 
                             $(this).css({
-                                left: l + 'px'
-                                ,top: t + 'px'
+                                left: String(l)
+                                ,top: String(t)
                             });
                         }
                     });
@@ -566,8 +566,8 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             var win = $(window);
 
             this.jq.addClass('ui-dialog-maximized').css({
-                'width': (win.width() - 6)  + 'px'
-                ,'height': win.height() + 'px'
+                'width': String(win.width() - 6)
+                ,'height': String(win.height())
             }).offset({
                 top: win.scrollTop()
                 ,left: win.scrollLeft()
@@ -577,7 +577,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             var contentPadding = this.content.innerHeight() - this.content.height();
             this.content.css({
                 width: 'auto',
-                height: (this.jq.height() - this.titlebar.outerHeight() - contentPadding)  + 'px'
+                height: String(this.jq.height() - this.titlebar.outerHeight() - contentPadding)
             });
 
             this.maximizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-extlink').addClass('ui-icon-newwin');
@@ -965,8 +965,8 @@ PrimeFaces.widget.DynamicDialog = PrimeFaces.widget.Dialog.extend({
      */
     initSize: function() {
         this.jq.css({
-            'width': this.cfg.width + 'px',
-            'height': this.cfg.height + 'px'
+            'width': String(this.cfg.width),
+            'height': String(this.cfg.height)
         });
 
         if(this.cfg.fitViewport) {
