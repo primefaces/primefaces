@@ -141,18 +141,16 @@ if (window.PrimeFaces) {
         var highlight = cfg.highlight === undefined || cfg.highlight === true;
 
         if (cfg.ajax && cfg.process) {
-            var processIds = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(cfg.process),
-            inputs = $();
+            var inputs = $();
 
-            for (var i = 0; i < processIds.length; i++) {
-                if (processIds[i]) {
-                    var component = $(PrimeFaces.escapeClientId(processIds[i]));
-                    if (component.is(':input')) {
-                        inputs = inputs.add(component);
-                    }
-                    else {
-                        inputs = inputs.add(component.find(':input:visible:enabled:not(:button)[name]'));
-                    }
+            var process = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(cfg.process);
+            for (var component in process) {
+                component = $(component);
+                if (component.is(':input')) {
+                    inputs = inputs.add(component);
+                }
+                else {
+                    inputs = inputs.add(component.find(':input:visible:enabled:not(:button)[name]'));
                 }
             }
 
@@ -168,12 +166,10 @@ if (window.PrimeFaces) {
         }
         else {
             if (cfg.ajax && cfg.update) {
-                var updateIds = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(cfg.update);
-                for (var i = 0; i < updateIds.length; i++) {
-                    if (updateIds[i]) {
-                        var component = $(PrimeFaces.escapeClientId(updateIds[i]));
-                        PrimeFaces.validation.Utils.renderMessages(vc.messages, component);
-                    }
+                var update = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(cfg.update);
+                for (var component in update) {
+                    component = $(component);
+                    PrimeFaces.validation.Utils.renderMessages(vc.messages, component);
                 }
             }
             else {
