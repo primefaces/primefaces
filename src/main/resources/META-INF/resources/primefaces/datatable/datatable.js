@@ -4668,11 +4668,17 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.reflowDD && this.cfg.reflow) {
             var options = this.reflowDD.children('option'),
             orderIndex = sortOrder > 0 ? 0 : 1;
+            var header = columnHeader.text();
+            var filterby = header.indexOf("Filter by");
+            if (filterby !== -1) {
+                header = header.substring(0, filterby);
+            }
+            header = $.escapeSelector(header);
 
             options.filter(':selected').prop('selected', false);
             options.filter(function(idx, element) {
-                var header = $.escapeSelector(columnHeader.text());
-                return $.escapeSelector(element.text).startsWith(header) && element.value.endsWith("_" + orderIndex);
+                var optionText = $.escapeSelector(element.text);
+                return optionText.startsWith(header) && element.value.endsWith("_" + orderIndex);
             }).prop("selected", true);
         }
     },

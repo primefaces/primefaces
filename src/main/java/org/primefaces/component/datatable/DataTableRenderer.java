@@ -1827,6 +1827,9 @@ public class DataTableRenderer extends DataRenderer {
         boolean sortable = false;
 
         for (UIColumn column : columns) {
+            if (column instanceof DynamicColumn) {
+                ((DynamicColumn) column).applyStatelessModel();
+            }
             columnSortByVE = column.getValueExpression(Column.PropertyKeys.sortBy.toString());
             sortable = (columnSortByVE != null && column.isSortable());
             if (sortable) {
