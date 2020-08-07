@@ -145,7 +145,8 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("appendTo", SearchExpressionFacade.resolveClientId(context, datepicker, datepicker.getAppendTo(),
                             SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
             .attr("icon", datepicker.getTriggerButtonIcon(), null)
-            .attr("rangeSeparator", datepicker.getRangeSeparator(), null)
+            .attr("rangeSeparator", datepicker.getRangeSeparator(), "-")
+            .attr("timeSeparator", datepicker.getTimeSeparator(), ":")
             .attr("timeInput", datepicker.isTimeInput())
             .attr("touchable", ComponentUtils.isTouchable(context, datepicker),  true);
 
