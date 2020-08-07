@@ -460,26 +460,6 @@ declare namespace PrimeFaces {
         severityText?: string;
     }
 
-    /**
-     * When an element is invalid due to a validation error, the user needs to be informed. A highlight handler is
-     * responsible for changing the visual state of an element so that the user notices the invalid element. A highlight
-     * handler is usually registered for a particular type of element or widget.
-     */
-    export interface HighlightHandler {
-        /**
-         * When an element is invalid due to a validation error, the user needs to be informed. This method must
-         * highlight the given element in a way that makes the user notice that the element is invalid.
-         * @param element An element to highlight.
-         */
-        highlight(element: JQuery): void;
-
-        /**
-         * When an element is invalid due to a validation error, the user needs to be informed. This method must
-         * remove the highlighting of the given element that was added by `highlight`.
-         */
-        unhighlight(element: JQuery): void;
-    }
-
     /*
      * __Note__: Do not parametrize the this context via a type parameter. This would require changing the return type
      * of BaseWidget#getBehavior to "PrimeFaces.Behavior<this>"". If that were done, however, it would not be longer be
@@ -907,6 +887,27 @@ declare namespace PrimeFaces.ajax {
 
 declare namespace PrimeFaces.validation {
 
+    /**
+     * When an element is invalid due to a validation error, the user needs to be informed. A highlight handler is
+     * responsible for changing the visual state of an element so that the user notices the invalid element. A highlight
+     * handler is usually registered for a particular type of element or widget.
+     */
+    export interface Highlighter {
+        /**
+         * When an element is invalid due to a validation error, the user needs to be informed. This method must
+         * highlight the given element in a way that makes the user notice that the element is invalid.
+         * @param element An element to highlight.
+         */
+        highlight(element: JQuery): void;
+
+        /**
+         * When an element is invalid due to a validation error, the user needs to be informed. This method must
+         * remove the highlighting of the given element that was added by `highlight`.
+         */
+        unhighlight(element: JQuery): void;
+    }
+
+
    /**
      * The options that can be passed to the Validation method. Note that you do not have to provide a value
      * for all these property. Most methods methods such as `PrimeFaces.vb` have got sensible defaults in case you
@@ -932,7 +933,12 @@ declare namespace PrimeFaces.validation {
         /**
          * A (client-side) PrimeFaces search expression for the components to update in the validation.
          */
-        update: string;
+        update: string,
+
+        /**
+         * `true` if invalid elements should be highlighted as invalid. Default is `true`.
+         */
+        highlight: boolean;
     }
 
     /**
@@ -944,7 +950,8 @@ declare namespace PrimeFaces.validation {
         source: "s",
         ajax: "a",
         process: "p",
-        update: "u";
+        update: "u",
+        highlight: "h";
     }>;
 }
 

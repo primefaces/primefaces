@@ -136,8 +136,9 @@ if (window.PrimeFaces) {
      * @return {boolean} `true` if the request would not result in validation errors, or `false` otherwise.
      */
     PrimeFaces.validation.validate = function(cfg) {
-        var vc = PrimeFaces.validation.ValidationContext,
-        form = $(cfg.source).closest('form');
+        var vc = PrimeFaces.validation.ValidationContext;
+        var form = $(cfg.source).closest('form');
+        var highlight = cfg.highlight === undefined || cfg.highlight === true;
 
         if (cfg.ajax && cfg.process) {
             var processIds = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(cfg.process),
@@ -155,11 +156,11 @@ if (window.PrimeFaces) {
                 }
             }
 
-            PrimeFaces.validation.validateInputs(inputs);
+            PrimeFaces.validation.validateInputs(inputs, highlight);
         }
         else {
             var inputs = form.find(':input:visible:enabled:not(:button)[name]');
-            PrimeFaces.validation.validateInputs(inputs);
+            PrimeFaces.validation.validateInputs(inputs, highlight);
         }
 
         if (vc.isEmpty()) {
@@ -255,10 +256,11 @@ if (window.PrimeFaces) {
      * Validates all given input fields, checking whether their current value is valid.
      * @function
      * @param {JQuery} inputs A JQuery instance with one or more input elements.
+     * @param {boolean} highlight If the invalid element should be highlighted.
      */
-    PrimeFaces.validation.validateInputs = function(inputs) {
+    PrimeFaces.validation.validateInputs = function(inputs, highlight) {
         for (var i = 0; i < inputs.length; i++) {
-            PrimeFaces.validation.validateInput(inputs.eq(i));
+            PrimeFaces.validation.validateInput(inputs.eq(i), highlight);
         }
     };
 
@@ -268,8 +270,9 @@ if (window.PrimeFaces) {
      * messages.
      * @function
      * @param {JQuery} element A JQuery instance with a single input element to validate.
+     * @param {boolean} highlight If the invalid element should be highlighted.
      */
-    PrimeFaces.validation.validateInput = function(element) {
+    PrimeFaces.validation.validateInput = function(element, highlight) {
         var vc = PrimeFaces.validation.ValidationContext;
 
         if (element.is(':checkbox,:radio') && element.data('p-grouped')) {
@@ -363,8 +366,10 @@ if (window.PrimeFaces) {
             element.attr('aria-invalid', false);
         }
         else {
-            highlighter.highlight(element);
-            element.attr('aria-invalid', true);
+            if (highlight) {
+                highlighter.highlight(element);
+                element.attr('aria-invalid', true);
+            }
         }
     };
 
