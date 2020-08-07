@@ -473,7 +473,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         var $this = this;
 
         //reset
-        this.jq.css({left:'0px',top:'0px'});
+        this.jq.css({left:'0',top:'0'});
 
         if(/(center|left|top|right|bottom)/.test(this.cfg.position)) {
             this.cfg.position = this.cfg.position.replace(',', ' ');
@@ -496,8 +496,8 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
                             }
 
                             $(this).css({
-                                left: String(l)
-                                ,top: String(t)
+                                left: l + 'px'
+                                ,top: t + 'px'
                             });
                         }
                     });
