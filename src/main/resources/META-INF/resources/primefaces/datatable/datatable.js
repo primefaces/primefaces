@@ -4675,11 +4675,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
             header = $.escapeSelector(header);
 
-            options.filter(':selected').prop('selected', false);
-            options.filter(function(idx, element) {
-                var optionText = $.escapeSelector(element.text);
-                return optionText.startsWith(header) && element.value.endsWith("_" + orderIndex);
-            }).prop("selected", true);
+            options.each(function() {
+                var optionText = $.escapeSelector(this.text);
+                this.selected = optionText.startsWith(header) && this.value.endsWith("_" + orderIndex);
+            });
         }
     },
 
