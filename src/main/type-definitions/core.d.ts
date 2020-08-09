@@ -938,7 +938,12 @@ declare namespace PrimeFaces.validation {
         /**
          * `true` if invalid elements should be highlighted as invalid. Default is `true`.
          */
-        highlight: boolean;
+        highlight: boolean,
+
+        /**
+         * `true` if the first invalid element should be focussed. Default is `true`.
+         */
+        focus: boolean;
     }
 
     /**
@@ -951,7 +956,8 @@ declare namespace PrimeFaces.validation {
         ajax: "a",
         process: "p",
         update: "u",
-        highlight: "h";
+        highlight: "h",
+        focus: "f";
     }>;
 }
 

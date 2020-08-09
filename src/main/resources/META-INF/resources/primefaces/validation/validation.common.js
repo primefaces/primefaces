@@ -88,15 +88,16 @@ if (window.PrimeFaces) {
             's': 'source',
             'p': 'process',
             'u': 'update',
-            'a': 'ajax'
+            'a': 'ajax',
+            'h': 'highlight',
+            'f': 'focus'
         }    
     };
 
     /**
-     * A shortcut for `PrimeFaces.validation.validate`.
+     * A shortcut for `PrimeFaces.validation.validate` used by server-side renderers.
      * @function
-     * @param {Partial<PrimeFaces.validation.ShorthandConfiguration>} cfg An configuration. It should have at least the
-     * source (`s`) attribute set.
+     * @param {Partial<PrimeFaces.validation.ShorthandConfiguration>} cfg An configuration.
      * @return {boolean} `true` if the request would not result in validation errors, or `false` otherwise.
      */
     PrimeFaces.vb = function(cfg) {
@@ -112,7 +113,26 @@ if (window.PrimeFaces) {
             }
         }
         
-        return PrimeFaces.validation.validate(cfg);
+        var highlight = cfg.highlight === undefined || cfg.highlight === true;
+        var focus = cfg.focus === undefined || cfg.focus === true;
+
+        var process;
+        if (cfg.ajax && cfg.process) {
+            process = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(cfg.process);
+        }
+        else {
+            process = $(cfg.source).closest('form');
+        }
+
+        var update;
+        if (cfg.ajax && cfg.update) {
+            update = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(cfg.update);
+        }
+        else {
+            update = $(cfg.source).closest('form');
+        }
+
+        return PrimeFaces.validation.validate(process, update, highlight, focus);
     };
 
     /**
@@ -131,52 +151,42 @@ if (window.PrimeFaces) {
      * and all messages for the inputs configured by the `update` attribute are rendered.
      * Otherwise, if the `ajax` attribute is set to the `false`, all inputs of the the parent form, of the `source` attribute, are processed and updated.
      * @function
-     * @param {Partial<PrimeFaces.validation.Configuration>} cfg The validation configuration. It should have at least the
-     * source (`s`) attribute set.
+     * @param {string | HTMLElement | JQuery} process The elements to be processed.
+     * @param {string | HTMLElement | JQuery} update The elements to be updated.
+     * @param {boolean} highlight If invalid elements should be highlighted.
+     * @param {boolean} focus If the first invalid element should be focused.
      * @return {boolean} `true` if the request would not result in validation errors, or `false` otherwise.
      */
-    PrimeFaces.validation.validate = function(cfg) {
+    PrimeFaces.validation.validate = function(process, update, highlight, focus) {
         var vc = PrimeFaces.validation.ValidationContext;
-        var form = $(cfg.source).closest('form');
-        var highlight = cfg.highlight === undefined || cfg.highlight === true;
 
-        if (cfg.ajax && cfg.process) {
-            var inputs = $();
+        var inputs = $();
 
-            var process = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(cfg.process);
-            for (var component in process) {
-                component = $(component);
-                if (component.is(':input')) {
-                    inputs = inputs.add(component);
-                }
-                else {
-                    inputs = inputs.add(component.find(':input:visible:enabled:not(:button)[name]'));
-                }
+        process = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(process);
+        for (var component in process) {
+            component = $(component);
+            if (component.is(':input')) {
+                inputs = inputs.add(component);
             }
+            else {
+                inputs = inputs.add(component.find(':input:visible:enabled:not(:button)[name]'));
+            }
+        }
 
-            PrimeFaces.validation.validateInputs(inputs, highlight);
-        }
-        else {
-            var inputs = form.find(':input:visible:enabled:not(:button)[name]');
-            PrimeFaces.validation.validateInputs(inputs, highlight);
-        }
+        PrimeFaces.validation.validateInputs(inputs, highlight);
 
         if (vc.isEmpty()) {
             return true;
         }
-        else {
-            if (cfg.ajax && cfg.update) {
-                var update = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(cfg.update);
-                for (var component in update) {
-                    component = $(component);
-                    PrimeFaces.validation.Utils.renderMessages(vc.messages, component);
-                }
-            }
-            else {
-                PrimeFaces.validation.Utils.renderMessages(vc.messages, form);
-            }
 
-            //focus first element
+        update = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(update);
+        for (var component in update) {
+            component = $(component);
+            PrimeFaces.validation.Utils.renderMessages(vc.messages, component);
+        }
+
+        //focus first element
+        if (focus === true) {
             for (var key in vc.messages) {
                 if (vc.messages.hasOwnProperty(key)) {
                     var el = $(PrimeFaces.escapeClientId(key));
@@ -189,11 +199,11 @@ if (window.PrimeFaces) {
                     break;
                 }
             }
-
-            vc.clear();
-
-            return false;
         }
+
+        vc.clear();
+
+        return false;
     };
 
     /**
