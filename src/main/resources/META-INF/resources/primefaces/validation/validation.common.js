@@ -160,11 +160,12 @@ if (window.PrimeFaces) {
     PrimeFaces.validation.validate = function(process, update, highlight, focus) {
         var vc = PrimeFaces.validation.ValidationContext;
 
-        var inputs = $();
-
         process = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(process);
-        for (var component in process) {
-            component = $(component);
+
+        // validate all inputs first
+        var inputs = $();
+        for (var i = 0; i < process.length; i++) {
+            var component = process.eq(i);
             if (component.is(':input')) {
                 inputs = inputs.add(component);
             }
@@ -172,17 +173,28 @@ if (window.PrimeFaces) {
                 inputs = inputs.add(component.find(':input:visible:enabled:not(:button)[name]'));
             }
         }
-
         PrimeFaces.validation.validateInputs(inputs, highlight);
+
+        // validate complex validations, which cann be applied to any container element
+        var nonInputs = $();
+        for (var i = 0; i < process.length; i++) {
+            var component = process.eq(i);
+            nonInputs = nonInputs.add(component.find(':not(:input)'));
+        }
+        nonInputs = nonInputs.filter('[data-p-val]');
+        for (var i = 0; i < nonInputs.length; i++) {
+            PrimeFaces.validation.validateComplex(nonInputs.eq(i), highlight);
+        }
 
         // early exit - we dont need to render messages
         if (vc.isEmpty()) {
             return true;
         }
 
+        // render messages
         update = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(update);
-        for (var component in update) {
-            component = $(component);
+        for (var i = 0; i < update.length; i++) {
+            var component = process.eq(i);
             PrimeFaces.validation.Utils.renderMessages(vc.messages, component);
         }
 
@@ -375,9 +387,61 @@ if (window.PrimeFaces) {
         else {
             if (highlight) {
                 highlighter.highlight(element);
-                element.attr('aria-invalid', true);
+            }
+            element.attr('aria-invalid', true);
+        }
+    };
+
+    PrimeFaces.validation.validateComplex = function(element, highlight) {
+        var vc = PrimeFaces.validation.ValidationContext;
+        var valid = true;
+
+        var validatorIds = element.data('p-val');
+        if (validatorIds) {
+            validatorIds = validatorIds.split(',');
+
+            for (var j = 0; j < validatorIds.length; j++) {
+                var validatorId = validatorIds[j],
+                validator = PrimeFaces.validator[validatorId];
+
+                if (validator) {
+                    try {
+                        validator.validate(element);
+                    }
+                    catch (ve) {
+                        var validatorMessageStr = element.data('p-vmsg');
+                        var validatorMsg = validatorMessageStr
+                            ? {summary: validatorMessageStr, detail: validatorMessageStr}
+                            : ve;
+
+                        vc.addMessage(element, validatorMsg);
+
+                        valid = false;
+
+                        var highlighterType = element.data('p-hl');
+
+                        var highlighter = highlighterType
+                            ? PrimeFaces.validator.Highlighter.types[highlighterType]
+                            : PrimeFaces.validator.Highlighter.types[validatorId];
+
+                        if (valid) {
+                            if (highlighter) {
+                                highlighter.unhighlight(element);
+                            }
+                            element.attr('aria-invalid', false);
+                        }
+                        else {
+                            if (highlight && highlighter) {
+                                highlighter.highlight(element);
+                            }
+                            element.attr('aria-invalid', true);
+                        }
+                    }
+                }
             }
         }
+        
+        return valid;
     };
 
     /**
