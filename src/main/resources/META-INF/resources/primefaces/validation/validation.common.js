@@ -175,6 +175,7 @@ if (window.PrimeFaces) {
 
         PrimeFaces.validation.validateInputs(inputs, highlight);
 
+        // early exit - we dont need to render messages
         if (vc.isEmpty()) {
             return true;
         }
