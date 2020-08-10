@@ -135,7 +135,7 @@ public class InputMaskRenderer extends InputRenderer {
             wb.attr("mask", mask)
                 .attr("placeholder", inputMask.getSlotChar(), "_")
                 .attr("clearMaskOnLostFocus", inputMask.isAutoClear(), true)
-                .attr("clearIncomplete", inputMask.isAutoClear(), false);
+                .attr("clearIncomplete", inputMask.isValidateMask(), false);
         }
 
         wb.finish();
