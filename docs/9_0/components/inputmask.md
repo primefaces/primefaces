@@ -58,7 +58,7 @@ slotChar | '_' | String | PlaceHolder in mask template. Default to underscore '_
 style | null | String | Inline style of the input element.
 styleClass | null | String | Style class of the input element.
 tabindex | null | Integer | Position of the input element in the tabbing order.
-title | null | String | Advisory tooltip informaton.
+title | null | String | Advisory tooltip information.
 validateMask | false | Boolean | Defines whether mask pattern would be validated or not on the server side.
 validator | null | MethodExpr | A method binding expression that refers to a method validationg the input
 validatorMessage | null | String | Message to be displayed when validation fields.

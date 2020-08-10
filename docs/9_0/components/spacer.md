@@ -20,7 +20,7 @@ Spacer is used to put spaces between elements.
 id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-title | null | String | Advisory tooltip informaton.
+title | null | String | Advisory tooltip information.
 style | null | String | Inline style of the spacer.
 styleClass | null | String | Style class of the spacer.
 width | null | String | Width of the space.

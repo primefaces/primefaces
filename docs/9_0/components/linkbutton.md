@@ -38,7 +38,7 @@ rev | null | String | A reverse link from the anchor specified by this link to t
 shape | null | String | Shape of hot spot on the screen, valid values are default, rect, circle and poly.
 tabindex | null | String | Position of the element in the tabbing order.
 target | null | String | Name of a frame where the resource targeted by this link will be displayed.
-title | null | String | Advisory tooltip informaton.
+title | null | String | Advisory tooltip information.
 type | null | String | Type of resource referenced by the link.
 style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the component.

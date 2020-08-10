@@ -88,7 +88,7 @@ ajax selection and more.
 | styleClass | null | String | Style class of the component.
 | size | null | Integer | Number of characters used to determine the width of the input element.
 | tabindex | null | Integer | Position of the input element in the tabbing order.
-| title | null | String | Advisory tooltip informaton.
+| title | null | String | Advisory tooltip information.
 | beforeShowDay | null | String | Client side callback to execute before displaying a date, used to customize date display.
 | mask | null | String | Applies a mask using the pattern.
 | timeControlType | slider | String | Defines the type of element to use for time picker, valid values are "slider" and "select".

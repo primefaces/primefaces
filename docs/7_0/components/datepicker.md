@@ -109,7 +109,7 @@ widgetVar | null | String | Name of the client side widget.
 | style | null | String | Inline style of the input element.
 | styleClass | null | String | Style class of the input element.
 | tabindex | null | Integer | Position of the input element in the tabbing order.
-| title | null | String | Advisory tooltip informaton.
+| title | null | String | Advisory tooltip information.
 
 ## Getting Started with DatePicker
 Value of the DatePicker should be a java.util.Date in single selection mode which is the default.
