@@ -77,6 +77,7 @@ public class LineChartRenderer extends ChartRenderer {
         encodeTitle(context, lineOptions.getTitle(), true);
         encodeTooltip(context, lineOptions.getTooltip(), true);
         encodeLegend(context, lineOptions.getLegend(), true);
+        encodeAnimation(context, lineOptions.getAnimation(), true);
 
         writer.write("}");
     }

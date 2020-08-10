@@ -91,6 +91,7 @@ public class PieChartRenderer extends ChartRenderer {
         encodeTitle(context, pieOptions.getTitle(), true);
         encodeTooltip(context, pieOptions.getTooltip(), true);
         encodeLegend(context, pieOptions.getLegend(), true);
+        encodeAnimation(context, pieOptions.getAnimation(), true);
 
         writer.write("}");
     }

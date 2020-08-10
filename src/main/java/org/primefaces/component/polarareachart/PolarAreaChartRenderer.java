@@ -84,6 +84,7 @@ public class PolarAreaChartRenderer extends ChartRenderer {
         encodeTitle(context, polarOptions.getTitle(), true);
         encodeTooltip(context, polarOptions.getTooltip(), true);
         encodeLegend(context, polarOptions.getLegend(), true);
+        encodeAnimation(context, polarOptions.getAnimation(), true);
 
         writer.write("}");
     }

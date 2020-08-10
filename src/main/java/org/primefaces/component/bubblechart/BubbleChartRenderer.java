@@ -77,6 +77,8 @@ public class BubbleChartRenderer extends ChartRenderer {
                 || bubbleOptions.getElements() != null || bubbleOptions.getTitle() != null));
         encodeLegend(context, bubbleOptions.getLegend(), (bubbleOptions.getScales() != null
                     || bubbleOptions.getElements() != null || bubbleOptions.getTitle() != null || bubbleOptions.getTooltip() != null));
+        encodeAnimation(context, bubbleOptions.getAnimation(), (bubbleOptions.getScales() != null
+                    || bubbleOptions.getElements() != null || bubbleOptions.getTitle() != null || bubbleOptions.getTooltip() != null));
 
         writer.write("}");
     }
