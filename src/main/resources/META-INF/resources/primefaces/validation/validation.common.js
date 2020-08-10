@@ -148,7 +148,7 @@ if (window.PrimeFaces) {
         },
 
         /**
-         * Triggers client-side-validation of single or multiple containers (complex validation or simple inputs.
+         * Triggers client-side-validation of single or multiple containers (complex validation or simple inputs).
          * @function
          * @param {string | HTMLElement | JQuery} process The elements to be processed.
          * @param {string | HTMLElement | JQuery} update The elements to be updated.
@@ -226,7 +226,7 @@ if (window.PrimeFaces) {
          * If the value of the element is invalid, adds the appropriate validation failure messages.
          * This is used by `p:clientValidator`.
          * @function
-         * @param {string | HTMLElement | JQuery} el The ID of an element to validate, or the element itself.
+         * @param {string | HTMLElement | JQuery} el The ID of an input to validate, or the input itself.
          * @return {boolean} `true` if the element is valid, or `false` otherwise.
          */
         validateInstant : function(el) {
