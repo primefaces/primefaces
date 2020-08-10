@@ -107,7 +107,7 @@ ajax selection and more.
 | style | null | String | Inline style of the input element.
 | styleClass | null | String | Style class of the input element.
 | tabindex | null | Integer | Position of the input element in the tabbing order.
-| title | null | String | Advisory tooltip informaton.
+| title | null | String | Advisory tooltip information.
 | rangeSeparator | - | String | Separator for joining start and end dates on range selection mode.
 | resolverStyle | smart | String | Relevant when parsing to a Java 8 Date/Time object. lenient, smart or strict. See [ResolverStyle](https://docs.oracle.com/javase/8/docs/api/java/time/format/ResolverStyle.html).
 

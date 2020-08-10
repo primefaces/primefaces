@@ -109,7 +109,7 @@ ajax selection and more.
 | timeInput | false | Boolean | Allows direct input in time field.
 | timeOnly | false | Boolean | Shows only timepicker without date.
 | timeZone | null | Time Zone | String or a java.time.ZoneId instance or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to ZoneId.systemDefault().
-| title | null | String | Advisory tooltip informaton.
+| title | null | String | Advisory tooltip information.
 | touchable | true | Boolean | Enable touch support if browser detection supports it.
 | type | text | String | Input field type. Default is text.
 | validator | null | Method Expr | A method expression that refers to a method validationg the input

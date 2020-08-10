@@ -47,7 +47,7 @@ Button is an extension to the standard h:button component with skinning capabili
 | style | null | String | Inline style of the button.
 | styleClass | null | String | Style class of the button.
 | tabindex | null | Integer | Position in the tabbing order.
-| title | null | String | Advisory tooltip informaton.
+| title | null | String | Advisory tooltip information.
 | href | null | String | Resource to link directly to implement anchor behavior.
 | icon | null | String | Icon of the button.
 | iconPos | left | String | Position of the button icon.

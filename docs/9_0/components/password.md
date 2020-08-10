@@ -71,7 +71,7 @@ showEvent | focus | String | Client-side event to show the feedback overlay pane
 style | null | String | Inline style of the input element.
 styleClass | null | String | Style class of the input element.
 tabindex | null | Integer | Position of the input element in the tabbing order.
-title | null | String | Advisory tooltip informaton.
+title | null | String | Advisory tooltip information.
 
 ## Getting Started with Password
 Password is an input component and used just like a standard input text. When _feedback_ option is
