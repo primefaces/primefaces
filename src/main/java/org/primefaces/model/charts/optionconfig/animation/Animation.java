@@ -61,7 +61,7 @@ public class Animation implements Serializable {
     public String encode() throws IOException {
         try (FastStringWriter fsw = new FastStringWriter()) {
             ChartUtils.writeDataValue(fsw, "duration", this.duration, false);
-            ChartUtils.writeDataValue(fsw, "easing", this.easing, true);
+            ChartUtils.writeDataValue(fsw, "easing", this.easing, this.duration != null);
             return fsw.toString();
         }
     }
