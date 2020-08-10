@@ -89,6 +89,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.cfg.minHeight = this.cfg.minHeight||this.titlebar.outerHeight();
         this.cfg.my = this.cfg.my||'center';
         this.cfg.position = this.cfg.position||'center';
+        this.cfg.cache = this.cfg.cache === false ? false : true;
         this.parent = this.jq.parent();
 
         this.initSize();
@@ -205,14 +206,8 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             return;
         }
 
-        if(this.cfg.dynamic) {
-            if (!this.cfg.cache) {
-                this.loaded = false;
-            }
-
-            if(!this.loaded) {
-                this.loadContents();
-            }
+        if(!this.loaded && this.cfg.dynamic) {
+            this.loadContents();
         }
         else {
             if (this.positionInitialized === false) {
@@ -224,6 +219,10 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             }
 
             this._show(duration);
+
+            if(this.cfg.dynamic && !this.cfg.cache) {
+                this.loaded = false;
+            }
         }
     },
 

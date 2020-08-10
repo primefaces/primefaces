@@ -342,8 +342,8 @@ public abstract class DialogBase extends UIPanel implements Widget, RTLAware, Cl
         return (Boolean) getStateHelper().eval(PropertyKeys.cache, true);
     }
 
-    public void setCache(boolean responsive) {
-        getStateHelper().put(PropertyKeys.cache, responsive);
+    public void setCache(boolean cache) {
+        getStateHelper().put(PropertyKeys.cache, cache);
     }
 
 
