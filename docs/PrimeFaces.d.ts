@@ -12555,6 +12555,10 @@ declare namespace PrimeFaces.widget {
          */
         blockScroll: boolean;
         /**
+         * Only relevant for dynamic="true": Defines if activating the dialog should load the contents from server again. For cache="true" (default) the dialog content is only loaded once..
+         */
+        cache: boolean;
+        /**
          * Whether the dialog can be closed by the user.
          */
         closable: boolean;
