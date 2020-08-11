@@ -135,8 +135,8 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
             }
         };
 
-        if(this.hasBehavior('processCommand')) {
-            this.callBehavior('processCommand', options);
+        if(this.hasBehavior('command')) {
+            this.callBehavior('command', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);

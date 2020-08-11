@@ -54,7 +54,7 @@ public class Terminal extends TerminalBase {
     public static final String PROMPT_CLASS = "ui-terminal-prompt";
     public static final String INPUT_CLASS = "ui-terminal-input";
 
-    private static final String DEFAULT_EVENT = "processCommand";
+    private static final String DEFAULT_EVENT = "command";
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>> builder()
                 .put(DEFAULT_EVENT, null)
                 .build();
