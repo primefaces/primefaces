@@ -31,6 +31,7 @@
  * body.
  * @prop {boolean} cfg.absolutePositioned Whether the dialog is positioned absolutely.
  * @prop {boolean} cfg.blockScroll Whether to prevent the document from scrolling when the dialog is visible.
+ * @prop {boolean} cfg.cache Only relevant for dynamic="true": Defines if activating the dialog should load the contents from server again. For cache="true" (default) the dialog content is only loaded once..
  * @prop {boolean} cfg.closeOnEscape Whether the dialog is closed when the user presses the escape button.
  * @prop {boolean} cfg.closable Whether the dialog can be closed by the user.
  * @prop {boolean} cfg.draggable Whether the dialog is draggable.
@@ -88,6 +89,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.cfg.minHeight = this.cfg.minHeight||this.titlebar.outerHeight();
         this.cfg.my = this.cfg.my||'center';
         this.cfg.position = this.cfg.position||'center';
+        this.cfg.cache = this.cfg.cache === false ? false : true;
         this.parent = this.jq.parent();
 
         this.initSize();
@@ -217,6 +219,10 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             }
 
             this._show(duration);
+
+            if(this.cfg.dynamic && !this.cfg.cache) {
+                this.loaded = false;
+            }
         }
     },
 
