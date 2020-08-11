@@ -135,7 +135,12 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
             }
         };
 
-        PrimeFaces.ajax.Request.handle(options);
+        if(this.hasBehavior('command')) {
+            this.callBehavior('command', options);
+        }
+        else {
+            PrimeFaces.ajax.Request.handle(options);
+        }
     },
 
     /**
