@@ -91,6 +91,7 @@ public class DonutChartRenderer extends ChartRenderer {
         encodeTitle(context, donutOptions.getTitle(), true);
         encodeTooltip(context, donutOptions.getTooltip(), true);
         encodeLegend(context, donutOptions.getLegend(), true);
+        encodeAnimation(context, donutOptions.getAnimation(), true);
 
         writer.write("}");
     }
