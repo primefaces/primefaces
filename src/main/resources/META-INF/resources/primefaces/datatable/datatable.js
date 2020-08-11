@@ -2369,7 +2369,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         // #5944 in single select all other rows should be unselected
-        if (this.isSingleSelection()) {
+        if (this.isSingleSelection() || this.isRadioSelectionEnabled()) {
             this.unselectAllRows();
         }
 
