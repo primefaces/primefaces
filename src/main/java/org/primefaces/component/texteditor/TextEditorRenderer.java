@@ -60,7 +60,7 @@ public class TextEditorRenderer extends InputRenderer {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String value = params.get(inputParam);
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isHtmlSanitizerAvailable()) {
+        if (editor.isSecure() && PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isHtmlSanitizerAvailable()) {
             value = HtmlSanitizer.sanitizeHtml(value,
                     editor.isAllowBlocks(), editor.isAllowFormatting(),
                     editor.isAllowLinks(), editor.isAllowStyles(), editor.isAllowImages());
