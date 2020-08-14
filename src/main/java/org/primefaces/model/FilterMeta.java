@@ -103,7 +103,7 @@ public class FilterMeta implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(columnKey, filterField, filterValue);
+        return Objects.hash(columnKey, filterField);
     }
 
     @Override
@@ -118,6 +118,6 @@ public class FilterMeta implements Serializable {
             return false;
         }
         FilterMeta other = (FilterMeta) obj;
-        return Objects.equals(columnKey, other.columnKey) && Objects.equals(filterField, other.filterField) && Objects.equals(filterValue, other.filterValue);
+        return Objects.equals(columnKey, other.columnKey) && Objects.equals(filterField, other.filterField);
     }
 }
