@@ -198,7 +198,7 @@ if (window.PrimeFaces) {
             // render messages
             update = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(update);
             for (var i = 0; i < update.length; i++) {
-                var component = process.eq(i);
+                var component = update.eq(i);
                 PrimeFaces.validation.Utils.renderMessages(vc.messages, component);
             }
 
