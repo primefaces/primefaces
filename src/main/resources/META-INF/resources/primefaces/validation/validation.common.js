@@ -180,6 +180,9 @@ if (window.PrimeFaces) {
             var nonInputs = $();
             for (var i = 0; i < process.length; i++) {
                 var component = process.eq(i);
+                if (component.is(':not(:input)')) {
+                    nonInputs = nonInputs.add(component);
+                }
                 nonInputs = nonInputs.add(component.find(':not(:input)'));
             }
             nonInputs = nonInputs.filter('[data-p-val]');
