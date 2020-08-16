@@ -95,6 +95,9 @@ public class PasswordRenderer extends InputRenderer {
         if (password.getStyle() != null) {
             writer.writeAttribute("style", password.getStyle(), null);
         }
+        if (password.isIgnoreLastPass()) {
+            writer.writeAttribute("data-lpignore", "true", null);
+        }
 
         String valueToRender = ComponentUtils.getValueToRender(context, password);
         if (!LangUtils.isValueBlank(valueToRender) && password.isRedisplay()) {

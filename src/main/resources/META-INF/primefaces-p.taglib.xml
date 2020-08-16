@@ -18563,6 +18563,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Disable LastPass autofill for this password field. Default is false.]]>
+            </description>
+            <name>ignoreLastPass</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
