@@ -46,7 +46,8 @@ public abstract class PasswordBase extends HtmlInputText implements Widget {
         redisplay,
         match,
         showEvent,
-        hideEvent
+        hideEvent,
+        ignoreLastPass
     }
 
     public PasswordBase() {
@@ -152,5 +153,13 @@ public abstract class PasswordBase extends HtmlInputText implements Widget {
 
     public void setHideEvent(String hideEvent) {
         getStateHelper().put(PropertyKeys.hideEvent, hideEvent);
+    }
+
+    public boolean isIgnoreLastPass() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.ignoreLastPass, false);
+    }
+
+    public void setIgnoreLastPass(boolean ignoreLastPass) {
+        getStateHelper().put(PropertyKeys.ignoreLastPass, ignoreLastPass);
     }
 }
