@@ -78,7 +78,7 @@ public class SortMeta implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(columnKey);
+        return Objects.hash(columnKey, sortField);
     }
 
     @Override
@@ -93,6 +93,6 @@ public class SortMeta implements Serializable {
             return false;
         }
         SortMeta other = (SortMeta) obj;
-        return Objects.equals(columnKey, other.columnKey);
+        return Objects.equals(columnKey, other.columnKey) && Objects.equals(sortField, other.sortField);
     }
 }
