@@ -50,6 +50,7 @@ import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.inputtext.InputText;
+import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.model.CollectionDataModel;
 import org.primefaces.model.IterableDataModel;
 import org.primefaces.model.LazyDataModel;
@@ -160,7 +161,8 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
             throw new IllegalArgumentException(String.valueOf(rows));
         }
         ELContext elContext = getFacesContext().getELContext();
-        ValueExpression rowsVe = getValueExpression("rows");
+        ValueExpression rowsVe = ValueExpressionAnalyzer.getExpression(
+                elContext, getValueExpression(PropertyKeys.rows.name()));
         if (isWriteable(elContext, rowsVe)) {
             rowsVe.setValue(elContext, rows);
         }
