@@ -206,7 +206,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         if (hasWidth) {
             // need to subtract the drop down icon from total width
             var labelsWidth = this.jq.find('.ui-selectonemenu-label').width();
-            var dropDownWidth = this.jq.find('.ui-selectonemenu-trigger.ui-state-default.ui-corner-right').width();
+            var dropDownWidth = this.jq.find('.ui-selectonemenu-trigger.ui-corner-right').width();
             var minWidth = (labelsWidth - dropDownWidth) + 'px';
             this.jq.css('width', minWidth);
             this.jq.css('min-width', minWidth);
