@@ -35,7 +35,7 @@ pageLinks | 10 | Integer | Maximum number of page links to display.
 paginatorPosition | both | String | Position of the paginator.
 paginatorAlwaysVisible | true | Boolean | Defines if paginator should be hidden if total data count is less than number of rows per page.
 rowIndexVar | null | String | Name of the iterator to refer each row index.
-lazy | false | Boolean | Defines if lazy loading is enabled for the data component. 
+lazy | false | Boolean | Defines if lazy loading is enabled for the data component. In most cases this is detected automatically based on value-binding to LazyDataModel. So no need to set this explicit.
 rowStatePreserved | false | String | Boolean flag directing how the per-row component state should be handled.
 widgetVar | null | String | Name of the client side widget.
 style | null | String | Inline style of the dataview.
