@@ -174,7 +174,8 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
     @Override
     public void setFirst(int first) {
         ELContext elContext = getFacesContext().getELContext();
-        ValueExpression firstVe = getValueExpression("first");
+        ValueExpression firstVe = ValueExpressionAnalyzer.getExpression(
+                elContext, getValueExpression("first"));
         if (isWriteable(elContext, firstVe)) {
             firstVe.setValue(elContext, first);
         }
