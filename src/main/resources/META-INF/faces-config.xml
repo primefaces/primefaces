@@ -397,11 +397,6 @@
     </component>
 
     <component>
-        <component-type>org.primefaces.component.Editor</component-type>
-        <component-class>org.primefaces.component.editor.Editor</component-class>
-    </component>
-
-    <component>
         <component-type>org.primefaces.component.Effect</component-type>
         <component-class>org.primefaces.component.effect.Effect</component-class>
     </component>
@@ -529,16 +524,6 @@
     <component>
         <component-type>org.primefaces.component.Knob</component-type>
         <component-class>org.primefaces.component.knob.Knob</component-class>
-    </component>
-
-    <component>
-        <component-type>org.primefaces.component.Layout</component-type>
-        <component-class>org.primefaces.component.layout.Layout</component-class>
-    </component>
-
-    <component>
-        <component-type>org.primefaces.component.LayoutUnit</component-type>
-        <component-class>org.primefaces.component.layout.LayoutUnit</component-class>
     </component>
 
     <component>
@@ -1209,11 +1194,6 @@
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>
-            <renderer-type>org.primefaces.component.EditorRenderer</renderer-type>
-            <renderer-class>org.primefaces.component.editor.EditorRenderer</renderer-class>
-        </renderer>
-        <renderer>
-            <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.EffectRenderer</renderer-type>
             <renderer-class>org.primefaces.component.effect.EffectRenderer</renderer-class>
         </renderer>
@@ -1336,16 +1316,6 @@
             <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.KnobRenderer</renderer-type>
             <renderer-class>org.primefaces.component.knob.KnobRenderer</renderer-class>
-        </renderer>
-        <renderer>
-            <component-family>org.primefaces.component</component-family>
-            <renderer-type>org.primefaces.component.LayoutRenderer</renderer-type>
-            <renderer-class>org.primefaces.component.layout.LayoutRenderer</renderer-class>
-        </renderer>
-        <renderer>
-            <component-family>org.primefaces.component</component-family>
-            <renderer-type>org.primefaces.component.LayoutUnitRenderer</renderer-type>
-            <renderer-class>org.primefaces.component.layout.LayoutUnitRenderer</renderer-class>
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>
