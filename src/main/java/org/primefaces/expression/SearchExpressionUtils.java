@@ -95,12 +95,7 @@ public class SearchExpressionUtils {
     }
 
     // used by p:closestWidgetVar
-    public static String closestWidgetVar() {
-        return closestWidgetVarFor(UIComponent.getCurrentComponent(FacesContext.getCurrentInstance()));
-    }
-
-    // used by p:closestWidgetVarFor
-    public static String closestWidgetVarFor(UIComponent component) {
+    public static String closestWidgetVar(UIComponent component) {
         Widget widget = ComponentTraversalUtils.closest(Widget.class, component);
         if (widget != null) {
             return widget.resolveWidgetVar(FacesContext.getCurrentInstance());
