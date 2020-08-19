@@ -23,14 +23,17 @@
  */
 package org.primefaces.component.timeline;
 
+import static java.util.stream.Collectors.toList;
+
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
-
-import static java.util.stream.Collectors.toList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -152,7 +155,7 @@ public class TimelineRenderer extends CoreRenderer {
         writer.write("]");
 
         if (timeline.isShowCurrentTime()) {
-            wb.nativeAttr("currentTime", encodeDate(dateTimeFormatter, LocalDateTime.now()));
+            wb.nativeAttr("currentTime", encodeDate(dateTimeFormatter, LocalDateTime.now(CalendarUtils.calculateZoneId(timeline.getClientTimeZone()))));
         }
 
         if (timeline.getPreloadFactor() < 0) {

@@ -58,13 +58,14 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
             return;
         }
 
-        super.decode(context, component);
-
-        String clientId = button.getClientId(context);
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String param = button.isAjax() ? clientId : clientId + "_button";
-        if (params.containsKey(param)) {
-            component.queueEvent(new ActionEvent(component));
+        boolean menuItemDecoded = decodeDynamicMenuItem(context, component);
+        if (!menuItemDecoded) {
+            String clientId = button.getClientId(context);
+            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+            String param = button.isAjax() ? clientId : clientId + "_button";
+            if (params.containsKey(param)) {
+                component.queueEvent(new ActionEvent(component));
+            }
         }
     }
 

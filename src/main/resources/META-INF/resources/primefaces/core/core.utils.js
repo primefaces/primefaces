@@ -99,7 +99,7 @@ if (!PrimeFaces.utils) {
 
             var modalOverlay = $('<div id="' + modalId + '" class="ui-widget-overlay ui-dialog-mask"></div>');
             modalOverlay.appendTo($(document.body));
-            modalOverlay.css('z-index' , zIndex);
+            modalOverlay.css('z-index' , String(zIndex));
 
             return modalOverlay;
         },

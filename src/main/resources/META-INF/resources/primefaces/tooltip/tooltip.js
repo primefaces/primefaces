@@ -47,6 +47,8 @@
  * @prop {string} cfg.showEffect Effect to be used for displaying.
  * @prop {string} cfg.showEvent Event displaying the tooltip. 
  * @prop {string} cfg.styleClass Style class of the tooltip.
+ * @prop {string} cfg.myPos Position of tooltip with respect to target. If set overrides the 'position' attribute.
+ * @prop {string} cfg.atPos Position of tooltip with respect to target. If set overrides the 'position' attribute.
  * @prop {string} cfg.target Search expression for the component to which the tooltip is attached.
  * @prop {boolean} cfg.trackMouse Whether the tooltip position should follow the mouse or pointer.
  */
@@ -253,8 +255,8 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
             break;
         }
         this.jq.css({
-            left: position['left'],
-            top: position['top']
+            left: position['left'] + 'px',
+            top: position['top'] + 'px'
         });
     },
 
@@ -266,7 +268,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
          this.jq.css({
             left:'',
             top:'',
-            'z-index': ++PrimeFaces.zindex
+            'z-index': PrimeFaces.nextZindex()
         });
 
         if(this.cfg.trackMouse && this.mouseEvent) {
@@ -283,9 +285,11 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
             this.mouseEvent = null;
         }
         else {
-            var _my, _at;
+            var _my = this.cfg.myPos, 
+            _at = this.cfg.atPos;
 
-            switch(this.cfg.position) {
+            if (!_my || !_at) {
+                switch(this.cfg.position) {
                 case 'right':
                     _my = 'left center';
                     _at = 'right center';
@@ -305,6 +309,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                     _my = 'center top';
                     _at = 'center bottom';
                 break;
+                }
             }
 
             this.jq.position({
@@ -347,7 +352,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
             }
         }
 
-        this.jq.css({'display':'block', 'opacity':0, 'pointer-events': 'none'});
+        this.jq.css({'display':'block', 'opacity':'0', 'pointer-events': 'none'});
     
         this.align();
 

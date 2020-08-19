@@ -9,7 +9,7 @@ experience difference behaviors on client side and server side.
 
 - Compatible with Server Side Implementation.
 - Conversion and Validation happens at client side.
-- Partial Process&Update support for Ajax.
+- Partial Process & Update support for AJAX.
 - I18n support along with component specific messages.
 - Client side Renderers for message components.
 - Easy to write custom client converters and validators.
@@ -42,17 +42,17 @@ using messages component.
 
 CSV works for PrimeFaces components only, standard h: * components are not supported.
 
-## Ajax vs Non-Ajax
+## AJAX vs Non-AJAX
 
 CSV works differently depending on the request type of the trigger component to be compatible
 with cases where CSV is not enabled.
 
 
-**Non-Ajax**
-In non-ajax case, all visible and editable input components in the form are validated and message
+**Non-AJAX**
+In non-AJAX case, all visible and editable input components in the form are validated and message
 components must be placed inside the form.
 
-**Ajax**
+**AJAX**
 CSV supports partial processing and updates on client side as well, if process attribute is enabled,
 the components that would be processed at server side gets validated at client side. Similary if
 update attribute is defined, only message components inside the updated parts gets rendered. Whole
@@ -96,7 +96,7 @@ client side bundle and message components are required for the displays.
 Default language is English for the CSV messages and for other languages or to customize the
 default messages, PrimeFaces Locales bundle needs to be present at the page if you'd like to provide
 translations. For more info on PrimeFaces Locales, visit
-[https://github.com/primefaces/primefaces/wiki/Locales.](https://github.com/primefaces/primefaces/wiki/Locales.)
+[https://github.com/primefaces/primefaces/wiki/Locales](https://github.com/primefaces/primefaces/wiki/Locales).
 
 
 **Rendering**
@@ -105,8 +105,8 @@ p:messages and p:growl. Component options like showSummary, showDetail, globalOn
 all implemented by client side renderer for compatibility.
 
 **MyFaces vs Mojarra**
-Bean validation messages between implementations have a slight difference regarding labels,
-mojarra do not the label of the field but myfaces does. For example;
+Bean Validation messages between implementations have a slight difference regarding labels,
+Mojarra do not the label of the field but MyFaces does. For example;
 
 ```js
 Mojarra:
@@ -350,4 +350,57 @@ BeanValidationMetadataMapper.registerConstraintMapping(Class<? extends Annotatio
 ```
 ```java
 BeanValidationMetadataMapper.removeConstraintMapping(Class<? extends Annotation> constraint);
+```
+
+
+
+## Manual usage via JS API
+
+
+### PrimeFaces.validation.validate
+
+This is the main method used by PrimeFaces commands like `p:commandButton` when `validateClient` is activated.
+
+```js
+/**
+ * Triggers client-side-validation of single or multiple containers (complex validation or simple inputs).
+ * @function
+ * @param {string | HTMLElement | JQuery} process The elements to be processed.
+ * @param {string | HTMLElement | JQuery} update The elements to be updated.
+ * @param {boolean} highlight If invalid elements should be highlighted.
+ * @param {boolean} focus If the first invalid element should be focused.
+ * @return {boolean} `true` if the request would not result in validation errors, or `false` otherwise.
+ */
+validate : function(process, update, highlight, focus) {
+    ...
+}
+```
+
+To validate a form or container, you can simply use:
+```js
+PrimeFaces.validation.validate($('#myForm'), $('#myForm'), true, true);
+```
+
+### PrimeFaces.validation.validateInstant
+
+This is the main method used by `p:clientBehavior` which only validates a single input.
+
+```js
+/**
+ * Performs a client-side validation of the given element. The context of this validation is a single field only.
+ * If the element is valid, removes old messages from the element.
+ * If the value of the element is invalid, adds the appropriate validation failure messages.
+ * This is used by `p:clientValidator`.
+ * @function
+ * @param {string | HTMLElement | JQuery} el The ID of an element to validate, or the element itself.
+ * @return {boolean} `true` if the element is valid, or `false` otherwise.
+ */
+validateInstant : function(el) {
+    ...
+}
+```
+
+Example:
+```js
+PrimeFaces.validation.validateInstant($('#myInput'));
 ```

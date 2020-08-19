@@ -101,7 +101,7 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
         var rootLeft = -1 * (this.depth() * this.jqWidth);
 
         submenu.show().css({
-            left: this.jqWidth
+            left: this.jqWidth + 'px'
         });
 
         this.rootList.animate({
@@ -191,7 +191,7 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
      */
     show: function() {
         this.align();
-        this.jq.css('z-index', ++PrimeFaces.zindex).show();
+        this.jq.css('z-index', PrimeFaces.nextZindex()).show();
 
         if(!this.rendered) {
             this.render();

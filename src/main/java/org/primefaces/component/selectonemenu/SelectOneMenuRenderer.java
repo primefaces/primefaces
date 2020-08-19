@@ -196,6 +196,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("id", inputId, "id");
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("tabindex", "-1", null);
+        writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
         if (menu.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);

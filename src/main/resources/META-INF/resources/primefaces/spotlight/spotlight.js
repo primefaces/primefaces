@@ -63,7 +63,7 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
         var doc = $(document),
         documentBody = $(document.body),
         offset = PrimeFaces.utils.calculateRelativeOffset(this.target),
-        zindex = ++PrimeFaces.zindex;
+        zindex = PrimeFaces.nextZindex();
 
         documentBody.children('div.ui-spotlight-top').css({
             'left': '0px',
@@ -115,7 +115,7 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
     bindEvents: function() {
         var $this = this;
 
-        this.target.data('zindex',this.target.zIndex()).css('z-index', ++PrimeFaces.zindex);
+        this.target.data('zindex',this.target.zIndex()).css('z-index', PrimeFaces.nextZindex());
 
         if (this.cfg.blockScroll) {
             PrimeFaces.utils.preventScrolling();
@@ -147,7 +147,7 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
     hide: function() {
         $(document.body).children('.ui-spotlight').hide();
         this.unbindEvents();
-        this.target.css('z-index', this.target.zIndex());
+        this.target.css('z-index', String(this.target.zIndex()));
     }
 
 });

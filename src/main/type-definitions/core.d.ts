@@ -460,26 +460,6 @@ declare namespace PrimeFaces {
         severityText?: string;
     }
 
-    /**
-     * When an element is invalid due to a validation error, the user needs to be informed. A highlight handler is
-     * responsible for changing the visual state of an element so that the user notices the invalid element. A highlight
-     * handler is usually registered for a particular type of element or widget.
-     */
-    export interface HighlightHandler {
-        /**
-         * When an element is invalid due to a validation error, the user needs to be informed. This method must
-         * highlight the given element in a way that makes the user notice that the element is invalid.
-         * @param element An element to highlight.
-         */
-        highlight(element: JQuery): void;
-
-        /**
-         * When an element is invalid due to a validation error, the user needs to be informed. This method must
-         * remove the highlighting of the given element that was added by `highlight`.
-         */
-        unhighlight(element: JQuery): void;
-    }
-
     /*
      * __Note__: Do not parametrize the this context via a type parameter. This would require changing the return type
      * of BaseWidget#getBehavior to "PrimeFaces.Behavior<this>"". If that were done, however, it would not be longer be
@@ -699,7 +679,7 @@ declare namespace PrimeFaces.ajax {
          * The handle function which is given the HTML string of the update
          * @param content The new HTML content from the update. 
          */
-        handler(this: TWidget, content: string): void;
+        handle(this: TWidget, content: string): void;
     }
 
     /**
@@ -902,6 +882,82 @@ declare namespace PrimeFaces.ajax {
         onerror: "oner",
         onsuccess: "onsu",
         oncomplete: "onco",
+    }>;
+}
+
+declare namespace PrimeFaces.validation {
+
+    /**
+     * When an element is invalid due to a validation error, the user needs to be informed. A highlight handler is
+     * responsible for changing the visual state of an element so that the user notices the invalid element. A highlight
+     * handler is usually registered for a particular type of element or widget.
+     */
+    export interface Highlighter {
+        /**
+         * When an element is invalid due to a validation error, the user needs to be informed. This method must
+         * highlight the given element in a way that makes the user notice that the element is invalid.
+         * @param element An element to highlight.
+         */
+        highlight(element: JQuery): void;
+
+        /**
+         * When an element is invalid due to a validation error, the user needs to be informed. This method must
+         * remove the highlighting of the given element that was added by `highlight`.
+         */
+        unhighlight(element: JQuery): void;
+    }
+
+
+   /**
+     * The options that can be passed to the Validation method. Note that you do not have to provide a value
+     * for all these property. Most methods methods such as `PrimeFaces.vb` have got sensible defaults in case you
+     * do not. 
+     */
+    export interface Configuration {
+
+        /**
+         * The source that triggered the validationt.
+         */
+        source: string | JQuery | HTMLElement;
+
+        /**
+         * `true` if the validation is triggered by AJAXified compoment. Defaults to `false`.
+         */
+        ajax: boolean;
+
+        /**
+         * A (client-side) PrimeFaces search expression for the components to process in the validation.
+         */
+        process: string;
+
+        /**
+         * A (client-side) PrimeFaces search expression for the components to update in the validation.
+         */
+        update: string,
+
+        /**
+         * `true` if invalid elements should be highlighted as invalid. Default is `true`.
+         */
+        highlight: boolean,
+
+        /**
+         * `true` if the first invalid element should be focussed. Default is `true`.
+         */
+        focus: boolean;
+    }
+
+    /**
+     * Options passed to `PrimeFaces.vb` as shortcut. This is the same as `Configuration`, but with shorter
+     * option names and is used mainly by the method `PrimeFaces.vb`. See `Configuration` for a detailed description
+     * of these options.
+     */
+    export type ShorthandConfiguration = RenameKeys<Configuration, {
+        source: "s",
+        ajax: "a",
+        process: "p",
+        update: "u",
+        highlight: "h",
+        focus: "f";
     }>;
 }
 

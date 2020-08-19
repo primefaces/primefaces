@@ -1,18 +1,38 @@
 //@ts-check
 
-const { join } = require("path");
+const { join, dirname } = require("path");
 const typedoc = require("typedoc");
 
 const { Paths } = require("./constants");
-const { withTemporaryFileOnDisk } = require("./lang-fs");
+const { readDir, isExistingFileOrDir, withTemporaryFileOnDisk } = require("./lang-fs");
 
 /**
  * @param {CliArgs} cliArgs 
- * @return {string[]}
+ * @return {Promise<string[]>}
  */
-function createExcludes(cliArgs) {
-    if (cliArgs.exclusionTags.length === 0) {
+async function createExcludes(cliArgs) {
+    const packageJson = await isExistingFileOrDir(cliArgs.packageJson);
+    if (cliArgs.includeModules.length === 0) {
         return ["node_modules/**/*"];
+    }
+    else if (packageJson.exists) {
+        const nodeModulesDir = join(dirname(cliArgs.packageJson), "node_modules");
+        const nodeModulesTypesDir = join(dirname(cliArgs.packageJson), "node_modules", "@types");
+        const main = await readDir(nodeModulesDir);
+        const types = await readDir(nodeModulesTypesDir);
+        const excludesMain = main
+            .filter(pkg => !pkg.isFile())
+            .map(pkg => pkg.name)
+            .filter(pkg => pkg !== "@types")
+            .filter(pkg => !cliArgs.includeModules.includes(pkg))
+            .map(pkg => `node_modules/${pkg}/**/*`);
+        const excludesTypes = types
+            .filter(pkg => !pkg.isFile())
+            .map(pkg => pkg.name)
+            .filter(pkg => pkg !== "@types")
+            .filter(pkg => !cliArgs.includeModules.includes(pkg))
+            .map(pkg => `node_modules/@types/${pkg}/**/*`);
+        return [...excludesMain, ...excludesTypes];
     }
     else {
         return [
@@ -30,17 +50,20 @@ function createExcludes(cliArgs) {
 async function generateTypedocs(sourceFiles, cliArgs) {
     const targetDir = cliArgs.typedocOutputDir || join(cliArgs.declarationOutputDir, "jsdocs");
     const app = new typedoc.Application();
-    app.bootstrap({
+    /** @type {Partial<import("typedoc").TypeDocAndTSOptions>} */
+    const typedocOpts = {
         mode: "file",
         name: "PrimeFaces JavaScript API Docs",
         tsconfig: Paths.TsConfigPath,
         readme: Paths.JsdocReadmePath,
-        exclude: createExcludes(cliArgs),
+        exclude: await createExcludes(cliArgs),
         ignoreCompilerErrors: true,
         includeDeclarations: true,
         listInvalidSymbolLinks: false, // TODO: enable once typedoc support {@link Class#method} syntax
         disableSources: true,
-    });
+    };
+    console.log("Typedoc options:", JSON.stringify(typedocOpts));
+    app.bootstrap(typedocOpts);
     await withTemporaryFileOnDisk(sourceFiles, Paths.NpmVirtualDeclarationFile, tempFiles => {
         app.generateDocs(app.expandInputFiles([
             tempFiles.ambient,

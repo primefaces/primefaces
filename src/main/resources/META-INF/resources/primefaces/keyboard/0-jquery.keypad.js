@@ -883,7 +883,7 @@ $('selector').tabs(); // And instantiate it */
 			inst._mainDiv.find(':not(div)').each(function() {
 				width = Math.max(width, this.offsetLeft + $(this).outerWidth(true));
 			});
-			inst._mainDiv.css('width', width + 1);
+			inst._mainDiv.css('width', (width + 1)  + 'px');
 			// reposition keypad panel horizontally if outside the browser window
 			if (inst.options.isRTL ||
 					(offset.left + inst._mainDiv.outerWidth() - scrollX) > browserWidth) {

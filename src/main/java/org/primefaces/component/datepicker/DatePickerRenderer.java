@@ -49,17 +49,16 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
     @Override
     protected void encodeMarkup(FacesContext context, UICalendar uicalendar, String value) throws IOException {
         DatePicker datepicker = (DatePicker) uicalendar;
+        String pattern = datepicker.calculatePattern();
 
         if (datepicker.isShowTimeWithoutDefault() == null) {
             Class<?> type = datepicker.getTypeFromValueByValueExpression(context);
 
             if (type != null) {
-                if (LocalDateTime.class.isAssignableFrom(type)) {
-                    datepicker.setShowTime(true);
-                }
-                else {
-                    datepicker.setShowTime(false);
-                }
+                datepicker.setShowTime(LocalDateTime.class.isAssignableFrom(type));
+            }
+            else {
+                datepicker.setShowTime(CalendarUtils.hasTime(pattern));
             }
         }
 
@@ -67,13 +66,12 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             Class<?> type = datepicker.getTypeFromValueByValueExpression(context);
 
             if (type != null) {
-                if (LocalTime.class.isAssignableFrom(type)) {
-                    datepicker.setTimeOnly(true);
-                }
-                else {
-                    datepicker.setTimeOnly(false);
-                }
+                datepicker.setTimeOnly(LocalTime.class.isAssignableFrom(type));
             }
+        }
+
+        if (datepicker.isShowSecondsWithoutDefault() == null) {
+            datepicker.setShowSeconds(pattern.contains("s"));
         }
 
         ResponseWriter writer = context.getResponseWriter();
@@ -126,6 +124,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("buttonTabindex", datepicker.getButtonTabindex())
             .attr("focusOnSelect", datepicker.isFocusOnSelect(), false)
             .attr("disabled", datepicker.isDisabled(), false)
+            .attr("valid", datepicker.isValid(), true)
             .attr("yearRange", datepicker.getYearRange(), null)
             .attr("minDate", getMinMaxDate(context, datepicker, datepicker.getMindate(), false), null)
             .attr("maxDate", getMinMaxDate(context, datepicker, datepicker.getMaxdate(), true), null)
@@ -146,7 +145,8 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("appendTo", SearchExpressionFacade.resolveClientId(context, datepicker, datepicker.getAppendTo(),
                             SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
             .attr("icon", datepicker.getTriggerButtonIcon(), null)
-            .attr("rangeSeparator", datepicker.getRangeSeparator(), null)
+            .attr("rangeSeparator", datepicker.getRangeSeparator(), "-")
+            .attr("timeSeparator", datepicker.getTimeSeparator(), ":")
             .attr("timeInput", datepicker.isTimeInput())
             .attr("touchable", ComponentUtils.isTouchable(context, datepicker),  true);
 
@@ -202,7 +202,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
 
         String mask = datepicker.getMask();
         if (mask != null && !mask.equals("false")) {
-            String patternTemplate = datepicker.getPattern() == null ? pattern : datepicker.getPattern();
+            String patternTemplate = datepicker.calculatePattern();
             String maskTemplate = (mask.equals("true")) ? datepicker.convertPattern(patternTemplate) : mask;
             wb.attr("mask", maskTemplate)
                 .attr("maskSlotChar", datepicker.getMaskSlotChar(), "_")

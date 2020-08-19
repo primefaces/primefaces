@@ -59,7 +59,7 @@ However, there are some settings and patterns that can improve the performance.
 ### MyFaces
 
 ```xml
-<!-- Cache EL expressions; See: https://myfaces.apache.org/wiki/core/user-guide/configuration-of-special-features/cache-el-expressions.html-->
+<!-- Cache EL expressions; See: https://myfaces.apache.org/#/coreConceptsCacheElExpressions -->
 <context-param>
     <param-name>org.apache.myfaces.CACHE_EL_EXPRESSIONS</param-name>
     <param-value>alwaysRecompile</param-value>
@@ -120,8 +120,8 @@ However, there are some settings and patterns that can improve the performance.
 </context-param>
 ```
 
-You can also try ViewPooling: http://lu4242.blogspot.com/2013/12/view-pooling-in-jsf-22-using-apache.html
-and Whitespace compression: http://lu4242.blogspot.com/2012/12/html-white-space-compression-for-jsf.html
+You can also try ViewPooling: https://myfaces.apache.org/#/coreConceptsViewPooling
+and Whitespace compression: https://myfaces.apache.org/#/coreConceptsWhitespaceCompression
 
 
 ### Other

@@ -443,7 +443,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             this.cfg.page = 0;
 
             var newState = {
-                first: 1,
+                first: 0,
                 rows: rpp,
                 page: this.cfg.page
             };

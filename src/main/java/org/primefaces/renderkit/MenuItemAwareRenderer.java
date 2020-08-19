@@ -54,23 +54,7 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
-        String clientId = component.getClientId(context);
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-
-        String menuid = params.get(clientId + "_menuid");
-        if (menuid != null) {
-            MenuItem menuitem = findMenuitem(((MenuItemAware) component).getElements(), menuid);
-            MenuActionEvent event = new MenuActionEvent(component, menuitem);
-
-            if (menuitem.isImmediate()) {
-                event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
-            }
-            else {
-                event.setPhaseId(PhaseId.INVOKE_APPLICATION);
-            }
-
-            component.queueEvent(event);
-        }
+        decodeDynamicMenuItem(context, component);
     }
 
     protected void encodeOnClick(FacesContext context, UIComponent source, MenuItem menuitem) throws IOException {
@@ -208,5 +192,33 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
                 return findMenuitem(((MenuGroup) childElement).getElements(), relativeIndex);
             }
         }
+    }
+
+    /**
+     * Decode menu item not present in JSF tree but added using model attribute
+     * @param context
+     * @param component
+     * @return true if a menu item has been decoded, otherwise false
+     */
+    protected boolean decodeDynamicMenuItem(FacesContext context, UIComponent component) {
+        String clientId = component.getClientId(context);
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+
+        String menuid = params.get(clientId + "_menuid");
+        if (menuid != null) {
+            MenuItem menuitem = findMenuitem(((MenuItemAware) component).getElements(), menuid);
+            MenuActionEvent event = new MenuActionEvent(component, menuitem);
+
+            if (menuitem.isImmediate()) {
+                event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+            }
+            else {
+                event.setPhaseId(PhaseId.INVOKE_APPLICATION);
+            }
+
+            component.queueEvent(event);
+        }
+
+        return menuid != null;
     }
 }

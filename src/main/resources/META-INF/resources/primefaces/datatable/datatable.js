@@ -1330,8 +1330,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
 
             if(this.hasVerticalOverflow()) {
-                this.scrollHeaderBox.css('margin-right', scrollBarWidth);
-                this.scrollFooterBox.css('margin-right', scrollBarWidth);
+                this.scrollHeaderBox.css('margin-right', scrollBarWidth + 'px');
+                this.scrollFooterBox.css('margin-right', scrollBarWidth + 'px');
             }
         }
 
@@ -1383,12 +1383,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var scrollLeft = $this.scrollBody.scrollLeft();
             
             if ($this.isRTL) {
-                $this.scrollHeaderBox.css('margin-right', (scrollLeft - hScrollWidth + this.clientWidth));
-                $this.scrollFooterBox.css('margin-right', (scrollLeft - hScrollWidth + this.clientWidth));
+                $this.scrollHeaderBox.css('margin-right', (scrollLeft - hScrollWidth + this.clientWidth) + 'px');
+                $this.scrollFooterBox.css('margin-right', (scrollLeft - hScrollWidth + this.clientWidth) + 'px');
             }
             else {
-                $this.scrollHeaderBox.css('margin-left', -scrollLeft);
-                $this.scrollFooterBox.css('margin-left', -scrollLeft);
+                $this.scrollHeaderBox.css('margin-left', -scrollLeft + 'px');
+                $this.scrollFooterBox.css('margin-left', -scrollLeft + 'px');
             }
 
             if($this.isEmpty()) {
@@ -1536,7 +1536,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         height = (relativeHeight - (scrollersHeight + paginatorsHeight + tableHeaderHeight + tableFooterHeight));
 
         if(this.cfg.virtualScroll) {
-            this.scrollBody.css('max-height', height);
+            this.scrollBody.css('max-height', height + 'px');
         }
         else {
             this.scrollBody.height(height);
@@ -1579,7 +1579,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             $this.setOuterWidth($(this), width);
         });
         this.scrollHeader.width(width);
-        this.scrollBody.css('margin-right', 0).width(width);
+        this.scrollBody.css('margin-right', '0px').width(width);
         this.scrollFooter.width(width);
     },
 
@@ -2252,6 +2252,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             if(this.cfg.disabledTextSelection) {
                 PrimeFaces.clearSelection();
             }
+
+            //#3567 trigger client row click on ENTER/SPACE
+            if (this.cfg.onRowClick && event.type === "keydown") {
+                this.cfg.onRowClick.call(this, row);
+            }
         }
     },
 
@@ -2364,7 +2369,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         // #5944 in single select all other rows should be unselected
-        if (this.isSingleSelection()) {
+        if (this.isSingleSelection() || this.isRadioSelectionEnabled()) {
             this.unselectAllRows();
         }
 
@@ -4104,7 +4109,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             scope: this.id,
             cancel: ':input,.ui-column-resizer',
             start: function(event, ui) {
-                ui.helper.css('z-index', ++PrimeFaces.zindex);
+                ui.helper.css('z-index', PrimeFaces.nextZindex());
             },
             drag: function(event, ui) {
                 var droppable = ui.helper.data('droppable-column');
@@ -4144,13 +4149,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             stop: function(event, ui) {
                 //hide dnd arrows
                 $this.dragIndicatorTop.css({
-                    'left':0,
-                    'top':0
+                    'left':'0px',
+                    'top':'0px'
                 }).hide();
 
                 $this.dragIndicatorBottom.css({
-                    'left':0,
-                    'top':0
+                    'left':'0px',
+                    'top':'0px'
                 }).hide();
             },
             helper: function() {
@@ -4281,7 +4286,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             handle: draggableHandle,
             appendTo: document.body,
             start: function(event, ui) {
-                ui.helper.css('z-index', ++PrimeFaces.zindex);
+                ui.helper.css('z-index', PrimeFaces.nextZindex());
             },
             helper: function(event, ui) {
                 var cells = ui.children(),
@@ -4483,10 +4488,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         this.stickyContainer.css({
             position: 'absolute',
-            width: table.outerWidth(),
-            top: offset.top,
-            left: offset.left,
-            'z-index': ++PrimeFaces.zindex
+            width: table.outerWidth() + 'px',
+            top: offset.top + 'px',
+            left: offset.left + 'px',
+            'z-index': PrimeFaces.nextZindex()
         });
 
         this.jq.prepend(this.stickyContainer);
@@ -4502,7 +4507,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             if(scrollTop + fixedElementsHeight > tableOffset.top) {
                 $this.stickyContainer.css({
                                         'position': 'fixed',
-                                        'top': fixedElementsHeight
+                                        'top': fixedElementsHeight + 'px'
                                     })
                                     .addClass('ui-shadow ui-sticky');
 
@@ -4518,7 +4523,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             else {
                 $this.stickyContainer.css({
                                         'position': 'absolute',
-                                        'top': tableOffset.top
+                                        'top': tableOffset.top + 'px'
                                     })
                                     .removeClass('ui-shadow ui-sticky');
 
@@ -4542,7 +4547,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 $this.stickyContainer.hide();
                 $this.resizeTimeout = setTimeout(function() {
-                    $this.stickyContainer.css('left', orginTableContent.offset().left);
+                    $this.stickyContainer.css('left', orginTableContent.offset().left + 'px');
                     $this.stickyContainer.width(table.outerWidth());
                     $this.stickyContainer.show();
                 }, _delay);
@@ -4663,9 +4668,17 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.reflowDD && this.cfg.reflow) {
             var options = this.reflowDD.children('option'),
             orderIndex = sortOrder > 0 ? 0 : 1;
+            var header = columnHeader.text();
+            var filterby = header.indexOf("Filter by");
+            if (filterby !== -1) {
+                header = header.substring(0, filterby);
+            }
+            header = $.escapeSelector(header);
 
-            options.filter(':selected').prop('selected', false);
-            options.filter('[value="' + $.escapeSelector(columnHeader.index() + '_' + orderIndex) + '"]').prop('selected', true);
+            options.each(function() {
+                var optionText = $.escapeSelector(this.text);
+                this.selected = optionText.startsWith(header) && this.value.endsWith("_" + orderIndex);
+            });
         }
     },
 
@@ -5046,12 +5059,12 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
             scrollTop = $this.scrollBody.scrollTop();
             
             if ($this.isRTL) {
-                $this.scrollHeaderBox.css('margin-right', (scrollLeft - hScrollWidth + this.clientWidth));
-                $this.scrollFooterBox.css('margin-right', (scrollLeft - hScrollWidth + this.clientWidth));
+                $this.scrollHeaderBox.css('margin-right', (scrollLeft - hScrollWidth + this.clientWidth) + 'px');
+                $this.scrollFooterBox.css('margin-right', (scrollLeft - hScrollWidth + this.clientWidth) + 'px');
             }
             else {
-                $this.scrollHeaderBox.css('margin-left', -scrollLeft);
-                $this.scrollFooterBox.css('margin-left', -scrollLeft);
+                $this.scrollHeaderBox.css('margin-left', -scrollLeft + 'px');
+                $this.scrollFooterBox.css('margin-left', -scrollLeft + 'px');
             }
             
             $this.frozenBody.scrollTop(scrollTop);
@@ -5142,8 +5155,8 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         height = (relativeHeight - (scrollersHeight + paginatorsHeight + tableHeaderHeight + tableFooterHeight));
 
         if(this.cfg.virtualScroll) {
-            this.scrollBody.css('max-height', height);
-            this.frozenBody.css('max-height', height);
+            this.scrollBody.css('max-height', height + 'px');
+            this.frozenBody.css('max-height', height + 'px');
         }
         else {
             this.scrollBody.height(height);
@@ -5171,7 +5184,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
      */
     setScrollWidth: function(width) {
         this.scrollHeader.width(width);
-        this.scrollBody.css('margin-right', 0).width(width);
+        this.scrollBody.css('margin-right', '0px').width(width);
         this.scrollFooter.width(width);
 
         var $this = this,

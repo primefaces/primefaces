@@ -75,7 +75,7 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
     show: function(msgs) {
         var $this = this;
 
-        this.jq.css('z-index', ++PrimeFaces.zindex);
+        this.jq.css('z-index', PrimeFaces.nextZindex());
 
         if(!this.cfg.keepAlive) {
             //clear previous messages

@@ -41,7 +41,8 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
     private boolean allDay = false;
     private String styleClass;
     private T data;
-    private boolean editable = true;
+    private Boolean resizable;
+    private Boolean draggable;
     private boolean overlapAllowed = false;
     private String description;
     private String url;
@@ -147,6 +148,7 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
         return allDay;
     }
 
+    @Override
     public void setAllDay(boolean allDay) {
         this.allDay = allDay;
     }
@@ -170,8 +172,13 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
     }
 
     @Override
-    public boolean isEditable() {
-        return editable;
+    public Boolean isDraggable() {
+        return draggable;
+    }
+
+    @Override
+    public Boolean isResizable() {
+        return resizable;
     }
 
     @Override
@@ -183,8 +190,31 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
         this.overlapAllowed = overlapAllowed;
     }
 
+    /**
+     * Shortcut for calling both {@link #setDraggable(Boolean)} and
+     * {@link #setResizable(Boolean)}.
+     */
     public void setEditable(boolean editable) {
-        this.editable = editable;
+        this.draggable = editable;
+        this.resizable = editable;
+    }
+
+    /**
+     * @param draggable Whether the event should be draggable. Setting
+     * {@code null} means that the default of the schedule is applied.
+     * Otherwise, this setting overrides the default of the schedule.
+     */
+    public void setDraggable(Boolean draggable) {
+        this.draggable = draggable;
+    }
+
+    /**
+     * @param resizable Whether the event should be resizable. Setting
+     * {@code null} means that the default of the schedule is applied.
+     * Otherwise, this setting overrides the default of the schedule.
+     */
+    public void setResizable(Boolean resizable) {
+        this.resizable = resizable;
     }
 
     @Override
@@ -298,8 +328,34 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
             return this;
         }
 
+        /**
+         * Makes the event both resizable and draggable.This is a shortcut
+         * for calling {@link #resizable(Boolean)} and
+         * {@link #draggable(Boolean)}.
+         * @param editable Whether the event should be editable.
+         */
         public DefaultScheduleEvent.Builder<T> editable(boolean editable) {
             scheduleEvent.setEditable(editable);
+            return this;
+        }
+
+        /**
+         * @param draggable Whether the event should be draggable. Passing
+         * {@code null} means that the default of the schedule is applied.
+         * Otherwise, this setting overrides the default of the schedule.
+         */
+        public DefaultScheduleEvent.Builder<T> draggable(Boolean draggable) {
+            scheduleEvent.setDraggable(draggable);
+            return this;
+        }
+
+        /**
+         * @param resizable Whether the event should be resizable. Passing
+         * {@code null} means that the default of the schedule is applied.
+         * Otherwise, this setting overrides the default of the schedule.
+         */
+        public DefaultScheduleEvent.Builder<T> resizable(Boolean resizable) {
+            scheduleEvent.setResizable(resizable);
             return this;
         }
 

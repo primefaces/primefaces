@@ -42,7 +42,7 @@ DataList presents a collection of data in list layout with several display types
 | styleClass | null | String | Style class of the main container.
 | rowIndexVar | null | String | Name of the iterator to refer each row index.
 | varStatus | null | String | Name of the exported request scoped variable to represent state of the iteration same as in ui:repeat varStatus.
-| lazy | false | Boolean | Defines if lazy loading is enabled for the data component.
+| lazy | false | Boolean | Defines if lazy loading is enabled for the data component. In most cases this is detected automatically based on value-binding to LazyDataModel. So no need to set this explicit.
 | emptyMessage | No records found. | String | Text to display when there is no data to display.
 | itemStyleClass | null | String | Style class of an item in list.
 | multiViewState | false | Boolean | Whether to keep list state across views, defaults to false.

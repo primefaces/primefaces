@@ -73,9 +73,15 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
     wrapEvents: function() {
         var $this = this;
 
-        // copy the value from the input to the hidden input
+        // get the current attached events if using CSP
+        var events = $._data(this.input[0], "events");
+
+        // use DOM if non-CSP and JQ event if CSP
         var originalOnkeyup = this.input.prop('onkeyup');
-        this.input.prop('onkeyup', null).off('keyup').on('keyup', function (e) {
+        if (!originalOnkeyup && events.keyup) {
+            originalOnkeyup = events.keyup[0].handler;
+        }
+        this.input.prop('onkeyup', null).off('keyup').on('keyup.inputnumber', function (e) {
 
             var oldValue;
 
@@ -96,8 +102,12 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
             }
         });
 
+        // use DOM if non-CSP and JQ event if CSP
         var originalOnchange = this.input.prop('onchange');
-        this.input.prop('onchange', null).off('change').on('change', function (e) {
+        if (!originalOnchange && events.change) {
+            originalOnchange = events.change[0].handler;
+        }
+        this.input.prop('onchange', null).off('change').on('change.inputnumber', function (e) {
 
             var oldValue = $this.copyValueToHiddenInput();
             if (originalOnchange && originalOnchange.call(this, e) === false) {
@@ -106,8 +116,12 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
             }
         });
 
+        // use DOM if non-CSP and JQ event if CSP 
         var originalOnkeydown = this.input.prop('onkeydown');
-        this.input.prop('onkeydown', null).off('keydown').on('keydown', function (e) {
+        if (!originalOnkeydown && events.keydown) {
+            originalOnkeydown = events.keydown[0].handler;
+        }
+        this.input.prop('onkeydown', null).off('keydown').on('keydown.inputnumber', function (e) {
 
             var oldValue = $this.copyValueToHiddenInput();
             if (originalOnkeydown && originalOnkeydown.call(this, e) === false) {
@@ -116,8 +130,8 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
             }
         });
 
-        // handle mousewheel and paste
-        this.input.off('input').on('input', function (e) {
+        // handle mouse wheel and paste
+        this.input.off('input.inputnumber').on('input.inputnumber', function (e) {
             $this.copyValueToHiddenInput();
         });
     },

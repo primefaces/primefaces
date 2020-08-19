@@ -23,16 +23,16 @@
  */
 package org.primefaces.util;
 
-import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+
 
 public class LangUtilsTest {
-    
+
     private static final String FOO = "foo";
     private static final String SENTENCE = "foo bar baz";
 
@@ -63,8 +63,13 @@ public class LangUtilsTest {
 
         assertEquals(String.class, type);
     }
-    
 
+    @Test
+    public void testCountMatches_char() {
+        assertEquals(0, LangUtils.countMatches(null, 'D'));
+        assertEquals(5, LangUtils.countMatches("one long someone sentence of one", ' '));
+        assertEquals(6, LangUtils.countMatches("one long someone sentence of one", 'o'));
+    }
 
     @Test
     public void substring() {
@@ -83,8 +88,6 @@ public class LangUtilsTest {
         assertEquals("", LangUtils.substring(SENTENCE, 2, 2));
         assertEquals("b", LangUtils.substring("abc", -2, -1));
     }
-
-   
 
     class SimpleClass {
         private List<String> strings;

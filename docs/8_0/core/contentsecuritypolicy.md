@@ -90,7 +90,7 @@ $('#btnHello').on('click', sayHello());
 ## Known Limitations
 Currently CSP in combination with `<f:ajax>` cannot be used with all Faces implementations / versions.
 
-MyFaces supports it since 3.0.0,
+MyFaces supports it since 2.3-next (which will be 4.0 in the future),
 Mojarra doesn't support it in general: https://github.com/eclipse-ee4j/mojarra/issues/4542
 
 As workaround, you can always use `<p:ajax>` instead.

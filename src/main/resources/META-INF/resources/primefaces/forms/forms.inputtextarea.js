@@ -444,7 +444,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
 
         this.panel.css({left:'', top:''}).position({
             my: 'left top'
-            ,at: 'left' + posLeft +  ' top' + posTop
+            ,at: 'left' + posLeft + 'px' +  ' top' + posTop + 'px'
             ,of: this.jq
         });
     },
@@ -455,8 +455,8 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
      */
     show: function() {
         this.panel.css({
-            'z-index': ++PrimeFaces.zindex,
-            'width': this.jq.innerWidth(),
+            'z-index': PrimeFaces.nextZindex(),
+            'width': this.jq.innerWidth() + 'px',
             'visibility': 'hidden'
         }).show();
 

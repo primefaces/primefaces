@@ -23,11 +23,13 @@
  */
 package org.primefaces.component.filedownload;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.Map;
+import org.apache.commons.io.IOUtils;
+import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.model.StreamedContent;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.ResourceUtils;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
@@ -38,13 +40,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
-
-import org.primefaces.context.PrimeRequestContext;
-import org.primefaces.model.StreamedContent;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.ResourceUtils;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FileDownloadActionListener implements ActionListener, StateHolder {
 
@@ -75,66 +74,45 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
         }
 
         ExternalContext externalContext = context.getExternalContext();
+        externalContext.setResponseContentType(content.getContentType());
+        String contentDispositionValue = contentDisposition != null ? (String) contentDisposition.getValue(elContext) : "attachment";
+        externalContext.setResponseHeader("Content-Disposition", ComponentUtils.createContentDisposition(contentDispositionValue, content.getName()));
 
-        InputStream inputStream = null;
-
-        try {
-            externalContext.setResponseContentType(content.getContentType());
-
-            String contentDispositionValue = contentDisposition != null ? (String) contentDisposition.getValue(elContext) : "attachment";
-            externalContext.setResponseHeader("Content-Disposition", ComponentUtils.createContentDisposition(contentDispositionValue, content.getName()));
-
-
-            String monitorKeyCookieName = Constants.DOWNLOAD_COOKIE + context.getViewRoot().getViewId().replace('/', '_');
-            if (monitorKey != null) {
-                String evaluated = (String) monitorKey.getValue(elContext);
-                if (!LangUtils.isValueBlank(evaluated)) {
-                    monitorKeyCookieName += "_" + evaluated;
-                }
+        String monitorKeyCookieName = Constants.DOWNLOAD_COOKIE + context.getViewRoot().getViewId().replace('/', '_');
+        if (monitorKey != null) {
+            String evaluated = (String) monitorKey.getValue(elContext);
+            if (!LangUtils.isValueBlank(evaluated)) {
+                monitorKeyCookieName += "_" + evaluated;
             }
+        }
 
-            Map<String, Object> cookieOptions = new HashMap<>(4);
-            cookieOptions.put("path", LangUtils.isValueBlank(externalContext.getRequestContextPath())
-                    ? "/"
-                    : externalContext.getRequestContextPath()); // Always add cookies to context root; see #3108
-            ResourceUtils.addResponseCookie(context, monitorKeyCookieName, "true", cookieOptions);
+        Map<String, Object> cookieOptions = new HashMap<>(4);
+        cookieOptions.put("path", LangUtils.isValueBlank(externalContext.getRequestContextPath())
+                ? "/"
+                : externalContext.getRequestContextPath()); // Always add cookies to context root; see #3108
+        ResourceUtils.addResponseCookie(context, monitorKeyCookieName, "true", cookieOptions);
 
-            if (content.getContentLength() != null) {
-                externalContext.setResponseContentLength(content.getContentLength());
-            }
+        if (content.getContentLength() != null) {
+            externalContext.setResponseContentLength(content.getContentLength());
+        }
 
-            if (PrimeRequestContext.getCurrentInstance(context).isSecure()) {
-                externalContext.setResponseHeader("Cache-Control", "public");
-                externalContext.setResponseHeader("Pragma", "public");
-            }
+        if (PrimeRequestContext.getCurrentInstance(context).isSecure()) {
+            externalContext.setResponseHeader("Cache-Control", "public");
+            externalContext.setResponseHeader("Pragma", "public");
+        }
 
-            byte[] buffer = new byte[2048];
-            int length;
-            inputStream = content.getStream();
-            OutputStream outputStream = externalContext.getResponseOutputStream();
-
-            while ((length = (inputStream.read(buffer))) != -1) {
-                outputStream.write(buffer, 0, length);
-            }
+        try (InputStream is = content.getStream()) {
+            IOUtils.copyLarge(is, externalContext.getResponseOutputStream());
 
             if (!externalContext.isResponseCommitted()) {
                 externalContext.setResponseStatus(200);
             }
+
             externalContext.responseFlushBuffer();
             context.responseComplete();
         }
         catch (IOException e) {
             throw new FacesException(e);
-        }
-        finally {
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                }
-                catch (IOException e) {
-                    // ignore
-                }
-            }
         }
     }
 
@@ -145,7 +123,7 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
 
     @Override
     public void setTransient(boolean value) {
-
+        // NOOP
     }
 
     @Override

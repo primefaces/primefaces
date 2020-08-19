@@ -28,12 +28,14 @@
             inline: false,
             selectionMode: 'single',
             rangeSeparator: '-',
+            timeSeparator: ':',
             inputId: null,
             inputStyle: null,
             inputStyleClass: null,
             required: false,
             readOnlyInput: false,
             disabled: false,
+            valid: true,
             tabIndex: null,
             placeholder: null,
             showIcon: false,
@@ -715,11 +717,11 @@
             } else {
                 output += (hours < 10) ? '0' + hours : hours;
             }
-            output += ':';
+            output += this.options.timeSeparator;
             output += (minutes < 10) ? '0' + minutes : minutes;
 
             if (this.options.showSeconds) {
-                output += ':';
+                output += this.options.timeSeparator;
                 output += (seconds < 10) ? '0' + seconds : seconds;
             }
 
@@ -731,7 +733,7 @@
         },
 
         parseTime: function (value, ampm) {
-            var tokens = value.split(':'),
+            var tokens = value.split(this.options.timeSeparator),
                 validTokenLength = this.options.showSeconds ? 3 : 2;
 
             if (tokens.length !== validTokenLength) {
@@ -788,6 +790,11 @@
                         minSize = (match === "y" ? size : 1),
                         digits = new RegExp("^\\d{" + minSize + "," + size + "}"),
                         num = value.substring(iValue).match(digits);
+                    if (!num && match === "y" && isDoubled) {
+                        //allow 2 digit-inputs for 4-digit-year-pattern (gets reformated to 4 digits onBlur)
+                        digits = new RegExp("^\\d{" + 2 + "," + size + "}"),
+                            num = value.substring(iValue).match(digits);
+                    }
                     if (!num) {
                         throw "Missing number at position " + iValue;
                     }
@@ -1114,6 +1121,7 @@
                 'ui-shadow': !this.options.inline,
                 'ui-input-overlay': !this.options.inline,
                 'ui-state-disabled': this.options.disabled,
+                'ui-state-error': this.options.inline && !this.options.valid,
                 'ui-datepicker-timeonly': this.options.timeOnly,
                 'ui-datepicker-multiple-month': this.options.numberOfMonths > 1,
                 'ui-datepicker-monthpicker': (this.options.view === 'month'),
@@ -1704,6 +1712,8 @@
                 this.options.onBlur.call(this, event);
             }
 
+            this.inputfield.val(this.getValueToRender());
+
             this.inputfield.removeClass('ui-state-focus');
             this.container.removeClass('ui-inputwrapper-focus');
         },
@@ -1735,12 +1745,12 @@
 
             try {
                 var value = this.parseValueFromString(rawValue);
-                this.updateModel(event, value);
+                this.updateModel(event, value, false);
                 this.updateViewDate(event, value.length ? value[0] : value);
             }
             catch (err) {
                 if (!this.options.mask) {
-                    this.updateModel(event, rawValue);
+                    this.updateModel(event, rawValue, false);
                 }
             }
 
@@ -2049,8 +2059,8 @@
 
                 if (this.panel.parent().is(this.container)) {
                     this.panel.css({
-                        left: 0,
-                        top: this.container.innerHeight()
+                        left: '0px',
+                        top: String(this.container.innerHeight())
                     });
                 }
                 else {
@@ -2488,9 +2498,11 @@
             this._setInitOptionValues();
         },
 
-        updateModel: function (event, value) {
+        updateModel: function (event, value, updateInput) {
             this.value = (value === '' ? null : value);
-            this.inputfield.val(this.getValueToRender());
+            if (updateInput != false) {
+                this.inputfield.val(this.getValueToRender());
+            }
 
             this.panel.get(0).innerHTML = this.renderPanelElements();
 

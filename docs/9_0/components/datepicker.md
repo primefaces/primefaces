@@ -106,7 +106,7 @@ ajax selection and more.
 | timeInput | false | Boolean | Allows direct input in time field.
 | timeOnly | false * | Boolean | Shows only timepicker without date. (* Defaults to true, when value is bound to java.time.LocalTime)
 | timeZone | null | Time Zone | String a java.time.ZoneId instance or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to ZoneId.systemDefault().
-| title | null | String | Advisory tooltip informaton.
+| title | null | String | Advisory tooltip information.
 | touchUI | false | Boolean | Activates touch friendly mode
 | touchable | true | Boolean | Enable touch support if browser detection supports it.
 | triggerButtonIcon | null | String | Icon of the datepicker element that toggles the visibility in popup mode.

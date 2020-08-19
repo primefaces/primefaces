@@ -35,6 +35,8 @@ nextLabel | null | String | Label of next navigation button.
 backLabel | null | String | Label of back navigation button.
 widgetVar | null | String | Name of the client side widget
 updateModelOnPrev | false | Boolean | If yes, the model will be updated when the "Back" button is clicked. Default is false.
+effect | null | String | Animation effect to use when showing and hiding wizard step. Default is no animation.
+effectDuration | 400 | Integer | Duration of the animation effect in milliseconds.
 
 ## Ajax Behavior Events
 Wizard provides custom ajax behavior events to configure the built-in AJAX requests.

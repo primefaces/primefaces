@@ -57,6 +57,9 @@ public class ValueExpressionAnalyzer {
                     return unwrappedRef;
                 }
             }
+
+            // return null if it cant be further unwrapped
+            return null;
         }
 
         return reference;
@@ -77,15 +80,13 @@ public class ValueExpressionAnalyzer {
             if (reference != null && isCompositeComponentReference(reference)) {
                 ValueExpression unwrapped = unwrapCompositeComponentReference(reference);
 
-                if (unwrapped != null) {
-                    // check for nested CC expressions
-                    if (isCompositeComponentReference(toValueReference(unwrapped, elContext))) {
-                        return getExpression(elContext, unwrapped);
-                    }
-                    else {
-                        return unwrapped;
-                    }
+                // check for nested CC expressions
+                if (unwrapped != null && isCompositeComponentReference(toValueReference(unwrapped, elContext))) {
+                    return getExpression(elContext, unwrapped);
                 }
+
+                // also return null if it cant be further unwrapped
+                return unwrapped;
             }
         }
 

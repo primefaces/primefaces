@@ -810,9 +810,9 @@
         calculateScrollbarWidth: function() {
             if(!this.scrollbarWidth) {
                 var $div = $('<div></div>')
-                    .css({ width: 100, height: 100, overflow: 'auto', position: 'absolute', top: -1000, left: -1000 })
+                    .css({ width: '100px', height: '100px', overflow: 'auto', position: 'absolute', top: '-1000px', left: '-1000px' })
                     .prependTo('body').append('<div></div>').find('div')
-                        .css({ width: '100%', height: 200 });
+                        .css({ width: '100%', height: '200px' });
                 this.scrollbarWidth = 100 - $div.width();
                 $div.parent().remove();
             }
@@ -1063,6 +1063,16 @@
         },
 
         /**
+         * Increment and return the next zindex for CSS as a String.
+         * jQuery will no longer accept numeric values in $.css as of 4.0.
+         * 
+         *  @return {string} the next zindex as a String
+         */
+        nextZindex: function() {
+            return String(++PrimeFaces.zindex);
+        },
+      
+       /**
          * Converts a date into an ISO-8601 date without using the browser timezone offset.
          * 
          * See https://stackoverflow.com/questions/10830357/javascript-toisostring-ignores-timezone-offset

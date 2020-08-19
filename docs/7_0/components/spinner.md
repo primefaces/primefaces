@@ -64,7 +64,7 @@ size | null | Integer | Number of characters used to determine the width of the 
 style | null | String | Inline style of the input element.
 styleClass | null | String | Style class of the input element.
 tabindex | null | Integer | Position of the input element in the tabbing order.
-title | null | String | Advisory tooltip informaton.
+title | null | String | Advisory tooltip information.
 
 ## Getting Started with Spinner
 Spinner is an input component and used just like a standard input text.

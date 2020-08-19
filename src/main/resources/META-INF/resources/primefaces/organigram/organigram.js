@@ -279,21 +279,14 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
      */
     zoom : function(zoom) {
         var element = this.target.find(">:first-child");
-
-        // avoid both zoom and transform in IE, otherwise it will be zoomed * 2
-        if (PrimeFaces.env.isIE()) {
-            element.css("zoom", zoom);
-        }
-        else {
-            element.css("-moz-transform", "scale(" + zoom + ")");
-            element.css("-moz-transform-origin", "0 0");
-            element.css("-o-transform", "scale(" + zoom + ")");
-            element.css("-o-transform-origin", "0 0");
-            element.css("-webkit-transform", "scale(" + zoom + ")");
-            element.css("-webkit-transform-origin", "0 0");
-            element.css("transform", "scale(" + zoom + ")");
-            element.css("transform-origin", "0 0");
-        }
+        element.css("-moz-transform", "scale(" + zoom + ")");
+        element.css("-moz-transform-origin", "0 0");
+        element.css("-o-transform", "scale(" + zoom + ")");
+        element.css("-o-transform-origin", "0 0");
+        element.css("-webkit-transform", "scale(" + zoom + ")");
+        element.css("-webkit-transform-origin", "0 0");
+        element.css("transform", "scale(" + zoom + ")");
+        element.css("transform-origin", "0 0");
     },
 
     /**

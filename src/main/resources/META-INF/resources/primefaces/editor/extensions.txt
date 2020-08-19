@@ -1,1 +1,0 @@
-- Line #733 applied fix from https://github.com/barneycarroll/cleditor/blob/master/jquery.cleditor.js

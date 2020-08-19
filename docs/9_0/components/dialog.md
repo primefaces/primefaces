@@ -44,6 +44,7 @@ Dialog is a panel component that can overlay other elements on page.
 | showHeader | true | Boolean | Defines visibility of the header content.
 | footer | null | String | Text of the footer.
 | dynamic | false | Boolean | Enables lazy loading of the content with ajax.
+| cache | true | Boolean | Only relevant for dynamic="true": Defines if activating the dialog should load the contents from server again. For cache="true" (default) the dialog content is only loaded once.
 | minimizable | false | Boolean | Whether a dialog is minimizable or not.
 | maximizable | false | Boolean | Whether a dialog is maximizable or not.
 | closeOnEscape | false | Boolean | Defines if dialog should close on escape key.

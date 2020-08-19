@@ -25,6 +25,8 @@ package org.primefaces.component.datatable;
 
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;
@@ -176,6 +178,11 @@ public class DataTable extends DataTableBase {
             .put("liveScroll", PageEvent.class)
             .build();
 
+    /**
+     * Backward compatibility for column properties (e.g sortBy, filterBy)
+     * using old syntax #{car[column.property]}) instead of #{column.property}
+     */
+    private static final Pattern OLD_SYNTAX_COLUMN_PROPERTY_REGEX = Pattern.compile("^#\\{\\w+\\[(.+)]}$");
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     private int columnsCountWithSpan = -1;
@@ -191,7 +198,6 @@ public class DataTable extends DataTableBase {
     private Map<String, Boolean> togglableColsMap;
     private String resizableColumnsAsString;
     private Map<String, String> resizableColsMap;
-    private List<UIComponent> iterableChildren;
 
     public DataTableFeature getFeature(DataTableFeatureKey key) {
         return FEATURES.get(key);
@@ -458,9 +464,11 @@ public class DataTable extends DataTableBase {
             return null;
         }
 
+        List<UIColumn> columns = getColumns();
+
         //body columns
-        for (int i = 0; i < getColumns().size(); i++) {
-            UIColumn column = getColumns().get(i);
+        for (int i = 0; i < columns.size(); i++) {
+            UIColumn column = columns.get(i);
             if (Objects.equals(column.getColumnKey(), columnKey)) {
                 return column;
             }
@@ -658,31 +666,29 @@ public class DataTable extends DataTableBase {
         return null;
     }
 
-    public String resolveDynamicField(ValueExpression expression) {
-
-        if (expression == null) {
+    /**
+     * Get bean's property value from a value expression.
+     * Support old syntax (e.g #{car[column.property]}) instead of #{column.property}
+     * @param exprVE
+     * @return
+     */
+    public String resolveDynamicField(ValueExpression exprVE) {
+        if (exprVE == null) {
             return null;
         }
 
         FacesContext context = getFacesContext();
         ELContext elContext = context.getELContext();
+        String exprStr = exprVE.getExpressionString();
 
-        String expressionString = expression.getExpressionString();
-
-        // old syntax compatibility
-        // #{car[column.property]}
-        // new syntax is:
-        // #{column.property} or even a method call
-        if (expressionString.startsWith("#{" + getVar() + "[")) {
-            expressionString = expressionString.substring(expressionString.indexOf('[') + 1, expressionString.indexOf(']'));
-            expressionString = "#{" + expressionString + "}";
-
-            ValueExpression dynaVE = context.getApplication()
-                    .getExpressionFactory().createValueExpression(elContext, expressionString, String.class);
-            return (String) dynaVE.getValue(elContext);
+        Matcher matcher = OLD_SYNTAX_COLUMN_PROPERTY_REGEX.matcher(exprStr );
+        if (matcher.find()) {
+            exprStr = matcher.group(1);
+            exprVE = context.getApplication().getExpressionFactory()
+                    .createValueExpression(elContext, "#{" + exprStr  + "}", String.class);
         }
 
-        return (String) expression.getValue(elContext);
+        return (String) exprVE.getValue(elContext);
     }
 
     public void clearLazyCache() {
@@ -912,7 +918,7 @@ public class DataTable extends DataTableBase {
             for (UIComponent kid : getChildren()) {
                 if (kid.isRendered()) {
                     if (kid instanceof Columns) {
-                        int dynamicColumnsCount = ((Columns) kid).getRowCount();
+                        int dynamicColumnsCount = ((Columns) kid).getDynamicColumns().size();
                         if (dynamicColumnsCount > 0) {
                             columnsCount += dynamicColumnsCount;
                         }
@@ -944,7 +950,7 @@ public class DataTable extends DataTableBase {
             for (UIComponent kid : getChildren()) {
                 if (kid.isRendered()) {
                     if (kid instanceof Columns) {
-                        int dynamicColumnsCount = ((Columns) kid).getRowCount();
+                        int dynamicColumnsCount = ((Columns) kid).getDynamicColumns().size();
                         if (dynamicColumnsCount > 0) {
                             columnsCountWithSpan += dynamicColumnsCount;
                         }
@@ -971,26 +977,34 @@ public class DataTable extends DataTableBase {
     }
 
     public List<UIColumn> getColumns() {
-        if (columns == null) {
-            columns = new ArrayList<>();
-            FacesContext context = getFacesContext();
-            char separator = UINamingContainer.getSeparatorChar(context);
+        if (this.columns != null) {
+            return this.columns;
+        }
 
-            for (UIComponent child : getChildren()) {
-                if (child instanceof Column) {
-                    columns.add((Column) child);
-                }
-                else if (child instanceof Columns) {
-                    Columns uiColumns = (Columns) child;
-                    String uiColumnsClientId = uiColumns.getClientId(context);
+        List<UIColumn> columns = new ArrayList<>();
+        FacesContext context = getFacesContext();
+        char separator = UINamingContainer.getSeparatorChar(context);
 
-                    for (int i = 0; i < uiColumns.getRowCount(); i++) {
-                        DynamicColumn dynaColumn = new DynamicColumn(i, uiColumns);
-                        dynaColumn.setColumnKey(uiColumnsClientId + separator + i);
-                        columns.add(dynaColumn);
-                    }
+        for (UIComponent child : getChildren()) {
+            if (child instanceof Column) {
+                columns.add((Column) child);
+            }
+            else if (child instanceof Columns) {
+                Columns uiColumns = (Columns) child;
+                String uiColumnsClientId = uiColumns.getClientId(context);
+
+                for (int i = 0; i < uiColumns.getRowCount(); i++) {
+                    DynamicColumn dynaColumn = new DynamicColumn(i, uiColumns);
+                    dynaColumn.setColumnKey(uiColumnsClientId + separator + i);
+                    columns.add(dynaColumn);
                 }
             }
+        }
+
+        // lets cache it only when RENDER_RESPONSE is reached, the columns might change before reaching that phase
+        // see https://github.com/primefaces/primefaces/issues/2110
+        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            this.columns = columns;
         }
 
         return columns;
@@ -1156,6 +1170,8 @@ public class DataTable extends DataTableBase {
             last = first + rows;
         }
 
+        List<UIComponent> iterableChildren = null;
+
         for (int rowIndex = first; rowIndex < last; rowIndex++) {
             setRowIndex(rowIndex);
 
@@ -1163,10 +1179,16 @@ public class DataTable extends DataTableBase {
                 break;
             }
 
-            for (UIComponent child : getIterableChildren()) {
+            if (iterableChildren == null) {
+                iterableChildren = getIterableChildren();
+            }
+
+            for (int i = 0; i < iterableChildren.size(); i++) {
+                UIComponent child = iterableChildren.get(i);
                 if (child.isRendered()) {
                     if (child instanceof Column) {
-                        for (UIComponent grandkid : child.getChildren()) {
+                        for (int j = 0; j < child.getChildCount(); j++) {
+                            UIComponent grandkid = child.getChildren().get(j);
                             process(context, grandkid, phaseId);
                         }
                     }
@@ -1340,12 +1362,12 @@ public class DataTable extends DataTableBase {
 
     @Override
     protected List<UIComponent> getIterableChildren() {
-        if (iterableChildren == null) {
-            iterableChildren = new ArrayList<>();
-            for (UIComponent child : getChildren()) {
-                if (!(child instanceof ColumnGroup)) {
-                    iterableChildren.add(child);
-                }
+        ArrayList iterableChildren = new ArrayList<>(getChildCount());
+
+        for (int i = 0; i < getChildCount(); i++) {
+            UIComponent child = getChildren().get(i);
+            if (!(child instanceof ColumnGroup)) {
+                iterableChildren.add(child);
             }
         }
 
@@ -1404,7 +1426,6 @@ public class DataTable extends DataTableBase {
         togglableColsMap = null;
         resizableColumnsAsString = null;
         resizableColsMap = null;
-        iterableChildren = null;
 
         return super.saveState(context);
     }

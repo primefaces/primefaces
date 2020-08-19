@@ -18,7 +18,6 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  * 
- * @prop {string} cfg.contextPath The context path of the web application.
  * @prop {boolean} cfg.multiWindowSupport When set to true, the lastAccessed state will be shared between all browser
  * windows for the same servlet context.
  * @prop {PrimeFaces.widget.IdleMonitor.OnActiveCallback} cfg.onactive Client side callback to execute when the user
@@ -59,7 +58,7 @@ PrimeFaces.widget.IdleMonitor = PrimeFaces.widget.BaseWidget.extend({
 
 
         if (cfg.multiWindowSupport) {
-            var globalLastActiveKey = $this.cfg.contextPath + '_idleMonitor_lastActive' + this.cfg.id;
+            var globalLastActiveKey = PrimeFaces.createStorageKey(this.cfg.id, 'IdleMonitor_lastActive');
 
             // always reset with current time on init
             localStorage.setItem(globalLastActiveKey, $(document).data('idleTimerObj' + this.cfg.id).lastActive);

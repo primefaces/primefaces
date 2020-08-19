@@ -94,7 +94,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
      * milliseconds, respectively.
      */
     show: function(duration) {
-        this.blocker.css('z-index', ++PrimeFaces.zindex);
+        this.blocker.css('z-index', PrimeFaces.nextZindex());
         
         //center position of content
         for(var i = 0; i < this.block.length; i++) {
@@ -102,9 +102,9 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
                 content = $(this.content[i]);
            
             content.css({
-                'left': (blocker.width() - content.outerWidth()) / 2,
-                'top': (blocker.height() - content.outerHeight()) / 2,
-                'z-index': ++PrimeFaces.zindex
+                'left': ((blocker.width() - content.outerWidth()) / 2) + 'px',
+                'top': ((blocker.height() - content.outerHeight()) / 2)+ 'px',
+                'z-index': PrimeFaces.nextZindex()
             });
         }
 

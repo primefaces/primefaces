@@ -214,7 +214,7 @@
 
         zIndex: function (zIndex) {
             if (zIndex !== undefined) {
-                return this.css("zIndex", zIndex);
+                return this.css("zIndex", String(zIndex));
             }
 
             if (this.length) {

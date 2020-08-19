@@ -77,6 +77,8 @@ public class RadarChartRenderer extends ChartRenderer {
                 || radarOptions.getElements() != null || radarOptions.getTitle() != null));
         encodeLegend(context, radarOptions.getLegend(), (radarOptions.getScales() != null
                     || radarOptions.getElements() != null || radarOptions.getTitle() != null || radarOptions.getTooltip() != null));
+        encodeAnimation(context, radarOptions.getAnimation(), radarOptions.getScales() != null
+                    || radarOptions.getElements() != null || radarOptions.getTitle() != null || radarOptions.getTooltip() != null);
 
         writer.write("}");
     }

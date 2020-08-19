@@ -165,7 +165,7 @@ public class HeadRenderer extends Renderer {
         }
 
         if (beanValidationEnabled) {
-            resource = context.getApplication().getResourceHandler().createResource("validation/beanvalidation.js", "primefaces");
+            resource = context.getApplication().getResourceHandler().createResource("validation/validation.bv.js", "primefaces");
 
             if (resource != null) {
                 writer.startElement("script", null);

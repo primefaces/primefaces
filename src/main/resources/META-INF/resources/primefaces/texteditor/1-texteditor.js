@@ -195,7 +195,7 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Enables this text editor so that no text can be entered or removed.
+     * Disables this text editor so that no text can be entered or removed.
      */
     disable: function () {
         this.editor.disable();

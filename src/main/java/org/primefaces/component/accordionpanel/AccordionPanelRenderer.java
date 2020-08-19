@@ -175,10 +175,9 @@ public class AccordionPanelRenderer extends CoreRenderer {
             for (int i = 0; i < acco.getChildCount(); i++) {
                 UIComponent child = acco.getChildren().get(i);
                 if (child.isRendered() && child instanceof Tab) {
-                    boolean active = activeIndexes.indexOf(Integer.toString(j)) != -1;
-
-                    encodeTab(context, acco, (Tab) child, active, dynamic, rtl);
-
+                    Tab tab = (Tab) child;
+                    boolean active = isActive(tab, activeIndexes, j);
+                    encodeTab(context, acco, tab, active, dynamic, rtl);
                     j++;
                 }
             }
@@ -189,13 +188,17 @@ public class AccordionPanelRenderer extends CoreRenderer {
 
             for (int i = 0; i < dataCount; i++) {
                 acco.setIndex(i);
-                boolean active = activeIndexes.indexOf(Integer.toString(i)) != -1;
-
+                boolean active = isActive(tab, activeIndexes, i);
                 encodeTab(context, acco, tab, active, dynamic, rtl);
             }
 
             acco.setIndex(-1);
         }
+    }
+
+    protected boolean isActive(Tab tab, List<String> activeIndexes, int index) {
+        boolean active = activeIndexes.indexOf(Integer.toString(index)) != -1;
+        return active && !tab.isDisabled();
     }
 
     protected void encodeTab(FacesContext context, AccordionPanel accordionPanel, Tab tab, boolean active, boolean dynamic,

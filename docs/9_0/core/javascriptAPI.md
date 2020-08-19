@@ -58,4 +58,8 @@ _PrimeFaces.widgets_ is an object with all current widget instances, with the ke
 
 See: [AJAX / JavaScript API](/ajax/javascriptApi.md)
 
+## PrimeFaces Client Side Validation (CSV) (PrimeFaces.validation.*)
+
+See: [Client Side Validation](/core/clientsidevalidation.md)
+
 

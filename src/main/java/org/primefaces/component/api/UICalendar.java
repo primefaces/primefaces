@@ -36,6 +36,7 @@ import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.MessageFactory;
 
@@ -174,22 +175,30 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder, T
         String pattern = getPattern();
 
         if (pattern == null) {
-            Locale locale = calculateLocale(getFacesContext());
-            return DateTimeFormatterBuilder.getLocalizedDateTimePattern(FormatStyle.SHORT, null, IsoChronology.INSTANCE, locale);
+            return calculateLocalizedPattern();
         }
         else return pattern;
     }
 
     public String calculateTimeOnlyPattern() {
         if (timeOnlyPattern == null) {
-            Locale locale = calculateLocale(getFacesContext());
-            String localePattern = DateTimeFormatterBuilder.getLocalizedDateTimePattern(FormatStyle.SHORT, null, IsoChronology.INSTANCE, locale);
+            String localePattern = calculateLocalizedPattern();
             String userTimePattern = getPattern();
-
             timeOnlyPattern = localePattern + " " + userTimePattern;
         }
 
         return timeOnlyPattern;
+    }
+
+    public String calculateLocalizedPattern() {
+        Locale locale = calculateLocale(getFacesContext());
+        String localePattern = DateTimeFormatterBuilder.getLocalizedDateTimePattern(FormatStyle.SHORT, null, IsoChronology.INSTANCE, locale);
+
+        // #6170 default to 4 digit year
+        if (LangUtils.countMatches(localePattern, 'y') == 2) {
+            localePattern = localePattern.replace("yy", "yyyy");
+        }
+        return localePattern;
     }
 
     public abstract String calculateWidgetPattern();
@@ -214,10 +223,9 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder, T
             }
         }
         String pattern = new String(chars);
-        int patternLen = pattern.length();
-        int countY = patternLen - pattern.replace("y", "").length();
-        int countM = patternLen - pattern.replace("m", "").length();
-        int countD = patternLen - pattern.replace("d", "").length();
+        int countY = LangUtils.countMatches(pattern, 'y');
+        int countM = LangUtils.countMatches(pattern, 'm');
+        int countD = LangUtils.countMatches(pattern, 'd');
         if (countD == 1) {
             pattern = pattern.replace("d", "dd");
         }

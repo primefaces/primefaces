@@ -161,7 +161,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
 
                 //display on top
                 setTimeout(function() {
-                    $('#ui-datepicker-div').addClass('ui-input-overlay').css('z-index', ++PrimeFaces.zindex);
+                    $('#ui-datepicker-div').addClass('ui-input-overlay').css('z-index', PrimeFaces.nextZindex());
 
                     if ($this.cfg.showTodayButton === false) {
                         $(input).datepicker("widget").find(".ui-datepicker-current").hide();
@@ -253,12 +253,15 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     applyMask: function() {
-        if (this.cfg.mask && !this.cfg.inline) {
+        if (this.cfg.inline || this.input.prop('readonly')) {
+            return;
+        }
+        if (this.cfg.mask) {
             var maskCfg = {
                 placeholder: this.cfg.maskSlotChar||'_',
                 clearMaskOnLostFocus: this.cfg.maskAutoClear||true,
                 clearIncomplete: this.cfg.maskAutoClear||true,
-                autoUnmask: this.cfg.maskAutoUnmask||true
+                autoUnmask: false
             };
             var pattern = new RegExp("m|d|y|h|s", 'i');
             var isAlias = pattern.test(this.cfg.mask);

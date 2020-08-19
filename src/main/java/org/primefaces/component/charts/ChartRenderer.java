@@ -38,6 +38,7 @@ import org.primefaces.model.charts.axes.AxesScale;
 import org.primefaces.model.charts.axes.cartesian.CartesianAxes;
 import org.primefaces.model.charts.axes.cartesian.CartesianScales;
 import org.primefaces.model.charts.axes.radial.RadialScales;
+import org.primefaces.model.charts.optionconfig.animation.Animation;
 import org.primefaces.model.charts.optionconfig.elements.Elements;
 import org.primefaces.model.charts.optionconfig.legend.Legend;
 import org.primefaces.model.charts.optionconfig.title.Title;
@@ -290,6 +291,20 @@ public class ChartRenderer extends CoreRenderer {
 
             writer.write("\"legend\":{");
             writer.write(legend.encode());
+            writer.write("}");
+        }
+    }
+
+    protected void encodeAnimation(FacesContext context, Animation animation, boolean hasComma) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        if (animation != null) {
+            if (hasComma) {
+                writer.write(",");
+            }
+
+            writer.write("\"animation\":{");
+            writer.write(animation.encode());
             writer.write("}");
         }
     }

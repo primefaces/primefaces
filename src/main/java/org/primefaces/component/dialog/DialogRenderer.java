@@ -81,6 +81,7 @@ public class DialogRenderer extends CoreRenderer {
                 .attr("closeOnEscape", dialog.isCloseOnEscape(), false)
                 .attr("fitViewport", dialog.isFitViewport(), false)
                 .attr("responsive", dialog.isResponsive(), false)
+                .attr("cache", dialog.isCache(), true)
                 .callback("onHide", "function()", dialog.getOnHide())
                 .callback("onShow", "function()", dialog.getOnShow());
 

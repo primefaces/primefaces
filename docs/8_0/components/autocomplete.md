@@ -73,7 +73,7 @@ AutoComplete provides live suggestions while an input is being typed.
 | style | null | String | Inline style of the container element.
 | styleClass | null | String | Style class of the container element.
 | tabindex | null | Integer | Position of the input element in the tabbing order.
-| title | null | String | Advisory tooltip informaton.
+| title | null | String | Advisory tooltip information.
 | itemtipMyPosition | left top | String | Position of itemtip corner relative to item.
 | itemtipAtPosition | right bottom | String | Position of item corner relative to itemtip.
 | cache | false | Boolean | When enabled autocomplete caches the searched result list.
@@ -244,7 +244,7 @@ display a message about the selected item instantly.
 
 ```xhtml
 <p:autoComplete value="#{bean.text}" completeMethod="#{bean.complete}">
-    <p:ajax event="itemSelect" listener="bean.handleSelect" update="msg" />
+    <p:ajax event="itemSelect" listener="#{bean.handleSelect}" update="msg" />
 </p:autoComplete>
 <p:messages id=”msg” />
 ```

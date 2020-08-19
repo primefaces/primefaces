@@ -453,12 +453,12 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
      * Align the overlay panel with the additional buttons actions.
      */
     alignPanel: function() {
-        this.menu.css({left:'', top:'','z-index': ++PrimeFaces.zindex});
+        this.menu.css({left:'', top:'','z-index': PrimeFaces.nextZindex()});
 
         if(this.menu.parent().is(this.jq)) {
             this.menu.css({
-                left: 0,
-                top: this.jq.innerHeight()
+                left: '0px',
+                top: this.jq.innerHeight() + 'px'
             });
         }
         else {
