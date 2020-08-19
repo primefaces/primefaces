@@ -493,7 +493,7 @@ public class TimelineRenderer extends CoreRenderer {
                 .map(TimelineEvent::getGroup)
                 .filter(Objects::nonNull)
                 .distinct()
-                .map(group -> new TimelineGroup<>(group, group))
+                .map(group -> new TimelineGroup<Object>(group, group))
                 .collect(toList());
     }
 }
