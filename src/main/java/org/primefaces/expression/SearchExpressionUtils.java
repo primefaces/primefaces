@@ -87,7 +87,7 @@ public class SearchExpressionUtils {
                 expression);
 
         if (resolvedComponent instanceof Widget) {
-            return javascriptWidgetVar((Widget) resolvedComponent, context);
+            return ((Widget) resolvedComponent).resolveWidgetVar(context);
         }
         else {
             throw new FacesException("Component with clientId " + resolvedComponent.getClientId() + " is not a Widget");
@@ -103,14 +103,10 @@ public class SearchExpressionUtils {
     public static String closestWidgetVarFor(UIComponent component) {
         Widget widget = ComponentTraversalUtils.closest(Widget.class, component);
         if (widget != null) {
-            return javascriptWidgetVar(widget, FacesContext.getCurrentInstance());
+            return widget.resolveWidgetVar(FacesContext.getCurrentInstance());
         }
         else {
             throw new FaceletException("Component with clientId " + component.getClientId() + " has no Widget as parent");
         }
-    }
-
-    private static String javascriptWidgetVar(Widget widget, FacesContext context) {
-        return "PF('" + ((Widget) widget).resolveWidgetVar(context) + "')";
     }
 }
