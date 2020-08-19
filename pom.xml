@@ -1104,6 +1104,18 @@
                                     <pattern>javax.faces</pattern>
                                     <shadedPattern>jakarta.faces</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>javax.el</pattern>
+                                    <shadedPattern>jakarta.el</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>javax.annotation</pattern>
+                                    <shadedPattern>jakarta.annotation</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>javax.servlet</pattern>
+                                    <shadedPattern>jakarta.servlet</shadedPattern>
+                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
