@@ -31,6 +31,12 @@
     </function>
 
     <function>
+        <function-name>closestWidgetVar</function-name>
+        <function-class>org.primefaces.expression.SearchExpressionUtils</function-class>
+        <function-signature>java.lang.String closestWidgetVar(javax.faces.component.UIComponent)</function-signature>
+    </function>
+
+    <function>
         <function-name>resolveFirstComponentWithId</function-name>
         <function-class>org.primefaces.util.ComponentTraversalUtils</function-class>
         <function-signature>javax.faces.component.UIComponent firstWithId(java.lang.String,javax.faces.component.UIComponent)</function-signature>
