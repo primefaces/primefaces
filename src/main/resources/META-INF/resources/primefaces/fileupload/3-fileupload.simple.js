@@ -206,72 +206,40 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
     upload: function() {
 
         var $this = this,
-            postURL = this.form.attr('action'),
-            encodedURLfield = this.form.children("input[name*='javax.faces.encodedURL']");
-
-        var files = this.input[0].files;
+            files = this.input[0].files;
 
         var parameterPrefix = PrimeFaces.ajax.Request.extractParameterNamespace(this.form);
+        var process = this.cfg.process ? this.id + ' ' + PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.cfg.process).join(' ') : this.id;
+        var update = this.cfg.update ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.cfg.update).join(' ') : null;
 
-        var formData = new FormData();
+        var formData = PrimeFaces.ajax.Request.createFacesAjaxFormData(this.form, parameterPrefix, this.id, process, update);
+
+        // append files
         for (var i = 0; i < files.length; i++) {
             formData.append(this.input.attr('id'), files[i]);
         }
 
-        PrimeFaces.ajax.Request.addFormData(formData, PrimeFaces.PARTIAL_REQUEST_PARAM, true, parameterPrefix);
-        PrimeFaces.ajax.Request.addFormData(formData, PrimeFaces.PARTIAL_SOURCE_PARAM, this.id, parameterPrefix);
-
-        var process = this.cfg.process ? this.id + ' ' + PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.cfg.process).join(' ') : this.id;
-        PrimeFaces.ajax.Request.addFormData(formData, PrimeFaces.PARTIAL_PROCESS_PARAM, process, parameterPrefix);
-
-
-        if (this.cfg.update) {
-            var update = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.cfg.update).join(' ');
-            PrimeFaces.ajax.Request.addFormData(formData, PrimeFaces.PARTIAL_UPDATE_PARAM, update, parameterPrefix);
-        }
-
-
-        PrimeFaces.ajax.Request.addFromDataFromInput(formData, PrimeFaces.VIEW_STATE, $this.form, parameterPrefix);
-        PrimeFaces.ajax.Request.addFromDataFromInput(formData, PrimeFaces.CLIENT_WINDOW, $this.form, parameterPrefix);
-        PrimeFaces.ajax.Request.addFromDataFromInput(formData, PrimeFaces.csp.NONCE_INPUT, $this.form, parameterPrefix);
-        PrimeFaces.ajax.Request.addFromDataFromInput(formData, 'dsPostWindowId', $this.form, parameterPrefix);
-        PrimeFaces.ajax.Request.addFromDataFromInput(formData, 'dspwid', $this.form, parameterPrefix);
-
-
-
-
-
-        //portlet support
-        var portletFormsSelector = null;
-        if(encodedURLfield.length > 0) {
-            portletFormsSelector = 'form[action="' + postURL + '"]';
-            postURL = encodedURLfield.val();
-        }
-
-
         var xhrOptions = {
-            url : postURL,
+            url: PrimeFaces.ajax.Utils.getPostUrl(this.form),
+            portletForms: PrimeFaces.ajax.Utils.getPorletForms(this.form, parameterPrefix),
             type : "POST",
             cache : false,
             dataType : "xml",
             data: formData,
             processData: false,
             contentType: false,
-            portletForms: portletFormsSelector,
             global: false,
             beforeSend: function(xhr, settings) {
                 xhr.setRequestHeader('Faces-Request', 'partial/ajax');
                 xhr.pfSettings = settings;
                 xhr.pfArgs = {}; // default should be an empty object
-                PrimeFaces.nonAjaxPosted = false;
             }
         };
-
 
         var jqXhr = $.ajax(xhrOptions)
             .fail(function(xhr, status, errorThrown) {
                 var location = xhr.getResponseHeader("Location");
-                if (xhr.status == 401 && location) {
+                if (xhr.status === 401 && location) {
                     PrimeFaces.debug('Unauthorized status received. Redirecting to ' + location);
                     window.location = location;
                     return;
@@ -312,12 +280,6 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
                 }
 
                 PrimeFaces.debug('Response completed.');
-
-                PrimeFaces.ajax.Queue.removeXHR(xhr);
-
-                if(!PrimeFaces.nonAjaxPosted) {
-                    PrimeFaces.ajax.Queue.poll();
-                }
 
                 if ($this.display) {
                     $this.display.text('');

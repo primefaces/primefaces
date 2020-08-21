@@ -111,6 +111,27 @@ if (!PrimeFaces.ajax) {
                 return content;
             },
 
+            getPostUrl: function(form) {
+                var postURL = form.attr('action');
+                var encodedURLInput = form.children("input[name*='javax.faces.encodedURL']");
+
+                if (encodedURLInput.length > 0) {
+                    postURL = encodedURLInput.val();
+                }
+
+                return postURL;
+            },
+
+            getPorletForms: function(form, parameterPrefix) {
+                var encodedURLInput = form.children("input[name*='javax.faces.encodedURL']");
+
+                if (encodedURLInput.length > 0) {
+                    return 'form[id*="' + parameterPrefix + '"]';
+                }
+
+                return null;
+            },
+
             /**
              * Updates the main hidden input element for each form.
              * @param {string} name Name of the hidden form input element, usually the same as the form.
@@ -365,7 +386,7 @@ if (!PrimeFaces.ajax) {
                 // abort any in-flight that are not DONE(4)
                 for(var i = 0; i < this.xhrs.length; i++) {
                     var xhr = this.xhrs[i];
-                    if (xhr.readyState != 4) {
+                    if (xhr.readyState !== 4) {
                         xhr.abort();
                     }
                 }
@@ -523,19 +544,10 @@ if (!PrimeFaces.ajax) {
 
                 PrimeFaces.debug('Form to post ' + form.attr('id') + '.');
 
-                var postURL = form.attr('action'),
-                encodedURLfield = form.children("input[name*='javax.faces.encodedURL']"),
-                postParams = [];
+                var postURL = PrimeFaces.ajax.Utils.getPostUrl(form);
 
                 // See #6857 - parameter namespace for porlet
                 var parameterPrefix = PrimeFaces.ajax.Request.extractParameterNamespace(form);
-
-                //portlet support
-                var portletFormsSelector = null;
-                if(encodedURLfield.length > 0) {
-                    portletFormsSelector = 'form[id*="' + parameterPrefix + '"]';
-                    postURL = encodedURLfield.val();
-                }
 
                 PrimeFaces.debug('URL to post ' + postURL + '.');
 
@@ -574,7 +586,7 @@ if (!PrimeFaces.ajax) {
                 // fallback to @all if no process was defined by the user
                 else {
                     var definedProcess = PrimeFaces.ajax.Request.resolveComponentsForAjaxCall(cfg, 'process');
-                    if (definedProcess === undefined || definedProcess.length == 0) {
+                    if (definedProcess === undefined || definedProcess.length === 0) {
                         processIds = '@all';
                     }
                 }
@@ -690,7 +702,7 @@ if (!PrimeFaces.ajax) {
                     cache : false,
                     dataType : "xml",
                     data : postData,
-                    portletForms: portletFormsSelector,
+                    portletForms: PrimeFaces.ajax.Utils.getPorletForms(form, parameterPrefix),
                     source: cfg.source,
                     global: false,
                     beforeSend: function(xhr, settings) {
@@ -721,7 +733,7 @@ if (!PrimeFaces.ajax) {
                         }
 
                         var location = xhr.getResponseHeader("Location");
-                        if (xhr.status == 401 && location) {
+                        if (xhr.status === 401 && location) {
                             PrimeFaces.debug('Unauthorized status received. Redirecting to ' + location);
                             window.location = location;
                             return;
@@ -953,8 +965,9 @@ if (!PrimeFaces.ajax) {
             },
 
             /**
-             * Finds the namespace (prefix) for the parameters of the given form. This namespace is, for example,
-             * prefixed to the name of the submitted input fields.
+             * Finds the namespace (prefix) for the parameters of the given form.
+             * This is required for Porlets as a Portlet contains multiple JSF views and we must only process and update the forms/inputs of the current view / application.
+             * Later the namespace is used for all post params.
              * @param {JQuery} form An HTML FORM element.
              * @return {string | null} The namespace for the parameters of the given form, or `null` when the form does
              * not specifiy a namespace.
@@ -994,6 +1007,27 @@ if (!PrimeFaces.ajax) {
                 });
 
                 return arr2;
+            },
+
+            createFacesAjaxFormData: function(form, parameterPrefix, source, process, update) {
+                var formData = new FormData();
+
+                PrimeFaces.ajax.Request.addFormData(formData, PrimeFaces.PARTIAL_REQUEST_PARAM, true, parameterPrefix);
+                PrimeFaces.ajax.Request.addFormData(formData, PrimeFaces.PARTIAL_SOURCE_PARAM, source, parameterPrefix);
+                if (process) {
+                    PrimeFaces.ajax.Request.addFormData(formData, PrimeFaces.PARTIAL_PROCESS_PARAM, process, parameterPrefix);
+                }
+                if (update) {
+                    PrimeFaces.ajax.Request.addFormData(formData, PrimeFaces.PARTIAL_UPDATE_PARAM, update, parameterPrefix);
+                }
+
+                PrimeFaces.ajax.Request.addFromDataFromInput(formData, PrimeFaces.VIEW_STATE, form, parameterPrefix);
+                PrimeFaces.ajax.Request.addFromDataFromInput(formData, PrimeFaces.CLIENT_WINDOW, form, parameterPrefix);
+                PrimeFaces.ajax.Request.addFromDataFromInput(formData, PrimeFaces.csp.NONCE_INPUT, form, parameterPrefix);
+                PrimeFaces.ajax.Request.addFromDataFromInput(formData, 'dsPostWindowId', form, parameterPrefix);
+                PrimeFaces.ajax.Request.addFromDataFromInput(formData, 'dspwid', form, parameterPrefix);
+
+                return formData;
             }
         },
 
