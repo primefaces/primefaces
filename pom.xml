@@ -956,6 +956,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/fileupload/0-jquery.iframe-transport.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/fileupload/1-jquery.fileupload.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/fileupload/2-fileupload.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/fileupload/3-fileupload.simple.js</include>
                             </includes>
                         </aggregation>
                         <aggregation>
