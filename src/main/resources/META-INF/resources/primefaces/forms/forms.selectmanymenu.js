@@ -25,6 +25,8 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
         this.cfg.metaKeySelection = this.cfg.metaKeySelection != undefined ? this.cfg.metaKeySelection : true;
 
         this.allItems.filter('.ui-state-highlight').find('> .ui-chkbox > .ui-chkbox-box').addClass('ui-state-active');
+        // Checkbox is inside TD element when using custom content
+        this.allItems.filter('.ui-state-highlight').find('> td > .ui-chkbox > .ui-chkbox-box').addClass('ui-state-active');
     },
 
     /**
