@@ -41,14 +41,22 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
 
         this.maxFileSize = this.cfg.maxFileSize;
 
-        if(this.cfg.skinSimple) {
+        this.form = this.jq.closest('form');
+        this.input = $(this.jqId + '_input');
+
+        if (this.cfg.skinSimple) {
             this.button = this.jq.children('.ui-button');
-            this.input = $(this.jqId + '_input');
             this.display = this.jq.children('.ui-fileupload-filename');
 
-            if(!this.input.prop('disabled')) {
+            if (!this.input.prop('disabled')) {
                 this.bindEvents();
             }
+        }
+        else if (this.cfg.auto) {
+            var $this = this;
+            this.input.on('change.fileupload', function() {
+                $this.upload();
+            });
         }
     },
 
@@ -61,7 +69,7 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
 
         this.button.on('mouseover.fileupload', function(){
             var el = $(this);
-            if(!el.prop('disabled')) {
+            if (!el.prop('disabled')) {
                 el.addClass('ui-state-hover');
             }
         })
@@ -70,7 +78,7 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
         })
         .on('mousedown.fileupload', function() {
             var el = $(this);
-            if(!el.prop('disabled')) {
+            if (!el.prop('disabled')) {
                 el.addClass('ui-state-active').removeClass('ui-state-hover');
             }
         })
@@ -92,9 +100,9 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
             	// checking each file until find a violation
             	var i = 0;
             	for(; !validationFailureMessage && i < files.length; ++i) {
-            		var file = files[i];
-            		var validMsg = $this.validate(file);
-                    if(validMsg) {
+                    var file = files[i];
+                    var validMsg = $this.validate(file);
+                    if (validMsg) {
                     	validationFailureMessage = validMsg;
                     	validationFileName = file.name;
                 		validationFileSize = file.size;
@@ -102,14 +110,14 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
             	}
 
                 if(validationFailureMessage) {
-                	//a violation was found. Display the respective message, clear the input and
-                	// call the validation failure handler if exists
-                	var details = '';
-                	if(validationFileName && validationFileSize) {
-                		details += ': ' + $this.cfg.messageTemplate.replace('{name}', validationFileName).replace('{size}', $this.formatSize(validationFileSize));
-                	}
-                	$this.display.text(validationFailureMessage + details);
-                	$this.input.val('');
+                    //a violation was found. Display the respective message, clear the input and
+                    // call the validation failure handler if exists
+                    var details = '';
+                    if (validationFileName && validationFileSize) {
+                            details += ': ' + $this.cfg.messageTemplate.replace('{name}', validationFileName).replace('{size}', $this.formatSize(validationFileSize));
+                    }
+                    $this.display.text(validationFailureMessage + details);
+                    $this.input.val('');
 
                     if ($this.cfg.onvalidationfailure) {
                     	$this.cfg.onvalidationfailure({
@@ -119,13 +127,17 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
                         });
                     }
                 } else {
-                	// If everything is ok, format the message and display it
-                	var toDisplay = $this.cfg.messageTemplate.replace('{name}', files[0].name).replace('{size}', $this.formatSize(files[0].size));
+                    // If everything is ok, format the message and display it
+                    var toDisplay = $this.cfg.messageTemplate.replace('{name}', files[0].name).replace('{size}', $this.formatSize(files[0].size));
 
-                	if (files.length > 1) {
-                		toDisplay = toDisplay + " + " + (files.length - 1);
-                	}
-                	$this.display.text(toDisplay);
+                    if (files.length > 1) {
+                            toDisplay = toDisplay + " + " + (files.length - 1);
+                    }
+                    $this.display.text(toDisplay);
+                }
+
+                if ($this.cfg.auto) {
+                    $this.upload();
                 }
             } else {
             	// no data was found so clear the input
@@ -165,7 +177,7 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
      * @return {string} The given file size, formatted in a more human-friendly format.
      */
     formatSize: function(bytes) {
-        if(bytes === undefined)
+        if (bytes === undefined)
             return '';
 
         if (bytes === 0)
@@ -182,12 +194,139 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
      * Brings up the native file selection dialog.
      */
     show: function() {
-        if(this.cfg.skinSimple) {
+        if (this.cfg.skinSimple) {
             this.input.trigger("click");
         }
         else {
             this.jq.trigger("click");
         }
+    },
+
+
+    upload: function() {
+
+        var $this = this,
+            postURL = this.form.attr('action'),
+            encodedURLfield = this.form.children("input[name*='javax.faces.encodedURL']");
+
+        var files = this.input[0].files;
+
+        var parameterPrefix = PrimeFaces.ajax.Request.extractParameterNamespace(this.form);
+
+        var formData = new FormData();
+        for (var i = 0; i < files.length; i++) {
+            formData.append(this.input.attr('id'), files[i]);
+        }
+
+        PrimeFaces.ajax.Request.addFormData(formData, PrimeFaces.PARTIAL_REQUEST_PARAM, true, parameterPrefix);
+        PrimeFaces.ajax.Request.addFormData(formData, PrimeFaces.PARTIAL_SOURCE_PARAM, this.id, parameterPrefix);
+
+        var process = this.cfg.process ? this.id + ' ' + PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.cfg.process).join(' ') : this.id;
+        PrimeFaces.ajax.Request.addFormData(formData, PrimeFaces.PARTIAL_PROCESS_PARAM, process, parameterPrefix);
+
+
+        if (this.cfg.update) {
+            var update = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.cfg.update).join(' ');
+            PrimeFaces.ajax.Request.addFormData(formData, PrimeFaces.PARTIAL_UPDATE_PARAM, update, parameterPrefix);
+        }
+
+
+        PrimeFaces.ajax.Request.addFromDataFromInput(formData, PrimeFaces.VIEW_STATE, $this.form, parameterPrefix);
+        PrimeFaces.ajax.Request.addFromDataFromInput(formData, PrimeFaces.CLIENT_WINDOW, $this.form, parameterPrefix);
+        PrimeFaces.ajax.Request.addFromDataFromInput(formData, PrimeFaces.csp.NONCE_INPUT, $this.form, parameterPrefix);
+        PrimeFaces.ajax.Request.addFromDataFromInput(formData, 'dsPostWindowId', $this.form, parameterPrefix);
+        PrimeFaces.ajax.Request.addFromDataFromInput(formData, 'dspwid', $this.form, parameterPrefix);
+
+
+
+
+
+        //portlet support
+        var portletFormsSelector = null;
+        if(encodedURLfield.length > 0) {
+            portletFormsSelector = 'form[action="' + postURL + '"]';
+            postURL = encodedURLfield.val();
+        }
+
+
+        var xhrOptions = {
+            url : postURL,
+            type : "POST",
+            cache : false,
+            dataType : "xml",
+            data: formData,
+            processData: false,
+            contentType: false,
+            portletForms: portletFormsSelector,
+            global: false,
+            beforeSend: function(xhr, settings) {
+                xhr.setRequestHeader('Faces-Request', 'partial/ajax');
+                xhr.pfSettings = settings;
+                xhr.pfArgs = {}; // default should be an empty object
+                PrimeFaces.nonAjaxPosted = false;
+            }
+        };
+
+
+        var jqXhr = $.ajax(xhrOptions)
+            .fail(function(xhr, status, errorThrown) {
+                var location = xhr.getResponseHeader("Location");
+                if (xhr.status == 401 && location) {
+                    PrimeFaces.debug('Unauthorized status received. Redirecting to ' + location);
+                    window.location = location;
+                    return;
+                }
+                if($this.cfg.onerror) {
+                    $this.cfg.onerror.call(this, xhr, status, errorThrown);
+                }
+
+                PrimeFaces.error('Request return with error:' + status + '.');
+            })
+            .done(function(data, status, xhr) {
+                PrimeFaces.debug('Response received successfully.');
+                try {
+                    var parsed;
+
+                    //call user callback
+                    if($this.cfg.onsuccess) {
+                        parsed = $this.cfg.onsuccess.call(this, data, status, xhr);
+                    }
+
+                    //do not execute default handler as response already has been parsed
+                    if(parsed) {
+                        return;
+                    }
+                    else {
+                        PrimeFaces.ajax.Response.handle(data, status, xhr);
+                    }
+                }
+                catch(err) {
+                    PrimeFaces.error(err);
+                }
+
+                PrimeFaces.debug('DOM is updated.');
+            })
+            .always(function(data, status, xhr) {
+                if($this.cfg.oncomplete) {
+                    $this.cfg.oncomplete.call(this, xhr, status, xhr.pfArgs, data);
+                }
+
+                PrimeFaces.debug('Response completed.');
+
+                PrimeFaces.ajax.Queue.removeXHR(xhr);
+
+                if(!PrimeFaces.nonAjaxPosted) {
+                    PrimeFaces.ajax.Queue.poll();
+                }
+
+                if ($this.display) {
+                    $this.display.text('');
+                }
+                $this.input.val('');
+            });
+
+        PrimeFaces.ajax.Queue.addXHR(jqXhr);
+
     }
 
 });

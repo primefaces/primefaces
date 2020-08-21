@@ -18,7 +18,7 @@
  * An object that can be used to emulate classes and a class hierarchy in JavaScript. This works even for old
  * browsers that do no support the native `class` syntax yet. Note however, that this should be mostly compatible
  * with the new `class` syntax of JavaScript, so consider creating your own widgets as a class:
- * 
+ *
  * ```javascript
  * class MyWidget extends PrimeFaces.widget.BaseWidget {
  *   init(cfg){
@@ -26,7 +26,7 @@
  *   }
  * }
  * ```
- * 
+ *
  * __Note to typescript users__: You will need to specify the type parameters explicitly. The best way to do so is by
  * defining the interfaces for the classes separately:
  * ```typescript
@@ -46,7 +46,7 @@
  *   method2(): boolean;
  * }
  * ```
- * 
+ *
  * Now you can use it normally:
  * ```typescript
  * const BaseWidget = Class.extend<BaseWidget, [BaseWidgetCfg]>({
@@ -80,7 +80,7 @@ declare const Class: PrimeFaces.Class;
 declare namespace PrimeFaces {
     /**
      * Construct a type with the properties of T except for those in type K.
-     * 
+     *
      * Same as the builtin TypeScript type `Omit`, but repeated here to support slightly older TypeScript versions (3.4
      * and lower) that did not include it yet.
      */
@@ -120,7 +120,7 @@ declare namespace PrimeFaces {
         Base | void;
 
     /**
-     * Constructs a new type that is the union of all types of each property in T. 
+     * Constructs a new type that is the union of all types of each property in T.
      * ```typescript
      * type X = {a: ["bar", RegExp], b: ["foo", number]};
      * type Y = ValueOf<X>;
@@ -152,7 +152,7 @@ declare namespace PrimeFaces {
      * // type S = { b: RegExp; f: number; }
      * ```
      * @typeparam Base Type with properties to rename
-     * @typeparam RenameMap Type with string properties that indicate how to rename the keys of `Base`. 
+     * @typeparam RenameMap Type with string properties that indicate how to rename the keys of `Base`.
      */
     export type RenameKeys<Base, RenameMap extends Record<string, string>> =
         KeyValueTupleToObject<ValueOf<{
@@ -184,7 +184,7 @@ declare namespace PrimeFaces {
      * type Y = (this: string, k: string) => boolean;
      * type Z = BindThis<Y, X>;
      * // type Z = (this: {foo: string, bar: number, _super: Y}, k: string) => boolean
-     * ``` 
+     * ```
      * @typeparam Base Type to rebind.
      * @typeparam ThisContext New this context for `Base`.
      * @return If `Base` is a function type, that type with the this context bound to `ThisContext` and with an
@@ -204,13 +204,13 @@ declare namespace PrimeFaces {
      *   mail: string;
      *   active: boolean;
      * }
-     * 
+     *
      * type UserStringKeys = MatchingKeys<User, string>;
      * // type UserStringKeys = "name" | "mail";
      * ```
      * @typeparam Base Type from which to pick some properties.
      * @typeparam Condition Type which the properties in the base type have to match.
-     * @return A string intersection type of property names from the base type that match the condition. 
+     * @return A string intersection type of property names from the base type that match the condition.
      */
     type MatchingKeys<Base, Condition> = {
         [Key in keyof Base]: Base[Key] extends Condition ? Key : never;
@@ -224,7 +224,7 @@ declare namespace PrimeFaces {
      *   mail: string;
      *   active: boolean;
      * }
-     * 
+     *
      * type UserStringProperties = PickMatching<User, string>;
      * // type UserStringProperties = {name: string, mail: string};
      * ```
@@ -267,7 +267,7 @@ declare namespace PrimeFaces {
      * An object that can be used to emulate classes and a class hierarchy in JavaScript. This works even for old
      * browsers that do no support the native `class` syntax yet. Note however, that this should be mostly compatible
      * with the new `class` syntax of JavaScript, so consider creating your own widgets as a class:
-     * 
+     *
      * ```javascript
      * class MyWidget extends PrimeFaces.widget.BaseWidget {
      *   init(cfg){
@@ -275,7 +275,7 @@ declare namespace PrimeFaces {
      *   }
      * }
      * ```
-     * 
+     *
      * Note for typescript users: You will need to specify the type parameters explicitly. The best way to do so is by
      * defining the interfaces for the classes separately:
      * ```typescript
@@ -295,7 +295,7 @@ declare namespace PrimeFaces {
      *   method2(): boolean;
      * }
      * ```
-     * 
+     *
      * Now you can use it normally:
      * ```typescript
      * const BaseWidget = Class.extend<BaseWidget, [BaseWidgetCfg]>({
@@ -345,7 +345,7 @@ declare namespace PrimeFaces {
      * @return The type that is returned by the JQueryUI wrapper method.
      */
     export type ToJQueryUIWidgetReturnType<W, R, JQ> =
-        // tslint:disable-next-line 
+        // tslint:disable-next-line
         R extends W | undefined | void
         ? JQ
         : R extends undefined | void
@@ -390,7 +390,7 @@ declare namespace PrimeFaces {
 declare namespace PrimeFaces {
     /**
      * Defines the possible severity levels of a faces message (a message shown to the user).
-     * 
+     *
      * - fatal: Indicates that the message reports a grave error that needs the immediate attention of the reader.
      * - error: Indicates that the message reports an error that occurred, such as invalid user input or database
      * connection failures etc.
@@ -474,13 +474,13 @@ declare namespace PrimeFaces {
      * Behaviors are often, but not necessarily, AJAX behavior. When triggered, it initiates a request the server and
      * processes the response once it is received. This enables several features such as updating or replacing elements
      * dynamically. You can add an AJAX behavior via `<p:ajax event="name" actionListener="#{...}" onstart="..." />`.
-     * 
+     *
      */
     export type Behavior =
         /**
          * @this This callback takes the widget instance as the this context. This must be the widget instance that owns
          * the behavior. The type is only required to be a {@link BaseWidget} as only common widget properties such as
-         * its ID are used. 
+         * its ID are used.
          * @param ext Additional data to be sent with the AJAX request that is made to the server.
          */
         (this: PrimeFaces.widget.BaseWidget, ext?: Partial<PrimeFaces.ajax.ConfigurationExtender>) => void;
@@ -576,7 +576,7 @@ declare namespace PrimeFaces.ajax {
          * The XML document that was returned by the server. This may include several elements such as `update` for DOM
          * updates that need to be performed, `executeScript` for running JavaScript code. A typical response might look
          * as follows:
-         * 
+         *
          * ```xml
          * <?xml version="1.0" encoding="UTF-8"?>
          * <partial-response>
@@ -594,9 +594,9 @@ declare namespace PrimeFaces.ajax {
 
         /**
          * The jQuery XHR request object that was used for the request.
-         * 
+         *
          * __Note__: This object has a `pfArgs` entry that contains the values added to the response by the server. See
-         * {@link PrimeFaces.ajax.pfXHR.pfArgs}.  
+         * {@link PrimeFaces.ajax.pfXHR.pfArgs}.
          */
         jqXHR: PrimeFaces.ajax.pfXHR;
 
@@ -618,7 +618,7 @@ declare namespace PrimeFaces.ajax {
 
         /**
          * The jQuery XHR request object that was used for the request. May not be available when no HTTP request was
-         * sent, such as when validation failed. 
+         * sent, such as when validation failed.
          */
         jqXHR?: PrimeFaces.ajax.pfXHR;
 
@@ -632,7 +632,7 @@ declare namespace PrimeFaces.ajax {
      * Describes a server callback parameter for an AJAX call. For example, when you call a
      * `<p:remoteCommand name="myCommand" />` from the client, you may pass additional parameters to the backing
      * bean like this:
-     * 
+     *
      * ```javascript
      * myCommand([
      *   {
@@ -641,17 +641,17 @@ declare namespace PrimeFaces.ajax {
      *   }
      * ]);
      * ```
-     * 
+     *
      * In the backing bean, you can access this parameter like this:
-     * 
+     *
      * ```java
      * final String myParam = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("myParam");
      * ```
-     * 
+     *
      * @typeparam T Type of the value of the callback parameter. Please note that it will be converted to string
      * before it is passed to the server.
      */
-    export interface ServerCallbackParameter<T = any> {
+    export interface RequestParameter<T = any> {
         /**
          * The name of the parameter to pass to the server.
          */
@@ -677,7 +677,7 @@ declare namespace PrimeFaces.ajax {
 
         /**
          * The handle function which is given the HTML string of the update
-         * @param content The new HTML content from the update. 
+         * @param content The new HTML content from the update.
          */
         handle(this: TWidget, content: string): void;
     }
@@ -692,17 +692,17 @@ declare namespace PrimeFaces.ajax {
         start: number;
 
         /**
-         * End of the selection, that is, one plus the index of the last selected character. 
+         * End of the selection, that is, one plus the index of the last selected character.
          */
         end: number;
 
         /**
-         * The number of selected characters. 
+         * The number of selected characters.
          */
         length: number;
 
         /**
-         * The selected text 
+         * The selected text
          */
         text: string;
     }
@@ -710,7 +710,7 @@ declare namespace PrimeFaces.ajax {
     /**
      * The options that can be passed to AJAX calls made by PrimeFaces. Note that you do not have to provide a value
      * for all these property. Most methods methods such as `PrimeFaces.ab` have got sensible defaults in case you
-     * do not. 
+     * do not.
      */
     export interface Configuration {
         /**
@@ -726,7 +726,7 @@ declare namespace PrimeFaces.ajax {
          */
         delay: number;
 
-        /** 
+        /**
          * A PrimeFaces client-side search expression (such as `@widgetVar` or `@(.my-class)` for locating the form
          * to with the input elements that are serialized. If not given, defaults to the enclosing form.
          */
@@ -783,12 +783,12 @@ declare namespace PrimeFaces.ajax {
 
         /**
          * Additional parameters that are passed to the server. These can be accessed as follows:
-         * 
+         *
          * ```java
          * final String myParam = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("myParam");
          * ```
          */
-        params: ServerCallbackParameter[];
+        params: RequestParameter[];
 
         /**
          * `true` to perform a partial submit and not send the entire form data, but only the processed components;
@@ -853,7 +853,7 @@ declare namespace PrimeFaces.ajax {
          * @param componentPostParams The serialized values of a component.
          * @return The filtered values that are to be sent to the server.
          */
-        partialSubmitParameterFilter(this: Request, componentPostParams: ServerCallbackParameter[]): ServerCallbackParameter[];
+        partialSubmitParameterFilter(this: Request, componentPostParams: RequestParameter[]): RequestParameter[];
     };
 
     /**
@@ -911,7 +911,7 @@ declare namespace PrimeFaces.validation {
    /**
      * The options that can be passed to the Validation method. Note that you do not have to provide a value
      * for all these property. Most methods methods such as `PrimeFaces.vb` have got sensible defaults in case you
-     * do not. 
+     * do not.
      */
     export interface Configuration {
 
@@ -994,7 +994,7 @@ declare namespace JQuery {
         > {
         /**
          * Triggered on the document before an AJAX request made by {@link PrimeFaces.ajax} starts.
-         * 
+         *
          * Usually the following arguments are passed to the callback:
          * - {@link PrimeFaces.ajax.pfXHR}: The AJAX request that is about to be sent.
          * - {@link JQuery.AjaxSettings}: The settings of the AJAX request.
@@ -1003,14 +1003,14 @@ declare namespace JQuery {
 
         /**
          * Triggered on the document when an AJAX request made by {@link PrimeFaces.ajax} starts.
-         * 
+         *
          * Usually no arguments are passed to the callback.
          */
         pfAjaxStart: JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget>;
 
         /**
          * Triggered on the document when an AJAX request made by {@link PrimeFaces.ajax} fails.
-         * 
+         *
          * Usually the following arguments are passed to the callback:
          * - {@link PrimeFaces.ajax.pfXHR}: The AJAX request that failed.
          * - {@link JQuery.AjaxSettings}: The settings of the AJAX request.
@@ -1020,7 +1020,7 @@ declare namespace JQuery {
 
         /**
          * Triggered on the document when an AJAX request made by {@link PrimeFaces.ajax} succeeds.
-         * 
+         *
          * Usually the following arguments are passed to the callback:
          * - {@link PrimeFaces.ajax.pfXHR}: The AJAX request that was successful.
          * - {@link JQuery.AjaxSettings}: The settings of the AJAX request.
@@ -1029,7 +1029,7 @@ declare namespace JQuery {
 
         /**
          * Triggered on the document when an AJAX request completes (both success and failure). Only when `global` is set to `true`.
-         * 
+         *
          * Usually the following arguments are passed to the callback:
          * - {@link PrimeFaces.ajax.pfXHR}: The AJAX request that completed
          * - {@link JQuery.AjaxSettings}: The settings of the AJAX request.

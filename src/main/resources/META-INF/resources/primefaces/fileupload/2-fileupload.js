@@ -151,15 +151,15 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             encodedURLfield = this.form.children("input[name*='javax.faces.encodedURL']");
 
         //portlet support
-        var porletFormsSelector = null;
+        var portletFormsSelector = null;
         if(encodedURLfield.length > 0) {
-            porletFormsSelector = 'form[action="' + postURL + '"]';
+            portletFormsSelector = 'form[action="' + postURL + '"]';
             postURL = encodedURLfield.val();
         }
 
         this.ucfg = {
             url: postURL,
-            portletForms: porletFormsSelector,
+            portletForms: portletFormsSelector,
             paramName: this.id,
             dataType: 'xml',
             dropZone: (this.cfg.dnd === false) ? null : this.jq,
