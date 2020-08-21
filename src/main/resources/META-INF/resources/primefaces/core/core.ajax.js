@@ -545,6 +545,7 @@ if (!PrimeFaces.ajax) {
                 PrimeFaces.debug('Form to post ' + form.attr('id') + '.');
 
                 var postURL = PrimeFaces.ajax.Utils.getPostUrl(form);
+                var postParams = [];
 
                 // See #6857 - parameter namespace for porlet
                 var parameterPrefix = PrimeFaces.ajax.Request.extractParameterNamespace(form);
