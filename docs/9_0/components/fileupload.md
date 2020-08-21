@@ -127,7 +127,7 @@ UploadedFile instance. AJAX uploads are not supported in simple upload, however 
 ```java
 import org.primefaces.model.file.UploadedFile;
 public class FileBean {
-    private SingleUploadedFile file;
+    private UploadedFile file;
     //getter-setter
 }
 ```
@@ -144,7 +144,7 @@ defined `listener` is processed with a `FileUploadEvent` as the parameter.
 ```java
 public class FileBean {
     public void handleFileUpload(FileUploadEvent event) {
-        SingleUploadedFile file = event.getFile();
+        UploadedFile file = event.getFile();
         //application code
     }
 }
