@@ -1,36 +1,36 @@
 /**
  * __PrimeFaces FileUpload Widget__
- * 
+ *
  * FileUpload goes beyond the browser input `type="file"` functionality and features an HTML5 powered rich solution with
  * graceful degradation for legacy browsers.
- * 
+ *
  * @typedef PrimeFaces.widget.FileUpload.OnAddCallback Callback invoked when file was selected and is added to this
  * widget. See also {@link FileUploadCfg.onAdd}.
  * @this {PrimeFaces.widget.FileUpload} PrimeFaces.widget.FileUpload.OnAddCallback
  * @param {File} PrimeFaces.widget.FileUpload.OnAddCallback.file The file that was selected for the upload.
  * @param {(processedFile: File) => void} PrimeFaces.widget.FileUpload.OnAddCallback.callback Callback that needs to be
  * invoked with the file that should be added to the upload queue.
- * 
+ *
  * @typedef PrimeFaces.widget.FileUpload.OnCancelCallback Callback that is invoked when a file upload was canceled. See
  * also {@link FileUploadCfg.oncancel}.
- * @this {PrimeFaces.widget.FileUpload} PrimeFaces.widget.FileUpload.OnCancelCallback 
- * 
+ * @this {PrimeFaces.widget.FileUpload} PrimeFaces.widget.FileUpload.OnCancelCallback
+ *
  * @typedef PrimeFaces.widget.FileUpload.OnCompleteCallback Callback that is invoked after a file was uploaded to the
  * server successfully. See also {@link FileUploadCfg.oncomplete}.
- * @this {PrimeFaces.widget.FileUpload} PrimeFaces.widget.FileUpload.OnCompleteCallback 
+ * @this {PrimeFaces.widget.FileUpload} PrimeFaces.widget.FileUpload.OnCompleteCallback
  * @param {PrimeFaces.ajax.PrimeFacesArgs} PrimeFaces.widget.FileUpload.OnCompleteCallback.pfArgs The additional
  * arguments from the jQuery XHR requests.
  * @param {JQueryFileUpload.JQueryAjaxCallbackData} PrimeFaces.widget.FileUpload.OnCompleteCallback.data Details about
  * the uploaded file or files.
- * 
+ *
  * @typedef PrimeFaces.widget.FileUpload.OnErrorCallback Callback that is invoked when a file could not be uploaded to
  * the server. See also {@link FileUploadCfg.onerror}.
- * @this {PrimeFaces.widget.FileUpload} PrimeFaces.widget.FileUpload.OnErrorCallback 
+ * @this {PrimeFaces.widget.FileUpload} PrimeFaces.widget.FileUpload.OnErrorCallback
  * @param {JQuery.jqXHR} PrimeFaces.widget.FileUpload.OnErrorCallback.jqXHR The XHR object from the HTTP request.
  * @param {string} PrimeFaces.widget.FileUpload.OnErrorCallback.textStatus The HTTP status text of the failed request.
  * @param {PrimeFaces.ajax.PrimeFacesArgs} PrimeFaces.widget.FileUpload.OnErrorCallback.pfArgs The additional arguments
  * from the jQuery XHR request.
- * 
+ *
  * @typedef PrimeFaces.widget.FileUpload.OnStartCallback Callback that is invoked at the beginning of a file upload,
  * when a file is sent to the server. See also {@link FileUploadCfg.onstart}.
  * @this {PrimeFaces.widget.FileUpload} PrimeFaces.widget.FileUpload.OnStartCallback
@@ -39,11 +39,11 @@
  * @prop {number} UploadMessage.filesize The size of the uploaded file in bytes.
  * @prop {string} UploadMessage.filename The name of the uploaded file.
  * @prop {string} UploadMessage.summary A short summary of this message.
- * 
+ *
  * @interface {PrimeFaces.widget.FileUpload.UploadFile} UploadFile Represents an uploaded file added to the upload
  * widget.
  * @prop {JQuery} UploadFile.row Row of an uploaded file.
- * 
+ *
  * @prop {JQueryFileUpload.FileUploadOptions} ucfg Options for the BlueImp jQuery file upload plugin.
  * @prop {JQuery} form The DOM element for the form containing this upload widget.
  * @prop {JQuery} buttonBar The DOM element for the bar with the buttons of this widget.
@@ -63,12 +63,12 @@
  * @prop {string} rowActionSelector Selector for the available actions (buttons) of a row.
  * @prop {string} rowCancelActionSelector Selector for the button for canceling a file upload.
  * @prop {string} clearMessagesSelector Selector for the button to clear the error messages.
- * 
+ *
  * @interface {PrimeFaces.widget.FileUploadCfg} cfg The configuration for the {@link  FileUpload| FileUpload widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
- * 
+ *
  * @prop {RegExp} cfg.allowTypes Regular expression for accepted file types.
  * @prop {boolean} cfg.auto When set to true, selecting a file starts the upload process implicitly.
  * @prop {boolean} cfg.dnd Whether drag and drop is enabled.
@@ -208,7 +208,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                         });
 
                         $this.postSelectFile(data);
-                        
+
                         if ($this.cfg.onvalidationfailure) {
                         	$this.cfg.onvalidationfailure({
                                 summary: validMsg,
@@ -338,7 +338,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 var file = data.files[0];
                 params.push({name : 'X-File-Id', value: $this.createXFileId(file)});
                 data.formData = params;
-            },
+            }
         };
 
         this.jq.fileupload(this.ucfg);
@@ -768,17 +768,17 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
 /**
  * __PrimeFaces Simple FileUpload Widget__
- * 
+ *
  * @prop {JQuery} button The DOM element for the button for selecting a file.
  * @prop {JQuery} display The DOM element for the UI display.
  * @prop {JQuery} input The DOM element for the file input element.
- * 
+ *
  * @interface {PrimeFaces.widget.SimpleFileUploadCfg} cfg The configuration for the
  * {@link  SimpleFileUpload| SimpleFileUpload widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
- * 
+ *
  * @prop {boolean} cfg.skinSimple Whether to apply theming to the simple upload widget.
  * @prop {boolean} cfg.disabled Whether this file upload is disabled.
  * @prop {number} cfg.fileLimit Maximum number of files allowed to upload.
@@ -868,9 +868,9 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
                 		validationFileSize = file.size;
                     }
             	}
-                
+
                 if(validationFailureMessage) {
-                	//a violation was found. Display the respective message, clear the input and 
+                	//a violation was found. Display the respective message, clear the input and
                 	// call the validation failure handler if exists
                 	var details = '';
                 	if(validationFileName && validationFileSize) {
@@ -878,7 +878,7 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
                 	}
                 	$this.display.text(validationFailureMessage + details);
                 	$this.input.val('');
-                    
+
                     if ($this.cfg.onvalidationfailure) {
                     	$this.cfg.onvalidationfailure({
                             summary: validationFailureMessage,
@@ -889,7 +889,7 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
                 } else {
                 	// If everything is ok, format the message and display it
                 	var toDisplay = $this.cfg.messageTemplate.replace('{name}', files[0].name).replace('{size}', $this.formatSize(files[0].size));
-                	
+
                 	if (files.length > 1) {
                 		toDisplay = toDisplay + " + " + (files.length - 1);
                 	}
@@ -945,7 +945,7 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
         else
             return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + this.sizes[i];
     },
-    
+
     /**
      * Brings up the native file selection dialog.
      */
@@ -959,4 +959,3 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
     }
 
 });
-        
