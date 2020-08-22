@@ -1030,10 +1030,10 @@ if (!PrimeFaces.ajax) {
              * It already contains all required parameters like ViewState or ClientWindow.
              *
              * @param {HTMLElement} form The cloest form of the request source.
-             * @param {tring} parameterPrefix The Portlet parameter namespace.
-             * @param {tring} source The id of the request source.
-             * @param {tring} process A comma seperated list of components which should be processed.
-             * @param {tring} update A comma seperated list of components which should be updated.
+             * @param {string} parameterPrefix The Portlet parameter namespace.
+             * @param {string} source The id of the request source.
+             * @param {string} process A comma seperated list of components which should be processed.
+             * @param {string} update A comma seperated list of components which should be updated.
              * @return {FormData} The created FormData.
              */
             createFacesAjaxFormData: function(form, parameterPrefix, source, process, update) {
