@@ -1026,13 +1026,15 @@ if (!PrimeFaces.ajax) {
             },
 
             /**
-             * 
-             * @param {type} form
-             * @param {type} parameterPrefix
-             * @param {type} source
-             * @param {type} process
-             * @param {type} update
-             * @return {FormData}
+             * Creates a FormData which can be used for a Faces AJAX request on the current view.
+             * It already contains all required parameters like ViewState or ClientWindow.
+             *
+             * @param {type} form The cloest form of the request source.
+             * @param {type} parameterPrefix The Portlet parameter namespace.
+             * @param {type} source The id of the request source.
+             * @param {type} process A comma seperated list of components which should be processed.
+             * @param {type} update A comma seperated list of components which should be updated.
+             * @return {FormData} The created FormData.
              */
             createFacesAjaxFormData: function(form, parameterPrefix, source, process, update) {
                 var formData = new FormData();
