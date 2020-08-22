@@ -466,17 +466,43 @@
         },
 
         /**
+         * Gets the currently loaded PF Theme CSS Link.
+         * @return {String} the full URL to the theme CSS
+         */
+        getThemeLink : function() {
+            var themeLink = $('link[href*="' + PrimeFaces.RESOURCE_IDENTIFIER + '/theme.css"]');
+            // portlet
+            if (themeLink.length === 0) {
+                themeLink = $('link[href*="' + PrimeFaces.RESOURCE_IDENTIFIER + '=theme.css"]');
+            }
+            return themeLink;
+        },
+
+        /**
+         * Gets the currently loaded PF Theme.
+         * @return {String} the current theme like "omega" or "luna-amber".
+         */
+        getTheme : function() {
+            var themeLink = PrimeFaces.getThemeLink();
+            if (themeLink.length === 0) {
+                return "";
+            }
+
+            var themeURL = themeLink.attr('href'),
+                plainURL = themeURL.split('&')[0],
+                oldTheme = plainURL.split('ln=primefaces-')[1];
+
+            return oldTheme;
+        },
+
+        /**
          * Changes the current theme to the given theme (by exchanging CSS files). Requires that the theme was
          * installed and is available.
          * @param {string} newTheme The new theme, eg. `luna-amber`, `nova-dark`, or `omega`.
          */
         changeTheme: function(newTheme) {
             if(newTheme && newTheme !== '') {
-                var themeLink = $('link[href*="' + PrimeFaces.RESOURCE_IDENTIFIER + '/theme.css"]');
-                // portlet
-                if (themeLink.length === 0) {
-                    themeLink = $('link[href*="' + PrimeFaces.RESOURCE_IDENTIFIER + '=theme.css"]');
-                }
+                var themeLink = PrimeFaces.getThemeLink();
 
                 var themeURL = themeLink.attr('href'),
                     plainURL = themeURL.split('&')[0],
