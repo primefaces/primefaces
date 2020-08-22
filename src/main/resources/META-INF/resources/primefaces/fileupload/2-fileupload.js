@@ -569,7 +569,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Creates the HTML post data for uploading the selected files.
      * @private
-     * @return {PrimeFaces.ajax.ServerCallbackParameter} Parameters to post when upload the files.
+     * @return {PrimeFaces.ajax.RequestParameter} Parameters to post when upload the files.
      */
     createPostData: function() {
         var process = this.cfg.process ? this.id + ' ' + PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.cfg.process).join(' ') : this.id;
