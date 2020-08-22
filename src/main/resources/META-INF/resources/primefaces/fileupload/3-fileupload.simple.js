@@ -202,7 +202,10 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
-
+    /**
+     * Uploads all selected files via AJAX.
+     * @private
+     */
     upload: function() {
 
         var $this = this,
