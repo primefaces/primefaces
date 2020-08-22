@@ -94,10 +94,10 @@ if (!PrimeFaces.ajax) {
          */
         Utils: {
             /**
-             * Iterates over all immediate children of the given node and returns the concatenated content (
-             * `node value`) of each such child node. For the document itself, the node value is `null`. For text,
-             * comment, and CDATA nodes, the `node value` is the (text) content of the node. For attribute nodes, the
-             * value of the attribute is used.
+             * Iterates over all immediate children of the given node and returns the concatenated content (`node value`)
+             * of each such child node. For the document itself, the node value is `null`.
+             * For text, comment, and CDATA nodes, the `node value` is the (text) content of the node.
+             * For attribute nodes, the value of the attribute is used.
              * @param {HTMLElement} node An HTML node for which to retrieve the content.
              * @return {string} The content of all immediate child nodes, concatenated together.
              */
@@ -111,6 +111,13 @@ if (!PrimeFaces.ajax) {
                 return content;
             },
 
+            /**
+             * Resolves the URL which should be used for the POST.
+             * In Portlet a different URL is used.
+             *
+             * @param {JQuery} form The closest form of the request source.
+             * @return {string} The POST url.
+             */
             getPostUrl: function(form) {
                 var postURL = form.attr('action');
                 var encodedURLInput = form.children("input[name*='javax.faces.encodedURL']");
@@ -122,6 +129,14 @@ if (!PrimeFaces.ajax) {
                 return postURL;
             },
 
+            /**
+             * Gets a selector to resolve all forms which needs to be updated with a new ViewState.
+             * This is required in Portlets as the DOM contains forms of multiple JSF views / applications.
+             *
+             * @param {JQuery} form The closest form of the request source.
+             * @param {string} parameterPrefix The Portlet parameter prefix.
+             * @return {string} null or a selector.
+             */
             getPorletForms: function(form, parameterPrefix) {
                 var encodedURLInput = form.children("input[name*='javax.faces.encodedURL']");
 
@@ -547,7 +562,7 @@ if (!PrimeFaces.ajax) {
                 var postURL = PrimeFaces.ajax.Utils.getPostUrl(form);
                 var postParams = [];
 
-                // See #6857 - parameter namespace for porlet
+                // See #6857 - parameter namespace for Portlets
                 var parameterPrefix = PrimeFaces.ajax.Request.extractParameterNamespace(form);
 
                 PrimeFaces.debug('URL to post ' + postURL + '.');
@@ -852,7 +867,7 @@ if (!PrimeFaces.ajax) {
 
             /**
              * Appends a request parameter to the given list of parameters.
-             * Optionally add a prefix to the name, this is used by portlet namespacing.
+             * Optionally add a prefix to the name, this is used for Portlet namespacing.
              * @template [TValue=any] Type of the parameter value.
              * @param {PrimeFaces.ajax.RequestParameter<TValue>[]} params List of parameters to which a new
              * parameter is added.
@@ -873,7 +888,7 @@ if (!PrimeFaces.ajax) {
 
             /**
              * Appends a request parameter to the given list of parameters.
-             * Optionally add a prefix to the name, this is used by portlet namespacing.
+             * Optionally add a prefix to the name, this is used for Portlet namespacing.
              * @param {FormData} formData the FormData.
              * @param {string} name Name of the new parameter to add.
              * @param {TValue} value Value of the parameter to add.
@@ -916,7 +931,7 @@ if (!PrimeFaces.ajax) {
             /**
              * Adds a new request parameter to the given list. The value of the parameter is taken from the input
              * element of the given form. The input element must have the same name as the name of the parameter to add.
-             * Optionally add a prefix to the name, which used by portlet namespacing.
+             * Optionally add a prefix to the name, which used for Portlet namespacing.
              * @param {PrimeFaces.ajax.RequestParameter[]} params List of request parameters to the new
              * parameter is added.
              * @param {string} name Name of the new parameter to add
@@ -941,15 +956,15 @@ if (!PrimeFaces.ajax) {
 
 
             /**
-             * Adds a new request parameter to the given list. The value of the parameter is taken from the input
+             * Adds a new request parameter to the given FormData. The value of the parameter is taken from the input
              * element of the given form. The input element must have the same name as the name of the parameter to add.
-             * Optionally add a prefix to the name, which used by portlet namespacing.
+             * Optionally add a prefix to the name, which used for Portlet namespacing.
              * @param {FormData} formData The FormData.
              * @param {string} name Name of the new parameter to add
              * @param {JQuery} form An HTML FORM element that contains an INPUT element with the given name.
              * @param {string} [parameterPrefix] Optional prefix that is added in front of the name.
              */
-            addFromDataFromInput: function(formData, name, form, parameterPrefix) {
+            addFormDataFromInput: function(formData, name, form, parameterPrefix) {
                 var input = null,
                     escapedName = $.escapeSelector(name);
                 if (parameterPrefix) {
@@ -1010,6 +1025,15 @@ if (!PrimeFaces.ajax) {
                 return arr2;
             },
 
+            /**
+             * 
+             * @param {type} form
+             * @param {type} parameterPrefix
+             * @param {type} source
+             * @param {type} process
+             * @param {type} update
+             * @return {FormData}
+             */
             createFacesAjaxFormData: function(form, parameterPrefix, source, process, update) {
                 var formData = new FormData();
 
@@ -1022,11 +1046,11 @@ if (!PrimeFaces.ajax) {
                     PrimeFaces.ajax.Request.addFormData(formData, PrimeFaces.PARTIAL_UPDATE_PARAM, update, parameterPrefix);
                 }
 
-                PrimeFaces.ajax.Request.addFromDataFromInput(formData, PrimeFaces.VIEW_STATE, form, parameterPrefix);
-                PrimeFaces.ajax.Request.addFromDataFromInput(formData, PrimeFaces.CLIENT_WINDOW, form, parameterPrefix);
-                PrimeFaces.ajax.Request.addFromDataFromInput(formData, PrimeFaces.csp.NONCE_INPUT, form, parameterPrefix);
-                PrimeFaces.ajax.Request.addFromDataFromInput(formData, 'dsPostWindowId', form, parameterPrefix);
-                PrimeFaces.ajax.Request.addFromDataFromInput(formData, 'dspwid', form, parameterPrefix);
+                PrimeFaces.ajax.Request.addFormDataFromInput(formData, PrimeFaces.VIEW_STATE, form, parameterPrefix);
+                PrimeFaces.ajax.Request.addFormDataFromInput(formData, PrimeFaces.CLIENT_WINDOW, form, parameterPrefix);
+                PrimeFaces.ajax.Request.addFormDataFromInput(formData, PrimeFaces.csp.NONCE_INPUT, form, parameterPrefix);
+                PrimeFaces.ajax.Request.addFormDataFromInput(formData, 'dsPostWindowId', form, parameterPrefix);
+                PrimeFaces.ajax.Request.addFormDataFromInput(formData, 'dspwid', form, parameterPrefix);
 
                 return formData;
             }
@@ -1259,7 +1283,7 @@ if (!PrimeFaces.ajax) {
                 if (xhr) {
                     if (node.getAttribute("ln") === "primefaces" && node.getAttribute("type") === "args") {
                         var textContent = node.textContent || node.innerText || node.text;
-                        // it's possible that pfArgs are already defined e.g. if portlet parameter namespacing is enabled
+                        // it's possible that pfArgs are already defined e.g. if Portlet parameter namespacing is enabled
                         // the "parameterPrefix" will be encoded on document start
                         // the other parameters will be encoded on document end
                         // --> see PrimePartialResponseWriter
