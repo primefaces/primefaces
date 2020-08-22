@@ -889,6 +889,7 @@ if (!PrimeFaces.ajax) {
             /**
              * Appends a request parameter to the given list of parameters.
              * Optionally add a prefix to the name, this is used for Portlet namespacing.
+             * @template [TValue=any] Type of the parameter values.
              * @param {FormData} formData the FormData.
              * @param {string} name Name of the new parameter to add.
              * @param {TValue} value Value of the parameter to add.
