@@ -233,7 +233,7 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
     }
 
     public boolean isLazy() {
-        return ComponentUtils.eval(getStateHelper(), PropertyKeys.lazy, () -> getValue() instanceof LazyDataModel);
+        return ComponentUtils.eval(getStateHelper(), PropertyKeys.lazy, this::isValueLazyDataModel);
     }
 
     public void setLazy(boolean _lazy) {
@@ -1504,5 +1504,9 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
                 renderer.encodeBegin(context, this);
             }
         }
+    }
+
+    public boolean isValueLazyDataModel() {
+        return getValue() instanceof LazyDataModel;
     }
 }

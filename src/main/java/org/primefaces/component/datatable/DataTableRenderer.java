@@ -1670,7 +1670,7 @@ public class DataTableRenderer extends DataRenderer {
         }
         else {
             String ariaRowLabel = table.getAriaRowLabel();
-            Object rowKey = table.getRowKey();
+            Object rowKey = null;
             String boxClass = HTML.CHECKBOX_BOX_CLASS;
             boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
             boxClass = checked ? boxClass + " ui-state-active" : boxClass;
@@ -1679,6 +1679,9 @@ public class DataTableRenderer extends DataRenderer {
             if (isHeaderCheckbox) {
                 rowKey = "head";
                 ariaRowLabel = MessageFactory.getMessage(DataTable.ARIA_HEADER_CHECKBOX_ALL, new Object[]{});
+            }
+            else {
+                rowKey = table.getRowKeyFromModel(table.getRowData());
             }
 
             writer.startElement("div", null);

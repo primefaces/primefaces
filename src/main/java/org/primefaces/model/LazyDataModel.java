@@ -23,23 +23,18 @@
  */
 package org.primefaces.model;
 
-import java.io.Serializable;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.model.DataModel;
 import javax.faces.model.DataModelEvent;
 import javax.faces.model.DataModelListener;
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * Custom lazy loading DataModel to deal with huge datasets
  */
-public abstract class LazyDataModel<T> extends DataModel<T> implements SelectableDataModel<T>, Serializable {
+public abstract class LazyDataModel<T> extends DataModel<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -156,18 +151,6 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
     public List<T> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
         throw new UnsupportedOperationException(
                 getMessage("Either the LazyDataModel#load for single or multi-sort must be implemented [component=%s,view=%s]."));
-    }
-
-    @Override
-    public T getRowData(String rowKey) {
-        throw new UnsupportedOperationException(
-                getMessage("getRowData(String rowKey) must be implemented by %s when basic rowKey algorithm is not used [component=%s,view=%s]."));
-    }
-
-    @Override
-    public Object getRowKey(T object) {
-        throw new UnsupportedOperationException(
-                getMessage("getRowKey(T object) must be implemented by %s when basic rowKey algorithm is not used [component=%s,view=%s]."));
     }
 
     private String getMessage(String format) {

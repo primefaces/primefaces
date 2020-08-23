@@ -25,6 +25,7 @@ package org.primefaces.component.datatable;
 
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -550,10 +551,8 @@ public class DataTable extends DataTableBase {
     }
 
     public void loadLazyData() {
-        DataModel model = getDataModel();
-
-        if (model instanceof LazyDataModel) {
-            LazyDataModel lazyModel = (LazyDataModel) model;
+        if (isValueLazyDataModel()) {
+            LazyDataModel lazyModel = (LazyDataModel) getValue();
             List<?> data = null;
 
             calculateFirst();
@@ -584,10 +583,8 @@ public class DataTable extends DataTableBase {
     }
 
     public void loadLazyScrollData(int offset, int rows) {
-        DataModel model = getDataModel();
-
-        if (model instanceof LazyDataModel) {
-            LazyDataModel lazyModel = (LazyDataModel) model;
+        if (isValueLazyDataModel()) {
+            LazyDataModel lazyModel = (LazyDataModel) getValue();
 
             List<?> data = null;
             if (isMultiSort()) {
@@ -692,9 +689,8 @@ public class DataTable extends DataTableBase {
     }
 
     public void clearLazyCache() {
-        if (getDataModel() instanceof LazyDataModel) {
-            LazyDataModel model = (LazyDataModel) getDataModel();
-            model.setWrappedData(null);
+        if (isValueLazyDataModel()) {
+            getDataModel().setWrappedData(null);
         }
     }
 
@@ -791,39 +787,14 @@ public class DataTable extends DataTableBase {
     }
 
     public Object getRowData(String rowKey) {
-
-        boolean hasRowKeyVe = getValueExpression(PropertyKeys.rowKey.toString()) != null;
         DataModel model = getDataModel();
-
-        // use rowKey if available and if != lazy
-        // lazy must implement #getRowData
-        if (hasRowKeyVe && !(model instanceof LazyDataModel)) {
-            Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
-            String var = getVar();
-            Collection data = (Collection) getDataModel().getWrappedData();
-
-            if (data != null) {
-                for (Iterator it = data.iterator(); it.hasNext(); ) {
-                    Object object = it.next();
-                    requestMap.put(var, object);
-
-                    if (String.valueOf(getRowKey()).equals(rowKey)) {
-                        return object;
-                    }
-                }
-            }
-
-            return null;
+        if (!(model instanceof SelectableDataModel)) {
+            throw new FacesException("DataModel must implement "
+                    + SelectableDataModel.class.getName()
+                    + " when selection is enabled or you need to define rowKey attribute");
         }
-        else {
-            if (!(model instanceof SelectableDataModel)) {
-                throw new FacesException("DataModel must implement "
-                        + SelectableDataModel.class.getName()
-                        + " when selection is enabled or you need to define rowKey attribute");
-            }
 
-            return ((SelectableDataModel) model).getRowData(rowKey);
-        }
+        return ((SelectableDataModel) model).getRowData(rowKey);
     }
 
     public void findSelectedRowKeys() {
@@ -1380,7 +1351,7 @@ public class DataTable extends DataTableBase {
         if (!isLazy() && event instanceof PostRestoreStateEvent && (this == event.getComponent())) {
             Object filteredValue = getFilteredValue();
             if (filteredValue != null) {
-                updateValue(filteredValue);
+                setValue(filteredValue);
             }
         }
     }
@@ -1393,16 +1364,6 @@ public class DataTable extends DataTableBase {
         }
         else {
             setFilteredValue(value);
-        }
-    }
-
-    public void updateValue(Object value) {
-        Object originalValue = getValue();
-        if (originalValue instanceof SelectableDataModel) {
-            setValue(new SelectableDataModelWrapper((SelectableDataModel) originalValue, value));
-        }
-        else {
-            setValue(value);
         }
     }
 
@@ -1554,5 +1515,26 @@ public class DataTable extends DataTableBase {
         return null;
     }
 
+    @Override
+    protected DataModel getDataModel() {
+        DataModel model = super.getDataModel();
+        if (!(model instanceof SelectableDataModel) && isSelectionEnabled()) {
+            boolean hasRowKeyVe = getValueExpression(PropertyKeys.rowKey.toString()) != null;
+            if (hasRowKeyVe) {
+                Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
+                String var = getVar();
+                Function<Object, String> rowKeyTransformer = o -> {
+                    requestMap.put(var, o);
+                    return Objects.toString(getRowKey());
+                };
 
+                setDataModel(new DefaultSelectableDataModel(model, rowKeyTransformer));
+            }
+            else {
+                setDataModel(new DefaultSelectableDataModel(model));
+            }
+        }
+
+        return super.getDataModel();
+    }
 }

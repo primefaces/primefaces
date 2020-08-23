@@ -238,7 +238,7 @@ public class FilterFeature implements DataTableFeature {
         table.updateFilteredValue(context, filteredData);
 
         //update value
-        table.updateValue(table.getFilteredValue());
+        table.setValue(table.getFilteredValue());
 
         table.setRowIndex(-1);  //reset datamodel
     }
