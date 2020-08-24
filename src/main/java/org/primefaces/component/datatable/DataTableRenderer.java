@@ -1338,13 +1338,7 @@ public class DataTableRenderer extends DataRenderer {
         List<UIColumn> columns = table.getColumns();
 
         if (selectionEnabled) {
-            //try rowKey attribute
-            rowKey = table.getRowKey();
-
-            //ask selectable datamodel
-            if (rowKey == null) {
-                rowKey = table.getRowKeyFromModel(table.getRowData());
-            }
+            rowKey = table.getRowKeyFromModel(table.getRowData());
         }
 
         //Preselection

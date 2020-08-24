@@ -23,6 +23,7 @@
  */
 package org.primefaces.model;
 
+import javax.faces.component.StateHelper;
 import javax.faces.model.DataModel;
 import javax.faces.model.DataModelListener;
 import java.util.*;
@@ -34,29 +35,37 @@ public class DefaultSelectableDataModel<T> extends DataModel<T> implements Selec
 
     private static final Function<Object, String> DEFAULT_ROWKEY_TRANSFORMER = o -> Objects.toString(System.identityHashCode(o));
 
+    private static final String ROW_KEY_HASH_NAME = "DefaultSelectableDataModel#hash";
+
+    private static final String ROW_KEY_CACHE_NAME = "DefaultSelectableDataModel#cache";
+
     private DataModel<T> wrapped;
 
-    private Map<String, T> cache = new HashMap<>();
+    private Function<Object, String> rowKeyTransformer;
 
-    private Function<Object, String> rowKeyTransformer = DEFAULT_ROWKEY_TRANSFORMER;
+    private StateHelper stateHelper;
 
     // for serialization
     public DefaultSelectableDataModel() {
         // NOOP
     }
 
-    public DefaultSelectableDataModel(DataModel<T> wrapped, Function<Object, String> rowKeyTransformer) {
+    public DefaultSelectableDataModel(StateHelper stateHelper, DataModel<T> wrapped, Function<Object, String> rowKeyTransformer) {
         this.wrapped = wrapped;
         this.rowKeyTransformer = rowKeyTransformer;
+        this.stateHelper = stateHelper;
+        if (isDirty(wrapped.getWrappedData())) {
+            setWrappedData(wrapped.getWrappedData());
+        }
     }
 
-    public DefaultSelectableDataModel(DataModel<T> wrapped) {
-        this(wrapped, DEFAULT_ROWKEY_TRANSFORMER);
+    public DefaultSelectableDataModel(StateHelper stateHelper, DataModel<T> wrapped) {
+        this(stateHelper, wrapped, DEFAULT_ROWKEY_TRANSFORMER);
     }
 
     @Override
     public T getRowData(String rowKey) {
-        return cache.get(rowKey);
+        return getCache().get(rowKey);
     }
 
     @Override
@@ -67,12 +76,19 @@ public class DefaultSelectableDataModel<T> extends DataModel<T> implements Selec
     @Override
     public void setWrappedData(Object data) {
         wrapped.setWrappedData(data);
-        if (data != null) {
-            cache = ((Collection<T>) data).stream().collect(Collectors.toMap(rowKeyTransformer, o -> o));
-        }
-        else {
-            cache = Collections.emptyMap();
-        }
+        Map<String, Object> cache = data != null
+                ? ((Collection<T>) data).stream().collect(Collectors.toMap(rowKeyTransformer, o -> o))
+                : Collections.emptyMap();
+        stateHelper.put(ROW_KEY_HASH_NAME, Objects.hash(data));
+        stateHelper.put(ROW_KEY_CACHE_NAME, cache);
+    }
+
+    protected Map<String, T> getCache() {
+        return (Map<String, T>) stateHelper.get(ROW_KEY_CACHE_NAME);
+    }
+
+    protected boolean isDirty(Object data) {
+        return !Objects.equals(stateHelper.get(ROW_KEY_HASH_NAME), Objects.hash(data));
     }
 
     @Override

@@ -573,7 +573,7 @@ public class DataTable extends DataTableBase {
             }
 
             lazyModel.setPageSize(getRows());
-            lazyModel.setWrappedData(data);
+            getDataModel().setWrappedData(data);
 
             //Update paginator/livescroller for callback
             if (ComponentUtils.isRequestSource(this, context) && (isPaginator() || isLiveScroll() || isVirtualScroll())) {
@@ -780,7 +780,7 @@ public class DataTable extends DataTableBase {
     public Object getRowKeyFromModel(Object object) {
         DataModel model = getDataModel();
         if (!(model instanceof SelectableDataModel)) {
-            throw new FacesException("DataModel must implement org.primefaces.model.SelectableDataModel when selection is enabled.");
+            throw new FacesException("Unable to retrieve row key from data model. Selection is disabled.");
         }
 
         return ((SelectableDataModel) getDataModel()).getRowKey(object);
@@ -789,9 +789,7 @@ public class DataTable extends DataTableBase {
     public Object getRowData(String rowKey) {
         DataModel model = getDataModel();
         if (!(model instanceof SelectableDataModel)) {
-            throw new FacesException("DataModel must implement "
-                    + SelectableDataModel.class.getName()
-                    + " when selection is enabled or you need to define rowKey attribute");
+            throw new FacesException("Unable to retrieve data from row key. Selection is disabled.");
         }
 
         return ((SelectableDataModel) model).getRowData(rowKey);
@@ -1528,10 +1526,10 @@ public class DataTable extends DataTableBase {
                     return Objects.toString(getRowKey());
                 };
 
-                setDataModel(new DefaultSelectableDataModel(model, rowKeyTransformer));
+                setDataModel(new DefaultSelectableDataModel(getStateHelper(), model, rowKeyTransformer));
             }
             else {
-                setDataModel(new DefaultSelectableDataModel(model));
+                setDataModel(new DefaultSelectableDataModel(getStateHelper(), model));
             }
         }
 
