@@ -77,7 +77,9 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
 
         //attach contextmenu
         if(documentTarget) {
-            $(document).off('contextmenu.ui-contextmenu').on('contextmenu.ui-contextmenu', function(e) {
+            var event = 'contextmenu.' + this.id + '_contextmenu';
+            
+            $(document).off(event).on(event, function(e) {
                 $this.show(e);
             });
 
@@ -107,7 +109,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
             }
 
             if (binded === false) {
-                var event = this.cfg.event + '.ui-contextmenu';
+                var event = this.cfg.event + '.' + this.id + '_contextmenu';
 
                 $(document).off(event, this.jqTargetId).on(event, this.jqTargetId, null, function(e) {
                     $this.show(e);
