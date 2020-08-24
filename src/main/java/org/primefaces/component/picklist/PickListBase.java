@@ -39,7 +39,7 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
 
         widgetVar,
         var,
-        allowMultiple,
+        allowDuplicates,
         itemLabel,
         itemValue,
         style,
@@ -100,12 +100,12 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
         getStateHelper().put(PropertyKeys.var, var);
     }
 
-    public String getAllowMultiple() {
-        return (String) getStateHelper().eval(PropertyKeys.allowMultiple, null);
+    public String getAllowDuplicates() {
+        return (String) getStateHelper().eval(PropertyKeys.allowDuplicates, null);
     }
 
-    public void setAllowMultiple(String allowMultiple) {
-        getStateHelper().put(PropertyKeys.allowMultiple, allowMultiple);
+    public void setAllowDuplicates(String allowDuplicates) {
+        getStateHelper().put(PropertyKeys.allowDuplicates, allowDuplicates);
     }
 
     public String getItemLabel() {

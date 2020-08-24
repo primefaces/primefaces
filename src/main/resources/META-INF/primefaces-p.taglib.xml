@@ -18364,7 +18364,7 @@
             <description>
                 <![CDATA[Boolean value to specify whether values may appear multiple times in the same list.]]>
             </description>
-            <name>allowMultiple</name>
+            <name>allowDuplicates</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
