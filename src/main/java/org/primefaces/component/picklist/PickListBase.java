@@ -245,12 +245,10 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
     }
 
     public String getOnTransfer() {
-        System.out.println("getONTRANSFER");
         return (String) getStateHelper().eval(PropertyKeys.onTransfer, null);
     }
 
     public void setOnTransfer(String onTransfer) {
-        System.out.println("setONTRANSFER");
         getStateHelper().put(PropertyKeys.onTransfer, onTransfer);
     }
 
