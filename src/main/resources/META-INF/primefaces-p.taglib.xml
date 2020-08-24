@@ -18362,6 +18362,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Boolean value to specify whether values may appear multiple times in the same list.]]>
+            </description>
+            <name>allowMultiple</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
             </description>
             <name>binding</name>
@@ -24136,7 +24144,7 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
-		<attribute>
+        <attribute>
             <description>
                 <![CDATA[Decimal separator char. Default is taken from the view's locale.]]>
             </description>

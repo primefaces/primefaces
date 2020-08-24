@@ -39,6 +39,7 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
 
         widgetVar,
         var,
+        allowMultiple,
         itemLabel,
         itemValue,
         style,
@@ -97,6 +98,14 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
 
     public void setVar(String var) {
         getStateHelper().put(PropertyKeys.var, var);
+    }
+
+    public String getAllowMultiple() {
+        return (String) getStateHelper().eval(PropertyKeys.allowMultiple, null);
+    }
+
+    public void setAllowMultiple(String allowMultiple) {
+        getStateHelper().put(PropertyKeys.allowMultiple, allowMultiple);
     }
 
     public String getItemLabel() {
@@ -236,10 +245,12 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
     }
 
     public String getOnTransfer() {
+        System.out.println("getONTRANSFER");
         return (String) getStateHelper().eval(PropertyKeys.onTransfer, null);
     }
 
     public void setOnTransfer(String onTransfer) {
+        System.out.println("setONTRANSFER");
         getStateHelper().put(PropertyKeys.onTransfer, onTransfer);
     }
 
