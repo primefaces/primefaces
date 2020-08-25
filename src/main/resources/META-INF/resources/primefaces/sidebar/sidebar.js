@@ -227,8 +227,8 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function(content) {
-                            this.content.html(content);
-                            this.loaded = true;
+                            $this.jq.html(content);
+                            $this.loaded = true;
                         }
                     });
 
