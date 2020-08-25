@@ -100,11 +100,11 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
         getStateHelper().put(PropertyKeys.var, var);
     }
 
-    public String getAllowDuplicates() {
-        return (String) getStateHelper().eval(PropertyKeys.allowDuplicates, null);
+    public boolean isAllowDuplicates() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.allowDuplicates, false);
     }
 
-    public void setAllowDuplicates(String allowDuplicates) {
+    public void setAllowDuplicates(boolean allowDuplicates) {
         getStateHelper().put(PropertyKeys.allowDuplicates, allowDuplicates);
     }
 
