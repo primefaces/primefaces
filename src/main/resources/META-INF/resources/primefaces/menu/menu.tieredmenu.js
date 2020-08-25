@@ -24,10 +24,10 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
+    init: function (cfg) {
         this._super(cfg);
 
-        this.cfg.toggleEvent = this.cfg.toggleEvent||'hover';
+        this.cfg.toggleEvent = this.cfg.toggleEvent || 'hover';
         this.links = this.jq.find('a.ui-menuitem-link:not(.ui-state-disabled)');
         this.rootLinks = this.jq.find('> ul.ui-menu-list > .ui-menuitem > .ui-menuitem-link');
 
@@ -38,7 +38,7 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
      * Sets up all event listeners required by this widget.
      * @protected
      */
-    bindEvents: function() {
+    bindEvents: function () {
         this.bindItemEvents();
         this.bindKeyEvents();
         this.bindDocumentHandler();
@@ -48,10 +48,10 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
      * Sets up all event listeners for the mouse events on the menu entries (`click` / `hover`).
      * @protected
      */
-    bindItemEvents: function() {
-        if(this.cfg.toggleEvent === 'hover')
+    bindItemEvents: function () {
+        if (this.cfg.toggleEvent === 'hover' || this.cfg.toggleEvent === 'hoverButClickFirst')
             this.bindHoverModeEvents();
-        else if(this.cfg.toggleEvent === 'click')
+        else if (this.cfg.toggleEvent === 'click')
             this.bindClickModeEvents();
     },
 
@@ -59,45 +59,46 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
      * Sets up all event listeners when `toggleEvent` is set to `hover`.
      * @protected
      */
-    bindHoverModeEvents: function() {
+    bindHoverModeEvents: function () {
         var $this = this;
 
-        this.links.on("mouseenter", function() {
+        this.links.on("mouseenter", function () {
             var link = $(this),
-            menuitem = link.parent();
+                menuitem = link.parent();
 
             var activeSibling = menuitem.siblings('.ui-menuitem-active');
-            if(activeSibling.length === 1) {
-                activeSibling.find('li.ui-menuitem-active').each(function() {
+            if (activeSibling.length === 1) {
+                activeSibling.find('li.ui-menuitem-active').each(function () {
                     $this.deactivate($(this));
                 });
                 $this.deactivate(activeSibling);
             }
 
-            if($this.cfg.autoDisplay||$this.active) {
-                if(menuitem.hasClass('ui-menuitem-active'))
-                    $this.reactivate(menuitem);
-                else
-                    $this.activate(menuitem);
-            }
-            else {
+            if ($this.cfg.autoDisplay || $this.active) {
+
+                if (!$this.shouldBlockHoverBecauseOfFirstLevel(menuitem)) {
+                    if (menuitem.hasClass('ui-menuitem-active'))
+                        $this.reactivate(menuitem);
+                    else
+                        $this.activate(menuitem);
+                }
+            } else {
                 $this.highlight(menuitem);
             }
         });
 
-        this.rootLinks.on("click", function(e) {
+        this.rootLinks.on("click", function (e) {
             var link = $(this),
-            menuitem = link.parent(),
-            submenu = menuitem.children('ul.ui-menu-child');
+                menuitem = link.parent(),
+                submenu = menuitem.children('ul.ui-menu-child');
 
             $this.itemClick = true;
 
-            if(submenu.length === 1) {
-                if(submenu.is(':visible')) {
+            if (submenu.length === 1 || $this.shouldBlockHoverBecauseOfFirstLevel(menuitem)) {
+                if (submenu.is(':visible')) {
                     $this.active = false;
                     $this.deactivate(menuitem);
-                }
-                else {
+                } else {
                     $this.active = true;
                     $this.highlight(menuitem);
                     $this.showSubmenu(menuitem, submenu);
@@ -105,17 +106,17 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
             }
         });
 
-        this.links.filter('.ui-submenu-link').on("click", function(e) {
+        this.links.filter('.ui-submenu-link').on("click", function (e) {
             $this.itemClick = true;
             e.preventDefault();
         });
 
-        this.jq.find('ul.ui-menu-list').on("mouseleave", function(e) {
-           if($this.activeitem) {
-               $this.deactivate($this.activeitem);
-           }
+        this.jq.find('ul.ui-menu-list').on("mouseleave", function (e) {
+            if ($this.activeitem) {
+                $this.deactivate($this.activeitem);
+            }
 
-           e.stopPropagation();
+            e.stopPropagation();
         });
     },
 
@@ -123,52 +124,51 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
      * Sets up all event listeners when `toggleEvent` is set to `click`.
      * @protected
      */
-    bindClickModeEvents: function() {
+    bindClickModeEvents: function () {
         var $this = this;
 
-        this.links.on("mouseenter", function() {
+        this.links.on("mouseenter", function () {
             var menuitem = $(this).parent();
 
-            if(!menuitem.hasClass('ui-menuitem-active')) {
+            if (!menuitem.hasClass('ui-menuitem-active')) {
                 menuitem.addClass('ui-menuitem-highlight').children('a.ui-menuitem-link').addClass('ui-state-hover');
             }
         })
-        .on("mouseleave", function() {
-            var menuitem = $(this).parent();
+            .on("mouseleave", function () {
+                var menuitem = $(this).parent();
 
-            if(!menuitem.hasClass('ui-menuitem-active')) {
-                menuitem.removeClass('ui-menuitem-highlight').children('a.ui-menuitem-link').removeClass('ui-state-hover');
-            }
-        });
+                if (!menuitem.hasClass('ui-menuitem-active')) {
+                    menuitem.removeClass('ui-menuitem-highlight').children('a.ui-menuitem-link').removeClass('ui-state-hover');
+                }
+            });
 
-        this.links.filter('.ui-submenu-link').on('click.tieredMenu', function(e) {
+        this.links.filter('.ui-submenu-link').on('click.tieredMenu', function (e) {
             var link = $(this),
-            menuitem = link.parent(),
-            submenu = menuitem.children('ul.ui-menu-child');
+                menuitem = link.parent(),
+                submenu = menuitem.children('ul.ui-menu-child');
 
             $this.itemClick = true;
 
             var activeSibling = menuitem.siblings('.ui-menuitem-active');
-            if(activeSibling.length) {
-                activeSibling.find('li.ui-menuitem-active').each(function() {
+            if (activeSibling.length) {
+                activeSibling.find('li.ui-menuitem-active').each(function () {
                     $this.deactivate($(this));
                 });
                 $this.deactivate(activeSibling);
             }
 
-            if(submenu.length) {
-                if(submenu.is(':visible')) {
+            if (submenu.length) {
+                if (submenu.is(':visible')) {
                     $this.deactivate(menuitem);
                     menuitem.addClass('ui-menuitem-highlight').children('a.ui-menuitem-link').addClass('ui-state-hover');
-                }
-                else {
+                } else {
                     menuitem.addClass('ui-menuitem-active').children('a.ui-menuitem-link').removeClass('ui-state-hover').addClass('ui-state-active');
                     $this.showSubmenu(menuitem, submenu);
                 }
             }
 
             e.preventDefault();
-        }).on('mousedown.tieredMenu', function(e) {
+        }).on('mousedown.tieredMenu', function (e) {
             e.stopPropagation();
         });
     },
@@ -177,7 +177,7 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
      * Sets up all event listners required for keyboard interactions.
      * @protected
      */
-    bindKeyEvents: function() {
+    bindKeyEvents: function () {
         //not implemented
     },
 
@@ -185,12 +185,12 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
      * Registers a delegated event listener for a mouse click on a menu entry.
      * @protected
      */
-    bindDocumentHandler: function() {
+    bindDocumentHandler: function () {
         var $this = this,
-        clickNS = 'click.' + this.id;
+            clickNS = 'click.' + this.id;
 
-        $(document.body).off(clickNS).on(clickNS, function(e) {
-            if($this.itemClick) {
+        $(document.body).off(clickNS).on(clickNS, function (e) {
+            if ($this.itemClick) {
                 $this.itemClick = false;
                 return;
             }
@@ -204,12 +204,12 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
      * @param {JQuery} menuitem Menu item (`LI`) to deactivate.
      * @param {boolean} [animate] `true` to animate the transition to the disabled state, `false` otherwise.
      */
-    deactivate: function(menuitem, animate) {
+    deactivate: function (menuitem, animate) {
         this.activeitem = null;
         menuitem.children('a.ui-menuitem-link').removeClass('ui-state-hover ui-state-active');
         menuitem.removeClass('ui-menuitem-active ui-menuitem-highlight');
 
-        if(animate)
+        if (animate)
             menuitem.children('ul.ui-menu-child').fadeOut('fast');
         else
             menuitem.children('ul.ui-menu-child').hide();
@@ -219,11 +219,11 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
      * Activates a menu item so that it can be clicked and interacted with.
      * @param {JQuery} menuitem Menu item (`LI`) to activate.
      */
-    activate: function(menuitem) {
+    activate: function (menuitem) {
         this.highlight(menuitem);
 
         var submenu = menuitem.children('ul.ui-menu-child');
-        if(submenu.length == 1) {
+        if (submenu.length == 1) {
             this.showSubmenu(menuitem, submenu);
         }
     },
@@ -233,13 +233,13 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
      * @protected
      * @param {JQuery} menuitem Menu item (`LI`) to reactivate.
      */
-    reactivate: function(menuitem) {
+    reactivate: function (menuitem) {
         this.activeitem = menuitem;
         var submenu = menuitem.children('ul.ui-menu-child'),
-        activeChilditem = submenu.children('li.ui-menuitem-active:first'),
-        _self = this;
+            activeChilditem = submenu.children('li.ui-menuitem-active:first'),
+            _self = this;
 
-        if(activeChilditem.length == 1) {
+        if (activeChilditem.length == 1) {
             _self.deactivate(activeChilditem);
         }
     },
@@ -248,7 +248,7 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
      * Highlights the given menu item by applying the proper CSS classes.
      * @param {JQuery} menuitem Menu item to highlight.
      */
-    highlight: function(menuitem) {
+    highlight: function (menuitem) {
         this.activeitem = menuitem;
         menuitem.children('a.ui-menuitem-link').addClass('ui-state-hover');
         menuitem.addClass('ui-menuitem-active');
@@ -259,8 +259,8 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
      * @param {JQuery} menuitem A menu item (`LI`) with children.
      * @param {JQuery} submenu A child of the menu item.
      */
-    showSubmenu: function(menuitem, submenu) {
-        var pos ={
+    showSubmenu: function (menuitem, submenu) {
+        var pos = {
             my: 'left top',
             at: 'right top',
             of: menuitem,
@@ -274,15 +274,24 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
 
     /**
      * Deactivates all items and resets the state of this widget to its orignal state such that only the top-level menu
-     * items are shown. 
+     * items are shown.
      */
-    reset: function() {
+    reset: function () {
         var $this = this;
         this.active = false;
 
-        this.jq.find('li.ui-menuitem-active').each(function() {
+        this.jq.find('li.ui-menuitem-active').each(function () {
             $this.deactivate($(this), true);
         });
+    },
+
+    shouldBlockHoverBecauseOfFirstLevel: function (menuitem) {
+        if (this.cfg.toggleEvent !== 'hoverButClickFirst') {
+            return false;
+        }
+
+        var menuitemIsRootLink = !menuitem.parent().hasClass("ui-menu-child");
+        return menuitemIsRootLink;
     }
-    
+
 });
