@@ -1299,6 +1299,7 @@
                                 <exclude>**/0-jquery.inputmask.js</exclude>
                                 <exclude>**/raphael.js</exclude>
                                 <exclude>**/theme.css</exclude>
+                                <exclude>**/build/**</exclude>
                             </excludes>
                             <includes>
                                 <include>**/*.js</include>
