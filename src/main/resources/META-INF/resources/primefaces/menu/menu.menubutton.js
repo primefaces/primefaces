@@ -18,7 +18,7 @@
  * e.g., `flip`, `fit`, `fit flip`, `fit none`.
  * @prop {boolean} cfg.disabled Whether this menu button is initially disabled.
  */
-PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
 
     /**
      * @override
@@ -28,16 +28,37 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
 
-        this.menuId = this.jqId + '_menu';
-        this.button = this.jq.children('button');
-        this.menu = this.jq.children('.ui-menu');
-        this.menuitems = this.jq.find('.ui-menuitem');
-        this.cfg.disabled = this.button.is(':disabled');
-
         if(!this.cfg.disabled) {
-            this.bindEvents();
             PrimeFaces.utils.registerDynamicOverlay(this, this.menu, this.id + '_menu');
         }
+    },
+
+    /**
+     * @override
+     * @inheritdoc
+     * @param {JQuery} menuitem 
+     * @param {JQuery} submenu 
+     */
+    showSubmenu: function(menuitem, submenu) {
+        var pos = null;
+
+        pos = {
+            my: 'left top',
+            at: 'right top',
+            of: menuitem,
+            collision: 'flipfit'
+        };
+
+        //avoid queuing multiple runs
+        if(this.timeoutId) {
+            clearTimeout(this.timeoutId);
+        }
+
+        this.timeoutId = setTimeout(function () {
+           submenu.css('z-index', PrimeFaces.nextZindex())
+                  .show()
+                  .position(pos)
+        }, this.cfg.delay);
     },
 
     /**
@@ -54,6 +75,14 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     bindEvents: function() {
+        this.menuId = this.jqId + '_menu';
+        this.button = this.jq.children('button');
+        this.menu = this.jq.children('.ui-menu');
+        this.menuitems = this.jq.find('.ui-menuitem');
+        this.cfg.disabled = this.button.is(':disabled');
+
+        this._super();
+
         var $this = this;
 
         //button visuals

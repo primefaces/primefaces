@@ -32,19 +32,17 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.menu.AbstractMenu;
-import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
+import org.primefaces.component.tieredmenu.TieredMenuRenderer;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.menu.MenuElement;
-import org.primefaces.model.menu.MenuItem;
-import org.primefaces.model.menu.Separator;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
-public class MenuButtonRenderer extends BaseMenuRenderer {
+public class MenuButtonRenderer extends TieredMenuRenderer {
 
     @Override
     protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
@@ -142,21 +140,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
 
         if (button.getElementsCount() > 0) {
             List<MenuElement> elements = button.getElements();
-
-            for (MenuElement element : elements) {
-                if (element.isRendered()) {
-                    if (element instanceof MenuItem) {
-                        writer.startElement("li", null);
-                        writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
-                        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM, null);
-                        encodeMenuItem(context, button, (MenuItem) element, "-1");
-                        writer.endElement("li");
-                    }
-                    else if (element instanceof Separator) {
-                        encodeSeparator(context, (Separator) element);
-                    }
-                }
-            }
+            encodeElements(context, button, elements);
         }
 
         writer.endElement("ul");
@@ -179,6 +163,9 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         wb.attr("appendTo", SearchExpressionFacade.resolveClientId(context, button, button.getAppendTo(),
                 SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null);
         wb.attr("collision", button.getCollision());
+        wb.attr("autoDisplay", button.isAutoDisplay());
+        wb.attr("toggleEvent", button.getToggleEvent(), null);
+        wb.attr("delay", button.getDelay());
         wb.finish();
     }
 }

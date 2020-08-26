@@ -47,7 +47,10 @@ public abstract class MenuButtonBase extends AbstractMenu implements Widget {
         title,
         ariaLabel,
         collision,
-        maxHeight
+        maxHeight,
+        autoDisplay,
+        toggleEvent,
+        delay
     }
 
     public MenuButtonBase() {
@@ -170,5 +173,29 @@ public abstract class MenuButtonBase extends AbstractMenu implements Widget {
 
     public void setMaxHeight(String maxHeight) {
         getStateHelper().put(PropertyKeys.maxHeight, maxHeight);
+    }
+
+    public boolean isAutoDisplay() {
+        return (boolean) getStateHelper().eval(PropertyKeys.autoDisplay, true);
+    }
+
+    public void setAutoDisplay(boolean autoDisplay) {
+        getStateHelper().put(PropertyKeys.autoDisplay, autoDisplay);
+    }
+
+    public String getToggleEvent() {
+        return (String) getStateHelper().eval(PropertyKeys.toggleEvent, null);
+    }
+
+    public void setToggleEvent(String toggleEvent) {
+        getStateHelper().put(PropertyKeys.toggleEvent, toggleEvent);
+    }
+
+    public int getDelay() {
+        return (int) getStateHelper().eval(PropertyKeys.delay, 0);
+    }
+
+    public void setDelay(int delay) {
+        getStateHelper().put(PropertyKeys.delay, delay);
     }
 }
