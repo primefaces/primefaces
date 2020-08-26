@@ -23,12 +23,11 @@
  */
 package org.primefaces.component.inputtext;
 
-import javax.faces.component.html.HtmlInputText;
-
+import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 
-public abstract class InputTextBase extends HtmlInputText implements Widget, RTLAware {
+public abstract class InputTextBase extends AbstractPrimeHtmlInputText implements Widget, RTLAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

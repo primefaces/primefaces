@@ -32,7 +32,6 @@ import java.util.Locale;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
-import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.util.CalendarUtils;
@@ -40,7 +39,7 @@ import org.primefaces.util.LangUtils;
 import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.MessageFactory;
 
-public abstract class UICalendar extends HtmlInputText implements InputHolder, TouchAware {
+public abstract class UICalendar extends AbstractPrimeHtmlInputText implements InputHolder, TouchAware {
 
     public static final String CONTAINER_CLASS = "ui-calendar";
     public static final String INPUT_STYLE_CLASS = "ui-inputfield ui-widget ui-state-default ui-corner-all";

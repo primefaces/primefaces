@@ -52,7 +52,24 @@ public class HTML {
         "onmousemove",
         "onmouseout",
         "onmouseover",
-        "onmouseup"
+        "onmouseup",
+        "onwheel",
+        "oncut",
+        "oncopy",
+        "onpaste",
+        "oncontextmenu",
+        "oninput",
+        "oninvalid",
+        "onreset",
+        "onsearch",
+        "ondrag",
+        "ondragend",
+        "ondragenter",
+        "ondragleave",
+        "ondragover",
+        "ondragstart",
+        "ondrop",
+        "onscroll"
     );
 
     //StyleClass is omitted

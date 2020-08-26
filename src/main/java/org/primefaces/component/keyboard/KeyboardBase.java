@@ -23,11 +23,10 @@
  */
 package org.primefaces.component.keyboard;
 
-import javax.faces.component.html.HtmlInputText;
-
+import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.Widget;
 
-public abstract class KeyboardBase extends HtmlInputText implements Widget {
+public abstract class KeyboardBase extends AbstractPrimeHtmlInputText implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

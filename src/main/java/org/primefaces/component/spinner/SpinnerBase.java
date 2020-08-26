@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.spinner;
 
-import javax.faces.component.html.HtmlInputText;
+import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LocaleUtils;
 
-public abstract class SpinnerBase extends HtmlInputText implements Widget, InputHolder {
+public abstract class SpinnerBase extends AbstractPrimeHtmlInputText implements Widget, InputHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
