@@ -23,13 +23,12 @@
  */
 package org.primefaces.component.chips;
 
-import javax.faces.component.html.HtmlInputText;
-
+import org.primefaces.component.api.HtmlInputTextExtended;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 
-public abstract class ChipsBase extends HtmlInputText implements Widget, InputHolder, MixedClientBehaviorHolder {
+public abstract class ChipsBase extends HtmlInputTextExtended implements Widget, InputHolder, MixedClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
