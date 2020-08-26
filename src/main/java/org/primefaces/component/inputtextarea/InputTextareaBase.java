@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.inputtextarea;
 
-import org.primefaces.component.api.HtmlInputTextAreaExtended;
+import org.primefaces.component.api.AbstractPrimeHtmlInputTextArea;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 
-public abstract class InputTextareaBase extends HtmlInputTextAreaExtended implements Widget, RTLAware, MixedClientBehaviorHolder {
+public abstract class InputTextareaBase extends AbstractPrimeHtmlInputTextArea implements Widget, RTLAware, MixedClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.inputnumber;
 
-import org.primefaces.component.api.HtmlInputTextExtended;
+import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LocaleUtils;
 
-public abstract class InputNumberBase extends HtmlInputTextExtended implements Widget, InputHolder {
+public abstract class InputNumberBase extends AbstractPrimeHtmlInputText implements Widget, InputHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

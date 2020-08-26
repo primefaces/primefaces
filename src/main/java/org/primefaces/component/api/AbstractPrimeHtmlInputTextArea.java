@@ -33,7 +33,7 @@ import javax.faces.component.html.HtmlInputTextarea;
  * Extended {@link HtmlInputTextarea} to allow for new events such as "input" and "paste".
  * Remove if JSF4.0 ever implements these events.
  */
-public class HtmlInputTextAreaExtended extends HtmlInputTextarea {
+public abstract class AbstractPrimeHtmlInputTextArea extends HtmlInputTextarea {
 
     // new HTML5 events
     public enum PropertyKeys {
