@@ -28,7 +28,14 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
     init: function(cfg) {
         this._super(cfg);
 
+        this.menuId = this.jqId + '_menu';
+        this.button = this.jq.children('button');
+        this.menu = this.jq.children('.ui-menu');
+        this.menuitems = this.jq.find('.ui-menuitem');
+        this.cfg.disabled = this.button.is(':disabled');
+
         if(!this.cfg.disabled) {
+            this.bindButtonEvents();
             PrimeFaces.utils.registerDynamicOverlay(this, this.menu, this.id + '_menu');
         }
     },
@@ -72,15 +79,7 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
      * Sets up all event listeners that are required by this widget.
      * @private
      */
-    bindEvents: function() {
-        this.menuId = this.jqId + '_menu';
-        this.button = this.jq.children('button');
-        this.menu = this.jq.children('.ui-menu');
-        this.menuitems = this.jq.find('.ui-menuitem');
-        this.cfg.disabled = this.button.is(':disabled');
-
-        this._super();
-
+    bindButtonEvents: function() {
         var $this = this;
 
         //button visuals
