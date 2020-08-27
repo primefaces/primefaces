@@ -12,7 +12,7 @@ are many other third party libraries and plugins used to support features.
 | [ContentFlow](../jsdocs/classes/contentflow.html) | 1.0.2 | http://www.jacksasylum.eu/ContentFlow |
 | [Cropper.js](../jsdocs/modules/jquery.html#cropper) | 1.5.6 | https://github.com/fengyuanchen/cropperjs |
 | FontAwesome | 4.7.0 | https://fontawesome.com/ |
-| [FullCalendar](../jsdocs/modules/__fullcalendar_core_calendar_.html) | 5.1.0 | https://fullcalendar.io/ |
+| [FullCalendar](../jsdocs/modules/__fullcalendar_core_calendar_.html) | 5.3.0 | https://fullcalendar.io/ |
 | [Idle Timer](../jsdocs/modules/jquery.html#idletimer) | 1.1.0 - 2016-03-21 | https://github.com/thorst/jquery-idletimer |
 | [Input Mask](../jsdocs/modules/inputmask.html) | 5.0.5 | https://github.com/RobinHerbots/Inputmask |
 | jqPlot | 1.0.9 | http://www.jqplot.com/ |
