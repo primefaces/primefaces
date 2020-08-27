@@ -40,9 +40,7 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
      * @param {JQuery} submenu 
      */
     showSubmenu: function(menuitem, submenu) {
-        var pos = null;
-
-        pos = {
+        var pos = {
             my: 'left top',
             at: 'right top',
             of: menuitem,
