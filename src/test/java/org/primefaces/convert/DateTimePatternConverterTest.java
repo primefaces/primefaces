@@ -52,8 +52,6 @@ public class DateTimePatternConverterTest {
         assertConvertsSame("yy-M-dd", "yyyy-MMM-dd");
         assertConvertsSame("mm/dd/yy HH:mm:ss", "MM/dd/yyyy HH:mm:ss");
         assertConvertsSame("mm/yy", "MM/yyyy");
-
-        assertConvertsDifferently("dd-mm-yy", "dd-mm-YYYY", "dd-MM-YYYY");
     }
 
     @Test
@@ -82,7 +80,7 @@ public class DateTimePatternConverterTest {
         assertConvertsSame("VV", "VV");
         assertConvertsSame("WW", "WW");
         assertConvertsSame("z", "XX");
-        assertConvertsDifferently("y", "YY", "YY");
+        assertConvertsSame("YY", "YY");
         assertConvertsSame("z", "ZZ");
 
         assertConvertsSame("TT", "aa");
@@ -179,7 +177,7 @@ public class DateTimePatternConverterTest {
         assertConvertsSame("VVVV", "VVVV");
         assertConvertsSame("WWWW", "WWWW");
         assertConvertsSame("Z", "XXXX");
-        assertConvertsDifferently("yy", "YYYY", "YYYY");
+        assertConvertsSame("YYYY", "YYYY");
         assertConvertsSame("z", "ZZZZ");
 
         assertConvertsSame("TT", "aaaa");
@@ -236,7 +234,7 @@ public class DateTimePatternConverterTest {
         assertConvertsSame("VVVVV", "VVVVV");
         assertConvertsSame("WWWWW", "WWWWW");
         assertConvertsSame("Z", "XXXXX");
-        assertConvertsDifferently("yy", "YYYYY", "YYYYY");
+        assertConvertsSame("YYYYY", "YYYYY");
         assertConvertsSame("z", "ZZZZZ");
 
         assertConvertsSame("TT", "aaaaa");
@@ -280,7 +278,7 @@ public class DateTimePatternConverterTest {
         assertConvertsSame("ymmddHHmmssz", "yyMMddHHmmssZ");
         assertConvertsSame("yy-mm-dd'T'HH:mm:ss.lz", "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         assertConvertsSame("yy-mm-dd'T'HH:mm:ss.lZ", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-        assertConvertsDifferently("yy-Www-yy", "YYYY-'W'ww-u", "YYYY-'W'ww-u");
+        assertConvertsDifferently("YYYY-Www-yy", "YYYY-'W'ww-u", "YYYY-'W'ww-u");
     }
 
     @Test
@@ -309,7 +307,7 @@ public class DateTimePatternConverterTest {
         assertConvertsSame("V", "V");
         assertConvertsSame("W", "W");
         assertConvertsDifferently("z", "X", "X");
-        assertConvertsDifferently("yy", "Y", "Y");
+        assertConvertsSame("Y", "Y");
         assertConvertsSame("z", "Z");
 
         assertConvertsSame("TT", "a");
@@ -366,7 +364,7 @@ public class DateTimePatternConverterTest {
         assertConvertsSame("VVV", "VVV");
         assertConvertsSame("WWW", "WWW");
         assertConvertsSame("Z", "XXX");
-        assertConvertsDifferently("yy", "YYY", "YYY");
+        assertConvertsSame("YYY", "YYY");
         assertConvertsSame("z", "ZZZ");
 
         assertConvertsSame("TT", "aaa");

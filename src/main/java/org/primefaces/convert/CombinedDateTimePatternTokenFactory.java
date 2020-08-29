@@ -60,7 +60,6 @@ public class CombinedDateTimePatternTokenFactory implements TokenFactory<JqueryP
             // date
             case 'u':
             case 'y':
-            case 'Y':
                 return new YearToken(repetitions);
             case 'M':
                 return new MonthToken(repetitions);
