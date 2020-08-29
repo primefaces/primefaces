@@ -12922,7 +12922,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Controls empty input display behavior, options are empty, zero, sign. Default is empty.]]>
+                <![CDATA[Defines what to display when the input value is empty (possible options are null, focus, press, always, min, max, zero, number, or a string representing a number)]]>
             </description>
             <name>emptyValue</name>
             <required>false</required>
