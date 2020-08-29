@@ -241,8 +241,14 @@ _cacheTimeout_ option to configure how long it takes to clear a cache automatica
 ```
 
 ## Ajax Behavior Events
+The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
+  
+**Default Event:** `valueChange`  
+**Available Events:** `blur, change, clear, click, contextmenu, copy, cut, dblclick, drag, dragend, dragenter, dragleave, dragover, dragstart, drop, focus, input, invalid, itemSelect, itemUnselect, keydown, keypress, keyup, moreText, mousedown, mousemove, mouseout, mouseover, mouseup, paste, query, reset, scroll, search, select, valueChange, wheel`  
+
+
 Instead of waiting for user to submit the form manually to process the selected item, you can enable
-instant ajax selection by using the _itemSelect_ ajax behavior. Example below demonstrates how to
+instant AJAX selection by using the _itemSelect_ AJAX behavior. Example below demonstrates how to
 display a message about the selected item instantly.
 
 ```xhtml
