@@ -23,11 +23,12 @@
  */
 package org.primefaces.component.api;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
 import javax.faces.component.html.HtmlInputTextarea;
+
+import org.primefaces.util.LangUtils;
 
 /**
  * Extended {@link HtmlInputTextarea} to allow for new events such as "input" and "paste".
@@ -56,8 +57,7 @@ public abstract class AbstractPrimeHtmlInputTextArea extends HtmlInputTextarea {
         onscroll
     }
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(
-                Arrays.asList(
+    protected static final List<String> EVENT_NAMES = LangUtils.unmodifiableList(
                             "blur",
                             "change",
                             "valueChange",
@@ -89,7 +89,7 @@ public abstract class AbstractPrimeHtmlInputTextArea extends HtmlInputTextarea {
                             "dragover",
                             "dragstart",
                             "drop",
-                            "scroll"));
+                            "scroll");
 
     @Override
     public Collection<String> getEventNames() {

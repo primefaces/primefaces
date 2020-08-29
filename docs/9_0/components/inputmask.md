@@ -104,6 +104,17 @@ Here are more samples based on different masks;
 <p:inputMask value="#{bean.productKey}" mask="a*-999-a999"/>
 ```
 
+## Ajax Behavior Events
+
+The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
+  
+**Default Event:** `valueChange`  
+**Available Events:** `blur, change, click, contextmenu, copy, cut, dblclick, drag, dragend, dragenter, dragleave, dragover, dragstart, drop, focus, input, invalid, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, paste, reset, scroll, search, select, valueChange, wheel`  
+
+```xhtml
+<p:ajax event="valueChange" listener="#{bean.handlevalueChange}" update="msgs" />
+```
+
 ## Client Side API
 Widget: _PrimeFaces.widget.AccordionPanel_
 
