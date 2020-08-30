@@ -124,7 +124,7 @@ ajax selection and more.
 | timeControlType | slider | String | Defines the type of element to use for time picker, valid values are "slider" and "select".
 | timeInput | false | Boolean | Allows direct input in time field.
 | timeOnly | false | Boolean | Shows only timepicker without date.
-| timeZone | null | Time Zone | String or a java.time.ZoneId instance or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to ZoneId.systemDefault(). (This attribute is only relevant for java.util.Date in combination with the build-in converter.)
+| timeZone | null | Time Zone | String or a java.time.ZoneId instance or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to ZoneId.systemDefault(). (This attribute is only relevant for java.util.Date in combination with the built-in converter.)
 | title | null | String | Advisory tooltip information.
 | touchable | true | Boolean | Enable touch support if browser detection supports it.
 | type | text | String | Input field type. Default is text.
