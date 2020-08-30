@@ -31,3 +31,4 @@ This product includes software developed by Jack Moore (http://www.jacklmoore.co
 This product includes software developed by Matt Bryson (http://labs.rampinteractive.co.uk/touchSwipe)
 This product includes software developed by David Furfero (http://touchpunch.furf.com/)
 This product includes software developed by Jason Chen - Sales Force (http://quilljs.com/)
+This product includes software developed by dandavis (http://danml.com/download.html)
