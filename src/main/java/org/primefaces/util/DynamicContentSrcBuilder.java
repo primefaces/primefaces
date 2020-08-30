@@ -100,7 +100,8 @@ public class DynamicContentSrcBuilder {
                         .append("&").append(Constants.DYNAMIC_CONTENT_TYPE_PARAM).append("=").append(type.toString());
 
                 if (component != null) {
-                    for (UIComponent child : component.getChildren()) {
+                    for (int i = 0; i < component.getChildCount(); i++) {
+                        UIComponent child = component.getChildren().get(i);
                         if (child instanceof UIParameter) {
                             UIParameter param = (UIParameter) child;
                             if (!param.isDisable()) {
