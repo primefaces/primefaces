@@ -183,7 +183,7 @@ structural style classes;
 
 As skinning style classes are global, see the main theming section for more information.
 
-**Tips**:
+## Tips
 
 - Use appendTo with care as the page definition and HTML DOM would be different, for example if
     dialog is inside an h:form component and appendTo is enabled, on the browser dialog would be
@@ -194,3 +194,69 @@ As skinning style classes are global, see the main theming section for more info
     couple of examples. Same applies to confirmDialog as well.
 - A facet called “header” is available to provide custom content inside header instead of using
     header attribute.
+    
+## Modal
+The dialog support for `modal='true'` works very well. However, there is a use case where the background area of the
+screen is still accessible by keyboard from the browser address bar. See: https://github.com/primefaces/primefaces/issues/1991
+
+To make a dialog truly modal so the keyboard focus is only ever in your modal dialog you have to re-arrange your page.
+You must add a `<main>` element where your page content is and your dialog should live outside that main area.  You can then
+use some clever JQuery to hide the area from screen readers and all keyboard and mouse interaction while the modal
+dialog is being displayed. See example code below:
+
+**JavaScript:**
+
+```javascript
+/**
+ * Show the modal dialog while ensuring the <main> is no longer keyboard/mouse accessible 
+ * and is marked hidden from screen readers.
+ */
+function showModal() {
+    var main = $('main');
+    main.attr('aria-hidden', true).css('pointer-events', 'none');
+    main.find(':focusable').each(function(i) {
+        var tabindex = String($(this).attr('tabindex') || 0);
+        $(this).data('tabindex', tabindex).attr('tabindex', '-1');
+    });
+}
+
+/**
+ * Hide the modal dialog and reinstates the <main> keyboard/mouse and screen reader accessibility.
+ */
+function hideModal() {
+    var main = $('main');
+    main.removeAttr('aria-hidden').css('pointer-events', '');
+    main.find(':focusable').each(function(i) {
+        var tabindex = $(this).data('tabindex') || 0;
+        $(this).attr('tabindex', tabindex).removeData('tabindex');
+    });
+}
+``` 
+
+**XHTML:**
+
+```xhtml
+<h:body>
+    <!-- Main Page content -->
+    <main>
+        <h:form>
+            <p:calendar />
+            <div>
+                <p:commandButton value="Open Dialog" type="button" onclick="PF('modalDlg').show()" />
+            </div>
+        </h:form>
+    </main>
+    <!-- Dialogs outside of main -->
+    <div>
+        <h:form>
+            <p:dialog widgetVar="modalDlg" modal="true" onShow="showModal();" onHide="hideModal();">
+                <p:inputText value="test" />
+                <h:outputLabel value="test" />
+            </p:dialog>
+        </h:form>
+    </div>
+</h:body>
+
+```
+
+
