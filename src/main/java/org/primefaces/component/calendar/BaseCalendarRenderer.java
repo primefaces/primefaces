@@ -159,7 +159,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
             if (Temporal.class.isAssignableFrom(type)) {
                 if (calendar.getTimeZone() != null) {
                     FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                            "timeZone-attribute is not supported for " + type.getName() + ". Use a explicit converter instead of the built-in.",
+                            "'timeZone' attribute is not supported for " + type.getName() + ". Use an explicit converter instead of the built-in.",
                             null);
                     throw new ConverterException(message);
                 }
