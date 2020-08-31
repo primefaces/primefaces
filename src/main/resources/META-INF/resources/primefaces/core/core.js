@@ -467,7 +467,7 @@
 
         /**
          * Gets the currently loaded PF Theme CSS Link.
-         * @return {String} the full URL to the theme CSS
+         * @return {string} the full URL to the theme CSS
          */
         getThemeLink : function() {
             var themeLink = $('link[href*="' + PrimeFaces.RESOURCE_IDENTIFIER + '/theme.css"]');
@@ -480,7 +480,7 @@
 
         /**
          * Gets the currently loaded PF Theme.
-         * @return {String} the current theme like "omega" or "luna-amber".
+         * @return {string} the current theme like "omega" or "luna-amber".
          */
         getTheme : function() {
             var themeLink = PrimeFaces.getThemeLink();
