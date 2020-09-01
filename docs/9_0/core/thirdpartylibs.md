@@ -42,4 +42,4 @@ are many other third party libraries and plugins used to support features.
 | [Timeline](../jsdocs/classes/timeline.html) | 7.3.7 | https://github.com/visjs/vis-timeline |
 | [TouchSwipe](../jsdocs/modules/jquery.html#swipe) | 1.6.18 | https://github.com/mattbryson/TouchSwipe-Jquery-Plugin |
 | [WebcamJS](../jsdocs/modules/webcam.html) | 1.0.26 | http://github.com/jhuckaby |
-
+| download.js | 4.2 | http://danml.com/download.html |
