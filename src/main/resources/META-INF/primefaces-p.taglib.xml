@@ -12882,7 +12882,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Symbol suffix. Default is prefix.]]>
+                <![CDATA[Position of the symbol. 'p' for prefix 's' for suffix]]>
             </description>
             <name>symbolPosition</name>
             <required>false</required>
@@ -12890,7 +12890,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Minimum value. Warning: If minValue is greater than 0, then you will effectively prevent your users to entirely delete the content of their input.]]>
+                <![CDATA[Minimum value. Warning: If minValue is greater than 0, then you will effectively prevent your users to entirely delete the content of their input. Default is -10000000000000.]]>
             </description>
             <name>minValue</name>
             <required>false</required>
@@ -12898,7 +12898,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Maximum values. Default is 999999999.99.]]>
+                <![CDATA[Maximum values. Default is 10000000000000.]]>
             </description>
             <name>maxValue</name>
             <required>false</required>
@@ -12914,7 +12914,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Number of decimal places. Default is 2.]]>
+                <![CDATA[Number of decimal places. If value is Integer/Long/Short number defaults to 0 else defaults to 2.]]>
             </description>
             <name>decimalPlaces</name>
             <required>false</required>
@@ -12922,7 +12922,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Controls empty input display behavior, options are empty, zero, sign. Default is empty.]]>
+                <![CDATA[Defines what to display when the input value is empty (possible options are null, focus, press, always, min, max, zero, number, or a string representing a number)]]>
             </description>
             <name>emptyValue</name>
             <required>false</required>

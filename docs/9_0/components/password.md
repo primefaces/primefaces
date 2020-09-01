@@ -133,6 +133,18 @@ other password component’s id should be used to define the _match_ option.
 <p:password id="pwd1" value="#{passwordBean.password6}" feedback="false" match="pwd2" label="Password 1" required="true"/>
 <p:password id="pwd2" value="#{passwordBean.password6}" feedback="false" label="Password 2" required="true"/>
 ```
+
+## Ajax Behavior Events
+
+The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
+  
+**Default Event:** `valueChange`  
+**Available Events:** `blur, change, click, contextmenu, copy, cut, dblclick, drag, dragend, dragenter, dragleave, dragover, dragstart, drop, focus, input, invalid, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, paste, reset, scroll, search, select, valueChange, wheel`  
+
+```xhtml
+<p:ajax event="valueChange" listener="#{bean.handlevalueChange}" update="msgs" />
+```
+
 ## Skinning
 Structural selectors for password are;
 

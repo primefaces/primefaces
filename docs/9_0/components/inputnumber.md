@@ -80,20 +80,21 @@ styleClass | null | String | Style class of the input element.
 tabindex | null | Integer | Position of the input element in the tabbing order.
 title | null | String | Advisory tooltip information.
 type | text | String | Input field type.
+decimalPlaces | 2 | String | Number of decimal places. If value is Integer/Long/Short number defaults to 0 else defaults to 2.
 decimalSeparator | *1 | String | Decimal separator char.
 decimalSeparatorAlternative | null | String | Allow to declare an alternative decimal separator which is automatically replaced by `decimalCharacter` when typed.
-thousandSeparator | *1 | String | Thousand separator char.
-symbol | none | String | Desired symbol or unit.
-symbolPosition | p | String | Position of the symbol. 'p' for prefix 's' for suffix
-minValue | -10000000000000 | String | Minimum value allowed
-maxValue | 10000000000000 | String | Maximum values allowed.
-roundMethod | Round-Half-Up-Symmetric | String | Controls the rounding method.
-decimalPlaces | 2 | String | Number of decimal places. If value is Integer/Long/Short number defaults to 0.
 emptyValue | focus | String | Defines what to display when the input value is empty (possible options are null, focus, press, always, min, max, zero, number, or a string representing a number)
+leadingZero | allow | Sting | Controls leading zero behavior. Valid values are "allow"(default), "deny" and "keep".
 inputStyle | null | String | Inline style of the input element.
 inputStyleClass | null | String | Style class of the input element.
-padControl | true | Boolean | Controls padding of the decimal places. If true, always pads the decimal with zeros.
+maxValue | 10000000000000 | String | Maximum values allowed.
+minValue | -10000000000000 | String | Minimum value. Warning: If minValue is greater than 0, then you will effectively prevent your users to entirely delete the content of their input.
 modifyValueOnWheel | true | Boolean | Allows the user to increment or decrement the element value with the mouse wheel.
+padControl | true | Boolean | Controls padding of the decimal places. If true, always pads the decimal with zeros.
+roundMethod | Round-Half-Up-Symmetric | String | Controls the rounding method.
+symbol | none | String | Desired symbol or unit.
+symbolPosition | p | String | Position of the symbol. 'p' for prefix 's' for suffix
+thousandSeparator | *1 | String | Thousand separator char.
 
 *1 Depends on locale defined via faces-config.xml
 
@@ -145,10 +146,10 @@ Here are some examples demonstrating various cases;
 
 ## Ajax Behavior Events
 
-The following AJAX behavior events are available for this component. If no event is specific the default event is called.  
+The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
   
-**Default Event:** valueChange  
-**Available Events:** blur, change, click, dblclick, focus, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, select, valueChange  
+**Default Event:** `valueChange`  
+**Available Events:** `blur, change, click, contextmenu, copy, cut, dblclick, drag, dragend, dragenter, dragleave, dragover, dragstart, drop, focus, input, invalid, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, paste, reset, scroll, search, select, valueChange, wheel`  
 
 ```xhtml
 <p:ajax event="valueChange" listener="#{bean.handlevalueChange}" update="msgs" />

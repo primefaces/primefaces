@@ -196,6 +196,14 @@ Various effects can be used when showing and hiding the popup calendar, options 
 slideDown, fadeIn, blind, bounce, clip, drop, fold and slide.
 
 ## Ajax Behavior Events
+
+**Custom Events:**
+| Event | Description |
+| --- | --- |
+| close | When the popup is closed.
+| dateSelect | When a date is selected.
+| viewChange | When the date picker changed to a different month or year page.
+
 Calendar provides a _dateSelect_ ajax behavior event to execute an instant ajax selection whenever a
 date is selected. If you define a method as a listener, it will be invoked by passing an
 _org.primefaces.event.SelectEvent_ instance.

@@ -55,6 +55,7 @@ public class PrimeConfiguration {
     private String cspPolicy;
     private String[] exceptionTypesToIgnoreInLogging;
     private final String multiViewStateStore;
+    private final boolean markInputAsInvalidOnErrorMsg;
 
     // internal config
     private final boolean stringConverterAvailable;
@@ -128,6 +129,9 @@ public class PrimeConfiguration {
         }
 
         multiViewStateStore = externalContext.getInitParameter(Constants.ContextParams.MULTI_VIEW_STATE_STORE);
+
+        value = externalContext.getInitParameter(Constants.ContextParams.MARK_INPUT_AS_INVALID_ON_ERROR_MSG);
+        markInputAsInvalidOnErrorMsg = Boolean.parseBoolean(value);
     }
 
     protected boolean resolveValidateEmptyFields(FacesContext context, PrimeEnvironment environment) {
@@ -235,5 +239,9 @@ public class PrimeConfiguration {
 
     public String getMultiViewStateStore() {
         return multiViewStateStore;
+    }
+
+    public boolean isMarkInputAsInvalidOnErrorMsg() {
+        return markInputAsInvalidOnErrorMsg;
     }
 }

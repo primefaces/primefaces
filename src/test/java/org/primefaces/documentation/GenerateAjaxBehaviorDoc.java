@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright (c) 2009-2019 PrimeTek
@@ -30,7 +30,7 @@ import java.util.List;
 import javax.faces.component.UIComponentBase;
 
 /**
- * Utility class to scan a component and generated the Markdown information 
+ * Utility class to scan a component and generated the Markdown information
  * for the AJAX behavior events the component supports.
  * <p>
  * Execute by passing component class to the command line argument.
@@ -38,7 +38,7 @@ import javax.faces.component.UIComponentBase;
  */
 public class GenerateAjaxBehaviorDoc {
 
-    
+
     public static void main(String[] args) {
         try {
             for (String className : args) {
@@ -59,10 +59,10 @@ public class GenerateAjaxBehaviorDoc {
         eventString =  eventString.substring(eventString.indexOf("[")+1, eventString.indexOf("]"));
         System.out.println("## Ajax Behavior Events");
         System.out.println();
-        System.out.println("The following AJAX behavior events are available for this component. If no event is specific the default event is called.  ");
+        System.out.println("The following AJAX behavior events are available for this component. If no event is specified the default event is called.  ");
         System.out.println("  ");
-        System.out.println("**Default Event:** " + defaultEvent + "  ");
-        System.out.println("**Available Events:** " + eventString + "  ");
+        System.out.println("**Default Event:** `" + defaultEvent + "`  ");
+        System.out.println("**Available Events:** `" + eventString + "`  ");
         System.out.println();
         System.out.println("```xhtml");
         System.out.println(String.format("<p:ajax event=\"%s\" listener=\"#{bean.handle%s}\" update=\"msgs\" />", defaultEvent,defaultEvent));

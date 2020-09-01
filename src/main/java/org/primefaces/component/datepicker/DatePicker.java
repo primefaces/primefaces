@@ -38,7 +38,6 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -52,16 +51,11 @@ public class DatePicker extends DatePickerBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.DatePicker";
     public static final String CONTAINER_EXTENSION_CLASS = "p-datepicker";
 
-    private static final Collection<String> EVENT_NAMES = LangUtils.unmodifiableList("blur", "change", "valueChange", "click", "dblclick",
-            "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select", "dateSelect", "viewChange",
-            "close");
-    private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("dateSelect", "viewChange", "close");
-
     private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>(1);
 
     @Override
     public Collection<String> getEventNames() {
-        return EVENT_NAMES;
+        return CALENDAR_EVENT_NAMES;
     }
 
     @Override
