@@ -219,7 +219,14 @@ slideDown, fadeIn, blind, bounce, clip, drop, fold and slide.
 The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
   
 **Default Event:** `valueChange`  
-**Available Events:** `blur, change, click, close, contextmenu, copy, cut, dateSelect, dblclick, drag, dragend, dragenter, dragleave, dragover, dragstart, drop, focus, input, invalid, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, paste, reset, scroll, search, select, valueChange, viewChange, wheel`  
+**Available Events:** `blur, change, click, close, contextmenu, copy, cut, dateSelect, dblclick, drag, dragend, dragenter, dragleave, dragover, dragstart, drop, focus, input, invalid, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, paste, reset, scroll, search, select, valueChange, viewChange, wheel`
+
+**Custom Events:**
+| Event | Description |
+| --- | --- |
+| close | When the popup is closed.
+| dateSelect | When a date is selected.
+| viewChange | When the date picker changed to a different month or year page. 
 
 Calendar provides a _dateSelect_ ajax behavior event to execute an instant ajax selection whenever a
 date is selected. If you define a method as a listener, it will be invoked by passing an
