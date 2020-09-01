@@ -71,7 +71,7 @@ public class DynamicContentSrcBuilder {
                         context.getELContext(), component.getValueExpression(attributeName));
             return build(context, streamedContent, component, cache, type, stream, expression);
         }
-        return encodeResourceURL(context, src, cache);
+        return null;
     }
 
     public static String build(FacesContext context, StreamedContent streamedContent, UIComponent component, boolean cache,
