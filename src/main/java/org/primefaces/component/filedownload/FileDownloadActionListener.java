@@ -76,11 +76,11 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
             return;
         }
 
-        if (!PrimeFaces.current().isAjaxRequest()) {
-            regularDownload(context, elContext, content);
+        if (PrimeFaces.current().isAjaxRequest()) {
+            ajaxDownload(context, elContext, content);
         }
         else {
-            ajaxDownload(context, elContext, content);
+            regularDownload(context, elContext, content);
         }
     }
 
