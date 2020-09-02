@@ -11,7 +11,7 @@
  * @interface {PrimeFaces.widget.MenuButtonCfg} cfg The configuration for the {@link  MenuButton| MenuButton widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
- * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * @extends {PrimeFaces.widget.TieredMenuCfg} cfg
  *
  * @prop {string} cfg.collision When the positioned element overflows the window in some direction, move it to an
  * alternative position. Similar to my and at, this accepts a single value or a pair for horizontal/vertical,
