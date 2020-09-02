@@ -213,6 +213,7 @@ The following AJAX behavior events are available for this component. If no event
 **Available Events:** `blur, change, click, close, contextmenu, copy, cut, dateSelect, dblclick, drag, dragend, dragenter, dragleave, dragover, dragstart, drop, focus, input, invalid, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, paste, reset, scroll, search, select, valueChange, viewChange, wheel`
 
 **Custom Events:**
+
 | Event | Description |
 | --- | --- |
 | close | When the popup is closed.

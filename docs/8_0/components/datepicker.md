@@ -183,6 +183,7 @@ Multiple dates or a range of dates can be selected by setting the _selectionMode
 ## Ajax Behavior Events
 
 **Custom Events:**
+
 | Event | Description |
 | --- | --- |
 | close | When the popup is closed.
