@@ -340,13 +340,13 @@
                     y = year + 1;
                 }
 
-                months.push(this.createMonth(m, y));
+                months.push(this.createMonth(m, y, i));
             }
 
             return months;
         },
 
-        createMonth: function (month, year) {
+        createMonth: function (month, year, index) {
             var dates = [];
             firstDay = this.getFirstDayOfMonthIndex(month, year);
             daysLength = this.getDaysCountInMonth(month, year);
@@ -402,7 +402,8 @@
             return {
                 month: month,
                 year: year,
-                dates: dates
+                dates: dates,
+                index: index
             };
         },
 
@@ -1292,8 +1293,8 @@
                 '</a>';
         },
 
-        renderTitleMonthElement: function (month) {
-            if (this.options.monthNavigator && this.options.view !== 'month') {
+        renderTitleMonthElement: function (month, index) {
+            if (this.options.monthNavigator && this.options.view !== 'month' && index === 0) {
                 return '<select class="ui-datepicker-month">' + this.renderTitleOptions('month', this.options.locale.monthNamesShort) + '</select>';
             }
             else {
@@ -1301,8 +1302,8 @@
             }
         },
 
-        renderTitleYearElement: function (year) {
-            if (this.options.yearNavigator) {
+        renderTitleYearElement: function (year, index) {
+            if (this.options.yearNavigator && index === 0) {
                 var yearOptions = [],
                     years = this.options.yearRange.split(':'),
                     yearStart = parseInt(years[0], 10),
@@ -1344,8 +1345,8 @@
         },
 
         renderTitle: function (monthMetaData) {
-            var month = this.renderTitleMonthElement(monthMetaData.month),
-                year = this.renderTitleYearElement(monthMetaData.year);
+            var month = this.renderTitleMonthElement(monthMetaData.month, monthMetaData.index),
+                year = this.renderTitleYearElement(monthMetaData.year, monthMetaData.index);
 
             return (
                 '<div class="ui-datepicker-title">' +
