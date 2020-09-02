@@ -27311,7 +27311,7 @@ declare namespace PrimeFaces.widget {
      *
      * @typeparam TCfg Defaults to `MenuButtonCfg`. Type of the configuration object for this widget.
      */
-    export class MenuButton<TCfg extends MenuButtonCfg = MenuButtonCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
+    export class MenuButton<TCfg extends MenuButton = MenuButton> extends PrimeFaces.widget.TieredMenu<TCfg> {
         /**
          * The DOM element for the menu button.
          */
