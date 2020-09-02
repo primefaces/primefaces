@@ -14,8 +14,8 @@ stream the binary data. FileDownload presents an easier way to do the same.
 
 | Name | Default | Type | Description | 
 | --- | --- | --- | --- |
-| value | null | StreamedContent | A streamed content instance
-| contentDisposition | attachment | String | Specifies display mode.
+| value | null | StreamedContent | A streamed content instance.
+| contentDisposition | attachment | String | Specifies display mode on non-ajax downloads.
 | monitorKey | null | String | Optional key to support monitoring multiple filedownloads on same page.
 
 ## Getting started with FileDownload
@@ -57,24 +57,18 @@ Similarly a more graphical presentation would be to use a commandlink with an im
     <h:graphicImage value="pdficon.gif" />
 </h:commandLink>
 ```
-If you’d like to use PrimeFaces commandButton and commandLink, disable ajax option as
-fileDownload requires a full page refresh to present the file.
 
-```xhtml
-<p:commandButton value="Download" ajax="false">
-    <p:fileDownload value="#{fileBean.file}" />
-</p:commandButton>
-```
-```xhtml
-<p:commandLink value="Download" ajax="false">
-    <p:fileDownload value="#{fileBean.file}"/>
-    <h:graphicImage value="pdficon.gif" />
-</p:commandLink>
-```
+## Ajax downloading
+Before PrimeFaces 9, you had to disable ajax on commandButton and commandLink. As of version 9 that's no longer needed.
+
+The ajax download uses the same principle you may know from the _p:graphicImage_ component. Basically we generate a URI
+based on the _DefaultStreamedContent_ which is handled by JavaScript triggering a download.
+Please see our core documentation about it [Dynamic Content Streaming / Rendering](/core/dynamiccontent.md)
+
 ## ContentDisposition
-By default, content is displayed as an _attachment_ with a download dialog box, another alternative is
-the _inline_ mode, in this case browser will try to open the file internally without a prompt. Note that
-content disposition is not part of the http standard although it is widely implemented.
+On regular (non-ajax) downloads, by default, content is displayed as an _attachment_ with a download dialog box,
+another alternative is the _inline_ mode, in this case browser will try to open the file internally without a prompt.
+Note that content disposition is not part of the http standard although it is widely implemented.
 
 ## Monitor Status
 As fileDownload process is non-ajax, ajaxStatus cannot apply. Still PrimeFaces provides a feature
