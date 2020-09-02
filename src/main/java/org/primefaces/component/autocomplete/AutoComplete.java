@@ -69,10 +69,9 @@ public class AutoComplete extends AutoCompleteBase {
     public static final String MORE_TEXT_LIST_CLASS = "ui-autocomplete-item ui-autocomplete-moretext ui-corner-all";
     public static final String MORE_TEXT_TABLE_CLASS = "ui-autocomplete-item ui-autocomplete-moretext ui-widget-content ui-corner-all";
 
-
-    private static final List<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("itemSelect", "itemUnselect", "query",
+    protected static final List<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("itemSelect", "itemUnselect", "query",
             "moreText", "clear");
-    public static final Collection<String> EVENT_NAMES =  LangUtils.concat(AbstractPrimeHtmlInputText.EVENT_NAMES, UNOBSTRUSIVE_EVENT_NAMES);
+    protected static final Collection<String> EVENT_NAMES = LangUtils.concat(AbstractPrimeHtmlInputText.EVENT_NAMES, UNOBSTRUSIVE_EVENT_NAMES);
 
     private Object suggestions = null;
 

@@ -43,9 +43,6 @@ import org.primefaces.util.MessageFactory;
 
 public abstract class UICalendar extends AbstractPrimeHtmlInputText implements InputHolder, TouchAware {
 
-    public static final List<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("dateSelect", "viewChange", "close");
-    public static final Collection<String> CALENDAR_EVENT_NAMES =  LangUtils.concat(AbstractPrimeHtmlInputText.EVENT_NAMES, UNOBSTRUSIVE_EVENT_NAMES);
-
     public static final String CONTAINER_CLASS = "ui-calendar";
     public static final String INPUT_STYLE_CLASS = "ui-inputfield ui-widget ui-state-default ui-corner-all";
     public static final String DATE_OUT_OF_RANGE_MESSAGE_ID = "primefaces.calendar.OUT_OF_RANGE";
@@ -53,6 +50,9 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
     public static final String DATE_MAX_DATE_ID = "primefaces.calendar.MAX_DATE";
     public static final String DATE_INVALID_MESSAGE_ID = "primefaces.calendar.INVALID";
     public static final String DATE_INVALID_RANGE_MESSAGE_ID = "primefaces.calendar.DATE_INVALID_RANGE_MESSAGE_ID";
+
+    protected static final List<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("dateSelect", "viewChange", "close");
+    protected static final Collection<String> CALENDAR_EVENT_NAMES =  LangUtils.concat(AbstractPrimeHtmlInputText.EVENT_NAMES, UNOBSTRUSIVE_EVENT_NAMES);
 
     protected String timeOnlyPattern = null;
 
