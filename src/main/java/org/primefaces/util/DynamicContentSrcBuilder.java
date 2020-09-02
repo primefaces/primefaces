@@ -56,13 +56,11 @@ public class DynamicContentSrcBuilder {
     public static String build(FacesContext context, Object value, UIComponent component, boolean cache,
             DynamicContentType type, boolean stream, String attributeName) {
 
-        String src = null;
-
         if (value == null) {
             return "";
         }
         else if (value instanceof String) {
-            src = ResourceUtils.getResourceURL(context, (String) value);
+            String src = ResourceUtils.getResourceURL(context, (String) value);
             return encodeResourceURL(context, src, cache);
         }
         else if (value instanceof StreamedContent) {
@@ -71,6 +69,7 @@ public class DynamicContentSrcBuilder {
                         context.getELContext(), component.getValueExpression(attributeName));
             return build(context, streamedContent, component, cache, type, stream, expression);
         }
+
         return null;
     }
 
