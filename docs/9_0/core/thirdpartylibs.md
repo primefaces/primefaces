@@ -11,6 +11,7 @@ are many other third party libraries and plugins used to support features.
 | [Cookie](../jsdocs/modules/cookies.html) | 3.0.0 | https://github.com/js-cookie/js-cookie |
 | [ContentFlow](../jsdocs/classes/contentflow.html) | 1.0.2 | http://www.jacksasylum.eu/ContentFlow |
 | [Cropper.js](../jsdocs/modules/jquery.html#cropper) | 1.5.6 | https://github.com/fengyuanchen/cropperjs |
+| Download.js | 4.2 | http://danml.com/download.html |
 | FontAwesome | 4.7.0 | https://fontawesome.com/ |
 | [FullCalendar](../jsdocs/modules/__fullcalendar_core_calendar_.html) | 5.3.0 | https://fullcalendar.io/ |
 | [Idle Timer](../jsdocs/modules/jquery.html#idletimer) | 1.1.0 - 2016-03-21 | https://github.com/thorst/jquery-idletimer |
@@ -42,4 +43,3 @@ are many other third party libraries and plugins used to support features.
 | [Timeline](../jsdocs/classes/timeline.html) | 7.3.7 | https://github.com/visjs/vis-timeline |
 | [TouchSwipe](../jsdocs/modules/jquery.html#swipe) | 1.6.18 | https://github.com/mattbryson/TouchSwipe-Jquery-Plugin |
 | [WebcamJS](../jsdocs/modules/webcam.html) | 1.0.26 | http://github.com/jhuckaby |
-
