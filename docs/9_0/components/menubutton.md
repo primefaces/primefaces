@@ -36,6 +36,9 @@ menuStyleClass | null | String | Style class of the overlay menu element.
 ariaLabel | null | String | The aria-label attribute is used to define a string that labels the current element for accessibility.
 collision | flip | String | For the overlay menu that shows up when the menu button is clicked. When the overlay menu overflows the window in some direction, move it to an alternative position. Supported values are flip, fit, flipfit and none. See https://api.jqueryui.com/position/ for more details. Defaults to flip. When you the body of your layout does not scroll, you may also want to set the option maxHeight.
 maxHeight | null | String | The maximum height of the overlay menu that shows up when the menu button is clicked. May be either a number (such as 200), which is interpreted as a height in pixels. Alternatively, may also be a CSS length such as 90vh or 10em. Useful in case the body of your layout does not scroll, especially in combination with the collision property.
+autoDisplay | true | Boolean | Defines whether the first level of submenus will be displayed on mouseover or not. When set to false, click event is required to display.
+delay | 0 | int | Delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.
+toggleEvent | hover | String | Event to toggle the submenus, valid values are "hover" and "click".
 
 ## Getting started with the MenuButton
 MenuButton consists of one ore more menuitems. Following menubutton example has three

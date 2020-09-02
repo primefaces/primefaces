@@ -18,7 +18,7 @@
  * e.g., `flip`, `fit`, `fit flip`, `fit none`.
  * @prop {boolean} cfg.disabled Whether this menu button is initially disabled.
  */
-PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
 
     /**
      * @override
@@ -35,9 +35,35 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.disabled = this.button.is(':disabled');
 
         if(!this.cfg.disabled) {
-            this.bindEvents();
+            this.bindButtonEvents();
             PrimeFaces.utils.registerDynamicOverlay(this, this.menu, this.id + '_menu');
         }
+    },
+
+    /**
+     * @override
+     * @inheritdoc
+     * @param {JQuery} menuitem 
+     * @param {JQuery} submenu 
+     */
+    showSubmenu: function(menuitem, submenu) {
+        var pos = {
+            my: 'left top',
+            at: 'right top',
+            of: menuitem,
+            collision: 'flipfit'
+        };
+
+        //avoid queuing multiple runs
+        if(this.timeoutId) {
+            clearTimeout(this.timeoutId);
+        }
+
+        this.timeoutId = setTimeout(function () {
+           submenu.css('z-index', PrimeFaces.nextZindex())
+                  .show()
+                  .position(pos)
+        }, this.cfg.delay);
     },
 
     /**
@@ -53,7 +79,7 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
      * Sets up all event listeners that are required by this widget.
      * @private
      */
-    bindEvents: function() {
+    bindButtonEvents: function() {
         var $this = this;
 
         //button visuals
