@@ -70,6 +70,8 @@ public class PrimeFacesContext extends FacesContextWrapper {
         }
 
         markInputAsInvalidOnErrorMsg = config.isMarkInputAsInvalidOnErrorMsg();
+
+        FacesContext.setCurrentInstance(this);
     }
 
     @Override
@@ -126,6 +128,9 @@ public class PrimeFacesContext extends FacesContextWrapper {
         }
 
         super.release();
+
+        // just to be sure!
+        FacesContext.setCurrentInstance(null);
     }
 
     @Override
