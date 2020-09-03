@@ -31,3 +31,4 @@ pattern of JavaEE. Here is the list of all configuration options defined with a 
 | TRANSFORM_METADATA | false | Transforms bean validation metadata to HTML attributes. |
 | UPLOADER | auto | Defines uploader mode; 'auto', 'native' or 'commons'. 'auto' means 'native' on JSF2.2+, otherwise 'commons'. |
 | MARK_INPUT_AS_INVALID_ON_ERROR_MSG | false | Marks a input as invalid, when a FacesMessage is added for a UIInput with 'SEVERITY_ERROR'. This will show the red border on the client side, when the input is updated. |
+| COOKIES_SAME_SITE |  | Defines the sameSite value for all cookies, which will be added by PrimeFaces. Currently this is only supported for cookies added on the clientside as Servlet API doesn't support it yet. |
