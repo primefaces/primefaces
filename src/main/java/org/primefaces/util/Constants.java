@@ -51,6 +51,7 @@ public class Constants {
         public static final String EXCEPTION_TYPES_TO_IGNORE_IN_LOGGING = "primefaces.EXCEPTION_TYPES_TO_IGNORE_IN_LOGGING";
         public static final String MULTI_VIEW_STATE_STORE = "primefaces.MULTI_VIEW_STATE_STORE";
         public static final String MARK_INPUT_AS_INVALID_ON_ERROR_MSG = "primefaces.MARK_INPUT_AS_INVALID_ON_ERROR_MSG";
+        public static final String COOKIES_SAME_SITE = "primefaces.COOKIES_SAME_SITE";
 
         private ContextParams() {
 

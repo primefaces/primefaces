@@ -176,16 +176,21 @@
         },
 
         /**
-         * Sets the value of a given cookie. If using HTTPS will set secure=true and SameSite=Strict.
+         * Sets the value of a given cookie.
+         * It will set secure=true, if using HTTPS and session-config/cookie-config/secure is set to true in web.xml.
+         * It will set sameSite, if secure=true, with the value of the primefaces.COOKIES_SAME_SITE parameter.
          * @param {string} name Name of the cookie to set
          * @param {string} value Value to set 
          * @param {Partial<Cookies.CookieAttributes>} [cfg] Configuration for this cookie: when it expires, its
          * paths and domain and whether it is secure cookie.
          */
         setCookie : function(name, value, cfg) {
-            if (location.protocol === 'https:') {
+            if (location.protocol === 'https:' && PrimeFaces.settings.cookiesSecure) {
                 cfg.secure = true;
-                cfg.sameSite = 'Strict';
+
+                if (PrimeFaces.settings.cookiesSameSite) {
+                    cfg.sameSite = PrimeFaces.settings.cookiesSameSite;
+                }
             }
             Cookies.set(name, value, cfg);
         },
