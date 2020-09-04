@@ -196,7 +196,7 @@
             <type>java.lang.Object</type>
         </attribute>
         <attribute>
-            <description>Specifies display mode, valid values are "attachment" (default) and "inline".</description>
+            <description>Specifies display mode (non-ajax), valid values are "attachment" (default) and "inline".</description>
             <name>contentDisposition</name>
             <required>false</required>
             <type>java.lang.String</type>
