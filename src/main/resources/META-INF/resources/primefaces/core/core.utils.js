@@ -180,13 +180,15 @@ if (!PrimeFaces.utils) {
         removeModal: function(widget, overlay) {
             var id = widget.id;
             var modalId = id + '_modal';
-            
-            overlay.attr({
-                'role': ''
-                ,'aria-hidden': true
-                ,'aria-modal': false
-                ,'aria-live': 'off' 
-            });
+
+            if (overlay) {
+                overlay.attr({
+                    'role': ''
+                    ,'aria-hidden': true
+                    ,'aria-modal': false
+                    ,'aria-live': 'off' 
+                });
+            }
 
             // if the id contains a ':'
             $(PrimeFaces.escapeClientId(modalId)).remove();
