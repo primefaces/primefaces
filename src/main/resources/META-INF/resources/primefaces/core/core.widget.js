@@ -540,7 +540,7 @@ if (!PrimeFaces.widget) {
          * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
          */
         refresh: function(cfg) {
-            PrimeFaces.utils.removeModal(this);
+            PrimeFaces.utils.removeModal(this, this.modalOverlay);
 
             this.appendTo = null;
             this.modalOverlay = null;
