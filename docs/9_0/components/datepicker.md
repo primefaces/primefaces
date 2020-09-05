@@ -214,11 +214,11 @@ The following AJAX behavior events are available for this component. If no event
 
 **Custom Events:**
 
-| Event | Description |
-| --- | --- |
-| close | When the popup is closed.
-| dateSelect | When a date is selected.
-| viewChange | When the date picker changed to a different month or year page.
+| Event | Listener Parameter | Fired |
+| --- | --- | --- |
+| close | - | When the popup is closed.
+| dateSelect | org.primefaces.event.SelectEvent | When a date is selected.
+| viewChange | org.primefaces.event.DateViewChangeEvent | When the date picker changed to a different month or year page.
 
 DatePicker provides a _dateSelect_ ajax behavior event to execute an instant ajax selection whenever a
 date is selected. If you define a method as a listener, it will be invoked by passing an
