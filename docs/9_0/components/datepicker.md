@@ -304,8 +304,9 @@ Widget: _PrimeFaces.widget.Calendar_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |
-| getDate() | - | Date | Return selected date
-| setDate(date) | date: Date to display | void | Sets display date
+| getDate() | - | Date | Return selected date.
+| setDate(date) | date: Date to display | void | Sets display date.
+| updateDisabledDates(dates) | dates: Array of dates to disable | void | Sets disabled dates. Accepts date objects and strings formatted as M/d/yyyy.
 
 ## Skinning
 DatePicker resides in a container element which _style_ and _styleClass_ options apply.

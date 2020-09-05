@@ -144,6 +144,17 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
 
+    updateDisabledDates: function(disabledDates) {
+        var pdp = this.jq.data().primeDatePicker;
+        pdp.options.disabledDates = disabledDates;
+        if (pdp.options.disabledDates) {
+            for (var i = 0; i < pdp.options.disabledDates.length; i++) {
+                pdp.options.disabledDates[i] = pdp.parseOptionValue(pdp.options.disabledDates[i]);
+            }
+        }
+        pdp.panel.get(0).innerHTML = pdp.renderPanelElements();
+    },
+
     /**
      * @override
      * @inheritdoc
