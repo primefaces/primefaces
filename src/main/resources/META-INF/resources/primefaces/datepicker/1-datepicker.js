@@ -394,6 +394,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Update panel.
+     * @private
      */
     updatePanel: function() {
         var pdp = this.jq.data().primeDatePicker;
