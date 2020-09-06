@@ -385,7 +385,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Sets the disabled days.
-     * @param {Number[]} disabledDays The days to disable.
+     * @param {number[]} disabledDays The days to disable.
      */
     setDisabledDays: function(disabledDays) {
         this.jq.data().primeDatePicker.options.disabledDays = disabledDays;
