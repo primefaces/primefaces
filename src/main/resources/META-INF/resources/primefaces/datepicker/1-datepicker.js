@@ -368,4 +368,37 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         return this.jq.datePicker().data().primeDatePicker.viewDate;
     },
 
+    /**
+     * Sets the disabled dates.
+     * @param {string[] | Date[]} disabledDates The dates to disable.
+     */
+    setDisabledDates: function(disabledDates) {
+        var pdp = this.jq.data().primeDatePicker;
+        pdp.options.disabledDates = disabledDates;
+        if (pdp.options.disabledDates) {
+            for (var i = 0; i < pdp.options.disabledDates.length; i++) {
+                pdp.options.disabledDates[i] = pdp.parseOptionValue(pdp.options.disabledDates[i]);
+            }
+        }
+        this.updatePanel();
+    },
+
+    /**
+     * Sets the disabled days.
+     * @param {Number[]} disabledDays The days to disable.
+     */
+    setDisabledDays: function(disabledDays) {
+        this.jq.data().primeDatePicker.options.disabledDays = disabledDays;
+        this.updatePanel();
+    },
+
+    /**
+     * Update panel.
+     * @private
+     */
+    updatePanel: function() {
+        var pdp = this.jq.data().primeDatePicker;
+        pdp.panel.get(0).innerHTML = pdp.renderPanelElements();
+    },
+
 });
