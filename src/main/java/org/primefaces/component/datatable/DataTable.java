@@ -1374,11 +1374,6 @@ public class DataTable extends DataTableBase {
         return iterableChildren;
     }
 
-    @Override
-    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
-        super.processEvent(event);
-    }
-
     public void updateFilteredValue(FacesContext context, List<?> value) {
         ValueExpression ve = getValueExpression(PropertyKeys.filteredValue.toString());
 
