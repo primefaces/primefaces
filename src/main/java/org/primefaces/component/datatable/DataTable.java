@@ -1377,12 +1377,6 @@ public class DataTable extends DataTableBase {
     @Override
     public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
         super.processEvent(event);
-        if (!isLazy() && event instanceof PostRestoreStateEvent && (this == event.getComponent())) {
-            Object filteredValue = getFilteredValue();
-            if (filteredValue != null) {
-                updateValue(filteredValue);
-            }
-        }
     }
 
     public void updateFilteredValue(FacesContext context, List<?> value) {
