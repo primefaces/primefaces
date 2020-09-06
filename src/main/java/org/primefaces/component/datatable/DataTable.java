@@ -1374,17 +1374,6 @@ public class DataTable extends DataTableBase {
         return iterableChildren;
     }
 
-    @Override
-    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
-        super.processEvent(event);
-        if (!isLazy() && event instanceof PostRestoreStateEvent && (this == event.getComponent())) {
-            Object filteredValue = getFilteredValue();
-            if (filteredValue != null) {
-                updateValue(filteredValue);
-            }
-        }
-    }
-
     public void updateFilteredValue(FacesContext context, List<?> value) {
         ValueExpression ve = getValueExpression(PropertyKeys.filteredValue.toString());
 
@@ -1393,16 +1382,6 @@ public class DataTable extends DataTableBase {
         }
         else {
             setFilteredValue(value);
-        }
-    }
-
-    public void updateValue(Object value) {
-        Object originalValue = getValue();
-        if (originalValue instanceof SelectableDataModel) {
-            setValue(new SelectableDataModelWrapper((SelectableDataModel) originalValue, value));
-        }
-        else {
-            setValue(value);
         }
     }
 
