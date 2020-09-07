@@ -98,7 +98,7 @@
             return $.map(this.widgets, function(widget, key) {
                 return type.prototype.isPrototypeOf(widget) ? widget : null;
             });
-        }
+        },
 
         /**
          * Adds hidden input elements to the given form. For each key-value pair, a new hidden input element is created
