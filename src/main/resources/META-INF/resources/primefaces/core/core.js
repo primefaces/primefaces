@@ -89,6 +89,18 @@
         },
 
         /**
+         * Finds all widgets in the current page of the given type.
+         * @param {PrimeFaces.widget.BaseWidget} type The type of the widgets of interest.
+         * @return  {PrimeFaces.widget.BaseWidget[]} An array of widgets that are of the requested type. If no suitable
+         * widgets are found on the current page, an empty array will be returned.
+         */
+        getWidgetsByType: function(type) {
+            return $.map(this.widgets, function(widget, key) {
+                return type.prototype.isPrototypeOf(widget) ? widget : null;
+            });
+        },
+
+        /**
          * Adds hidden input elements to the given form. For each key-value pair, a new hidden input element is created
          * with the given value and the key used as the name. 
          * @param {string} parent The ID of a FORM element.
