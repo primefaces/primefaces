@@ -28,6 +28,7 @@ To enable features such as code autocompletion or type checking, a type declarat
 [PrimeFaces.info(msg)](../jsdocs/modules/primefaces.html#info), [debug(msg)](../jsdocs/modules/primefaces.html#debug), [warn(msg)](../jsdocs/modules/primefaces.html#warn), [error(msg)](../jsdocs/modules/primefaces.html#error) | Client side log API.
 [PrimeFaces.changeTheme(theme)](../jsdocs/modules/primefaces.html#changetheme) | Changes theme on the fly with no page refresh.
 [PrimeFaces.getWidgetById(clientid)](../jsdocs/modules/primefaces.html#getwidgetbyid) | Returns the widget instance from the client id
+[PrimeFaces.getWidgetsByType(type)](../jsdocs/modules/primefaces.html#getwidgetsbytype) | Returns an array of widget instances of the specified type, where type is any concrete class of [`PrimeFaces.widget.*`](../jsdocs/modules/primefaces.widget.html).
 
 ## PrimeFaces Environment (PrimeFaces.env.*)
 
