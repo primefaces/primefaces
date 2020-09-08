@@ -3092,7 +3092,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         var inputs=row.find(':input:enabled');
         if (inputs.length > 0) {
-            inputs.first().trigger('focus');
+            inputs.first().triggerHandler('focus');
         }
     },
 
