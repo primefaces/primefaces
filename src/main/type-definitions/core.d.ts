@@ -7,7 +7,6 @@
 /// <reference types="googlemaps" />
 /// <reference types="jquery" />
 /// <reference types="jqueryui" />
-/// <reference types="jquery.cleditor" />
 /// <reference types="moment-timezone" />
 
 /// <reference path="PrimeFaces-module.d.ts" />
