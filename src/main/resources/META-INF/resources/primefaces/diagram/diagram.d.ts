@@ -1,35 +1,69 @@
-// Type definitions for jsPlumb 2.1.0
+// Type definitions for jsPlumb 2.14.6
 // Ron Newcomb
 // Note: The newer versions of jsPlumb (since 2.5) ship with a type declaration file
 // Use that when upgrading jsPlumb (npm i jsplumb and include it via --includemodules when generating the declarations)
 
+declare module jsPlumb {
 
-
-declare namespace JsPlumb {
-
-    export interface PaintStyle {
-        strokeStyle?: string;
-        fillStyle?: string;
-        lineWidth?: number;
-        outlineWidth: number;
-        outlineColor: string;
+    interface PaintStyle {
+        stroke?: string;
+        fill?: string;
+        strokeWidth?: number;
     }
 
-    export type Selector = string;
-    export type UUID = string;
-    export type ElementId = string;
-    export type ElementRef = ElementId | Element;
-    export type ElementGroupRef = ElementId | Element | ElementId[] | Element[];
+    module jsPlumb {
+        function extend(target: Object, source: Object): any;
 
-    export class jsPlumbInstance {
+        function addClass(el: NodeListOf<Element>, clazz: string): void;
 
-        addEndpoint(el: ElementGroupRef, params?: EndpointOptions, referenceParams?: EndpointOptions): Endpoint | Endpoint[];
+        function removeClass(el: NodeListOf<Element>, clazz: string): void;
 
-        addEndpoints(target: ElementGroupRef, endpoints: EndpointOptions[], referenceParams?: EndpointOptions): Endpoint[];
+        function on(el: any, event: string, delegateSelector: string, handler: Function): void;
+        function on(el: any, event: string, handler: Function): void;
 
-        animate(el: ElementRef, properties?: Record<string, any>, options?: Record<string, any>): void;
+        function off(el: any, event: string, handler: Function): void;
 
-        batch(fn: (...args: any) => any, doNotRepaintAfterwards?: boolean/* =false */): void;
+        function revalidate(el: Element): void;
+
+        function getInstance(_defaults?: Defaults): jsPlumbInstance;
+    }
+
+    module jsPlumbUtil {
+        function isArray(obj:any):boolean;
+        function isNumber(obj:any):boolean;
+        function isString(obj:any):boolean;
+        function isBoolean(obj:any):boolean;
+        function isNull(obj:any):boolean;
+        function isObject(obj:any):boolean;
+        function isDate(obj:any):boolean;
+        function isFunction(obj:any):boolean;
+        function isNamedFunction(obj:any):boolean;
+        function isEmpty(obj:any):boolean;
+        function extend(target: Object, source: Object): any;
+        function uuid():UUID;
+        function findWithFunction(list:Array<any>, fn:(obj:any)=>boolean):number;
+        function addWithFunction(list:Array<any>, item:any, fn:(obj:any)=>boolean):void;
+        function removeWithFunction(list:Array<any>, fn:(obj:any)=>boolean):number;
+        function suggest(list:Array<any>, item:any, insertAtHead?:boolean):boolean;
+        function fastTrim(s:string):string;
+    }
+
+    type Selector = string;
+    type UUID = string;
+    type ElementId = string;
+    type ElementRef = ElementId | Element;
+    type ElementGroupRef = ElementId | Element | Array<ElementId> | Array<Element>;
+    type ConnectionId = string;
+
+    class jsPlumbInstance {
+
+        addEndpoint(el: ElementGroupRef, params?: EndpointOptions, referenceParams?: EndpointOptions): Endpoint | Array<Endpoint>;
+
+        addEndpoints(target: ElementGroupRef, endpoints: Array<EndpointOptions>, referenceParams?: EndpointOptions): Array<Endpoint>;
+
+        animate(el: ElementRef, properties?: Object, options?: Object): void;
+
+        batch(fn: Function, doNotRepaintAfterwards?: boolean/* =false */): void;
 
         bind(event: "connection", callback: (info: ConnectionMadeEventInfo, originalEvent: Event) => void, insertAtStart?: boolean/* =false */): void;
         bind(event: "click", callback: (info: Connection, originalEvent: Event) => void, insertAtStart?: boolean/* =false */): void;
@@ -37,29 +71,27 @@ declare namespace JsPlumb {
 
         cleanupListeners(): void;
 
-        connect(params: ConnectParams, referenceParams?: Partial<ConnectParams>): Connection;
+        connect(params: ConnectParams, referenceParams?: Object): Connection;
 
         deleteEndpoint(object: UUID | Endpoint, doNotRepaintAfterwards?: boolean/* =false */): jsPlumbInstance;
 
+        deleteEveryConnection(): void;
+
         deleteEveryEndpoint(): jsPlumbInstance;
 
-        detach(conn: Connection): void;
-
-        detachEveryConnection(): void;
-
-        detachAllConnections(element: string): void;
+        deleteConnection(conn: Connection): void;
 
         doWhileSuspended(): jsPlumbInstance;
 
-        draggable(el: string | HTMLElement | ArrayLike<string | HTMLElement>, options?: DragOptions): jsPlumbInstance;
+        draggable(el: Object, options?: DragOptions): jsPlumbInstance;
 
         empty(el: string | Element | Selector): void;
 
-        fire(event: string, value: any, originalEvent: Event): void;
+        fire(event: string, value: Object, originalEvent: Event): void;
 
-        getAllConnections(): Connection[];
+        getAllConnections(): Array<Connection>;
 
-        getConnections(scope: string, options: any, scope2?: string | string, source?: string | string | Selector, target?: string | string | Selector, flat?: boolean/* =false */): any[] | Map<any, any>;
+        getConnections(scope: string, options: Object, scope2?: string | string, source?: string | string | Selector, target?: string | string | Selector, flat?: boolean/* =false */): Array<any> | Record<any, any>;
 
         getContainer(): Element;
 
@@ -67,23 +99,23 @@ declare namespace JsPlumb {
 
         getEndpoint(uuid: string): Endpoint;
 
-        getEndpoints(element:string | Element): Endpoint[] | null;
-
-        getInstance(_defaults?: Defaults): any;
+        getEndpoints(element:string|Element):Array<Endpoint>;
 
         getScope(Element: Element | string): string;
 
         getSelector(context?: Element | Selector, spec?: string): void;
 
-        getSourceScope(Element: Element | string): string;
+        getSourceScope(element: Element | string): string;
 
-        getTargetScope(Element: Element | string): string;
+        getTargetScope(element: Element | string): string;
 
-        getType(id: string, typeDescriptor: string): any;
+        getType(id: string, typeDescriptor: string): Object;
+
+        getZoom(): number;
 
         hide(el: string | Element | Selector, changeEndpoints?: boolean/* =false */): jsPlumbInstance;
 
-        importDefaults(defaults: Defaults): jsPlumbInstance;
+        importDefaults(defaults: Object): jsPlumbInstance;
 
         isHoverSuspended(): boolean;
 
@@ -99,25 +131,25 @@ declare namespace JsPlumb {
 
         isTargetEnabled(el: string | Element | Selector): boolean;
 
-        makeSource(el: string | Element | Selector, params: Record<string, any>, endpoint?: string | any[], parent?: string | Element, scope?: string, dragOptions?: Record<string, any>, deleteEndpointsOnDetach?: boolean/* =false */, filter?: (...args: any) => any): void;
+        makeSource(el: string | Element | Selector, params: Object, endpoint?: string | Array<any>, parent?: string | Element, scope?: string, dragOptions?: Object, deleteEndpointsOnEmpty?: boolean/* =false */, filter?: Function): void;
 
-        makeTarget(el: string | Element | Selector, params: Record<string, any>, endpoint?: string | any[], scope?: string, dropOptions?: Record<string, any>, deleteEndpointsOnDetach?: boolean/* =true */, maxConnections?: number/* =-1 */, onMaxConnections?: (...args: any) => any): void;
+        makeTarget(el: string | Element | Selector, params: Object, endpoint?: string | Array<any>, scope?: string, dropOptions?: Object, deleteEndpointsOnEmpty?: boolean/* =true */, maxConnections?: number/* =-1 */, onMaxConnections?: Function): void;
 
-        off(el: Element | Element | string, event: string, fn: (...args: any) => any): jsPlumbInstance;
+        off(el: Element | Element | string, event: string, fn: Function): jsPlumbInstance;
 
-        on(el: Element | Element | string, children?: string, event?: string, fn?: (...args: any) => any): jsPlumbInstance;
+        on(el: Element | Element | string, children?: string, event?: string, fn?: Function): jsPlumbInstance;
 
-        ready(fn: (...args: any) => any): void;
+        ready(fn: Function): void;
 
         recalculateOffsets(el: string | Element | Selector): void;
 
-        registerConnectionType(typeId: string, type: any): void;
+        registerConnectionType(typeId: string, type: Object): void;
 
-        registerConnectionTypes(types: any[]): void;
+        registerConnectionTypes(types: Object): void;
 
-        registerEndpointType(typeId: string, type: any): void;
+        registerEndpointType(typeId: string, type: Object): void;
 
-        registerEndpointTypes(types: any[]): void;
+        registerEndpointTypes(types: Object): void;
 
         remove(el: string | Element | Selector): void;
 
@@ -127,21 +159,23 @@ declare namespace JsPlumb {
 
         repaintEverything(clearEdits?: boolean/* =false */): jsPlumbInstance;
 
-        reset(): void;
+        reset(doNotUnbindInstanceEventListeners?: boolean): void;
 
         restoreDefaults(): jsPlumbInstance;
 
         revalidate(el: string | Element | Selector): void;
 
-        select(params?: Record<string, any>, scope?: string | string, source?: string | string, target?: string | string, connections?: Connection[]): { each(fn: (conn: Connection) => void): void };
+        select(params?: Object, scope?: string | string, source?: string | string, target?: string | string, connections?: Connection[]): { each(fn: (conn: Connection) => void): void };
 
-        getHoverPaintStyle(params?: Record<string, any>, scope?: string, source?: string | Element | Selector | any[], target?: string | Element | Selector | any[], element?: string | Element | Selector | any[]): Selection;
+        getHoverPaintStyle(params?: Object, scope?: string | string/* =jsPlumb.DefaultScope */, source?: string | Element | Selector | Array<any>, target?: string | Element | Selector | Array<any>, element?: string | Element | Selector | Array<any>): Selection;
+
+        setContainer(el: string | Element | Selector): void;
 
         setHover(container: string | Element | Selector): void;
 
         setDefaultScope(scope: string): jsPlumbInstance;
 
-        setDraggable(el: string | Record<string, any> | any[], draggable: boolean): void;
+        setDraggable(el: string | Object | Array<any>, draggable: boolean): void;
 
         setHoverSuspended(hover: boolean): void;
 
@@ -167,6 +201,8 @@ declare namespace JsPlumb {
 
         setTargetScope(el: Element | string, scope: string, connectionType?: string): void;
 
+        setZoom(val: number, repaintEverything?: boolean/* =false */): boolean;
+
         show(el: string | Element | Selector, changeEndpoints?: boolean/* =false */): jsPlumbInstance;
 
         toggleDraggable(el: string | Element | Selector): boolean;
@@ -177,7 +213,7 @@ declare namespace JsPlumb {
 
         toggleVisible(el: string | Element | Selector, changeEndpoints?: boolean/* =false */): void;
 
-        unbind(eventOrListener?: string | ((...args: any) => any), listener?: (...args: any) => any): void;
+        unbind(eventOrListener?: string | Function, listener?: Function): void;
 
         unmakeEverySource(): jsPlumbInstance;
 
@@ -188,7 +224,7 @@ declare namespace JsPlumb {
         unmakeTarget(el: string | Element | Selector): jsPlumbInstance;
     }
 
-    export interface ConnectionMadeEventInfo {
+    interface ConnectionMadeEventInfo {
         connection: Connection;
         source: HTMLDivElement;
         sourceEndpoint: Endpoint;
@@ -198,14 +234,14 @@ declare namespace JsPlumb {
         targetId: string;
     }
 
-    export interface OnConnectionBindInfo {
+    interface OnConnectionBindInfo {
         connection: Connection;// the new Connection.you can register listeners on this etc.
-        sourceId: number;// - id of the source element in the Connection
-        originalSourceId: number;
-        newSourceId: number;
-        targetId: number;// - id of the target element in the Connection
-        originalTargetId: number;
-        newTargetId: number;
+        sourceId: string;// - id of the source element in the Connection
+        originalSourceId: string;
+        newSourceId: string;
+        targetId: string;// - id of the target element in the Connection
+        originalTargetId: string;
+        newTargetId: string;
         source: Element;// - the source element in the Connection
         target: Element;//- the target element in the Connection
         sourceEndpoint: Endpoint;//- the source Endpoint in the Connection
@@ -214,27 +250,30 @@ declare namespace JsPlumb {
         newTargetEndpoint: Endpoint;
     }
 
-    export interface Defaults {
-        Endpoint?: any;
-        Endpoints?: any[];
-        Anchor?: any;
-        Anchors?: any[];
+    interface Defaults {
+        Endpoint?: EndpointSpec;
+        Endpoints?: [ EndpointSpec, EndpointSpec ];
+        Anchor?: AnchorSpec;
+        Anchors?: [ AnchorSpec, AnchorSpec ];
         PaintStyle?: PaintStyle;
         HoverPaintStyle?: PaintStyle;
+        EndpointStyle?: PaintStyle;
+        EndpointHoverStyle?: PaintStyle;
         ConnectionsDetachable?: boolean;
         ReattachConnections?: boolean;
-        ConnectionOverlays?: any[][];
+        ConnectionOverlays?: Array<OverlaySpec>;
         Container?: any; // string(selector or id) or element
         DragOptions?: DragOptions;
+        Connector?:ConnectorSpec;
     }
 
-    export interface Connections {
+    interface Connections {
         detach(): void;
         length: number;
         each(e: (c: Connection) => void): void;
     }
 
-    export interface ConnectParams {
+    interface ConnectParams {
         uuids?: [UUID, UUID];
         source?: ElementRef | Endpoint;
         target?: ElementRef | Endpoint;
@@ -244,50 +283,89 @@ declare namespace JsPlumb {
         anchor?: AnchorSpec;
         anchors?: [AnchorSpec, AnchorSpec];
         label?: string;
+        connector?: ConnectorSpec;
+        overlays?:Array<OverlaySpec>;
+        cssClass?: string;
+        parameters?: Record<string, any>;
     }
 
-    export interface DragOptions {
+    interface DragEventCallbackOptions {
+        drag: object; // The associated Drag instance
+        e: MouseEvent;
+        el: HTMLElement; // element being dragged
+        pos: [number, number]; // x,y location of the element. drag event only.
+    }
+
+    interface DragOptions {
         containment?: string;
-        start?(...args: any): any;
-        drag?(...args: any): any;
-        stop?(...args: any): any;
+        start?: (params:DragEventCallbackOptions) => void;
+        drag?: (params:DragEventCallbackOptions) => void;
+        stop?: (params:DragEventCallbackOptions) => void;
+        cursor?: string;
+        zIndex?: number;
     }
 
-    export interface DropOptions {
+    interface DropOptions {
         hoverClass: string;
     }
 
-    export interface Connection {
-        id: string;
+    interface UIComponent {
+        getParameter:(name:string) => any;
+        setParameter:(name: string, value: any) => void;
+        getParameters:() => Record<string, any>;
+        setParameters:(parameters:Record<string, any>) => void;
+    }
+
+    interface Connection extends UIComponent {
+        id: ConnectionId;
         setDetachable(detachable: boolean): void;
-        setParameter(name: string, value: any): void;
         endpoints: [Endpoint, Endpoint];
+        getLabelOverlay(): Overlay;
+        getOverlays(): Object;
         getOverlay(s: string): Overlay;
         showOverlay(s: string): void;
         hideOverlay(s: string): void;
         setLabel(s: string): void;
         getElement(): Connection;
+        repaint():void;
+        source: Element;
+        target: Element;
+        sourceId: string;
+        targetId: string;
     }
 
 
     /* -------------------------------------------- CONNECTORS ---------------------------------------------------- */
 
-    export interface ConnectorOptions {
+    interface ConnectorOptions {
     }
-    export type UserDefinedConnectorId = string;
-    export type ConnectorId = "Bezier" | "StateMachine" | "Flowchart" | "Straight" | UserDefinedConnectorId;
-    export type ConnectorSpec = ConnectorId | [ConnectorId, ConnectorOptions];
+    type UserDefinedConnectorId = string;
+    type ConnectorId = "Bezier" | "StateMachine" | "Flowchart" | "Straight" | UserDefinedConnectorId;
+    type ConnectorSpec = ConnectorId | [ConnectorId, ConnectorOptions];
 
 
     /* -------------------------------------------- ENDPOINTS ------------------------------------------------------ */
 
-    export type EndpointId = "Rectangle" | "Dot" | "Blank" | UserDefinedEndpointId;
-    export type UserDefinedEndpointId = string;
-    export type EndpointSpec = EndpointId | [EndpointId, EndpointOptions];
+    type EndpointSpec = EndpointId |
+                        [ EndpointRectangle, EndpointRectangleOptions ] |
+                        [ EndpointDot, EndpointDotOptions ] |
+                        [ EndpointBlank, EndpointBlankOptions ]
+    ;
 
-    export interface EndpointOptions {
+    type EndpointId = EndpointRectangle | EndpointDot | EndpointBlank;
+    type EndpointRectangle = "Rectangle";
+    type EndpointDot = "Dot";
+    type EndpointBlank = "Blank";
+
+    type EndpointDotOptions = { radius?: number, cssClass?: string, hoverClass?: string };
+    type EndpointRectangleOptions = { width?: number, height?: number, cssClass?: string, hoverClass?: string};
+    type EndpointImageOptions = { src: string, cssClass?: string, hoverClass?: string };
+    type EndpointBlankOptions = {};
+
+
+    interface EndpointOptions {
         anchor?: AnchorSpec;
-        endpoint?: Endpoint;
+        endpoint?: EndpointSpec;
         enabled?: boolean;//= true
         paintStyle?: PaintStyle;
         hoverPaintStyle?: PaintStyle;
@@ -299,34 +377,32 @@ declare namespace JsPlumb {
         connectorStyle?: PaintStyle;
         connectorHoverStyle?: PaintStyle;
         connector?: ConnectorSpec;
-        connectorOverlays?: OverlaySpec[];
+        connectorOverlays?: Array<OverlaySpec>;
         connectorClass?: string;
         connectorHoverClass?: string;
         connectionsDetachable?: boolean;//= true
         isSource?: boolean;//= false
         isTarget?: boolean;//= false
         reattach?: boolean;//= false
-        parameters: Record<string, any>;
+        parameters?: Record<string, any>;
         "connector-pointer-events"?: string;
         connectionType?: string;
-        dragProxy?: string | string[];
-        id: string;
-        scope: string;
-        reattachConnections: boolean;
-        type: string; // "Dot", etc.
+        dragProxy?: string | Array<string>;
+        id?: string;
+        scope?: string;
+        reattachConnections?: boolean;
+        type?: string; // "Dot", etc.
+        overlays?:Array<OverlaySpec>;
+        uuid?:string;
     }
 
-    export class Endpoint {
+    interface Endpoint extends UIComponent {
         anchor: Anchor;
-        connections?: Connection[];
+        connections?: Array<Connection>;
         maxConnections: number;//= 1?
         id: string;
         scope: string;
         type: EndpointId;
-
-        detachAll(): void;
-
-        detach(spec: EndpointSpec): void;
 
         setEndpoint(spec: EndpointSpec): void;
 
@@ -346,17 +422,14 @@ declare namespace JsPlumb {
     /**
      * The actual component that does the rendering.
      */
-    export interface EndpointRenderer {
+    interface EndpointRenderer {
     }
 
     /* -------------------------------------------- ANCHORS -------------------------------------------------------- */
 
-    export interface AnchorOptions {
-    }
+    type AnchorOrientationHint = -1 | 0 | 1;
 
-    export type AnchorOrientationHint = -1 | 0 | 1;
-
-    export interface Anchor {
+    interface Anchor {
         type: AnchorId;
         cssClass: string;
         elementId: string;
@@ -368,39 +441,81 @@ declare namespace JsPlumb {
         y: number;
     }
 
-    export type AnchorId =
+    type AnchorDynamicSpec = Array<
+         AnchorStaticSpec |
+         AnchorDynamicId |
+         AnchorPerimeterSpec |
+         AnchorContinuousSpec
+    >;
+
+    type AnchorDynamicId = "AutoDefault";
+
+    type AnchorId =
+        AnchorStaticId |
+        AnchorDynamicId |
+        AnchorPerimeterId |
+        AnchorContinuousId
+    ;
+
+    type AnchorStaticSpec = AnchorStaticId | AnchorArraySpec;
+
+    type AnchorStaticId =
         "Assign" |
-        "AutoDefault" |
         "Bottom" |
         "BottomCenter" |
         "BottomLeft" |
         "BottomRight" |
         "Center" |
-        "Continuous" |
-        "ContinuousBottom" |
-        "ContinuousLeft" |
-        "ContinuousRight" |
-        "ContinuousTop" |
         "Left" |
         "LeftMiddle" |
-        "Perimeter" |
         "Right" |
         "RightMiddle" |
         "Top" |
         "TopCenter" |
         "TopLeft" |
-        "TopRight";
+        "TopRight"
+    ;
 
+    type AnchorArraySpec = [ number, number, number, number, number?, number?, string? ];
 
-    export type AnchorSpec = AnchorId | [AnchorId, AnchorOptions]
+    type AnchorPerimeterSpec = AnchorPerimeterId | [ AnchorPerimeterId, { shape?: PerimeterShape, anchorCount?: number, rotation?: number } ]
 
+    type AnchorPerimeterId = "Perimeter";
+
+    type PerimeterShape =
+        "Circle" |
+        "Ellipse" |
+        "Triangle" |
+        "Diamond" |
+        "Rectangle" |
+        "Square"
+    ;
+
+    type AnchorContinuousSpec = AnchorContinuousId | [ AnchorContinuousId, { faces?: [ ContinuousAnchorFace ] } ]
+
+    type AnchorContinuousId =
+        "Continuous" |
+        "ContinuousBottom" |
+        "ContinuousLeft" |
+        "ContinuousRight" |
+        "ContinuousTop"
+    ;
+
+    type ContinuousAnchorFace = "top" | "left" | "right" | "bottom";
+
+    type AnchorSpec =
+         AnchorStaticSpec |
+         AnchorDynamicSpec |
+         AnchorPerimeterSpec |
+         AnchorContinuousSpec
+    ;
 
     /* --------------------------------------- OVERLAYS ------------------------------------------------------------- */
 
-    export interface OverlayOptions {
+    interface OverlayOptions {
     }
 
-    export interface ArrowOverlayOptions extends OverlayOptions {
+    interface ArrowOverlayOptions extends OverlayOptions {
         width?: number; // 20
         length?: number; // 20
         location?: number; // 0.5
@@ -409,7 +524,7 @@ declare namespace JsPlumb {
         paintStyle?: PaintStyle;
     }
 
-    export interface LabelOverlayOptions extends OverlayOptions {
+    interface LabelOverlayOptions extends OverlayOptions {
         label: string;
         cssClass?: string;
         location?: number; // 0.5
@@ -423,13 +538,11 @@ declare namespace JsPlumb {
         };
     }
 
-    export type OverlayId = "Label" | "Arrow" | "PlainArrow" | "Custom";
+    type OverlayId = "Label" | "Arrow" | "PlainArrow" | "Custom";
 
-    export type OverlaySpec = OverlayId | [OverlayId, OverlayOptions];
+    type OverlaySpec = OverlayId | [OverlayId, OverlayOptions];
 
-    export interface Overlay { }
+    interface Overlay { }
 }
 
-
-declare const jsPlumb: JsPlumb.jsPlumbInstance;
-
+export = jsPlumb

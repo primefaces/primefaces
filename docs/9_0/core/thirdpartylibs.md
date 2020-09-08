@@ -33,7 +33,7 @@ are many other third party libraries and plugins used to support features.
 | [jQuery](../jsdocs/modules/jquery.html) | 3.5.0 | https://jquery.com/ |
 | [Jquery.print](../jsdocs/modules/jquery.html#print) | 1.6.0 | https://github.com/DoersGuild/jQuery.print |
 | [jScrollPane](../jsdocs/modules/jquery.html#jscrollpane) | 2.2.3 | https://github.com/vitch/jScrollPane |
-| [JSPlumb Diagram](../jsdocs/globals.html#jsplumb) | 2.1.0 | https://github.com/jsplumb/jsplumb |
+| [JSPlumb Diagram](../jsdocs/globals.html#jsplumb) | 2.14.6 | https://github.com/jsplumb/jsplumb |
 | [Keypad](../jsdocs/modules/jquery.html#keypad) | 2.1.0 | http://keith-wood.name/keypad.html |
 | [Moment](../jsdocs/modules/moment.html) | 2.22.2 | https://github.com/moment/moment |
 | moment-timezone.js | 0.5.25 | https://github.com/moment/moment-timezone |
