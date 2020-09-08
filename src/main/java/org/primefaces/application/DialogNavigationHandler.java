@@ -39,7 +39,7 @@ import java.util.UUID;
 
 public class DialogNavigationHandler extends ConfigurableNavigationHandler {
 
-    private ConfigurableNavigationHandler base;
+    private final ConfigurableNavigationHandler base;
 
     public DialogNavigationHandler(ConfigurableNavigationHandler base) {
         this.base = base;

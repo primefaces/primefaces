@@ -334,6 +334,10 @@ if (window.PrimeFaces) {
         }
     };
 
+    PrimeFaces.validation.ValidationContext.getMessageBV = function(element, defaultKey, msg) {
+        return PrimeFaces.validation.Utils.getMessageBV(element, defaultKey, msg);
+    };
+
     /**
      * Used when bean validation is enabled. Creates a faces message with the given key and for the given element. The
      * element is used to find the label that is added to the message.
@@ -343,7 +347,7 @@ if (window.PrimeFaces) {
      * @param {string} [msg] Default message to show. May be used to find the key of the message.
      * @return {PrimeFaces.FacesMessageBase} A faces message with the given key for the given element.
      */
-    PrimeFaces.validation.ValidationContext.getMessageBV = function(element, defaultKey, msg) {
+    PrimeFaces.validation.Utils.getMessageBV = function(element, defaultKey, msg) {
         if (msg && msg.charAt(0) !== '{') {
             return { summary : msg, detail : msg };
         }
@@ -353,21 +357,21 @@ if (window.PrimeFaces) {
                 key = msg.substring(1, msg.length - 1);
             }
 
-            var locale = PrimeFaces.validation.ValidationContext.getLocaleSettings();
+            var locale = PrimeFaces.validation.Utils.getLocaleSettings();
             var bundle = (locale.messages && locale.messages[key]) ? locale : PrimeFaces.locales['en_US'];
 
             var summary = bundle.messages[key];
             var detail = bundle.messages[key + '_detail'];
 
             if(summary) {
-                summary = this.formatBV(summary, arguments);
-                detail = (detail) ? this.formatBV(detail, arguments) : summary;
+                summary = PrimeFaces.validation.Utils.formatBV(summary, arguments);
+                detail = (detail) ? PrimeFaces.validation.Utils.formatBV(detail, arguments) : summary;
 
                 // see #7069
                 // simulate the message handling of the server side BeanValidator
                 var wrapperBundle = (locale.messages && locale.messages['javax.faces.validator.BeanValidator.MESSAGE']) ? locale : PrimeFaces.locales['en_US'];
                 var wrapper = wrapperBundle.messages['javax.faces.validator.BeanValidator.MESSAGE'];
-                var label = PrimeFaces.validation.ValidationContext.getLabel(element);
+                var label = PrimeFaces.validation.Utils.getLabel(element);
                 summary = wrapper.replace("{0}", summary).replace("{1}", label);
                 detail = wrapper.replace("{0}", detail).replace("{1}", label);
 
@@ -392,7 +396,7 @@ if (window.PrimeFaces) {
      * at index `i` corresponds to the placeholder `{i-3}`.
      * @return {string} The string, with the placeholders replaced by the given params.
      */
-    PrimeFaces.validation.ValidationContext.formatBV = function(str, params) {
+    PrimeFaces.validation.Utils.formatBV = function(str, params) {
         var s = str;
         for(var i = 3; i < params.length; i++) {       
             var reg = new RegExp('\\{' + (i - 3) + '\\}', 'gm');             

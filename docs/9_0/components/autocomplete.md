@@ -57,9 +57,10 @@ AutoComplete provides live suggestions while an input is being typed.
 | maxlength | null | Integer | Maximum number of characters that may be entered in this field.
 | onblur | null | String | Client side callback to execute when input element loses focus.
 | onchange | null | String | Client side callback to execute when input element loses focus and its value has been modified since gaining focus.
+| oninput | null | String | Client side callback to execute when an element gets user input.
 | onclick | null | String | Client side callback to execute when input element is clicked.
 | ondblclick | null | String | Client side callback to execute when input element is double clicked.
-| onfocus | null | String | Client side callback to execute when input element receives focus.
+| onfocus | null | String | Client side callback to execute on input element focus.
 | onkeydown | null | String | Client side callback to execute when a key is pressed down over input element.
 | onkeypress | null | String | Client side callback to execute when a key is pressed and released over input element.
 | onkeyup | null | String | Client side callback to execute when a key is released over input element.
@@ -68,24 +69,23 @@ AutoComplete provides live suggestions while an input is being typed.
 | onmouseout | null | String | Client side callback to execute when a pointer button is moved away from input element.
 | onmouseover | null | String | Client side callback to execute when a pointer button is moved onto input element.
 | onmouseup | null | String | Client side callback to execute when a pointer button is released over input element.
+| onwheel | null | String | Client side callback to execute when the mouse wheel rolls up or down over an element.
 | onselect | null | String | Client side callback to execute when text within input element is selected by user.
-| placeholder | null | String | Specifies a short hint.
-| readonly | false | Boolean | Flag indicating that this component will prevent changes by the user.
-| size | null | Integer | Number of characters used to determine the width of the input element.
-| style | null | String | Inline style of the container element.
-| styleClass | null | String | Style class of the container element.
-| tabindex | null | Integer | Position of the input element in the tabbing order.
-| title | null | String | Advisory tooltip informaton.
-| itemtipMyPosition | left top | String | Position of itemtip corner relative to item.
-| itemtipAtPosition | right bottom | String | Position of item corner relative to itemtip.
-| cache | false | Boolean | When enabled autocomplete caches the searched result list.
-| cacheTimeout | 300000 | Integer | Timeout value for cached results.
-| emptyMessage | null | String | Text to display when there is no data to display.
-| appendTo | null | String | Appends the overlay to the element defined by search expression. Defaults to document body.
-| resultsMessage | null | String | Hint text for screen readers to provide information about the search results.
-| groupBy | null | Object | Value to group items in categories.
-| queryEvent | keyup | String | Event to initiate the query, valid options are "keyup" and "enter".
-| dropdownMode | blank | String | Specifies the behavior dropdown button. Default "blank" mode sends an empty string and "current" mode sends the input value.
+| oncut | null | String | Client side callback to execute when the user copies the content of an element.
+| oncopy | null | String | Client side callback to execute when the user cuts the content of an element.
+| onpaste | null | String | Client side callback to execute when the user pastes some content in an element.
+| oncontextmenu | null | String | Client side callback to execute when a context menu is triggered.
+| oninvalid | null | String | Client side callback to execute when an element is invalid.
+| onreset | null | String | Client side callback to execute when the Reset button in a form is clicked.
+| onsearch | null | String | Client side callback to execute when the user writes something in a search field.
+| ondrag | null | String | Client side callback to execute when an element is dragged.
+| ondragend | null | String | Client side callback to execute at the end of a drag operation.
+| ondragenter | null | String | Client side callback to execute when an element has been dragged to a valid drop target.
+| ondragleave | null | String | Client side callback to execute when an element leaves a valid drop target.
+| ondragover | null | String | Client side callback to execute when an element is being dragged over a valid drop target.
+| ondragstart | null | String | Client side callback to execute at the start of a drag operation.
+| ondrop | null | String | Client side callback to execute when dragged element is being dropped.
+| onscroll | null | String | Client side callback to execute when an element's scrollbar is being scrolled.e input value.
 | autoHighlight | true | Boolean | Highlights the first suggested item automatically.
 | selectLimit | null | Integer | Limits the multiple selection. Default is unlimited.
 | inputStyle | null | String | Inline style of the input element.
@@ -241,8 +241,14 @@ _cacheTimeout_ option to configure how long it takes to clear a cache automatica
 ```
 
 ## Ajax Behavior Events
+The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
+  
+**Default Event:** `valueChange`  
+**Available Events:** `blur, change, clear, click, contextmenu, copy, cut, dblclick, drag, dragend, dragenter, dragleave, dragover, dragstart, drop, focus, input, invalid, itemSelect, itemUnselect, keydown, keypress, keyup, moreText, mousedown, mousemove, mouseout, mouseover, mouseup, paste, query, reset, scroll, search, select, valueChange, wheel`  
+
+
 Instead of waiting for user to submit the form manually to process the selected item, you can enable
-instant ajax selection by using the _itemSelect_ ajax behavior. Example below demonstrates how to
+instant AJAX selection by using the _itemSelect_ AJAX behavior. Example below demonstrates how to
 display a message about the selected item instantly.
 
 ```xhtml

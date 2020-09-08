@@ -12555,6 +12555,10 @@ declare namespace PrimeFaces.widget {
          */
         blockScroll: boolean;
         /**
+         * Only relevant for dynamic="true": Defines if activating the dialog should load the contents from server again. For cache="true" (default) the dialog content is only loaded once..
+         */
+        cache: boolean;
+        /**
          * Whether the dialog can be closed by the user.
          */
         closable: boolean;
@@ -27307,7 +27311,7 @@ declare namespace PrimeFaces.widget {
      *
      * @typeparam TCfg Defaults to `MenuButtonCfg`. Type of the configuration object for this widget.
      */
-    export class MenuButton<TCfg extends MenuButtonCfg = MenuButtonCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
+    export class MenuButton<TCfg extends MenuButton = MenuButton> extends PrimeFaces.widget.TieredMenu<TCfg> {
         /**
          * The DOM element for the menu button.
          */

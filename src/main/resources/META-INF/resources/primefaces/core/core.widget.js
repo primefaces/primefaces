@@ -540,7 +540,7 @@ if (!PrimeFaces.widget) {
          * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
          */
         refresh: function(cfg) {
-            PrimeFaces.utils.removeModal(this);
+            PrimeFaces.utils.removeModal(this, this.modalOverlay);
 
             this.appendTo = null;
             this.modalOverlay = null;
@@ -564,10 +564,12 @@ if (!PrimeFaces.widget) {
         /**
          * Enables modality for this widget and creates the modal overlay element, but does not change whether the
          * overlay is currently displayed.
+         * @param {JQuery} overlay The target overlay, if null default to this.jq.
          */
-        enableModality: function() {
+        enableModality: function(overlay) {
+            var target = overlay||this.jq;
             this.modalOverlay = PrimeFaces.utils.addModal(this,
-                this.jq.css('z-index') - 1,
+                target,
                 $.proxy(function() {
                     return this.getModalTabbables();
                 }, this));
@@ -576,9 +578,11 @@ if (!PrimeFaces.widget) {
         /**
          * Disabled modality for this widget and removes the modal overlay element, but does not change whether the
          * overlay is currently displayed.
+         * @param {JQuery} overlay The target overlay, if null default to this.jq.
          */
-        disableModality: function(){
-            PrimeFaces.utils.removeModal(this);
+        disableModality: function(overlay){
+            var target = overlay||this.jq;
+            PrimeFaces.utils.removeModal(this, target);
             this.modalOverlay = null;
         },
 

@@ -50,8 +50,10 @@ import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.inputtext.InputText;
+import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.model.CollectionDataModel;
 import org.primefaces.model.IterableDataModel;
+import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.SharedStringBuilder;
@@ -159,7 +161,8 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
             throw new IllegalArgumentException(String.valueOf(rows));
         }
         ELContext elContext = getFacesContext().getELContext();
-        ValueExpression rowsVe = getValueExpression("rows");
+        ValueExpression rowsVe = ValueExpressionAnalyzer.getExpression(
+                elContext, getValueExpression(PropertyKeys.rows.name()));
         if (isWriteable(elContext, rowsVe)) {
             rowsVe.setValue(elContext, rows);
         }
@@ -171,7 +174,8 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
     @Override
     public void setFirst(int first) {
         ELContext elContext = getFacesContext().getELContext();
-        ValueExpression firstVe = getValueExpression("first");
+        ValueExpression firstVe = ValueExpressionAnalyzer.getExpression(
+                elContext, getValueExpression("first"));
         if (isWriteable(elContext, firstVe)) {
             firstVe.setValue(elContext, first);
         }
@@ -229,7 +233,7 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
     }
 
     public boolean isLazy() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.lazy, false);
+        return ComponentUtils.eval(getStateHelper(), PropertyKeys.lazy, () -> getValue() instanceof LazyDataModel);
     }
 
     public void setLazy(boolean _lazy) {
@@ -435,6 +439,8 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
         int rows = getRows();
         int last = rows == 0 ? getRowCount() : (first + rows);
 
+        List<UIComponent> iterableChildren = null;
+
         for (int rowIndex = first; rowIndex < last; rowIndex++) {
             setRowIndex(rowIndex);
 
@@ -442,7 +448,12 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
                 break;
             }
 
-            for (UIComponent child : getIterableChildren()) {
+            if (iterableChildren == null) {
+                iterableChildren = getIterableChildren();
+            }
+
+            for (int i = 0; i < iterableChildren.size(); i++) {
+                UIComponent child = iterableChildren.get(i);
                 if (child.isRendered()) {
                     if (child instanceof Column) {
                         for (UIComponent grandkid : child.getChildren()) {

@@ -345,33 +345,22 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
       border-left-style: hidden;
       border-right-style: hidden;
     }
-.fc .fc-scrollgrid > tbody table,
-    .fc .fc-scrollgrid > tfoot table {
-      border-bottom-style: hidden; /* head keeps its bottom border tho */
-    }
 .fc .fc-scrollgrid {
 
     border-collapse: separate;
     border-right-width: 0;
-    border-bottom-width: 0
+    border-bottom-width: 0;
+
   }
-.fc .fc-scrollgrid > * > tr > * {
-      border-top-width: 0;
-      border-left-width: 0;
-    }
-.fc .fc-scrollgrid > thead > tr > *,
-    .fc .fc-scrollgrid > tfoot > tr > * {
-      border-bottom-width: 0;
-    }
 .fc .fc-scrollgrid-liquid {
     height: 100%;
   }
 .fc .fc-scrollgrid-section { /* a <tr> */
-    height: 0
+    height: 1px /* better than 0, for firefox */
 
   }
 .fc .fc-scrollgrid-section > td {
-      height: 0; /* needs a height so inner div within grow */
+      height: 1px; /* needs a height so inner div within grow. better than 0, for firefox */
     }
 .fc .fc-scrollgrid-section table {
       height: 1px;
@@ -383,8 +372,20 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
 
   }
 .fc .fc-scrollgrid-section-liquid > td {
-      height: 100%; /* FF needs this instead of auto */
+      height: 100%; /* better than `auto`, for firefox */
     }
+.fc .fc-scrollgrid-section > * {
+    border-top-width: 0;
+    border-left-width: 0;
+  }
+.fc .fc-scrollgrid-section-header > *,
+  .fc .fc-scrollgrid-section-footer > * {
+    border-bottom-width: 0;
+  }
+.fc .fc-scrollgrid-section-body table,
+  .fc .fc-scrollgrid-section-footer table {
+    border-bottom-style: hidden; /* head keeps its bottom border tho */
+  }
 .fc {
 
   /* stickiness */
@@ -398,21 +399,21 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
     z-index: 2; /* TODO: var */
     /* TODO: box-shadow when sticking */
   }
-.fc .fc-scrollgrid > thead > .fc-scrollgrid-section-sticky > * {
+.fc .fc-scrollgrid-section-header.fc-scrollgrid-section-sticky > * {
     top: 0; /* because border-sharing causes a gap at the top */
       /* TODO: give safari -1. has bug */
   }
-.fc .fc-scrollgrid > tfoot > .fc-scrollgrid-section-sticky > * {
+.fc .fc-scrollgrid-section-footer.fc-scrollgrid-section-sticky > * {
     bottom: 0; /* known bug: bottom-stickiness doesn't work in safari */
   }
 .fc .fc-scrollgrid-sticky-shim { /* for horizontal scrollbar */
     height: 1px; /* needs height to create scrollbars */
     margin-bottom: -1px;
   }
-.fc .fc-sticky {
-    position: -webkit-sticky;
-    position: sticky;
-  }
+.fc-sticky { /* no .fc wrap because used as child of body */
+  position: -webkit-sticky;
+  position: sticky;
+}
 .fc .fc-view-harness {
     flex-grow: 1; /* because this harness is WITHIN the .fc's flexbox */
     position: relative;
@@ -721,8 +722,6 @@ A HORIZONTAL event
 
 }
 .fc .fc-daygrid-day-top {
-    position: relative;
-    z-index: 4;
     display: flex;
     flex-direction: row-reverse;
   }
@@ -735,6 +734,8 @@ A HORIZONTAL event
 
 }
 .fc .fc-daygrid-day-number {
+    position: relative;
+    z-index: 4;
     padding: 4px;
   }
 .fc {
@@ -809,12 +810,12 @@ A HORIZONTAL event
 
 }
 .fc .fc-daygrid-day-bottom {
-    position: relative;
-    z-index: 4;
     font-size: .85em;
     margin: 2px 3px 0;
   }
 .fc .fc-daygrid-more-link {
+    position: relative;
+    z-index: 4;
     cursor: pointer;
   }
 .fc {
@@ -882,24 +883,28 @@ A HORIZONTAL event
   }
 /* --- the dot style of event --- */
 .fc-daygrid-dot-event {
-  display: block;
-  padding: 2px 0;
-  overflow: hidden
+  display: flex;
+  align-items: center;
+  padding: 2px 0
 
 }
 .fc-daygrid-dot-event .fc-event-title {
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-width: 0; /* important for allowing to shrink all the way */
+    overflow: hidden;
     font-weight: bold;
-  }
-.fc-daygrid-dot-event .fc-event-time,
-  .fc-daygrid-dot-event .fc-event-title {
-    display: inline-block; /* better than inline, for sitting next to dot */
   }
 .fc-daygrid-dot-event:hover,
   .fc-daygrid-dot-event.fc-event-mirror {
     background: rgba(0, 0, 0, 0.1);
   }
+.fc-daygrid-dot-event.fc-event-selected:before {
+    /* expand hit area */
+    top: -10px;
+    bottom: -10px;
+  }
 .fc-daygrid-event-dot { /* the actual dot */
-  display: inline-block;
   margin: 0 4px;
   box-sizing: content-box;
   width: 0;
@@ -1060,12 +1065,15 @@ A VERTICAL event
     }
 .fc .fc-timegrid-slots {
     position: relative;
-    z-index: 2;
+    z-index: 1;
   }
 .fc .fc-timegrid-slot { /* a <td> */
     height: 1.5em;
-    border-bottom: 0; /* each cell owns its top border */
+    border-bottom: 0 /* each cell owns its top border */
   }
+.fc .fc-timegrid-slot:empty:before {
+      content: '\00a0'; /* make sure there's at least an empty space to create height for height syncing */
+    }
 .fc .fc-timegrid-slot-minor {
     border-top-style: dotted;
   }
@@ -1163,7 +1171,7 @@ A VERTICAL event
 
 }
 .fc .fc-timegrid-col-bg {
-    z-index: 1; /* TODO: kill */
+    z-index: 2; /* TODO: kill */
   }
 .fc .fc-timegrid-col-bg .fc-non-business { z-index: 1 }
 .fc .fc-timegrid-col-bg .fc-bg-event { z-index: 2 }

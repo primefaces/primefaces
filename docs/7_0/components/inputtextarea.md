@@ -57,7 +57,7 @@ size | null | Integer | Number of characters used to determine the width of the 
 style | null | String | Inline style of the input element.
 styleClass | null | String | Style class of the input element.
 tabindex | null | Integer | Position of the input element in the tabbing order.
-title | null | String | Advisory tooltip informaton.
+title | null | String | Advisory tooltip information.
 autoResize | true | Boolean | Specifies auto growing when being typed.
 maxlength | null | Integer | Maximum number of characters that may be entered in this field.
 counter | null | String | Id of the output component to display remaining chars.

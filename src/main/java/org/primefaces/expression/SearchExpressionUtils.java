@@ -30,7 +30,9 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
+import javax.faces.view.facelets.FaceletException;
 import org.primefaces.component.api.Widget;
+import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.ComponentUtils;
 
 public class SearchExpressionUtils {
@@ -85,10 +87,21 @@ public class SearchExpressionUtils {
                 expression);
 
         if (resolvedComponent instanceof Widget) {
-            return "PF('" + ((Widget) resolvedComponent).resolveWidgetVar(context) + "')";
+            return ((Widget) resolvedComponent).resolveWidgetVar(context);
         }
         else {
             throw new FacesException("Component with clientId " + resolvedComponent.getClientId() + " is not a Widget");
+        }
+    }
+
+    // used by p:closestWidgetVar
+    public static String closestWidgetVar(UIComponent component) {
+        Widget widget = ComponentTraversalUtils.closest(Widget.class, component);
+        if (widget != null) {
+            return widget.resolveWidgetVar(FacesContext.getCurrentInstance());
+        }
+        else {
+            throw new FaceletException("Component with clientId " + component.getClientId() + " has no Widget as parent");
         }
     }
 }

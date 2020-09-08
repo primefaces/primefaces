@@ -18,10 +18,18 @@ if (!PrimeFaces.expressions) {
          * Takes a search expression that may contain multiple components, separated by commas or whitespaces. Resolves
          * each search expression to the component it refers to and returns a JQuery object with the DOM elements of
          * the resolved components.
-         * @param {string} expressions A search expression with one or multiple components to resolve.
+         * @param {string | HTMLElement | JQuery}  expressions A search expression with one or multiple components to resolve.
          * @return {JQuery} A list with the resolved components.
          */
         resolveComponentsAsSelector: function(expressions) {
+
+            if (expressions instanceof $) {
+                return expressions;
+            }
+            
+            if (expressions instanceof HTMLElement) {
+                return $(expressions);
+            }
 
             var splittedExpressions = PrimeFaces.expressions.SearchExpressionFacade.splitExpressions(expressions);
             var elements = $();

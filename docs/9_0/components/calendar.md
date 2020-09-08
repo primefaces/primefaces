@@ -64,10 +64,10 @@ ajax selection and more.
 | navigator | false | Boolean | Enables month/year navigator
 | onblur | null | String | Client side callback to execute when input element loses focus.
 | onchange | null | String | Client side callback to execute when input element loses focus and its value has been modified since gaining focus.
-| onclick | null | String | Client side callback to execute onclick event.
+| oninput | null | String | Client side callback to execute when an element gets user input.
+| onclick | null | String | Client side callback to execute when input element is clicked.
 | ondblclick | null | String | Client side callback to execute when input element is double clicked.
-| oneLine | false | Boolean | Try to show the time dropdowns all on one line. This should be used with controlType 'select'.
-| onfocus | null | String | Client side callback to execute when input element receives focus.
+| onfocus | null | String | Client side callback to execute on input element focus.
 | onkeydown | null | String | Client side callback to execute when a key is pressed down over input element.
 | onkeypress | null | String | Client side callback to execute when a key is pressed and released over input element.
 | onkeyup | null | String | Client side callback to execute when a key is released over input element.
@@ -76,7 +76,23 @@ ajax selection and more.
 | onmouseout | null | String | Client side callback to execute when a pointer button is moved away from input element.
 | onmouseover | null | String | Client side callback to execute when a pointer button is moved onto input element.
 | onmouseup | null | String | Client side callback to execute when a pointer button is released over input element.
+| onwheel | null | String | Client side callback to execute when the mouse wheel rolls up or down over an element.
 | onselect | null | String | Client side callback to execute when text within input element is selected by user.
+| oncut | null | String | Client side callback to execute when the user copies the content of an element.
+| oncopy | null | String | Client side callback to execute when the user cuts the content of an element.
+| onpaste | null | String | Client side callback to execute when the user pastes some content in an element.
+| oncontextmenu | null | String | Client side callback to execute when a context menu is triggered.
+| oninvalid | null | String | Client side callback to execute when an element is invalid.
+| onreset | null | String | Client side callback to execute when the Reset button in a form is clicked.
+| onsearch | null | String | Client side callback to execute when the user writes something in a search field.
+| ondrag | null | String | Client side callback to execute when an element is dragged.
+| ondragend | null | String | Client side callback to execute at the end of a drag operation.
+| ondragenter | null | String | Client side callback to execute when an element has been dragged to a valid drop target.
+| ondragleave | null | String | Client side callback to execute when an element leaves a valid drop target.
+| ondragover | null | String | Client side callback to execute when an element is being dragged over a valid drop target.
+| ondragstart | null | String | Client side callback to execute at the start of a drag operation.
+| ondrop | null | String | Client side callback to execute when dragged element is being dropped.
+| onscroll | null | String | Client side callback to execute when an element's scrollbar is being scrolled.e input value.
 | pagedate | null | Object | Initial date to display if value is null.
 | pages | 1 | Integer | Enables multiple page rendering.
 | pattern | MM/dd/yyyy | String | DateFormat pattern for localization
@@ -109,7 +125,7 @@ ajax selection and more.
 | timeInput | false | Boolean | Allows direct input in time field.
 | timeOnly | false | Boolean | Shows only timepicker without date.
 | timeZone | null | Time Zone | String or a java.time.ZoneId instance or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to ZoneId.systemDefault().
-| title | null | String | Advisory tooltip informaton.
+| title | null | String | Advisory tooltip information.
 | touchable | true | Boolean | Enable touch support if browser detection supports it.
 | type | text | String | Input field type. Default is text.
 | validator | null | Method Expr | A method expression that refers to a method validationg the input
@@ -200,6 +216,19 @@ Various effects can be used when showing and hiding the popup calendar, options 
 slideDown, fadeIn, blind, bounce, clip, drop, fold and slide.
 
 ## Ajax Behavior Events
+The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
+  
+**Default Event:** `valueChange`  
+**Available Events:** `blur, change, click, close, contextmenu, copy, cut, dateSelect, dblclick, drag, dragend, dragenter, dragleave, dragover, dragstart, drop, focus, input, invalid, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, paste, reset, scroll, search, select, valueChange, viewChange, wheel`
+
+**Custom Events:**
+
+| Event | Listener Parameter | Fired |
+| --- | --- | --- |
+| close | - | When the popup is closed.
+| dateSelect | org.primefaces.event.SelectEvent | When a date is selected.
+| viewChange | org.primefaces.event.DateViewChangeEvent | When the date picker changed to a different month or year page.
+
 Calendar provides a _dateSelect_ ajax behavior event to execute an instant ajax selection whenever a
 date is selected. If you define a method as a listener, it will be invoked by passing an
 _org.primefaces.event.SelectEvent_ instance.

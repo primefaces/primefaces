@@ -25,13 +25,17 @@ package org.primefaces.component.terminal;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
 
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
+import javax.faces.event.BehaviorEvent;
 
 import org.primefaces.model.terminal.TerminalAutoCompleteMatches;
 import org.primefaces.model.terminal.TerminalAutoCompleteModel;
 import org.primefaces.model.terminal.TerminalCommand;
+import org.primefaces.util.MapBuilder;
 
 @ResourceDependency(library = "primefaces", name = "terminal/terminal.css")
 @ResourceDependency(library = "primefaces", name = "components.css")
@@ -49,6 +53,28 @@ public class Terminal extends TerminalBase {
     public static final String CONTENT_CLASS = "ui-terminal-content";
     public static final String PROMPT_CLASS = "ui-terminal-prompt";
     public static final String INPUT_CLASS = "ui-terminal-input";
+
+    private static final String DEFAULT_EVENT = "command";
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>> builder()
+                .put(DEFAULT_EVENT, null)
+                .build();
+
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
+    @Override
+    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
+        return BEHAVIOR_EVENT_MAPPING;
+    }
+
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
+    }
+
+    @Override
+    public String getDefaultEventName() {
+        return DEFAULT_EVENT;
+    }
 
     public boolean isCommandRequest() {
         FacesContext context = getFacesContext();

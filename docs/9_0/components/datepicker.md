@@ -63,9 +63,10 @@ ajax selection and more.
 | onYearChange | null | Function | Javascript function to invoke when year changes.
 | onblur | null | String | Client side callback to execute when input element loses focus.
 | onchange | null | String | Client side callback to execute when input element loses focus and its value has been modified since gaining focus.
+| oninput | null | String | Client side callback to execute when an element gets user input.
 | onclick | null | String | Client side callback to execute when input element is clicked.
 | ondblclick | null | String | Client side callback to execute when input element is double clicked.
-| onfocus | null | String | Client side callback to execute when input element receives focus.
+| onfocus | null | String | Client side callback to execute on input element focus.
 | onkeydown | null | String | Client side callback to execute when a key is pressed down over input element.
 | onkeypress | null | String | Client side callback to execute when a key is pressed and released over input element.
 | onkeyup | null | String | Client side callback to execute when a key is released over input element.
@@ -74,7 +75,23 @@ ajax selection and more.
 | onmouseout | null | String | Client side callback to execute when a pointer button is moved away from input element.
 | onmouseover | null | String | Client side callback to execute when a pointer button is moved onto input element.
 | onmouseup | null | String | Client side callback to execute when a pointer button is released over input element.
+| onwheel | null | String | Client side callback to execute when the mouse wheel rolls up or down over an element.
 | onselect | null | String | Client side callback to execute when text within input element is selected by user.
+| oncut | null | String | Client side callback to execute when the user copies the content of an element.
+| oncopy | null | String | Client side callback to execute when the user cuts the content of an element.
+| onpaste | null | String | Client side callback to execute when the user pastes some content in an element.
+| oncontextmenu | null | String | Client side callback to execute when a context menu is triggered.
+| oninvalid | null | String | Client side callback to execute when an element is invalid.
+| onreset | null | String | Client side callback to execute when the Reset button in a form is clicked.
+| onsearch | null | String | Client side callback to execute when the user writes something in a search field.
+| ondrag | null | String | Client side callback to execute when an element is dragged.
+| ondragend | null | String | Client side callback to execute at the end of a drag operation.
+| ondragenter | null | String | Client side callback to execute when an element has been dragged to a valid drop target.
+| ondragleave | null | String | Client side callback to execute when an element leaves a valid drop target.
+| ondragover | null | String | Client side callback to execute when an element is being dragged over a valid drop target.
+| ondragstart | null | String | Client side callback to execute at the start of a drag operation.
+| ondrop | null | String | Client side callback to execute when dragged element is being dropped.
+| onscroll | null | String | Client side callback to execute when an element's scrollbar is being scrolled.e input value.
 | panelStyle | null | String | Inline style of the container element.
 | panelStyleClass | null | String | Style class of the container element.
 | pattern | MM/dd/yy | String | DateFormat pattern for localization (for the date part only)
@@ -106,7 +123,7 @@ ajax selection and more.
 | timeInput | false | Boolean | Allows direct input in time field.
 | timeOnly | false * | Boolean | Shows only timepicker without date. (* Defaults to true, when value is bound to java.time.LocalTime)
 | timeZone | null | Time Zone | String a java.time.ZoneId instance or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to ZoneId.systemDefault().
-| title | null | String | Advisory tooltip informaton.
+| title | null | String | Advisory tooltip information.
 | touchUI | false | Boolean | Activates touch friendly mode
 | touchable | true | Boolean | Enable touch support if browser detection supports it.
 | triggerButtonIcon | null | String | Icon of the datepicker element that toggles the visibility in popup mode.
@@ -190,6 +207,19 @@ Multiple dates or a range of dates can be selected by setting the _selectionMode
 ```
 
 ## Ajax Behavior Events
+The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
+  
+**Default Event:** `valueChange`  
+**Available Events:** `blur, change, click, close, contextmenu, copy, cut, dateSelect, dblclick, drag, dragend, dragenter, dragleave, dragover, dragstart, drop, focus, input, invalid, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, paste, reset, scroll, search, select, valueChange, viewChange, wheel`
+
+**Custom Events:**
+
+| Event | Listener Parameter | Fired |
+| --- | --- | --- |
+| close | - | When the popup is closed.
+| dateSelect | org.primefaces.event.SelectEvent | When a date is selected.
+| viewChange | org.primefaces.event.DateViewChangeEvent | When the date picker changed to a different month or year page.
+
 DatePicker provides a _dateSelect_ ajax behavior event to execute an instant ajax selection whenever a
 date is selected. If you define a method as a listener, it will be invoked by passing an
 _org.primefaces.event.SelectEvent_ instance.
@@ -274,8 +304,11 @@ Widget: _PrimeFaces.widget.Calendar_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |
-| getDate() | - | Date | Return selected date
-| setDate(date) | date: Date to display | void | Sets display date
+| getDate() | - | Date | Return selected date.
+| setDate(date) | date: Date to display | void | Sets display date.
+| setDisabledDates(dates) | dates: Array of dates to disable | void | Sets disabled dates and update panel. Accepts array of date objects and strings formatted as M/d/yyyy.
+| setDisabledDays(days) | days: Array of days to disable | void | Sets disabled days and update panel. Accepts array of numbers, Sunday = 0.
+| updatePanel() | - | void | Update panel.
 
 ## Skinning
 DatePicker resides in a container element which _style_ and _styleClass_ options apply.

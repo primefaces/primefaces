@@ -37,9 +37,10 @@ mask | null | String | Mask template
 maxlength | null | Integer | Maximum number of characters that may be entered in this field.
 onblur | null | String | Client side callback to execute when input element loses focus.
 onchange | null | String | Client side callback to execute when input element loses focus and its value has been modified since gaining focus.
+oninput | null | String | Client side callback to execute when an element gets user input.
 onclick | null | String | Client side callback to execute when input element is clicked.
 ondblclick | null | String | Client side callback to execute when input element is double clicked.
-onfocus | null | String | Client side callback to execute when input element receives focus.
+onfocus | null | String | Client side callback to execute on input element focus.
 onkeydown | null | String | Client side callback to execute when a key is pressed down over input element.
 onkeypress | null | String | Client side callback to execute when a key is pressed and released over input element.
 onkeyup | null | String | Client side callback to execute when a key is released over input element.
@@ -48,7 +49,23 @@ onmousemove | null | String | Client side callback to execute when a pointer but
 onmouseout | null | String | Client side callback to execute when a pointer button is moved away from input element.
 onmouseover | null | String | Client side callback to execute when a pointer button is moved onto input element.
 onmouseup | null | String | Client side callback to execute when a pointer button is released over input element.
+onwheel | null | String | Client side callback to execute when the mouse wheel rolls up or down over an element.
 onselect | null | String | Client side callback to execute when text within input element is selected by user.
+oncut | null | String | Client side callback to execute when the user copies the content of an element.
+oncopy | null | String | Client side callback to execute when the user cuts the content of an element.
+onpaste | null | String | Client side callback to execute when the user pastes some content in an element.
+oncontextmenu | null | String | Client side callback to execute when a context menu is triggered.
+oninvalid | null | String | Client side callback to execute when an element is invalid.
+onreset | null | String | Client side callback to execute when the Reset button in a form is clicked.
+onsearch | null | String | Client side callback to execute when the user writes something in a search field.
+ondrag | null | String | Client side callback to execute when an element is dragged.
+ondragend | null | String | Client side callback to execute at the end of a drag operation.
+ondragenter | null | String | Client side callback to execute when an element has been dragged to a valid drop target.
+ondragleave | null | String | Client side callback to execute when an element leaves a valid drop target.
+ondragover | null | String | Client side callback to execute when an element is being dragged over a valid drop target.
+ondragstart | null | String | Client side callback to execute at the start of a drag operation.
+ondrop | null | String | Client side callback to execute when dragged element is being dropped.
+onscroll | null | String | Client side callback to execute when an element's scrollbar is being scrolled.
 placeholder | null | String | Specifies a short hint.
 readonly | false | Boolean | Flag indicating that this component will prevent changes by the user.
 required | false | Boolean | Mask component as required
@@ -58,7 +75,7 @@ slotChar | '_' | String | PlaceHolder in mask template. Default to underscore '_
 style | null | String | Inline style of the input element.
 styleClass | null | String | Style class of the input element.
 tabindex | null | Integer | Position of the input element in the tabbing order.
-title | null | String | Advisory tooltip informaton.
+title | null | String | Advisory tooltip information.
 validateMask | false | Boolean | Defines whether mask pattern would be validated or not on the server side.
 validator | null | MethodExpr | A method binding expression that refers to a method validationg the input
 validatorMessage | null | String | Message to be displayed when validation fields.
@@ -85,6 +102,17 @@ Here are more samples based on different masks;
 <p:inputMask value="#{bean.ssn}" mask="999-99-9999"/>
 <h:outputText value="Product Key: " />
 <p:inputMask value="#{bean.productKey}" mask="a*-999-a999"/>
+```
+
+## Ajax Behavior Events
+
+The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
+  
+**Default Event:** `valueChange`  
+**Available Events:** `blur, change, click, contextmenu, copy, cut, dblclick, drag, dragend, dragenter, dragleave, dragover, dragstart, drop, focus, input, invalid, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, paste, reset, scroll, search, select, valueChange, wheel`  
+
+```xhtml
+<p:ajax event="valueChange" listener="#{bean.handlevalueChange}" update="msgs" />
 ```
 
 ## Client Side API

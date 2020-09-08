@@ -21,26 +21,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.layout;
+package org.primefaces.event;
+
 
 import javax.faces.component.UIComponent;
+import javax.faces.event.FacesEvent;
+import javax.faces.event.FacesListener;
+import org.primefaces.model.file.UploadedFiles;
 
+public class FilesUploadEvent extends FacesEvent {
 
-public class LayoutUnit extends LayoutUnitBase {
+    private static final long serialVersionUID = 1L;
 
-    public static final String COMPONENT_TYPE = "org.primefaces.component.LayoutUnit";
+    private UploadedFiles files;
 
-    public String getCollapseIcon() {
-        return "ui-icon-triangle-1-" + getPosition().substring(0, 1);
+    public FilesUploadEvent(UIComponent component, UploadedFiles files) {
+        super(component);
+        this.files = files;
     }
 
-    public boolean isNesting() {
-        for (UIComponent child : getChildren()) {
-            if (child instanceof Layout) {
-                return true;
-            }
-        }
-
+    @Override
+    public boolean isAppropriateListener(FacesListener listener) {
         return false;
+    }
+
+    @Override
+    public void processListener(FacesListener listener) {
+        throw new UnsupportedOperationException();
+    }
+
+    public UploadedFiles getFiles() {
+        return files;
     }
 }

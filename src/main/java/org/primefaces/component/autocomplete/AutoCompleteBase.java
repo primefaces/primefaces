@@ -23,13 +23,12 @@
  */
 package org.primefaces.component.autocomplete;
 
-import javax.faces.component.html.HtmlInputText;
-
+import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 
-public abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHolder, MixedClientBehaviorHolder {
+public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implements Widget, InputHolder, MixedClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

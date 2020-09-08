@@ -23,8 +23,7 @@
  */
 package org.primefaces.renderkit;
 
-import org.primefaces.component.api.UIOutcomeTarget;
-import org.primefaces.context.PrimeApplicationContext;
+import java.util.*;
 
 import javax.faces.FacesException;
 import javax.faces.application.ConfigurableNavigationHandler;
@@ -34,7 +33,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionListener;
 import javax.faces.flow.FlowHandler;
 import javax.faces.lifecycle.ClientWindow;
-import java.util.*;
+
+import org.primefaces.component.api.UIOutcomeTarget;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.util.LangUtils;
 
 public class OutcomeTargetRenderer extends CoreRenderer {
 
@@ -86,7 +88,9 @@ public class OutcomeTargetRenderer extends CoreRenderer {
                 // evaluate the ValueExpression
                 value = context.getApplication().evaluateExpressionGet(context, value, String.class);
             }
-            target.add(value);
+            if (!LangUtils.isValueEmpty(value)) {
+                target.add(value);
+            }
         }
         return target;
     }

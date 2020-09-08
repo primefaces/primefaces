@@ -89,6 +89,18 @@
         },
 
         /**
+         * Finds all widgets in the current page of the given type.
+         * @param {PrimeFaces.widget.BaseWidget} type The type of the widgets of interest.
+         * @return  {PrimeFaces.widget.BaseWidget[]} An array of widgets that are of the requested type. If no suitable
+         * widgets are found on the current page, an empty array will be returned.
+         */
+        getWidgetsByType: function(type) {
+            return $.map(this.widgets, function(widget, key) {
+                return type.prototype.isPrototypeOf(widget) ? widget : null;
+            });
+        },
+
+        /**
          * Adds hidden input elements to the given form. For each key-value pair, a new hidden input element is created
          * with the given value and the key used as the name. 
          * @param {string} parent The ID of a FORM element.
@@ -176,16 +188,21 @@
         },
 
         /**
-         * Sets the value of a given cookie. If using HTTPS will set secure=true and SameSite=Strict.
+         * Sets the value of a given cookie.
+         * It will set secure=true, if using HTTPS and session-config/cookie-config/secure is set to true in web.xml.
+         * It will set sameSite, if secure=true, with the value of the primefaces.COOKIES_SAME_SITE parameter.
          * @param {string} name Name of the cookie to set
          * @param {string} value Value to set 
          * @param {Partial<Cookies.CookieAttributes>} [cfg] Configuration for this cookie: when it expires, its
          * paths and domain and whether it is secure cookie.
          */
         setCookie : function(name, value, cfg) {
-            if (location.protocol === 'https:') {
+            if (location.protocol === 'https:' && PrimeFaces.settings.cookiesSecure) {
                 cfg.secure = true;
-                cfg.sameSite = 'Strict';
+
+                if (PrimeFaces.settings.cookiesSameSite) {
+                    cfg.sameSite = PrimeFaces.settings.cookiesSameSite;
+                }
             }
             Cookies.set(name, value, cfg);
         },
@@ -466,17 +483,43 @@
         },
 
         /**
+         * Gets the currently loaded PF Theme CSS Link.
+         * @return {string} the full URL to the theme CSS
+         */
+        getThemeLink : function() {
+            var themeLink = $('link[href*="' + PrimeFaces.RESOURCE_IDENTIFIER + '/theme.css"]');
+            // portlet
+            if (themeLink.length === 0) {
+                themeLink = $('link[href*="' + PrimeFaces.RESOURCE_IDENTIFIER + '=theme.css"]');
+            }
+            return themeLink;
+        },
+
+        /**
+         * Gets the currently loaded PF Theme.
+         * @return {string} the current theme like "omega" or "luna-amber".
+         */
+        getTheme : function() {
+            var themeLink = PrimeFaces.getThemeLink();
+            if (themeLink.length === 0) {
+                return "";
+            }
+
+            var themeURL = themeLink.attr('href'),
+                plainURL = themeURL.split('&')[0],
+                oldTheme = plainURL.split('ln=primefaces-')[1];
+
+            return oldTheme;
+        },
+
+        /**
          * Changes the current theme to the given theme (by exchanging CSS files). Requires that the theme was
          * installed and is available.
          * @param {string} newTheme The new theme, eg. `luna-amber`, `nova-dark`, or `omega`.
          */
         changeTheme: function(newTheme) {
             if(newTheme && newTheme !== '') {
-                var themeLink = $('link[href*="' + PrimeFaces.RESOURCE_IDENTIFIER + '/theme.css"]');
-                // portlet
-                if (themeLink.length === 0) {
-                    themeLink = $('link[href*="' + PrimeFaces.RESOURCE_IDENTIFIER + '=theme.css"]');
-                }
+                var themeLink = PrimeFaces.getThemeLink();
 
                 var themeURL = themeLink.attr('href'),
                     plainURL = themeURL.split('&')[0],

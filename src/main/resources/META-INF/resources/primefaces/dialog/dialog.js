@@ -31,6 +31,7 @@
  * body.
  * @prop {boolean} cfg.absolutePositioned Whether the dialog is positioned absolutely.
  * @prop {boolean} cfg.blockScroll Whether to prevent the document from scrolling when the dialog is visible.
+ * @prop {boolean} cfg.cache Only relevant for dynamic="true": Defines if activating the dialog should load the contents from server again. For cache="true" (default) the dialog content is only loaded once..
  * @prop {boolean} cfg.closeOnEscape Whether the dialog is closed when the user presses the escape button.
  * @prop {boolean} cfg.closable Whether the dialog can be closed by the user.
  * @prop {boolean} cfg.draggable Whether the dialog is draggable.
@@ -88,6 +89,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.cfg.minHeight = this.cfg.minHeight||this.titlebar.outerHeight();
         this.cfg.my = this.cfg.my||'center';
         this.cfg.position = this.cfg.position||'center';
+        this.cfg.cache = this.cfg.cache === false ? false : true;
         this.parent = this.jq.parent();
 
         this.initSize();
@@ -151,7 +153,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
      */
     initSize: function() {
         this.jq.css({
-            'width': this.cfg.width + 'px',
+            'width': String(this.cfg.width),
             'height': 'auto'
         });
 
@@ -176,7 +178,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
         var maxHeight = windowHeight - (margin + headerHeight + contentPadding + footerHeight);
 
-        this.content.css('max-height', maxHeight + 'px');
+        this.content.css('max-height', String(maxHeight));
     },
 
 
@@ -217,6 +219,10 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             }
 
             this._show(duration);
+
+            if(this.cfg.dynamic && !this.cfg.cache) {
+                this.loaded = false;
+            }
         }
     },
 
@@ -236,7 +242,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         //offset
         if(this.cfg.absolutePositioned) {
             var winScrollTop = $(window).scrollTop();
-            this.jq.css('top', parseFloat(this.jq.css('top')) + (winScrollTop - this.lastScrollTop) + 'px');
+            this.jq.css('top', String(parseFloat(this.jq.css('top')) + (winScrollTop - this.lastScrollTop)));
             this.lastScrollTop = winScrollTop;
         }
 
@@ -473,7 +479,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         var $this = this;
 
         //reset
-        this.jq.css({left:'0px',top:'0px'});
+        this.jq.css({left:'0',top:'0'});
 
         if(/(center|left|top|right|bottom)/.test(this.cfg.position)) {
             this.cfg.position = this.cfg.position.replace(',', ' ');
@@ -566,8 +572,8 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             var win = $(window);
 
             this.jq.addClass('ui-dialog-maximized').css({
-                'width': (win.width() - 6)  + 'px'
-                ,'height': win.height() + 'px'
+                'width': String(win.width() - 6)
+                ,'height': String(win.height())
             }).offset({
                 top: win.scrollTop()
                 ,left: win.scrollLeft()
@@ -577,7 +583,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             var contentPadding = this.content.innerHeight() - this.content.height();
             this.content.css({
                 width: 'auto',
-                height: (this.jq.height() - this.titlebar.outerHeight() - contentPadding)  + 'px'
+                height: String(this.jq.height() - this.titlebar.outerHeight() - contentPadding)
             });
 
             this.maximizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-extlink').addClass('ui-icon-newwin');
@@ -965,8 +971,8 @@ PrimeFaces.widget.DynamicDialog = PrimeFaces.widget.Dialog.extend({
      */
     initSize: function() {
         this.jq.css({
-            'width': this.cfg.width + 'px',
-            'height': this.cfg.height + 'px'
+            'width': String(this.cfg.width),
+            'height': String(this.cfg.height)
         });
 
         if(this.cfg.fitViewport) {

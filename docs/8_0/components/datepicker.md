@@ -107,7 +107,7 @@ ajax selection and more.
 | style | null | String | Inline style of the input element.
 | styleClass | null | String | Style class of the input element.
 | tabindex | null | Integer | Position of the input element in the tabbing order.
-| title | null | String | Advisory tooltip informaton.
+| title | null | String | Advisory tooltip information.
 | rangeSeparator | - | String | Separator for joining start and end dates on range selection mode.
 | resolverStyle | smart | String | Relevant when parsing to a Java 8 Date/Time object. lenient, smart or strict. See [ResolverStyle](https://docs.oracle.com/javase/8/docs/api/java/time/format/ResolverStyle.html).
 
@@ -181,6 +181,15 @@ Multiple dates or a range of dates can be selected by setting the _selectionMode
 ```
 
 ## Ajax Behavior Events
+
+**Custom Events:**
+
+| Event | Listener Parameter | Fired |
+| --- | --- | --- |
+| close | - | When the popup is closed.
+| dateSelect | org.primefaces.event.SelectEvent | When a date is selected.
+| viewChange | org.primefaces.event.DateViewChangeEvent | When the date picker changed to a different month or year page.
+
 DatePicker provides a _dateSelect_ ajax behavior event to execute an instant ajax selection whenever a
 date is selected. If you define a method as a listener, it will be invoked by passing an
 _org.primefaces.event.SelectEvent_ instance.

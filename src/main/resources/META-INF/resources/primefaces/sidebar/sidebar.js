@@ -120,11 +120,6 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
         if(this.cfg.onShow) {
             this.cfg.onShow.call(this);
         }
-
-        this.jq.attr({
-            'aria-hidden': false
-            ,'aria-live': 'polite'
-        });
     },
 
     /**
@@ -155,11 +150,6 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * @param {unknown} ui Currently unused.
      */
     onHide: function(event, ui) {
-        this.jq.attr({
-            'aria-hidden': true
-            ,'aria-live': 'off'
-        });
-
         if(this.cfg.onHide) {
             this.cfg.onHide.call(this, event, ui);
         }
@@ -183,7 +173,7 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this._super();
 
         var $this = this;
-        this.modalOverlay.on('click', function() {
+        this.modalOverlay.one('click.sidebar', function() {
             $this.hide();
         });
     },
@@ -205,6 +195,7 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.jq.attr({
             'role': 'dialog'
             ,'aria-hidden': !this.cfg.visible
+            ,'aria-modal': this.cfg.visible
         });
 
         this.closeIcon.attr('role', 'button');
@@ -227,8 +218,8 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function(content) {
-                            this.content.html(content);
-                            this.loaded = true;
+                            $this.jq.html(content);
+                            $this.loaded = true;
                         }
                     });
 

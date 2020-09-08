@@ -65,7 +65,8 @@ public class HeadRenderer extends Renderer {
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
+        PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(context);
+        PrimeApplicationContext applicationContext = requestContext.getApplicationContext();
         boolean csvEnabled = applicationContext.getConfig().isClientSideValidationEnabled();
 
         writer.startElement("head", component);
@@ -118,7 +119,7 @@ public class HeadRenderer extends Renderer {
             encodeValidationResources(context, applicationContext.getConfig().isBeanValidationEnabled());
         }
 
-        encodeSettingScripts(context, applicationContext, writer, csvEnabled);
+        encodeSettingScripts(context, applicationContext, requestContext, writer, csvEnabled);
 
         // encode initialization scripts
         encodeInitScripts(writer);
@@ -176,7 +177,7 @@ public class HeadRenderer extends Renderer {
         }
     }
 
-    protected void encodeSettingScripts(FacesContext context, PrimeApplicationContext applicationContext,
+    protected void encodeSettingScripts(FacesContext context, PrimeApplicationContext applicationContext, PrimeRequestContext requestContext,
             ResponseWriter writer, boolean csvEnabled) throws IOException {
 
         ProjectStage projectStage = context.getApplication().getProjectStage();
@@ -188,6 +189,11 @@ public class HeadRenderer extends Renderer {
         writer.write("PrimeFaces.settings.locale='" + LocaleUtils.getCurrentLocale(context) + "';");
         writer.write("PrimeFaces.settings.viewId='" + context.getViewRoot().getViewId() + "';");
         writer.write("PrimeFaces.settings.contextPath='" + context.getExternalContext().getRequestContextPath() + "';");
+
+        writer.write("PrimeFaces.settings.cookiesSecure=" + (requestContext.isSecure() && applicationContext.getConfig().isCookiesSecure()) + ";");
+        if (applicationContext.getConfig().getCookiesSameSite() != null) {
+            writer.write("PrimeFaces.settings.cookiesSameSite='" + applicationContext.getConfig().getCookiesSameSite() + "';");
+        }
 
         if (csvEnabled) {
             writer.write("PrimeFaces.settings.validateEmptyFields=" + applicationContext.getConfig().isValidateEmptyFields() + ";");

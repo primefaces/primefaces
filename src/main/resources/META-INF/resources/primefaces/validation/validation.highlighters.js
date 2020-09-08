@@ -36,7 +36,7 @@ if (window.PrimeFaces) {
 
         /**
          * A map between a widget type and the corresponding highlight handler for that type.
-         * @type {Record<string, PrimeFaces.HighlightHandler>}
+         * @type {Record<string, PrimeFaces.validation.Highlighter>}
          */
         types : {
 

@@ -25,6 +25,7 @@ package org.primefaces.model.charts;
 
 import java.io.Serializable;
 
+import org.primefaces.model.charts.optionconfig.animation.Animation;
 import org.primefaces.model.charts.optionconfig.elements.Elements;
 import org.primefaces.model.charts.optionconfig.legend.Legend;
 import org.primefaces.model.charts.optionconfig.title.Title;
@@ -38,6 +39,7 @@ public abstract class ChartOptions implements Serializable {
     private Title title;
     private Tooltip tooltip;
     private Legend legend;
+    private Animation animation;
 
     public Elements getElements() {
         return elements;
@@ -69,5 +71,13 @@ public abstract class ChartOptions implements Serializable {
 
     public void setLegend(Legend legend) {
         this.legend = legend;
+    }
+
+    public Animation getAnimation() {
+        return animation;
+    }
+
+    public void setAnimation(Animation animation) {
+        this.animation = animation;
     }
 }

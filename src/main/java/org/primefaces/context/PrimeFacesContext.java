@@ -23,6 +23,8 @@
  */
 package org.primefaces.context;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.FacesContextWrapper;
@@ -42,6 +44,7 @@ public class PrimeFacesContext extends FacesContextWrapper {
     private final FacesContext wrapped;
     private final boolean moveScriptsToBottom;
     private final boolean csp;
+    private final boolean markInputAsInvalidOnErrorMsg;
 
     private MoveScriptsToBottomState moveScriptsToBottomState;
     private CspState cspState;
@@ -65,6 +68,10 @@ public class PrimeFacesContext extends FacesContextWrapper {
         if (csp) {
             cspState = getCspState(this);
         }
+
+        markInputAsInvalidOnErrorMsg = config.isMarkInputAsInvalidOnErrorMsg();
+
+        FacesContext.setCurrentInstance(this);
     }
 
     @Override
@@ -121,6 +128,26 @@ public class PrimeFacesContext extends FacesContextWrapper {
         }
 
         super.release();
+
+        // just to be sure!
+        FacesContext.setCurrentInstance(null);
+    }
+
+    @Override
+    public void addMessage(String clientId, FacesMessage message) {
+        super.addMessage(clientId, message);
+
+        if (markInputAsInvalidOnErrorMsg
+                && clientId != null
+                && message != null
+                && FacesMessage.SEVERITY_ERROR.equals(message.getSeverity())) {
+
+            getViewRoot().invokeOnComponent(this, clientId, (context, target) -> {
+                if (target instanceof UIInput) {
+                    ((UIInput) target).setValid(false);
+                }
+            });
+        }
     }
 
     public static CspState getCspState(FacesContext context) {

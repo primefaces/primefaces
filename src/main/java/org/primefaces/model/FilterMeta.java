@@ -24,7 +24,10 @@
 package org.primefaces.model;
 
 import java.io.Serializable;
+import java.util.Objects;
+
 import javax.el.ValueExpression;
+
 import org.primefaces.component.api.UIColumn;
 
 public class FilterMeta implements Serializable {
@@ -96,5 +99,25 @@ public class FilterMeta implements Serializable {
     public String toString() {
         return "FilterMeta [filterField=" + filterField + ", columnKey=" + columnKey + ", filterByVE=" + filterByVE + ", filterMatchMode=" + filterMatchMode
                     + ", filterValue=" + filterValue + "]";
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(columnKey, filterField);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof FilterMeta)) {
+            return false;
+        }
+        FilterMeta other = (FilterMeta) obj;
+        return Objects.equals(columnKey, other.columnKey) && Objects.equals(filterField, other.filterField);
     }
 }

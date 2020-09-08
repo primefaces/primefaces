@@ -72,12 +72,7 @@ public class FileUploadRenderer extends CoreRenderer {
 
             wb.init("FileUpload", fileUpload.resolveWidgetVar(context), clientId);
 
-            wb.attr("auto", fileUpload.isAuto(), false)
-                    .attr("dnd", fileUpload.isDragDropSupport(), true)
-                    .attr("update", SearchExpressionFacade.resolveClientIds(context, fileUpload, update,
-                            SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
-                    .attr("process", SearchExpressionFacade.resolveClientIds(context, fileUpload, process,
-                            SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
+            wb.attr("dnd", fileUpload.isDragDropSupport(), true)
                     .attr("previewWidth", fileUpload.getPreviewWidth(), 80)
                     .attr("sequentialUploads", fileUpload.isSequential(), false)
                     .attr("maxChunkSize", fileUpload.getMaxChunkSize(), 0)
@@ -85,10 +80,7 @@ public class FileUploadRenderer extends CoreRenderer {
                     .attr("retryTimeout", fileUpload.getRetryTimeout(), 1000)
                     .attr("resumeContextPath", pfContext.getFileUploadResumeUrl(), null)
                     .callback("onAdd", "function(file, callback)", fileUpload.getOnAdd())
-                    .callback("onstart", "function()", fileUpload.getOnstart())
-                    .callback("onerror", "function()", fileUpload.getOnerror())
-                    .callback("oncancel", "function()", fileUpload.getOncancel())
-                    .callback("oncomplete", "function(args)", fileUpload.getOncomplete());
+                    .callback("oncancel", "function()", fileUpload.getOncancel());
 
         }
         else {
@@ -96,13 +88,21 @@ public class FileUploadRenderer extends CoreRenderer {
                     .attr("skinSimple", fileUpload.isSkinSimple(), false);
         }
 
-        wb.attr("disabled", fileUpload.isDisabled(), false)
+        wb.attr("auto", fileUpload.isAuto(), false)
+                .attr("update", SearchExpressionFacade.resolveClientIds(context, fileUpload, update,
+                            SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
+                .attr("process", SearchExpressionFacade.resolveClientIds(context, fileUpload, process,
+                            SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
+                .attr("disabled", fileUpload.isDisabled(), false)
                 .attr("invalidSizeMessage", fileUpload.getInvalidSizeMessage(), null)
                 .attr("invalidFileMessage", fileUpload.getInvalidFileMessage(), null)
                 .attr("fileLimitMessage", fileUpload.getFileLimitMessage(), null)
                 .attr("messageTemplate", fileUpload.getMessageTemplate(), null)
                 .attr("maxFileSize", fileUpload.getSizeLimit(), Long.MAX_VALUE)
                 .attr("fileLimit", fileUpload.getFileLimit(), Integer.MAX_VALUE)
+                .callback("onstart", "function()", fileUpload.getOnstart())
+                .callback("onerror", "function()", fileUpload.getOnerror())
+                .callback("oncomplete", "function(args)", fileUpload.getOncomplete())
                 .callback("onvalidationfailure", "function(msg)", fileUpload.getOnvalidationfailure());
 
         String allowTypes = fileUpload.getAllowTypes();

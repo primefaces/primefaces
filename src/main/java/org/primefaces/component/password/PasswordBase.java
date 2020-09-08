@@ -23,11 +23,10 @@
  */
 package org.primefaces.component.password;
 
-import javax.faces.component.html.HtmlInputText;
-
+import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.Widget;
 
-public abstract class PasswordBase extends HtmlInputText implements Widget {
+public abstract class PasswordBase extends AbstractPrimeHtmlInputText implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -46,7 +45,8 @@ public abstract class PasswordBase extends HtmlInputText implements Widget {
         redisplay,
         match,
         showEvent,
-        hideEvent
+        hideEvent,
+        ignoreLastPass
     }
 
     public PasswordBase() {
@@ -152,5 +152,13 @@ public abstract class PasswordBase extends HtmlInputText implements Widget {
 
     public void setHideEvent(String hideEvent) {
         getStateHelper().put(PropertyKeys.hideEvent, hideEvent);
+    }
+
+    public boolean isIgnoreLastPass() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.ignoreLastPass, false);
+    }
+
+    public void setIgnoreLastPass(boolean ignoreLastPass) {
+        getStateHelper().put(PropertyKeys.ignoreLastPass, ignoreLastPass);
     }
 }

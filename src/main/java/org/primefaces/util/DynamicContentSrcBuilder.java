@@ -31,7 +31,6 @@ import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
-
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Resource;
@@ -39,7 +38,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.xml.bind.DatatypeConverter;
-
 import org.primefaces.application.resource.DynamicContentType;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.model.StreamedContent;
@@ -58,43 +56,49 @@ public class DynamicContentSrcBuilder {
     public static String build(FacesContext context, Object value, UIComponent component, boolean cache,
             DynamicContentType type, boolean stream, String attributeName) {
 
-        String src = null;
-
         if (value == null) {
             return "";
         }
         else if (value instanceof String) {
-            src = ResourceUtils.getResourceURL(context, (String) value);
+            String src = ResourceUtils.getResourceURL(context, (String) value);
+            return encodeResourceURL(context, src, cache);
         }
         else if (value instanceof StreamedContent) {
             StreamedContent streamedContent = (StreamedContent) value;
-
-            if (stream) {
-                Resource resource = context.getApplication().getResourceHandler().createResource(
-                        "dynamiccontent.properties", "primefaces", streamedContent.getContentType());
-                String resourcePath = resource.getRequestPath();
-
-                Map<String, Object> session = context.getExternalContext().getSessionMap();
-                Map<String, String> dynamicResourcesMapping = (Map) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
-                if (dynamicResourcesMapping == null) {
-                    dynamicResourcesMapping = new LimitedSizeHashMap<>(200);
-                    session.put(Constants.DYNAMIC_RESOURCES_MAPPING, dynamicResourcesMapping);
-                }
-
-                ValueExpression expression = ValueExpressionAnalyzer.getExpression(
+            ValueExpression expression = ValueExpressionAnalyzer.getExpression(
                         context.getELContext(), component.getValueExpression(attributeName));
+            return build(context, streamedContent, component, cache, type, stream, expression);
+        }
 
-                String expressionString = expression.getExpressionString();
-                String resourceKey = md5(expressionString);
+        return null;
+    }
 
-                dynamicResourcesMapping.put(resourceKey, expressionString);
+    public static String build(FacesContext context, StreamedContent streamedContent, UIComponent component, boolean cache,
+            DynamicContentType type, boolean stream, ValueExpression valueExpression) {
+        if (stream) {
+            Resource resource = context.getApplication().getResourceHandler().createResource(
+                    "dynamiccontent.properties", "primefaces", streamedContent.getContentType());
+            String resourcePath = resource.getRequestPath();
 
-                try {
-                    StringBuilder builder = SharedStringBuilder.get(context, SB_BUILD);
-                    builder.append(resourcePath)
-                            .append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(resourceKey, "UTF-8"))
-                            .append("&").append(Constants.DYNAMIC_CONTENT_TYPE_PARAM).append("=").append(type.toString());
+            Map<String, Object> session = context.getExternalContext().getSessionMap();
+            Map<String, String> dynamicResourcesMapping = (Map) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
+            if (dynamicResourcesMapping == null) {
+                dynamicResourcesMapping = new LimitedSizeHashMap<>(200);
+                session.put(Constants.DYNAMIC_RESOURCES_MAPPING, dynamicResourcesMapping);
+            }
 
+            String expressionString = valueExpression.getExpressionString();
+            String resourceKey = md5(expressionString);
+
+            dynamicResourcesMapping.put(resourceKey, expressionString);
+
+            try {
+                StringBuilder builder = SharedStringBuilder.get(context, SB_BUILD);
+                builder.append(resourcePath)
+                        .append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(resourceKey, "UTF-8"))
+                        .append("&").append(Constants.DYNAMIC_CONTENT_TYPE_PARAM).append("=").append(type.toString());
+
+                if (component != null) {
                     for (int i = 0; i < component.getChildCount(); i++) {
                         UIComponent child = component.getChildren().get(i);
                         if (child instanceof UIParameter) {
@@ -110,23 +114,23 @@ public class DynamicContentSrcBuilder {
                             }
                         }
                     }
+                }
 
-                    src = builder.toString();
-                }
-                catch (UnsupportedEncodingException ex) {
-                    throw new FacesException(ex);
-                }
+                return encodeResourceURL(context, builder.toString(), cache);
             }
-            else {
-                byte[] bytes = toByteArray(streamedContent.getStream());
-                String base64 = DatatypeConverter.printBase64Binary(bytes);
-                return "data:" + streamedContent.getContentType() + ";base64," + base64;
+            catch (UnsupportedEncodingException ex) {
+                throw new FacesException(ex);
             }
         }
+        else {
+            byte[] bytes = toByteArray(streamedContent.getStream());
+            String base64 = DatatypeConverter.printBase64Binary(bytes);
+            return "data:" + streamedContent.getContentType() + ";base64," + base64;
+        }
+    }
 
-        src = ResourceUtils.appendCacheBuster(src, cache);
-
-        return context.getExternalContext().encodeResourceURL(src);
+    public static String encodeResourceURL(FacesContext context, String src, boolean cache) {
+        return context.getExternalContext().encodeResourceURL(ResourceUtils.appendCacheBuster(src, cache));
     }
 
     public static byte[] toByteArray(InputStream stream) {

@@ -24,6 +24,8 @@
 package org.primefaces.model;
 
 import java.io.Serializable;
+import java.util.Objects;
+
 import javax.el.MethodExpression;
 
 public class SortMeta implements Serializable {
@@ -72,5 +74,25 @@ public class SortMeta implements Serializable {
     public String toString() {
         return "SortMeta [columnKey=" + columnKey + ", sortField=" + sortField + ", sortOrder=" + sortOrder + ", sortFunction="
                 + sortFunction + "]";
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(columnKey, sortField);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof SortMeta)) {
+            return false;
+        }
+        SortMeta other = (SortMeta) obj;
+        return Objects.equals(columnKey, other.columnKey) && Objects.equals(sortField, other.sortField);
     }
 }

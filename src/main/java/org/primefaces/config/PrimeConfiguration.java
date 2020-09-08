@@ -28,6 +28,7 @@ import java.util.Map;
 import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
@@ -55,6 +56,7 @@ public class PrimeConfiguration {
     private String cspPolicy;
     private String[] exceptionTypesToIgnoreInLogging;
     private final String multiViewStateStore;
+    private final boolean markInputAsInvalidOnErrorMsg;
 
     // internal config
     private final boolean stringConverterAvailable;
@@ -63,6 +65,9 @@ public class PrimeConfiguration {
 
     // web.xml
     private final Map<String, String> errorPages;
+
+    private boolean cookiesSecure;
+    private String cookiesSameSite;
 
     public PrimeConfiguration(FacesContext context, PrimeEnvironment environment) {
         ExternalContext externalContext = context.getExternalContext();
@@ -128,6 +133,19 @@ public class PrimeConfiguration {
         }
 
         multiViewStateStore = externalContext.getInitParameter(Constants.ContextParams.MULTI_VIEW_STATE_STORE);
+
+        value = externalContext.getInitParameter(Constants.ContextParams.MARK_INPUT_AS_INVALID_ON_ERROR_MSG);
+        markInputAsInvalidOnErrorMsg = Boolean.parseBoolean(value);
+
+        cookiesSameSite = externalContext.getInitParameter(Constants.ContextParams.COOKIES_SAME_SITE);
+
+        cookiesSecure = true;
+        if (externalContext.getContext() instanceof ServletContext) {
+            ServletContext se = (ServletContext) externalContext.getContext();
+            if (environment.isAtLeastServlet30()) {
+                cookiesSecure = se.getSessionCookieConfig().isSecure();
+            }
+        }
     }
 
     protected boolean resolveValidateEmptyFields(FacesContext context, PrimeEnvironment environment) {
@@ -235,5 +253,17 @@ public class PrimeConfiguration {
 
     public String getMultiViewStateStore() {
         return multiViewStateStore;
+    }
+
+    public boolean isMarkInputAsInvalidOnErrorMsg() {
+        return markInputAsInvalidOnErrorMsg;
+    }
+
+    public boolean isCookiesSecure() {
+        return cookiesSecure;
+    }
+
+    public String getCookiesSameSite() {
+        return cookiesSameSite;
     }
 }

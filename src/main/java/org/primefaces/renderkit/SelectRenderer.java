@@ -43,6 +43,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.RandomAccess;
 
 import org.primefaces.util.LangUtils;
@@ -256,33 +257,46 @@ public abstract class SelectRenderer extends InputRenderer {
             for (int i = 0; i < length; i++) {
                 Object value = Array.get(valueArray, i);
 
-                if (value == null && itemValue == null) {
-                    return true;
-                }
-                else {
-                    if ((value == null) ^ (itemValue == null)) {
-                        continue;
-                    }
-
-                    Object compareValue;
-                    if (converter == null) {
-                        compareValue = coerceToModelType(context, itemValue, value.getClass());
-                    }
-                    else {
-                        compareValue = itemValue;
-
-                        if (compareValue instanceof String && !(value instanceof String)) {
-                            compareValue = converter.getAsObject(context, component, (String) compareValue);
-                        }
-                    }
-
-                    if (value.equals(compareValue)) {
-                        return (true);
-                    }
+                if (isSelectValueEqual(context, component, itemValue, value, converter)) {
+                    return (true);
                 }
             }
         }
         return false;
+    }
+
+    /**
+     * Compares two select options against each other. Values can be either a serialized string,
+     * or the actual object, this method takes care of the conversion.
+     * @param context The currently active faces context.
+     * @param component The select component for which to compare values.
+     * @param itemValue First value to compare against the second. May be a submitted string value,
+     * in which case it run through the given {@code converter}.
+     * @param value Second value to compare against the first. Should be the model value, i.e. not
+     * a string, unless {@code itemValue} is a string too.
+     * @param converter Optional converter defined for the select component.
+     * @return {@code true} if the two values are equal, or {@code false} otherwise.
+     */
+    protected boolean isSelectValueEqual(FacesContext context, UIComponent component, Object itemValue, Object value, Converter converter) {
+        if (value == null && itemValue == null) {
+            return true;
+        }
+        if ((value == null) ^ (itemValue == null)) {
+            return false;
+        }
+        Object compareValue;
+        if (converter == null) {
+            compareValue = coerceToModelType(context, itemValue, value.getClass());
+        }
+        else {
+            compareValue = itemValue;
+
+            if (compareValue instanceof String && !(value instanceof String)) {
+                compareValue = converter.getAsObject(context, component, (String) compareValue);
+            }
+        }
+
+        return Objects.equals(value, compareValue);
     }
 
     protected int countSelectItems(List<SelectItem> selectItems) {

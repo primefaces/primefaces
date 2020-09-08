@@ -1,45 +1,18 @@
 if (!PrimeFaces.ajax) {
 
     /**
-     * AJAX parameter shortcut mapping for the method `PrimeFaces.ab` that sends an AJAX request.
-     * @type {Record<string, string>}
-     */
-    PrimeFaces.AB_MAPPING = {
-        's': 'source',
-        'f': 'formId',
-        'p': 'process',
-        'u': 'update',
-        'e': 'event',
-        'a': 'async',
-        'g': 'global',
-        'd': 'delay',
-        't': 'timeout',
-        'sc': 'skipChildren',
-        'iau': 'ignoreAutoUpdate',
-        'ps': 'partialSubmit',
-        'psf': 'partialSubmitFilter',
-        'rv': 'resetValues',
-        'fi': 'fragmentId',
-        'pa': 'params',
-        'onst': 'onstart',
-        'oner': 'onerror',
-        'onsu': 'onsuccess',
-        'onco': 'oncomplete'
-    };
-
-    /**
      * A shortcut for `PrimeFaces.ajax.Request.handle(cfg, ext)`, with shorter option names. Sends an AJAX request to
      * the server and processes the response. You can use this method if you need more fine-grained control over which
      * components you want to update or process, or if you need to change some other AJAX options.
-     * @function 
+     * @function
      * @param {Partial<PrimeFaces.ajax.ShorthandConfiguration>} cfg Configuration for the AJAX request, with shorthand
-     * options. The individual options are documented in `PrimeFaces.ajax.Configuration`. 
+     * options. The individual options are documented in `PrimeFaces.ajax.Configuration`.
      * @param {Partial<PrimeFaces.ajax.ConfigurationExtender>} [ext] Optional extender with additional options that
      * overwrite the options given in `cfg`.
      * @return {Promise<PrimeFaces.ajax.ResponseData>} A promise that resolves once the AJAX requests is done. Use this
      * to run custom JavaScript logic. When the AJAX request succeeds, the promise is fulfilled. Otherwise, when the
      * AJAX request fails, the promise is rejected. If the promise is rejected, the rejection handler receives an object
-     * of type {@link PrimeFaces.ajax.FailedRequestData}. 
+     * of type {@link PrimeFaces.ajax.FailedRequestData}.
      */
     PrimeFaces.ab = function(cfg, ext) {
         for (var option in cfg) {
@@ -48,8 +21,8 @@ if (!PrimeFaces.ajax) {
             }
 
             // just pass though if no mapping is available
-            if (this.AB_MAPPING[option]) {
-                cfg[this.AB_MAPPING[option]] = cfg[option];
+            if (PrimeFaces.ajax.CFG_SHORTCUTS[option]) {
+                cfg[PrimeFaces.ajax.CFG_SHORTCUTS[option]] = cfg[option];
                 delete cfg[option];
             }
         }
@@ -61,7 +34,7 @@ if (!PrimeFaces.ajax) {
      * The object with functionality related to sending and receiving AJAX requests that are made by PrimeFaces. Each
      * request receives an XML response, which consists of one or multiple actions that are to be performed. This
      * includes creating new DOM elements, deleting or updating existing elements, or executing some JavaScript.
-     * 
+     *
      * @namespace
      */
     PrimeFaces.ajax = {
@@ -86,6 +59,33 @@ if (!PrimeFaces.ajax) {
         RESOURCE : "javax.faces.Resource",
 
         /**
+         * Parameter shortcut mapping for the method `PrimeFaces.ab`.
+         * @type {Record<string, string>}
+         */
+        CFG_SHORTCUTS : {
+            's': 'source',
+            'f': 'formId',
+            'p': 'process',
+            'u': 'update',
+            'e': 'event',
+            'a': 'async',
+            'g': 'global',
+            'd': 'delay',
+            't': 'timeout',
+            'sc': 'skipChildren',
+            'iau': 'ignoreAutoUpdate',
+            'ps': 'partialSubmit',
+            'psf': 'partialSubmitFilter',
+            'rv': 'resetValues',
+            'fi': 'fragmentId',
+            'pa': 'params',
+            'onst': 'onstart',
+            'oner': 'onerror',
+            'onsu': 'onsuccess',
+            'onco': 'oncomplete'
+        },
+
+        /**
          * This object contains utility methods for AJAX requests, primarily used internally.
          * @interface {PrimeFaces.ajax.Utils} . The class for the object with the AJAX utility methods, used for
          * handling and working with AJAX requests and updates.
@@ -94,10 +94,10 @@ if (!PrimeFaces.ajax) {
          */
         Utils: {
             /**
-             * Iterates over all immediate children of the given node and returns the concatenated content (
-             * `node value`) of each such child node. For the document itself, the node value is `null`. For text,
-             * comment, and CDATA nodes, the `node value` is the (text) content of the node. For attribute nodes, the
-             * value of the attribute is used.
+             * Iterates over all immediate children of the given node and returns the concatenated content (`node value`)
+             * of each such child node. For the document itself, the node value is `null`.
+             * For text, comment, and CDATA nodes, the `node value` is the (text) content of the node.
+             * For attribute nodes, the value of the attribute is used.
              * @param {HTMLElement} node An HTML node for which to retrieve the content.
              * @return {string} The content of all immediate child nodes, concatenated together.
              */
@@ -112,11 +112,47 @@ if (!PrimeFaces.ajax) {
             },
 
             /**
+             * Resolves the URL which should be used for the POST.
+             * In Portlet a different URL is used.
+             *
+             * @param {JQuery} form The closest form of the request source.
+             * @return {string} The POST url.
+             */
+            getPostUrl: function(form) {
+                var postURL = form.attr('action');
+                var encodedURLInput = form.children("input[name*='javax.faces.encodedURL']");
+
+                if (encodedURLInput.length > 0) {
+                    postURL = encodedURLInput.val();
+                }
+
+                return postURL;
+            },
+
+            /**
+             * Gets a selector to resolve all forms which needs to be updated with a new ViewState.
+             * This is required in Portlets as the DOM contains forms of multiple JSF views / applications.
+             *
+             * @param {JQuery} form The closest form of the request source.
+             * @param {string} parameterPrefix The Portlet parameter prefix.
+             * @return {string} null or a selector.
+             */
+            getPorletForms: function(form, parameterPrefix) {
+                var encodedURLInput = form.children("input[name*='javax.faces.encodedURL']");
+
+                if (encodedURLInput.length > 0) {
+                    return 'form[id*="' + parameterPrefix + '"]';
+                }
+
+                return null;
+            },
+
+            /**
              * Updates the main hidden input element for each form.
              * @param {string} name Name of the hidden form input element, usually the same as the form.
-             * @param {string} value Value to set on the hidden input element. 
+             * @param {string} value Value to set on the hidden input element.
              * @param {PrimeFaces.ajax.pfXHR} [xhr] Optional XHR request with `pfSettings` or `pfArgs` with further
-             * data, such as which forms should be updated. 
+             * data, such as which forms should be updated.
              */
             updateFormStateInput: function(name, value, xhr) {
                 var trimmedValue = PrimeFaces.trim(value);
@@ -151,7 +187,7 @@ if (!PrimeFaces.ajax) {
 
             /**
              * Updates the HTML `head` element of the current document with the content received from an AJAX request.
-             * @param {string} content The content of the changeset that was returned by an AJAX request.  
+             * @param {string} content The content of the changeset that was returned by an AJAX request.
              */
             updateHead: function(content) {
                 var cache = $.ajaxSetup()['cache'];
@@ -166,7 +202,7 @@ if (!PrimeFaces.ajax) {
 
             /**
              * Updates the HTML `body` element of the current document with the content received from an AJAX request.
-             * @param {string} content The content of the changeset that was returned by an AJAX request.  
+             * @param {string} content The content of the changeset that was returned by an AJAX request.
              */
             updateBody: function(content) {
                 var bodyStartTag = new RegExp("<body[^>]*>", "gi").exec(content)[0];
@@ -180,7 +216,7 @@ if (!PrimeFaces.ajax) {
              * @param {string} id ID of the element that is to be updated.
              * @param {string} content The new content of the changeset as returned by an AJAX request.
              * @param {PrimeFaces.ajax.pfXHR} [xhr] Optional XHR request with `pfSettings` or `pfArgs` with further
-             * data, such as which forms should be updated. 
+             * data, such as which forms should be updated.
              */
             updateElement: function(id, content, xhr) {
 
@@ -222,7 +258,7 @@ if (!PrimeFaces.ajax) {
 
         /**
          * This object contains functionality related to queuing AJAX requests to ensure that they are (a) sent in the
-         * proper order and (b) that each response is processed in the same order as the requests were sent. 
+         * proper order and (b) that each response is processed in the same order as the requests were sent.
          * @interface {PrimeFaces.ajax.Queue} . The interface for the object containing functionality related to queuing
          * AJAX requests. The queue ensures that requests are (a) sent in the order as they were issued, and (b) that
          * each response is processed in the same order as the requests were sent.
@@ -247,7 +283,7 @@ if (!PrimeFaces.ajax) {
             /**
              * A list of sent AJAX requests, i.e. HTTP requests that were already started. This is used, for example, to
              * abort requests that were sent already when that becomes necessary.
-             * 
+             *
              * @type {PrimeFaces.ajax.pfXHR}
              */
             xhrs: new Array(),
@@ -255,7 +291,7 @@ if (!PrimeFaces.ajax) {
             /**
              * Offers an AJAX request to this queue. The request is sent once all other requests in this queue have
              * been sent. If a delay is set on the request configuration, the request is not sent before the specified
-             * delay has elapsed. 
+             * delay has elapsed.
              * @param {Partial<PrimeFaces.ajax.Configuration>} request The request to send.
              */
             offer: function(request) {
@@ -365,7 +401,7 @@ if (!PrimeFaces.ajax) {
                 // abort any in-flight that are not DONE(4)
                 for(var i = 0; i < this.xhrs.length; i++) {
                     var xhr = this.xhrs[i];
-                    if (xhr.readyState != 4) {
+                    if (xhr.readyState !== 4) {
                         xhr.abort();
                     }
                 }
@@ -375,9 +411,9 @@ if (!PrimeFaces.ajax) {
         },
 
         /**
-         * The interface for the object containing low-level functionality related to sending AJAX requests. 
+         * The interface for the object containing low-level functionality related to sending AJAX requests.
          * @interface {PrimeFaces.ajax.Request}. The interface for the object containing functionality related to
-         * sending AJAX requests. 
+         * sending AJAX requests.
          * @type {PrimeFaces.ajax.Request}
          * @readonly
          */
@@ -388,7 +424,7 @@ if (!PrimeFaces.ajax) {
              * adding it to the AJAX queue otherwise. The AJAX queue ensures that requests are sent and handled in the
              * order they were started. See also {@link jsf.ajax.request}.
              * @param {Partial<PrimeFaces.ajax.Configuration>} cfg Configuration for the AJAX request to send, such as
-             * the HTTP method, the URL, and the content of the request. 
+             * the HTTP method, the URL, and the content of the request.
              * @param {Partial<PrimeFaces.ajax.ConfigurationExtender>} [ext] Optional extender with additional options
              * that overwrite the options given in `cfg`.
              * @return {Promise<PrimeFaces.ajax.ResponseData>} A promise that resolves once the AJAX requests is done.
@@ -417,10 +453,10 @@ if (!PrimeFaces.ajax) {
             /**
              * Performs the early collection of post parameters (form element values) if the request is configured that
              * way. See: https://github.com/primefaces/primefaces/issues/109
-             * 
+             *
              * @param {Partial<PrimeFaces.ajax.Configuration>} cfg Configuration for the AJAX request to send, such as
              * the HTTP method, the URL, and the content of the request.
-             * @return {PrimeFaces.ajax.ServerCallbackParameter[]} The collected form element values to be sent with the request.
+             * @return {PrimeFaces.ajax.RequestParameter[]} The collected form element values to be sent with the request.
              */
             collectEarlyPostParams: function(cfg) {
 
@@ -461,7 +497,7 @@ if (!PrimeFaces.ajax) {
              * @param {Partial<PrimeFaces.ajax.Configuration>} cfg Configuration for the AJAX request to send, such as
              * the HTTP method, the URL, and the content of the request.
              * @return {boolean|undefined} `false` if the AJAX request is to be canceled, `true` or `undefined`
-             * otherwise. 
+             * otherwise.
              */
             send: function(cfg) {
                 PrimeFaces.debug('Initiating ajax request.');
@@ -523,19 +559,11 @@ if (!PrimeFaces.ajax) {
 
                 PrimeFaces.debug('Form to post ' + form.attr('id') + '.');
 
-                var postURL = form.attr('action'),
-                encodedURLfield = form.children("input[name*='javax.faces.encodedURL']"),
-                postParams = [];
+                var postURL = PrimeFaces.ajax.Utils.getPostUrl(form);
+                var postParams = [];
 
-                // See #6857 - parameter namespace for porlet
+                // See #6857 - parameter namespace for Portlets
                 var parameterPrefix = PrimeFaces.ajax.Request.extractParameterNamespace(form);
-
-                //portlet support
-                var portletFormsSelector = null;
-                if(encodedURLfield.length > 0) {
-                    portletFormsSelector = 'form[id*="' + parameterPrefix + '"]';
-                    postURL = encodedURLfield.val();
-                }
 
                 PrimeFaces.debug('URL to post ' + postURL + '.');
 
@@ -574,7 +602,7 @@ if (!PrimeFaces.ajax) {
                 // fallback to @all if no process was defined by the user
                 else {
                     var definedProcess = PrimeFaces.ajax.Request.resolveComponentsForAjaxCall(cfg, 'process');
-                    if (definedProcess === undefined || definedProcess.length == 0) {
+                    if (definedProcess === undefined || definedProcess.length === 0) {
                         processIds = '@all';
                     }
                 }
@@ -690,7 +718,7 @@ if (!PrimeFaces.ajax) {
                     cache : false,
                     dataType : "xml",
                     data : postData,
-                    portletForms: portletFormsSelector,
+                    portletForms: PrimeFaces.ajax.Utils.getPorletForms(form, parameterPrefix),
                     source: cfg.source,
                     global: false,
                     beforeSend: function(xhr, settings) {
@@ -721,7 +749,7 @@ if (!PrimeFaces.ajax) {
                         }
 
                         var location = xhr.getResponseHeader("Location");
-                        if (xhr.status == 401 && location) {
+                        if (xhr.status === 401 && location) {
                             PrimeFaces.debug('Unauthorized status received. Redirecting to ' + location);
                             window.location = location;
                             return;
@@ -838,14 +866,14 @@ if (!PrimeFaces.ajax) {
             },
 
             /**
-             * Adds a new server callback parameter to the given list of parameters. Optionally add a prefix to the
-             * name.
+             * Appends a request parameter to the given list of parameters.
+             * Optionally add a prefix to the name, this is used for Portlet namespacing.
              * @template [TValue=any] Type of the parameter value.
-             * @param {PrimeFaces.ajax.ServerCallbackParameter<TValue>[]} params List of parameters to which a new
+             * @param {PrimeFaces.ajax.RequestParameter<TValue>[]} params List of parameters to which a new
              * parameter is added.
              * @param {string} name Name of the new parameter to add.
              * @param {TValue} value Value of the parameter to add.
-             * @param {string} [parameterPrefix] Optional prefix that is added in front of the name. 
+             * @param {string} [parameterPrefix] Optional prefix that is added in front of the name.
              */
             addParam: function(params, name, value, parameterPrefix) {
                 // add namespace if not available
@@ -859,15 +887,34 @@ if (!PrimeFaces.ajax) {
             },
 
             /**
+             * Appends a request parameter to the given list of parameters.
+             * Optionally add a prefix to the name, this is used for Portlet namespacing.
+             * @template [TValue=any] Type of the parameter values.
+             * @param {FormData} formData the FormData.
+             * @param {string} name Name of the new parameter to add.
+             * @param {TValue} value Value of the parameter to add.
+             * @param {string} [parameterPrefix] Optional prefix that is added in front of the name.
+             */
+            addFormData: function(formData, name, value, parameterPrefix) {
+                // add namespace if not available
+                if (parameterPrefix || !name.indexOf(parameterPrefix) === 0) {
+                    formData.append(parameterPrefix + name, value);
+                }
+                else {
+                    formData.append(name, value);
+                }
+            },
+
+            /**
              * Adds a list of callback parameters to the given list. Optionally prepends a prefix to the name of each
              * added parameter.
              * @template [TValue=any] Type of the parameter values.
-             * @param {PrimeFaces.ajax.ServerCallbackParameter<TValue>[]} params List of callback parameters to which
+             * @param {PrimeFaces.ajax.RequestParameter<TValue>[]} params List of callback parameters to which
              * parameters are added.
-             * @param {PrimeFaces.ajax.ServerCallbackParameter<TValue>[]} paramsToAdd List of callback parameters to
+             * @param {PrimeFaces.ajax.RequestParameter<TValue>[]} paramsToAdd List of callback parameters to
              * add.
              * @param {string} [parameterPrefix] Optional prefix that is added in front of the name of the added
-             * callback parameters. 
+             * callback parameters.
              */
             addParams: function(params, paramsToAdd, parameterPrefix) {
 
@@ -883,14 +930,14 @@ if (!PrimeFaces.ajax) {
             },
 
             /**
-             * Adds a new callback parameter to the given list. The value of the parameter is taken from the input
+             * Adds a new request parameter to the given list. The value of the parameter is taken from the input
              * element of the given form. The input element must have the same name as the name of the parameter to add.
-             * Optionally add a prefix to the name.
-             * @param {PrimeFaces.ajax.ServerCallbackParameter[]} params List of callback parameters to the new
+             * Optionally add a prefix to the name, which used for Portlet namespacing.
+             * @param {PrimeFaces.ajax.RequestParameter[]} params List of request parameters to the new
              * parameter is added.
              * @param {string} name Name of the new parameter to add
              * @param {JQuery} form An HTML FORM element that contains an INPUT element with the given name.
-             * @param {string} [parameterPrefix] Optional prefix that is added in front of the name. 
+             * @param {string} [parameterPrefix] Optional prefix that is added in front of the name.
              */
             addParamFromInput: function(params, name, form, parameterPrefix) {
                 var input = null,
@@ -908,9 +955,36 @@ if (!PrimeFaces.ajax) {
                 }
             },
 
+
             /**
-             * Finds the namespace (prefix) for the parameters of the given form. This namespace is, for example,
-             * prefixed to the name of the submitted input fields.
+             * Adds a new request parameter to the given FormData. The value of the parameter is taken from the input
+             * element of the given form. The input element must have the same name as the name of the parameter to add.
+             * Optionally add a prefix to the name, which used for Portlet namespacing.
+             * @param {FormData} formData The FormData.
+             * @param {string} name Name of the new parameter to add
+             * @param {JQuery} form An HTML FORM element that contains an INPUT element with the given name.
+             * @param {string} [parameterPrefix] Optional prefix that is added in front of the name.
+             */
+            addFormDataFromInput: function(formData, name, form, parameterPrefix) {
+                var input = null,
+                    escapedName = $.escapeSelector(name);
+                if (parameterPrefix) {
+                    input = form.children("input[name*='" + escapedName + "']");
+                }
+                else {
+                    input = form.children("input[name='" + escapedName + "']");
+                }
+
+                if (input && input.length > 0) {
+                    var value = input.val();
+                    PrimeFaces.ajax.Request.addFormData(formData, name, value, parameterPrefix);
+                }
+            },
+
+            /**
+             * Finds the namespace (prefix) for the parameters of the given form.
+             * This is required for Porlets as a Portlet contains multiple JSF views and we must only process and update the forms/inputs of the current view / application.
+             * Later the namespace is used for all post params.
              * @param {JQuery} form An HTML FORM element.
              * @return {string | null} The namespace for the parameters of the given form, or `null` when the form does
              * not specifiy a namespace.
@@ -932,10 +1006,10 @@ if (!PrimeFaces.ajax) {
              * removes all parameters from the second array whose name is equal to one of the parameters in the first
              * array. The given input array are not modified.
              * @template [TValue=any] Type of the parameter values.
-             * @param {PrimeFaces.ajax.ServerCallbackParameter<TValue>[]} arr1 A list of parameters for comparison.
-             * @param {PrimeFaces.ajax.ServerCallbackParameter<TValue>[]} arr2 A list of additional parameters.
-             * @return {PrimeFaces.ajax.ServerCallbackParameter<TValue>[]} An list of parameters that are in the second
-             * array, but not in the first. 
+             * @param {PrimeFaces.ajax.RequestParameter<TValue>[]} arr1 A list of parameters for comparison.
+             * @param {PrimeFaces.ajax.RequestParameter<TValue>[]} arr2 A list of additional parameters.
+             * @return {PrimeFaces.ajax.RequestParameter<TValue>[]} An list of parameters that are in the second
+             * array, but not in the first.
              */
             arrayCompare: function(arr1, arr2) {
                 // loop arr1 params
@@ -950,6 +1024,38 @@ if (!PrimeFaces.ajax) {
                 });
 
                 return arr2;
+            },
+
+            /**
+             * Creates a FormData which can be used for a Faces AJAX request on the current view.
+             * It already contains all required parameters like ViewState or ClientWindow.
+             *
+             * @param {HTMLElement} form The cloest form of the request source.
+             * @param {string} parameterPrefix The Portlet parameter namespace.
+             * @param {string} source The id of the request source.
+             * @param {string} process A comma seperated list of components which should be processed.
+             * @param {string} update A comma seperated list of components which should be updated.
+             * @return {FormData} The created FormData.
+             */
+            createFacesAjaxFormData: function(form, parameterPrefix, source, process, update) {
+                var formData = new FormData();
+
+                PrimeFaces.ajax.Request.addFormData(formData, PrimeFaces.PARTIAL_REQUEST_PARAM, true, parameterPrefix);
+                PrimeFaces.ajax.Request.addFormData(formData, PrimeFaces.PARTIAL_SOURCE_PARAM, source, parameterPrefix);
+                if (process) {
+                    PrimeFaces.ajax.Request.addFormData(formData, PrimeFaces.PARTIAL_PROCESS_PARAM, process, parameterPrefix);
+                }
+                if (update) {
+                    PrimeFaces.ajax.Request.addFormData(formData, PrimeFaces.PARTIAL_UPDATE_PARAM, update, parameterPrefix);
+                }
+
+                PrimeFaces.ajax.Request.addFormDataFromInput(formData, PrimeFaces.VIEW_STATE, form, parameterPrefix);
+                PrimeFaces.ajax.Request.addFormDataFromInput(formData, PrimeFaces.CLIENT_WINDOW, form, parameterPrefix);
+                PrimeFaces.ajax.Request.addFormDataFromInput(formData, PrimeFaces.csp.NONCE_INPUT, form, parameterPrefix);
+                PrimeFaces.ajax.Request.addFormDataFromInput(formData, 'dsPostWindowId', form, parameterPrefix);
+                PrimeFaces.ajax.Request.addFormDataFromInput(formData, 'dspwid', form, parameterPrefix);
+
+                return formData;
             }
         },
 
@@ -1138,7 +1244,7 @@ if (!PrimeFaces.ajax) {
 
             /**
              * Handles an `update` AJAX action by calling the given update handler. When no update handler is given,
-             * replaces the HTML content of the element with the new content. 
+             * replaces the HTML content of the element with the new content.
              * @template {PrimeFaces.widget.BaseWidget} [TWidget=PrimeFaces.widget.BaseWidget] Type of the widget which
              * triggered the AJAX request.
              * @param {Node} node The XML node of the `update` action.
@@ -1157,7 +1263,7 @@ if (!PrimeFaces.ajax) {
             },
 
             /**
-             * Handles an `eval` AJAX action by evaluating the returned JavaScript. 
+             * Handles an `eval` AJAX action by evaluating the returned JavaScript.
              * @param {Node} node The XML node of the `eval` action.
              * @param {PrimeFaces.ajax.pfXHR} xhr The XHR request to which a response was received.
              */
@@ -1180,7 +1286,7 @@ if (!PrimeFaces.ajax) {
                 if (xhr) {
                     if (node.getAttribute("ln") === "primefaces" && node.getAttribute("type") === "args") {
                         var textContent = node.textContent || node.innerText || node.text;
-                        // it's possible that pfArgs are already defined e.g. if portlet parameter namespacing is enabled
+                        // it's possible that pfArgs are already defined e.g. if Portlet parameter namespacing is enabled
                         // the "parameterPrefix" will be encoded on document start
                         // the other parameters will be encoded on document end
                         // --> see PrimePartialResponseWriter
@@ -1275,9 +1381,9 @@ if (!PrimeFaces.ajax) {
 
         /**
          * Only available for backward compatibility, do not use in new code.
-         * @deprecated Use `PrimeFaces.ajax.Request.handle` instead. 
+         * @deprecated Use `PrimeFaces.ajax.Request.handle` instead.
          * @param {Partial<PrimeFaces.ajax.Configuration>} cfg Configuration for the AJAX request to send, such as
-         * the HTTP method, the URL, and the content of the request. 
+         * the HTTP method, the URL, and the content of the request.
          * @param {Partial<PrimeFaces.ajax.ConfigurationExtender>} [ext] Optional extender with additional options
          * that overwrite the options given in `cfg`.
          * @return {undefined} Always returns `undefined`.

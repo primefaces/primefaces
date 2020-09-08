@@ -221,7 +221,7 @@
         <dependency>
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast</artifactId>
-            <version>4.0.1</version>
+            <version>4.0.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -864,15 +864,6 @@
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
                             <removeIncluded>true</removeIncluded>
-                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/layout/layout.js</output>
-                            <includes>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/layout/0-jquery.layout.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/layout/1-layout.js</include>
-                            </includes>
-                        </aggregation>
-                        <aggregation>
-                            <insertNewLine>true</insertNewLine>
-                            <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/knob/knob.js</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/knob/1-jquery.knob.js</include>
@@ -965,6 +956,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/fileupload/0-jquery.iframe-transport.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/fileupload/1-jquery.fileupload.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/fileupload/2-fileupload.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/fileupload/3-fileupload.simple.js</include>
                             </includes>
                         </aggregation>
                         <aggregation>
@@ -1002,6 +994,15 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/texteditor/1-texteditor.js</include>
                             </includes>
                         </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/filedownload/filedownload.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/filedownload/0-download.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/filedownload/1-pf-filedownload.js</include>
+                            </includes>
+                        </aggregation>
                     </aggregations>
                 </configuration>
             </plugin>
@@ -1037,6 +1038,8 @@
                                 <include>org.apache.commons.io.FilenameUtils</include>
                                 <include>org.apache.commons.io.IOUtils</include>
                                 <include>org.apache.commons.io.input.BoundedInputStream</include>
+                                <include>org.apache.commons.io.output.StringBuilderWriter</include>
+                                <include>org.apache.commons.io.output.ByteArrayOutputStream</include>
                             </includes>
                         </relocation>
                     </relocations>
@@ -1047,6 +1050,8 @@
                                 <include>org/apache/commons/io/FilenameUtils.class</include>
                                 <include>org/apache/commons/io/IOUtils.class</include>
                                 <include>org/apache/commons/io/input/BoundedInputStream.class</include>
+                                <include>org/apache/commons/io/output/StringBuilderWriter.class</include>
+                                <include>org/apache/commons/io/output/ByteArrayOutputStream.class</include>
                             </includes>
                         </filter>
                         <filter>
@@ -1112,6 +1117,18 @@
                                 <relocation>
                                     <pattern>javax.faces</pattern>
                                     <shadedPattern>jakarta.faces</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>javax.el</pattern>
+                                    <shadedPattern>jakarta.el</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>javax.annotation</pattern>
+                                    <shadedPattern>jakarta.annotation</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>javax.servlet</pattern>
+                                    <shadedPattern>jakarta.servlet</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -1300,6 +1317,7 @@
                                 <exclude>**/0-jquery.inputmask.js</exclude>
                                 <exclude>**/raphael.js</exclude>
                                 <exclude>**/theme.css</exclude>
+                                <exclude>**/build/**</exclude>
                             </excludes>
                             <includes>
                                 <include>**/*.js</include>

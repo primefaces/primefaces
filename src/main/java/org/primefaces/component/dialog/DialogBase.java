@@ -69,7 +69,8 @@ public abstract class DialogBase extends UIPanel implements Widget, RTLAware, Cl
         focus,
         fitViewport,
         positionType,
-        responsive
+        responsive,
+        cache
     }
 
     public DialogBase() {
@@ -336,4 +337,14 @@ public abstract class DialogBase extends UIPanel implements Widget, RTLAware, Cl
     public void setResponsive(boolean responsive) {
         getStateHelper().put(PropertyKeys.responsive, responsive);
     }
+
+    public boolean isCache() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.cache, true);
+    }
+
+    public void setCache(boolean cache) {
+        getStateHelper().put(PropertyKeys.cache, cache);
+    }
+
+
 }

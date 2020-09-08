@@ -40,7 +40,7 @@ paginatorAlwaysVisible | true | Boolean | Defines if paginator should be hidden 
 style | null | String | Inline style of the datagrid.
 styleClass | null | String | Style class of the datagrid.
 rowIndexVar | null | String | Name of the iterator to refer each row index.
-lazy | false | Boolean | Defines if lazy loading is enabled for the data component. 
+lazy | false | Boolean | Defines if lazy loading is enabled for the data component. In most cases this is detected automatically based on value-binding to LazyDataModel. So no need to set this explicit.
 emptyMessage | No records found. | String | Text to display when there is no data to display.
 layout | tabular | String | Layout approach to use, valid values are "tabular" and "grid" for responsive grid.
 multiViewState | false | Boolean | Whether to keep DataGrid state across views, defaults to false.

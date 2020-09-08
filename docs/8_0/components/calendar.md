@@ -88,7 +88,7 @@ ajax selection and more.
 | styleClass | null | String | Style class of the component.
 | size | null | Integer | Number of characters used to determine the width of the input element.
 | tabindex | null | Integer | Position of the input element in the tabbing order.
-| title | null | String | Advisory tooltip informaton.
+| title | null | String | Advisory tooltip information.
 | beforeShowDay | null | String | Client side callback to execute before displaying a date, used to customize date display.
 | mask | null | String | Applies a mask using the pattern.
 | timeControlType | slider | String | Defines the type of element to use for time picker, valid values are "slider" and "select".
@@ -196,6 +196,15 @@ Various effects can be used when showing and hiding the popup calendar, options 
 slideDown, fadeIn, blind, bounce, clip, drop, fold and slide.
 
 ## Ajax Behavior Events
+
+**Custom Events:**
+
+| Event | Listener Parameter | Fired |
+| --- | --- | --- |
+| close | - | When the popup is closed.
+| dateSelect | org.primefaces.event.SelectEvent | When a date is selected.
+| viewChange | org.primefaces.event.DateViewChangeEvent | When the date picker changed to a different month or year page.
+
 Calendar provides a _dateSelect_ ajax behavior event to execute an instant ajax selection whenever a
 date is selected. If you define a method as a listener, it will be invoked by passing an
 _org.primefaces.event.SelectEvent_ instance.

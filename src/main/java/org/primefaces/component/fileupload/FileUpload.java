@@ -37,6 +37,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.validator.ValidatorException;
+import org.primefaces.event.FilesUploadEvent;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "fileupload/fileupload.css")
@@ -66,7 +67,7 @@ public class FileUpload extends FileUploadBase {
 
         FacesContext facesContext = getFacesContext();
 
-        if (event instanceof FileUploadEvent) {
+        if (event instanceof FileUploadEvent || event instanceof FilesUploadEvent) {
             MethodExpression me = getListener();
             if (me != null) {
                 me.invoke(facesContext.getELContext(), new Object[]{event});
@@ -90,8 +91,11 @@ public class FileUpload extends FileUploadBase {
                     throw new IllegalArgumentException("Argument of type '" + newValue.getClass().getName() + "' not supported");
                 }
 
-                if (newValue instanceof UploadedFile && "advanced".equals(getMode())) {
+                if (newValue instanceof UploadedFile) {
                     queueEvent(new FileUploadEvent(this, (UploadedFile) newValue));
+                }
+                else if (newValue instanceof UploadedFiles) {
+                    queueEvent(new FilesUploadEvent(this, (UploadedFiles) newValue));
                 }
             }
             catch (VirusException | ValidatorException e) {

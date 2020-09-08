@@ -80,15 +80,24 @@ if (!PrimeFaces.utils) {
 
         /**
          * Creates a new (empty) container for a modal overlay. A modal overlay is an overlay that blocks the content
-         * belown it. To remove the modal overlay, use `PrimeFaces.utils.removeModal`.
+         * below it. To remove the modal overlay, use `PrimeFaces.utils.removeModal`.
          * @param {PrimeFaces.widget.BaseWidget} widget An overlay widget instance.
-         * @param {number} zIndex The z-index to set on the modal overlay.
+         * @param {JQuery} overlay The modal overlay element should be a DIV.
          * @param {() => JQuery} tabbablesCallback A supplier function that return a list of tabbable elements. A
          * tabbable element is an element to which the user can navigate to via the tab key.
          * @return {JQuery} The DOM element for the newly added modal overlay container.
          */
-        addModal: function(widget, zIndex, tabbablesCallback) {
-            var id = widget.id;
+        addModal: function(widget, overlay, tabbablesCallback) {
+            var id = widget.id,
+                zIndex = overlay.css('z-index') - 1;
+            
+            overlay.attr({
+                'role': 'dialog'
+                ,'aria-hidden': false
+                ,'aria-modal': true
+                ,'aria-live': 'polite'
+            });
+            
             PrimeFaces.utils.preventTabbing(id, zIndex, tabbablesCallback);
 
             if (widget.cfg.blockScroll) {
@@ -96,7 +105,6 @@ if (!PrimeFaces.utils) {
             }
 
             var modalId = id + '_modal';
-
             var modalOverlay = $('<div id="' + modalId + '" class="ui-widget-overlay ui-dialog-mask"></div>');
             modalOverlay.appendTo($(document.body));
             modalOverlay.css('z-index' , String(zIndex));
@@ -167,10 +175,20 @@ if (!PrimeFaces.utils) {
          * Given a modal overlay widget, removes the modal overlay element from the DOM. This reverts the changes as
          * made by `PrimeFaces.utils.addModal`.
          * @param {PrimeFaces.widget.BaseWidget} widget A modal overlay widget instance.
+         * @param {JQuery} overlay The modal overlay element should be a DIV.
          */
-        removeModal: function(widget) {
+        removeModal: function(widget, overlay) {
             var id = widget.id;
             var modalId = id + '_modal';
+
+            if (overlay) {
+                overlay.attr({
+                    'role': ''
+                    ,'aria-hidden': true
+                    ,'aria-modal': false
+                    ,'aria-live': 'off' 
+                });
+            }
 
             // if the id contains a ':'
             $(PrimeFaces.escapeClientId(modalId)).remove();

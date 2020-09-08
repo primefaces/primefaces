@@ -72,8 +72,8 @@ powered rich solution with graceful degradation for legacy browsers.
 | validateContentType | false | Boolean | Whether content type validation should be performed, based on the types defined in the accept attribute. Default is false.
 | virusScan | false | Boolean | Whether virus scan should be performed. Default is false.
 | maxChunkSize | 0 | Long | To upload large files in smaller chunks, set this option to a preferred maximum chunk size. If set to 0 (default), null or undefined, or the browser does not support the required Blob API, files will be uploaded as a whole. Only works in "advanced" mode.
-| maxRetries | 30 | Integer | Only for chunked file upload: Amount of retries when upload get´s interrupted due to e.g. unstable network connection. 
-| retryTimeout | 1000 | Integer | Only for chunked file upload: (Base-)Timeout in milliseconds to wait until the next retry. It is multiplied with the retry count. (first retry: retryTimeout * 1, second retry: retryTimeout *2, ...)  
+| maxRetries | 30 | Integer | Only for chunked file upload: Amount of retries when upload get´s interrupted due to e.g. unstable network connection.
+| retryTimeout | 1000 | Integer | Only for chunked file upload: (Base-)Timeout in milliseconds to wait until the next retry. It is multiplied with the retry count. (first retry: retryTimeout * 1, second retry: retryTimeout *2, ...)
 
 ## Getting started with FileUpload
 FileUpload engine on the server side can either be servlet 3.0 or commons fileupload. PrimeFaces
@@ -116,7 +116,7 @@ Servlet in this case. Alternatively you can do a configuration based on url-patt
 
 ## Simple File Upload
 Simple file upload mode works in legacy mode with a file input whose value should be an
-UploadedFile instance. Ajax uploads are not supported in simple upload.
+UploadedFile instance. AJAX uploads are not supported in simple upload, however AJAX is used to automatically upload the file when `auto` is set to `true`.
 
 ```xhtml
 <h:form enctype="multipart/form-data">
@@ -127,7 +127,7 @@ UploadedFile instance. Ajax uploads are not supported in simple upload.
 ```java
 import org.primefaces.model.file.UploadedFile;
 public class FileBean {
-    private SingleUploadedFile file;
+    private UploadedFile file;
     //getter-setter
 }
 ```
@@ -144,22 +144,22 @@ defined `listener` is processed with a `FileUploadEvent` as the parameter.
 ```java
 public class FileBean {
     public void handleFileUpload(FileUploadEvent event) {
-        SingleUploadedFile file = event.getFile();
+        UploadedFile file = event.getFile();
         //application code
     }
 }
 ```
 
 ## Multiple Uploads
-Multiple uploads can be enabled using the multiple attribute so that multiple files can be selected
-from browser dialog. Multiple uploads are not supported in legacy browsers. In advanced mode, it does not send all files in one request, but always
-uses a new request for each file.
+Multiple uploads can be enabled using the `multiple` attribute so that multiple files can be selected from browser dialog.
+Multiple uploads are not supported in legacy browsers.
+In `advanced` mode, it does not send all files in one request, but always uses a new request for each file.
 
 ```xhtml
 <p:fileUpload listener="#{fileBean.handleFileUpload}" multiple="true" />
 ```
 
-However, in simple mode, it is possible to get all updated files at once via the `UploadedFiles` model:
+However, in `simple` mode, it is possible to get all updated files at once via the `UploadedFiles` model:
 ```xhtml
 <p:fileUpload value="#{fileUploadView.files}" multiple="true" mode="simple" />
 <p:commandButton value="Submit" action="#{fileUploadView.upload}" ajax="false"/>
@@ -192,12 +192,13 @@ public class FileUploadView {
 ```
 
 ## Auto Upload
-Default behavior requires users to trigger the upload process, you can change this way by setting
-auto to true. Auto uploads are triggered as soon as files are selected from the dialog.
+Default behavior requires users to trigger the upload process, you can change this way by setting `auto` to `true`.
+Auto uploads are triggered as soon as files are selected from the dialog.
 
 ```xhtml
 <p:fileUpload listener="#{fileBean.handleFileUpload}" auto="true" />
 ```
+
 ## Partial Page Update
 After the fileUpload process completes you can use the PrimeFaces PPR to update any component
 on the page. FileUpload is equipped with the update attribute for this purpose. Following example
@@ -247,8 +248,8 @@ FileUpload resides in a container element which _style_ and _styleClass_ options
 style classes are global, see the main theming section for more information. Following is the list of
 structural style classes
 
-| Class | Applies | 
-| --- | --- | 
+| Class | Applies |
+| --- | --- |
 | .ui-fileupload | Main container element
 | .ui-fileupload-buttonbar | Button bar
 | .ui-fileupload-choose | Browse button
@@ -315,7 +316,7 @@ FileUpload is able to resume uploads that have been canceled (e.g user abort, lo
 > You're free to choose `url-pattern` mapping, as long it doesn't conflict with an existing page
 
 ### Deleting aborted chunked uploads
-For Servlet 3.0 and later versions, uploaded files are automatically removed from the internal 
+For Servlet 3.0 and later versions, uploaded files are automatically removed from the internal
 upload directory after the request is destroyed.
 
 If you're running a Servlet 2.5 container, you'll need to add the following listener to your web.xml:
@@ -326,14 +327,14 @@ If you're running a Servlet 2.5 container, you'll need to add the following list
 ```
 
 Chunks file are put either into directory from Apache Commons or Servlet 3.0, if not defined then into internal temporary upload directory [ServletContext.TMP_DIR](https://docs.oracle.com/javaee/6/api/javax/servlet/ServletContext.html#TEMPDIR). They get removed:
-1. after the last chunk is uploaded and the merged file is created 
+1. after the last chunk is uploaded and the merged file is created
 2. when the user aborts the upload.
 
 Though it is recommended to run a cron-job that deletes incomplete uploaded files.
 
 ## More secure file upload
 
-### Introduction 
+### Introduction
 
 File uploads per se introduce some security risks, for best practices you should consult OWASP's recommendations: https://www.owasp.org/index.php/Unrestricted_File_Upload
 
@@ -344,15 +345,15 @@ Here are some measures that can be taken into account when using PrimeFaces's `f
 2. Consider **restricting file names** of uploaded files. As of PrimeFaces 7.0 this will be double-checked at server side as well: `p:fileUpload allowTypes="/(\.|\/)(gif|jpe?g|png)$/"`. See https://github.com/primefaces/primefaces/issues/2791.
 3. Consider **enabling content type validation**. This feature has been introduced with PrimeFaces 7.0 and can be used by combining the `accept` and `validateContentType` attributes: `p:fileUpload accept="image/*" validateContentType="true"`. For reliable content type validation we recommend to use Apache Tika, which will be picked up automatically if available in classpath. See https://github.com/primefaces/primefaces/issues/4244.
 4. Consider **enabling virus scanning**. This feature has been introduced with PrimeFaces 7.0 and can be enabled with `p:fileUpload virusScan="true"`. See https://github.com/primefaces/primefaces/issues/4256.
-   * **Built-in implementation**: You may either make use of PrimeFaces' basic built-in implementation, that just searches for the file's hash at VirusTotal. Therefore you have to configure accordingly the context param `primefaces.virusscan.VIRUSTOTAL_KEY` in `web.xml`; a key can be obtained for free at [VirusTotal](https://www.virustotal.com/#/join-us). 
-   * **Built-in implementation**: ClamAV Daemon which can send a file over TCP to a running ClamAV service in your network. You have to configure the host/port context params `primefaces.virusscan.CLAMAV_HOST` and `primefaces.virusscan.CLAMAV_PORT` in `web.xml`; More information at [ClamAV API](https://linux.die.net/man/8/clamd). 
+   * **Built-in implementation**: You may either make use of PrimeFaces' basic built-in implementation, that just searches for the file's hash at VirusTotal. Therefore you have to configure accordingly the context param `primefaces.virusscan.VIRUSTOTAL_KEY` in `web.xml`; a key can be obtained for free at [VirusTotal](https://www.virustotal.com/#/join-us).
+   * **Built-in implementation**: ClamAV Daemon which can send a file over TCP to a running ClamAV service in your network. You have to configure the host/port context params `primefaces.virusscan.CLAMAV_HOST` and `primefaces.virusscan.CLAMAV_PORT` in `web.xml`; More information at [ClamAV API](https://linux.die.net/man/8/clamd).
    * **Custom implementation**: Or if more sophisticated virus scanning is required, you can just drop in your custom service provider implementation that will be picked up automatically once available in classpath. In your custom implementation you may leverage your system's virus scanner by using its appropriate API for example.
 
       * Implementation skeleton
 
         ```java
         public class CustomVirusScanner implements org.primefaces.virusscan.VirusScanner {
-        
+
             @Override
             public boolean isEnabled() {
                 // maybe read some config here
@@ -368,12 +369,12 @@ Here are some measures that can be taken into account when using PrimeFaces's `f
             }
         }
 
-      * Service provider registration: 
-      
+      * Service provider registration:
+
       To register the service provider just place a file named `org.primefaces.virusscan.VirusScanner` in the `META-INF/services` directory within your JAR file:
 
         ```
-        com.example.CustomVirusScanner 
+        com.example.CustomVirusScanner
         ```
 
    * **Multiple implementations**: If more than one service provider is available in classpath, all of them will be consulted and must give the green light.
@@ -381,12 +382,12 @@ Here are some measures that can be taken into account when using PrimeFaces's `f
 ## Client Side API
 Widget: _PrimeFaces.widget.SimpleFileUpload_
 
-| Method | Params | Return Type | Description | 
-| --- | --- | --- | --- | 
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
 show() | - | void | Shows file chooser dialog.
 
 Widget: _PrimeFaces.widget.FileUpload_
 
-| Method | Params | Return Type | Description | 
-| --- | --- | --- | --- | 
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
 show() | - | void | Shows file(s) chooser dialog.

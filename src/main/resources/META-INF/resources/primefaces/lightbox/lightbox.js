@@ -401,14 +401,14 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
      * Makes this  lightbox a modal dialog so that the user cannot interact with other content on the page.
      */
     enableModality: function() {
-        PrimeFaces.utils.addModal(this, this.panel.css('z-index') - 1);
+        PrimeFaces.utils.addModal(this, this.panel);
     },
 
     /**
      * Makes this  lightbox a non-modal dialog so that the user can interact with other content on the page.
      */
     disableModality: function() {
-        PrimeFaces.utils.removeModal(this);
+        PrimeFaces.utils.removeModal(this, this.panel);
     },
 
     /**
