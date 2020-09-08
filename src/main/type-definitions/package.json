@@ -102,6 +102,7 @@
     "@types/raphael": "~2.3.0",
     "autonumeric": "~4.5.13",
     "cropperjs": "~1.5.6",
+    "jsplumb": "~2.14.6",
     "moment": "~2.24.0",
     "quill-delta": "~3.6.2",
     "vis-data": "~6.5.0",

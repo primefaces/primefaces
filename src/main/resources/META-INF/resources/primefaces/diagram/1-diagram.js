@@ -28,7 +28,7 @@
  * @prop {number} UpdateElementInfo.x New horizontal position of the element.
  * @prop {number} UpdateElementInfo.y New vertical position of the element.
  * 
- * @prop {JsPlumb.jsPlumbInstance} canvas The JSPlumb instance for this diagram.
+ * @prop {import("jsplumb").jsPlumbInstance} canvas The JSPlumb instance for this diagram.
  * @prop {boolean} connectionChanged Internal state whether the connection was changed before a connect event.
  * 
  * @interface {PrimeFaces.widget.DiagramCfg} cfg The configuration for the {@link Diagram|diagram widget}. You can
@@ -38,14 +38,14 @@
  * 
  * @prop {{uuids: string[]}[]} cfg.connections List of initial connections to be established between nodes.
  * @prop {boolean} cfg.connectionsDetachable Whether connections can be severed by the user.
- * @prop {JsPlumb.OverlaySpec[]} cfg.connectionOverlays Overlays for the connections (arrows, labels, etc.)
+ * @prop {import("jsplumb").OverlaySpec[]} cfg.connectionOverlays Overlays for the connections (arrows, labels, etc.)
  * @prop {string} cfg.containment Constrains dragging to within the bounds of the specified element or region.
- * @prop {JsPlumb.ConnectorSpec} cfg.defaultConnector Connector (straight lines, bezier curves, etc.) to use by default.
- * @prop {(JsPlumb.EndpointOptions & {element: JsPlumb.ElementGroupRef})[]} cfg.endPoints A list of endpoints (ports) of
+ * @prop {import("jsplumb").ConnectorSpec} cfg.defaultConnector Connector (straight lines, bezier curves, etc.) to use by default.
+ * @prop {(import("jsplumb").EndpointOptions & {element: import("jsplumb").ElementGroupRef})[]} cfg.endPoints A list of endpoints (ports) of
  * all diagram nodes.
- * @prop {JsPlumb.PaintStyle} cfg.hoverPaintStyle Paint style to use when hovering.
+ * @prop {import("jsplumb").PaintStyle} cfg.hoverPaintStyle Paint style to use when hovering.
  * @prop {number} cfg.maxConnections Maximum number of allowed connections (per node).
- * @prop {JsPlumb.PaintStyle} cfg.paintStyle Paint style to use when not hovering.
+ * @prop {import("jsplumb").PaintStyle} cfg.paintStyle Paint style to use when not hovering.
  */
 PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
 
