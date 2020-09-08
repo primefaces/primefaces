@@ -521,7 +521,8 @@ public class DataTable extends DataTableBase {
     }
 
     public ColumnGroup getColumnGroup(String target) {
-        for (UIComponent child : getChildren()) {
+        for (int i = 0; i < getChildCount(); i++) {
+            UIComponent child = getChildren().get(i);
             if (child instanceof ColumnGroup) {
                 ColumnGroup colGroup = (ColumnGroup) child;
                 String type = colGroup.getType();
@@ -536,7 +537,8 @@ public class DataTable extends DataTableBase {
     }
 
     public boolean hasFooterColumn() {
-        for (UIComponent child : getChildren()) {
+        for (int i = 0; i < getChildCount(); i++) {
+            UIComponent child = getChildren().get(i);
             if (child.isRendered() && (child instanceof UIColumn)) {
                 UIColumn column = (UIColumn) child;
 
@@ -742,9 +744,10 @@ public class DataTable extends DataTableBase {
     }
 
     public RowExpansion getRowExpansion() {
-        for (UIComponent kid : getChildren()) {
-            if (kid instanceof RowExpansion) {
-                return (RowExpansion) kid;
+        for (int i = 0; i < getChildCount(); i++) {
+            UIComponent child = getChildren().get(i);
+            if (child instanceof RowExpansion) {
+                return (RowExpansion) child;
             }
         }
 
@@ -772,9 +775,10 @@ public class DataTable extends DataTableBase {
     }
 
     public SubTable getSubTable() {
-        for (UIComponent kid : getChildren()) {
-            if (kid instanceof SubTable) {
-                return (SubTable) kid;
+        for (int i = 0; i < getChildCount(); i++) {
+            UIComponent child = getChildren().get(i);
+            if (child instanceof SubTable) {
+                return (SubTable) child;
             }
         }
 
@@ -892,7 +896,8 @@ public class DataTable extends DataTableBase {
     }
 
     public SummaryRow getSummaryRow() {
-        for (UIComponent kid : getChildren()) {
+        for (int i = 0; i < getChildCount(); i++) {
+            UIComponent kid = getChildren().get(i);
             if (kid.isRendered() && kid instanceof SummaryRow) {
                 return (SummaryRow) kid;
             }
@@ -902,7 +907,8 @@ public class DataTable extends DataTableBase {
     }
 
     public HeaderRow getHeaderRow() {
-        for (UIComponent kid : getChildren()) {
+        for (int i = 0; i < getChildCount(); i++) {
+            UIComponent kid = getChildren().get(i);
             if (kid.isRendered() && kid instanceof HeaderRow) {
                 return (HeaderRow) kid;
             }
@@ -915,7 +921,8 @@ public class DataTable extends DataTableBase {
         if (columnsCount == -1) {
             columnsCount = 0;
 
-            for (UIComponent kid : getChildren()) {
+            for (int i = 0; i < getChildCount(); i++) {
+                UIComponent kid = getChildren().get(i);
                 if (kid.isRendered()) {
                     if (kid instanceof Columns) {
                         int dynamicColumnsCount = ((Columns) kid).getDynamicColumns().size();
@@ -947,7 +954,8 @@ public class DataTable extends DataTableBase {
         if (columnsCountWithSpan == -1) {
             columnsCountWithSpan = 0;
 
-            for (UIComponent kid : getChildren()) {
+            for (int i = 0; i < getChildCount(); i++) {
+                UIComponent kid = getChildren().get(i);
                 if (kid.isRendered()) {
                     if (kid instanceof Columns) {
                         int dynamicColumnsCount = ((Columns) kid).getDynamicColumns().size();
@@ -985,7 +993,8 @@ public class DataTable extends DataTableBase {
         FacesContext context = getFacesContext();
         char separator = UINamingContainer.getSeparatorChar(context);
 
-        for (UIComponent child : getChildren()) {
+        for (int i = 0; i < getChildCount(); i++) {
+            UIComponent child = getChildren().get(i);
             if (child instanceof Column) {
                 columns.add((Column) child);
             }
@@ -993,9 +1002,9 @@ public class DataTable extends DataTableBase {
                 Columns uiColumns = (Columns) child;
                 String uiColumnsClientId = uiColumns.getClientId(context);
 
-                for (int i = 0; i < uiColumns.getRowCount(); i++) {
-                    DynamicColumn dynaColumn = new DynamicColumn(i, uiColumns);
-                    dynaColumn.setColumnKey(uiColumnsClientId + separator + i);
+                for (int j = 0; j < uiColumns.getRowCount(); j++) {
+                    DynamicColumn dynaColumn = new DynamicColumn(j, uiColumns);
+                    dynaColumn.setColumnKey(uiColumnsClientId + separator + j);
                     columns.add(dynaColumn);
                 }
             }

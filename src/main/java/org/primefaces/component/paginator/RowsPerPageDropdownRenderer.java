@@ -25,6 +25,7 @@ package org.primefaces.component.paginator;
 
 import java.io.IOException;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIViewRoot;
@@ -39,6 +40,7 @@ import org.primefaces.util.MessageFactory;
 public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
 
     private static final Logger LOGGER = Logger.getLogger(RowsPerPageDropdownRenderer.class.getName());
+    private static final Pattern PATTERN = Pattern.compile("[,]+");
 
     @Override
     public void render(FacesContext context, Pageable pageable) throws IOException {
@@ -49,7 +51,7 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
         if (template != null) {
             ResponseWriter writer = context.getResponseWriter();
             int actualRows = pageable.getRows();
-            String[] options = pageable.getRowsPerPageTemplate().split("[,]+");
+            String[] options = PATTERN.split(pageable.getRowsPerPageTemplate());
             String label = pageable.getRowsPerPageLabel();
             if (label != null) {
                 LOGGER.info("RowsPerPageLabel attribute is deprecated, use 'primefaces.paginator.aria.ROWS_PER_PAGE' key instead to override default message.");
