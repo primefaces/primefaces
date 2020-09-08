@@ -175,9 +175,8 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
 
         if(this.connectionChanged) {
             options.params.push({name: this.id + '_connectionChanged', value: true});
-        } else {
-            this.connectionChanged = false;
         }
+        this.connectionChanged = false;
 
         if(this.hasBehavior('connect')) {
             this.callBehavior('connect', options);
