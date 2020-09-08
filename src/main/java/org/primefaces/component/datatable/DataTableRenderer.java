@@ -442,8 +442,8 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         encodeThead(context, table);
-        encodeTFoot(context, table);
         encodeTbody(context, table, false);
+        encodeTFoot(context, table);
 
         writer.endElement("table");
         writer.endElement("div");
