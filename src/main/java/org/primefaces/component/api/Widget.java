@@ -31,7 +31,7 @@ import org.primefaces.util.LangUtils;
 
 public interface Widget {
 
-    static final String ATTR_WIDGET_VAR_PATTERN = Widget.class.getName() + ".ATTR_WIDGET_VAR_PATTERN";
+    String ATTR_WIDGET_VAR_PATTERN = Widget.class.getName() + ".ATTR_WIDGET_VAR_PATTERN";
 
     // backwards compatibility
     default String resolveWidgetVar() {
