@@ -1125,7 +1125,8 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
 
     protected boolean visitColumnContent(VisitContext context, VisitCallback callback, UIComponent component) {
         if (component.getChildCount() > 0) {
-            for (UIComponent grandkid : component.getChildren()) {
+            for (int i = 0; i < component.getChildCount(); i++) {
+                UIComponent grandkid = component.getChildren().get(i);
                 if (grandkid.visitTree(context, callback)) {
                     return true;
                 }
