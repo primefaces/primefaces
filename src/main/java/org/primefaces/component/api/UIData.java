@@ -266,22 +266,21 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
         getStateHelper().put(PropertyKeys.rowStatePreserved, _paginator);
     }
 
-    /**
-     * Resets row-count to the initial value.
-     */
-    public void resetRows2InitialValue() {
-        Object rows = getStateHelper().eval(PropertyKeys.internal_rowsInitialValue);
-        if (rows != null) {
-            setRows((int) rows);
-        }
-    }
-
-    /**
-     * Removes row-count from StateHelper.
-     * This may be relevant when rows-attribute is bound to a value-expression and the value in the backing bean was modified.
-     */
     public void resetRows() {
-        getStateHelper().remove(PropertyKeys.rows);
+        ELContext elContext = getFacesContext().getELContext();
+        ValueExpression rowsVe = ValueExpressionAnalyzer.getExpression(
+                elContext, getValueExpression(PropertyKeys.rows.name()));
+        if (rowsVe != null) {
+            //ValueExpression --> remove state to ensure the VE is re-evaluated
+            getStateHelper().remove(PropertyKeys.rows);
+        }
+        else {
+            //normal attribute value --> restore inital rows
+            Object rows = getStateHelper().eval(PropertyKeys.internal_rowsInitialValue);
+            if (rows != null) {
+                setRows((int) rows);
+            }
+        }
     }
 
     public void calculateFirst() {
