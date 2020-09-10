@@ -719,7 +719,7 @@ public class DataTable extends DataTableBase {
     public void reset() {
         resetValue();
         setFirst(0);
-        resetRows();
+        resetRows2InitialValue();
         reset = true;
         setValueExpression("sortBy", getDefaultSortByVE());
         setSortFunction(getDefaultSortFunction());
