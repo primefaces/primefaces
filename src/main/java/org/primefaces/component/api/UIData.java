@@ -120,7 +120,8 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
         saved,
         lazy,
         rowStatePreserved,
-        touchable;
+        touchable,
+        internal_rowsInitialValue;
     }
 
     public boolean isPaginator() {
@@ -157,6 +158,13 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
 
     @Override
     public void setRows(int rows) {
+        if (getStateHelper().eval(PropertyKeys.internal_rowsInitialValue) == null) {
+            int rowsOld = getRows();
+            if (rowsOld != 0) {
+                getStateHelper().put(UIData.PropertyKeys.internal_rowsInitialValue, rowsOld);
+            }
+        }
+
         if (rows < 0) {
             throw new IllegalArgumentException(String.valueOf(rows));
         }
@@ -259,7 +267,10 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
     }
 
     public void resetRows() {
-        getStateHelper().remove(PropertyKeys.rows);
+        Object rows = getStateHelper().eval(PropertyKeys.internal_rowsInitialValue);
+        if (rows != null) {
+            setRows((int) rows);
+        }
     }
 
     public void calculateFirst() {
