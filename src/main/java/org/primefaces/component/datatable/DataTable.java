@@ -251,7 +251,8 @@ public class DataTable extends DataTableBase {
     }
 
     public String getColumnSelectionMode() {
-        for (UIComponent child : getChildren()) {
+        for (int i = 0; i < getChildCount(); i++) {
+            UIComponent child = getChildren().get(i);
             if (child.isRendered() && (child instanceof Column)) {
                 String selectionMode = ((Column) child).getSelectionMode();
 
@@ -884,12 +885,13 @@ public class DataTable extends DataTableBase {
 
     public String getSelectedRowKeysAsString() {
         StringBuilder builder = SharedStringBuilder.get(SB_GET_SELECTED_ROW_KEYS_AS_STRING);
-        for (Iterator<Object> iter = getSelectedRowKeys().iterator(); iter.hasNext(); ) {
-            builder.append(iter.next());
 
-            if (iter.hasNext()) {
+        for (int i = 0; i < getSelectedRowKeys().size(); i++) {
+            if (i > 0) {
                 builder.append(",");
             }
+
+            builder.append(getSelectedRowKeys().get(i));
         }
 
         return builder.toString();
