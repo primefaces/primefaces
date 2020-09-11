@@ -27,6 +27,7 @@ if (window.PrimeFaces) {
         
         var highlight = cfg.highlight === undefined || cfg.highlight === true;
         var focus = cfg.focus === undefined || cfg.focus === true;
+        var renderMessages = cfg.renderMessages === undefined || cfg.renderMessages === true;
 
         var process;
         if (cfg.ajax && cfg.process) {
@@ -44,7 +45,7 @@ if (window.PrimeFaces) {
             update = $(cfg.source).closest('form');
         }
 
-        return PrimeFaces.validation.validate(process, update, highlight, focus);
+        return PrimeFaces.validation.validate(process, update, highlight, focus, renderMessages);
     };
 
     /**
@@ -144,7 +145,8 @@ if (window.PrimeFaces) {
             'u': 'update',
             'a': 'ajax',
             'h': 'highlight',
-            'f': 'focus'
+            'f': 'focus',
+            'r': 'renderMessages'
         },
 
         /**
@@ -154,9 +156,10 @@ if (window.PrimeFaces) {
          * @param {string | HTMLElement | JQuery} update The elements to be updated.
          * @param {boolean} highlight If invalid elements should be highlighted.
          * @param {boolean} focus If the first invalid element should be focused.
+         * @param {boolean} renderMessages If messages should be rendered.
          * @return {boolean} `true` if the request would not result in validation errors, or `false` otherwise.
          */
-        validate : function(process, update, highlight, focus) {
+        validate : function(process, update, highlight, focus, renderMessages) {
             var vc = PrimeFaces.validation.ValidationContext;
 
             process = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(process);
@@ -196,10 +199,12 @@ if (window.PrimeFaces) {
             }
 
             // render messages
-            update = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(update);
-            for (var i = 0; i < update.length; i++) {
-                var component = update.eq(i);
-                PrimeFaces.validation.Utils.renderMessages(vc.messages, component);
+            if (renderMessages === true) {
+                update = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(update);
+                for (var i = 0; i < update.length; i++) {
+                    var component = update.eq(i);
+                    PrimeFaces.validation.Utils.renderMessages(vc.messages, component);
+                }
             }
 
             //focus first element
