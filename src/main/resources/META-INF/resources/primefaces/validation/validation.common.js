@@ -25,9 +25,10 @@ if (window.PrimeFaces) {
             }
         }
         
-        var highlight = cfg.highlight === undefined || cfg.highlight === true;
-        var focus = cfg.focus === undefined || cfg.focus === true;
-        var renderMessages = cfg.renderMessages === undefined || cfg.renderMessages === true;
+        var highlight = cfg.highlight || true;
+        var focus = cfg.focus || true;
+        var renderMessages = cfg.renderMessages || true;
+        var validateInvisibleElements = cfg.validateInvisibleElements || false;
 
         var process;
         if (cfg.ajax && cfg.process) {
@@ -45,7 +46,7 @@ if (window.PrimeFaces) {
             update = $(cfg.source).closest('form');
         }
 
-        return PrimeFaces.validation.validate(process, update, highlight, focus, renderMessages);
+        return PrimeFaces.validation.validate(process, update, highlight, focus, renderMessages, validateInvisibleElements);
     };
 
     /**
@@ -146,7 +147,8 @@ if (window.PrimeFaces) {
             'a': 'ajax',
             'h': 'highlight',
             'f': 'focus',
-            'r': 'renderMessages'
+            'r': 'renderMessages',
+            'v': 'validateInvisibleElements'
         },
 
         /**
@@ -157,9 +159,10 @@ if (window.PrimeFaces) {
          * @param {boolean} highlight If invalid elements should be highlighted.
          * @param {boolean} focus If the first invalid element should be focused.
          * @param {boolean} renderMessages If messages should be rendered.
+         * @param {boolean} validateInvisibleElements If invisible elements should be validated.
          * @return {boolean} `true` if the request would not result in validation errors, or `false` otherwise.
          */
-        validate : function(process, update, highlight, focus, renderMessages) {
+        validate : function(process, update, highlight, focus, renderMessages, validateInvisibleElements) {
             var vc = PrimeFaces.validation.ValidationContext;
 
             process = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(process);
@@ -172,8 +175,11 @@ if (window.PrimeFaces) {
                     inputs = inputs.add(component);
                 }
                 else {
-                    inputs = inputs.add(component.find(':input:visible:enabled:not(:button)[name]'));
+                    inputs = inputs.add(component.find(':input:enabled:not(:button)[name]'));
                 }
+            }
+            if (validateInvisibleElements === false) {
+                inputs = inputs.filter(':visible');
             }
             for (var i = 0; i < inputs.length; i++) {
                 PrimeFaces.validation.validateInput(inputs.eq(i), highlight);
@@ -189,6 +195,9 @@ if (window.PrimeFaces) {
                 nonInputs = nonInputs.add(component.find(':not(:input)'));
             }
             nonInputs = nonInputs.filter('[data-p-val]');
+            if (validateInvisibleElements === false) {
+                nonInputs = nonInputs.filter(':visible');
+            }
             for (var i = 0; i < nonInputs.length; i++) {
                 PrimeFaces.validation.validateComplex(nonInputs.eq(i), highlight);
             }

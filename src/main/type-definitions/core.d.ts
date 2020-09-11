@@ -948,7 +948,12 @@ declare namespace PrimeFaces.validation {
         /**
          * `true` if messages should be rendered. Default is `true`.
          */
-        renderMessages: boolean;
+        renderMessages: boolean,
+
+        /**
+         * `true` if invisible elements should be validated. Default is `false`.
+         */
+        validateInvisibleElements: boolean;
     }
 
     /**
@@ -963,7 +968,8 @@ declare namespace PrimeFaces.validation {
         update: "u",
         highlight: "h",
         focus: "f",
-        renderMessages: "r";
+        renderMessages: "r",
+        validateInvisibleElements: "v";
     }>;
 }
 
