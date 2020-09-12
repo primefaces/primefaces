@@ -25,14 +25,12 @@ package org.primefaces.component.autocomplete;
 
 import java.io.IOException;
 import java.util.*;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.event.PhaseId;
-
 import org.primefaces.component.column.Column;
 import org.primefaces.event.AutoCompleteEvent;
 import org.primefaces.expression.SearchExpressionFacade;
@@ -321,7 +319,10 @@ public class AutoCompleteRenderer extends InputRenderer {
         if (disabled) {
             writer.writeAttribute("disabled", "disabled", null);
         }
-        if (ac.getTabindex() != null) {
+        if (ac.getDropdownTabindex() != null) {
+            writer.writeAttribute("tabindex", ac.getDropdownTabindex(), null);
+        }
+        else if (ac.getTabindex() != null) {
             writer.writeAttribute("tabindex", ac.getTabindex(), null);
         }
 

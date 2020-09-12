@@ -78,7 +78,8 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
         dynamic,
         autoSelection,
         escape,
-        queryMode
+        queryMode,
+        dropdownTabindex
     }
 
     public AutoCompleteBase() {
@@ -432,5 +433,13 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
 
     public void setQueryMode(String queryMode) {
         getStateHelper().put(PropertyKeys.queryMode, queryMode);
+    }
+
+    public String getDropdownTabindex() {
+        return (String) getStateHelper().eval(PropertyKeys.dropdownTabindex, null);
+    }
+
+    public void setDropdownTabindex(String dropdownTabindex) {
+        getStateHelper().put(PropertyKeys.dropdownTabindex, dropdownTabindex);
     }
 }
