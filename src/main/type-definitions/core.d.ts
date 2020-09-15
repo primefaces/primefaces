@@ -943,7 +943,17 @@ declare namespace PrimeFaces.validation {
         /**
          * `true` if the first invalid element should be focussed. Default is `true`.
          */
-        focus: boolean;
+        focus: boolean,
+
+        /**
+         * `true` if messages should be rendered. Default is `true`.
+         */
+        renderMessages: boolean,
+
+        /**
+         * `true` if invisible elements should be validated. Default is `false`.
+         */
+        validateInvisibleElements: boolean;
     }
 
     /**
@@ -957,7 +967,9 @@ declare namespace PrimeFaces.validation {
         process: "p",
         update: "u",
         highlight: "h",
-        focus: "f";
+        focus: "f",
+        renderMessages: "r",
+        validateInvisibleElements: "v";
     }>;
 }
 

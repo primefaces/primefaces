@@ -101,6 +101,8 @@ AutoComplete provides live suggestions while an input is being typed.
 | autoSelection | true | Boolean | Defines if auto selection of items that are equal to the typed input is enabled. If true, an item that is equal to the typed input is selected.
 | escape | true | Boolean | Defines if autocomplete results are escaped or not.
 | queryMode | server | String | Specifies query mode, valid values are "server" (default), "client" and "hybrid". [more](https://github.com/primefaces/primefaces/issues/5298)
+| tabindex | null | String | Position of the input field in the tabbing order.
+| dropdownTabindex | null | String | Position of the dropdown button in the tabbing order.
 
 ## Getting Started with AutoComplete
 AutoComplete is an input component so it requires a value as usual. Suggestions are loaded by

@@ -1746,6 +1746,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Position of the dropdown button in the tabbing order.]]>
+            </description>
+            <name>dropdownTabindex</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>

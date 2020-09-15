@@ -23,12 +23,15 @@
  */
 package org.primefaces.component.api;
 
+import java.util.regex.Pattern;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import org.primefaces.util.LangUtils;
 
 public interface Widget {
+
+    String ATTR_WIDGET_VAR_PATTERN = Widget.class.getName() + ".ATTR_WIDGET_VAR_PATTERN";
 
     // backwards compatibility
     default String resolveWidgetVar() {
@@ -37,13 +40,19 @@ public interface Widget {
 
     default String resolveWidgetVar(FacesContext context) {
         UIComponent component = (UIComponent) this;
-        String userWidgetVar = (String) component.getAttributes().get("widgetVar");
 
+        String userWidgetVar = (String) component.getAttributes().get("widgetVar");
         if (!LangUtils.isValueBlank(userWidgetVar)) {
             return userWidgetVar;
         }
-        else {
-            return "widget_" + component.getClientId(context).replaceAll("-|" + UINamingContainer.getSeparatorChar(context), "_");
+
+        Pattern pattern = (Pattern) context.getAttributes().get(ATTR_WIDGET_VAR_PATTERN);
+        if (pattern == null) {
+            pattern = Pattern.compile("-|" + UINamingContainer.getSeparatorChar(context));
+            context.getAttributes().put(ATTR_WIDGET_VAR_PATTERN, pattern);
         }
+
+        String widgetVar = "widget_" + component.getClientId(context);
+        return pattern.matcher(widgetVar).replaceAll("_");
     }
 }
