@@ -3059,6 +3059,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @param {JQuery} row A row (`TR`) to switch to edit mode. 
      */
     switchToRowEdit: function(row) {
+        // #1499 disable rowReorder while editing
+        if (this.cfg.draggableRows) {
+            this.tbody.sortable("disable");
+        }
+
         if(this.cfg.rowEditMode === "lazy") {
             this.lazyRowEditInit(row);
         }
@@ -3595,6 +3600,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
+        }
+
+        // #1499 enable rowReorder when done editing
+        if (this.cfg.draggableRows) {
+            this.tbody.sortable("enable");
         }
     },
 
