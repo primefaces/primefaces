@@ -14,7 +14,7 @@ treetable and more.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 | id | null | String | Unique identifier of the component
 | rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -36,7 +36,7 @@ treetable and more.
 | selectionMode | null | String | Enables selection mode.
 | filterMaxLength | null | Integer | Maximum number of characters for an input filter.
 | resizable | true | Boolean | Specifies resizable feature at column level. Datatable's resizableColumns must be enabled to use this option.
-| width | null | String | Width in pixels or percentage.
+| width | null | String | The width of the column ('px' as default if no length unit is defined)
 | exportable | true | Boolean | Defines if the column should be exported by dataexporter.
 | filterValue | null | Object | Value of the filter field.
 | toggleable | true | Boolean | Defines if panel is toggleable by columnToggler component. Default value is true and a false value marks the column as static.
