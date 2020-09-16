@@ -30,7 +30,6 @@ npm install --save-dev  \
   @types/googlemaps \
   @types/jquery \
   @types/jqueryui \
-  @types/jquery.cleditor
   @types/moment-timezone \
   @types/quill \
   @types/raphael \
