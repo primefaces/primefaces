@@ -122,7 +122,7 @@ ajax selection and more.
 | tabindex | null | Integer | Position of the input element in the tabbing order.
 | timeInput | false | Boolean | Allows direct input in time field.
 | timeOnly | false * | Boolean | Shows only timepicker without date. (* Defaults to true, when value is bound to java.time.LocalTime)
-| timeZone | null | Time Zone | String a java.time.ZoneId instance or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to ZoneId.systemDefault().
+| timeZone | null | Time Zone | String a java.time.ZoneId instance or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to ZoneId.systemDefault(). (This attribute is only relevant for java.util.Date in combination with the built-in converter.)
 | title | null | String | Advisory tooltip information.
 | touchUI | false | Boolean | Activates touch friendly mode
 | touchable | true | Boolean | Enable touch support if browser detection supports it.
