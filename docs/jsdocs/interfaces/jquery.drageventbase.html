@@ -311,8 +311,8 @@
 							</dd>
 							<dt>example</dt>
 							<dd><p>​ ````Alert that currentTarget matches the <code>this</code> keyword.</p>
-								<pre><code class="language-javascript">$( <span class="hljs-string">"p"</span> ).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
-alert( event.currentTarget === <span class="hljs-keyword">this</span> ); <span class="hljs-comment">// true</span>
+								<pre><code class="language-javascript">$( <span class="hljs-string">&quot;p&quot;</span> ).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
+alert( event.currentTarget === <span class="hljs-built_in">this</span> ); <span class="hljs-comment">// true</span>
 });</code></pre>
 							</dd>
 						</dl>
@@ -339,11 +339,11 @@ alert( event.currentTarget === <span class="hljs-keyword">this</span> ); <span c
 							<dt>example</dt>
 							<dd><p>​ ````Within a for loop, pass the value of i to the .on() method so that the current iteration&#39;s value is preserved.</p>
 								<pre><code class="language-html"><span class="hljs-meta">&lt;!doctype <span class="hljs-meta-keyword">html</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"utf-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;utf-8&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>event.data demo<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://code.jquery.com/jquery-3.3.1.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://code.jquery.com/jquery-3.3.1.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
 ​
@@ -353,19 +353,19 @@ alert( event.currentTarget === <span class="hljs-keyword">this</span> ); <span c
 <span class="hljs-tag">&lt;<span class="hljs-name">button</span>&gt;</span> 3 <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">button</span>&gt;</span> 4 <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
 ​
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"log"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;log&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 ​
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
-<span class="hljs-keyword">var</span> logDiv = $( <span class="hljs-string">"#log"</span> );
+<span class="hljs-keyword">var</span> logDiv = $( <span class="hljs-string">&quot;#log&quot;</span> );
 ​
 <span class="hljs-keyword">for</span> ( <span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++ ) {
-$( <span class="hljs-string">"button"</span> ).eq( i ).on( <span class="hljs-string">"click"</span>, { <span class="hljs-attr">value</span>: i }, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
+$( <span class="hljs-string">&quot;button&quot;</span> ).eq( i ).on( <span class="hljs-string">&quot;click&quot;</span>, { <span class="hljs-attr">value</span>: i }, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
 <span class="hljs-keyword">var</span> msgs = [
-<span class="hljs-string">"button = "</span> + $( <span class="hljs-keyword">this</span> ).index(),
-<span class="hljs-string">"event.data.value = "</span> + event.data.value,
-<span class="hljs-string">"i = "</span> + i
+<span class="hljs-string">&quot;button = &quot;</span> + $( <span class="hljs-built_in">this</span> ).index(),
+<span class="hljs-string">&quot;event.data.value = &quot;</span> + event.data.value,
+<span class="hljs-string">&quot;i = &quot;</span> + i
 ];
-logDiv.append( msgs.join( <span class="hljs-string">", "</span> ) + <span class="hljs-string">"&lt;br&gt;"</span> );
+logDiv.append( msgs.join( <span class="hljs-string">&quot;, &quot;</span> ) + <span class="hljs-string">&quot;&lt;br&gt;&quot;</span> );
 });
 }
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
@@ -396,8 +396,8 @@ logDiv.append( msgs.join( <span class="hljs-string">", "</span> ) + <span class=
 							</dd>
 							<dt>example</dt>
 							<dd><p>​ ````When a button in any box class is clicked, change the box&#39;s background color to red.</p>
-								<pre><code class="language-javascript">$( <span class="hljs-string">".box"</span> ).on( <span class="hljs-string">"click"</span>, <span class="hljs-string">"button"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
-$( event.delegateTarget ).css( <span class="hljs-string">"background-color"</span>, <span class="hljs-string">"red"</span> );
+								<pre><code class="language-javascript">$( <span class="hljs-string">&quot;.box&quot;</span> ).on( <span class="hljs-string">&quot;click&quot;</span>, <span class="hljs-string">&quot;button&quot;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
+$( event.delegateTarget ).css( <span class="hljs-string">&quot;background-color&quot;</span>, <span class="hljs-string">&quot;red&quot;</span> );
 });</code></pre>
 							</dd>
 						</dl>
@@ -464,9 +464,9 @@ $( event.delegateTarget ).css( <span class="hljs-string">"background-color"</spa
 							<dt>example</dt>
 							<dd><p>​ ````Determine whether the META key was pressed when the event fired.</p>
 								<pre><code class="language-html"><span class="hljs-meta">&lt;!doctype <span class="hljs-meta-keyword">html</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"utf-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;utf-8&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>event.metaKey demo<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="css">
 <span class="hljs-selector-tag">body</span> {
@@ -476,16 +476,16 @@ $( event.delegateTarget ).css( <span class="hljs-string">"background-color"</spa
 <span class="hljs-attribute">padding</span>: <span class="hljs-number">20px</span>;
 }
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://code.jquery.com/jquery-3.3.1.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://code.jquery.com/jquery-3.3.1.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
 ​
-<span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"Test"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"Test"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"checkMetaKey"</span>&gt;</span>Click me!<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"display"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;Test&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;Test&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;checkMetaKey&quot;</span>&gt;</span>Click me!<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;display&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 ​
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
-$( <span class="hljs-string">"#checkMetaKey"</span> ).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
-$( <span class="hljs-string">"#display"</span> ).text( event.metaKey );
+$( <span class="hljs-string">&quot;#checkMetaKey&quot;</span> ).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
+$( <span class="hljs-string">&quot;#display&quot;</span> ).text( event.metaKey );
 });
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 ​
@@ -516,11 +516,11 @@ $( <span class="hljs-string">"#display"</span> ).text( event.metaKey );
 							<dt>example</dt>
 							<dd><p>​ ````Determine the event namespace used.</p>
 								<pre><code class="language-html"><span class="hljs-meta">&lt;!doctype <span class="hljs-meta-keyword">html</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"utf-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;utf-8&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>event.namespace demo<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://code.jquery.com/jquery-3.3.1.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://code.jquery.com/jquery-3.3.1.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
 ​
@@ -528,11 +528,11 @@ $( <span class="hljs-string">"#display"</span> ).text( event.metaKey );
 <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
 ​
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
-$( <span class="hljs-string">"p"</span> ).on( <span class="hljs-string">"test.something"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
+$( <span class="hljs-string">&quot;p&quot;</span> ).on( <span class="hljs-string">&quot;test.something&quot;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
 alert( event.namespace );
 });
-$( <span class="hljs-string">"button"</span> ).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
-$( <span class="hljs-string">"p"</span> ).trigger( <span class="hljs-string">"test.something"</span> );
+$( <span class="hljs-string">&quot;button&quot;</span> ).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
+$( <span class="hljs-string">&quot;p&quot;</span> ).trigger( <span class="hljs-string">&quot;test.something&quot;</span> );
 });
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 ​
@@ -587,9 +587,9 @@ $( <span class="hljs-string">"p"</span> ).trigger( <span class="hljs-string">"te
 							<dt>example</dt>
 							<dd><p>​ ````Show the mouse position relative to the left and top edges of the document (within this iframe).</p>
 								<pre><code class="language-html"><span class="hljs-meta">&lt;!doctype <span class="hljs-meta-keyword">html</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"utf-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;utf-8&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>event.pageX demo<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="css">
 <span class="hljs-selector-tag">body</span> {
@@ -599,15 +599,15 @@ $( <span class="hljs-string">"p"</span> ).trigger( <span class="hljs-string">"te
 <span class="hljs-attribute">padding</span>: <span class="hljs-number">20px</span>;
 }
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://code.jquery.com/jquery-3.3.1.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://code.jquery.com/jquery-3.3.1.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
 ​
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"log"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;log&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 ​
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
-$( <span class="hljs-built_in">document</span> ).on( <span class="hljs-string">"mousemove"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
-$( <span class="hljs-string">"#log"</span> ).text( <span class="hljs-string">"pageX: "</span> + event.pageX + <span class="hljs-string">", pageY: "</span> + event.pageY );
+$( <span class="hljs-built_in">document</span> ).on( <span class="hljs-string">&quot;mousemove&quot;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
+$( <span class="hljs-string">&quot;#log&quot;</span> ).text( <span class="hljs-string">&quot;pageX: &quot;</span> + event.pageX + <span class="hljs-string">&quot;, pageY: &quot;</span> + event.pageY );
 });
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 ​
@@ -638,9 +638,9 @@ $( <span class="hljs-string">"#log"</span> ).text( <span class="hljs-string">"pa
 							<dt>example</dt>
 							<dd><p>​ ````Show the mouse position relative to the left and top edges of the document (within this iframe).</p>
 								<pre><code class="language-html"><span class="hljs-meta">&lt;!doctype <span class="hljs-meta-keyword">html</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"utf-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;utf-8&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>event.pageY demo<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="css">
 <span class="hljs-selector-tag">body</span> {
@@ -650,15 +650,15 @@ $( <span class="hljs-string">"#log"</span> ).text( <span class="hljs-string">"pa
 <span class="hljs-attribute">padding</span>: <span class="hljs-number">20px</span>;
 }
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://code.jquery.com/jquery-3.3.1.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://code.jquery.com/jquery-3.3.1.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
 ​
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"log"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;log&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 ​
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
-$( <span class="hljs-built_in">document</span> ).on( <span class="hljs-string">"mousemove"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
-$( <span class="hljs-string">"#log"</span> ).text( <span class="hljs-string">"pageX: "</span> + event.pageX + <span class="hljs-string">", pageY: "</span> + event.pageY );
+$( <span class="hljs-built_in">document</span> ).on( <span class="hljs-string">&quot;mousemove&quot;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
+$( <span class="hljs-string">&quot;#log&quot;</span> ).text( <span class="hljs-string">&quot;pageX: &quot;</span> + event.pageX + <span class="hljs-string">&quot;, pageY: &quot;</span> + event.pageY );
 });
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 ​
@@ -705,11 +705,11 @@ $( <span class="hljs-string">"#log"</span> ).text( <span class="hljs-string">"pa
 							<dt>example</dt>
 							<dd><p>​ ````Display previous handler&#39;s return value</p>
 								<pre><code class="language-html"><span class="hljs-meta">&lt;!doctype <span class="hljs-meta-keyword">html</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"utf-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;utf-8&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>event.result demo<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://code.jquery.com/jquery-3.3.1.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://code.jquery.com/jquery-3.3.1.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
 ​
@@ -717,11 +717,11 @@ $( <span class="hljs-string">"#log"</span> ).text( <span class="hljs-string">"pa
 <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
 ​
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
-$( <span class="hljs-string">"button"</span> ).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
-<span class="hljs-keyword">return</span> <span class="hljs-string">"hey"</span>;
+$( <span class="hljs-string">&quot;button&quot;</span> ).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
+<span class="hljs-keyword">return</span> <span class="hljs-string">&quot;hey&quot;</span>;
 });
-$( <span class="hljs-string">"button"</span> ).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
-$( <span class="hljs-string">"p"</span> ).html( event.result );
+$( <span class="hljs-string">&quot;button&quot;</span> ).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
+$( <span class="hljs-string">&quot;p&quot;</span> ).html( event.result );
 });
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 ​
@@ -776,9 +776,9 @@ $( <span class="hljs-string">"p"</span> ).html( event.result );
 							<dt>example</dt>
 							<dd><p>​ ````Display the tag&#39;s name on click</p>
 								<pre><code class="language-html"><span class="hljs-meta">&lt;!doctype <span class="hljs-meta-keyword">html</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"utf-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;utf-8&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>event.target demo<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="css">
 <span class="hljs-selector-tag">span</span>, <span class="hljs-selector-tag">strong</span>, <span class="hljs-selector-tag">p</span> {
@@ -787,11 +787,11 @@ $( <span class="hljs-string">"p"</span> ).html( event.result );
 <span class="hljs-attribute">border</span>: <span class="hljs-number">1px</span> solid <span class="hljs-number">#999</span>;
 }
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://code.jquery.com/jquery-3.3.1.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://code.jquery.com/jquery-3.3.1.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
 ​
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"log"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;log&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">strong</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>click<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">strong</span>&gt;</span>
@@ -799,8 +799,8 @@ $( <span class="hljs-string">"p"</span> ).html( event.result );
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 ​
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
-$( <span class="hljs-string">"body"</span> ).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
-$( <span class="hljs-string">"#log"</span> ).html( <span class="hljs-string">"clicked: "</span> + event.target.nodeName );
+$( <span class="hljs-string">&quot;body&quot;</span> ).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
+$( <span class="hljs-string">&quot;#log&quot;</span> ).html( <span class="hljs-string">&quot;clicked: &quot;</span> + event.target.nodeName );
 });
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 ​
@@ -810,11 +810,11 @@ $( <span class="hljs-string">"#log"</span> ).html( <span class="hljs-string">"cl
 							<dt>example</dt>
 							<dd><p>​ ````Implements a simple event delegation: The click handler is added to an unordered list, and the children of its li children are hidden. Clicking one of the li children toggles (see toggle()) their children.</p>
 								<pre><code class="language-html"><span class="hljs-meta">&lt;!doctype <span class="hljs-meta-keyword">html</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"utf-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;utf-8&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>event.target demo<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://code.jquery.com/jquery-3.3.1.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://code.jquery.com/jquery-3.3.1.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
 ​
@@ -836,11 +836,11 @@ $( <span class="hljs-string">"#log"</span> ).html( <span class="hljs-string">"cl
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handler</span>(<span class="hljs-params"> event </span>) </span>{
 <span class="hljs-keyword">var</span> target = $( event.target );
-<span class="hljs-keyword">if</span> ( target.is( <span class="hljs-string">"li"</span> ) ) {
+<span class="hljs-keyword">if</span> ( target.is( <span class="hljs-string">&quot;li&quot;</span> ) ) {
 target.children().toggle();
 }
 }
-$( <span class="hljs-string">"ul"</span> ).click( handler ).find( <span class="hljs-string">"ul"</span> ).hide();
+$( <span class="hljs-string">&quot;ul&quot;</span> ).click( handler ).find( <span class="hljs-string">&quot;ul&quot;</span> ).hide();
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 ​
 <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
@@ -878,9 +878,9 @@ $( <span class="hljs-string">"ul"</span> ).click( handler ).find( <span class="h
 							<dt>example</dt>
 							<dd><p>​ ````Display the time since the click handler last executed.</p>
 								<pre><code class="language-html"><span class="hljs-meta">&lt;!doctype <span class="hljs-meta-keyword">html</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"utf-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;utf-8&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>event.timeStamp demo<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="css">
 <span class="hljs-selector-tag">div</span> {
@@ -891,7 +891,7 @@ $( <span class="hljs-string">"ul"</span> ).click( handler ).find( <span class="h
 <span class="hljs-attribute">overflow</span>: auto;
 }
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://code.jquery.com/jquery-3.3.1.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://code.jquery.com/jquery-3.3.1.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
 ​
@@ -899,12 +899,12 @@ $( <span class="hljs-string">"ul"</span> ).click( handler ).find( <span class="h
 ​
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
 <span class="hljs-keyword">var</span> last, diff;
-$( <span class="hljs-string">"div"</span> ).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
+$( <span class="hljs-string">&quot;div&quot;</span> ).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
 <span class="hljs-keyword">if</span> ( last ) {
 diff = event.timeStamp - last;
-$( <span class="hljs-string">"div"</span> ).append( <span class="hljs-string">"time since last event: "</span> + diff + <span class="hljs-string">"&lt;br&gt;"</span> );
+$( <span class="hljs-string">&quot;div&quot;</span> ).append( <span class="hljs-string">&quot;time since last event: &quot;</span> + diff + <span class="hljs-string">&quot;&lt;br&gt;&quot;</span> );
 } <span class="hljs-keyword">else</span> {
-$( <span class="hljs-string">"div"</span> ).append( <span class="hljs-string">"Click again.&lt;br&gt;"</span> );
+$( <span class="hljs-string">&quot;div&quot;</span> ).append( <span class="hljs-string">&quot;Click again.&lt;br&gt;&quot;</span> );
 }
 last = event.timeStamp;
 });
@@ -958,8 +958,8 @@ last = event.timeStamp;
 							</dd>
 							<dt>example</dt>
 							<dd><p>​ ````On all anchor clicks, alert the event type.</p>
-								<pre><code class="language-javascript">$( <span class="hljs-string">"a"</span> ).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
-alert( event.type ); <span class="hljs-comment">// "click"</span>
+								<pre><code class="language-javascript">$( <span class="hljs-string">&quot;a&quot;</span> ).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
+alert( event.type ); <span class="hljs-comment">// &quot;click&quot;</span>
 });</code></pre>
 							</dd>
 						</dl>
@@ -998,20 +998,20 @@ alert( event.type ); <span class="hljs-comment">// "click"</span>
 							<dt>example</dt>
 							<dd><p>​ ````Log which key was depressed.</p>
 								<pre><code class="language-html"><span class="hljs-meta">&lt;!doctype <span class="hljs-meta-keyword">html</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"utf-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;utf-8&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>event.which demo<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://code.jquery.com/jquery-3.3.1.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://code.jquery.com/jquery-3.3.1.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
 ​
-<span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"whichkey"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"type something"</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"log"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;whichkey&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;type something&quot;</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;log&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 ​
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
-$( <span class="hljs-string">"#whichkey"</span> ).on( <span class="hljs-string">"keydown"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
-$( <span class="hljs-string">"#log"</span> ).html( event.type + <span class="hljs-string">": "</span> +  event.which );
+$( <span class="hljs-string">&quot;#whichkey&quot;</span> ).on( <span class="hljs-string">&quot;keydown&quot;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
+$( <span class="hljs-string">&quot;#log&quot;</span> ).html( event.type + <span class="hljs-string">&quot;: &quot;</span> +  event.which );
 });
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 ​
@@ -1021,20 +1021,20 @@ $( <span class="hljs-string">"#log"</span> ).html( event.type + <span class="hlj
 							<dt>example</dt>
 							<dd><p>​ ````Log which mouse button was depressed.</p>
 								<pre><code class="language-html"><span class="hljs-meta">&lt;!doctype <span class="hljs-meta-keyword">html</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"utf-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;utf-8&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>event.which demo<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://code.jquery.com/jquery-3.3.1.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://code.jquery.com/jquery-3.3.1.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
 ​
-<span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"whichkey"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"click here"</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"log"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;whichkey&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;click here&quot;</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;log&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 ​
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
-$( <span class="hljs-string">"#whichkey"</span> ).on( <span class="hljs-string">"mousedown"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
-$( <span class="hljs-string">"#log"</span> ).html( event.type + <span class="hljs-string">": "</span> +  event.which );
+$( <span class="hljs-string">&quot;#whichkey&quot;</span> ).on( <span class="hljs-string">&quot;mousedown&quot;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
+$( <span class="hljs-string">&quot;#log&quot;</span> ).html( event.type + <span class="hljs-string">&quot;: &quot;</span> +  event.which );
 });
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 ​
@@ -1071,7 +1071,7 @@ $( <span class="hljs-string">"#log"</span> ).html( event.type + <span class="hlj
 									</dd>
 									<dt>example</dt>
 									<dd><p>​ ````Checks whether event.preventDefault() was called.</p>
-										<pre><code class="language-javascript">$( <span class="hljs-string">"a"</span> ).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
+										<pre><code class="language-javascript">$( <span class="hljs-string">&quot;a&quot;</span> ).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
 alert( event.isDefaultPrevented() ); <span class="hljs-comment">// false</span>
 event.preventDefault();
 alert( event.isDefaultPrevented() ); <span class="hljs-comment">// true</span>
@@ -1108,29 +1108,29 @@ alert( event.isDefaultPrevented() ); <span class="hljs-comment">// true</span>
 									<dt>example</dt>
 									<dd><p>​ ````Checks whether event.stopImmediatePropagation() was called.</p>
 										<pre><code class="language-html"><span class="hljs-meta">&lt;!doctype <span class="hljs-meta-keyword">html</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"utf-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;utf-8&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>event.isImmediatePropagationStopped demo<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://code.jquery.com/jquery-3.3.1.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://code.jquery.com/jquery-3.3.1.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
 ​
 <span class="hljs-tag">&lt;<span class="hljs-name">button</span>&gt;</span>click me<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"stop-log"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;stop-log&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 ​
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">immediatePropStopped</span>(<span class="hljs-params"> event </span>) </span>{
-<span class="hljs-keyword">var</span> msg = <span class="hljs-string">""</span>;
+<span class="hljs-keyword">var</span> msg = <span class="hljs-string">&quot;&quot;</span>;
 <span class="hljs-keyword">if</span> ( event.isImmediatePropagationStopped() ) {
-msg = <span class="hljs-string">"called"</span>;
+msg = <span class="hljs-string">&quot;called&quot;</span>;
 } <span class="hljs-keyword">else</span> {
-msg = <span class="hljs-string">"not called"</span>;
+msg = <span class="hljs-string">&quot;not called&quot;</span>;
 }
-$( <span class="hljs-string">"#stop-log"</span> ).append( <span class="hljs-string">"&lt;div&gt;"</span> + msg + <span class="hljs-string">"&lt;/div&gt;"</span> );
+$( <span class="hljs-string">&quot;#stop-log&quot;</span> ).append( <span class="hljs-string">&quot;&lt;div&gt;&quot;</span> + msg + <span class="hljs-string">&quot;&lt;/div&gt;&quot;</span> );
 }
 ​
-$( <span class="hljs-string">"button"</span> ).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
+$( <span class="hljs-string">&quot;button&quot;</span> ).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
 immediatePropStopped( event );
 event.stopImmediatePropagation();
 immediatePropStopped( event );
@@ -1171,29 +1171,29 @@ immediatePropStopped( event );
 									<dt>example</dt>
 									<dd><p>​ ````Checks whether event.stopPropagation() was called</p>
 										<pre><code class="language-html"><span class="hljs-meta">&lt;!doctype <span class="hljs-meta-keyword">html</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"utf-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;utf-8&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>event.isPropagationStopped demo<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://code.jquery.com/jquery-3.3.1.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://code.jquery.com/jquery-3.3.1.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
 ​
 <span class="hljs-tag">&lt;<span class="hljs-name">button</span>&gt;</span>click me<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"stop-log"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;stop-log&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 ​
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">propStopped</span>(<span class="hljs-params"> event </span>) </span>{
-<span class="hljs-keyword">var</span> msg = <span class="hljs-string">""</span>;
+<span class="hljs-keyword">var</span> msg = <span class="hljs-string">&quot;&quot;</span>;
 <span class="hljs-keyword">if</span> ( event.isPropagationStopped() ) {
-msg = <span class="hljs-string">"called"</span>;
+msg = <span class="hljs-string">&quot;called&quot;</span>;
 } <span class="hljs-keyword">else</span> {
-msg = <span class="hljs-string">"not called"</span>;
+msg = <span class="hljs-string">&quot;not called&quot;</span>;
 }
-$( <span class="hljs-string">"#stop-log"</span> ).append( <span class="hljs-string">"&lt;div&gt;"</span> + msg + <span class="hljs-string">"&lt;/div&gt;"</span> );
+$( <span class="hljs-string">&quot;#stop-log&quot;</span> ).append( <span class="hljs-string">&quot;&lt;div&gt;&quot;</span> + msg + <span class="hljs-string">&quot;&lt;/div&gt;&quot;</span> );
 }
 ​
-$( <span class="hljs-string">"button"</span> ).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>) </span>{
+$( <span class="hljs-string">&quot;button&quot;</span> ).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>) </span>{
 propStopped( event );
 event.stopPropagation();
 propStopped( event );
@@ -1234,23 +1234,23 @@ propStopped( event );
 									<dt>example</dt>
 									<dd><p>​ ````Cancel the default action (navigation) of the click.</p>
 										<pre><code class="language-html"><span class="hljs-meta">&lt;!doctype <span class="hljs-meta-keyword">html</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"utf-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;utf-8&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>event.preventDefault demo<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://code.jquery.com/jquery-3.3.1.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://code.jquery.com/jquery-3.3.1.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
 ​
-<span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"https://jquery.com"</span>&gt;</span>default click action is prevented<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"log"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;https://jquery.com&quot;</span>&gt;</span>default click action is prevented<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;log&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 ​
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
-$( <span class="hljs-string">"a"</span> ).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
+$( <span class="hljs-string">&quot;a&quot;</span> ).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
 event.preventDefault();
-$( <span class="hljs-string">"&lt;div&gt;"</span> )
-.append( <span class="hljs-string">"default "</span> + event.type + <span class="hljs-string">" prevented"</span> )
-.appendTo( <span class="hljs-string">"#log"</span> );
+$( <span class="hljs-string">&quot;&lt;div&gt;&quot;</span> )
+.append( <span class="hljs-string">&quot;default &quot;</span> + event.type + <span class="hljs-string">&quot; prevented&quot;</span> )
+.appendTo( <span class="hljs-string">&quot;#log&quot;</span> );
 });
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 ​
@@ -1288,9 +1288,9 @@ $( <span class="hljs-string">"&lt;div&gt;"</span> )
 									<dt>example</dt>
 									<dd><p>​ ````Prevents other event handlers from being called.</p>
 										<pre><code class="language-html"><span class="hljs-meta">&lt;!doctype <span class="hljs-meta-keyword">html</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"utf-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;utf-8&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>event.stopImmediatePropagation demo<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="css">
 <span class="hljs-selector-tag">p</span> {
@@ -1304,7 +1304,7 @@ $( <span class="hljs-string">"&lt;div&gt;"</span> )
 <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#cfc</span>;
 }
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://code.jquery.com/jquery-3.3.1.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://code.jquery.com/jquery-3.3.1.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
 ​
@@ -1312,16 +1312,16 @@ $( <span class="hljs-string">"&lt;div&gt;"</span> )
 <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>division<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 ​
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
-$( <span class="hljs-string">"p"</span> ).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
+$( <span class="hljs-string">&quot;p&quot;</span> ).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
 event.stopImmediatePropagation();
 });
-$( <span class="hljs-string">"p"</span> ).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
-<span class="hljs-comment">// This function won't be executed</span>
-$( <span class="hljs-keyword">this</span> ).css( <span class="hljs-string">"background-color"</span>, <span class="hljs-string">"#f00"</span> );
+$( <span class="hljs-string">&quot;p&quot;</span> ).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
+<span class="hljs-comment">// This function won&#x27;t be executed</span>
+$( <span class="hljs-built_in">this</span> ).css( <span class="hljs-string">&quot;background-color&quot;</span>, <span class="hljs-string">&quot;#f00&quot;</span> );
 });
-$( <span class="hljs-string">"div"</span> ).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
+$( <span class="hljs-string">&quot;div&quot;</span> ).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
 <span class="hljs-comment">// This function will be executed</span>
-$( <span class="hljs-keyword">this</span> ).css( <span class="hljs-string">"background-color"</span>, <span class="hljs-string">"#f00"</span> );
+$( <span class="hljs-built_in">this</span> ).css( <span class="hljs-string">&quot;background-color&quot;</span>, <span class="hljs-string">&quot;#f00&quot;</span> );
 });
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 ​
@@ -1358,7 +1358,7 @@ $( <span class="hljs-keyword">this</span> ).css( <span class="hljs-string">"back
 									</dd>
 									<dt>example</dt>
 									<dd><p>​ ````Kill the bubbling on the click event.</p>
-										<pre><code class="language-javascript">$( <span class="hljs-string">"p"</span> ).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
+										<pre><code class="language-javascript">$( <span class="hljs-string">&quot;p&quot;</span> ).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> event </span>) </span>{
 event.stopPropagation();
 <span class="hljs-comment">// Do something</span>
 });</code></pre>
@@ -1552,6 +1552,7 @@ event.stopPropagation();
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
@@ -1568,6 +1569,9 @@ event.stopPropagation();
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>

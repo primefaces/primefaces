@@ -92,6 +92,7 @@
 						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.csp.html#clickevent" class="tsd-kind-icon">click<wbr>Event</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.csp.html#eval" class="tsd-kind-icon">eval</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.csp.html#evalresult" class="tsd-kind-icon">eval<wbr>Result</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.csp.html#executeevent" class="tsd-kind-icon">execute<wbr>Event</a></li>
@@ -131,6 +132,27 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace">
+					<a name="clickevent" class="tsd-anchor"></a>
+					<h3>click<wbr>Event</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace">
+						<li class="tsd-signature tsd-kind-icon">click<wbr>Event<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/jquery.event.html" class="tsd-signature-type">Event</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>GitHub #5790: When using jQuery to trigger a click event on a button while using CSP
+									we must set preventDefault or else it will trigger a non-ajax button click.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/jquery.event.html" class="tsd-signature-type">Event</a></h4>
+							<p>the JQuery click event</p>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace">
 					<a name="eval" class="tsd-anchor"></a>
 					<h3>eval</h3>
@@ -335,6 +357,9 @@
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="primefaces.ajax.html">ajax</a>
 							</li>
+							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+								<a href="primefaces.clientwindow.html">clientwindow</a>
+							</li>
 							<li class="current tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="primefaces.csp.html">csp</a>
 							</li>
@@ -354,10 +379,10 @@
 								<a href="primefaces.settings.html">settings</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="primefaces.util.html">util</a>
+								<a href="primefaces.utils.html">utils</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="primefaces.utils.html">utils</a>
+								<a href="primefaces.validation.html">validation</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="primefaces.widget.html">widget</a>
@@ -373,6 +398,9 @@
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-namespace">
 						<a href="primefaces.csp.html#nonce_value" class="tsd-kind-icon">NONCE_<wbr>VALUE</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-namespace">
+						<a href="primefaces.csp.html#clickevent" class="tsd-kind-icon">click<wbr>Event</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-namespace">
 						<a href="primefaces.csp.html#eval" class="tsd-kind-icon">eval</a>
@@ -399,6 +427,7 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
@@ -415,6 +444,9 @@
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>

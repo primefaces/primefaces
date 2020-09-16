@@ -75,7 +75,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The configuration for the <a href="../classes/primefaces.widget.wizard.html"> Wizard widget</a>.
+						<p>The configuration for the <a href="../classes/primefaces.widget.wizard.html">Wizard widget</a>.
 							You can access this configuration via <a href="../classes/primefaces.widget.basewidget.html#cfg">BaseWidget.cfg</a>. Please note that this
 						configuration is usually meant to be read-only and should not be modified.</p>
 					</div>
@@ -102,6 +102,8 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="primefaces.widget.wizardcfg.html#behaviors" class="tsd-kind-icon">behaviors</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.wizardcfg.html#effect" class="tsd-kind-icon">effect</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.wizardcfg.html#effectduration" class="tsd-kind-icon">effect<wbr>Duration</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.wizardcfg.html#formid" class="tsd-kind-icon">form<wbr>Id</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="primefaces.widget.wizardcfg.html#id" class="tsd-kind-icon">id</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.wizardcfg.html#initialstep" class="tsd-kind-icon">initial<wbr>Step</a></li>
@@ -130,6 +132,30 @@
 							<p>A map with all behaviors that
 								were defined for this widget. The key is the name of the behavior, the value is the callback function that is
 							invoked when the behavior is called.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="effect" class="tsd-anchor"></a>
+					<h3>effect</h3>
+					<div class="tsd-signature tsd-kind-icon">effect<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Animation effect to use when showing and hiding wizard.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="effectduration" class="tsd-anchor"></a>
+					<h3>effect<wbr>Duration</h3>
+					<div class="tsd-signature tsd-kind-icon">effect<wbr>Duration<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Duration of the animation effect in milliseconds.</p>
 						</div>
 					</div>
 				</section>
@@ -263,6 +289,9 @@
 								<a href="../modules/primefaces.ajax.html">ajax</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+								<a href="../modules/primefaces.clientwindow.html">clientwindow</a>
+							</li>
+							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="../modules/primefaces.csp.html">csp</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
@@ -281,10 +310,10 @@
 								<a href="../modules/primefaces.settings.html">settings</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="../modules/primefaces.util.html">util</a>
+								<a href="../modules/primefaces.utils.html">utils</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="../modules/primefaces.utils.html">utils</a>
+								<a href="../modules/primefaces.validation.html">validation</a>
 							</li>
 							<li class="current tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="../modules/primefaces.widget.html">widget</a>
@@ -307,6 +336,12 @@
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 								<a href="primefaces.widget.wizardcfg.html#behaviors" class="tsd-kind-icon">behaviors</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="primefaces.widget.wizardcfg.html#effect" class="tsd-kind-icon">effect</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="primefaces.widget.wizardcfg.html#effectduration" class="tsd-kind-icon">effect<wbr>Duration</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="primefaces.widget.wizardcfg.html#formid" class="tsd-kind-icon">form<wbr>Id</a>
@@ -349,6 +384,7 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
@@ -365,6 +401,9 @@
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>

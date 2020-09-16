@@ -115,7 +115,7 @@
 					<a name="addmodal" class="tsd-anchor"></a>
 					<h3>add<wbr>Modal</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Modal<span class="tsd-signature-symbol">(</span>widget<span class="tsd-signature-symbol">: </span><a href="../classes/primefaces.widget.basewidget.html" class="tsd-signature-type">BaseWidget</a>, zIndex<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, tabbablesCallback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="jquery.html" class="tsd-signature-type">JQuery</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="jquery.html" class="tsd-signature-type">JQuery</a></li>
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Modal<span class="tsd-signature-symbol">(</span>widget<span class="tsd-signature-symbol">: </span><a href="../classes/primefaces.widget.basewidget.html" class="tsd-signature-type">BaseWidget</a>, overlay<span class="tsd-signature-symbol">: </span><a href="jquery.html" class="tsd-signature-type">JQuery</a>, tabbablesCallback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="jquery.html" class="tsd-signature-type">JQuery</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="jquery.html" class="tsd-signature-type">JQuery</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -124,7 +124,7 @@
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Creates a new (empty) container for a modal overlay. A modal overlay is an overlay that blocks the content
-									belown it. To remove the modal overlay, use <code>PrimeFaces.utils.removeModal</code>.</p>
+									below it. To remove the modal overlay, use <code>PrimeFaces.utils.removeModal</code>.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -136,9 +136,9 @@
 									</div>
 								</li>
 								<li>
-									<h5>zIndex: <span class="tsd-signature-type">number</span></h5>
+									<h5>overlay: <a href="jquery.html" class="tsd-signature-type">JQuery</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The z-index to set on the modal overlay.</p>
+										<p>The modal overlay element should be a DIV.</p>
 									</div>
 								</li>
 								<li>
@@ -861,7 +861,7 @@
 					<a name="removemodal" class="tsd-anchor"></a>
 					<h3>remove<wbr>Modal</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace">
-						<li class="tsd-signature tsd-kind-icon">remove<wbr>Modal<span class="tsd-signature-symbol">(</span>widget<span class="tsd-signature-symbol">: </span><a href="../classes/primefaces.widget.basewidget.html" class="tsd-signature-type">BaseWidget</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">remove<wbr>Modal<span class="tsd-signature-symbol">(</span>widget<span class="tsd-signature-symbol">: </span><a href="../classes/primefaces.widget.basewidget.html" class="tsd-signature-type">BaseWidget</a>, overlay<span class="tsd-signature-symbol">: </span><a href="jquery.html" class="tsd-signature-type">JQuery</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -879,6 +879,12 @@
 									<h5>widget: <a href="../classes/primefaces.widget.basewidget.html" class="tsd-signature-type">BaseWidget</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>A modal overlay widget instance.</p>
+									</div>
+								</li>
+								<li>
+									<h5>overlay: <a href="jquery.html" class="tsd-signature-type">JQuery</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The modal overlay element should be a DIV.</p>
 									</div>
 								</li>
 							</ul>
@@ -965,6 +971,9 @@
 								<a href="primefaces.ajax.html">ajax</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+								<a href="primefaces.clientwindow.html">clientwindow</a>
+							</li>
+							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="primefaces.csp.html">csp</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
@@ -982,11 +991,11 @@
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="primefaces.settings.html">settings</a>
 							</li>
-							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="primefaces.util.html">util</a>
-							</li>
 							<li class="current tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="primefaces.utils.html">utils</a>
+							</li>
+							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+								<a href="primefaces.validation.html">validation</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="primefaces.widget.html">widget</a>
@@ -1070,6 +1079,7 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
@@ -1086,6 +1096,9 @@
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
