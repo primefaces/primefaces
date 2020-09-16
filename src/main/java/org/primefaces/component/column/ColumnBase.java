@@ -41,6 +41,7 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         styleClass,
         sortFunction,
         filterBy,
+        filterType,
         filterStyle,
         filterStyleClass,
         filterOptions,
@@ -68,7 +69,8 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         exportFunction,
         groupRow,
         exportHeaderValue,
-        exportFooterValue
+        exportFooterValue,
+        externalFilter
     }
 
     public ColumnBase() {
@@ -123,6 +125,15 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
 
     public void setFilterBy(Object filterBy) {
         getStateHelper().put(PropertyKeys.filterBy, filterBy);
+    }
+
+
+    public java.lang.String getFilterType() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.filterType, "text");
+    }
+
+    public void setFilterType(java.lang.String filterType) {
+        getStateHelper().put(PropertyKeys.filterType, filterType);
     }
 
     @Override
@@ -375,6 +386,14 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
 
     public void setExportFooterValue(String exportFooterValue) {
         getStateHelper().put(PropertyKeys.exportFooterValue, exportFooterValue);
+    }
+
+    public java.lang.String getExternalFilter() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.externalFilter, null);
+    }
+
+    public void setExternalFilter(java.lang.String externalFilter) {
+        getStateHelper().put(PropertyKeys.externalFilter, externalFilter);
     }
 
 }

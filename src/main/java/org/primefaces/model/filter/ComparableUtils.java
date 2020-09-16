@@ -21,44 +21,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model;
+package org.primefaces.model.filter;
 
-public enum MatchMode {
+//TODO: separate TClickFaces utils so we can use those functions instead
+public class ComparableUtils {
 
-    STARTS_WITH("startsWith"),
-    ENDS_WITH("endsWith"),
-    CONTAINS("contains"),
-    EXACT("exact"),
-    LESS_THAN("lt"),
-    LESS_THAN_EQUALS("lte"),
-    GREATER_THAN("gt"),
-    GREATER_THAN_EQUALS("gte"),
-    EQUALS("equals"),
-    IN("in"),
-    GLOBAL("global"),
-
-    LESS_THEN_DAY("ltDay"),
-    EQUALS_DAY("equalsDay"),
-    GREATER_THEN_DAY("gtDay"),
-    BETWEEN("between"),
-    BETWEEN_DAY("betweenDay");
-
-    private final String name;
-
-    MatchMode(String name) {
-        this.name = name;
+    private ComparableUtils() {
     }
 
-    public String getName() {
-        return name;
+    public static boolean isBetween(Comparable a, Comparable b, Comparable value) {
+        return value.compareTo(a) >= 0 && value.compareTo(b) <= 0;
     }
 
-    public static MatchMode byName(String name) {
-        for (MatchMode mode : MatchMode.values()) {
-            if (mode.getName().equals(name)) {
-                return mode;
-            }
-        }
-        return null;
-    }
 }

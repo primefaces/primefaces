@@ -21,44 +21,47 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model;
+package org.primefaces.model.filter;
 
-public enum MatchMode {
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
-    STARTS_WITH("startsWith"),
-    ENDS_WITH("endsWith"),
-    CONTAINS("contains"),
-    EXACT("exact"),
-    LESS_THAN("lt"),
-    LESS_THAN_EQUALS("lte"),
-    GREATER_THAN("gt"),
-    GREATER_THAN_EQUALS("gte"),
-    EQUALS("equals"),
-    IN("in"),
-    GLOBAL("global"),
+//TODO: separate TClickFaces utils so we can use those functions instead
+public class CalendarUtils {
 
-    LESS_THEN_DAY("ltDay"),
-    EQUALS_DAY("equalsDay"),
-    GREATER_THEN_DAY("gtDay"),
-    BETWEEN("between"),
-    BETWEEN_DAY("betweenDay");
-
-    private final String name;
-
-    MatchMode(String name) {
-        this.name = name;
+    private CalendarUtils() {
     }
 
-    public String getName() {
-        return name;
+    public static Calendar getDutchCalendar() {
+        Calendar cal = new GregorianCalendar();
+        cal.setMinimalDaysInFirstWeek(4);
+        cal.setFirstDayOfWeek(Calendar.MONDAY);
+        return cal;
     }
 
-    public static MatchMode byName(String name) {
-        for (MatchMode mode : MatchMode.values()) {
-            if (mode.getName().equals(name)) {
-                return mode;
-            }
-        }
-        return null;
+    public static Calendar of(Date date) {
+        Calendar cal = getDutchCalendar();
+        cal.setTime(date);
+        return cal;
     }
+
+    public static Date getStartOfDay(Date date) {
+        Calendar cal = of(date);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTime();
+    }
+
+    public static Date getEndOfDay(Date date) {
+        Calendar cal = of(date);
+        cal.set(Calendar.HOUR_OF_DAY, 23);
+        cal.set(Calendar.MINUTE, 59);
+        cal.set(Calendar.SECOND, 59);
+        cal.set(Calendar.MILLISECOND, 999);
+        return cal.getTime();
+    }
+
 }

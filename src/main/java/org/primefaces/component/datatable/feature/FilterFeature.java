@@ -45,6 +45,7 @@ import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.DataTableState;
 import org.primefaces.component.row.Row;
 import org.primefaces.event.data.PostFilterEvent;
+import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.MatchMode;
 import org.primefaces.model.filter.*;
@@ -55,26 +56,41 @@ import org.primefaces.util.MapBuilder;
 public class FilterFeature implements DataTableFeature {
 
     private static final Map<MatchMode, FilterConstraint> FILTER_CONSTRAINTS = MapBuilder.<MatchMode, FilterConstraint>builder()
-        .put(MatchMode.STARTS_WITH, new StartsWithFilterConstraint())
-        .put(MatchMode.ENDS_WITH, new EndsWithFilterConstraint())
-        .put(MatchMode.CONTAINS, new ContainsFilterConstraint())
-        .put(MatchMode.EXACT, new ExactFilterConstraint())
-        .put(MatchMode.LESS_THAN, new LessThanFilterConstraint())
-        .put(MatchMode.LESS_THAN_EQUALS, new LessThanEqualsFilterConstraint())
-        .put(MatchMode.GREATER_THAN, new GreaterThanFilterConstraint())
-        .put(MatchMode.GREATER_THAN_EQUALS, new GreaterThanEqualsFilterConstraint())
-        .put(MatchMode.EQUALS, new EqualsFilterConstraint())
-        .put(MatchMode.IN, new InFilterConstraint())
-        .put(MatchMode.GLOBAL, new GlobalFilterConstraint())
-        .build();
+            .put(MatchMode.STARTS_WITH, new StartsWithFilterConstraint())
+            .put(MatchMode.ENDS_WITH, new EndsWithFilterConstraint())
+            .put(MatchMode.CONTAINS, new ContainsFilterConstraint())
+            .put(MatchMode.EXACT, new ExactFilterConstraint())
+            .put(MatchMode.LESS_THAN, new LessThanFilterConstraint())
+            .put(MatchMode.LESS_THAN_EQUALS, new LessThanEqualsFilterConstraint())
+            .put(MatchMode.GREATER_THAN, new GreaterThanFilterConstraint())
+            .put(MatchMode.GREATER_THAN_EQUALS, new GreaterThanEqualsFilterConstraint())
+            .put(MatchMode.EQUALS, new EqualsFilterConstraint())
+            .put(MatchMode.IN, new InFilterConstraint())
+            .put(MatchMode.GLOBAL, new GlobalFilterConstraint())
+
+            .put(MatchMode.LESS_THEN_DAY, new LessThanDayFilterConstraint())
+            .put(MatchMode.EQUALS_DAY, new EqualsDayFilterConstraint())
+            .put(MatchMode.GREATER_THEN_DAY, new GreaterThanDayFilterConstraint())
+            .put(MatchMode.BETWEEN, new BetweenFilterConstraint())
+            .put(MatchMode.BETWEEN_DAY, new BetweenDayFilterConstraint())
+            .build();
 
     private boolean isFilterRequest(FacesContext context, DataTable table) {
         return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_filtering");
     }
 
+    protected FilterMeta createFilterMetaInstance(String filterField,
+                                                  String columnKey,
+                                                  ValueExpression filterByVE,
+                                                  MatchMode filterMatchMode,
+                                                  Object filterValue,
+                                                  String filterType) {
+        return new FilterMeta(filterField, columnKey, filterByVE, filterMatchMode,  filterValue, filterType);
+    }
+
     @Override
-    public boolean shouldDecode(FacesContext context, DataTable table) {
-        return false;
+    public boolean shouldDecode(FacesContext context, DataTable table) { // This feature should decode on dataTableRenderer.processValidators()
+        return true;
     }
 
     @Override
@@ -343,15 +359,33 @@ public class FilterFeature implements DataTableFeature {
                                                      ? ((ValueHolder) filterFacet).getLocalValue()
                                                      : params.get(column.getClientId(context) + separator + "filter");
                                 if (isFilterValueEmpty(filterValue)) {
-                                    filterValue = null;
+                                    if (column.getExternalFilter() == null) {
+                                        filterValue = null;
+                                    }
+                                    else { // Since TClickFaces links the hidden inputText, we don't want to constantly look up the externalFilter
+                                        UIComponent externalFilterComponent = SearchExpressionFacade.resolveComponent(context,
+                                                dataTable,
+                                                column.getExternalFilter());
+                                        Object externalFilterValue = ((ValueHolder) externalFilterComponent).getValue();
+                                        if (this.isFilterValueEmpty(externalFilterValue)) {
+                                            filterValue = null;
+                                        }
+                                        else {
+                                            // toString() because because of the inputText filters they get cast later on
+                                            filterValue = externalFilterValue.toString();
+                                        }
+                                    }
                                 }
 
-                                String filterField = getFilterField(dataTable, column);
-                                filterBy.put(filterField, new FilterMeta(filterField,
-                                        column.getColumnKey(),
-                                        filterVE,
-                                        MatchMode.byName(column.getFilterMatchMode()),
-                                        filterValue));
+                                if (filterValue != null) {
+                                    String filterField = getFilterField(dataTable, column);
+                                    filterBy.put(filterField, createFilterMetaInstance(filterField,
+                                            column.getColumnKey(),
+                                            filterVE,
+                                            MatchMode.byName(column.getFilterMatchMode()),
+                                            filterValue,
+                                            column.getFilterType()));
+                                }
                             }
                         }
                     }
@@ -373,12 +407,15 @@ public class FilterFeature implements DataTableFeature {
                                         filterValue = null;
                                     }
 
-                                    String filterField = getFilterField(dataTable, dynaColumn);
-                                    filterBy.put(filterField, new FilterMeta(filterField,
-                                            dynaColumn.getColumnKey(),
-                                            filterVE,
-                                            MatchMode.byName(dynaColumn.getFilterMatchMode()),
-                                            filterValue));
+                                    if (filterValue != null) {
+                                        String filterField = getFilterField(dataTable, dynaColumn);
+                                        filterBy.put(filterField, createFilterMetaInstance(filterField,
+                                                dynaColumn.getColumnKey(),
+                                                filterVE,
+                                                MatchMode.byName(dynaColumn.getFilterMatchMode()),
+                                                filterValue,
+                                                "text"));
+                                    }
                                 }
                             }
                         }
@@ -398,31 +435,55 @@ public class FilterFeature implements DataTableFeature {
                 Object filterValue = null;
                 String filterId;
                 String filterMatchMode = null;
+                String filterType = null;
 
                 if (column instanceof Column) {
                     filterId = column.getClientId(context) + separator + "filter";
+                    filterType = ((Column) column).getFilterType();
                     filterValue = ComponentUtils.shouldRenderFacet(filterFacet) ? ((ValueHolder) filterFacet).getLocalValue() : params.get(filterId);
+                    if (isFilterValueEmpty(filterValue)) {
+                        if (((Column) column).getExternalFilter() == null) {
+                            filterValue = null;
+                        }
+                        else { // Since TClickFaces links the hidden inputText, we don't want to constantly look up the externalFilter
+                            UIComponent externalFilterComponent = SearchExpressionFacade.resolveComponent(context,
+                                    table,
+                                    ((Column) column).getExternalFilter());
+                            Object externalFilterValue = ((ValueHolder) externalFilterComponent).getValue();
+                            if (this.isFilterValueEmpty(externalFilterValue)) {
+                                filterValue = null;
+                            }
+                            else {
+                                // toString() because because of the inputText filters they get cast later on
+                                filterValue = externalFilterValue.toString();
+                            }
+                        }
+                    }
+
                     filterMatchMode = column.getFilterMatchMode();
                 }
                 else if (column instanceof DynamicColumn) {
                     DynamicColumn dynamicColumn = (DynamicColumn) column;
                     dynamicColumn.applyModel();
                     filterId = dynamicColumn.getContainerClientId(context) + separator + "filter";
+                    filterType = "text";
                     filterValue = ComponentUtils.shouldRenderFacet(filterFacet) ? ((ValueHolder) filterFacet).getLocalValue() : params.get(filterId);
+                    if (isFilterValueEmpty(filterValue)) {
+                        filterValue = null;
+                    }
                     filterMatchMode = column.getFilterMatchMode();
                     dynamicColumn.cleanModel();
                 }
 
-                if (isFilterValueEmpty(filterValue)) {
-                    filterValue = null;
+                if (filterValue != null) {
+                    String filterField = getFilterField(table, column);
+                    filterBy.put(filterField, createFilterMetaInstance(filterField,
+                            column.getColumnKey(),
+                            filterVE,
+                            MatchMode.byName(filterMatchMode),
+                            filterValue,
+                            filterType));
                 }
-
-                String filterField = getFilterField(table, column);
-                filterBy.put(filterField, new FilterMeta(filterField,
-                        column.getColumnKey(),
-                        filterVE,
-                        MatchMode.byName(filterMatchMode),
-                        filterValue));
             }
         }
     }

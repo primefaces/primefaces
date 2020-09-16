@@ -39,6 +39,7 @@ public class FilterMeta implements Serializable {
     private transient UIColumn column;
     private ValueExpression filterByVE;
     private MatchMode filterMatchMode;
+    private String filterType;
     private Object filterValue;
 
     public FilterMeta() {
@@ -58,11 +59,21 @@ public class FilterMeta implements Serializable {
         this.filterValue = filterValue;
     }
 
+    public FilterMeta(String filterField, String columnKey, ValueExpression filterByVE, MatchMode filterMatchMode, Object filterValue, String filterType) {
+        this.filterField = filterField;
+        this.columnKey = columnKey;
+        this.filterByVE = filterByVE;
+        this.filterMatchMode = filterMatchMode;
+        this.filterType = filterType;
+        this.filterValue = filterValue;
+    }
+
     public FilterMeta(FilterMeta filterMeta) {
         this.filterField = filterMeta.getFilterField();
         this.columnKey = filterMeta.getColumnKey();
         this.filterByVE = filterMeta.getFilterByVE();
         this.filterMatchMode = filterMeta.getFilterMatchMode();
+        this.filterType = filterMeta.getFilterType();
         this.filterValue = filterMeta.getFilterValue();
         this.column = null; // this constructor is currently just a copy-constructor for the TableState, and we don't need the component in the state
     }
@@ -81,6 +92,10 @@ public class FilterMeta implements Serializable {
 
     public MatchMode getFilterMatchMode() {
         return filterMatchMode;
+    }
+
+    public String getFilterType() {
+        return filterType;
     }
 
     public Object getFilterValue() {

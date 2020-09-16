@@ -21,44 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model;
+package org.primefaces.model.filter;
 
-public enum MatchMode {
+import java.util.Date;
+import java.util.Locale;
 
-    STARTS_WITH("startsWith"),
-    ENDS_WITH("endsWith"),
-    CONTAINS("contains"),
-    EXACT("exact"),
-    LESS_THAN("lt"),
-    LESS_THAN_EQUALS("lte"),
-    GREATER_THAN("gt"),
-    GREATER_THAN_EQUALS("gte"),
-    EQUALS("equals"),
-    IN("in"),
-    GLOBAL("global"),
+import static org.primefaces.model.filter.CalendarUtils.getStartOfDay;
 
-    LESS_THEN_DAY("ltDay"),
-    EQUALS_DAY("equalsDay"),
-    GREATER_THEN_DAY("gtDay"),
-    BETWEEN("between"),
-    BETWEEN_DAY("betweenDay");
+public class EqualsDayFilterConstraint implements FilterConstraint {
 
-    private final String name;
-
-    MatchMode(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public static MatchMode byName(String name) {
-        for (MatchMode mode : MatchMode.values()) {
-            if (mode.getName().equals(name)) {
-                return mode;
-            }
+    @Override
+    public boolean applies(Object value, Object filter, Locale locale) {
+        if (filter == null) {
+            return true;
         }
-        return null;
+        if (value == null) {
+            return false;
+        }
+
+        return getStartOfDay(((Date) value)).compareTo((Date) filter) == 0;
     }
+
 }

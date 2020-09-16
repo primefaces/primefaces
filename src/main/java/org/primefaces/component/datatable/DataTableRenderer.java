@@ -90,6 +90,7 @@ public class DataTableRenderer extends DataRenderer {
             }
         }
         else {
+            table.getFeature(DataTableFeatureKey.FILTER).decode(context, table); // To ensure externalFilters are read before rendering
             preRender(context, table);
 
             encodeMarkup(context, table);
