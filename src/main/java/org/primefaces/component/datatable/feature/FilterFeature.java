@@ -90,7 +90,7 @@ public class FilterFeature implements DataTableFeature {
 
     @Override
     public boolean shouldDecode(FacesContext context, DataTable table) { // This feature should decode on dataTableRenderer.processValidators()
-        return true;
+        return false;
     }
 
     @Override
