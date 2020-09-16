@@ -42,6 +42,7 @@ npm install --save-dev  \
   @fullcalendar/timegrid \
   autonumeric \
   cropperjs \
+  jsplumb \
   moment \
   vis-data \
   vis-timeline
@@ -159,7 +160,7 @@ notable ones are:
 * [Google Maps](./modules/google.maps.html)
     * The [Google Maps JavaScript API](https://developers.google.com/maps/documentation/javascript/tutorial) for
       including maps in a web page.
-* [jsplumb](./modules/jsplumb.html)
+* [jsplumb](./classes/jsplumb.jsplumbinstance.html)
     * The [jsPlumb library](https://github.com/jsplumb/jsplumb), to visually connect elements on web pages.
 * [JuxtaposeJS](./modules/juxtapose.html)
     * The [JuxtaposeJs library](https://juxtapose.knightlab.com/), a simple, open source tool for creating before or
