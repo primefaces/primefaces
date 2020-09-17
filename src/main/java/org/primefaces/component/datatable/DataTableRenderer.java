@@ -399,6 +399,10 @@ public class DataTableRenderer extends DataRenderer {
             encodeStateHolder(context, table, table.getClientId(context) + "_resizableColumnState", table.getResizableColumnsAsString());
         }
 
+        if (table.getRowExpansion() != null) {
+            encodeStateHolder(context, table, table.getClientId(context) + "_rowExpansionState", null);
+        }
+
         writer.endElement("div");
     }
 

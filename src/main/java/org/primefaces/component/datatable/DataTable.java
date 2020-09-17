@@ -198,6 +198,7 @@ public class DataTable extends DataTableBase {
     private Map<String, Boolean> togglableColsMap;
     private String resizableColumnsAsString;
     private Map<String, String> resizableColsMap;
+    private Set<Integer> expandedRowsSet;
 
     public DataTableFeature getFeature(DataTableFeatureKey key) {
         return FEATURES.get(key);
@@ -1203,6 +1204,11 @@ public class DataTable extends DataTableBase {
                             process(context, grandkid, phaseId);
                         }
                     }
+                    else if (child instanceof RowExpansion) {
+                        if (getExpandedRowsSet().contains(rowIndex)) {
+                            process(context, child, phaseId);
+                        }
+                    }
                     else {
                         process(context, child, phaseId);
                     }
@@ -1259,6 +1265,25 @@ public class DataTable extends DataTableBase {
 
     public void setTogglableColumnsAsString(String togglableColumnsAsString) {
         this.togglableColumnsAsString = togglableColumnsAsString;
+    }
+
+    public Set<Integer> getExpandedRowsSet() {
+        if (expandedRowsSet == null) {
+            expandedRowsSet = new HashSet<>();
+
+            FacesContext context = getFacesContext();
+            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+            String expandedRows = params.get(getClientId(context) + "_rowExpansionState");
+
+            if (!LangUtils.isValueBlank(expandedRows)) {
+                String[] tmp = expandedRows.split(",");
+                for (int i = 0; i < tmp.length; ++i) {
+                    expandedRowsSet.add(Integer.parseInt(tmp[i]));
+                }
+            }
+        }
+
+        return expandedRowsSet;
     }
 
     public Map getTogglableColumnsMap() {
@@ -1437,6 +1462,7 @@ public class DataTable extends DataTableBase {
         togglableColsMap = null;
         resizableColumnsAsString = null;
         resizableColsMap = null;
+        expandedRowsSet = null;
 
         return super.saveState(context);
     }
