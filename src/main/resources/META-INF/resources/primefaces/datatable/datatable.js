@@ -3603,7 +3603,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         // #1499 enable rowReorder when done editing
-        if (this.cfg.draggableRows) {
+        if (this.cfg.draggableRows && $('tr.ui-row-editing').length === 0) {
             this.tbody.sortable("enable");
         }
     },
