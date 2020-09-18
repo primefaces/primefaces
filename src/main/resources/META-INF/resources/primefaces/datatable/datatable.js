@@ -3566,6 +3566,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         }
                     });
 
+                // #1499 enable rowReorder when done editing
+                if (this.cfg.draggableRows && $('tr.ui-row-editing').length === 0) {
+                    this.tbody.sortable("enable");
+                }
+
                 return true;
             },
             oncomplete: function(xhr, status, args, data) {
@@ -3600,11 +3605,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
-        }
-
-        // #1499 enable rowReorder when done editing
-        if (this.cfg.draggableRows && $('tr.ui-row-editing').length === 0) {
-            this.tbody.sortable("enable");
         }
     },
 
