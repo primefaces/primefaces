@@ -43,6 +43,7 @@ public class HeaderRowRenderer extends CoreRenderer {
         DataTable table = (DataTable) row.getParent();
         ResponseWriter writer = context.getResponseWriter();
         boolean isExpandableRowGroups = table.isExpandableRowGroups();
+        boolean isExpanded = row.isExpanded();
 
         writer.startElement("tr", null);
         writer.writeAttribute("class", DataTable.HEADER_ROW_CLASS, null);
@@ -74,11 +75,11 @@ public class HeaderRowRenderer extends CoreRenderer {
 
                     writer.startElement("a", null);
                     writer.writeAttribute("class", DataTable.ROW_GROUP_TOGGLER_CLASS, null);
-                    writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(true), null);
+                    writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(isExpanded), null);
                     writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
                     writer.writeAttribute("href", "#", null);
                     writer.startElement("span", null);
-                    writer.writeAttribute("class", DataTable.ROW_GROUP_TOGGLER_ICON_CLASS, null);
+                    writer.writeAttribute("class", isExpanded ? DataTable.ROW_GROUP_TOGGLER_OPEN_ICON_CLASS : DataTable.ROW_GROUP_TOGGLER_CLOSED_ICON_CLASS, null);
                     writer.endElement("span");
                     writer.endElement("a");
 

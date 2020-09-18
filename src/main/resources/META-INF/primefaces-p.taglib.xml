@@ -11010,6 +11010,14 @@
             <required>false</required>
             <type>javax.faces.component.UIComponent</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean value to specify whether the row group will be rendered expanded or closed. Default true.]]>
+            </description>
+            <name>expanded</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>

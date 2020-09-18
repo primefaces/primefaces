@@ -33,6 +33,7 @@ public abstract class HeaderRowBase extends UIComponentBase {
     public static final String DEFAULT_RENDERER = "org.primefaces.component.HeaderRowRenderer";
 
     public enum PropertyKeys {
+        expanded
     }
 
     public HeaderRowBase() {
@@ -42,6 +43,14 @@ public abstract class HeaderRowBase extends UIComponentBase {
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
+    }
+
+    public boolean isExpanded() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.expanded, true);
+    }
+
+    public void setExpanded(boolean expanded) {
+        getStateHelper().put(PropertyKeys.expanded, expanded);
     }
 
 }
