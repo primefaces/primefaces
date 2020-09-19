@@ -179,10 +179,10 @@
 						</div>
 						<pre><code class="language-javascript">paper.customAttributes.hue = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">num</span>) </span>{
   num = num % <span class="hljs-number">1</span>;
-  <span class="hljs-keyword">return</span> {<span class="hljs-attr">fill</span>: <span class="hljs-string">"hsb("</span> + num + <span class="hljs-string">", .75, 1)"</span>};
+  <span class="hljs-keyword">return</span> {<span class="hljs-attr">fill</span>: <span class="hljs-string">&quot;hsb(&quot;</span> + num + <span class="hljs-string">&quot;, .75, 1)&quot;</span>};
 };
 
-<span class="hljs-comment">// Custom attribute "hue" will change fill</span>
+<span class="hljs-comment">// Custom attribute &quot;hue&quot; will change fill</span>
 <span class="hljs-comment">// to be given hue with fixed saturation and brightness.</span>
 <span class="hljs-comment">// Now you can use it like this:</span>
 <span class="hljs-keyword">var</span> c = paper.circle(<span class="hljs-number">10</span>, <span class="hljs-number">10</span>, <span class="hljs-number">10</span>).attr({<span class="hljs-attr">hue</span>: <span class="hljs-number">.45</span>});
@@ -192,14 +192,14 @@ c.animate({<span class="hljs-attr">hue</span>: <span class="hljs-number">1</span
 <span class="hljs-comment">// You could also create custom attribute</span>
 <span class="hljs-comment">// with multiple parameters:</span>
 paper.customAttributes.hsb = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">h, s, b</span>) </span>{
-  <span class="hljs-keyword">return</span> {<span class="hljs-attr">fill</span>: <span class="hljs-string">"hsb("</span> + [h, s, b].join(<span class="hljs-string">","</span>) + <span class="hljs-string">")"</span>};
+  <span class="hljs-keyword">return</span> {<span class="hljs-attr">fill</span>: <span class="hljs-string">&quot;hsb(&quot;</span> + [h, s, b].join(<span class="hljs-string">&quot;,&quot;</span>) + <span class="hljs-string">&quot;)&quot;</span>};
 };
-c.attr({<span class="hljs-attr">hsb</span>: <span class="hljs-string">".5 .8 1"</span>});
-c.animate({<span class="hljs-attr">hsb</span>: <span class="hljs-string">"1 0 .5"</span>}, <span class="hljs-number">1e3</span>);</code></pre>
+c.attr({<span class="hljs-attr">hsb</span>: <span class="hljs-string">&quot;.5 .8 1&quot;</span>});
+c.animate({<span class="hljs-attr">hsb</span>: <span class="hljs-string">&quot;1 0 .5&quot;</span>}, <span class="hljs-number">1e3</span>);</code></pre>
 						<p><strong>Note to TypeScript users</strong></p>
 						<p>To declare your plugin, you should extend the <code>raphael</code> module and add to the <a href="raphaelattributes.html">RaphaelAttributes</a>:</p>
-						<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { RaphaelAttributes } <span class="hljs-keyword">from</span> <span class="hljs-string">"raphael"</span>
-<span class="hljs-keyword">declare</span> <span class="hljs-keyword">module</span> "raphael" {
+						<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { RaphaelAttributes } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;raphael&quot;</span>
+<span class="hljs-keyword">declare</span> <span class="hljs-keyword">module</span> &quot;raphael&quot; {
   <span class="hljs-keyword">interface</span> RaphaelAttributes {
     hue: <span class="hljs-built_in">number</span>;
     hsb: <span class="hljs-built_in">string</span>;
@@ -476,7 +476,7 @@ c.animate({<span class="hljs-attr">hsb</span>: <span class="hljs-string">"1 0 .5
 								<div class="lead">
 									<p>Return the topmost element at given point.</p>
 								</div>
-								<pre><code class="language-javascript">paper.getElementByPoint(mouseX, mouseY).attr({<span class="hljs-attr">stroke</span>: <span class="hljs-string">"#f00"</span>});</code></pre>
+								<pre><code class="language-javascript">paper.getElementByPoint(mouseX, mouseY).attr({<span class="hljs-attr">stroke</span>: <span class="hljs-string">&quot;#f00&quot;</span>});</code></pre>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -513,7 +513,7 @@ c.animate({<span class="hljs-attr">hsb</span>: <span class="hljs-string">"1 0 .5
 									<p>Finds font object in the registered fonts by given parameters. You could specify only one word from the font
 									name, like <code>Myriad</code> for <code>Myriad Pr</code>.</p>
 								</div>
-								<pre><code class="language-javascript">paper.print(<span class="hljs-number">100</span>, <span class="hljs-number">100</span>, <span class="hljs-string">"Test string"</span>, paper.getFont(<span class="hljs-string">"Times"</span>, <span class="hljs-number">800</span>), <span class="hljs-number">30</span>);</code></pre>
+								<pre><code class="language-javascript">paper.print(<span class="hljs-number">100</span>, <span class="hljs-number">100</span>, <span class="hljs-string">&quot;Test string&quot;</span>, paper.getFont(<span class="hljs-string">&quot;Times&quot;</span>, <span class="hljs-number">800</span>), <span class="hljs-number">30</span>);</code></pre>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -561,7 +561,7 @@ c.animate({<span class="hljs-attr">hsb</span>: <span class="hljs-string">"1 0 .5
 								<div class="lead">
 									<p>Embeds an image into this paper.</p>
 								</div>
-								<pre><code class="language-javascript"><span class="hljs-keyword">var</span> c = paper.image(<span class="hljs-string">"apple.png"</span>, <span class="hljs-number">10</span>, <span class="hljs-number">10</span>, <span class="hljs-number">80</span>, <span class="hljs-number">80</span>);</code></pre>
+								<pre><code class="language-javascript"><span class="hljs-keyword">var</span> c = paper.image(<span class="hljs-string">&quot;apple.png&quot;</span>, <span class="hljs-number">10</span>, <span class="hljs-number">10</span>, <span class="hljs-number">80</span>, <span class="hljs-number">80</span>);</code></pre>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -616,8 +616,8 @@ c.animate({<span class="hljs-attr">hsb</span>: <span class="hljs-string">"1 0 .5
 									<p>Creates a path element by given path data string.</p>
 								</div>
 								<p>Path string consists of one-letter commands, followed by comma separated arguments in numerical form:</p>
-								<pre><code><span class="hljs-string">"M10,20L30,40"</span></code></pre><p>For example:</p>
-								<pre><code class="language-javascript"><span class="hljs-keyword">var</span> c = paper.path(<span class="hljs-string">"M10 10L90 90"</span>);
+								<pre><code><span class="hljs-string">&quot;M10,20L30,40&quot;</span></code></pre><p>For example:</p>
+								<pre><code class="language-javascript"><span class="hljs-keyword">var</span> c = paper.path(<span class="hljs-string">&quot;M10 10L90 90&quot;</span>);
 <span class="hljs-comment">// draw a diagonal line:</span>
 <span class="hljs-comment">// move to 10,10, line to 90,90</span></code></pre>
 							</div>
@@ -650,9 +650,9 @@ c.animate({<span class="hljs-attr">hsb</span>: <span class="hljs-string">"1 0 .5
 									<p>Creates set of shapes to represent given font at given position with given size. Result of the method is set
 									object (see <a href="raphaelpaper.html#set">set</a>) which contains each letter as separate path object.</p>
 								</div>
-								<pre><code class="language-javascript"><span class="hljs-keyword">var</span> txt = r.print(<span class="hljs-number">10</span>, <span class="hljs-number">50</span>, <span class="hljs-string">"print"</span>, r.getFont(<span class="hljs-string">"Arial"</span>), <span class="hljs-number">30</span>).attr({<span class="hljs-attr">fill</span>: <span class="hljs-string">"#fff"</span>});
+								<pre><code class="language-javascript"><span class="hljs-keyword">var</span> txt = r.print(<span class="hljs-number">10</span>, <span class="hljs-number">50</span>, <span class="hljs-string">&quot;print&quot;</span>, r.getFont(<span class="hljs-string">&quot;Arial&quot;</span>), <span class="hljs-number">30</span>).attr({<span class="hljs-attr">fill</span>: <span class="hljs-string">&quot;#fff&quot;</span>});
 <span class="hljs-comment">// following line will paint first letter in red</span>
-txt[<span class="hljs-number">0</span>].attr({<span class="hljs-attr">fill</span>: <span class="hljs-string">"#f00"</span>});</code></pre>
+txt[<span class="hljs-number">0</span>].attr({<span class="hljs-attr">fill</span>: <span class="hljs-string">&quot;#f00&quot;</span>});</code></pre>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -861,7 +861,7 @@ st.push(
   paper.circle(<span class="hljs-number">10</span>, <span class="hljs-number">10</span>, <span class="hljs-number">5</span>),
   paper.circle(<span class="hljs-number">30</span>, <span class="hljs-number">10</span>, <span class="hljs-number">5</span>)
 );
-st.attr({<span class="hljs-attr">fill</span>: <span class="hljs-string">"red"</span>}); <span class="hljs-comment">// changes the fill of both circles</span></code></pre>
+st.attr({<span class="hljs-attr">fill</span>: <span class="hljs-string">&quot;red&quot;</span>}); <span class="hljs-comment">// changes the fill of both circles</span></code></pre>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -951,7 +951,7 @@ st.attr({<span class="hljs-attr">fill</span>: <span class="hljs-string">"red"</s
 paper.circle(<span class="hljs-number">10</span>, <span class="hljs-number">10</span>, <span class="hljs-number">5</span>),
 paper.circle(<span class="hljs-number">30</span>, <span class="hljs-number">10</span>, <span class="hljs-number">5</span>)
 <span class="hljs-keyword">var</span> st = paper.setFinish();
-st.attr({<span class="hljs-attr">fill</span>: <span class="hljs-string">"red"</span>}); <span class="hljs-comment">// changes the fill of both circles</span></code></pre>
+st.attr({<span class="hljs-attr">fill</span>: <span class="hljs-string">&quot;red&quot;</span>}); <span class="hljs-comment">// changes the fill of both circles</span></code></pre>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
@@ -1164,6 +1164,7 @@ st.attr({<span class="hljs-attr">fill</span>: <span class="hljs-string">"red"</s
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
@@ -1180,6 +1181,9 @@ st.attr({<span class="hljs-attr">fill</span>: <span class="hljs-string">"red"</s
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>

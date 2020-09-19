@@ -119,6 +119,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="primefaces.widget.fieldset.html#jq" class="tsd-kind-icon">jq</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="primefaces.widget.fieldset.html#jqid" class="tsd-kind-icon">jq<wbr>Id</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="primefaces.widget.fieldset.html#legend" class="tsd-kind-icon">legend</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="primefaces.widget.fieldset.html#loaded" class="tsd-kind-icon">loaded</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="primefaces.widget.fieldset.html#stateholder" class="tsd-kind-icon">state<wbr>Holder</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="primefaces.widget.fieldset.html#toggler" class="tsd-kind-icon">toggler</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="primefaces.widget.fieldset.html#widgetvar" class="tsd-kind-icon">widget<wbr>Var</a></li>
@@ -136,7 +137,8 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="primefaces.widget.fieldset.html#hasbehavior" class="tsd-kind-icon">has<wbr>Behavior</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="primefaces.widget.fieldset.html#init" class="tsd-kind-icon">init</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="primefaces.widget.fieldset.html#isdetached" class="tsd-kind-icon">is<wbr>Detached</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="primefaces.widget.fieldset.html#refresh" class="tsd-kind-icon">refresh</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.fieldset.html#loadcontents" class="tsd-kind-icon">load<wbr>Contents</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="primefaces.widget.fieldset.html#refresh" class="tsd-kind-icon">refresh</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="primefaces.widget.fieldset.html#removescriptelement" class="tsd-kind-icon">remove<wbr>Script<wbr>Element</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="primefaces.widget.fieldset.html#toggle" class="tsd-kind-icon">toggle</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.fieldset.html#updatetogglestate" class="tsd-kind-icon">update<wbr>Toggle<wbr>State</a></li>
@@ -229,6 +231,18 @@
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>The DOM element with the legend of this fieldset.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="loaded" class="tsd-anchor"></a>
+					<h3>loaded</h3>
+					<div class="tsd-signature tsd-kind-icon">loaded<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>When dynamic loading is enabled, whether the content was already loaded.</p>
 						</div>
 					</div>
 				</section>
@@ -554,7 +568,7 @@
 								<p>Please make sure to call the super method first before adding your own custom logic to the init method:</p>
 								<pre><code class="language-javascript">PrimeFaces.widget.MyWidget = PrimeFaces.widget.BaseWidget.extend({
   <span class="hljs-attr">init</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">cfg</span>) </span>{
-    <span class="hljs-keyword">this</span>._super(cfg);
+    <span class="hljs-built_in">this</span>._super(cfg);
     <span class="hljs-comment">// custom initialization</span>
   }
 });</code></pre>
@@ -601,16 +615,35 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-					<a name="refresh" class="tsd-anchor"></a>
-					<h3>refresh</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">refresh<span class="tsd-signature-symbol">(</span>cfg<span class="tsd-signature-symbol">: </span><a href="../modules/primefaces.html#partialwidgetcfg" class="tsd-signature-type">PartialWidgetCfg</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TCfg</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="loadcontents" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> load<wbr>Contents</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">load<wbr>Contents<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="primefaces.widget.accordionpanel.html">AccordionPanel</a>.<a href="primefaces.widget.accordionpanel.html#refresh">refresh</a></p>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Loads the contents of this fieldset panel dynamically via AJAX, if dynamic loading is enabled.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+					<a name="refresh" class="tsd-anchor"></a>
+					<h3>refresh</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">refresh<span class="tsd-signature-symbol">(</span>cfg<span class="tsd-signature-symbol">: </span><a href="../modules/primefaces.html#partialwidgetcfg" class="tsd-signature-type">PartialWidgetCfg</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TCfg</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Overrides <a href="primefaces.widget.accordionpanel.html">AccordionPanel</a>.<a href="primefaces.widget.accordionpanel.html#refresh">refresh</a></p>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
@@ -625,6 +658,10 @@
 								possible to add additional listeners from code outside this widget.</p>
 								<p>By default, this method calls all refresh listeners, then reinitializes the widget by calling the <code>init</code>
 								method.</p>
+								<dl class="tsd-comment-tags">
+									<dt>override</dt>
+									<dd></dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -635,7 +672,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">unknown</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 							<p>The value as returned by the <code>init</code> method, which is often <code>undefined</code>.</p>
 						</li>
 					</ul>
@@ -741,6 +778,9 @@
 								<a href="../modules/primefaces.ajax.html">ajax</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+								<a href="../modules/primefaces.clientwindow.html">clientwindow</a>
+							</li>
+							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="../modules/primefaces.csp.html">csp</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
@@ -759,10 +799,10 @@
 								<a href="../modules/primefaces.settings.html">settings</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="../modules/primefaces.util.html">util</a>
+								<a href="../modules/primefaces.utils.html">utils</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="../modules/primefaces.utils.html">utils</a>
+								<a href="../modules/primefaces.validation.html">validation</a>
 							</li>
 							<li class="current tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="../modules/primefaces.widget.html">widget</a>
@@ -802,6 +842,9 @@
 								<a href="primefaces.widget.fieldset.html#legend" class="tsd-kind-icon">legend</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="primefaces.widget.fieldset.html#loaded" class="tsd-kind-icon">loaded</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="primefaces.widget.fieldset.html#stateholder" class="tsd-kind-icon">state<wbr>Holder</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
@@ -837,7 +880,10 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="primefaces.widget.fieldset.html#isdetached" class="tsd-kind-icon">is<wbr>Detached</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="primefaces.widget.fieldset.html#loadcontents" class="tsd-kind-icon">load<wbr>Contents</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 								<a href="primefaces.widget.fieldset.html#refresh" class="tsd-kind-icon">refresh</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -863,6 +909,7 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
@@ -883,6 +930,9 @@
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>

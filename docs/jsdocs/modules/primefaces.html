@@ -74,6 +74,7 @@
 					</div>
 					<ul>
 						<li><a href="primefaces.ajax.html">PrimeFaces.ajax</a> The AJAX module with functionality for sending AJAX requests</li>
+						<li><a href="primefaces.clientwindow.html">PrimeFaces.clientwindow</a> The client window module for multiple window support in PrimeFaces applications.</li>
 						<li><a href="primefaces.csp.html">PrimeFaces.csp</a> The  CSP module for the HTTP Content-Security-Policy (CSP) policy <code>script-src</code> directive.</li>
 						<li><a href="primefaces.dialog.html">PrimeFaces.dialog</a> The dialog module with functionality related to the dialog framework</li>
 						<li><a href="primefaces.env.html">PrimeFaces.env</a> The environment module with information about the current browser</li>
@@ -95,14 +96,15 @@
 							<h3>Namespaces</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="primefaces.ajax.html" class="tsd-kind-icon">ajax</a></li>
+								<li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="primefaces.clientwindow.html" class="tsd-kind-icon">clientwindow</a></li>
 								<li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="primefaces.csp.html" class="tsd-kind-icon">csp</a></li>
 								<li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="primefaces.dialog.html" class="tsd-kind-icon">dialog</a></li>
 								<li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="primefaces.env.html" class="tsd-kind-icon">env</a></li>
 								<li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="primefaces.expressions.html" class="tsd-kind-icon">expressions</a></li>
 								<li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="primefaces.resources.html" class="tsd-kind-icon">resources</a></li>
 								<li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="primefaces.settings.html" class="tsd-kind-icon">settings</a></li>
-								<li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="primefaces.util.html" class="tsd-kind-icon">util</a></li>
 								<li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="primefaces.utils.html" class="tsd-kind-icon">utils</a></li>
+								<li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="primefaces.validation.html" class="tsd-kind-icon">validation</a></li>
 								<li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="primefaces.widget.html" class="tsd-kind-icon">widget</a></li>
 							</ul>
 						</section>
@@ -114,7 +116,6 @@
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.deferredrender.html" class="tsd-kind-icon">Deferred<wbr>Render</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.facesmessage.html" class="tsd-kind-icon">Faces<wbr>Message</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.facesmessagebase.html" class="tsd-kind-icon">Faces<wbr>Message<wbr>Base</a></li>
-								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.highlighthandler.html" class="tsd-kind-icon">Highlight<wbr>Handler</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.highlighter.html" class="tsd-kind-icon">Highlighter</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.locale.html" class="tsd-kind-icon">Locale</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../interfaces/primefaces.validator.html" class="tsd-kind-icon">Validator</a></li>
@@ -144,7 +145,6 @@
 						<section class="tsd-index-section ">
 							<h3>Variables</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-variable tsd-parent-kind-namespace"><a href="primefaces.html#ab_mapping" class="tsd-kind-icon">AB_<wbr>MAPPING</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-namespace"><a href="primefaces.html#behavior_event_param" class="tsd-kind-icon">BEHAVIOR_<wbr>EVENT_<wbr>PARAM</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-namespace"><a href="primefaces.html#client_id_data" class="tsd-kind-icon">CLIENT_<wbr>ID_<wbr>DATA</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-namespace"><a href="primefaces.html#client_window" class="tsd-kind-icon">CLIENT_<wbr>WINDOW</a></li>
@@ -187,6 +187,7 @@
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#closedialog" class="tsd-kind-icon">close<wbr>Dialog</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#confirm" class="tsd-kind-icon">confirm</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#cookiesenabled" class="tsd-kind-icon">cookies<wbr>Enabled</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#createstoragekey" class="tsd-kind-icon">create<wbr>Storage<wbr>Key</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#createwidget" class="tsd-kind-icon">create<wbr>Widget</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#cw" class="tsd-kind-icon">cw</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#debug" class="tsd-kind-icon">debug</a></li>
@@ -202,7 +203,10 @@
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#getfacesresource" class="tsd-kind-icon">get<wbr>Faces<wbr>Resource</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#getlocalesettings" class="tsd-kind-icon">get<wbr>Locale<wbr>Settings</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#getselection" class="tsd-kind-icon">get<wbr>Selection</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#gettheme" class="tsd-kind-icon">get<wbr>Theme</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#getthemelink" class="tsd-kind-icon">get<wbr>Theme<wbr>Link</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#getwidgetbyid" class="tsd-kind-icon">get<wbr>Widget<wbr>ById</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#getwidgetsbytype" class="tsd-kind-icon">get<wbr>Widgets<wbr>ByType</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#hasselection" class="tsd-kind-icon">has<wbr>Selection</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter"><a href="primefaces.html#inarray" class="tsd-kind-icon">in<wbr>Array</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#info" class="tsd-kind-icon">info</a></li>
@@ -210,6 +214,7 @@
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#isdevelopmentprojectstage" class="tsd-kind-icon">is<wbr>Development<wbr>Project<wbr>Stage</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#isnumber" class="tsd-kind-icon">is<wbr>Number</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#monitordownload" class="tsd-kind-icon">monitor<wbr>Download</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#nextzindex" class="tsd-kind-icon">next<wbr>Zindex</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#onelementload" class="tsd-kind-icon">on<wbr>Element<wbr>Load</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#onpost" class="tsd-kind-icon">on<wbr>Post</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#opendialog" class="tsd-kind-icon">open<wbr>Dialog</a></li>
@@ -223,13 +228,12 @@
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#skininput" class="tsd-kind-icon">skin<wbr>Input</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#skinselect" class="tsd-kind-icon">skin<wbr>Select</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#submit" class="tsd-kind-icon">submit</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#toisostring" class="tsd-kind-icon">toISOString</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#trim" class="tsd-kind-icon">trim</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#updatefilledstate" class="tsd-kind-icon">update<wbr>Filled<wbr>State</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#uuid" class="tsd-kind-icon">uuid</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#validate" class="tsd-kind-icon">validate</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#validateinput" class="tsd-kind-icon">validate<wbr>Input</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#validateinputs" class="tsd-kind-icon">validate<wbr>Inputs</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#validateinstant" class="tsd-kind-icon">validate<wbr>Instant</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#vb" class="tsd-kind-icon">vb</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#version-1" class="tsd-kind-icon">version</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#vi" class="tsd-kind-icon">vi</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#warn" class="tsd-kind-icon">warn</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#widgetnotavailable" class="tsd-kind-icon">widget<wbr>Not<wbr>Available</a></li>
@@ -297,7 +301,7 @@
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Constructs a new type by binding the this context of <code>Base</code> to another type <code>ThisContext</code>.</p>
-							<pre><code class="language-typescript"><span class="hljs-keyword">type</span> X = <span class="hljs-function">(<span class="hljs-params"><span class="hljs-keyword">this</span>: <span class="hljs-built_in">string</span>, x: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-built_in">boolean</span>;
+							<pre><code class="language-typescript"><span class="hljs-keyword">type</span> X = <span class="hljs-function">(<span class="hljs-params"><span class="hljs-built_in">this</span>: <span class="hljs-built_in">string</span>, x: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-built_in">boolean</span>;
 <span class="hljs-keyword">type</span> Y = BindThis&lt;X, <span class="hljs-built_in">number</span>&gt;;
 <span class="hljs-comment">// type Y = (this: number, x: string) =&gt; boolean</span></code></pre>
 						</div>
@@ -339,7 +343,7 @@
 							<p>Constructs a new type by binding the this context of <code>Base</code> to the <code>ThisContext</code>. Additionally, also adds a new
 							property <code>_super</code> to the this context of <code>Base</code> that is also of type <code>Base</code>.</p>
 							<pre><code class="language-typescript"><span class="hljs-keyword">type</span> X = {foo: <span class="hljs-built_in">string</span>, bar: <span class="hljs-built_in">number</span>};
-<span class="hljs-keyword">type</span> Y = <span class="hljs-function">(<span class="hljs-params"><span class="hljs-keyword">this</span>: <span class="hljs-built_in">string</span>, k: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-built_in">boolean</span>;
+<span class="hljs-keyword">type</span> Y = <span class="hljs-function">(<span class="hljs-params"><span class="hljs-built_in">this</span>: <span class="hljs-built_in">string</span>, k: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-built_in">boolean</span>;
 <span class="hljs-keyword">type</span> Z = BindThis&lt;Y, X&gt;;
 <span class="hljs-comment">// type Z = (this: {foo: string, bar: number, _super: Y}, k: string) =&gt; boolean</span></code></pre>
 						</div>
@@ -444,7 +448,7 @@
 						<div class="lead">
 							<p>Constructs an object type a union of two-tuples. The first item in the pair
 							is used as the key, the second item as the type of the property&#39;s value.</p>
-							<pre><code class="language-typescript"><span class="hljs-keyword">type</span> Y = [<span class="hljs-string">"bar"</span>, <span class="hljs-built_in">RegExp</span>] | [<span class="hljs-string">"foo"</span>, <span class="hljs-built_in">number</span>];
+							<pre><code class="language-typescript"><span class="hljs-keyword">type</span> Y = [<span class="hljs-string">&quot;bar&quot;</span>, <span class="hljs-built_in">RegExp</span>] | [<span class="hljs-string">&quot;foo&quot;</span>, <span class="hljs-built_in">number</span>];
 <span class="hljs-keyword">type</span> Z = KeyValueTupleToObject&lt;Y&gt;;
 <span class="hljs-comment">// type Z = { bar: RegExp; foo: number; }</span></code></pre>
 						</div>
@@ -545,7 +549,7 @@
 						<div class="lead">
 							<p>Constructs a new type by making all properties <code>Key</code> in <code>Base</code> optional.</p>
 							<pre><code class="language-typescript"><span class="hljs-keyword">type</span> X = {foo: <span class="hljs-built_in">string</span>, bar: <span class="hljs-built_in">string</span>, baz: <span class="hljs-built_in">string</span>};
-<span class="hljs-keyword">type</span> Y = PartialBy&lt;X, <span class="hljs-string">"foo"</span> | <span class="hljs-string">"baz"</span>&gt;;
+<span class="hljs-keyword">type</span> Y = PartialBy&lt;X, <span class="hljs-string">&quot;foo&quot;</span> | <span class="hljs-string">&quot;baz&quot;</span>&gt;;
 <span class="hljs-comment">// type Y = {foo?: string, bar: string, baz?: string};</span></code></pre>
 						</div>
 						<dl class="tsd-comment-tags">
@@ -693,7 +697,7 @@
 						<div class="lead">
 							<p>Constructs a new type by renaming the properties in <code>Base</code> according to the <code>RenameMap</code>.</p>
 							<pre><code class="language-typescript"><span class="hljs-keyword">type</span> Z = { bar: <span class="hljs-built_in">RegExp</span>; foo: <span class="hljs-built_in">number</span>; };
-<span class="hljs-keyword">type</span> S = RenameKeys&lt;Z, {bar: <span class="hljs-string">"b"</span>, foo: <span class="hljs-string">"f"</span>}&gt;;
+<span class="hljs-keyword">type</span> S = RenameKeys&lt;Z, {bar: <span class="hljs-string">&quot;b&quot;</span>, foo: <span class="hljs-string">&quot;f&quot;</span>}&gt;;
 <span class="hljs-comment">// type S = { b: RegExp; f: number; }</span></code></pre>
 						</div>
 					</div>
@@ -804,9 +808,9 @@
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Constructs a new type that is the union of all types of each property in T.</p>
-							<pre><code class="language-typescript"><span class="hljs-keyword">type</span> X = {a: [<span class="hljs-string">"bar"</span>, <span class="hljs-built_in">RegExp</span>], b: [<span class="hljs-string">"foo"</span>, <span class="hljs-built_in">number</span>]};
+							<pre><code class="language-typescript"><span class="hljs-keyword">type</span> X = {a: [<span class="hljs-string">&quot;bar&quot;</span>, <span class="hljs-built_in">RegExp</span>], b: [<span class="hljs-string">&quot;foo&quot;</span>, <span class="hljs-built_in">number</span>]};
 <span class="hljs-keyword">type</span> Y = ValueOf&lt;X&gt;;
-<span class="hljs-comment">// type Y = ["bar", RegExp] | ["foo", number]</span></code></pre>
+<span class="hljs-comment">// type Y = [&quot;bar&quot;, RegExp] | [&quot;foo&quot;, number]</span></code></pre>
 						</div>
 					</div>
 					<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -824,18 +828,6 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Variables</h2>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-namespace">
-					<a name="ab_mapping" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagLet">Let</span> AB_<wbr>MAPPING</h3>
-					<div class="tsd-signature tsd-kind-icon">AB_<wbr>MAPPING<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></div>
-					<aside class="tsd-sources">
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>AJAX parameter shortcut mapping for the method <code>PrimeFaces.ab</code> that sends an AJAX request.</p>
-						</div>
-					</div>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-namespace">
 					<a name="behavior_event_param" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> BEHAVIOR_<wbr>EVENT_<wbr>PARAM</h3>
@@ -1100,7 +1092,7 @@
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-namespace">
 					<a name="validator-1" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagLet">Let</span> validator</h3>
-					<div class="tsd-signature tsd-kind-icon">validator<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>Highlighter<span class="tsd-signature-symbol">: </span><a href="../interfaces/primefaces.highlighter.html" class="tsd-signature-type">Highlighter</a><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="../interfaces/primefaces.validator.html" class="tsd-signature-type">Validator</a><span class="tsd-signature-symbol">&gt;</span></div>
+					<div class="tsd-signature tsd-kind-icon">validator<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="../interfaces/primefaces.validator.html" class="tsd-signature-type">Validator</a><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1141,7 +1133,7 @@
 					<a name="ab" class="tsd-anchor"></a>
 					<h3>ab</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace">
-						<li class="tsd-signature tsd-kind-icon">ab<span class="tsd-signature-symbol">(</span>cfg<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="primefaces.ajax.html#shorthandconfiguration" class="tsd-signature-type">ShorthandConfiguration</a><span class="tsd-signature-symbol">&gt;</span>, ext<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="primefaces.ajax.html#configurationextender" class="tsd-signature-type">ConfigurationExtender</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">ab<span class="tsd-signature-symbol">(</span>cfg<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="primefaces.ajax.html#shorthandconfiguration" class="tsd-signature-type">ShorthandConfiguration</a><span class="tsd-signature-symbol">&gt;</span>, ext<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="primefaces.ajax.html#configurationextender" class="tsd-signature-type">ConfigurationExtender</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/primefaces.ajax.responsedata.html" class="tsd-signature-type">ResponseData</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -1171,7 +1163,11 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/primefaces.ajax.responsedata.html" class="tsd-signature-type">ResponseData</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>A promise that resolves once the AJAX requests is done. Use this
+								to run custom JavaScript logic. When the AJAX request succeeds, the promise is fulfilled. Otherwise, when the
+								AJAX request fails, the promise is rejected. If the promise is rejected, the rejection handler receives an object
+							of type <a href="../interfaces/primefaces.ajax.failedrequestdata.html">PrimeFaces.ajax.FailedRequestData</a>.</p>
 						</li>
 					</ul>
 				</section>
@@ -1286,6 +1282,7 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">typeof </span><a href="primefaces.html" class="tsd-signature-type">PrimeFaces</a></h4>
+							<p>This object for chaining.</p>
 						</li>
 					</ul>
 				</section>
@@ -1452,7 +1449,7 @@
 								<li>
 									<h5>newTheme: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The new theme, eg. <code>aristo</code>, <code>nova-dark</code>, or <code>omega</code>.</p>
+										<p>The new theme, eg. <code>luna-amber</code>, <code>nova-dark</code>, or <code>omega</code>.</p>
 									</div>
 								</li>
 							</ul>
@@ -1560,6 +1557,41 @@
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 							<p><code>true</code> if cookies are enabled and can be used, <code>false</code> otherwise.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace">
+					<a name="createstoragekey" class="tsd-anchor"></a>
+					<h3>create<wbr>Storage<wbr>Key</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Storage<wbr>Key<span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Generates a unique key for using in HTML5 local storage by combining the context, view, id, and key.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>id: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>ID of the component</p>
+									</div>
+								</li>
+								<li>
+									<h5>key: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>a unique key name such as the component name</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<p>the generated key comprising of context + view + id + key</p>
 						</li>
 					</ul>
 				</section>
@@ -1677,7 +1709,7 @@
 					<a name="deletecookie" class="tsd-anchor"></a>
 					<h3>delete<wbr>Cookie</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace">
-						<li class="tsd-signature tsd-kind-icon">delete<wbr>Cookie<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, cfg<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/jquerycookie.options.html" class="tsd-signature-type">Options</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">delete<wbr>Cookie<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, cfg<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/cookies.cookieattributes.html" class="tsd-signature-type">CookieAttributes</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -1697,7 +1729,7 @@
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> cfg: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/jquerycookie.options.html" class="tsd-signature-type">Options</a><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> cfg: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/cookies.cookieattributes.html" class="tsd-signature-type">CookieAttributes</a><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>The cookie configuration used to set the cookie.</p>
 									</div>
@@ -1748,8 +1780,8 @@
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Creates an ID to a CSS ID selector that matches elements with that ID. For example:</p>
-									<pre><code><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">PrimeFaces</span>.</span></span>escape<span class="hljs-constructor">ClientId(<span class="hljs-string">"form:input"</span>)</span>; <span class="hljs-comment">// =&gt; "#form\:input"</span>
-<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">PrimeFaces</span>.</span></span>escape<span class="hljs-constructor">ClientId(<span class="hljs-string">"form#input"</span>)</span>; <span class="hljs-comment">// =&gt; "#form#input"</span></code></pre>
+									<pre><code><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">PrimeFaces</span>.</span></span>escape<span class="hljs-constructor">ClientId(<span class="hljs-string">&quot;form:input&quot;</span>)</span>; <span class="hljs-comment">// =&gt; &quot;#form\:input&quot;</span>
+<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">PrimeFaces</span>.</span></span>escape<span class="hljs-constructor">ClientId(<span class="hljs-string">&quot;form#input&quot;</span>)</span>; <span class="hljs-comment">// =&gt; &quot;#form#input&quot;</span></code></pre>
 								</div>
 								<p><strong>Please note that this method does not escape all characters that need to be escaped and will not work with arbitrary IDs</strong></p>
 							</div>
@@ -2034,6 +2066,47 @@
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Selection</span></h4>
+							<p>The text currently selected by the user on the current page.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace">
+					<a name="gettheme" class="tsd-anchor"></a>
+					<h3>get<wbr>Theme</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Theme<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets the currently loaded PF Theme.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<p>the current theme like &quot;omega&quot; or &quot;luna-amber&quot;.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace">
+					<a name="getthemelink" class="tsd-anchor"></a>
+					<h3>get<wbr>Theme<wbr>Link</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Theme<wbr>Link<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets the currently loaded PF Theme CSS Link.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<p>the full URL to the theme CSS</p>
 						</li>
 					</ul>
 				</section>
@@ -2064,6 +2137,36 @@
 							<h4 class="tsd-returns-title">Returns <a href="../classes/primefaces.widget.basewidget.html" class="tsd-signature-type">BaseWidget</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h4>
 							<p>The widget with the given ID, of <code>null</code> if no such widget was
 							found.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace">
+					<a name="getwidgetsbytype" class="tsd-anchor"></a>
+					<h3>get<wbr>Widgets<wbr>ByType</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Widgets<wbr>ByType<span class="tsd-signature-symbol">(</span>type<span class="tsd-signature-symbol">: </span><a href="../classes/primefaces.widget.basewidget.html" class="tsd-signature-type">BaseWidget</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/primefaces.widget.basewidget.html" class="tsd-signature-type">BaseWidget</a><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Finds all widgets in the current page of the given type.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>type: <a href="../classes/primefaces.widget.basewidget.html" class="tsd-signature-type">BaseWidget</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The type of the widgets of interest.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../classes/primefaces.widget.basewidget.html" class="tsd-signature-type">BaseWidget</a><span class="tsd-signature-symbol">[]</span></h4>
+							<p>An array of widgets that are of the requested type. If no suitable
+							widgets are found on the current page, an empty array will be returned.</p>
 						</li>
 					</ul>
 				</section>
@@ -2265,14 +2368,14 @@
 								<p>The example below displays a modal dialog when a download begins and hides it when the download is complete:</p>
 								<p>Client-side callbacks:</p>
 								<pre><code class="language-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">showStatus</span>(<span class="hljs-params"></span>) </span>{
-  PF(<span class="hljs-string">'statusDialog'</span>).show();
+  PF(<span class="hljs-string">&#x27;statusDialog&#x27;</span>).show();
 }
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">hideStatus</span>(<span class="hljs-params"></span>) </span>{
-  PF(<span class="hljs-string">'statusDialog'</span>).hide();
+  PF(<span class="hljs-string">&#x27;statusDialog&#x27;</span>).hide();
 }</code></pre>
 								<p>Server-side XHTML view:</p>
-								<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">p:commandButton</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"Download"</span> <span class="hljs-attr">ajax</span>=<span class="hljs-string">"false"</span> <span class="hljs-attr">onclick</span>=<span class="hljs-string">"PrimeFaces.monitorDownload(showStatus, hideStatus)"</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">p:fileDownload</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"#{fileDownloadController.file}"</span>/&gt;</span>
+								<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">p:commandButton</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;Download&quot;</span> <span class="hljs-attr">ajax</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">onclick</span>=<span class="hljs-string">&quot;PrimeFaces.monitorDownload(showStatus, hideStatus)&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">p:fileDownload</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;#{fileDownloadController.file}&quot;</span>/&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">p:commandButton</span>&gt;</span></code></pre>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2317,12 +2420,33 @@
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> monitorKey: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Name of the cookie for monitoring the download. The cookie name defaults to
-											<code>primefaces.download</code>. When a monitor key is given, the name of the cookie will consist of a prefix and the
+											<code>primefaces.download</code> + the current viewId. When a monitor key is given, the name of the cookie will consist of a prefix and the
 										given monitor key.</p>
 									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace">
+					<a name="nextzindex" class="tsd-anchor"></a>
+					<h3>next<wbr>Zindex</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace">
+						<li class="tsd-signature tsd-kind-icon">next<wbr>Zindex<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Increment and return the next zindex for CSS as a String.
+									jQuery will no longer accept numeric values in $.css as of 4.0.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<p>the next zindex as a String</p>
 						</li>
 					</ul>
 				</section>
@@ -2553,7 +2677,7 @@
 					<a name="setcookie" class="tsd-anchor"></a>
 					<h3>set<wbr>Cookie</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Cookie<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, cfg<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/jquerycookie.options.html" class="tsd-signature-type">Options</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Cookie<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, cfg<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/cookies.cookieattributes.html" class="tsd-signature-type">CookieAttributes</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -2561,7 +2685,9 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Sets the value of a given cookie.</p>
+									<p>Sets the value of a given cookie.
+										It will set secure=true, if using HTTPS and session-config/cookie-config/secure is set to true in web.xml.
+									It will set sameSite, if secure=true, with the value of the primefaces.COOKIES_SAME_SITE parameter.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2579,7 +2705,7 @@
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> cfg: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/jquerycookie.options.html" class="tsd-signature-type">Options</a><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> cfg: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/cookies.cookieattributes.html" class="tsd-signature-type">CookieAttributes</a><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Configuration for this cookie: when it expires, its
 										paths and domain and whether it is secure cookie.</p>
@@ -2755,6 +2881,66 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace">
+					<a name="toisostring" class="tsd-anchor"></a>
+					<h3>toISOString</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace">
+						<li class="tsd-signature tsd-kind-icon">toISOString<span class="tsd-signature-symbol">(</span>date<span class="tsd-signature-symbol">: </span><a href="../interfaces/date.html" class="tsd-signature-type">Date</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Converts a date into an ISO-8601 date without using the browser timezone offset.</p>
+								</div>
+								<p>See <a href="https://stackoverflow.com/questions/10830357/javascript-toisostring-ignores-timezone-offset">https://stackoverflow.com/questions/10830357/javascript-toisostring-ignores-timezone-offset</a></p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>date: <a href="../interfaces/date.html" class="tsd-signature-type">Date</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the date to convert</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<p>ISO-8601 version of the date</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace">
+					<a name="trim" class="tsd-anchor"></a>
+					<h3>trim</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace">
+						<li class="tsd-signature tsd-kind-icon">trim<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>For 4.0 jQuery deprecated $.trim in favor of PrimeFaces.trim however that does not handle
+									NULL and jQuery did so this function allows a drop in replacement.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>value: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the String to trim</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<p>trimmed value or &quot;&quot; if it was NULL</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace">
 					<a name="updatefilledstate" class="tsd-anchor"></a>
 					<h3>update<wbr>Filled<wbr>State</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace">
@@ -2811,132 +2997,10 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace">
-					<a name="validate" class="tsd-anchor"></a>
-					<h3>validate</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace">
-						<li class="tsd-signature tsd-kind-icon">validate<span class="tsd-signature-symbol">(</span>cfg<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="primefaces.ajax.html#shorthandconfiguration" class="tsd-signature-type">ShorthandConfiguration</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>When an AJAX request (with a specified <code>process</code> and/or <code>update</code>) is sent, the submitted form values are
-										validated by the server. Given the configuration of such an AJAX request, this function checks whether it would
-										result in any validation errors. It does this on the client via JavaScript, without sending any requests. This
-									can be used for client-side validation that provides quick feedback to the user.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>cfg: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="primefaces.ajax.html#shorthandconfiguration" class="tsd-signature-type">ShorthandConfiguration</a><span class="tsd-signature-symbol">&gt;</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>An AJAX configuration. It should have at least the
-										source (<code>s</code>) attribute set.</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-							<p><code>true</code> if the request would not result in validation errors, or <code>false</code> otherwise.</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace">
-					<a name="validateinput" class="tsd-anchor"></a>
-					<h3>validate<wbr>Input</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace">
-						<li class="tsd-signature tsd-kind-icon">validate<wbr>Input<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><a href="jquery.html" class="tsd-signature-type">JQuery</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Performs a client-side validation of (the value of) the given element. If the element is valid, removes old
-										messages from the element. If the value of the element is invalid, adds the appropriate validation failure
-									messages.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>element: <a href="jquery.html" class="tsd-signature-type">JQuery</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>A JQuery instance with a single input element to validate.</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace">
-					<a name="validateinputs" class="tsd-anchor"></a>
-					<h3>validate<wbr>Inputs</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace">
-						<li class="tsd-signature tsd-kind-icon">validate<wbr>Inputs<span class="tsd-signature-symbol">(</span>inputs<span class="tsd-signature-symbol">: </span><a href="jquery.html" class="tsd-signature-type">JQuery</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Validates all given input fields, checking whether their current value is valid.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>inputs: <a href="jquery.html" class="tsd-signature-type">JQuery</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>A JQuery instance with one or more input elements.</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace">
-					<a name="validateinstant" class="tsd-anchor"></a>
-					<h3>validate<wbr>Instant</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace">
-						<li class="tsd-signature tsd-kind-icon">validate<wbr>Instant<span class="tsd-signature-symbol">(</span>el<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/htmlelement.html" class="tsd-signature-type">HTMLElement</a><span class="tsd-signature-symbol"> | </span><a href="jquery.html" class="tsd-signature-type">JQuery</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Performs a client-side validation of (the value of) the given element. If the element is valid, removes old
-										messages from the element. If the value of the element is invalid, adds the appropriate validation failure
-									messages.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>el: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/htmlelement.html" class="tsd-signature-type">HTMLElement</a><span class="tsd-signature-symbol"> | </span><a href="jquery.html" class="tsd-signature-type">JQuery</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The ID of an element to validate, or the element itself.</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-							<p><code>true</code> if the element is valid, or <code>false</code> otherwise.</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace">
 					<a name="vb" class="tsd-anchor"></a>
 					<h3>vb</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace">
-						<li class="tsd-signature tsd-kind-icon">vb<span class="tsd-signature-symbol">(</span>cfg<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="primefaces.ajax.html#shorthandconfiguration" class="tsd-signature-type">ShorthandConfiguration</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">vb<span class="tsd-signature-symbol">(</span>cfg<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="primefaces.validation.html#shorthandconfiguration" class="tsd-signature-type">ShorthandConfiguration</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -2944,21 +3008,42 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>A shortcut for <code>PrimeFaces.validate</code>.</p>
+									<p>A shortcut for <code>PrimeFaces.validation.validate</code> used by server-side renderers.
+										If the <code>ajax</code> attribute is set to <code>true</code> (the default is <code>false</code>), all inputs configured by the <code>process</code> attribute are validated
+										and all messages for the inputs configured by the <code>update</code> attribute are rendered.
+									Otherwise, if the <code>ajax</code> attribute is set to the <code>false</code>, all inputs of the the parent form, of the <code>source</code> attribute, are processed and updated.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>cfg: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="primefaces.ajax.html#shorthandconfiguration" class="tsd-signature-type">ShorthandConfiguration</a><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>cfg: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="primefaces.validation.html#shorthandconfiguration" class="tsd-signature-type">ShorthandConfiguration</a><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>An AJAX configuration. It should have at least the
-										source (<code>s</code>) attribute set.</p>
+										<p>An configuration.</p>
 									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 							<p><code>true</code> if the request would not result in validation errors, or <code>false</code> otherwise.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace">
+					<a name="version-1" class="tsd-anchor"></a>
+					<h3>version</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace">
+						<li class="tsd-signature tsd-kind-icon">version<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Logs the current PrimeFaces and jQuery version to console.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -2974,7 +3059,7 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>A shortcut for <code>PrimeFaces.validateInstant</code>.</p>
+									<p>A shortcut for <code>PrimeFaces.validation.validateInstant</code>. This is used by <code>p:clientValidator</code>.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3063,6 +3148,9 @@
 								<a href="primefaces.ajax.html">ajax</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+								<a href="primefaces.clientwindow.html">clientwindow</a>
+							</li>
+							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="primefaces.csp.html">csp</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
@@ -3081,10 +3169,10 @@
 								<a href="primefaces.settings.html">settings</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="primefaces.util.html">util</a>
+								<a href="primefaces.utils.html">utils</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="primefaces.utils.html">utils</a>
+								<a href="primefaces.validation.html">validation</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="primefaces.widget.html">widget</a>
@@ -3109,9 +3197,6 @@
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="../interfaces/primefaces.facesmessagebase.html" class="tsd-kind-icon">Faces<wbr>Message<wbr>Base</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-						<a href="../interfaces/primefaces.highlighthandler.html" class="tsd-kind-icon">Highlight<wbr>Handler</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="../interfaces/primefaces.highlighter.html" class="tsd-kind-icon">Highlighter</a>
@@ -3169,9 +3254,6 @@
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace tsd-has-type-parameter">
 						<a href="primefaces.html#valueof" class="tsd-kind-icon">Value<wbr>Of</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-namespace">
-						<a href="primefaces.html#ab_mapping" class="tsd-kind-icon">AB_<wbr>MAPPING</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-namespace">
 						<a href="primefaces.html#behavior_event_param" class="tsd-kind-icon">BEHAVIOR_<wbr>EVENT_<wbr>PARAM</a>
@@ -3285,6 +3367,9 @@
 						<a href="primefaces.html#cookiesenabled" class="tsd-kind-icon">cookies<wbr>Enabled</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-namespace">
+						<a href="primefaces.html#createstoragekey" class="tsd-kind-icon">create<wbr>Storage<wbr>Key</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-namespace">
 						<a href="primefaces.html#createwidget" class="tsd-kind-icon">create<wbr>Widget</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-namespace">
@@ -3330,7 +3415,16 @@
 						<a href="primefaces.html#getselection" class="tsd-kind-icon">get<wbr>Selection</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-namespace">
+						<a href="primefaces.html#gettheme" class="tsd-kind-icon">get<wbr>Theme</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-namespace">
+						<a href="primefaces.html#getthemelink" class="tsd-kind-icon">get<wbr>Theme<wbr>Link</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-namespace">
 						<a href="primefaces.html#getwidgetbyid" class="tsd-kind-icon">get<wbr>Widget<wbr>ById</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-namespace">
+						<a href="primefaces.html#getwidgetsbytype" class="tsd-kind-icon">get<wbr>Widgets<wbr>ByType</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-namespace">
 						<a href="primefaces.html#hasselection" class="tsd-kind-icon">has<wbr>Selection</a>
@@ -3352,6 +3446,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-namespace">
 						<a href="primefaces.html#monitordownload" class="tsd-kind-icon">monitor<wbr>Download</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-namespace">
+						<a href="primefaces.html#nextzindex" class="tsd-kind-icon">next<wbr>Zindex</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-namespace">
 						<a href="primefaces.html#onelementload" class="tsd-kind-icon">on<wbr>Element<wbr>Load</a>
@@ -3393,25 +3490,22 @@
 						<a href="primefaces.html#submit" class="tsd-kind-icon">submit</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-namespace">
+						<a href="primefaces.html#toisostring" class="tsd-kind-icon">toISOString</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-namespace">
+						<a href="primefaces.html#trim" class="tsd-kind-icon">trim</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-namespace">
 						<a href="primefaces.html#updatefilledstate" class="tsd-kind-icon">update<wbr>Filled<wbr>State</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-namespace">
 						<a href="primefaces.html#uuid" class="tsd-kind-icon">uuid</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-namespace">
-						<a href="primefaces.html#validate" class="tsd-kind-icon">validate</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-namespace">
-						<a href="primefaces.html#validateinput" class="tsd-kind-icon">validate<wbr>Input</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-namespace">
-						<a href="primefaces.html#validateinputs" class="tsd-kind-icon">validate<wbr>Inputs</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-namespace">
-						<a href="primefaces.html#validateinstant" class="tsd-kind-icon">validate<wbr>Instant</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-namespace">
 						<a href="primefaces.html#vb" class="tsd-kind-icon">vb</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-namespace">
+						<a href="primefaces.html#version-1" class="tsd-kind-icon">version</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-namespace">
 						<a href="primefaces.html#vi" class="tsd-kind-icon">vi</a>
@@ -3432,6 +3526,7 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
@@ -3448,6 +3543,9 @@
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>

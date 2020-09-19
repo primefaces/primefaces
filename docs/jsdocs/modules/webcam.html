@@ -202,7 +202,7 @@
 									<p>WebcamJS is initialized and activated by attaching a live camera viewer to a DOM element. The DOM element must
 									already be created and empty:</p>
 								</div>
-								<pre><code class="language-javascript">Webcam.attach(<span class="hljs-string">"#my_camera"</span>);</code></pre>
+								<pre><code class="language-javascript">Webcam.attach(<span class="hljs-string">&quot;#my_camera&quot;</span>);</code></pre>
 								<p>This will activate the user&#39;s webcam, ask for the appropriate permission, and begin showing a live camera image in
 								the specified DOM element.</p>
 								<p>Note that the browser itself handles asking the user for permission to use their camera. WebcamJS has no control
@@ -428,7 +428,7 @@
 									passed to your function as a daata URI, which you can then display in your web page, or submit to a server:</p>
 								</div>
 								<pre><code class="language-javascript">Webcam.snap(<span class="hljs-function"><span class="hljs-params">data_uri</span> =&gt;</span> {
-  <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">"my_result"</span>).innerHTML = <span class="hljs-string">`&lt;img src="<span class="hljs-subst">${data_uri}</span>"&gt;`</span>;
+  <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&quot;my_result&quot;</span>).innerHTML = <span class="hljs-string">`&lt;img src=&quot;<span class="hljs-subst">${data_uri}</span>&quot;&gt;`</span>;
 });</code></pre>
 								<p>Your function is also passed a HTML5 Canvas and a 2D Context object, so you can gain access to the raw pixels
 								instead of a compressed image Data URI. These are passed as the 2nd and 3rd arguments to your callback function:</p>
@@ -439,8 +439,8 @@
 								<p>If you would prefer that WebcamJS simply copy the image into your own canvas, it can do that instead of generating
 									a data URI (which can be an expensive operation). To do this, simply pass your canvas object to the <code>Webcam.snap()</code>
 								method, as the 2nd argument, right after your callback function:</p>
-								<pre><code class="language-javascript"><span class="hljs-comment">// assumes 'myCanvas' is a reference to your own canvas object, at the correct size</span>
-Webcam.snap(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+								<pre><code class="language-javascript"><span class="hljs-comment">// assumes &#x27;myCanvas&#x27; is a reference to your own canvas object, at the correct size</span>
+Webcam.snap(<span class="hljs-function">() =&gt;</span> {
   <span class="hljs-comment">// the webcam image is now in your own canvas</span>
 }, myCanvas );</code></pre>
 							</div>
@@ -501,17 +501,17 @@ Webcam.snap(<span class="hljs-function"><span class="hljs-params">()</span> =&gt
 									page. However, the library also provides a way to decode and submit this image data to a server API endpoint, via
 								binary AJAX:</p>
 								<pre><code class="language-javascript">Webcam.snap(<span class="hljs-function"><span class="hljs-params">data_uri</span> =&gt;</span> {
-  <span class="hljs-comment">// snap complete, image data is in "data_uri"</span>
-  Webcam.upload(data_uri, <span class="hljs-string">"myScript.php"</span>, (code, text) =&gt; {
+  <span class="hljs-comment">// snap complete, image data is in &quot;data_uri&quot;</span>
+  Webcam.upload(data_uri, <span class="hljs-string">&quot;myScript.php&quot;</span>, <span class="hljs-function">(<span class="hljs-params">code, text</span>) =&gt;</span> {
     <span class="hljs-comment">// Upload complete!</span>
-    <span class="hljs-comment">// "code" will be the HTTP response code from the server, e.g. 200</span>
-    <span class="hljs-comment">// 'text' will be the raw response content</span>
+    <span class="hljs-comment">// &quot;code&quot; will be the HTTP response code from the server, e.g. 200</span>
+    <span class="hljs-comment">// &#x27;text&#x27; will be the raw response content</span>
   });
 });</code></pre>
 								<p>The image data is uploaded as part of a standard multipart form post, and included as a form element named
 								webcam. To gain access to this data, write some server-side code like this (PHP shown):</p>
 								<pre><code class="language-php"><span class="hljs-comment">// be aware of file / directory permissions on your server</span>
-move_uploaded_file($_FILES[<span class="hljs-string">'webcam'</span>][<span class="hljs-string">'tmp_name'</span>], <span class="hljs-string">'webcam.jpg'</span>);</code></pre>
+move_uploaded_file($_FILES[<span class="hljs-string">&#x27;webcam&#x27;</span>][<span class="hljs-string">&#x27;tmp_name&#x27;</span>], <span class="hljs-string">&#x27;webcam.jpg&#x27;</span>);</code></pre>
 								<p>Treat the uploaded data as if you were receiving a standard form submission with a
 								<code>&lt;input type=&quot;file&quot; name=&quot;webcam&quot;&gt;</code> element. The data is sent in the same exact way.</p>
 							</div>
@@ -608,6 +608,7 @@ move_uploaded_file($_FILES[<span class="hljs-string">'webcam'</span>][<span clas
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
@@ -624,6 +625,9 @@ move_uploaded_file($_FILES[<span class="hljs-string">'webcam'</span>][<span clas
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
