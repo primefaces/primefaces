@@ -349,6 +349,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             this.groupRows();
             this.bindToggleRowGroupEvents();
         }
+
+        if(this.cfg.expansion) {
+            this.initRowExpansion();
+        }
     },
 
     /**
