@@ -4570,23 +4570,23 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     initRowExpansion: function() {
         var $this = this;
 
-    	this.expansionHolder = $(this.jqId + '_rowExpansionState');
+        this.expansionHolder = $(this.jqId + '_rowExpansionState');
         this.loadedExpansionRows = this.tbody.children('.ui-expanded-row-content').prev().map(function() {
             return $this.getRowMeta($(this)).index;
         }).get();
 
         this.writeRowExpansions();
     },
-    
+
     writeRowExpansions: function() {
-    	this.expansionHolder.val(this.loadedExpansionRows.join(','));
+        this.expansionHolder.val(this.loadedExpansionRows.join(','));
     },
 
     rowExpansionLoaded: function(rowIndex) {
-    	if (!PrimeFaces.inArray(this.loadedExpansionRows, rowIndex)) {
-    		this.loadedExpansionRows.push(rowIndex);
-    		this.writeRowExpansions();
-    	}
+        if(!PrimeFaces.inArray(this.loadedExpansionRows, rowIndex)) {
+            this.loadedExpansionRows.push(rowIndex);
+            this.writeRowExpansions();
+        }
     },
 
     /**
