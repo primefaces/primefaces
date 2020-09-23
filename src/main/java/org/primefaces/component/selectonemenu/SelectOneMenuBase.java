@@ -60,7 +60,9 @@ public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Wid
         autoWidth,
         dynamic,
         dir,
-        touchable
+        touchable,
+
+        disabledAsLabel
     }
 
     public SelectOneMenuBase() {
@@ -260,5 +262,13 @@ public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Wid
     @Override
     public void setTouchable(boolean touchable) {
         getStateHelper().put(PropertyKeys.touchable, touchable);
+    }
+
+    public boolean isDisabledAsLabel() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabledAsLabel, false);
+    }
+
+    public void setDisabledAsLabel(boolean disabledAsLabel) {
+        getStateHelper().put(PropertyKeys.disabledAsLabel, disabledAsLabel);
     }
 }

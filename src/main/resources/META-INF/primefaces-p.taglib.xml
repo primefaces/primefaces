@@ -23762,6 +23762,14 @@
             <required>false</required>
             <type>boolean</type>
         </attribute>
+       <attribute>
+          <description>
+             <![CDATA[]]>
+          </description>
+          <name>disabledAsLabel</name>
+          <required>false</required>
+          <type>boolean</type>
+       </attribute>
         <attribute>
             <description>
                 <![CDATA[]]>

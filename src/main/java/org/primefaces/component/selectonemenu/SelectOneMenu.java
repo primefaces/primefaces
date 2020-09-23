@@ -72,6 +72,7 @@ public class SelectOneMenu extends SelectOneMenuBase {
     public static final String FILTER_CONTAINER_CLASS = "ui-selectonemenu-filter-container";
     public static final String FILTER_CLASS = "ui-selectonemenu-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
     public static final String FILTER_ICON_CLASS = "ui-icon ui-icon-search";
+    public static final String DISABLED_AS_LABEL_CLASS = "ui-selectonemenu-disabled-as-label";
 
     private static final Collection<String> EVENT_NAMES = LangUtils.unmodifiableList("itemSelect", "blur", "change", "valueChange", "click",
             "dblclick", "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select");
@@ -218,5 +219,8 @@ public class SelectOneMenu extends SelectOneMenuBase {
         getStateHelper().put("labelledby", labelledBy);
     }
 
-
+    @Override
+    public boolean isDisabled() {
+        return super.isDisabled() || isDisabledAsLabel();
+    }
 }

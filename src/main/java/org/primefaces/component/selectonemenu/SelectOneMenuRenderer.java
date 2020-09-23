@@ -130,6 +130,9 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         if (ComponentUtils.isRTL(context, menu)) {
             styleClass = styleClass + " " + SelectOneMenu.RTL_CLASS;
         }
+        if (menu.isDisabledAsLabel()) {
+            styleClass = styleClass + " " + SelectOneMenu.DISABLED_AS_LABEL_CLASS;
+        }
 
         writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");

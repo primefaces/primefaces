@@ -382,6 +382,18 @@ input[type=text]::-ms-clear {
     text-align: right; 
 }
 
+.ui-selectonemenu-disabled-as-label {
+    border-color: transparent !important;
+    background-color: transparent;
+    opacity: 1 !important;
+}
+.ui-selectonemenu-disabled-as-label > .ui-selectonemenu-label {
+    background-color: transparent;
+}
+.ui-selectonemenu-disabled-as-label > .ui-selectonemenu-trigger {
+    display:none;
+}
+
 .ui-state-disabled a{outline: none;}
 
 /* Button */
