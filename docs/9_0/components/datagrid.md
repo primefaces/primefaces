@@ -38,7 +38,7 @@ pageLinks | 10 | Integer | Maximum number of page links to display.
 paginatorPosition | both | String | Position of the paginator.
 paginatorAlwaysVisible | true | Boolean | Defines if paginator should be hidden if total data count is less than number of rows per page.
 style | null | String | Inline style of the datagrid (main container).
-styleClass | null | String | Style class of the datagrid main container.
+styleClass | null | String | Style class of the datagrid (main container).
 rowStyle | null | String | Inline style of each row (grid-cell).
 rowStyleClass | null | String | Style class of each row (grid-cell).
 rowIndexVar | null | String | Name of the iterator to refer each row index.
