@@ -414,7 +414,14 @@
                         <supportedProjectType>jar</supportedProjectType>
                     </supportedProjectTypes>
                     <instructions>
-                        <Export-Package>org.primefaces.*;version="${project.version}</Export-Package>
+                        <Export-Package>
+                            org.primefaces.*;version="${project.version}",
+                            org.primefaces.shaded.json;version="${project.version}",
+                            org.primefaces.shaded.commons;version="${project.version}",
+                            org.primefaces.shaded.commons.io;version="${project.version}",
+                            org.primefaces.shaded.commons.io.input;version="${project.version}",
+                            org.primefaces.shaded.owasp.encoder;version="${project.version}"
+						</Export-Package>
                         <Import-Package>
                             javax.faces.component.search;resolution:=optional,
                             javax.faces.component.search.*;resolution:=optional,
