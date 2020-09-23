@@ -750,7 +750,7 @@ public class TreeTableRenderer extends DataRenderer {
         }
 
         if (width != null) {
-            String unit = width.endsWith("%") ? "" : "px";
+            String unit = endsWithLenghtUnit(width) ? Constants.EMPTY_STRING : "px";
             if (style != null) {
                 style = style + ";width:" + width + unit;
             }

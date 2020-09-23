@@ -221,7 +221,7 @@
         <dependency>
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast</artifactId>
-            <version>4.1-BETA-1</version>
+            <version>4.0.3</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -951,6 +951,24 @@
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
                             <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/diagram/diagram.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/diagram/0-jsplumb.min.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/diagram/1-diagram.js</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/diagram/diagram.css</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/diagram/0-jsplumbtoolkit-defaults.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/diagram/1-diagram.css</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/fileupload/fileupload.js</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/fileupload/0-jquery.iframe-transport.js</include>
@@ -1312,6 +1330,7 @@
                                 <exclude>**/0-quill.min.js</exclude>
                                 <exclude>**/jquery.js</exclude>
                                 <exclude>**/fullcalendar.min.js</exclude>
+                                <exclude>**/0-jsplumb.min.js</exclude>
                                 <exclude>**/0-timeline.min.js</exclude>
                                 <exclude>**/0-chartjs.js</exclude>
                                 <exclude>**/0-jquery.inputmask.js</exclude>

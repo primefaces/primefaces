@@ -82,13 +82,13 @@
 					<p>DatePicker is designed to replace the old <a href="primefaces.widget.calendar.html">p:calendar</a> component.</p>
 					<p>To interact with the calendar, use the methods of this widget, or for more advanced usages, use the <code>datePicker</code>
 					JQueryUI widget plugin, for example:</p>
-					<pre><code class="language-javascript">PF(<span class="hljs-string">"datePickerWidget"</span>).getDate();
-PF(<span class="hljs-string">"datePickerWidget"</span>).jq.datePicker(<span class="hljs-string">"getDate"</span>);
+					<pre><code class="language-javascript">PF(<span class="hljs-string">&quot;datePickerWidget&quot;</span>).getDate();
+PF(<span class="hljs-string">&quot;datePickerWidget&quot;</span>).jq.datePicker(<span class="hljs-string">&quot;getDate&quot;</span>);
 
-PF(<span class="hljs-string">"datePickerWidget"</span>).setDate(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>());
-PF(<span class="hljs-string">"datePickerWidget"</span>).jq.datePicker(<span class="hljs-string">"setDate"</span>, <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>());
+PF(<span class="hljs-string">&quot;datePickerWidget&quot;</span>).setDate(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>());
+PF(<span class="hljs-string">&quot;datePickerWidget&quot;</span>).jq.datePicker(<span class="hljs-string">&quot;setDate&quot;</span>, <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>());
 
-PF(<span class="hljs-string">"datePickerWidget"</span>).jq.datePicker(<span class="hljs-string">"enableModality"</span>);</code></pre>
+PF(<span class="hljs-string">&quot;datePickerWidget&quot;</span>).jq.datePicker(<span class="hljs-string">&quot;enableModality&quot;</span>);</code></pre>
 				</div>
 			</section>
 			<section class="tsd-panel tsd-type-parameters">
@@ -146,6 +146,8 @@ PF(<span class="hljs-string">"datePickerWidget"</span>).jq.datePicker(<span clas
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="primefaces.widget.datepicker.html#adddestroylistener" class="tsd-kind-icon">add<wbr>Destroy<wbr>Listener</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="primefaces.widget.datepicker.html#addrefreshlistener" class="tsd-kind-icon">add<wbr>Refresh<wbr>Listener</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.datepicker.html#applymask" class="tsd-kind-icon">apply<wbr>Mask</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.datepicker.html#bindclearbuttonlistener" class="tsd-kind-icon">bind<wbr>Clear<wbr>Button<wbr>Listener</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.datepicker.html#bindcloselistener" class="tsd-kind-icon">bind<wbr>Close<wbr>Listener</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.datepicker.html#binddateselectlistener" class="tsd-kind-icon">bind<wbr>Date<wbr>Select<wbr>Listener</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.datepicker.html#bindviewchangelistener" class="tsd-kind-icon">bind<wbr>View<wbr>Change<wbr>Listener</a></li>
@@ -165,7 +167,10 @@ PF(<span class="hljs-string">"datePickerWidget"</span>).jq.datePicker(<span clas
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="primefaces.widget.datepicker.html#refresh" class="tsd-kind-icon">refresh</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="primefaces.widget.datepicker.html#removescriptelement" class="tsd-kind-icon">remove<wbr>Script<wbr>Element</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="primefaces.widget.datepicker.html#setdate" class="tsd-kind-icon">set<wbr>Date</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="primefaces.widget.datepicker.html#setdisableddates" class="tsd-kind-icon">set<wbr>Disabled<wbr>Dates</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="primefaces.widget.datepicker.html#setdisableddays" class="tsd-kind-icon">set<wbr>Disabled<wbr>Days</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="primefaces.widget.datepicker.html#setviewdate" class="tsd-kind-icon">set<wbr>View<wbr>Date</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.datepicker.html#updatepanel" class="tsd-kind-icon">update<wbr>Panel</a></li>
 							</ul>
 						</section>
 					</div>
@@ -426,6 +431,44 @@ PF(<span class="hljs-string">"datePickerWidget"</span>).jq.datePicker(<span clas
 									</div>
 								</li>
 							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="applymask" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> apply<wbr>Mask</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">apply<wbr>Mask<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Initializes the mask on the input if using a mask and not an inline picker.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="bindclearbuttonlistener" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> bind<wbr>Clear<wbr>Button<wbr>Listener</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">bind<wbr>Clear<wbr>Button<wbr>Listener<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Sets up the event listener for when the Clear button is selected.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -821,7 +864,7 @@ PF(<span class="hljs-string">"datePickerWidget"</span>).jq.datePicker(<span clas
 								<p>Please make sure to call the super method first before adding your own custom logic to the init method:</p>
 								<pre><code class="language-javascript">PrimeFaces.widget.MyWidget = PrimeFaces.widget.BaseWidget.extend({
   <span class="hljs-attr">init</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">cfg</span>) </span>{
-    <span class="hljs-keyword">this</span>._super(cfg);
+    <span class="hljs-built_in">this</span>._super(cfg);
     <span class="hljs-comment">// custom initialization</span>
   }
 });</code></pre>
@@ -970,6 +1013,62 @@ PF(<span class="hljs-string">"datePickerWidget"</span>).jq.datePicker(<span clas
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="setdisableddates" class="tsd-anchor"></a>
+					<h3>set<wbr>Disabled<wbr>Dates</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Disabled<wbr>Dates<span class="tsd-signature-symbol">(</span>disabledDates<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/date.html" class="tsd-signature-type">Date</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Sets the disabled dates.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>disabledDates: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/date.html" class="tsd-signature-type">Date</a><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The dates to disable.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="setdisableddays" class="tsd-anchor"></a>
+					<h3>set<wbr>Disabled<wbr>Days</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Disabled<wbr>Days<span class="tsd-signature-symbol">(</span>disabledDays<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Sets the disabled days.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>disabledDays: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The days to disable.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="setviewdate" class="tsd-anchor"></a>
 					<h3>set<wbr>View<wbr>Date</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -997,6 +1096,25 @@ PF(<span class="hljs-string">"datePickerWidget"</span>).jq.datePicker(<span clas
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="updatepanel" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> update<wbr>Panel</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Panel<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Update panel.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -1010,6 +1128,9 @@ PF(<span class="hljs-string">"datePickerWidget"</span>).jq.datePicker(<span clas
 						<ul>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="../modules/primefaces.ajax.html">ajax</a>
+							</li>
+							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+								<a href="../modules/primefaces.clientwindow.html">clientwindow</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="../modules/primefaces.csp.html">csp</a>
@@ -1030,10 +1151,10 @@ PF(<span class="hljs-string">"datePickerWidget"</span>).jq.datePicker(<span clas
 								<a href="../modules/primefaces.settings.html">settings</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="../modules/primefaces.util.html">util</a>
+								<a href="../modules/primefaces.utils.html">utils</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="../modules/primefaces.utils.html">utils</a>
+								<a href="../modules/primefaces.validation.html">validation</a>
 							</li>
 							<li class="current tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="../modules/primefaces.widget.html">widget</a>
@@ -1089,6 +1210,12 @@ PF(<span class="hljs-string">"datePickerWidget"</span>).jq.datePicker(<span clas
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="primefaces.widget.datepicker.html#addrefreshlistener" class="tsd-kind-icon">add<wbr>Refresh<wbr>Listener</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="primefaces.widget.datepicker.html#applymask" class="tsd-kind-icon">apply<wbr>Mask</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="primefaces.widget.datepicker.html#bindclearbuttonlistener" class="tsd-kind-icon">bind<wbr>Clear<wbr>Button<wbr>Listener</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="primefaces.widget.datepicker.html#bindcloselistener" class="tsd-kind-icon">bind<wbr>Close<wbr>Listener</a>
@@ -1148,7 +1275,16 @@ PF(<span class="hljs-string">"datePickerWidget"</span>).jq.datePicker(<span clas
 								<a href="primefaces.widget.datepicker.html#setdate" class="tsd-kind-icon">set<wbr>Date</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="primefaces.widget.datepicker.html#setdisableddates" class="tsd-kind-icon">set<wbr>Disabled<wbr>Dates</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="primefaces.widget.datepicker.html#setdisableddays" class="tsd-kind-icon">set<wbr>Disabled<wbr>Days</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="primefaces.widget.datepicker.html#setviewdate" class="tsd-kind-icon">set<wbr>View<wbr>Date</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="primefaces.widget.datepicker.html#updatepanel" class="tsd-kind-icon">update<wbr>Panel</a>
 							</li>
 						</ul>
 					</li>
@@ -1164,6 +1300,7 @@ PF(<span class="hljs-string">"datePickerWidget"</span>).jq.datePicker(<span clas
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
@@ -1184,6 +1321,9 @@ PF(<span class="hljs-string">"datePickerWidget"</span>).jq.datePicker(<span clas
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>

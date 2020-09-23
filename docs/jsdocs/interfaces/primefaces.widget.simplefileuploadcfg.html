@@ -75,7 +75,8 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The configuration for the <a href="../classes/primefaces.widget.simplefileupload.html"> SimpleFileUpload widget</a>.
+						<p>The configuration for the
+							<a href="../classes/primefaces.widget.simplefileupload.html">SimpleFileUpload widget</a>.
 							You can access this configuration via <a href="../classes/primefaces.widget.basewidget.html#cfg">BaseWidget.cfg</a>. Please note that this
 						configuration is usually meant to be read-only and should not be modified.</p>
 					</div>
@@ -102,9 +103,14 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="primefaces.widget.simplefileuploadcfg.html#behaviors" class="tsd-kind-icon">behaviors</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.simplefileuploadcfg.html#disabled" class="tsd-kind-icon">disabled</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.simplefileuploadcfg.html#filelimit" class="tsd-kind-icon">file<wbr>Limit</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.simplefileuploadcfg.html#filelimitmessage" class="tsd-kind-icon">file<wbr>Limit<wbr>Message</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="primefaces.widget.simplefileuploadcfg.html#id" class="tsd-kind-icon">id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.simplefileuploadcfg.html#invalidfilemessage" class="tsd-kind-icon">invalid<wbr>File<wbr>Message</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.simplefileuploadcfg.html#invalidsizemessage" class="tsd-kind-icon">invalid<wbr>Size<wbr>Message</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.simplefileuploadcfg.html#maxfilesize" class="tsd-kind-icon">max<wbr>File<wbr>Size</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.simplefileuploadcfg.html#messagetemplate" class="tsd-kind-icon">message<wbr>Template</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.simplefileuploadcfg.html#skinsimple" class="tsd-kind-icon">skin<wbr>Simple</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="primefaces.widget.simplefileuploadcfg.html#widgetvar" class="tsd-kind-icon">widget<wbr>Var</a></li>
 							</ul>
@@ -129,6 +135,42 @@
 						</div>
 					</div>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="disabled" class="tsd-anchor"></a>
+					<h3>disabled</h3>
+					<div class="tsd-signature tsd-kind-icon">disabled<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Whether this file upload is disabled.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="filelimit" class="tsd-anchor"></a>
+					<h3>file<wbr>Limit</h3>
+					<div class="tsd-signature tsd-kind-icon">file<wbr>Limit<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Maximum number of files allowed to upload.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="filelimitmessage" class="tsd-anchor"></a>
+					<h3>file<wbr>Limit<wbr>Message</h3>
+					<div class="tsd-signature tsd-kind-icon">file<wbr>Limit<wbr>Message<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Message to display when file limit exceeds.</p>
+						</div>
+					</div>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="id" class="tsd-anchor"></a>
 					<h3>id</h3>
@@ -141,6 +183,18 @@
 							<p>The client-side ID of the widget, with all parent naming containers, such as
 								<code>myForm:myWidget</code>. This is also the ID of the container HTML element for this widget. In case the widget needs
 							multiple container elements (such as <a href="../classes/primefaces.widget.paginator.html">Paginator</a>), this may also be an array if IDs.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="invalidfilemessage" class="tsd-anchor"></a>
+					<h3>invalid<wbr>File<wbr>Message</h3>
+					<div class="tsd-signature tsd-kind-icon">invalid<wbr>File<wbr>Message<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Message to display when file is not accepted.</p>
 						</div>
 					</div>
 				</section>
@@ -169,6 +223,18 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="messagetemplate" class="tsd-anchor"></a>
+					<h3>message<wbr>Template</h3>
+					<div class="tsd-signature tsd-kind-icon">message<wbr>Template<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Message template to use when displaying file validation errors.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="skinsimple" class="tsd-anchor"></a>
 					<h3>skin<wbr>Simple</h3>
 					<div class="tsd-signature tsd-kind-icon">skin<wbr>Simple<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
@@ -176,7 +242,7 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Applies theming to simple uploader.</p>
+							<p>Whether to apply theming to the simple upload widget.</p>
 						</div>
 					</div>
 				</section>
@@ -209,6 +275,9 @@
 								<a href="../modules/primefaces.ajax.html">ajax</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+								<a href="../modules/primefaces.clientwindow.html">clientwindow</a>
+							</li>
+							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="../modules/primefaces.csp.html">csp</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
@@ -227,10 +296,10 @@
 								<a href="../modules/primefaces.settings.html">settings</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="../modules/primefaces.util.html">util</a>
+								<a href="../modules/primefaces.utils.html">utils</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="../modules/primefaces.utils.html">utils</a>
+								<a href="../modules/primefaces.validation.html">validation</a>
 							</li>
 							<li class="current tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="../modules/primefaces.widget.html">widget</a>
@@ -254,14 +323,29 @@
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 								<a href="primefaces.widget.simplefileuploadcfg.html#behaviors" class="tsd-kind-icon">behaviors</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="primefaces.widget.simplefileuploadcfg.html#disabled" class="tsd-kind-icon">disabled</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="primefaces.widget.simplefileuploadcfg.html#filelimit" class="tsd-kind-icon">file<wbr>Limit</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="primefaces.widget.simplefileuploadcfg.html#filelimitmessage" class="tsd-kind-icon">file<wbr>Limit<wbr>Message</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 								<a href="primefaces.widget.simplefileuploadcfg.html#id" class="tsd-kind-icon">id</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="primefaces.widget.simplefileuploadcfg.html#invalidfilemessage" class="tsd-kind-icon">invalid<wbr>File<wbr>Message</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="primefaces.widget.simplefileuploadcfg.html#invalidsizemessage" class="tsd-kind-icon">invalid<wbr>Size<wbr>Message</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="primefaces.widget.simplefileuploadcfg.html#maxfilesize" class="tsd-kind-icon">max<wbr>File<wbr>Size</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="primefaces.widget.simplefileuploadcfg.html#messagetemplate" class="tsd-kind-icon">message<wbr>Template</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="primefaces.widget.simplefileuploadcfg.html#skinsimple" class="tsd-kind-icon">skin<wbr>Simple</a>
@@ -283,6 +367,7 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
@@ -299,6 +384,9 @@
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>

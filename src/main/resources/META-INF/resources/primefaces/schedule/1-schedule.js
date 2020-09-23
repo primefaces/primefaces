@@ -74,6 +74,9 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         this.setViewOptions();
 
         this.renderDeferred();
+
+        // must be done after FullCalendar is built
+        this.setupTitlebarHandlers();
     },
 
     /**
@@ -216,6 +219,17 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                 }
             };
         }
+    },
+
+    /**
+     * Creates and sets the event listeners for the previous, next, and today buttons in the title bar.
+     * @private
+     */
+    setupTitlebarHandlers: function() {
+        var $this = this;
+        $('.fc-prev-button, .fc-next-button, .fc-today-button').on('click.' + this.id, function() {
+            $this.callBehavior('viewChange');
+        });
     },
 
     /**

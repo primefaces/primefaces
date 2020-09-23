@@ -75,7 +75,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The configuration for the <a href="../classes/primefaces.widget.datepicker.html"> DatePicker widget</a>.
+						<p>The configuration for the <a href="../classes/primefaces.widget.datepicker.html">DatePicker widget</a>.
 							You can access this configuration via <a href="../classes/primefaces.widget.basewidget.html#cfg">BaseWidget.cfg</a>. Please note that this
 						configuration is usually meant to be read-only and should not be modified.</p>
 					</div>
@@ -125,6 +125,9 @@
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="primefaces.widget.datepickercfg.html#inputstyleclass" class="tsd-kind-icon">input<wbr>Style<wbr>Class</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="primefaces.widget.datepickercfg.html#keepinvalid" class="tsd-kind-icon">keep<wbr>Invalid</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="primefaces.widget.datepickercfg.html#locale" class="tsd-kind-icon">locale</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.datepickercfg.html#mask" class="tsd-kind-icon">mask</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.datepickercfg.html#maskautoclear" class="tsd-kind-icon">mask<wbr>Auto<wbr>Clear</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.datepickercfg.html#maskslotchar" class="tsd-kind-icon">mask<wbr>Slot<wbr>Char</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="primefaces.widget.datepickercfg.html#maxdate" class="tsd-kind-icon">max<wbr>Date</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="primefaces.widget.datepickercfg.html#maxdatecount" class="tsd-kind-icon">max<wbr>Date<wbr>Count</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="primefaces.widget.datepickercfg.html#mindate" class="tsd-kind-icon">min<wbr>Date</a></li>
@@ -454,6 +457,42 @@
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Localized strings for various messages displayed by the date or time picker.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="mask" class="tsd-anchor"></a>
+					<h3>mask</h3>
+					<div class="tsd-signature tsd-kind-icon">mask<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Applies a mask using the pattern.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="maskautoclear" class="tsd-anchor"></a>
+					<h3>mask<wbr>Auto<wbr>Clear</h3>
+					<div class="tsd-signature tsd-kind-icon">mask<wbr>Auto<wbr>Clear<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Clears the field on blur when incomplete input is entered</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="maskslotchar" class="tsd-anchor"></a>
+					<h3>mask<wbr>Slot<wbr>Char</h3>
+					<div class="tsd-signature tsd-kind-icon">mask<wbr>Slot<wbr>Char<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Placeholder in mask template.</p>
 						</div>
 					</div>
 				</section>
@@ -1138,6 +1177,9 @@
 								<a href="../modules/primefaces.ajax.html">ajax</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+								<a href="../modules/primefaces.clientwindow.html">clientwindow</a>
+							</li>
+							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="../modules/primefaces.csp.html">csp</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
@@ -1156,10 +1198,10 @@
 								<a href="../modules/primefaces.settings.html">settings</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="../modules/primefaces.util.html">util</a>
+								<a href="../modules/primefaces.utils.html">utils</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="../modules/primefaces.utils.html">utils</a>
+								<a href="../modules/primefaces.validation.html">validation</a>
 							</li>
 							<li class="current tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="../modules/primefaces.widget.html">widget</a>
@@ -1242,6 +1284,15 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 								<a href="primefaces.widget.datepickercfg.html#locale" class="tsd-kind-icon">locale</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="primefaces.widget.datepickercfg.html#mask" class="tsd-kind-icon">mask</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="primefaces.widget.datepickercfg.html#maskautoclear" class="tsd-kind-icon">mask<wbr>Auto<wbr>Clear</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="primefaces.widget.datepickercfg.html#maskslotchar" class="tsd-kind-icon">mask<wbr>Slot<wbr>Char</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 								<a href="primefaces.widget.datepickercfg.html#maxdate" class="tsd-kind-icon">max<wbr>Date</a>
@@ -1410,6 +1461,7 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
@@ -1426,6 +1478,9 @@
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>

@@ -3225,7 +3225,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             cell.addClass('ui-state-highlight ui-cell-editing');
             displayContainer.hide();
             inputContainer.show();
-            inputs.eq(0).trigger('focus').trigger('select');
+            var input = inputs.eq(0);
+            input.triggerHandler('focus');
+            input.triggerHandler('select');
 
             //metadata
             if(multi) {

@@ -443,8 +443,8 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         encodeThead(context, table);
-        encodeTFoot(context, table);
         encodeTbody(context, table, false);
+        encodeTFoot(context, table);
 
         writer.endElement("table");
         writer.endElement("div");
@@ -705,7 +705,7 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         if (width != null) {
-            String unit = width.endsWith("%") ? Constants.EMPTY_STRING : "px";
+            String unit = endsWithLenghtUnit(width) ? Constants.EMPTY_STRING : "px";
             if (style != null) {
                 style = style + ";width:" + width + unit;
             }
