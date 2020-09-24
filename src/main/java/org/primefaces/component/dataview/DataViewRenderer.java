@@ -241,8 +241,12 @@ public class DataViewRenderer extends DataRenderer {
             int rows = dataview.getRows();
             int itemsToRender = rows != 0 ? rows : dataview.getRowCount();
             int numberOfRowsToRender = (itemsToRender + columns - 1) / columns;
-            String columnClass = DataView.GRID_LAYOUT_COLUMN_CLASS + " " + GridLayoutUtils.getColumnClass(columns) + " " + dataview.getGridRowStyleClass();
+            String columnClass = DataView.GRID_LAYOUT_COLUMN_CLASS + " " + GridLayoutUtils.getColumnClass(columns);
             String columnInlineStyle = dataview.getGridRowStyle();
+
+            if (!LangUtils.isValueBlank(dataview.getGridRowStyleClass())) {
+                columnClass += " " + dataview.getGridRowStyleClass();
+            }
 
             writer.startElement("div", null);
             writer.writeAttribute("class", DataView.GRID_LAYOUT_ROW_CLASS, null);
