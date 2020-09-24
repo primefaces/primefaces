@@ -171,8 +171,12 @@ public class DataGridRenderer extends DataRenderer {
         int itemsToRender = rows != 0 ? rows : grid.getRowCount();
         int numberOfRowsToRender = (itemsToRender + columns - 1) / columns;
         int displayedItemsToRender = rowIndex + itemsToRender;
-        String columnClass = DataGrid.COLUMN_CLASS + " " + GridLayoutUtils.getColumnClass(columns) + " " + grid.getRowStyleClass();
+        String columnClass = DataGrid.COLUMN_CLASS + " " + GridLayoutUtils.getColumnClass(columns);
         String columnInlineStyle = grid.getRowStyle();
+
+        if (!LangUtils.isValueBlank(grid.getRowStyleClass())) {
+            columnClass += " " + grid.getRowStyleClass();
+        }
 
         writer.startElement("div", null);
         writer.writeAttribute("class", DataGrid.GRID_ROW_CLASS, null);
