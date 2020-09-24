@@ -31,10 +31,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.DataRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.GridLayoutUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.*;
 
 public class DataViewRenderer extends DataRenderer {
 
@@ -245,6 +242,14 @@ public class DataViewRenderer extends DataRenderer {
             int itemsToRender = rows != 0 ? rows : dataview.getRowCount();
             int numberOfRowsToRender = (itemsToRender + columns - 1) / columns;
             String columnClass = DataView.GRID_LAYOUT_COLUMN_CLASS + " " + GridLayoutUtils.getColumnClass(columns);
+            String columnInlineStyle = dataview.getGridRowStyle();
+
+            if (!LangUtils.isValueBlank(dataview.getGridRowStyleClass())) {
+                columnClass += " " + dataview.getGridRowStyleClass();
+            }
+
+            writer.startElement("div", null);
+            writer.writeAttribute("class", DataView.GRID_LAYOUT_ROW_CLASS, null);
 
             for (int i = 0; i < numberOfRowsToRender; i++) {
                 dataview.setRowIndex(rowIndex);
@@ -252,12 +257,12 @@ public class DataViewRenderer extends DataRenderer {
                     break;
                 }
 
-                writer.startElement("div", null);
-                writer.writeAttribute("class", DataView.GRID_LAYOUT_ROW_CLASS, null);
-
                 for (int j = 0; j < columns; j++) {
                     writer.startElement("div", null);
                     writer.writeAttribute("class", columnClass, null);
+                    if (!LangUtils.isValueEmpty(columnInlineStyle)) {
+                        writer.writeAttribute("style", columnInlineStyle, null);
+                    }
 
                     dataview.setRowIndex(rowIndex);
                     if (dataview.isRowAvailable()) {
@@ -267,9 +272,9 @@ public class DataViewRenderer extends DataRenderer {
 
                     writer.endElement("div");
                 }
-
-                writer.endElement("div");
             }
+
+            writer.endElement("div");
 
             dataview.setRowIndex(-1); //cleanup
         }

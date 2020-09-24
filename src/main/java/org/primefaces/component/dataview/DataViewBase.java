@@ -42,7 +42,9 @@ public abstract class DataViewBase extends UIData
         layout,
         gridIcon,
         listIcon,
-        multiViewState
+        multiViewState,
+        gridRowStyle,
+        gridRowStyleClass
     }
 
     public DataViewBase() {
@@ -109,5 +111,21 @@ public abstract class DataViewBase extends UIData
 
     public void setMultiViewState(boolean multiViewState) {
         getStateHelper().put(PropertyKeys.multiViewState, multiViewState);
+    }
+
+    public String getGridRowStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.gridRowStyle, null);
+    }
+
+    public void setGridRowStyle(String gridRowStyle) {
+        getStateHelper().put(PropertyKeys.gridRowStyle, gridRowStyle);
+    }
+
+    public String getGridRowStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.gridRowStyleClass, null);
+    }
+
+    public void setGridRowStyleClass(String gridRowStyleClass) {
+        getStateHelper().put(PropertyKeys.gridRowStyleClass, gridRowStyleClass);
     }
 }
