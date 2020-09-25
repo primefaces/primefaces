@@ -241,6 +241,7 @@ public class HTML {
     public static final String ARIA_HIDDEN = "aria-hidden";
     public static final String ARIA_INVALID = "aria-invalid";
     public static final String ARIA_LABEL = "aria-label";
+    public static final String ARIA_LABEL_BREADCRUMB = "Breadcrumb";
     public static final String ARIA_LABELLEDBY = "aria-labelledby";
     public static final String ARIA_LIVE = "aria-live";
     public static final String ARIA_MULITSELECTABLE = "aria-multiselectable";

@@ -61,7 +61,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
         if (aria) {
-            writer.writeAttribute(HTML.ARIA_LABEL, "Breadcrumb", null);
+            writer.writeAttribute(HTML.ARIA_LABEL, HTML.ARIA_LABEL_BREADCRUMB, null);
         }
         else {
             writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
