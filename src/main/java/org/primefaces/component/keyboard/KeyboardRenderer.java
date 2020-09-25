@@ -83,6 +83,10 @@ public class KeyboardRenderer extends InputRenderer {
                     .attr("layoutTemplate", keyboard.getLayoutTemplate(), null);
         }
 
+        if (ComponentUtils.isRTL(context, keyboard)) {
+            wb.attr("isRTL", true);
+        }
+
         wb.attr("keypadClass", keyboard.getStyleClass(), null)
                 .attr("prompt", keyboard.getPromptLabel(), null)
                 .attr("backText", keyboard.getBackspaceLabel(), null)
