@@ -8484,6 +8484,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Use modern PrimeFlex-Grid instead of classic Grid CSS.]]>
+            </description>
+            <name>usePrimeFlex</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>

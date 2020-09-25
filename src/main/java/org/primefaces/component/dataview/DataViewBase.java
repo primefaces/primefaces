@@ -44,7 +44,8 @@ public abstract class DataViewBase extends UIData
         listIcon,
         multiViewState,
         gridRowStyle,
-        gridRowStyleClass
+        gridRowStyleClass,
+        usePrimeFlex
     }
 
     public DataViewBase() {
@@ -127,5 +128,13 @@ public abstract class DataViewBase extends UIData
 
     public void setGridRowStyleClass(String gridRowStyleClass) {
         getStateHelper().put(PropertyKeys.gridRowStyleClass, gridRowStyleClass);
+    }
+
+    public boolean isUsePrimeFlex() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.usePrimeFlex, false);
+    }
+
+    public void setUsePrimeFlex(boolean usePrimeFlex) {
+        getStateHelper().put(PropertyKeys.usePrimeFlex, usePrimeFlex);
     }
 }
