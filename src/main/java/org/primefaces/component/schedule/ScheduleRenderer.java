@@ -23,20 +23,6 @@
  */
 package org.primefaces.component.schedule;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.primefaces.model.LazyScheduleModel;
-import org.primefaces.model.ScheduleEvent;
-import org.primefaces.model.ScheduleModel;
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.CalendarUtils;
-import org.primefaces.util.EscapeUtils;
-import org.primefaces.util.LocaleUtils;
-import org.primefaces.util.WidgetBuilder;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -46,6 +32,18 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.primefaces.model.LazyScheduleModel;
+import org.primefaces.model.ScheduleEvent;
+import org.primefaces.model.ScheduleModel;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.*;
 
 public class ScheduleRenderer extends CoreRenderer {
 
@@ -192,6 +190,10 @@ public class ScheduleRenderer extends CoreRenderer {
         }
         else {
             wb.attr("headerToolbar", false);
+        }
+
+        if (ComponentUtils.isRTL(context, schedule)) {
+            wb.attr("direction", "rtl");
         }
 
         boolean isShowWeekNumbers = schedule.isShowWeekNumbers();
