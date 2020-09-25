@@ -39,7 +39,8 @@ public abstract class BreadCrumbBase extends AbstractMenu implements Widget {
         styleClass,
         homeDisplay,
         tabindex,
-        lastItemDisabled;
+        lastItemDisabled,
+        accessible;
     }
 
     public BreadCrumbBase() {
@@ -100,5 +101,13 @@ public abstract class BreadCrumbBase extends AbstractMenu implements Widget {
 
     public void setLastItemDisabled(boolean lastItemDisabled) {
         getStateHelper().put(PropertyKeys.lastItemDisabled, lastItemDisabled);
+    }
+
+    public boolean isAccessible() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.accessible, false);
+    }
+
+    public void setAccessible(boolean accessible) {
+        getStateHelper().put(PropertyKeys.accessible, accessible);
     }
 }

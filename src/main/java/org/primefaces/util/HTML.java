@@ -232,6 +232,8 @@ public class HTML {
     public static final String ARIA_AUTOCOMPLETE = "aria-autocomplete";
     public static final String ARIA_CHECKED = "aria-checked";
     public static final String ARIA_CONTROLS = "aria-controls";
+    public static final String ARIA_CURRENT = "aria-current";
+    public static final String ARIA_CURRENT_PAGE = "page";
     public static final String ARIA_DESCRIBEDBY = "aria-describedby";
     public static final String ARIA_DISABLED = "aria-disabled";
     public static final String ARIA_EXPANDED = "aria-expanded";

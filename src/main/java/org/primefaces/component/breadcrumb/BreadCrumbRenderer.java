@@ -28,6 +28,7 @@ import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.apache.commons.collections4.keyvalue.DefaultMapEntry;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
@@ -47,22 +48,30 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
         int elementCount = menu.getElementsCount();
         List<MenuElement> menuElements = menu.getElements();
         boolean isIconHome = breadCrumb.getHomeDisplay().equals("icon");
+        boolean aria = breadCrumb.isAccessible();
+        String wrapper = aria ? "nav" : "div";
+        String listType = aria ? "ol" : "ul";
 
         //home icon for first item
         if (isIconHome && elementCount > 0) {
             ((MenuItem) menuElements.get(0)).setStyleClass("ui-icon ui-icon-home");
         }
 
-        writer.startElement("div", null);
+        writer.startElement(wrapper, null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
-        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
+        if (aria) {
+            writer.writeAttribute(HTML.ARIA_LABEL, "Breadcrumb", null);
+        }
+        else {
+            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
+        }
         if (breadCrumb.getStyle() != null) {
             writer.writeAttribute("style", breadCrumb.getStyle(), null);
         }
 
         if (elementCount > 0) {
-            writer.startElement("ul", null);
+            writer.startElement(listType, null);
 
             for (int i = 0; i < elementCount; i++) {
                 MenuElement element = menuElements.get(i);
@@ -71,20 +80,30 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
                     MenuItem item = (MenuItem) element;
 
                     //dont render chevron before home icon
-                    if (i != 0) {
+                    if (!aria && i != 0) {
                         writer.startElement("li", null);
                         writer.writeAttribute("class", BreadCrumb.CHEVRON_CLASS, null);
                         writer.endElement("li");
                     }
 
                     writer.startElement("li", null);
-                    writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM, null);
+                    if (!aria) {
+                        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM, null);
+                    }
 
-                    if (item.isDisabled() || (breadCrumb.isLastItemDisabled() && i + 1 == elementCount)) {
+                    boolean last = i + 1 == elementCount;
+                    if (item.isDisabled() || (breadCrumb.isLastItemDisabled() && last)) {
                         encodeDisabledMenuItem(context, item);
                     }
                     else {
-                        encodeMenuItem(context, menu, item, menu.getTabindex());
+                        if (aria) {
+                            DefaultMapEntry<String, String> attr = last
+                                    ? new DefaultMapEntry<>(HTML.ARIA_CURRENT, HTML.ARIA_CURRENT_PAGE) : null;
+                            encodeMenuItem(context, menu, item, menu.getTabindex(), attr);
+                        }
+                        else {
+                            encodeMenuItem(context, menu, item, menu.getTabindex());
+                        }
                     }
 
                     writer.endElement("li");
@@ -95,15 +114,17 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
             if (ComponentUtils.shouldRenderFacet(optionsFacet)) {
                 writer.startElement("li", null);
                 writer.writeAttribute("class", BreadCrumb.OPTIONS_CLASS, null);
-                writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM, null);
+                if (!aria) {
+                    writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM, null);
+                }
                 optionsFacet.encodeAll(context);
                 writer.endElement("li");
             }
 
-            writer.endElement("ul");
+            writer.endElement(listType);
         }
 
-        writer.endElement("div");
+        writer.endElement(wrapper);
     }
 
     @Override

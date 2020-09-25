@@ -2168,6 +2168,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean flag indicating whether (more) accessible HTML should be rendered. Note: currently this mode is not styled by default yet! Default is false.]]>
+            </description>
+            <name>accessible</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
