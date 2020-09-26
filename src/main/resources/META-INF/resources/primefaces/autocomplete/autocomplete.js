@@ -587,6 +587,18 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             $this.checkMatchedItem = false;
         });
 
+        this.panel.on('click', function() {
+            if (!this.children) {
+                return;
+            }
+            var item = $(this.children[0]),
+            isEmptyMessage = item.hasClass('ui-autocomplete-emptyMessage');
+
+            if(isEmptyMessage) {
+                $this.invokeEmptyMessageBehavior();
+            }
+        });
+
         if(PrimeFaces.env.browser.mobile) {
             this.items.on('touchstart', function() {
                 if(!$this.touchToDropdownButton) {
@@ -965,6 +977,22 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             };
 
             this.callBehavior('moreText', ext);
+        }
+    },
+
+    /**
+     * Invokes the appropriate behavior for when empty message was selected.
+     * @private
+     */
+    invokeEmptyMessageBehavior: function() {
+        if(this.hasBehavior('emptyMessage')) {
+            var ext = {
+                params : [
+                    {name: this.id + '_emptyMessage', value: true}
+                ]
+            };
+
+            this.callBehavior('emptyMessage', ext);
         }
     },
 
