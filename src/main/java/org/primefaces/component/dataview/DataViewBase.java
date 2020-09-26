@@ -28,7 +28,7 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 import org.primefaces.component.api.*;
 
 public abstract class DataViewBase extends UIData
-        implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable, MultiViewStateAware<DataViewState> {
+        implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable, MultiViewStateAware<DataViewState>, FlexAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -45,7 +45,7 @@ public abstract class DataViewBase extends UIData
         multiViewState,
         gridRowStyle,
         gridRowStyleClass,
-        usePrimeFlex
+        flex
     }
 
     public DataViewBase() {
@@ -130,11 +130,13 @@ public abstract class DataViewBase extends UIData
         getStateHelper().put(PropertyKeys.gridRowStyleClass, gridRowStyleClass);
     }
 
-    public boolean isUsePrimeFlex() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.usePrimeFlex, false);
+    @Override
+    public boolean isFlex() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.flex, false);
     }
 
-    public void setUsePrimeFlex(boolean usePrimeFlex) {
-        getStateHelper().put(PropertyKeys.usePrimeFlex, usePrimeFlex);
+    @Override
+    public void setFlex(boolean flex) {
+        getStateHelper().put(PropertyKeys.flex, flex);
     }
 }

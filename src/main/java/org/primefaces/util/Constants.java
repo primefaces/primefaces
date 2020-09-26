@@ -52,6 +52,7 @@ public class Constants {
         public static final String MULTI_VIEW_STATE_STORE = "primefaces.MULTI_VIEW_STATE_STORE";
         public static final String MARK_INPUT_AS_INVALID_ON_ERROR_MSG = "primefaces.MARK_INPUT_AS_INVALID_ON_ERROR_MSG";
         public static final String COOKIES_SAME_SITE = "primefaces.COOKIES_SAME_SITE";
+        public static final String FLEX = "primefaces.FLEX";
 
         private ContextParams() {
 

@@ -45,10 +45,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.render.Renderer;
 
-import org.primefaces.component.api.RTLAware;
-import org.primefaces.component.api.TouchAware;
-import org.primefaces.component.api.UITabPanel;
-import org.primefaces.component.api.Widget;
+import org.primefaces.component.api.*;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
@@ -229,6 +226,12 @@ public class ComponentUtils {
         boolean globalValue = PrimeRequestContext.getCurrentInstance(context).isTouchable();
 
         return globalValue || component.isTouchable();
+    }
+
+    public static boolean isFlex(FacesContext context, FlexAware component) {
+        boolean globalValue = PrimeRequestContext.getCurrentInstance(context).isFlex();
+
+        return globalValue || component.isFlex();
     }
 
     public static void processDecodesOfFacetsAndChilds(UIComponent component, FacesContext context) {

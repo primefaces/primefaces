@@ -8488,7 +8488,7 @@
             <description>
                 <![CDATA[Use modern PrimeFlex-Grid instead of classic Grid CSS.]]>
             </description>
-            <name>usePrimeFlex</name>
+            <name>flex</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>

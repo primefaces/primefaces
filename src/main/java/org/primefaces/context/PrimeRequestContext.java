@@ -65,6 +65,7 @@ public class PrimeRequestContext {
     private Boolean rtl;
     private Boolean touchable;
     private Boolean secure;
+    private Boolean flex;
 
     public PrimeRequestContext(FacesContext context) {
         this.context = context;
@@ -261,19 +262,31 @@ public class PrimeRequestContext {
 
     public boolean isTouchable() {
         if (touchable == null) {
-            String param = context.getExternalContext().getInitParameter(Constants.ContextParams.TOUCHABLE);
-            if (param == null) {
-                touchable = true;
-            }
-            else {
-                ELContext elContext = context.getELContext();
-                ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
-                ValueExpression expression = expressionFactory.createValueExpression(elContext, param, String.class);
-                String expressionValue = (String) expression.getValue(elContext);
-                touchable = expressionValue == null || Boolean.parseBoolean(expressionValue);
-            }
+            touchable = evalBooleanExpression(Constants.ContextParams.TOUCHABLE, true);
         }
 
         return touchable;
+    }
+
+    public boolean isFlex() {
+        if (flex == null) {
+            flex = evalBooleanExpression(Constants.ContextParams.FLEX, false);
+        }
+
+        return flex;
+    }
+
+    private boolean evalBooleanExpression(String param, boolean defaultValueIfNull) {
+        String paramValue = context.getExternalContext().getInitParameter(param);
+        if (paramValue == null) {
+            return defaultValueIfNull;
+        }
+        else {
+            ELContext elContext = context.getELContext();
+            ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
+            ValueExpression expression = expressionFactory.createValueExpression(elContext, paramValue, String.class);
+            String expressionValue = (String) expression.getValue(elContext);
+            return expressionValue == null || Boolean.parseBoolean(expressionValue);
+        }
     }
 }
