@@ -59,6 +59,8 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
 
         this.setupEventSource();
 
+        this.configureLocale();
+
         if(this.cfg.tooltip) {
             this.tip = $('<div class="ui-tooltip ui-widget ui-widget-content ui-shadow ui-corner-all"></div>').appendTo(document.body);
             this.addDestroyListener(function(){this.tip.remove();});
@@ -90,6 +92,24 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         var calendarEl = document.getElementById(this.cfg.id);
         _self.calendar = new FullCalendar.Calendar(calendarEl, this.cfg.calendarCfg);
         _self.calendar.render();
+    },
+
+    /**
+     * Localizes certain aspects of FullCalendar that are exposed. The rest are configured by "locale"
+     * setting and FullCalendar and Moment translations for that locale.
+     * @private
+     */
+    configureLocale: function() {
+        var lang = PrimeFaces.locales[this.cfg.locale];
+
+        if(lang) {
+            this.cfg.firstDay = lang.firstDay;
+            this.cfg.buttonText = {today: lang.currentText
+                                  ,month: lang.month
+                                  ,week: lang.week
+                                  ,day: lang.day};
+            this.cfg.weekText= lang.weekNumberTitle;
+        }
     },
 
     /**
