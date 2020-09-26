@@ -135,7 +135,6 @@ public abstract class DataViewBase extends UIData
         return (Boolean) getStateHelper().eval(PropertyKeys.flex, false);
     }
 
-    @Override
     public void setFlex(boolean flex) {
         getStateHelper().put(PropertyKeys.flex, flex);
     }
