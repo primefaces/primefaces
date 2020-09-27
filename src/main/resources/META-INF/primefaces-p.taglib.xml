@@ -21557,6 +21557,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Defines direction of schedule. Valid values are "ltr" (default) and "rtl".]]>
+            </description>
+            <name>dir</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Ratio of calendar width to height, higher the value shorter the height is.]]>
             </description>
             <name>aspectRatio</name>
