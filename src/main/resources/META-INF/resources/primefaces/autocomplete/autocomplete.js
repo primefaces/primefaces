@@ -587,7 +587,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             $this.checkMatchedItem = false;
         });
 
-        this.panel.on('click', function() {
+        this.panel.on('click.emptyMessage', function() {
             if (!this.children) {
                 return;
             }
