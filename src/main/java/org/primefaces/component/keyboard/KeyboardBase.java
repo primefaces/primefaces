@@ -24,9 +24,10 @@
 package org.primefaces.component.keyboard;
 
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
+import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 
-public abstract class KeyboardBase extends AbstractPrimeHtmlInputText implements Widget {
+public abstract class KeyboardBase extends AbstractPrimeHtmlInputText implements Widget, RTLAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
