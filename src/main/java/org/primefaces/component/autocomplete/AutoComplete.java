@@ -68,7 +68,7 @@ public class AutoComplete extends AutoCompleteBase {
     public static final String MORE_TEXT_TABLE_CLASS = "ui-autocomplete-item ui-autocomplete-moretext ui-widget-content ui-corner-all";
 
     protected static final List<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("itemSelect", "itemUnselect", "query",
-            "moreText", "emptyMessage", "clear");
+            "moreTextSelect", "emptyMessageSelect", "clear");
     protected static final Collection<String> EVENT_NAMES = LangUtils.concat(AbstractPrimeHtmlInputText.EVENT_NAMES, UNOBSTRUSIVE_EVENT_NAMES);
 
     private Object suggestions = null;
@@ -116,7 +116,7 @@ public class AutoComplete extends AutoCompleteBase {
                 unselectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(unselectEvent);
             }
-            else if (eventName.equals("moreText") || eventName.equals("emptyMessage") || eventName.equals("clear")) {
+            else if (eventName.equals("moreTextSelect") || eventName.equals("emptyMessageSelect") || eventName.equals("clear")) {
                 ajaxBehaviorEvent.setPhaseId(event.getPhaseId());
                 super.queueEvent(ajaxBehaviorEvent);
             }

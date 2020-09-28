@@ -969,14 +969,14 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     invokeMoreTextBehavior: function() {
-        if(this.hasBehavior('moreText')) {
+        if(this.hasBehavior('moreTextSelect')) {
             var ext = {
                 params : [
-                    {name: this.id + '_moreText', value: true}
+                    {name: this.id + '_moreTextSelect', value: true}
                 ]
             };
 
-            this.callBehavior('moreText', ext);
+            this.callBehavior('moreTextSelect', ext);
         }
     },
 
@@ -985,14 +985,14 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     invokeEmptyMessageBehavior: function() {
-        if(this.hasBehavior('emptyMessage')) {
+        if(this.hasBehavior('emptyMessageSelect')) {
             var ext = {
                 params : [
-                    {name: this.id + '_emptyMessage', value: true}
+                    {name: this.id + '_emptyMessageSelect', value: true}
                 ]
             };
 
-            this.callBehavior('emptyMessage', ext);
+            this.callBehavior('emptyMessageSelect', ext);
         }
     },
 
