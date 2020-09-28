@@ -3160,7 +3160,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * When cell editing is enabeld, shows the cell editor for the given cell that lets the user edit the cell content.
+     * When cell editing is enabled, shows the cell editor for the given cell that lets the user edit the cell content.
      * @param {JQuery} c A cell (`TD`) of this data table to edit.
      */
     showCellEditor: function(c) {
@@ -3190,10 +3190,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
             if(this.hasBehavior('cellEditInit')) {
                 var cellInfo = this.getCellMeta(cell);
-                var ext = {
-                    params: [{name: this.id + '_cellInfo', value: cellInfo}]
-                };
-                this.callBehavior('cellEditInit', ext);
+
+                // #6357 tabbing off last cell generates "undefined,-1" cellInfo
+                if (cellInfo.indexOf('undefined') === -1) {
+                    var ext = {
+                        params: [{name: this.id + '_cellInfo', value: cellInfo}]
+                    };
+                    this.callBehavior('cellEditInit', ext);
+                }
             }
         }
     },
