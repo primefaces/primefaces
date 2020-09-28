@@ -43,7 +43,6 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         this._super(cfg);
         this.cfg.formId = this.jq.closest('form').attr('id');
         this.cfg.calendarCfg.themeSystem = 'standard';
-        this.cfg.calendarCfg.locale = FullCalendar.globalLocales[this.cfg.locale || "en"];
         this.cfg.calendarCfg.slotLabelFormat = this.cfg.calendarCfg.slotLabelFormat || undefined; 
         this.cfg.calendarCfg.viewClassNames = this.onViewChange.bind(this);
         this.viewNameState = $(this.jqId + '_view');
@@ -100,15 +99,54 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     configureLocale: function() {
+        // first configure the FullCalendar Locale
+        this.cfg.calendarCfg.locale = FullCalendar.globalLocales[this.cfg.locale || "en"];
+
+        // check for overridden values
         var lang = PrimeFaces.locales[this.cfg.locale];
 
-        if(lang) {
-            this.cfg.firstDay = lang.firstDay;
-            this.cfg.buttonText = {today: lang.currentText
-                                  ,month: lang.month
-                                  ,week: lang.week
-                                  ,day: lang.day};
-            this.cfg.weekText= lang.weekNumberTitle;
+        if(lang && this.cfg.calendarCfg.locale) {       
+            var calendarLocale = this.cfg.calendarCfg.locale;
+
+            // firstDay can be 0 for Sunday so check undefined
+            if (lang.firstDay !== undefined) {
+                calendarLocale.week = {dow: lang.firstDay};
+            }
+
+            if (lang.weekNumberTitle) {
+                calendarLocale.weekText = lang.weekNumberTitle;
+            }
+
+            if (lang.allDayText) {
+                calendarLocale.allDayText = lang.allDayText;
+            }
+
+            if (lang.moreLinkText) {
+                calendarLocale.moreLinkText = lang.moreLinkText;
+            }
+
+            if (lang.noEventsText) {
+                calendarLocale.noEventsText = lang.noEventsText;
+            }
+            
+            calendarLocale.buttonText = {
+                    prev: lang.prevText,
+                    next: lang.nextText,
+                    today: lang.currentText,
+                    year: lang.year,
+                    month: lang.month,
+                    week: lang.week,
+                    day: lang.day,
+                    list: lang.list
+                  };
+            
+            moment.updateLocale(this.cfg.locale, {
+                months  : lang.monthNames,
+                monthsShort : lang.monthNamesShort,
+                weekdays : lang.dayNames,
+                weekdaysShort : lang.dayNamesShort,
+                weekdaysMin : lang.dayNamesMin
+            });
         }
     },
 
