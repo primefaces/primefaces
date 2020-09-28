@@ -617,10 +617,9 @@ if (!PrimeFaces.ajax) {
                 }
 
                 //behavior event
+                var domEvent = cfg.event;
                 if(cfg.event) {
                     PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.BEHAVIOR_EVENT_PARAM, cfg.event, parameterPrefix);
-
-                    var domEvent = cfg.event;
 
                     if(cfg.event === 'valueChange')
                         domEvent = 'change';
@@ -732,6 +731,19 @@ if (!PrimeFaces.ajax) {
                         }
                     }
                 };
+
+                // #6360 respect form enctype multipart/form-data
+                if (form.attr('enctype') === 'multipart/form-data') {
+                    var formData = PrimeFaces.ajax.Request.createFacesAjaxFormData(form, parameterPrefix, sourceId, processIds, updateArray, true);
+                    if(cfg.event) {
+                        PrimeFaces.ajax.Request.addFormData(formData, PrimeFaces.BEHAVIOR_EVENT_PARAM, cfg.event, parameterPrefix);
+                        PrimeFaces.ajax.Request.addFormData(formData, PrimeFaces.PARTIAL_EVENT_PARAM, domEvent, parameterPrefix);
+                    }
+                    xhrOptions.data = formData;
+                    xhrOptions.enctype = 'multipart/form-data';
+                    xhrOptions.processData = false;
+                    xhrOptions.contentType = false;
+                }
 
                 var nonce = form.children("input[name='" + $.escapeSelector(PrimeFaces.csp.NONCE_INPUT) + "']");
                 if (nonce.length > 0) {
@@ -1030,22 +1042,26 @@ if (!PrimeFaces.ajax) {
              * Creates a FormData which can be used for a Faces AJAX request on the current view.
              * It already contains all required parameters like ViewState or ClientWindow.
              *
-             * @param {HTMLElement} form The cloest form of the request source.
+             * @param {HTMLElement} form The closest form of the request source.
              * @param {string} parameterPrefix The Portlet parameter namespace.
              * @param {string} source The id of the request source.
-             * @param {string} process A comma seperated list of components which should be processed.
-             * @param {string} update A comma seperated list of components which should be updated.
+             * @param {string} process A comma separated list of components which should be processed.
+             * @param {string} update A comma separated list of components which should be updated.
+             * @param {boolean} serialize true if serializing the form, false if a blank FormData
              * @return {FormData} The created FormData.
              */
-            createFacesAjaxFormData: function(form, parameterPrefix, source, process, update) {
+            createFacesAjaxFormData: function(form, parameterPrefix, source, process, update, serialize) {
                 var formData = new FormData();
+                if (serialize) {
+                    formData = new FormData(form[0]);
+                }
 
                 PrimeFaces.ajax.Request.addFormData(formData, PrimeFaces.PARTIAL_REQUEST_PARAM, true, parameterPrefix);
                 PrimeFaces.ajax.Request.addFormData(formData, PrimeFaces.PARTIAL_SOURCE_PARAM, source, parameterPrefix);
-                if (process) {
+                if (process && !process.includes('@none')) {
                     PrimeFaces.ajax.Request.addFormData(formData, PrimeFaces.PARTIAL_PROCESS_PARAM, process, parameterPrefix);
                 }
-                if (update) {
+                if (update && update.length > 0) {
                     PrimeFaces.ajax.Request.addFormData(formData, PrimeFaces.PARTIAL_UPDATE_PARAM, update, parameterPrefix);
                 }
 

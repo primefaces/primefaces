@@ -215,7 +215,7 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
         var process = this.cfg.process ? this.id + ' ' + PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.cfg.process).join(' ') : this.id;
         var update = this.cfg.update ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.cfg.update).join(' ') : null;
 
-        var formData = PrimeFaces.ajax.Request.createFacesAjaxFormData(this.form, parameterPrefix, this.id, process, update);
+        var formData = PrimeFaces.ajax.Request.createFacesAjaxFormData(this.form, parameterPrefix, this.id, process, update, false);
 
         // append files
         for (var i = 0; i < files.length; i++) {
