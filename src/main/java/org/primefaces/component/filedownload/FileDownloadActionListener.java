@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -36,16 +37,12 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
+
 import org.apache.commons.io.IOUtils;
 import org.primefaces.PrimeFaces;
 import org.primefaces.application.resource.DynamicContentType;
-import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.model.StreamedContent;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.DynamicContentSrcBuilder;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.ResourceUtils;
+import org.primefaces.util.*;
 
 public class FileDownloadActionListener implements ActionListener, StateHolder {
 
@@ -104,14 +101,10 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
                 ? "/"
                 : externalContext.getRequestContextPath()); // Always add cookies to context root; see #3108
         ResourceUtils.addResponseCookie(context, monitorKeyCookieName, "true", cookieOptions);
+        ResourceUtils.addNoCacheControl(externalContext);
 
         if (content.getContentLength() != null) {
             externalContext.setResponseContentLength(content.getContentLength());
-        }
-
-        if (PrimeRequestContext.getCurrentInstance(context).isSecure()) {
-            externalContext.setResponseHeader("Cache-Control", "public");
-            externalContext.setResponseHeader("Pragma", "public");
         }
 
         try (InputStream is = content.getStream()) {

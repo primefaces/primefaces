@@ -28,7 +28,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
+
 import javax.faces.context.ExternalContext;
+
+import org.primefaces.util.ResourceUtils;
 
 public abstract class BaseDynamicContentHandler implements DynamicContentHandler {
 
@@ -42,9 +45,7 @@ public abstract class BaseDynamicContentHandler implements DynamicContentHandler
             externalContext.setResponseHeader("Expires", httpDateFormat.format(calendar.getTime()));
         }
         else {
-            externalContext.setResponseHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-            externalContext.setResponseHeader("Pragma", "no-cache");
-            externalContext.setResponseHeader("Expires", "Mon, 8 Aug 1980 10:00:00 GMT");
+            ResourceUtils.addNoCacheControl(externalContext);
         }
     }
 }

@@ -32,6 +32,7 @@ import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.context.PrimeRequestContext;
@@ -56,6 +57,19 @@ public class ResourceUtils {
 
             return context.getExternalContext().encodeResourceURL(url);
         }
+    }
+
+    /**
+     * Adds no cache pragma to the response to ensure it is not cached.  Dynamic downloads should always add this
+     * to prevent caching and for GDPR.
+     *
+     * @param context the ExternalContext we add the pragma to
+     * @see https://github.com/primefaces/primefaces/issues/6359
+     */
+    public static void addNoCacheControl(ExternalContext externalContext) {
+        externalContext.setResponseHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        externalContext.setResponseHeader("Pragma", "no-cache");
+        externalContext.setResponseHeader("Expires", "0");
     }
 
     /**
