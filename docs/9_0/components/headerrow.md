@@ -19,7 +19,8 @@ HeaderRow is a helper component of datatable used for dynamic grouping.
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
+binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
+expanded | true | Boolean | Boolean value to specify whether the row group will be rendered expanded or closed.
 
 ## Getting started with HeaderRow
 See DataTable section for more information.

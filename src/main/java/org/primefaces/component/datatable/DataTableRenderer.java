@@ -1336,6 +1336,7 @@ public class DataTableRenderer extends DataRenderer {
         boolean selectionEnabled = table.isSelectionEnabled();
         Object rowKey = null;
         List<UIColumn> columns = table.getColumns();
+        HeaderRow headerRow = table.getHeaderRow();
 
         if (selectionEnabled) {
             //try rowKey attribute
@@ -1381,6 +1382,9 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("role", "row", null);
         if (selectionEnabled) {
             writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(selected), null);
+        }
+        if (headerRow != null && !headerRow.isExpanded()) {
+            writer.writeAttribute("style", "display: none;", null);
         }
 
         for (int i = columnStart; i < columnEnd; i++) {
