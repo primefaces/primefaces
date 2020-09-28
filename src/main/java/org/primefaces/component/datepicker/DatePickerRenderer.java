@@ -30,21 +30,112 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
+import java.util.Map;
+import java.util.Objects;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
-
+import org.json.JSONObject;
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.calendar.BaseCalendarRenderer;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.model.ScheduleEvent;
+import org.primefaces.model.datepicker.DateMetaDataModel;
+import org.primefaces.model.datepicker.LazyDateMetaDataModel;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class DatePickerRenderer extends BaseCalendarRenderer {
+
+    @Override
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        DatePicker datePicker = (DatePicker) component;
+
+        if (context.getExternalContext().getRequestParameterMap().containsKey(datePicker.getClientId(context))) {
+            encodeDateMetaData(context, datePicker);
+        }
+        else {
+            super.encodeEnd(context, component);
+        }
+    }
+
+    protected void encodeDateMetaData(FacesContext context, DatePicker datePicker) throws IOException {
+        String clientId = datePicker.getClientId(context);
+        DateMetaDataModel model = datePicker.getModel();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+
+        if (model instanceof LazyDateMetaDataModel) {
+            String startDateParam = params.get(clientId + "_start");
+            String endDateParam = params.get(clientId + "_end");
+
+            LocalDate startDate = LocalDate.parse(startDateParam);
+            LocalDate endDate = LocalDate.parse(endDateParam);
+
+            LazyDateMetaDataModel lazyModel = ((LazyDateMetaDataModel) model);
+            lazyModel.clear();
+            lazyModel.loadDateMetaData(startDate, endDate);
+        }
+
+        encodeDateMetaDataAsJSON(context, datePicker, model);
+    }
+
+    protected void encodeDateMetaDataAsJSON(FacesContext context, DatePicker datePicker, DateMetaDataModel model) throws IOException {
+        JSONObject jsonDateMetaData = new JSONObject();
+
+        if (model != null) {
+
+            
+
+
+
+
+            for (ScheduleEvent<?> event : model.getEvents()) {
+                JSONObject jsonObject = new JSONObject();
+
+                jsonObject.put("id", event.getId());
+                if (event.getGroupId() != null && event.getGroupId().length() > 0) {
+                    jsonObject.put("groupId", event.getGroupId());
+                }
+                jsonObject.put("title", event.getTitle());
+                jsonObject.put("start", dateTimeFormatter.format(event.getStartDate().atZone(zoneId)));
+                jsonObject.put("end", dateTimeFormatter.format(event.getEndDate().atZone(zoneId)));
+                jsonObject.put("allDay", event.isAllDay());
+                if (event.isDraggable() != null) {
+                    jsonObject.put("startEditable", event.isDraggable());
+                }
+                if (event.isResizable() != null) {
+                    jsonObject.put("durationEditable", event.isResizable());
+                }
+                jsonObject.put("overlap", event.isOverlapAllowed());
+                jsonObject.put("classNames", event.getStyleClass());
+                jsonObject.put("description", event.getDescription());
+                jsonObject.put("url", event.getUrl());
+                jsonObject.put("rendering", Objects.toString(event.getRenderingMode(), null));
+
+                if (event.getDynamicProperties() != null) {
+                    for (Map.Entry<String, Object> dynaProperty : event.getDynamicProperties().entrySet()) {
+                        String key = dynaProperty.getKey();
+                        Object value = dynaProperty.getValue();
+                        if (value instanceof LocalDateTime) {
+                            value = ((LocalDateTime) value).format(dateTimeFormatter);
+                        }
+                        jsonObject.put(key, value);
+                    }
+                }
+
+                jsonDateMetaData.put(jsonObject);
+            }
+        }
+
+        JSONObject jsonResponse = new JSONObject();
+        jsonResponse.put("dateMetaData", jsonDateMetaData);
+
+        ResponseWriter writer = context.getResponseWriter();
+        writer.write(jsonResponse.toString());
+    }
 
     @Override
     protected void encodeMarkup(FacesContext context, UICalendar uicalendar, String value) throws IOException {
