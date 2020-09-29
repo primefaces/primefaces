@@ -240,8 +240,9 @@ public class DataViewRenderer extends DataRenderer {
             int rows = dataview.getRows();
             int itemsToRender = rows != 0 ? rows : dataview.getRowCount();
             int numberOfRowsToRender = (itemsToRender + columns - 1) / columns;
+            boolean flex = ComponentUtils.isFlex(context, dataview);
             String columnClass = DataView.GRID_LAYOUT_COLUMN_CLASS + " ";
-            if (ComponentUtils.isFlex(context, dataview)) {
+            if (flex) {
                 columnClass += GridLayoutUtils.getFlexColumnClass(columns);
             }
             else {
@@ -255,7 +256,7 @@ public class DataViewRenderer extends DataRenderer {
             }
 
             writer.startElement("div", null);
-            if (ComponentUtils.isFlex(context, dataview)) {
+            if (flex) {
                 writer.writeAttribute("class", DataView.FLEX_GRID_LAYOUT_ROW_CLASS, null);
             }
             else {
