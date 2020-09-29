@@ -560,6 +560,7 @@ if (!PrimeFaces.ajax) {
                 PrimeFaces.debug('Form to post ' + form.attr('id') + '.');
 
                 var postURL = PrimeFaces.ajax.Utils.getPostUrl(form);
+                var multipart = form.attr('enctype') === 'multipart/form-data';
                 var postParams = [];
 
                 // See #6857 - parameter namespace for Portlets
@@ -707,17 +708,11 @@ if (!PrimeFaces.ajax) {
                     $.merge(postParams, cfg.earlyPostParams);
                 }
 
-                //serialize
-                var postData = $.param(postParams);
-
-                PrimeFaces.debug('Post Data:' + postData);
-
                 var xhrOptions = {
                     url : postURL,
                     type : "POST",
                     cache : false,
                     dataType : "xml",
-                    data : postData,
                     portletForms: PrimeFaces.ajax.Utils.getPorletForms(form, parameterPrefix),
                     source: cfg.source,
                     global: false,
@@ -732,6 +727,26 @@ if (!PrimeFaces.ajax) {
                         }
                     }
                 };
+
+                // #6360 respect form enctype multipart/form-data
+                if (multipart) {
+                    var formData = new FormData();
+                    $.each(postParams, function(index, value) {
+                        formData.append(value.name, value.value);
+                    });
+
+                    xhrOptions.data = formData;
+                    xhrOptions.enctype = 'multipart/form-data';
+                    xhrOptions.processData = false;
+                    xhrOptions.contentType = false;
+                }
+                else {
+                    var postData = $.param(postParams);
+
+                    PrimeFaces.debug('Post Data:' + postData);
+
+                    xhrOptions.data = postData;
+                }
 
                 var nonce = form.children("input[name='" + $.escapeSelector(PrimeFaces.csp.NONCE_INPUT) + "']");
                 if (nonce.length > 0) {
