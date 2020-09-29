@@ -559,8 +559,15 @@ if (!PrimeFaces.ajax) {
 
                 PrimeFaces.debug('Form to post ' + form.attr('id') + '.');
 
-                var postURL = PrimeFaces.ajax.Utils.getPostUrl(form);
+                var formData;
+                var scanForFiles;
                 var multipart = form.attr('enctype') === 'multipart/form-data';
+                if (multipart) {
+                    formData = new FormData();
+                    scanForFiles = $();
+                }
+
+                var postURL = PrimeFaces.ajax.Utils.getPostUrl(form);
                 var postParams = [];
 
                 // See #6857 - parameter namespace for Portlets
@@ -667,12 +674,22 @@ if (!PrimeFaces.ajax) {
                             if(jqProcess.is('form')) {
                                 componentPostParams = jqProcess.serializeArray();
                                 formProcessed = true;
+                                if (multipart) {
+                                    scanForFiles = scanForFiles.add(jqProcess);
+                                }
                             }
                             else if(jqProcess.is(':input')) {
                                 componentPostParams = jqProcess.serializeArray();
+                                if (multipart) {
+                                    scanForFiles = scanForFiles.add(jqProcess);
+                                }
                             }
                             else {
-                                componentPostParams = jqProcess.find(partialSubmitFilter).serializeArray();
+                                var filtered = jqProcess.find(partialSubmitFilter);
+                                componentPostParams = filtered.serializeArray();
+                                if (multipart) {
+                                    scanForFiles = scanForFiles.add(filtered);
+                                }
                             }
 
                             postParams = PrimeFaces.ajax.Request.arrayCompare(componentPostParams, postParams);
@@ -699,13 +716,37 @@ if (!PrimeFaces.ajax) {
                 }
                 else {
                     $.merge(postParams, form.serializeArray());
+                    if (multipart) {
+                        scanForFiles = scanForFiles.add(form);
+                    }
                 }
 
                 // remove postParam if already available in earlyPostParams
+                // we can skip files here, they likely wont change during that time
                 if (PrimeFaces.settings.earlyPostParamEvaluation && cfg.earlyPostParams) {
                     postParams = PrimeFaces.ajax.Request.arrayCompare(cfg.earlyPostParams, postParams);
 
                     $.merge(postParams, cfg.earlyPostParams);
+                }
+
+                // scan for files and append to formData
+                if (multipart) {
+                    var fileInputs = $();
+                    scanForFiles.each(function(index, value) {
+                        var $value = $(value);
+                        if ($value.is(':input[type="file"]')) {
+                            fileInputs = fileInputs.add($value);
+                        }
+                        else {
+                            fileInputs = fileInputs.add($value.find('input[type="file"]'));
+                        }
+                    });
+
+                    fileInputs.each(function(index, value) {
+                        for (var i = 0; i < value.files.length; i++) {
+                            formData.append(value.id, value.files[i]);
+                        }
+                    });
                 }
 
                 var xhrOptions = {
@@ -730,7 +771,6 @@ if (!PrimeFaces.ajax) {
 
                 // #6360 respect form enctype multipart/form-data
                 if (multipart) {
-                    var formData = new FormData();
                     $.each(postParams, function(index, value) {
                         formData.append(value.name, value.value);
                     });
