@@ -28,6 +28,7 @@ import java.time.ZoneId;
 import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
+import javax.el.ELContext;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -36,6 +37,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
+import org.primefaces.el.ValueExpressionAnalyzer;
 
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
@@ -178,9 +180,11 @@ public class Schedule extends ScheduleBase {
 
         super.processUpdates(context);
 
-        ValueExpression expr = getValueExpression(PropertyKeys.view.toString());
+        ELContext elContext = getFacesContext().getELContext();
+        ValueExpression expr = ValueExpressionAnalyzer.getExpression(elContext,
+                getValueExpression(PropertyKeys.view.toString()));
         if (expr != null) {
-            expr.setValue(getFacesContext().getELContext(), getView());
+            expr.setValue(elContext, getView());
             getStateHelper().remove(PropertyKeys.view);
         }
     }
