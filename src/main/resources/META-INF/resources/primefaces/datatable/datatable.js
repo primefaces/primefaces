@@ -1500,7 +1500,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     col.data('original', originalId);
                 }
 
-                $this.setOuterWidth($(PrimeFaces.escapeClientId(originalId)), col[0].style.width);
+                $(PrimeFaces.escapeClientId(originalId))[0].style.width = col[0].style.width;
             });
 
             clonedSortableColumns.on('blur.dataTable', function() {
@@ -1560,11 +1560,43 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     setOuterWidth: function(element, width) {
         if (element.css('box-sizing') === 'border-box') { // Github issue: #5014
-            var diff = element.outerWidth() - element.width();
-            element.width(parseFloat(width) - diff);
+            element.outerWidth(width);
         }
         else {
             element.width(width);
+        }
+    },
+
+    getColumnWidthInfo: function(col, isIncludeResizeableState) {
+        var width, isOuterWidth;
+
+    	if(isIncludeResizeableState && this.cfg.multiViewState && this.resizableStateHolder && this.resizableStateHolder.attr('value')) {
+    		width = $this.findColWidthInResizableState(col.attr('id'));
+    		isOuterWidth = false;
+        }
+
+        if(!width) {
+        	width = col[0].style.width;
+        	isOuterWidth = width && (col.css('box-sizing') === 'border-box');
+        }
+
+        if(!width) {
+            width = col.width();
+            isOuterWidth = false;
+        }
+
+        return {
+        	width: width,
+            isOuterWidth: isOuterWidth
+        };
+    },
+
+    applyWidthInfo: function(element, widthInfo) {
+        if(widthInfo.isOuterWidth) {
+	        element.outerWidth(widthInfo.width);
+        }
+        else {
+            element.width(widthInfo.width);
         }
     },
 
@@ -1663,18 +1695,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 this.scrollHeader.find('> .ui-datatable-scrollable-header-box > table > thead > tr > th').each(function() {
                     var headerCol = $(this),
                     colIndex = headerCol.index(),
-                    headerStyle = headerCol[0].style,
-                    width = headerStyle.width||headerCol.width();
+                    widthInfo = $this.getColumnWidthInfo(headerCol, true);
 
-                    if($this.cfg.multiViewState && $this.resizableStateHolder && $this.resizableStateHolder.attr('value')) {
-                        width = ($this.findColWidthInResizableState(headerCol.attr('id')) || width);
-                    }
-
-                    $this.setOuterWidth(headerCol, width);
+                    $this.applyWidthInfo(headerCol, widthInfo);
 
                     if($this.footerCols.length > 0) {
                         var footerCol = $this.footerCols.eq(colIndex);
-                        $this.setOuterWidth(footerCol, width);
+                        $this.applyWidthInfo(footerCol, widthInfo);
                     }
                 });
             }
@@ -1703,14 +1730,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
             columns.each(function() {
                 var col = $(this),
-                colStyle = col[0].style,
-                width = colStyle.width||col.width();
+                widthInfo = $this.getColumnWidthInfo(col, true);
 
-                if($this.cfg.multiViewState && $this.resizableStateHolder && $this.resizableStateHolder.attr('value')) {
-                    width = ($this.findColWidthInResizableState(col.attr('id')) || width);
-                }
-
-                col.width(width);
+                $this.applyWidthInfo(col, widthInfo);
             });
         }
     },
@@ -5210,9 +5232,9 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
             else {
                 this.jq.find('> .ui-datatable-tablewrapper > table > thead > tr > th').each(function() {
                     var col = $(this),
-                    colStyle = col[0].style,
-                    width = colStyle.width||col.width();
-                    col.width(width);
+                    widthInfo = $this.getColumnWidthInfo(col);
+
+                    $this.applyWidthInfo(col, widthInfo);
                 });
             }
 
@@ -5232,14 +5254,13 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         header.find('> .ui-datatable-scrollable-header-box > table > thead > tr > th').each(function() {
             var headerCol = $(this),
             colIndex = headerCol.index(),
-            headerStyle = headerCol[0].style,
-            width = headerStyle.width||headerCol.width();
+            widthInfo = $this.getColumnWidthInfo(headerCol);
 
-            $this.setOuterWidth(headerCol, width);
+            $this.applyWidthInfo(headerCol, widthInfo);
 
             if(footerCols.length > 0) {
                 var footerCol = footerCols.eq(colIndex);
-                $this.setOuterWidth(footerCol, width);
+                $this.applyWidthInfo(footerCol, widthInfo);
             }
         });
     },
