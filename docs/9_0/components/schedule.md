@@ -25,6 +25,7 @@ binding | null | Object | An el expression that maps to a server side UIComponen
 widgetVar | null | String | Name of the client side widget.
 value | null | Object | An org.primefaces.model.ScheduleModel instance representing the backed model
 locale | null | Object | Locale for localization, can be String or a java.util.Locale instance
+dir | ltr | String | Defines direction of schedule. Valid values are "ltr" (default) and "rtl".
 aspectRatio | null | Float | Ratio of calendar width to height, higher the value shorter the height is
 view | dayGridMonth | String | The view type to use, possible values are 'dayGridMonth', 'dayGridWeek', 'dayGridDay', 'timeGridWeek', 'timeGridDay', 'listYear' , 'listMonth', 'listWeek', 'listDay'.
 initialDate | null | java.time.LocalDate | The initial date that is used when schedule loads. If ommitted, the schedule starts on the current date

@@ -31,6 +31,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.renderkit.CoreRenderer;
 
 public class SummaryRowRenderer extends CoreRenderer {
@@ -38,10 +39,16 @@ public class SummaryRowRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         SummaryRow row = (SummaryRow) component;
+        DataTable table = (DataTable) row.getParent();
         ResponseWriter writer = context.getResponseWriter();
+        HeaderRow headerRow = table.getHeaderRow();
 
         writer.startElement("tr", null);
         writer.writeAttribute("class", DataTable.SUMMARY_ROW_CLASS, null);
+
+        if (headerRow != null && !headerRow.isExpanded()) {
+            writer.writeAttribute("style", "display: none;", null);
+        }
 
         for (UIComponent kid : row.getChildren()) {
             if (kid.isRendered() && kid instanceof Column) {

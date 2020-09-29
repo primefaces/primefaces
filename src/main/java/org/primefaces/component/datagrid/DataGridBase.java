@@ -42,7 +42,9 @@ public abstract class DataGridBase extends UIData
         style,
         styleClass,
         emptyMessage,
-        layout
+        layout,
+        rowStyle,
+        rowStyleClass
     }
 
     public DataGridBase() {
@@ -109,5 +111,21 @@ public abstract class DataGridBase extends UIData
 
     public void setMultiViewState(boolean multiViewState) {
         getStateHelper().put(DataListBase.PropertyKeys.multiViewState, multiViewState);
+    }
+
+    public String getRowStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.rowStyle, null);
+    }
+
+    public void setRowStyle(String rowStyle) {
+        getStateHelper().put(PropertyKeys.rowStyle, rowStyle);
+    }
+
+    public String getRowStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.rowStyleClass, null);
+    }
+
+    public void setRowStyleClass(String rowStyleClass) {
+        getStateHelper().put(PropertyKeys.rowStyleClass, rowStyleClass);
     }
 }

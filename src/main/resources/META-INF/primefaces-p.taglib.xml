@@ -7103,6 +7103,22 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Inline style of each row (grid-cell).]]>
+            </description>
+            <name>rowStyle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of each row (grid-cell).]]>
+            </description>
+            <name>rowStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -8451,6 +8467,22 @@
             <name>touchable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Inline style of each row (grid-cell) in grid layout.]]>
+            </description>
+            <name>gridRowStyle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of each row (grid-cell) in grid layout.]]>
+            </description>
+            <name>gridRowStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
@@ -11009,6 +11041,14 @@
             <name>binding</name>
             <required>false</required>
             <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean value to specify whether the row group will be rendered expanded or closed. Default true.]]>
+            </description>
+            <name>expanded</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
     </tag>
     <tag>
@@ -21522,6 +21562,14 @@
             <name>locale</name>
             <required>false</required>
             <type>java.lang.Object</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines direction of schedule. Valid values are "ltr" (default) and "rtl".]]>
+            </description>
+            <name>dir</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>

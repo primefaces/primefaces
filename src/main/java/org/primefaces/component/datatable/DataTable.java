@@ -124,7 +124,8 @@ public class DataTable extends DataTableBase {
     public static final String SUMMARY_ROW_CLASS = "ui-datatable-summaryrow ui-widget-header";
     public static final String HEADER_ROW_CLASS = "ui-rowgroup-header ui-datatable-headerrow ui-widget-header";
     public static final String ROW_GROUP_TOGGLER_CLASS = "ui-rowgroup-toggler";
-    public static final String ROW_GROUP_TOGGLER_ICON_CLASS = "ui-rowgroup-toggler-icon ui-icon ui-icon-circle-triangle-s";
+    public static final String ROW_GROUP_TOGGLER_OPEN_ICON_CLASS = "ui-rowgroup-toggler-icon ui-icon ui-icon-circle-triangle-s";
+    public static final String ROW_GROUP_TOGGLER_CLOSED_ICON_CLASS = "ui-rowgroup-toggler-icon ui-icon ui-icon-circle-triangle-e";
     public static final String EDITING_ROW_CLASS = "ui-row-editing";
     public static final String STICKY_HEADER_CLASS = "ui-datatable-sticky";
     public static final String ARIA_FILTER_BY = "primefaces.datatable.aria.FILTER_BY";

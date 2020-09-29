@@ -384,9 +384,7 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
     }
 
     protected void setResponseHeader(ExternalContext externalContext , String contentDisposition) {
-        externalContext.setResponseHeader("Expires", "0");
-        externalContext.setResponseHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
-        externalContext.setResponseHeader("Pragma", "public");
+        ResourceUtils.addNoCacheControl(externalContext);
         externalContext.setResponseHeader("Content-disposition", contentDisposition);
     }
 

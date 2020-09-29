@@ -33,6 +33,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.GridLayoutUtils;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class DataGridRenderer extends DataRenderer {
@@ -171,6 +172,14 @@ public class DataGridRenderer extends DataRenderer {
         int numberOfRowsToRender = (itemsToRender + columns - 1) / columns;
         int displayedItemsToRender = rowIndex + itemsToRender;
         String columnClass = DataGrid.COLUMN_CLASS + " " + GridLayoutUtils.getColumnClass(columns);
+        String columnInlineStyle = grid.getRowStyle();
+
+        if (!LangUtils.isValueBlank(grid.getRowStyleClass())) {
+            columnClass += " " + grid.getRowStyleClass();
+        }
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", DataGrid.GRID_ROW_CLASS, null);
 
         for (int i = 0; i < numberOfRowsToRender; i++) {
             grid.setRowIndex(rowIndex);
@@ -178,12 +187,12 @@ public class DataGridRenderer extends DataRenderer {
                 break;
             }
 
-            writer.startElement("div", null);
-            writer.writeAttribute("class", DataGrid.GRID_ROW_CLASS, null);
-
             for (int j = 0; j < columns; j++) {
                 writer.startElement("div", null);
                 writer.writeAttribute("class", columnClass, null);
+                if (!LangUtils.isValueEmpty(columnInlineStyle)) {
+                    writer.writeAttribute("style", columnInlineStyle, null);
+                }
 
                 grid.setRowIndex(rowIndex);
                 if (grid.isRowAvailable()) {
@@ -197,9 +206,9 @@ public class DataGridRenderer extends DataRenderer {
                     break;
                 }
             }
-
-            writer.endElement("div");
         }
+
+        writer.endElement("div");
 
         grid.setRowIndex(-1); //cleanup
     }
