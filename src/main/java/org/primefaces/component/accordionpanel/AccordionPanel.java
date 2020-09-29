@@ -25,6 +25,7 @@ package org.primefaces.component.accordionpanel;
 
 import java.util.Collection;
 import java.util.Map;
+import javax.el.ELContext;
 
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
@@ -38,6 +39,7 @@ import javax.faces.event.FacesEvent;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.tabview.Tab;
+import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.event.TabCloseEvent;
 import org.primefaces.event.TabEvent;
@@ -165,9 +167,11 @@ public class AccordionPanel extends AccordionPanelBase {
 
         super.processUpdates(context);
 
-        ValueExpression expr = getValueExpression(PropertyKeys.activeIndex.toString());
-        if (expr != null) {
-            expr.setValue(getFacesContext().getELContext(), getActiveIndex());
+        ELContext elContext = getFacesContext().getELContext();
+        ValueExpression expr = ValueExpressionAnalyzer.getExpression(elContext,
+                getValueExpression(PropertyKeys.activeIndex.toString()));
+        if (expr != null && !expr.isReadOnly(elContext)) {
+            expr.setValue(elContext, getActiveIndex());
             resetActiveIndex();
         }
     }
