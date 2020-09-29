@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
+import java.util.Map.Entry;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -41,7 +41,7 @@ import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.calendar.BaseCalendarRenderer;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.model.ScheduleEvent;
+import org.primefaces.model.datepicker.DateMetaData;
 import org.primefaces.model.datepicker.DateMetaDataModel;
 import org.primefaces.model.datepicker.LazyDateMetaDataModel;
 import org.primefaces.util.CalendarUtils;
@@ -86,47 +86,12 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         JSONObject jsonDateMetaData = new JSONObject();
 
         if (model != null) {
-
-            
-
-
-
-
-            for (ScheduleEvent<?> event : model.getEvents()) {
+            for (Entry<LocalDate, DateMetaData> entry : model.getDateMetaData().entrySet()) {
+                LocalDate date = entry.getKey();
+                DateMetaData metaData = entry.getValue();
                 JSONObject jsonObject = new JSONObject();
-
-                jsonObject.put("id", event.getId());
-                if (event.getGroupId() != null && event.getGroupId().length() > 0) {
-                    jsonObject.put("groupId", event.getGroupId());
-                }
-                jsonObject.put("title", event.getTitle());
-                jsonObject.put("start", dateTimeFormatter.format(event.getStartDate().atZone(zoneId)));
-                jsonObject.put("end", dateTimeFormatter.format(event.getEndDate().atZone(zoneId)));
-                jsonObject.put("allDay", event.isAllDay());
-                if (event.isDraggable() != null) {
-                    jsonObject.put("startEditable", event.isDraggable());
-                }
-                if (event.isResizable() != null) {
-                    jsonObject.put("durationEditable", event.isResizable());
-                }
-                jsonObject.put("overlap", event.isOverlapAllowed());
-                jsonObject.put("classNames", event.getStyleClass());
-                jsonObject.put("description", event.getDescription());
-                jsonObject.put("url", event.getUrl());
-                jsonObject.put("rendering", Objects.toString(event.getRenderingMode(), null));
-
-                if (event.getDynamicProperties() != null) {
-                    for (Map.Entry<String, Object> dynaProperty : event.getDynamicProperties().entrySet()) {
-                        String key = dynaProperty.getKey();
-                        Object value = dynaProperty.getValue();
-                        if (value instanceof LocalDateTime) {
-                            value = ((LocalDateTime) value).format(dateTimeFormatter);
-                        }
-                        jsonObject.put(key, value);
-                    }
-                }
-
-                jsonDateMetaData.put(jsonObject);
+                jsonObject.put("disabled", metaData.isDisabled());
+                jsonDateMetaData.put(date.toString(), jsonObject);
             }
         }
 
@@ -246,7 +211,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             CalendarUtils.encodeListValue(context, datepicker, "disabledDays", disabledDays, pattern);
         }
 
-        List<Object> disabledDates = datepicker.getDisabledDates();
+        List<Object> disabledDates = datepicker.getInitialDisabledDates(context);
         if (disabledDates != null) {
             CalendarUtils.encodeListValue(context, datepicker, "disabledDates", disabledDates, pattern);
         }
