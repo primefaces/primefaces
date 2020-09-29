@@ -1570,14 +1570,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     getColumnWidthInfo: function(col, isIncludeResizeableState) {
         var width, isOuterWidth;
 
-    	if(isIncludeResizeableState && this.cfg.multiViewState && this.resizableStateHolder && this.resizableStateHolder.attr('value')) {
-    		width = $this.findColWidthInResizableState(col.attr('id'));
-    		isOuterWidth = false;
+        if(isIncludeResizeableState && this.cfg.multiViewState && this.resizableStateHolder && this.resizableStateHolder.attr('value')) {
+            width = $this.findColWidthInResizableState(col.attr('id'));
+            isOuterWidth = false;
         }
 
         if(!width) {
-        	width = col[0].style.width;
-        	isOuterWidth = width && (col.css('box-sizing') === 'border-box');
+            width = col[0].style.width;
+            isOuterWidth = width && (col.css('box-sizing') === 'border-box');
         }
 
         if(!width) {
@@ -1586,14 +1586,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         return {
-        	width: width,
+            width: width,
             isOuterWidth: isOuterWidth
         };
     },
 
     applyWidthInfo: function(element, widthInfo) {
         if(widthInfo.isOuterWidth) {
-	        element.outerWidth(widthInfo.width);
+            element.outerWidth(widthInfo.width);
         }
         else {
             element.width(widthInfo.width);
