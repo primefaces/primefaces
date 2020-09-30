@@ -246,7 +246,7 @@ _cacheTimeout_ option to configure how long it takes to clear a cache automatica
 The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
   
 **Default Event:** `valueChange`  
-**Available Events:** `blur, change, clear, click, contextmenu, copy, cut, dblclick, drag, dragend, dragenter, dragleave, dragover, dragstart, drop, focus, input, invalid, itemSelect, itemUnselect, keydown, keypress, keyup, moreText, mousedown, mousemove, mouseout, mouseover, mouseup, paste, query, reset, scroll, search, select, valueChange, wheel`  
+**Available Events:** `blur, change, clear, click, contextmenu, copy, cut, dblclick, drag, dragend, dragenter, dragleave, dragover, dragstart, drop, focus, input, invalid, itemSelect, itemUnselect, keydown, keypress, keyup, moreTextSelect, emptyMessageSelect, mousedown, mousemove, mouseout, mouseover, mouseup, paste, query, reset, scroll, search, select, valueChange, wheel`
 
 
 Instead of waiting for user to submit the form manually to process the selected item, you can enable
@@ -279,8 +279,9 @@ case _org.primefaces.event.Unselect_ instance is passed to a listener if defined
 | itemSelect | org.primefaces.event.SelectEvent | On item selection. |
 | itemUnselect | org.primefaces.event.UnselectEvent | On item unselection. |
 | query | - | On query. |
-| moreText | - | When moreText is clicked. |
+| moreTextSelect | - | When moreText is selected. |
 | clear | - | When all text is deleted. |
+| emptyMessageSelect | - | When emptyMessage is selected. |
 
 ## ItemTip
 Itemtip is an advanced built-in tooltip when mouse is over on suggested items. Content of the
