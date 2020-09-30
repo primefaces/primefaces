@@ -27,6 +27,7 @@ import javax.faces.component.html.HtmlSelectBooleanCheckbox;
 
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.Widget;
+import org.primefaces.model.AttributeMutator;
 
 public abstract class SelectBooleanCheckboxBase extends HtmlSelectBooleanCheckbox implements Widget, InputHolder {
 
@@ -39,7 +40,9 @@ public abstract class SelectBooleanCheckboxBase extends HtmlSelectBooleanCheckbo
         widgetVar,
         itemLabel,
         escape,
-        ariaLabel;
+        ariaLabel,
+
+        mutator
     }
 
     public SelectBooleanCheckboxBase() {
@@ -81,5 +84,33 @@ public abstract class SelectBooleanCheckboxBase extends HtmlSelectBooleanCheckbo
 
     public void setAriaLabel(String ariaLabel) {
         getStateHelper().put(SelectBooleanCheckboxBase.PropertyKeys.ariaLabel, ariaLabel);
+    }
+
+    public AttributeMutator getMutator() {
+        return (AttributeMutator) getStateHelper().eval(PropertyKeys.mutator, null);
+    }
+
+    public void setMutator(AttributeMutator mutator) {
+        getStateHelper().put(PropertyKeys.mutator, mutator);
+    }
+
+    @Override
+    public boolean isRendered() {
+        return AttributeMutator.optionallyOverrideRendered(super.isRendered(), getMutator());
+    }
+
+    @Override
+    public boolean isRequired() {
+        return AttributeMutator.optionallyOverrideRequired(super.isRequired(), getMutator());
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return AttributeMutator.optionallyOverrideDisabled(super.isDisabled(), getMutator());
+    }
+
+    @Override
+    public String getTabindex() {
+        return AttributeMutator.optionallyOverrideTabindex(super.getTabindex(), getMutator());
     }
 }

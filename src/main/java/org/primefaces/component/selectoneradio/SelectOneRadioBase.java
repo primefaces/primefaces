@@ -26,6 +26,7 @@ package org.primefaces.component.selectoneradio;
 import javax.faces.component.html.HtmlSelectOneRadio;
 
 import org.primefaces.component.api.Widget;
+import org.primefaces.model.AttributeMutator;
 
 public abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements Widget {
 
@@ -38,7 +39,9 @@ public abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements W
         widgetVar,
         columns,
         plain,
-        unselectable
+        unselectable,
+
+        mutator
     }
 
     public SelectOneRadioBase() {
@@ -80,5 +83,33 @@ public abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements W
 
     public void setUnselectable(boolean unselectable) {
         getStateHelper().put(PropertyKeys.unselectable, unselectable);
+    }
+
+    public AttributeMutator getMutator() {
+        return (AttributeMutator) getStateHelper().eval(PropertyKeys.mutator, null);
+    }
+
+    public void setMutator(AttributeMutator mutator) {
+        getStateHelper().put(PropertyKeys.mutator, mutator);
+    }
+
+    @Override
+    public boolean isRendered() {
+        return AttributeMutator.optionallyOverrideRendered(super.isRendered(), getMutator());
+    }
+
+    @Override
+    public boolean isRequired() {
+        return AttributeMutator.optionallyOverrideRequired(super.isRequired(), getMutator());
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return AttributeMutator.optionallyOverrideDisabled(super.isDisabled(), getMutator());
+    }
+
+    @Override
+    public String getTabindex() {
+        return AttributeMutator.optionallyOverrideTabindex(super.getTabindex(), getMutator());
     }
 }

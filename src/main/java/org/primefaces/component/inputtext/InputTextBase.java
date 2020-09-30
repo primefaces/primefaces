@@ -26,6 +26,7 @@ package org.primefaces.component.inputtext;
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
+import org.primefaces.model.AttributeMutator;
 
 public abstract class InputTextBase extends AbstractPrimeHtmlInputText implements Widget, RTLAware {
 
@@ -39,7 +40,9 @@ public abstract class InputTextBase extends AbstractPrimeHtmlInputText implement
         widgetVar,
         type,
         counter,
-        counterTemplate
+        counterTemplate,
+
+        mutator
     }
 
     public InputTextBase() {
@@ -89,5 +92,33 @@ public abstract class InputTextBase extends AbstractPrimeHtmlInputText implement
 
     public void setCounterTemplate(String counterTemplate) {
         getStateHelper().put(PropertyKeys.counterTemplate, counterTemplate);
+    }
+
+    public AttributeMutator getMutator() {
+        return (AttributeMutator) getStateHelper().eval(PropertyKeys.mutator, null);
+    }
+
+    public void setMutator(AttributeMutator mutator) {
+        getStateHelper().put(PropertyKeys.mutator, mutator);
+    }
+
+    @Override
+    public boolean isRendered() {
+        return AttributeMutator.optionallyOverrideRendered(super.isRendered(), getMutator());
+    }
+
+    @Override
+    public boolean isRequired() {
+        return AttributeMutator.optionallyOverrideRequired(super.isRequired(), getMutator());
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return AttributeMutator.optionallyOverrideDisabled(super.isDisabled(), getMutator());
+    }
+
+    @Override
+    public String getTabindex() {
+        return AttributeMutator.optionallyOverrideTabindex(super.getTabindex(), getMutator());
     }
 }

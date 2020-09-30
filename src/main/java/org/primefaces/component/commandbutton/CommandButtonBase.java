@@ -29,6 +29,7 @@ import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.Confirmable;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
+import org.primefaces.model.AttributeMutator;
 
 public abstract class CommandButtonBase extends HtmlCommandButton implements AjaxSource, Widget, Confirmable, PrimeClientBehaviorHolder {
 
@@ -62,7 +63,9 @@ public abstract class CommandButtonBase extends HtmlCommandButton implements Aja
         form,
         renderDisabledClick,
         ariaLabel,
-        ignoreComponentNotFound
+        ignoreComponentNotFound,
+
+        mutator
     }
 
     public CommandButtonBase() {
@@ -288,5 +291,28 @@ public abstract class CommandButtonBase extends HtmlCommandButton implements Aja
 
     public void setIgnoreComponentNotFound(boolean ignoreComponentNotFound) {
         getStateHelper().put(PropertyKeys.ignoreComponentNotFound, ignoreComponentNotFound);
+    }
+
+    public AttributeMutator getMutator() {
+        return (AttributeMutator) getStateHelper().eval(PropertyKeys.mutator, null);
+    }
+
+    public void setMutator(AttributeMutator mutator) {
+        getStateHelper().put(PropertyKeys.mutator, mutator);
+    }
+
+    @Override
+    public boolean isRendered() {
+        return AttributeMutator.optionallyOverrideRendered(super.isRendered(), getMutator());
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return AttributeMutator.optionallyOverrideDisabled(super.isDisabled(), getMutator());
+    }
+
+    @Override
+    public String getTabindex() {
+        return AttributeMutator.optionallyOverrideTabindex(super.getTabindex(), getMutator());
     }
 }

@@ -26,6 +26,7 @@ package org.primefaces.component.inputnumber;
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.Widget;
+import org.primefaces.model.AttributeMutator;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LocaleUtils;
 
@@ -54,7 +55,9 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
         padControl,
         leadingZero,
         decimalSeparatorAlternative,
-        modifyValueOnWheel
+        modifyValueOnWheel,
+
+        mutator
     }
 
     public InputNumberBase() {
@@ -210,5 +213,33 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
 
     public void setModifyValueOnWheel(boolean modifyValueOnWheel) {
         getStateHelper().put(PropertyKeys.modifyValueOnWheel, modifyValueOnWheel);
+    }
+
+    public AttributeMutator getMutator() {
+        return (AttributeMutator) getStateHelper().eval(PropertyKeys.mutator, null);
+    }
+
+    public void setMutator(AttributeMutator mutator) {
+        getStateHelper().put(PropertyKeys.mutator, mutator);
+    }
+
+    @Override
+    public boolean isRendered() {
+        return AttributeMutator.optionallyOverrideRendered(super.isRendered(), getMutator());
+    }
+
+    @Override
+    public boolean isRequired() {
+        return AttributeMutator.optionallyOverrideRequired(super.isRequired(), getMutator());
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return AttributeMutator.optionallyOverrideDisabled(super.isDisabled(), getMutator());
+    }
+
+    @Override
+    public String getTabindex() {
+        return AttributeMutator.optionallyOverrideTabindex(super.getTabindex(), getMutator());
     }
 }

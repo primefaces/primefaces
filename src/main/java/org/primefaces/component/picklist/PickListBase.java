@@ -28,6 +28,7 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
+import org.primefaces.model.AttributeMutator;
 
 public abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
@@ -71,7 +72,9 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
         tabindex,
         filterEvent,
         filterDelay,
-        escapeValue
+        escapeValue,
+
+        mutator
     }
 
     public PickListBase() {
@@ -132,7 +135,7 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
     }
 
     public boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+        return AttributeMutator.optionallyOverrideDisabled((Boolean) getStateHelper().eval(PropertyKeys.disabled, false), getMutator());
     }
 
     public void setDisabled(boolean disabled) {
@@ -324,7 +327,7 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
     }
 
     public String getTabindex() {
-        return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
+        return AttributeMutator.optionallyOverrideTabindex((String) getStateHelper().eval(PropertyKeys.tabindex, "0"), getMutator());
     }
 
     public void setTabindex(String tabindex) {
@@ -361,5 +364,23 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
 
     public void setEscapeValue(boolean escapeValue) {
         getStateHelper().put(PropertyKeys.escapeValue, escapeValue);
+    }
+
+    public AttributeMutator getMutator() {
+        return (AttributeMutator) getStateHelper().eval(PropertyKeys.mutator, null);
+    }
+
+    public void setMutator(AttributeMutator mutator) {
+        getStateHelper().put(PropertyKeys.mutator, mutator);
+    }
+
+    @Override
+    public boolean isRendered() {
+        return AttributeMutator.optionallyOverrideRendered(super.isRendered(), getMutator());
+    }
+
+    @Override
+    public boolean isRequired() {
+        return AttributeMutator.optionallyOverrideRequired(super.isRequired(), getMutator());
     }
 }

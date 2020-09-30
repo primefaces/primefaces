@@ -1754,6 +1754,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Allows the user to modify the state of the component by enum.]]>
+            </description>
+            <name>mutator</name>
+            <required>false</required>
+            <type>org.primefaces.model.AttributeMutator</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -5999,6 +6007,14 @@
             <name>ignoreComponentNotFound</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Allows the user to modify the state of the component by enum.]]>
+            </description>
+            <name>mutator</name>
+            <required>false</required>
+            <type>org.primefaces.model.AttributeMutator</type>
         </attribute>
     </tag>
     <tag>
@@ -13024,6 +13040,14 @@
             <required>false</required>
             <type>boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Allows the user to modify the state of the component by enum.]]>
+            </description>
+            <name>mutator</name>
+            <required>false</required>
+            <type>org.primefaces.model.AttributeMutator</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -13734,6 +13758,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Allows the user to modify the state of the component by enum.]]>
+            </description>
+            <name>mutator</name>
+            <required>false</required>
+            <type>org.primefaces.model.AttributeMutator</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -14273,6 +14305,14 @@
             <name>addLine</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Allows the user to modify the state of the component by enum.]]>
+            </description>
+            <name>mutator</name>
+            <required>false</required>
+            <type>org.primefaces.model.AttributeMutator</type>
         </attribute>
     </tag>
     <tag>
@@ -20001,6 +20041,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Allows the user to modify the state of the component by enum.]]>
+            </description>
+            <name>mutator</name>
+            <required>false</required>
+            <type>org.primefaces.model.AttributeMutator</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -22332,6 +22380,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Allows the user to modify the state of the component by enum.]]>
+            </description>
+            <name>mutator</name>
+            <required>false</required>
+            <type>org.primefaces.model.AttributeMutator</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -24059,6 +24115,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Allows the user to modify the state of the component by enum.]]>
+            </description>
+            <name>mutator</name>
+            <required>false</required>
+            <type>org.primefaces.model.AttributeMutator</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -24269,6 +24333,14 @@
             <name>hideNoSelectionOption</name>
             <required>false</required>
             <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Allows the user to modify the state of the component by enum.]]>
+            </description>
+            <name>mutator</name>
+            <required>false</required>
+            <type>org.primefaces.model.AttributeMutator</type>
         </attribute>
     </tag>
     <tag>

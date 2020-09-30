@@ -27,6 +27,7 @@ import org.primefaces.component.api.AbstractPrimeHtmlInputTextArea;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
+import org.primefaces.model.AttributeMutator;
 
 public abstract class InputTextareaBase extends AbstractPrimeHtmlInputTextArea implements Widget, RTLAware, MixedClientBehaviorHolder {
 
@@ -46,7 +47,9 @@ public abstract class InputTextareaBase extends AbstractPrimeHtmlInputTextArea i
         minQueryLength,
         queryDelay,
         scrollHeight,
-        addLine
+        addLine,
+
+        mutator
     }
 
     public InputTextareaBase() {
@@ -144,5 +147,33 @@ public abstract class InputTextareaBase extends AbstractPrimeHtmlInputTextArea i
 
     public void setAddLine(boolean addLine) {
         getStateHelper().put(PropertyKeys.addLine, addLine);
+    }
+
+    public AttributeMutator getMutator() {
+        return (AttributeMutator) getStateHelper().eval(PropertyKeys.mutator, null);
+    }
+
+    public void setMutator(AttributeMutator mutator) {
+        getStateHelper().put(PropertyKeys.mutator, mutator);
+    }
+
+    @Override
+    public boolean isRendered() {
+        return AttributeMutator.optionallyOverrideRendered(super.isRendered(), getMutator());
+    }
+
+    @Override
+    public boolean isRequired() {
+        return AttributeMutator.optionallyOverrideRequired(super.isRequired(), getMutator());
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return AttributeMutator.optionallyOverrideDisabled(super.isDisabled(), getMutator());
+    }
+
+    @Override
+    public String getTabindex() {
+        return AttributeMutator.optionallyOverrideTabindex(super.getTabindex(), getMutator());
     }
 }
