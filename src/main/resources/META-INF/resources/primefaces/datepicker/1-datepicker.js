@@ -285,8 +285,9 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             if (_self.cfg.lazyModel) {
                 var options = {
                     source: _self.id,
-                    process: '@none',
-                    update: '@none',
+                    process: _self.id,
+                    update: _self.id,
+                    formId: _self.cfg.formId,
                     params: [
                         {name: _self.id + '_year', value: date.getFullYear()},
                         {name: _self.id + '_month', value: date.getMonth()}
@@ -298,11 +299,11 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                                 var dateMetaData = JSON.parse(content).dateMetaData;
                                 var disabledDates = [];
                                 for (date in dateMetaData) {
-                                    if (disabledDates[date].disabled) {
+                                    if (dateMetaData[date].disabled) {
                                         disabledDates.push(date);
                                     }
                                 }
-                                _self.updateDisabledDates(disabledDates);
+                                _self.setDisabledDates(disabledDates);
                             }
                         });
 
