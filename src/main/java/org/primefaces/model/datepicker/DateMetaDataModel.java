@@ -32,4 +32,5 @@ public interface DateMetaDataModel {
 
     void clear();
 
+    void add(LocalDate localDate, DateMetaData metaData);
 }

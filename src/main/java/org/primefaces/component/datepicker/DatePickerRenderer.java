@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -68,11 +69,11 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
         if (model instanceof LazyDateMetaDataModel) {
-            String startDateParam = params.get(clientId + "_start");
-            String endDateParam = params.get(clientId + "_end");
+            int year = Integer.valueOf(params.get(clientId + "_year"));
+            int month = Integer.valueOf(params.get(clientId + "_month")) + 1;
 
-            LocalDate startDate = LocalDate.parse(startDateParam);
-            LocalDate endDate = LocalDate.parse(endDateParam);
+            LocalDate startDate = LocalDate.of(year, month, 1);
+            LocalDate endDate = startDate.plusMonths(datePicker.getNumberOfMonths()).minusDays(1);
 
             LazyDateMetaDataModel lazyModel = ((LazyDateMetaDataModel) model);
             lazyModel.clear();
@@ -86,12 +87,13 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         JSONObject jsonDateMetaData = new JSONObject();
 
         if (model != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy");
             for (Entry<LocalDate, DateMetaData> entry : model.getDateMetaData().entrySet()) {
                 LocalDate date = entry.getKey();
                 DateMetaData metaData = entry.getValue();
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("disabled", metaData.isDisabled());
-                jsonDateMetaData.put(date.toString(), jsonObject);
+                jsonDateMetaData.put(date.format(formatter), jsonObject);
             }
         }
 
@@ -204,7 +206,8 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("rangeSeparator", datepicker.getRangeSeparator(), "-")
             .attr("timeSeparator", datepicker.getTimeSeparator(), ":")
             .attr("timeInput", datepicker.isTimeInput())
-            .attr("touchable", ComponentUtils.isTouchable(context, datepicker),  true);
+            .attr("touchable", ComponentUtils.isTouchable(context, datepicker), true)
+            .attr("lazyModel", datepicker.getModel() instanceof LazyDateMetaDataModel, false);
 
         List<Integer> disabledDays = datepicker.getDisabledDays();
         if (disabledDays != null) {

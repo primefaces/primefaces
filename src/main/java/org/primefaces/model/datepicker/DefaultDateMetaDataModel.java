@@ -46,4 +46,8 @@ public class DefaultDateMetaDataModel implements DateMetaDataModel, Serializable
         dateMetaData.clear();
     }
 
+    @Override
+    public void add(LocalDate localDate, DateMetaData metaData) {
+        dateMetaData.put(localDate, metaData);
+    }
 }
