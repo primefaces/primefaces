@@ -3099,7 +3099,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Finds the meta data for a given cell.
      * @param {JQuery} cell A cell for which to get the meta data.
-     * @return {string} The meta data of the given cell.
+     * @return {string} The meta data of the given cell or NULL if not found
      */
     getCellMeta: function(cell) {
         var rowMeta = this.getRowMeta(cell.closest('tr')),
@@ -3109,6 +3109,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             cellIndex = (this.scrollTbody.is(cell.closest('tbody'))) ? (cellIndex + $this.cfg.frozenColumns) : cellIndex;
         }
 
+        if (!rowMeta || !rowMeta.index) {
+            return null;
+        }
         var cellInfo = rowMeta.index + ',' + cellIndex;
         if(rowMeta.key) {
             cellInfo = cellInfo + ',' + rowMeta.key;
@@ -3190,9 +3193,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
             if(this.hasBehavior('cellEditInit')) {
                 var cellInfo = this.getCellMeta(cell);
-
-                // #6357 tabbing off last cell generates "undefined,-1" cellInfo
-                if (cellInfo.indexOf('undefined') === -1) {
+                if (cellInfo) {
                     var ext = {
                         params: [{name: this.id + '_cellInfo', value: cellInfo}]
                     };
