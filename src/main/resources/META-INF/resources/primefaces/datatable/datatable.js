@@ -4589,10 +4589,19 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.writeRowExpansions();
     },
 
+    /**
+     * Write row expansion state.
+     * @private
+     */
     writeRowExpansions: function() {
         this.expansionHolder.val(this.loadedExpansionRows.join(','));
     },
 
+    /**
+     * Detect if row expansion for this row has been loaded and if not load it.
+     * @protected
+     * @param {number} rowIndex The row index to check for expansion
+     */
     rowExpansionLoaded: function(rowIndex) {
         if(!PrimeFaces.inArray(this.loadedExpansionRows, rowIndex)) {
             this.loadedExpansionRows.push(rowIndex);
