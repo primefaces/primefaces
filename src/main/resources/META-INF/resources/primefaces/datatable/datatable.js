@@ -285,6 +285,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         if(this.cfg.expansion) {
+            this.initRowExpansion();
             this.updateExpandedRowsColspan();
         }
     },
@@ -347,6 +348,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.groupColumnIndexes) {
             this.groupRows();
             this.bindToggleRowGroupEvents();
+        }
+
+        if(this.cfg.expansion) {
+            this.initRowExpansion();
         }
     },
 
@@ -2845,6 +2850,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         handle: function(content) {
                             if(content && PrimeFaces.trim(content).length) {
                                 row.addClass('ui-expanded-row');
+                                this.rowExpansionLoaded(rowIndex);
                                 this.displayExpandedRow(row, content);
                             }
                         }
@@ -4561,6 +4567,32 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         //filter support
         this.clone.find('.ui-column-filter').prop('disabled', true);
+    },
+
+    /**
+     * Initializes the expansion state
+     * @private
+     */
+    initRowExpansion: function() {
+        var $this = this;
+
+        this.expansionHolder = $(this.jqId + '_rowExpansionState');
+        this.loadedExpansionRows = this.tbody.children('.ui-expanded-row-content').prev().map(function() {
+            return $this.getRowMeta($(this)).index;
+        }).get();
+
+        this.writeRowExpansions();
+    },
+
+    writeRowExpansions: function() {
+        this.expansionHolder.val(this.loadedExpansionRows.join(','));
+    },
+
+    rowExpansionLoaded: function(rowIndex) {
+        if(!PrimeFaces.inArray(this.loadedExpansionRows, rowIndex)) {
+            this.loadedExpansionRows.push(rowIndex);
+            this.writeRowExpansions();
+        }
     },
 
     /**
