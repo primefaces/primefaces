@@ -23,14 +23,15 @@
  */
 package org.primefaces.component.datatable;
 
-import org.primefaces.component.api.*;
-import org.primefaces.model.FilterMeta;
-import org.primefaces.model.SortMeta;
+import java.util.Collections;
+import java.util.Map;
 
 import javax.el.MethodExpression;
 import javax.faces.component.behavior.ClientBehaviorHolder;
-import java.util.Collections;
-import java.util.Map;
+
+import org.primefaces.component.api.*;
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.SortMeta;
 
 public abstract class DataTableBase extends UIData
         implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable, MultiViewStateAware<DataTableState> {
@@ -167,11 +168,21 @@ public abstract class DataTableBase extends UIData
     }
 
     public Object getSelection() {
-        return getStateHelper().eval(PropertyKeys.selection, null);
+        Object o = getLocalSelection();
+        if (o == null) {
+            return getStateHelper().eval(PropertyKeys.selection, null);
+        }
+        else {
+            return o;
+        }
     }
 
     public void setSelection(Object selection) {
-        getStateHelper().put(PropertyKeys.selection, selection);
+        getStateHelper().put(PropertyKeys.selection + getClientId(), selection);
+    }
+
+    public Object getLocalSelection() {
+        return getStateHelper().get(PropertyKeys.selection + getClientId());
     }
 
     public String getEmptyMessage() {

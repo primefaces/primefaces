@@ -757,10 +757,6 @@ public class DataTable extends DataTableBase {
         return null;
     }
 
-    public Object getLocalSelection() {
-        return getStateHelper().get(PropertyKeys.selection);
-    }
-
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
         return BEHAVIOR_EVENT_MAPPING;
