@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -85,15 +84,14 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
 
     protected void encodeDateMetaDataAsJSON(FacesContext context, DatePicker datePicker, DateMetaDataModel model) throws IOException {
         JSONObject jsonDateMetaData = new JSONObject();
-
+        String pattern = datePicker.calculateWidgetPattern();
         if (model != null) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy");
             for (Entry<LocalDate, DateMetaData> entry : model.getDateMetaData().entrySet()) {
-                LocalDate date = entry.getKey();
+                String date = CalendarUtils.getValueAsString(context, datePicker, entry.getKey(), pattern);
                 DateMetaData metaData = entry.getValue();
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("disabled", metaData.isDisabled());
-                jsonDateMetaData.put(date.format(formatter), jsonObject);
+                jsonDateMetaData.put(date, jsonObject);
             }
         }
 
