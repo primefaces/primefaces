@@ -25,6 +25,6 @@ package org.primefaces.model.datepicker;
 
 public interface DateMetaData {
 
-    public boolean isDisabled();
+    boolean isDisabled();
 
 }
