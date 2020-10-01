@@ -257,18 +257,49 @@ private LocalDate maxDate;
 
 @PostConstruct
 public void init() {
-        invalidDates = new ArrayList<>();
-        invalidDates.add(LocalDate.now());
-        for (int i = 0; i < 5; i++) {
-            invalidDates.add(invalidDates.get(i).plusDays(1));
+    invalidDates = new ArrayList<>();
+    invalidDates.add(LocalDate.now());
+    for (int i = 0; i < 5; i++) {
+        invalidDates.add(invalidDates.get(i).plusDays(1));
+    }
+
+    invalidDays = new ArrayList<>();
+    invalidDays.add(0); /* the first day of week is disabled */
+    invalidDays.add(3);
+
+    minDate = LocalDate.now().minusYears(1);
+    maxDate = LocalDate.now().plusYears(1);
+}
+```
+
+## Date meta data model
+
+You can use the `model` attribute to set meta data per date in the calendar. Meta data currently contains disabled, but more properties will be added later.
+
+Setting disabled dates is already possible using the corresponding attribute, I hear you think. But here comes the interesting part:
+
+### Lazy date meta data model
+
+This can be used to set the meta data when the calendar view changes. For example:
+
+```xhtml
+<p:datePicker value="#{dateBean.date}" model="#{dateBean.lazyModel}" />
+```
+
+```java
+private LocalDate date;
+private DateMetaDataModel lazyModel;
+
+@PostConstruct
+public void init() {
+    DefaultDateMetaData metaDataDisabled = DefaultDateMetaData.builder().disabled(true).build();
+    lazyModel = new LazyDateMetaDataModel() {
+        @Override
+        public void loadDateMetaData(LocalDate start, LocalDate end) {
+            add(someDate, metaDataDisabled);
+            add(someOtherDate, metaDataDisabled);
         }
-
-        invalidDays = new ArrayList<>();
-        invalidDays.add(0); /* the first day of week is disabled */
-        invalidDays.add(3);
-
-        minDate = LocalDate.now().minusYears(1);
-        maxDate = LocalDate.now().plusYears(1);
+    };
 }
 ```
 
