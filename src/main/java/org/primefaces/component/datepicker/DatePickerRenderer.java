@@ -63,11 +63,13 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
     }
 
     protected void encodeDateMetaData(FacesContext context, DatePicker datePicker) throws IOException {
-        String clientId = datePicker.getClientId(context);
         DateMetaDataModel model = datePicker.getModel();
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-
+        if (model == null) {
+            return;
+        }
         if (model instanceof LazyDateMetaDataModel) {
+            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+            String clientId = datePicker.getClientId(context);
             int year = Integer.valueOf(params.get(clientId + "_year"));
             int month = Integer.valueOf(params.get(clientId + "_month")) + 1;
 
@@ -78,21 +80,18 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             lazyModel.clear();
             lazyModel.loadDateMetaData(startDate, endDate);
         }
-
         encodeDateMetaDataAsJSON(context, datePicker, model);
     }
 
     protected void encodeDateMetaDataAsJSON(FacesContext context, DatePicker datePicker, DateMetaDataModel model) throws IOException {
         JSONObject jsonDateMetaData = new JSONObject();
         String pattern = datePicker.calculateWidgetPattern();
-        if (model != null) {
-            for (Entry<LocalDate, DateMetaData> entry : model.getDateMetaData().entrySet()) {
-                String date = CalendarUtils.getValueAsString(context, datePicker, entry.getKey(), pattern);
-                DateMetaData metaData = entry.getValue();
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("disabled", metaData.isDisabled());
-                jsonDateMetaData.put(date, jsonObject);
-            }
+        for (Entry<LocalDate, DateMetaData> entry : model.getDateMetaData().entrySet()) {
+            String date = CalendarUtils.getValueAsString(context, datePicker, entry.getKey(), pattern);
+            DateMetaData metaData = entry.getValue();
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("disabled", metaData.isDisabled());
+            jsonDateMetaData.put(date, jsonObject);
         }
 
         JSONObject jsonResponse = new JSONObject();

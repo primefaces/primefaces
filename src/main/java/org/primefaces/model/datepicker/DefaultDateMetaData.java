@@ -27,6 +27,8 @@ import java.io.Serializable;
 
 public class DefaultDateMetaData implements DateMetaData, Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private boolean disabled;
 
     public DefaultDateMetaData() {

@@ -30,6 +30,8 @@ import java.util.Map;
 
 public class DefaultDateMetaDataModel implements DateMetaDataModel, Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private final Map<LocalDate, DateMetaData> dateMetaData;
 
     public DefaultDateMetaDataModel() {

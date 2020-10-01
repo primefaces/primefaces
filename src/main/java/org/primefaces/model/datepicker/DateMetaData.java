@@ -27,6 +27,4 @@ public interface DateMetaData {
 
     public boolean isDisabled();
 
-    // TODO add styleClass in new PR
-
 }
