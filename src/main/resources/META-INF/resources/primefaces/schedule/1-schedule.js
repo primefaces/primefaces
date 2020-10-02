@@ -193,6 +193,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                     targetWindow.opener = null;    
                 }
                 targetWindow.location = eventClickInfo.event.url;
+                eventClickInfo.jsEvent.preventDefault(); // don't let the browser navigate
                 return false;
             }
 
