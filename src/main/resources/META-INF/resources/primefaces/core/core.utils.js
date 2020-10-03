@@ -349,7 +349,7 @@ if (!PrimeFaces.utils) {
         registerScrollHandler: function(widget, scrollNamespace, scrollCallback) {
 
             var scrollParent = widget.getJQ().scrollParent();
-            if (scrollParent.is('body') || scrollParent.is('html')) {
+            if (scrollParent.is('body') || scrollParent.is('html') || scrollParent[0].nodeType === 9) { // nodeType 9 is for document element
                 scrollParent = $(window);
             }
 
