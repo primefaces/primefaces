@@ -130,20 +130,6 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
         this.rowCount = rowCount;
     }
 
-    public List<T> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, FilterMeta> filterBy) {
-
-        Map<String, SortMeta> sortBy;
-        if (sortField == null) {
-            sortBy = Collections.emptyMap();
-        }
-        else {
-            sortBy = new HashMap<>(1);
-            sortBy.put(sortField, new SortMeta(null, sortField, sortOrder == null ? SortOrder.UNSORTED : sortOrder, null));
-        }
-
-        return load(first, pageSize, sortBy, filterBy);
-    }
-
     /**
      * Loads the data for the given parameters.
      *
@@ -153,10 +139,7 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
      * @param filterBy a map with all filter informations
      * @return the data
      */
-    public List<T> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
-        throw new UnsupportedOperationException(
-                getMessage("Either the LazyDataModel#load for single or multi-sort must be implemented [component=%s,view=%s]."));
-    }
+    public abstract List<T> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy);
 
     @Override
     public T getRowData(String rowKey) {
@@ -191,7 +174,7 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
         }
         else {
             sortBy = new HashMap<>(1);
-            sortBy.put(sortField, new SortMeta(null, sortField, sortOrder == null ? SortOrder.UNSORTED : sortOrder, null));
+            //sortBy.put(sortField, new SortMeta(null, sortField, sortOrder == null ? SortOrder.UNSORTED : sortOrder, null));
         }
 
         return iterator(sortBy, filterBy);

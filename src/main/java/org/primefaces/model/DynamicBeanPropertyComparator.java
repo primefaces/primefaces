@@ -23,25 +23,26 @@
  */
 package org.primefaces.model;
 
-import java.util.Locale;
-import javax.el.MethodExpression;
-import javax.el.ValueExpression;
 import org.primefaces.component.api.DynamicColumn;
 
-public class DynamicChainedPropertyComparator extends BeanPropertyComparator {
+import java.util.Locale;
 
-    private DynamicColumn column;
+public class DynamicBeanPropertyComparator extends BeanPropertyComparator {
 
-    public DynamicChainedPropertyComparator(DynamicColumn column, ValueExpression sortBy, String var, SortOrder sortOrder, MethodExpression sortFunction,
-            boolean caseSensitiveSort, Locale locale, int nullSortOrder) {
-        super(sortBy, var, sortOrder, sortFunction, caseSensitiveSort, locale, nullSortOrder);
-        this.column = column;
+    private SortMeta sortMeta;
+
+    public DynamicBeanPropertyComparator(String var, SortMeta sortMeta, boolean caseSensitiveSort, Locale locale, int nullSortOrder) {
+        super(var, sortMeta, caseSensitiveSort, locale, nullSortOrder);
+        if (!(sortMeta.getComponent() instanceof DynamicColumn)) {
+            throw new IllegalArgumentException();
+        }
+        this.sortMeta = sortMeta;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public int compare(Object obj1, Object obj2) {
-        column.applyStatelessModel();
+        ((DynamicColumn) sortMeta.getComponent()).applyStatelessModel();
 
         return super.compare(obj1, obj2);
     }

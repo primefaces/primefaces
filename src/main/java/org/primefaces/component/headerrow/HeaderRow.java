@@ -26,4 +26,15 @@ package org.primefaces.component.headerrow;
 public class HeaderRow extends HeaderRowBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.HeaderRow";
+
+    public static final String HEADER_ROW_CLASS = "ui-rowgroup-header ui-datatable-headerrow ui-widget-header";
+
+    public boolean isEnabled() {
+        return isRendered()
+                && (getField() != null
+                || getGroupBy() != null
+                || getValueExpression(PropertyKeys.field.name()) != null
+                || getValueExpression(PropertyKeys.groupBy.name()) != null);
+
+    }
 }

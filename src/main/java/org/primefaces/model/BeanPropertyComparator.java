@@ -27,7 +27,6 @@ import java.text.Collator;
 import java.util.Comparator;
 import java.util.Locale;
 
-import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -35,24 +34,18 @@ import javax.faces.context.FacesContext;
 /**
  * Generic comparator for column sorting.
  */
-public class BeanPropertyComparator implements Comparator {
+public class BeanPropertyComparator implements Comparator<Object> {
 
-    private ValueExpression sortBy;
-    private boolean asc;
     private String var;
-    private MethodExpression sortFunction;
     private boolean caseSensitive = false;
     private Locale locale;
     private Collator collator;
     private int nullSortOrder;
+    private SortMeta sortMeta;
 
-    public BeanPropertyComparator(ValueExpression sortBy, String var, SortOrder sortOrder, MethodExpression sortFunction,
-            boolean caseSensitive, Locale locale, int nullSortOrder) {
-
-        this.sortBy = sortBy;
+    public BeanPropertyComparator(String var, SortMeta sortMeta, boolean caseSensitive, Locale locale, int nullSortOrder) {
+        this.sortMeta = sortMeta;
         this.var = var;
-        this.asc = sortOrder == SortOrder.ASCENDING;
-        this.sortFunction = sortFunction;
         this.caseSensitive = caseSensitive;
         this.locale = locale;
         this.collator = Collator.getInstance(locale);
@@ -62,11 +55,13 @@ public class BeanPropertyComparator implements Comparator {
     @SuppressWarnings("unchecked")
     @Override
     public int compare(Object obj1, Object obj2) {
-        try {
-            FacesContext context = FacesContext.getCurrentInstance();
+        FacesContext context = FacesContext.getCurrentInstance();
+        ValueExpression sortBy = sortMeta.getSortBy();
 
+        try {
             context.getExternalContext().getRequestMap().put(var, obj1);
             Object value1 = sortBy.getValue(context.getELContext());
+
             context.getExternalContext().getRequestMap().put(var, obj2);
             Object value2 = sortBy.getValue(context.getELContext());
 
@@ -77,12 +72,12 @@ public class BeanPropertyComparator implements Comparator {
                 return 0;
             }
             else if (value1 == null) {
-                result = 1 * nullSortOrder;
+                result = nullSortOrder;
             }
             else if (value2 == null) {
                 result = -1 * nullSortOrder;
             }
-            else if (sortFunction == null) {
+            else if (sortMeta.getSortFunction() == null) {
                 if (value1 instanceof String && value2 instanceof String) {
                     if (this.caseSensitive) {
                         result = collator.compare(value1, value2);
@@ -99,10 +94,10 @@ public class BeanPropertyComparator implements Comparator {
                 }
             }
             else {
-                result = (Integer) sortFunction.invoke(context.getELContext(), new Object[]{value1, value2});
+                result = (Integer) sortMeta.getSortFunction().invoke(context.getELContext(), new Object[]{value1, value2});
             }
 
-            return asc ? result : -1 * result;
+            return SortOrder.ASCENDING.equals(sortMeta.getSortOrder()) ? result : -1 * result;
 
         }
         catch (Exception e) {
