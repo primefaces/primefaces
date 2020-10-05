@@ -40,6 +40,6 @@ are many other third party libraries and plugins used to support features.
 | [Quill Editor](../jsdocs/classes/quill.html) | 1.3.7 | https://quilljs.com/ |
 | [Raphaël](../jsdocs/interfaces/raphaelstatic.html) | 2.3.0 | http://raphaeljs.com |
 | [Signature](../jsdocs/modules/jquery.html#signature) | 1.2.0 | http://keith-wood.name/signature.html |
-| [Timeline](../jsdocs/classes/timeline.html) | 7.3.7 | https://github.com/visjs/vis-timeline |
+| [Timeline](../jsdocs/classes/timeline.html) | 7.3.10 | https://github.com/visjs/vis-timeline |
 | [TouchSwipe](../jsdocs/modules/jquery.html#swipe) | 1.6.18 | https://github.com/mattbryson/TouchSwipe-Jquery-Plugin |
 | [WebcamJS](../jsdocs/modules/webcam.html) | 1.0.26 | http://github.com/jhuckaby |
