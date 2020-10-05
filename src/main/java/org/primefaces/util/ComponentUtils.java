@@ -217,21 +217,15 @@ public class ComponentUtils {
     }
 
     public static boolean isRTL(FacesContext context, RTLAware component) {
-        boolean globalValue = PrimeRequestContext.getCurrentInstance(context).isRTL();
-
-        return globalValue || component.isRTL();
+        return component.isRTL() || PrimeRequestContext.getCurrentInstance(context).isRTL();
     }
 
     public static boolean isTouchable(FacesContext context, TouchAware component) {
-        boolean globalValue = PrimeRequestContext.getCurrentInstance(context).isTouchable();
-
-        return globalValue || component.isTouchable();
+        return component.isTouchable() || PrimeRequestContext.getCurrentInstance(context).isTouchable();
     }
 
     public static boolean isFlex(FacesContext context, FlexAware component) {
-        boolean globalValue = PrimeRequestContext.getCurrentInstance(context).isFlex();
-
-        return globalValue || component.isFlex();
+        return component.isFlex() || PrimeRequestContext.getCurrentInstance(context).isFlex();
     }
 
     public static void processDecodesOfFacetsAndChilds(UIComponent component, FacesContext context) {
