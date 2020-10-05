@@ -26,4 +26,13 @@ package org.primefaces.component.headerrow;
 public class HeaderRow extends HeaderRowBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.HeaderRow";
+
+    public boolean isEnabled() {
+        return isRendered()
+                && (getField() != null
+                || getGroupBy() != null
+                || getValueExpression(PropertyKeys.field.name()) != null
+                || getValueExpression(PropertyKeys.groupBy.name()) != null);
+
+    }
 }

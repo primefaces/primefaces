@@ -31,7 +31,6 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import org.primefaces.component.api.*;
 import org.primefaces.model.FilterMeta;
-import org.primefaces.model.SortMeta;
 
 public abstract class DataTableBase extends UIData
         implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable, MultiViewStateAware<DataTableState> {
@@ -55,9 +54,6 @@ public abstract class DataTableBase extends UIData
         rowStyleClass,
         onExpandStart,
         resizableColumns,
-        sortBy,
-        sortOrder,
-        sortFunction,
         sortMode,
         allowUnsorting,
         scrollRows,
@@ -88,7 +84,6 @@ public abstract class DataTableBase extends UIData
         caseSensitiveSort,
         skipChildren,
         disabledTextSelection,
-        sortField,
         initMode,
         nullSortOrder,
         tabindex,
@@ -101,10 +96,8 @@ public abstract class DataTableBase extends UIData
         clientCache,
         multiViewState,
         filterBy,
-        sortMeta,
         globalFilter,
         cellEditMode,
-        expandableRowGroups,
         virtualScroll,
         rowDragSelector,
         draggableRowsFunction,
@@ -232,30 +225,6 @@ public abstract class DataTableBase extends UIData
         getStateHelper().put(PropertyKeys.resizableColumns, resizableColumns);
     }
 
-    public Object getSortBy() {
-        return getStateHelper().eval(PropertyKeys.sortBy, null);
-    }
-
-    public void setSortBy(Object sortBy) {
-        getStateHelper().put(PropertyKeys.sortBy, sortBy);
-    }
-
-    public String getSortOrder() {
-        return (String) getStateHelper().eval(PropertyKeys.sortOrder, "ascending");
-    }
-
-    public void setSortOrder(String sortOrder) {
-        getStateHelper().put(PropertyKeys.sortOrder, sortOrder);
-    }
-
-    public javax.el.MethodExpression getSortFunction() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.sortFunction, null);
-    }
-
-    public void setSortFunction(javax.el.MethodExpression sortFunction) {
-        getStateHelper().put(PropertyKeys.sortFunction, sortFunction);
-    }
-
     public int getScrollRows() {
         return (Integer) getStateHelper().eval(PropertyKeys.scrollRows, 0);
     }
@@ -329,7 +298,7 @@ public abstract class DataTableBase extends UIData
     }
 
     public String getSortMode() {
-        return (String) getStateHelper().eval(PropertyKeys.sortMode, "single");
+        return (String) getStateHelper().eval(PropertyKeys.sortMode, "multiple");
     }
 
     public void setSortMode(String sortMode) {
@@ -497,14 +466,6 @@ public abstract class DataTableBase extends UIData
         getStateHelper().put(PropertyKeys.disabledTextSelection, disabledTextSelection);
     }
 
-    public String getSortField() {
-        return (String) getStateHelper().eval(PropertyKeys.sortField, null);
-    }
-
-    public void setSortField(String sortField) {
-        getStateHelper().put(PropertyKeys.sortField, sortField);
-    }
-
     public String getInitMode() {
         return (String) getStateHelper().eval(PropertyKeys.initMode, "load");
     }
@@ -602,14 +563,6 @@ public abstract class DataTableBase extends UIData
         getStateHelper().put(PropertyKeys.filterBy, filterBy);
     }
 
-    public Map<String, SortMeta> getSortMeta() {
-        return (Map<String, SortMeta>) getStateHelper().eval(PropertyKeys.sortMeta, Collections.emptyMap());
-    }
-
-    public void setSortMeta(Map<String, SortMeta> sortMeta) {
-        getStateHelper().put(PropertyKeys.sortMeta, sortMeta);
-    }
-
     public String getGlobalFilter() {
         return (String) getStateHelper().eval(PropertyKeys.globalFilter, null);
     }
@@ -624,14 +577,6 @@ public abstract class DataTableBase extends UIData
 
     public void setCellEditMode(String cellEditMode) {
         getStateHelper().put(PropertyKeys.cellEditMode, cellEditMode);
-    }
-
-    public boolean isExpandableRowGroups() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.expandableRowGroups, false);
-    }
-
-    public void setExpandableRowGroups(boolean expandableRowGroups) {
-        getStateHelper().put(PropertyKeys.expandableRowGroups, expandableRowGroups);
     }
 
     public boolean isVirtualScroll() {

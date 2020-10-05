@@ -23,8 +23,41 @@
  */
 package org.primefaces.model;
 
+import java.util.Arrays;
+import java.util.List;
+
 public enum SortOrder {
-    ASCENDING,
-    DESCENDING,
-    UNSORTED;
+
+    ASCENDING("asc", "1", 1, "ascending"),
+    DESCENDING("desc", "-1", -1, "descending"),
+    UNSORTED("", null, "0", 0, "unsorted");
+
+    private List<Object> values;
+
+    SortOrder(Object... values) {
+        this.values = Arrays.asList(values);
+    }
+
+    public static SortOrder of(Object order) {
+        SortOrder s = UNSORTED;
+        for (SortOrder o : values()) {
+            if (o.values.contains(order)) {
+                s = o;
+                break;
+            }
+        }
+        return s;
+    }
+
+    public boolean isAscending() {
+        return this == SortOrder.ASCENDING;
+    }
+
+    public boolean isDescending() {
+        return this == SortOrder.DESCENDING;
+    }
+
+    public boolean isUnsorted() {
+        return this == SortOrder.UNSORTED;
+    }
 }

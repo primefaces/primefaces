@@ -68,7 +68,9 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         exportFunction,
         groupRow,
         exportHeaderValue,
-        exportFooterValue
+        exportFooterValue,
+        sortOrder,
+        sortPriority
     }
 
     public ColumnBase() {
@@ -377,4 +379,20 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         getStateHelper().put(PropertyKeys.exportFooterValue, exportFooterValue);
     }
 
+    @Override
+    public String getSortOrder() {
+        return (String) getStateHelper().eval(PropertyKeys.sortOrder, null);
+    }
+
+    public void setSortOrder(String sortOrder) {
+        getStateHelper().put(PropertyKeys.sortOrder, sortOrder);
+    }
+
+    public int getSortPriority() {
+        return (Integer) getStateHelper().eval(PropertyKeys.sortPriority, Integer.MAX_VALUE);
+    }
+
+    public void setSortPriority(String sortPriority) {
+        getStateHelper().put(PropertyKeys.sortPriority, sortPriority);
+    }
 }

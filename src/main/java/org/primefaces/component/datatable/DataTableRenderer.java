@@ -104,15 +104,7 @@ public class DataTableRenderer extends DataRenderer {
             table.restoreMultiViewState();
         }
 
-        boolean defaultSorted = (table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()) != null
-                || table.getSortBy() != null
-                || !table.getSortMeta().isEmpty());
-
-        if (defaultSorted && table.isDefaultSort()) {
-            table.setDefaultSortByVE(table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()));
-            table.setDefaultSortOrder(table.getSortOrder());
-            table.setDefaultSortFunction(table.getSortFunction());
-        }
+        boolean defaultSorted = table.isDefaultSort();
 
         if (table.isLiveScroll()) {
             table.setScrollOffset(0);
@@ -137,14 +129,7 @@ public class DataTableRenderer extends DataRenderer {
         else {
             if (defaultSorted) {
                 SortFeature sortFeature = (SortFeature) table.getFeature(DataTableFeatureKey.SORT);
-
-                if (table.isMultiSort()) {
-                    sortFeature.multiSort(context, table);
-                }
-                else {
-                    sortFeature.singleSort(context, table);
-                }
-
+                sortFeature.sort(context, table);
                 table.setRowIndex(-1);
             }
 
@@ -165,21 +150,15 @@ public class DataTableRenderer extends DataRenderer {
             }
         }
 
-        if (defaultSorted && table.isMultiViewState() && table.isDefaultSort()) {
-            ValueExpression sortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
-            Map<String, SortMeta> multiSortState = table.isMultiSort() ? table.getSortMeta() : null;
-            if (sortByVE != null || (multiSortState != null && !multiSortState.isEmpty())) {
+        if (defaultSorted && table.isMultiViewState()) {
+            Map<String, SortMeta> sortMeta = table.getSortMeta();
+            if ((sortMeta != null && !sortMeta.isEmpty())) {
                 DataTableState ts = table.getMultiViewState(true);
-                ts.setSortBy(sortByVE);
-                ts.setSortMeta(multiSortState);
-                ts.setSortOrder(table.getSortOrder());
-                ts.setSortField(table.getSortField());
-                ts.setSortFunction(table.getSortFunction());
+                // ts.setSortBy(sortByVE);
+                ts.setSortMeta(sortMeta);
 
                 /* default sort */
-                ts.setDefaultSortBy(sortByVE);
-                ts.setDefaultSortOrder(table.getSortOrder());
-                ts.setDefaultSortFunction(table.getSortFunction());
+                //ts.setDefaultSortBy(sortByVE);
 
                 if (table.isPaginator()) {
                     ts.setFirst(table.getFirst());
@@ -284,7 +263,7 @@ public class DataTableRenderer extends DataRenderer {
         //MultiColumn Sorting
         if (table.isMultiSort()) {
             wb.attr("multiSort", true)
-                    .nativeAttr("sortMetaOrder", table.getSortMetaAsString(context), null);
+                    .nativeAttr("sortMetaOrder", table.getSortMetaAsString(), null);
         }
 
         // by default cycling through sorting includes unsort, an attribute is needed when unsort should not be included
@@ -641,9 +620,8 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = column.getContainerClientId(context);
 
-        ValueExpression columnSortByVE = column.getValueExpression(Column.PropertyKeys.sortBy.toString());
         ValueExpression columnFilterByVE = column.getValueExpression(Column.PropertyKeys.filterBy.toString());
-        boolean sortable = (columnSortByVE != null && column.isSortable());
+        boolean sortable = table.getSortMeta().containsKey(column.getColumnKey());
         boolean filterable = (columnFilterByVE != null && column.isFilterable());
         String selectionMode = column.getSelectionMode();
         String sortIcon = null;
@@ -669,32 +647,9 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         if (sortable) {
-            ValueExpression tableSortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
-            Object tableSortBy = table.getSortBy();
-            Map<String, SortMeta> sortMeta = table.getSortMeta();
-            boolean defaultSorted = (tableSortByVE != null || tableSortBy != null || !sortMeta.isEmpty());
-
-            if (defaultSorted) {
-                if (table.isMultiSort()) {
-                    if (sortMeta != null) {
-                        for (SortMeta meta : sortMeta.values()) {
-                            sortIcon = resolveDefaultSortIcon(column, meta);
-
-                            if (sortIcon != null) {
-                                break;
-                            }
-                        }
-                    }
-                }
-                else {
-                    sortIcon = resolveDefaultSortIcon(table, column, table.getSortOrder());
-                }
-            }
-
-            if (sortIcon == null) {
-                sortIcon = DataTable.SORTABLE_COLUMN_ICON_CLASS;
-            }
-            else {
+            SortMeta s = table.getSortMeta().get(column.getColumnKey());
+            sortIcon = resolveDefaultSortIcon(s);
+            if (s.isActive()) {
                 columnClass += " ui-state-active";
             }
         }
@@ -780,36 +735,14 @@ public class DataTableRenderer extends DataRenderer {
         return null;
     }
 
-    protected String resolveDefaultSortIcon(UIColumn column, SortMeta sortMeta) {
+    protected String resolveDefaultSortIcon(SortMeta sortMeta) {
         SortOrder sortOrder = sortMeta.getSortOrder();
-        String sortIcon = null;
-
-        if (Objects.equals(column.getColumnKey(), sortMeta.getColumnKey())) {
-            if (sortOrder == SortOrder.ASCENDING) {
-                sortIcon = DataTable.SORTABLE_COLUMN_ASCENDING_ICON_CLASS;
-            }
-            else if (sortOrder == SortOrder.DESCENDING) {
-                sortIcon = DataTable.SORTABLE_COLUMN_DESCENDING_ICON_CLASS;
-            }
+        String sortIcon = DataTable.SORTABLE_COLUMN_ICON_CLASS;
+        if (sortOrder.equals(SortOrder.ASCENDING)) {
+            sortIcon = DataTable.SORTABLE_COLUMN_ASCENDING_ICON_CLASS;
         }
-
-        return sortIcon;
-    }
-
-    protected String resolveDefaultSortIcon(DataTable table, UIColumn column, String sortOrder) {
-        ValueExpression tableSortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
-        String field = table.resolveColumnField(column);
-        String sortField = table.getSortField();
-        sortField = (sortField == null && tableSortByVE != null) ? table.resolveStaticField(tableSortByVE) : sortField;
-        String sortIcon = null;
-
-        if (sortField != null && field != null && sortField.equals(field)) {
-            if (sortOrder.equalsIgnoreCase("ASCENDING")) {
-                sortIcon = DataTable.SORTABLE_COLUMN_ASCENDING_ICON_CLASS;
-            }
-            else if (sortOrder.equalsIgnoreCase("DESCENDING")) {
-                sortIcon = DataTable.SORTABLE_COLUMN_DESCENDING_ICON_CLASS;
-            }
+        else if (sortOrder.equals(SortOrder.DESCENDING)) {
+            sortIcon = DataTable.SORTABLE_COLUMN_DESCENDING_ICON_CLASS;
         }
 
         return sortIcon;
@@ -1253,20 +1186,10 @@ public class DataTableRenderer extends DataRenderer {
         SummaryRow summaryRow = table.getSummaryRow();
         HeaderRow headerRow = table.getHeaderRow();
         ELContext eLContext = context.getELContext();
-        ValueExpression groupByVE = null;
-        ValueExpression tableSortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
-        if (tableSortByVE != null) {
-            groupByVE = tableSortByVE;
-        }
-        else {
-            groupByVE = (table.getSortBy() == null || table.isMultiSort())
-                        ? null
-                        : context.getApplication().getExpressionFactory().createValueExpression(
-                                eLContext, "#{" + table.getVar() + "." + table.getSortBy() + "}", Object.class);
-        }
 
-        boolean encodeSummaryRow = (summaryRow != null && groupByVE != null);
-        boolean encodeHeaderRow = (headerRow != null && groupByVE != null);
+        SortMeta sort = table.getHighestPriorityActiveSortMeta();
+        boolean encodeHeaderRow = headerRow != null && headerRow.isEnabled() && sort != null;
+        boolean encodeSummaryRow = (summaryRow != null && sort != null);
         Columns dynamicCols = table.getDynamicColumns();
 
         for (int i = first; i < last; i++) {
@@ -1281,7 +1204,7 @@ public class DataTableRenderer extends DataRenderer {
 
             table.setRowIndex(i);
 
-            if (encodeHeaderRow && (i == first || !isInSameGroup(context, table, i, -1, groupByVE, eLContext))) {
+            if (encodeHeaderRow && (i == first || !isInSameGroup(context, table, i, -1, sort.getSortBy(), eLContext))) {
                 table.setRowIndex(i);
                 encodeHeaderRow(context, table, headerRow);
             }
@@ -1289,9 +1212,9 @@ public class DataTableRenderer extends DataRenderer {
             table.setRowIndex(i);
             encodeRow(context, table, clientId, i, columnStart, columnEnd);
 
-            if (encodeSummaryRow && !isInSameGroup(context, table, i, 1, groupByVE, eLContext)) {
+            if (encodeSummaryRow && !isInSameGroup(context, table, i, 1, sort.getSortBy(), eLContext)) {
                 table.setRowIndex(i);
-                encodeSummaryRow(context, table, summaryRow);
+                encodeSummaryRow(context, summaryRow, sort);
             }
         }
     }
@@ -1316,10 +1239,10 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("tbody");
     }
 
-    protected void encodeSummaryRow(FacesContext context, DataTable table, SummaryRow summaryRow) throws IOException {
+    protected void encodeSummaryRow(FacesContext context, SummaryRow summaryRow, SortMeta sort) throws IOException {
         MethodExpression me = summaryRow.getListener();
         if (me != null) {
-            me.invoke(context.getELContext(), new Object[]{table.getSortBy()});
+            me.invoke(context.getELContext(), new Object[]{sort.getSortBy()});
         }
 
         summaryRow.encodeAll(context);
@@ -1480,6 +1403,11 @@ public class DataTableRenderer extends DataRenderer {
         if (column instanceof DynamicColumn) {
             column.encodeAll(context);
         }
+        else if (column.getChildren().isEmpty() && !LangUtils.isValueBlank(column.getField())) {
+            Object value = DataTable.getValueExprFromVarField(context, table.getVar(), column.getField())
+                    .getValue(context.getELContext());
+            writer.writeText(value, null);
+        }
         else {
             column.renderChildren(context);
         }
@@ -1619,23 +1547,6 @@ public class DataTableRenderer extends DataRenderer {
         return true;
     }
 
-    protected void encodeColumnSelection(FacesContext context, DataTable table, String clientId, UIColumn column, boolean selected)
-            throws IOException {
-
-        String selectionMode = column.getSelectionMode();
-        boolean disabled = table.isDisabledSelection();
-
-        if (selectionMode.equalsIgnoreCase("single")) {
-            encodeRadio(context, table, selected, disabled);
-        }
-        else if (selectionMode.equalsIgnoreCase("multiple")) {
-            encodeCheckbox(context, table, selected, disabled, HTML.CHECKBOX_CLASS, false);
-        }
-        else {
-            throw new FacesException("Invalid column selection mode:" + selectionMode);
-        }
-    }
-
     protected void encodeRadio(FacesContext context, DataTable table, boolean checked, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
@@ -1665,6 +1576,23 @@ public class DataTableRenderer extends DataRenderer {
 
             writer.endElement("div");
             writer.endElement("div");
+        }
+    }
+
+    protected void encodeColumnSelection(FacesContext context, DataTable table, String clientId, UIColumn column, boolean selected)
+            throws IOException {
+
+        String selectionMode = column.getSelectionMode();
+        boolean disabled = table.isDisabledSelection();
+
+        if (selectionMode.equalsIgnoreCase("single")) {
+            encodeRadio(context, table, selected, disabled);
+        }
+        else if (selectionMode.equalsIgnoreCase("multiple")) {
+            encodeCheckbox(context, table, selected, disabled, HTML.CHECKBOX_CLASS, false);
+        }
+        else {
+            throw new FacesException("Invalid column selection mode:" + selectionMode);
         }
     }
 

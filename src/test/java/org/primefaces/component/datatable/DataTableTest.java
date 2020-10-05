@@ -87,12 +87,12 @@ public class DataTableTest {
         // old syntax
         ValueExpression exprVE = expFactory.createValueExpression(
                 context.getELContext(), "#{car[column.container.value]}", String.class);
-        String field = table.resolveDynamicField(exprVE);
+        String field = DataTable.resolveDynamicField(context, exprVE);
         Assertions.assertEquals("MyValue", field);
 
         // new syntax
         exprVE = expFactory.createValueExpression(context.getELContext(), "#{column.container.value}", String.class);
-        field = table.resolveDynamicField(exprVE);
+        field = table.resolveDynamicField(context, exprVE);
         Assertions.assertEquals("MyValue", field);
     }
 }

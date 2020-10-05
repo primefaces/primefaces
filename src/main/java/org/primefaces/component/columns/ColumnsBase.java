@@ -64,7 +64,9 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
         exportFunction,
         groupRow,
         exportHeaderValue,
-        exportFooterValue
+        exportFooterValue,
+        sortOrder,
+        sortPriority
     }
 
     public ColumnsBase() {
@@ -364,4 +366,20 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
         getStateHelper().put(PropertyKeys.exportFooterValue, exportFooterValue);
     }
 
+    @Override
+    public String getSortOrder() {
+        return (String) getStateHelper().eval(PropertyKeys.sortOrder, null);
+    }
+
+    public void setSortOrder(String order) {
+        getStateHelper().put(PropertyKeys.sortOrder, order);
+    }
+
+    public int getSortPriority() {
+        return (Integer) getStateHelper().eval(PropertyKeys.sortPriority, Integer.MAX_VALUE);
+    }
+
+    public void setSortPriority(String sortPriority) {
+        getStateHelper().put(PropertyKeys.sortPriority, sortPriority);
+    }
 }

@@ -23,6 +23,8 @@
  */
 package org.primefaces.component.headerrow;
 
+import org.primefaces.component.column.ColumnBase;
+
 import javax.faces.component.UIComponentBase;
 
 
@@ -33,7 +35,16 @@ public abstract class HeaderRowBase extends UIComponentBase {
     public static final String DEFAULT_RENDERER = "org.primefaces.component.HeaderRowRenderer";
 
     public enum PropertyKeys {
-        expanded
+        field,
+        groupBy,
+        sortFunction,
+        sortOrder,
+        expandable,
+        expanded,
+        style,
+        styleClass,
+        rowspan,
+        colspan
     }
 
     public HeaderRowBase() {
@@ -43,6 +54,78 @@ public abstract class HeaderRowBase extends UIComponentBase {
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
+    }
+
+    public String getField() {
+        return (String) getStateHelper().eval(PropertyKeys.field, null);
+    }
+
+    public void setField(String field) {
+        getStateHelper().put(PropertyKeys.field, field);
+    }
+
+    public String getGroupBy() {
+        return (String) getStateHelper().eval(PropertyKeys.groupBy, null);
+    }
+
+    public void setGroupBy(String groupBy) {
+        getStateHelper().put(PropertyKeys.groupBy, groupBy);
+    }
+
+    public String getSortOrder() {
+        return (String) getStateHelper().eval(PropertyKeys.sortOrder, "asc");
+    }
+
+    public void setSortOrder(String sortOrder) {
+        getStateHelper().put(PropertyKeys.sortOrder, sortOrder);
+    }
+
+    public boolean isExpandable() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.expandable, false);
+    }
+
+    public void setExpandable(boolean expandable) {
+        getStateHelper().put(PropertyKeys.expandable, expandable);
+    }
+
+    public String getStyle() {
+        return (String) getStateHelper().eval(ColumnBase.PropertyKeys.style, null);
+    }
+
+    public void setStyle(String style) {
+        getStateHelper().put(ColumnBase.PropertyKeys.style, style);
+    }
+
+    public String getStyleClass() {
+        return (String) getStateHelper().eval(ColumnBase.PropertyKeys.styleClass, null);
+    }
+
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(ColumnBase.PropertyKeys.styleClass, styleClass);
+    }
+
+    public Integer getRowspan() {
+        return (Integer) getStateHelper().eval(ColumnBase.PropertyKeys.rowspan, null);
+    }
+
+    public void setRowspan(Integer rowspan) {
+        getStateHelper().put(ColumnBase.PropertyKeys.rowspan, rowspan);
+    }
+
+    public Integer getColspan() {
+        return (Integer) getStateHelper().eval(ColumnBase.PropertyKeys.colspan, null);
+    }
+
+    public void setColspan(Integer colspan) {
+        getStateHelper().put(ColumnBase.PropertyKeys.colspan, colspan);
+    }
+
+    public javax.el.MethodExpression getSortFunction() {
+        return (javax.el.MethodExpression) getStateHelper().eval(ColumnBase.PropertyKeys.sortFunction, null);
+    }
+
+    public void setSortFunction(javax.el.MethodExpression sortFunction) {
+        getStateHelper().put(ColumnBase.PropertyKeys.sortFunction, sortFunction);
     }
 
     public boolean isExpanded() {
