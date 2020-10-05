@@ -197,6 +197,20 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
      * @return {number} The current numerical value of this input number widget.
      */
     getValue: function () {
-        return this.autonumeric.getNumericString();
+        var val = this.autonumeric.getNumericString();
+        if (val && this.cfg.decimalPlaces) {
+            var decimalPlacesToPad;
+            if (val.indexOf('.') === -1) {
+                decimalPlacesToPad = this.cfg.decimalPlaces;
+                val += '.';
+            } else {
+                var decimalPlacesAlreadyRendered = val.length - val.indexOf('.') - 1;
+                decimalPlacesToPad = this.cfg.decimalPlaces - decimalPlacesAlreadyRendered;
+            }
+            while (decimalPlacesToPad-- > 0) {
+                val += '0';
+            }
+        }
+        return val;
     }
 });
