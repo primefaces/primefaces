@@ -23,8 +23,6 @@
  */
 package org.primefaces.component.headerrow;
 
-import org.primefaces.component.column.ColumnBase;
-
 import javax.faces.component.UIComponentBase;
 
 
@@ -89,43 +87,43 @@ public abstract class HeaderRowBase extends UIComponentBase {
     }
 
     public String getStyle() {
-        return (String) getStateHelper().eval(ColumnBase.PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
-        getStateHelper().put(ColumnBase.PropertyKeys.style, style);
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
     public String getStyleClass() {
-        return (String) getStateHelper().eval(ColumnBase.PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
-        getStateHelper().put(ColumnBase.PropertyKeys.styleClass, styleClass);
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
     public Integer getRowspan() {
-        return (Integer) getStateHelper().eval(ColumnBase.PropertyKeys.rowspan, null);
+        return (Integer) getStateHelper().eval(PropertyKeys.rowspan, null);
     }
 
     public void setRowspan(Integer rowspan) {
-        getStateHelper().put(ColumnBase.PropertyKeys.rowspan, rowspan);
+        getStateHelper().put(PropertyKeys.rowspan, rowspan);
     }
 
     public Integer getColspan() {
-        return (Integer) getStateHelper().eval(ColumnBase.PropertyKeys.colspan, null);
+        return (Integer) getStateHelper().eval(PropertyKeys.colspan, null);
     }
 
     public void setColspan(Integer colspan) {
-        getStateHelper().put(ColumnBase.PropertyKeys.colspan, colspan);
+        getStateHelper().put(PropertyKeys.colspan, colspan);
     }
 
     public javax.el.MethodExpression getSortFunction() {
-        return (javax.el.MethodExpression) getStateHelper().eval(ColumnBase.PropertyKeys.sortFunction, null);
+        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.sortFunction, null);
     }
 
     public void setSortFunction(javax.el.MethodExpression sortFunction) {
-        getStateHelper().put(ColumnBase.PropertyKeys.sortFunction, sortFunction);
+        getStateHelper().put(PropertyKeys.sortFunction, sortFunction);
     }
 
     public boolean isExpanded() {
