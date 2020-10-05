@@ -2033,8 +2033,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                                 $(PrimeFaces.escapeClientId(activeColumn.attr('id') + '_clone')).removeAttr('aria-sort').attr('aria-label', $this.getSortMessage(ariaLabelOfActive, $this.ascMessage));
                             }
 
-                            activeColumns.data('sortorder', $this.SORT_ORDER.UNSORTED).removeClass('ui-state-active')
-                                        .find('.ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s');
+                            activeColumns.data('sortorder', $this.SORT_ORDER.UNSORTED)
+                                         .removeClass('ui-state-active')
+                                         .find('.ui-sortable-column-icon')
+                                         .removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s')
+                                         .addClass('ui-icon-carat-2-n-s');
                         }
 
                         columnHeader.data('sortorder', order).removeClass('ui-state-hover').addClass('ui-state-active');
