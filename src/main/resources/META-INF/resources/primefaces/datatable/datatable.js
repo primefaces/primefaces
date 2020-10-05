@@ -2036,8 +2036,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                             activeColumns.data('sortorder', $this.SORT_ORDER.UNSORTED)
                                          .removeClass('ui-state-active')
                                          .find('.ui-sortable-column-icon')
-                                         .removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s')
-                                         .addClass('ui-icon-carat-2-n-s');
+                                         .removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s');
                         }
 
                         columnHeader.data('sortorder', order).removeClass('ui-state-hover').addClass('ui-state-active');
@@ -2050,7 +2049,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                             $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'descending')
                                 .attr('aria-label', $this.getSortMessage(ariaLabel, $this.otherMessage));
                         } else if (order === $this.SORT_ORDER.ASCENDING) {
-                            sortIcon.removeClass('ui-icon-carat-2-n-s').addClass('ui-icon-triangle-1-n');
+                            sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-n');
                             columnHeader.attr('aria-sort', 'ascending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.descMessage));
                             $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'ascending')
                                 .attr('aria-label', $this.getSortMessage(ariaLabel, $this.descMessage));
