@@ -1430,7 +1430,7 @@ public class DataTable extends DataTableBase {
                 .collect(Collectors.joining("','", "['", "']"));
     }
 
-    public static ValueExpression getValueExprFromVarField(FacesContext context, String var, String field) {
+    public static ValueExpression createValueExprFromVarField(FacesContext context, String var, String field) {
         return context.getApplication().getExpressionFactory()
                 .createValueExpression(context.getELContext(), "#{" + var + "." + field + "}", String.class);
     }

@@ -70,7 +70,7 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
 
         SortOrder order = SortOrder.of(column.getSortOrder());
         ValueExpression sortByVE = column.getValueExpression(ColumnBase.PropertyKeys.sortBy.name());
-        sortByVE = sortByVE != null ? sortByVE : DataTable.getValueExprFromVarField(context, var, field);
+        sortByVE = sortByVE != null ? sortByVE : DataTable.createValueExprFromVarField(context, var, field);
 
         return new SortMeta(column.getColumnKey(),
                             field,
@@ -84,7 +84,7 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
     public static SortMeta of(FacesContext context, String var, HeaderRow headerRow) {
         SortOrder order = SortOrder.of(headerRow.getSortOrder());
         ValueExpression groupByVE = headerRow.getValueExpression(HeaderRowBase.PropertyKeys.groupBy.name());
-        groupByVE = groupByVE != null ? groupByVE : DataTable.getValueExprFromVarField(context, var, headerRow.getField());
+        groupByVE = groupByVE != null ? groupByVE : DataTable.createValueExprFromVarField(context, var, headerRow.getField());
 
         return new SortMeta(headerRow.getClientId(context),
                             headerRow.getField(),

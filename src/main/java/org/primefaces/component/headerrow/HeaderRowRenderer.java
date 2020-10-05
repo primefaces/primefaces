@@ -140,7 +140,7 @@ public class HeaderRowRenderer extends CoreRenderer {
 
         String field = row.getField();
         Object value = !LangUtils.isValueBlank(field)
-                ? DataTable.getValueExprFromVarField(context, table.getVar(), field).getValue(context.getELContext())
+                ? DataTable.createValueExprFromVarField(context, table.getVar(), field).getValue(context.getELContext())
                 : row.getGroupBy();
         writer.writeText(value, null);
 

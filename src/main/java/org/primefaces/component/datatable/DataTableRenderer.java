@@ -1404,7 +1404,7 @@ public class DataTableRenderer extends DataRenderer {
             column.encodeAll(context);
         }
         else if (column.getChildren().isEmpty() && !LangUtils.isValueBlank(column.getField())) {
-            Object value = DataTable.getValueExprFromVarField(context, table.getVar(), column.getField())
+            Object value = DataTable.createValueExprFromVarField(context, table.getVar(), column.getField())
                     .getValue(context.getELContext());
             writer.writeText(value, null);
         }
