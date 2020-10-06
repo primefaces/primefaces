@@ -1389,7 +1389,7 @@ public class DataTable extends DataTableBase {
                 setRows(rows);
             }
 
-            setSortMeta(ts.getSortMeta());
+            updateSortMetaWithTableState(ts.getSortMeta());
             setDefaultSort(false);
 
             if (isSelectionEnabled()) {
@@ -1431,6 +1431,10 @@ public class DataTable extends DataTableBase {
     }
 
     public static ValueExpression createValueExprFromVarField(FacesContext context, String var, String field) {
+        if (LangUtils.isValueBlank(var) || LangUtils.isValueBlank(field)) {
+            throw new FacesException("var and field must be non null");
+        }
+
         return context.getApplication().getExpressionFactory()
                 .createValueExpression(context.getELContext(), "#{" + var + "." + field + "}", String.class);
     }
@@ -1442,13 +1446,8 @@ public class DataTable extends DataTableBase {
         HeaderRow headerRow = getHeaderRow();
         if (headerRow != null) {
             SortMeta s = SortMeta.of(getFacesContext(), getVar(), headerRow);
-            if (s == null) {
-                // LOG
-            }
-            else {
-                sortMeta.put(s.getColumnKey(), s);
-                defaultSort = true;
-            }
+            sortMeta.put(s.getColumnKey(), s);
+            defaultSort = true;
         }
 
         for (UIColumn column : getColumns()) {
@@ -1470,6 +1469,19 @@ public class DataTable extends DataTableBase {
         }
 
         setDefaultSort(defaultSort);
+    }
+
+    protected void updateSortMetaWithTableState(Map<String, SortMeta> meta) {
+        if (meta != null) {
+            for (Map.Entry<String, SortMeta> entry : meta.entrySet()) {
+                SortMeta sm = sortMeta.get(entry.getKey());
+                if (sm != null) {
+                    SortMeta tsm = entry.getValue();
+                    sm.setPriority(tsm.getPriority());
+                    sm.setSortOrder(tsm.getSortOrder());
+                }
+            }
+        }
     }
 
     public SortMeta getHighestPriorityActiveSortMeta() {
