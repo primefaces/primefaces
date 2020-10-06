@@ -28,6 +28,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -150,12 +151,13 @@ public class ScheduleRenderer extends CoreRenderer {
 
     protected void encodeScript(FacesContext context, Schedule schedule) throws IOException {
         String clientId = schedule.getClientId(context);
+        Locale locale = schedule.calculateLocale(context);
         WidgetBuilder wb = getWidgetBuilder(context);
 
         wb.init("Schedule", schedule.resolveWidgetVar(context), clientId)
                 .attr("urlTarget", schedule.getUrlTarget(), "_blank")
                 .attr("noOpener", schedule.isNoOpener(), true)
-                .attr("locale", LocaleUtils.toJavascriptLocale(schedule.calculateLocale(context)))
+                .attr("locale", locale.toString())
                 .attr("tooltip", schedule.isTooltip(), false);
 
         String columnFormat = schedule.getColumnHeaderFormat() != null ? schedule.getColumnHeaderFormat() : schedule.getColumnFormat();
@@ -168,7 +170,8 @@ public class ScheduleRenderer extends CoreRenderer {
             wb.nativeAttr("extender", extender);
         }
 
-        wb.append(",calendarCfg:{");
+        wb.append(",options:{");
+        wb.append("locale:\"").append(LocaleUtils.toJavascriptLocale(locale)).append("\",");
         wb.append("initialView:\"").append(EscapeUtils.forJavaScript(translateViewName(schedule.getView().trim()))).append("\"");
         wb.attr("dayMaxEventRows", schedule.getValue().isEventLimit(), false);
 
@@ -209,11 +212,12 @@ public class ScheduleRenderer extends CoreRenderer {
                 .attr("eventStartEditable", schedule.isDraggable())
                 .attr("eventDurationEditable", schedule.isResizable())
                 .attr("slotLabelInterval", schedule.getSlotLabelInterval(), null)
-                .attr("slotLabelFormat", schedule.getSlotLabelFormat(), null)
                 .attr("eventTimeFormat", schedule.getTimeFormat(), null) //https://momentjs.com/docs/#/displaying/
                 .attr("weekNumbers", isShowWeekNumbers, false)
                 .attr("nextDayThreshold", schedule.getNextDayThreshold(), "09:00:00")
                 .attr("slotEventOverlap", schedule.isSlotEventOverlap(), true);
+
+        wb.nativeAttr("slotLabelFormat", schedule.getSlotLabelFormat());
 
         String displayEventEnd = schedule.getDisplayEventEnd();
         if (displayEventEnd != null) {

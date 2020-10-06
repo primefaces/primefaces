@@ -21822,6 +21822,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Determines the text that will be displayed within a time slot.]]>
+            </description>
+            <name>slotLabelFormat</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Target for events with urls. Clicking on such events in the schedule will not trigger the selectEvent but open the url using this target instead. Default is "_blank".]]>
             </description>
             <name>urlTarget</name>
