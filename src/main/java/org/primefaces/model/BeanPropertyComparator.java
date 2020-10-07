@@ -97,7 +97,7 @@ public class BeanPropertyComparator implements Comparator<Object> {
                 result = (Integer) sortMeta.getSortFunction().invoke(context.getELContext(), new Object[]{value1, value2});
             }
 
-            return SortOrder.ASCENDING.equals(sortMeta.getSortOrder()) ? result : -1 * result;
+            return sortMeta.getSortOrder().isAscending() ? result : -1 * result;
 
         }
         catch (Exception e) {

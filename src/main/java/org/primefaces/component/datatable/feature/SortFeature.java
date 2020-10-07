@@ -114,7 +114,7 @@ public class SortFeature implements DataTableFeature {
             Map<String, SortMeta> sortMeta = table.getSortByAsMap();
             if (!sortMeta.isEmpty()) {
                 DataTableState ts = table.getMultiViewState(true);
-                ts.setSortMeta(sortMeta);
+                ts.setSortBy(sortMeta);
                 if (table.isPaginator()) {
                     ts.setFirst(table.getFirst());
                     ts.setRows(table.getRows());

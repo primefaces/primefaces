@@ -1384,7 +1384,7 @@ public class DataTable extends DataTableBase {
                 setRows(rows);
             }
 
-            updateSortByWithTableState(ts.getSortMeta());
+            updateSortByWithTableState(ts.getSortBy());
 
             if (isSelectionEnabled()) {
                 selectedRowKeys = ts.getRowKeys();

@@ -151,25 +151,6 @@ public class DataTableRenderer extends DataRenderer {
             }
         }
 
-        if (defaultSorted && table.isMultiViewState()) {
-            Map<String, SortMeta> sortMeta = table.getSortByAsMap();
-            if ((sortMeta != null && !sortMeta.isEmpty())) {
-                DataTableState ts = table.getMultiViewState(true);
-                // ts.setSortBy(sortByVE);
-                ts.setSortMeta(sortMeta);
-
-                /* default sort */
-                //ts.setDefaultSortBy(sortByVE);
-
-                if (table.isPaginator()) {
-                    ts.setFirst(table.getFirst());
-                    ts.setRows(table.getRows());
-                }
-            }
-
-            table.setDefaultSort(false);
-        }
-
         if (table.isPaginator()) {
             table.calculateFirst();
         }
@@ -739,10 +720,10 @@ public class DataTableRenderer extends DataRenderer {
     protected String resolveDefaultSortIcon(SortMeta sortMeta) {
         SortOrder sortOrder = sortMeta.getSortOrder();
         String sortIcon = DataTable.SORTABLE_COLUMN_ICON_CLASS;
-        if (sortOrder.equals(SortOrder.ASCENDING)) {
+        if (sortOrder.isAscending()) {
             sortIcon = DataTable.SORTABLE_COLUMN_ASCENDING_ICON_CLASS;
         }
-        else if (sortOrder.equals(SortOrder.DESCENDING)) {
+        else if (sortOrder.isDescending()) {
             sortIcon = DataTable.SORTABLE_COLUMN_DESCENDING_ICON_CLASS;
         }
 
