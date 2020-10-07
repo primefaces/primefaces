@@ -1434,7 +1434,7 @@ public class DataTable extends DataTableBase {
     }
 
     protected Map<String, SortMeta> initSortBy(Object sortByTmp) {
-        Map<String, SortMeta> sortMeta = new LinkedHashMap<>();
+        Map<String, SortMeta> sortMeta = new HashMap<>();
         boolean sorted = false;
 
         HeaderRow headerRow = getHeaderRow();
@@ -1482,16 +1482,16 @@ public class DataTable extends DataTableBase {
         return sortMeta;
     }
 
-    protected void updateSortByWithTableState(Map<String, SortMeta> meta) {
-        if (meta != null) {
+    protected void updateSortByWithTableState(Map<String, SortMeta> tsSortBy) {
+        if (tsSortBy != null) {
             boolean defaultSort = isDefaultSort();
-            for (Map.Entry<String, SortMeta> entry : meta.entrySet()) {
-                SortMeta sm = getSortByAsMap().get(entry.getKey());
-                if (sm != null) {
-                    SortMeta tsm = entry.getValue();
-                    sm.setPriority(tsm.getPriority());
-                    sm.setSortOrder(tsm.getSortOrder());
-                    defaultSort |= sm.isActive();
+            for (Map.Entry<String, SortMeta> entry : tsSortBy.entrySet()) {
+                SortMeta intlSortBy = getSortByAsMap().get(entry.getKey());
+                if (intlSortBy != null) {
+                    SortMeta tsSortMeta = entry.getValue();
+                    intlSortBy.setPriority(tsSortMeta.getPriority());
+                    intlSortBy.setSortOrder(tsSortMeta.getSortOrder());
+                    defaultSort |= intlSortBy.isActive();
                 }
             }
 
@@ -1499,13 +1499,13 @@ public class DataTable extends DataTableBase {
         }
     }
 
-    protected void updateSortByWithUserSortBy(Map<String, SortMeta> meta, Collection<SortMeta> sortBy, boolean sorted) {
-        for (SortMeta userSM : sortBy) {
-            SortMeta internalSM = meta.values().stream()
+    protected void updateSortByWithUserSortBy(Map<String, SortMeta> intlSortBy, Collection<SortMeta> usrSortBy, boolean sorted) {
+        for (SortMeta userSM : usrSortBy) {
+            SortMeta intlSM = intlSortBy.values().stream()
                     .filter(o -> o.getSortField().equals(userSM.getSortField()))
                     .findAny()
                     .orElse(null);
-            if (internalSM == null) {
+            if (intlSM == null) {
                 throw new FacesException("No column with field '" + userSM.getSortField() + "' has been found");
             }
 
@@ -1514,10 +1514,10 @@ public class DataTable extends DataTableBase {
                 sortByVE = createValueExprFromVarField(getFacesContext(), getVar(), userSM.getSortField());
             }
 
-            internalSM.setPriority(userSM.getPriority());
-            internalSM.setSortOrder(userSM.getSortOrder());
-            internalSM.setSortBy(sortByVE);
-            internalSM.setSortFunction(userSM.getSortFunction());
+            intlSM.setPriority(userSM.getPriority());
+            intlSM.setSortOrder(userSM.getSortOrder());
+            intlSM.setSortBy(sortByVE);
+            intlSM.setSortFunction(userSM.getSortFunction());
             sorted |= userSM.isActive();
         }
 
