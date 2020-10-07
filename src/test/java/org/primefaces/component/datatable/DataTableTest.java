@@ -30,13 +30,9 @@ import org.primefaces.el.MyBean;
 import org.primefaces.el.MyContainer;
 import org.primefaces.mock.FacesContextMock;
 
-import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-
-import java.io.Serializable;
 
 import static org.mockito.Mockito.*;
 
@@ -45,7 +41,7 @@ public class DataTableTest {
     @Test
     public void testAllowUnsorting() {
         DataTable table = new DataTable();
-        Assertions.assertEquals(true,table.getAllowUnsorting());
+        Assertions.assertEquals(true,table.isAllowUnsorting());
     }
 
     @Test
@@ -92,7 +88,7 @@ public class DataTableTest {
 
         // new syntax
         exprVE = expFactory.createValueExpression(context.getELContext(), "#{column.container.value}", String.class);
-        field = table.resolveDynamicField(context, exprVE);
+        field = DataTable.resolveDynamicField(context, exprVE);
         Assertions.assertEquals("MyValue", field);
     }
 }

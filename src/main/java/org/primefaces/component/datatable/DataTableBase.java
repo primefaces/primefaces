@@ -55,6 +55,7 @@ public abstract class DataTableBase extends UIData
         onExpandStart,
         resizableColumns,
         sortMode,
+        sortBy,
         allowUnsorting,
         scrollRows,
         rowKey,
@@ -305,8 +306,16 @@ public abstract class DataTableBase extends UIData
         getStateHelper().put(PropertyKeys.sortMode, sortMode);
     }
 
-    public boolean getAllowUnsorting() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.allowUnsorting, true);
+    public Object getSortBy() {
+        return getStateHelper().eval(PropertyKeys.sortBy, null);
+    }
+
+    public void setSortBy(Object sortBy) {
+        getStateHelper().put(PropertyKeys.sortBy, sortBy);
+    }
+
+    public boolean isAllowUnsorting() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.allowUnsorting, false);
     }
 
     public void setAllowUnsorting(boolean allowUnsorting) {

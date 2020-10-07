@@ -44,7 +44,7 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
     private SortOrder sortOrder = SortOrder.UNSORTED;
     private ValueExpression sortBy;
     private MethodExpression sortFunction;
-    private Integer priority;
+    private Integer priority = Integer.MAX_VALUE;
     private transient Object component;
 
     public SortMeta() {
@@ -104,26 +104,6 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
         return result;
     }
 
-    static String resolveSortField(FacesContext context, UIColumn column) {
-        ValueExpression columnSortByVE = column.getValueExpression(ColumnBase.PropertyKeys.sortBy.toString());
-
-        if (column.isDynamic()) {
-            String field = column.getField();
-            if (field == null) {
-                Object sortByProperty = column.getSortBy();
-                field = (sortByProperty == null) ? DataTable.resolveDynamicField(context, columnSortByVE) : sortByProperty.toString();
-            }
-            return field;
-        }
-        else {
-            String field = column.getField();
-            if (field == null) {
-                field = (columnSortByVE == null) ? (String) column.getSortBy() : DataTable.resolveStaticField(columnSortByVE);
-            }
-            return field;
-        }
-    }
-
     public String getSortField() {
         return sortField;
     }
@@ -136,8 +116,16 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
         return sortFunction;
     }
 
+    public void setSortFunction(MethodExpression sortFunction) {
+        this.sortFunction = sortFunction;
+    }
+
     public ValueExpression getSortBy() {
         return sortBy;
+    }
+
+    public void setSortBy(ValueExpression sortBy) {
+        this.sortBy = sortBy;
     }
 
     public boolean isActive() {
@@ -188,5 +176,66 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
                 ", sortFunction=" + sortFunction +
                 ", priority=" + priority +
                 '}';
+    }
+
+    static String resolveSortField(FacesContext context, UIColumn column) {
+        ValueExpression columnSortByVE = column.getValueExpression(ColumnBase.PropertyKeys.sortBy.toString());
+
+        if (column.isDynamic()) {
+            String field = column.getField();
+            if (field == null) {
+                Object sortByProperty = column.getSortBy();
+                field = (sortByProperty == null) ? DataTable.resolveDynamicField(context, columnSortByVE) : sortByProperty.toString();
+            }
+            return field;
+        }
+        else {
+            String field = column.getField();
+            if (field == null) {
+                field = (columnSortByVE == null) ? (String) column.getSortBy() : DataTable.resolveStaticField(columnSortByVE);
+            }
+            return field;
+        }
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private SortMeta sortMeta;
+
+        private Builder() {
+            sortMeta = new SortMeta();
+        }
+
+        public Builder field(String field) {
+            sortMeta.sortField = field;
+            return this;
+        }
+
+        public Builder sortOrder(SortOrder sortOrder) {
+            sortMeta.sortOrder = sortOrder;
+            return this;
+        }
+
+        public Builder sortBy(ValueExpression sortBy) {
+            sortMeta.sortBy = sortBy;
+            return this;
+        }
+
+        public Builder sortFunction(MethodExpression sortFunction) {
+            sortMeta.sortFunction = sortFunction;
+            return this;
+        }
+
+        public Builder priority(Integer priority) {
+            sortMeta.priority = priority;
+            return this;
+        }
+
+        public SortMeta build() {
+            return sortMeta;
+        }
     }
 }

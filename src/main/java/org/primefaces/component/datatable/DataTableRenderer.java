@@ -151,7 +151,7 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         if (defaultSorted && table.isMultiViewState()) {
-            Map<String, SortMeta> sortMeta = table.getSortMeta();
+            Map<String, SortMeta> sortMeta = table.getSortByAsMap();
             if ((sortMeta != null && !sortMeta.isEmpty())) {
                 DataTableState ts = table.getMultiViewState(true);
                 // ts.setSortBy(sortByVE);
@@ -267,7 +267,7 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         // by default cycling through sorting includes unsort, an attribute is needed when unsort should not be included
-        if (!table.getAllowUnsorting()) {
+        if (!table.isAllowUnsorting()) {
             wb.attr("allowUnsorting", false);
         }
 
@@ -621,7 +621,7 @@ public class DataTableRenderer extends DataRenderer {
         String clientId = column.getContainerClientId(context);
 
         ValueExpression columnFilterByVE = column.getValueExpression(Column.PropertyKeys.filterBy.toString());
-        boolean sortable = table.getSortMeta().containsKey(column.getColumnKey());
+        boolean sortable = table.getSortByAsMap().containsKey(column.getColumnKey());
         boolean filterable = (columnFilterByVE != null && column.isFilterable());
         String selectionMode = column.getSelectionMode();
         String sortIcon = null;
@@ -647,7 +647,7 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         if (sortable) {
-            SortMeta s = table.getSortMeta().get(column.getColumnKey());
+            SortMeta s = table.getSortByAsMap().get(column.getColumnKey());
             sortIcon = resolveDefaultSortIcon(s);
             if (s.isActive()) {
                 columnClass += " ui-state-active";

@@ -35,10 +35,7 @@ import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.faces.model.ListDataModel;
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class SortFeature implements DataTableFeature {
@@ -54,17 +51,26 @@ public class SortFeature implements DataTableFeature {
         String sortKey = params.get(clientId + "_sortKey");
         String sortDir = params.get(clientId + "_sortDir");
 
-        String[] sortKeys = sortKey.split(",");
-        String[] sortOrders = sortDir.split(",");
+        List<String> sortKeys = Arrays.asList(sortKey.split(","));
+        List<String> sortOrders = Arrays.asList(sortDir.split(","));
 
-        if (sortKeys.length != sortOrders.length) {
-            throw new FacesException();
+        if (sortKeys.size() != sortOrders.size()) {
+            throw new FacesException("sortKeys != sortDirs");
         }
 
-        for (int i = 0; i < sortKeys.length; i++) {
-            SortMeta m = table.getSortMeta().get(sortKeys[i]);
-            m.setSortOrder(SortOrder.of(sortOrders[i]));
-            m.setPriority(i);
+        int i = 0;
+        for(Map.Entry<String, SortMeta> entry : table.getSortByAsMap().entrySet()) {
+            SortMeta m = entry.getValue();
+            if (!sortKeys.contains(entry.getKey())) {
+                m.setSortOrder(SortOrder.UNSORTED);
+                m.setPriority(Integer.MAX_VALUE);
+            }
+            else {
+                m = table.getSortByAsMap().get(sortKeys.get(i));
+                m.setSortOrder(SortOrder.of(sortOrders.get(i)));
+                m.setPriority(i);
+                i++;
+            }
         }
     }
 
@@ -105,7 +111,7 @@ public class SortFeature implements DataTableFeature {
         renderer.encodeTbody(context, table, true);
 
         if (table.isMultiViewState()) {
-            Map<String, SortMeta> sortMeta = table.getSortMeta();
+            Map<String, SortMeta> sortMeta = table.getSortByAsMap();
             if (!sortMeta.isEmpty()) {
                 DataTableState ts = table.getMultiViewState(true);
                 ts.setSortMeta(sortMeta);
@@ -129,15 +135,15 @@ public class SortFeature implements DataTableFeature {
         int nullSortOrder = table.getNullSortOrder();
 
         if (table.isMultiSort()) {
-            Map<String, SortMeta> sortedMeta = table.getSortMeta().entrySet().stream()
+            Map<String, SortMeta> sortedMeta = table.getSortByAsMap().entrySet().stream()
                     .sorted(Map.Entry.comparingByValue())
                     .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (o1, o2) -> o1, LinkedHashMap::new));
-            table.setSortMeta(sortedMeta);
+            table.setSortByAsMap(sortedMeta);
         }
 
         ChainedBeanPropertyComparator chainedComparator = new ChainedBeanPropertyComparator();
 
-        for (SortMeta meta : table.getSortMeta().values()) {
+        for (SortMeta meta : table.getSortByAsMap().values()) {
             if (!meta.isActive()) {
                 continue;
             }
