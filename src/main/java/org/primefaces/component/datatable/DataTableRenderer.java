@@ -26,6 +26,7 @@ package org.primefaces.component.datatable;
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;
@@ -1757,24 +1758,10 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected List<String> getSortableHeadersText(FacesContext context, DataTable table) {
-        List<UIColumn> columns = table.getColumns();
-        List<String> headersText = new ArrayList<>();
-        ValueExpression columnSortByVE = null;
-        boolean sortable = false;
-
-        for (UIColumn column : columns) {
-            if (column instanceof DynamicColumn) {
-                ((DynamicColumn) column).applyStatelessModel();
-            }
-            columnSortByVE = column.getValueExpression(Column.PropertyKeys.sortBy.toString());
-            sortable = (columnSortByVE != null && column.isSortable());
-            if (sortable) {
-                String headerText = getHeaderLabel(context, column);
-                if (headerText != null) {
-                    headersText.add(headerText);
-                }
-            }
-        }
-        return headersText;
+        return table.getSortByAsMap().values().stream()
+                .filter(s -> s.getComponent() instanceof UIColumn)
+                .map(s -> getHeaderLabel(context, (UIColumn) s.getComponent()))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
     }
 }
