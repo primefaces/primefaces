@@ -92,7 +92,7 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
         });
 
         if (this.input.parent().hasClass('ui-inputnumber')) {
-            this.input.parent().find('input:hidden').on('change', function () {
+            this.input.parent().find('input:hidden').off('change.slider').on('change.slider', function () {
                 $this.setValue($(this).val());
             });
         }
