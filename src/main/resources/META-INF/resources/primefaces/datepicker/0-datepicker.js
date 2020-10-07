@@ -1106,6 +1106,9 @@
                     }
                 });
             }
+
+            // #6379 set state of navigator buttons
+            this.setNavigationState(this.viewDate);
         },
 
         renderTriggerButton: function () {
@@ -1826,6 +1829,8 @@
                 testDate.setMonth(testDate.getMonth()+1)
                 testDate.setHours(-1);
                 if (minDate && minDate > testDate) {
+                    this.setNavigationState(newViewDate);
+                    event.preventDefault();
                     return;
                 }
 
@@ -1877,6 +1882,8 @@
                 // #5967 check if month can be navigated to by checking first day next month
                 var maxDate = this.options.maxDate;
                 if (maxDate && maxDate < newViewDate) {
+                    this.setNavigationState(newViewDate);
+                    event.preventDefault();
                     return;
                 }
 
@@ -1906,6 +1913,40 @@
             this.updateViewDate(event, newViewDate);
 
             event.preventDefault();
+        },
+
+        setNavigationState: function(newViewDate) {
+            if (this.options.view !== 'date') {
+                return;
+            }
+
+            var navPrev = this.panel.find('.ui-datepicker-header > .ui-datepicker-prev');
+            var navNext = this.panel.find('.ui-datepicker-header > .ui-datepicker-next');
+
+            if (this.options.disabled) {
+                navPrev.addClass('ui-state-disabled');
+                navNext.addClass('ui-state-disabled');
+                return;
+            }
+
+            // previous
+            var testDate = new Date(newViewDate.getTime()),
+                minDate = this.options.minDate;
+            testDate.setMonth(testDate.getMonth()+1)
+            testDate.setHours(-1);
+            if (minDate && minDate > testDate) {
+                navPrev.addClass('ui-state-disabled');
+            } else {
+                navPrev.removeClass('ui-state-disabled');
+            }
+
+            // next
+            var maxDate = this.options.maxDate;
+            if (maxDate && maxDate < newViewDate) {
+                navNext.addClass('ui-state-disabled');
+            } else {
+                navNext.removeClass('ui-state-disabled');
+            }
         },
 
         onTimePickerElementMouseDown: function (event, type, direction) {
