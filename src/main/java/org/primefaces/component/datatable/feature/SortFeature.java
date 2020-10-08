@@ -37,6 +37,7 @@ import javax.faces.model.ListDataModel;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class SortFeature implements DataTableFeature {
 
@@ -51,25 +52,31 @@ public class SortFeature implements DataTableFeature {
         String sortKey = params.get(clientId + "_sortKey");
         String sortDir = params.get(clientId + "_sortDir");
 
-        List<String> sortKeys = Arrays.asList(sortKey.split(","));
-        List<String> sortOrders = Arrays.asList(sortDir.split(","));
+        String[] sortKeys = sortKey.split(",");
+        String[] sortOrders = sortDir.split(",");
 
-        if (sortKeys.size() != sortOrders.size()) {
+        if (sortKeys.length != sortOrders.length) {
             throw new FacesException("sortKeys != sortDirs");
         }
 
-        int i = 0;
-        for(Map.Entry<String, SortMeta> entry : table.getSortByAsMap().entrySet()) {
-            SortMeta m = entry.getValue();
-            if (!sortKeys.contains(entry.getKey())) {
-                m.setSortOrder(SortOrder.UNSORTED);
-                m.setPriority(Integer.MAX_VALUE);
+        Map<String, SortMeta> sortByMap = table.getSortByAsMap();
+        Map<String, Integer> sortKeysIndexes = IntStream.range(0, sortKeys.length).boxed()
+                .collect(Collectors.toMap(i -> sortKeys[i], i -> i));
+
+        for (Map.Entry<String, SortMeta> entry : sortByMap.entrySet()) {
+            SortMeta sortBy = entry.getValue();
+            if (!(sortBy.getComponent() instanceof UIColumn)) {
+                continue;
+            }
+
+            Integer index = sortKeysIndexes.get(entry.getKey());
+            if (index != null) {
+                sortBy.setSortOrder(SortOrder.of(sortOrders[index]));
+                sortBy.setPriority(index);
             }
             else {
-                m = table.getSortByAsMap().get(sortKeys.get(i));
-                m.setSortOrder(SortOrder.of(sortOrders.get(i)));
-                m.setPriority(i);
-                i++;
+                sortBy.setSortOrder(SortOrder.UNSORTED);
+                sortBy.setPriority(SortMeta.MIN_PRIORITY);
             }
         }
     }
@@ -129,7 +136,7 @@ public class SortFeature implements DataTableFeature {
             return;
         }
 
-        List list = resolveList(value);
+        List<?> list = resolveList(value);
         boolean caseSensitiveSort = table.isCaseSensitiveSort();
         Locale locale = table.resolveDataLocale();
         int nullSortOrder = table.getNullSortOrder();
@@ -152,8 +159,7 @@ public class SortFeature implements DataTableFeature {
             Object source = meta.getComponent();
 
             if (source instanceof UIColumn && ((UIColumn) source).isDynamic()) {
-                comparator = new DynamicBeanPropertyComparator(table.getVar(),
-                        meta, caseSensitiveSort, locale, nullSortOrder);
+                comparator = new DynamicBeanPropertyComparator(table.getVar(), meta, caseSensitiveSort, locale, nullSortOrder);
             }
             else {
                 comparator = new BeanPropertyComparator(table.getVar(), meta, caseSensitiveSort, locale, nullSortOrder);
@@ -177,12 +183,12 @@ public class SortFeature implements DataTableFeature {
         return isSortRequest(context, table);
     }
 
-    protected List resolveList(Object value) {
+    protected <T> List<T> resolveList(Object value) {
         if (value instanceof List) {
-            return (List) value;
+            return (List<T>) value;
         }
         else if (value instanceof ListDataModel) {
-            return (List) ((ListDataModel) value).getWrappedData();
+            return (List<T>) ((ListDataModel<T>) value).getWrappedData();
         }
         else {
             throw new FacesException("Data type should be java.util.List or javax.faces.model.ListDataModel instance to be sortable.");

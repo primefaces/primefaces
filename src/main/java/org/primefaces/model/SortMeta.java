@@ -37,6 +37,9 @@ import java.util.Objects;
 
 public class SortMeta implements Serializable, Comparable<SortMeta> {
 
+    public static final Integer MIN_PRIORITY = Integer.MAX_VALUE;
+    public static final Integer MAX_PRIORITY = Integer.MIN_VALUE;
+
     private static final long serialVersionUID = 1L;
 
     private String columnKey;
@@ -44,7 +47,7 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
     private SortOrder sortOrder = SortOrder.UNSORTED;
     private ValueExpression sortBy;
     private MethodExpression sortFunction;
-    private Integer priority = Integer.MAX_VALUE;
+    private Integer priority = MIN_PRIORITY;
     private transient Object component;
 
     public SortMeta() {
@@ -91,7 +94,7 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
                             order,
                             headerRow.getSortFunction(),
                             groupByVE,
-                            Integer.MIN_VALUE,
+                            MAX_PRIORITY,
                             headerRow);
     }
 

@@ -1464,6 +1464,7 @@ public class DataTable extends DataTableBase {
 
         setDefaultSort(sorted);
 
+        // merge internal sortBy with user sortBy
         if (sortByTmp != null) {
             Collection<SortMeta> sortBy;
             if (sortByTmp instanceof SortMeta) {
@@ -1532,7 +1533,7 @@ public class DataTable extends DataTableBase {
     }
 
     public Map<String, SortMeta> getSortByAsMap() {
-        return ComponentUtils.computeIfAbsent(getStateHelper(),"_sortBy", () -> initSortBy(getSortBy()));
+        return ComponentUtils.computeIfAbsent(getStateHelper(), "_sortBy", () -> initSortBy(getSortBy()));
     }
 
     public void setSortByAsMap(Map<String, SortMeta> sortBy) {
