@@ -24,7 +24,8 @@
 package org.primefaces.model;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public enum SortOrder {
 
@@ -32,21 +33,20 @@ public enum SortOrder {
     DESCENDING("desc", "-1", -1, "descending"),
     UNSORTED("", null, "0", 0, "unsorted");
 
-    private List<Object> values;
+    private final Set<Object> values;
 
     SortOrder(Object... values) {
-        this.values = Arrays.asList(values);
+        this.values = new HashSet<>(Arrays.asList(values));
     }
 
     public static SortOrder of(Object order) {
-        SortOrder s = UNSORTED;
         for (SortOrder o : values()) {
             if (o.values.contains(order)) {
-                s = o;
-                break;
+                return o;
             }
         }
-        return s;
+
+        throw new IllegalArgumentException("No SorderOrder match value: " + order);
     }
 
     public boolean isAscending() {
