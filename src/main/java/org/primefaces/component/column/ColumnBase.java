@@ -25,6 +25,7 @@ package org.primefaces.component.column;
 
 import javax.faces.component.UIColumn;
 
+import org.primefaces.model.SortMeta;
 import org.primefaces.model.menu.MenuColumn;
 
 
@@ -389,7 +390,7 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
     }
 
     public int getSortPriority() {
-        return (Integer) getStateHelper().eval(PropertyKeys.sortPriority, Integer.MAX_VALUE);
+        return (Integer) getStateHelper().eval(PropertyKeys.sortPriority, SortMeta.MIN_PRIORITY);
     }
 
     public void setSortPriority(String sortPriority) {
