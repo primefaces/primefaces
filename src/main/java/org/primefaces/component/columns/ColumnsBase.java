@@ -25,6 +25,7 @@ package org.primefaces.component.columns;
 
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.UIData;
+import org.primefaces.model.SortMeta;
 
 
 public abstract class ColumnsBase extends UIData implements UIColumn {
@@ -376,7 +377,7 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
     }
 
     public int getSortPriority() {
-        return (Integer) getStateHelper().eval(PropertyKeys.sortPriority, Integer.MAX_VALUE);
+        return (Integer) getStateHelper().eval(PropertyKeys.sortPriority, SortMeta.MIN_PRIORITY);
     }
 
     public void setSortPriority(String sortPriority) {

@@ -39,7 +39,6 @@ public class DynamicBeanPropertyComparator extends BeanPropertyComparator {
         this.sortMeta = sortMeta;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public int compare(Object obj1, Object obj2) {
         ((DynamicColumn) sortMeta.getComponent()).applyStatelessModel();
