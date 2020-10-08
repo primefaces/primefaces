@@ -1532,6 +1532,10 @@ public class DataTable extends DataTableBase {
                 .orElse(null);
     }
 
+    public boolean isSortingCurrentlyActive() {
+        return getSortByAsMap().values().stream().anyMatch(SortMeta::isActive);
+    }
+
     public Map<String, SortMeta> getSortByAsMap() {
         return ComponentUtils.computeIfAbsent(getStateHelper(), "_sortBy", () -> initSortBy(getSortBy()));
     }

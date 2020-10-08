@@ -47,7 +47,6 @@ import org.primefaces.component.row.Row;
 import org.primefaces.event.data.PostFilterEvent;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.MatchMode;
-import org.primefaces.model.SortMeta;
 import org.primefaces.model.filter.*;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
@@ -127,10 +126,9 @@ public class FilterFeature implements DataTableFeature {
             filter(context, table, table.getFilterBy());
 
             //sort new filtered data to restore sort state
-            boolean sorted = table.getSortByAsMap().values().stream().anyMatch(SortMeta::isActive);
+            boolean sorted = table.isSortingCurrentlyActive();
             if (sorted) {
                 SortFeature sortFeature = (SortFeature) table.getFeature(DataTableFeatureKey.SORT);
-
                 sortFeature.sort(context, table);
             }
         }
