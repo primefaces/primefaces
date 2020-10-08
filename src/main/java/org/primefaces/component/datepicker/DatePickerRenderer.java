@@ -30,21 +30,76 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
+import java.util.Map;
+import java.util.Map.Entry;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
-
+import org.json.JSONObject;
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.calendar.BaseCalendarRenderer;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.model.datepicker.DateMetaData;
+import org.primefaces.model.datepicker.DateMetaDataModel;
+import org.primefaces.model.datepicker.LazyDateMetaDataModel;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class DatePickerRenderer extends BaseCalendarRenderer {
+
+    @Override
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        DatePicker datePicker = (DatePicker) component;
+
+        if (context.getExternalContext().getRequestParameterMap().containsKey(datePicker.getClientId(context))) {
+            encodeDateMetaData(context, datePicker);
+        }
+        else {
+            super.encodeEnd(context, component);
+        }
+    }
+
+    protected void encodeDateMetaData(FacesContext context, DatePicker datePicker) throws IOException {
+        DateMetaDataModel model = datePicker.getModel();
+        if (model == null) {
+            return;
+        }
+        if (model instanceof LazyDateMetaDataModel) {
+            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+            String clientId = datePicker.getClientId(context);
+            int year = Integer.valueOf(params.get(clientId + "_year"));
+            int month = Integer.valueOf(params.get(clientId + "_month")) + 1;
+
+            LocalDate startDate = LocalDate.of(year, month, 1);
+            LocalDate endDate = startDate.plusMonths(datePicker.getNumberOfMonths()).minusDays(1);
+
+            LazyDateMetaDataModel lazyModel = ((LazyDateMetaDataModel) model);
+            lazyModel.clear();
+            lazyModel.loadDateMetaData(startDate, endDate);
+        }
+        encodeDateMetaDataAsJSON(context, datePicker, model);
+    }
+
+    protected void encodeDateMetaDataAsJSON(FacesContext context, DatePicker datePicker, DateMetaDataModel model) throws IOException {
+        JSONObject jsonDateMetaData = new JSONObject();
+        String pattern = datePicker.calculateWidgetPattern();
+        for (Entry<LocalDate, DateMetaData> entry : model.getDateMetaData().entrySet()) {
+            String date = CalendarUtils.getValueAsString(context, datePicker, entry.getKey(), pattern);
+            DateMetaData metaData = entry.getValue();
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("disabled", metaData.isDisabled());
+            jsonDateMetaData.put(date, jsonObject);
+        }
+
+        JSONObject jsonResponse = new JSONObject();
+        jsonResponse.put("dateMetaData", jsonDateMetaData);
+
+        ResponseWriter writer = context.getResponseWriter();
+        writer.write(jsonResponse.toString());
+    }
 
     @Override
     protected void encodeMarkup(FacesContext context, UICalendar uicalendar, String value) throws IOException {
@@ -148,14 +203,15 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("rangeSeparator", datepicker.getRangeSeparator(), "-")
             .attr("timeSeparator", datepicker.getTimeSeparator(), ":")
             .attr("timeInput", datepicker.isTimeInput())
-            .attr("touchable", ComponentUtils.isTouchable(context, datepicker),  true);
+            .attr("touchable", ComponentUtils.isTouchable(context, datepicker), true)
+            .attr("lazyModel", datepicker.getModel() instanceof LazyDateMetaDataModel, false);
 
         List<Integer> disabledDays = datepicker.getDisabledDays();
         if (disabledDays != null) {
             CalendarUtils.encodeListValue(context, datepicker, "disabledDays", disabledDays, pattern);
         }
 
-        List<Object> disabledDates = datepicker.getDisabledDates();
+        List<Object> disabledDates = datepicker.getInitialDisabledDates(context);
         if (disabledDates != null) {
             CalendarUtils.encodeListValue(context, datepicker, "disabledDates", disabledDates, pattern);
         }

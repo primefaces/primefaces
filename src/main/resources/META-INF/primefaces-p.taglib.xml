@@ -31495,5 +31495,13 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Model with meta data for certain dates, like disabled.]]>
+            </description>
+            <name>model</name>
+            <required>false</required>
+            <type>org.primefaces.model.datepicker.DateMetaDataModel</type>
+        </attribute>
     </tag>
 </facelet-taglib>

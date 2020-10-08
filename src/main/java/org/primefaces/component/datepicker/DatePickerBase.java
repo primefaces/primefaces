@@ -28,11 +28,11 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
 import java.util.List;
 import java.util.Locale;
-
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.api.Widget;
+import org.primefaces.model.datepicker.DateMetaDataModel;
 import org.primefaces.util.CalendarUtils;
 
 public abstract class DatePickerBase extends UICalendar implements Widget, InputHolder, MixedClientBehaviorHolder {
@@ -85,7 +85,8 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         onYearChange,
         timeInput,
         showWeek,
-        weekCalculator
+        weekCalculator,
+        model
     }
 
     public DatePickerBase() {
@@ -424,6 +425,14 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     public void setWeekCalculator(String weekCalculator) {
         getStateHelper().put(PropertyKeys.weekCalculator, weekCalculator);
+    }
+
+    public DateMetaDataModel getModel() {
+        return (DateMetaDataModel) getStateHelper().eval(PropertyKeys.model, null);
+    }
+
+    public void setModel(DateMetaDataModel model) {
+        getStateHelper().put(PropertyKeys.model, model);
     }
 
     @Override

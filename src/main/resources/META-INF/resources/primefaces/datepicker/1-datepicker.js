@@ -282,6 +282,36 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             if(_self.hasBehavior('viewChange')) {
                 _self.fireViewChangeEvent(date.getFullYear(), date.getMonth());
             }
+            if (_self.cfg.lazyModel) {
+                var options = {
+                    source: _self.id,
+                    process: _self.id,
+                    update: _self.id,
+                    formId: _self.cfg.formId,
+                    params: [
+                        {name: _self.id + '_year', value: date.getFullYear()},
+                        {name: _self.id + '_month', value: date.getMonth()}
+                    ],
+                    onsuccess: function(responseXML, status, xhr) {
+                        PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                            widget: _self,
+                            handle: function(content) {
+                                var dateMetaData = JSON.parse(content).dateMetaData;
+                                var disabledDates = [];
+                                for (date in dateMetaData) {
+                                    if (dateMetaData[date].disabled) {
+                                        disabledDates.push(date);
+                                    }
+                                }
+                                _self.setDisabledDates(disabledDates);
+                            }
+                        });
+
+                        return true;
+                    }
+                };
+                PrimeFaces.ajax.Request.handle(options);
+            }
         };
     },
 
