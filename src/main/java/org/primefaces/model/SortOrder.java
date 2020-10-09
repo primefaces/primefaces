@@ -46,7 +46,7 @@ public enum SortOrder {
             }
         }
 
-        throw new IllegalArgumentException("No SorderOrder match value: " + order);
+        throw new IllegalArgumentException("No SorderOrder matching value: " + order);
     }
 
     public boolean isAscending() {
