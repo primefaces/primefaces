@@ -27,12 +27,11 @@ powered rich solution with graceful degradation for legacy browsers.
 | converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id.
 | immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
 | required | false | Boolean | Marks component as required.
-| validator | null | MethodExpr | A method expression that refers to a method validationg the input.
+| validator | null | MethodExpr | A method expression that refers to a method validating the input.
 | valueChangeListener | null | MethodExpr | A method expression that refers to a method for handling a valuchangeevent.
 | requiredMessage | null | String | Message to be displayed when required field validation fails.
 | converterMessage | null | String | Message to be displayed when conversion fails.
 | validatorMessage | null | String | Message to be displayed when validation fails.
-| onvalidationfailure | null | String | Handler called when client-side validation fails.
 | widgetVar | null | String | Name of the client side widget.
 | update | @none | String | Component(s) to update after fileupload completes.
 | process | @all | String | Component(s) to process in fileupload request.
@@ -52,9 +51,12 @@ powered rich solution with graceful degradation for legacy browsers.
 | invalidFileMessage | Invalid file type | String | Message to display when file is not accepted.
 | fileLimitMessage | Maximum number of files exceeded | String | Message to display when file limit exceeds.
 | dragDropSupport | true | Boolean | Specifies dragdrop based file selection from filesystem, default is true and works only on supported browsers.
+| onAdd | null | String | Callback to execute before adding a file.
+| onupload | null | String | Callback to execute before the files are sent. If this callback returns false, the file upload request is not started.
 | onstart | null | String | Client side callback to execute when upload begins.
 | onerror | null | String | Callback to execute if fileupload request fails.
 | oncomplete | null | String | Client side callback to execute when upload ends.
+| onvalidationfailure | null | String | Handler called when client-side validation fails.
 | disabled | false | Boolean | Disables component when set true.
 | messageTemplate | {name} {size} | String | Message template to use when displaying file validation errors.
 | previewWidth | 80 | Integer | Width for image previews in pixels.
@@ -68,7 +70,6 @@ powered rich solution with graceful degradation for legacy browsers.
 | chooseButtonTitle | null | String | Native title tooltip for choose button
 | uploadButtonTitle | null | String | Native title tooltip for upload button
 | cancelButtonTitle | null | String | Native title tooltip for cancel button
-| onAdd | null | String | Callback to execute before adding a file.
 | validateContentType | false | Boolean | Whether content type validation should be performed, based on the types defined in the accept attribute. Default is false.
 | virusScan | false | Boolean | Whether virus scan should be performed. Default is false.
 | maxChunkSize | 0 | Long | To upload large files in smaller chunks, set this option to a preferred maximum chunk size. If set to 0 (default), null or undefined, or the browser does not support the required Blob API, files will be uploaded as a whole. Only works in "advanced" mode.
@@ -78,7 +79,7 @@ powered rich solution with graceful degradation for legacy browsers.
 ## Getting started with FileUpload
 FileUpload engine on the server side can either be servlet 3.0 or commons fileupload. PrimeFaces
 selects the most appropriate uploader engine by detection and it is possible to force one or the other
-usign an **optional** configuration param.
+using an **optional** configuration param.
 
 ```xml
 <context-param>
@@ -95,8 +96,8 @@ and exception is being thrown.
 **commons**: This option chooses commons fileupload regardless of the environment, advantage of
 this option is that it works even on a Servlet 2.5 environment.
 
-If you have decided to choose commons fileupload, it requires the following filter configration in
-your web deployment descriptior.
+If you have decided to choose commons fileupload, it requires the following filter configuration in
+your web deployment descriptor.
 
 
 ```xml
@@ -216,6 +217,15 @@ public class FileBean {
     }
 }
 ```
+
+## Confirmation Before Upload
+You can add a client side callback if you want a confirmation dialog before the uploads begin. Any return of `false`
+from the `onupload` callback will not send the files.
+
+```xhtml
+<p:fileUpload listener="#{fileBean.handleFileUpload}" onupload="return confirm('Are you sure?')"/>
+```
+
 ## File Filters
 Users can be restricted to only select the file types you’ve configured, example below demonstrates
 how to accept images only.

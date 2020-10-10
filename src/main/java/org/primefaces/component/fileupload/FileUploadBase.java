@@ -57,6 +57,7 @@ public abstract class FileUploadBase extends UIInput implements Widget {
         onstart,
         oncomplete,
         onerror,
+        onupload,
         onvalidationfailure,
         oncancel,
         disabled,
@@ -247,6 +248,14 @@ public abstract class FileUploadBase extends UIInput implements Widget {
 
     public void setOnstart(String onstart) {
         getStateHelper().put(PropertyKeys.onstart, onstart);
+    }
+
+    public String getOnupload() {
+        return (String) getStateHelper().eval(PropertyKeys.onupload, null);
+    }
+
+    public void setOnupload(String onupload) {
+        getStateHelper().put(PropertyKeys.onupload, onupload);
     }
 
     public String getOncomplete() {
