@@ -1324,6 +1324,8 @@ public class DataTable extends DataTableBase {
             setValue(null);
         }
 
+        setSortByAsMap(null);
+
         // reset component for MyFaces view pooling
         columnsCountWithSpan = -1;
         reset = false;
@@ -1444,14 +1446,6 @@ public class DataTable extends DataTableBase {
         }
 
         for (UIColumn column : getColumns()) {
-            if (column instanceof DynamicColumn) {
-                ((DynamicColumn) column).applyStatelessModel();
-            }
-
-            if (!column.isSortable()) {
-                continue;
-            }
-
             SortMeta s = SortMeta.of(getFacesContext(), getVar(), column);
             if (s == null) {
                 continue;

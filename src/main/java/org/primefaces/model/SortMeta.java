@@ -23,6 +23,7 @@
  */
 package org.primefaces.model;
 
+import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.ColumnBase;
 import org.primefaces.component.datatable.DataTable;
@@ -66,6 +67,14 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
     }
 
     public static SortMeta of(FacesContext context, String var, UIColumn column) {
+        if (column instanceof DynamicColumn) {
+            ((DynamicColumn) column).applyStatelessModel();
+        }
+
+        if (!column.isSortable()) {
+            return null;
+        }
+
         String field = resolveSortField(context, column);
         if (field == null) {
             return null;
