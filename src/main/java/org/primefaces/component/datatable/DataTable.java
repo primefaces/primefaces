@@ -667,7 +667,7 @@ public class DataTable extends DataTableBase {
         resetRows();
         reset = true;
         setDefaultSort(false);
-        setSortByAsMap(Collections.emptyMap());
+        setSortByAsMap(null);
         setScrollOffset(0);
     }
 
