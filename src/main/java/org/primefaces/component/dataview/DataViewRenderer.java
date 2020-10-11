@@ -235,13 +235,20 @@ public class DataViewRenderer extends DataRenderer {
 
         if (grid != null) {
             ResponseWriter writer = context.getResponseWriter();
-
             int columns = grid.getColumns();
             int rowIndex = dataview.getFirst();
             int rows = dataview.getRows();
             int itemsToRender = rows != 0 ? rows : dataview.getRowCount();
             int numberOfRowsToRender = (itemsToRender + columns - 1) / columns;
-            String columnClass = DataView.GRID_LAYOUT_COLUMN_CLASS + " " + GridLayoutUtils.getColumnClass(columns);
+            boolean flex = ComponentUtils.isFlex(context, dataview);
+            String columnClass = DataView.GRID_LAYOUT_COLUMN_CLASS + " ";
+            if (flex) {
+                columnClass += GridLayoutUtils.getFlexColumnClass(columns);
+            }
+            else {
+                columnClass += GridLayoutUtils.getColumnClass(columns);
+            }
+
             String columnInlineStyle = dataview.getGridRowStyle();
 
             if (!LangUtils.isValueBlank(dataview.getGridRowStyleClass())) {
@@ -249,7 +256,12 @@ public class DataViewRenderer extends DataRenderer {
             }
 
             writer.startElement("div", null);
-            writer.writeAttribute("class", DataView.GRID_LAYOUT_ROW_CLASS, null);
+            if (flex) {
+                writer.writeAttribute("class", DataView.FLEX_GRID_LAYOUT_ROW_CLASS, null);
+            }
+            else {
+                writer.writeAttribute("class", DataView.GRID_LAYOUT_ROW_CLASS, null);
+            }
 
             for (int i = 0; i < numberOfRowsToRender; i++) {
                 dataview.setRowIndex(rowIndex);

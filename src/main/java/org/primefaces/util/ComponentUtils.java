@@ -45,10 +45,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.render.Renderer;
 
-import org.primefaces.component.api.RTLAware;
-import org.primefaces.component.api.TouchAware;
-import org.primefaces.component.api.UITabPanel;
-import org.primefaces.component.api.Widget;
+import org.primefaces.component.api.*;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
@@ -220,15 +217,15 @@ public class ComponentUtils {
     }
 
     public static boolean isRTL(FacesContext context, RTLAware component) {
-        boolean globalValue = PrimeRequestContext.getCurrentInstance(context).isRTL();
-
-        return globalValue || component.isRTL();
+        return component.isRTL() || PrimeRequestContext.getCurrentInstance(context).isRTL();
     }
 
     public static boolean isTouchable(FacesContext context, TouchAware component) {
-        boolean globalValue = PrimeRequestContext.getCurrentInstance(context).isTouchable();
+        return component.isTouchable() || PrimeRequestContext.getCurrentInstance(context).isTouchable();
+    }
 
-        return globalValue || component.isTouchable();
+    public static boolean isFlex(FacesContext context, FlexAware component) {
+        return component.isFlex() || PrimeRequestContext.getCurrentInstance(context).isFlex();
     }
 
     public static void processDecodesOfFacetsAndChilds(UIComponent component, FacesContext context) {
