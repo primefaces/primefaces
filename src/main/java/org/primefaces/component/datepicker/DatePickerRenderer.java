@@ -88,9 +88,9 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         String pattern = datePicker.calculateWidgetPattern();
         for (Entry<LocalDate, DateMetadata> entry : model.getDateMetadata().entrySet()) {
             String date = CalendarUtils.getValueAsString(context, datePicker, entry.getKey(), pattern);
-            DateMetadata metaData = entry.getValue();
+            DateMetadata metadata = entry.getValue();
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("disabled", metaData.isDisabled());
+            jsonObject.put("disabled", metadata.isDisabled());
             jsonDateMetadata.put(date, jsonObject);
         }
 
