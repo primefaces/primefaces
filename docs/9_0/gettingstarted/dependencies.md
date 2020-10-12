@@ -4,17 +4,17 @@ PrimeFaces only requires a Java 8+ runtime and a JSF 2.x implementation as manda
 dependencies. There’re some optional libraries for certain features. Licenses of all dependencies and
 any 3rd part work incorporated are compatible with the PrimeFaces Licenses.
 
-| Dependency | Version | Type | Description |
-| --- | --- | --- | --- |
-| JSF runtime | 2.0, 2.1, 2.2, 2.3 | Required | Apache MyFaces or Eclipse (former Oracle) Mojarra |
-| Libre OpenPDF | 1.3.14 | Optional | DataExporter (PDF) |
-| Apache POI | 4.1.1 | Optional | DataExporter (Excel or XML) |
-| Rome | 1.13.0 | Optional | FeedReader |
-| Apache Commons FileUpload | 1.4 | Optional | FileUpload |
-| Apache Tika | 1.24.1 | Optional | Advanced security (content type validation) for FileUpload |
-| barcode4j-light | 2.1 | Optional | Barcode |
-| qrgen |  1.4 | Optional | QR Code support for Barcode |
-| owasp-java-html-sanitizer |  20200615.1 | Optional | TextEditor |
+| Dependency | GroupId | ArtifactId | Version | Type | Description |
+| --- | --- | --- | --- | --- | --- |
+| JSF runtime | | |  2.0, 2.1, 2.2, 2.3 | Required | Apache MyFaces or Eclipse (former Oracle) Mojarra |
+| Libre OpenPDF | com.github.librepdf | openpdf | 1.3.14 | Optional | DataExporter (PDF) |
+| Apache POI | org.apache.poi | poi | 4.1.1 | Optional | DataExporter (Excel or XML) |
+| Rome | com.rometools | rome | 1.13.0 | Optional | FeedReader |
+| Apache Commons FileUpload | commons-fileupload | commons-fileupload | 1.4 | Optional | FileUpload |
+| Apache Tika | org.apache.tika | tika-java7 | 1.24.1 | Optional | Advanced security (content type validation) for FileUpload |
+| barcode4j-light | net.sf.barcode4j | barcode4j-light | 2.1 | Optional | Barcode |
+| qrgen | net.glxn | qrgen |  1.4 | Optional | QR Code support for Barcode |
+| owasp-java-html-sanitizer | com.googlecode.owasp-java-html-sanitizer | owasp-java-html-sanitizer |  20200615.1 | Optional | TextEditor |
 
 *Listed versions are tested and known to be working with PrimeFaces, other versions of these
 dependencies may also work but not tested.
