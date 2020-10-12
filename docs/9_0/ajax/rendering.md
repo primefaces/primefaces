@@ -1,9 +1,9 @@
 # Partial Rendering
 
-In addition to components like autoComplete, datatable, slider with built-in AJAX capabilities,
+In addition to components like `autoComplete`, `dataTable`, `slider` with built-in AJAX capabilities,
 PrimeFaces also provides a generic PPR (Partial Page Rendering) mechanism to update JSF
 components with AJAX. Several components are equipped with the common PPR attributes (e.g.
-update, process, onstart, oncomplete).
+`update`, `process`, `onstart`, `oncomplete`).
 
 ## Infrastructure
 
@@ -21,10 +21,10 @@ implementations scripts.
 **Getting Started**
 
 When using PPR you need to specify which component(s) to update with AJAX. If the component
-that triggers PPR request is at the same namingcontainer (eg. form) with the component(s) it
-renders, you can use the server ids directly. In this section although we’ll be using commandButton,
-same applies to every component that’s capable of PPR such as commandLink, poll,
-remoteCommand and etc.
+that triggers PPR request is at the same `NamingContainer` (eg. `form`) with the component(s) it
+renders, you can use the server ids directly. In this section although we’ll be using `commandButton`,
+same applies to every component that’s capable of PPR such as `commandLink`, `poll`,
+`remoteCommand` and etc.
 
 ```xhtml
 <h:form>
@@ -55,9 +55,9 @@ It is also possible to define the client id of the component to update.
 ```
 **Different NamingContainers**
 
-If your page has different naming containers (e.g. two forms), you also need to add the container id
-to search expression so that PPR can handle requests that are triggered inside a namingcontainer
-that updates another namingcontainer. Following is the suggested way using separator char as a
+If your page has different `NamingContainer` (e.g. two forms), you also need to add the container id
+to search expression so that PPR can handle requests that are triggered inside a `NamingContainer`
+that updates another `NamingContainer`. Following is the suggested way using separator char as a
 prefix, note that this uses same search algorithm as standard JSF 2 implementation;
 
 ```xhtml
@@ -93,16 +93,16 @@ whitespace or even both.
 
 ## Notifying Users
 
-ajaxStatus is the component to notify the users about the status of **global** AJAX requests. See the
-ajaxStatus section to get more information about the component.
+`ajaxStatus` is the component to notify the users about the status of **global** AJAX requests. See the
+`ajaxStatus` section to get more information about the component.
 
 **Global vs Non-Global**
 
-By default AJAX requests are global, meaning if there is an ajaxStatus component present on page, it
+By default AJAX requests are global, meaning if there is an `ajaxStatus` component present on page, it
 is triggered.
 
-If you want to do a "silent" request not to trigger ajaxStatus instead, set global to false. An example
-with commandButton would be;
+If you want to do a "silent" request not to trigger `ajaxStatus` instead, set `global` to `false`. An example
+with `commandButton` would be;
 
 ```xhtml
 <p:commandButton value="Silent" global="false" />
@@ -116,7 +116,7 @@ on a dynamic condition. In this case, it is not efficient to use declarative upd
 update areas since this will cause unnecessary updates.
 
 There may be cases where you need to define which component(s) to update at runtime rather than specifying it declaratively
- _update_ method is added to handle this case. In example below, button actionListener decides which part of the page to update on-the-fly.
+ _update_ method is added to handle this case. In example below, button `actionListener` decides which part of the page to update on-the-fly.
 
 ```xhtml
 <p:commandButton value="Save" action="#{bean.save}" />
