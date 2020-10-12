@@ -36,8 +36,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
+import org.primefaces.PrimeFaces;
 import org.primefaces.component.datatable.export.DataTableExporterFactory;
 import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.util.ResourceUtils;
 
 public class DataExporter implements ActionListener, StateHolder {
 
@@ -64,11 +66,13 @@ public class DataExporter implements ActionListener, StateHolder {
     private ValueExpression exporter;
 
     public DataExporter() {
+        ResourceUtils.addComponentResource(FacesContext.getCurrentInstance(), "filedownload/filedownload.js");
     }
 
     public DataExporter(ValueExpression target, ValueExpression type, ValueExpression fileName, ValueExpression pageOnly,
                         ValueExpression selectionOnly, ValueExpression encoding, MethodExpression preProcessor,
                         MethodExpression postProcessor, ValueExpression options, MethodExpression onTableRender) {
+        this();
         this.target = target;
         this.type = type;
         this.fileName = fileName;
@@ -134,7 +138,9 @@ public class DataExporter implements ActionListener, StateHolder {
 
             exporter.export(context, components, config);
 
-            context.responseComplete();
+            if (!PrimeFaces.current().isAjaxRequest()) {
+                context.responseComplete();
+            }
         }
         catch (IOException e) {
             throw new FacesException(e);
