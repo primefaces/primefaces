@@ -45,7 +45,7 @@ AjaxBehavior is attached to the component to ajaxify.
 </h:inputText>
 <h:outputText id="out" value="#{bean.text}" />
 ```
-In the example above, each time the input changes, an ajax request is sent to the server. When the
+In the example above, each time the input changes, an AJAX request is sent to the server. When the
 response is received output text with id "out" is updated with value of the input.
 
 ## Listener
@@ -71,7 +71,7 @@ public class CounterBean {
 ## Events
 Default client side events are defined by components that support client behaviors, for input
 components it is _onchange_ and for command components it is _onclick_. In order to override the DOM
-event to trigger the ajax request use _event_ option. In following example, ajax request is triggered
+event to trigger the AJAX request use _event_ option. In following example, AJAX request is triggered
 when key is up on input field.
 
 ```xhtml

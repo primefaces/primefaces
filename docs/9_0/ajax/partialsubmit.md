@@ -11,7 +11,7 @@ during server side processing but consume resources.
 
 PrimeFaces provides partialSubmit feature to reduce the network traffic and computing on client
 side. When `partialSubmit` is enabled, only data of components that will be partially processed on the
-server side are serialized. By default partialSubmit is disabled and you can enable it globally using a
+server side are serialized. By default `partialSubmit` is disabled and you can enable it globally using a
 context parameter.
 
 ```xml
