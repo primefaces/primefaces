@@ -272,15 +272,15 @@ public void init() {
 }
 ```
 
-## Date meta data model
+## Date metadata model
 
-You can use the `model` attribute to set meta data per date in the calendar. Meta data currently contains disabled, but more properties will be added later.
+You can use the `model` attribute to set metadata per date in the calendar. Metadata currently contains disabled, but more properties will be added later.
 
 Setting disabled dates is already possible using the corresponding attribute, I hear you think. But here comes the interesting part:
 
-### Lazy date meta data model
+### Lazy date metadata model
 
-This can be used to set the meta data when the calendar view changes. For example:
+This can be used to set the metadata when the calendar view changes. For example:
 
 ```xhtml
 <p:datePicker value="#{dateBean.date}" model="#{dateBean.lazyModel}" />
