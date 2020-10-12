@@ -995,7 +995,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -2618,7 +2618,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -3534,7 +3534,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -4161,7 +4161,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -4742,7 +4742,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -9827,7 +9827,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -10040,6 +10040,14 @@
             <name>dragDropSupport</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Callback to execute before the files are sent. If this callback returns false, the file upload request is not started.]]>
+            </description>
+            <name>onupload</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -11494,7 +11502,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -11967,7 +11975,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -12490,7 +12498,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -13101,7 +13109,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -13304,7 +13312,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -13812,7 +13820,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -14351,7 +14359,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -15028,7 +15036,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -17371,7 +17379,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -17632,7 +17640,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -18884,7 +18892,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -19456,7 +19464,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -19691,7 +19699,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -20534,7 +20542,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -21987,7 +21995,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -22206,7 +22214,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -22417,7 +22425,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -22733,7 +22741,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -22904,7 +22912,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -23091,7 +23099,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -23342,7 +23350,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -23521,7 +23529,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -23756,7 +23764,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -24136,7 +24144,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -24536,7 +24544,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -25106,7 +25114,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -27235,7 +27243,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -27462,7 +27470,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -28341,7 +28349,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -29669,7 +29677,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -30622,7 +30630,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
