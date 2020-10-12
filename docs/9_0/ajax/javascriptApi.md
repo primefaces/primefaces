@@ -6,7 +6,7 @@ The whole API consists of three properly namespaced simple javascript functions.
 [See the AJAX Javascript API Docs.](../jsdocs/modules/primefaces.ajax.html)
 
 ## PrimeFaces.ajax.Request
-Sends ajax requests that execute JSF lifecycle and retrieve partial output.
+Sends AJAX requests that execute JSF lifecycle and retrieve partial output.
 [Function signature](../jsdocs/interfaces/primefaces.ajax.request.html#handle)
 is as follows:
 
@@ -40,7 +40,7 @@ Suppose you have a JSF page called _createUser_ with a simple form and some inpu
     ... More components
 </h:form>
 ```
-You can post all the information with ajax using;
+You can post all the information with AJAX using;
 
 ```js
 PrimeFaces.ajax.Request.handle({

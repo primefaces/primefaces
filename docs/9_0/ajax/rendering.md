@@ -1,26 +1,26 @@
 # Partial Rendering
 
-In addition to components like autoComplete, datatable, slider with built-in ajax capabilities,
+In addition to components like autoComplete, datatable, slider with built-in AJAX capabilities,
 PrimeFaces also provides a generic PPR (Partial Page Rendering) mechanism to update JSF
-components with ajax. Several components are equipped with the common PPR attributes (e.g.
+components with AJAX. Several components are equipped with the common PPR attributes (e.g.
 update, process, onstart, oncomplete).
 
 ## Infrastructure
 
-PrimeFaces Ajax Framework is based on standard server side APIs of JSF 2. There are no additional
+PrimeFaces AJAX Framework is based on standard server side APIs of JSF 2. There are no additional
 artfacts like custom AjaxViewRoot, AjaxStateManager, AjaxViewHandler, Servlet Filters,
 HtmlParsers, PhaseListeners and so on. PrimeFaces aims to keep it clean, fast and lightweight.
 
 On client side rather than using client side API implementations of JSF implementations like
 Mojarra and MyFaces, PrimeFaces scripts are based on the most popular javascript library; jQuery
-which is far more tested, stable regarding ajax, DOM handling, DOM tree traversing than a JSF
+which is far more tested, stable regarding AJAX, DOM handling, DOM tree traversing than a JSF
 implementations scripts.
 
 ## Using IDs
 
 **Getting Started**
 
-When using PPR you need to specify which component(s) to update with ajax. If the component
+When using PPR you need to specify which component(s) to update with AJAX. If the component
 that triggers PPR request is at the same namingcontainer (eg. form) with the component(s) it
 renders, you can use the server ids directly. In this section although we’ll be using commandButton,
 same applies to every component that’s capable of PPR such as commandLink, poll,
@@ -93,12 +93,12 @@ whitespace or even both.
 
 ## Notifying Users
 
-ajaxStatus is the component to notify the users about the status of **global** ajax requests. See the
+ajaxStatus is the component to notify the users about the status of **global** AJAX requests. See the
 ajaxStatus section to get more information about the component.
 
 **Global vs Non-Global**
 
-By default ajax requests are global, meaning if there is an ajaxStatus component present on page, it
+By default AJAX requests are global, meaning if there is an ajaxStatus component present on page, it
 is triggered.
 
 If you want to do a "silent" request not to trigger ajaxStatus instead, set global to false. An example
