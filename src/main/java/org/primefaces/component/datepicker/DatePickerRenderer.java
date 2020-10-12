@@ -70,8 +70,8 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         if (model instanceof LazyDateMetaDataModel) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String clientId = datePicker.getClientId(context);
-            int year = Integer.valueOf(params.get(clientId + "_year"));
-            int month = Integer.valueOf(params.get(clientId + "_month")) + 1;
+            int year = Integer.parseInt(params.get(clientId + "_year"));
+            int month = Integer.parseInt(params.get(clientId + "_month")) + 1;
 
             LocalDate startDate = LocalDate.of(year, month, 1);
             LocalDate endDate = startDate.plusMonths(datePicker.getNumberOfMonths()).minusDays(1);
