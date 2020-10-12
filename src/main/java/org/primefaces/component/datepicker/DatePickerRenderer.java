@@ -41,12 +41,12 @@ import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.calendar.BaseCalendarRenderer;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.model.datepicker.DateMetaData;
-import org.primefaces.model.datepicker.DateMetaDataModel;
-import org.primefaces.model.datepicker.LazyDateMetaDataModel;
+import org.primefaces.model.datepicker.LazyDateMetadataModel;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
+import org.primefaces.model.datepicker.DateMetadata;
+import org.primefaces.model.datepicker.DateMetadataModel;
 
 public class DatePickerRenderer extends BaseCalendarRenderer {
 
@@ -55,19 +55,19 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         DatePicker datePicker = (DatePicker) component;
 
         if (context.getExternalContext().getRequestParameterMap().containsKey(datePicker.getClientId(context))) {
-            encodeDateMetaData(context, datePicker);
+            encodeDateMetadata(context, datePicker);
         }
         else {
             super.encodeEnd(context, component);
         }
     }
 
-    protected void encodeDateMetaData(FacesContext context, DatePicker datePicker) throws IOException {
-        DateMetaDataModel model = datePicker.getModel();
+    protected void encodeDateMetadata(FacesContext context, DatePicker datePicker) throws IOException {
+        DateMetadataModel model = datePicker.getModel();
         if (model == null) {
             return;
         }
-        if (model instanceof LazyDateMetaDataModel) {
+        if (model instanceof LazyDateMetadataModel) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String clientId = datePicker.getClientId(context);
             int year = Integer.parseInt(params.get(clientId + "_year"));
@@ -76,26 +76,26 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             LocalDate startDate = LocalDate.of(year, month, 1);
             LocalDate endDate = startDate.plusMonths(datePicker.getNumberOfMonths()).minusDays(1);
 
-            LazyDateMetaDataModel lazyModel = ((LazyDateMetaDataModel) model);
+            LazyDateMetadataModel lazyModel = ((LazyDateMetadataModel) model);
             lazyModel.clear();
-            lazyModel.loadDateMetaData(startDate, endDate);
+            lazyModel.loadDateMetadata(startDate, endDate);
         }
-        encodeDateMetaDataAsJSON(context, datePicker, model);
+        encodeDateMetadataAsJSON(context, datePicker, model);
     }
 
-    protected void encodeDateMetaDataAsJSON(FacesContext context, DatePicker datePicker, DateMetaDataModel model) throws IOException {
-        JSONObject jsonDateMetaData = new JSONObject();
+    protected void encodeDateMetadataAsJSON(FacesContext context, DatePicker datePicker, DateMetadataModel model) throws IOException {
+        JSONObject jsonDateMetadata = new JSONObject();
         String pattern = datePicker.calculateWidgetPattern();
-        for (Entry<LocalDate, DateMetaData> entry : model.getDateMetaData().entrySet()) {
+        for (Entry<LocalDate, DateMetadata> entry : model.getDateMetadata().entrySet()) {
             String date = CalendarUtils.getValueAsString(context, datePicker, entry.getKey(), pattern);
-            DateMetaData metaData = entry.getValue();
+            DateMetadata metaData = entry.getValue();
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("disabled", metaData.isDisabled());
-            jsonDateMetaData.put(date, jsonObject);
+            jsonDateMetadata.put(date, jsonObject);
         }
 
         JSONObject jsonResponse = new JSONObject();
-        jsonResponse.put("dateMetaData", jsonDateMetaData);
+        jsonResponse.put("dateMetadata", jsonDateMetadata);
 
         ResponseWriter writer = context.getResponseWriter();
         writer.write(jsonResponse.toString());
@@ -204,7 +204,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("timeSeparator", datepicker.getTimeSeparator(), ":")
             .attr("timeInput", datepicker.isTimeInput())
             .attr("touchable", ComponentUtils.isTouchable(context, datepicker), true)
-            .attr("lazyModel", datepicker.getModel() instanceof LazyDateMetaDataModel, false);
+            .attr("lazyModel", datepicker.getModel() instanceof LazyDateMetadataModel, false);
 
         List<Integer> disabledDays = datepicker.getDisabledDays();
         if (disabledDays != null) {

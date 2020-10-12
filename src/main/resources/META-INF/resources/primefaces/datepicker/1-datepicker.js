@@ -1,41 +1,41 @@
 /**
  * __PrimeFaces DatePicker Widget__
- * 
+ *
  * DatePicker is an input component used to select a date featuring display modes, paging, localization, ajax selection
  * and more.
- * 
+ *
  * DatePicker is designed to replace the old {@link Calendar|p:calendar} component.
- * 
+ *
  * To interact with the calendar, use the methods of this widget, or for more advanced usages, use the `datePicker`
  * JQueryUI widget plugin, for example:
- * 
+ *
  * ```javascript
  * PF("datePickerWidget").getDate();
  * PF("datePickerWidget").jq.datePicker("getDate");
- * 
+ *
  * PF("datePickerWidget").setDate(new Date());
  * PF("datePickerWidget").jq.datePicker("setDate", new Date());
- * 
+ *
  * PF("datePickerWidget").jq.datePicker("enableModality");
  * ```
- * 
+ *
  * @typedef PrimeFaces.widget.DatePicker.PreShowCallback User-defined callback invoked before the date picker overlay is
  * shown.
  * @this {PrimeFaces.widget.DatePickerCfg} PrimeFaces.widget.DatePicker.PreShowCallback
  * @param {JQueryPrimeDatePicker.PickerInstance} PrimeFaces.widget.DatePicker.PreShowCallback.datePicker The current
  * date picker instance.
- * 
+ *
  * @prop {JQuery} input The DOM element for the hidden input element with the selected date.
  * @prop {JQuery} jqEl The DOM element for the inline picker or the input.
  * @prop {boolean} refocusInput Whether focus should be put on the input again.
  * @prop {Date | Date[]} viewDateOption The date that is displayed in the date picker.
- * 
+ *
  * @interface {PrimeFaces.widget.DatePickerCfg} cfg The configuration for the {@link  DatePicker| DatePicker widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
- * @extends {JQueryPrimeDatePicker.PickerOptions} cfg 
- * 
+ * @extends {JQueryPrimeDatePicker.PickerOptions} cfg
+ *
  * @prop {string} cfg.mask Applies a mask using the pattern.
  * @prop {boolean} cfg.maskAutoClear Clears the field on blur when incomplete input is entered
  * @prop {string} cfg.maskSlotChar Placeholder in mask template.
@@ -139,7 +139,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         if(!this.cfg.inline) {
             this.jq.data('primefaces-overlay-target', this.id).find('*').data('primefaces-overlay-target', this.id);
         }
-        
+
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
@@ -185,7 +185,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             this.cfg.userLocale = locale;
         }
     },
-    
+
     /**
      * Initializes the mask on the input if using a mask and not an inline picker.
      * @private
@@ -296,10 +296,10 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                         PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                             widget: _self,
                             handle: function(content) {
-                                var dateMetaData = JSON.parse(content).dateMetaData;
+                                var dateMetadata = JSON.parse(content).dateMetadata;
                                 var disabledDates = [];
-                                for (date in dateMetaData) {
-                                    if (dateMetaData[date].disabled) {
+                                for (date in dateMetadata) {
+                                    if (dateMetadata[date].disabled) {
                                         disabledDates.push(date);
                                     }
                                 }
@@ -383,7 +383,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Sets the displayed visible calendar date. This refers to the currently displayed month page.
-     * @param {string | Date | Date[]} date The date to be shown in the calendar. 
+     * @param {string | Date | Date[]} date The date to be shown in the calendar.
      */
     setViewDate: function(date) {
         var viewDate = this.jq.data().primeDatePicker.parseValue(date);
@@ -392,7 +392,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Gets the displayed visible calendar date. This refers to the currently displayed month page.
-     * @return {Date | Date[]} The currently displayed date or dates. 
+     * @return {Date | Date[]} The currently displayed date or dates.
      */
     getViewDate: function() {
         return this.jq.datePicker().data().primeDatePicker.viewDate;

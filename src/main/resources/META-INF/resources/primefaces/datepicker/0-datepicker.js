@@ -1163,8 +1163,8 @@
         },
 
         renderDateView: function () {
-            this.monthsMetaData = this.createMonths(this.viewDate.getMonth(), this.viewDate.getFullYear());
-            var months = this.renderMonths(this.monthsMetaData);
+            this.monthsMetadata = this.createMonths(this.viewDate.getMonth(), this.viewDate.getFullYear());
+            var months = this.renderMonths(this.monthsMetadata);
 
             return months;
         },
@@ -1256,23 +1256,23 @@
             return months;
         },
 
-        renderMonths: function (monthsMetaData) {
+        renderMonths: function (monthsMetadata) {
             var monthsHtml = '';
 
-            for (var i = 0; i < monthsMetaData.length; i++) {
-                monthsHtml += this.renderMonth(monthsMetaData[i], i);
+            for (var i = 0; i < monthsMetadata.length; i++) {
+                monthsHtml += this.renderMonth(monthsMetadata[i], i);
             }
 
             return monthsHtml;
         },
 
-        renderMonth: function (monthMetaData, index) {
+        renderMonth: function (monthMetadata, index) {
             var weekDaysMin = this.createWeekDaysMin(),
                 weekDays = this.createWeekDays(),
                 backwardNavigator = (index === 0) ? this.renderBackwardNavigator() : '',
                 forwardNavigator = (this.options.numberOfMonths === 1) || (index === this.options.numberOfMonths - 1) ? this.renderForwardNavigator() : '',
-                title = this.renderTitle(monthMetaData),
-                dateViewGrid = this.renderDateViewGrid(monthMetaData, weekDaysMin, weekDays);
+                title = this.renderTitle(monthMetadata),
+                dateViewGrid = this.renderDateViewGrid(monthMetadata, weekDaysMin, weekDays);
 
             return ('<div class="ui-datepicker-group ui-widget-content">' +
                 '<div class="ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-all">' +
@@ -1347,9 +1347,9 @@
             return _options;
         },
 
-        renderTitle: function (monthMetaData) {
-            var month = this.renderTitleMonthElement(monthMetaData.month, monthMetaData.index),
-                year = this.renderTitleYearElement(monthMetaData.year, monthMetaData.index);
+        renderTitle: function (monthMetadata) {
+            var month = this.renderTitleMonthElement(monthMetadata.month, monthMetadata.index),
+                year = this.renderTitleYearElement(monthMetadata.year, monthMetadata.index);
 
             return (
                 '<div class="ui-datepicker-title">' +
@@ -1475,11 +1475,11 @@
             }
         },
 
-        renderDates: function (monthMetaData) {
+        renderDates: function (monthMetadata) {
             var datesHtml = '';
 
-            for (var i = 0; i < monthMetaData.dates.length; i++) {
-                var week = monthMetaData.dates[i];
+            for (var i = 0; i < monthMetadata.dates.length; i++) {
+                var week = monthMetadata.dates[i];
 
                 datesHtml += '<tr>' +
                     this.renderWeek(week) +
@@ -1489,9 +1489,9 @@
             return datesHtml;
         },
 
-        renderDateViewGrid: function (monthMetaData, weekDaysMin, weekDays) {
+        renderDateViewGrid: function (monthMetadata, weekDaysMin, weekDays) {
             var dayNames = this.renderDayNames(weekDaysMin, weekDays),
-                dates = this.renderDates(monthMetaData);
+                dates = this.renderDates(monthMetadata);
 
             return (
                 '<div class="ui-datepicker-calendar-container">' +
@@ -1678,12 +1678,12 @@
 
             var dateSelector = '.ui-datepicker-calendar td a';
             this.panel.off('click.datePicker-date', dateSelector).on('click.datePicker-date', dateSelector, null, function (event) {
-                if ($this.monthsMetaData) {
+                if ($this.monthsMetadata) {
                     var dayEl = $(this),
                         calendarIndex = dayEl.closest('.ui-datepicker-group').index(),
                         weekIndex = dayEl.closest('tr').index(),
                         dayIndex = dayEl.closest('td').index() - ($this.options.showWeek ? 1 : 0);
-                    $this.onDateSelect(event, $this.monthsMetaData[calendarIndex].dates[weekIndex][dayIndex]);
+                    $this.onDateSelect(event, $this.monthsMetadata[calendarIndex].dates[weekIndex][dayIndex]);
                 }
             });
         },
