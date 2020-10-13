@@ -43,17 +43,28 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 
+import org.primefaces.PrimeFaces;
+import org.primefaces.application.resource.DynamicContentType;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.Exporter;
 import org.primefaces.component.overlaypanel.OverlayPanel;
+import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.DynamicContentSrcBuilder;
 import org.primefaces.util.ResourceUtils;
 
 public abstract class DataTableExporter implements Exporter<DataTable> {
+
+    protected void ajaxDownload(DefaultStreamedContent content, FacesContext context) {
+        String uri = DynamicContentSrcBuilder.build(context, content, null, false, DynamicContentType.STREAMED_CONTENT, false, "");
+        String monitorKeyCookieName = ResourceUtils.getMonitorKeyCookieName(context, null);
+        PrimeFaces.current().executeScript(String.format("PrimeFaces.download('%s', '%s', '%s', '%s')",
+                uri, content.getContentType(), content.getName(), monitorKeyCookieName));
+    }
 
     protected enum ColumnType {
         HEADER("header"),

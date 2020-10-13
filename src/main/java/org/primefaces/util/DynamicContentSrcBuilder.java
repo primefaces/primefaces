@@ -66,7 +66,7 @@ public class DynamicContentSrcBuilder {
         else if (value instanceof StreamedContent) {
             StreamedContent streamedContent = (StreamedContent) value;
             ValueExpression ve = null;
-            if (attributeName != null && attributeName.length() > 0) {
+            if (!LangUtils.isValueBlank(attributeName)) {
                 ve = component.getValueExpression(attributeName);
             }
             ValueExpression expression = ValueExpressionAnalyzer.getExpression(

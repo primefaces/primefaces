@@ -28,7 +28,6 @@ import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.WorkbookUtil;
 import org.primefaces.PrimeFaces;
-import org.primefaces.application.resource.DynamicContentType;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
@@ -36,13 +35,8 @@ import org.primefaces.component.export.ExcelOptions;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.ExporterOptions;
 import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.DynamicContentSrcBuilder;
-import org.primefaces.util.LangUtils;
+import org.primefaces.util.*;
 
-import javax.el.ELContext;
-import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
 import javax.faces.context.ExternalContext;
@@ -60,8 +54,6 @@ public class DataTableExcelExporter extends DataTableExporter {
     private CellStyle cellStyle;
     private CellStyle facetStyle;
     private Workbook wb;
-
-    private ValueExpression monitorKey;
 
     @Override
     protected void preExport(FacesContext context, ExportConfiguration config) throws IOException {
@@ -243,20 +235,14 @@ public class DataTableExcelExporter extends DataTableExporter {
         return wb.createSheet(sheetName);
     }
 
-
-    protected String getMonitorKeyCookieName(FacesContext context, ELContext elContext) {
-        String monitorKeyCookieName = Constants.DOWNLOAD_COOKIE + context.getViewRoot().getViewId().replace('/', '_');
-        if (monitorKey != null) {
-            String evaluated = (String) monitorKey.getValue(elContext);
-            if (!LangUtils.isValueBlank(evaluated)) {
-                monitorKeyCookieName += "_" + evaluated;
-            }
-        }
-        return monitorKeyCookieName;
-    }
-
     protected void ajaxDownload(FacesContext context, Workbook generatedExcel, String filename) throws IOException {
-        String filenameWithExtension = filename + ".xls";
+        String filenameWithExtension = filename;
+        if ("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet".equals(getContentType())) {
+            filenameWithExtension += ".xlsx";
+        }
+        else {
+            filenameWithExtension += ".xls";
+        }
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         generatedExcel.write(out);
 
@@ -266,10 +252,7 @@ public class DataTableExcelExporter extends DataTableExporter {
                 .stream(() -> new ByteArrayInputStream(out.toByteArray()))
                 .build();
 
-        String uri = DynamicContentSrcBuilder.build(context, content, null, false, DynamicContentType.STREAMED_CONTENT, false, "");
-        String monitorKeyCookieName = getMonitorKeyCookieName(context, context.getELContext());
-        PrimeFaces.current().executeScript(String.format("PrimeFaces.download('%s', '%s', '%s', '%s')",
-                uri, getContentType(), filenameWithExtension, monitorKeyCookieName));
+        ajaxDownload(content, context);
     }
 
     protected void writeExcelToResponse(FacesContext context, Workbook generatedExcel, String filename) throws IOException {

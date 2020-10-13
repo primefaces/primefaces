@@ -28,11 +28,13 @@ import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
+import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.ExporterOptions;
+import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
 
@@ -41,6 +43,7 @@ import javax.faces.component.UIPanel;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.awt.Color;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -106,7 +109,12 @@ public class DataTablePDFExporter extends DataTableExporter {
             config.getPostProcessor().invoke(context.getELContext(), new Object[]{document});
         }
 
-        writePDFToResponse(context, baos, config.getOutputFileName());
+        if (PrimeFaces.current().isAjaxRequest()) {
+            ajaxDownload(context, baos, config.getOutputFileName());
+        }
+        else {
+            writePDFToResponse(context, baos, config.getOutputFileName());
+        }
 
         reset();
     }
@@ -284,6 +292,17 @@ public class DataTablePDFExporter extends DataTableExporter {
 
             pdfTable.addCell(new Paragraph(builder.toString(), font));
         }
+    }
+    protected void ajaxDownload(FacesContext context, ByteArrayOutputStream baos, String filename) throws IOException {
+        String filenameWithExtension = filename + ".pdf";
+
+        DefaultStreamedContent content = DefaultStreamedContent.builder()
+                .name(filenameWithExtension)
+                .contentType("application/pdf")
+                .stream(() -> new ByteArrayInputStream(baos.toByteArray()))
+                .build();
+
+        ajaxDownload(content, context);
     }
 
     protected void writePDFToResponse(FacesContext context, ByteArrayOutputStream baos, String fileName) throws IOException {
