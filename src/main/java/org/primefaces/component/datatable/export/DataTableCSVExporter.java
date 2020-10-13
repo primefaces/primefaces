@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.datatable.export;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Iterator;
@@ -33,12 +34,14 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.CSVOptions;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.ExporterOptions;
+import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 
@@ -72,7 +75,6 @@ public class DataTableCSVExporter extends DataTableExporter {
     @Override
     public void doExport(FacesContext context, DataTable table, ExportConfiguration config, int index) throws IOException {
         ExternalContext externalContext = context.getExternalContext();
-        configureResponse(context, config.getOutputFileName(), config.getEncodingType());
         sb = createStringBuilder();
 
         if (config.getPreProcessor() != null) {
@@ -99,10 +101,24 @@ public class DataTableCSVExporter extends DataTableExporter {
             config.getPostProcessor().invoke(context.getELContext(), new Object[]{sb});
         }
 
-        Writer writer = externalContext.getResponseOutputWriter();
-        writer.write(sb.toString());
-        writer.flush();
-        writer.close();
+        if (PrimeFaces.current().isAjaxRequest()) {
+            String filenameWithExtension = config.getOutputFileName() + ".csv";
+
+            DefaultStreamedContent content = DefaultStreamedContent.builder()
+                    .name(filenameWithExtension)
+                    .contentType("text/csv; charset=" + config.getEncodingType())
+                    .stream(() -> new ByteArrayInputStream(sb.toString().getBytes()))
+                    .build();
+
+            ajaxDownload(content, context);
+        }
+        else {
+            configureResponse(context, config.getOutputFileName(), config.getEncodingType());
+            Writer writer = externalContext.getResponseOutputWriter();
+            writer.write(sb.toString());
+            writer.flush();
+            writer.close();
+        }
     }
 
     protected void addColumnFacets(StringBuilder builder, DataTable table, ColumnType columnType) throws IOException {

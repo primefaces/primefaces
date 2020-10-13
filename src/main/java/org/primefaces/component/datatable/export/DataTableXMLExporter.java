@@ -23,10 +23,12 @@
  */
 package org.primefaces.component.datatable.export;
 
+import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExportConfiguration;
+import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.EscapeUtils;
 
@@ -34,10 +36,7 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.List;
 
 public class DataTableXMLExporter extends DataTableExporter {
@@ -45,7 +44,6 @@ public class DataTableXMLExporter extends DataTableExporter {
     @Override
     public void doExport(FacesContext context, DataTable table, ExportConfiguration config, int index) throws IOException {
         ExternalContext externalContext = context.getExternalContext();
-        configureResponse(context, config.getOutputFileName());
         StringBuilder builder = new StringBuilder();
 
         if (config.getPreProcessor() != null) {
@@ -73,12 +71,27 @@ public class DataTableXMLExporter extends DataTableExporter {
             config.getPostProcessor().invoke(context.getELContext(), new Object[]{builder});
         }
 
-        OutputStream os = externalContext.getResponseOutputStream();
-        OutputStreamWriter osw = new OutputStreamWriter(os, config.getEncodingType());
-        PrintWriter writer = new PrintWriter(osw);
-        writer.write(builder.toString());
-        writer.flush();
-        writer.close();
+        if (PrimeFaces.current().isAjaxRequest()) {
+            String filenameWithExtension = config.getOutputFileName() + ".xml";
+
+            DefaultStreamedContent content = DefaultStreamedContent.builder()
+                    .name(filenameWithExtension)
+                    .contentType("text/xml")
+                    .stream(() -> new ByteArrayInputStream(builder.toString().getBytes()))
+                    .build();
+
+            ajaxDownload(content, context);
+        }
+        else {
+            configureResponse(context, config.getOutputFileName());
+
+            OutputStream os = externalContext.getResponseOutputStream();
+            OutputStreamWriter osw = new OutputStreamWriter(os, config.getEncodingType());
+            PrintWriter writer = new PrintWriter(osw);
+            writer.write(builder.toString());
+            writer.flush();
+            writer.close();
+        }
     }
 
     @Override
