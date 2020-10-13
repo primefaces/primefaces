@@ -174,7 +174,13 @@
  * table.
  * @prop {string} cfg.tabindex The value of the `tabindex` attribute for this data table.
  * @prop {boolean} cfg.allowUnsorting When true columns can be unsorted upon clicking sort.
- * @prop {boolean} cfg.virtualScroll Loads data on demand as the scrollbar gets close to the bottom.
+ * @prop {boolean} cfg.virtualScroll Loads data on demand as the scrollbar gets close to the bottom. 
+ * 
+ * 
+ * @interface {PrimeFaces.widget.DataTable.WidthInfo} WidthInfo Describes the width information of a DOM element.
+ * @prop {number | string} WidthInfo.width The width of the element. It's either a unitless numeric pixel value or a
+ * string containing the width including an unit.
+ * @prop {boolean} WidthInfo.isOuterWidth Tells whether the width includes the border-box or not. 
  */
 PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
@@ -1567,6 +1573,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Retrieves width information of the given column.
+     * @private
+     * @param {JQuery} col The column of which the width should be retrieved.
+     * @param {boolean} isIncludeResizeableState Tells whether the width should be retrieved from the resizable state,
+     * if it exists.
+     * @return {PrimeFaces.widget.DataTable.WidthInfo} The width information of the given column.
+     */
     getColumnWidthInfo: function(col, isIncludeResizeableState) {
         var width, isOuterWidth;
 
@@ -1591,6 +1605,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         };
     },
 
+    /**
+     * Applies the width information to the given element.
+     * @private
+     * @param {JQuery} element The element to which the width should be applied.
+     * @param {PrimeFaces.widget.DataTable.WidthInfo} widthInfo The width information (retrieved using the method {@link getColumnWidthInfo}).
+     */
     applyWidthInfo: function(element, widthInfo) {
         if(widthInfo.isOuterWidth) {
             element.outerWidth(widthInfo.width);
