@@ -47,6 +47,7 @@ emptyMessage | No records found. | String | Text to display when there is no dat
 layout | tabular | String | Layout approach to use, valid values are "tabular" and "grid" for responsive grid.
 multiViewState | false | Boolean | Whether to keep DataGrid state across views, defaults to false.
 touchable | true | Boolean | Enable touch support if browser detection supports it.
+flex | false | Boolean | Use modern PrimeFlex-Grid instead of classic Grid CSS. (primeflex.css must be included into the template.xhtml)
 
 ## Getting started with the DataGrid
 A list of cars will be used throughout the datagrid, datalist and datatable examples.
