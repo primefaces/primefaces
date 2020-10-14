@@ -14,6 +14,10 @@
  * @typedef PrimeFaces.widget.FileUpload.OnCancelCallback Callback that is invoked when a file upload was canceled. See
  * also {@link FileUploadCfg.oncancel}.
  * @this {PrimeFaces.widget.FileUpload} PrimeFaces.widget.FileUpload.OnCancelCallback
+ * 
+ * @typedef PrimeFaces.widget.FileUpload.OnUploadCallback Callback to execute before the files are sent. 
+ * If this callback returns false, the file upload request is not started. See also {@link FileUploadCfg.onupload}.
+ * @this {PrimeFaces.widget.FileUpload} PrimeFaces.widget.FileUpload.OnUploadCallback
  *
  * @typedef PrimeFaces.widget.FileUpload.OnCompleteCallback Callback that is invoked after a file was uploaded to the
  * server successfully. See also {@link FileUploadCfg.oncomplete}.
@@ -80,6 +84,8 @@
  * @prop {number} cfg.maxFileSize Maximum allowed size in bytes for files.
  * @prop {string} cfg.messageTemplate Message template to use when displaying file validation errors.
  * @prop {PrimeFaces.widget.FileUpload.OnAddCallback} cfg.onAdd Callback invoked when an uploaded file is added.
+ * @prop {PrimeFaces.widget.FileUpload.OnUploadCallback} cfg.onupload Callback to execute before the files are sent. 
+ * If this callback returns false, the file upload request is not started.
  * @prop {PrimeFaces.widget.FileUpload.OnCancelCallback} cfg.oncancel Callback that is invoked when a file upload was
  * canceled.
  * @prop {PrimeFaces.widget.FileUpload.OnCompleteCallback} cfg.oncomplete Callback that is invoked after a file was
@@ -485,12 +491,19 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         });
 
         this.uploadButton.on('click.fileupload', function(e) {
+            e.preventDefault();
+
+            // GitHub #6396 allow cancel of upload with callback
+            if ($this.cfg.onupload) {
+                if ($this.cfg.onupload.call($this) === false) {
+                    return false;
+                }
+            }
+
             $this.disableButton($this.uploadButton);
             $this.disableButton($this.cancelButton);
 
             $this.upload();
-
-            e.preventDefault();
         });
 
         this.cancelButton.on('click.fileupload', function(e) {
