@@ -33,12 +33,12 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import org.primefaces.event.DateViewChangeEvent;
 import org.primefaces.event.SelectEvent;
-import org.primefaces.model.datepicker.DateMetaData;
-import org.primefaces.model.datepicker.DateMetaDataModel;
-import org.primefaces.model.datepicker.LazyDateMetaDataModel;
+import org.primefaces.model.datepicker.LazyDateMetadataModel;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.model.datepicker.DateMetadata;
+import org.primefaces.model.datepicker.DateMetadataModel;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -323,18 +323,18 @@ public class DatePicker extends DatePickerBase {
         if (disabledDates != null) {
             return disabledDates;
         }
-        DateMetaDataModel model = getModel();
-        if (model instanceof LazyDateMetaDataModel) {
+        DateMetadataModel model = getModel();
+        if (model instanceof LazyDateMetadataModel) {
             LocalDate startDate = getInitalStartDate(context);
             LocalDate endDate = startDate.plusMonths(getNumberOfMonths()).minusDays(1);
 
-            LazyDateMetaDataModel lazyModel = ((LazyDateMetaDataModel) model);
+            LazyDateMetadataModel lazyModel = ((LazyDateMetadataModel) model);
             lazyModel.clear();
-            lazyModel.loadDateMetaData(startDate, endDate);
+            lazyModel.loadDateMetadata(startDate, endDate);
         }
         if (model != null) {
             disabledDates = new ArrayList<>();
-            for (Map.Entry<LocalDate, DateMetaData> entry : model.getDateMetaData().entrySet()) {
+            for (Map.Entry<LocalDate, DateMetadata> entry : model.getDateMetadata().entrySet()) {
                 if (entry.getValue().isDisabled()) {
                     disabledDates.add(entry.getKey());
                 }

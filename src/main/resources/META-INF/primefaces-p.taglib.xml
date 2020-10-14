@@ -31517,7 +31517,7 @@
             </description>
             <name>model</name>
             <required>false</required>
-            <type>org.primefaces.model.datepicker.DateMetaDataModel</type>
+            <type>org.primefaces.model.datepicker.DateMetadataModel</type>
         </attribute>
     </tag>
 </facelet-taglib>

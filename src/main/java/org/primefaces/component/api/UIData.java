@@ -123,6 +123,10 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
         touchable;
     }
 
+    protected enum InternalPropertyKeys {
+        rowsInitialValue;
+    }
+
     public boolean isPaginator() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.paginator, false);
     }
@@ -157,6 +161,13 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
 
     @Override
     public void setRows(int rows) {
+        if (getStateHelper().eval(InternalPropertyKeys.rowsInitialValue) == null) {
+            int rowsOld = getRows();
+            if (rowsOld != 0) {
+                getStateHelper().put(UIData.InternalPropertyKeys.rowsInitialValue, rowsOld);
+            }
+        }
+
         if (rows < 0) {
             throw new IllegalArgumentException(String.valueOf(rows));
         }
@@ -259,7 +270,20 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
     }
 
     public void resetRows() {
-        getStateHelper().remove(PropertyKeys.rows);
+        ELContext elContext = getFacesContext().getELContext();
+        ValueExpression rowsVe = ValueExpressionAnalyzer.getExpression(
+                elContext, getValueExpression(PropertyKeys.rows.name()));
+        if (rowsVe != null) {
+            //ValueExpression --> remove state to ensure the VE is re-evaluated
+            getStateHelper().remove(PropertyKeys.rows);
+        }
+        else {
+            //normal attribute value --> restore inital rows
+            Object rows = getStateHelper().eval(InternalPropertyKeys.rowsInitialValue);
+            if (rows != null) {
+                setRows((int) rows);
+            }
+        }
     }
 
     public void calculateFirst() {

@@ -28,28 +28,28 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DefaultDateMetaDataModel implements DateMetaDataModel, Serializable {
+public class DefaultDateMetadataModel implements DateMetadataModel, Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Map<LocalDate, DateMetaData> dateMetaData;
+    private final Map<LocalDate, DateMetadata> dateMetadata;
 
-    public DefaultDateMetaDataModel() {
-        this.dateMetaData = new HashMap<>();
+    public DefaultDateMetadataModel() {
+        this.dateMetadata = new HashMap<>();
     }
 
     @Override
-    public Map<LocalDate, DateMetaData> getDateMetaData() {
-        return dateMetaData;
+    public Map<LocalDate, DateMetadata> getDateMetadata() {
+        return dateMetadata;
     }
 
     @Override
     public void clear() {
-        dateMetaData.clear();
+        dateMetadata.clear();
     }
 
     @Override
-    public void add(LocalDate localDate, DateMetaData metaData) {
-        dateMetaData.put(localDate, metaData);
+    public void add(LocalDate localDate, DateMetadata metadata) {
+        dateMetadata.put(localDate, metadata);
     }
 }

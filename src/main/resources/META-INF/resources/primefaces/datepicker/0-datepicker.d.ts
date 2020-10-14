@@ -1,6 +1,6 @@
 /**
  * Namespace for the JQuery UI PrimeFaces date picker.
- * 
+ *
  * The Prime date picker is a JQuery UI widget used to select a date featuring display modes, paging, localization,
  * AJAX selection and more.
  */
@@ -243,7 +243,7 @@ declare namespace JQueryPrimeDatePicker {
         dayNames: [string, string, string, string, string, string, string];
 
         /**
-         * Short names of the weekdays, starting at `Sunday` (`Sun`). 
+         * Short names of the weekdays, starting at `Sunday` (`Sun`).
          */
         dayNamesShort: [string, string, string, string, string, string, string];
 
@@ -373,7 +373,7 @@ declare namespace JQueryPrimeDatePicker {
         icon: string;
 
         /**
-         * Whether the date picker overlay is shown when the element focused. 
+         * Whether the date picker overlay is shown when the element focused.
          */
         showOnFocus: boolean;
 
@@ -706,7 +706,7 @@ declare namespace JQueryPrimeDatePicker {
         /**
          * Updates the currently displayed date range.
          * @param event Event that occurred.
-         * @param value The date to be displayed. 
+         * @param value The date to be displayed.
          */
         updateViewDate(event: JQuery.Event, value: Date): void;
 
@@ -724,7 +724,7 @@ declare namespace JQueryPrimeDatePicker {
         /**
          * Parses a string that either represents a date time, a list of date times, or a date time range, depending on
          * the current {@link PickerOptions.selectionMode} setting.
-         * 
+         *
          * When the given value is a date time, a list of date times, or a date time range already, returns that value
          * unchanged.
          * @param text The string with the date time, date times, or date time range to parse.
@@ -734,7 +734,7 @@ declare namespace JQueryPrimeDatePicker {
 
         /**
          * Parses a string that either represent a date time, a list of date times, or a date time range, depending on
-         * the current {@link PickerOptions.selectionMode} setting. 
+         * the current {@link PickerOptions.selectionMode} setting.
          * @param text The string with the date time, date times, or date time range to parse.
          * @return The parsed date time, date times, or date time range.
          */
@@ -759,12 +759,12 @@ declare namespace JQueryPrimeDatePicker {
         /**
          * Parses a string with a date and a time.
          * @param text The date time string to parse.
-         * @return The parsed date. 
+         * @return The parsed date.
          */
         parseDateTime(text: string): Date;
 
         /**
-          * Parses a texual representation of a date that is stored in the {@link PickerOptions.disabledDates} list. 
+          * Parses a texual representation of a date that is stored in the {@link PickerOptions.disabledDates} list.
           * @param option Value to parse as a date.
           * @return The parsed date.
           */
@@ -854,19 +854,19 @@ declare namespace JQueryPrimeDatePicker {
 
         /**
          * Creates a list of super short day names in a week.
-         * @return A list with the super sort day names in a week. 
+         * @return A list with the super sort day names in a week.
          */
         createWeekDaysMin(): string[];
 
         /**
          * Creates a list of short day names in a week.
-         * @return A list with the sort day names in a week. 
+         * @return A list with the sort day names in a week.
          */
         createWeekDaysShort(): string[];
 
         /**
          * Creates a list of long day names in a week.
-         * @return A list with the long day names in a week. 
+         * @return A list with the long day names in a week.
          */
         createWeekDays(): string[];
 
@@ -1008,7 +1008,7 @@ declare namespace JQueryPrimeDatePicker {
         renderDatePickerPanel(): void;
 
         /**
-         * Creates the HTML snippet for the panel elements. 
+         * Creates the HTML snippet for the panel elements.
          * @return The rendered HTML snippet.
          */
         renderPanelElements(): string;
@@ -1052,18 +1052,18 @@ declare namespace JQueryPrimeDatePicker {
 
         /**
          * Creates the HTML snippet for the given days.
-         * @param monthsMetaData List of days to render.
+         * @param monthsMetadata List of days to render.
          * @return The rendered HTML snippet.
          */
-        renderMonths(monthsMetaData: DayListInMonth[]): string;
+        renderMonths(monthsMetadata: DayListInMonth[]): string;
 
         /**
          * Creates the HTML snippet for the given days in a month.
-         * @param monthMetaData List of days to render
+         * @param monthMetadata List of days to render
          * @param index Month to which the days belong.
          * @return The rendered HTML snippet.
          */
-        renderMonth(monthMetaData: DayListInMonth, index: MonthOfTheYear): string;
+        renderMonth(monthMetadata: DayListInMonth, index: MonthOfTheYear): string;
 
         /**
          * Creates the HTML snippet for the button for navigating to the previous month.
@@ -1111,10 +1111,10 @@ declare namespace JQueryPrimeDatePicker {
 
         /**
          * Creates the HTML snippet for the title bar of the given month.
-         * @param monthMetaData Month to use.
+         * @param monthMetadata Month to use.
          * @return The rendered HTML snippet.
          */
-        renderTitle(monthMetaData: DayListInMonth): string;
+        renderTitle(monthMetadata: DayListInMonth): string;
 
         /**
          * Creates the HTML snippet for the names of the given days.
@@ -1141,19 +1141,19 @@ declare namespace JQueryPrimeDatePicker {
 
         /**
          * Creates the HTML snippet for the given dates.
-         * @param monthMetaData List of dates to render.
+         * @param monthMetadata List of dates to render.
          * @return The rendered HTML snippet.
          */
-        renderDates(monthMetaData: DayListInMonth): string;
+        renderDates(monthMetadata: DayListInMonth): string;
 
         /**
          * Creates the HTML snippet for the date view grid of the given month.
-         * @param monthMetaData Month to use.
+         * @param monthMetadata Month to use.
          * @param weekDaysMin List of super short week day names.
          * @param weekDays List of long week names.
          * @return The rendered HTML snippet.
          */
-        renderDateViewGrid(monthMetaData: DayListInMonth, weekDaysMin: string[], weekDays: string[]): string;
+        renderDateViewGrid(monthMetadata: DayListInMonth, weekDaysMin: string[], weekDays: string[]): string;
 
         /**
          * Creates the HTML snippet for the hour picker for selecting an hour.
@@ -1443,7 +1443,7 @@ declare namespace JQueryPrimeDatePicker {
         container: JQuery;
 
         /**
-         * The hidden input field containing the currently selected value. 
+         * The hidden input field containing the currently selected value.
          */
         inputfield: JQuery;
 
@@ -1470,7 +1470,7 @@ declare namespace JQueryPrimeDatePicker {
         /**
          * List of all days in the current year.
          */
-        monthsMetaData: DayListInMonth[];
+        monthsMetadata: DayListInMonth[];
 
         /**
          * Mask for the modal overlay.
@@ -1531,7 +1531,7 @@ interface JQuery {
      * Finds the value of the given option.
      * @typeparam K Name of an option to retrieve.
      * @param method Name of the method to call on the widget.
-     * @param optionName Name of an option to retrieve. 
+     * @param optionName Name of an option to retrieve.
      * @return The value of the given option.
      */
     datePicker<
@@ -1542,7 +1542,7 @@ interface JQuery {
      * Sets the value of the given option to the given value.
      * @typeparam K Name of an option to set.
      * @param method Name of the method to call on the widget.
-     * @param optionName Name of an option to set. 
+     * @param optionName Name of an option to set.
      * @param optionValue Value of the option to set.
      * @return This JQuery instance for chaining.
      */

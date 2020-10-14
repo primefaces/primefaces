@@ -25,13 +25,13 @@ package org.primefaces.model.datepicker;
 
 import java.io.Serializable;
 
-public class DefaultDateMetaData implements DateMetaData, Serializable {
+public class DefaultDateMetadata implements DateMetadata, Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private boolean disabled;
 
-    public DefaultDateMetaData() {
+    public DefaultDateMetadata() {
     }
 
     @Override
@@ -61,13 +61,13 @@ public class DefaultDateMetaData implements DateMetaData, Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final DefaultDateMetaData other = (DefaultDateMetaData) obj;
+        final DefaultDateMetadata other = (DefaultDateMetadata) obj;
         return this.disabled == other.disabled;
     }
 
     @Override
     public String toString() {
-        return "DefaultDateMetaData{" + "disabled=" + disabled + '}';
+        return "DefaultDateMetadata{" + "disabled=" + disabled + '}';
     }
 
     public static Builder builder() {
@@ -76,19 +76,19 @@ public class DefaultDateMetaData implements DateMetaData, Serializable {
 
     public static final class Builder {
 
-        private final DefaultDateMetaData dateMetaData;
+        private final DefaultDateMetadata dateMetadata;
 
         private Builder() {
-            dateMetaData = new DefaultDateMetaData();
+            dateMetadata = new DefaultDateMetadata();
         }
 
         public Builder disabled(boolean disabled) {
-            dateMetaData.setDisabled(disabled);
+            dateMetadata.setDisabled(disabled);
             return this;
         }
 
-        public DefaultDateMetaData build() {
-            return dateMetaData;
+        public DefaultDateMetadata build() {
+            return dateMetadata;
         }
     }
 }

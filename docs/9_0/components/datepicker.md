@@ -58,7 +58,7 @@ ajax selection and more.
 | maxlength | null | Integer | Maximum number of characters that may be entered in this field.
 | mindate | null | java.time.LocalDate, java.time.LocalDateTime, java.time.LocalTime, java.util.Date (deprecated) or String | Sets DatePicker's minimum selectable value; Also used for validation on the server-side.
 | monthNavigator | false | Boolean | Whether to show the month navigator
-| model | null | org.primefaces.model.datepicker.DateMetaDataModel | Model with meta data for certain dates, like disabled
+| model | null | org.primefaces.model.datepicker.DateMetadataModel | Model with meta data for certain dates, like disabled
 | numberOfMonths | 1 | Integer | Number of months to display concurrently.
 | onMonthChange | null | Function | Javascript function to invoke when month changes.
 | onYearChange | null | Function | Javascript function to invoke when year changes.
@@ -208,9 +208,9 @@ Multiple dates or a range of dates can be selected by setting the _selectionMode
 ```
 
 ## Ajax Behavior Events
-The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
-  
-**Default Event:** `valueChange`  
+The following AJAX behavior events are available for this component. If no event is specified the default event is called.
+
+**Default Event:** `valueChange`
 **Available Events:** `blur, change, click, close, contextmenu, copy, cut, dateSelect, dblclick, drag, dragend, dragenter, dragleave, dragover, dragstart, drop, focus, input, invalid, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, paste, reset, scroll, search, select, valueChange, viewChange, wheel`
 
 **Custom Events:**
@@ -272,15 +272,15 @@ public void init() {
 }
 ```
 
-## Date meta data model
+## Date metadata model
 
-You can use the `model` attribute to set meta data per date in the calendar. Meta data currently contains disabled, but more properties will be added later.
+You can use the `model` attribute to set metadata per date in the calendar. Metadata currently contains disabled, but more properties will be added later.
 
 Setting disabled dates is already possible using the corresponding attribute, I hear you think. But here comes the interesting part:
 
-### Lazy date meta data model
+### Lazy date metadata model
 
-This can be used to set the meta data when the calendar view changes. For example:
+This can be used to set the metadata when the calendar view changes. For example:
 
 ```xhtml
 <p:datePicker value="#{dateBean.date}" model="#{dateBean.lazyModel}" />
@@ -288,16 +288,16 @@ This can be used to set the meta data when the calendar view changes. For exampl
 
 ```java
 private LocalDate date;
-private DateMetaDataModel lazyModel;
+private DateMetadataModel lazyModel;
 
 @PostConstruct
 public void init() {
-    DefaultDateMetaData metaDataDisabled = DefaultDateMetaData.builder().disabled(true).build();
-    lazyModel = new LazyDateMetaDataModel() {
+    DefaultDateMetadata metadataDisabled = DefaultDateMetadata.builder().disabled(true).build();
+    lazyModel = new LazyDateMetadataModel() {
         @Override
-        public void loadDateMetaData(LocalDate start, LocalDate end) {
-            add(someDate, metaDataDisabled);
-            add(someOtherDate, metaDataDisabled);
+        public void loadDateMetadata(LocalDate start, LocalDate end) {
+            add(someDate, metadataDisabled);
+            add(someOtherDate, metadataDisabled);
         }
     };
 }

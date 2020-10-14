@@ -24,9 +24,13 @@
 package org.primefaces.model.datepicker;
 
 import java.time.LocalDate;
+import java.util.Map;
 
-public abstract class LazyDateMetaDataModel extends DefaultDateMetaDataModel {
+public interface DateMetadataModel {
 
-    public abstract void loadDateMetaData(LocalDate start, LocalDate end);
+    Map<LocalDate, DateMetadata> getDateMetadata();
 
+    void clear();
+
+    void add(LocalDate localDate, DateMetadata metadata);
 }

@@ -23,7 +23,9 @@
  */
 package org.primefaces.model.datepicker;
 
-public interface DateMetaData {
+import java.io.Serializable;
+
+public interface DateMetadata extends Serializable {
 
     boolean isDisabled();
 

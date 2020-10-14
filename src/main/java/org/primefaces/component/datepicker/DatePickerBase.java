@@ -32,8 +32,8 @@ import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.api.Widget;
-import org.primefaces.model.datepicker.DateMetaDataModel;
 import org.primefaces.util.CalendarUtils;
+import org.primefaces.model.datepicker.DateMetadataModel;
 
 public abstract class DatePickerBase extends UICalendar implements Widget, InputHolder, MixedClientBehaviorHolder {
 
@@ -427,11 +427,11 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         getStateHelper().put(PropertyKeys.weekCalculator, weekCalculator);
     }
 
-    public DateMetaDataModel getModel() {
-        return (DateMetaDataModel) getStateHelper().eval(PropertyKeys.model, null);
+    public DateMetadataModel getModel() {
+        return (DateMetadataModel) getStateHelper().eval(PropertyKeys.model, null);
     }
 
-    public void setModel(DateMetaDataModel model) {
+    public void setModel(DateMetadataModel model) {
         getStateHelper().put(PropertyKeys.model, model);
     }
 
