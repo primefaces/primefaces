@@ -94,4 +94,5 @@ parent | null | MindmapNode | Parent node instance.
 **Tips**
 
 - IE 7 and IE 8 are not supported due to technical limitations, IE 9 is supported.
+- The `ManagedBean` must be `@SessionScoped` to support navigating to nodes deeper than level 1 below the root
 
