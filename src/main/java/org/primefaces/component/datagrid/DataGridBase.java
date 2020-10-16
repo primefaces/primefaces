@@ -29,7 +29,7 @@ import org.primefaces.component.api.*;
 import org.primefaces.component.datalist.DataListBase;
 
 public abstract class DataGridBase extends UIData
-        implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable, MultiViewStateAware<DataGridState> {
+        implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable, FlexAware, MultiViewStateAware<DataGridState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -44,7 +44,8 @@ public abstract class DataGridBase extends UIData
         emptyMessage,
         layout,
         rowStyle,
-        rowStyleClass
+        rowStyleClass,
+        flex
     }
 
     public DataGridBase() {
@@ -127,5 +128,14 @@ public abstract class DataGridBase extends UIData
 
     public void setRowStyleClass(String rowStyleClass) {
         getStateHelper().put(PropertyKeys.rowStyleClass, rowStyleClass);
+    }
+
+    @Override
+    public boolean isFlex() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.flex, false);
+    }
+
+    public void setFlex(boolean flex) {
+        getStateHelper().put(PropertyKeys.flex, flex);
     }
 }

@@ -97,11 +97,13 @@ public class DataGridRenderer extends DataRenderer {
         boolean empty = grid.getRowCount() == 0;
         String layout = grid.getLayout();
         String paginatorPosition = grid.getPaginatorPosition();
+        boolean flex = ComponentUtils.isFlex(context, grid);
+        String gridContentClass = flex ? DataGrid.FLEX_GRID_CONTENT_CLASS : DataGrid.GRID_CONTENT_CLASS;
         String style = grid.getStyle();
         String styleClass = grid.getStyleClass() == null ? DataGrid.DATAGRID_CLASS : DataGrid.DATAGRID_CLASS + " " + grid.getStyleClass();
         String contentClass = empty
                               ? DataGrid.EMPTY_CONTENT_CLASS
-                              : (layout.equals("tabular") ? DataGrid.TABLE_CONTENT_CLASS : DataGrid.GRID_CONTENT_CLASS);
+                              : (layout.equals("tabular") ? DataGrid.TABLE_CONTENT_CLASS : gridContentClass);
 
         if (hasPaginator) {
             grid.calculateFirst();
@@ -171,15 +173,29 @@ public class DataGridRenderer extends DataRenderer {
         int itemsToRender = rows != 0 ? rows : grid.getRowCount();
         int numberOfRowsToRender = (itemsToRender + columns - 1) / columns;
         int displayedItemsToRender = rowIndex + itemsToRender;
-        String columnClass = DataGrid.COLUMN_CLASS + " " + GridLayoutUtils.getColumnClass(columns);
         String columnInlineStyle = grid.getRowStyle();
+        boolean flex = ComponentUtils.isFlex(context, grid);
+        String columnClass = DataGrid.COLUMN_CLASS + " ";
+        if (flex) {
+            columnClass += GridLayoutUtils.getFlexColumnClass(columns);
+        }
+        else {
+            columnClass += GridLayoutUtils.getColumnClass(columns);
+        }
+
 
         if (!LangUtils.isValueBlank(grid.getRowStyleClass())) {
             columnClass += " " + grid.getRowStyleClass();
         }
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", DataGrid.GRID_ROW_CLASS, null);
+
+        if (flex) {
+            writer.writeAttribute("class", DataGrid.FLEX_GRID_ROW_CLASS, null);
+        }
+        else {
+            writer.writeAttribute("class", DataGrid.GRID_ROW_CLASS, null);
+        }
 
         for (int i = 0; i < numberOfRowsToRender; i++) {
             grid.setRowIndex(rowIndex);
