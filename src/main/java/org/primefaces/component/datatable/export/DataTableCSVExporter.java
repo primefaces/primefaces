@@ -121,6 +121,11 @@ public class DataTableCSVExporter extends DataTableExporter {
         }
     }
 
+    @Override
+    protected String getContentType() {
+        return "text/csv";
+    }
+
     protected void addColumnFacets(StringBuilder builder, DataTable table, ColumnType columnType) throws IOException {
         boolean firstCellWritten = false;
 

@@ -76,7 +76,7 @@ public class DataTableXMLExporter extends DataTableExporter {
 
             DefaultStreamedContent content = DefaultStreamedContent.builder()
                     .name(filenameWithExtension)
-                    .contentType("text/xml")
+                    .contentType(getContentType())
                     .stream(() -> new ByteArrayInputStream(builder.toString().getBytes()))
                     .build();
 
@@ -92,6 +92,11 @@ public class DataTableXMLExporter extends DataTableExporter {
             writer.flush();
             writer.close();
         }
+    }
+
+    @Override
+    protected String getContentType() {
+        return "text/xml";
     }
 
     @Override
@@ -166,7 +171,7 @@ public class DataTableXMLExporter extends DataTableExporter {
 
     protected void configureResponse(FacesContext context, String filename) {
         ExternalContext externalContext = context.getExternalContext();
-        externalContext.setResponseContentType("text/xml");
+        externalContext.setResponseContentType(getContentType());
         setResponseHeader(externalContext, ComponentUtils.createContentDisposition("attachment", filename + ".xml"));
         addResponseCookie(context);
     }

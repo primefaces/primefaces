@@ -27,25 +27,20 @@ import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.WorkbookUtil;
-import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExcelOptions;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.ExporterOptions;
-import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.util.*;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.awt.Color;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.List;
 
 public class DataTableExcelExporter extends DataTableExporter {
@@ -102,12 +97,7 @@ public class DataTableExcelExporter extends DataTableExporter {
             config.getPostProcessor().invoke(context.getELContext(), new Object[]{wb});
         }
 
-        if (PrimeFaces.current().isAjaxRequest()) {
-            ajaxDownload(context, wb, config.getOutputFileName());
-        }
-        else {
-            writeExcelToResponse(context, wb, config.getOutputFileName());
-        }
+        sendExport2Client(context, wb, config.getOutputFileName());
 
         reset();
     }
@@ -235,42 +225,28 @@ public class DataTableExcelExporter extends DataTableExporter {
         return wb.createSheet(sheetName);
     }
 
-    protected void ajaxDownload(FacesContext context, Workbook generatedExcel, String filename) throws IOException {
-        String filenameWithExtension = filename;
+    protected void sendExport2Client(FacesContext context, Workbook generatedExcel, String filename) throws IOException {
+        ByteArrayOutputStream byteArrayOutputStream = getByteArrayOutputStream(generatedExcel);
+
         if ("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet".equals(getContentType())) {
-            filenameWithExtension += ".xlsx";
+            filename += ".xlsx";
         }
         else {
-            filenameWithExtension += ".xls";
+            filename += ".xls";
         }
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        generatedExcel.write(out);
 
-        DefaultStreamedContent content = DefaultStreamedContent.builder()
-                .name(filenameWithExtension)
-                .contentType(getContentType())
-                .stream(() -> new ByteArrayInputStream(out.toByteArray()))
-                .build();
-
-        ajaxDownload(content, context);
+        sendExport2Client(filename, byteArrayOutputStream, context);
     }
 
-    protected void writeExcelToResponse(FacesContext context, Workbook generatedExcel, String filename) throws IOException {
-        ExternalContext externalContext = context.getExternalContext();
-        externalContext.setResponseContentType(getContentType());
-        setResponseHeader(externalContext, getContentDisposition(filename));
-        addResponseCookie(context);
-
-        OutputStream out = externalContext.getResponseOutputStream();
-        generatedExcel.write(out);
+    protected ByteArrayOutputStream getByteArrayOutputStream(Workbook generatedExcel) throws IOException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        generatedExcel.write(byteArrayOutputStream);
+        return byteArrayOutputStream;
     }
 
+    @Override
     protected String getContentType() {
         return "application/vnd.ms-excel";
-    }
-
-    protected String getContentDisposition(String filename) {
-        return ComponentUtils.createContentDisposition("attachment", filename + ".xls");
     }
 
     public void exportTable(FacesContext context, UIComponent component, Sheet sheet, boolean pageOnly, boolean selectionOnly) {

@@ -23,9 +23,8 @@
  */
 package org.primefaces.component.datatable.export;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-
-import javax.faces.context.FacesContext;
 
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -50,9 +49,10 @@ public class DataTableExcelXStreamExporter extends DataTableExcelXExporter {
     }
 
     @Override
-    protected void writeExcelToResponse(FacesContext context, Workbook generatedExcel, String filename) throws IOException {
-        super.writeExcelToResponse(context, generatedExcel, filename);
+    protected ByteArrayOutputStream getByteArrayOutputStream(Workbook generatedExcel) throws IOException {
+        ByteArrayOutputStream byteArrayOutputStream = super.getByteArrayOutputStream(generatedExcel);
         ((SXSSFWorkbook) generatedExcel).dispose();
+        return byteArrayOutputStream;
     }
 
     @Override
