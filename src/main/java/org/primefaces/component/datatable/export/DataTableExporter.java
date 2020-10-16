@@ -23,9 +23,7 @@
  */
 package org.primefaces.component.datatable.export;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Collection;
@@ -54,10 +52,7 @@ import org.primefaces.component.export.Exporter;
 import org.primefaces.component.overlaypanel.OverlayPanel;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.LazyDataModel;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.DynamicContentSrcBuilder;
-import org.primefaces.util.ResourceUtils;
+import org.primefaces.util.*;
 
 public abstract class DataTableExporter implements Exporter<DataTable> {
 
@@ -345,33 +340,62 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
 
     protected abstract String getContentType();
 
-    protected void sendExport2Client(String filenameWithExtension, ByteArrayOutputStream byteArrayOutputStream, FacesContext context) throws IOException {
+    protected void sendExport2Client(String filenameWithExtension, ByteArrayOutputStream content, FacesContext context) throws IOException {
         if (PrimeFaces.current().isAjaxRequest()) {
-            DefaultStreamedContent content = DefaultStreamedContent.builder()
-                    .name(filenameWithExtension)
-                    .contentType(getContentType())
-                    .stream(() -> new ByteArrayInputStream(byteArrayOutputStream.toByteArray()))
-                    .build();
-
-            ajaxDownload(content, context);
+            ajaxDownload(filenameWithExtension, content.toByteArray(), context);
         }
         else {
             ExternalContext externalContext = context.getExternalContext();
             externalContext.setResponseContentType(getContentType());
             setResponseHeader(externalContext, ComponentUtils.createContentDisposition("attachment", filenameWithExtension));
-            externalContext.setResponseContentLength(byteArrayOutputStream.size());
+            externalContext.setResponseContentLength(content.size());
             addResponseCookie(context);
 
-            byteArrayOutputStream.writeTo(externalContext.getResponseOutputStream());
+            content.writeTo(externalContext.getResponseOutputStream());
             externalContext.responseFlushBuffer();
         }
     }
 
-    protected void ajaxDownload(DefaultStreamedContent content, FacesContext context) {
-        String uri = DynamicContentSrcBuilder.build(context, content, null, false, DynamicContentType.STREAMED_CONTENT, false, "");
+    protected void sendExport2Client(String filenameWithExtension, StringBuilder content, String encodingType, FacesContext context) throws IOException {
+        if (PrimeFaces.current().isAjaxRequest()) {
+            ajaxDownload(filenameWithExtension, content.toString().getBytes(encodingType), encodingType, context);
+        }
+        else {
+            ExternalContext externalContext = context.getExternalContext();
+            externalContext.setResponseContentType(getContentType() + "; charset=" + encodingType);
+            setResponseHeader(externalContext, ComponentUtils.createContentDisposition("attachment", filenameWithExtension));
+
+            addResponseCookie(context);
+
+            OutputStream os = externalContext.getResponseOutputStream();
+            OutputStreamWriter osw = new OutputStreamWriter(os, encodingType);
+            PrintWriter writer = new PrintWriter(osw);
+            writer.write(content.toString());
+            writer.flush();
+            writer.close();
+        }
+    }
+
+    private void ajaxDownload(String filenameWithExtension, byte[] content, FacesContext context) {
+        ajaxDownload(filenameWithExtension, content, null, context);
+    }
+
+    private void ajaxDownload(String filenameWithExtension, byte[] content, String encodingType, FacesContext context) {
+        String contentType = getContentType();
+        if (!LangUtils.isValueBlank(encodingType)) {
+            contentType += "; charset=" + encodingType;
+        }
+
+        DefaultStreamedContent streamedContent = DefaultStreamedContent.builder()
+                .name(filenameWithExtension)
+                .contentType(contentType)
+                .stream(() -> new ByteArrayInputStream(content))
+                .build();
+
+        String uri = DynamicContentSrcBuilder.build(context, streamedContent, null, false, DynamicContentType.STREAMED_CONTENT, false, "");
         String monitorKeyCookieName = ResourceUtils.getMonitorKeyCookieName(context, null);
         PrimeFaces.current().executeScript(String.format("PrimeFaces.download('%s', '%s', '%s', '%s')",
-                uri, content.getContentType(), content.getName(), monitorKeyCookieName));
+                uri, contentType, filenameWithExtension, monitorKeyCookieName));
     }
 
     private class DataTableVisitCallBack implements VisitCallback {

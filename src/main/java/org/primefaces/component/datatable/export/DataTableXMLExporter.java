@@ -23,12 +23,10 @@
  */
 package org.primefaces.component.datatable.export;
 
-import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExportConfiguration;
-import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.EscapeUtils;
 
@@ -71,27 +69,7 @@ public class DataTableXMLExporter extends DataTableExporter {
             config.getPostProcessor().invoke(context.getELContext(), new Object[]{builder});
         }
 
-        if (PrimeFaces.current().isAjaxRequest()) {
-            String filenameWithExtension = config.getOutputFileName() + ".xml";
-
-            DefaultStreamedContent content = DefaultStreamedContent.builder()
-                    .name(filenameWithExtension)
-                    .contentType(getContentType())
-                    .stream(() -> new ByteArrayInputStream(builder.toString().getBytes()))
-                    .build();
-
-            ajaxDownload(content, context);
-        }
-        else {
-            configureResponse(context, config.getOutputFileName());
-
-            OutputStream os = externalContext.getResponseOutputStream();
-            OutputStreamWriter osw = new OutputStreamWriter(os, config.getEncodingType());
-            PrintWriter writer = new PrintWriter(osw);
-            writer.write(builder.toString());
-            writer.flush();
-            writer.close();
-        }
+        sendExport2Client(config.getOutputFileName() + ".xml", builder, config.getEncodingType(), context);
     }
 
     @Override
@@ -167,13 +145,6 @@ public class DataTableXMLExporter extends DataTableExporter {
         }
 
         builder.append("</" + tag + ">\n");
-    }
-
-    protected void configureResponse(FacesContext context, String filename) {
-        ExternalContext externalContext = context.getExternalContext();
-        externalContext.setResponseContentType(getContentType());
-        setResponseHeader(externalContext, ComponentUtils.createContentDisposition("attachment", filename + ".xml"));
-        addResponseCookie(context);
     }
 
 }
