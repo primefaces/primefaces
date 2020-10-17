@@ -1308,13 +1308,15 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
-
+    /**
+     * Renders panel content based on hidden select.
+     * @private
+     */
     renderPanelContentFromHiddenSelect: function() {
          if (this.itemsWrapper.children().length === 0) {
              console.log("renderPanelContentFromHiddenSelect do");
 
              //TODO: SelectItemGroup
-             //TODO: bind events
 
              var panelContent = '<ul id="' + this.jqId + '_items" class="ui-selectonemenu-items ui-selectonemenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset" role="listbox">';
 
