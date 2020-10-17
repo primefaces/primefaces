@@ -55,7 +55,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         DatePicker datePicker = (DatePicker) component;
 
-        if (ComponentUtils.isRequestSource(datePicker, context)) {
+        if (datePicker.getModel() != null && ComponentUtils.isRequestSource(datePicker, context)) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             if ("viewChange".equals(eventName)) {
@@ -69,9 +69,6 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
 
     protected void encodeDateMetadata(FacesContext context, DatePicker datePicker) throws IOException {
         DateMetadataModel model = datePicker.getModel();
-        if (model == null) {
-            return;
-        }
         if (model instanceof LazyDateMetadataModel) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String clientId = datePicker.getClientId(context);
