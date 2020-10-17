@@ -27,6 +27,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
@@ -51,6 +53,8 @@ import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
 public class SelectOneMenuRenderer extends SelectOneRenderer {
+
+    private static final Logger LOGGER = Logger.getLogger(SelectOneMenuRenderer.class.getName());
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -105,8 +109,14 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             Object values = getValues(menu);
             Object submittedValues = getSubmittedValues(menu);
 
+            long t1 = System.nanoTime();
             encodeHiddenSelect(context, menu, clientId, selectItems, values, submittedValues, converter);
+            long t2 = System.nanoTime();
             encodePanelContent(context, menu, selectItems);
+            long t3 = System.nanoTime();
+
+            LOGGER.log(Level.INFO, "SelectOneMenuRenderer#encodeHiddenSelect " + ((t2 - t1) / 1000000));
+            LOGGER.log(Level.INFO, "SelectOneMenuRenderer#encodePanelContent " + ((t3 - t2) / 1000000));
         }
         else {
             encodeMarkup(context, menu);
@@ -143,10 +153,17 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         }
         renderARIACombobox(context, menu);
 
+        long t1 = System.nanoTime();
         encodeInput(context, menu, clientId, selectItems, values, submittedValues, converter);
+        long t2 = System.nanoTime();
         encodeLabel(context, menu, selectItems);
         encodeMenuIcon(context, menu, valid);
+        long t3 = System.nanoTime();
         encodePanel(context, menu, selectItems);
+        long t4 = System.nanoTime();
+
+        LOGGER.log(Level.INFO, "SelectOneMenuRenderer#encodeInput " + ((t2 - t1) / 1000000));
+        LOGGER.log(Level.INFO, "SelectOneMenuRenderer#encodePanel " + ((t4 - t3) / 1000000));
 
         writer.endElement("div");
     }
@@ -573,21 +590,23 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             valuesArray = values;
         }
 
-        for (int i = 0; i < selectItems.size(); i++) {
-            SelectItem selectItem = selectItems.get(i);
+        if (valuesArray != null) {
+            for (int i = 0; i < selectItems.size(); i++) {
+                SelectItem selectItem = selectItems.get(i);
 
-            Object itemValue;
-            if (submittedValues != null) {
-                //what the hell does the following line? maybe for editable?
-                itemValue = getOptionAsString(context, menu, converter, selectItem.getValue());
-            }
-            else {
-                itemValue = selectItem.getValue();
-            }
+                Object itemValue;
+                if (submittedValues != null) {
+                    //what the hell does the following line? maybe for editable?
+                    itemValue = getOptionAsString(context, menu, converter, selectItem.getValue());
+                }
+                else {
+                    itemValue = selectItem.getValue();
+                }
 
-            if (isSelected(context, menu, itemValue, valuesArray, converter)) {
-                selectedSelectItem = selectItem;
-                break;
+                if (isSelected(context, menu, itemValue, valuesArray, converter)) {
+                    selectedSelectItem = selectItem;
+                    break;
+                }
             }
         }
 
@@ -610,13 +629,14 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             }
         }
         else {
-            String itemValueAsString = getOptionAsString(context, menu, converter, option.getValue());
             boolean disabled = option.isDisabled();
             boolean isEscape = option.isEscape();
 
             boolean selected = option.equals(selectedOption);
 
             if (!menu.isDynamic() || (menu.isDynamic() && (selected || menu.isDynamicLoadRequest(context) || itemIndex == 0))) {
+                String itemValueAsString = getOptionAsString(context, menu, converter, option.getValue());
+
                 writer.startElement("option", null);
                 writer.writeAttribute("value", itemValueAsString, null);
                 if (disabled) {
