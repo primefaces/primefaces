@@ -103,13 +103,15 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.appendTo = this.getAppendTo();
         this.isDynamicLoaded = false;
 
-        if(this.cfg.dynamic) {
+        if(this.cfg.dynamic || (this.itemsWrapper.children().length === 0)) {
+            console.log("dynamic or panel content not built");
             var selectedOption = this.options.filter(':selected'),
             labelVal = this.cfg.editable ? this.label.val() : selectedOption.text();
 
             this.setLabel(labelVal);
         }
         else {
+            console.log("panel content already built -> init");
             this.initContents();
             this.bindItemEvents();
         }
@@ -1269,6 +1271,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 $this.isDynamicLoaded = true;
                 $this.input = $($this.jqId + '_input');
                 $this.options = $this.input.children('option');
+
+                $this.renderPanelContentFromHiddenSelect();
+
                 $this.initContents();
                 $this.bindItemEvents();
             }
@@ -1302,7 +1307,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         else {
             console.log("dynamic content is already loaded");
 
-            $this.renderPanelContentFromHiddenSelect();
+            this.renderPanelContentFromHiddenSelect();
 
             handleMethod.call(this, event);
         }
@@ -1324,6 +1329,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
              //TODO: check dynamic
              //TODO: check custom content
              //TODO: check initial value (should be similar to dynamic)
+             //TODO: filter
 
              var panelContent = '<ul id="' + this.jqId + '_items" class="ui-selectonemenu-items ui-selectonemenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset" role="listbox">';
 
