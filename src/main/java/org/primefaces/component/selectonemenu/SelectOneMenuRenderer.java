@@ -563,13 +563,42 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
     protected void encodeSelectItems(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems, Object values,
                                      Object submittedValues, Converter converter) throws IOException {
 
+        SelectItem selectedSelectItem = null;
+
+        Object valuesArray;
+        if (submittedValues != null) {
+            valuesArray = submittedValues;
+        }
+        else {
+            valuesArray = values;
+        }
+
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
-            encodeOption(context, menu, selectItem, values, submittedValues, converter, i);
+
+            Object itemValue;
+            if (submittedValues != null) {
+                //what the hell does the following line? maybe for editable?
+                itemValue = getOptionAsString(context, menu, converter, selectItem.getValue());
+            }
+            else {
+                itemValue = selectItem.getValue();
+            }
+
+            if (isSelected(context, menu, itemValue, valuesArray, converter)) {
+                selectedSelectItem = selectItem;
+                break;
+            }
         }
+
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem selectItem = selectItems.get(i);
+            encodeOption(context, menu, selectItem, selectedSelectItem, values, submittedValues, converter, i);
+        }
+
     }
 
-    protected void encodeOption(FacesContext context, SelectOneMenu menu, SelectItem option, Object values, Object submittedValues,
+    protected void encodeOption(FacesContext context, SelectOneMenu menu, SelectItem option, SelectItem selectedOption, Object values, Object submittedValues,
                                 Converter converter, int itemIndex) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
@@ -577,7 +606,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         if (option instanceof SelectItemGroup) {
             SelectItemGroup group = (SelectItemGroup) option;
             for (SelectItem groupItem : group.getSelectItems()) {
-                encodeOption(context, menu, groupItem, values, submittedValues, converter, itemIndex);
+                encodeOption(context, menu, groupItem, selectedOption, values, submittedValues, converter, itemIndex);
             }
         }
         else {
@@ -585,18 +614,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             boolean disabled = option.isDisabled();
             boolean isEscape = option.isEscape();
 
-            Object valuesArray;
-            Object itemValue;
-            if (submittedValues != null) {
-                valuesArray = submittedValues;
-                itemValue = itemValueAsString;
-            }
-            else {
-                valuesArray = values;
-                itemValue = option.getValue();
-            }
-
-            boolean selected = isSelected(context, menu, itemValue, valuesArray, converter);
+            boolean selected = option.equals(selectedOption);
 
             if (!menu.isDynamic() || (menu.isDynamic() && (selected || menu.isDynamicLoadRequest(context) || itemIndex == 0))) {
                 writer.startElement("option", null);
