@@ -1317,6 +1317,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
              console.log("renderPanelContentFromHiddenSelect do");
 
              //TODO: SelectItemGroup
+             //TODO: disabled
+             //TODO: selected
+             //TODO: title
+             //TODO: escape
+             //TODO: check dynamic
+             //TODO: check custom content
+             //TODO: check initial value (should be similar to dynamic)
 
              var panelContent = '<ul id="' + this.jqId + '_items" class="ui-selectonemenu-items ui-selectonemenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset" role="listbox">';
 

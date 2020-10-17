@@ -504,6 +504,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         context.getExternalContext().getRequestMap().put(var, null);
     }
 
+    @Deprecated
     protected void encodeOptionsAsList(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
@@ -520,6 +521,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         }
     }
 
+    @Deprecated
     protected void encodeItem(FacesContext context, SelectOneMenu menu, SelectItem selectItem, String styleClass) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String itemLabel = selectItem.getLabel();
@@ -655,6 +657,9 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                     writer.writeAttribute("selected", "selected", null);
                 }
                 writer.writeAttribute("data-escape", String.valueOf(isEscape), null);
+                if (option.getDescription() != null) {
+                    writer.writeAttribute("data-title", option.getDescription(), null);
+                }
 
                 if (!isValueBlank(option.getLabel())) {
                     if (isEscape) {
