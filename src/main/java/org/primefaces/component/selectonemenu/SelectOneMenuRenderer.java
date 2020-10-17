@@ -370,12 +370,15 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             writer.endElement("table");
         }
         else {
+            // TODO: do with JS
+            /*
             writer.startElement("ul", null);
             writer.writeAttribute("id", menu.getClientId(context) + "_items", null);
             writer.writeAttribute("class", SelectOneMenu.LIST_CLASS, null);
             writer.writeAttribute("role", "listbox", null);
             encodeOptionsAsList(context, menu, selectItems);
             writer.endElement("ul");
+             */
         }
     }
 
@@ -623,10 +626,16 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         if (option instanceof SelectItemGroup) {
+            //TODO: https://developer.mozilla.org/de/docs/Web/HTML/Element/optgroup
+
             SelectItemGroup group = (SelectItemGroup) option;
+
+            writer.startElement("optgroup", null);
+            writer.writeAttribute("label", group.getDescription(), null);
             for (SelectItem groupItem : group.getSelectItems()) {
                 encodeOption(context, menu, groupItem, selectedOption, values, submittedValues, converter, itemIndex);
             }
+            writer.endElement("optgroup");
         }
         else {
             boolean disabled = option.isDisabled();

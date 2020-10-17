@@ -1287,6 +1287,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     callHandleMethod: function(handleMethod, event) {
         var $this = this;
         if(this.cfg.dynamic && !this.isDynamicLoaded) {
+            console.log("dynamic content should be loaded");
+
             this.dynamicPanelLoad();
 
             var interval = setInterval(function() {
@@ -1298,8 +1300,39 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             }, 10);
         }
         else {
+            console.log("dynamic content is already loaded");
+
+            $this.renderPanelContentFromHiddenSelect();
+
             handleMethod.call(this, event);
         }
+    },
+
+
+    renderPanelContentFromHiddenSelect: function() {
+         if (this.itemsWrapper.children().length === 0) {
+             console.log("renderPanelContentFromHiddenSelect do");
+
+             //TODO: SelectItemGroup
+             //TODO: bind events
+
+             var panelContent = '<ul id="' + this.jqId + '_items" class="ui-selectonemenu-items ui-selectonemenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset" role="listbox">';
+
+             this.input.find("option").each((i, opt) => {
+                 var label = $(opt).text()
+                 panelContent += '<li class="ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all" data-label="' + label + '" tabindex="-1" role="option" title="TODO">' + label + '</li>';
+             });
+
+             panelContent += '</ul>';
+
+             this.itemsWrapper.append(panelContent);
+
+             this.initContents();
+             this.bindItemEvents();
+         }
+         else {
+             console.log("renderPanelContentFromHiddenSelect already done");
+         }
     },
 
     /**
