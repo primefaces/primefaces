@@ -60,11 +60,10 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             if ("viewChange".equals(eventName)) {
                 encodeDateMetadata(context, datePicker);
+                return;
             }
         }
-        else {
-            super.encodeEnd(context, component);
-        }
+        super.encodeEnd(context, component);
     }
 
     protected void encodeDateMetadata(FacesContext context, DatePicker datePicker) throws IOException {
