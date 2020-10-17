@@ -318,6 +318,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             var viewChangeBehavior = this.cfg.behaviors['viewChange'];
 
             if(viewChangeBehavior) {
+                options.update = (options.update||'') +' '+ this.id;
                 viewChangeBehavior.call(this, options);
                 fired = true;
             }
