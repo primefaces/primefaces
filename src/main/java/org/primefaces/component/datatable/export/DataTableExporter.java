@@ -368,11 +368,11 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
             addResponseCookie(context);
 
             OutputStream os = externalContext.getResponseOutputStream();
-            OutputStreamWriter osw = new OutputStreamWriter(os, encodingType);
-            PrintWriter writer = new PrintWriter(osw);
-            writer.write(content.toString());
-            writer.flush();
-            writer.close();
+            try (OutputStreamWriter osw = new OutputStreamWriter(os, encodingType);
+                 PrintWriter writer = new PrintWriter(osw);) {
+                writer.write(content.toString());
+                writer.flush();
+            }
         }
     }
 
