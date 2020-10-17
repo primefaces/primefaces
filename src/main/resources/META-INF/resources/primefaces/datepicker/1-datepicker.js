@@ -288,14 +288,15 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
      * @param {Date} date The date to which the date picker changed.
      */
     fireViewChangeEvent: function(date) {
-        var _self = this, fired = false;
+        var _self = this;
+        var lazy = this.cfg.lazyModel;
         var options = {
             params: [
                 {name: this.id + '_year', value: date.getFullYear()},
                 {name: this.id + '_month', value: date.getMonth()}
             ]
         }
-        if (this.cfg.lazyModel) {
+        if (lazy) {
             options.onsuccess = function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                     widget: _self,
@@ -315,16 +316,12 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         }
 
         if (this.hasBehavior('viewChange')) {
-            var viewChangeBehavior = this.cfg.behaviors['viewChange'];
-
-            if(viewChangeBehavior) {
+            if (lazy) {
                 options.update = (options.update||'') +' '+ this.id;
-                viewChangeBehavior.call(this, options);
-                fired = true;
             }
+            this.callBehavior('viewChange', options);
         }
-
-        if (!fired) {
+        else if (lazy) {
             options.source = this.id;
             options.process = this.id;
             options.update = this.id;
