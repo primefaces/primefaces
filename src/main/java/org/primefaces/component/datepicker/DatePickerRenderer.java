@@ -41,12 +41,12 @@ import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.calendar.BaseCalendarRenderer;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.model.datepicker.DateMetadata;
+import org.primefaces.model.datepicker.DateMetadataModel;
 import org.primefaces.model.datepicker.LazyDateMetadataModel;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
-import org.primefaces.model.datepicker.DateMetadata;
-import org.primefaces.model.datepicker.DateMetadataModel;
 
 public class DatePickerRenderer extends BaseCalendarRenderer {
 
@@ -54,8 +54,12 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         DatePicker datePicker = (DatePicker) component;
 
-        if (context.getExternalContext().getRequestParameterMap().containsKey(datePicker.getClientId(context))) {
-            encodeDateMetadata(context, datePicker);
+        if (ComponentUtils.isRequestSource(datePicker, context)) {
+            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+            String clientId = datePicker.getClientId(context);
+            if (params.get(clientId + "_year") != null && params.get(clientId + "_month") != null) {
+                encodeDateMetadata(context, datePicker);
+            }
         }
         else {
             super.encodeEnd(context, component);

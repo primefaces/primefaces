@@ -278,63 +278,57 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         var _self = this;
         this.cfg.onViewDateChange = function(event, date) {
             _self.viewDateOption = date;
-
-            if(_self.hasBehavior('viewChange')) {
-                _self.fireViewChangeEvent(date.getFullYear(), date.getMonth());
-            }
-            if (_self.cfg.lazyModel) {
-                var options = {
-                    source: _self.id,
-                    process: _self.id,
-                    update: _self.id,
-                    formId: _self.cfg.formId,
-                    params: [
-                        {name: _self.id + '_year', value: date.getFullYear()},
-                        {name: _self.id + '_month', value: date.getMonth()}
-                    ],
-                    onsuccess: function(responseXML, status, xhr) {
-                        PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                            widget: _self,
-                            handle: function(content) {
-                                var dateMetadata = JSON.parse(content).dateMetadata;
-                                var disabledDates = [];
-                                for (date in dateMetadata) {
-                                    if (dateMetadata[date].disabled) {
-                                        disabledDates.push(date);
-                                    }
-                                }
-                                _self.setDisabledDates(disabledDates);
-                            }
-                        });
-
-                        return true;
-                    }
-                };
-                PrimeFaces.ajax.Request.handle(options);
-            }
+            _self.fireViewChangeEvent(date);
         };
     },
 
     /**
      * Triggers the event for when the date picker changed to a different month or year page.
      * @private
-     * @param {number} year The year to which the date picker changed.
-     * @param {number} month The year to which the date picker changed, starting with `0` for `Janurary`.
+     * @param {Date} date The date to which the date picker changed.
      */
-    fireViewChangeEvent: function(year, month) {
-        if(this.cfg.behaviors) {
+    fireViewChangeEvent: function(date) {
+        var _self = this, fired = false;
+        var options = {
+            params: [
+                {name: this.id + '_year', value: date.getFullYear()},
+                {name: this.id + '_month', value: date.getMonth()}
+            ]
+        }
+        if (this.cfg.lazyModel) {
+            options.onsuccess = function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                    widget: _self,
+                    handle: function(content) {
+                        var dateMetadata = JSON.parse(content).dateMetadata;
+                        var disabledDates = [];
+                        for (date in dateMetadata) {
+                            if (dateMetadata[date].disabled) {
+                                disabledDates.push(date);
+                            }
+                        }
+                        _self.setDisabledDates(disabledDates);
+                    }
+                });
+                return true;
+            };
+        }
+
+        if (this.hasBehavior('viewChange')) {
             var viewChangeBehavior = this.cfg.behaviors['viewChange'];
 
             if(viewChangeBehavior) {
-                var ext = {
-                        params: [
-                            {name: this.id + '_month', value: month},
-                            {name: this.id + '_year', value: year}
-                        ]
-                };
-
-                viewChangeBehavior.call(this, ext);
+                viewChangeBehavior.call(this, options);
+                fired = true;
             }
+        }
+
+        if (!fired) {
+            options.source = this.id;
+            options.process = this.id;
+            options.update = this.id;
+            options.formId = this.cfg.formId;
+            PrimeFaces.ajax.Request.handle(options);
         }
     },
 
