@@ -633,7 +633,10 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             SelectItemGroup group = (SelectItemGroup) option;
 
             writer.startElement("optgroup", null);
-            writer.writeAttribute("label", group.getDescription(), null);
+            writer.writeAttribute("label", group.getLabel(), null);
+            if (group.isDisabled()) {
+                writer.writeAttribute("disabled", "disabled", null);
+            }
             for (SelectItem groupItem : group.getSelectItems()) {
                 encodeOption(context, menu, groupItem, selectedOption, values, submittedValues, converter, itemIndex);
             }

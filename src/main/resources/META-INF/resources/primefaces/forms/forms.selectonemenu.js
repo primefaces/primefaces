@@ -94,7 +94,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.panel = $(this.panelId);
         this.disabled = this.jq.hasClass('ui-state-disabled');
         this.itemsWrapper = this.panel.children('.ui-selectonemenu-items-wrapper');
-        this.options = this.input.children('option');
+        this.options = this.input.find('option');
         this.cfg.effect = this.cfg.effect||'fade';
 
         this.cfg.effectSpeed = this.cfg.effectSpeed||'normal';
@@ -1332,12 +1332,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
              //TODO: filter
 
              var panelContent = '<ul id="' + this.jqId + '_items" class="ui-selectonemenu-items ui-selectonemenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset" role="listbox">';
-
-             this.input.find("option").each((i, opt) => {
-                 var label = $(opt).text()
-                 panelContent += '<li class="ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all" data-label="' + label + '" tabindex="-1" role="option" title="TODO">' + label + '</li>';
-             });
-
+             panelContent += this.renderSelectItems(this.input);
              panelContent += '</ul>';
 
              this.itemsWrapper.append(panelContent);
@@ -1348,6 +1343,59 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
          else {
              console.log("renderPanelContentFromHiddenSelect already done");
          }
+    },
+
+    /**
+     * Renders Panel-HTML-code for SelectItems.
+     * @private
+     * @param {JQuery} parentItem An parentItem (select, optgroup) for which to render HTML-code.
+     * @return {string} Rendered HTML-code.
+     */
+    renderSelectItems: function(parentItem) {
+        var content = "";
+
+        var opts = parentItem.children("option, optgroup");
+
+        opts.each((i, opt) => {
+            if (opt.tagName === "OPTGROUP") {
+                content += this.renderSelectItemGroup(opt);
+            }
+            else {
+                content += this.renderSelectItem(opt);
+            }
+        });
+
+        return content;
+    },
+
+    /**
+     * Renders Panel-HTML-code for one SelectItem.
+     * @private
+     * @param {JQuery} item An option for which to render HTML-code.
+     * @return {string} Rendered HTML-code.
+     */
+    renderSelectItem: function(item) {
+        var label = $(item).text()
+        var content = '<li class="ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all" data-label="' + label + '" tabindex="-1" role="option" title="TODO">';
+        content += label + '</li>';
+        return content;
+    },
+
+    /**
+     * Renders Panel-HTML-code for one SelectItemGroup.
+     * @private
+     * @param {JQuery} item An option for which to render HTML-code.
+     * @return {string} Rendered HTML-code.
+     */
+    renderSelectItemGroup: function(itemGroup) {
+        var content = "";
+        var $itemGroup = $(itemGroup);
+        var label = $itemGroup.attr("label");
+
+        content += '<li class="ui-selectonemenu-item-group ui-corner-all" data-label="' + label + '" tabindex="-1" role="option" title="TODO">' + label + '</li>';
+        content += this.renderSelectItems($itemGroup);
+
+        return content;
     },
 
     /**
