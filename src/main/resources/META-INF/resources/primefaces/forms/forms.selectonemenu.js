@@ -1385,6 +1385,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         var label = $item.text();
         var title = $item.data("title");
         var escape = $item.data("escape");
+        var dataLabel = escape ? label : label.replace(/(<([^>]+)>)/gi, "");
         var content = '<li class="ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all" tabindex="-1" role="option"';
         if (title) {
             content += ' title="' + title + '"';
@@ -1392,20 +1393,12 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         if ($item.is(':disabled')) {
             content += ' disabled';
         }
-        if (escape) {
-            content += ' data-label="' + label + '"';
-        }
+        content += ' data-label="' + dataLabel + '"';
         content += '>';
-        //content += label;
         if (escape) {
             content += label;
         }
         else {
-            /*
-            var unescapedRef = $item.data("unescaped-ref");
-            var labelHtml = $("#unescaped_" + unescapedRef).html();
-            content += labelHtml; //TODO: does not work because option does not seem to allow for html
-             */
             content += item.innerText;
         }
         content += '</li>';
