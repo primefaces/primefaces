@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -229,9 +230,19 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
         renderValidationMetadata(context, menu);
 
-        encodeSelectItems(context, menu, selectItems, values, submittedValues, converter);
+        StringBuilder unescapedLabels = new StringBuilder();
+        encodeSelectItems(context, menu, selectItems, values, submittedValues, converter, unescapedLabels);
 
         writer.endElement("select");
+
+        if (unescapedLabels.length() > 0) {
+            writer.startElement("div", null);
+            writer.writeAttribute("style", "display:none", null);
+
+            writer.write(unescapedLabels.toString());
+
+            writer.endElement("div");
+        }
     }
 
     protected void encodeLabel(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
@@ -370,15 +381,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             writer.endElement("table");
         }
         else {
-            // TODO: do with JS
-            /*
-            writer.startElement("ul", null);
-            writer.writeAttribute("id", menu.getClientId(context) + "_items", null);
-            writer.writeAttribute("class", SelectOneMenu.LIST_CLASS, null);
-            writer.writeAttribute("role", "listbox", null);
-            encodeOptionsAsList(context, menu, selectItems);
-            writer.endElement("ul");
-             */
+            // Rendering was moved to the client - see renderPanelContentFromHiddenSelect as part of forms.selectonemenu.js
         }
     }
 
@@ -568,7 +571,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 .attr("labelTemplate", menu.getLabelTemplate(), null)
                 .attr("autoWidth", menu.isAutoWidth(), true)
                 .attr("dynamic", menu.isDynamic(), false)
-                .attr("touchable", ComponentUtils.isTouchable(context, menu),  true);
+                .attr("touchable", ComponentUtils.isTouchable(context, menu),  true)
+                .attr("renderPanelContentOnClient", menu.getVar() == null,  false);
 
         if (menu.isFilter()) {
             wb.attr("filter", true)
@@ -583,7 +587,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
     }
 
     protected void encodeSelectItems(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems, Object values,
-                                     Object submittedValues, Converter converter) throws IOException {
+                                     Object submittedValues, Converter converter, StringBuilder unescapedLabels) throws IOException {
 
         SelectItem selectedSelectItem = null;
 
@@ -617,13 +621,13 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
-            encodeOption(context, menu, selectItem, selectedSelectItem, values, submittedValues, converter, i);
+            encodeOption(context, menu, selectItem, selectedSelectItem, values, submittedValues, converter, i, unescapedLabels);
         }
 
     }
 
     protected void encodeOption(FacesContext context, SelectOneMenu menu, SelectItem option, SelectItem selectedOption, Object values, Object submittedValues,
-                                Converter converter, int itemIndex) throws IOException {
+                                Converter converter, int itemIndex, StringBuilder unescapedLabels) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
 
@@ -637,8 +641,12 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             if (group.isDisabled()) {
                 writer.writeAttribute("disabled", "disabled", null);
             }
+            writer.writeAttribute("data-escape", String.valueOf(group.isDisabled()), null);
+            if (option.getDescription() != null) {
+                writer.writeAttribute("data-title", option.getDescription(), null);
+            }
             for (SelectItem groupItem : group.getSelectItems()) {
-                encodeOption(context, menu, groupItem, selectedOption, values, submittedValues, converter, itemIndex);
+                encodeOption(context, menu, groupItem, selectedOption, values, submittedValues, converter, itemIndex, unescapedLabels);
             }
             writer.endElement("optgroup");
         }
@@ -665,12 +673,24 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 }
 
                 if (!isValueBlank(option.getLabel())) {
-                    if (isEscape) {
-                        writer.writeText(option.getLabel(), "value");
+                    writer.writeText(option.getLabel(), null);
+
+                    if (!isEscape) {
+                        //writer.writeText(option.getLabel(), null);
+                        /*
+                        writer.writeText("data-label", String.valueOf(isEscape), null);
+                        */
+
+                        UUID ref = UUID.randomUUID();
+                        String refStr = ref.toString().replace("-", "");
+                        writer.writeAttribute("data-unescaped-ref", refStr, null);
+                        unescapedLabels.append("<span id=\"unescaped_" + refStr + "\">" + option.getLabel()  + "</span>");
                     }
+                    /*
                     else {
                         writer.write(option.getLabel());
                     }
+                     */
                 }
 
                 writer.endElement("option");

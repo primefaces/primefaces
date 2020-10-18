@@ -74,6 +74,7 @@
  * @prop {string} cfg.labelTemplate Displays label of the element in a custom template. Valid placeholder is `{0}`,
  * which is replaced with the value of the currently selected item.
  * @prop {boolean} cfg.syncTooltip Updates the title of the component with the description of the selected item.
+ * @prop {boolean} cfg.renderPanelContentOnClient Renders panel content on client.
  */
 PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
@@ -101,6 +102,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.autoWidth = this.cfg.autoWidth === false ? false : true;
         this.cfg.dynamic = this.cfg.dynamic === true ? true : false;
         this.cfg.appendTo = this.getAppendTo();
+        this.cfg.renderPanelContentOnClient = this.cfg.renderPanelContentOnClient === true ? true : false;
         this.isDynamicLoaded = false;
 
         if(this.cfg.dynamic || (this.itemsWrapper.children().length === 0)) {
@@ -1319,17 +1321,18 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     renderPanelContentFromHiddenSelect: function(initContentsAndBindItemEvents) {
+        console.log("renderPanelContentOnClient: " + this.cfg.renderPanelContentOnClient);
          if (this.itemsWrapper.children().length === 0) {
              console.log("renderPanelContentFromHiddenSelect do");
 
-             //TODO: SelectItemGroup
-             //TODO: disabled
-             //TODO: selected
+             //DONE: SelectItemGroup
+             //DONE: disabled
+             //DONE: selected
              //TODO: title
              //TODO: escape
-             //TODO: check dynamic
-             //TODO: check custom content
-             //TODO: check initial value (should be similar to dynamic)
+             //DONE: check dynamic
+             //DONE: check custom content
+             //DONE: check initial value (should be similar to dynamic)
              //TODO: filter
 
              var panelContent = '<ul id="' + this.jqId + '_items" class="ui-selectonemenu-items ui-selectonemenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset" role="listbox">';
@@ -1380,22 +1383,30 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     renderSelectItem: function(item) {
         var $item = $(item);
         var label = $item.text();
-        var labelHtml = $item.html();
         var title = $item.data("title");
         var escape = $item.data("escape");
-        var content = '<li class="ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all" data-label="' + label + '" tabindex="-1" role="option"';
+        var content = '<li class="ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all" tabindex="-1" role="option"';
         if (title) {
             content += ' title="' + title + '"';
         }
         if ($item.is(':disabled')) {
             content += ' disabled';
         }
+        if (escape) {
+            content += ' data-label="' + label + '"';
+        }
         content += '>';
+        //content += label;
         if (escape) {
             content += label;
         }
         else {
+            /*
+            var unescapedRef = $item.data("unescaped-ref");
+            var labelHtml = $("#unescaped_" + unescapedRef).html();
             content += labelHtml; //TODO: does not work because option does not seem to allow for html
+             */
+            content += item.innerText;
         }
         content += '</li>';
         return content;
