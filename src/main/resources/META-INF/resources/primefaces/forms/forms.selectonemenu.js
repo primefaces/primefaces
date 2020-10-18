@@ -1272,7 +1272,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 $this.input = $($this.jqId + '_input');
                 $this.options = $this.input.children('option');
 
-                $this.renderPanelContentFromHiddenSelect();
+                $this.renderPanelContentFromHiddenSelect(false);
 
                 $this.initContents();
                 $this.bindItemEvents();
@@ -1307,7 +1307,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         else {
             console.log("dynamic content is already loaded");
 
-            this.renderPanelContentFromHiddenSelect();
+            this.renderPanelContentFromHiddenSelect(true);
 
             handleMethod.call(this, event);
         }
@@ -1317,7 +1317,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * Renders panel content based on hidden select.
      * @private
      */
-    renderPanelContentFromHiddenSelect: function() {
+    renderPanelContentFromHiddenSelect: function(initContentsAndBindItemEvents) {
          if (this.itemsWrapper.children().length === 0) {
              console.log("renderPanelContentFromHiddenSelect do");
 
@@ -1337,8 +1337,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
              this.itemsWrapper.append(panelContent);
 
-             this.initContents();
-             this.bindItemEvents();
+             if (initContentsAndBindItemEvents) {
+                 this.initContents();
+                 this.bindItemEvents();
+             }
          }
          else {
              console.log("renderPanelContentFromHiddenSelect already done");
@@ -1375,9 +1377,26 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @return {string} Rendered HTML-code.
      */
     renderSelectItem: function(item) {
-        var label = $(item).text()
-        var content = '<li class="ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all" data-label="' + label + '" tabindex="-1" role="option" title="TODO">';
-        content += label + '</li>';
+        var $item = $(item);
+        var label = $item.text();
+        var labelHtml = $item.html();
+        var title = $item.data("title");
+        var escape = $item.data("escape");
+        var content = '<li class="ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all" data-label="' + label + '" tabindex="-1" role="option"';
+        if (title) {
+            content += ' title="' + title + '"';
+        }
+        if ($item.is(':disabled')) {
+            content += ' disabled';
+        }
+        content += '>';
+        if (escape) {
+            content += label;
+        }
+        else {
+            content += labelHtml; //TODO: does not work because option does not seem to allow for html
+        }
+        content += '</li>';
         return content;
     },
 
