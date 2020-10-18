@@ -1315,6 +1315,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Renders panel content based on hidden select.
+     * @param {boolean} initContentsAndBindItemEvents
      * @private
      */
     renderPanelContentFromHiddenSelect: function(initContentsAndBindItemEvents) {
