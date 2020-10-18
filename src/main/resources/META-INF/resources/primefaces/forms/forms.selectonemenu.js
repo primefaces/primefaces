@@ -1384,7 +1384,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Renders Panel-HTML-code for one SelectItemGroup.
      * @private
-     * @param {JQuery} item An option for which to render HTML-code.
+     * @param {JQuery} itemGroup An option for which to render HTML-code.
      * @return {string} Rendered HTML-code.
      */
     renderSelectItemGroup: function(itemGroup) {
