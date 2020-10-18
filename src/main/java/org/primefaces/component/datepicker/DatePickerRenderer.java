@@ -46,7 +46,6 @@ import org.primefaces.model.datepicker.DateMetadataModel;
 import org.primefaces.model.datepicker.LazyDateMetadataModel;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
 import org.primefaces.util.WidgetBuilder;
 
 public class DatePickerRenderer extends BaseCalendarRenderer {
@@ -55,13 +54,9 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         DatePicker datePicker = (DatePicker) component;
 
-        if (datePicker.getModel() instanceof LazyDateMetadataModel && ComponentUtils.isRequestSource(datePicker, context)) {
-            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
-            if ("viewChange".equals(eventName)) {
-                encodeDateMetadata(context, datePicker);
-                return;
-            }
+        if (datePicker.getModel() instanceof LazyDateMetadataModel && ComponentUtils.isRequestSource(datePicker, context, "viewChange")) {
+            encodeDateMetadata(context, datePicker);
+            return;
         }
         super.encodeEnd(context, component);
     }
