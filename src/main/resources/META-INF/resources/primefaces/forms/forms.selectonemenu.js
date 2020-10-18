@@ -1381,12 +1381,14 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @return {string} Rendered HTML-code.
      */
     renderSelectItem: function(item) {
+        var content = "";
         var $item = $(item);
         var label = $item.text();
         var title = $item.data("title");
         var escape = $item.data("escape");
         var dataLabel = escape ? label : label.replace(/(<([^>]+)>)/gi, "");
-        var content = '<li class="ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all" tabindex="-1" role="option"';
+
+        content += '<li class="ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all" tabindex="-1" role="option"';
         if (title) {
             content += ' title="' + title + '"';
         }
@@ -1395,13 +1397,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
         content += ' data-label="' + dataLabel + '"';
         content += '>';
-        if (escape) {
-            content += label;
-        }
-        else {
-            content += item.innerText;
-        }
+        content += label;
         content += '</li>';
+
         return content;
     },
 
@@ -1415,8 +1413,20 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         var content = "";
         var $itemGroup = $(itemGroup);
         var label = $itemGroup.attr("label");
+        var title = $itemGroup.data("title");
+        var escape = $itemGroup.data("escape");
+        var dataLabel = escape ? label : label.replace(/(<([^>]+)>)/gi, "");
 
-        content += '<li class="ui-selectonemenu-item-group ui-corner-all" data-label="' + label + '" tabindex="-1" role="option" title="TODO">' + label + '</li>';
+        content += '<li class="ui-selectonemenu-item-group ui-corner-all" tabindex="-1" role="option"';
+        if (title) {
+            content += ' title="' + title + '"';
+        }
+        if ($itemGroup.is(':disabled')) {
+            content += ' disabled';
+        }
+        content += ' data-label="' + dataLabel + '"';
+        content += '>';
+        content += label + '</li>';
         content += this.renderSelectItems($itemGroup);
 
         return content;
