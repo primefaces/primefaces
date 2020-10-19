@@ -24,7 +24,6 @@
 package org.primefaces.component.selectonemenu;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -494,57 +493,6 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         }
 
         context.getExternalContext().getRequestMap().put(var, null);
-    }
-
-    @Deprecated
-    protected void encodeOptionsAsList(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
-        for (int i = 0; i < selectItems.size(); i++) {
-            SelectItem selectItem = selectItems.get(i);
-
-            if (selectItem instanceof SelectItemGroup) {
-                SelectItemGroup group = (SelectItemGroup) selectItem;
-
-                encodeItem(context, menu, group, SelectOneMenu.ITEM_GROUP_CLASS);
-                encodeOptionsAsList(context, menu, Arrays.asList(group.getSelectItems()));
-            }
-            else {
-                encodeItem(context, menu, selectItem, SelectOneMenu.ITEM_CLASS);
-            }
-        }
-    }
-
-    @Deprecated
-    protected void encodeItem(FacesContext context, SelectOneMenu menu, SelectItem selectItem, String styleClass) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String itemLabel = selectItem.getLabel();
-        itemLabel = isValueBlank(itemLabel) ? "&nbsp;" : itemLabel;
-        String itemStyleClass = styleClass;
-        if (selectItem.isNoSelectionOption()) {
-            itemStyleClass = itemStyleClass + " ui-noselection-option";
-        }
-
-        writer.startElement("li", null);
-        writer.writeAttribute("class", itemStyleClass, null);
-        writer.writeAttribute("data-label", itemLabel, null);
-        writer.writeAttribute("tabindex", "-1", null);
-        writer.writeAttribute("role", "option", null);
-        if (selectItem.getDescription() != null) {
-            writer.writeAttribute("title", selectItem.getDescription(), null);
-        }
-
-        if (itemLabel.equals("&nbsp;")) {
-            writer.write(itemLabel);
-        }
-        else {
-            if (selectItem.isEscape()) {
-                writer.writeText(itemLabel, "value");
-            }
-            else {
-                writer.write(itemLabel);
-            }
-        }
-
-        writer.endElement("li");
     }
 
     protected void encodeScript(FacesContext context, SelectOneMenu menu) throws IOException {

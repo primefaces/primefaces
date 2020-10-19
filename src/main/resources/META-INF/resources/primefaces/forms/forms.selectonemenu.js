@@ -1322,18 +1322,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      */
     renderPanelContentFromHiddenSelect: function(initContentsAndBindItemEvents) {
         console.log("renderPanelContentOnClient: " + this.cfg.renderPanelContentOnClient);
-         if (this.itemsWrapper.children().length === 0) {
+         if (this.cfg.renderPanelContentOnClient && this.itemsWrapper.children().length === 0) {
              console.log("renderPanelContentFromHiddenSelect do");
-
-             //DONE: SelectItemGroup
-             //DONE: disabled
-             //DONE: selected
-             //TODO: title
-             //TODO: escape
-             //DONE: check dynamic
-             //DONE: check custom content
-             //DONE: check initial value (should be similar to dynamic)
-             //TODO: filter
 
              var panelContent = '<ul id="' + this.jqId + '_items" class="ui-selectonemenu-items ui-selectonemenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset" role="listbox">';
              panelContent += this.renderSelectItems(this.input);
@@ -1363,32 +1353,38 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         var opts = parentItem.children("option, optgroup");
 
         opts.each((i, opt) => {
-            if (opt.tagName === "OPTGROUP") {
-                content += this.renderSelectItemGroup(opt);
-            }
-            else {
-                content += this.renderSelectItem(opt);
-            }
+            content += this.renderSelectItem(opt);
         });
 
         return content;
     },
 
     /**
-     * Renders Panel-HTML-code for one SelectItem.
+     * Renders Panel-HTML-code for one SelectItem(Group).
      * @private
-     * @param {JQuery} item An option for which to render HTML-code.
+     * @param {JQuery} item An option(group) for which to render HTML-code.
      * @return {string} Rendered HTML-code.
      */
     renderSelectItem: function(item) {
         var content = "";
         var $item = $(item);
-        var label = $item.text();
+        var label;
         var title = $item.data("title");
         var escape = $item.data("escape");
+        var cssClass;
+
+        if (item.tagName === "OPTGROUP") {
+            label = $item.attr("label");
+            cssClass = "ui-selectonemenu-item-group ui-corner-all";
+        }
+        else { //OPTION
+            label = $item.text();
+            cssClass = "ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all";
+        }
+
         var dataLabel = escape ? label : label.replace(/(<([^>]+)>)/gi, "");
 
-        content += '<li class="ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all" tabindex="-1" role="option"';
+        content += '<li class="' + cssClass + '" tabindex="-1" role="option"';
         if (title) {
             content += ' title="' + title + '"';
         }
@@ -1400,34 +1396,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         content += label;
         content += '</li>';
 
-        return content;
-    },
-
-    /**
-     * Renders Panel-HTML-code for one SelectItemGroup.
-     * @private
-     * @param {JQuery} itemGroup An option for which to render HTML-code.
-     * @return {string} Rendered HTML-code.
-     */
-    renderSelectItemGroup: function(itemGroup) {
-        var content = "";
-        var $itemGroup = $(itemGroup);
-        var label = $itemGroup.attr("label");
-        var title = $itemGroup.data("title");
-        var escape = $itemGroup.data("escape");
-        var dataLabel = escape ? label : label.replace(/(<([^>]+)>)/gi, "");
-
-        content += '<li class="ui-selectonemenu-item-group ui-corner-all" tabindex="-1" role="option"';
-        if (title) {
-            content += ' title="' + title + '"';
+        if (item.tagName === "OPTGROUP") {
+            content += this.renderSelectItems($item);
         }
-        if ($itemGroup.is(':disabled')) {
-            content += ' disabled';
-        }
-        content += ' data-label="' + dataLabel + '"';
-        content += '>';
-        content += label + '</li>';
-        content += this.renderSelectItems($itemGroup);
 
         return content;
     },
