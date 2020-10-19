@@ -569,8 +569,6 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         if (option instanceof SelectItemGroup) {
-            //TODO: https://developer.mozilla.org/de/docs/Web/HTML/Element/optgroup
-
             SelectItemGroup group = (SelectItemGroup) option;
 
             writer.startElement("optgroup", null);
@@ -590,7 +588,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         else {
             boolean disabled = option.isDisabled();
             boolean isEscape = option.isEscape();
-
+            boolean isNoSelectionOption = option.isNoSelectionOption();
             boolean selected = option.equals(selectedOption);
 
             if (!menu.isDynamic() || (menu.isDynamic() && (selected || menu.isDynamicLoadRequest(context) || itemIndex == 0))) {
@@ -603,6 +601,9 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 }
                 if (selected) {
                     writer.writeAttribute("selected", "selected", null);
+                }
+                if (isNoSelectionOption) {
+                    writer.writeAttribute("data-noselection-option", "true", null);
                 }
                 writer.writeAttribute("data-escape", String.valueOf(isEscape), null);
                 if (option.getDescription() != null) {

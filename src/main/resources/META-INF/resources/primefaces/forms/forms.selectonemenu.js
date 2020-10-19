@@ -1358,7 +1358,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         var $item = $(item);
         var label;
         var title = $item.data("title");
-        var escape = $item.data("escape");
         var cssClass;
 
         if (item.tagName === "OPTGROUP") {
@@ -1370,7 +1369,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             cssClass = "ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all";
         }
 
-        var dataLabel = escape ? label : label.replace(/(<([^>]+)>)/gi, "");
+        var dataLabel = label.replace(/(<([^>]+)>)/gi, "");
+        if ($item.data("noselection-option")) {
+            cssClass += " ui-noselection-option";
+        }
 
         content += '<li class="' + cssClass + '" tabindex="-1" role="option"';
         if (title) {
