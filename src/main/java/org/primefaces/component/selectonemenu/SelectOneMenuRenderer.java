@@ -576,7 +576,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             if (group.isDisabled()) {
                 writer.writeAttribute("disabled", "disabled", null);
             }
-            writer.writeAttribute("data-escape", String.valueOf(group.isDisabled()), null);
+            writer.writeAttribute("data-escape", String.valueOf(group.isEscape()), null);
             if (option.getDescription() != null) {
                 writer.writeAttribute("data-title", option.getDescription(), null);
             }
