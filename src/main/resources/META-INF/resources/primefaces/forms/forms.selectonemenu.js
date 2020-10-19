@@ -106,14 +106,12 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.isDynamicLoaded = false;
 
         if(this.cfg.dynamic || (this.itemsWrapper.children().length === 0)) {
-            console.log("dynamic or panel content not built");
             var selectedOption = this.options.filter(':selected'),
             labelVal = this.cfg.editable ? this.label.val() : selectedOption.text();
 
             this.setLabel(labelVal);
         }
         else {
-            console.log("panel content already built -> init");
             this.initContents();
             this.bindItemEvents();
         }
@@ -1294,8 +1292,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     callHandleMethod: function(handleMethod, event) {
         var $this = this;
         if(this.cfg.dynamic && !this.isDynamicLoaded) {
-            console.log("dynamic content should be loaded");
-
             this.dynamicPanelLoad();
 
             var interval = setInterval(function() {
@@ -1307,8 +1303,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             }, 10);
         }
         else {
-            console.log("dynamic content is already loaded");
-
             this.renderPanelContentFromHiddenSelect(true);
 
             handleMethod.call(this, event);
@@ -1321,10 +1315,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     renderPanelContentFromHiddenSelect: function(initContentsAndBindItemEvents) {
-        console.log("renderPanelContentOnClient: " + this.cfg.renderPanelContentOnClient);
          if (this.cfg.renderPanelContentOnClient && this.itemsWrapper.children().length === 0) {
-             console.log("renderPanelContentFromHiddenSelect do");
-
              var panelContent = '<ul id="' + this.jqId + '_items" class="ui-selectonemenu-items ui-selectonemenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset" role="listbox">';
              panelContent += this.renderSelectItems(this.input);
              panelContent += '</ul>';
@@ -1335,9 +1326,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                  this.initContents();
                  this.bindItemEvents();
              }
-         }
-         else {
-             console.log("renderPanelContentFromHiddenSelect already done");
          }
     },
 
