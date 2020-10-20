@@ -28,8 +28,8 @@ import java.time.ZoneId;
 import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
-import javax.el.ELContext;
 
+import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.ResourceDependency;
@@ -37,8 +37,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
-import org.primefaces.el.ValueExpressionAnalyzer;
 
+import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
@@ -80,6 +80,10 @@ public class Schedule extends ScheduleBase {
 
     Locale calculateLocale(FacesContext facesContext) {
         return LocaleUtils.resolveLocale(facesContext, getLocale(), getClientId(facesContext));
+    }
+
+    public boolean isEventRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_event");
     }
 
     @Override
