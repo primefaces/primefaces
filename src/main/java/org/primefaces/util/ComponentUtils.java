@@ -41,6 +41,7 @@ import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.render.Renderer;
@@ -457,7 +458,15 @@ public class ComponentUtils {
     }
 
     public static boolean isRequestSource(UIComponent component, FacesContext context) {
-        return component.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
+        String partialSource = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM);
+        return component.getClientId(context).equals(partialSource);
+    }
+
+    public static boolean isRequestSource(UIComponent component, FacesContext context, String event) {
+        ExternalContext externalContext = context.getExternalContext();
+        String partialSource = externalContext.getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM);
+        String partialEvent = externalContext.getRequestParameterMap().get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
+        return component.getClientId(context).equals(partialSource) && partialEvent.equals(event);
     }
 
     /**

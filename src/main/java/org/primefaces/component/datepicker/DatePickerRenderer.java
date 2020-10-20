@@ -41,12 +41,12 @@ import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.calendar.BaseCalendarRenderer;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.model.datepicker.DateMetadata;
+import org.primefaces.model.datepicker.DateMetadataModel;
 import org.primefaces.model.datepicker.LazyDateMetadataModel;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
-import org.primefaces.model.datepicker.DateMetadata;
-import org.primefaces.model.datepicker.DateMetadataModel;
 
 public class DatePickerRenderer extends BaseCalendarRenderer {
 
@@ -54,32 +54,25 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         DatePicker datePicker = (DatePicker) component;
 
-        if (context.getExternalContext().getRequestParameterMap().containsKey(datePicker.getClientId(context))) {
+        if (datePicker.getModel() instanceof LazyDateMetadataModel && ComponentUtils.isRequestSource(datePicker, context, "viewChange")) {
             encodeDateMetadata(context, datePicker);
+            return;
         }
-        else {
-            super.encodeEnd(context, component);
-        }
+        super.encodeEnd(context, component);
     }
 
     protected void encodeDateMetadata(FacesContext context, DatePicker datePicker) throws IOException {
-        DateMetadataModel model = datePicker.getModel();
-        if (model == null) {
-            return;
-        }
-        if (model instanceof LazyDateMetadataModel) {
-            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            String clientId = datePicker.getClientId(context);
-            int year = Integer.parseInt(params.get(clientId + "_year"));
-            int month = Integer.parseInt(params.get(clientId + "_month")) + 1;
+        LazyDateMetadataModel model = (LazyDateMetadataModel) datePicker.getModel();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String clientId = datePicker.getClientId(context);
+        int year = Integer.parseInt(params.get(clientId + "_year"));
+        int month = Integer.parseInt(params.get(clientId + "_month")) + 1;
 
-            LocalDate startDate = LocalDate.of(year, month, 1);
-            LocalDate endDate = startDate.plusMonths(datePicker.getNumberOfMonths()).minusDays(1);
+        LocalDate startDate = LocalDate.of(year, month, 1);
+        LocalDate endDate = startDate.plusMonths(datePicker.getNumberOfMonths()).minusDays(1);
 
-            LazyDateMetadataModel lazyModel = ((LazyDateMetadataModel) model);
-            lazyModel.clear();
-            lazyModel.loadDateMetadata(startDate, endDate);
-        }
+        model.clear();
+        model.loadDateMetadata(startDate, endDate);
         encodeDateMetadataAsJSON(context, datePicker, model);
     }
 

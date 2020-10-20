@@ -23,16 +23,24 @@
  */
 package org.primefaces.component.datatable.export;
 
-import com.lowagie.text.Font;
-import com.lowagie.text.*;
-import com.lowagie.text.pdf.PdfPCell;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
+import java.awt.Color;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.List;
+
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIPanel;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.ExporterOptions;
+import org.primefaces.component.export.PDFOptions;
+import org.primefaces.component.export.PDFOrientationType;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
 
@@ -43,6 +51,11 @@ import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
+
+import com.lowagie.text.*;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
 
 public class DataTablePDFExporter extends DataTableExporter {
 
@@ -66,6 +79,13 @@ public class DataTablePDFExporter extends DataTableExporter {
         baos = new ByteArrayOutputStream();
 
         try {
+            PDFOptions options = (PDFOptions) config.getOptions();
+            if (options != null) {
+                if (PDFOrientationType.LANDSCAPE == options.getOrientation()) {
+                    document.setPageSize(PageSize.A4.rotate());
+                }
+            }
+
             PdfWriter.getInstance(document, baos);
         }
         catch (DocumentException e) {
