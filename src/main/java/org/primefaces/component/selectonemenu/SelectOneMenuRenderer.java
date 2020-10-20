@@ -26,8 +26,6 @@ package org.primefaces.component.selectonemenu;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
@@ -52,8 +50,6 @@ import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
 public class SelectOneMenuRenderer extends SelectOneRenderer {
-
-    private static final Logger LOGGER = Logger.getLogger(SelectOneMenuRenderer.class.getName());
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -108,14 +104,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             Object values = getValues(menu);
             Object submittedValues = getSubmittedValues(menu);
 
-            long t1 = System.nanoTime();
             encodeHiddenSelect(context, menu, clientId, selectItems, values, submittedValues, converter);
-            long t2 = System.nanoTime();
             encodePanelContent(context, menu, selectItems);
-            long t3 = System.nanoTime();
-
-            LOGGER.log(Level.INFO, "SelectOneMenuRenderer#encodeHiddenSelect " + ((t2 - t1) / 1000000));
-            LOGGER.log(Level.INFO, "SelectOneMenuRenderer#encodePanelContent " + ((t3 - t2) / 1000000));
         }
         else {
             encodeMarkup(context, menu);
@@ -152,17 +142,10 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         }
         renderARIACombobox(context, menu);
 
-        long t1 = System.nanoTime();
         encodeInput(context, menu, clientId, selectItems, values, submittedValues, converter);
-        long t2 = System.nanoTime();
         encodeLabel(context, menu, selectItems);
         encodeMenuIcon(context, menu, valid);
-        long t3 = System.nanoTime();
         encodePanel(context, menu, selectItems);
-        long t4 = System.nanoTime();
-
-        LOGGER.log(Level.INFO, "SelectOneMenuRenderer#encodeInput " + ((t2 - t1) / 1000000));
-        LOGGER.log(Level.INFO, "SelectOneMenuRenderer#encodePanel " + ((t4 - t3) / 1000000));
 
         writer.endElement("div");
     }
