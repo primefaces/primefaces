@@ -102,7 +102,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.autoWidth = this.cfg.autoWidth === false ? false : true;
         this.cfg.dynamic = this.cfg.dynamic === true ? true : false;
         this.cfg.appendTo = this.getAppendTo();
-        this.cfg.renderPanelContentOnClient = this.cfg.renderPanelContentOnClient === true ? true : false;
+        this.cfg.renderPanelContentOnClient = this.cfg.renderPanelContentOnClient === true;
         this.isDynamicLoaded = false;
 
         if(this.cfg.dynamic || (this.itemsWrapper.children().length === 0)) {
@@ -1336,14 +1336,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @return {string} Rendered HTML-code.
      */
     renderSelectItems: function(parentItem) {
+        var $this = this;
         var content = "";
 
         var opts = parentItem.children("option, optgroup");
-
-        opts.each((i, opt) => {
-            content += this.renderSelectItem(opt);
+        opts.each(function(index, element) {
+            content += $this.renderSelectItem(element);
         });
-
         return content;
     },
 
