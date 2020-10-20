@@ -229,12 +229,14 @@ public class LangUtils {
     }
 
     public static boolean containsIgnoreCase(String[] array, String searchedText) {
-        if (array == null || array.length == 0) {
+        if (array == null || array.length == 0 || searchedText == null) {
             return false;
         }
 
+        String compareValue = searchedText.toLowerCase();
         for (int i = 0; i < array.length; i++) {
-            if (array[i].equalsIgnoreCase(searchedText)) {
+            String arrayValue = Objects.toString(array[i]).toLowerCase();
+            if (arrayValue.contains(compareValue)) {
                 return true;
             }
         }

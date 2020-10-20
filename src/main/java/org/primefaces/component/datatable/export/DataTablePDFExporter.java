@@ -279,7 +279,8 @@ public class DataTablePDFExporter extends DataTableExporter {
         FacesContext context = FacesContext.getCurrentInstance();
 
         if (column.getExportFunction() != null) {
-            pdfTable.addCell(new Paragraph(exportColumnByFunction(context, column), font));
+            PdfPCell cell = createCell(column, new Paragraph(exportColumnByFunction(context, column), font));
+            pdfTable.addCell(cell);
         }
         else {
             StringBuilder builder = new StringBuilder();
@@ -293,7 +294,8 @@ public class DataTablePDFExporter extends DataTableExporter {
                 }
             }
 
-            pdfTable.addCell(new Paragraph(builder.toString(), font));
+            PdfPCell cell = createCell(column, new Paragraph(builder.toString(), font));
+            pdfTable.addCell(cell);
         }
     }
 
@@ -379,5 +381,24 @@ public class DataTablePDFExporter extends DataTableExporter {
         }
         cellFont = FontFactory.getFont(newFont, encoding);
         facetFont = FontFactory.getFont(newFont, encoding, Font.DEFAULTSIZE, Font.BOLD);
+    }
+
+    protected PdfPCell createCell(final UIColumn column, Phrase phrase) {
+        PdfPCell cell = new PdfPCell(phrase);
+        return applyColumnAlignments(column, cell);
+    }
+
+    protected PdfPCell applyColumnAlignments(final UIColumn column, final PdfPCell cell) {
+        String[] styles = new String[] {column.getStyle(), column.getStyleClass()};
+        if (LangUtils.containsIgnoreCase(styles, "right")) {
+            cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        }
+        else  if (LangUtils.containsIgnoreCase(styles, "center")) {
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        }
+        else {
+            cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        }
+        return cell;
     }
 }
