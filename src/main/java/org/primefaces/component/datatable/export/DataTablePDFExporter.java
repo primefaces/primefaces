@@ -26,12 +26,10 @@ package org.primefaces.component.datatable.export;
 import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.List;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.DynamicColumn;
@@ -43,14 +41,6 @@ import org.primefaces.component.export.PDFOptions;
 import org.primefaces.component.export.PDFOrientationType;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
-
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIPanel;
-import javax.faces.context.FacesContext;
-import java.awt.Color;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.List;
 
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfPCell;
