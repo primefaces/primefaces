@@ -74,6 +74,7 @@
  * @prop {string} cfg.labelTemplate Displays label of the element in a custom template. Valid placeholder is `{0}`,
  * which is replaced with the value of the currently selected item.
  * @prop {boolean} cfg.syncTooltip Updates the title of the component with the description of the selected item.
+ * @prop {boolean} cfg.renderPanelContentOnClient Renders panel content on client.
  */
 PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
@@ -94,16 +95,17 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.panel = $(this.panelId);
         this.disabled = this.jq.hasClass('ui-state-disabled');
         this.itemsWrapper = this.panel.children('.ui-selectonemenu-items-wrapper');
-        this.options = this.input.children('option');
+        this.options = this.input.find('option');
         this.cfg.effect = this.cfg.effect||'fade';
 
         this.cfg.effectSpeed = this.cfg.effectSpeed||'normal';
         this.cfg.autoWidth = this.cfg.autoWidth === false ? false : true;
         this.cfg.dynamic = this.cfg.dynamic === true ? true : false;
         this.cfg.appendTo = this.getAppendTo();
+        this.cfg.renderPanelContentOnClient = this.cfg.renderPanelContentOnClient === true;
         this.isDynamicLoaded = false;
 
-        if(this.cfg.dynamic) {
+        if(this.cfg.dynamic || (this.itemsWrapper.children().length === 0)) {
             var selectedOption = this.options.filter(':selected'),
             labelVal = this.cfg.editable ? this.label.val() : selectedOption.text();
 
@@ -1269,6 +1271,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 $this.isDynamicLoaded = true;
                 $this.input = $($this.jqId + '_input');
                 $this.options = $this.input.children('option');
+
+                $this.renderPanelContentFromHiddenSelect(false);
+
                 $this.initContents();
                 $this.bindItemEvents();
             }
@@ -1298,8 +1303,102 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             }, 10);
         }
         else {
+            this.renderPanelContentFromHiddenSelect(true);
+
             handleMethod.call(this, event);
         }
+    },
+
+    /**
+     * Renders panel content based on hidden select.
+     * @param {boolean} initContentsAndBindItemEvents Call initContents and bindItemEvents after rendering?
+     * @private
+     */
+    renderPanelContentFromHiddenSelect: function(initContentsAndBindItemEvents) {
+         if (this.cfg.renderPanelContentOnClient && this.itemsWrapper.children().length === 0) {
+             var panelContent = '<ul id="' + this.id + '_items" class="ui-selectonemenu-items ui-selectonemenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset" role="listbox">';
+             panelContent += this.renderSelectItems(this.input);
+             panelContent += '</ul>';
+
+             this.itemsWrapper.append(panelContent);
+
+             if (initContentsAndBindItemEvents) {
+                 this.initContents();
+                 this.bindItemEvents();
+             }
+         }
+    },
+
+    /**
+     * Renders Panel-HTML-code for SelectItems.
+     * @private
+     * @param {JQuery} parentItem An parentItem (select, optgroup) for which to render HTML-code.
+     * @return {string} Rendered HTML-code.
+     */
+    renderSelectItems: function(parentItem) {
+        var $this = this;
+        var content = "";
+
+        var opts = parentItem.children("option, optgroup");
+        opts.each(function(index, element) {
+            content += $this.renderSelectItem(element);
+        });
+        return content;
+    },
+
+    /**
+     * Renders Panel-HTML-code for one SelectItem(Group).
+     * @private
+     * @param {JQuery} item An option(group) for which to render HTML-code.
+     * @return {string} Rendered HTML-code.
+     */
+    renderSelectItem: function(item) {
+        var content = "";
+        var $item = $(item);
+        var label;
+        var title = $item.data("title");
+        var escape = $item.data("escape");
+        var cssClass;
+
+        if (item.tagName === "OPTGROUP") {
+            label = $item.attr("label");
+            cssClass = "ui-selectonemenu-item-group ui-corner-all";
+        }
+        else { //OPTION
+            if (escape) {
+                label = $item.html();
+                if ($item.text() === "&nbsp;") {
+                    label = $item.text();
+                }
+            }
+            else {
+                label = $item.text();
+            }
+            cssClass = "ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all";
+        }
+
+        var dataLabel = label.replace(/(<([^>]+)>)/gi, "");
+        if ($item.data("noselection-option")) {
+            cssClass += " ui-noselection-option";
+        }
+
+        content += '<li class="' + cssClass + '" tabindex="-1" role="option"';
+        if (title) {
+            content += ' title="' + title + '"';
+        }
+        if ($item.is(':disabled')) {
+            content += ' disabled';
+        }
+        content += ' data-label="' + dataLabel + '"';
+        content += '>';
+        content += label;
+        content += '</li>';
+
+        if (item.tagName === "OPTGROUP") {
+            content += this.renderSelectItems($item);
+        }
+
+        return content;
     },
 
     /**
