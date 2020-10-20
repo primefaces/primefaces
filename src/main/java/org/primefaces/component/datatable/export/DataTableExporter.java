@@ -42,15 +42,14 @@ import javax.faces.component.visit.VisitResult;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import javax.xml.bind.DatatypeConverter;
 
 import org.primefaces.PrimeFaces;
-import org.primefaces.application.resource.DynamicContentType;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.Exporter;
 import org.primefaces.component.overlaypanel.OverlayPanel;
-import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.*;
 
@@ -386,16 +385,12 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
             contentType += "; charset=" + encodingType;
         }
 
-        DefaultStreamedContent streamedContent = DefaultStreamedContent.builder()
-                .name(filenameWithExtension)
-                .contentType(contentType)
-                .stream(() -> new ByteArrayInputStream(content))
-                .build();
+        String base64 = DatatypeConverter.printBase64Binary(content);
+        String data = "data:" + contentType + ";base64," + base64;
 
-        String uri = DynamicContentSrcBuilder.build(context, streamedContent, null, false, DynamicContentType.STREAMED_CONTENT, false, "");
         String monitorKeyCookieName = ResourceUtils.getMonitorKeyCookieName(context, null);
         PrimeFaces.current().executeScript(String.format("PrimeFaces.download('%s', '%s', '%s', '%s')",
-                uri, contentType, filenameWithExtension, monitorKeyCookieName));
+                data, contentType, filenameWithExtension, monitorKeyCookieName));
     }
 
     private class DataTableVisitCallBack implements VisitCallback {
