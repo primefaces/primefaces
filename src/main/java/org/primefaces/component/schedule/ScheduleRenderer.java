@@ -66,7 +66,7 @@ public class ScheduleRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Schedule schedule = (Schedule) component;
 
-        if (schedule.getValue() instanceof LazyScheduleModel && schedule.isEventRequest(context)) {
+        if (ComponentUtils.isRequestSource(schedule, context) && schedule.isEventRequest(context)) {
             encodeEvents(context, schedule);
         }
         else {
