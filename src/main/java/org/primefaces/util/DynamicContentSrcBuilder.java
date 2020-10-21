@@ -30,6 +30,7 @@ import java.math.BigInteger;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.Map;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -128,7 +129,7 @@ public class DynamicContentSrcBuilder {
         }
         else {
             byte[] bytes = toByteArray(streamedContent.getStream());
-            String base64 = DatatypeConverter.printBase64Binary(bytes);
+            String base64 = Base64.getEncoder().withoutPadding().encodeToString(bytes);
             return "data:" + streamedContent.getContentType() + ";base64," + base64;
         }
     }

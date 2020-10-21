@@ -25,10 +25,7 @@ package org.primefaces.component.datatable.export;
 
 import java.io.*;
 import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.el.MethodExpression;
@@ -42,7 +39,6 @@ import javax.faces.component.visit.VisitResult;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
-import javax.xml.bind.DatatypeConverter;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.celleditor.CellEditor;
@@ -385,7 +381,7 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
             contentType += "; charset=" + encodingType;
         }
 
-        String base64 = DatatypeConverter.printBase64Binary(content);
+        String base64 = Base64.getEncoder().withoutPadding().encodeToString(content);
         String data = "data:" + contentType + ";base64," + base64;
 
         String monitorKeyCookieName = ResourceUtils.getMonitorKeyCookieName(context, null);
