@@ -24,6 +24,7 @@
 package org.primefaces.component.selectonemenu;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -520,23 +521,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         }
 
         if (valuesArray != null) {
-            for (int i = 0; i < selectItems.size(); i++) {
-                SelectItem selectItem = selectItems.get(i);
-
-                Object itemValue;
-                if (submittedValues != null) {
-                    //what the hell does the following line? maybe for editable?
-                    itemValue = getOptionAsString(context, menu, converter, selectItem.getValue());
-                }
-                else {
-                    itemValue = selectItem.getValue();
-                }
-
-                if (isSelected(context, menu, itemValue, valuesArray, converter)) {
-                    selectedSelectItem = selectItem;
-                    break;
-                }
-            }
+            selectedSelectItem = getSelectedSelectItem(context, menu, selectItems, submittedValues, converter, valuesArray);
         }
 
         for (int i = 0; i < selectItems.size(); i++) {
@@ -544,6 +529,39 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             encodeOption(context, menu, selectItem, selectedSelectItem, values, submittedValues, converter, i);
         }
 
+    }
+
+    private SelectItem getSelectedSelectItem(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems,
+                                             Object submittedValues, Converter converter, Object valuesArray) {
+        SelectItem selectedSelectItem = null;
+
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem selectItem = selectItems.get(i);
+
+            if (selectItem instanceof SelectItemGroup) {
+                SelectItemGroup selectItemGroup = (SelectItemGroup) selectItem;
+                selectedSelectItem = getSelectedSelectItem(context, menu, Arrays.asList(selectItemGroup.getSelectItems()),
+                        submittedValues, converter, valuesArray);
+                if (selectedSelectItem != null) {
+                    break;
+                }
+            }
+
+            Object itemValue;
+            if (submittedValues != null) {
+                //what the hell does the following line? maybe for editable?
+                itemValue = getOptionAsString(context, menu, converter, selectItem.getValue());
+            }
+            else {
+                itemValue = selectItem.getValue();
+            }
+
+            if (isSelected(context, menu, itemValue, valuesArray, converter)) {
+                selectedSelectItem = selectItem;
+                break;
+            }
+        }
+        return selectedSelectItem;
     }
 
     protected void encodeOption(FacesContext context, SelectOneMenu menu, SelectItem option, SelectItem selectedOption, Object values, Object submittedValues,
