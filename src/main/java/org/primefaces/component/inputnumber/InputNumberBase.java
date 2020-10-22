@@ -157,7 +157,7 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
     }
 
     public String getEmptyValue() {
-        return (String) getStateHelper().eval(PropertyKeys.emptyValue, "empty");
+        return (String) getStateHelper().eval(PropertyKeys.emptyValue, "focus");
     }
 
     public void setEmptyValue(String emptyValue) {
