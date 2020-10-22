@@ -13002,6 +13002,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[HTML5 inputmode attribute for hinting at the type of data this control has for touch devices. Default is 'numeric' if decimalPlaces==0, 'decimal' if decimalPlaces>0.]]>
+            </description>
+            <name>inputMode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Inline style of the input element.]]>
             </description>
             <name>inputStyle</name>

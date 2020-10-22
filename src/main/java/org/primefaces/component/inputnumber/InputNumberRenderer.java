@@ -138,6 +138,15 @@ public class InputNumberRenderer extends InputRenderer {
             writer.writeAttribute("style", inputNumber.getStyle(), "style");
         }
 
+        String defaultDecimalPlaces = "2";
+        if (value instanceof Long || value instanceof Integer || value instanceof Short || value instanceof BigInteger) {
+            defaultDecimalPlaces = "0";
+        }
+        String decimalPlaces = isValueBlank(inputNumber.getDecimalPlaces())
+                ? defaultDecimalPlaces
+                : inputNumber.getDecimalPlaces();
+        inputNumber.setDecimalPlaces(decimalPlaces);
+
         encodeInput(context, inputNumber, clientId, valueToRender);
         encodeHiddenInput(context, inputNumber, clientId, valueToRender);
 
@@ -182,12 +191,17 @@ public class InputNumberRenderer extends InputRenderer {
         String inputStyle = inputNumber.getInputStyle();
         String style = inputStyle;
         String styleClass = createStyleClass(inputNumber, InputNumber.PropertyKeys.inputStyleClass.name(), InputText.STYLE_CLASS) ;
+        String inputMode = inputNumber.getInputMode();
+        if (inputMode == null) {
+            inputMode = "0".equals(inputNumber.getDecimalPlaces()) ? "numeric" : "decimal";
+        }
 
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", inputNumber.getType(), null);
         writer.writeAttribute("value", valueToRender, null);
+        writer.writeAttribute("inputmode", inputMode, null);
 
         if (!isValueBlank(style)) {
             writer.writeAttribute("style", style, null);
@@ -212,14 +226,6 @@ public class InputNumberRenderer extends InputRenderer {
                 ? Constants.EMPTY_STRING
                 : inputNumber.getThousandSeparator();
 
-        String defaultDecimalPlaces = "2";
-        if (value instanceof Long || value instanceof Integer || value instanceof Short || value instanceof BigInteger) {
-            defaultDecimalPlaces = "0";
-        }
-        String decimalPlaces = isValueBlank(inputNumber.getDecimalPlaces())
-                ? defaultDecimalPlaces
-                : inputNumber.getDecimalPlaces();
-
         String decimalSeparator = isValueBlank(inputNumber.getDecimalSeparator())
                     ? "."
                     : inputNumber.getDecimalSeparator();
@@ -235,7 +241,7 @@ public class InputNumberRenderer extends InputRenderer {
             .attr("currencySymbolPlacement", inputNumber.getSymbolPosition(), "p")
             .attr("minimumValue", formatForPlugin(inputNumber.getMinValue()))
             .attr("maximumValue", formatForPlugin(inputNumber.getMaxValue()))
-            .attr("decimalPlaces", decimalPlaces)
+            .attr("decimalPlaces", inputNumber.getDecimalPlaces())
             .attr("emptyInputBehavior", emptyValue, "focus")
             .attr("leadingZero", inputNumber.getLeadingZero(), "deny")
             .attr("allowDecimalPadding", inputNumber.isPadControl(), true)
