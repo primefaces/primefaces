@@ -235,6 +235,11 @@ public class DataTableCSVExporter extends DataTableExporter {
     @Override
     protected void postExport(FacesContext context, ExportConfiguration config) throws IOException {
         super.postExport(context, config);
+
+    }
+
+    @Override
+    protected void reset() {
         sb = null;
     }
 }

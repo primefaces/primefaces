@@ -116,8 +116,6 @@ public class DataTablePDFExporter extends DataTableExporter {
 
         getDocument().close();
         sendExport2Client(config.getOutputFileName() + ".pdf", baos, context);
-
-        reset();
     }
 
 
@@ -126,6 +124,7 @@ public class DataTablePDFExporter extends DataTableExporter {
         return "application/pdf";
     }
 
+    @Override
     protected void reset() {
         document = null;
         baos = null;

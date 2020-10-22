@@ -147,4 +147,8 @@ public class DataTableXMLExporter extends DataTableExporter {
         builder.append("</" + tag + ">\n");
     }
 
+    @Override
+    protected void reset() {
+        // NOOP
+    }
 }

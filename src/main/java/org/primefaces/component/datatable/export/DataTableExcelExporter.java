@@ -98,10 +98,9 @@ public class DataTableExcelExporter extends DataTableExporter {
         }
 
         sendExport2Client(context, wb, config.getOutputFileName());
-
-        reset();
     }
 
+    @Override
     protected void reset() throws IOException {
         wb.close();
         wb = null;

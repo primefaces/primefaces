@@ -321,7 +321,14 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
         }
 
         postExport(context, config);
+
+        reset();
     }
+
+    /**
+     * Resets internal data-structures after export is done.
+     */
+    protected abstract void reset() throws IOException;
 
     /**
      * Export datatable
