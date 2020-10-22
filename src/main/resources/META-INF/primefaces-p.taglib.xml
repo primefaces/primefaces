@@ -8274,6 +8274,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Render facets even if their children are not rendered. Default is false.]]>
+            </description>
+            <name>renderEmptyFacets</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
