@@ -1362,6 +1362,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         if (item.tagName === "OPTGROUP") {
             label = $item.attr("label");
+            if (escape) {
+                label = $("<div>").text(label).html();
+            }
             cssClass = "ui-selectonemenu-item-group ui-corner-all";
         }
         else { //OPTION
