@@ -85,6 +85,7 @@ decimalSeparator | *1 | String | Decimal separator char.
 decimalSeparatorAlternative | null | String | Allow to declare an alternative decimal separator which is automatically replaced by `decimalCharacter` when typed.
 emptyValue | focus | String | Defines what to display when the input value is empty (possible options are null, focus, press, always, min, max, zero, number, or a string representing a number)
 leadingZero | allow | Sting | Controls leading zero behavior. Valid values are "allow"(default), "deny" and "keep".
+inputMode | null | String | HTML5 inputmode attribute for hinting at the type of data this control has for touch devices. Default is 'numeric' if decimalPlaces==0, 'decimal' if decimalPlaces>0.
 inputStyle | null | String | Inline style of the input element.
 inputStyleClass | null | String | Style class of the input element.
 maxValue | 10000000000000 | String | Maximum values allowed.
