@@ -69,7 +69,7 @@ public class DataTableXMLExporter extends DataTableExporter {
             config.getPostProcessor().invoke(context.getELContext(), new Object[]{builder});
         }
 
-        sendExport2Client(config.getOutputFileName() + ".xml", builder, config.getEncodingType(), context);
+        setDataTableExportResult(new DataTableExportResult(config.getOutputFileName() + ".xml", builder, config.getEncodingType()));
     }
 
     @Override
@@ -145,10 +145,5 @@ public class DataTableXMLExporter extends DataTableExporter {
         }
 
         builder.append("</" + tag + ">\n");
-    }
-
-    @Override
-    protected void reset() {
-        // NOOP
     }
 }

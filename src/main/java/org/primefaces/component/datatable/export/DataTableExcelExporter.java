@@ -97,11 +97,16 @@ public class DataTableExcelExporter extends DataTableExporter {
             config.getPostProcessor().invoke(context.getELContext(), new Object[]{wb});
         }
 
-        sendExport2Client(context, wb, config.getOutputFileName());
-    }
+        String filename = config.getOutputFileName();
+        if ("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet".equals(getContentType())) {
+            filename += ".xlsx";
+        }
+        else {
+            filename += ".xls";
+        }
 
-    @Override
-    protected void reset() throws IOException {
+        setDataTableExportResult(new DataTableExportResult(filename, getByteArrayOutputStream(wb)));
+
         wb.close();
         wb = null;
     }
@@ -222,19 +227,6 @@ public class DataTableExcelExporter extends DataTableExporter {
 
     protected Sheet createSheet(Workbook wb, String sheetName, ExcelOptions options) {
         return wb.createSheet(sheetName);
-    }
-
-    protected void sendExport2Client(FacesContext context, Workbook generatedExcel, String filename) throws IOException {
-        ByteArrayOutputStream byteArrayOutputStream = getByteArrayOutputStream(generatedExcel);
-
-        if ("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet".equals(getContentType())) {
-            filename += ".xlsx";
-        }
-        else {
-            filename += ".xls";
-        }
-
-        sendExport2Client(filename, byteArrayOutputStream, context);
     }
 
     protected ByteArrayOutputStream getByteArrayOutputStream(Workbook generatedExcel) throws IOException {

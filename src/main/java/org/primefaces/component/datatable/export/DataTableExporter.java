@@ -51,6 +51,8 @@ import org.primefaces.util.*;
 
 public abstract class DataTableExporter implements Exporter<DataTable> {
 
+    private DataTableExportResult dataTableExportResult;
+
     protected enum ColumnType {
         HEADER("header"),
         FOOTER("footer");
@@ -322,13 +324,10 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
 
         postExport(context, config);
 
-        reset();
-    }
+        sendExport2Client(context);
 
-    /**
-     * Resets internal data-structures after export is done.
-     */
-    protected abstract void reset() throws IOException;
+        dataTableExportResult = null;
+    }
 
     /**
      * Export datatable
@@ -342,44 +341,42 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
 
     protected abstract String getContentType();
 
-    protected void sendExport2Client(String filenameWithExtension, ByteArrayOutputStream content, FacesContext context) throws IOException {
+    protected void sendExport2Client(FacesContext context) throws IOException {
         if (PrimeFaces.current().isAjaxRequest()) {
-            ajaxDownload(filenameWithExtension, content.toByteArray(), context);
+            ajaxDownload(dataTableExportResult, context);
         }
         else {
             ExternalContext externalContext = context.getExternalContext();
             externalContext.setResponseContentType(getContentType());
-            setResponseHeader(externalContext, ComponentUtils.createContentDisposition("attachment", filenameWithExtension));
-            externalContext.setResponseContentLength(content.size());
+            setResponseHeader(externalContext, ComponentUtils.createContentDisposition("attachment", dataTableExportResult.getFilenameWithExtension()));
             addResponseCookie(context);
 
-            content.writeTo(externalContext.getResponseOutputStream());
-            externalContext.responseFlushBuffer();
-        }
-    }
-
-    protected void sendExport2Client(String filenameWithExtension, StringBuilder content, String encodingType, FacesContext context) throws IOException {
-        if (PrimeFaces.current().isAjaxRequest()) {
-            ajaxDownload(filenameWithExtension, content.toString().getBytes(encodingType), encodingType, context);
-        }
-        else {
-            ExternalContext externalContext = context.getExternalContext();
-            externalContext.setResponseContentType(getContentType() + "; charset=" + encodingType);
-            setResponseHeader(externalContext, ComponentUtils.createContentDisposition("attachment", filenameWithExtension));
-
-            addResponseCookie(context);
-
-            OutputStream os = externalContext.getResponseOutputStream();
-            try (OutputStreamWriter osw = new OutputStreamWriter(os, encodingType);
-                 PrintWriter writer = new PrintWriter(osw);) {
-                writer.write(content.toString());
-                writer.flush();
+            if (dataTableExportResult.getByteArrayOutputStream() != null) {
+                externalContext.setResponseContentLength(dataTableExportResult.getByteArrayOutputStream().size());
+                dataTableExportResult.getByteArrayOutputStream().writeTo(externalContext.getResponseOutputStream());
+                externalContext.responseFlushBuffer();
+            }
+            else if (dataTableExportResult.getStringBuilder() != null) {
+                OutputStream os = externalContext.getResponseOutputStream();
+                try (OutputStreamWriter osw = new OutputStreamWriter(os, dataTableExportResult.getEncodingType());
+                     PrintWriter writer = new PrintWriter(osw);) {
+                    writer.write(dataTableExportResult.getStringBuilder().toString());
+                    writer.flush();
+                }
             }
         }
     }
 
-    private void ajaxDownload(String filenameWithExtension, byte[] content, FacesContext context) {
-        ajaxDownload(filenameWithExtension, content, null, context);
+    private void ajaxDownload(DataTableExportResult dataTableExportResult, FacesContext context) throws UnsupportedEncodingException {
+        if (dataTableExportResult.getByteArrayOutputStream() != null) {
+            ajaxDownload(dataTableExportResult.getFilenameWithExtension(), dataTableExportResult.getByteArrayOutputStream().toByteArray(), null, context);
+        }
+        else if (dataTableExportResult.getStringBuilder() != null) {
+            ajaxDownload(dataTableExportResult.getFilenameWithExtension(),
+                    dataTableExportResult.getStringBuilder().toString().getBytes(dataTableExportResult.getEncodingType()),
+                    null,
+                    context);
+        }
     }
 
     private void ajaxDownload(String filenameWithExtension, byte[] content, String encodingType, FacesContext context) {
@@ -451,4 +448,11 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
         ResourceUtils.addResponseCookie(context, Constants.DOWNLOAD_COOKIE, "true", null);
     }
 
+    /**
+     * Needs to be called after export is finished to prepare DataTableExportResult which need to be sent to client.
+     * @param dataTableExportResult
+     */
+    protected void setDataTableExportResult(DataTableExportResult dataTableExportResult) {
+        this.dataTableExportResult = dataTableExportResult;
+    }
 }

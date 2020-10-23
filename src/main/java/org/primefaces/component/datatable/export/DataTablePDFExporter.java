@@ -115,19 +115,17 @@ public class DataTablePDFExporter extends DataTableExporter {
         }
 
         getDocument().close();
-        sendExport2Client(config.getOutputFileName() + ".pdf", baos, context);
+
+        setDataTableExportResult(new DataTableExportResult(config.getOutputFileName() + ".pdf", baos));
+
+        document = null;
+        baos = null;
     }
 
 
     @Override
     protected String getContentType() {
         return "application/pdf";
-    }
-
-    @Override
-    protected void reset() {
-        document = null;
-        baos = null;
     }
 
     protected PdfPTable exportTable(FacesContext context, DataTable table, ExportConfiguration config) {
