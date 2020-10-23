@@ -96,10 +96,6 @@ public class DataTableCSVExporter extends DataTableExporter {
         if (config.getPostProcessor() != null) {
             config.getPostProcessor().invoke(context.getELContext(), new Object[]{sb});
         }
-
-        setDataTableExportResult(new DataTableExportResult(config.getOutputFileName() + ".csv", sb, config.getEncodingType()));
-
-        sb = null;
     }
 
     @Override
@@ -238,5 +234,8 @@ public class DataTableCSVExporter extends DataTableExporter {
     protected void postExport(FacesContext context, ExportConfiguration config) throws IOException {
         super.postExport(context, config);
 
+        setDataTableExportResult(new DataTableExportResult(config.getOutputFileName() + ".csv", sb, config.getEncodingType()));
+
+        sb = null;
     }
 }
