@@ -25,81 +25,36 @@ package org.primefaces.convert;
 
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.primefaces.convert.PatternReader.LiteralToken;
-import org.primefaces.convert.PatternReader.PatternLetterToken;
-import org.primefaces.convert.PatternReader.PatternToken;
-import org.primefaces.convert.PatternReader.TokenFactory;
+import org.primefaces.convert.PatternReader.TokenVisitor;
 
 /**
  * Utility class for converting between {@link SimpleDateFormat} /
- * {@link DateTimeFormatter} patterns and jquery UI datepicker patterns.
+ * {@link DateTimeFormatter} patterns and JQuery UI date picker patterns.
  */
 public class DateTimePatternConverter implements PatternConverter {
     private static final Logger LOGGER = Logger.getLogger(DateTimePatternConverter.class.getName());
 
     /**
-     * Converts a java date pattern to a jquery UI datepicker pattern
+     * Converts a Java date pattern with the given pattern letters to a JQuery UI
+     * date picker pattern.
      *
-     * @param pattern Pattern to be converted
-     * @return The converted jquery UI pattern.
+     * @param pattern Pattern to be converted.
+     * @return The converted JQuery UI date picker pattern.
      */
     public String convert(String pattern) {
-        return convert(pattern, CombinedDateTimePatternTokenFactory.getInstance());
-    }
-
-    /**
-     * Converts a Java date pattern with the given pattern letters to a jquery UI
-     * datepicker pattern.
-     *
-     * @param pattern Pattern to be converted
-     * @param letters An interpretation for each pattern letter (a-z, A-Z).
-     * @return The converted jquery UI datepicker pattern.
-     */
-    private String convert(String pattern, TokenFactory<JqueryPatternToken> letters) {
         pattern = pattern != null ? pattern : "";
-        final List<JqueryPatternToken> tokens;
+        final JQueryDateTimePatternBuilder builder = new JQueryDateTimePatternBuilder();
+        final TokenVisitor visitor = new CombinedDateTimePatternTokenVisitor(builder);
         try {
-            tokens = PatternReader.parsePattern(pattern, letters);
+            PatternReader.parsePattern(pattern, visitor);
         }
         catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Could not parse pattern '" + pattern + "'", e);
+            LOGGER.log(Level.SEVERE, "Could not process pattern '" + pattern + "'", e);
             return pattern;
         }
-        try {
-            final JQueryDateTimePatternBuilder builder = new JQueryDateTimePatternBuilder();
-            for (final JqueryPatternToken token : tokens) {
-                token.buildJqueryUiPattern(builder);
-            }
-            return builder.toString();
-        }
-        catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Could not build converted pattern for '" + pattern + "'", e);
-            return pattern;
-        }
-    }
-
-    public static class JqueryLiteralToken extends LiteralToken implements JqueryPatternToken {
-        public JqueryLiteralToken(String text) {
-            super(text);
-        }
-
-        @Override
-        public void buildJqueryUiPattern(JQueryDateTimePatternBuilder builder) {
-            builder.appendLiteralText(text);
-        }
-    }
-
-    public abstract static class JQueryPatternLetterToken extends PatternLetterToken implements JqueryPatternToken {
-        public JQueryPatternLetterToken(int repetitions) {
-            super(repetitions);
-        }
-    }
-
-    public static interface JqueryPatternToken extends PatternToken {
-        void buildJqueryUiPattern(JQueryDateTimePatternBuilder builder);
+        return builder.toString();
     }
 }

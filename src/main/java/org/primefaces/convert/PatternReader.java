@@ -23,14 +23,15 @@
  */
 package org.primefaces.convert;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.PrimitiveIterator.OfInt;
 
-public class PatternReader<T extends PatternReader.PatternToken> {
+/**
+ * Reads and parses a date time pattern, such as {@code YYYY-mm-dd}. Accepts a visitor object with methods that
+ * are called when a token of the pattern is encountered. These callback methods may be used for example to
+ * transform the pattern into a different pattern.
+ */
+public class PatternReader {
     private static final int INVALID_CODEPOINT = -1;
-
-    private final List<T> tokens;
 
     private OfInt iterator;
 
@@ -38,25 +39,21 @@ public class PatternReader<T extends PatternReader.PatternToken> {
 
     private StringBuilder literals = new StringBuilder();
 
-    private final TokenFactory<T> factory;
+    private final TokenVisitor visitor;
 
-    public PatternReader(CharSequence sequence, TokenFactory<T> factory) {
+    /**
+     * Creates a new pattern read for processing the given string.
+     * @param sequence String with the pattern to process.
+     * @param visitor Visitor to call for each encountered token of the pattern.
+     */
+    private PatternReader(CharSequence sequence, TokenVisitor visitor) {
         this.iterator = sequence.codePoints().iterator();
-        this.tokens = new ArrayList<>(sequence.length());
-        this.factory = factory;
+        this.visitor = visitor;
     }
 
     private void addLiteral(int literal) {
         if (literal != INVALID_CODEPOINT) {
             literals.appendCodePoint(literal);
-        }
-    }
-
-    private void addPatternLetter(int letter, int repetitions) {
-        finishLiterals();
-        final T token = factory.getForTokenLetter(letter, repetitions);
-        if (token != null) {
-            tokens.add(token);
         }
     }
 
@@ -108,7 +105,7 @@ public class PatternReader<T extends PatternReader.PatternToken> {
             consumeChar();
             repetitions += 1;
         }
-        addPatternLetter(letter, repetitions);
+        processPatternLetter(letter, repetitions);
     }
 
     private void consumeQuotedLiteral() {
@@ -132,7 +129,7 @@ public class PatternReader<T extends PatternReader.PatternToken> {
 
     private void finishLiterals() {
         if (literals.length() > 0) {
-            tokens.add(factory.getForLiteral(literals.toString()));
+            visitor.visitLiteral(literals.toString());
             literals.setLength(0);
         }
     }
@@ -148,42 +145,37 @@ public class PatternReader<T extends PatternReader.PatternToken> {
         return peeked;
     }
 
-    public static <T extends PatternToken> List<T> parsePattern(CharSequence sequence, TokenFactory<T> factory) {
-        final PatternReader<T> reader = new PatternReader<>(sequence, factory);
+    private void processPatternLetter(int letter, int repetitions) {
+        finishLiterals();
+        visitor.visitTokenLetter(letter, repetitions);
+    }
+
+    /**
+     * Parses the given pattern and calls the visitor for each encountered pattern.
+     * @param sequence String with the pattern to process.
+     * @param visitor Visitor to call for each encountered token of the pattern.
+     */
+    public static void parsePattern(CharSequence sequence, TokenVisitor visitor) {
+        final PatternReader reader = new PatternReader(sequence, visitor);
         reader.consumePattern();
-        return reader.tokens;
     }
 
-    public static class LiteralToken implements PatternToken {
-        protected final String text;
+    /**
+     * Visits a date time pattern token when one encountered. All methods receive a custom object.
+     */
+    public static interface TokenVisitor {
+        /**
+         * Visits a literal token, i.e. plain text without special meaning.
+         * @param text Plain text to process.
+         */
+        void visitLiteral(String text);
 
-        public LiteralToken(String text) {
-            this.text = text;
-        }
-
-        public String getText() {
-            return text;
-        }
-    }
-
-    public abstract static class PatternLetterToken implements PatternToken {
-        protected final int repetitions;
-
-        public PatternLetterToken(int repetitions) {
-            this.repetitions = repetitions;
-        }
-
-        public int getRepetitions() {
-            return repetitions;
-        }
-    }
-
-    public static interface PatternToken {
-    }
-
-    public static interface TokenFactory<T extends PatternToken> {
-        T getForLiteral(String text);
-
-        T getForTokenLetter(int letter, int repetitions);
+        /**
+         *
+         * @param letter The token letter that was encountered, i.e. {@code Y}.
+         * @param repetitions The number of repetitions of the letter. E.g. when a pattern contains {@code YYYY},
+         * with method is called once with {@code repetitions} set to {@code 4}.
+         */
+        void visitTokenLetter(int letter, int repetitions);
     }
 }
