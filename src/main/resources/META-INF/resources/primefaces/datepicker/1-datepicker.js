@@ -311,7 +311,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                                 disabledDates.push(parsedDate);
                             }
                             if (dateMetadata[date].styleClass) {
-                              dateStyleClasses[parsedDate.getTime()] = dateMetadata[date].styleClass;
+                              dateStyleClasses[pdp.toISO(parsedDate)] = dateMetadata[date].styleClass;
                             }
                         }
                         pdp.options.dateStyleClasses = dateStyleClasses;

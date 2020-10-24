@@ -1470,7 +1470,7 @@
             var content = this.options.dateTemplate ? this.options.dateTemplate.call(this, date) : date.day;
             var classes = this.options.dateStyleClasses;
             if (classes !== null) {
-              var time = new Date(date.year, date.month, date.day).getTime();
+              var time = this.toISO(new Date(date.year, date.month, date.day));
               if (classes[time]) {
                 dateClass += ' ' + classes[time];
               }
@@ -1608,6 +1608,10 @@
             });
 
             return _classes;
+        },
+
+        toISO: function (date) {
+            return date.toISOString().substring(0, 10);
         },
 
         _bindEvents: function () {

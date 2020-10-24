@@ -58,7 +58,7 @@ ajax selection and more.
 | maxlength | null | Integer | Maximum number of characters that may be entered in this field.
 | mindate | null | java.time.LocalDate, java.time.LocalDateTime, java.time.LocalTime, java.util.Date (deprecated) or String | Sets DatePicker's minimum selectable value; Also used for validation on the server-side.
 | monthNavigator | false | Boolean | Whether to show the month navigator
-| model | null | org.primefaces.model.datepicker.DateMetadataModel | Model with meta data for certain dates, like disabled
+| model | null | org.primefaces.model.datepicker.DateMetadataModel | Model with meta data for certain dates, like `disabled` and `styleClass`
 | numberOfMonths | 1 | Integer | Number of months to display concurrently.
 | onMonthChange | null | Function | Javascript function to invoke when month changes.
 | onYearChange | null | Function | Javascript function to invoke when year changes.
@@ -274,7 +274,7 @@ public void init() {
 
 ## Date metadata model
 
-You can use the `model` attribute to set metadata per date in the calendar. Metadata currently contains disabled, but more properties will be added later.
+You can use the `model` attribute to set metadata per date in the calendar. Metadata currently contains `disabled` and `styleClass`.
 
 Setting disabled dates is already possible using the corresponding attribute, I hear you think. But here comes the interesting part:
 

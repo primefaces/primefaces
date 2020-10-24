@@ -33,12 +33,12 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import org.primefaces.event.DateViewChangeEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.datepicker.DateMetadata;
+import org.primefaces.model.datepicker.DateMetadataModel;
 import org.primefaces.model.datepicker.LazyDateMetadataModel;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.model.datepicker.DateMetadata;
-import org.primefaces.model.datepicker.DateMetadataModel;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -324,14 +324,6 @@ public class DatePicker extends DatePickerBase {
             return disabledDates;
         }
         DateMetadataModel model = getModel();
-        if (model instanceof LazyDateMetadataModel) {
-            LocalDate startDate = getInitalStartDate(context);
-            LocalDate endDate = startDate.plusMonths(getNumberOfMonths()).minusDays(1);
-
-            LazyDateMetadataModel lazyModel = ((LazyDateMetadataModel) model);
-            lazyModel.clear();
-            lazyModel.loadDateMetadata(startDate, endDate);
-        }
         if (model != null) {
             disabledDates = new ArrayList<>();
             for (Map.Entry<LocalDate, DateMetadata> entry : model.getDateMetadata().entrySet()) {
@@ -341,6 +333,18 @@ public class DatePicker extends DatePickerBase {
             }
         }
         return disabledDates;
+    }
+
+    protected void loadInitialLazyMetadata(FacesContext context) {
+        DateMetadataModel model = getModel();
+        if (model instanceof LazyDateMetadataModel) {
+            LocalDate startDate = getInitalStartDate(context);
+            LocalDate endDate = startDate.plusMonths(getNumberOfMonths()).minusDays(1);
+
+            LazyDateMetadataModel lazyModel = ((LazyDateMetadataModel) model);
+            lazyModel.clear();
+            lazyModel.loadDateMetadata(startDate, endDate);
+        }
     }
 
     protected LocalDate getInitalStartDate(FacesContext context) {

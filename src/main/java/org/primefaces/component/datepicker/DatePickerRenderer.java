@@ -84,6 +84,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             DateMetadata metadata = entry.getValue();
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("disabled", metadata.isDisabled());
+            jsonObject.put("styleClass", metadata.getStyleClass());
             jsonDateMetadata.put(date, jsonObject);
         }
 
@@ -204,10 +205,12 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             CalendarUtils.encodeListValue(context, datepicker, "disabledDays", disabledDays, pattern);
         }
 
+        datepicker.loadInitialLazyMetadata(context);
         List<Object> disabledDates = datepicker.getInitialDisabledDates(context);
         if (disabledDates != null) {
             CalendarUtils.encodeListValue(context, datepicker, "disabledDates", disabledDates, pattern);
         }
+        encodeScriptDateStyleClasses(wb, context, datepicker);
 
         String dateTemplate = datepicker.getDateTemplate();
         if (dateTemplate != null) {
@@ -261,6 +264,20 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         encodeClientBehaviors(context, datepicker);
 
         wb.finish();
+    }
+
+    protected void encodeScriptDateStyleClasses(WidgetBuilder wb, FacesContext context, DatePicker datePicker) throws IOException {
+        if (datePicker.getModel() == null) {
+            return;
+        }
+        JSONObject styleClasses = new JSONObject();
+        for (Entry<LocalDate, DateMetadata> entry : datePicker.getModel().getDateMetadata().entrySet()) {
+            DateMetadata metadata = entry.getValue();
+            if (metadata.getStyleClass() != null) {
+                styleClasses.put(entry.getKey().toString(), metadata.getStyleClass());
+            }
+        }
+        wb.nativeAttr("dateStyleClasses", styleClasses.toString());
     }
 
     @Override
