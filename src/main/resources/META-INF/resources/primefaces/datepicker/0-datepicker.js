@@ -73,6 +73,7 @@
             panelStyleClass: null,
             monthNavigator: false,
             yearNavigator: false,
+            dateStyleClasses: null,
             disabledDates: null,
             disabledDays: null,
             minDate: null,
@@ -1467,6 +1468,13 @@
 
         renderDateCellContent: function (date, dateClass) {
             var content = this.options.dateTemplate ? this.options.dateTemplate.call(this, date) : date.day;
+            var classes = this.options.dateStyleClasses;
+            if (classes !== null) {
+              var time = new Date(date.year, date.month, date.day).getTime();
+              if (classes[time]) {
+                dateClass += ' ' + classes[time];
+              }
+            }
             if (date.selectable) {
                 return '<a tabindex="0" class="' + dateClass + '">' + content + '</a>';
             }
