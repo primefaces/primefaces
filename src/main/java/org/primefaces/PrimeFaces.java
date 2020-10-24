@@ -417,6 +417,23 @@ public class PrimeFaces {
 
             update(Arrays.asList(expressions));
         }
+
+        /**
+         * Updates all the given components.
+         *
+         * @param components the {@link UIComponent}s.
+         */
+        public void update(UIComponent... components) {
+            if (components == null || components.length == 0) {
+                return;
+            }
+
+            FacesContext facesContext = getFacesContext();
+
+            for (UIComponent component : components) {
+                facesContext.getPartialViewContext().getRenderIds().add(component.getClientId(facesContext));
+            }
+        }
     }
 
     public class MultiViewState {

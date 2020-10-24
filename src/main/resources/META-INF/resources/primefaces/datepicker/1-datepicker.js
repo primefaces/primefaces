@@ -67,7 +67,6 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         this.bindClearButtonListener();
         this.bindViewChangeListener();
         this.bindCloseListener();
-        this.applyMask();
 
         // is touch support enabled
         var touchEnabled = PrimeFaces.env.isTouchable(this.cfg) && !this.input.attr("readonly") && this.cfg.showIcon;
@@ -116,6 +115,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.appendTo = this.cfg.appendTo ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo) : null;
 
         this.jq.datePicker(this.cfg);
+        this.applyMask(); // moved below datapicker initialization because of race condition in event handling. See https://github.com/primefaces/primefaces/issues/6445
 
         //extensions
         if(!this.cfg.inline && this.cfg.showIcon) {

@@ -278,6 +278,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                 update: $this.id,
                 formId: $this.cfg.formId,
                 params: [
+                    {name: $this.id + '_event', value: true},
                     {name: $this.id + '_start', value: PrimeFaces.toISOString(fetchInfo.start)},
                     {name: $this.id + '_end', value: PrimeFaces.toISOString(fetchInfo.end)}
                 ],

@@ -54,7 +54,8 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
         padControl,
         leadingZero,
         decimalSeparatorAlternative,
-        modifyValueOnWheel
+        modifyValueOnWheel,
+        inputMode
     }
 
     public InputNumberBase() {
@@ -157,7 +158,7 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
     }
 
     public String getEmptyValue() {
-        return (String) getStateHelper().eval(PropertyKeys.emptyValue, "empty");
+        return (String) getStateHelper().eval(PropertyKeys.emptyValue, "focus");
     }
 
     public void setEmptyValue(String emptyValue) {
@@ -210,5 +211,13 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
 
     public void setModifyValueOnWheel(boolean modifyValueOnWheel) {
         getStateHelper().put(PropertyKeys.modifyValueOnWheel, modifyValueOnWheel);
+    }
+
+    public String getInputMode() {
+        return (String) getStateHelper().eval(PropertyKeys.inputMode, null);
+    }
+
+    public void setInputMode(String inputMode) {
+        getStateHelper().put(PropertyKeys.inputMode, inputMode);
     }
 }

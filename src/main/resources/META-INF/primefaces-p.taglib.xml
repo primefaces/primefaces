@@ -12994,9 +12994,17 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines what to display when the input value is empty (possible options are null, focus, press, always, min, max, zero, number, or a string representing a number)]]>
+                <![CDATA[Defines what to display when the input value is empty (possible options are null, focus, press, always, min, max, zero, number, or a string representing a number). Default is focus.]]>
             </description>
             <name>emptyValue</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[HTML5 inputmode attribute for hinting at the type of data this control has for touch devices. Default is 'numeric' if decimalPlaces==0, 'decimal' if decimalPlaces>0.]]>
+            </description>
+            <name>inputMode</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
