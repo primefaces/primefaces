@@ -109,17 +109,19 @@ public class DataTablePDFExporter extends DataTableExporter {
     }
 
     @Override
-    protected void postExport(FacesContext context, ExportConfiguration config) throws IOException {
+    protected DataTableExportResult postExport(FacesContext context, ExportConfiguration config) throws IOException {
         if (config.getPostProcessor() != null) {
             config.getPostProcessor().invoke(context.getELContext(), new Object[]{document});
         }
 
         getDocument().close();
 
-        setDataTableExportResult(new DataTableExportResult(config.getOutputFileName() + ".pdf", baos));
+        DataTableExportResult dataTableExportResult = new DataTableExportResult(config.getOutputFileName() + ".pdf", baos);
 
         document = null;
         baos = null;
+
+        return dataTableExportResult;
     }
 
 

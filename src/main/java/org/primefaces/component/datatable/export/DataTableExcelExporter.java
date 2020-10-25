@@ -92,7 +92,7 @@ public class DataTableExcelExporter extends DataTableExporter {
     }
 
     @Override
-    protected void postExport(FacesContext context, ExportConfiguration config) throws IOException {
+    protected DataTableExportResult postExport(FacesContext context, ExportConfiguration config) throws IOException {
         if (config.getPostProcessor() != null) {
             config.getPostProcessor().invoke(context.getELContext(), new Object[]{wb});
         }
@@ -105,10 +105,12 @@ public class DataTableExcelExporter extends DataTableExporter {
             filename += ".xls";
         }
 
-        setDataTableExportResult(new DataTableExportResult(filename, getByteArrayOutputStream(wb)));
+        DataTableExportResult dataTableExportResult = new DataTableExportResult(filename, getByteArrayOutputStream(wb));
 
         wb.close();
         wb = null;
+
+        return dataTableExportResult;
     }
 
     @Override

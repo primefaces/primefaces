@@ -51,8 +51,6 @@ import org.primefaces.util.*;
 
 public abstract class DataTableExporter implements Exporter<DataTable> {
 
-    private DataTableExportResult dataTableExportResult;
-
     protected enum ColumnType {
         HEADER("header"),
         FOOTER("footer");
@@ -297,9 +295,7 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
         // NOOP
     }
 
-    protected void postExport(FacesContext context, ExportConfiguration config) throws IOException {
-        // NOOP
-    }
+    protected abstract DataTableExportResult postExport(FacesContext context, ExportConfiguration config) throws IOException;
 
     protected void preRowExport(DataTable table, Object document) {
         // NOOP
@@ -322,11 +318,8 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
             index += nbTables;
         }
 
-        postExport(context, config);
-
-        sendExport2Client(context);
-
-        dataTableExportResult = null;
+        DataTableExportResult dataTableExportResult = postExport(context, config);
+        sendExport2Client(dataTableExportResult, context);
     }
 
     /**
@@ -341,7 +334,7 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
 
     protected abstract String getContentType();
 
-    protected void sendExport2Client(FacesContext context) throws IOException {
+    protected void sendExport2Client(DataTableExportResult dataTableExportResult, FacesContext context) throws IOException {
         if (PrimeFaces.current().isAjaxRequest()) {
             ajaxDownload(dataTableExportResult, context);
         }
@@ -446,13 +439,5 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
 
     protected void addResponseCookie(FacesContext context) {
         ResourceUtils.addResponseCookie(context, Constants.DOWNLOAD_COOKIE, "true", null);
-    }
-
-    /**
-     * Needs to be called after export is finished to prepare DataTableExportResult which need to be sent to client.
-     * @param dataTableExportResult
-     */
-    protected void setDataTableExportResult(DataTableExportResult dataTableExportResult) {
-        this.dataTableExportResult = dataTableExportResult;
     }
 }

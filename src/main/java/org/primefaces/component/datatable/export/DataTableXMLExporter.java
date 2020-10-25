@@ -32,16 +32,16 @@ import org.primefaces.util.EscapeUtils;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.io.*;
 import java.util.List;
 
 public class DataTableXMLExporter extends DataTableExporter {
 
+    private DataTableExportResult dataTableExportResult;
+
     @Override
     public void doExport(FacesContext context, DataTable table, ExportConfiguration config, int index) throws IOException {
-        ExternalContext externalContext = context.getExternalContext();
         StringBuilder builder = new StringBuilder();
 
         if (config.getPreProcessor() != null) {
@@ -69,7 +69,14 @@ public class DataTableXMLExporter extends DataTableExporter {
             config.getPostProcessor().invoke(context.getELContext(), new Object[]{builder});
         }
 
-        setDataTableExportResult(new DataTableExportResult(config.getOutputFileName() + ".xml", builder, config.getEncodingType()));
+        dataTableExportResult = new DataTableExportResult(config.getOutputFileName() + ".xml", builder, config.getEncodingType());
+    }
+
+    @Override
+    protected DataTableExportResult postExport(FacesContext context, ExportConfiguration config) throws IOException {
+        DataTableExportResult result = dataTableExportResult;
+        dataTableExportResult = null;
+        return result;
     }
 
     @Override

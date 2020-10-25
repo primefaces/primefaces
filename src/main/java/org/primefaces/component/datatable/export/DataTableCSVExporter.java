@@ -231,11 +231,11 @@ public class DataTableCSVExporter extends DataTableExporter {
     }
 
     @Override
-    protected void postExport(FacesContext context, ExportConfiguration config) throws IOException {
-        super.postExport(context, config);
-
-        setDataTableExportResult(new DataTableExportResult(config.getOutputFileName() + ".csv", sb, config.getEncodingType()));
+    protected DataTableExportResult postExport(FacesContext context, ExportConfiguration config) throws IOException {
+        DataTableExportResult dataTableExportResult = new DataTableExportResult(config.getOutputFileName() + ".csv", sb, config.getEncodingType());
 
         sb = null;
+
+        return dataTableExportResult;
     }
 }
