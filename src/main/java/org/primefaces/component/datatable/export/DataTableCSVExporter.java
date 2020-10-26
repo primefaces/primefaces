@@ -75,7 +75,7 @@ public class DataTableCSVExporter extends DataTableExporter {
             ExternalContext externalContext = context.getExternalContext();
 
             if (config.getPreProcessor() != null) {
-                // PF 9 - attention: break change to PreProcessor (PrintWriter instead of writer)
+                // PF 9 - attention: breaking change to PreProcessor (PrintWriter instead of writer)
                 config.getPreProcessor().invoke(context.getELContext(), new Object[]{writer});
             }
 
@@ -96,7 +96,7 @@ public class DataTableCSVExporter extends DataTableExporter {
             }
 
             if (config.getPostProcessor() != null) {
-                // PF 9 - attention: break change to PostProcessor (PrintWriter instead of writer)
+                // PF 9 - attention: breaking change to PostProcessor (PrintWriter instead of writer)
                 config.getPostProcessor().invoke(context.getELContext(), new Object[]{writer});
             }
 
