@@ -26,40 +26,41 @@ widgetVar | null | String | Name of the client side widget.
 value | null | Object | An org.primefaces.model.ScheduleModel instance representing the backed model
 locale | null | Object | Locale for localization, can be String or a java.util.Locale instance
 dir | ltr | String | Defines direction of schedule. Valid values are "ltr" (default) and "rtl".
-aspectRatio | null | Float | Ratio of calendar width to height, higher the value shorter the height is
-view | dayGridMonth | String | The view type to use, possible values are 'dayGridMonth', 'dayGridWeek', 'dayGridDay', 'timeGridWeek', 'timeGridDay', 'listYear' , 'listMonth', 'listWeek', 'listDay'.
-initialDate | null | java.time.LocalDate | The initial date that is used when schedule loads. If ommitted, the schedule starts on the current date
-showWeekends | true | Boolean | Specifies inclusion Saturday/Sunday columns in any of the views
-style | null | String | Style of the main container element of schedule
-styleClass | null | String | Style class of the main container element of schedule
-draggable | true | Boolean | When true, events are draggable.
-resizable | true | Boolean | When true, events are resizable.
-showHeader | true | Boolean | Specifies visibility of header content.
-leftHeaderTemplate | prev, next, today | String | Content of left side of header.
-centerHeaderTemplate | title | String | Content of center of header.
-rightHeaderTemplate | dayGridMonth, timeGridWeek, timeGridDay | String | Content of right side of header.
 allDaySlot | true | Boolean | Determines if all-day slot will be displayed in timeGridWeek or timeGridDay views
-slotDuration | 00:30:00 | String | The frequency for displaying time slots.
-slotLabelInterval | null | String | The frequency that the time slots should be labeled with text. If not specified, a reasonable value will be automatically computed based on slotDuration. When specifying this option, give a Duration-ish input, like "01:00" or {hours:1}. This will cause the header labels to appear on the hour marks, even if slotDuration was hypothetically 15 or 30 minutes long.
-slotLabelFormat | null | String | Determines the text that will be displayed within a time slot. The default English value will produce times that look like 5pm and 5:30pm. (see https://momentjs.com/docs/#/displaying/)
-scrollTime | 06:00:00 | String | Determines how far down the scroll pane is initially scrolled down.
-minTime | null | String | Minimum time to display in a day view.
-maxTime | null | String | Maximum time to display in a day view.
-timeFormat | null | String | Determines the time-text that will be displayed on each event. (see https://momentjs.com/docs/#/displaying/)
+aspectRatio | null | Float | Ratio of calendar width to height, higher the value shorter the height is
+centerHeaderTemplate | title | String | Content of center of header.
+clientTimeZone | local | String | Defines how to interpret the dates at browser. Valid values are "local", "UTC" and ids like "America/Chicago". (see https://fullcalendar.io/docs/timeZone)
 columnFormat | null | String | Deprecated, use columnHeaderFormat instead. Format for column headers.
 columnHeaderFormat | null | String | Format for column headers. (eg `timeGridWeek: {weekday: 'narrow'}` or `timeGridWeek: {weekday: 'short'}, timeGridDay: {day: 'numeric'}`) see: https://fullcalendar.io/docs/v4/columnHeaderFormat
+displayEventEnd | null | String | Whether or not to display an event's end time text when it is rendered on the calendar. Value can be a boolean to globally configure for all views or a comma separated list such as "month:false,basicWeek:true" to configure per view.
+draggable | true | Boolean | When true, events are draggable.
+extender | null | String | Name of JavaScript function to extend the options of the underlying FullCalendar plugin.
+height | null | String | Sets the height of the entire calendar, including header and footer. By default, this option is unset and the calendar’s height is calculated by aspectRatio. If "auto" is specified, the view’s contents will assume a natural height and no scrollbars will be used.
+initialDate | null | java.time.LocalDate | The initial date that is used when schedule loads. If ommitted, the schedule starts on the current date
+leftHeaderTemplate | prev, next, today | String | Content of left side of header.
+maxTime | null | String | Maximum time to display in a day view.
+minTime | null | String | Minimum time to display in a day view.
+nextDayThreshold | 09:00:00 | String | When an event's end time spans into another day, the minimum time it must be in order for it to render as if it were on that day. Default is `09:00:00`.
+noOpener | true | Boolean | Whether for URL events access to the opener window from the target site should be prevented (phishing protection), default value is true.
+resizable | true | Boolean | When true, events are resizable.
+rightHeaderTemplate | dayGridMonth, timeGridWeek, timeGridDay | String | Content of right side of header.
+scrollTime | 06:00:00 | String | Determines how far down the scroll pane is initially scrolled down.
+showHeader | true | Boolean | Specifies visibility of header content.
+showWeekends | true | Boolean | Specifies inclusion Saturday/Sunday columns in any of the views
+showWeekNumbers | false | Boolean | Display week numbers in schedule.
+slotDuration | 00:30:00 | String | The frequency for displaying time slots.
+slotEventOverlap | true | Boolean | If true contemporary events will be rendered one overlapping the other, else they will be rendered side by side.
+slotLabelFormat | null | String | Determines the text that will be displayed within a time slot. The default English value will produce times that look like 5pm and 5:30pm. (see https://momentjs.com/docs/#/displaying/)
+slotLabelInterval | null | String | The frequency that the time slots should be labeled with text. If not specified, a reasonable value will be automatically computed based on slotDuration. When specifying this option, give a Duration-ish input, like "01:00" or {hours:1}. This will cause the header labels to appear on the hour marks, even if slotDuration was hypothetically 15 or 30 minutes long.
+style | null | String | Style of the main container element of schedule
+styleClass | null | String | Style class of the main container element of schedule
+timeFormat | null | String | Determines the time-text that will be displayed on each event. (see https://momentjs.com/docs/#/displaying/)
 timeZone | null | Object | String or a java.time.ZoneId instance to specify the timezone used for date conversion, defaults to ZoneId.systemDefault().
 tooltip | false | Boolean | Displays description of events on a tooltip.
-clientTimeZone | local | String | Defines how to interpret the dates at browser. Valid values are "local", "UTC" and ids like "America/Chicago". (see https://fullcalendar.io/docs/timeZone)
-showWeekNumbers | false | Boolean | Display week numbers in schedule.
-extender | null | String | Name of JavaScript function to extend the options of the underlying FullCalendar plugin.
-displayEventEnd | null | String | Whether or not to display an event's end time text when it is rendered on the calendar. Value can be a boolean to globally configure for all views or a comma separated list such as "month:false,basicWeek:true" to configure per view.
+urlTarget | _blank | String | Target for events with urls. Clicking on such events in the schedule will not trigger the selectEvent but open the url using this target instead. Default is "_blank".
+view | dayGridMonth | String | The view type to use, possible values are 'dayGridMonth', 'dayGridWeek', 'dayGridDay', 'timeGridWeek', 'timeGridDay', 'listYear' , 'listMonth', 'listWeek', 'listDay'.
 weekNumberCalculation | local | String | The method for calculating week numbers that are displayed. Valid values are "local"(default), "ISO" and "custom".
 weekNumberCalculator | null | String | Client side function to use in custom `weekNumberCalculation`. This must be a JavaScript expression that results in an integer week number. You can use the local variable `date`, which points to the `Date` object for which the week number is to be determined. To illustrate, if you were to specify `date.getFullYear()`, the year would be shown instead of the actual week number.  
-nextDayThreshold | 09:00:00 | String | When an event's end time spans into another day, the minimum time it must be in order for it to render as if it were on that day. Default is `09:00:00`.
-slotEventOverlap | true | Boolean | If true contemporary events will be rendered one overlapping the other, else they will be rendered side by side.
-urlTarget | _blank | String | Target for events with urls. Clicking on such events in the schedule will not trigger the selectEvent but open the url using this target instead. Default is "_blank".
-noOpener | true | Boolean | Whether for URL events access to the opener window from the target site should be prevented (phishing protection), default value is true.
 
 ## Getting started with Schedule
 Schedule needs to be backed by an _org.primefaces.model.ScheduleModel_ instance, a schedule
