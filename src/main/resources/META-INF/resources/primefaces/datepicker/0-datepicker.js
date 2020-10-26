@@ -1470,10 +1470,10 @@
             var content = this.options.dateTemplate ? this.options.dateTemplate.call(this, date) : date.day;
             var classes = this.options.dateStyleClasses;
             if (classes !== null) {
-              var isoDateStr = this.toISO(new Date(date.year, date.month, date.day));
-              if (classes[isoDateStr]) {
-                dateClass += ' ' + classes[isoDateStr];
-              }
+                var isoDateStr = this.toISO(new Date(date.year, date.month, date.day));
+                if (classes[isoDateStr]) {
+                    dateClass += ' ' + classes[isoDateStr];
+                }
             }
             if (date.selectable) {
                 return '<a tabindex="0" class="' + dateClass + '">' + content + '</a>';
