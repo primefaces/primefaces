@@ -75,7 +75,8 @@ public abstract class ScheduleBase extends UIComponentBase implements Widget, RT
         slotEventOverlap,
         urlTarget,
         noOpener,
-        dir
+        dir,
+        height
     }
 
     public ScheduleBase() {
@@ -390,5 +391,13 @@ public abstract class ScheduleBase extends UIComponentBase implements Widget, RT
 
     public void setDir(String dir) {
         getStateHelper().put(PropertyKeys.dir, dir);
+    }
+
+    public String getHeight() {
+        return (String) getStateHelper().eval(PropertyKeys.height, null);
+    }
+
+    public void setHeight(String height) {
+        getStateHelper().put(PropertyKeys.height, height);
     }
 }
