@@ -24,8 +24,8 @@
 package org.primefaces.component.datatable.export;
 
 import java.awt.Color;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 import javax.faces.component.UIComponent;
@@ -53,7 +53,7 @@ public class DataTablePDFExporter extends DataTableExporter {
     private Font facetFont;
     private Color facetBgColor;
     private Document document;
-    private ByteArrayOutputStream baos;
+    private OutputStream outputStream;
 
     protected Document createDocument() {
         return new Document();
@@ -64,9 +64,9 @@ public class DataTablePDFExporter extends DataTableExporter {
     }
 
     @Override
-    protected void preExport(FacesContext context, ExportConfiguration config) throws IOException {
+    protected void preExport(FacesContext context, ExportConfiguration config, OutputStream outputStream) throws IOException {
         document = createDocument();
-        baos = new ByteArrayOutputStream();
+        this.outputStream = outputStream;
 
         try {
             PDFOptions options = (PDFOptions) config.getOptions();
@@ -76,7 +76,7 @@ public class DataTablePDFExporter extends DataTableExporter {
                 }
             }
 
-            PdfWriter.getInstance(document, baos);
+            PdfWriter.getInstance(document, this.outputStream);
         }
         catch (DocumentException e) {
             throw new IOException(e);
@@ -109,25 +109,26 @@ public class DataTablePDFExporter extends DataTableExporter {
     }
 
     @Override
-    protected DataTableExportResult postExport(FacesContext context, ExportConfiguration config) throws IOException {
+    protected void postExport(FacesContext context, ExportConfiguration config) throws IOException {
         if (config.getPostProcessor() != null) {
             config.getPostProcessor().invoke(context.getELContext(), new Object[]{document});
         }
 
         getDocument().close();
 
-        DataTableExportResult dataTableExportResult = new DataTableExportResult(config.getOutputFileName() + ".pdf", baos);
-
         document = null;
-        baos = null;
-
-        return dataTableExportResult;
+        outputStream = null;
     }
 
 
     @Override
     protected String getContentType() {
         return "application/pdf";
+    }
+
+    @Override
+    protected String getFileExtension() {
+        return ".pdf";
     }
 
     protected PdfPTable exportTable(FacesContext context, DataTable table, ExportConfiguration config) {

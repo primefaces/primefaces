@@ -23,7 +23,6 @@
  */
 package org.primefaces.component.datatable.export;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import org.apache.poi.ss.usermodel.Sheet;
@@ -31,6 +30,9 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.primefaces.component.export.ExcelOptions;
+import org.primefaces.component.export.ExportConfiguration;
+
+import javax.faces.context.FacesContext;
 
 /**
  * Different implementation of ExcelXExporter using the POI streaming API:
@@ -49,10 +51,10 @@ public class DataTableExcelXStreamExporter extends DataTableExcelXExporter {
     }
 
     @Override
-    protected ByteArrayOutputStream getByteArrayOutputStream(Workbook generatedExcel) throws IOException {
-        ByteArrayOutputStream byteArrayOutputStream = super.getByteArrayOutputStream(generatedExcel);
-        ((SXSSFWorkbook) generatedExcel).dispose();
-        return byteArrayOutputStream;
+    protected void postExport(FacesContext context, ExportConfiguration config) throws IOException {
+        SXSSFWorkbook sxssfWorkbook =  ((SXSSFWorkbook) wb);
+        super.postExport(context, config);
+        sxssfWorkbook.dispose();
     }
 
     @Override

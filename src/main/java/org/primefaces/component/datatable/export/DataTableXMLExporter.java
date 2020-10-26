@@ -38,65 +38,74 @@ import java.util.List;
 
 public class DataTableXMLExporter extends DataTableExporter {
 
-    private DataTableExportResult dataTableExportResult;
+    private OutputStream outputStream;
+    private ExportConfiguration exportConfiguration;
 
     @Override
-    public void doExport(FacesContext context, DataTable table, ExportConfiguration config, int index) throws IOException {
-        StringBuilder builder = new StringBuilder();
-
-        if (config.getPreProcessor() != null) {
-            config.getPreProcessor().invoke(context.getELContext(), new Object[]{builder});
-        }
-
-        builder.append("<?xml version=\"1.0\"?>\n");
-        builder.append("<" + table.getId() + ">\n");
-
-        if (config.isPageOnly()) {
-            exportPageOnly(context, table, builder);
-        }
-        else if (config.isSelectionOnly()) {
-            exportSelectionOnly(context, table, builder);
-        }
-        else {
-            exportAll(context, table, builder);
-        }
-
-        builder.append("</" + table.getId() + ">");
-
-        table.setRowIndex(-1);
-
-        if (config.getPostProcessor() != null) {
-            config.getPostProcessor().invoke(context.getELContext(), new Object[]{builder});
-        }
-
-        dataTableExportResult = new DataTableExportResult(config.getOutputFileName() + ".xml", builder, config.getEncodingType());
+    protected void preExport(FacesContext context, ExportConfiguration config, OutputStream outputStream) throws IOException {
+        this.outputStream = outputStream;
+        this.exportConfiguration = config;
     }
 
     @Override
-    protected DataTableExportResult postExport(FacesContext context, ExportConfiguration config) throws IOException {
-        DataTableExportResult result = dataTableExportResult;
-        dataTableExportResult = null;
-        return result;
+    public void doExport(FacesContext context, DataTable table, ExportConfiguration config, int index) throws IOException {
+        try (OutputStreamWriter osw = new OutputStreamWriter(outputStream, config.getEncodingType());
+            PrintWriter writer = new PrintWriter(osw);) {
+
+            if (config.getPreProcessor() != null) {
+                // PF 9 - attention: break change to PreProcessor (PrintWriter instead of writer)
+                config.getPreProcessor().invoke(context.getELContext(), new Object[]{writer});
+            }
+
+            writer.append("<?xml version=\"1.0\"?>\n");
+            writer.append("<" + table.getId() + ">\n");
+
+            if (config.isPageOnly()) {
+                exportPageOnly(context, table, writer);
+            }
+            else if (config.isSelectionOnly()) {
+                exportSelectionOnly(context, table, writer);
+            }
+            else {
+                exportAll(context, table, writer);
+            }
+
+            writer.append("</" + table.getId() + ">");
+
+            table.setRowIndex(-1);
+
+            if (config.getPostProcessor() != null) {
+                // PF 9 - attention: break change to PostProcessor (PrintWriter instead of writer)
+                config.getPostProcessor().invoke(context.getELContext(), new Object[]{writer});
+            }
+
+            writer.flush();
+        }
     }
 
     @Override
     protected String getContentType() {
-        return "text/xml";
+        return "text/xml; charset=" + exportConfiguration.getEncodingType();
+    }
+
+    @Override
+    protected String getFileExtension() {
+        return ".xml";
     }
 
     @Override
     protected void preRowExport(DataTable table, Object document) {
-        ((StringBuilder) document).append("\t<" + table.getVar() + ">\n");
+        ((PrintWriter) document).append("\t<" + table.getVar() + ">\n");
     }
 
     @Override
     protected void postRowExport(DataTable table, Object document) {
-        ((StringBuilder) document).append("\t</" + table.getVar() + ">\n");
+        ((PrintWriter) document).append("\t</" + table.getVar() + ">\n");
     }
 
     @Override
     protected void exportCells(DataTable table, Object document) {
-        StringBuilder builder = (StringBuilder) document;
+        PrintWriter writer = (PrintWriter) document;
         for (UIColumn col : table.getColumns()) {
             if (col instanceof DynamicColumn) {
                 ((DynamicColumn) col).applyStatelessModel();
@@ -105,7 +114,7 @@ public class DataTableXMLExporter extends DataTableExporter {
             if (col.isRendered() && col.isExportable()) {
                 String columnTag = getColumnTag(col);
                 try {
-                    addColumnValue(builder, col.getChildren(), columnTag, col);
+                    addColumnValue(writer, col.getChildren(), columnTag, col);
                 }
                 catch (IOException ex) {
                     throw new FacesException(ex);
@@ -132,25 +141,25 @@ public class DataTableXMLExporter extends DataTableExporter {
         return EscapeUtils.forXmlTag(columnTag);
     }
 
-    protected void addColumnValue(StringBuilder builder, List<UIComponent> components, String tag, UIColumn column) throws IOException {
+    protected void addColumnValue(PrintWriter writer, List<UIComponent> components, String tag, UIColumn column) throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        builder.append("\t\t<" + tag + ">");
+        writer.append("\t\t<" + tag + ">");
 
         if (column.getExportFunction() != null) {
-            builder.append(EscapeUtils.forXml(exportColumnByFunction(context, column)));
+            writer.append(EscapeUtils.forXml(exportColumnByFunction(context, column)));
         }
         else {
             for (UIComponent component : components) {
                 if (component.isRendered()) {
                     String value = exportValue(context, component);
                     if (value != null) {
-                        builder.append(EscapeUtils.forXml(value));
+                        writer.append(EscapeUtils.forXml(value));
                     }
                 }
             }
         }
 
-        builder.append("</" + tag + ">\n");
+        writer.append("</" + tag + ">\n");
     }
 }

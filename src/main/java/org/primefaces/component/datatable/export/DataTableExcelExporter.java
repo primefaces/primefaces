@@ -39,19 +39,23 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;
 import java.awt.Color;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 public class DataTableExcelExporter extends DataTableExporter {
 
     protected static final String DEFAULT_FONT = HSSFFont.FONT_ARIAL;
+    protected Workbook wb;
+
     private CellStyle cellStyle;
     private CellStyle facetStyle;
-    private Workbook wb;
+    private OutputStream outputStream;
 
     @Override
-    protected void preExport(FacesContext context, ExportConfiguration config) throws IOException {
+    protected void preExport(FacesContext context, ExportConfiguration config, OutputStream outputStream) throws IOException {
+        this.outputStream = outputStream;
+
         wb = createWorkBook();
 
         if (config.getPreProcessor() != null) {
@@ -92,25 +96,16 @@ public class DataTableExcelExporter extends DataTableExporter {
     }
 
     @Override
-    protected DataTableExportResult postExport(FacesContext context, ExportConfiguration config) throws IOException {
+    protected void postExport(FacesContext context, ExportConfiguration config) throws IOException {
         if (config.getPostProcessor() != null) {
             config.getPostProcessor().invoke(context.getELContext(), new Object[]{wb});
         }
 
-        String filename = config.getOutputFileName();
-        if ("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet".equals(getContentType())) {
-            filename += ".xlsx";
-        }
-        else {
-            filename += ".xls";
-        }
-
-        DataTableExportResult dataTableExportResult = new DataTableExportResult(filename, getByteArrayOutputStream(wb));
+        wb.write(outputStream);
 
         wb.close();
         wb = null;
-
-        return dataTableExportResult;
+        outputStream = null;
     }
 
     @Override
@@ -231,15 +226,14 @@ public class DataTableExcelExporter extends DataTableExporter {
         return wb.createSheet(sheetName);
     }
 
-    protected ByteArrayOutputStream getByteArrayOutputStream(Workbook generatedExcel) throws IOException {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        generatedExcel.write(byteArrayOutputStream);
-        return byteArrayOutputStream;
-    }
-
     @Override
     protected String getContentType() {
         return "application/vnd.ms-excel";
+    }
+
+    @Override
+    protected String getFileExtension() {
+        return ".xls";
     }
 
     public void exportTable(FacesContext context, UIComponent component, Sheet sheet, boolean pageOnly, boolean selectionOnly) {

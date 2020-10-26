@@ -48,6 +48,11 @@ public class DataTableExcelXExporter extends DataTableExcelExporter {
     }
 
     @Override
+    protected String getFileExtension() {
+        return ".xlsx";
+    }
+
+    @Override
     protected void applyFacetOptions(Workbook wb, ExporterOptions options, CellStyle facetStyle) {
         Font facetFont = getFont(wb, options);
 
