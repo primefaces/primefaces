@@ -71,7 +71,8 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         exportHeaderValue,
         exportFooterValue,
         sortOrder,
-        sortPriority
+        sortPriority,
+        nullSortOrder
     }
 
     public ColumnBase() {
@@ -395,5 +396,13 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
 
     public void setSortPriority(String sortPriority) {
         getStateHelper().put(PropertyKeys.sortPriority, sortPriority);
+    }
+
+    public int getNullSortOrder() {
+        return (Integer) getStateHelper().eval(PropertyKeys.nullSortOrder, 1);
+    }
+
+    public void setNullSortOrder(int nullSortOrder) {
+        getStateHelper().put(PropertyKeys.nullSortOrder, nullSortOrder);
     }
 }

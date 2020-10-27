@@ -67,7 +67,8 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
         exportHeaderValue,
         exportFooterValue,
         sortOrder,
-        sortPriority
+        sortPriority,
+        nullSortOrder
     }
 
     public ColumnsBase() {
@@ -382,5 +383,13 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
 
     public void setSortPriority(String sortPriority) {
         getStateHelper().put(PropertyKeys.sortPriority, sortPriority);
+    }
+
+    public int getNullSortOrder() {
+        return (Integer) getStateHelper().eval(PropertyKeys.nullSortOrder, 1);
+    }
+
+    public void setNullSortOrder(int nullSortOrder) {
+        getStateHelper().put(PropertyKeys.nullSortOrder, nullSortOrder);
     }
 }

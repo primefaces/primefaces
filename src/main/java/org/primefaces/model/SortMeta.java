@@ -49,6 +49,7 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
     private ValueExpression sortBy;
     private MethodExpression sortFunction;
     private Integer priority = MIN_PRIORITY;
+    private int nullSortOrder;
     private transient Object component;
 
     public SortMeta() {
@@ -56,13 +57,14 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
     }
 
     SortMeta(String columnKey, String sortField, SortOrder sortOrder, MethodExpression sortFunction,
-             ValueExpression sortBy, Integer priority, Object component) {
+             ValueExpression sortBy, Integer priority, int nullSortOrder, Object component) {
         this.columnKey = columnKey;
         this.sortField = sortField;
         this.sortOrder = sortOrder;
         this.sortFunction = sortFunction;
         this.sortBy = sortBy;
         this.priority = priority;
+        this.nullSortOrder = nullSortOrder;
         this.component = component;
     }
 
@@ -90,6 +92,7 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
                             column.getSortFunction(),
                             sortByVE,
                             column.getSortPriority(),
+                            column.getNullSortOrder(),
                             column);
     }
 
@@ -104,6 +107,7 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
                             headerRow.getSortFunction(),
                             groupByVE,
                             MAX_PRIORITY,
+                            1,
                             headerRow);
     }
 
@@ -164,6 +168,10 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
         return columnKey;
     }
 
+    public int getNullSortOrder() {
+        return nullSortOrder;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -187,6 +195,7 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
                 ", sortBy=" + sortBy +
                 ", sortFunction=" + sortFunction +
                 ", priority=" + priority +
+                ", nullSortOrder=" + nullSortOrder +
                 '}';
     }
 
@@ -243,6 +252,11 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
 
         public Builder priority(Integer priority) {
             sortMeta.priority = priority;
+            return this;
+        }
+
+        public Builder nullSortOrder(int nullSortOrder) {
+            sortMeta.nullSortOrder = nullSortOrder;
             return this;
         }
 

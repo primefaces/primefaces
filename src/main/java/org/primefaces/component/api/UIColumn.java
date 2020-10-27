@@ -128,4 +128,6 @@ public interface UIColumn {
     String getSortOrder();
 
     int getSortPriority();
+
+    int getNullSortOrder();
 }

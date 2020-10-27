@@ -24,6 +24,7 @@
 package org.primefaces.component.datatable.feature;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
@@ -139,7 +140,6 @@ public class SortFeature implements DataTableFeature {
         List<?> list = resolveList(value);
         boolean caseSensitiveSort = table.isCaseSensitiveSort();
         Locale locale = table.resolveDataLocale();
-        int nullSortOrder = table.getNullSortOrder();
 
         if (table.isMultiSort()) {
             Map<String, SortMeta> sortedMeta = table.getSortByAsMap().entrySet().stream()
@@ -158,11 +158,11 @@ public class SortFeature implements DataTableFeature {
             BeanPropertyComparator comparator;
             Object source = meta.getComponent();
 
-            if (source instanceof UIColumn && ((UIColumn) source).isDynamic()) {
-                comparator = new DynamicBeanPropertyComparator(table.getVar(), meta, caseSensitiveSort, locale, nullSortOrder);
+            if (source instanceof DynamicColumn) {
+                comparator = new DynamicBeanPropertyComparator(table.getVar(), meta, caseSensitiveSort, locale);
             }
             else {
-                comparator = new BeanPropertyComparator(table.getVar(), meta, caseSensitiveSort, locale, nullSortOrder);
+                comparator = new BeanPropertyComparator(table.getVar(), meta, caseSensitiveSort, locale);
             }
 
             chainedComparator.addComparator(comparator);

@@ -86,7 +86,6 @@ public abstract class DataTableBase extends UIData
         skipChildren,
         disabledTextSelection,
         initMode,
-        nullSortOrder,
         tabindex,
         reflow,
         liveScrollBuffer,
@@ -481,14 +480,6 @@ public abstract class DataTableBase extends UIData
 
     public void setInitMode(String initMode) {
         getStateHelper().put(PropertyKeys.initMode, initMode);
-    }
-
-    public int getNullSortOrder() {
-        return (Integer) getStateHelper().eval(PropertyKeys.nullSortOrder, 1);
-    }
-
-    public void setNullSortOrder(int nullSortOrder) {
-        getStateHelper().put(PropertyKeys.nullSortOrder, nullSortOrder);
     }
 
     public String getTabindex() {

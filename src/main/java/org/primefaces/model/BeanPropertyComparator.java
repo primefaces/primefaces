@@ -40,19 +40,16 @@ public class BeanPropertyComparator implements Comparator<Object> {
     private boolean caseSensitive = false;
     private Locale locale;
     private Collator collator;
-    private int nullSortOrder;
     private SortMeta sortMeta;
 
-    public BeanPropertyComparator(String var, SortMeta sortMeta, boolean caseSensitive, Locale locale, int nullSortOrder) {
+    public BeanPropertyComparator(String var, SortMeta sortMeta, boolean caseSensitive, Locale locale) {
         this.sortMeta = sortMeta;
         this.var = var;
         this.caseSensitive = caseSensitive;
         this.locale = locale;
         this.collator = Collator.getInstance(locale);
-        this.nullSortOrder = nullSortOrder;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public int compare(Object obj1, Object obj2) {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -67,18 +64,18 @@ public class BeanPropertyComparator implements Comparator<Object> {
 
             int result;
 
-            //Empty check
-            if (value1 == null && value2 == null) {
-                return 0;
-            }
-            else if (value1 == null) {
-                result = nullSortOrder;
-            }
-            else if (value2 == null) {
-                result = -1 * nullSortOrder;
-            }
-            else if (sortMeta.getSortFunction() == null) {
-                if (value1 instanceof String && value2 instanceof String) {
+            if (sortMeta.getSortFunction() == null) {
+                //Empty check
+                if (value1 == null && value2 == null) {
+                    return 0;
+                }
+                else if (value1 == null) {
+                    result = sortMeta.getNullSortOrder();
+                }
+                else if (value2 == null) {
+                    result = -1 * sortMeta.getNullSortOrder();
+                }
+                else if (value1 instanceof String && value2 instanceof String) {
                     if (this.caseSensitive) {
                         result = collator.compare(value1, value2);
                     }
@@ -90,7 +87,7 @@ public class BeanPropertyComparator implements Comparator<Object> {
                     }
                 }
                 else {
-                    result = ((Comparable) value1).compareTo(value2);
+                    result = ((Comparable<Object>) value1).compareTo(value2);
                 }
             }
             else {

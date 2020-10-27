@@ -313,4 +313,9 @@ public class DynamicColumn implements UIColumn {
     public int getSortPriority() {
         return columns.getSortPriority();
     }
+
+    @Override
+    public int getNullSortOrder() {
+        return columns.getNullSortOrder();
+    }
 }
