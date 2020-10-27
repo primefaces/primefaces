@@ -6,7 +6,11 @@
   - [Dependencies](/gettingstarted/dependencies.md)
   - [Configuration](/gettingstarted/configuration.md)
   - [Hello World](/gettingstarted/helloworld.md)
-  - [Migration Guide](/gettingstarted/migrationguide.md)
+
+- Migration Guide
+
+  - [9.0](/migrationguide/9_0.md)
+  - [8.0](/migrationguide/8_0.md)
 
 - Core
 
