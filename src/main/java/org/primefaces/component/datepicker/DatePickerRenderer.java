@@ -210,7 +210,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         if (disabledDates != null) {
             CalendarUtils.encodeListValue(context, datepicker, "disabledDates", disabledDates, pattern);
         }
-        encodeScriptDateStyleClasses(wb, context, datepicker);
+        encodeScriptDateStyleClasses(wb, datepicker);
 
         String dateTemplate = datepicker.getDateTemplate();
         if (dateTemplate != null) {
@@ -266,7 +266,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         wb.finish();
     }
 
-    protected void encodeScriptDateStyleClasses(WidgetBuilder wb, FacesContext context, DatePicker datePicker) throws IOException {
+    protected void encodeScriptDateStyleClasses(WidgetBuilder wb, DatePicker datePicker) throws IOException {
         if (datePicker.getModel() == null) {
             return;
         }
