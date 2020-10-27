@@ -57,10 +57,7 @@ public class DefaultDateMetadata implements DateMetadata, Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 67 * hash + (this.disabled ? 1 : 0);
-        hash = 67 * hash + Objects.hashCode(this.styleClass);
-        return hash;
+        return Objects.hash(disabled, styleClass);
     }
 
     @Override
@@ -71,14 +68,11 @@ public class DefaultDateMetadata implements DateMetadata, Serializable {
         if (obj == null) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+        if (!(obj instanceof DefaultDateMetadata)) {
             return false;
         }
-        final DefaultDateMetadata other = (DefaultDateMetadata) obj;
-        if (this.disabled != other.disabled) {
-            return false;
-        }
-        return Objects.equals(this.styleClass, other.styleClass);
+        DefaultDateMetadata other = (DefaultDateMetadata) obj;
+        return disabled == other.disabled && Objects.equals(styleClass, other.styleClass);
     }
 
     @Override
