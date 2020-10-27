@@ -293,12 +293,12 @@ private DateMetadataModel lazyModel;
 @PostConstruct
 public void init() {
     DefaultDateMetadata metadataDisabled = DefaultDateMetadata.builder().disabled(true).build();
-    DefaultDateMetadata metaDataDeadline = DefaultDateMetadata.builder().styleClass("deadline").build();
+    DefaultDateMetadata metadataDeadline = DefaultDateMetadata.builder().styleClass("deadline").build();
     lazyModel = new LazyDateMetadataModel() {
         @Override
         public void loadDateMetadata(LocalDate start, LocalDate end) {
             add(someDate, metadataDisabled);
-            add(someOtherDate, metaDataDeadline);
+            add(someOtherDate, metadataDeadline);
         }
     };
 }
