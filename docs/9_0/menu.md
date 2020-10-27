@@ -6,6 +6,7 @@
   - [Dependencies](/gettingstarted/dependencies.md)
   - [Configuration](/gettingstarted/configuration.md)
   - [Hello World](/gettingstarted/helloworld.md)
+  - [Whats new](/gettingstarted/whatsnew.md)
 
 - Migration Guide
 
