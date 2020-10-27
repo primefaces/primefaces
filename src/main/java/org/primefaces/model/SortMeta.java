@@ -50,6 +50,7 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
     private MethodExpression sortFunction;
     private Integer priority = MIN_PRIORITY;
     private int nullSortOrder;
+    private boolean caseSensitiveSort;
     private transient Object component;
 
     public SortMeta() {
@@ -57,7 +58,7 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
     }
 
     SortMeta(String columnKey, String sortField, SortOrder sortOrder, MethodExpression sortFunction,
-             ValueExpression sortBy, Integer priority, int nullSortOrder, Object component) {
+             ValueExpression sortBy, Integer priority, int nullSortOrder, boolean caseSensitiveSort, Object component) {
         this.columnKey = columnKey;
         this.sortField = sortField;
         this.sortOrder = sortOrder;
@@ -65,6 +66,7 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
         this.sortBy = sortBy;
         this.priority = priority;
         this.nullSortOrder = nullSortOrder;
+        this.caseSensitiveSort = caseSensitiveSort;
         this.component = component;
     }
 
@@ -93,6 +95,7 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
                             sortByVE,
                             column.getSortPriority(),
                             column.getNullSortOrder(),
+                            column.isCaseSensitiveSort(),
                             column);
     }
 
@@ -108,6 +111,7 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
                             groupByVE,
                             MAX_PRIORITY,
                             SortOrder.ASCENDING.intValue(),
+                            false,
                             headerRow);
     }
 
@@ -172,6 +176,10 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
         return nullSortOrder;
     }
 
+    public boolean isCaseSensitiveSort() {
+        return caseSensitiveSort;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -196,6 +204,7 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
                 ", sortFunction=" + sortFunction +
                 ", priority=" + priority +
                 ", nullSortOrder=" + nullSortOrder +
+                ", caseSensitiveSort=" + caseSensitiveSort +
                 '}';
     }
 
@@ -257,6 +266,11 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
 
         public Builder nullSortOrder(int nullSortOrder) {
             sortMeta.nullSortOrder = nullSortOrder;
+            return this;
+        }
+
+        public Builder caseSensitiveSort(boolean caseSensitiveSort) {
+            sortMeta.caseSensitiveSort = caseSensitiveSort;
             return this;
         }
 

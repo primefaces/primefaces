@@ -450,14 +450,6 @@ public abstract class DataTableBase extends UIData
         getStateHelper().put(PropertyKeys.draggableRows, draggableRows);
     }
 
-    public boolean isCaseSensitiveSort() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.caseSensitiveSort, false);
-    }
-
-    public void setCaseSensitiveSort(boolean caseSensitiveSort) {
-        getStateHelper().put(PropertyKeys.caseSensitiveSort, caseSensitiveSort);
-    }
-
     public boolean isSkipChildren() {
         return (Boolean) getStateHelper().eval(PropertyKeys.skipChildren, false);
     }

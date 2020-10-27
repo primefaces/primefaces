@@ -318,4 +318,9 @@ public class DynamicColumn implements UIColumn {
     public int getNullSortOrder() {
         return columns.getNullSortOrder();
     }
+
+    @Override
+    public boolean isCaseSensitiveSort() {
+        return columns.isCaseSensitiveSort();
+    }
 }

@@ -72,7 +72,8 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         exportFooterValue,
         sortOrder,
         sortPriority,
-        nullSortOrder
+        nullSortOrder,
+        caseSensitiveSort
     }
 
     public ColumnBase() {
@@ -404,5 +405,13 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
 
     public void setNullSortOrder(int nullSortOrder) {
         getStateHelper().put(PropertyKeys.nullSortOrder, nullSortOrder);
+    }
+
+    public boolean isCaseSensitiveSort() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.caseSensitiveSort, false);
+    }
+
+    public void setCaseSensitiveSort(boolean caseSensitiveSort) {
+        getStateHelper().put(PropertyKeys.caseSensitiveSort, caseSensitiveSort);
     }
 }

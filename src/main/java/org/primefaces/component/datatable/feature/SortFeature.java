@@ -138,7 +138,6 @@ public class SortFeature implements DataTableFeature {
         }
 
         List<?> list = resolveList(value);
-        boolean caseSensitiveSort = table.isCaseSensitiveSort();
         Locale locale = table.resolveDataLocale();
 
         if (table.isMultiSort()) {
@@ -159,10 +158,10 @@ public class SortFeature implements DataTableFeature {
             Object source = meta.getComponent();
 
             if (source instanceof DynamicColumn) {
-                comparator = new DynamicBeanPropertyComparator(table.getVar(), meta, caseSensitiveSort, locale);
+                comparator = new DynamicBeanPropertyComparator(table.getVar(), meta, locale);
             }
             else {
-                comparator = new BeanPropertyComparator(table.getVar(), meta, caseSensitiveSort, locale);
+                comparator = new BeanPropertyComparator(table.getVar(), meta, locale);
             }
 
             chainedComparator.addComparator(comparator);

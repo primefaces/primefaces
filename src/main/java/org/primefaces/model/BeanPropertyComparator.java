@@ -37,15 +37,13 @@ import javax.faces.context.FacesContext;
 public class BeanPropertyComparator implements Comparator<Object> {
 
     private String var;
-    private boolean caseSensitive = false;
     private Locale locale;
     private Collator collator;
     private SortMeta sortMeta;
 
-    public BeanPropertyComparator(String var, SortMeta sortMeta, boolean caseSensitive, Locale locale) {
+    public BeanPropertyComparator(String var, SortMeta sortMeta, Locale locale) {
         this.sortMeta = sortMeta;
         this.var = var;
-        this.caseSensitive = caseSensitive;
         this.locale = locale;
         this.collator = Collator.getInstance(locale);
     }
@@ -76,7 +74,7 @@ public class BeanPropertyComparator implements Comparator<Object> {
                     result = -1 * sortMeta.getNullSortOrder();
                 }
                 else if (value1 instanceof String && value2 instanceof String) {
-                    if (this.caseSensitive) {
+                    if (sortMeta.isCaseSensitiveSort()) {
                         result = collator.compare(value1, value2);
                     }
                     else {

@@ -130,4 +130,6 @@ public interface UIColumn {
     int getSortPriority();
 
     int getNullSortOrder();
+
+    boolean isCaseSensitiveSort();
 }

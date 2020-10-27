@@ -31,8 +31,8 @@ public class DynamicBeanPropertyComparator extends BeanPropertyComparator {
 
     private SortMeta sortMeta;
 
-    public DynamicBeanPropertyComparator(String var, SortMeta sortMeta, boolean caseSensitiveSort, Locale locale) {
-        super(var, sortMeta, caseSensitiveSort, locale);
+    public DynamicBeanPropertyComparator(String var, SortMeta sortMeta, Locale locale) {
+        super(var, sortMeta, locale);
         if (!(sortMeta.getComponent() instanceof DynamicColumn)) {
             throw new IllegalArgumentException();
         }

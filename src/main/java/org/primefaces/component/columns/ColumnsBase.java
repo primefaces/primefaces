@@ -68,7 +68,8 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
         exportFooterValue,
         sortOrder,
         sortPriority,
-        nullSortOrder
+        nullSortOrder,
+        caseSensitiveSort
     }
 
     public ColumnsBase() {
@@ -391,5 +392,13 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
 
     public void setNullSortOrder(int nullSortOrder) {
         getStateHelper().put(PropertyKeys.nullSortOrder, nullSortOrder);
+    }
+
+    public boolean isCaseSensitiveSort() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.caseSensitiveSort, false);
+    }
+
+    public void setCaseSensitiveSort(boolean caseSensitiveSort) {
+        getStateHelper().put(PropertyKeys.caseSensitiveSort, caseSensitiveSort);
     }
 }
