@@ -41,7 +41,7 @@ public class DataTableTest {
     @Test
     public void testAllowUnsorting() {
         DataTable table = new DataTable();
-        Assertions.assertEquals(true,table.isAllowUnsorting());
+        Assertions.assertEquals(false, table.isAllowUnsorting());
     }
 
     @Test
@@ -50,25 +50,24 @@ public class DataTableTest {
         ValueExpression exprVE = mock(ValueExpression.class);
 
         when(exprVE.getExpressionString()).thenReturn("#{car.year}");
-        String field = table.resolveStaticField(exprVE);
+        String field = DataTable.resolveStaticField(exprVE);
         Assertions.assertEquals("year", field);
 
         when(exprVE.getExpressionString()).thenReturn("#{car.wrapper.year}");
-        field = table.resolveStaticField(exprVE);
+        field = DataTable.resolveStaticField(exprVE);
         Assertions.assertEquals("wrapper.year", field);
 
         when(exprVE.getExpressionString()).thenReturn("#{car}");
-        field = table.resolveStaticField(exprVE);
+        field = DataTable.resolveStaticField(exprVE);
         Assertions.assertEquals("car", field);
 
         when(exprVE.getExpressionString()).thenReturn("car.year");
-        field = table.resolveStaticField(exprVE);
+        field = DataTable.resolveStaticField(exprVE);
         Assertions.assertNull(field);
     }
 
     @Test
     public void testResolveDynamicField() {
-        DataTable table = new DataTable();
         FacesContext context = new FacesContextMock();
         ExpressionFactory expFactory = context.getApplication().getExpressionFactory();
 
