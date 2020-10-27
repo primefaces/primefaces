@@ -202,6 +202,7 @@ public class ScheduleRenderer extends CoreRenderer {
         boolean isShowWeekNumbers = schedule.isShowWeekNumbers();
 
         wb.attr("allDaySlot", schedule.isAllDaySlot(), true)
+                .attr("height", schedule.getHeight(), null)
                 .attr("slotDuration", schedule.getSlotDuration(), "00:30:00")
                 .attr("scrollTime", schedule.getScrollTime(), "06:00:00")
                 .attr("timeZone", schedule.getClientTimeZone(), "local")
@@ -217,7 +218,9 @@ public class ScheduleRenderer extends CoreRenderer {
                 .attr("nextDayThreshold", schedule.getNextDayThreshold(), "09:00:00")
                 .attr("slotEventOverlap", schedule.isSlotEventOverlap(), true);
 
-        wb.nativeAttr("slotLabelFormat", schedule.getSlotLabelFormat());
+        if (!LangUtils.isValueBlank(schedule.getSlotLabelFormat())) {
+            wb.nativeAttr("slotLabelFormat", schedule.getSlotLabelFormat());
+        }
 
         String displayEventEnd = schedule.getDisplayEventEnd();
         if (displayEventEnd != null) {

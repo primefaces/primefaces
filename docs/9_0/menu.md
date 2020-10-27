@@ -6,8 +6,21 @@
   - [Dependencies](/gettingstarted/dependencies.md)
   - [Configuration](/gettingstarted/configuration.md)
   - [Hello World](/gettingstarted/helloworld.md)
+  - [Whats new](/gettingstarted/whatsnew.md)
+
+- Migration Guide
+
+  - [9.0](/migrationguide/9_0.md)
+  - [8.0](/migrationguide/8_0.md)
 
 - Core
+
+    - AJAX
+
+        - [Partial Render / Update](/core/ajaxRendering.md)
+        - [Partial Execute / Process](/core/ajaxProcessing.md)
+        - [Partial Submit](/core/ajaxPartialsubmit.md)
+        - [JavaScript API](/core/ajaxJavascriptApi.md)
 
   - [Accessibility](/core/accessibility.md)
   - [BeanValidation Transformation](/core/beanvalidationtransformation.md)
@@ -23,20 +36,13 @@
   - [Java API](/core/javaAPI.md)
   - [Javascript API](/core/javascriptAPI.md)
   - [Localization](/core/localization.md)
-  - [MultiViewState](/core/multiviewstate.md) 
+  - [MultiViewState](/core/multiviewstate.md)
   - [Performance](/core/performance.md)
   - [Portlets](/core/portlets.md)
   - [Responsive Design](/core/responsive.md)
   - [Search Expression](/core/searchexpression.md)
   - [Themes](/core/themes.md)
   - [Third Party Libraries](/core/thirdpartylibs.md)
-
-- AJAX
-
-  - [Partial Render / Update](/ajax/rendering.md)
-  - [Partial Execute / Process](/ajax/processing.md)
-  - [Partial Submit](/ajax/partialsubmit.md)
-  - [JavaScript API](/ajax/javascriptApi.md)
 
 - Components
 
