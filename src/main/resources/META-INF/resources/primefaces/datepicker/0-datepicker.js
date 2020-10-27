@@ -1470,7 +1470,7 @@
             var content = this.options.dateTemplate ? this.options.dateTemplate.call(this, date) : date.day;
             var classes = this.options.dateStyleClasses;
             if (classes !== null) {
-                var isoDateStr = this.toISO(new Date(date.year, date.month, date.day));
+                var isoDateStr = this.toISODateString(new Date(date.year, date.month, date.day));
                 if (classes[isoDateStr]) {
                     dateClass += ' ' + classes[isoDateStr];
                 }
@@ -1610,7 +1610,13 @@
             return _classes;
         },
 
-        toISO: function (date) {
+        /**
+         * Converts a date object to an ISO date (only, no time) string. Useful to check if a dates matches with a date
+         * sent from the backend whithout needing to parse the backend date first.
+         * @private
+         * @param {Date} date The date to convert.
+         */
+        toISODateString: function (date) {
             return date.toISOString().substring(0, 10);
         },
 
