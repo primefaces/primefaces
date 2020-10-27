@@ -4890,6 +4890,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Case sensitivity for sorting, insensitive by default.]]>
+            </description>
+            <name>caseSensitiveSort</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Inline style of the column.]]>
             </description>
             <name>style</name>
@@ -5291,6 +5299,14 @@
             <name>nullSortOrder</name>
             <required>false</required>
             <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Case sensitivity for sorting, insensitive by default.]]>
+            </description>
+            <name>caseSensitiveSort</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -8039,14 +8055,6 @@
                 <![CDATA[When enabled, rows can be reordered using dragdrop.]]>
             </description>
             <name>draggableRows</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Case sensitivity for sorting, insensitive by default.]]>
-            </description>
-            <name>caseSensitiveSort</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
