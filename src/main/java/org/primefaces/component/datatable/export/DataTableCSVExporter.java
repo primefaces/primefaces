@@ -24,7 +24,6 @@
 package org.primefaces.component.datatable.export;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.Iterator;
@@ -47,16 +46,11 @@ import org.primefaces.util.Constants;
 public class DataTableCSVExporter extends DataTableExporter {
 
     private CSVOptions csvOptions;
-    private OutputStream outputStream;
-    private ExportConfiguration exportConfiguration;
 
     @Override
-    protected void preExport(FacesContext context, ExportConfiguration config, OutputStream outputStream) throws IOException {
-        this.outputStream = outputStream;
-        this.exportConfiguration = config;
-
+    protected void preExport(FacesContext context) throws IOException {
         csvOptions = CSVOptions.EXCEL;
-        ExporterOptions options = config.getOptions();
+        ExporterOptions options = getExportConfiguration().getOptions();
         if (options != null) {
             if (options instanceof CSVOptions) {
                 csvOptions = (CSVOptions) options;
@@ -68,8 +62,10 @@ public class DataTableCSVExporter extends DataTableExporter {
     }
 
     @Override
-    public void doExport(FacesContext context, DataTable table, ExportConfiguration config, int index) throws IOException {
-        try (OutputStreamWriter osw = new OutputStreamWriter(outputStream, config.getEncodingType());
+    public void doExport(FacesContext context, DataTable table, int index) throws IOException {
+        ExportConfiguration config = getExportConfiguration();
+
+        try (OutputStreamWriter osw = new OutputStreamWriter(getOutputStream(), config.getEncodingType());
             PrintWriter writer = new PrintWriter(osw);) {
 
             ExternalContext externalContext = context.getExternalContext();
@@ -105,12 +101,12 @@ public class DataTableCSVExporter extends DataTableExporter {
     }
 
     @Override
-    protected String getContentType() {
-        return "text/csv; charset=" + exportConfiguration.getEncodingType();
+    public String getContentType() {
+        return "text/csv; charset=" + getExportConfiguration().getEncodingType();
     }
 
     @Override
-    protected String getFileExtension() {
+    public String getFileExtension() {
         return ".csv";
     }
 

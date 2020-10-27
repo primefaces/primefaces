@@ -26,9 +26,17 @@ package org.primefaces.component.export;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 public interface Exporter<T extends UIComponent> {
 
-    void export(FacesContext facesContext, List<T> component, ExportConfiguration config) throws IOException;
+    void export(FacesContext facesContext, List<T> component, OutputStream outputStream) throws IOException;
+
+    String getContentType();
+
+    String getFileExtension();
+
+    void setExportConfiguration(ExportConfiguration exportConfiguration);
+
 }

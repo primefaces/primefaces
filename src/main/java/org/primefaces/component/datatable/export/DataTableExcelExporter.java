@@ -40,7 +40,6 @@ import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;
 import java.awt.Color;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.List;
 
 public class DataTableExcelExporter extends DataTableExporter {
@@ -50,21 +49,20 @@ public class DataTableExcelExporter extends DataTableExporter {
 
     private CellStyle cellStyle;
     private CellStyle facetStyle;
-    private OutputStream outputStream;
 
     @Override
-    protected void preExport(FacesContext context, ExportConfiguration config, OutputStream outputStream) throws IOException {
-        this.outputStream = outputStream;
-
+    protected void preExport(FacesContext context) throws IOException {
         wb = createWorkBook();
 
-        if (config.getPreProcessor() != null) {
-            config.getPreProcessor().invoke(context.getELContext(), new Object[]{wb});
+        if (getExportConfiguration().getPreProcessor() != null) {
+            getExportConfiguration().getPreProcessor().invoke(context.getELContext(), new Object[]{wb});
         }
     }
 
     @Override
-    public void doExport(FacesContext context, DataTable table, ExportConfiguration config, int index) throws IOException {
+    public void doExport(FacesContext context, DataTable table, int index) throws IOException {
+        ExportConfiguration config = getExportConfiguration();
+
         String sheetName = getSheetName(context, table);
         if (sheetName == null) {
             sheetName = table.getId() + (index + 1);
@@ -96,16 +94,15 @@ public class DataTableExcelExporter extends DataTableExporter {
     }
 
     @Override
-    protected void postExport(FacesContext context, ExportConfiguration config) throws IOException {
-        if (config.getPostProcessor() != null) {
-            config.getPostProcessor().invoke(context.getELContext(), new Object[]{wb});
+    protected void postExport(FacesContext context) throws IOException {
+        if (getExportConfiguration().getPostProcessor() != null) {
+            getExportConfiguration().getPostProcessor().invoke(context.getELContext(), new Object[]{wb});
         }
 
-        wb.write(outputStream);
+        wb.write(getOutputStream());
 
         wb.close();
         wb = null;
-        outputStream = null;
     }
 
     @Override
@@ -227,12 +224,12 @@ public class DataTableExcelExporter extends DataTableExporter {
     }
 
     @Override
-    protected String getContentType() {
+    public String getContentType() {
         return "application/vnd.ms-excel";
     }
 
     @Override
-    protected String getFileExtension() {
+    public String getFileExtension() {
         return ".xls";
     }
 

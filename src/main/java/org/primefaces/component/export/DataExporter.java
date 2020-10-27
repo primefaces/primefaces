@@ -23,7 +23,10 @@
  */
 package org.primefaces.component.export;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Base64;
 import java.util.List;
 
 import javax.el.ELContext;
@@ -32,6 +35,7 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.StateHolder;
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
@@ -39,6 +43,8 @@ import javax.faces.event.ActionListener;
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.datatable.export.DataTableExporterFactory;
 import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 import org.primefaces.util.ResourceUtils;
 
 public class DataExporter implements ActionListener, StateHolder {
@@ -136,9 +142,28 @@ public class DataExporter implements ActionListener, StateHolder {
                     .setPostProcessor(postProcessor)
                     .setOnTableRender(onTableRender);
 
-            exporter.export(context, components, config);
+            ExternalContext externalContext = context.getExternalContext();
+            exporter.setExportConfiguration(config);
+            String filenameWithExtension = config.getOutputFileName() + exporter.getFileExtension();
+            OutputStream outputStream;
 
-            if (!PrimeFaces.current().isAjaxRequest()) {
+            if (PrimeFaces.current().isAjaxRequest()) {
+                outputStream = new ByteArrayOutputStream();
+            }
+            else {
+                outputStream = context.getExternalContext().getResponseOutputStream();
+                externalContext.setResponseContentType(exporter.getContentType());
+                setResponseHeader(externalContext, ComponentUtils.createContentDisposition("attachment", filenameWithExtension));
+                addResponseCookie(context);
+            }
+
+            exporter.export(context, components, outputStream);
+
+            if (PrimeFaces.current().isAjaxRequest()) {
+                ajaxDownload(filenameWithExtension, ((ByteArrayOutputStream) outputStream).toByteArray(), exporter.getContentType(), context);
+            }
+            else {
+                externalContext.responseFlushBuffer();
                 context.responseComplete();
             }
         }
@@ -161,6 +186,24 @@ public class DataExporter implements ActionListener, StateHolder {
                    + customExporterInstance.getClass().getName() + " does not implement Exporter!");
         }
 
+    }
+
+    private void ajaxDownload(String filenameWithExtension, byte[] content, String contentType, FacesContext context) {
+        String base64 = Base64.getEncoder().withoutPadding().encodeToString(content);
+        String data = "data:" + contentType + ";base64," + base64;
+
+        String monitorKeyCookieName = ResourceUtils.getMonitorKeyCookieName(context, null);
+        PrimeFaces.current().executeScript(String.format("PrimeFaces.download('%s', '%s', '%s', '%s')",
+                data, contentType, filenameWithExtension, monitorKeyCookieName));
+    }
+
+    protected void setResponseHeader(ExternalContext externalContext , String contentDisposition) {
+        ResourceUtils.addNoCacheControl(externalContext);
+        externalContext.setResponseHeader("Content-disposition", contentDisposition);
+    }
+
+    protected void addResponseCookie(FacesContext context) {
+        ResourceUtils.addResponseCookie(context, Constants.DOWNLOAD_COOKIE, "true", null);
     }
 
     @Override

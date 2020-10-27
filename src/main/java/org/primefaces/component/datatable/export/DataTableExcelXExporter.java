@@ -43,12 +43,12 @@ public class DataTableExcelXExporter extends DataTableExcelExporter {
     }
 
     @Override
-    protected String getContentType() {
+    public String getContentType() {
         return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
     }
 
     @Override
-    protected String getFileExtension() {
+    public String getFileExtension() {
         return ".xlsx";
     }
 

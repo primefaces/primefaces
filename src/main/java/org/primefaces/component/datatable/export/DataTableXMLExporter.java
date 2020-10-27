@@ -38,18 +38,11 @@ import java.util.List;
 
 public class DataTableXMLExporter extends DataTableExporter {
 
-    private OutputStream outputStream;
-    private ExportConfiguration exportConfiguration;
-
     @Override
-    protected void preExport(FacesContext context, ExportConfiguration config, OutputStream outputStream) throws IOException {
-        this.outputStream = outputStream;
-        this.exportConfiguration = config;
-    }
+    public void doExport(FacesContext context, DataTable table, int index) throws IOException {
+        ExportConfiguration config = getExportConfiguration();
 
-    @Override
-    public void doExport(FacesContext context, DataTable table, ExportConfiguration config, int index) throws IOException {
-        try (OutputStreamWriter osw = new OutputStreamWriter(outputStream, config.getEncodingType());
+        try (OutputStreamWriter osw = new OutputStreamWriter(getOutputStream(), config.getEncodingType());
             PrintWriter writer = new PrintWriter(osw);) {
 
             if (config.getPreProcessor() != null) {
@@ -84,12 +77,12 @@ public class DataTableXMLExporter extends DataTableExporter {
     }
 
     @Override
-    protected String getContentType() {
-        return "text/xml; charset=" + exportConfiguration.getEncodingType();
+    public String getContentType() {
+        return "text/xml; charset=" + getExportConfiguration().getEncodingType();
     }
 
     @Override
-    protected String getFileExtension() {
+    public String getFileExtension() {
         return ".xml";
     }
 

@@ -25,7 +25,6 @@ package org.primefaces.component.datatable.export;
 
 import java.awt.Color;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.List;
 
 import javax.faces.component.UIComponent;
@@ -53,7 +52,6 @@ public class DataTablePDFExporter extends DataTableExporter {
     private Font facetFont;
     private Color facetBgColor;
     private Document document;
-    private OutputStream outputStream;
 
     protected Document createDocument() {
         return new Document();
@@ -64,9 +62,10 @@ public class DataTablePDFExporter extends DataTableExporter {
     }
 
     @Override
-    protected void preExport(FacesContext context, ExportConfiguration config, OutputStream outputStream) throws IOException {
+    protected void preExport(FacesContext context) throws IOException {
+        ExportConfiguration config = getExportConfiguration();
+
         document = createDocument();
-        this.outputStream = outputStream;
 
         try {
             PDFOptions options = (PDFOptions) config.getOptions();
@@ -76,7 +75,7 @@ public class DataTablePDFExporter extends DataTableExporter {
                 }
             }
 
-            PdfWriter.getInstance(document, this.outputStream);
+            PdfWriter.getInstance(document, getOutputStream());
         }
         catch (DocumentException e) {
             throw new IOException(e);
@@ -92,7 +91,7 @@ public class DataTablePDFExporter extends DataTableExporter {
     }
 
     @Override
-    protected void doExport(FacesContext context, DataTable table, ExportConfiguration config, int index) throws IOException {
+    protected void doExport(FacesContext context, DataTable table, int index) throws IOException {
         try {
             // Add empty paragraph between each exported tables
             if (index > 0) {
@@ -101,7 +100,7 @@ public class DataTablePDFExporter extends DataTableExporter {
                 getDocument().add(preface);
             }
 
-            getDocument().add(exportTable(context, table, config));
+            getDocument().add(exportTable(context, table, getExportConfiguration()));
         }
         catch (DocumentException e) {
             throw new IOException(e.getMessage());
@@ -109,25 +108,24 @@ public class DataTablePDFExporter extends DataTableExporter {
     }
 
     @Override
-    protected void postExport(FacesContext context, ExportConfiguration config) throws IOException {
-        if (config.getPostProcessor() != null) {
-            config.getPostProcessor().invoke(context.getELContext(), new Object[]{document});
+    protected void postExport(FacesContext context) throws IOException {
+        if (getExportConfiguration().getPostProcessor() != null) {
+            getExportConfiguration().getPostProcessor().invoke(context.getELContext(), new Object[]{document});
         }
 
         getDocument().close();
 
         document = null;
-        outputStream = null;
     }
 
 
     @Override
-    protected String getContentType() {
+    public String getContentType() {
         return "application/pdf";
     }
 
     @Override
-    protected String getFileExtension() {
+    public String getFileExtension() {
         return ".pdf";
     }
 

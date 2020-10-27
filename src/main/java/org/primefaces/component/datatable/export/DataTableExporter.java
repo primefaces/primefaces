@@ -36,11 +36,9 @@ import javax.faces.component.html.HtmlGraphicImage;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 
-import org.primefaces.PrimeFaces;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExportConfiguration;
@@ -50,6 +48,9 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.*;
 
 public abstract class DataTableExporter implements Exporter<DataTable> {
+
+    private OutputStream outputStream;
+    private ExportConfiguration exportConfiguration;
 
     protected enum ColumnType {
         HEADER("header"),
@@ -291,9 +292,11 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
         }
     }
 
-    protected abstract void preExport(FacesContext context, ExportConfiguration config, OutputStream outputStream) throws IOException;
+    protected void preExport(FacesContext context) throws IOException {
+        // NOOP
+    }
 
-    protected void postExport(FacesContext context, ExportConfiguration config) throws IOException {
+    protected void postExport(FacesContext context) throws IOException {
         // NOOP
     }
 
@@ -308,70 +311,33 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
     protected abstract void exportCells(DataTable table, Object document);
 
     @Override
-    public void export(FacesContext context, List<DataTable> tables, ExportConfiguration config) throws IOException {
-        ExternalContext externalContext = context.getExternalContext();
-        OutputStream outputStream;
-        String filenameWithExtension = config.getOutputFileName() + getFileExtension();
+    public void export(FacesContext context, List<DataTable> tables, OutputStream outputStream) throws IOException {
+        this.outputStream = outputStream;
 
-        if (PrimeFaces.current().isAjaxRequest()) {
-            outputStream = new ByteArrayOutputStream();
-        }
-        else {
-            outputStream = context.getExternalContext().getResponseOutputStream();
-        }
-
-        preExport(context, config, outputStream);
-
-        if (!PrimeFaces.current().isAjaxRequest()) {
-            externalContext.setResponseContentType(getContentType());
-            setResponseHeader(externalContext, ComponentUtils.createContentDisposition("attachment", filenameWithExtension));
-            addResponseCookie(context);
-        }
+        preExport(context);
 
         int index = 0;
         for (DataTable table : tables) {
-            DataTableVisitCallBack visitCallback = new DataTableVisitCallBack(table, config, index);
+            DataTableVisitCallBack visitCallback = new DataTableVisitCallBack(table, exportConfiguration, index);
             int nbTables = visitCallback.invoke(context);
             index += nbTables;
         }
 
-        postExport(context, config);
+        postExport(context);
 
-        if (PrimeFaces.current().isAjaxRequest()) {
-            ajaxDownload(filenameWithExtension, ((ByteArrayOutputStream) outputStream).toByteArray(), null, context);
-        }
-        else {
-            externalContext.responseFlushBuffer();
-        }
+        this.outputStream = null;
     }
 
     /**
      * Export datatable
      * @param facesContext faces context
      * @param table datatable to export
-     * @param config export configuration
      * @param index datatable current index during export process
      * @throws IOException
      */
-    protected abstract void doExport(FacesContext facesContext, DataTable table, ExportConfiguration config, int index) throws IOException;
+    protected abstract void doExport(FacesContext facesContext, DataTable table, int index) throws IOException;
 
-    protected abstract String getContentType();
-
-    protected abstract String getFileExtension();
-
-    private void ajaxDownload(String filenameWithExtension, byte[] content, String encodingType, FacesContext context) {
-        String contentType = getContentType();
-        if (!LangUtils.isValueBlank(encodingType)) {
-            contentType += "; charset=" + encodingType;
-        }
-
-        String base64 = Base64.getEncoder().withoutPadding().encodeToString(content);
-        String data = "data:" + contentType + ";base64," + base64;
-
-        String monitorKeyCookieName = ResourceUtils.getMonitorKeyCookieName(context, null);
-        PrimeFaces.current().executeScript(String.format("PrimeFaces.download('%s', '%s', '%s', '%s')",
-                data, contentType, filenameWithExtension, monitorKeyCookieName));
-    }
+    public abstract String getFileExtension();
 
     private class DataTableVisitCallBack implements VisitCallback {
 
@@ -393,7 +359,7 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
         public VisitResult visit(VisitContext context, UIComponent component) {
             if (target == component) {
                 try {
-                    doExport(context.getFacesContext(), target, config, index);
+                    doExport(context.getFacesContext(), target, index);
                     index++;
                     counter++;
                 }
@@ -419,12 +385,17 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
         }
     }
 
-    protected void setResponseHeader(ExternalContext externalContext , String contentDisposition) {
-        ResourceUtils.addNoCacheControl(externalContext);
-        externalContext.setResponseHeader("Content-disposition", contentDisposition);
+    protected OutputStream getOutputStream() {
+        return outputStream;
     }
 
-    protected void addResponseCookie(FacesContext context) {
-        ResourceUtils.addResponseCookie(context, Constants.DOWNLOAD_COOKIE, "true", null);
+    protected ExportConfiguration getExportConfiguration() {
+        return exportConfiguration;
     }
+
+    @Override
+    public void setExportConfiguration(ExportConfiguration exportConfiguration) {
+        this.exportConfiguration = exportConfiguration;
+    }
+
 }
