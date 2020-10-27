@@ -184,7 +184,7 @@ public class InputNumberRenderer extends InputRenderer {
         String styleClass = createStyleClass(inputNumber, InputNumber.PropertyKeys.inputStyleClass.name(), InputText.STYLE_CLASS) ;
         String inputMode = inputNumber.getInputMode();
         if (inputMode == null) {
-            String decimalPlaces = getDecimalPlaces(inputNumber, valueToRender);
+            String decimalPlaces = getDecimalPlaces(inputNumber, inputNumber.getValue());
             inputMode = "0".equals(decimalPlaces) ? "numeric" : "decimal";
         }
 
@@ -244,6 +244,11 @@ public class InputNumberRenderer extends InputRenderer {
             .attr("showWarnings", false, true);
 
         wb.finish();
+    }
+
+    @Override
+    protected String getHighlighter() {
+        return "inputnumber";
     }
 
     /**
@@ -327,11 +332,6 @@ public class InputNumberRenderer extends InputRenderer {
         }
     }
 
-    @Override
-    protected String getHighlighter() {
-        return "inputnumber";
-    }
-
     /**
      * Format a BigDecimal value as value/minValue/maxValue for the AutoNumeric plugin.
      * @param valueToRender the value to render
@@ -341,6 +341,13 @@ public class InputNumberRenderer extends InputRenderer {
         return valueToRender.toPlainString();
     }
 
+    /**
+     * Determines the number of decimal places to use.  If this is an Integer type number then default to 0
+     * decimal places if none was declared else default to 2.
+     * @param inputNumber the component
+     * @param value the value of the input number
+     * @return the number of decimal places to use
+     */
     private String getDecimalPlaces(InputNumber inputNumber, Object value) {
         String defaultDecimalPlaces = "2";
         if (value instanceof Long || value instanceof Integer || value instanceof Short || value instanceof BigInteger) {
@@ -351,7 +358,5 @@ public class InputNumberRenderer extends InputRenderer {
                 : inputNumber.getDecimalPlaces();
         return decimalPlaces;
     }
-
-
 
 }
