@@ -138,15 +138,6 @@ public class InputNumberRenderer extends InputRenderer {
             writer.writeAttribute("style", inputNumber.getStyle(), "style");
         }
 
-        String defaultDecimalPlaces = "2";
-        if (value instanceof Long || value instanceof Integer || value instanceof Short || value instanceof BigInteger) {
-            defaultDecimalPlaces = "0";
-        }
-        String decimalPlaces = isValueBlank(inputNumber.getDecimalPlaces())
-                ? defaultDecimalPlaces
-                : inputNumber.getDecimalPlaces();
-        inputNumber.setDecimalPlaces(decimalPlaces);
-
         encodeInput(context, inputNumber, clientId, valueToRender);
         encodeHiddenInput(context, inputNumber, clientId, valueToRender);
 
@@ -193,7 +184,8 @@ public class InputNumberRenderer extends InputRenderer {
         String styleClass = createStyleClass(inputNumber, InputNumber.PropertyKeys.inputStyleClass.name(), InputText.STYLE_CLASS) ;
         String inputMode = inputNumber.getInputMode();
         if (inputMode == null) {
-            inputMode = "0".equals(inputNumber.getDecimalPlaces()) ? "numeric" : "decimal";
+            String decimalPlaces = getDecimalPlaces(inputNumber, inputNumber.getValue());
+            inputMode = "0".equals(decimalPlaces) ? "numeric" : "decimal";
         }
 
         writer.startElement("input", null);
@@ -229,6 +221,7 @@ public class InputNumberRenderer extends InputRenderer {
         String decimalSeparator = isValueBlank(inputNumber.getDecimalSeparator())
                     ? "."
                     : inputNumber.getDecimalSeparator();
+        String decimalPlaces = getDecimalPlaces(inputNumber, value);
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init(InputNumber.class.getSimpleName(), inputNumber.resolveWidgetVar(context), inputNumber.getClientId());
@@ -241,7 +234,7 @@ public class InputNumberRenderer extends InputRenderer {
             .attr("currencySymbolPlacement", inputNumber.getSymbolPosition(), "p")
             .attr("minimumValue", formatForPlugin(inputNumber.getMinValue()))
             .attr("maximumValue", formatForPlugin(inputNumber.getMaxValue()))
-            .attr("decimalPlaces", inputNumber.getDecimalPlaces())
+            .attr("decimalPlaces", decimalPlaces)
             .attr("emptyInputBehavior", emptyValue, "focus")
             .attr("leadingZero", inputNumber.getLeadingZero(), "deny")
             .attr("allowDecimalPadding", inputNumber.isPadControl(), true)
@@ -251,6 +244,11 @@ public class InputNumberRenderer extends InputRenderer {
             .attr("showWarnings", false, true);
 
         wb.finish();
+    }
+
+    @Override
+    protected String getHighlighter() {
+        return "inputnumber";
     }
 
     /**
@@ -343,9 +341,22 @@ public class InputNumberRenderer extends InputRenderer {
         return valueToRender.toPlainString();
     }
 
-    @Override
-    protected String getHighlighter() {
-        return "inputnumber";
+    /**
+     * Determines the number of decimal places to use.  If this is an Integer type number then default to 0
+     * decimal places if none was declared else default to 2.
+     * @param inputNumber the component
+     * @param value the value of the input number
+     * @return the number of decimal places to use
+     */
+    private String getDecimalPlaces(InputNumber inputNumber, Object value) {
+        String defaultDecimalPlaces = "2";
+        if (value instanceof Long || value instanceof Integer || value instanceof Short || value instanceof BigInteger) {
+            defaultDecimalPlaces = "0";
+        }
+        String decimalPlaces = isValueBlank(inputNumber.getDecimalPlaces())
+                ? defaultDecimalPlaces
+                : inputNumber.getDecimalPlaces();
+        return decimalPlaces;
     }
 
 }
