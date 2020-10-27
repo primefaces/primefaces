@@ -6,6 +6,7 @@
   - [Dependencies](/gettingstarted/dependencies.md)
   - [Configuration](/gettingstarted/configuration.md)
   - [Hello World](/gettingstarted/helloworld.md)
+  - [Migration Guide](/gettingstarted/migrationguide.md)
 
 - Core
 
@@ -23,7 +24,7 @@
   - [Java API](/core/javaAPI.md)
   - [Javascript API](/core/javascriptAPI.md)
   - [Localization](/core/localization.md)
-  - [MultiViewState](/core/multiviewstate.md) 
+  - [MultiViewState](/core/multiviewstate.md)
   - [Performance](/core/performance.md)
   - [Portlets](/core/portlets.md)
   - [Responsive Design](/core/responsive.md)
