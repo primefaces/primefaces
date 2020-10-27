@@ -483,7 +483,7 @@ public class ComponentUtils {
         }
 
         // Facet has no child but is rendered
-        if (facet.getChildren().isEmpty() || ignoreChildren) {
+        if (ignoreChildren || facet.getChildCount() == 0) {
             return true;
         }
 
@@ -505,7 +505,7 @@ public class ComponentUtils {
      * @return true if one of the first level child's is rendered.
      */
     public static boolean shouldRenderChildren(UIComponent component) {
-        for (int i = 0; i < component.getChildren().size(); i++) {
+        for (int i = 0; i < component.getChildCount(); i++) {
             if (component.getChildren().get(i).isRendered()) {
                 return true;
             }
