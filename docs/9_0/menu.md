@@ -9,11 +9,14 @@
   - [Migration Guide](/gettingstarted/migrationguide.md)
 
 - Core
+
     - AJAX
+
         - [Partial Render / Update](/core/ajaxRendering.md)
         - [Partial Execute / Process](/core/ajaxProcessing.md)
         - [Partial Submit](/core/ajaxPartialsubmit.md)
         - [JavaScript API](/core/ajaxJavascriptApi.md)
+
   - [Accessibility](/core/accessibility.md)
   - [BeanValidation Transformation](/core/beanvalidationtransformation.md)
   - [Client Side Validation](/core/clientsidevalidation.md)
