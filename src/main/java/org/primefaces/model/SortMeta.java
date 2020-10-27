@@ -107,7 +107,7 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
                             headerRow.getSortFunction(),
                             groupByVE,
                             MAX_PRIORITY,
-                            1,
+                            SortOrder.ASCENDING.intValue(),
                             headerRow);
     }
 

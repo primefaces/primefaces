@@ -29,19 +29,22 @@ import java.util.Set;
 
 public enum SortOrder {
 
-    ASCENDING("asc", "1", 1, "ascending"),
-    DESCENDING("desc", "-1", -1, "descending"),
-    UNSORTED("", null, "0", 0, "unsorted");
+    ASCENDING(1, "asc", "1", "ascending"),
+    DESCENDING(-1, "desc", "-1", "descending"),
+    UNSORTED(0, "", null, "0", "unsorted");
 
     private final Set<Object> values;
 
-    SortOrder(Object... values) {
+    private final Integer intValue;
+
+    SortOrder(int intValue, Object... values) {
+        this.intValue = intValue;
         this.values = new HashSet<>(Arrays.asList(values));
     }
 
     public static SortOrder of(Object order) {
         for (SortOrder o : values()) {
-            if (o.values.contains(order)) {
+            if (o.intValue == order || o.values.contains(order)) {
                 return o;
             }
         }
@@ -59,5 +62,9 @@ public enum SortOrder {
 
     public boolean isUnsorted() {
         return this == SortOrder.UNSORTED;
+    }
+
+    public int intValue() {
+        return intValue;
     }
 }
