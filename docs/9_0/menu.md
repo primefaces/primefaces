@@ -9,7 +9,11 @@
   - [Migration Guide](/gettingstarted/migrationguide.md)
 
 - Core
-
+    - AJAX
+        - [Partial Render / Update](/core/ajaxRendering.md)
+        - [Partial Execute / Process](/core/ajaxProcessing.md)
+        - [Partial Submit](/core/ajaxPartialsubmit.md)
+        - [JavaScript API](/core/ajaxJavascriptApi.md)
   - [Accessibility](/core/accessibility.md)
   - [BeanValidation Transformation](/core/beanvalidationtransformation.md)
   - [Client Side Validation](/core/clientsidevalidation.md)
@@ -31,13 +35,6 @@
   - [Search Expression](/core/searchexpression.md)
   - [Themes](/core/themes.md)
   - [Third Party Libraries](/core/thirdpartylibs.md)
-
-- AJAX
-
-  - [Partial Render / Update](/ajax/rendering.md)
-  - [Partial Execute / Process](/ajax/processing.md)
-  - [Partial Submit](/ajax/partialsubmit.md)
-  - [JavaScript API](/ajax/javascriptApi.md)
 
 - Components
 
