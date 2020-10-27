@@ -44,7 +44,7 @@ public enum SortOrder {
 
     public static SortOrder of(Object order) {
         for (SortOrder o : values()) {
-            if (o.intValue == order || o.values.contains(order)) {
+            if (o.intValue.equals(order) || o.values.contains(order)) {
                 return o;
             }
         }
