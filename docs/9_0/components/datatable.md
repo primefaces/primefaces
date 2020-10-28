@@ -70,6 +70,7 @@ DataTable displays data in tabular format.
 | paginatorTemplate         | null               | String           | Template of the paginator.
 | reflow                    | false              | Boolean          | Reflow mode is a responsive mode to display columns as stacked depending on screen size.
 | rendered                  | true               | Boolean          | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
+| renderEmptyFacets         | false              | Boolean          | Render facets even if their children are not rendered. Default is false. See https://github.com/primefaces/primefaces/issues/4840
 | resizableColumns          | false              | Boolean          | Enables column resizing.
 | resizeMode                | fit                | String           | Defines the resize behavior, valid values are "fit" (default) and expand.
 | rowDragSelector           | td,span:not(.ui-c) | String           | Defines the element used to reorder rows using dragdrop. Default selector is "td,span:not(.ui-c)"
