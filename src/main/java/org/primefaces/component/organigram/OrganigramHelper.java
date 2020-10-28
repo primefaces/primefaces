@@ -96,7 +96,7 @@ public final class OrganigramHelper {
      * @param node The root node.
      */
     public static void buildRowKeys(OrganigramNode node) {
-        if (node.getChildCount() > 0) {
+        if (node.getChildCount() > 0 && node.getChildren() != null) {
             for (int i = 0; i < node.getChildCount(); i++) {
                 OrganigramNode childNode = node.getChildren().get(i);
 

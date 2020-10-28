@@ -211,7 +211,7 @@ public class OrganigramRenderer extends CoreRenderer {
         requestMap.remove(organigram.getVar());
 
         // render child nodes
-        if (node.getChildCount() > 0) {
+        if (node.getChildCount() > 0 && node.getChildren() != null) {
             writer.startElement("ul", null);
             for (OrganigramNode childNode : node.getChildren()) {
                 renderNode(context, writer, nodeMapping, organigram, childNode, selection, selectionEnabled);
