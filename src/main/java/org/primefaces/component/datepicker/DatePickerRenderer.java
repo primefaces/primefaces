@@ -99,7 +99,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
     @Override
     protected void encodeMarkup(FacesContext context, UICalendar uicalendar, String value) throws IOException {
         DatePicker datepicker = (DatePicker) uicalendar;
-        String pattern = datepicker.getPattern();
+        String pattern = datepicker.getPattern() == null ? datepicker.calculatePattern() : datepicker.getPattern();
 
         if (datepicker.isShowTimeWithoutDefault() == null) {
             Class<?> type = datepicker.getTypeFromValueByValueExpression(context);
