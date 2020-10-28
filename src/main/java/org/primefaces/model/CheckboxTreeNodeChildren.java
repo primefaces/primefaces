@@ -227,7 +227,7 @@ public class CheckboxTreeNodeChildren extends TreeNodeList {
         boolean allChildrenSelected = true;
         boolean partialSelected = false;
 
-        for (int i = 0; i < node.getChildren().size(); i++) {
+        for (int i = 0; i < node.getChildCount(); i++) {
             TreeNode childNode = node.getChildren().get(i);
 
             boolean childSelected = childNode.isSelected();

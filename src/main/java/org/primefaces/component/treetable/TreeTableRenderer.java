@@ -23,6 +23,8 @@
  */
 package org.primefaces.component.treetable;
 
+import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
+
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -58,8 +60,6 @@ import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.*;
 import org.primefaces.visit.ResetInputVisitCallback;
-
-import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
 
 public class TreeTableRenderer extends DataRenderer {
 
@@ -1207,7 +1207,7 @@ public class TreeTableRenderer extends DataRenderer {
 
         //Metadata for callback
         if (tt.isPaginator()) {
-            PrimeFaces.current().ajax().addCallbackParam("totalRecords", filteredNode.getChildren().size());
+            PrimeFaces.current().ajax().addCallbackParam("totalRecords", filteredNode.getChildCount());
         }
         if (tt.getSelectedRowKeysAsString() != null) {
             PrimeFaces.current().ajax().addCallbackParam("selection", tt.getSelectedRowKeysAsString());
