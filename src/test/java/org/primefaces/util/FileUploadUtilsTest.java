@@ -188,4 +188,30 @@ public class FileUploadUtilsTest {
         assertEquals(relativePath, result);
     }
 
+    @Test
+    public void convertJavaScriptRegex_Normal() {
+        // Arrange
+        String jsRegex = "/(\\.|\\/)(gif|jpe?g|png)$/";
+
+        // Act
+        String result = FileUploadUtils.convertJavaScriptRegex(jsRegex);
+
+        // Assert
+        assertEquals("(\\.|\\/)(gif|jpe?g|png)$", result);
+    }
+
+    @Test
+    public void convertJavaScriptRegex_CaseInsensitive() {
+        // Arrange
+        String jsRegex = "/\\.(gif|png|jpe?g)$/i";
+
+        // Act
+        String result = FileUploadUtils.convertJavaScriptRegex(jsRegex);
+
+        // Assert
+        assertEquals("\\.(gif|png|jpe?g)$", result);
+    }
+
+
+
 }
