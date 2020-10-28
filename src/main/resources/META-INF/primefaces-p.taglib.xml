@@ -8274,6 +8274,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Render facets even if their children are not rendered. Default is false.]]>
+            </description>
+            <name>renderEmptyFacets</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -21875,6 +21883,14 @@
             <name>noOpener</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Sets the height of the entire calendar, including header and footer. By default, this option is unset and the calendar's height is calculated by aspectRatio. If "auto" is specified, the view's contents will assume a natural height and no scrollbars will be used.]]>
+            </description>
+            <name>height</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
