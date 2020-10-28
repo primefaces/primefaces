@@ -32,10 +32,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
+
 import org.json.JSONObject;
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.calendar.BaseCalendarRenderer;
@@ -97,7 +99,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
     @Override
     protected void encodeMarkup(FacesContext context, UICalendar uicalendar, String value) throws IOException {
         DatePicker datepicker = (DatePicker) uicalendar;
-        String pattern = datepicker.calculatePattern();
+        String pattern = datepicker.getPattern();
 
         if (datepicker.isShowTimeWithoutDefault() == null) {
             Class<?> type = datepicker.getTypeFromValueByValueExpression(context);
