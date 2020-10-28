@@ -470,11 +470,12 @@ public class ComponentUtils {
     }
 
     /**
-     * Checks if the facet and one of the first level child's is rendered.
+     * Checks if the facet and one of the first level children is rendered.
      * @param facet The Facet component to check
-     * @return true when facet and one of the first level child's is rendered.
+     * @param ignoreChildren flag to ignore children and only check the facet itself
+     * @return true if the facet should be rendered, false if not
      */
-    public static boolean shouldRenderFacet(UIComponent facet) {
+    public static boolean shouldRenderFacet(UIComponent facet, boolean ignoreChildren) {
         if (facet == null || !facet.isRendered()) {
             // For any future version of JSF where the f:facet gets a rendered attribute (https://github.com/javaserverfaces/mojarra/issues/4299)
             // or there is only 1 child.
@@ -482,11 +483,20 @@ public class ComponentUtils {
         }
 
         // Facet has no child but is rendered
-        if (facet.getChildren().isEmpty()) {
+        if (ignoreChildren || facet.getChildCount() == 0) {
             return true;
         }
 
         return shouldRenderChildren(facet);
+    }
+
+    /**
+     * Checks if the facet and one of the first level children is rendered.
+     * @param facet The Facet component to check
+     * @return true when facet and one of the first level children is rendered.
+     */
+    public static boolean shouldRenderFacet(UIComponent facet) {
+        return shouldRenderFacet(facet, false);
     }
 
     /**
@@ -495,7 +505,7 @@ public class ComponentUtils {
      * @return true if one of the first level child's is rendered.
      */
     public static boolean shouldRenderChildren(UIComponent component) {
-        for (int i = 0; i < component.getChildren().size(); i++) {
+        for (int i = 0; i < component.getChildCount(); i++) {
             if (component.getChildren().get(i).isRendered()) {
                 return true;
             }

@@ -23,14 +23,15 @@
  */
 package org.primefaces.component.datatable;
 
-import org.primefaces.component.api.*;
-import org.primefaces.model.FilterMeta;
-import org.primefaces.model.SortMeta;
+import java.util.Collections;
+import java.util.Map;
 
 import javax.el.MethodExpression;
 import javax.faces.component.behavior.ClientBehaviorHolder;
-import java.util.Collections;
-import java.util.Map;
+
+import org.primefaces.component.api.*;
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.SortMeta;
 
 public abstract class DataTableBase extends UIData
         implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable, MultiViewStateAware<DataTableState> {
@@ -114,7 +115,8 @@ public abstract class DataTableBase extends UIData
         escapeText,
         rowEditMode,
         stickyTopAt,
-        globalFilterFunction
+        globalFilterFunction,
+        renderEmptyFacets
     }
 
     public DataTableBase() {
@@ -718,5 +720,13 @@ public abstract class DataTableBase extends UIData
 
     public void setGlobalFilterFunction(MethodExpression globalFilterFunction) {
         getStateHelper().put(PropertyKeys.globalFilterFunction, globalFilterFunction);
+    }
+
+    public boolean isRenderEmptyFacets() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.renderEmptyFacets, false);
+    }
+
+    public void setRenderEmptyFacets(boolean renderEmptyFacets) {
+        getStateHelper().put(PropertyKeys.renderEmptyFacets, renderEmptyFacets);
     }
 }
