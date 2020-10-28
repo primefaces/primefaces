@@ -54,12 +54,38 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        DatePicker datePicker = (DatePicker) component;
+        DatePicker datepicker = (DatePicker) component;
 
-        if (datePicker.getModel() instanceof LazyDateMetadataModel && ComponentUtils.isRequestSource(datePicker, context, "viewChange")) {
-            encodeDateMetadata(context, datePicker);
+        if (datepicker.getModel() instanceof LazyDateMetadataModel && ComponentUtils.isRequestSource(datepicker, context, "viewChange")) {
+            encodeDateMetadata(context, datepicker);
             return;
         }
+
+        String pattern = datepicker.getPattern() == null ? datepicker.calculatePattern() : datepicker.getPattern();
+
+        if (datepicker.isShowTimeWithoutDefault() == null) {
+            Class<?> type = datepicker.getTypeFromValueByValueExpression(context);
+
+            if (type != null) {
+                datepicker.setShowTime(LocalDateTime.class.isAssignableFrom(type));
+            }
+            else {
+                datepicker.setShowTime(CalendarUtils.hasTime(pattern));
+            }
+        }
+
+        if (datepicker.isTimeOnlyWithoutDefault() == null) {
+            Class<?> type = datepicker.getTypeFromValueByValueExpression(context);
+
+            if (type != null) {
+                datepicker.setTimeOnly(LocalTime.class.isAssignableFrom(type));
+            }
+        }
+
+        if (datepicker.isShowSecondsWithoutDefault() == null) {
+            datepicker.setShowSeconds(pattern.contains("s"));
+        }
+
         super.encodeEnd(context, component);
     }
 
@@ -99,31 +125,6 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
     @Override
     protected void encodeMarkup(FacesContext context, UICalendar uicalendar, String value) throws IOException {
         DatePicker datepicker = (DatePicker) uicalendar;
-        String pattern = datepicker.getPattern() == null ? datepicker.calculatePattern() : datepicker.getPattern();
-
-        if (datepicker.isShowTimeWithoutDefault() == null) {
-            Class<?> type = datepicker.getTypeFromValueByValueExpression(context);
-
-            if (type != null) {
-                datepicker.setShowTime(LocalDateTime.class.isAssignableFrom(type));
-            }
-            else {
-                datepicker.setShowTime(CalendarUtils.hasTime(pattern));
-            }
-        }
-
-        if (datepicker.isTimeOnlyWithoutDefault() == null) {
-            Class<?> type = datepicker.getTypeFromValueByValueExpression(context);
-
-            if (type != null) {
-                datepicker.setTimeOnly(LocalTime.class.isAssignableFrom(type));
-            }
-        }
-
-        if (datepicker.isShowSecondsWithoutDefault() == null) {
-            datepicker.setShowSeconds(pattern.contains("s"));
-        }
-
         ResponseWriter writer = context.getResponseWriter();
         String clientId = datepicker.getClientId(context);
         String styleClass = datepicker.getStyleClass();
