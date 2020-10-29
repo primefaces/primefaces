@@ -161,23 +161,30 @@ public class FileUploadUtils {
     }
 
     private static boolean isValidFileName(FileUpload fileUpload, UploadedFile uploadedFile) {
-        String allowTypesRegex = fileUpload.getAllowTypes();
-        if (!LangUtils.isValueBlank(allowTypesRegex)) {
-            allowTypesRegex = convertJavaScriptRegex(allowTypesRegex);
-            String fileName = EscapeUtils.forJavaScriptAttribute(uploadedFile.getFileName());
-            String contentType = EscapeUtils.forJavaScriptAttribute(uploadedFile.getContentType());
-
-            final Pattern allowTypesPattern = Pattern.compile(allowTypesRegex, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
-            final Matcher fileNameMatcher = allowTypesPattern.matcher(fileName);
-            final Matcher contentTypeMatcher = allowTypesPattern.matcher(contentType);
-            boolean isValid = fileNameMatcher.find() || contentTypeMatcher.find();
-            if (!isValid) {
-                if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.warning(String.format("The uploaded filename %s does not match the specified regex %s", fileName, allowTypesRegex));
-                }
-                return false;
-            }
+        String javascriptRegex = fileUpload.getAllowTypes();
+        if (LangUtils.isValueBlank(javascriptRegex)) {
+            return true;
         }
+
+        String javaRegex = convertJavaScriptRegex(javascriptRegex);
+        if (LangUtils.isValueBlank(javaRegex)) {
+            return true;
+        }
+
+        String fileName = EscapeUtils.forJavaScriptAttribute(uploadedFile.getFileName());
+        String contentType = EscapeUtils.forJavaScriptAttribute(uploadedFile.getContentType());
+
+        final Pattern allowTypesPattern = Pattern.compile(javaRegex, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+        final Matcher fileNameMatcher = allowTypesPattern.matcher(fileName);
+        final Matcher contentTypeMatcher = allowTypesPattern.matcher(contentType);
+        boolean isValid = fileNameMatcher.find() || contentTypeMatcher.find();
+        if (!isValid) {
+            if (LOGGER.isLoggable(Level.WARNING)) {
+                LOGGER.warning(String.format("The uploaded filename %s does not match the specified regex %s", fileName, javaRegex));
+            }
+            return false;
+        }
+
         return true;
     }
 

@@ -103,6 +103,16 @@ public class FileUploadUtilsTest {
         Assertions.assertFalse(FileUploadUtils.isValidType(appContext, fileUpload,createFile("adobe.pdf", "application/pdf", inputStream)));
     }
 
+    @Test
+    public void isValidType_InvalidRegex() {
+        when(fileUpload.getAllowTypes()).thenReturn("x");
+        // all of these should be true when the regex is not valid
+        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.PNG", "image/png", inputStream)));
+        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.jpeg", "image/png", inputStream)));
+        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload,createFile("test.bmp", "image/bitmap", inputStream)));
+        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload,createFile("adobe.pdf", "application/pdf", inputStream)));
+    }
+
     //TODO Once including Apache Tika as test scope dependency, we never check the default implementation which should work well also for the non-tampered cases
     //TODO Can we somehow run specific tests with AND without Apache Tika in place, e.g. by differently configured executions of maven-surefire-plugin?
     @Test
@@ -221,6 +231,29 @@ public class FileUploadUtilsTest {
         assertEquals("\\.(gif|png|jpe?g)$", result);
     }
 
+    @Test
+    public void convertJavaScriptRegex_Short() {
+        // Arrange
+        String jsRegex = "/x/";
+
+        // Act
+        String result = FileUploadUtils.convertJavaScriptRegex(jsRegex);
+
+        // Assert
+        assertEquals("x", result);
+    }
+
+    @Test
+    public void convertJavaScriptRegex_NotRegex() {
+        // Arrange
+        String jsRegex = "x";
+
+        // Act
+        String result = FileUploadUtils.convertJavaScriptRegex(jsRegex);
+
+        // Assert
+        assertEquals("", result);
+    }
 
 
 }
