@@ -84,14 +84,23 @@ public class FileUploadUtilsTest {
     }
 
     @Test
-    public void isValidTypeFilenameCheck() {
+    public void isValidType_NameCheck() {
         when(fileUpload.getAllowTypes()).thenReturn(null);
         Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.png", "image/png", inputStream)));
 
         when(fileUpload.getAllowTypes()).thenReturn("/\\.(gif|png|jpe?g)$/i");
         Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.PNG", "image/png", inputStream)));
+        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.jpeg", "image/jpeg", inputStream)));
+        Assertions.assertFalse(FileUploadUtils.isValidType(appContext, fileUpload,createFile("test.bmp", "image/bitmap", inputStream)));
+    }
+
+    @Test
+    public void isValidType_MimeTypeCheck() {
+        when(fileUpload.getAllowTypes()).thenReturn("/image/g");
+        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.PNG", "image/png", inputStream)));
         Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.jpeg", "image/png", inputStream)));
-        Assertions.assertFalse(FileUploadUtils.isValidType(appContext, fileUpload,createFile( "test.bmp", "text/plain", inputStream)));
+        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload,createFile("test.bmp", "image/bitmap", inputStream)));
+        Assertions.assertFalse(FileUploadUtils.isValidType(appContext, fileUpload,createFile("adobe.pdf", "application/pdf", inputStream)));
     }
 
     //TODO Once including Apache Tika as test scope dependency, we never check the default implementation which should work well also for the non-tampered cases
