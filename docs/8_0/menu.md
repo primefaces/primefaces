@@ -10,8 +10,11 @@
 
 - Migration Guide
 
-  - [8.0](/migrationguide/8_0.md)
-  - [7.0](/migrationguide/7_0.md)
+  - [8.0](../migrationguide/8_0.md)
+  - [7.0](../migrationguide/7_0.md)
+  - [6.2](../migrationguide/6_2.md)
+  - [6.1](../migrationguide/6_1.md)
+  - [6.0](../migrationguide/6_0.md)
 
 - Core
 
