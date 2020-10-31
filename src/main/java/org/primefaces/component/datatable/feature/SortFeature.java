@@ -72,11 +72,11 @@ public class SortFeature implements DataTableFeature {
 
             Integer index = sortKeysIndexes.get(entry.getKey());
             if (index != null) {
-                sortBy.setSortOrder(SortOrder.of(sortOrders[index]));
+                sortBy.setOrder(SortOrder.of(sortOrders[index]));
                 sortBy.setPriority(index);
             }
             else {
-                sortBy.setSortOrder(SortOrder.UNSORTED);
+                sortBy.setOrder(SortOrder.UNSORTED);
                 sortBy.setPriority(SortMeta.MIN_PRIORITY);
             }
         }

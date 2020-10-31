@@ -44,10 +44,10 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
     private static final long serialVersionUID = 1L;
 
     private String columnKey;
-    private String sortField;
-    private SortOrder sortOrder = SortOrder.UNSORTED;
+    private String field;
+    private SortOrder order = SortOrder.UNSORTED;
     private ValueExpression sortBy;
-    private MethodExpression sortFunction;
+    private MethodExpression function;
     private Integer priority = MIN_PRIORITY;
     private int nullSortOrder;
     private boolean caseSensitiveSort;
@@ -60,9 +60,9 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
     SortMeta(String columnKey, String sortField, SortOrder sortOrder, MethodExpression sortFunction,
              ValueExpression sortBy, Integer priority, int nullSortOrder, boolean caseSensitiveSort, Object component) {
         this.columnKey = columnKey;
-        this.sortField = sortField;
-        this.sortOrder = sortOrder;
-        this.sortFunction = sortFunction;
+        this.field = sortField;
+        this.order = sortOrder;
+        this.function = sortFunction;
         this.sortBy = sortBy;
         this.priority = priority;
         this.nullSortOrder = nullSortOrder;
@@ -124,20 +124,20 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
         return result;
     }
 
-    public String getSortField() {
-        return sortField;
+    public String getField() {
+        return field;
     }
 
-    public SortOrder getSortOrder() {
-        return sortOrder;
+    public SortOrder getOrder() {
+        return order;
     }
 
-    public MethodExpression getSortFunction() {
-        return sortFunction;
+    public MethodExpression getFunction() {
+        return function;
     }
 
-    public void setSortFunction(MethodExpression sortFunction) {
-        this.sortFunction = sortFunction;
+    public void setFunction(MethodExpression function) {
+        this.function = function;
     }
 
     public ValueExpression getSortBy() {
@@ -149,11 +149,11 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
     }
 
     public boolean isActive() {
-        return sortOrder != SortOrder.UNSORTED;
+        return order != SortOrder.UNSORTED;
     }
 
-    public void setSortOrder(SortOrder sortOrder) {
-        this.sortOrder = sortOrder;
+    public void setOrder(SortOrder order) {
+        this.order = order;
     }
 
     public Integer getPriority() {
@@ -186,22 +186,22 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
         if (o == null || getClass() != o.getClass()) return false;
         SortMeta sortMeta = (SortMeta) o;
         return Objects.equals(columnKey, sortMeta.columnKey) &&
-                Objects.equals(sortField, sortMeta.sortField);
+                Objects.equals(field, sortMeta.field);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(columnKey, sortField);
+        return Objects.hash(columnKey, field);
     }
 
     @Override
     public String toString() {
         return "SortMeta{" +
                 "columnKey='" + columnKey + '\'' +
-                ", sortField='" + sortField + '\'' +
-                ", sortOrder=" + sortOrder +
+                ", sortField='" + field + '\'' +
+                ", sortOrder=" + order +
                 ", sortBy=" + sortBy +
-                ", sortFunction=" + sortFunction +
+                ", sortFunction=" + function +
                 ", priority=" + priority +
                 ", nullSortOrder=" + nullSortOrder +
                 ", caseSensitiveSort=" + caseSensitiveSort +
@@ -233,6 +233,7 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
     }
 
     public static final class Builder {
+
         private SortMeta sortMeta;
 
         private Builder() {
@@ -240,12 +241,12 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
         }
 
         public Builder field(String field) {
-            sortMeta.sortField = field;
+            sortMeta.field = field;
             return this;
         }
 
-        public Builder sortOrder(SortOrder sortOrder) {
-            sortMeta.sortOrder = sortOrder;
+        public Builder order(SortOrder sortOrder) {
+            sortMeta.order = sortOrder;
             return this;
         }
 
@@ -254,8 +255,8 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
             return this;
         }
 
-        public Builder sortFunction(MethodExpression sortFunction) {
-            sortMeta.sortFunction = sortFunction;
+        public Builder function(MethodExpression sortFunction) {
+            sortMeta.function = sortFunction;
             return this;
         }
 

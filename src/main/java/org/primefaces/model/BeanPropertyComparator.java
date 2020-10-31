@@ -62,7 +62,7 @@ public class BeanPropertyComparator implements Comparator<Object> {
 
             int result;
 
-            if (sortMeta.getSortFunction() == null) {
+            if (sortMeta.getFunction() == null) {
                 //Empty check
                 if (value1 == null && value2 == null) {
                     return 0;
@@ -89,10 +89,10 @@ public class BeanPropertyComparator implements Comparator<Object> {
                 }
             }
             else {
-                result = (Integer) sortMeta.getSortFunction().invoke(context.getELContext(), new Object[]{value1, value2});
+                result = (Integer) sortMeta.getFunction().invoke(context.getELContext(), new Object[]{value1, value2});
             }
 
-            return sortMeta.getSortOrder().isAscending() ? result : -1 * result;
+            return sortMeta.getOrder().isAscending() ? result : -1 * result;
 
         }
         catch (Exception e) {

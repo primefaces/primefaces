@@ -718,7 +718,7 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected String resolveDefaultSortIcon(SortMeta sortMeta) {
-        SortOrder sortOrder = sortMeta.getSortOrder();
+        SortOrder sortOrder = sortMeta.getOrder();
         String sortIcon = DataTable.SORTABLE_COLUMN_ICON_CLASS;
         if (sortOrder.isAscending()) {
             sortIcon = DataTable.SORTABLE_COLUMN_ASCENDING_ICON_CLASS;
@@ -1385,7 +1385,7 @@ public class DataTableRenderer extends DataRenderer {
         if (column instanceof DynamicColumn) {
             column.encodeAll(context);
         }
-        else if (column.getChildren().isEmpty() && !LangUtils.isValueBlank(column.getField())) {
+        else if (hasColumnDefaultRendering(table, column)) {
             Object value = DataTable.createValueExprFromVarField(context, table.getVar(), column.getField())
                     .getValue(context.getELContext());
             writer.writeText(value, null);
@@ -1744,5 +1744,12 @@ public class DataTableRenderer extends DataRenderer {
                 .map(s -> getHeaderLabel(context, (UIColumn) s.getComponent()))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
+    }
+
+    protected boolean hasColumnDefaultRendering(DataTable table, UIColumn column) {
+        return table.getChildCount() == 0
+                && (table.getSortByAsMap().containsKey(column.getColumnKey())
+                || !LangUtils.isValueBlank(column.getField()));
+
     }
 }

@@ -375,7 +375,7 @@ public class DataTable extends DataTableBase {
                     meta = getSortByAsMap().get(params.get(clientId + "_sortKey"));
                 }
 
-                wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), (UIColumn) meta.getComponent(), meta.getSortOrder(), sortColumnIndex);
+                wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), (UIColumn) meta.getComponent(), meta.getOrder(), sortColumnIndex);
             }
             else if (eventName.equals("filter")) {
                 wrapperEvent = new FilterEvent(this, behaviorEvent.getBehavior(), getFilteredValue());
@@ -567,7 +567,7 @@ public class DataTable extends DataTableBase {
 
             Map<String, SortMeta> sorters = getSortByAsMap().values().stream()
                     .filter(SortMeta::isActive)
-                    .collect(Collectors.toMap(SortMeta::getSortField, e -> e));
+                    .collect(Collectors.toMap(SortMeta::getField, e -> e));
             List<?> data = lazyModel.load(first, rows, sorters, getFilterBy());
             lazyModel.setPageSize(getRows());
             lazyModel.setWrappedData(data);
@@ -587,7 +587,7 @@ public class DataTable extends DataTableBase {
 
             Map<String, SortMeta> sorters = getSortByAsMap().values().stream()
                     .filter(SortMeta::isActive)
-                    .collect(Collectors.toMap(SortMeta::getSortField, e -> e));
+                    .collect(Collectors.toMap(SortMeta::getField, e -> e));
             List<?> data = lazyModel.load(offset, rows, sorters, getFilterBy());
 
             lazyModel.setPageSize(rows);
@@ -1484,7 +1484,7 @@ public class DataTable extends DataTableBase {
                 if (intlSortBy != null) {
                     SortMeta tsSortMeta = entry.getValue();
                     intlSortBy.setPriority(tsSortMeta.getPriority());
-                    intlSortBy.setSortOrder(tsSortMeta.getSortOrder());
+                    intlSortBy.setOrder(tsSortMeta.getOrder());
                     defaultSort |= intlSortBy.isActive();
                 }
             }
@@ -1496,22 +1496,22 @@ public class DataTable extends DataTableBase {
     protected void updateSortByWithUserSortBy(Map<String, SortMeta> intlSortBy, Collection<SortMeta> usrSortBy, boolean sorted) {
         for (SortMeta userSM : usrSortBy) {
             SortMeta intlSM = intlSortBy.values().stream()
-                    .filter(o -> o.getSortField().equals(userSM.getSortField()))
+                    .filter(o -> o.getField().equals(userSM.getField()))
                     .findAny()
                     .orElse(null);
             if (intlSM == null) {
-                throw new FacesException("No column with field '" + userSM.getSortField() + "' has been found");
+                throw new FacesException("No column with field '" + userSM.getField() + "' has been found");
             }
 
             ValueExpression sortByVE = userSM.getSortBy();
             if (sortByVE == null) {
-                sortByVE = createValueExprFromVarField(getFacesContext(), getVar(), userSM.getSortField());
+                sortByVE = createValueExprFromVarField(getFacesContext(), getVar(), userSM.getField());
             }
 
             intlSM.setPriority(userSM.getPriority());
-            intlSM.setSortOrder(userSM.getSortOrder());
+            intlSM.setOrder(userSM.getOrder());
             intlSM.setSortBy(sortByVE);
-            intlSM.setSortFunction(userSM.getSortFunction());
+            intlSM.setFunction(userSM.getFunction());
             sorted |= userSM.isActive();
         }
 
