@@ -1747,7 +1747,7 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected boolean hasColumnDefaultRendering(DataTable table, UIColumn column) {
-        return table.getChildCount() == 0
+        return column.getChildren().isEmpty()
                 && (table.getSortByAsMap().containsKey(column.getColumnKey())
                 || !LangUtils.isValueBlank(column.getField()));
 
