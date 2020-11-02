@@ -32,68 +32,72 @@ import org.primefaces.util.EscapeUtils;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.List;
 
 public class DataTableXMLExporter extends DataTableExporter {
 
     @Override
-    public void doExport(FacesContext context, DataTable table, ExportConfiguration config, int index) throws IOException {
-        ExternalContext externalContext = context.getExternalContext();
-        configureResponse(context, config.getOutputFileName());
-        StringBuilder builder = new StringBuilder();
+    public void doExport(FacesContext context, DataTable table, ExportConfiguration exportConfiguration, int index) throws IOException {
 
-        if (config.getPreProcessor() != null) {
-            config.getPreProcessor().invoke(context.getELContext(), new Object[]{builder});
+        try (OutputStreamWriter osw = new OutputStreamWriter(getOutputStream(), exportConfiguration.getEncodingType());
+            PrintWriter writer = new PrintWriter(osw);) {
+
+            if (exportConfiguration.getPreProcessor() != null) {
+                // PF 9 - attention: breaking change to PreProcessor (PrintWriter instead of writer)
+                exportConfiguration.getPreProcessor().invoke(context.getELContext(), new Object[]{writer});
+            }
+
+            writer.append("<?xml version=\"1.0\"?>\n");
+            writer.append("<" + table.getId() + ">\n");
+
+            if (exportConfiguration.isPageOnly()) {
+                exportPageOnly(context, table, writer);
+            }
+            else if (exportConfiguration.isSelectionOnly()) {
+                exportSelectionOnly(context, table, writer);
+            }
+            else {
+                exportAll(context, table, writer);
+            }
+
+            writer.append("</" + table.getId() + ">");
+
+            table.setRowIndex(-1);
+
+            if (exportConfiguration.getPostProcessor() != null) {
+                // PF 9 - attention: breaking change to PostProcessor (PrintWriter instead of writer)
+                exportConfiguration.getPostProcessor().invoke(context.getELContext(), new Object[]{writer});
+            }
+
+            writer.flush();
         }
+    }
 
-        builder.append("<?xml version=\"1.0\"?>\n");
-        builder.append("<" + table.getId() + ">\n");
+    @Override
+    public String getContentType() {
+        return "text/xml";
+    }
 
-        if (config.isPageOnly()) {
-            exportPageOnly(context, table, builder);
-        }
-        else if (config.isSelectionOnly()) {
-            exportSelectionOnly(context, table, builder);
-        }
-        else {
-            exportAll(context, table, builder);
-        }
-
-        builder.append("</" + table.getId() + ">");
-
-        table.setRowIndex(-1);
-
-        if (config.getPostProcessor() != null) {
-            config.getPostProcessor().invoke(context.getELContext(), new Object[]{builder});
-        }
-
-        OutputStream os = externalContext.getResponseOutputStream();
-        OutputStreamWriter osw = new OutputStreamWriter(os, config.getEncodingType());
-        PrintWriter writer = new PrintWriter(osw);
-        writer.write(builder.toString());
-        writer.flush();
-        writer.close();
+    @Override
+    public String getFileExtension() {
+        return ".xml";
     }
 
     @Override
     protected void preRowExport(DataTable table, Object document) {
-        ((StringBuilder) document).append("\t<" + table.getVar() + ">\n");
+        ((PrintWriter) document).append("\t<" + table.getVar() + ">\n");
     }
 
     @Override
     protected void postRowExport(DataTable table, Object document) {
-        ((StringBuilder) document).append("\t</" + table.getVar() + ">\n");
+        ((PrintWriter) document).append("\t</" + table.getVar() + ">\n");
     }
 
     @Override
     protected void exportCells(DataTable table, Object document) {
-        StringBuilder builder = (StringBuilder) document;
+        PrintWriter writer = (PrintWriter) document;
         for (UIColumn col : table.getColumns()) {
             if (col instanceof DynamicColumn) {
                 ((DynamicColumn) col).applyStatelessModel();
@@ -102,7 +106,7 @@ public class DataTableXMLExporter extends DataTableExporter {
             if (col.isRendered() && col.isExportable()) {
                 String columnTag = getColumnTag(col);
                 try {
-                    addColumnValue(builder, col.getChildren(), columnTag, col);
+                    addColumnValue(writer, col.getChildren(), columnTag, col);
                 }
                 catch (IOException ex) {
                     throw new FacesException(ex);
@@ -129,33 +133,25 @@ public class DataTableXMLExporter extends DataTableExporter {
         return EscapeUtils.forXmlTag(columnTag);
     }
 
-    protected void addColumnValue(StringBuilder builder, List<UIComponent> components, String tag, UIColumn column) throws IOException {
+    protected void addColumnValue(PrintWriter writer, List<UIComponent> components, String tag, UIColumn column) throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        builder.append("\t\t<" + tag + ">");
+        writer.append("\t\t<" + tag + ">");
 
         if (column.getExportFunction() != null) {
-            builder.append(EscapeUtils.forXml(exportColumnByFunction(context, column)));
+            writer.append(EscapeUtils.forXml(exportColumnByFunction(context, column)));
         }
         else {
             for (UIComponent component : components) {
                 if (component.isRendered()) {
                     String value = exportValue(context, component);
                     if (value != null) {
-                        builder.append(EscapeUtils.forXml(value));
+                        writer.append(EscapeUtils.forXml(value));
                     }
                 }
             }
         }
 
-        builder.append("</" + tag + ">\n");
+        writer.append("</" + tag + ">\n");
     }
-
-    protected void configureResponse(FacesContext context, String filename) {
-        ExternalContext externalContext = context.getExternalContext();
-        externalContext.setResponseContentType("text/xml");
-        setResponseHeader(externalContext, ComponentUtils.createContentDisposition("attachment", filename + ".xml"));
-        addResponseCookie(context);
-    }
-
 }

@@ -30,6 +30,7 @@ import java.math.BigInteger;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.Map;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -37,7 +38,6 @@ import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
-import javax.xml.bind.DatatypeConverter;
 import org.primefaces.application.resource.DynamicContentType;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.model.StreamedContent;
@@ -65,8 +65,12 @@ public class DynamicContentSrcBuilder {
         }
         else if (value instanceof StreamedContent) {
             StreamedContent streamedContent = (StreamedContent) value;
+            ValueExpression ve = null;
+            if (!LangUtils.isValueBlank(attributeName)) {
+                ve = component.getValueExpression(attributeName);
+            }
             ValueExpression expression = ValueExpressionAnalyzer.getExpression(
-                        context.getELContext(), component.getValueExpression(attributeName));
+                        context.getELContext(), ve);
             return build(context, streamedContent, component, cache, type, stream, expression);
         }
 
@@ -124,7 +128,7 @@ public class DynamicContentSrcBuilder {
         }
         else {
             byte[] bytes = toByteArray(streamedContent.getStream());
-            String base64 = DatatypeConverter.printBase64Binary(bytes);
+            String base64 = Base64.getEncoder().withoutPadding().encodeToString(bytes);
             return "data:" + streamedContent.getContentType() + ";base64," + base64;
         }
     }
