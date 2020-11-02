@@ -25,7 +25,14 @@ package org.primefaces.util;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.time.*;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.YearMonth;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.Temporal;
@@ -42,16 +49,14 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
 import org.primefaces.component.api.UICalendar;
-import org.primefaces.convert.DatePatternConverter;
+import org.primefaces.convert.DateTimePatternConverter;
 import org.primefaces.convert.PatternConverter;
-import org.primefaces.convert.TimePatternConverter;
 
 public class CalendarUtils {
 
     private static final String[] TIME_CHARS = {"H", "K", "h", "k", "m", "s"};
 
-    private static final PatternConverter[] PATTERN_CONVERTERS =
-            new PatternConverter[]{new TimePatternConverter(), new DatePatternConverter()};
+    private static final PatternConverter PATTERN_CONVERTER = new DateTimePatternConverter();
 
     private CalendarUtils() {
     }
@@ -299,7 +304,7 @@ public class CalendarUtils {
     }
 
     /**
-     * Converts a java date pattern to a jquery date pattern
+     * Converts a java date pattern to a jquery UI date picker pattern.
      *
      * @param pattern Pattern to be converted
      * @return converted pattern
@@ -309,12 +314,7 @@ public class CalendarUtils {
             return null;
         }
         else {
-            String convertedPattern = pattern;
-            for (PatternConverter converter : PATTERN_CONVERTERS) {
-                convertedPattern = converter.convert(convertedPattern);
-            }
-
-            return convertedPattern;
+            return PATTERN_CONVERTER.convert(pattern);
         }
     }
 

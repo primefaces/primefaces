@@ -52,9 +52,11 @@ public class InputMaskRenderer extends InputRenderer {
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId);
 
         if (submittedValue != null) {
+            // strip mask characters in case of optional values
+            submittedValue = submittedValue.replace(inputMask.getSlotChar(), Constants.EMPTY_STRING);
             String mask = inputMask.getMask();
 
-            if (inputMask.isValidateMask() && !submittedValue.isEmpty() && !LangUtils.isValueBlank(mask)) {
+            if (inputMask.isValidateMask() && !LangUtils.isValueEmpty(submittedValue) && !LangUtils.isValueBlank(mask)) {
                 Pattern pattern = translateMaskIntoRegex(context, mask);
                 if (!pattern.matcher(submittedValue).matches()) {
                     submittedValue = Constants.EMPTY_STRING;
@@ -80,6 +82,10 @@ public class InputMaskRenderer extends InputRenderer {
      */
     protected Pattern translateMaskIntoRegex(FacesContext context, String mask) {
         StringBuilder regex = SharedStringBuilder.get(context, SB_PATTERN);
+        return translateMaskIntoRegex(regex, mask);
+    }
+
+    protected Pattern translateMaskIntoRegex(StringBuilder regex, String mask) {
         boolean optionalFound = false;
 
         for (char c : mask.toCharArray()) {

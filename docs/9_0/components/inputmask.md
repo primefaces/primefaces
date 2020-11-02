@@ -76,8 +76,8 @@ style | null | String | Inline style of the input element.
 styleClass | null | String | Style class of the input element.
 tabindex | null | Integer | Position of the input element in the tabbing order.
 title | null | String | Advisory tooltip information.
-validateMask | false | Boolean | Defines whether mask pattern would be validated or not on the server side.
-validator | null | MethodExpr | A method binding expression that refers to a method validationg the input
+validateMask | true | Boolean | Defines whether mask pattern would be validated or not on the server side.
+validator | null | MethodExpr | A method binding expression that refers to a method validating the input
 validatorMessage | null | String | Message to be displayed when validation fields.
 value | null | Object | Value of the component than can be either an EL expression of a literal text
 valueChangeListener | null | MethodExpr | A method binding expression that refers to a method for handling a valuchangeevent
