@@ -31,7 +31,6 @@ import java.util.List;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.DynamicColumn;
@@ -65,8 +64,6 @@ public class DataTableCSVExporter extends DataTableExporter {
     public void doExport(FacesContext context, DataTable table, ExportConfiguration exportConfiguration, int index) throws IOException {
         try (OutputStreamWriter osw = new OutputStreamWriter(getOutputStream(), exportConfiguration.getEncodingType());
             PrintWriter writer = new PrintWriter(osw);) {
-
-            ExternalContext externalContext = context.getExternalContext();
 
             if (exportConfiguration.getPreProcessor() != null) {
                 // PF 9 - attention: breaking change to PreProcessor (PrintWriter instead of writer)

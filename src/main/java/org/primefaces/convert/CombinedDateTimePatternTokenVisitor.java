@@ -99,8 +99,6 @@ public class CombinedDateTimePatternTokenVisitor implements TokenVisitor {
 
             // time zone
             case 'z':
-                visitZonezToken(repetitions, builder);
-                break;
             case 'Z':
                 visitZoneZToken(repetitions, builder);
                 break;
@@ -110,8 +108,10 @@ public class CombinedDateTimePatternTokenVisitor implements TokenVisitor {
 
             default:
                 final String letterString = Character.toString((char) letter);
-                LOGGER.log(Level.WARNING, "Found unsupported letter '" + letterString
-                        + "' in pattern. Date / times will be formatted differently on the server and client. Use a different pattern.");
+                if (LOGGER.isLoggable(Level.WARNING)) {
+                    LOGGER.log(Level.WARNING, "Found unsupported letter '" + letterString
+                                + "' in pattern. Date / times will be formatted differently on the server and client. Use a different pattern.");
+                }
                 visitDefault(letterString, repetitions, builder);
         }
     }
@@ -175,13 +175,12 @@ public class CombinedDateTimePatternTokenVisitor implements TokenVisitor {
      * More than three 'D' are interpreted as 'DDD'.
      */
     private static void visitDayOfYearToken(int repetitions, JQueryDateTimePatternBuilder builder) {
-        switch (repetitions) {
-            case 1:
-                builder.appendDayOfYearNoLeadingZeros();
-                break;
-            default: // 2+
-                builder.appendDayOfYearWithLeadingZeros();
-                break;
+        if (repetitions == 1) {
+            builder.appendDayOfYearNoLeadingZeros();
+        }
+        else {
+            // 2+
+            builder.appendDayOfYearWithLeadingZeros();
         }
     }
 
@@ -306,14 +305,7 @@ public class CombinedDateTimePatternTokenVisitor implements TokenVisitor {
     }
 
     /**
-     * Time zone 'z' token.
-     */
-    private static void visitZonezToken(int repetitions, JQueryDateTimePatternBuilder builder) {
-        builder.appendTimezoneByProvidedTimezoneList();
-    }
-
-    /**
-     * Time zone 'Z' token.
+     * Time zone 'Z' or 'z' token.
      */
     private static void visitZoneZToken(int repetitions, JQueryDateTimePatternBuilder builder) {
         builder.appendTimezoneByProvidedTimezoneList();
