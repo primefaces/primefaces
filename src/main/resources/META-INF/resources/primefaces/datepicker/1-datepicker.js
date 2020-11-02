@@ -302,12 +302,19 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                     widget: _self,
                     handle: function(content) {
                         var dateMetadata = JSON.parse(content).dateMetadata;
+                        var pdp = _self.jq.data().primeDatePicker;
                         var disabledDates = [];
+                        var dateStyleClasses = {};
                         for (date in dateMetadata) {
+                            var parsedDate = pdp.parseOptionValue(date);
                             if (dateMetadata[date].disabled) {
-                                disabledDates.push(date);
+                                disabledDates.push(parsedDate);
+                            }
+                            if (dateMetadata[date].styleClass) {
+                                dateStyleClasses[pdp.toISODateString(parsedDate)] = dateMetadata[date].styleClass;
                             }
                         }
+                        pdp.options.dateStyleClasses = dateStyleClasses;
                         _self.setDisabledDates(disabledDates);
                     }
                 });

@@ -24,12 +24,15 @@
 package org.primefaces.model.datepicker;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class DefaultDateMetadata implements DateMetadata, Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
 
     private boolean disabled;
+
+    private String styleClass;
 
     public DefaultDateMetadata() {
     }
@@ -44,10 +47,17 @@ public class DefaultDateMetadata implements DateMetadata, Serializable {
     }
 
     @Override
+    public String getStyleClass() {
+        return styleClass;
+    }
+
+    public void setStyleClass(String styleClass) {
+        this.styleClass = styleClass;
+    }
+
+    @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 41 * hash + (this.disabled ? 1 : 0);
-        return hash;
+        return Objects.hash(disabled, styleClass);
     }
 
     @Override
@@ -58,16 +68,16 @@ public class DefaultDateMetadata implements DateMetadata, Serializable {
         if (obj == null) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+        if (!(obj instanceof DefaultDateMetadata)) {
             return false;
         }
-        final DefaultDateMetadata other = (DefaultDateMetadata) obj;
-        return this.disabled == other.disabled;
+        DefaultDateMetadata other = (DefaultDateMetadata) obj;
+        return disabled == other.disabled && Objects.equals(styleClass, other.styleClass);
     }
 
     @Override
     public String toString() {
-        return "DefaultDateMetadata{" + "disabled=" + disabled + '}';
+        return "DefaultDateMetadata{" + "disabled=" + disabled + ", styleClass=" + styleClass + '}';
     }
 
     public static Builder builder() {
@@ -84,6 +94,11 @@ public class DefaultDateMetadata implements DateMetadata, Serializable {
 
         public Builder disabled(boolean disabled) {
             dateMetadata.setDisabled(disabled);
+            return this;
+        }
+
+        public Builder styleClass(String styleClass) {
+            dateMetadata.setStyleClass(styleClass);
             return this;
         }
 

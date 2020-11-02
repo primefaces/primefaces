@@ -29,4 +29,6 @@ public interface DateMetadata extends Serializable {
 
     boolean isDisabled();
 
+    String getStyleClass();
+
 }
