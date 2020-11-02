@@ -23,9 +23,13 @@
  */
 package org.primefaces.component.datatable.export;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.Array;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.el.MethodExpression;
@@ -45,7 +49,8 @@ import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.Exporter;
 import org.primefaces.component.overlaypanel.OverlayPanel;
 import org.primefaces.model.LazyDataModel;
-import org.primefaces.util.*;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 
 public abstract class DataTableExporter implements Exporter<DataTable> {
 
@@ -336,8 +341,6 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
      * @throws IOException
      */
     protected abstract void doExport(FacesContext facesContext, DataTable table, ExportConfiguration exportConfiguration, int index) throws IOException;
-
-    public abstract String getFileExtension();
 
     private class DataTableVisitCallBack implements VisitCallback {
 

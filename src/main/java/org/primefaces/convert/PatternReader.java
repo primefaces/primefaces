@@ -58,13 +58,13 @@ public class PatternReader {
     }
 
     private int consumeChar() {
-        final int peeked = this.peeked;
-        if (peeked == INVALID_CODEPOINT) {
+        final int peek = this.peeked;
+        if (peek == INVALID_CODEPOINT) {
             return iterator.hasNext() ? iterator.nextInt() : INVALID_CODEPOINT;
         }
         else {
             this.peeked = INVALID_CODEPOINT;
-            return peeked;
+            return peek;
         }
     }
 
@@ -163,7 +163,7 @@ public class PatternReader {
     /**
      * Visits a date time pattern token when one encountered. All methods receive a custom object.
      */
-    public static interface TokenVisitor {
+    public interface TokenVisitor {
         /**
          * Visits a literal token, i.e. plain text without special meaning.
          * @param text Plain text to process.

@@ -101,9 +101,8 @@ public class DataGridRenderer extends DataRenderer {
         String gridContentClass = flex ? DataGrid.FLEX_GRID_CONTENT_CLASS : DataGrid.GRID_CONTENT_CLASS;
         String style = grid.getStyle();
         String styleClass = grid.getStyleClass() == null ? DataGrid.DATAGRID_CLASS : DataGrid.DATAGRID_CLASS + " " + grid.getStyleClass();
-        String contentClass = empty
-                              ? DataGrid.EMPTY_CONTENT_CLASS
-                              : (layout.equals("tabular") ? DataGrid.TABLE_CONTENT_CLASS : gridContentClass);
+        String layoutClass = layout.equals("tabular") ? DataGrid.TABLE_CONTENT_CLASS : gridContentClass;
+        String contentClass = empty ? DataGrid.EMPTY_CONTENT_CLASS : layoutClass;
 
         if (hasPaginator) {
             grid.calculateFirst();
