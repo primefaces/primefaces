@@ -337,8 +337,6 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
      */
     protected abstract void doExport(FacesContext facesContext, DataTable table, ExportConfiguration exportConfiguration, int index) throws IOException;
 
-    public abstract String getFileExtension();
-
     private class DataTableVisitCallBack implements VisitCallback {
 
         private ExportConfiguration config;
