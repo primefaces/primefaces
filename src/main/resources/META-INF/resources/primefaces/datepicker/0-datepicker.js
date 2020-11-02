@@ -73,6 +73,7 @@
             panelStyleClass: null,
             monthNavigator: false,
             yearNavigator: false,
+            dateStyleClasses: null,
             disabledDates: null,
             disabledDays: null,
             minDate: null,
@@ -1467,6 +1468,13 @@
 
         renderDateCellContent: function (date, dateClass) {
             var content = this.options.dateTemplate ? this.options.dateTemplate.call(this, date) : date.day;
+            var classes = this.options.dateStyleClasses;
+            if (classes !== null) {
+                var isoDateStr = this.toISODateString(new Date(date.year, date.month, date.day));
+                if (classes[isoDateStr]) {
+                    dateClass += ' ' + classes[isoDateStr];
+                }
+            }
             if (date.selectable) {
                 return '<a tabindex="0" class="' + dateClass + '">' + content + '</a>';
             }
@@ -1600,6 +1608,16 @@
             });
 
             return _classes;
+        },
+
+        /**
+         * Converts a date object to an ISO date (only, no time) string. Useful to check if a dates matches with a date
+         * sent from the backend whithout needing to parse the backend date first.
+         * @private
+         * @param {Date} date The date to convert.
+         */
+        toISODateString: function (date) {
+            return date.toISOString().substring(0, 10);
         },
 
         _bindEvents: function () {

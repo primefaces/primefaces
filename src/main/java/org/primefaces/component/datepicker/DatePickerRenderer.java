@@ -32,12 +32,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
-
 import org.json.JSONObject;
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.calendar.BaseCalendarRenderer;
@@ -112,6 +110,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             DateMetadata metadata = entry.getValue();
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("disabled", metadata.isDisabled());
+            jsonObject.put("styleClass", metadata.getStyleClass());
             jsonDateMetadata.put(date, jsonObject);
         }
 
@@ -207,10 +206,12 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             CalendarUtils.encodeListValue(context, datePicker, "disabledDays", disabledDays, pattern);
         }
 
+        datePicker.loadInitialLazyMetadata(context);
         List<Object> disabledDates = datePicker.getInitialDisabledDates(context);
         if (disabledDates != null) {
             CalendarUtils.encodeListValue(context, datePicker, "disabledDates", disabledDates, pattern);
         }
+        encodeScriptDateStyleClasses(wb, datePicker);
 
         String dateTemplate = datePicker.getDateTemplate();
         if (dateTemplate != null) {
@@ -264,6 +265,20 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         encodeClientBehaviors(context, datePicker);
 
         wb.finish();
+    }
+
+    protected void encodeScriptDateStyleClasses(WidgetBuilder wb, DatePicker datePicker) throws IOException {
+        if (datePicker.getModel() == null) {
+            return;
+        }
+        JSONObject styleClasses = new JSONObject();
+        for (Entry<LocalDate, DateMetadata> entry : datePicker.getModel().getDateMetadata().entrySet()) {
+            DateMetadata metadata = entry.getValue();
+            if (metadata.getStyleClass() != null) {
+                styleClasses.put(entry.getKey().toString(), metadata.getStyleClass());
+            }
+        }
+        wb.nativeAttr("dateStyleClasses", styleClasses.toString());
     }
 
     @Override
