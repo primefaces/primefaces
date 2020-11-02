@@ -39,24 +39,23 @@ import java.util.List;
 public class DataTableXMLExporter extends DataTableExporter {
 
     @Override
-    public void doExport(FacesContext context, DataTable table, int index) throws IOException {
-        ExportConfiguration config = getExportConfiguration();
+    public void doExport(FacesContext context, DataTable table, ExportConfiguration exportConfiguration, int index) throws IOException {
 
-        try (OutputStreamWriter osw = new OutputStreamWriter(getOutputStream(), config.getEncodingType());
+        try (OutputStreamWriter osw = new OutputStreamWriter(getOutputStream(), exportConfiguration.getEncodingType());
             PrintWriter writer = new PrintWriter(osw);) {
 
-            if (config.getPreProcessor() != null) {
+            if (exportConfiguration.getPreProcessor() != null) {
                 // PF 9 - attention: breaking change to PreProcessor (PrintWriter instead of writer)
-                config.getPreProcessor().invoke(context.getELContext(), new Object[]{writer});
+                exportConfiguration.getPreProcessor().invoke(context.getELContext(), new Object[]{writer});
             }
 
             writer.append("<?xml version=\"1.0\"?>\n");
             writer.append("<" + table.getId() + ">\n");
 
-            if (config.isPageOnly()) {
+            if (exportConfiguration.isPageOnly()) {
                 exportPageOnly(context, table, writer);
             }
-            else if (config.isSelectionOnly()) {
+            else if (exportConfiguration.isSelectionOnly()) {
                 exportSelectionOnly(context, table, writer);
             }
             else {
@@ -67,9 +66,9 @@ public class DataTableXMLExporter extends DataTableExporter {
 
             table.setRowIndex(-1);
 
-            if (config.getPostProcessor() != null) {
+            if (exportConfiguration.getPostProcessor() != null) {
                 // PF 9 - attention: breaking change to PostProcessor (PrintWriter instead of writer)
-                config.getPostProcessor().invoke(context.getELContext(), new Object[]{writer});
+                exportConfiguration.getPostProcessor().invoke(context.getELContext(), new Object[]{writer});
             }
 
             writer.flush();
@@ -78,7 +77,7 @@ public class DataTableXMLExporter extends DataTableExporter {
 
     @Override
     public String getContentType() {
-        return "text/xml; charset=" + getExportConfiguration().getEncodingType();
+        return "text/xml";
     }
 
     @Override

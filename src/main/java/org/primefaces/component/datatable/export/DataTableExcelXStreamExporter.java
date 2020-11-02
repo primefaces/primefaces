@@ -30,6 +30,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.primefaces.component.export.ExcelOptions;
+import org.primefaces.component.export.ExportConfiguration;
 
 import javax.faces.context.FacesContext;
 
@@ -50,9 +51,9 @@ public class DataTableExcelXStreamExporter extends DataTableExcelXExporter {
     }
 
     @Override
-    protected void postExport(FacesContext context) throws IOException {
+    protected void postExport(FacesContext context, ExportConfiguration exportConfiguration) throws IOException {
         SXSSFWorkbook sxssfWorkbook =  ((SXSSFWorkbook) wb);
-        super.postExport(context);
+        super.postExport(context, exportConfiguration);
         sxssfWorkbook.dispose();
     }
 

@@ -51,18 +51,16 @@ public class DataTableExcelExporter extends DataTableExporter {
     private CellStyle facetStyle;
 
     @Override
-    protected void preExport(FacesContext context) throws IOException {
+    protected void preExport(FacesContext context, ExportConfiguration exportConfiguration) throws IOException {
         wb = createWorkBook();
 
-        if (getExportConfiguration().getPreProcessor() != null) {
-            getExportConfiguration().getPreProcessor().invoke(context.getELContext(), new Object[]{wb});
+        if (exportConfiguration.getPreProcessor() != null) {
+            exportConfiguration.getPreProcessor().invoke(context.getELContext(), new Object[]{wb});
         }
     }
 
     @Override
-    public void doExport(FacesContext context, DataTable table, int index) throws IOException {
-        ExportConfiguration config = getExportConfiguration();
-
+    public void doExport(FacesContext context, DataTable table, ExportConfiguration exportConfiguration, int index) throws IOException {
         String sheetName = getSheetName(context, table);
         if (sheetName == null) {
             sheetName = table.getId() + (index + 1);
@@ -73,10 +71,10 @@ public class DataTableExcelExporter extends DataTableExporter {
             sheetName = "Sheet (" + (index + 1) + ")";
         }
 
-        ExcelOptions options = (ExcelOptions) config.getOptions();
+        ExcelOptions options = (ExcelOptions) exportConfiguration.getOptions();
         Sheet sheet = createSheet(wb, sheetName, options);
-        applyOptions(wb, table, sheet, config.getOptions());
-        exportTable(context, table, sheet, config.isPageOnly(), config.isSelectionOnly());
+        applyOptions(wb, table, sheet, exportConfiguration.getOptions());
+        exportTable(context, table, sheet, exportConfiguration.isPageOnly(), exportConfiguration.isSelectionOnly());
 
         if (options == null || options.isAutoSizeColumn()) {
             short colIndex = 0;
@@ -94,9 +92,9 @@ public class DataTableExcelExporter extends DataTableExporter {
     }
 
     @Override
-    protected void postExport(FacesContext context) throws IOException {
-        if (getExportConfiguration().getPostProcessor() != null) {
-            getExportConfiguration().getPostProcessor().invoke(context.getELContext(), new Object[]{wb});
+    protected void postExport(FacesContext context, ExportConfiguration exportConfiguration) throws IOException {
+        if (exportConfiguration.getPostProcessor() != null) {
+            exportConfiguration.getPostProcessor().invoke(context.getELContext(), new Object[]{wb});
         }
 
         wb.write(getOutputStream());

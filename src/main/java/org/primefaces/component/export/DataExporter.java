@@ -45,6 +45,7 @@ import org.primefaces.component.datatable.export.DataTableExporterFactory;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.ResourceUtils;
 
 public class DataExporter implements ActionListener, StateHolder {
@@ -143,24 +144,28 @@ public class DataExporter implements ActionListener, StateHolder {
                     .setOnTableRender(onTableRender);
 
             ExternalContext externalContext = context.getExternalContext();
-            exporter.setExportConfiguration(config);
             String filenameWithExtension = config.getOutputFileName() + exporter.getFileExtension();
             OutputStream outputStream;
+
+            String contentType = exporter.getContentType();
+            if (contentType.startsWith("text/") && !LangUtils.isValueBlank(config.getEncodingType())) {
+                contentType += "; charset=" + config.getEncodingType();
+            }
 
             if (PrimeFaces.current().isAjaxRequest()) {
                 outputStream = new ByteArrayOutputStream();
             }
             else {
                 outputStream = context.getExternalContext().getResponseOutputStream();
-                externalContext.setResponseContentType(exporter.getContentType());
+                externalContext.setResponseContentType(contentType);
                 setResponseHeader(externalContext, ComponentUtils.createContentDisposition("attachment", filenameWithExtension));
                 addResponseCookie(context);
             }
 
-            exporter.export(context, components, outputStream);
+            exporter.export(context, components, outputStream, config);
 
             if (PrimeFaces.current().isAjaxRequest()) {
-                ajaxDownload(filenameWithExtension, ((ByteArrayOutputStream) outputStream).toByteArray(), exporter.getContentType(), context);
+                ajaxDownload(filenameWithExtension, ((ByteArrayOutputStream) outputStream).toByteArray(), contentType, context);
             }
             else {
                 externalContext.responseFlushBuffer();

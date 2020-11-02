@@ -62,13 +62,11 @@ public class DataTablePDFExporter extends DataTableExporter {
     }
 
     @Override
-    protected void preExport(FacesContext context) throws IOException {
-        ExportConfiguration config = getExportConfiguration();
-
+    protected void preExport(FacesContext context, ExportConfiguration exportConfiguration) throws IOException {
         document = createDocument();
 
         try {
-            PDFOptions options = (PDFOptions) config.getOptions();
+            PDFOptions options = (PDFOptions) exportConfiguration.getOptions();
             if (options != null) {
                 if (PDFOrientationType.LANDSCAPE == options.getOrientation()) {
                     document.setPageSize(PageSize.A4.rotate());
@@ -81,8 +79,8 @@ public class DataTablePDFExporter extends DataTableExporter {
             throw new IOException(e);
         }
 
-        if (config.getPreProcessor() != null) {
-            config.getPreProcessor().invoke(context.getELContext(), new Object[]{document});
+        if (exportConfiguration.getPreProcessor() != null) {
+            exportConfiguration.getPreProcessor().invoke(context.getELContext(), new Object[]{document});
         }
 
         if (!document.isOpen()) {
@@ -91,7 +89,7 @@ public class DataTablePDFExporter extends DataTableExporter {
     }
 
     @Override
-    protected void doExport(FacesContext context, DataTable table, int index) throws IOException {
+    protected void doExport(FacesContext context, DataTable table, ExportConfiguration exportConfiguration, int index) throws IOException {
         try {
             // Add empty paragraph between each exported tables
             if (index > 0) {
@@ -100,7 +98,7 @@ public class DataTablePDFExporter extends DataTableExporter {
                 getDocument().add(preface);
             }
 
-            getDocument().add(exportTable(context, table, getExportConfiguration()));
+            getDocument().add(exportTable(context, table, exportConfiguration));
         }
         catch (DocumentException e) {
             throw new IOException(e.getMessage());
@@ -108,9 +106,9 @@ public class DataTablePDFExporter extends DataTableExporter {
     }
 
     @Override
-    protected void postExport(FacesContext context) throws IOException {
-        if (getExportConfiguration().getPostProcessor() != null) {
-            getExportConfiguration().getPostProcessor().invoke(context.getELContext(), new Object[]{document});
+    protected void postExport(FacesContext context, ExportConfiguration exportConfiguration) throws IOException {
+        if (exportConfiguration.getPostProcessor() != null) {
+            exportConfiguration.getPostProcessor().invoke(context.getELContext(), new Object[]{document});
         }
 
         getDocument().close();

@@ -50,7 +50,6 @@ import org.primefaces.util.*;
 public abstract class DataTableExporter implements Exporter<DataTable> {
 
     private OutputStream outputStream;
-    private ExportConfiguration exportConfiguration;
 
     protected enum ColumnType {
         HEADER("header"),
@@ -292,11 +291,11 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
         }
     }
 
-    protected void preExport(FacesContext context) throws IOException {
+    protected void preExport(FacesContext context, ExportConfiguration exportConfiguration) throws IOException {
         // NOOP
     }
 
-    protected void postExport(FacesContext context) throws IOException {
+    protected void postExport(FacesContext context, ExportConfiguration exportConfiguration) throws IOException {
         // NOOP
     }
 
@@ -311,10 +310,10 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
     protected abstract void exportCells(DataTable table, Object document);
 
     @Override
-    public void export(FacesContext context, List<DataTable> tables, OutputStream outputStream) throws IOException {
+    public void export(FacesContext context, List<DataTable> tables, OutputStream outputStream, ExportConfiguration exportConfiguration) throws IOException {
         this.outputStream = outputStream;
 
-        preExport(context);
+        preExport(context, exportConfiguration);
 
         int index = 0;
         for (DataTable table : tables) {
@@ -323,7 +322,7 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
             index += nbTables;
         }
 
-        postExport(context);
+        postExport(context, exportConfiguration);
 
         this.outputStream = null;
     }
@@ -332,10 +331,11 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
      * Export datatable
      * @param facesContext faces context
      * @param table datatable to export
+     * @param exportConfiguration export configuration
      * @param index datatable current index during export process
      * @throws IOException
      */
-    protected abstract void doExport(FacesContext facesContext, DataTable table, int index) throws IOException;
+    protected abstract void doExport(FacesContext facesContext, DataTable table, ExportConfiguration exportConfiguration, int index) throws IOException;
 
     public abstract String getFileExtension();
 
@@ -359,7 +359,7 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
         public VisitResult visit(VisitContext context, UIComponent component) {
             if (target == component) {
                 try {
-                    doExport(context.getFacesContext(), target, index);
+                    doExport(context.getFacesContext(), target, config, index);
                     index++;
                     counter++;
                 }
@@ -387,15 +387,6 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
 
     protected OutputStream getOutputStream() {
         return outputStream;
-    }
-
-    protected ExportConfiguration getExportConfiguration() {
-        return exportConfiguration;
-    }
-
-    @Override
-    public void setExportConfiguration(ExportConfiguration exportConfiguration) {
-        this.exportConfiguration = exportConfiguration;
     }
 
 }

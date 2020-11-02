@@ -31,12 +31,16 @@ import java.util.List;
 
 public interface Exporter<T extends UIComponent> {
 
-    void export(FacesContext facesContext, List<T> component, OutputStream outputStream) throws IOException;
+    void export(FacesContext facesContext, List<T> component, OutputStream outputStream, ExportConfiguration exportConfiguration) throws IOException;
 
+    /**
+     * Content-type (MIME-type) excluding charset. (eg 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+     */
     String getContentType();
 
+    /**
+     * File-extension of the exported file including a leading dot. (eg '.xlsx')
+     */
     String getFileExtension();
-
-    void setExportConfiguration(ExportConfiguration exportConfiguration);
 
 }
