@@ -34,11 +34,12 @@ import javax.faces.component.*;
 import javax.faces.component.UIColumn;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
-import javax.faces.component.visit.VisitHint;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.event.*;
 
+import org.primefaces.component.column.Column;
+import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.tree.UITreeNode;
 import org.primefaces.model.CheckboxTreeNode;
@@ -804,7 +805,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         }
 
         FacesContext facesContext = context.getFacesContext();
-        boolean visitNodes = requiresIteration(facesContext, context);
+        boolean visitNodes = !ComponentUtils.isSkipIteration(context, facesContext);
         TreeNode root = getValue();
 
         String oldRowKey = getRowKey();
@@ -823,6 +824,10 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 
             if ((result == VisitResult.ACCEPT) && doVisitChildren(context)) {
                 if (visitFacets(context, root, callback, visitNodes)) {
+                    return true;
+                }
+
+                if (requiresColumns() && visitColumnsAndColumnFacets(context, callback, visitNodes, root)) {
                     return true;
                 }
 
@@ -966,6 +971,81 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         return false;
     }
 
+    protected boolean requiresColumns() {
+        return false;
+    }
+
+    protected boolean visitColumnsAndColumnFacets(VisitContext context, VisitCallback callback, boolean visitRows, TreeNode root) {
+        if (visitRows) {
+            setRowKey(root, null);
+        }
+
+        if (getChildCount() > 0) {
+            for (UIComponent child : getChildren()) {
+                VisitResult result = context.invokeVisitCallback(child, callback); // visit the column directly
+                if (result == VisitResult.COMPLETE) {
+                    return true;
+                }
+
+                if (child instanceof org.primefaces.component.api.UIColumn) {
+                    if (child.getFacetCount() > 0) {
+                        if (child instanceof Columns) {
+                            Columns columns = (Columns) child;
+                            for (int i = 0; i < columns.getRowCount(); i++) {
+                                columns.setRowIndex(i);
+                                boolean value = visitColumnFacets(context, callback, child);
+                                if (value) {
+                                    return true;
+                                }
+                            }
+                            columns.setRowIndex(-1);
+                        }
+                        else {
+                            boolean value = visitColumnFacets(context, callback, child);
+                            if (value) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+                else if (child instanceof ColumnGroup) {
+                    visitColumnGroup(context, callback, (ColumnGroup) child);
+                }
+            }
+        }
+
+        return false;
+    }
+
+    protected boolean visitColumnFacets(VisitContext context, VisitCallback callback, UIComponent component) {
+        for (UIComponent columnFacet : component.getFacets().values()) {
+            if (columnFacet.visitTree(context, callback)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    protected boolean visitColumnGroup(VisitContext context, VisitCallback callback, ColumnGroup group) {
+        if (group.getChildCount() > 0) {
+            for (UIComponent row : group.getChildren()) {
+                if (row.getChildCount() > 0) {
+                    for (UIComponent col : row.getChildren()) {
+                        if (col instanceof Column && col.getFacetCount() > 0) {
+                            boolean value = visitColumnFacets(context, callback, col);
+                            if (value) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
     public boolean isRTLRendering() {
         return rtl;
     }
@@ -976,19 +1056,6 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 
     protected boolean shouldVisitNode(TreeNode node) {
         return (node.isExpanded() || node.getParent() == null);
-    }
-
-    protected boolean requiresIteration(FacesContext context, VisitContext visitContext) {
-        try {
-            //JSF 2.1
-            VisitHint skipHint = VisitHint.valueOf("SKIP_ITERATION");
-            return !visitContext.getHints().contains(skipHint);
-        }
-        catch (IllegalArgumentException e) {
-            //JSF 2.0
-            Object skipHint = context.getAttributes().get("javax.faces.visit.SKIP_ITERATION");
-            return !Boolean.TRUE.equals(skipHint);
-        }
     }
 
     @Override

@@ -713,4 +713,9 @@ public class TreeTable extends TreeTableBase {
             }
         }
     }
+
+    @Override
+    protected boolean requiresColumns() {
+        return true;
+    }
 }
