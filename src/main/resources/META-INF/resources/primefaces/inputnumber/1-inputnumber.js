@@ -50,6 +50,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         PrimeFaces.skinInput(this.input);
 
         this.wrapEvents();
+        this.bindInputEvents();
 
         this.autonumeric = new AutoNumeric(this.jqId + '_input', this.cfg);
 
@@ -129,9 +130,22 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
                 return false;
             }
         });
+    },
 
-        // handle mouse wheel and paste
-        this.input.off('input.inputnumber').on('input.inputnumber', function (e) {
+    /**
+     * Binds input listener which fixes a browser AutoFill issue.
+     * See: https://github.com/autoNumeric/autoNumeric/issues/536
+     * @private
+     */
+    bindInputEvents: function() {
+        var $this = this;
+
+        // GitHub #6447: browser auto fill fix
+        this.input.off('blur.inputnumber').on('blur.inputnumber', function(e) {
+            var element = AutoNumeric.getAutoNumericElement(this);
+            if (element && this.value && this.value.length > 0) {
+                element.set(this.value, null, true);
+            }
             $this.copyValueToHiddenInput();
         });
     },
