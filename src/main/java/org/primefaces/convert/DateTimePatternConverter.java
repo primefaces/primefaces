@@ -52,7 +52,9 @@ public class DateTimePatternConverter implements PatternConverter {
             PatternReader.parsePattern(pattern, visitor);
         }
         catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Could not process pattern '" + pattern + "'", e);
+            if (LOGGER.isLoggable(Level.SEVERE)) {
+                LOGGER.log(Level.SEVERE, "Could not process pattern '{0}" + pattern + "'", e);
+            }
             return pattern;
         }
         return builder.toString();

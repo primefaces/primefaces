@@ -29,7 +29,6 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.xssf.usermodel.*;
 import org.primefaces.component.export.ExporterOptions;
-import org.primefaces.util.ComponentUtils;
 
 public class DataTableExcelXExporter extends DataTableExcelExporter {
 
@@ -44,13 +43,13 @@ public class DataTableExcelXExporter extends DataTableExcelExporter {
     }
 
     @Override
-    protected String getContentType() {
+    public String getContentType() {
         return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
     }
 
     @Override
-    protected String getContentDisposition(String filename) {
-        return ComponentUtils.createContentDisposition("attachment", filename + ".xlsx");
+    public String getFileExtension() {
+        return ".xlsx";
     }
 
     @Override

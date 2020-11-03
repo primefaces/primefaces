@@ -24,13 +24,13 @@
 package org.primefaces.component.datatable.export;
 
 import java.io.IOException;
-import java.io.Writer;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.DynamicColumn;
@@ -45,20 +45,11 @@ import org.primefaces.util.Constants;
 public class DataTableCSVExporter extends DataTableExporter {
 
     private CSVOptions csvOptions;
-    private StringBuilder sb;
-
-    protected StringBuilder createStringBuilder() {
-        return new StringBuilder();
-    }
-
-    protected StringBuilder getStringBuilder() {
-        return sb;
-    }
 
     @Override
-    protected void preExport(FacesContext context, ExportConfiguration config) throws IOException {
+    protected void preExport(FacesContext context, ExportConfiguration exportConfiguration) throws IOException {
         csvOptions = CSVOptions.EXCEL;
-        ExporterOptions options = config.getOptions();
+        ExporterOptions options = exportConfiguration.getOptions();
         if (options != null) {
             if (options instanceof CSVOptions) {
                 csvOptions = (CSVOptions) options;
@@ -70,42 +61,51 @@ public class DataTableCSVExporter extends DataTableExporter {
     }
 
     @Override
-    public void doExport(FacesContext context, DataTable table, ExportConfiguration config, int index) throws IOException {
-        ExternalContext externalContext = context.getExternalContext();
-        configureResponse(context, config.getOutputFileName(), config.getEncodingType());
-        sb = createStringBuilder();
+    public void doExport(FacesContext context, DataTable table, ExportConfiguration exportConfiguration, int index) throws IOException {
+        try (OutputStreamWriter osw = new OutputStreamWriter(getOutputStream(), exportConfiguration.getEncodingType());
+            PrintWriter writer = new PrintWriter(osw);) {
 
-        if (config.getPreProcessor() != null) {
-            config.getPreProcessor().invoke(context.getELContext(), new Object[]{sb});
-        }
+            if (exportConfiguration.getPreProcessor() != null) {
+                // PF 9 - attention: breaking change to PreProcessor (PrintWriter instead of writer)
+                exportConfiguration.getPreProcessor().invoke(context.getELContext(), new Object[]{writer});
+            }
 
-        addColumnFacets(sb, table, ColumnType.HEADER);
+            addColumnFacets(writer, table, ColumnType.HEADER);
 
-        if (config.isPageOnly()) {
-            exportPageOnly(context, table, sb);
-        }
-        else if (config.isSelectionOnly()) {
-            exportSelectionOnly(context, table, sb);
-        }
-        else {
-            exportAll(context, table, sb);
-        }
+            if (exportConfiguration.isPageOnly()) {
+                exportPageOnly(context, table, writer);
+            }
+            else if (exportConfiguration.isSelectionOnly()) {
+                exportSelectionOnly(context, table, writer);
+            }
+            else {
+                exportAll(context, table, writer);
+            }
 
-        if (table.hasFooterColumn()) {
-            addColumnFacets(sb, table, ColumnType.FOOTER);
-        }
+            if (table.hasFooterColumn()) {
+                addColumnFacets(writer, table, ColumnType.FOOTER);
+            }
 
-        if (config.getPostProcessor() != null) {
-            config.getPostProcessor().invoke(context.getELContext(), new Object[]{sb});
-        }
+            if (exportConfiguration.getPostProcessor() != null) {
+                // PF 9 - attention: breaking change to PostProcessor (PrintWriter instead of writer)
+                exportConfiguration.getPostProcessor().invoke(context.getELContext(), new Object[]{writer});
+            }
 
-        Writer writer = externalContext.getResponseOutputWriter();
-        writer.write(sb.toString());
-        writer.flush();
-        writer.close();
+            writer.flush();
+        }
     }
 
-    protected void addColumnFacets(StringBuilder builder, DataTable table, ColumnType columnType) throws IOException {
+    @Override
+    public String getContentType() {
+        return "text/csv";
+    }
+
+    @Override
+    public String getFileExtension() {
+        return ".csv";
+    }
+
+    protected void addColumnFacets(PrintWriter writer, DataTable table, ColumnType columnType) throws IOException {
         boolean firstCellWritten = false;
 
         for (UIColumn col : table.getColumns()) {
@@ -115,7 +115,7 @@ public class DataTableCSVExporter extends DataTableExporter {
 
             if (col.isRendered() && col.isExportable()) {
                 if (firstCellWritten) {
-                    builder.append(csvOptions.getDelimiterChar());
+                    writer.append(csvOptions.getDelimiterChar());
                 }
 
                 UIComponent facet = col.getFacet(columnType.facet());
@@ -133,25 +133,25 @@ public class DataTableCSVExporter extends DataTableExporter {
                 }
 
                 if (textValue != null) {
-                    addColumnValue(builder, textValue);
+                    addColumnValue(writer, textValue);
                 }
                 else if (ComponentUtils.shouldRenderFacet(facet)) {
-                    addColumnValue(builder, facet);
+                    addColumnValue(writer, facet);
                 }
                 else {
-                    addColumnValue(builder, Constants.EMPTY_STRING);
+                    addColumnValue(writer, Constants.EMPTY_STRING);
                 }
 
                 firstCellWritten = true;
             }
         }
 
-        builder.append(csvOptions.getEndOfLineSymbols());
+        writer.append(csvOptions.getEndOfLineSymbols());
     }
 
     @Override
     protected void exportCells(DataTable table, Object document) {
-        StringBuilder builder = (StringBuilder) document;
+        PrintWriter writer = (PrintWriter) document;
         boolean firstCellWritten = false;
 
         for (UIColumn col : table.getColumns()) {
@@ -161,11 +161,11 @@ public class DataTableCSVExporter extends DataTableExporter {
 
             if (col.isRendered() && col.isExportable()) {
                 if (firstCellWritten) {
-                    builder.append(csvOptions.getDelimiterChar());
+                    writer.append(csvOptions.getDelimiterChar());
                 }
 
                 try {
-                    addColumnValue(builder, col.getChildren(), col);
+                    addColumnValue(writer, col.getChildren(), col);
                 }
                 catch (IOException ex) {
                     throw new FacesException(ex);
@@ -176,47 +176,40 @@ public class DataTableCSVExporter extends DataTableExporter {
         }
     }
 
-    protected void configureResponse(FacesContext context, String filename, String encodingType) {
-        ExternalContext externalContext = context.getExternalContext();
-        externalContext.setResponseContentType("text/csv; charset=" + encodingType);
-        setResponseHeader(externalContext, ComponentUtils.createContentDisposition("attachment", filename + ".csv"));
-        addResponseCookie(context);
-    }
-
-    protected void addColumnValues(StringBuilder builder, List<UIColumn> columns) throws IOException {
+    protected void addColumnValues(PrintWriter writer, List<UIColumn> columns) throws IOException {
         for (Iterator<UIColumn> iterator = columns.iterator(); iterator.hasNext(); ) {
             UIColumn col = iterator.next();
-            addColumnValue(builder, col.getChildren(), col);
+            addColumnValue(writer, col.getChildren(), col);
 
             if (iterator.hasNext()) {
-                builder.append(csvOptions.getDelimiterChar());
+                writer.append(csvOptions.getDelimiterChar());
             }
         }
     }
 
-    protected void addColumnValue(StringBuilder builder, UIComponent component) throws IOException {
+    protected void addColumnValue(PrintWriter writer, UIComponent component) throws IOException {
         String value = component == null ? "" : exportValue(FacesContext.getCurrentInstance(), component);
 
-        addColumnValue(builder, value);
+        addColumnValue(writer, value);
     }
 
-    protected void addColumnValue(StringBuilder builder, String value) throws IOException {
+    protected void addColumnValue(PrintWriter writer, String value) throws IOException {
         value = (value == null) ? "" : value.replace(csvOptions.getQuoteString(), csvOptions.getDoubleQuoteString());
 
-        builder.append(csvOptions.getQuoteChar()).append(value).append(csvOptions.getQuoteChar());
+        writer.append(csvOptions.getQuoteChar()).append(value).append(csvOptions.getQuoteChar());
     }
 
-    protected void addColumnValue(StringBuilder builder, List<UIComponent> components, UIColumn column) throws IOException {
+    protected void addColumnValue(PrintWriter writer, List<UIComponent> components, UIColumn column) throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        builder.append(csvOptions.getQuoteChar());
+        writer.append(csvOptions.getQuoteChar());
 
         if (column.getExportFunction() != null) {
             String value = exportColumnByFunction(context, column);
             //escape double quotes
             value = value == null ? "" : value.replace(csvOptions.getQuoteString(), csvOptions.getDoubleQuoteString());
 
-            builder.append(value);
+            writer.append(value);
         }
         else {
             for (UIComponent component : components) {
@@ -226,22 +219,16 @@ public class DataTableCSVExporter extends DataTableExporter {
                     //escape double quotes
                     value = value == null ? "" : value.replace(csvOptions.getQuoteString(), csvOptions.getDoubleQuoteString());
 
-                    builder.append(value);
+                    writer.append(value);
                 }
             }
         }
 
-        builder.append(csvOptions.getQuoteChar());
+        writer.append(csvOptions.getQuoteChar());
     }
 
     @Override
     protected void postRowExport(DataTable table, Object document) {
-        ((StringBuilder) document).append(csvOptions.getEndOfLineSymbols());
-    }
-
-    @Override
-    protected void postExport(FacesContext context, ExportConfiguration config) throws IOException {
-        super.postExport(context, config);
-        sb = null;
+        ((PrintWriter) document).append(csvOptions.getEndOfLineSymbols());
     }
 }

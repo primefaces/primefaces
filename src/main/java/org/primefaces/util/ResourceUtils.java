@@ -26,6 +26,7 @@ package org.primefaces.util;
 import java.io.Serializable;
 import java.util.*;
 
+import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.Resource;
@@ -190,6 +191,17 @@ public class ResourceUtils {
         }
 
         return resource;
+    }
+
+    public static String getMonitorKeyCookieName(FacesContext context, ValueExpression monitorKey) {
+        String monitorKeyCookieName = Constants.DOWNLOAD_COOKIE + context.getViewRoot().getViewId().replace('/', '_');
+        if (monitorKey != null) {
+            String evaluated = (String) monitorKey.getValue(context.getELContext());
+            if (!LangUtils.isValueBlank(evaluated)) {
+                monitorKeyCookieName += "_" + evaluated;
+            }
+        }
+        return monitorKeyCookieName;
     }
 
     public static class ResourceInfo implements Serializable {

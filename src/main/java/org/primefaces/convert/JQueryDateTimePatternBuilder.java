@@ -25,6 +25,8 @@ package org.primefaces.convert;
 
 import java.util.PrimitiveIterator.OfInt;
 
+import org.primefaces.util.LangUtils;
+
 /**
  * Builder for the pattern format as defined by the jquery UI datepicker, see
  * https://api.jqueryui.com/datepicker; and the jquery timepicker, see
@@ -131,7 +133,7 @@ public class JQueryDateTimePatternBuilder {
     }
 
     public JQueryDateTimePatternBuilder appendLiteralText(String text) {
-        if (text != null & text.length() > 0) {
+        if (!LangUtils.isValueEmpty(text)) {
             if (isQuoteNeeded(text)) {
                 sb.append('\'');
                 appendEscapedLiteralText(text);

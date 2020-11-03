@@ -30,9 +30,8 @@ onTableRender | null | MethodExpression | OnTableRender to be used to set the op
 ## Getting Started with DataExporter
 
 DataExporter is nested in a UICommand component such as commandButton or commandLink.
-NOTE: Exporting via AJAX is not supported.
 For PDF exporting **Libre OpenPDF** and for XLS exporting **Apache POI** libraries are required in the classpath. Target must
-point to a PrimeFaces Datatable. Assume the table to be exported is defined as;
+point to a PrimeFaces Datatable. Assume the table to be exported is defined as:
 
 ```xhtml
 <p:dataTable id="tableId" ...>
@@ -43,35 +42,35 @@ _Excel export (type="xls | xlsx | xlsxstream")_
 
 
 ```xhtml
-<p:commandButton value="Export as Excel" ajax="false">
+<p:commandButton value="Export as Excel">
     <p:dataExporter type="xls" target="tableId" fileName="cars"/>
 </p:commandButton>
 ```
 _PDF export (type="pdf")_
 
 ```xhtml
-<p:commandButton value="Export as PDF" ajax="false" >
+<p:commandButton value="Export as PDF">
     <p:dataExporter type="pdf" target="tableId" fileName="cars"/>
 </p:commandButton>
 ```
 _CSV export (type="csv")_
 
 ```xhtml
-<p:commandButton value="Export as CSV" ajax="false" >
+<p:commandButton value="Export as CSV">
     <p:dataExporter type="csv" target="tableId" fileName="cars"/>
 </p:commandButton>
 ```
 _XML export (type="xml")_
 
 ```xhtml
-<p:commandButton value="Export as XML" ajax="false" >
+<p:commandButton value="Export as XML">
     <p:dataExporter type="xml" target="tableId" fileName="cars"/>
 </p:commandLink>
 ```
 _Custom export (optional type="text")_
 
 ```xhtml
-<p:commandButton value="Export as Text" ajax="false" >
+<p:commandButton value="Export as Text">
     <p:dataExporter type="text" target="tableId" fileName="cars" customExporter="#{dataExporterView.textExporter}"/>
 </p:commandLink>
 ```

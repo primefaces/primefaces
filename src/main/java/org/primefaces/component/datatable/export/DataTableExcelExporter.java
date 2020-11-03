@@ -33,36 +33,34 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExcelOptions;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.ExporterOptions;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.LangUtils;
+import org.primefaces.util.*;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.awt.Color;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.List;
 
 public class DataTableExcelExporter extends DataTableExporter {
 
     protected static final String DEFAULT_FONT = HSSFFont.FONT_ARIAL;
+    protected Workbook wb;
+
     private CellStyle cellStyle;
     private CellStyle facetStyle;
-    private Workbook wb;
 
     @Override
-    protected void preExport(FacesContext context, ExportConfiguration config) throws IOException {
+    protected void preExport(FacesContext context, ExportConfiguration exportConfiguration) throws IOException {
         wb = createWorkBook();
 
-        if (config.getPreProcessor() != null) {
-            config.getPreProcessor().invoke(context.getELContext(), new Object[]{wb});
+        if (exportConfiguration.getPreProcessor() != null) {
+            exportConfiguration.getPreProcessor().invoke(context.getELContext(), new Object[]{wb});
         }
     }
 
     @Override
-    public void doExport(FacesContext context, DataTable table, ExportConfiguration config, int index) throws IOException {
+    public void doExport(FacesContext context, DataTable table, ExportConfiguration exportConfiguration, int index) throws IOException {
         String sheetName = getSheetName(context, table);
         if (sheetName == null) {
             sheetName = table.getId() + (index + 1);
@@ -73,10 +71,10 @@ public class DataTableExcelExporter extends DataTableExporter {
             sheetName = "Sheet (" + (index + 1) + ")";
         }
 
-        ExcelOptions options = (ExcelOptions) config.getOptions();
+        ExcelOptions options = (ExcelOptions) exportConfiguration.getOptions();
         Sheet sheet = createSheet(wb, sheetName, options);
-        applyOptions(wb, table, sheet, config.getOptions());
-        exportTable(context, table, sheet, config.isPageOnly(), config.isSelectionOnly());
+        applyOptions(wb, table, sheet, exportConfiguration.getOptions());
+        exportTable(context, table, sheet, exportConfiguration.isPageOnly(), exportConfiguration.isSelectionOnly());
 
         if (options == null || options.isAutoSizeColumn()) {
             short colIndex = 0;
@@ -94,17 +92,13 @@ public class DataTableExcelExporter extends DataTableExporter {
     }
 
     @Override
-    protected void postExport(FacesContext context, ExportConfiguration config) throws IOException {
-        if (config.getPostProcessor() != null) {
-            config.getPostProcessor().invoke(context.getELContext(), new Object[]{wb});
+    protected void postExport(FacesContext context, ExportConfiguration exportConfiguration) throws IOException {
+        if (exportConfiguration.getPostProcessor() != null) {
+            exportConfiguration.getPostProcessor().invoke(context.getELContext(), new Object[]{wb});
         }
 
-        writeExcelToResponse(context, wb, config.getOutputFileName());
+        wb.write(getOutputStream());
 
-        reset();
-    }
-
-    protected void reset() throws IOException {
         wb.close();
         wb = null;
     }
@@ -227,22 +221,14 @@ public class DataTableExcelExporter extends DataTableExporter {
         return wb.createSheet(sheetName);
     }
 
-    protected void writeExcelToResponse(FacesContext context, Workbook generatedExcel, String filename) throws IOException {
-        ExternalContext externalContext = context.getExternalContext();
-        externalContext.setResponseContentType(getContentType());
-        setResponseHeader(externalContext, getContentDisposition(filename));
-        addResponseCookie(context);
-
-        OutputStream out = externalContext.getResponseOutputStream();
-        generatedExcel.write(out);
-    }
-
-    protected String getContentType() {
+    @Override
+    public String getContentType() {
         return "application/vnd.ms-excel";
     }
 
-    protected String getContentDisposition(String filename) {
-        return ComponentUtils.createContentDisposition("attachment", filename + ".xls");
+    @Override
+    public String getFileExtension() {
+        return ".xls";
     }
 
     public void exportTable(FacesContext context, UIComponent component, Sheet sheet, boolean pageOnly, boolean selectionOnly) {
