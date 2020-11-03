@@ -43,7 +43,6 @@ import javax.faces.component.UINamingContainer;
 import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
-import javax.faces.component.visit.VisitHint;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
@@ -62,6 +61,7 @@ import org.primefaces.component.api.IterationStatus;
 import org.primefaces.component.api.SavedState;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.model.IterableDataModel;
+import org.primefaces.util.ComponentUtils;
 
 /**
  * Copied from Mojarra, to port bugfixes from newer Mojarra versions, to users of older Mojarra versions.
@@ -728,12 +728,14 @@ public class UIRepeat extends UINamingContainer {
     }
 
     private boolean requiresRowIteration(VisitContext ctx) {
-        boolean shouldIterate = !ctx.getHints().contains(VisitHint.SKIP_ITERATION); 
+        FacesContext facesContext = ctx.getFacesContext();
+        boolean shouldIterate = !ComponentUtils.isSkipIteration(ctx, facesContext);
         if (!shouldIterate) {
-            FacesContext faces = ctx.getFacesContext();  
-            String sourceId = faces.getExternalContext().getRequestParameterMap().get(
+            String sourceId = facesContext.getExternalContext().getRequestParameterMap().get(
                     ClientBehaviorContext.BEHAVIOR_SOURCE_PARAM_NAME);  
-            boolean containsSource = sourceId != null ? sourceId.startsWith(super.getClientId(faces) + getSeparatorChar(faces)): false;  
+            boolean containsSource = sourceId != null
+                    ? sourceId.startsWith(super.getClientId(facesContext) + getSeparatorChar(facesContext))
+                    : false;  
             return containsSource;
         } else {
             return shouldIterate;

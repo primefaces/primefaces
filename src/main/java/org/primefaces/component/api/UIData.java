@@ -36,7 +36,6 @@ import javax.faces.application.StateManager;
 import javax.faces.component.*;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
-import javax.faces.component.visit.VisitHint;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
@@ -949,7 +948,7 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
         }
 
         FacesContext facesContext = context.getFacesContext();
-        boolean visitRows = shouldVisitRows(facesContext, context);
+        boolean visitRows = !ComponentUtils.isSkipIteration(context, facesContext);
 
         int rowIndex = -1;
         if (visitRows) {
@@ -1158,19 +1157,6 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
         }
 
         return false;
-    }
-
-    protected boolean shouldVisitRows(FacesContext context, VisitContext visitContext) {
-        try {
-            //JSF 2.1
-            VisitHint skipHint = VisitHint.valueOf("SKIP_ITERATION");
-            return !visitContext.getHints().contains(skipHint);
-        }
-        catch (IllegalArgumentException e) {
-            //JSF 2.0
-            Object skipHint = context.getAttributes().get("javax.faces.visit.SKIP_ITERATION");
-            return !Boolean.TRUE.equals(skipHint);
-        }
     }
 
     protected boolean requiresColumns() {

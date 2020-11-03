@@ -34,7 +34,6 @@ import javax.faces.component.*;
 import javax.faces.component.UIColumn;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
-import javax.faces.component.visit.VisitHint;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.event.*;
@@ -806,7 +805,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         }
 
         FacesContext facesContext = context.getFacesContext();
-        boolean visitNodes = requiresIteration(facesContext, context);
+        boolean visitNodes = !ComponentUtils.isSkipIteration(context, facesContext);
         TreeNode root = getValue();
 
         String oldRowKey = getRowKey();
@@ -1057,19 +1056,6 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 
     protected boolean shouldVisitNode(TreeNode node) {
         return (node.isExpanded() || node.getParent() == null);
-    }
-
-    protected boolean requiresIteration(FacesContext context, VisitContext visitContext) {
-        try {
-            //JSF 2.1
-            VisitHint skipHint = VisitHint.valueOf("SKIP_ITERATION");
-            return !visitContext.getHints().contains(skipHint);
-        }
-        catch (IllegalArgumentException e) {
-            //JSF 2.0
-            Object skipHint = context.getAttributes().get("javax.faces.visit.SKIP_ITERATION");
-            return !Boolean.TRUE.equals(skipHint);
-        }
     }
 
     @Override
