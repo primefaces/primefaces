@@ -80,7 +80,7 @@ styleClass | null | String | Style class of the input element.
 tabindex | null | Integer | Position of the input element in the tabbing order.
 title | null | String | Advisory tooltip information.
 type | text | String | Input field type.
-decimalPlaces | 2 | String | Number of decimal places. If value is Integer/Long/Short number defaults to 0 else defaults to 2.
+decimalPlaces | 2 | String | Number of decimal places. If value is Integer/Long/Short/BigInteger number defaults to 0 else defaults to 2 only if the initial value is not `null`.
 decimalSeparator | *1 | String | Decimal separator char.
 decimalSeparatorAlternative | null | String | Allow to declare an alternative decimal separator which is automatically replaced by `decimalCharacter` when typed.
 emptyValue | focus | String | Defines what to display when the input value is empty (possible options are null, focus, press, always, min, max, zero, number, or a string representing a number)
