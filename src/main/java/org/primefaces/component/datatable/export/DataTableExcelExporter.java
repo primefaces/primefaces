@@ -23,7 +23,18 @@
  */
 package org.primefaces.component.datatable.export;
 
-import org.apache.poi.hssf.usermodel.*;
+import java.awt.Color;
+import java.io.IOException;
+import java.util.List;
+
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIPanel;
+import javax.faces.context.FacesContext;
+
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFPalette;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.WorkbookUtil;
@@ -35,19 +46,14 @@ import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.ExporterOptions;
 import org.primefaces.util.*;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIPanel;
-import javax.faces.context.FacesContext;
-import java.awt.Color;
-import java.io.IOException;
-import java.util.List;
 
 public class DataTableExcelExporter extends DataTableExporter {
 
     protected static final String DEFAULT_FONT = HSSFFont.FONT_ARIAL;
     protected Workbook wb;
-
-    private CellStyle cellStyle;
+    private CellStyle cellStyleRightAlign;
+    private CellStyle cellStyleCenterAlign;
+    private CellStyle cellStyleLeftAlign;
     private CellStyle facetStyle;
 
     @Override
@@ -182,6 +188,8 @@ public class DataTableExcelExporter extends DataTableExporter {
         Cell cell = row.createCell(cellIndex);
         FacesContext context = FacesContext.getCurrentInstance();
 
+        applyColumnAlignments(column, cell);
+
         if (column.getExportFunction() != null) {
             cell.setCellValue(createRichTextString(exportColumnByFunction(context, column)));
         }
@@ -198,10 +206,6 @@ public class DataTableExcelExporter extends DataTableExporter {
             }
 
             cell.setCellValue(createRichTextString(builder.toString()));
-        }
-
-        if (cellStyle != null) {
-            cell.setCellStyle(cellStyle);
         }
     }
 
@@ -262,10 +266,20 @@ public class DataTableExcelExporter extends DataTableExporter {
         facetStyle.setWrapText(true);
         applyFacetOptions(wb, options, facetStyle);
 
-        cellStyle = wb.createCellStyle();
-        cellStyle.setFont(font);
-        cellStyle.setAlignment(HorizontalAlignment.LEFT);
-        applyCellOptions(wb, options, cellStyle);
+        cellStyleLeftAlign = wb.createCellStyle();
+        cellStyleLeftAlign.setFont(font);
+        cellStyleLeftAlign.setAlignment(HorizontalAlignment.LEFT);
+        applyCellOptions(wb, options, cellStyleLeftAlign);
+
+        cellStyleCenterAlign = wb.createCellStyle();
+        cellStyleCenterAlign.setFont(font);
+        cellStyleCenterAlign.setAlignment(HorizontalAlignment.CENTER);
+        applyCellOptions(wb, options, cellStyleCenterAlign);
+
+        cellStyleRightAlign = wb.createCellStyle();
+        cellStyleRightAlign.setFont(font);
+        cellStyleRightAlign.setAlignment(HorizontalAlignment.RIGHT);
+        applyCellOptions(wb, options, cellStyleRightAlign);
 
         PrintSetup printSetup = sheet.getPrintSetup();
         printSetup.setLandscape(true);
@@ -343,6 +357,20 @@ public class DataTableExcelExporter extends DataTableExporter {
         }
 
         cellStyle.setFont(cellFont);
+    }
+
+    protected Cell applyColumnAlignments(final UIColumn column, final Cell cell) {
+        String[] styles = new String[] {column.getStyle(), column.getStyleClass()};
+        if (LangUtils.containsIgnoreCase(styles, "right")) {
+            cell.setCellStyle(cellStyleRightAlign);
+        }
+        else  if (LangUtils.containsIgnoreCase(styles, "center")) {
+            cell.setCellStyle(cellStyleCenterAlign);
+        }
+        else {
+            cell.setCellStyle(cellStyleLeftAlign);
+        }
+        return cell;
     }
 
     public String getSheetName(FacesContext context, UIComponent table) {
