@@ -7,13 +7,7 @@
   - [Configuration](/gettingstarted/configuration.md)
   - [Hello World](/gettingstarted/helloworld.md)
   - [Whats new](/gettingstarted/whatsnew.md)
-
-- Migration Guide
-
-  - [7.0](../migrationguide/7_0.md)
-  - [6.2](../migrationguide/6_2.md)
-  - [6.1](../migrationguide/6_1.md)
-  - [6.0](../migrationguide/6_0.md)
+  - [Migration Guide](../migrationguide/migrationguide.md)
 
 - Core
 
@@ -25,7 +19,7 @@
         - [JavaScript API](/core/ajaxJavascriptApi.md)
 
   - [Search Expression](/core/searchexpression.md)
-  - [Client Side Validation](/core/clientsidevalidation.md)  
+  - [Client Side Validation](/core/clientsidevalidation.md)
   - [Dialog Framework](/core/dialogframework.md)
   - [Error Handling](/core/errorhandling.md)
   - [BeanValidation Transformation](/core/beanvalidationtransformation.md)
