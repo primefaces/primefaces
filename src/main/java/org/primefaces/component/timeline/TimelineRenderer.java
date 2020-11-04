@@ -332,6 +332,19 @@ public class TimelineRenderer extends CoreRenderer {
         if (order != null) {
             fsw.write(", order: " + order);
         }
+
+        if (!LangUtils.isValueBlank(group.getSubgroupOrder())) {
+            fsw.write(", subgroupOrder: \"" + EscapeUtils.forJavaScript(group.getSubgroupOrder()) + "\"");
+        }
+
+        if (!LangUtils.isValueBlank(group.getSubgroupStack())) {
+            fsw.write(", subgroupStack: " + EscapeUtils.forJavaScript(group.getSubgroupStack()));
+        }
+
+        if (!LangUtils.isValueBlank(group.getSubgroupVisibility())) {
+            fsw.write(", subgroupVisibility: " + EscapeUtils.forJavaScript(group.getSubgroupVisibility()));
+        }
+
         fsw.write("}");
 
         String groupJson = fsw.toString();
@@ -399,6 +412,10 @@ public class TimelineRenderer extends CoreRenderer {
 
         if (foundGroup != null) {
             fsw.write(", group: \"" + EscapeUtils.forJavaScript(foundGroup.getId()) + "\"");
+
+            if (!LangUtils.isValueBlank(event.getSubgroup())) {
+                fsw.write(", subgroup: \"" + EscapeUtils.forJavaScript(event.getSubgroup()) + "\"");
+            }
         }
         else {
             // no group for the event
