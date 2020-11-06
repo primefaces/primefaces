@@ -11085,6 +11085,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Name of the field associated to bean "var".]]>
+            </description>
+            <name>field</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Property to be used for grouping.]]>
             </description>
             <name>groupBy</name>

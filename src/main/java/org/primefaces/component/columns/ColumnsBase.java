@@ -382,7 +382,7 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
         return (Integer) getStateHelper().eval(PropertyKeys.sortPriority, SortMeta.MIN_PRIORITY);
     }
 
-    public void setSortPriority(String sortPriority) {
+    public void setSortPriority(int sortPriority) {
         getStateHelper().put(PropertyKeys.sortPriority, sortPriority);
     }
 

@@ -1382,13 +1382,13 @@ public class DataTableRenderer extends DataRenderer {
             encodeColumnSelection(context, table, clientId, column, selected);
         }
 
-        if (column instanceof DynamicColumn) {
-            column.encodeAll(context);
-        }
-        else if (hasColumnDefaultRendering(table, column)) {
+        if (hasColumnDefaultRendering(table, column)) {
             Object value = DataTable.createValueExprFromVarField(context, table.getVar(), column.getField())
                     .getValue(context.getELContext());
             writer.writeText(value, null);
+        }
+        else if (column instanceof DynamicColumn) {
+            column.encodeAll(context);
         }
         else {
             column.renderChildren(context);
