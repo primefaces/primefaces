@@ -27,9 +27,10 @@ import java.lang.reflect.Array;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.el.ELContext;
-import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.ResourceDependency;
@@ -192,9 +193,7 @@ public class DataTable extends DataTableBase {
     private boolean isRowKeyRestored = false;
     private int columnsCount = -1;
     private List<UIColumn> columns;
-    private UIColumn sortColumn;
     private Columns dynamicColumns;
-    private ValueExpression sortByVE;
     private String togglableColumnsAsString;
     private Map<String, Boolean> togglableColsMap;
     private String resizableColumnsAsString;
@@ -364,24 +363,19 @@ public class DataTable extends DataTableBase {
                 wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), page);
             }
             else if (eventName.equals("sort")) {
-                SortOrder order;
-                UIColumn sortColumn;
+                SortMeta meta;
                 int sortColumnIndex = 0;
 
                 if (isMultiSort()) {
-                    String[] sortDirs = params.get(clientId + "_sortDir").split(",");
                     String[] sortKeys = params.get(clientId + "_sortKey").split(",");
-
-                    order = SortOrder.valueOf(((SortFeature) FEATURES.get(DataTableFeatureKey.SORT)).convertSortOrderParam(sortDirs[sortDirs.length - 1]));
-                    sortColumn = findColumn(sortKeys[sortKeys.length - 1]);
+                    meta = getSortByAsMap().get(sortKeys[sortKeys.length - 1]);
                     sortColumnIndex = sortKeys.length - 1;
                 }
                 else {
-                    order = SortOrder.valueOf(((SortFeature) FEATURES.get(DataTableFeatureKey.SORT)).convertSortOrderParam(params.get(clientId + "_sortDir")));
-                    sortColumn = findColumn(params.get(clientId + "_sortKey"));
+                    meta = getSortByAsMap().get(params.get(clientId + "_sortKey"));
                 }
 
-                wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), sortColumn, order, sortColumnIndex);
+                wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), (UIColumn) meta.getComponent(), meta.getOrder(), sortColumnIndex);
             }
             else if (eventName.equals("filter")) {
                 wrapperEvent = new FilterEvent(this, behaviorEvent.getBehavior(), getFilteredValue());
@@ -559,25 +553,22 @@ public class DataTable extends DataTableBase {
 
         if (model instanceof LazyDataModel) {
             LazyDataModel lazyModel = (LazyDataModel) model;
-            List<?> data = null;
 
             calculateFirst();
 
             FacesContext context = getFacesContext();
             int first = getFirst();
+            int rows = getRows();
 
             if (isClientCacheRequest(context)) {
                 Map<String, String> params = context.getExternalContext().getRequestParameterMap();
                 first = Integer.parseInt(params.get(getClientId(context) + "_first")) + getRows();
             }
 
-            if (isMultiSort()) {
-                data = lazyModel.load(first, getRows(), getSortMeta(), getFilterBy());
-            }
-            else {
-                data = lazyModel.load(first, getRows(), resolveSortField(), convertSortOrder(), getFilterBy());
-            }
-
+            Map<String, SortMeta> sorters = getSortByAsMap().values().stream()
+                    .filter(SortMeta::isActive)
+                    .collect(Collectors.toMap(SortMeta::getField, e -> e));
+            List<?> data = lazyModel.load(first, rows, sorters, getFilterBy());
             lazyModel.setPageSize(getRows());
             lazyModel.setWrappedData(data);
 
@@ -594,13 +585,10 @@ public class DataTable extends DataTableBase {
         if (model instanceof LazyDataModel) {
             LazyDataModel lazyModel = (LazyDataModel) model;
 
-            List<?> data = null;
-            if (isMultiSort()) {
-                data = lazyModel.load(offset, rows, getSortMeta(), getFilterBy());
-            }
-            else {
-                data = lazyModel.load(offset, rows, resolveSortField(), convertSortOrder(), getFilterBy());
-            }
+            Map<String, SortMeta> sorters = getSortByAsMap().values().stream()
+                    .filter(SortMeta::isActive)
+                    .collect(Collectors.toMap(SortMeta::getField, e -> e));
+            List<?> data = lazyModel.load(offset, rows, sorters, getFilterBy());
 
             lazyModel.setPageSize(rows);
             lazyModel.setWrappedData(data);
@@ -612,54 +600,7 @@ public class DataTable extends DataTableBase {
         }
     }
 
-    protected String resolveSortField() {
-        UIColumn column = getSortColumn();
-        if (column == null) {
-            String sortField = getSortField();
-            if (sortField == null) {
-                ValueExpression tableSortByVE = getValueExpression(PropertyKeys.sortBy.toString());
-                sortField = (tableSortByVE == null) ? (String) getSortBy() : resolveStaticField(tableSortByVE);
-            }
-
-            return sortField;
-        }
-
-        return resolveColumnField(column);
-    }
-
-    public String resolveColumnField(UIColumn column) {
-        ValueExpression columnSortByVE = column.getValueExpression(Column.PropertyKeys.sortBy.toString());
-
-        if (column.isDynamic()) {
-            ((DynamicColumn) column).applyStatelessModel();
-            String field = column.getField();
-            if (field == null) {
-                Object sortByProperty = column.getSortBy();
-                field = (sortByProperty == null) ? resolveDynamicField(columnSortByVE) : sortByProperty.toString();
-            }
-            return field;
-        }
-        else {
-            String field = column.getField();
-            if (field == null) {
-                field = (columnSortByVE == null) ? (String) column.getSortBy() : resolveStaticField(columnSortByVE);
-            }
-            return field;
-        }
-    }
-
-    public SortOrder convertSortOrder() {
-        String sortOrder = getSortOrder();
-
-        if (sortOrder == null) {
-            return SortOrder.UNSORTED;
-        }
-        else {
-            return SortOrder.valueOf(sortOrder.toUpperCase(Locale.ENGLISH));
-        }
-    }
-
-    public String resolveStaticField(ValueExpression expression) {
+    public static String resolveStaticField(ValueExpression expression) {
         if (expression != null) {
             String expressionString = expression.getExpressionString();
             if (expressionString.startsWith("#{")) {
@@ -677,12 +618,11 @@ public class DataTable extends DataTableBase {
      * @param exprVE
      * @return
      */
-    public String resolveDynamicField(ValueExpression exprVE) {
+    public static String resolveDynamicField(FacesContext context, ValueExpression exprVE) {
         if (exprVE == null) {
             return null;
         }
 
-        FacesContext context = getFacesContext();
         ELContext elContext = context.getELContext();
         String exprStr = exprVE.getExpressionString();
 
@@ -726,14 +666,8 @@ public class DataTable extends DataTableBase {
         setFirst(0);
         resetRows();
         reset = true;
-        setValueExpression("sortBy", getDefaultSortByVE());
-        setSortFunction(getDefaultSortFunction());
-        setSortOrder(getDefaultSortOrder());
-        setSortByVE(null);
-        setSortColumn(null);
-        setSortField(null);
-        setDefaultSort(true);
-        setSortMeta(null);
+        setDefaultSort(false);
+        setSortByAsMap(null);
         setScrollOffset(0);
     }
 
@@ -1048,28 +982,6 @@ public class DataTable extends DataTableBase {
         }
     }
 
-    public UIColumn getSortColumn() {
-        if (sortColumn == null) {
-            String sortColumnKey = (String) getStateHelper().get("sortColumnKey");
-            if (sortColumnKey != null) {
-                sortColumn = findColumn(sortColumnKey);
-            }
-        }
-
-        return sortColumn;
-    }
-
-    public void setSortColumn(UIColumn column) {
-        sortColumn = column;
-
-        if (column == null) {
-            getStateHelper().remove("sortColumnKey");
-        }
-        else {
-            getStateHelper().put("sortColumnKey", column.getColumnKey());
-        }
-    }
-
     public boolean isMultiSort() {
         String sortMode = getSortMode();
 
@@ -1219,46 +1131,8 @@ public class DataTable extends DataTableBase {
         }
     }
 
-    public ValueExpression getSortByVE() {
-        return sortByVE;
-    }
-
-    public void setSortByVE(ValueExpression ve) {
-        sortByVE = ve;
-    }
-
-    public ValueExpression getDefaultSortByVE() {
-        return getValueExpression("defaultSortBy");
-    }
-
-    public void setDefaultSortByVE(ValueExpression ve) {
-        setValueExpression("defaultSortBy", ve);
-    }
-
-    public String getDefaultSortOrder() {
-        return (String) getStateHelper().get("defaultSortOrder");
-    }
-
-    public void setDefaultSortOrder(String val) {
-        getStateHelper().put("defaultSortOrder", val);
-    }
-
-    public MethodExpression getDefaultSortFunction() {
-        return (MethodExpression) getStateHelper().get("defaultSortFunction");
-    }
-
-    public void setDefaultSortFunction(MethodExpression obj) {
-        getStateHelper().put("defaultSortFunction", obj);
-    }
-
     public boolean isDefaultSort() {
-        Object value = getStateHelper().get("defaultSort");
-        if (value == null) {
-            return true;
-        }
-        else {
-            return (java.lang.Boolean) value;
-        }
+        return getSortByAsMap() != null && Boolean.TRUE.equals(getStateHelper().get("defaultSort"));
     }
 
     public void setDefaultSort(boolean defaultSort) {
@@ -1400,7 +1274,7 @@ public class DataTable extends DataTableBase {
 
     @Override
     protected List<UIComponent> getIterableChildren() {
-        ArrayList iterableChildren = new ArrayList<>(getChildCount());
+        List<UIComponent> iterableChildren = new ArrayList<>(getChildCount());
 
         for (int i = 0; i < getChildCount(); i++) {
             UIComponent child = getChildren().get(i);
@@ -1413,7 +1287,7 @@ public class DataTable extends DataTableBase {
     }
 
     @Override
-    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
+    public void processEvent(ComponentSystemEvent event) {
         super.processEvent(event);
         if (!isLazy() && event instanceof PostRestoreStateEvent && (this == event.getComponent())) {
             Object filteredValue = getFilteredValue();
@@ -1450,6 +1324,8 @@ public class DataTable extends DataTableBase {
             setValue(null);
         }
 
+        setSortByAsMap(null);
+
         // reset component for MyFaces view pooling
         columnsCountWithSpan = -1;
         reset = false;
@@ -1457,9 +1333,7 @@ public class DataTable extends DataTableBase {
         isRowKeyRestored = false;
         columnsCount = -1;
         columns = null;
-        sortColumn = null;
         dynamicColumns = null;
-        sortByVE = null;
         togglableColumnsAsString = null;
         togglableColsMap = null;
         resizableColumnsAsString = null;
@@ -1511,15 +1385,7 @@ public class DataTable extends DataTableBase {
                 setRows(rows);
             }
 
-            setSortMeta(ts.getSortMeta());
-            setValueExpression("sortBy", ts.getSortBy());
-            setSortOrder(ts.getSortOrder());
-            setSortFunction(ts.getSortFunction());
-            setSortField(ts.getSortField());
-            setDefaultSort(false);
-            setDefaultSortByVE(ts.getDefaultSortBy());
-            setDefaultSortOrder(ts.getDefaultSortOrder());
-            setDefaultSortFunction(ts.getDefaultSortFunction());
+            updateSortByWithTableState(ts.getSortBy());
 
             if (isSelectionEnabled()) {
                 selectedRowKeys = ts.getRowKeys();
@@ -1548,50 +1414,126 @@ public class DataTable extends DataTableBase {
     }
 
     public String getGroupedColumnIndexes() {
-        List<UIColumn> columns = getColumns();
-        int size = columns.size();
-        boolean hasIndex = false;
-        if (size > 0) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("[");
-            for (int i = 0; i < size; i++) {
-                UIColumn column = columns.get(i);
-                if (column.isGroupRow()) {
-                    if (hasIndex) {
-                        sb.append(",");
-                    }
-
-                    sb.append(i);
-                    hasIndex = true;
-                }
-            }
-            sb.append("]");
-
-            return sb.toString();
-        }
-        return null;
+        return IntStream.range(0, columns.size())
+                .filter(i -> columns.get(i).isGroupRow())
+                .mapToObj(Objects::toString)
+                .collect(Collectors.joining(",", "[", "]"));
     }
 
-    public String getSortMetaAsString(FacesContext context) {
-        Map<String, SortMeta> multiSortMeta = getSortMeta();
-        if (multiSortMeta != null && !multiSortMeta.isEmpty()) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("['");
-            int i = 0;
-            for (SortMeta sortMeta : multiSortMeta.values()) {
-                if (i > 0) {
-                    sb.append("','");
-                }
-                UIColumn column = findColumn(sortMeta.getColumnKey());
-                sb.append(column.getClientId(context));
-                i++;
-            }
-            sb.append("']");
-
-            return sb.toString();
-        }
-        return null;
+    public String getSortMetaAsString() {
+        return getSortByAsMap().keySet().stream()
+                .collect(Collectors.joining("','", "['", "']"));
     }
 
+    public static ValueExpression createValueExprFromVarField(FacesContext context, String var, String field) {
+        if (LangUtils.isValueBlank(var) || LangUtils.isValueBlank(field)) {
+            throw new FacesException("var and field must be non null");
+        }
 
+        return context.getApplication().getExpressionFactory()
+                .createValueExpression(context.getELContext(), "#{" + var + "." + field + "}", String.class);
+    }
+
+    protected Map<String, SortMeta> initSortBy(Object sortByTmp) {
+        Map<String, SortMeta> sortMeta = new HashMap<>();
+        boolean sorted = false;
+
+        HeaderRow headerRow = getHeaderRow();
+        if (headerRow != null) {
+            SortMeta s = SortMeta.of(getFacesContext(), getVar(), headerRow);
+            sortMeta.put(s.getColumnKey(), s);
+            sorted = true;
+        }
+
+        for (UIColumn column : getColumns()) {
+            SortMeta s = SortMeta.of(getFacesContext(), getVar(), column);
+            if (s == null) {
+                continue;
+            }
+
+            sortMeta.put(s.getColumnKey(), s);
+            sorted |= s.isActive();
+        }
+
+        setDefaultSort(sorted);
+
+        // merge internal sortBy with user sortBy
+        if (sortByTmp != null) {
+            Collection<SortMeta> sortBy;
+            if (sortByTmp instanceof SortMeta) {
+                sortBy = Collections.singletonList((SortMeta) sortByTmp);
+            }
+            else if (!(sortByTmp instanceof Collection)) {
+                throw new FacesException("DataTable#sortBy expects a single or a collection of SortMeta");
+            }
+            else {
+                sortBy = (Collection<SortMeta>) sortByTmp;
+            }
+
+            updateSortByWithUserSortBy(sortMeta, sortBy, sorted);
+        }
+
+        return sortMeta;
+    }
+
+    protected void updateSortByWithTableState(Map<String, SortMeta> tsSortBy) {
+        if (tsSortBy != null) {
+            boolean defaultSort = isDefaultSort();
+            for (Map.Entry<String, SortMeta> entry : tsSortBy.entrySet()) {
+                SortMeta intlSortBy = getSortByAsMap().get(entry.getKey());
+                if (intlSortBy != null) {
+                    SortMeta tsSortMeta = entry.getValue();
+                    intlSortBy.setPriority(tsSortMeta.getPriority());
+                    intlSortBy.setOrder(tsSortMeta.getOrder());
+                    defaultSort |= intlSortBy.isActive();
+                }
+            }
+
+            setDefaultSort(defaultSort);
+        }
+    }
+
+    protected void updateSortByWithUserSortBy(Map<String, SortMeta> intlSortBy, Collection<SortMeta> usrSortBy, boolean sorted) {
+        for (SortMeta userSM : usrSortBy) {
+            SortMeta intlSM = intlSortBy.values().stream()
+                    .filter(o -> o.getField().equals(userSM.getField()))
+                    .findAny()
+                    .orElse(null);
+            if (intlSM == null) {
+                throw new FacesException("No column with field '" + userSM.getField() + "' has been found");
+            }
+
+            ValueExpression sortByVE = userSM.getSortBy();
+            if (sortByVE == null) {
+                sortByVE = createValueExprFromVarField(getFacesContext(), getVar(), userSM.getField());
+            }
+
+            intlSM.setPriority(userSM.getPriority());
+            intlSM.setOrder(userSM.getOrder());
+            intlSM.setSortBy(sortByVE);
+            intlSM.setFunction(userSM.getFunction());
+            sorted |= userSM.isActive();
+        }
+
+        setDefaultSort(sorted);
+    }
+
+    public SortMeta getHighestPriorityActiveSortMeta() {
+        return getSortByAsMap().values().stream()
+                .filter(SortMeta::isActive)
+                .min(Comparator.comparingInt(SortMeta::getPriority))
+                .orElse(null);
+    }
+
+    public boolean isSortingCurrentlyActive() {
+        return getSortByAsMap().values().stream().anyMatch(SortMeta::isActive);
+    }
+
+    public Map<String, SortMeta> getSortByAsMap() {
+        return ComponentUtils.computeIfAbsent(getStateHelper(), "_sortBy", () -> initSortBy(getSortBy()));
+    }
+
+    public void setSortByAsMap(Map<String, SortMeta> sortBy) {
+        getStateHelper().put("_sortBy", sortBy);
+    }
 }

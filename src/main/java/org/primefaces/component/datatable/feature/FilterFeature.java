@@ -126,17 +126,10 @@ public class FilterFeature implements DataTableFeature {
             filter(context, table, table.getFilterBy());
 
             //sort new filtered data to restore sort state
-            boolean sorted = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()) != null
-                    || table.getSortBy() != null;
+            boolean sorted = table.isSortingCurrentlyActive();
             if (sorted) {
                 SortFeature sortFeature = (SortFeature) table.getFeature(DataTableFeatureKey.SORT);
-
-                if (table.isMultiSort()) {
-                    sortFeature.multiSort(context, table);
-                }
-                else {
-                    sortFeature.singleSort(context, table);
-                }
+                sortFeature.sort(context, table);
             }
         }
 
@@ -267,14 +260,14 @@ public class FilterFeature implements DataTableFeature {
             String field = column.getField();
             if (field == null) {
                 Object filterByProperty = column.getFilterBy();
-                field = (filterByProperty == null) ? table.resolveDynamicField(filterByVE) : filterByProperty.toString();
+                field = (filterByProperty == null) ? DataTable.resolveDynamicField(FacesContext.getCurrentInstance(), filterByVE) : filterByProperty.toString();
             }
             return field;
         }
         else {
             String field = column.getField();
             if (field == null) {
-                field = (filterByVE == null) ? (String) column.getFilterBy() : table.resolveStaticField(filterByVE);
+                field = (filterByVE == null) ? (String) column.getFilterBy() : DataTable.resolveStaticField(filterByVE);
             }
             return field;
         }

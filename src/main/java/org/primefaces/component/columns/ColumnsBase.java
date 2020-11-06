@@ -25,6 +25,7 @@ package org.primefaces.component.columns;
 
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.UIData;
+import org.primefaces.model.SortMeta;
 
 
 public abstract class ColumnsBase extends UIData implements UIColumn {
@@ -64,7 +65,11 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
         exportFunction,
         groupRow,
         exportHeaderValue,
-        exportFooterValue
+        exportFooterValue,
+        sortOrder,
+        sortPriority,
+        nullSortOrder,
+        caseSensitiveSort
     }
 
     public ColumnsBase() {
@@ -364,4 +369,36 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
         getStateHelper().put(PropertyKeys.exportFooterValue, exportFooterValue);
     }
 
+    @Override
+    public String getSortOrder() {
+        return (String) getStateHelper().eval(PropertyKeys.sortOrder, null);
+    }
+
+    public void setSortOrder(String order) {
+        getStateHelper().put(PropertyKeys.sortOrder, order);
+    }
+
+    public int getSortPriority() {
+        return (Integer) getStateHelper().eval(PropertyKeys.sortPriority, SortMeta.MIN_PRIORITY);
+    }
+
+    public void setSortPriority(String sortPriority) {
+        getStateHelper().put(PropertyKeys.sortPriority, sortPriority);
+    }
+
+    public int getNullSortOrder() {
+        return (Integer) getStateHelper().eval(PropertyKeys.nullSortOrder, 1);
+    }
+
+    public void setNullSortOrder(int nullSortOrder) {
+        getStateHelper().put(PropertyKeys.nullSortOrder, nullSortOrder);
+    }
+
+    public boolean isCaseSensitiveSort() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.caseSensitiveSort, false);
+    }
+
+    public void setCaseSensitiveSort(boolean caseSensitiveSort) {
+        getStateHelper().put(PropertyKeys.caseSensitiveSort, caseSensitiveSort);
+    }
 }

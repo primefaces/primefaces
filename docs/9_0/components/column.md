@@ -41,7 +41,7 @@ treetable and more.
 | filterValue | null | Object | Value of the filter field.
 | toggleable | true | Boolean | Defines if panel is toggleable by columnToggler component. Default value is true and a false value marks the column as static.
 | filterFunction | null | MethodExpr | Custom implementation to filter a value against a constraint.
-| field | null | String | Name of the field to pass lazy load method for filtering and sorting. If not specified, filterBy-sortBy values are used to identify the field name.
+| field | null | String | Name of the field associated to bean "var". If not specified, filterBy-sortBy values are used to identify the field name.
 | priority | 0 | Integer | Priority of the column defined as an integer, lower values have more priority.
 | sortable | true | Boolean | Boolean value to mark column as sortable.
 | filterable | true | Boolean | Boolean value to mark column as filterable.
@@ -52,6 +52,11 @@ treetable and more.
 | groupRow | false | Boolean | Speficies whether to group rows based on the column data.
 | exportHeaderValue | null | String | Defines if the header value of column to be exported.
 | exportFooterValue | null | String | Defines if the footer value of column to be exported.
+| nullSortOrder             | 1                  | Integer          | Defines where the null values are placed in ascending sort order. Default value is "1"
+| sortOrder                 | asc                | String           | Sets sorting order in 'single' sortMode. Default is "ascending"
+| sortFunction              | null               | MethodExpression | Custom pluggable sortFunction.
+| sortPriority              | Integer.MAX_VALUE  | Integer          | Sets default sorting priority over the other columns. Default is Integer.MAX_VALUE. Higher is less priority.
+| caseSensitiveSort         | false              | Boolean          | Case sensitivity for sorting, insensitive by default.
 
 ## Getting Started with Column
 As column is a reused component, see documentation of components that use a column.

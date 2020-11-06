@@ -4865,6 +4865,39 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Sets default sorting order. Possible values "asc", "desc" or null]]>
+            </description>
+            <name>sortOrder</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines where the null values are placed in ascending sort order. Default value is "1" meaning null values are placed at the end in ascending mode and
+                at beginning in descending mode. Set to "-1" for the opposite behavior.]]>
+            </description>
+            <name>nullSortOrder</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Sets default sorting priority over the other columns. Default is Integer.MAX_VALUE. Higher is less priority]]>
+            </description>
+            <name>sortPriority</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Case sensitivity for sorting, insensitive by default.]]>
+            </description>
+            <name>caseSensitiveSort</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Inline style of the column.]]>
             </description>
             <name>style</name>
@@ -5033,7 +5066,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Name of the field to pass lazy load method for filtering and sorting. If not specified, filterBy-sortBy values are used to identify the field name.]]>
+                <![CDATA[Name of the field associated to bean "var".]]>
             </description>
             <name>field</name>
             <required>false</required>
@@ -5236,11 +5269,44 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Sets default sorting order. Possible values "asc", "desc" or null]]>
+            </description>
+            <name>sortOrder</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Sets default sorting priority over the other columns. Default is 0. Higher is less priority]]>
+            </description>
+            <name>sortPriority</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Custom pluggable sortFunction.]]>
             </description>
             <name>sortFunction</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines where the null values are placed in ascending sort order. Default value is "1" meaning null values are placed at the end in ascending mode and
+                at beginning in descending mode. Set to "-1" for the opposite behavior.]]>
+            </description>
+            <name>nullSortOrder</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Case sensitivity for sorting, insensitive by default.]]>
+            </description>
+            <name>caseSensitiveSort</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -7762,6 +7828,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Property to configure default sorting. Expects a single or a collection of SortMeta]]>
+            </description>
+            <name>sortBy</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Defines sorting mode, valid values are "single" (default) and "multiple".]]>
             </description>
             <name>sortMode</name>
@@ -7775,55 +7849,6 @@
             <name>allowUnsorting</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Ordered map of sort information in "multiple" sortMode; This also allows to sort the table by default.]]>
-            </description>
-            <name>sortMeta</name>
-            <required>false</required>
-            <type>java.util.Map</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Property to be used for default sorting in "single" sortMode.]]>
-            </description>
-            <name>sortBy</name>
-            <required>false</required>
-            <type>java.lang.Object</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Sets sorting order in "single" sortMode. Default is "ascending"]]>
-            </description>
-            <name>sortOrder</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Custom pluggable sortFunction for default sorting in "single" sortMode.]]>
-            </description>
-            <name>sortFunction</name>
-            <required>false</required>
-            <type>javax.el.MethodExpression</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Name of the field to pass lazy load method for sorting in "single" sortMode. If not specified, sortBy expression is used to extract the name.]]>
-            </description>
-            <name>sortField</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Defines where the null values are placed in ascending sort order. Default value is "1" meaning null values are placed at the end in ascending mode and
-                at beginning in descending mode. Set to "-1" for the opposite behavior.]]>
-            </description>
-            <name>nullSortOrder</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
         </attribute>
         <attribute>
             <description>
@@ -8035,14 +8060,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Case sensitivity for sorting, insensitive by default.]]>
-            </description>
-            <name>caseSensitiveSort</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Ignores processing of children during lifecycle, improves performance if table only has output components, default is false.]]>
             </description>
             <name>skipChildren</name>
@@ -8169,14 +8186,6 @@
             <name>cellEditMode</name>
             <required>false</required>
             <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Makes row groups toggleable, default is false.]]>
-            </description>
-            <name>expandableRowGroups</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -11073,6 +11082,54 @@
             <name>binding</name>
             <required>false</required>
             <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Property to be used for grouping.]]>
+            </description>
+            <name>groupBy</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Sets default sorting order. Possible values "asc", "desc" or null]]>
+            </description>
+            <name>sortOrder</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Inline style of the column.]]>
+            </description>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the column.]]>
+            </description>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Custom pluggable sortFunction.]]>
+            </description>
+            <name>sortFunction</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Makes row groups toggleable, default is false.]]>
+            </description>
+            <name>expandable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>

@@ -25,6 +25,7 @@ package org.primefaces.component.column;
 
 import javax.faces.component.UIColumn;
 
+import org.primefaces.model.SortMeta;
 import org.primefaces.model.menu.MenuColumn;
 
 
@@ -68,7 +69,11 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         exportFunction,
         groupRow,
         exportHeaderValue,
-        exportFooterValue
+        exportFooterValue,
+        sortOrder,
+        sortPriority,
+        nullSortOrder,
+        caseSensitiveSort
     }
 
     public ColumnBase() {
@@ -377,4 +382,36 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         getStateHelper().put(PropertyKeys.exportFooterValue, exportFooterValue);
     }
 
+    @Override
+    public String getSortOrder() {
+        return (String) getStateHelper().eval(PropertyKeys.sortOrder, null);
+    }
+
+    public void setSortOrder(String sortOrder) {
+        getStateHelper().put(PropertyKeys.sortOrder, sortOrder);
+    }
+
+    public int getSortPriority() {
+        return (Integer) getStateHelper().eval(PropertyKeys.sortPriority, SortMeta.MIN_PRIORITY);
+    }
+
+    public void setSortPriority(String sortPriority) {
+        getStateHelper().put(PropertyKeys.sortPriority, sortPriority);
+    }
+
+    public int getNullSortOrder() {
+        return (Integer) getStateHelper().eval(PropertyKeys.nullSortOrder, 1);
+    }
+
+    public void setNullSortOrder(int nullSortOrder) {
+        getStateHelper().put(PropertyKeys.nullSortOrder, nullSortOrder);
+    }
+
+    public boolean isCaseSensitiveSort() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.caseSensitiveSort, false);
+    }
+
+    public void setCaseSensitiveSort(boolean caseSensitiveSort) {
+        getStateHelper().put(PropertyKeys.caseSensitiveSort, caseSensitiveSort);
+    }
 }

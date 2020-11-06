@@ -124,4 +124,12 @@ public interface UIColumn {
     String getExportHeaderValue();
 
     String getExportFooterValue();
+
+    String getSortOrder();
+
+    int getSortPriority();
+
+    int getNullSortOrder();
+
+    boolean isCaseSensitiveSort();
 }
