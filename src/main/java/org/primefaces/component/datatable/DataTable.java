@@ -25,6 +25,8 @@ package org.primefaces.component.datatable;
 
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -36,6 +38,7 @@ import javax.faces.FacesException;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
+import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.event.*;
 import javax.faces.model.DataModel;
@@ -56,6 +59,8 @@ import org.primefaces.event.*;
 import org.primefaces.event.data.FilterEvent;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.event.data.SortEvent;
+import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.model.*;
 import org.primefaces.util.*;
 
@@ -306,32 +311,32 @@ public class DataTable extends DataTableBase {
             setSelection(null);
         }
 
-        Map<String, FilterMeta> filterBy = getFilterBy();
-        if (!filterBy.isEmpty()) {
-            ELContext elContext = context.getELContext();
-            for (FilterMeta filter : filterBy.values()) {
-                UIColumn column = filter.getColumn();
-                if (column == null) {
-                    column = findColumn(filter.getColumnKey());
-                    filter.setColumn(column);
-                }
-
-                if (column != null) {
-                    ValueExpression columnFilterValueVE = column.getValueExpression(Column.PropertyKeys.filterValue.toString());
-                    if (columnFilterValueVE != null) {
-                        if (column.isDynamic()) {
-                            DynamicColumn dynamicColumn = (DynamicColumn) column;
-                            dynamicColumn.applyStatelessModel();
-                            columnFilterValueVE.setValue(elContext, filter.getFilterValue());
-                            dynamicColumn.cleanStatelessModel();
-                        }
-                        else {
-                            columnFilterValueVE.setValue(elContext, filter.getFilterValue());
-                        }
-                    }
-                }
-            }
-        }
+//        Map<String, FilterMeta> filterBy = getFilterBy();
+//        if (!filterBy.isEmpty()) {
+//            ELContext elContext = context.getELContext();
+//            for (FilterMeta filter : filterBy.values()) {
+//                UIColumn column = filter.getColumn();
+//                if (column == null) {
+//                    column = findColumn(filter.getColumnKey());
+//                    filter.setColumn(column);
+//                }
+//
+//                if (column != null) {
+//                    ValueExpression columnFilterValueVE = column.getValueExpression(Column.PropertyKeys.filterValue.toString());
+//                    if (columnFilterValueVE != null) {
+//                        if (column.isDynamic()) {
+//                            DynamicColumn dynamicColumn = (DynamicColumn) column;
+//                            dynamicColumn.applyStatelessModel();
+//                            columnFilterValueVE.setValue(elContext, filter.getFilterValue());
+//                            dynamicColumn.cleanStatelessModel();
+//                        }
+//                        else {
+//                            columnFilterValueVE.setValue(elContext, filter.getFilterValue());
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
 
     @Override
@@ -568,8 +573,11 @@ public class DataTable extends DataTableBase {
 
             Map<String, SortMeta> sorters = getSortByAsMap().values().stream()
                     .filter(SortMeta::isActive)
-                    .collect(Collectors.toMap(SortMeta::getField, e -> e));
-            List<?> data = lazyModel.load(first, rows, sorters, getFilterBy());
+                    .collect(Collectors.toMap(SortMeta::getField, Function.identity()));
+            Map<String, FilterMeta> filters = getFilterByAsMap().values().stream()
+                    .filter(FilterMeta::isActive)
+                    .collect(Collectors.toMap(FilterMeta::getField, Function.identity()));
+            List<?> data = lazyModel.load(first, rows, sorters, filters);
             lazyModel.setPageSize(getRows());
             lazyModel.setWrappedData(data);
 
@@ -588,8 +596,11 @@ public class DataTable extends DataTableBase {
 
             Map<String, SortMeta> sorters = getSortByAsMap().values().stream()
                     .filter(SortMeta::isActive)
-                    .collect(Collectors.toMap(SortMeta::getField, e -> e));
-            List<?> data = lazyModel.load(offset, rows, sorters, getFilterBy());
+                    .collect(Collectors.toMap(SortMeta::getField, Function.identity()));
+            Map<String, FilterMeta> filters = getFilterByAsMap().values().stream()
+                    .filter(FilterMeta::isActive)
+                    .collect(Collectors.toMap(FilterMeta::getField, Function.identity()));
+            List<?> data = lazyModel.load(offset, rows, sorters, filters);
 
             lazyModel.setPageSize(rows);
             lazyModel.setWrappedData(data);
@@ -673,13 +684,7 @@ public class DataTable extends DataTableBase {
     }
 
     public boolean isFilteringEnabled() {
-        Object value = getStateHelper().get("filtering");
-
-        return value != null;
-    }
-
-    public void enableFiltering() {
-        getStateHelper().put("filtering", true);
+        return !getFilterByAsMap().isEmpty();
     }
 
     public RowExpansion getRowExpansion() {
@@ -1140,6 +1145,14 @@ public class DataTable extends DataTableBase {
         getStateHelper().put("defaultSort", defaultSort);
     }
 
+    public boolean isDefaultFilter() {
+        return getFilterByAsMap() != null && Boolean.TRUE.equals(getStateHelper().get("defaultFilter"));
+    }
+
+    public void setDefaultFilter(boolean defaultFilter) {
+        getStateHelper().put("defaultFilter", defaultFilter);
+    }
+
     public void setTogglableColumnsAsString(String togglableColumnsAsString) {
         this.togglableColumnsAsString = togglableColumnsAsString;
     }
@@ -1325,6 +1338,8 @@ public class DataTable extends DataTableBase {
             setValue(null);
         }
 
+        setFilterByAsMap(null);
+
         // reset component for MyFaces view pooling
         columnsCountWithSpan = -1;
         reset = false;
@@ -1385,13 +1400,13 @@ public class DataTable extends DataTableBase {
             }
 
             updateSortByWithTableState(ts.getSortBy());
+            updateFilterByWithTableState(ts.getFilterBy());
 
             if (isSelectionEnabled()) {
                 selectedRowKeys = ts.getRowKeys();
                 isRowKeyRestored = true;
             }
 
-            setFilterBy(ts.getFilterBy());
             setColumns(findOrderedColumns(ts.getOrderedColumnsAsString()));
             setTogglableColumnsAsString(ts.getTogglableColumnsAsString());
             setResizableColumnsAsString(ts.getResizableColumnsAsString());
@@ -1430,7 +1445,7 @@ public class DataTable extends DataTableBase {
         }
 
         return context.getApplication().getExpressionFactory()
-                .createValueExpression(context.getELContext(), "#{" + var + "." + field + "}", String.class);
+                .createValueExpression(context.getELContext(), "#{" + var + "." + field + "}", Object.class);
     }
 
     protected Map<String, SortMeta> initSortBy(Object sortByTmp) {
@@ -1542,11 +1557,131 @@ public class DataTable extends DataTableBase {
         return true;
     }
 
+    protected Map<String, FilterMeta> initFilterBy(Object userFilterBy) {
+        Map<String, FilterMeta> filterBy = new HashMap<>();
+        AtomicBoolean filtered = new AtomicBoolean();
+
+        // build columns filterBy
+        char separator = UINamingContainer.getSeparatorChar(getFacesContext());
+        populateFilterBy(getFacesContext(), separator, this, filterBy, filtered);
+
+        // merge internal filterBy with user filterBy
+        if (userFilterBy != null) {
+            Collection<FilterMeta> filterByTmp;
+            if (userFilterBy instanceof FilterMeta) {
+                filterByTmp = Collections.singletonList((FilterMeta) userFilterBy);
+            }
+            else if (!(userFilterBy instanceof Collection)) {
+                throw new FacesException("DataTable#filterBy expects a single or a collection of FilterMeta");
+            }
+            else {
+                filterByTmp = (Collection<FilterMeta>) userFilterBy;
+            }
+
+            updateFilterByWithUserFilterBy(filterBy, filterByTmp, filtered);
+        }
+
+        // build global filterBy
+        String globalFilter = getGlobalFilter();
+        Set<SearchExpressionHint> hint = LangUtils.isValueBlank(globalFilter)
+                ? EnumSet.of(SearchExpressionHint.IGNORE_NO_RESULT)
+                : Collections.emptySet();
+        UIComponent globalFilterComponent = SearchExpressionFacade
+                .resolveComponent(getFacesContext(), this, DataTable.PropertyKeys.globalFilter.toString(), hint);
+        if (globalFilterComponent != null) {
+            if (globalFilterComponent instanceof ValueHolder) {
+                ((ValueHolder) globalFilterComponent).setValue(globalFilter);
+            }
+            FilterMeta globalFilterBy = FilterMeta.of(filterBy.values(), globalFilter, getGlobalFilterFunction());
+            filterBy.put(globalFilterBy.getColumnKey(), globalFilterBy);
+        }
+
+        setDefaultFilter(filtered.get());
+
+        return filterBy;
+    }
+
+    protected void populateFilterBy(FacesContext context, char separator, UIComponent root, Map<String, FilterMeta> filterBy, AtomicBoolean defaultFilter) {
+        for (int i = 0; i < root.getChildCount(); i++) {
+            UIComponent child = root.getChildren().get(i);
+            if (child.isRendered()) {
+                if (child instanceof Columns) {
+                    Columns columns = (Columns) child;
+                    String uiColumnsClientId = columns.getClientId(context);
+
+                    for (int j = 0; j < columns.getRowCount(); j++) {
+                        DynamicColumn dynaColumn = new DynamicColumn(j, columns);
+                        dynaColumn.setColumnKey(uiColumnsClientId + separator + j);
+                        FilterMeta f = FilterMeta.of(getFacesContext(), getVar(), dynaColumn);
+                        if (f != null) {
+                            filterBy.put(f.getColumnKey(), f);
+                            defaultFilter.set(defaultFilter.get() || f.isActive());
+                        }
+                    }
+                }
+                else if (child instanceof UIColumn) {
+                    UIColumn column = (UIColumn) child;
+                    FilterMeta f = FilterMeta.of(getFacesContext(), getVar(), column);
+                    if (f != null) {
+                        filterBy.put(f.getColumnKey(), f);
+                        defaultFilter.set(defaultFilter.get() || f.isActive());
+                    }
+                }
+                else if (child instanceof ColumnGroup) {
+                    populateFilterBy(context, separator, child, filterBy, defaultFilter);
+                }
+            }
+        }
+    }
+
+    protected void updateFilterByWithTableState(Map<String, FilterMeta> tsSortBy) {
+        if (tsSortBy != null) {
+            boolean defaultFilter = isDefaultFilter();
+            for (Map.Entry<String, FilterMeta> entry : tsSortBy.entrySet()) {
+                FilterMeta intlSortBy = getFilterByAsMap().get(entry.getKey());
+                if (intlSortBy != null) {
+                    FilterMeta tsSortMeta = entry.getValue();
+                    intlSortBy.setFilterValue(tsSortMeta.getFilterValue());
+                    defaultFilter |= intlSortBy.isActive();
+                }
+            }
+
+            setDefaultFilter(defaultFilter);
+        }
+    }
+
+    protected void updateFilterByWithUserFilterBy(Map<String, FilterMeta> intlFilterBy, Collection<FilterMeta> usrFilterBy, AtomicBoolean filtered) {
+        for (FilterMeta userFM : usrFilterBy) {
+            FilterMeta intlFM = intlFilterBy.values().stream()
+                    .filter(o -> o.getField().equals(userFM.getField()))
+                    .findAny()
+                    .orElseThrow(() -> new FacesException("No column with field '" + userFM.getField() + "' has been found"));
+
+            ValueExpression filterByVE = userFM.getFilterBy();
+            if (filterByVE == null) {
+                filterByVE = createValueExprFromVarField(getFacesContext(), getVar(), userFM.getField());
+            }
+
+            intlFM.setFilterValue(userFM.getFilterValue());
+            intlFM.setFilterBy(filterByVE);
+            intlFM.setConstraint(userFM.getConstraint());
+            filtered.set(filtered.get() || userFM.isActive());
+        }
+    }
+
     public Map<String, SortMeta> getSortByAsMap() {
         return ComponentUtils.computeIfAbsent(getStateHelper(), "_sortBy", () -> initSortBy(getSortBy()));
     }
 
     public void setSortByAsMap(Map<String, SortMeta> sortBy) {
         getStateHelper().put("_sortBy", sortBy);
+    }
+
+    public Map<String, FilterMeta> getFilterByAsMap() {
+        return ComponentUtils.computeIfAbsent(getStateHelper(), "_filterBy", () -> initFilterBy(getFilterBy()));
+    }
+
+    public void setFilterByAsMap(Map<String, FilterMeta> sortBy) {
+        getStateHelper().put("_filterBy", sortBy);
     }
 }

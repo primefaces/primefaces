@@ -51,8 +51,6 @@ import org.primefaces.component.row.Row;
 import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.summaryrow.SummaryRow;
 import org.primefaces.event.data.PostRenderEvent;
-import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 import org.primefaces.renderkit.DataRenderer;
@@ -134,20 +132,9 @@ public class DataTableRenderer extends DataRenderer {
                 table.setRowIndex(-1);
             }
 
-            Map<String, FilterMeta> filterBy = table.getFilterBy();
-            if (!filterBy.isEmpty()) {
-                String globalFilter = table.getGlobalFilter();
-                if (globalFilter != null) {
-                    UIComponent globalFilterComponent = SearchExpressionFacade.resolveComponent(context, table,
-                            DataTable.PropertyKeys.globalFilter.toString());
-                    if (globalFilterComponent != null) {
-                        ((ValueHolder) globalFilterComponent).setValue(globalFilter);
-                    }
-                    filterBy.put("globalFilter", new FilterMeta("globalFilter", globalFilter));
-                }
-
+            if (table.isDefaultFilter()) {
                 FilterFeature filterFeature = (FilterFeature) table.getFeature(DataTableFeatureKey.FILTER);
-                filterFeature.filter(context, table, filterBy);
+                filterFeature.filter(context, table);
             }
         }
 
@@ -601,10 +588,9 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = column.getContainerClientId(context);
 
-        ValueExpression columnFilterByVE = column.getValueExpression(Column.PropertyKeys.filterBy.toString());
 
         boolean sortable = table.isColumnSortable(column);
-        boolean filterable = (columnFilterByVE != null && column.isFilterable());
+        boolean filterable = table.getFilterByAsMap().containsKey(column.getColumnKey());
         String selectionMode = column.getSelectionMode();
         String sortIcon = null;
         boolean resizable = table.isResizableColumns() && column.isResizable();
@@ -679,8 +665,6 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         if (filterable) {
-            table.enableFiltering();
-
             String filterPosition = column.getFilterPosition();
 
             if (filterPosition.equals("bottom")) {
@@ -707,16 +691,7 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected Object findFilterValue(DataTable table, UIColumn column) {
-        Map<String, FilterMeta> filterBy = table.getFilterBy();
-        if (!filterBy.isEmpty()) {
-            for (FilterMeta filter : filterBy.values()) {
-                if (Objects.equals(filter.getColumnKey(), column.getColumnKey())) {
-                    return filter.getFilterValue();
-                }
-            }
-        }
-
-        return null;
+        return table.getFilterByAsMap().get(column.getColumnKey()).getFilterValue();
     }
 
     protected String resolveDefaultSortIcon(SortMeta sortMeta) {

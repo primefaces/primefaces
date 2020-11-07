@@ -1229,50 +1229,43 @@ public class TreeTableRenderer extends DataRenderer {
 
         for (int i = 0; i < childCount; i++) {
             TreeNode childNode = node.getChildren().get(i);
-            boolean localMatch = true;
-            boolean globalMatch = false;
+            boolean matching = true;
             String rowKey = childNode.getRowKey();
             tt.setRowKey(root, rowKey);
 
-            for (int j = 0; j < filterBy.size(); j++) {
-                FilterMeta filter = filterBy.get(j);
-                UIColumn column = filter.getColumn();
-                if (column == null) {
-                    continue;
-                }
-
-                MethodExpression filterFunction = column.getFilterFunction();
-                ValueExpression filterByVE = filter.getFilterByVE();
-                Object filterValue = filter.getFilterValue();
-
-                if (column instanceof DynamicColumn) {
-                    ((DynamicColumn) column).applyStatelessModel();
-                }
-
-                Object columnValue = filterByVE.getValue(elContext);
-                FilterConstraint filterConstraint = getFilterConstraint(column);
-
-                if (hasGlobalFilter && !globalMatch) {
-                    globalMatch = globalFilterConstraint.applies(columnValue, globalFilterValue, filterLocale);
-                }
-                if (filterFunction != null) {
-                    localMatch = (Boolean) filterFunction.invoke(elContext, new Object[]{columnValue, filterValue, filterLocale});
-                }
-                else if (!filterConstraint.applies(columnValue, filterValue, filterLocale)) {
-                    localMatch = false;
-                }
-
-                if (!localMatch) {
-                    break;
-                }
-            }
-
-            boolean matches = localMatch;
             if (hasGlobalFilter) {
-                matches = localMatch && globalMatch;
+                matching = globalFilterConstraint.isMatching(context, childNode.getData(), globalFilterValue, filterLocale);
+            }
+            else {
+                for (int j = 0; j < filterBy.size(); j++) {
+                    FilterMeta filter = filterBy.get(j);
+                    UIColumn column = filter.getColumn();
+                    if (column == null || !filter.isActive()) {
+                        continue;
+                    }
+
+                    if (column instanceof DynamicColumn) {
+                        ((DynamicColumn) column).applyStatelessModel();
+                    }
+
+                    MethodExpression filterFunction = column.getFilterFunction();
+                    ValueExpression filterByVE = filter.getFilterBy();
+                    Object filterValue = filter.getFilterValue();
+
+                    Object columnValue = filterByVE.getValue(elContext);
+                    FilterConstraint filterConstraint = getFilterConstraint(column);
+
+                    matching = filterFunction != null
+                        ? (Boolean) filterFunction.invoke(elContext, new Object[]{columnValue, filterValue, filterLocale})
+                        : filterConstraint.isMatching(context, columnValue, filterValue, filterLocale);
+
+                    if (!matching) {
+                        break;
+                    }
+                }
             }
 
-            if (matches) {
+            if (matching) {
                 tt.getFilteredRowKeys().add(rowKey);
             }
 

@@ -43,7 +43,7 @@ DataTable displays data in tabular format.
 | expandedRow               | false              | Boolean          | Defines if row should be rendered as expanded by default.
 | filterBy                  | null               | Map              | Map of filters; This also allows to filter the table by default.
 | filterDelay               | 300                | Integer          | Delay in milliseconds before sending an ajax filter query.
-| filterEvent               | keyup              | String           | Event to invoke filtering for input filters.
+| filterEvent               | keyup              | String           | Event triggering filter for input filters.
 | filteredValue             | null               | List             | List to keep filtered data.
 | first                     | 0                  | Integer          | Index of the first row to be displayed
 | frozenColumns             | 0                  | Integer          | Number of columns to freeze from start index 0.

@@ -23,68 +23,126 @@
  */
 package org.primefaces.model;
 
-import java.io.Serializable;
-import java.util.Objects;
-
-import javax.el.ValueExpression;
-
+import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.column.ColumnBase;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.datatable.feature.FilterFeature;
+import org.primefaces.model.filter.FilterConstraint;
+import org.primefaces.model.filter.FunctionFilterConstraint;
+import org.primefaces.model.filter.GlobalFilterConstraint;
+
+import javax.el.ELContext;
+import javax.el.MethodExpression;
+import javax.el.ValueExpression;
+import javax.faces.context.FacesContext;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Objects;
 
 public class FilterMeta implements Serializable {
 
+    public static final String GLOBAL_FILTER_KEY = "globalFilter";
+
     private static final long serialVersionUID = 1L;
 
-    private String filterField;
+    private String field;
     private String columnKey;
     private transient UIColumn column;
-    private ValueExpression filterByVE;
-    private MatchMode filterMatchMode;
+    private ValueExpression filterBy;
     private Object filterValue;
+    private FilterConstraint constraint;
 
     public FilterMeta() {
-
+        // NOOP
     }
 
-    public FilterMeta(String filterField, Object filterValue) {
-        this.filterField = filterField;
-        this.filterValue = filterValue;
-    }
-
-    public FilterMeta(String filterField, String columnKey, ValueExpression filterByVE, MatchMode filterMatchMode, Object filterValue) {
-        this.filterField = filterField;
+    FilterMeta(String columnKey, String field, FilterConstraint constraint,
+               ValueExpression filterBy, Object filterValue, UIColumn column) {
+        this.field = field;
         this.columnKey = columnKey;
-        this.filterByVE = filterByVE;
-        this.filterMatchMode = filterMatchMode;
+        this.filterBy = filterBy;
+        this.constraint = constraint;
+        this.filterValue = filterValue;
+        this.column = column;
+    }
+
+    @Deprecated
+    public FilterMeta(String field, String columnKey, ValueExpression filterByVE, MatchMode filterMatchMode, Object filterValue) {
+        this.field = field;
+        this.columnKey = columnKey;
+        this.filterBy = filterByVE;
+        this.constraint = FilterFeature.FILTER_CONSTRAINTS.get(filterMatchMode);
         this.filterValue = filterValue;
     }
 
-    public FilterMeta(FilterMeta filterMeta) {
-        this.filterField = filterMeta.getFilterField();
-        this.columnKey = filterMeta.getColumnKey();
-        this.filterByVE = filterMeta.getFilterByVE();
-        this.filterMatchMode = filterMeta.getFilterMatchMode();
-        this.filterValue = filterMeta.getFilterValue();
-        this.column = null; // this constructor is currently just a copy-constructor for the TableState, and we don't need the component in the state
+    public static FilterMeta of(FacesContext context, String var, UIColumn column) {
+        if (column instanceof DynamicColumn) {
+            ((DynamicColumn) column).applyStatelessModel();
+        }
+
+        if (!column.isFilterable()) {
+            return null;
+        }
+
+        String field = resolveFilterField(context, column);
+        if (field == null) {
+            return null;
+        }
+
+        ValueExpression filterByVE = column.getValueExpression(ColumnBase.PropertyKeys.filterBy.name());
+        filterByVE = filterByVE != null ? filterByVE : DataTable.createValueExprFromVarField(context, var, field);
+
+        MatchMode mode = MatchMode.byName(column.getFilterMatchMode());
+        FilterConstraint constraint = FilterFeature.FILTER_CONSTRAINTS.get(mode);
+
+        if (column.getFilterFunction() != null) {
+            constraint = new FunctionFilterConstraint(column.getFilterFunction());
+        }
+
+        return new FilterMeta(column.getColumnKey(),
+                              field,
+                              constraint,
+                              filterByVE,
+                              column.getFilterValue(),
+                              column);
     }
 
-    public String getFilterField() {
-        return filterField;
+    public static FilterMeta of(Collection<FilterMeta> filterBy, Object globalFilterValue, MethodExpression globalFilterFunction) {
+        FilterConstraint constraint = globalFilterFunction == null
+                ? new GlobalFilterConstraint(filterBy)
+                : new FunctionFilterConstraint(globalFilterFunction);
+
+        return new FilterMeta(GLOBAL_FILTER_KEY,
+                              GLOBAL_FILTER_KEY,
+                              constraint,
+                              null,
+                              globalFilterValue,
+                              null);
+    }
+
+    public String getField() {
+        return field;
     }
 
     public String getColumnKey() {
         return columnKey;
     }
 
-    public ValueExpression getFilterByVE() {
-        return filterByVE;
+    public ValueExpression getFilterBy() {
+        return filterBy;
     }
 
-    public MatchMode getFilterMatchMode() {
-        return filterMatchMode;
+    public void setFilterBy(ValueExpression filterBy) {
+        this.filterBy = filterBy;
     }
 
     public Object getFilterValue() {
         return filterValue;
+    }
+
+    public void setFilterValue(Object filterValue) {
+        this.filterValue = filterValue;
     }
 
     public UIColumn getColumn() {
@@ -95,29 +153,97 @@ public class FilterMeta implements Serializable {
         this.column = column;
     }
 
+    public FilterConstraint getConstraint() {
+        return constraint;
+    }
+
+    public void setConstraint(FilterConstraint constraint) {
+        this.constraint = constraint;
+    }
+
+    public boolean isActive() {
+        return filterValue != null;
+    }
+
+    public boolean isGlobalFilter() {
+        return GLOBAL_FILTER_KEY.equals(columnKey);
+    }
+
+    public Object getLocalValue(ELContext elContext) {
+        if (column instanceof DynamicColumn) {
+            ((DynamicColumn) column).applyStatelessModel();
+        }
+        return filterBy.getValue(elContext);
+    }
+
+    static String resolveFilterField(FacesContext context, UIColumn column) {
+        ValueExpression columnFilterByVE = column.getValueExpression(ColumnBase.PropertyKeys.filterBy.toString());
+
+        if (column.isDynamic()) {
+            String field = column.getField();
+            if (field == null) {
+                Object filterBy = column.getFilterBy();
+                field = (filterBy == null) ? DataTable.resolveDynamicField(context, columnFilterByVE) : filterBy.toString();
+            }
+            return field;
+        }
+        else {
+            String field = column.getField();
+            if (field == null) {
+                field = (columnFilterByVE == null) ? (String) column.getFilterBy() : DataTable.resolveStaticField(columnFilterByVE);
+            }
+            return field;
+        }
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+
+        private final FilterMeta filterBy;
+
+        private Builder() {
+            filterBy = new FilterMeta();
+        }
+
+        public Builder field(String field) {
+            filterBy.field = field;
+            return this;
+        }
+
+        public Builder filterBy(ValueExpression filterBy) {
+            this.filterBy.filterBy = filterBy;
+            return this;
+        }
+
+        public Builder filterValue(Object filterValue) {
+            filterBy.filterValue = filterValue;
+            return this;
+        }
+
+        public Builder constraint(FilterConstraint constraint) {
+            filterBy.constraint = constraint;
+            return this;
+        }
+
+        public FilterMeta build() {
+            return filterBy;
+        }
+    }
+
     @Override
-    public String toString() {
-        return "FilterMeta [filterField=" + filterField + ", columnKey=" + columnKey + ", filterByVE=" + filterByVE + ", filterMatchMode=" + filterMatchMode
-                    + ", filterValue=" + filterValue + "]";
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FilterMeta that = (FilterMeta) o;
+        return Objects.equals(field, that.field) &&
+                Objects.equals(columnKey, that.columnKey);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(columnKey, filterField);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (!(obj instanceof FilterMeta)) {
-            return false;
-        }
-        FilterMeta other = (FilterMeta) obj;
-        return Objects.equals(columnKey, other.columnKey) && Objects.equals(filterField, other.filterField);
+        return Objects.hash(field, columnKey);
     }
 }
