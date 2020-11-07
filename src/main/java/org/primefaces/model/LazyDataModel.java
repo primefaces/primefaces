@@ -24,11 +24,7 @@
 package org.primefaces.model;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -174,7 +170,6 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
         }
         else {
             sortBy = new HashMap<>(1);
-            //sortBy.put(sortField, new SortMeta(null, sortField, sortOrder == null ? SortOrder.UNSORTED : sortOrder, null));
         }
 
         return iterator(sortBy, filterBy);
