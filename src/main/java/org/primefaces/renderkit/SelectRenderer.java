@@ -386,11 +386,19 @@ public abstract class SelectRenderer extends InputRenderer {
                     }
                     else if (LangUtils.contains(oldValues, selectItemVal)) {
                         validSubmittedValues.add(selectItemVal);
+                        if (submittedValues.length == validSubmittedValues.size()) {
+                            //fast path
+                            return validSubmittedValues;
+                        }
                     }
                 }
                 else {
                     if (LangUtils.contains(submittedValues, selectItemVal)) {
                         validSubmittedValues.add(selectItemVal);
+                        if (submittedValues.length == validSubmittedValues.size()) {
+                            //fast path
+                            return validSubmittedValues;
+                        }
                     }
                 }
             }
