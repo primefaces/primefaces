@@ -1324,8 +1324,6 @@ public class DataTable extends DataTableBase {
             setValue(null);
         }
 
-        setSortByAsMap(null);
-
         // reset component for MyFaces view pooling
         columnsCountWithSpan = -1;
         reset = false;
@@ -1498,10 +1496,7 @@ public class DataTable extends DataTableBase {
             SortMeta intlSM = intlSortBy.values().stream()
                     .filter(o -> o.getField().equals(userSM.getField()))
                     .findAny()
-                    .orElse(null);
-            if (intlSM == null) {
-                throw new FacesException("No column with field '" + userSM.getField() + "' has been found");
-            }
+                    .orElseThrow(() -> new FacesException("No column with field '" + userSM.getField() + "' has been found"));
 
             ValueExpression sortByVE = userSM.getSortBy();
             if (sortByVE == null) {
