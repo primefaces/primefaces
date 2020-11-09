@@ -109,7 +109,8 @@ public class CarouselRenderer extends CoreRenderer {
         encodeContent(context, carousel);
         encodeFooter(context, carousel);
 
-        encodeStateField(context, carousel, clientId + "_page", carousel.getPage());
+        int pageCount = calculatePageCount(carousel);
+        encodeStateField(context, carousel, clientId + "_page", pageCount);
 
         if (carousel.isToggleable()) {
             encodeStateField(context, carousel, clientId + "_collapsed", String.valueOf(collapsed));
@@ -135,7 +136,7 @@ public class CarouselRenderer extends CoreRenderer {
 
         if (carousel.getVar() != null) {
             for (int i = 0; i < carousel.getRowCount(); i++) {
-                carousel.setRowIndex(i);
+                carousel.setIndex(i);
 
                 writer.startElement("li", null);
                 writer.writeAttribute("class", itemStyleClass, "itemStyleClass");
@@ -148,7 +149,7 @@ public class CarouselRenderer extends CoreRenderer {
                 writer.endElement("li");
             }
 
-            carousel.setRowIndex(-1); //clear
+            carousel.setIndex(-1); //clear
         }
         else {
             for (UIComponent kid : carousel.getChildren()) {
@@ -175,11 +176,10 @@ public class CarouselRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         boolean vertical = carousel.isVertical();
         String clientId = carousel.getClientId(context);
-        int numVisible = carousel.getNumVisible();
         String var = carousel.getVar();
         int rowCount = carousel.getRowCount();
         int renderedChildCount = carousel.getRenderedChildCount();
-        int pageCount = var != null ? (int) (Math.ceil(rowCount / (1d * numVisible))) : renderedChildCount;
+        int pageCount = calculatePageCount(carousel);
         int itemCount = var != null ? rowCount : renderedChildCount;
 
         writer.startElement("div", null);
@@ -329,5 +329,13 @@ public class CarouselRenderer extends CoreRenderer {
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         //Rendering happens on encodeEnd
+    }
+
+    protected int calculatePageCount(Carousel carousel) {
+        String var = carousel.getVar();
+        int rowCount = carousel.getRowCount();
+        int numVisible = carousel.getNumVisible();
+        int renderedChildCount = carousel.getRenderedChildCount();
+        return var != null ? (int) (Math.ceil(rowCount / (1d * numVisible))) : renderedChildCount;
     }
 }
