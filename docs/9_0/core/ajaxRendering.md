@@ -150,15 +150,3 @@ This can be easily archived by attaching `p:autoUpdate` to the component:
 
 You can also skip all auto-updates by setting _ignoreAutoUpdate_ to `true` on the trigger component (like `p:ajax`)
 
-## Widget Lifecycle Events
-
-For any component you can attach client side Javascript to the widget lifecycle for `PostConstruct`, `PostRefresh`, or `PreDestroy` of the widget.
-Simply assign the correct `f:attribute` to add your script.
-
-```xhtml
-<p:inputText id="name" widgetVar="wgtName" value="#{basicView.text}">
-    <f:attribute name="widgetPostConstruct" value="alert('Widget created!');" />  
-    <f:attribute name="widgetPostRefresh" value="alert('Widget refreshed!');" />  
-    <f:attribute name="widgetPreDestroy" value="alert('Widget destroyed!');" />  
-</p:inputText>
-```

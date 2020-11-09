@@ -39,6 +39,7 @@
   - [Search Expression](/core/searchexpression.md)
   - [Themes](/core/themes.md)
   - [Third Party Libraries](/core/thirdpartylibs.md)
+  - [Widgets](/core/widgets.md)
 
 - Components
 
