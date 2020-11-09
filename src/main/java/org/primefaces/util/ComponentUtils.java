@@ -195,13 +195,13 @@ public class ComponentUtils {
         }
 
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String behaviorEvent = params.get("javax.faces.behavior.event");
+        String behaviorEvent = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
         if (null != behaviorEvent) {
             List<ClientBehavior> behaviorsForEvent = behaviors.get(behaviorEvent);
 
             if (behaviorsForEvent != null && !behaviorsForEvent.isEmpty()) {
-                String behaviorSource = params.get("javax.faces.source");
+                String behaviorSource = params.get(Constants.RequestParams.PARTIAL_SOURCE_PARAM);
                 String clientId = component.getClientId(context);
 
                 if (behaviorSource != null && clientId.equals(behaviorSource)) {
