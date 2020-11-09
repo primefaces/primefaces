@@ -41,10 +41,9 @@ public class IdleMonitorRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         IdleMonitor idleMonitor = (IdleMonitor) component;
-        String clientId = idleMonitor.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("IdleMonitor", idleMonitor.resolveWidgetVar(context), clientId)
+        wb.init("IdleMonitor", idleMonitor)
                 .attr("timeout", idleMonitor.getTimeout())
                 .attr("multiWindowSupport", idleMonitor.isMultiWindowSupport())
                 .callback("onidle", "function()", idleMonitor.getOnidle())

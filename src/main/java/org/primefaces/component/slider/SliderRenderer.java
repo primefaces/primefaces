@@ -68,12 +68,11 @@ public class SliderRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, Slider slider) throws IOException {
-        String clientId = slider.getClientId(context);
         boolean range = slider.isRange();
         UIComponent output = getTarget(context, slider, slider.getDisplay());
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Slider", slider.resolveWidgetVar(context), clientId);
+        wb.init("Slider", slider);
 
         if (range) {
             String[] inputIds = slider.getFor().split(",");

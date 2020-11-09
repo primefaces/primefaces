@@ -165,11 +165,10 @@ public class DataScrollerRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, DataScroller ds, int chunkSize) throws IOException {
-        String clientId = ds.getClientId(context);
         String loadEvent = ds.getFacet("loader") == null ? "scroll" : "manual";
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("DataScroller", ds.resolveWidgetVar(context), clientId)
+        wb.init("DataScroller", ds)
                 .attr("chunkSize", chunkSize)
                 .attr("totalSize", ds.getRowCount())
                 .attr("loadEvent", loadEvent)

@@ -51,7 +51,7 @@ public class DroppableRenderer extends CoreRenderer {
                 context, droppable, droppable.getFor(), SearchExpressionUtils.SET_PARENT_FALLBACK);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Droppable", droppable.resolveWidgetVar(context), clientId)
+        wb.init("Droppable", droppable)
                 .attr("target", target.getClientId(context))
                 .attr("disabled", droppable.isDisabled(), false)
                 .attr("hoverClass", droppable.getHoverStyleClass(), null)

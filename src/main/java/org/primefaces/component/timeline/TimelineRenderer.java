@@ -106,7 +106,6 @@ public class TimelineRenderer extends CoreRenderer {
         }
 
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = timeline.getClientId(context);
 
         ZoneId zoneId = CalendarUtils.calculateZoneId(timeline.getTimeZone());
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME.withZone(zoneId);
@@ -115,7 +114,7 @@ public class TimelineRenderer extends CoreRenderer {
         FastStringWriter fswHtml = new FastStringWriter();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Timeline", timeline.resolveWidgetVar(context), clientId);
+        wb.init("Timeline", timeline);
 
         List<TimelineEvent<Object>> events = model.getEvents();
         List<TimelineGroup<Object>> groups = calculateGroupsFromModel(model);

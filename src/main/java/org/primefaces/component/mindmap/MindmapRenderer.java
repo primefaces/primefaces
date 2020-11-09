@@ -58,11 +58,10 @@ public class MindmapRenderer extends CoreRenderer {
 
     protected void encodeScript(FacesContext context, Mindmap map) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = map.getClientId(context);
         MindmapNode root = map.getValue();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Mindmap", map.resolveWidgetVar(context), clientId)
+        wb.init("Mindmap", map)
                 .attr("effectSpeed", map.getEffectSpeed());
 
         if (root != null) {

@@ -47,10 +47,8 @@ public class DonutChartRenderer extends ChartRenderer {
     }
 
     protected void encodeScript(FacesContext context, DonutChart chart) throws IOException {
-        String clientId = chart.getClientId(context);
-
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("DonutChart", chart.resolveWidgetVar(context), clientId);
+        wb.init("DonutChart", chart);
 
         encodeConfig(context, chart.getModel());
         encodeClientBehaviors(context, chart);

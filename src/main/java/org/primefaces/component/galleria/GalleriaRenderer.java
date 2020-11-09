@@ -116,14 +116,13 @@ public class GalleriaRenderer extends CoreRenderer {
 
     public void encodeScript(FacesContext context, UIComponent component) throws IOException {
         Galleria galleria = (Galleria) component;
-        String clientId = galleria.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
 
         if (context.isPostback()) {
-            wb.init("Galleria", galleria.resolveWidgetVar(context), clientId);
+            wb.init("Galleria", galleria);
         }
         else {
-            wb.initWithWindowLoad("Galleria", galleria.resolveWidgetVar(context), clientId);
+            wb.initWithWindowLoad("Galleria", galleria);
         }
 
         wb.attr("showFilmstrip", galleria.isShowFilmstrip(), true)

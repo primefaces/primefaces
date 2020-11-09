@@ -91,10 +91,9 @@ public class ChartRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Chart chart) throws IOException {
         String type = chart.getType();
         BasePlotRenderer plotRenderer = CHART_RENDERERS.get(type);
-        String clientId = chart.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Chart", chart.resolveWidgetVar(context), clientId)
+        wb.init("Chart", chart)
                 .attr("type", type);
 
         if (chart.isResponsive()) {

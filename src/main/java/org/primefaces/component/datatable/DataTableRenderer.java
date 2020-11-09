@@ -162,7 +162,6 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void encodeScript(FacesContext context, DataTable table) throws IOException {
-        String clientId = table.getClientId(context);
         String selectionMode = table.resolveSelectionMode();
         String widgetClass = (table.getFrozenColumns() == 0) ? "DataTable" : "FrozenDataTable";
         String initMode = table.getInitMode();
@@ -170,10 +169,10 @@ public class DataTableRenderer extends DataRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
 
         if (initMode.equals("load")) {
-            wb.init(widgetClass, table.resolveWidgetVar(context), clientId);
+            wb.init(widgetClass, table);
         }
         else if (initMode.equals("immediate")) {
-            wb.init(widgetClass, table.resolveWidgetVar(context), clientId);
+            wb.init(widgetClass, table);
         }
         else {
             throw new FacesException(initMode + " is not a valid value for initMode, possible values are \"load\" and \"immediate.");

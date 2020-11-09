@@ -25,8 +25,8 @@ package org.primefaces.component.tabview;
 
 import java.io.IOException;
 import java.util.Map;
-import javax.faces.FacesException;
 
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -95,11 +95,10 @@ public class TabViewRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, TabView tabView) throws IOException {
-        String clientId = tabView.getClientId(context);
         boolean dynamic = tabView.isDynamic();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("TabView", tabView.resolveWidgetVar(context), clientId);
+        wb.init("TabView", tabView);
 
         if (dynamic) {
             wb.attr("dynamic", true).attr("cache", tabView.isCache());

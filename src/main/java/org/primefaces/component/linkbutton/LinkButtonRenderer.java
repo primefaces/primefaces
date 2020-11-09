@@ -84,10 +84,8 @@ public class LinkButtonRenderer extends OutcomeTargetRenderer {
     }
 
     protected void encodeScript(FacesContext context, LinkButton button) throws IOException {
-        String clientId = button.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("LinkButton", button.resolveWidgetVar(context), clientId);
-
+        wb.init("LinkButton", button);
         wb.finish();
     }
 

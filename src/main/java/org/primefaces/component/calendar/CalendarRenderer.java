@@ -71,12 +71,11 @@ public class CalendarRenderer extends BaseCalendarRenderer {
     @Override
     protected void encodeScript(FacesContext context, UICalendar uicalendar, String value) throws IOException {
         Calendar calendar = (Calendar) uicalendar;
-        String clientId = calendar.getClientId(context);
         Locale locale = calendar.calculateLocale(context);
         String pattern = calendar.calculateWidgetPattern();
         String mask = calendar.getMask();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Calendar", calendar.resolveWidgetVar(context), clientId);
+        wb.init("Calendar", calendar);
 
         wb.attr("popup", calendar.isPopup())
                 .attr("locale", locale.toString())

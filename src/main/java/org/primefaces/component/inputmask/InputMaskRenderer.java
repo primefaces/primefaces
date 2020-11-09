@@ -132,10 +132,9 @@ public class InputMaskRenderer extends InputRenderer {
     }
 
     protected void encodeScript(FacesContext context, InputMask inputMask) throws IOException {
-        String clientId = inputMask.getClientId(context);
         String mask = inputMask.getMask();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("InputMask", inputMask.resolveWidgetVar(context), clientId);
+        wb.init("InputMask", inputMask);
 
         if (mask != null) {
             wb.attr("mask", mask)

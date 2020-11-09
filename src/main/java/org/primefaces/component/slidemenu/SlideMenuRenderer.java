@@ -39,10 +39,9 @@ public class SlideMenuRenderer extends TieredMenuRenderer {
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         SlideMenu menu = (SlideMenu) abstractMenu;
-        String clientId = menu.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SlideMenu", menu.resolveWidgetVar(context), clientId);
+        wb.init("SlideMenu", menu);
 
         if (menu.isOverlay()) {
             encodeOverlayConfig(context, menu, wb);

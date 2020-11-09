@@ -156,10 +156,9 @@ public class ColorPickerRenderer extends InputRenderer {
     }
 
     protected void encodeScript(FacesContext context, ColorPicker colorPicker, String value) throws IOException {
-        String clientId = colorPicker.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
 
-        wb.init("ColorPicker", colorPicker.resolveWidgetVar(context), clientId)
+        wb.init("ColorPicker", colorPicker)
                 .attr("mode", colorPicker.getMode())
                 .attr("color", value, null);
 

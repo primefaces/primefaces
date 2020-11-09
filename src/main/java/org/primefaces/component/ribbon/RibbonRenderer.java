@@ -53,9 +53,8 @@ public class RibbonRenderer extends CoreRenderer {
     }
 
     private void encodeScript(FacesContext context, Ribbon ribbon) throws IOException {
-        String clientId = ribbon.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Ribbon", ribbon.resolveWidgetVar(context), clientId);
+        wb.init("Ribbon", ribbon);
 
         encodeClientBehaviors(context, ribbon);
 

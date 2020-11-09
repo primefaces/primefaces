@@ -47,10 +47,8 @@ public class RadarChartRenderer extends ChartRenderer {
     }
 
     protected void encodeScript(FacesContext context, RadarChart chart) throws IOException {
-        String clientId = chart.getClientId(context);
-
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("RadarChart", chart.resolveWidgetVar(context), clientId);
+        wb.init("RadarChart", chart);
 
         encodeConfig(context, chart.getModel());
         encodeClientBehaviors(context, chart);

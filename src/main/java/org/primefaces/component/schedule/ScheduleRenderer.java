@@ -150,11 +150,10 @@ public class ScheduleRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, Schedule schedule) throws IOException {
-        String clientId = schedule.getClientId(context);
         Locale locale = schedule.calculateLocale(context);
         WidgetBuilder wb = getWidgetBuilder(context);
 
-        wb.init("Schedule", schedule.resolveWidgetVar(context), clientId)
+        wb.init("Schedule", schedule)
                 .attr("urlTarget", schedule.getUrlTarget(), "_blank")
                 .attr("noOpener", schedule.isNoOpener(), true)
                 .attr("locale", locale.toString())

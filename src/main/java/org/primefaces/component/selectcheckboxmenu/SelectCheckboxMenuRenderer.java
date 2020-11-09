@@ -317,10 +317,8 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
     }
 
     protected void encodeScript(FacesContext context, SelectCheckboxMenu menu) throws IOException {
-        String clientId = menu.getClientId(context);
-
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectCheckboxMenu", menu.resolveWidgetVar(context), clientId)
+        wb.init("SelectCheckboxMenu", menu)
                 .callback("onShow", "function()", menu.getOnShow())
                 .callback("onHide", "function()", menu.getOnHide())
                 .callback("onChange", "function()", menu.getOnchange())

@@ -201,9 +201,8 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
     }
 
     protected void encodeScript(FacesContext context, SplitButton button) throws IOException {
-        String clientId = button.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SplitButton", button.resolveWidgetVar(context), clientId);
+        wb.init("SplitButton", button);
         wb.attr("appendTo", SearchExpressionFacade.resolveClientId(context, button, button.getAppendTo(),
                 SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null);
 

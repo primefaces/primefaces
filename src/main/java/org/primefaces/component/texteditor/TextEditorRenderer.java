@@ -33,14 +33,10 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
-import org.primefaces.context.PrimeApplicationContext;
 
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.EscapeUtils;
-import org.primefaces.util.HtmlSanitizer;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.*;
 
 public class TextEditorRenderer extends InputRenderer {
 
@@ -138,9 +134,8 @@ public class TextEditorRenderer extends InputRenderer {
     }
 
     private void encodeScript(FacesContext context, TextEditor editor) throws IOException {
-        String clientId = editor.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("TextEditor", editor.resolveWidgetVar(context), clientId)
+        wb.init("TextEditor", editor)
                 .attr("toolbarVisible", editor.isToolbarVisible())
                 .attr("readOnly", editor.isReadonly(), false)
                 .attr("disabled", editor.isDisabled(), false)

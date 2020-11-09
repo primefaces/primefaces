@@ -72,7 +72,6 @@ public class LightBoxRenderer extends CoreRenderer {
 
     public void encodeScript(FacesContext context, UIComponent component) throws IOException {
         LightBox lb = (LightBox) component;
-        String clientId = lb.getClientId(context);
         String mode = "image";
         if (lb.getFacet("inline") != null) {
             mode = "inline";
@@ -82,7 +81,7 @@ public class LightBoxRenderer extends CoreRenderer {
         }
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("LightBox", lb.resolveWidgetVar(context), clientId)
+        wb.init("LightBox", lb)
                 .attr("mode", mode)
                 .attr("width", lb.getWidth(), null)
                 .attr("height", lb.getHeight(), null)
