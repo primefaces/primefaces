@@ -34,6 +34,7 @@ import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 public class BreadCrumbRenderer extends BaseMenuRenderer {
 
@@ -118,7 +119,15 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
 
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
-        // Do nothing
+        BreadCrumb breadCrumb = (BreadCrumb) abstractMenu;
+        String clientId = breadCrumb.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.init("BreadCrumb", breadCrumb.resolveWidgetVar(context), clientId);
+        if (breadCrumb.getLimit() != null) {
+            wb.attr("limit", breadCrumb.getLimit());
+        }
+        wb.attr("permaRoot", breadCrumb.isPermaRoot());
+        wb.finish();
     }
 
     private void encodeDisabledMenuItem(FacesContext context, MenuItem menuItem) throws IOException {
