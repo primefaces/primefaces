@@ -1412,8 +1412,8 @@ public class DataTable extends DataTableBase {
     }
 
     public String getGroupedColumnIndexes() {
-        return IntStream.range(0, columns.size())
-                .filter(i -> columns.get(i).isGroupRow())
+        return IntStream.range(0, getColumns().size())
+                .filter(i -> getColumns().get(i).isGroupRow())
                 .mapToObj(Objects::toString)
                 .collect(Collectors.joining(",", "[", "]"));
     }
