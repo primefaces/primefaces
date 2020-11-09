@@ -152,11 +152,10 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
     @Override
     protected void encodeScript(FacesContext context, UICalendar uicalendar, String value) throws IOException {
         DatePicker datePicker = (DatePicker) uicalendar;
-        String clientId = datePicker.getClientId(context);
         Locale locale = datePicker.calculateLocale(context);
         String pattern = datePicker.calculateWidgetPattern();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("DatePicker", datePicker.resolveWidgetVar(context), clientId);
+        wb.init("DatePicker", datePicker);
 
         String defaultDate = null;
 

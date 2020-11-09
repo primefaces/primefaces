@@ -106,11 +106,10 @@ public class ProgressBarRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, ProgressBar progressBar) throws IOException {
-        String clientId = progressBar.getClientId(context);
         boolean isAjax = progressBar.isAjax();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("ProgressBar", progressBar.resolveWidgetVar(context), clientId)
+        wb.init("ProgressBar", progressBar)
                 .attr("initialValue", progressBar.getValue())
                 .attr("ajax", isAjax)
                 .attr("labelTemplate", progressBar.getLabelTemplate(), null)

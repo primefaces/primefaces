@@ -54,14 +54,13 @@ public class ImageSwitchRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ImageSwitch imageSwitch = (ImageSwitch) component;
-        String clientId = imageSwitch.getClientId(context);
         ResponseWriter writer = context.getResponseWriter();
         int slideshowSpeed = imageSwitch.isSlideshowAuto() ? imageSwitch.getSlideshowSpeed() : 0;
 
         writer.endElement("div");
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("ImageSwitch", imageSwitch.resolveWidgetVar(context), clientId)
+        wb.init("ImageSwitch", imageSwitch)
                 .attr("fx", imageSwitch.getEffect())
                 .attr("speed", imageSwitch.getSpeed())
                 .attr("timeout", slideshowSpeed)

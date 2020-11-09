@@ -39,7 +39,6 @@ public class EffectRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Effect effect = (Effect) component;
-        String clientId = effect.getClientId(context);
         String source = component.getParent().getClientId(context);
         String event = effect.getEvent();
         int delay = effect.getDelay();
@@ -51,7 +50,7 @@ public class EffectRenderer extends CoreRenderer {
         String animation = getEffectBuilder(effect, target).build();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Effect", effect.resolveWidgetVar(context), clientId)
+        wb.init("Effect", effect)
                 .attr("source", source)
                 .attr("event", event)
                 .attr("delay", delay)

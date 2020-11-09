@@ -57,7 +57,7 @@ public class LifecycleRenderer extends CoreRenderer {
         writer.endElement("table");
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Lifecycle", lifecycle.resolveWidgetVar(context), clientId);
+        wb.init("Lifecycle", lifecycle);
         wb.finish();
     }
 

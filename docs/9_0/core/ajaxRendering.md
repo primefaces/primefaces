@@ -149,3 +149,4 @@ This can be easily archived by attaching `p:autoUpdate` to the component:
 ### Skipping auto update
 
 You can also skip all auto-updates by setting _ignoreAutoUpdate_ to `true` on the trigger component (like `p:ajax`)
+

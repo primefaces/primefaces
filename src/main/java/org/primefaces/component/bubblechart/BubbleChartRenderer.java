@@ -47,10 +47,8 @@ public class BubbleChartRenderer extends ChartRenderer {
     }
 
     protected void encodeScript(FacesContext context, BubbleChart chart) throws IOException {
-        String clientId = chart.getClientId(context);
-
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("BubbleChart", chart.resolveWidgetVar(context), clientId);
+        wb.init("BubbleChart", chart);
 
         encodeConfig(context, chart.getModel());
         encodeClientBehaviors(context, chart);

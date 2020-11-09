@@ -40,10 +40,9 @@ public class MenubarRenderer extends TieredMenuRenderer {
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         Menubar menubar = (Menubar) abstractMenu;
-        String clientId = menubar.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Menubar", menubar.resolveWidgetVar(context), clientId)
+        wb.init("Menubar", menubar)
                 .attr("autoDisplay", menubar.isAutoDisplay())
                 .attr("delay", menubar.getDelay())
                 .attr("toggleEvent", menubar.getToggleEvent(), null);

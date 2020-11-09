@@ -53,10 +53,8 @@ public class SpotlightRenderer extends CoreRenderer {
     }
 
     private void encodeScript(FacesContext context, Spotlight spotlight) throws IOException {
-        String clientId = spotlight.getClientId(context);
-
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Spotlight", spotlight.resolveWidgetVar(context), clientId)
+        wb.init("Spotlight", spotlight)
                 .attr("target", SearchExpressionFacade.resolveClientIds(context, spotlight, spotlight.getTarget(),
                         SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE))
                 .attr("active", spotlight.isActive(), false)

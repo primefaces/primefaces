@@ -63,10 +63,9 @@ public class PasswordRenderer extends InputRenderer {
     }
 
     protected void encodeScript(FacesContext context, Password password) throws IOException {
-        String clientId = password.getClientId(context);
         boolean feedback = password.isFeedback();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Password", password.resolveWidgetVar(context), clientId);
+        wb.init("Password", password);
 
         if (feedback) {
             wb.attr("feedback", true)

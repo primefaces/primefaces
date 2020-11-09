@@ -227,10 +227,9 @@ public class TreeTableRenderer extends DataRenderer {
     }
 
     protected void encodeScript(FacesContext context, TreeTable tt) throws IOException {
-        String clientId = tt.getClientId(context);
         String selectionMode = tt.getSelectionMode();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("TreeTable", tt.resolveWidgetVar(context), clientId)
+        wb.init("TreeTable", tt)
                 .attr("selectionMode", selectionMode, null)
                 .attr("resizableColumns", tt.isResizableColumns(), false)
                 .attr("liveResize", tt.isLiveResize(), false)

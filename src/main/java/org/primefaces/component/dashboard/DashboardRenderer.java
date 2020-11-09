@@ -94,9 +94,8 @@ public class DashboardRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, Dashboard dashboard) throws IOException {
-        String clientId = dashboard.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Dashboard", dashboard.resolveWidgetVar(context), clientId)
+        wb.init("Dashboard", dashboard)
                 .attr("disabled", !dashboard.isReordering(), false);
 
         encodeClientBehaviors(context, dashboard);

@@ -92,9 +92,8 @@ public class TooltipRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, Tooltip tooltip, String target) throws IOException {
-        String clientId = tooltip.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Tooltip", tooltip.resolveWidgetVar(context), clientId)
+        wb.init("Tooltip", tooltip)
                 .attr("showEvent", tooltip.getShowEvent(), null)
                 .attr("hideEvent", tooltip.getHideEvent(), null)
                 .attr("showEffect", tooltip.getShowEffect(), null)

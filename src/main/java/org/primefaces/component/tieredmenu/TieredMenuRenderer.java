@@ -46,10 +46,9 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         TieredMenu menu = (TieredMenu) abstractMenu;
-        String clientId = menu.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("TieredMenu", menu.resolveWidgetVar(context), clientId)
+        wb.init("TieredMenu", menu)
                 .attr("autoDisplay", menu.isAutoDisplay())
                 .attr("toggleEvent", menu.getToggleEvent(), null);
 

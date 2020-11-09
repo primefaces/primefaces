@@ -42,10 +42,9 @@ public class MenuRenderer extends BaseMenuRenderer {
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         Menu menu = (Menu) abstractMenu;
-        String clientId = menu.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("PlainMenu", menu.resolveWidgetVar(context), clientId)
+        wb.init("PlainMenu", menu)
                 .attr("toggleable", menu.isToggleable(), false);
 
         if (menu.isOverlay()) {

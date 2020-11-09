@@ -63,7 +63,6 @@ public class FileUploadRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, FileUpload fileUpload) throws IOException {
-        String clientId = fileUpload.getClientId(context);
         String update = fileUpload.getUpdate();
         String process = fileUpload.getProcess();
         WidgetBuilder wb = getWidgetBuilder(context);
@@ -71,7 +70,7 @@ public class FileUploadRenderer extends CoreRenderer {
         if (fileUpload.getMode().equals("advanced")) {
             PrimeApplicationContext pfContext = PrimeApplicationContext.getCurrentInstance(context);
 
-            wb.init("FileUpload", fileUpload.resolveWidgetVar(context), clientId);
+            wb.init("FileUpload", fileUpload);
 
             wb.attr("dnd", fileUpload.isDragDropSupport(), true)
                     .attr("previewWidth", fileUpload.getPreviewWidth(), 80)
@@ -85,7 +84,7 @@ public class FileUploadRenderer extends CoreRenderer {
 
         }
         else {
-            wb.init("SimpleFileUpload", fileUpload.resolveWidgetVar(context), clientId)
+            wb.init("SimpleFileUpload", fileUpload)
                     .attr("skinSimple", fileUpload.isSkinSimple(), false);
         }
 
