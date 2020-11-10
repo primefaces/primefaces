@@ -15,9 +15,6 @@ export {default as listPlugin} from '@fullcalendar/list';
 export {default as momentPlugin} from '@fullcalendar/moment';
 export {default as momentTimezonePlugin} from '@fullcalendar/moment-timezone';
 
-export const globalLocales = {};
-for (const locale of allLocales) {
-    globalLocales[locale.code] = locale;
-}
+export const globalLocales = allLocales;
 
 import './main.css';
