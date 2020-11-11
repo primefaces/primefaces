@@ -5050,9 +5050,17 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines if panel is toggleable by columnToggler component. Default value is true and a false value marks the column as static.]]>
+                <![CDATA[Defines if column is toggleable by columnToggler component. Default value is true and a false value marks the column as static.]]>
             </description>
             <name>toggleable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if column is draggable if draggableColumns is set. Default true.]]>
+            </description>
+            <name>draggable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -5438,9 +5446,17 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines if panel is toggleable by columnToggler component. Default value is true and a false value marks the column as static.]]>
+                <![CDATA[Defines if columns are toggleable by columnToggler component. Default value is true and a false value marks the column as static.]]>
             </description>
             <name>toggleable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if columns are draggable if draggableColumns is set. Default true.]]>
+            </description>
+            <name>draggable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>

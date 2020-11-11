@@ -101,6 +101,8 @@ public interface UIColumn {
 
     boolean isToggleable();
 
+    boolean isDraggable();
+
     MethodExpression getFilterFunction();
 
     String getField();

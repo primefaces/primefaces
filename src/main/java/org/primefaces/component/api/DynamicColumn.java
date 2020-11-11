@@ -323,4 +323,9 @@ public class DynamicColumn implements UIColumn {
     public boolean isCaseSensitiveSort() {
         return columns.isCaseSensitiveSort();
     }
+
+    @Override
+    public boolean isDraggable() {
+        return columns.isDraggable();
+    }
 }

@@ -97,6 +97,7 @@ public class DataTable extends DataTableBase {
     public static final String COLUMN_INPUT_FILTER_CLASS = "ui-column-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
     public static final String COLUMN_CUSTOM_FILTER_CLASS = "ui-column-customfilter";
     public static final String RESIZABLE_COLUMN_CLASS = "ui-resizable-column";
+    public static final String DRAGGABLE_COLUMN_CLASS = "ui-draggable-column";
     public static final String EXPANDED_ROW_CLASS = "ui-expanded-row";
     public static final String EXPANDED_ROW_CONTENT_CLASS = "ui-expanded-row-content";
     public static final String ROW_TOGGLER_CLASS = "ui-row-toggler";
