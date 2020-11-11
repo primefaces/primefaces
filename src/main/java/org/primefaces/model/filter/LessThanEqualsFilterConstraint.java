@@ -32,7 +32,7 @@ public class LessThanEqualsFilterConstraint implements FilterConstraint {
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
         if (value instanceof Comparable) {
             int compared = ((Comparable) value).compareTo(filter);
-            return (compared == 0 || compared < 0);
+            return compared <= 0;
         }
 
         return false;
