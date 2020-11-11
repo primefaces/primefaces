@@ -234,6 +234,18 @@ public class FilterMeta implements Serializable {
     }
 
     @Override
+    public String toString() {
+        return "FilterMeta{" +
+                "field='" + field + '\'' +
+                ", columnKey='" + columnKey + '\'' +
+                ", column=" + column +
+                ", filterBy=" + filterBy +
+                ", filterValue=" + filterValue +
+                ", constraint=" + constraint +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
