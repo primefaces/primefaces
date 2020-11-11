@@ -188,7 +188,7 @@ public class TreeTableRenderer extends DataRenderer {
             String globalFilterParam = clientId + UINamingContainer.getSeparatorChar(context) + "globalFilter";
             String globalFilterValue = params.get(globalFilterParam);
 
-            filter(context, tt, root, tt.getFilterMetadata(), globalFilterValue);
+            filter(context, tt, tt.getValue(), tt.getFilterMetadata(), globalFilterValue);
 
             //sort new filtered data to restore sort state
             boolean sorted = (tt.getValueExpression("sortBy") != null || tt.getSortBy() != null);
@@ -196,7 +196,7 @@ public class TreeTableRenderer extends DataRenderer {
                 sort(tt);
             }
 
-            encodeTbody(context, tt, root, true);
+            encodeTbody(context, tt, tt.getValue(), true);
         }
         else if (tt.isSortRequest(context)) {
             encodeSort(context, tt, root);
