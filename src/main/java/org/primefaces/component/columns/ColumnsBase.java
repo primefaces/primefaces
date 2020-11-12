@@ -54,6 +54,7 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
         exportable,
         width,
         toggleable,
+        draggable,
         filterFunction,
         field,
         priority,
@@ -259,6 +260,15 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
 
     public void setToggleable(boolean toggleable) {
         getStateHelper().put(PropertyKeys.toggleable, toggleable);
+    }
+
+    @Override
+    public boolean isDraggable() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.draggable, true);
+    }
+
+    public void setDraggable(boolean draggable) {
+        getStateHelper().put(PropertyKeys.draggable, draggable);
     }
 
     @Override

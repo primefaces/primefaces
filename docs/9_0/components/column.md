@@ -39,7 +39,8 @@ treetable and more.
 | width | null | String | The width of the column ('px' as default if no length unit is defined)
 | exportable | true | Boolean | Defines if the column should be exported by dataexporter.
 | filterValue | null | Object | Value of the filter field.
-| toggleable | true | Boolean | Defines if panel is toggleable by columnToggler component. Default value is true and a false value marks the column as static.
+| toggleable | true | Boolean | Defines if column is toggleable by columnToggler component. Default value is true and a false value marks the column as static.
+| draggable | true | Boolean | Defines if column is draggable if draggableColumns is set. Default true.
 | filterFunction | null | MethodExpr | Custom implementation to filter a value against a constraint.
 | field | null | String | Name of the field associated to bean "var". If not specified, filterBy-sortBy values are used to identify the field name.
 | priority | 0 | Integer | Priority of the column defined as an integer, lower values have more priority.

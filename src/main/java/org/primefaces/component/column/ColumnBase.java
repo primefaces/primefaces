@@ -58,6 +58,7 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         filterValue,
         width,
         toggleable,
+        draggable,
         filterFunction,
         field,
         priority,
@@ -272,6 +273,15 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
 
     public void setToggleable(boolean toggleable) {
         getStateHelper().put(PropertyKeys.toggleable, toggleable);
+    }
+
+    @Override
+    public boolean isDraggable() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.draggable, true);
+    }
+
+    public void setDraggable(boolean draggable) {
+        getStateHelper().put(PropertyKeys.draggable, draggable);
     }
 
     @Override
