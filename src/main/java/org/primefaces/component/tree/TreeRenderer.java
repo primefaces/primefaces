@@ -881,7 +881,7 @@ public class TreeRenderer extends CoreRenderer {
     public FilterConstraint getFilterConstraint(Tree tree) {
         String filterMatchMode = tree.getFilterMatchMode();
 
-        MatchMode matchMode = MatchMode.byName(filterMatchMode);
+        MatchMode matchMode = MatchMode.of(filterMatchMode);
         if (matchMode == null) {
             throw new FacesException("Illegal filter match mode:" + filterMatchMode);
         }

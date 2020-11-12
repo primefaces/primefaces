@@ -1310,7 +1310,7 @@ public class TreeTableRenderer extends DataRenderer {
     public FilterConstraint getFilterConstraint(UIColumn column) {
         String filterMatchMode = column.getFilterMatchMode();
 
-        MatchMode matchMode = MatchMode.byName(filterMatchMode);
+        MatchMode matchMode = MatchMode.of(filterMatchMode);
         if (matchMode == null) {
             throw new FacesException("Illegal filter match mode:" + filterMatchMode);
         }

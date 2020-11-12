@@ -343,7 +343,7 @@ public class TreeTable extends TreeTableBase {
                 filterBy.add(new FilterMeta(null,
                         column.getColumnKey(),
                         filterByVE,
-                        MatchMode.byName(filterMatchMode),
+                        MatchMode.of(filterMatchMode),
                         filterValue));
             }
         }

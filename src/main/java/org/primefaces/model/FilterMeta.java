@@ -51,6 +51,7 @@ public class FilterMeta implements Serializable {
     private transient UIColumn column;
     private ValueExpression filterBy;
     private Object filterValue;
+    private MatchMode matchMode = MatchMode.CONTAINS;
     private FilterConstraint constraint;
 
     public FilterMeta() {
@@ -58,12 +59,13 @@ public class FilterMeta implements Serializable {
     }
 
     FilterMeta(String columnKey, String field, FilterConstraint constraint,
-               ValueExpression filterBy, Object filterValue, UIColumn column) {
+               ValueExpression filterBy, Object filterValue, MatchMode matchMode, UIColumn column) {
         this.field = field;
         this.columnKey = columnKey;
         this.filterBy = filterBy;
         this.constraint = constraint;
         this.filterValue = filterValue;
+        this.matchMode = matchMode;
         this.column = column;
     }
 
@@ -74,6 +76,7 @@ public class FilterMeta implements Serializable {
         this.filterBy = filterByVE;
         this.constraint = FilterFeature.FILTER_CONSTRAINTS.get(filterMatchMode);
         this.filterValue = filterValue;
+        this.matchMode = filterMatchMode;
     }
 
     public static FilterMeta of(FacesContext context, String var, UIColumn column) {
@@ -93,8 +96,8 @@ public class FilterMeta implements Serializable {
         ValueExpression filterByVE = column.getValueExpression(ColumnBase.PropertyKeys.filterBy.name());
         filterByVE = filterByVE != null ? filterByVE : DataTable.createValueExprFromVarField(context, var, field);
 
-        MatchMode mode = MatchMode.byName(column.getFilterMatchMode());
-        FilterConstraint constraint = FilterFeature.FILTER_CONSTRAINTS.get(mode);
+        MatchMode matchMode = MatchMode.of(column.getFilterMatchMode());
+        FilterConstraint constraint = FilterFeature.FILTER_CONSTRAINTS.get(matchMode);
 
         if (column.getFilterFunction() != null) {
             constraint = new FunctionFilterConstraint(column.getFilterFunction());
@@ -105,6 +108,7 @@ public class FilterMeta implements Serializable {
                               constraint,
                               filterByVE,
                               column.getFilterValue(),
+                              matchMode,
                               column);
     }
 
@@ -118,6 +122,7 @@ public class FilterMeta implements Serializable {
                               constraint,
                               null,
                               globalFilterValue,
+                              MatchMode.GLOBAL,
                               null);
     }
 
@@ -163,6 +168,10 @@ public class FilterMeta implements Serializable {
 
     public boolean isActive() {
         return filterValue != null;
+    }
+
+    public MatchMode getMatchMode() {
+        return matchMode;
     }
 
     public boolean isGlobalFilter() {
@@ -228,7 +237,16 @@ public class FilterMeta implements Serializable {
             return this;
         }
 
+        public Builder matchMode(MatchMode matchMode) {
+            filterBy.matchMode = matchMode;
+            return this;
+        }
+
         public FilterMeta build() {
+            if (filterBy.matchMode != null) {
+                filterBy.constraint = FilterFeature.FILTER_CONSTRAINTS.get(filterBy.matchMode);
+            }
+            Objects.requireNonNull(filterBy.constraint, () -> "Filter constraint is required");
             return filterBy;
         }
     }
