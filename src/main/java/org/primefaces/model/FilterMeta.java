@@ -263,6 +263,7 @@ public class FilterMeta implements Serializable {
                 ", column=" + column +
                 ", filterBy=" + filterBy +
                 ", filterValue=" + filterValue +
+                ", matchMode=" + matchMode +
                 ", constraint=" + constraint +
                 '}';
     }
