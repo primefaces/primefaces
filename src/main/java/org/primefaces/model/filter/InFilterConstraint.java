@@ -24,7 +24,6 @@
 package org.primefaces.model.filter;
 
 import java.util.*;
-import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 
 public class InFilterConstraint implements FilterConstraint {
