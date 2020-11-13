@@ -25,6 +25,7 @@ package org.primefaces.component.datatable.feature;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
+import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
@@ -41,10 +42,8 @@ import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
-import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class FilterFeature implements DataTableFeature {
@@ -78,7 +77,7 @@ public class FilterFeature implements DataTableFeature {
 
     @Override
     public void decode(FacesContext context, DataTable table) {
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        Map<String, String[]> params = context.getExternalContext().getRequestParameterValuesMap();
         Map<String, FilterMeta> filterBy = table.getFilterByAsMap();
         String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
 
@@ -174,7 +173,8 @@ public class FilterFeature implements DataTableFeature {
                     if (filterValue != null
                             && columnValue != null
                             && !Objects.equals(filterValue.getClass(), columnValue.getClass())
-                            && !filterValue.getClass().isArray()) {
+                            && !filterValue.getClass().isArray()
+                            && !(filterValue instanceof Collection)) {
                         ExpressionFactory ef = context.getApplication().getExpressionFactory();
                         filterValue = ef.coerceToType(filterValue, columnValue.getClass());
                         filter.setFilterValue(filterValue);
@@ -206,33 +206,43 @@ public class FilterFeature implements DataTableFeature {
         table.setRowIndex(-1);  //reset datamodel
     }
 
-    protected void decodeFilterValue(FacesContext context, DataTable table, FilterMeta filterBy, Map<String, String> params, String separator) {
-        Object filterValue = null;
+    protected void decodeFilterValue(FacesContext context, DataTable table, FilterMeta filterBy, Map<String, String[]> params, String separator) {
+        String[] param = null;
 
         if (filterBy.isGlobalFilter()) {
-            filterValue = params.get(table.getClientId(context) + UINamingContainer.getSeparatorChar(context) + FilterMeta.GLOBAL_FILTER_KEY);
+            param = params.get(table.getClientId(context) + separator + FilterMeta.GLOBAL_FILTER_KEY);
         }
         else {
             UIColumn column = filterBy.getColumn();
             if (column instanceof DynamicColumn) {
-                ((DynamicColumn) column).applyStatelessModel();
+                ((DynamicColumn) column).applyModel();
             }
 
-            String valueHolderClientId = column instanceof DynamicColumn
-                    ? column.getContainerClientId(context) + separator + "filter"
-                    : column.getClientId(context) + separator + "filter";
-
             UIComponent filterFacet = column.getFacet("filter");
-            filterValue = ComponentUtils.shouldRenderFacet(filterFacet)
-                    ? ((ValueHolder) filterFacet).getLocalValue()
-                    : params.get(valueHolderClientId);
+            String valueHolderClientId;
+
+            if (ComponentUtils.shouldRenderFacet(filterFacet)) {
+                valueHolderClientId = filterFacet instanceof InputHolder
+                        ?  ((InputHolder) filterFacet).getValidatableInputClientId()
+                        : filterFacet.getClientId(context);
+            }
+            else {
+                valueHolderClientId = column instanceof DynamicColumn
+                        ? column.getContainerClientId(context) + separator + "filter"
+                        : column.getClientId(context) + separator + "filter";
+            }
+
+            param = params.get(valueHolderClientId);
         }
 
-        // returns null if empty string/array/object
-        if (filterValue != null
-                && (filterValue.getClass().isArray() && Array.getLength(filterValue) == 0)
-                || (filterValue instanceof String && LangUtils.isValueBlank(filterValue.toString()))) {
-            filterValue = null;
+        Object filterValue = param;
+        if (param != null) {
+            if (LangUtils.isValueBlank(param[0])) {
+                filterValue = null;
+            }
+            else if (param.length == 1) {
+                filterValue = param[0];
+            }
         }
 
         filterBy.setFilterValue(filterValue);

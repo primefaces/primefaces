@@ -23,10 +23,7 @@
  */
 package org.primefaces.model.filter;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.*;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 
@@ -34,11 +31,7 @@ public class InFilterConstraint implements FilterConstraint {
 
     @Override
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
-        if (filter == null) {
-            return true;
-        }
-
-        if (value == null) {
+        if (filter == null || value == null) {
             return false;
         }
 
@@ -50,7 +43,7 @@ public class InFilterConstraint implements FilterConstraint {
             collection = (Collection<?>) filter;
         }
         else {
-            throw new FacesException("Filter value must be an array or a collection when using \"in\" filter constraint.");
+            collection = Collections.singletonList(filter);
         }
 
         for (Object o : collection) {

@@ -24,6 +24,7 @@
 package org.primefaces.model;
 
 import org.primefaces.component.api.DynamicColumn;
+import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.ColumnBase;
 import org.primefaces.component.datatable.DataTable;
@@ -31,6 +32,7 @@ import org.primefaces.component.datatable.feature.FilterFeature;
 import org.primefaces.model.filter.FilterConstraint;
 import org.primefaces.model.filter.FunctionFilterConstraint;
 import org.primefaces.model.filter.GlobalFilterConstraint;
+import org.primefaces.util.ComponentUtils;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;
@@ -172,6 +174,10 @@ public class FilterMeta implements Serializable {
 
     public MatchMode getMatchMode() {
         return matchMode;
+    }
+
+    public void setMatchMode(MatchMode matchMode) {
+        this.matchMode = matchMode;
     }
 
     public boolean isGlobalFilter() {

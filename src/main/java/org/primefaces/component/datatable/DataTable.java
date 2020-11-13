@@ -1665,6 +1665,7 @@ public class DataTable extends DataTableBase {
             intlFM.setFilterValue(userFM.getFilterValue());
             intlFM.setFilterBy(filterByVE);
             intlFM.setConstraint(userFM.getConstraint());
+            intlFM.setMatchMode(userFM.getMatchMode());
             filtered.set(filtered.get() || userFM.isActive());
         }
     }
