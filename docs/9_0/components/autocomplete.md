@@ -248,7 +248,79 @@ _cacheTimeout_ option to configure how long it takes to clear a cache automatica
 To improve performance (and avoid JSF-lifecycle-costs during calling completeMethod) AutoComplete can consume REST-endpoints to provide suggestions to the user.
 Or existing REST-endpoints may be re-used.
 
-TODO 
+AutoComplete does a HTTP-GET against the REST-endpoint and passes query-url-parameter. (eg `/rest/theme/autocomplete?query=lu`)
+
+The REST-endpoint has to return an JSON-array. Each item needs to have value- and label-property. 
+```json
+[{"value":"3","label":"Luna-Blue"},{"value":"4","label":"Luna-Amber"},{"value":"5","label":"Luna-Green"},{"value":"6","label":"Luna-Pink"}]
+```
+
+Sample REST-service based one JAX-RS and CDI: 
+
+```java
+public class AutoCompleteSuggestion {
+    private String value;
+    private String label;
+
+    public AutoCompleteSuggestion(String value, String label) {
+        this.value = value;
+        this.label = label;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+}
+```
+
+```java
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Named("themeRestService")
+@Path("/theme")
+public class ThemeService {
+
+    @Inject
+    private org.primefaces.showcase.service.ThemeService service;
+
+    @GET
+    @Path("/autocomplete")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public List<AutoCompleteSuggestion> autocomplete(@QueryParam("query") String query) {
+        String queryLowerCase = query.toLowerCase();
+        List<Theme> allThemes = service.getThemes();
+        return allThemes.stream()
+                .filter(t -> t.getName().toLowerCase().contains(queryLowerCase))
+                .map(t -> new AutoCompleteSuggestion(Integer.toString(t.getId()), t.getDisplayName()))
+                .collect(Collectors.toList());
+    }
+}
+``` 
+
+Sample-useage within AutoComplete. Note `restEndpoint`-attribute. 
+```xhtml
+<p:autoComplete id="themePojoRest" value="#{autoCompleteView.theme}" var="theme" itemLabel="#{theme.displayName}" itemValue="#{theme}" converter="#{themeConverter}" restEndpoint="../../rest/theme/autocomplete" forceSelection="true" />
+``` 
 
 ## Ajax Behavior Events
 The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
