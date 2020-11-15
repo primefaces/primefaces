@@ -258,34 +258,8 @@ The REST-endpoint has to return an JSON-array. Each item needs to have value- an
 Sample REST-service based one JAX-RS and CDI: 
 
 ```java
-public class AutoCompleteSuggestion {
-    private String value;
-    private String label;
+import org.primefaces.model.rest.AutoCompleteSuggestion;
 
-    public AutoCompleteSuggestion(String value, String label) {
-        this.value = value;
-        this.label = label;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
-    }
-}
-```
-
-```java
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.GET;
