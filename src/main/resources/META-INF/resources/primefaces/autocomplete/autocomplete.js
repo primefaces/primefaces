@@ -73,6 +73,7 @@
  * @prop {number} cfg.selectLimit Limits the number of simultaneously selected items. Default is unlimited.
  * @prop {number} cfg.scrollHeight Height of the container with the suggestion items.
  * @prop {boolean} cfg.unique Ensures uniqueness of the selected items.
+ * @prop {string} cfg.restEndpoint REST-Endpoint for fetching autocomplete-suggestions. (instead of completeMethod)
  */
 PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
@@ -798,6 +799,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} query Keyword for the search. 
      */
     search: function(query) {
+        console.log("PrimeFaces.widget.AutoComplete#search");
+
         //allow empty string but not undefined or null
         if (!this.cfg.active || query === undefined || query === null) {
             return;
@@ -843,44 +846,55 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             this.itemtip.hide();
         }
 
-        var options = {
-            source: this.id,
-            process: this.id,
-            update: this.id,
-            formId: this.cfg.formId,
-            onsuccess: function(responseXML, status, xhr) {
-                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                    widget: $this,
-                    handle: function(content) {
-                        if(this.cfg.dynamic && !this.isDynamicLoaded) {
-                            this.panel = $(content);
-                            this.appendPanel();
-                            content = this.panel.get(0).innerHTML;
-                        }
-                        else {
-                            this.panel.html(content);
-                        }
+        var options;
 
-                        if (this.cfg.cache) {
-                            if (this.cfg.queryMode !== 'server' && !this.isDynamicLoaded && this.cache[query]) {
-                                this.panel.html(this.cache[query]);
+        if (!!this.cfg.restEndpoint) {
+            console.log("AutoComplete - prepare options for REST-call");
+
+            options = {
+
+            };
+        }
+        else {
+            console.log("AutoComplete - prepare options for classic JSF-AJAX-call");
+
+            options = {
+                source: this.id,
+                process: this.id,
+                update: this.id,
+                formId: this.cfg.formId,
+                onsuccess: function (responseXML, status, xhr) {
+                    PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function (content) {
+                            if (this.cfg.dynamic && !this.isDynamicLoaded) {
+                                this.panel = $(content);
+                                this.appendPanel();
+                                content = this.panel.get(0).innerHTML;
+                            } else {
+                                this.panel.html(content);
                             }
-                            else {
-                                this.cache[query] = content;
+
+                            if (this.cfg.cache) {
+                                if (this.cfg.queryMode !== 'server' && !this.isDynamicLoaded && this.cache[query]) {
+                                    this.panel.html(this.cache[query]);
+                                } else {
+                                    this.cache[query] = content;
+                                }
                             }
+
+                            this.showSuggestions(query);
                         }
+                    });
 
-                        this.showSuggestions(query);
-                    }
-                });
-
-                return true;
-            },
-            oncomplete: function() {
-                $this.querying = false;
-                $this.isDynamicLoaded = true;
-            }
-        };
+                    return true;
+                },
+                oncomplete: function () {
+                    $this.querying = false;
+                    $this.isDynamicLoaded = true;
+                }
+            };
+        }
 
         options.params = [
           {name: this.id + '_query', value: query}
@@ -898,7 +912,28 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             this.callBehavior('query', options);
         }
         else {
-            PrimeFaces.ajax.Request.handle(options);
+            if (!!this.cfg.restEndpoint) {
+                console.log("AutoComplete - do REST-call");
+
+                $.ajax({
+                        url: this.cfg.restEndpoint,
+                        data: { query: query },
+                        dataType: 'json'
+                    })
+                    .done(function() {
+                        console.log("AutoComplete - REST-call - success");
+                    })
+                    .fail(function() {
+                        console.log("AutoComplete - REST-call - fail");
+                    })
+                    .always(function() {
+                        console.log("AutoComplete - REST-call - always");
+                    });
+            }
+            else {
+                console.log("AutoComplete - do classic JSF-AJAX-call");
+                PrimeFaces.ajax.Request.handle(options);
+            }
         }
     },
 

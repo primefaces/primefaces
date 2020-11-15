@@ -2408,6 +2408,10 @@ declare namespace PrimeFaces.widget {
          * Ensures uniqueness of the selected items.
          */
         unique: boolean;
+        /**
+         * REST-endpoint for fetching autocomplete-suggestions. (instead of completeMethod)
+         */
+        restEndpoint: string;
     }
 }
 declare namespace PrimeFaces.widget {
