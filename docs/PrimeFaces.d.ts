@@ -2411,7 +2411,7 @@ declare namespace PrimeFaces.widget {
         /**
          * REST-endpoint for fetching autocomplete-suggestions. (instead of completeMethod)
          */
-        restEndpoint: string;
+        completeEndpoint: string;
     }
 }
 declare namespace PrimeFaces.widget {

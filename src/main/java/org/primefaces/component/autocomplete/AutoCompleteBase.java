@@ -80,7 +80,7 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
         escape,
         queryMode,
         dropdownTabindex,
-        restEndpoint
+        completeEndpoint
     }
 
     public AutoCompleteBase() {
@@ -444,11 +444,11 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
         getStateHelper().put(PropertyKeys.dropdownTabindex, dropdownTabindex);
     }
 
-    public String getRestEndpoint() {
-        return (String) getStateHelper().eval(PropertyKeys.restEndpoint, null);
+    public String getCompleteEndpoint() {
+        return (String) getStateHelper().eval(PropertyKeys.completeEndpoint, null);
     }
 
-    public void setRestEndpoint(String restEndpoint) {
-        getStateHelper().put(PropertyKeys.restEndpoint, restEndpoint);
+    public void setCompleteEndpoint(String completeEndpoint) {
+        getStateHelper().put(PropertyKeys.completeEndpoint, completeEndpoint);
     }
 }

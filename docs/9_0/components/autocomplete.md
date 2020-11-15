@@ -103,7 +103,7 @@ AutoComplete provides live suggestions while an input is being typed.
 | queryMode | server | String | Specifies query mode, valid values are "server" (default), "client" and "hybrid". [more](https://github.com/primefaces/primefaces/issues/5298)
 | tabindex | null | String | Position of the input field in the tabbing order.
 | dropdownTabindex | null | String | Position of the dropdown button in the tabbing order.
-| restEndpoint | null | String | REST-endpoint for fetching autocomplete-suggestions. (instead of completeMethod) Can´t be combined with dynamic=true, queryMode!=server, cache=true. 
+| completeEndpoint | null | String | REST-endpoint for fetching autocomplete-suggestions. (instead of completeMethod) Can´t be combined with dynamic=true, queryMode!=server, cache=true. 
 
 ## Getting Started with AutoComplete
 AutoComplete is an input component so it requires a value as usual. Suggestions are loaded by
@@ -317,9 +317,9 @@ public class ThemeService {
 }
 ``` 
 
-Sample-useage within AutoComplete. Note `restEndpoint`-attribute. 
+Sample-useage within AutoComplete. Note `completeEndpoint`-attribute. 
 ```xhtml
-<p:autoComplete id="themePojoRest" value="#{autoCompleteView.theme}" var="theme" itemLabel="#{theme.displayName}" itemValue="#{theme}" converter="#{themeConverter}" restEndpoint="../../rest/theme/autocomplete" forceSelection="true" />
+<p:autoComplete id="themePojoRest" value="#{autoCompleteView.theme}" var="theme" itemLabel="#{theme.displayName}" itemValue="#{theme}" converter="#{themeConverter}" completeEndpoint="../../rest/theme/autocomplete" forceSelection="true" />
 ``` 
 
 ## Ajax Behavior Events

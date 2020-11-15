@@ -73,7 +73,7 @@
  * @prop {number} cfg.selectLimit Limits the number of simultaneously selected items. Default is unlimited.
  * @prop {number} cfg.scrollHeight Height of the container with the suggestion items.
  * @prop {boolean} cfg.unique Ensures uniqueness of the selected items.
- * @prop {string} cfg.restEndpoint REST-Endpoint for fetching autocomplete-suggestions. (instead of completeMethod)
+ * @prop {string} cfg.completeEndpoint REST-Endpoint for fetching autocomplete-suggestions. (instead of completeMethod)
  */
 PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
@@ -846,7 +846,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         var options;
 
-        if (!this.cfg.restEndpoint) {
+        if (!this.cfg.completeEndpoint) {
             options = {
                 source: this.id,
                 process: this.id,
@@ -901,9 +901,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             this.callBehavior('query', options);
         }
         else {
-            if (!!this.cfg.restEndpoint) {
+            if (!!this.cfg.completeEndpoint) {
                 $.ajax({
-                        url: this.cfg.restEndpoint,
+                        url: this.cfg.completeEndpoint,
                         data: { query: query },
                         dataType: 'json'
                     })
