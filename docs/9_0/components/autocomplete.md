@@ -103,6 +103,7 @@ AutoComplete provides live suggestions while an input is being typed.
 | queryMode | server | String | Specifies query mode, valid values are "server" (default), "client" and "hybrid". [more](https://github.com/primefaces/primefaces/issues/5298)
 | tabindex | null | String | Position of the input field in the tabbing order.
 | dropdownTabindex | null | String | Position of the dropdown button in the tabbing order.
+| restEndpoint | null | String | REST-endpoint for fetching autocomplete-suggestions. (instead of completeMethod) Can´t be combined with dynamic=true, queryMode!=server, cache=true. 
 
 ## Getting Started with AutoComplete
 AutoComplete is an input component so it requires a value as usual. Suggestions are loaded by
@@ -241,6 +242,13 @@ _cacheTimeout_ option to configure how long it takes to clear a cache automatica
 ```xhtml
 <p:autoComplete value="#{bean.text}" completeMethod="#{bean.complete}" cache="true"/>
 ```
+
+## Consuming REST-endpoints
+
+To improve performance (and avoid JSF-lifecycle-costs during calling completeMethod) AutoComplete can consume REST-endpoints to provide suggestions to the user.
+Or existing REST-endpoints may be re-used.
+
+TODO 
 
 ## Ajax Behavior Events
 The following AJAX behavior events are available for this component. If no event is specified the default event is called.  

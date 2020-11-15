@@ -799,8 +799,6 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} query Keyword for the search. 
      */
     search: function(query) {
-        console.log("PrimeFaces.widget.AutoComplete#search");
-
         //allow empty string but not undefined or null
         if (!this.cfg.active || query === undefined || query === null) {
             return;
@@ -848,16 +846,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         var options;
 
-        if (!!this.cfg.restEndpoint) {
-            console.log("AutoComplete - prepare options for REST-call");
-
-            options = {
-
-            };
-        }
-        else {
-            console.log("AutoComplete - prepare options for classic JSF-AJAX-call");
-
+        if (!this.cfg.restEndpoint) {
             options = {
                 source: this.id,
                 process: this.id,
@@ -894,18 +883,18 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     $this.isDynamicLoaded = true;
                 }
             };
-        }
 
-        options.params = [
-          {name: this.id + '_query', value: query}
-        ];
-        
-        if (this.cfg.queryMode === 'hybrid') {
-            options.params.push({name: this.id + '_clientCache', value: true});
-        }
+            options.params = [
+                {name: this.id + '_query', value: query}
+            ];
 
-        if (this.cfg.dynamic && !this.isDynamicLoaded) {
-            options.params.push({name: this.id + '_dynamicload', value: true});
+            if (this.cfg.queryMode === 'hybrid') {
+                options.params.push({name: this.id + '_clientCache', value: true});
+            }
+
+            if (this.cfg.dynamic && !this.isDynamicLoaded) {
+                options.params.push({name: this.id + '_dynamicload', value: true});
+            }
         }
 
         if (this.hasBehavior('query')) {
@@ -913,22 +902,20 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
         else {
             if (!!this.cfg.restEndpoint) {
-                console.log("AutoComplete - do REST-call");
-
                 $.ajax({
                         url: this.cfg.restEndpoint,
                         data: { query: query },
                         dataType: 'json'
                     })
                     .done(function(suggestions) {
-                        console.log("AutoComplete - REST-call - success");
-                        console.log("suggestions: " + suggestions);
-                        console.log("suggestions-count: " + suggestions.length);
-
                         var html = '<ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset">';
                         suggestions.forEach(function(suggestion) {
-                            var labelEncoded = $("<div>").text(suggestion.label).html()
-                            html += '<li class="ui-autocomplete-item ui-autocomplete-list-item ui-corner-all ui-state-highlight" data-item-value="' + suggestion.value + '" data-item-label="' + labelEncoded + '" role="option">' + labelEncoded + '</li>';
+                            var labelEncoded = $("<div>").text(suggestion.label).html();
+                            var itemValue = labelEncoded;
+                            if (!!suggestion.value) {
+                                itemValue = $("<div>").text(suggestion.value).html();
+                            }
+                            html += '<li class="ui-autocomplete-item ui-autocomplete-list-item ui-corner-all" data-item-value="' + itemValue + '" data-item-label="' + labelEncoded + '" role="option">' + labelEncoded + '</li>';
                         });
                         html += '</ul>';
 
@@ -936,15 +923,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
                         $this.showSuggestions(query);
                     })
-                    .fail(function() {
-                        console.log("AutoComplete - REST-call - fail");
-                    })
                     .always(function() {
-                        console.log("AutoComplete - REST-call - always");
+                        $this.querying = false;
                     });
             }
             else {
-                console.log("AutoComplete - do classic JSF-AJAX-call");
                 PrimeFaces.ajax.Request.handle(options);
             }
         }
