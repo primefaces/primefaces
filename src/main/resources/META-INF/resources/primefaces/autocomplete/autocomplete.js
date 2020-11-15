@@ -920,8 +920,21 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         data: { query: query },
                         dataType: 'json'
                     })
-                    .done(function() {
+                    .done(function(suggestions) {
                         console.log("AutoComplete - REST-call - success");
+                        console.log("suggestions: " + suggestions);
+                        console.log("suggestions-count: " + suggestions.length);
+
+                        var html = '<ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset">';
+                        suggestions.forEach(function(suggestion) {
+                            var labelEncoded = $("<div>").text(suggestion.label).html()
+                            html += '<li class="ui-autocomplete-item ui-autocomplete-list-item ui-corner-all ui-state-highlight" data-item-value="' + suggestion.value + '" data-item-label="' + labelEncoded + '" role="option">' + labelEncoded + '</li>';
+                        });
+                        html += '</ul>';
+
+                        $this.panel.html(html);
+
+                        $this.showSuggestions(query);
                     })
                     .fail(function() {
                         console.log("AutoComplete - REST-call - fail");
