@@ -592,7 +592,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         // save child state
         //_saveChildState();
         if (index < -1) {
-            throw new IllegalArgumentException("rowIndex is less than -1");
+            throw new IllegalArgumentException("index is less than -1");
         }
 
         if (_index == index) {

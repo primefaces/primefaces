@@ -38,9 +38,8 @@ public class ThemeSwitcherRenderer extends SelectOneMenuRenderer {
     @Override
     protected void encodeScript(FacesContext context, SelectOneMenu menu) throws IOException {
         ThemeSwitcher ts = (ThemeSwitcher) menu;
-        String clientId = ts.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("ThemeSwitcher", ts.resolveWidgetVar(context), clientId)
+        wb.init("ThemeSwitcher", ts)
                 .attr("effect", ts.getEffect(), null)
                 .attr("effectSpeed", ts.getEffectSpeed(), null)
                 .attr("appendTo", SearchExpressionFacade.resolveClientId(context, menu, menu.getAppendTo(),

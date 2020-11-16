@@ -162,9 +162,8 @@ public class CommandButtonRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, CommandButton button) throws IOException {
-        String clientId = button.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("CommandButton", button.resolveWidgetVar(context), clientId);
+        wb.init("CommandButton", button);
 
         encodeClientBehaviors(context, button);
 

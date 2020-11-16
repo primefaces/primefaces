@@ -29,6 +29,7 @@ import java.math.BigInteger;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -77,7 +78,6 @@ public class SpinnerRenderer extends InputRenderer {
     }
 
     protected void encodeScript(FacesContext context, Spinner spinner) throws IOException {
-        String clientId = spinner.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
 
         Object value = spinner.getValue();
@@ -89,7 +89,7 @@ public class SpinnerRenderer extends InputRenderer {
                 ? defaultDecimalPlaces
                 : spinner.getDecimalPlaces();
 
-        wb.init("Spinner", spinner.resolveWidgetVar(context), clientId)
+        wb.init("Spinner", spinner)
                 .attr("step", spinner.getStepFactor(), 1.0)
                 .attr("min", spinner.getMin(), Double.MIN_VALUE)
                 .attr("max", spinner.getMax(), Double.MAX_VALUE)

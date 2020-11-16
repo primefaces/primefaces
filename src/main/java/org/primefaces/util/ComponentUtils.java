@@ -195,13 +195,13 @@ public class ComponentUtils {
         }
 
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String behaviorEvent = params.get("javax.faces.behavior.event");
+        String behaviorEvent = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
         if (null != behaviorEvent) {
             List<ClientBehavior> behaviorsForEvent = behaviors.get(behaviorEvent);
 
             if (behaviorsForEvent != null && !behaviorsForEvent.isEmpty()) {
-                String behaviorSource = params.get("javax.faces.source");
+                String behaviorSource = params.get(Constants.RequestParams.PARTIAL_SOURCE_PARAM);
                 String clientId = component.getClientId(context);
 
                 if (behaviorSource != null && clientId.equals(behaviorSource)) {
@@ -530,6 +530,27 @@ public class ComponentUtils {
         T value = (T) stateHelper.eval(key, null);
         if (value == null) {
             value = defaultValueSupplier.get();
+        }
+        return value;
+    }
+
+    /**
+     * Tries to retrieve value from stateHelper by key first. If the value is not present (or is null),
+     * then it is retrieved from defaultValueSupplier.
+     *
+     * Should be removed when {@link StateHelper} is extended with similar functionality.
+     * (see https://github.com/eclipse-ee4j/mojarra/issues/4568 for details)
+     * @param stateHelper The stateHelper to try to retrieve value from
+     * @param key The key under which value is stored in the stateHelper
+     * @param defaultValueSupplier The object, from which default value is retrieved
+     * @param <T> the expected type of returned value
+     * @return value from stateHelper or defaultValueSupplier
+     */
+    public static <T> T computeIfAbsent(StateHelper stateHelper, Serializable key, Supplier<T> defaultValueSupplier) {
+        T value = (T) stateHelper.get(key);
+        if (value == null) {
+            value = defaultValueSupplier.get();
+            stateHelper.put(key, value);
         }
         return value;
     }

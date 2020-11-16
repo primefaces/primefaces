@@ -141,9 +141,8 @@ public class PickListRenderer extends InputRenderer {
     }
 
     protected void encodeScript(FacesContext context, PickList pickList) throws IOException {
-        String clientId = pickList.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("PickList", pickList.resolveWidgetVar(context), clientId)
+        wb.init("PickList", pickList)
                 .attr("effect", pickList.getEffect())
                 .attr("effectSpeed", pickList.getEffectSpeed())
                 .attr("escape", pickList.isEscape())

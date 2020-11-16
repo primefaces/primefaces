@@ -42,9 +42,8 @@ public class TabMenuRenderer extends BaseMenuRenderer {
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         TabMenu menu = (TabMenu) abstractMenu;
-        String clientId = menu.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("TabMenu", menu.resolveWidgetVar(context), clientId);
+        wb.init("TabMenu", menu);
         wb.finish();
     }
 

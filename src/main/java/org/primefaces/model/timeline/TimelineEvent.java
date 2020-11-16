@@ -79,6 +79,12 @@ public class TimelineEvent<T> implements Serializable {
     private String group;
 
     /**
+     * The id of a subgroup. Groups all items within a group per subgroup, and positions them on the same height instead
+     *  of staking them on top of each other. can be ordered by specifying the option subgroupOrder of a group.
+     */
+    private String subgroup;
+
+    /**
      * A title that is displayed when holding the mouse on the item. The title can be a string containing plain text or HTML (optional).
      */
     private String title;
@@ -280,6 +286,14 @@ public class TimelineEvent<T> implements Serializable {
         this.group = group;
     }
 
+    public String getSubgroup() {
+        return subgroup;
+    }
+
+    public void setSubgroup(String subgroup) {
+        this.subgroup = subgroup;
+    }
+
     public String getStyleClass() {
         return styleClass;
     }
@@ -312,6 +326,7 @@ public class TimelineEvent<T> implements Serializable {
         builder.editableGroup(event.editableGroup);
         builder.editableRemove(event.editableRemove);
         builder.group(event.group);
+        builder.subgroup(event.subgroup);
         builder.title(event.title);
         builder.styleClass(event.styleClass);
 
@@ -349,6 +364,7 @@ public class TimelineEvent<T> implements Serializable {
                 + ", endDate=" + endDate
                 + ", editable=" + editable
                 + ", group='" + group + '\''
+                + ", subgroup='" + subgroup + '\''
                 + ", styleClass='" + styleClass + '\''
                 + '}';
     }
@@ -403,6 +419,11 @@ public class TimelineEvent<T> implements Serializable {
 
         public Builder<T> group(String group) {
             event.setGroup(group);
+            return this;
+        }
+
+        public Builder<T> subgroup(String subgroup) {
+            event.setSubgroup(subgroup);
             return this;
         }
 

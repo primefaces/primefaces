@@ -121,10 +121,9 @@ public class FieldsetRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, Fieldset fieldset) throws IOException {
-        String clientId = fieldset.getClientId(context);
         boolean toggleable = fieldset.isToggleable();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Fieldset", fieldset.resolveWidgetVar(context), clientId);
+        wb.init("Fieldset", fieldset);
 
         if (toggleable) {
             wb.attr("toggleable", true)

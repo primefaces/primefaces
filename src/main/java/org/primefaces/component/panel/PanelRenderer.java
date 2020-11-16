@@ -70,9 +70,8 @@ public class PanelRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, Panel panel, Menu optionsMenu) throws IOException {
-        String clientId = panel.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Panel", panel.resolveWidgetVar(context), clientId);
+        wb.init("Panel", panel);
 
         if (panel.isToggleable()) {
             wb.attr("toggleable", true)

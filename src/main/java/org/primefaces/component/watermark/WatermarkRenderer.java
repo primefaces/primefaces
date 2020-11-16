@@ -50,7 +50,7 @@ public class WatermarkRenderer extends CoreRenderer {
         }
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Watermark", watermark.resolveWidgetVar(context), watermark.getClientId(context))
+        wb.init("Watermark", watermark)
                 .attr("value", watermark.getValue())
                 .attr("target", target);
 

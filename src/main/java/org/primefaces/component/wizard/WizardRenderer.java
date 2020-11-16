@@ -106,7 +106,7 @@ public class WizardRenderer extends CoreRenderer {
         }
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Wizard", wizard.resolveWidgetVar(context), clientId)
+        wb.init("Wizard", wizard)
                 .attr("showStepStatus", wizard.isShowStepStatus())
                 .attr("showNavBar", wizard.isShowNavBar());
 

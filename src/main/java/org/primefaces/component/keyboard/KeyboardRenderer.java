@@ -63,10 +63,8 @@ public class KeyboardRenderer extends InputRenderer {
     }
 
     protected void encodeScript(FacesContext context, Keyboard keyboard) throws IOException {
-        String clientId = keyboard.getClientId(context);
-
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Keyboard", keyboard.resolveWidgetVar(context), clientId)
+        wb.init("Keyboard", keyboard)
                 .attr("useThemeRoller", true)
                 .attr("showOn", keyboard.getShowMode())
                 .attr("showAnim", keyboard.getEffect())

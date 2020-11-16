@@ -44,11 +44,7 @@ import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.SelectOneRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.MessageFactory;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.*;
 
 public class SelectOneMenuRenderer extends SelectOneRenderer {
 
@@ -69,12 +65,9 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             // #2862 check if it matches a label and if so use the value
             if (!LangUtils.isValueBlank(editorInput)) {
                 List<SelectItem> selectItems = getSelectItems(context, menu);
-                for (int i = 0; i < selectItems.size(); i++) {
-                    SelectItem item = selectItems.get(i);
-                    if (item.getLabel().equalsIgnoreCase(editorInput)) {
-                        menu.setSubmittedValue(getOptionAsString(context, menu, menu.getConverter(), item.getValue()));
-                        break;
-                    }
+                Object foundValue = findEditableValue(context, selectItems, editorInput);
+                if (foundValue != null) {
+                    menu.setSubmittedValue(getOptionAsString(context, menu, menu.getConverter(), foundValue));
                 }
             }
 
@@ -83,6 +76,36 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         else {
             super.decode(context, component);
         }
+    }
+
+    /**
+     * Recursive method used when editable="true" to detect whether the submitted value
+     * matches a value in one of the SelectItems. GitHub #2862 and #6507
+     * @param context FacesContext
+     * @param selectItems the List of SelectItems
+     * @param editorInput the editor input value to search for
+     * @return either the value found or NULL if no item found
+     */
+    protected Object findEditableValue(FacesContext context, List<SelectItem> selectItems, String editorInput) {
+        Object foundValue = null;
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem item = selectItems.get(i);
+            if (item instanceof SelectItemGroup) {
+                SelectItemGroup selectItemGroup = (SelectItemGroup) item;
+                foundValue = findEditableValue(context, Arrays.asList(selectItemGroup.getSelectItems()), editorInput);
+                if (foundValue != null) {
+                    break;
+                }
+            }
+            else {
+                if (item.getLabel().equalsIgnoreCase(editorInput)) {
+                    foundValue = item.getValue();
+                    break;
+                }
+            }
+        }
+
+        return foundValue;
     }
 
     @Override
@@ -480,9 +503,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
     }
 
     protected void encodeScript(FacesContext context, SelectOneMenu menu) throws IOException {
-        String clientId = menu.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectOneMenu", menu.resolveWidgetVar(context), clientId)
+        wb.init("SelectOneMenu", menu)
                 .attr("effect", menu.getEffect(), null)
                 .attr("effectSpeed", menu.getEffectSpeed(), null)
                 .attr("editable", menu.isEditable(), false)

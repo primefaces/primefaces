@@ -116,10 +116,10 @@ public class ContentFlowRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
 
         if (context.isPostback()) {
-            wb.init("ContentFlow", cf.resolveWidgetVar(context), cf.getClientId(context));
+            wb.init("ContentFlow", cf);
         }
         else {
-            wb.initWithWindowLoad("ContentFlow", cf.resolveWidgetVar(context), cf.getClientId(context));
+            wb.initWithWindowLoad("ContentFlow", cf);
         }
 
         wb.finish();

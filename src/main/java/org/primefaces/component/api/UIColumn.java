@@ -101,6 +101,8 @@ public interface UIColumn {
 
     boolean isToggleable();
 
+    boolean isDraggable();
+
     MethodExpression getFilterFunction();
 
     String getField();
@@ -124,4 +126,12 @@ public interface UIColumn {
     String getExportHeaderValue();
 
     String getExportFooterValue();
+
+    String getSortOrder();
+
+    int getSortPriority();
+
+    int getNullSortOrder();
+
+    boolean isCaseSensitiveSort();
 }

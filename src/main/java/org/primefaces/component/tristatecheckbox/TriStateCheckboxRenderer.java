@@ -30,11 +30,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.EscapeUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.*;
 
 public class TriStateCheckboxRenderer extends InputRenderer {
 
@@ -198,7 +194,7 @@ public class TriStateCheckboxRenderer extends InputRenderer {
 
     protected void encodeScript(final FacesContext context, final TriStateCheckbox checkbox) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("TriStateCheckbox", checkbox.resolveWidgetVar(context), checkbox.getClientId());
+        wb.init("TriStateCheckbox", checkbox);
         encodeClientBehaviors(context, checkbox);
         wb.finish();
     }

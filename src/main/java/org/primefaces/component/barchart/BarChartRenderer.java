@@ -47,10 +47,8 @@ public class BarChartRenderer extends ChartRenderer {
     }
 
     protected void encodeScript(FacesContext context, BarChart chart) throws IOException {
-        String clientId = chart.getClientId(context);
-
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("BarChart", chart.resolveWidgetVar(context), clientId);
+        wb.init("BarChart", chart);
 
         encodeConfig(context, chart.getModel());
         encodeClientBehaviors(context, chart);

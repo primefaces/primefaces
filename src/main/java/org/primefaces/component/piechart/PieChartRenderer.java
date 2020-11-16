@@ -47,10 +47,8 @@ public class PieChartRenderer extends ChartRenderer {
     }
 
     protected void encodeScript(FacesContext context, PieChart chart) throws IOException {
-        String clientId = chart.getClientId(context);
-
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("PieChart", chart.resolveWidgetVar(context), clientId);
+        wb.init("PieChart", chart);
 
         encodeConfig(context, chart.getModel());
         encodeClientBehaviors(context, chart);

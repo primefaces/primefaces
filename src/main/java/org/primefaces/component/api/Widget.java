@@ -31,6 +31,10 @@ import org.primefaces.util.LangUtils;
 
 public interface Widget {
 
+    String CALLBACK_POST_CONSTRUCT = "widgetPostConstruct";
+    String CALLBACK_POST_REFRESH = "widgetPostRefresh";
+    String CALLBACK_PRE_DESTROY = "widgetPreDestroy";
+
     String ATTR_WIDGET_VAR_PATTERN = Widget.class.getName() + ".ATTR_WIDGET_VAR_PATTERN";
 
     // backwards compatibility

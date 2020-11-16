@@ -154,10 +154,9 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
     }
 
     protected void encodeScript(FacesContext context, MultiSelectListbox listbox) throws IOException {
-        String clientId = listbox.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
 
-        wb.init("MultiSelectListbox", listbox.resolveWidgetVar(context), clientId)
+        wb.init("MultiSelectListbox", listbox)
                 .attr("effect", listbox.getEffect(), null)
                 .attr("showHeaders", listbox.isShowHeaders(), false);
         encodeClientBehaviors(context, listbox);

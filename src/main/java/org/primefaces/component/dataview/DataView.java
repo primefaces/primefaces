@@ -146,7 +146,7 @@ public class DataView extends DataViewBase {
         DataModel model = getDataModel();
         if (model instanceof LazyDataModel) {
             LazyDataModel lazyModel = (LazyDataModel) model;
-            List<?> data = lazyModel.load(getFirst(), getRows(), null, null, Collections.emptyMap());
+            List<?> data = lazyModel.load(getFirst(), getRows(), Collections.emptyMap(), Collections.emptyMap());
 
             lazyModel.setPageSize(getRows());
             lazyModel.setWrappedData(data);

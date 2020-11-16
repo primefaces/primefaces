@@ -28,6 +28,9 @@ import org.primefaces.config.PrimeConfiguration;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import java.util.Map;
+import javax.faces.component.UIComponent;
+import org.primefaces.component.api.Widget;
 
 /**
  * Helper to generate scripts for widgets.
@@ -67,6 +70,13 @@ public class WidgetBuilder {
         return this;
     }
 
+    public <T extends UIComponent & Widget> WidgetBuilder init(String widgetClass, T widget)
+            throws IOException {
+
+        return init(widgetClass, widget.resolveWidgetVar(context), widget.getClientId(context))
+                .renderLifecycleCallbacks(widget);
+    }
+
     public WidgetBuilder init(String widgetClass, String widgetVar, String id) throws IOException {
         this.renderScriptBlock(id);
 
@@ -90,7 +100,15 @@ public class WidgetBuilder {
         return init(widgetClass, widgetVar, id);
     }
 
-    public WidgetBuilder initWithWindowLoad(String widgetClass, String widgetVar, String id) throws IOException {
+    public <T extends UIComponent & Widget> WidgetBuilder initWithWindowLoad(String widgetClass, T widget)
+            throws IOException {
+
+        return initWithWindowLoad(widgetClass, widget.resolveWidgetVar(context), widget.getClientId(context))
+                .renderLifecycleCallbacks(widget);
+    }
+
+    public WidgetBuilder initWithWindowLoad(String widgetClass, String widgetVar, String id)
+            throws IOException {
 
         this.renderScriptBlock(id);
         context.getResponseWriter().write("$(window).on(\"load\",function(){");
@@ -99,7 +117,15 @@ public class WidgetBuilder {
         return this;
     }
 
-    public WidgetBuilder initWithComponentLoad(String widgetClass, String widgetVar, String id, String targetId) throws IOException {
+    public <T extends UIComponent & Widget> WidgetBuilder initWithComponentLoad(String widgetClass, T widget, String targetId)
+            throws IOException {
+
+        return initWithComponentLoad(widgetClass, widget.resolveWidgetVar(context), widget.getClientId(context), targetId)
+                .renderLifecycleCallbacks(widget);
+    }
+
+    public WidgetBuilder initWithComponentLoad(String widgetClass, String widgetVar, String id, String targetId)
+            throws IOException {
 
         this.renderScriptBlock(id);
         context.getResponseWriter().write("PrimeFaces.onElementLoad($(PrimeFaces.escapeClientId(\"" + targetId + "\")),function(){");
@@ -113,6 +139,27 @@ public class WidgetBuilder {
         rw.startElement("script", null);
         rw.writeAttribute("id", id + "_s", null);
         rw.writeAttribute("type", "text/javascript", null);
+    }
+
+    protected WidgetBuilder renderLifecycleCallbacks(UIComponent component) throws IOException {
+        Map<String, Object> attributes = component.getAttributes();
+
+        Object postConstruct = attributes.get(Widget.CALLBACK_POST_CONSTRUCT);
+        if (postConstruct != null) {
+            callback("postConstruct", "function(widget)", postConstruct.toString());
+        }
+
+        Object postRefresh = attributes.get(Widget.CALLBACK_POST_REFRESH);
+        if (postRefresh != null) {
+            callback("postRefresh", "function(widget)", postRefresh.toString());
+        }
+
+        Object preDestroy = attributes.get(Widget.CALLBACK_PRE_DESTROY);
+        if (preDestroy != null) {
+            callback("preDestroy", "function(widget)", preDestroy.toString());
+        }
+
+        return this;
     }
 
     /**

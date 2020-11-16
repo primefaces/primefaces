@@ -223,10 +223,8 @@ public class OrganigramRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, Organigram organigram) throws IOException {
-        String clientId = organigram.getClientId(context);
-
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Organigram", organigram.resolveWidgetVar(context), clientId)
+        wb.init("Organigram", organigram)
                 .attr("zoom", organigram.isZoom())
                 .attr("leafNodeConnectorHeight", organigram.getLeafNodeConnectorHeight())
                 .attr("autoScrollToSelection", organigram.isAutoScrollToSelection());

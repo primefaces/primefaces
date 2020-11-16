@@ -40,7 +40,6 @@ import javax.faces.component.ContextCallback;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
-import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
@@ -62,6 +61,7 @@ import org.primefaces.component.api.SavedState;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.model.IterableDataModel;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 
 /**
  * Copied from Mojarra, to port bugfixes from newer Mojarra versions, to users of older Mojarra versions.
@@ -732,7 +732,7 @@ public class UIRepeat extends UINamingContainer {
         boolean shouldIterate = !ComponentUtils.isSkipIteration(ctx, facesContext);
         if (!shouldIterate) {
             String sourceId = facesContext.getExternalContext().getRequestParameterMap().get(
-                    ClientBehaviorContext.BEHAVIOR_SOURCE_PARAM_NAME);  
+                    Constants.RequestParams.PARTIAL_SOURCE_PARAM);  
             boolean containsSource = sourceId != null
                     ? sourceId.startsWith(super.getClientId(facesContext) + getSeparatorChar(facesContext))
                     : false;  

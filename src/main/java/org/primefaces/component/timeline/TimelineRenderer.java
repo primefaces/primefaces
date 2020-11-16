@@ -106,7 +106,6 @@ public class TimelineRenderer extends CoreRenderer {
         }
 
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = timeline.getClientId(context);
 
         ZoneId zoneId = CalendarUtils.calculateZoneId(timeline.getTimeZone());
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME.withZone(zoneId);
@@ -115,7 +114,7 @@ public class TimelineRenderer extends CoreRenderer {
         FastStringWriter fswHtml = new FastStringWriter();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Timeline", timeline.resolveWidgetVar(context), clientId);
+        wb.init("Timeline", timeline);
 
         List<TimelineEvent<Object>> events = model.getEvents();
         List<TimelineGroup<Object>> groups = calculateGroupsFromModel(model);
@@ -332,6 +331,19 @@ public class TimelineRenderer extends CoreRenderer {
         if (order != null) {
             fsw.write(", order: " + order);
         }
+
+        if (!LangUtils.isValueBlank(group.getSubgroupOrder())) {
+            fsw.write(", subgroupOrder: \"" + EscapeUtils.forJavaScript(group.getSubgroupOrder()) + "\"");
+        }
+
+        if (!LangUtils.isValueBlank(group.getSubgroupStack())) {
+            fsw.write(", subgroupStack: " + EscapeUtils.forJavaScript(group.getSubgroupStack()));
+        }
+
+        if (!LangUtils.isValueBlank(group.getSubgroupVisibility())) {
+            fsw.write(", subgroupVisibility: " + EscapeUtils.forJavaScript(group.getSubgroupVisibility()));
+        }
+
         fsw.write("}");
 
         String groupJson = fsw.toString();
@@ -399,6 +411,10 @@ public class TimelineRenderer extends CoreRenderer {
 
         if (foundGroup != null) {
             fsw.write(", group: \"" + EscapeUtils.forJavaScript(foundGroup.getId()) + "\"");
+
+            if (!LangUtils.isValueBlank(event.getSubgroup())) {
+                fsw.write(", subgroup: \"" + EscapeUtils.forJavaScript(event.getSubgroup()) + "\"");
+            }
         }
         else {
             // no group for the event

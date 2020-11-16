@@ -30,11 +30,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.HTML;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.*;
 
 public class InplaceRenderer extends CoreRenderer {
 
@@ -143,9 +139,8 @@ public class InplaceRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, Inplace inplace) throws IOException {
-        String clientId = inplace.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Inplace", inplace.resolveWidgetVar(context), clientId)
+        wb.init("Inplace", inplace)
                 .attr("effect", inplace.getEffect())
                 .attr("effectSpeed", inplace.getEffectSpeed())
                 .attr("event", inplace.getEvent())

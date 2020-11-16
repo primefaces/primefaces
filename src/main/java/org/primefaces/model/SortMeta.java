@@ -23,76 +23,260 @@
  */
 package org.primefaces.model;
 
+import org.primefaces.component.api.DynamicColumn;
+import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.column.ColumnBase;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.headerrow.HeaderRow;
+import org.primefaces.component.headerrow.HeaderRowBase;
+
+import javax.el.MethodExpression;
+import javax.el.ValueExpression;
+import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.util.Objects;
 
-import javax.el.MethodExpression;
+public class SortMeta implements Serializable, Comparable<SortMeta> {
 
-public class SortMeta implements Serializable {
+    public static final Integer MIN_PRIORITY = Integer.MAX_VALUE;
+    public static final Integer MAX_PRIORITY = Integer.MIN_VALUE;
 
     private static final long serialVersionUID = 1L;
 
     private String columnKey;
-    private String sortField;
-    private SortOrder sortOrder;
-    private MethodExpression sortFunction;
+    private String field;
+    private SortOrder order = SortOrder.UNSORTED;
+    private ValueExpression sortBy;
+    private MethodExpression function;
+    private Integer priority = MIN_PRIORITY;
+    private int nullSortOrder;
+    private boolean caseSensitiveSort;
+    private transient Object component;
 
     public SortMeta() {
+        // NOOP
     }
 
-    public SortMeta(String columnKey, String sortField, SortOrder sortOrder, MethodExpression sortFunction) {
+    SortMeta(String columnKey, String sortField, SortOrder sortOrder, MethodExpression sortFunction,
+             ValueExpression sortBy, Integer priority, int nullSortOrder, boolean caseSensitiveSort, Object component) {
         this.columnKey = columnKey;
-        this.sortField = sortField;
-        this.sortOrder = sortOrder;
-        this.sortFunction = sortFunction;
+        this.field = sortField;
+        this.order = sortOrder;
+        this.function = sortFunction;
+        this.sortBy = sortBy;
+        this.priority = priority;
+        this.nullSortOrder = nullSortOrder;
+        this.caseSensitiveSort = caseSensitiveSort;
+        this.component = component;
     }
 
-    public SortMeta(SortMeta sortMeta) {
-        this.columnKey = sortMeta.getColumnKey();
-        this.sortField = sortMeta.getSortField();
-        this.sortOrder = sortMeta.getSortOrder();
-        this.sortFunction = sortMeta.getSortFunction();
+    public static SortMeta of(FacesContext context, String var, UIColumn column) {
+        if (column instanceof DynamicColumn) {
+            ((DynamicColumn) column).applyStatelessModel();
+        }
+
+        if (!column.isSortable()) {
+            return null;
+        }
+
+        String field = resolveSortField(context, column);
+        if (field == null) {
+            return null;
+        }
+
+        SortOrder order = SortOrder.of(column.getSortOrder());
+        ValueExpression sortByVE = column.getValueExpression(ColumnBase.PropertyKeys.sortBy.name());
+        sortByVE = sortByVE != null ? sortByVE : DataTable.createValueExprFromVarField(context, var, field);
+
+        return new SortMeta(column.getColumnKey(),
+                            field,
+                            order,
+                            column.getSortFunction(),
+                            sortByVE,
+                            column.getSortPriority(),
+                            column.getNullSortOrder(),
+                            column.isCaseSensitiveSort(),
+                            column);
+    }
+
+    public static SortMeta of(FacesContext context, String var, HeaderRow headerRow) {
+        SortOrder order = SortOrder.of(headerRow.getSortOrder());
+        ValueExpression groupByVE = headerRow.getValueExpression(HeaderRowBase.PropertyKeys.groupBy.name());
+        groupByVE = groupByVE != null ? groupByVE : DataTable.createValueExprFromVarField(context, var, headerRow.getField());
+
+        return new SortMeta(headerRow.getClientId(context),
+                            headerRow.getField(),
+                            order,
+                            headerRow.getSortFunction(),
+                            groupByVE,
+                            MAX_PRIORITY,
+                            SortOrder.ASCENDING.intValue(),
+                            false,
+                            headerRow);
+    }
+
+    @Override
+    public int compareTo(SortMeta o) {
+        int result = getPriority().compareTo(o.priority);
+        if (result == 0) {
+            return -1 * Boolean.compare(isActive(), o.isActive());
+        }
+        return result;
+    }
+
+    public String getField() {
+        return field;
+    }
+
+    public SortOrder getOrder() {
+        return order;
+    }
+
+    public MethodExpression getFunction() {
+        return function;
+    }
+
+    public void setFunction(MethodExpression function) {
+        this.function = function;
+    }
+
+    public ValueExpression getSortBy() {
+        return sortBy;
+    }
+
+    public void setSortBy(ValueExpression sortBy) {
+        this.sortBy = sortBy;
+    }
+
+    public boolean isActive() {
+        return order != SortOrder.UNSORTED;
+    }
+
+    public void setOrder(SortOrder order) {
+        this.order = order;
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
+    }
+
+    public Object getComponent() {
+        return component;
     }
 
     public String getColumnKey() {
         return columnKey;
     }
 
-    public String getSortField() {
-        return sortField;
+    public int getNullSortOrder() {
+        return nullSortOrder;
     }
 
-    public SortOrder getSortOrder() {
-        return sortOrder;
-    }
-
-    public MethodExpression getSortFunction() {
-        return sortFunction;
+    public boolean isCaseSensitiveSort() {
+        return caseSensitiveSort;
     }
 
     @Override
-    public String toString() {
-        return "SortMeta [columnKey=" + columnKey + ", sortField=" + sortField + ", sortOrder=" + sortOrder + ", sortFunction="
-                + sortFunction + "]";
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SortMeta sortMeta = (SortMeta) o;
+        return Objects.equals(columnKey, sortMeta.columnKey) &&
+                Objects.equals(field, sortMeta.field);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(columnKey, sortField);
+        return Objects.hash(columnKey, field);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
+    public String toString() {
+        return "SortMeta{" +
+                "columnKey='" + columnKey + '\'' +
+                ", sortField='" + field + '\'' +
+                ", sortOrder=" + order +
+                ", sortBy=" + sortBy +
+                ", sortFunction=" + function +
+                ", priority=" + priority +
+                ", nullSortOrder=" + nullSortOrder +
+                ", caseSensitiveSort=" + caseSensitiveSort +
+                '}';
+    }
+
+    static String resolveSortField(FacesContext context, UIColumn column) {
+        ValueExpression columnSortByVE = column.getValueExpression(ColumnBase.PropertyKeys.sortBy.toString());
+
+        if (column.isDynamic()) {
+            String field = column.getField();
+            if (field == null) {
+                Object sortByProperty = column.getSortBy();
+                field = (sortByProperty == null) ? DataTable.resolveDynamicField(context, columnSortByVE) : sortByProperty.toString();
+            }
+            return field;
         }
-        if (obj == null) {
-            return false;
+        else {
+            String field = column.getField();
+            if (field == null) {
+                field = (columnSortByVE == null) ? (String) column.getSortBy() : DataTable.resolveStaticField(columnSortByVE);
+            }
+            return field;
         }
-        if (!(obj instanceof SortMeta)) {
-            return false;
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+
+        private SortMeta sortMeta;
+
+        private Builder() {
+            sortMeta = new SortMeta();
         }
-        SortMeta other = (SortMeta) obj;
-        return Objects.equals(columnKey, other.columnKey) && Objects.equals(sortField, other.sortField);
+
+        public Builder field(String field) {
+            sortMeta.field = field;
+            return this;
+        }
+
+        public Builder order(SortOrder sortOrder) {
+            sortMeta.order = sortOrder;
+            return this;
+        }
+
+        public Builder sortBy(ValueExpression sortBy) {
+            sortMeta.sortBy = sortBy;
+            return this;
+        }
+
+        public Builder function(MethodExpression sortFunction) {
+            sortMeta.function = sortFunction;
+            return this;
+        }
+
+        public Builder priority(Integer priority) {
+            sortMeta.priority = priority;
+            return this;
+        }
+
+        public Builder nullSortOrder(int nullSortOrder) {
+            sortMeta.nullSortOrder = nullSortOrder;
+            return this;
+        }
+
+        public Builder caseSensitiveSort(boolean caseSensitiveSort) {
+            sortMeta.caseSensitiveSort = caseSensitiveSort;
+            return this;
+        }
+
+        public SortMeta build() {
+            return sortMeta;
+        }
     }
 }

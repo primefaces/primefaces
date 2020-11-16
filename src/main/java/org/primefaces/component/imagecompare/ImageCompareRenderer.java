@@ -43,10 +43,8 @@ public class ImageCompareRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, ImageCompare compare) throws IOException {
-        String clientId = compare.getClientId(context);
-
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("ImageCompare", compare.resolveWidgetVar(context), clientId)
+        wb.init("ImageCompare", compare)
                 .attr("leftimage", getResourceURL(context, compare.getLeftImage()))
                 .attr("rightimage", getResourceURL(context, compare.getRightImage()));
         wb.finish();

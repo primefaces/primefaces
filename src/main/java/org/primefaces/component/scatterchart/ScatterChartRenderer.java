@@ -47,10 +47,8 @@ public class ScatterChartRenderer extends ChartRenderer {
     }
 
     protected void encodeScript(FacesContext context, ScatterChart chart) throws IOException {
-        String clientId = chart.getClientId(context);
-
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("ScatterChart", chart.resolveWidgetVar(context), clientId);
+        wb.init("ScatterChart", chart);
 
         encodeConfig(context, chart.getModel());
         encodeClientBehaviors(context, chart);

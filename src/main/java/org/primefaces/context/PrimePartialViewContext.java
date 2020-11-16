@@ -89,13 +89,15 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
     @Override
     public boolean isAjaxRequest() {
         return getWrapped().isAjaxRequest()
-                || FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().containsKey("javax.faces.partial.ajax");
+                || FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().containsKey(
+                        Constants.RequestParams.PARTIAL_REQUEST_PARAM);
     }
 
     @Override
     public boolean isPartialRequest() {
         return getWrapped().isPartialRequest()
-                || FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().containsKey("javax.faces.partial.execute");
+                || FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().containsKey(
+                        Constants.RequestParams.PARTIAL_PROCESS_PARAM);
     }
 
     /**

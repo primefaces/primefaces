@@ -4115,7 +4115,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         var $this = this;
 
-        $(this.jqId + ' thead th').draggable({
+        $(this.jqId + ' thead th.ui-draggable-column').draggable({
             appendTo: 'body',
             opacity: 0.75,
             cursor: 'move',

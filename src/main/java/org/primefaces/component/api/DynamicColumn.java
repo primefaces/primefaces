@@ -303,4 +303,29 @@ public class DynamicColumn implements UIColumn {
     public String getExportFooterValue() {
         return columns.getExportFooterValue();
     }
+
+    @Override
+    public String getSortOrder() {
+        return columns.getSortOrder();
+    }
+
+    @Override
+    public int getSortPriority() {
+        return columns.getSortPriority();
+    }
+
+    @Override
+    public int getNullSortOrder() {
+        return columns.getNullSortOrder();
+    }
+
+    @Override
+    public boolean isCaseSensitiveSort() {
+        return columns.isCaseSensitiveSort();
+    }
+
+    @Override
+    public boolean isDraggable() {
+        return columns.isDraggable();
+    }
 }

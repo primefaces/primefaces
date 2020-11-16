@@ -43,9 +43,8 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         PanelMenu menu = (PanelMenu) abstractMenu;
-        String clientId = menu.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("PanelMenu", menu.resolveWidgetVar(context), clientId)
+        wb.init("PanelMenu", menu)
                 .attr("stateful", menu.isStateful())
                 .attr("multiple", menu.isMultiple());
         wb.finish();

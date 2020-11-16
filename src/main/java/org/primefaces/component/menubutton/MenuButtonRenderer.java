@@ -159,7 +159,7 @@ public class MenuButtonRenderer extends TieredMenuRenderer {
         }
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("MenuButton", button.resolveWidgetVar(context), clientId);
+        wb.init("MenuButton", button);
         wb.attr("appendTo", SearchExpressionFacade.resolveClientId(context, button, button.getAppendTo(),
                 SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null);
         wb.attr("collision", button.getCollision());

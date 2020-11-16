@@ -45,10 +45,8 @@ public class BlockUIRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, BlockUI blockUI) throws IOException {
-        String clientId = blockUI.getClientId(context);
-
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("BlockUI", blockUI.resolveWidgetVar(context), clientId);
+        wb.init("BlockUI", blockUI);
 
         wb.attr("block", SearchExpressionFacade.resolveClientIds(context, blockUI, blockUI.getBlock(),
                 SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE));

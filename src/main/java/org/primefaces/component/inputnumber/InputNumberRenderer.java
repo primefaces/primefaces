@@ -224,7 +224,7 @@ public class InputNumberRenderer extends InputRenderer {
         String decimalPlaces = getDecimalPlaces(inputNumber, value);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init(InputNumber.class.getSimpleName(), inputNumber.resolveWidgetVar(context), inputNumber.getClientId());
+        wb.init(InputNumber.class.getSimpleName(), inputNumber);
         wb.attr("disabled", inputNumber.isDisabled())
             .attr("valueToRender", valueToRender)
             .attr("decimalCharacter", decimalSeparator, ".")

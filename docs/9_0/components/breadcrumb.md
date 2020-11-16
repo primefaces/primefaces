@@ -21,7 +21,6 @@ in the workflow.
 | id | null | String | Unique identifier of the component.
 | rendered | true | Boolean | Boolean value to specify the rendering of the component.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| widgetVar | null | String | Name of the client side widget.
 | model | null | MenuModel | MenuModel instance to create menus programmatically
 | style | null | String | Style of main container element.
 | styleClass | null | String | Style class of main container

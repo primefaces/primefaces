@@ -25,14 +25,7 @@ package org.primefaces.util;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.YearMonth;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.Temporal;
@@ -433,7 +426,13 @@ public class CalendarUtils {
             return null;
         }
         else {
-            return date.toInstant().atZone(zoneId);
+            if (date instanceof java.sql.Date) {
+                java.sql.Date sqlDate = (java.sql.Date) date;
+                return sqlDate.toLocalDate().atStartOfDay(zoneId);
+            }
+            else {
+                return date.toInstant().atZone(zoneId);
+            }
         }
     }
 

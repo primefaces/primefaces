@@ -41,9 +41,8 @@ public class StackRenderer extends BaseMenuRenderer {
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu menu) throws IOException {
         Stack stack = (Stack) menu;
-        String clientId = stack.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Stack", stack.resolveWidgetVar(context), clientId)
+        wb.init("Stack", stack)
                 .attr("openSpeed", stack.getOpenSpeed())
                 .attr("closeSpeed", stack.getCloseSpeed())
                 .attr("expanded", stack.isExpanded(), false);
