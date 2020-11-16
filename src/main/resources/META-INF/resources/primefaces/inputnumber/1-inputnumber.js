@@ -213,7 +213,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
      */
     getValue: function () {
         var val = this.autonumeric.getNumericString();
-        if (val && this.cfg.decimalPlaces) {
+        if (val && parseInt(this.cfg.decimalPlaces, 10) > 0) {
             var decimalPlacesToPad;
             if (val.indexOf('.') === -1) {
                 decimalPlacesToPad = this.cfg.decimalPlaces;
