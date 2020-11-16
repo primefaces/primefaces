@@ -35,7 +35,9 @@ widgetVar | null | String | Name of the client side widget.
 effect | blind | String | Name of the toggle animation.
 effectSpeed | normal | String | Duration of toggle animation, valid values are "slow", "normal" and "fast".
 disabled | false | Boolean | Disables the component.
-label | null | String | User presentable name.
+alwaysDisplayLabel | false | Boolean | Always display the `label` value instead of the selected item label.
+label | null | String | User presentable name used in conjuction with `alwaysDisplayLabel` to display instead of selected item.
+labelTemplate | null | String | Displays label of the element in a custom template. Valid placeholder is {0}.
 onchange | null | String | Client side callback to execute on value change.
 onkeyup | null | String | Client side callback to execute on keyup.
 onkeydown | null | String | Client side callback to execute on keydown.
@@ -53,7 +55,6 @@ maxlength | null | Integer | Number of maximum characters allowed in editable se
 appendTo | null | String | Appends the overlay to the element defined by search expression. Defaults to document body.
 title | null | String | Advisory tooltip information.
 syncTooltip | false | Boolean | Updates the title of the component with the description of the selected item.
-labelTemplate | null | String | Displays label of the element in a custom template. Valid placeholder is {0}.
 onfocus | null | String | Client side callback to execute when element receives focus.
 onblur | null | String | Client side callback to execute when element loses focus.
 autoWidth | true | Boolean | Calculates a fixed width based on the width of the maximum option label. Set to false for custom width.
