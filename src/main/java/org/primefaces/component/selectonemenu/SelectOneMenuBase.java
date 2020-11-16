@@ -228,10 +228,12 @@ public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Wid
         getStateHelper().put(PropertyKeys.labelTemplate, labelTemplate);
     }
 
+    @Override
     public String getLabel() {
         return (String) getStateHelper().eval(PropertyKeys.label, null);
     }
 
+    @Override
     public void setLabel(String label) {
         getStateHelper().put(PropertyKeys.label, label);
     }
