@@ -23949,7 +23949,15 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Always display the 'label' value instead of the selected item label. Default is false.]]>
+            </description>
+            <name>alwaysDisplayLabel</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[User presentable name used in conjuction with 'alwaysDisplayLabel' to display instead of selected item.]]>
             </description>
             <name>label</name>
             <required>false</required>

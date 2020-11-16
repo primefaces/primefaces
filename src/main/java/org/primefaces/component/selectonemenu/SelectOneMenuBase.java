@@ -55,6 +55,8 @@ public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Wid
         appendTo,
         title,
         syncTooltip,
+        alwaysDisplayLabel,
+        label,
         labelTemplate,
         placeholder,
         autoWidth,
@@ -210,12 +212,28 @@ public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Wid
         getStateHelper().put(PropertyKeys.syncTooltip, syncTooltip);
     }
 
+    public boolean isAlwaysDisplayLabel() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.alwaysDisplayLabel, false);
+    }
+
+    public void setAlwaysDisplayLabel(boolean alwaysDisplayLabel) {
+        getStateHelper().put(PropertyKeys.alwaysDisplayLabel, alwaysDisplayLabel);
+    }
+
     public String getLabelTemplate() {
         return (String) getStateHelper().eval(PropertyKeys.labelTemplate, null);
     }
 
     public void setLabelTemplate(String labelTemplate) {
         getStateHelper().put(PropertyKeys.labelTemplate, labelTemplate);
+    }
+
+    public String getLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.label, null);
+    }
+
+    public void setLabel(String label) {
+        getStateHelper().put(PropertyKeys.label, label);
     }
 
     public String getPlaceholder() {
