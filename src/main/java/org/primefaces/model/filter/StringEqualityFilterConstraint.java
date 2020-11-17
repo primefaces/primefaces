@@ -38,6 +38,7 @@ public class StringEqualityFilterConstraint implements FilterConstraint {
     @Override
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
         String str = filter == null ? null : filter.toString().trim().toLowerCase(locale);
-        return predicate.test(value.toString().toLowerCase(locale), str);
+        String val = value == null ? null : value.toString().toLowerCase(locale);
+        return predicate.test(val, str);
     }
 }
