@@ -1557,6 +1557,25 @@ public class DataTable extends DataTableBase {
         return true;
     }
 
+    public boolean isColumnFilterable(UIColumn column) {
+        Map<String, FilterMeta> filterBy = getFilterByAsMap();
+        if (filterBy.containsKey(column.getColumnKey())) {
+            // update filterBy's column to get local value later on (see FilterFeature)
+            filterBy.get(column.getColumnKey()).setColumn(column);
+            return true;
+        }
+
+        FilterMeta s = FilterMeta.of(getFacesContext(), getVar(), column);
+        if (s == null) {
+            return false;
+        }
+
+        // unlikely to happen, in case columns change between two ajax requests
+        filterBy.put(s.getColumnKey(), s);
+        setFilterByAsMap(filterBy);
+        return true;
+    }
+
     protected Map<String, FilterMeta> initFilterBy(Object userFilterBy) {
         Map<String, FilterMeta> filterBy = new HashMap<>();
         AtomicBoolean filtered = new AtomicBoolean();

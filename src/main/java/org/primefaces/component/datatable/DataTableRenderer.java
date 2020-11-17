@@ -588,9 +588,8 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = column.getContainerClientId(context);
 
-
         boolean sortable = table.isColumnSortable(column);
-        boolean filterable = table.getFilterByAsMap().containsKey(column.getColumnKey());
+        boolean filterable = table.isColumnFilterable(column);
         String selectionMode = column.getSelectionMode();
         String sortIcon = null;
         boolean resizable = table.isResizableColumns() && column.isResizable();
