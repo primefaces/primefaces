@@ -1525,6 +1525,23 @@ public class DataTable extends DataTableBase {
         return getSortByAsMap().values().stream().anyMatch(SortMeta::isActive);
     }
 
+    public boolean isColumnSortable(UIColumn column) {
+        Map<String, SortMeta> sortBy = getSortByAsMap();
+        if (sortBy.containsKey(column.getColumnKey())) {
+            return true;
+        }
+
+        SortMeta s = SortMeta.of(getFacesContext(), getVar(), column);
+        if (s == null) {
+            return false;
+        }
+
+        // unlikely to happen, in case columns change between two ajax requests
+        sortBy.put(s.getColumnKey(), s);
+        setSortByAsMap(sortBy);
+        return true;
+    }
+
     public Map<String, SortMeta> getSortByAsMap() {
         return ComponentUtils.computeIfAbsent(getStateHelper(), "_sortBy", () -> initSortBy(getSortBy()));
     }
