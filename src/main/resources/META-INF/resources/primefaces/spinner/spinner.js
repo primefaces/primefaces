@@ -17,7 +17,7 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  * 
- * @prop {number} cfg.decimalPlaces Number of decimal places.
+ * @prop {string} cfg.decimalPlaces Number of decimal places.
  * @prop {string} cfg.decimalSeparator The character separating the integral and fractional parts of the number.
  * @prop {number} cfg.max Minimum allowed value for this spinner.
  * @prop {number} cfg.maxlength Maximum number of characters that may be entered in this field.
@@ -55,8 +55,10 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
 
         var inputValue = this.input.val();
 
-        if(this.cfg.decimalPlaces > 0) {
-            this.cfg.precision = this.cfg.decimalPlaces;
+        this.cfg.precision = 0;
+        var decPlaces = parseInt(this.cfg.decimalPlaces, 10);
+        if(decPlaces > 0) {
+            this.cfg.precision = decPlaces;
         }
         else if(!(typeof this.cfg.step === 'number' && this.cfg.step % 1 === 0)) {
             this.cfg.precision = this.cfg.step.toString().split(/[,]|[.]/)[1].length;
@@ -146,14 +148,33 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
             }
 
             /* Github #1964 do not allow minus */
-            if ($this.cfg.min >= 0 && event.key === "-") {
+            var isNegative = event.key === '-';
+            if ($this.cfg.min >= 0 && isNegative) {
                 e.preventDefault();
+                return;
             }
 
-            /* GitHub #5579 prevent multiple '-' '.' */
-            var value = $(this).val();
-            if ((event.key === '-' && value.indexOf('-') != -1) || (event.key === '.' && value.indexOf('.')!= -1)) {
+            /* GitHub #5579 do not allow decimal separator for integers */
+            var isDecimalSeparator = event.key === $this.cfg.decimalSeparator;
+            if (isDecimalSeparator && $this.cfg.precision === 0) {
                 e.preventDefault();
+                return;
+            }
+
+            /* GitHub #5579 prevent non numeric characters and duplicate separators */
+            var value = $(this).val();
+            var isNumber = isFinite(event.key);
+            var isThousandsSeparator = event.key === $this.cfg.thousandSeparator;
+            if ((isNegative && value.indexOf('-') != -1) 
+                    || (isDecimalSeparator && value.indexOf($this.cfg.decimalSeparator)!= -1)
+                    || (isThousandsSeparator && value.indexOf($this.cfg.thousandSeparator)!= -1)) {
+                e.preventDefault();
+                return;
+            } 
+
+            if (!isNumber && !(isNegative || isDecimalSeparator || isThousandsSeparator)) {
+                e.preventDefault();
+                return;
             }
         })
         .on('keyup.spinner', function (e) {
