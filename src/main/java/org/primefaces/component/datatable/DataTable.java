@@ -1338,6 +1338,9 @@ public class DataTable extends DataTableBase {
             setValue(null);
         }
 
+        // must be reset, FilterMeta#column must be updated since local value
+        // (from column) must be decoded by FilterFeature#decodeFilterValue
+        // not happening with DataTable#sortByAsMap
         setFilterByAsMap(null);
 
         // reset component for MyFaces view pooling
@@ -1559,21 +1562,7 @@ public class DataTable extends DataTableBase {
 
     public boolean isColumnFilterable(UIColumn column) {
         Map<String, FilterMeta> filterBy = getFilterByAsMap();
-        if (filterBy.containsKey(column.getColumnKey())) {
-            // update filterBy's column to get local value later on (see FilterFeature)
-            filterBy.get(column.getColumnKey()).setColumn(column);
-            return true;
-        }
-
-        FilterMeta s = FilterMeta.of(getFacesContext(), getVar(), column);
-        if (s == null) {
-            return false;
-        }
-
-        // unlikely to happen, in case columns change between two ajax requests
-        filterBy.put(s.getColumnKey(), s);
-        setFilterByAsMap(filterBy);
-        return true;
+        return filterBy.containsKey(column.getColumnKey());
     }
 
     protected Map<String, FilterMeta> initFilterBy(Object userFilterBy) {

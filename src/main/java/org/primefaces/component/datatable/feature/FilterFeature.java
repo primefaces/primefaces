@@ -25,7 +25,6 @@ package org.primefaces.component.datatable.feature;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
-import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
