@@ -26,6 +26,7 @@ package org.primefaces.component.datatable;
 import java.lang.reflect.Array;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -1453,26 +1454,23 @@ public class DataTable extends DataTableBase {
 
     protected Map<String, SortMeta> initSortBy(Object sortByTmp) {
         Map<String, SortMeta> sortMeta = new HashMap<>();
-        boolean sorted = false;
+        AtomicBoolean sorted = new AtomicBoolean();
 
         HeaderRow headerRow = getHeaderRow();
         if (headerRow != null) {
             SortMeta s = SortMeta.of(getFacesContext(), getVar(), headerRow);
             sortMeta.put(s.getColumnKey(), s);
-            sorted = true;
+            sorted.set(true);
         }
 
-        for (UIColumn column : getColumns()) {
-            SortMeta s = SortMeta.of(getFacesContext(), getVar(), column);
-            if (s == null) {
-                continue;
+        char separator = UINamingContainer.getSeparatorChar(getFacesContext());
+        visitColumns(getFacesContext(), separator, this, c -> {
+            SortMeta s = SortMeta.of(getFacesContext(), getVar(), c);
+            if (s != null) {
+                sorted.set(sorted.get() || s.isActive());
+                sortMeta.put(s.getColumnKey(), s);
             }
-
-            sortMeta.put(s.getColumnKey(), s);
-            sorted |= s.isActive();
-        }
-
-        setDefaultSort(sorted);
+        });
 
         // merge internal sortBy with user sortBy
         if (sortByTmp != null) {
@@ -1489,6 +1487,8 @@ public class DataTable extends DataTableBase {
 
             updateSortByWithUserSortBy(sortMeta, sortBy, sorted);
         }
+
+        setDefaultSort(sorted.get());
 
         return sortMeta;
     }
@@ -1510,7 +1510,7 @@ public class DataTable extends DataTableBase {
         }
     }
 
-    protected void updateSortByWithUserSortBy(Map<String, SortMeta> intlSortBy, Collection<SortMeta> usrSortBy, boolean sorted) {
+    protected void updateSortByWithUserSortBy(Map<String, SortMeta> intlSortBy, Collection<SortMeta> usrSortBy, AtomicBoolean sorted) {
         for (SortMeta userSM : usrSortBy) {
             SortMeta intlSM = intlSortBy.values().stream()
                     .filter(o -> o.getField().equals(userSM.getField()))
@@ -1526,10 +1526,8 @@ public class DataTable extends DataTableBase {
             intlSM.setOrder(userSM.getOrder());
             intlSM.setSortBy(sortByVE);
             intlSM.setFunction(userSM.getFunction());
-            sorted |= userSM.isActive();
+            sorted.set(sorted.get() || userSM.isActive());
         }
-
-        setDefaultSort(sorted);
     }
 
     public SortMeta getHighestPriorityActiveSortMeta() {
@@ -1560,6 +1558,31 @@ public class DataTable extends DataTableBase {
         return true;
     }
 
+    protected void visitColumns(FacesContext context, char separator, UIComponent root, Consumer<UIColumn> visitor) {
+        for (int i = 0; i < root.getChildCount(); i++) {
+            UIComponent child = root.getChildren().get(i);
+            if (child.isRendered()) {
+                if (child instanceof Columns) {
+                    Columns columns = (Columns) child;
+                    String uiColumnsClientId = columns.getClientId(context);
+
+                    for (int j = 0; j < columns.getRowCount(); j++) {
+                        DynamicColumn dynaColumn = new DynamicColumn(j, columns);
+                        dynaColumn.setColumnKey(uiColumnsClientId + separator + j);
+                        visitor.accept(dynaColumn);
+                    }
+                }
+                else if (child instanceof UIColumn) {
+                    UIColumn column = (UIColumn) child;
+                    visitor.accept(column);
+                }
+                else if (child instanceof ColumnGroup) {
+                    visitColumns(context, separator, child, visitor);
+                }
+            }
+        }
+    }
+
     public boolean isColumnFilterable(UIColumn column) {
         Map<String, FilterMeta> filterBy = getFilterByAsMap();
         return filterBy.containsKey(column.getColumnKey());
@@ -1571,7 +1594,14 @@ public class DataTable extends DataTableBase {
 
         // build columns filterBy
         char separator = UINamingContainer.getSeparatorChar(getFacesContext());
-        populateFilterBy(getFacesContext(), separator, this, filterBy, filtered);
+
+        visitColumns(getFacesContext(), separator, this, c -> {
+            FilterMeta f = FilterMeta.of(getFacesContext(), getVar(), c);
+            if (f != null) {
+                filtered.set(filtered.get() || f.isActive());
+                filterBy.put(f.getColumnKey(), f);
+            }
+        });
 
         // merge internal filterBy with user filterBy
         if (userFilterBy != null) {
