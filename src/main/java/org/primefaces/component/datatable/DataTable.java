@@ -23,27 +23,6 @@
  */
 package org.primefaces.component.datatable;
 
-import java.lang.reflect.Array;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import javax.el.ELContext;
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.component.ValueHolder;
-import javax.faces.context.FacesContext;
-import javax.faces.event.*;
-import javax.faces.model.DataModel;
-
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
@@ -64,6 +43,26 @@ import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.model.*;
 import org.primefaces.util.*;
+
+import javax.el.ELContext;
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.application.ResourceDependency;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
+import javax.faces.component.ValueHolder;
+import javax.faces.context.FacesContext;
+import javax.faces.event.*;
+import javax.faces.model.DataModel;
+import java.lang.reflect.Array;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -311,33 +310,6 @@ public class DataTable extends DataTableBase {
             selectionVE.setValue(context.getELContext(), getLocalSelection());
             setSelection(null);
         }
-
-//        Map<String, FilterMeta> filterBy = getFilterBy();
-//        if (!filterBy.isEmpty()) {
-//            ELContext elContext = context.getELContext();
-//            for (FilterMeta filter : filterBy.values()) {
-//                UIColumn column = filter.getColumn();
-//                if (column == null) {
-//                    column = findColumn(filter.getColumnKey());
-//                    filter.setColumn(column);
-//                }
-//
-//                if (column != null) {
-//                    ValueExpression columnFilterValueVE = column.getValueExpression(Column.PropertyKeys.filterValue.toString());
-//                    if (columnFilterValueVE != null) {
-//                        if (column.isDynamic()) {
-//                            DynamicColumn dynamicColumn = (DynamicColumn) column;
-//                            dynamicColumn.applyStatelessModel();
-//                            columnFilterValueVE.setValue(elContext, filter.getFilterValue());
-//                            dynamicColumn.cleanStatelessModel();
-//                        }
-//                        else {
-//                            columnFilterValueVE.setValue(elContext, filter.getFilterValue());
-//                        }
-//                    }
-//                }
-//            }
-//        }
     }
 
     @Override
