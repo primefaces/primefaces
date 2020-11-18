@@ -689,7 +689,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("th");
     }
 
-    protected Object findFilterValue(DataTable table, UIColumn column) {
+    protected Object getFilterValue(DataTable table, UIColumn column) {
         return table.getFilterByAsMap().get(column.getColumnKey()).getFilterValue();
     }
 
@@ -744,7 +744,7 @@ public class DataTableRenderer extends DataRenderer {
             encodeDefaultFilter(context, table, column, writer);
         }
         else {
-            Object filterValue = findFilterValue(table, column);
+            Object filterValue = getFilterValue(table, column);
             if (filterValue != null) {
                 ((ValueHolder) filterFacet).setValue(filterValue);
             }
@@ -879,7 +879,7 @@ public class DataTableRenderer extends DataRenderer {
             filterValue = Constants.EMPTY_STRING;
         }
         else {
-            filterValue = findFilterValue(table, column);
+            filterValue = getFilterValue(table, column);
             if (filterValue == null) {
                 Map<String, String> params = context.getExternalContext().getRequestParameterMap();
                 if (params.containsKey(filterId)) {
@@ -1657,7 +1657,7 @@ public class DataTableRenderer extends DataRenderer {
                 break;
             }
 
-            subTable.encodeAll(context);
+            subTable.encodeAll(context);y
         }
     }
 
