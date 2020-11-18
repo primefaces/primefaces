@@ -1657,7 +1657,7 @@ public class DataTableRenderer extends DataRenderer {
                 break;
             }
 
-            subTable.encodeAll(context);y
+            subTable.encodeAll(context);
         }
     }
 
