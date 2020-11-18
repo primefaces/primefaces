@@ -313,7 +313,13 @@ if (!PrimeFaces.dialog) {
             else if(sourceComponentId) {
                 var dialogReturnBehaviorStr = $(windowContext.document.getElementById(sourceComponentId)).data('dialogreturn');
                 if(dialogReturnBehaviorStr) {
-                    dialogReturnBehavior = windowContext.eval('(function(ext){this.' + dialogReturnBehaviorStr + '})');
+                    var dialogFunction = '(function(ext){this.' + dialogReturnBehaviorStr + '})';
+                    if (PrimeFaces.csp.NONCE_VALUE) {
+                        dialogReturnBehavior = PrimeFaces.csp.evalResult(dialogFunction);
+                    }
+                    else {
+                        dialogReturnBehavior = windowContext.eval(dialogFunction);
+                    }
                 }
             }
 
