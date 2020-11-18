@@ -85,6 +85,10 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         return rowKey;
     }
 
+    public void setRowKey(String rowKey) {
+        setRowKey(getValue(), rowKey);
+    }
+
     public void setRowKey(TreeNode root, String rowKey) {
         Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
         saveDescendantState();
