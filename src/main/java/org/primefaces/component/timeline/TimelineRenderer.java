@@ -316,6 +316,18 @@ public class TimelineRenderer extends CoreRenderer {
             fsw.write(", content:\"" + groupsContent.get(group.getId()) + "\"");
         }
 
+        if (group.getTreeLevel() != null) {
+            fsw.write(", treeLevel: \"" + group.getTreeLevel() + "\"");
+
+            if (group.getNestedGroups() != null) {
+                fsw.write(", nestedGroups: [");
+                for (String s: group.getNestedGroups()) {
+                    fsw.write("\"" + EscapeUtils.forJavaScriptBlock(s) + "\"" + ", ");
+                }
+                fsw.write("]");
+            }
+        }
+
         if (timeline.getGroupStyle() != null) {
             fsw.write(", style: \"" + timeline.getGroupStyle() + "\"");
         }

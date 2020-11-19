@@ -24,6 +24,7 @@
 package org.primefaces.model.timeline;
 
 import java.io.Serializable;
+import java.util.HashSet;
 
 public class TimelineGroup<T> implements Serializable {
 
@@ -43,6 +44,17 @@ public class TimelineGroup<T> implements Serializable {
      * A title for the group, displayed when holding the mouse on the groups label. The title can only contain plain text.
      */
     private String title;
+
+    /**
+     * root level of the nested groups.
+     */
+    private Integer treeLevel;
+
+    /**
+     *
+     * it is a set of ids of nested groups that a group or nested group contains.
+     */
+    private HashSet<String> nestedGroups;
 
     /**
      * any custom style class for this event in UI (optional)
@@ -83,6 +95,27 @@ public class TimelineGroup<T> implements Serializable {
         this.title = title;
     }
 
+    public TimelineGroup(String id, T data, int treeLevel) {
+        this.id = id;
+        this.data = data;
+        this.treeLevel = treeLevel;
+    }
+
+    public TimelineGroup(String id, T data, int treeLevel, HashSet<String> nestedGroups) {
+        this.id = id;
+        this.data = data;
+        this.treeLevel = treeLevel;
+        this.nestedGroups = nestedGroups;
+    }
+
+    public TimelineGroup(String id, T data, String title, int treeLevel, HashSet<String> nestedGroups) {
+        this.id = id;
+        this.data = data;
+        this.title = title;
+        this.treeLevel = treeLevel;
+        this.nestedGroups = nestedGroups;
+    }
+
     public String getId() {
         return id;
     }
@@ -97,6 +130,22 @@ public class TimelineGroup<T> implements Serializable {
 
     public void setData(T data) {
         this.data = data;
+    }
+
+    public Integer getTreeLevel() {
+        return treeLevel;
+    }
+
+    public void setTreeLevel(Integer treeLevel) {
+        this.treeLevel = treeLevel;
+    }
+
+    public HashSet<String> getNestedGroups() {
+        return nestedGroups;
+    }
+
+    public void setNestedGroups(HashSet<String> nestedGroups) {
+        this.nestedGroups = nestedGroups;
     }
 
     public String getStyleClass() {
