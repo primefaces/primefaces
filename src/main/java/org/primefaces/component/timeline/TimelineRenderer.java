@@ -30,10 +30,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -314,6 +311,19 @@ public class TimelineRenderer extends CoreRenderer {
         else if (data != null) {
             groupsContent.put(group.getId(), EscapeUtils.forJavaScript(data.toString()));
             fsw.write(", content:\"" + groupsContent.get(group.getId()) + "\"");
+        }
+
+        if (group.getTreeLevel() != null) {
+            fsw.write(", treeLevel: \"" + group.getTreeLevel() + "\"");
+
+            Set<String> nestedGroups = group.getNestedGroups();
+            if (nestedGroups != null && !nestedGroups.isEmpty()) {
+                fsw.write(", nestedGroups: [");
+                for (String s: nestedGroups) {
+                    fsw.write("\"" + EscapeUtils.forJavaScriptBlock(s) + "\"" + ", ");
+                }
+                fsw.write("]");
+            }
         }
 
         if (timeline.getGroupStyle() != null) {

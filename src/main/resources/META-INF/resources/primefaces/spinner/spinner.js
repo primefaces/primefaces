@@ -142,6 +142,13 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                     $this.format();
                 break;
 
+                case keyCode.BACKSPACE:
+                case keyCode.DELETE:
+                case keyCode.LEFT:
+                case keyCode.RIGHT:
+                    return;
+                break;
+
                 default:
                     //do nothing
                 break;
