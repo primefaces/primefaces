@@ -24,7 +24,6 @@
 package org.primefaces.component.selectonemenu;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -538,62 +537,24 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
     protected void encodeSelectItems(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems, Object values,
                                      Object submittedValues, Converter converter) throws IOException {
 
-        SelectItem selectedSelectItem = null;
-
-        Object valuesArray;
-        if (submittedValues != null) {
-            valuesArray = submittedValues;
-        }
-        else {
-            valuesArray = values;
-        }
-
-        if (valuesArray != null) {
-            selectedSelectItem = getSelectedSelectItem(context, menu, selectItems, submittedValues, converter, valuesArray);
-        }
+        boolean isInitialDynamic = menu.isDynamic() && !menu.isDynamicLoadRequest(context);
 
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
-            encodeOption(context, menu, selectItem, selectedSelectItem, values, submittedValues, converter, i);
-        }
-
-    }
-
-    private SelectItem getSelectedSelectItem(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems,
-                                             Object submittedValues, Converter converter, Object valuesArray) {
-        SelectItem selectedSelectItem = null;
-
-        for (int i = 0; i < selectItems.size(); i++) {
-            SelectItem selectItem = selectItems.get(i);
-
-            if (selectItem instanceof SelectItemGroup) {
-                SelectItemGroup selectItemGroup = (SelectItemGroup) selectItem;
-                selectedSelectItem = getSelectedSelectItem(context, menu, Arrays.asList(selectItemGroup.getSelectItems()),
-                        submittedValues, converter, valuesArray);
-                if (selectedSelectItem != null) {
-                    break;
-                }
-            }
-
-            Object itemValue;
-            if (submittedValues != null) {
-                //what the hell does the following line? maybe for editable?
-                itemValue = getOptionAsString(context, menu, converter, selectItem.getValue());
-            }
-            else {
-                itemValue = selectItem.getValue();
-            }
-
-            if (isSelected(context, menu, itemValue, valuesArray, converter)) {
-                selectedSelectItem = selectItem;
-                break;
+            boolean selected = encodeOption(context, menu, selectItem, values, submittedValues, converter, i);
+            if (selected && isInitialDynamic) {
+                return;
             }
         }
-        return selectedSelectItem;
     }
 
-    protected void encodeOption(FacesContext context, SelectOneMenu menu, SelectItem option, SelectItem selectedOption, Object values, Object submittedValues,
-                                Converter converter, int itemIndex) throws IOException {
+    /**
+     * Encodes one SelectItem.
+     * @return true if SelectItem is selected.
+     * @throws IOException
+     */
+    protected boolean encodeOption(FacesContext context, SelectOneMenu menu, SelectItem option, Object values, Object submittedValues,
+                                   Converter converter, int itemIndex) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
 
@@ -610,19 +571,32 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 writer.writeAttribute("data-title", option.getDescription(), null);
             }
             for (SelectItem groupItem : group.getSelectItems()) {
-                encodeOption(context, menu, groupItem, selectedOption, values, submittedValues, converter, itemIndex);
+                encodeOption(context, menu, groupItem, values, submittedValues, converter, itemIndex);
             }
             writer.endElement("optgroup");
+
+            return false;
         }
         else {
+            String itemValueAsString = getOptionAsString(context, menu, converter, option.getValue());
             boolean disabled = option.isDisabled();
             boolean isEscape = option.isEscape();
             boolean isNoSelectionOption = option.isNoSelectionOption();
-            boolean selected = option.equals(selectedOption);
+
+            Object valuesArray;
+            Object itemValue;
+            if (submittedValues != null) {
+                valuesArray = submittedValues;
+                itemValue = itemValueAsString;
+            }
+            else {
+                valuesArray = values;
+                itemValue = option.getValue();
+            }
+
+            boolean selected = isSelected(context, menu, itemValue, valuesArray, converter);
 
             if (!menu.isDynamic() || (menu.isDynamic() && (selected || menu.isDynamicLoadRequest(context) || itemIndex == 0))) {
-                String itemValueAsString = getOptionAsString(context, menu, converter, option.getValue());
-
                 writer.startElement("option", null);
                 writer.writeAttribute("value", itemValueAsString, null);
                 if (disabled) {
@@ -645,6 +619,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
                 writer.endElement("option");
             }
+
+            return selected;
         }
     }
 
