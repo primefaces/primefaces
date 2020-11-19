@@ -23,11 +23,17 @@
  */
 package org.primefaces.model.rest;
 
+import java.io.Serializable;
+import java.util.Objects;
+
 /**
  * AutoComplete-REST-Endpoint (indicated via completeEndpoint-attribute) has to return a list of suggestions.
  * This class may be used to represent one suggestion.
  */
-public class AutoCompleteSuggestion {
+public class AutoCompleteSuggestion implements Serializable {
+
+    private static final long serialVersionUID = 7487414702117430146L;
+
     private String value;
     private String label;
 
@@ -50,5 +56,19 @@ public class AutoCompleteSuggestion {
 
     public void setLabel(String label) {
         this.label = label;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AutoCompleteSuggestion that = (AutoCompleteSuggestion) o;
+        return value.equals(that.value) &&
+                label.equals(that.label);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value, label);
     }
 }
