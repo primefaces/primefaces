@@ -502,15 +502,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         this.sortableColumns.on('mouseenter.dataTable', function() {
             var column = $(this);
-
-            if(!column.hasClass('ui-state-active'))
-                column.addClass('ui-state-hover');
+            column.addClass('ui-state-hover');
         })
         .on('mouseleave.dataTable', function() {
             var column = $(this);
-
-            if(!column.hasClass('ui-state-active'))
-                column.removeClass('ui-state-hover');
+            column.removeClass('ui-state-hover');  
         })
         .on('blur.dataTable', function() {
             $(this).removeClass('ui-state-focus');
