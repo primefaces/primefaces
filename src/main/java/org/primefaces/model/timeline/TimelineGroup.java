@@ -24,7 +24,7 @@
 package org.primefaces.model.timeline;
 
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.Set;
 
 public class TimelineGroup<T> implements Serializable {
 
@@ -54,7 +54,7 @@ public class TimelineGroup<T> implements Serializable {
      *
      * it is a set of ids of nested groups that a group or nested group contains.
      */
-    private HashSet<String> nestedGroups;
+    private Set<String> nestedGroups;
 
     /**
      * any custom style class for this event in UI (optional)
@@ -101,14 +101,14 @@ public class TimelineGroup<T> implements Serializable {
         this.treeLevel = treeLevel;
     }
 
-    public TimelineGroup(String id, T data, int treeLevel, HashSet<String> nestedGroups) {
+    public TimelineGroup(String id, T data, int treeLevel, Set<String> nestedGroups) {
         this.id = id;
         this.data = data;
         this.treeLevel = treeLevel;
         this.nestedGroups = nestedGroups;
     }
 
-    public TimelineGroup(String id, T data, String title, int treeLevel, HashSet<String> nestedGroups) {
+    public TimelineGroup(String id, T data, String title, int treeLevel, Set<String> nestedGroups) {
         this.id = id;
         this.data = data;
         this.title = title;
@@ -140,11 +140,11 @@ public class TimelineGroup<T> implements Serializable {
         this.treeLevel = treeLevel;
     }
 
-    public HashSet<String> getNestedGroups() {
+    public Set<String> getNestedGroups() {
         return nestedGroups;
     }
 
-    public void setNestedGroups(HashSet<String> nestedGroups) {
+    public void setNestedGroups(Set<String> nestedGroups) {
         this.nestedGroups = nestedGroups;
     }
 
