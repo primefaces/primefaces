@@ -250,10 +250,11 @@ Or existing REST-endpoints may be re-used.
 
 AutoComplete does a HTTP-GET against the REST-endpoint and passes query-url-parameter. (eg `/rest/theme/autocomplete?query=lu`)
 
-The REST-endpoint has to return an JSON-array. Each item needs to have value- and label-property. 
+The REST-endpoint has to return following JSON-response: 
 ```json
-[{"value":"3","label":"Luna-Blue"},{"value":"4","label":"Luna-Amber"},{"value":"5","label":"Luna-Green"},{"value":"6","label":"Luna-Pink"}]
+{"suggestions":[{"value":"0","label":"Nova-Light"},{"value":"1","label":"Nova-Dark"},{"value":"2","label":"Nova-Colored"}],"moreAvailable":false}
 ```
+Each suggestion-item needs to have value- and label-property.
 
 Sample REST-service based one JAX-RS and CDI: 
 
@@ -280,20 +281,20 @@ public class ThemeService {
     @GET
     @Path("/autocomplete")
     @Produces({ MediaType.APPLICATION_JSON })
-    public List<AutoCompleteSuggestion> autocomplete(@QueryParam("query") String query) {
+    public AutoCompleteSuggestionResponse autocomplete(@QueryParam("query") String query) {
         String queryLowerCase = query.toLowerCase();
         List<Theme> allThemes = service.getThemes();
-        return allThemes.stream()
+        return new AutoCompleteSuggestionResponse(allThemes.stream()
                 .filter(t -> t.getName().toLowerCase().contains(queryLowerCase))
                 .map(t -> new AutoCompleteSuggestion(Integer.toString(t.getId()), t.getDisplayName()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 }
 ``` 
 
 Sample-useage within AutoComplete. Note `completeEndpoint`-attribute. 
 ```xhtml
-<p:autoComplete id="themePojoRest" value="#{autoCompleteView.theme}" var="theme" itemLabel="#{theme.displayName}" itemValue="#{theme}" converter="#{themeConverter}" completeEndpoint="../../rest/theme/autocomplete" forceSelection="true" />
+<p:autoComplete id="themePojoRest" value="#{autoCompleteView.theme}" var="theme" itemLabel="#{theme.displayName}" itemValue="#{theme}" converter="#{themeConverter}" completeEndpoint="#{request.contextPath}/rest/theme/autocomplete" forceSelection="true" />
 ``` 
 
 ## Ajax Behavior Events

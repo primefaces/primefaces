@@ -74,6 +74,7 @@
  * @prop {number} cfg.scrollHeight Height of the container with the suggestion items.
  * @prop {boolean} cfg.unique Ensures uniqueness of the selected items.
  * @prop {string} cfg.completeEndpoint REST-Endpoint for fetching autocomplete-suggestions. (instead of completeMethod)
+ * @prop {string} cfg.moreText The text shown in panel when the suggested list is greater than maxResults.
  */
 PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
@@ -909,7 +910,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     })
                     .done(function(suggestions) {
                         var html = '<ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset">';
-                        suggestions.forEach(function(suggestion) {
+                        suggestions.suggestions.forEach(function(suggestion) {
                             var labelEncoded = $("<div>").text(suggestion.label).html();
                             var itemValue = labelEncoded;
                             if (!!suggestion.value) {
@@ -917,6 +918,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                             }
                             html += '<li class="ui-autocomplete-item ui-autocomplete-list-item ui-corner-all" data-item-value="' + itemValue + '" data-item-label="' + labelEncoded + '" role="option">' + labelEncoded + '</li>';
                         });
+                        if (suggestions.moreAvailable == true && $this.cfg.moreText) {
+                            var moreTextEncoded = $("<div>").text($this.cfg.moreText).html();;
+                            html += '<li class="ui-autocomplete-item ui-autocomplete-moretext ui-corner-all" role="option">' + moreTextEncoded + '</li>';
+                        }
                         html += '</ul>';
 
                         $this.panel.html(html);
