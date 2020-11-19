@@ -919,7 +919,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                             html += '<li class="ui-autocomplete-item ui-autocomplete-list-item ui-corner-all" data-item-value="' + itemValue + '" data-item-label="' + labelEncoded + '" role="option">' + labelEncoded + '</li>';
                         });
                         if (suggestions.moreAvailable == true && $this.cfg.moreText) {
-                            var moreTextEncoded = $("<div>").text($this.cfg.moreText).html();;
+                            var moreTextEncoded = $("<div>").text($this.cfg.moreText).html();
                             html += '<li class="ui-autocomplete-item ui-autocomplete-moretext ui-corner-all" role="option">' + moreTextEncoded + '</li>';
                         }
                         html += '</ul>';
