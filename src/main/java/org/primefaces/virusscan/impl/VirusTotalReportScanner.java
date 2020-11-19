@@ -105,7 +105,7 @@ public class VirusTotalReportScanner implements VirusScanner {
     }
 
     protected String createErrorMessage(UploadedFile file, JSONObject json) {
-        return MessageFactory.getMessage("primefaces.fileupload.VIRUS_TOTAL_FILE", new Object[]{file.getFileName()});
+        return MessageFactory.getMessage("primefaces.fileupload.VIRUS_TOTAL_FILE", file.getFileName());
     }
 
     protected URLConnection openConnection(UploadedFile file) throws IOException {

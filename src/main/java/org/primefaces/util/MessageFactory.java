@@ -31,7 +31,6 @@ import java.util.ResourceBundle;
 
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.FacesContextWrapper;
 
@@ -42,70 +41,20 @@ public class MessageFactory {
     private static final String DEFAULT_DETAIL_SUFFIX = "_detail";
 
     private MessageFactory() {
+        // NOOP
     }
 
-    public static FacesMessage getFacesMessage(String messageId, FacesMessage.Severity severity, Object[] params) {
+    public static FacesMessage getFacesMessage(String messageId, FacesMessage.Severity severity, Object... params) {
         FacesMessage facesMessage = getFacesMessage(LocaleUtils.getCurrentLocale(), messageId, params);
         facesMessage.setSeverity(severity);
-
         return facesMessage;
     }
 
-    public static FacesMessage getFacesMessage(Locale locale, String messageId, Object[] params) {
-        String summary = null;
+    public static FacesMessage getFacesMessage(Locale locale, String messageId, Object... params) {
+        Object[] bundleMessage = getBundleMessage(locale, messageId, params);
+        ResourceBundle bundle = (ResourceBundle) bundleMessage[0];
+        String summary = (String) bundleMessage[1];
         String detail = null;
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        Application application = facesContext.getApplication();
-        String userBundleName = application.getMessageBundle();
-        ResourceBundle bundle = null;
-        ClassLoader currentClassLoader = LangUtils.getCurrentClassLoader(application.getClass());
-
-        //try user defined bundle first
-        if (userBundleName != null) {
-            try {
-                bundle = getBundle(userBundleName, locale, currentClassLoader, facesContext);
-                if (bundle.containsKey(messageId)) {
-                    summary = bundle.getString(messageId);
-                }
-            }
-            catch (MissingResourceException e) {
-                // No Op
-            }
-        }
-
-        //try primefaces bundle
-        if (summary == null) {
-            try {
-                bundle = getBundle(PRIMEFACES_BUNDLE_BASENAME, locale, currentClassLoader, facesContext);
-                if (bundle == null) {
-                    throw new NullPointerException();
-                }
-                if (bundle.containsKey(messageId)) {
-                    summary = bundle.getString(messageId);
-                }
-            }
-            catch (MissingResourceException e) {
-                // No Op
-            }
-        }
-
-        //fallback to default jsf bundle
-        if (summary == null) {
-            try {
-                bundle = getBundle(DEFAULT_BUNDLE_BASENAME, locale, currentClassLoader, facesContext);
-                if (bundle == null) {
-                    throw new NullPointerException();
-                }
-                if (bundle.containsKey(messageId)) {
-                    summary = bundle.getString(messageId);
-                }
-            }
-            catch (MissingResourceException e) {
-                // No Op
-            }
-        }
-
-        summary = getFormattedText(locale, summary, params);
 
         if (bundle != null) {
             try {
@@ -122,11 +71,32 @@ public class MessageFactory {
         return new FacesMessage(summary, detail);
     }
 
-    public static String getMessage(String messageId, Object[] params) {
+    public static String getMessage(String messageId, Object... params) {
         return getMessage(LocaleUtils.getCurrentLocale(), messageId, params);
     }
 
-    public static String getMessage(Locale locale, String messageId, Object[] params) {
+    public static String getMessage(Locale locale, String messageId, Object... params) {
+        Object[] bundleMessage = getBundleMessage(locale, messageId, params);
+        return (String) bundleMessage[1];
+    }
+
+    public static String getFormattedText(Locale locale, String message, Object... params) {
+        if ((params == null || params.length == 0) || LangUtils.isValueBlank(message)) {
+            return message;
+        }
+
+        MessageFormat messageFormat = null;
+        if (locale != null) {
+            messageFormat = new MessageFormat(message, locale);
+        }
+        else {
+            messageFormat = new MessageFormat(message);
+        }
+
+        return messageFormat.format(params);
+    }
+
+    private static Object[] getBundleMessage(Locale locale, String messageId, Object params) {
         String summary = null;
         FacesContext facesContext = FacesContext.getCurrentInstance();
         Application application = facesContext.getApplication();
@@ -181,33 +151,7 @@ public class MessageFactory {
 
         summary = getFormattedText(locale, summary, params);
 
-        return summary;
-    }
-
-    public static String getFormattedText(Locale locale, String message, Object[] params) {
-        if ((params == null || params.length == 0) || LangUtils.isValueBlank(message)) {
-            return message;
-        }
-
-        MessageFormat messageFormat = null;
-        if (locale != null) {
-            messageFormat = new MessageFormat(message, locale);
-        }
-        else {
-            messageFormat = new MessageFormat(message);
-        }
-
-        return messageFormat.format(params);
-    }
-
-    public static Object getLabel(FacesContext facesContext, UIComponent component) {
-        String label = (String) component.getAttributes().get("label");
-
-        if (label == null) {
-            label = component.getClientId(facesContext);
-        }
-
-        return label;
+        return new Object[]{bundle, summary};
     }
 
     private static ResourceBundle getBundle(String baseName, Locale locale, ClassLoader classLoader,
@@ -248,7 +192,6 @@ public class MessageFactory {
     }
 
     private static FacesContext getWrappedFacesContextImpl(FacesContext facesContext) {
-
         if (!(facesContext instanceof FacesContextWrapper)) {
             return facesContext;
         }

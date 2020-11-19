@@ -69,7 +69,7 @@ public class HeaderRowRenderer extends CoreRenderer {
 
     protected void encodeToggleIcon(FacesContext context, boolean expanded) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String ariaLabel = MessageFactory.getMessage(DataTable.ROW_GROUP_TOGGLER, null);
+        String ariaLabel = MessageFactory.getMessage(DataTable.ROW_GROUP_TOGGLER);
 
         writer.startElement("a", null);
         writer.writeAttribute("class", DataTable.ROW_GROUP_TOGGLER_CLASS, null);

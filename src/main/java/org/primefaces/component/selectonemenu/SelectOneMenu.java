@@ -147,7 +147,7 @@ public class SelectOneMenu extends SelectOneMenuBase {
                 else {
                     message = MessageFactory.getFacesMessage(REQUIRED_MESSAGE_ID,
                             FacesMessage.SEVERITY_ERROR,
-                            new Object[]{MessageFactory.getLabel(context, this)});
+                            new Object[]{ComponentUtils.getLabel(context, this)});
                 }
                 context.addMessage(getClientId(context), message);
                 setValid(false);

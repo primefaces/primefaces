@@ -40,7 +40,7 @@ public class NextPageLinkRenderer extends PageLinkRenderer implements PaginatorE
 
         boolean disabled = (currentPage == (pageCount - 1)) || (currentPage == 0 && pageCount == 0);
 
-        String ariaMessage = MessageFactory.getMessage(UIData.ARIA_NEXT_PAGE_LABEL, new Object[]{});
+        String ariaMessage = MessageFactory.getMessage(UIData.ARIA_NEXT_PAGE_LABEL);
 
         super.render(context, pageable, UIData.PAGINATOR_NEXT_PAGE_LINK_CLASS, UIData.PAGINATOR_NEXT_PAGE_ICON_CLASS, disabled, ariaMessage);
     }

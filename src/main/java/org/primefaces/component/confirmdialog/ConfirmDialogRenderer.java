@@ -115,7 +115,7 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         writer.endElement("span");
 
         if (dialog.isClosable()) {
-            String ariaLabel = MessageFactory.getMessage(Dialog.ARIA_CLOSE, null);
+            String ariaLabel = MessageFactory.getMessage(Dialog.ARIA_CLOSE);
 
             writer.startElement("a", null);
             writer.writeAttribute("href", "#", null);

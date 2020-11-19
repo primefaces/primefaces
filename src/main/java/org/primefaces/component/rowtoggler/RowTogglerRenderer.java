@@ -47,7 +47,7 @@ public class RowTogglerRenderer extends CoreRenderer {
         String collapseLabel = toggler.getCollapseLabel();
         boolean iconOnly = (expandLabel == null && collapseLabel == null);
         String togglerClass = iconOnly ? DataTable.ROW_TOGGLER_CLASS + " " + icon : DataTable.ROW_TOGGLER_CLASS;
-        String ariaLabel = MessageFactory.getMessage(RowToggler.ROW_TOGGLER, null);
+        String ariaLabel = MessageFactory.getMessage(RowToggler.ROW_TOGGLER);
 
         writer.startElement("div", toggler);
         writer.writeAttribute("class", togglerClass, null);

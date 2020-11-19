@@ -57,7 +57,7 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
                 LOGGER.info("RowsPerPageLabel attribute is deprecated, use 'primefaces.paginator.aria.ROWS_PER_PAGE' key instead to override default message.");
             }
             else {
-                label = MessageFactory.getMessage(UIData.ROWS_PER_PAGE_LABEL, null);
+                label = MessageFactory.getMessage(UIData.ROWS_PER_PAGE_LABEL);
             }
 
             String clientId = pageable.getClientId(context);

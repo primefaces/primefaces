@@ -67,16 +67,16 @@ public class UINotificationRenderer extends CoreRenderer {
         String severity = null;
 
         if (ordinal == FacesMessage.SEVERITY_INFO.getOrdinal()) {
-            severity = MessageFactory.getMessage(Messages.ARIA_INFO, null);
+            severity = MessageFactory.getMessage(Messages.ARIA_INFO);
         }
         else if (ordinal == FacesMessage.SEVERITY_ERROR.getOrdinal()) {
-            severity = MessageFactory.getMessage(Messages.ARIA_ERROR, null);
+            severity = MessageFactory.getMessage(Messages.ARIA_ERROR);
         }
         else if (ordinal == FacesMessage.SEVERITY_WARN.getOrdinal()) {
-            severity = MessageFactory.getMessage(Messages.ARIA_WARN, null);
+            severity = MessageFactory.getMessage(Messages.ARIA_WARN);
         }
         else if (ordinal == FacesMessage.SEVERITY_FATAL.getOrdinal()) {
-            severity = MessageFactory.getMessage(Messages.ARIA_FATAL, null);
+            severity = MessageFactory.getMessage(Messages.ARIA_FATAL);
         }
 
         return severity;
