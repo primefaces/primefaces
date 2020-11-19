@@ -1611,39 +1611,6 @@ public class DataTable extends DataTableBase {
         return filterBy;
     }
 
-    protected void populateFilterBy(FacesContext context, char separator, UIComponent root, Map<String, FilterMeta> filterBy, AtomicBoolean defaultFilter) {
-        for (int i = 0; i < root.getChildCount(); i++) {
-            UIComponent child = root.getChildren().get(i);
-            if (child.isRendered()) {
-                if (child instanceof Columns) {
-                    Columns columns = (Columns) child;
-                    String uiColumnsClientId = columns.getClientId(context);
-
-                    for (int j = 0; j < columns.getRowCount(); j++) {
-                        DynamicColumn dynaColumn = new DynamicColumn(j, columns);
-                        dynaColumn.setColumnKey(uiColumnsClientId + separator + j);
-                        FilterMeta f = FilterMeta.of(getFacesContext(), getVar(), dynaColumn);
-                        if (f != null) {
-                            filterBy.put(f.getColumnKey(), f);
-                            defaultFilter.set(defaultFilter.get() || f.isActive());
-                        }
-                    }
-                }
-                else if (child instanceof UIColumn) {
-                    UIColumn column = (UIColumn) child;
-                    FilterMeta f = FilterMeta.of(getFacesContext(), getVar(), column);
-                    if (f != null) {
-                        filterBy.put(f.getColumnKey(), f);
-                        defaultFilter.set(defaultFilter.get() || f.isActive());
-                    }
-                }
-                else if (child instanceof ColumnGroup) {
-                    populateFilterBy(context, separator, child, filterBy, defaultFilter);
-                }
-            }
-        }
-    }
-
     protected void updateFilterByWithTableState(Map<String, FilterMeta> tsSortBy) {
         if (tsSortBy != null) {
             boolean defaultFilter = isDefaultFilter();
