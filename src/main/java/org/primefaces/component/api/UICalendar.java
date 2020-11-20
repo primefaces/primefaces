@@ -36,10 +36,7 @@ import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.util.CalendarUtils;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.LocaleUtils;
-import org.primefaces.util.MessageFactory;
+import org.primefaces.util.*;
 
 public abstract class UICalendar extends AbstractPrimeHtmlInputText implements InputHolder, TouchAware {
 
@@ -327,7 +324,7 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
     protected void createFacesMessageFromValidationResult(FacesContext context, ValidationResult validationResult) {
         FacesMessage msg = null;
         String validatorMessage = getValidatorMessage();
-        Object[] params = new Object[] {MessageFactory.getLabel(context, this),
+        Object[] params = new Object[] {ComponentUtils.getLabel(context, this),
                 CalendarUtils.getValueAsString(context, this, getMindate()),
                 CalendarUtils.getValueAsString(context, this, getMaxdate())};
         if (validatorMessage != null) {

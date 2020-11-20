@@ -153,7 +153,7 @@ public class DialogRenderer extends CoreRenderer {
         writer.endElement("span");
 
         if (dialog.isClosable()) {
-            encodeIcon(context, Dialog.TITLE_BAR_CLOSE_CLASS, Dialog.CLOSE_ICON_CLASS, MessageFactory.getMessage(Dialog.ARIA_CLOSE, null));
+            encodeIcon(context, Dialog.TITLE_BAR_CLOSE_CLASS, Dialog.CLOSE_ICON_CLASS, MessageFactory.getMessage(Dialog.ARIA_CLOSE));
         }
 
         if (dialog.isMaximizable()) {

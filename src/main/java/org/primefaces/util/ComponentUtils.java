@@ -469,6 +469,16 @@ public class ComponentUtils {
         return component.getClientId(context).equals(partialSource) && partialEvent.equals(event);
     }
 
+    public static Object getLabel(FacesContext facesContext, UIComponent component) {
+        String label = (String) component.getAttributes().get("label");
+
+        if (label == null) {
+            label = component.getClientId(facesContext);
+        }
+
+        return label;
+    }
+
     /**
      * Checks if the facet and one of the first level children is rendered.
      * @param facet The Facet component to check
