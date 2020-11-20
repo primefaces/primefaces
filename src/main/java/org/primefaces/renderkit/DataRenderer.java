@@ -97,7 +97,7 @@ public class DataRenderer extends CoreRenderer {
             styleClass = styleClass + " ui-corner-top";
         }
 
-        String ariaMessage = MessageFactory.getMessage(UIData.ARIA_HEADER_LABEL, new Object[]{});
+        String ariaMessage = MessageFactory.getMessage(UIData.ARIA_HEADER_LABEL);
 
         writer.startElement("div", null);
         writer.writeAttribute("id", id, null);

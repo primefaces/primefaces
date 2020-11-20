@@ -795,7 +795,7 @@ public class DataTableRenderer extends DataRenderer {
         String ariaLabelId = filterId + "_label";
         String ariaHeaderLabel = getHeaderLabel(context, column);
 
-        String ariaMessage = MessageFactory.getMessage(DataTable.ARIA_FILTER_BY, new Object[]{ariaHeaderLabel});
+        String ariaMessage = MessageFactory.getMessage(DataTable.ARIA_FILTER_BY, ariaHeaderLabel);
 
         writer.startElement("label", null);
         writer.writeAttribute("id", ariaLabelId, null);
@@ -1598,7 +1598,7 @@ public class DataTableRenderer extends DataRenderer {
 
             if (isHeaderCheckbox) {
                 rowKey = "head";
-                ariaRowLabel = MessageFactory.getMessage(DataTable.ARIA_HEADER_CHECKBOX_ALL, new Object[]{});
+                ariaRowLabel = MessageFactory.getMessage(DataTable.ARIA_HEADER_CHECKBOX_ALL);
             }
 
             writer.startElement("div", null);
@@ -1634,7 +1634,7 @@ public class DataTableRenderer extends DataRenderer {
 
         String ariaRowLabel = table.getAriaRowLabel();
         if (isHeaderCheckbox) {
-            ariaRowLabel = MessageFactory.getMessage(DataTable.ARIA_HEADER_CHECKBOX_ALL, new Object[]{});
+            ariaRowLabel = MessageFactory.getMessage(DataTable.ARIA_HEADER_CHECKBOX_ALL);
         }
 
         writer.startElement("input", null);
@@ -1714,7 +1714,7 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("id", reflowId + "_label", null);
             writer.writeAttribute("for", reflowId, null);
             writer.writeAttribute("class", "ui-reflow-label", null);
-            writer.writeText(MessageFactory.getMessage(DataTable.SORT_LABEL, null), null);
+            writer.writeText(MessageFactory.getMessage(DataTable.SORT_LABEL), null);
             writer.endElement("label");
 
             writer.startElement("select", null);
@@ -1726,8 +1726,8 @@ public class DataTableRenderer extends DataRenderer {
             for (int headerIndex = 0; headerIndex < options.size(); headerIndex++) {
                 for (int order = 0; order < 2; order++) {
                     String orderVal = (order == 0)
-                                      ? MessageFactory.getMessage(DataTable.SORT_ASC, null)
-                                      : MessageFactory.getMessage(DataTable.SORT_DESC, null);
+                                      ? MessageFactory.getMessage(DataTable.SORT_ASC)
+                                      : MessageFactory.getMessage(DataTable.SORT_DESC);
 
                     writer.startElement("option", null);
                     writer.writeAttribute("value", headerIndex + "_" + order, null);

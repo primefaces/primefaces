@@ -42,16 +42,16 @@ public class MessageFactory {
     private static final String DEFAULT_DETAIL_SUFFIX = "_detail";
 
     private MessageFactory() {
+        // NOOP
     }
 
-    public static FacesMessage getFacesMessage(String messageId, FacesMessage.Severity severity, Object[] params) {
+    public static FacesMessage getFacesMessage(String messageId, FacesMessage.Severity severity, Object... params) {
         FacesMessage facesMessage = getFacesMessage(LocaleUtils.getCurrentLocale(), messageId, params);
         facesMessage.setSeverity(severity);
-
         return facesMessage;
     }
 
-    public static FacesMessage getFacesMessage(Locale locale, String messageId, Object[] params) {
+    public static FacesMessage getFacesMessage(Locale locale, String messageId, Object... params) {
         String summary = null;
         String detail = null;
         FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -122,11 +122,11 @@ public class MessageFactory {
         return new FacesMessage(summary, detail);
     }
 
-    public static String getMessage(String messageId, Object[] params) {
+    public static String getMessage(String messageId, Object... params) {
         return getMessage(LocaleUtils.getCurrentLocale(), messageId, params);
     }
 
-    public static String getMessage(Locale locale, String messageId, Object[] params) {
+    public static String getMessage(Locale locale, String messageId, Object... params) {
         String summary = null;
         FacesContext facesContext = FacesContext.getCurrentInstance();
         Application application = facesContext.getApplication();
@@ -184,7 +184,7 @@ public class MessageFactory {
         return summary;
     }
 
-    public static String getFormattedText(Locale locale, String message, Object[] params) {
+    public static String getFormattedText(Locale locale, String message, Object... params) {
         if ((params == null || params.length == 0) || LangUtils.isValueBlank(message)) {
             return message;
         }
@@ -248,7 +248,6 @@ public class MessageFactory {
     }
 
     private static FacesContext getWrappedFacesContextImpl(FacesContext facesContext) {
-
         if (!(facesContext instanceof FacesContextWrapper)) {
             return facesContext;
         }

@@ -94,7 +94,7 @@ public class ClamDaemonScanner implements VirusScanner {
     }
 
     protected String createErrorMessage(UploadedFile file, String response) {
-        return MessageFactory.getMessage("primefaces.fileupload.CLAM_AV_FILE", new Object[] {file.getFileName(), response});
+        return MessageFactory.getMessage("primefaces.fileupload.CLAM_AV_FILE", file.getFileName(), response);
     }
 
     /**

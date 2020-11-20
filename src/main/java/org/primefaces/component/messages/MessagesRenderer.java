@@ -193,7 +193,7 @@ public class MessagesRenderer extends UINotificationRenderer {
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("class", Messages.CLOSE_LINK_CLASS, null);
         writer.writeAttribute("onclick", "$(this).parent().slideUp();return false;", null);
-        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(Messages.ARIA_CLOSE, null), null);
+        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(Messages.ARIA_CLOSE), null);
 
         writer.startElement("span", null);
         writer.writeAttribute("class", Messages.CLOSE_ICON_CLASS, null);
