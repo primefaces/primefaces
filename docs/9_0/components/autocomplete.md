@@ -374,6 +374,7 @@ Widget: _PrimeFaces.widget.AutoComplete_
 | deactivate() | - | void | Deactivates search behavior |
 | activate() | - | void | Activates search behavior |
 | removeAllItems() | - | void | In multiple mode removes all selected items |
+| clear() | - | void | Clears the input field |
 
 ## Skinning
 Following is the list of structural style classes;
