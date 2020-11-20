@@ -254,7 +254,7 @@ The REST-endpoint has to return following JSON-response:
 ```json
 {"suggestions":[{"value":"0","label":"Nova-Light"},{"value":"1","label":"Nova-Dark"},{"value":"2","label":"Nova-Colored"}],"moreAvailable":false}
 ```
-Each suggestion-item needs to have value- and label-property.
+Each suggestion-item needs to have value- and label-property. In most cases you can simply use `org.primefaces.model.rest.AutoCompleteSuggestionResponse` as response as the following example shows. 
 
 Sample REST-service based one JAX-RS and CDI: 
 
