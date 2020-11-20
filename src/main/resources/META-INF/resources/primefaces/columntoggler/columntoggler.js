@@ -403,8 +403,8 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Resize columns after toggle
-     * @param {boolean} isChecked `true` when the number of column will increase
-     * 'false' when they are decrease.
+     * @param {boolean} isChecked `true` when the number of column(s) will increase
+     * 'false' when they will decrease.
      */
     resizeColumns: function(isChecked) {
 
