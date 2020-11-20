@@ -1395,6 +1395,19 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     '<tbody>';
             this.wrapperEndTag = '</tbody></table>';
         }
+    },
+
+    /**
+     * Clears the input field.
+     */
+    clear: function() {
+        this.input.val('');
+        if (this.cfg.multiple) {
+            this.removeAllItems();
+        }
+        else if (this.cfg.pojo) {
+            this.hinput.val('');
+        }
     }
     
 });
