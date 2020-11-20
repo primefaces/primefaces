@@ -1754,6 +1754,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[REST-endpoint for fetching autocomplete-suggestions. (instead of completeMethod)]]>
+            </description>
+            <name>completeEndpoint</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
