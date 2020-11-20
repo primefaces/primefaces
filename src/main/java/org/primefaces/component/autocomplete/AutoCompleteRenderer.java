@@ -738,7 +738,9 @@ public class AutoCompleteRenderer extends InputRenderer {
                 .attr("dynamic", ac.isDynamic(), false)
                 .attr("autoSelection", ac.isAutoSelection(), true)
                 .attr("escape", ac.isEscape(), true)
-                .attr("queryMode", ac.getQueryMode());
+                .attr("queryMode", ac.getQueryMode())
+                .attr("completeEndpoint", ac.getCompleteEndpoint())
+                .attr("moreText", ac.getMoreText());
 
         if (ac.isCache()) {
             wb.attr("cache", true).attr("cacheTimeout", ac.getCacheTimeout());
