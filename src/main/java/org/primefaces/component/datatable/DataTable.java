@@ -1119,7 +1119,7 @@ public class DataTable extends DataTableBase {
     }
 
     public boolean isDefaultFilter() {
-        return getFilterByAsMap() != null && Boolean.TRUE.equals(getStateHelper().get("defaultFilter"));
+        return Boolean.TRUE.equals(getStateHelper().get("defaultFilter"));
     }
 
     public void setDefaultFilter(boolean defaultFilter) {
@@ -1311,11 +1311,6 @@ public class DataTable extends DataTableBase {
             setValue(null);
         }
 
-        // must be reset, FilterMeta#column must be updated since local value
-        // (from column) must be decoded by FilterFeature#decodeFilterValue
-        // not happening with DataTable#sortByAsMap
-        setFilterByAsMap(null);
-
         // reset component for MyFaces view pooling
         columnsCountWithSpan = -1;
         reset = false;
@@ -1424,7 +1419,7 @@ public class DataTable extends DataTableBase {
                 .createValueExpression(context.getELContext(), "#{" + var + "." + field + "}", Object.class);
     }
 
-    protected Map<String, SortMeta> initSortBy(Object sortByTmp) {
+    protected Map<String, SortMeta> initSortBy() {
         Map<String, SortMeta> sortMeta = new HashMap<>();
         AtomicBoolean sorted = new AtomicBoolean();
 
@@ -1445,19 +1440,9 @@ public class DataTable extends DataTableBase {
         });
 
         // merge internal sortBy with user sortBy
-        if (sortByTmp != null) {
-            Collection<SortMeta> sortBy;
-            if (sortByTmp instanceof SortMeta) {
-                sortBy = Collections.singletonList((SortMeta) sortByTmp);
-            }
-            else if (!(sortByTmp instanceof Collection)) {
-                throw new FacesException("DataTable#sortBy expects a single or a collection of SortMeta");
-            }
-            else {
-                sortBy = (Collection<SortMeta>) sortByTmp;
-            }
-
-            updateSortByWithUserSortBy(sortMeta, sortBy, sorted);
+        Object userSortBy = getSortBy();
+        if (userSortBy != null) {
+            updateSortByWithUserSortBy(sortMeta, userSortBy, sorted);
         }
 
         setDefaultSort(sorted.get());
@@ -1482,8 +1467,19 @@ public class DataTable extends DataTableBase {
         }
     }
 
-    protected void updateSortByWithUserSortBy(Map<String, SortMeta> intlSortBy, Collection<SortMeta> usrSortBy, AtomicBoolean sorted) {
-        for (SortMeta userSM : usrSortBy) {
+    protected void updateSortByWithUserSortBy(Map<String, SortMeta> intlSortBy, Object usrSortBy, AtomicBoolean sorted) {
+        Collection<SortMeta> sortBy;
+        if (usrSortBy instanceof SortMeta) {
+            sortBy = Collections.singletonList((SortMeta) usrSortBy);
+        }
+        else if (!(usrSortBy instanceof Collection)) {
+            throw new FacesException("DataTable#sortBy expects a single or a collection of SortMeta");
+        }
+        else {
+            sortBy = (Collection<SortMeta>) usrSortBy;
+        }
+
+        for (SortMeta userSM : sortBy) {
             SortMeta intlSM = intlSortBy.values().stream()
                     .filter(o -> o.getField().equals(userSM.getField()))
                     .findAny()
@@ -1555,60 +1551,46 @@ public class DataTable extends DataTableBase {
         }
     }
 
-    public boolean isColumnFilterable(UIColumn column) {
-        Map<String, FilterMeta> filterBy = getFilterByAsMap();
-        return filterBy.containsKey(column.getColumnKey());
+    public Map<String, FilterMeta> updateFilterBy() {
+        initFilterBy(false);
+        return getFilterByAsMap();
     }
 
-    protected Map<String, FilterMeta> initFilterBy(Object userFilterBy) {
-        Map<String, FilterMeta> filterBy = new HashMap<>();
-        AtomicBoolean filtered = new AtomicBoolean();
+    protected void initFilterBy(boolean invalidateCache) {
+        boolean invalidate = getFilterByAsMap() == null || invalidateCache;
+        Map<String, FilterMeta> filterBy = invalidate ? new HashMap<>() : getFilterByAsMap();
+        AtomicBoolean filtered = invalidate ? new AtomicBoolean() : new AtomicBoolean(isDefaultFilter());
 
         // build columns filterBy
         char separator = UINamingContainer.getSeparatorChar(getFacesContext());
 
         visitColumns(getFacesContext(), separator, this, c -> {
-            FilterMeta f = FilterMeta.of(getFacesContext(), getVar(), c);
-            if (f != null) {
-                filtered.set(filtered.get() || f.isActive());
-                filterBy.put(f.getColumnKey(), f);
+            FilterMeta f = filterBy.get(c.getColumnKey());
+            if (f != null && !invalidate) {
+                f.setColumn(c);
+            }
+            else {
+                f = FilterMeta.of(getFacesContext(), getVar(), c);
+                if (f != null) {
+                    filterBy.put(f.getColumnKey(), f);
+                    filtered.set(filtered.get() || f.isActive());
+                }
             }
         });
 
         // merge internal filterBy with user filterBy
-        if (userFilterBy != null) {
-            Collection<FilterMeta> filterByTmp;
-            if (userFilterBy instanceof FilterMeta) {
-                filterByTmp = Collections.singletonList((FilterMeta) userFilterBy);
-            }
-            else if (!(userFilterBy instanceof Collection)) {
-                throw new FacesException("DataTable#filterBy expects a single or a collection of FilterMeta");
-            }
-            else {
-                filterByTmp = (Collection<FilterMeta>) userFilterBy;
-            }
-
-            updateFilterByWithUserFilterBy(filterBy, filterByTmp, filtered);
+        Object userfilterBy = getFilterBy();
+        if (userfilterBy != null) {
+            updateFilterByWithUserFilterBy(filterBy, userfilterBy, filtered);
         }
 
         // build global filterBy
-        String globalFilter = getGlobalFilter();
-        Set<SearchExpressionHint> hint = LangUtils.isValueBlank(globalFilter)
-                ? EnumSet.of(SearchExpressionHint.IGNORE_NO_RESULT)
-                : Collections.emptySet();
-        UIComponent globalFilterComponent = SearchExpressionFacade
-                .resolveComponent(getFacesContext(), this, DataTable.PropertyKeys.globalFilter.toString(), hint);
-        if (globalFilterComponent != null) {
-            if (globalFilterComponent instanceof ValueHolder) {
-                ((ValueHolder) globalFilterComponent).setValue(globalFilter);
-            }
-            FilterMeta globalFilterBy = FilterMeta.of(filterBy.values(), globalFilter, getGlobalFilterFunction());
-            filterBy.put(globalFilterBy.getColumnKey(), globalFilterBy);
-        }
+        updateFilterByWithGlobalFilter(filterBy, filtered);
 
+        // finally set if default filtering is enabled
         setDefaultFilter(filtered.get());
 
-        return filterBy;
+        setFilterByAsMap(filterBy);
     }
 
     protected void updateFilterByWithTableState(Map<String, FilterMeta> tsSortBy) {
@@ -1627,8 +1609,17 @@ public class DataTable extends DataTableBase {
         }
     }
 
-    protected void updateFilterByWithUserFilterBy(Map<String, FilterMeta> intlFilterBy, Collection<FilterMeta> usrFilterBy, AtomicBoolean filtered) {
-        for (FilterMeta userFM : usrFilterBy) {
+    protected void updateFilterByWithUserFilterBy(Map<String, FilterMeta> intlFilterBy, Object usrFilterBy, AtomicBoolean filtered) {
+        Collection<FilterMeta> filterByTmp;
+        if (usrFilterBy instanceof FilterMeta) {
+            filterByTmp = Collections.singletonList((FilterMeta) usrFilterBy);
+        } else if (!(usrFilterBy instanceof Collection)) {
+            throw new FacesException("DataTable#filterBy expects a single or a collection of FilterMeta");
+        } else {
+            filterByTmp = (Collection<FilterMeta>) usrFilterBy;
+        }
+
+        for (FilterMeta userFM : filterByTmp) {
             FilterMeta intlFM = intlFilterBy.values().stream()
                     .filter(o -> o.getField().equals(userFM.getField()))
                     .findAny()
@@ -1647,8 +1638,30 @@ public class DataTable extends DataTableBase {
         }
     }
 
+    protected void updateFilterByWithGlobalFilter(Map<String, FilterMeta> filterBy, AtomicBoolean filtered) {
+        String globalFilter = getGlobalFilter();
+        Set<SearchExpressionHint> hint = LangUtils.isValueBlank(globalFilter)
+                ? EnumSet.of(SearchExpressionHint.IGNORE_NO_RESULT)
+                : Collections.emptySet();
+        UIComponent globalFilterComponent = SearchExpressionFacade
+                .resolveComponent(getFacesContext(), this, DataTable.PropertyKeys.globalFilter.toString(), hint);
+        if (globalFilterComponent != null) {
+            if (globalFilterComponent instanceof ValueHolder) {
+                ((ValueHolder) globalFilterComponent).setValue(globalFilter);
+            }
+            FilterMeta globalFilterBy = FilterMeta.of(filterBy.values(), globalFilter, getGlobalFilterFunction());
+            filterBy.put(globalFilterBy.getColumnKey(), globalFilterBy);
+            filtered.set(filtered.get() || globalFilterBy.isActive());
+        }
+    }
+
+    public boolean isColumnFilterable(UIColumn column) {
+        Map<String, FilterMeta> filterBy = getFilterByAsMap();
+        return filterBy.containsKey(column.getColumnKey());
+    }
+
     public Map<String, SortMeta> getSortByAsMap() {
-        return ComponentUtils.computeIfAbsent(getStateHelper(), "_sortBy", () -> initSortBy(getSortBy()));
+        return ComponentUtils.computeIfAbsent(getStateHelper(), "_sortBy", this::initSortBy);
     }
 
     public void setSortByAsMap(Map<String, SortMeta> sortBy) {
@@ -1656,7 +1669,7 @@ public class DataTable extends DataTableBase {
     }
 
     public Map<String, FilterMeta> getFilterByAsMap() {
-        return ComponentUtils.computeIfAbsent(getStateHelper(), "_filterBy", () -> initFilterBy(getFilterBy()));
+        return (Map<String, FilterMeta>) getStateHelper().get("_filterBy");
     }
 
     public void setFilterByAsMap(Map<String, FilterMeta> sortBy) {

@@ -99,6 +99,8 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void preRender(FacesContext context, DataTable table) {
+        table.updateFilterBy();
+
         if (table.isMultiViewState()) {
             table.restoreMultiViewState();
         }
@@ -117,7 +119,7 @@ public class DataTableRenderer extends DataRenderer {
                 int rows = table.getRows();
                 int scrollRows = table.getScrollRows();
                 int virtualScrollRows = (scrollRows * 2);
-                scrollRows = (rows == 0) ? virtualScrollRows : ((virtualScrollRows > rows) ? rows : virtualScrollRows);
+                scrollRows = (rows == 0) ? virtualScrollRows : Math.min(virtualScrollRows, rows);
 
                 table.loadLazyScrollData(0, scrollRows);
             }

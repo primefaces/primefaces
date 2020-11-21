@@ -79,8 +79,10 @@ public class FilterFeature implements DataTableFeature {
     @Override
     public void decode(FacesContext context, DataTable table) {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        Map<String, FilterMeta> filterBy = table.getFilterByAsMap();
-        String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
+        // FilterMeta#column must be updated since local value
+        // (from column) must be decoded by FilterFeature#decodeFilterValue
+        Map<String, FilterMeta> filterBy = table.updateFilterBy();
+        char separator = UINamingContainer.getSeparatorChar(context);
 
         for (FilterMeta entry : filterBy.values()) {
             decodeFilterValue(context, table, entry, params, separator);
@@ -207,7 +209,7 @@ public class FilterFeature implements DataTableFeature {
         table.setRowIndex(-1);  //reset datamodel
     }
 
-    protected void decodeFilterValue(FacesContext context, DataTable table, FilterMeta filterBy, Map<String, String> params, String separator) {
+    protected void decodeFilterValue(FacesContext context, DataTable table, FilterMeta filterBy, Map<String, String> params, char separator) {
         Object filterValue = null;
 
         if (filterBy.isGlobalFilter()) {
