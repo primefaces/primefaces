@@ -250,7 +250,8 @@ public class FilterMeta implements Serializable {
             if (filterBy.matchMode != null) {
                 filterBy.constraint = FilterFeature.FILTER_CONSTRAINTS.get(filterBy.matchMode);
             }
-            Objects.requireNonNull(filterBy.constraint, () -> "Filter constraint is required");
+            Objects.requireNonNull(filterBy.constraint, "Filter constraint is required");
+            Objects.requireNonNull(filterBy.field, "Field is required");
             return filterBy;
         }
     }
