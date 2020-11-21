@@ -1613,9 +1613,11 @@ public class DataTable extends DataTableBase {
         Collection<FilterMeta> filterByTmp;
         if (usrFilterBy instanceof FilterMeta) {
             filterByTmp = Collections.singletonList((FilterMeta) usrFilterBy);
-        } else if (!(usrFilterBy instanceof Collection)) {
+        }
+        else if (!(usrFilterBy instanceof Collection)) {
             throw new FacesException("DataTable#filterBy expects a single or a collection of FilterMeta");
-        } else {
+        }
+        else {
             filterByTmp = (Collection<FilterMeta>) usrFilterBy;
         }
 
