@@ -152,41 +152,36 @@ public class FilterFeature implements DataTableFeature {
         Map<String, FilterMeta> filterBy = table.getFilterByAsMap();
         List<Object> filteredData = new ArrayList<>();
         Locale filterLocale = table.resolveDataLocale();
-        FilterMeta globalFilter = filterBy.get(FilterMeta.GLOBAL_FILTER_KEY);
         ELContext elContext = context.getELContext();
 
         for (int i = 0; i < table.getRowCount(); i++) {
             table.setRowIndex(i);
             boolean matching = true;
 
-            if (globalFilter != null && globalFilter.isActive()) {
-                matching = globalFilter.getConstraint().isMatching(context, table.getRowData(), globalFilter.getFilterValue(), filterLocale);
-            }
-            else {
-                for (FilterMeta filter : filterBy.values()) {
-                    if (filter.isGlobalFilter() || !filter.isActive()) {
-                        continue;
-                    }
+            for (FilterMeta filter : filterBy.values()) {
+                if (!filter.isActive()) {
+                    continue;
+                }
 
-                    FilterConstraint constraint = filter.getConstraint();
-                    Object filterValue = filter.getFilterValue();
-                    Object columnValue = filter.getLocalValue(elContext);
+                FilterConstraint constraint = filter.getConstraint();
+                Object filterValue = filter.getFilterValue();
+                Object columnValue = filter.isGlobalFilter() ? table.getRowData() : filter.getLocalValue(elContext);
 
-                    // case of default filter value using markup value (coerce into String by default)
-                    if (filterValue != null
-                            && columnValue != null
-                            && !Objects.equals(filterValue.getClass(), columnValue.getClass())
-                            && !filterValue.getClass().isArray()
-                            && !(filterValue instanceof Collection)) {
-                        ExpressionFactory ef = context.getApplication().getExpressionFactory();
-                        filterValue = ef.coerceToType(filterValue, columnValue.getClass());
-                        filter.setFilterValue(filterValue);
-                    }
+                // case of default filter value using markup value (coerce into String by default)
+                if (!filter.isGlobalFilter()
+                        && filterValue != null
+                        && columnValue != null
+                        && !Objects.equals(filterValue.getClass(), columnValue.getClass())
+                        && !filterValue.getClass().isArray()
+                        && !(filterValue instanceof Collection)) {
+                    ExpressionFactory ef = context.getApplication().getExpressionFactory();
+                    filterValue = ef.coerceToType(filterValue, columnValue.getClass());
+                    filter.setFilterValue(filterValue);
+                }
 
-                    matching = constraint.isMatching(context, columnValue, filterValue, filterLocale);
-                    if (!matching) {
-                        break;
-                    }
+                matching = constraint.isMatching(context, columnValue, filterValue, filterLocale);
+                if (!matching) {
+                    break;
                 }
             }
 
