@@ -24,12 +24,9 @@
 package org.primefaces.component.datatable;
 
 import org.primefaces.component.api.*;
-import org.primefaces.model.FilterMeta;
 
 import javax.el.MethodExpression;
 import javax.faces.component.behavior.ClientBehaviorHolder;
-import java.util.Collections;
-import java.util.List;
 
 public abstract class DataTableBase extends UIData
         implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable, MultiViewStateAware<DataTableState> {
@@ -546,11 +543,11 @@ public abstract class DataTableBase extends UIData
         getStateHelper().put(PropertyKeys.multiViewState, multiViewState);
     }
 
-    public List<FilterMeta> getFilterBy() {
-        return (List<FilterMeta>) getStateHelper().eval(PropertyKeys.filterBy, Collections.emptyList());
+    public Object getFilterBy() {
+        return getStateHelper().eval(PropertyKeys.filterBy);
     }
 
-    public void setFilterBy(List<FilterMeta> filterBy) {
+    public void setFilterBy(Object filterBy) {
         getStateHelper().put(PropertyKeys.filterBy, filterBy);
     }
 

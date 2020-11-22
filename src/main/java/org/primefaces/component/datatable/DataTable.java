@@ -653,6 +653,7 @@ public class DataTable extends DataTableBase {
         reset = true;
         setDefaultSort(false);
         setSortByAsMap(null);
+        setFilterByAsMap(null);
         setScrollOffset(0);
     }
 
