@@ -113,6 +113,8 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.panelStyleClass = (this.cfg.panelStyleClass || '') + ' p-datepicker-panel';
         this.cfg.viewDate = this.viewDateOption;
         this.cfg.appendTo = this.cfg.appendTo ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo) : null;
+        this.cfg.rangeSeparator = this.cfg.rangeSeparator||'-';
+        this.cfg.timeSeparator = this.cfg.timeSeparator||':';
 
         this.jq.datePicker(this.cfg);
         this.applyMask(); // moved below datapicker initialization because of race condition in event handling. See https://github.com/primefaces/primefaces/issues/6445
