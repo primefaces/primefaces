@@ -99,7 +99,7 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void preRender(FacesContext context, DataTable table) {
-        table.updateFilterBy();
+        table.initFilterBy();
 
         if (table.isMultiViewState()) {
             table.restoreMultiViewState();

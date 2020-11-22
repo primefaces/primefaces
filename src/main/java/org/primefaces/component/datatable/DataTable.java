@@ -1552,13 +1552,8 @@ public class DataTable extends DataTableBase {
         }
     }
 
-    public Map<String, FilterMeta> updateFilterBy() {
-        initFilterBy(false);
-        return getFilterByAsMap();
-    }
-
-    protected void initFilterBy(boolean invalidateCache) {
-        boolean invalidate = getFilterByAsMap() == null || invalidateCache;
+    public Map<String, FilterMeta> initFilterBy() {
+        boolean invalidate = getFilterByAsMap() == null;
         Map<String, FilterMeta> filterBy = invalidate ? new HashMap<>() : getFilterByAsMap();
         AtomicBoolean filtered = invalidate ? new AtomicBoolean() : new AtomicBoolean(isDefaultFilter());
 
@@ -1592,6 +1587,8 @@ public class DataTable extends DataTableBase {
         setDefaultFilter(filtered.get());
 
         setFilterByAsMap(filterBy);
+
+        return filterBy;
     }
 
     protected void updateFilterByWithTableState(Map<String, FilterMeta> tsSortBy) {
