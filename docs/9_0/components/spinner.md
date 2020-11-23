@@ -33,6 +33,7 @@ converterMessage | null | String | Message to be displayed when conversion fails
 validatorMessage | null | String | Message to be displayed when validation fields.
 widgetVar | null | String | Name of the client side widget.
 stepFactor | 1 | Double | Stepping factor for each increment and decrement
+round | false | Boolean | Round the value to the nearest stepFactor. Default is false.
 min | null | Double | Minimum boundary value
 max | null | Double | Maximum boundary value
 rotate | false | Boolean | Rotate to the minimum value when maximum value is reached and vice versa

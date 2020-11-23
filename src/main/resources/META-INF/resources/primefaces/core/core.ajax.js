@@ -761,7 +761,6 @@ if (!PrimeFaces.ajax) {
                         xhr.setRequestHeader('Faces-Request', 'partial/ajax');
                         xhr.pfSettings = settings;
                         xhr.pfArgs = {}; // default should be an empty object
-                        PrimeFaces.nonAjaxPosted = false;
 
                         if(global) {
                             $(document).trigger('pfAjaxSend', [xhr, this]);
@@ -878,7 +877,7 @@ if (!PrimeFaces.ajax) {
 
                         PrimeFaces.ajax.Queue.removeXHR(xhr);
 
-                        if(!cfg.async && !PrimeFaces.nonAjaxPosted) {
+                        if(!cfg.async) {
                             PrimeFaces.ajax.Queue.poll();
                         }
                     });
@@ -1448,7 +1447,7 @@ if (!PrimeFaces.ajax) {
         }
     };
 
-    $(window).on('beforeunload', function() {
+    $(window).on('unload', function() {
         PrimeFaces.ajax.Queue.abortAll();
     });
 

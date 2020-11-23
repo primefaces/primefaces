@@ -47,7 +47,8 @@ public abstract class SpinnerBase extends AbstractPrimeHtmlInputText implements 
         decimalPlaces,
         decimalSeparator,
         thousandSeparator,
-        rotate
+        rotate,
+        round
     }
 
     public SpinnerBase() {
@@ -147,5 +148,13 @@ public abstract class SpinnerBase extends AbstractPrimeHtmlInputText implements 
 
     public void setRotate(boolean rotate) {
         getStateHelper().put(PropertyKeys.rotate, rotate);
+    }
+
+    public boolean isRound() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.round, false);
+    }
+
+    public void setRound(boolean round) {
+        getStateHelper().put(PropertyKeys.round, round);
     }
 }

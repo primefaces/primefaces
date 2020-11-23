@@ -116,26 +116,21 @@ public class InplaceRenderer extends CoreRenderer {
 
     protected String getLabelToRender(FacesContext context, Inplace inplace) {
         String label = inplace.getLabel();
-        String emptyLabel = inplace.getEmptyLabel();
-
         if (!isValueBlank(label)) {
             return label;
         }
-        else {
-            String value = ComponentUtils.getValueToRender(context, inplace.getChildren().get(0));
 
-            if (LangUtils.isValueBlank(value)) {
-                if (emptyLabel != null) {
-                    return emptyLabel;
-                }
-                else {
-                    return Constants.EMPTY_STRING;
-                }
+        String value = ComponentUtils.getValueToRender(context, inplace.getChildren().get(0));
+        if (LangUtils.isValueBlank(value)) {
+            String emptyLabel = inplace.getEmptyLabel();
+            if (emptyLabel != null) {
+                return emptyLabel;
             }
-            else {
-                return value;
-            }
+
+            return Constants.EMPTY_STRING;
         }
+
+        return value;
     }
 
     protected void encodeScript(FacesContext context, Inplace inplace) throws IOException {

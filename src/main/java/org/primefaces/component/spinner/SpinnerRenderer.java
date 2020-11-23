@@ -91,6 +91,7 @@ public class SpinnerRenderer extends InputRenderer {
 
         wb.init("Spinner", spinner)
                 .attr("step", spinner.getStepFactor(), 1.0)
+                .attr("round", spinner.isRound(), false)
                 .attr("min", spinner.getMin(), Double.MIN_VALUE)
                 .attr("max", spinner.getMax(), Double.MAX_VALUE)
                 .attr("prefix", spinner.getPrefix(), null)
