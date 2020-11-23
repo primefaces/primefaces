@@ -1448,7 +1448,7 @@ if (!PrimeFaces.ajax) {
         }
     };
 
-    $(window).on('beforeunload', function() {
+    $(window).on('unload', function() {
         PrimeFaces.ajax.Queue.abortAll();
     });
 
