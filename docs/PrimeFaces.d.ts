@@ -6931,10 +6931,6 @@ declare namespace PrimeFaces {
      */
     export function onElementLoad(element: JQuery, listener: () => void): void;
     /**
-     * Callback that is invoked after a POST request.
-     */
-    export function onPost(): void;
-    /**
      * Deprecated, use `PrimeFaces.dialog.DialogHandler.openDialog` instead.
      *
      * @param cfg Configuration of the dialog.
