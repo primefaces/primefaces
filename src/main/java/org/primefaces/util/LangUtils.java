@@ -65,6 +65,10 @@ public class LangUtils {
         return true;
     }
 
+    public static boolean isNotBlank(String value) {
+        return !isValueBlank(value);
+    }
+
     /**
      * <p>Counts how many times the char appears in the given string.</p>
      *

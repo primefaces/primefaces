@@ -21,20 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.media;
+package org.primefaces.component.video;
 
-import java.util.List;
+/**
+ * HTML5 supports three video formats: MP4, OGG, and WEBM.
+ */
+public enum VideoType {
 
-import org.primefaces.util.LangUtils;
+    MP4("mp4", "video/mp4"),
+    OGG("ogg", "video/ogg"),
+    WEBM("webm", "video/webm");
 
-public class Media extends MediaBase {
+    private final String fileExtension;
+    private final String mediaType;
 
-    public static final String COMPONENT_TYPE = "org.primefaces.component.Media";
+    private VideoType (String fileExtension, String mediaType) {
+        this.fileExtension = fileExtension;
+        this.mediaType = mediaType;
+    }
 
-    //StyleClass is omitted
-    public static final List<String> MEDIA_ATTRS = LangUtils.unmodifiableList(
-        "height",
-        "width",
-        "style"
-    );
+    public String getFileExtension() {
+        return fileExtension;
+    }
+
+    public String getMediaType() {
+        return mediaType;
+    }
+
 }
