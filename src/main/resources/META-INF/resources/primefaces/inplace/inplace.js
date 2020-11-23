@@ -1,25 +1,25 @@
 /**
  * __PrimeFaces Inplace Widget__
- * 
- * Inplace provides easy inplace editing and inline content display. Inplace 
+ *
+ * Inplace provides easy inplace editing and inline content display. Inplace
  * consists of two members, a display element that is the initially clickable
  * label and an inline element that is the hidden content which is displayed
  * when the display element is toggled.
- * 
+ *
  * @typedef {"fade" | "none" | "slide"} PrimeFaces.widget.Inplace.EffectType Available effect types for the transition
  * between the display and the inline content of the inline widget.
- * 
+ *
  * @prop {JQuery} content The DOM element with the container of the label that is shown when the content or inplace
  * editor is hidden.
  * @prop {JQuery} display The DOM element with the container of the content or inplace editor that is shown when this
  * inline widget is toggled.
  * @prop {JQuery} editor The DOM element with the inplace editor, if one exists.
- * 
+ *
  * @interface {PrimeFaces.widget.InplaceCfg} cfg The configuration for the {@link  Inplace| Inplace widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
- * 
+ *
  * @prop {boolean} cfg.disabled Whether this inplace widget is disabled. If disabled, switching to the content or
  * inplace editor is not possible.
  * @prop {string} cfg.formId The ID of the form that is used for AJAX requests. Usually the containing form.
@@ -69,12 +69,16 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
                 this.editor = $(this.jqId + '_editor');
 
                 var saveButton = this.editor.children('.ui-inplace-save'),
-                cancelButton = this.editor.children('.ui-inplace-cancel');
+                    cancelButton = this.editor.children('.ui-inplace-cancel');
 
                 PrimeFaces.skinButton(saveButton).skinButton(cancelButton);
 
-                saveButton.on("click", function(e) {$this.save(e)});
-                cancelButton.on("click", function(e) {$this.cancel(e)});
+                saveButton.on("click", function(e) {
+                    $this.save(e);
+                });
+                cancelButton.on("click", function(e) {
+                    $this.cancel(e);
+                });
             }
 
             /* to enter space in inplace input within multi-selection dataTable */
@@ -112,17 +116,15 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
 
         if(this.cfg.effect === 'fade') {
-            elToHide.fadeOut(this.cfg.effectSpeed,
-                function() {
-                    elToShow.fadeIn($this.cfg.effectSpeed);
-                    $this.postShow();
-                });
+            elToHide.fadeOut(this.cfg.effectSpeed, function() {
+                elToShow.fadeIn($this.cfg.effectSpeed);
+                $this.postShow();
+            });
         }
         else if(this.cfg.effect === 'slide') {
-            elToHide.slideUp(this.cfg.effectSpeed,
-                function() {
-                    elToShow.slideDown($this.cfg.effectSpeed);
-                    $this.postShow();
+            elToHide.slideUp(this.cfg.effectSpeed, function() {
+                elToShow.slideDown($this.cfg.effectSpeed);
+                $this.postShow();
             });
         }
         else if(this.cfg.effect === 'none') {
@@ -163,7 +165,7 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
     /**
      * When an inplace editor exists and it is currently active: saves the content of the editor and hides the inplace
      * editor.
-     * @param {JQuery.Event} [e] The (click) event which triggered the saving. Currently unused. 
+     * @param {JQuery.Event} [e] The (click) event which triggered the saving. Currently unused.
      */
     save: function(e) {
         var options = {
@@ -184,7 +186,7 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
     /**
      * When an inplace editor exists and it is currently active: discard changes that were made and hides the inplace
      * editor.
-     * @param {JQuery.Event} [e] The (click) event which triggered the cancellation. Currently unused. 
+     * @param {JQuery.Event} [e] The (click) event which triggered the cancellation. Currently unused.
      */
     cancel: function(e) {
         var options = {
