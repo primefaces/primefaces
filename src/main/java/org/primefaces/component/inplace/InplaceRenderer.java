@@ -59,6 +59,7 @@ public class InplaceRenderer extends CoreRenderer {
         String displayClass = disabled ? Inplace.DISABLED_DISPLAY_CLASS : Inplace.DISPLAY_CLASS;
 
         boolean validationFailed = context.isValidationFailed() && !inplace.isValid();
+        String mode = inplace.getMode();
 
         //container
         writer.startElement("span", inplace);
@@ -72,7 +73,9 @@ public class InplaceRenderer extends CoreRenderer {
 
 
         //output
-        String outputStyle = validationFailed ? Inplace.DISPLAY_NONE : Inplace.DISPLAY_INLINE;
+        String outputStyle = validationFailed
+                ? Inplace.DISPLAY_NONE
+                : (Inplace.MODE_OUTPUT.equals(mode) ? Inplace.DISPLAY_INLINE : Inplace.DISPLAY_NONE);
         UIComponent outputFacet = inplace.getFacet("output");
 
         writer.startElement("span", null);
@@ -91,7 +94,9 @@ public class InplaceRenderer extends CoreRenderer {
 
 
         //input
-        String inputStyle = validationFailed ? Inplace.DISPLAY_INLINE : Inplace.DISPLAY_NONE;        
+        String inputStyle = validationFailed
+                ? Inplace.DISPLAY_INLINE
+                : (Inplace.MODE_OUTPUT.equals(mode) ? Inplace.DISPLAY_NONE : Inplace.DISPLAY_INLINE);
         UIComponent inputFacet = inplace.getFacet("input");
 
         if (!inplace.isDisabled()) {
