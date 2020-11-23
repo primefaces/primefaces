@@ -19,7 +19,7 @@ displayed when display element is toggled.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -37,6 +37,7 @@ saveLabel | Save | String | Tooltip text of save button in editor mode.
 cancelLabel | Cancel | String | Tooltip text of cancel button in editor mode.
 event | click | String | Name of the client side event to display inline content.
 toggleable | true | Boolean | Defines if inplace is toggleable or not.
+mode | output | String | Defines the default mode to display (input or ouput).
 
 ## Getting Started with Inplace
 The inline component needs to be a child of inplace.
@@ -118,8 +119,8 @@ public class InplaceBean {
 ## Client Side API
 Widget: _PrimeFaces.widget.Inplace_
 
-| Method | Params | Return Type | Description | 
-| --- | --- | --- | --- | 
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
 show() | - | void | Shows content and hides display element.
 hide() | - | void | Shows display element and hides content.
 toggle() | - | void | Toggles visibility of between content and display element.
@@ -130,8 +131,8 @@ cancel() | - | void | Triggers an ajax request to revert inplace input.
 Inplace resides in a main container element which _style_ and _styleClass_ options apply. Following is
 the list of structural style classes;
 
-| Class | Applies | 
-| --- | --- | 
+| Class | Applies |
+| --- | --- |
 .ui-inplace | Main container element.
 .ui-inplace-disabled | Main container element when disabled.
 .ui-inplace-display | Display element.

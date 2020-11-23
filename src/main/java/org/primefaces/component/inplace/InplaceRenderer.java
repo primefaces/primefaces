@@ -59,11 +59,7 @@ public class InplaceRenderer extends CoreRenderer {
         String displayClass = disabled ? Inplace.DISABLED_DISPLAY_CLASS : Inplace.DISPLAY_CLASS;
 
         boolean validationFailed = context.isValidationFailed() && !inplace.isValid();
-        String displayStyle = validationFailed ? Inplace.DISPLAY_NONE : Inplace.DISPLAY_INLINE;
-        String contentStyle = validationFailed ? Inplace.DISPLAY_INLINE : Inplace.DISPLAY_NONE;
-
-        UIComponent outputFacet = inplace.getFacet("output");
-        UIComponent inputFacet = inplace.getFacet("input");
+        String mode = inplace.getMode();
 
         //container
         writer.startElement("span", inplace);
@@ -75,11 +71,17 @@ public class InplaceRenderer extends CoreRenderer {
 
         writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
 
-        //display
+
+        //output
+        String outputStyle = validationFailed
+                ? Inplace.DISPLAY_NONE
+                : (Inplace.MODE_OUTPUT.equals(mode) ? Inplace.DISPLAY_INLINE : Inplace.DISPLAY_NONE);
+        UIComponent outputFacet = inplace.getFacet("output");
+
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId + "_display", "id");
         writer.writeAttribute("class", displayClass, null);
-        writer.writeAttribute("style", "display:" + displayStyle, null);
+        writer.writeAttribute("style", "display:" + outputStyle, null);
 
         if (ComponentUtils.shouldRenderFacet(outputFacet)) {
             outputFacet.encodeAll(context);
@@ -90,12 +92,18 @@ public class InplaceRenderer extends CoreRenderer {
 
         writer.endElement("span");
 
-        //content
+
+        //input
+        String inputStyle = validationFailed
+                ? Inplace.DISPLAY_INLINE
+                : (Inplace.MODE_OUTPUT.equals(mode) ? Inplace.DISPLAY_NONE : Inplace.DISPLAY_INLINE);
+        UIComponent inputFacet = inplace.getFacet("input");
+
         if (!inplace.isDisabled()) {
             writer.startElement("span", null);
             writer.writeAttribute("id", clientId + "_content", "id");
             writer.writeAttribute("class", Inplace.CONTENT_CLASS, null);
-            writer.writeAttribute("style", "display:" + contentStyle, null);
+            writer.writeAttribute("style", "display:" + inputStyle, null);
 
             if (ComponentUtils.shouldRenderFacet(inputFacet)) {
                 inputFacet.encodeAll(context);
