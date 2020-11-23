@@ -330,6 +330,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
             if (numAndFract.length === 2) {
               value += this.cfg.decimalSeparator + numAndFract[1];
             }
+            value = this.roundStep(value);
             if(this.cfg.prefix)
                 value = this.cfg.prefix + value;
 
@@ -338,6 +339,20 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
 
             this.input.val(value);
         }
+    },
+
+    /**
+     * If roundStep is enabled then round to the nearest step value. 
+     * For example if step=5 and value=8 it would be rounded 10.
+     * @param {number} value The value for this spinner.
+     * @return {number} Original value if rounding disabled, else a rounded value.
+     * @private
+     */
+    roundStep: function(value) {
+        if (!this.cfg.round) {
+            return value;
+        }
+        return (Math.ceil(value / this.cfg.step) * this.cfg.step).toFixed(this.cfg.precision);
     },
 
     /**

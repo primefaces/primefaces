@@ -25667,6 +25667,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Round the value to the nearest stepFactor. Default is false.]]>
+            </description>
+            <name>round</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Minimum boundary value. Default is min double value.]]>
             </description>
             <name>min</name>
