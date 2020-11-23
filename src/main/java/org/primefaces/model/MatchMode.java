@@ -38,6 +38,7 @@ public enum MatchMode {
     GREATER_THAN_EQUALS("gte"),
     EQUALS("equals"),
     IN("in"),
+    RANGE("range"),
     GLOBAL("global");
 
     private final String operator;
