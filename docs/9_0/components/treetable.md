@@ -17,7 +17,7 @@ Treetable is is used for displaying hierarchical data in tabular format.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -119,7 +119,8 @@ collapse | org.primefaces.event.NodeCollapseEvent | When a node is collapsed.
 select | org.primefaces.event.NodeSelectEvent | When a node is selected.
 unselect | org.primefaces.event.NodeUnselectEvent | When a node is unselected.
 colResize | org.primefaces.event.ColumnResizeEvent | When a column is resized.
-sort | org.primefaces.event.SortEvent | When data is sorted
+sort | org.primefaces.event.SortEvent | When data is sorted.
+filter | org.primefaces.event.FilterEvent | When data is filtered.
 rowEdit | org.primefaces.event.RowEditEvent | On row edit.
 rowEditInit | org.primefaces.event.RowEditEvent | When row edit is initialized.
 rowEditCancel | org.primefaces.event.RowEditEvent | When row edit is cancelled.
@@ -129,8 +130,8 @@ page | org.primefaces.event.data.PageEvent | On pagination.
 ## Client Side API
 Widget: _PrimeFaces.widget.TreeTable_
 
-| Method | Params | Return Type | Description | 
-| --- | --- | --- | --- | 
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
 | clearFilters() | - | void | Clears all column filters
 
 ## ContextMenu
@@ -173,8 +174,8 @@ information.
 TreeTable content resides in a container element which style and styleClass attributes apply.
 Following is the list of structural style classes;
 
-| Class | Applies | 
-| --- | --- | 
+| Class | Applies |
+| --- | --- |
 .ui-treetable | Main container element.
 .ui-treetable-header | Header of treetable.
 .ui-treetable-data | Body element of the table containing data
