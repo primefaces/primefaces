@@ -4324,7 +4324,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 var options = {
                     source: $this.id,
                     process: $this.id,
-                    update: $this.id,
                     params: [
                         {name: $this.id + '_rowreorder', value: true},
                         {name: $this.id + '_fromIndex', value: fromIndex},
