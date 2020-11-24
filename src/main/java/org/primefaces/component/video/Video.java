@@ -36,7 +36,8 @@ public class Video extends UIMedia {
     public enum PropertyKeys {
         width,
         height,
-        preload;
+        preload,
+        poster;
     }
 
     public Video() {
@@ -70,5 +71,13 @@ public class Video extends UIMedia {
 
     public void setPreload(String preload) {
         getStateHelper().put(PropertyKeys.preload, preload);
+    }
+
+    public String getPoster() {
+        return (String) getStateHelper().eval(PropertyKeys.poster, null);
+    }
+
+    public void setPoster(String poster) {
+        getStateHelper().put(PropertyKeys.poster, poster);
     }
 }

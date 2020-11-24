@@ -27,6 +27,14 @@ player | null | String | Type of the player, possible values are "mp4","ogg", an
 style | null | String | Style of the player.
 styleClass | null | String | StyleClass of the player.
 cache | true | Boolean | Controls browser caching mode of the resource.
+poster | null | String | Specifies an image to be shown while the video is downloading, or until the user hits the play button
+autoplay | null | Boolean | Specifies that the video will start playing as soon as it is ready
+controls | null | Boolean | Specifies that video controls should be displayed (such as a play/pause button etc).
+loop | null | Boolean | Specifies that the video will start over again, every time it is finished
+muted | null | Boolean | Specifies that the audio output of the video should be muted
+preload | null | String | Specifies if and how the author thinks the video should be loaded when the page loads
+height | null | String | Sets the height of the video player
+width | null | String | Sets the width of the video player
 
 ## Getting started with Video
 In its simplest form media component requires a source to play;
@@ -64,4 +72,12 @@ public class MediaController {
         return media;
     }
 }
+```
+
+## Client Side Events
+See the documentation at [HTML5 Audio Events and Attributes](https://www.w3schools.com/tags/ref_av_dom.asp)
+All events are available such as `onplay` and `onpause`.
+
+```xml
+<p:video onplay="console.log('MP4 Started Playing')" onpause="console.log('MP4 Stopped Playing')" />
 ```

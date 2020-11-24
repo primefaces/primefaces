@@ -76,6 +76,9 @@ public class VideoRenderer extends CoreRenderer {
         if (LangUtils.isNotBlank(media.getPreload())) {
             writer.writeAttribute("preload", media.getPreload(), null);
         }
+        if (LangUtils.isNotBlank(media.getPoster())) {
+            writer.writeAttribute("poster", media.getPoster(), null);
+        }
 
         VideoType player = resolvePlayer(context, media);
         writer.startElement("source", null);
