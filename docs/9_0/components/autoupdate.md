@@ -14,6 +14,7 @@ AutoUpdate is a tag handler to mark a component to be updated at every ajax requ
 | Name | Default | Type | Description | 
 | --- | --- | --- | --- |
 | disabled | false | Boolean | Whether the autoUpdate functionality is enabled.
+| on | null | String | Defines an observer event, which will trigger the auto update.
 
 ## Getting Started with AutoUpdate
 AutoUpdate is used by nesting inside a parent component.
@@ -22,4 +23,33 @@ AutoUpdate is used by nesting inside a parent component.
 <p:panel>
     <p:autoUpdate />
 </p:panel>
+```
+
+## Publish/Subscribe Pattern
+If you would like to subscribe to only certain events when updating components you can use the Observer pattern.
+Use the `on` attribute to determine what events you would like to **subscribe** to. Then you can **publish**
+that event from many different components using `update="@obs(event)"`.
+
+```xhtml
+<p:commandButton value="Update global" />
+<p:commandButton value="Update event1" update="@obs(event1)" />
+<p:commandButton value="Update event2" update="@obs(event2)" />
+
+
+Global:
+<h:outputText id="displayGlobal" value="#{observerView.text}">
+    <p:autoUpdate />
+</h:outputText>
+
+
+ Event1:
+<h:outputText id="displayEvent1" value="#{observerView.text}">
+    <p:autoUpdate on="event1" />
+</h:outputText>
+
+
+Event2:
+<h:outputText id="displayEvent2" value="#{observerView.text}">
+    <p:autoUpdate on="event2" />
+</h:outputText>
 ```
