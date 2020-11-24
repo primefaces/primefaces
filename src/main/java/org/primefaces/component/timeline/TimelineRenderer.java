@@ -314,14 +314,20 @@ public class TimelineRenderer extends CoreRenderer {
         }
 
         if (group.getTreeLevel() != null) {
-            fsw.write(", treeLevel: \"" + group.getTreeLevel() + "\"");
+            fsw.write(", treeLevel:\"" + group.getTreeLevel() + "\"");
 
-            Set<String> nestedGroups = group.getNestedGroups();
+            List<String> nestedGroups = group.getNestedGroups();
             if (nestedGroups != null && !nestedGroups.isEmpty()) {
                 fsw.write(", nestedGroups: [");
-                for (String s: nestedGroups) {
-                    fsw.write("\"" + EscapeUtils.forJavaScriptBlock(s) + "\"" + ", ");
+
+                for (Iterator<String> iter = nestedGroups.iterator(); iter.hasNext(); ) {
+                    fsw.write("\"" + EscapeUtils.forJavaScriptBlock(iter.next()) + "\"");
+
+                    if (iter.hasNext()) {
+                        fsw.write(",");
+                    }
                 }
+
                 fsw.write("]");
             }
         }
