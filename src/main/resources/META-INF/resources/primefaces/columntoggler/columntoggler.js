@@ -354,13 +354,12 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         this.changeTogglerState(column, true);
         this.fireToggleEvent(true, (index - 1));
         this.updateColspan();
-        this.resizeColumns(true);
     },
 
     /**
      * Unchecks the given checkbox for a column, so that the column is now not selected. Also hides the column of the
      * table to which this column toggler is attached.
-     * @param {JQuery} chkbox Checkbox (`.ui-chkbox-box`) of a column of this column toggler.
+     * @param {JQuery} chkbox Checkbox (`.ui-chkbox-box`) of a column of this column toggler. 
      */
     uncheck: function(chkbox) {
         chkbox.removeClass('ui-state-active').children('.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
@@ -398,38 +397,6 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         this.changeTogglerState(column, false);
         this.fireToggleEvent(false, (index - 1));
         this.updateColspan();
-        this.resizeColumns(false);
-    },
-
-    /**
-     * Resize columns after toggle
-     * @param {boolean} isChecked `true` when the number of column(s) will increase
-     * 'false' when they will decrease.
-     */
-    resizeColumns: function(isChecked) {
-
-        var columns = this.table.find('> .ui-datatable-tablewrapper > table > thead > tr > th');
-
-        if(columns.length) {
-            var visibleColumnLength = columns.filter(':visible').length;
-
-            if (isChecked && visibleColumnLength > 1) {
-                columns.each(function() {
-                    var col = $(this),
-                        colStyle = col[0].style,
-                        width = colStyle.width||col.width();
-                    col.width(parseInt(width) * ( (visibleColumnLength - 1) / visibleColumnLength));
-                });
-            }
-            else if (!isChecked && visibleColumnLength > 0) {
-                columns.each(function() {
-                    var col = $(this),
-                        colStyle = col[0].style,
-                        width = colStyle.width||col.width();
-                    col.width(parseInt(width) * ( (visibleColumnLength  + 1) / visibleColumnLength ));
-                });
-            }
-        }
     },
 
     /**
