@@ -25,10 +25,10 @@ AutoUpdate is used by nesting inside a parent component.
 </p:panel>
 ```
 
-## Publish/Subscribe Pattern
-If you would like to subscribe to only certain events when updating components you can use the Observer pattern.
-Use the `on` attribute to determine what events you would like to **subscribe** to. Then you can **publish**
-that event from many different components using `update="@obs(event)"`.
+## Event/Observer Pattern
+If you would like to subscribe only to certain events when updating components you can use the observer pattern.
+Use the `on` attribute to determine what events you would like to **observe** to. Then you can publish
+that **event** from many different components using `update="@obs(event)"`.
 
 ```xhtml
 <p:commandButton value="Update global" />
