@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.autoupdate;
 
-import java.util.List;
+import java.util.Map;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
@@ -31,6 +31,8 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 
 import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 
 public class AutoUpdatePhaseListener implements PhaseListener {
 
@@ -48,10 +50,19 @@ public class AutoUpdatePhaseListener implements PhaseListener {
             return;
         }
 
-        List<String> clientIds = AutoUpdateListener.getAutoUpdateComponentClientIds(context);
-        if (clientIds != null && !clientIds.isEmpty()) {
-            for (int i = 0; i < clientIds.size(); i++) {
-                String clientId = clientIds.get(i);
+        Map<String, String> infos = AutoUpdateListener.getAutoUpdateComponentInfos(context);
+        if (infos != null && !infos.isEmpty()) {
+            for (Map.Entry<String, String> entries : infos.entrySet()) {
+                String clientId = entries.getKey();
+                String on = entries.getValue();
+
+                if (on != null) {
+                    String update = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_UPDATE_PARAM);
+                    if (LangUtils.isValueBlank(update) || !update.contains("@obs(" + on + ")")) {
+                        continue;
+                    }
+                }
+
                 if (!context.getPartialViewContext().getRenderIds().contains(clientId)) {
                     context.getPartialViewContext().getRenderIds().add(clientId);
                 }
