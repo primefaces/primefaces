@@ -23,18 +23,20 @@
  */
 package org.primefaces.model;
 
+import java.io.Serializable;
+import java.util.Objects;
+
+import javax.el.MethodExpression;
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
+
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.ColumnBase;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.component.headerrow.HeaderRowBase;
-
-import javax.el.MethodExpression;
-import javax.el.ValueExpression;
-import javax.faces.context.FacesContext;
-import java.io.Serializable;
-import java.util.Objects;
 
 public class SortMeta implements Serializable, Comparable<SortMeta> {
 
@@ -102,7 +104,12 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
     public static SortMeta of(FacesContext context, String var, HeaderRow headerRow) {
         SortOrder order = SortOrder.of(headerRow.getSortOrder());
         ValueExpression groupByVE = headerRow.getValueExpression(HeaderRowBase.PropertyKeys.groupBy.name());
-        groupByVE = groupByVE != null ? groupByVE : DataTable.createValueExprFromVarField(context, var, headerRow.getField());
+        try {
+            groupByVE = groupByVE != null ? groupByVE : DataTable.createValueExprFromVarField(context, var, headerRow.getField());
+        }
+        catch (FacesException ex) {
+            throw new FacesException("HeaderRow must have 'groupBy' or 'field' attribute value.");
+        }
 
         return new SortMeta(headerRow.getClientId(context),
                             headerRow.getField(),
