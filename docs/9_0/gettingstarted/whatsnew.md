@@ -9,4 +9,4 @@ This page contains a list of big features. Please check the GitHub issues for al
   * MultiViewState: supports client window mode (see https://primefaces.github.io/primefaces/9_0/#/core/multiviewstate)
   * Prime Client Window: improved implementation of JSF Client Window mode (see https://primefaces.github.io/primefaces/9_0/#/core/clientwindow)
   * DatePicker: added (lazy) metamodel to set disabled and style class (see https://primefaces.github.io/primefaces/9_0/#/components/datepicker?id=date-metadata-model)
-
+  * Observer/Event based p:autoUpdate, inspired by https://github.com/encoway/edu
