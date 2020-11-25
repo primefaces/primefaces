@@ -1553,7 +1553,7 @@ public class DataTable extends DataTableBase {
     }
 
     public Map<String, FilterMeta> initFilterBy() {
-        boolean invalidate = getFilterByAsMap() == null;
+        boolean invalidate = getStateHelper().get("_filterBy") == null;
         Map<String, FilterMeta> filterBy = invalidate ? new HashMap<>() : getFilterByAsMap();
         AtomicBoolean filtered = invalidate ? new AtomicBoolean() : new AtomicBoolean(isDefaultFilter());
 
@@ -1669,7 +1669,7 @@ public class DataTable extends DataTableBase {
     }
 
     public Map<String, FilterMeta> getFilterByAsMap() {
-        return (Map<String, FilterMeta>) getStateHelper().get("_filterBy");
+        return ComponentUtils.eval(getStateHelper(), "_filterBy", Collections::emptyMap);
     }
 
     public void setFilterByAsMap(Map<String, FilterMeta> sortBy) {

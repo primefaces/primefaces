@@ -41,7 +41,7 @@ DataTable displays data in tabular format.
 | emptyMessage              | No records found.  | String           | Text to display when there is no data to display. Alternative is emptyMessage facet.
 | escapeText                | true               | Boolean          | Defines if headerText and footerText values on columns are escaped or not. Default is true.
 | expandedRow               | false              | Boolean          | Defines if row should be rendered as expanded by default.
-| filterBy                  | null               | Map              | Property to be used for default filtering. Expects a single or a collection of FilterMeta.
+| filterBy                  | null               | Object           | Property to be used for default filtering. Expects a single or a collection of FilterMeta.
 | filterDelay               | 300                | Integer          | Delay in milliseconds before sending an ajax filter query.
 | filterEvent               | keyup              | String           | Event triggering filter for input filters.
 | filteredValue             | null               | List             | List to keep filtered data.
@@ -275,7 +275,7 @@ Or
 ```
 
 ## Filtering
-Ajax based filtering is enabled by setting _filterBy_ at column level and providing a list to keep the
+Ajax based filtering is enabled by setting _field_ or _filterBy_ at column level and providing a list to keep the
 filtered sublist. It is suggested to use a scope longer than request like viewscope to keep the
 filteredValue so that filtered list is still accessible after filtering.
 
@@ -297,27 +297,22 @@ Following is a basic filtering datatable with these options demonstrated:
 
 ```xhtml
 <p:dataTable var="car" value="#{carBean.cars}" filteredValue="#{carBean.filteredCars}" widgetVar="carsTable">
+    
     <f:facet name="header">
-        <p:outputPanel>
-            <h:outputText value="Search all fields:" />
-            <h:inputText id="globalFilter" onkeyup="PF('carsTable').filter()" />
-        </p:outputPanel>
+        <h:outputText value="Search all fields:" />
+        <h:inputText id="globalFilter" onkeyup="PF('carsTable').filter()" />
     </f:facet>
-    <p:column filterBy="#{car.model}" headerText="Model" filterMatchMode="contains">
-        <h:outputText value="#{car.model}" />
-    </p:column>
-    <p:column filterBy="#{car.year}" headerText="Year" footerText="startsWith">
-        <h:outputText value="#{car.year}" />
-    </p:column>
-    <p:column filterBy="#{car.manufacturer}" headerText="Manufacturer" filterOptions="#{carBean.manufacturerOptions}" filterMatchMode="exact">
-        <h:outputText value="#{car.manufacturer}" />
-    </p:column>
-    <p:column filterBy="#{car.color}" headerText="Color" filterMatchMode="endsWith">
-        <h:outputText value="#{car.color}" />
-    </p:column>
-    <p:column filterBy="#{car.price}" headerText="Price" filterMatchMode="exact">
-        <h:outputText value="#{car.price}" />
-    </p:column>
+
+    <p:column field="model" headerText="Model" filterMatchMode="contains" />
+
+    <p:column field="year" headerText="Year" footerText="startsWith" />
+
+    <p:column field="manufacturer" headerText="Manufacturer" filterOptions="#{carBean.manufacturerOptions}" filterMatchMode="exact" />
+    
+    <p:column field="color" headerText="Color" filterMatchMode="endsWith" />
+    
+    <p:column field="price" headerText="Price" filterMatchMode="exact" />
+
 </p:dataTable>
 ```
 Filter located at header is a global one applying on all fields, this is implemented by calling client
@@ -332,9 +327,10 @@ necessary if the value of the filter facet is not defined.
 
 ```xhtml
 <p:dataTable id="dataTable" var="car" value="#{tableBean.carsSmall}" widgetVar="carsTable" filteredValue="#{tableBean.filteredCars}">
-    <p:column id="modelColumn" field="model" headerText="Model" footerText="contains" filterMatchMode="contains" />
+    
+<p:column field="model" headerText="Model" footerText="contains" filterMatchMode="contains" />
 
-    <p:column id="yearColumn" filterBy="#{car.year}" headerText="Year" footerText="lte" filterMatchMode="lte">
+    <p:column field="year" headerText="Year" footerText="lte" filterMatchMode="lte">
         <f:facet name="filter">
             <p:spinner onchange="PF('carsTable').filter()" min="1960" max="2010">
                 <f:converter converterId="javax.faces.Integer" />
@@ -342,7 +338,8 @@ necessary if the value of the filter facet is not defined.
         </f:facet>
         <h:outputText value="#{car.year}" />
     </p:column>
-    <p:column id="manufacturerColumn" filterBy="#{car.manufacturer}" headerText="Manufacturer" footerText="exact" filterMatchMode="exact">
+
+    <p:column field="manufacturer" headerText="Manufacturer" footerText="exact" filterMatchMode="exact">
         <f:facet name="filter">
             <p:selectOneMenu onchange="PF('carsTable').filter()" >
                 <f:selectItems value="#{tableBean.manufacturerOptions}" />
@@ -350,7 +347,8 @@ necessary if the value of the filter facet is not defined.
         </f:facet>
         <h:outputText value="#{car.manufacturer}" />
     </p:column>
-    <p:column id="colorColumn" filterBy="#{car.color}" headerText="Color" footerText="in" filterMatchMode="in">
+
+    <p:column field="color" headerText="Color" footerText="in" filterMatchMode="in">
         <f:facet name="filter">
             <p:selectCheckboxMenu label="Colors" onchange="PF('carsTable').filter()">
                 <f:selectItems value="#{tableBean.colors}" />
@@ -358,7 +356,8 @@ necessary if the value of the filter facet is not defined.
         </f:facet>
         <h:outputText value="#{car.color}" />
     </p:column>
-    <p:column id="soldColumn" filterBy="#{car.sold}" headerText="Status" footerText="equals" filterMatchMode="equals">
+
+    <p:column field="sold" headerText="Status" footerText="equals" filterMatchMode="equals">
         <f:facet name="filter">
             <p:selectOneButton onchange="PF('carsTable').filter()">
                 <f:converter converterId="javax.faces.Boolean" />
@@ -410,6 +409,35 @@ toLowerCase already and _dataLocale_ attribute is used to provide the locale to 
 
 This same principle can be applied globally by implementing a globalFilterFunction. It takes the
 same parameters of which the first parameter is the row value.
+
+Default filtering can be set up with markup or programmatically. Here is two ways to go about it:
+```xhtml
+<p:dataTable var="car" value="#{carBean.cars}">
+    <p:column field="model" headerText="Model"  />
+    <p:column field="year" headerText="Year" filterValue="20" matchMode="contains"/>
+</p:dataTable>
+```
+
+Or using _DataTable#filterBy_ and _FilterMeta#builder_:
+
+```xhtml
+<p:dataTable var="car" value="#{carBean.cars}" filterBy="#{carBean.filterBy}">
+    <p:column field="model" headerText="Model" />
+    <p:column field="year" headerText="Year" />
+</p:dataTable>
+```
+
+```java
+@PostConstruct
+public void init() {
+    filterBy = new ArrayList<>();
+    filterBy.add(FilterMeta.builder()
+            .field("year")
+            .filterValue(20)
+            .matchMode(MatchMode.CONTAINS)
+            .build());
+}
+```
 
 ## Row Selection
 There are several ways to select row(s) from datatable. Let’s begin by adding a Car reference for
@@ -763,7 +791,7 @@ public class CarBean {
     public CarBean() {
         model = new LazyDataModel() {
             @Override
-            public void load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
+            public List<Car> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
                 //load physical data
             }
         };
