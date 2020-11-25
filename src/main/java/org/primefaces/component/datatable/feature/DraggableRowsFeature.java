@@ -75,8 +75,8 @@ public class DraggableRowsFeature implements DataTableFeature {
                 }
             }
             else {
-                LOGGER.info("Row reordering is only available for list backed datatables, "
-                        + "use rowReorder ajax behavior with listener for manual handling of model update.");
+                LOGGER.info("Row reordering is only available for list backed datatables. "
+                            + "Use rowReorder AJAX behavior with listener and manually handle the model update.");
             }
         }
     }

@@ -37,6 +37,7 @@ import org.primefaces.expression.impl.JQuerySelectorExpressionResolver;
 import org.primefaces.expression.impl.NamingContainerExpressionResolver;
 import org.primefaces.expression.impl.NextExpressionResolver;
 import org.primefaces.expression.impl.NoneExpressionResolver;
+import org.primefaces.expression.impl.ObserverExpressionResolver;
 import org.primefaces.expression.impl.ParentExpressionResolver;
 import org.primefaces.expression.impl.PreviousExpressionResolver;
 import org.primefaces.expression.impl.RootExpressionResolver;
@@ -69,6 +70,7 @@ public class SearchExpressionResolverFactory {
         RESOLVER_MAPPING.put(SearchExpressionConstants.ROW_KEYWORD, new RowExpressionResolver());
         RESOLVER_MAPPING.put(SearchExpressionConstants.ID_KEYWORD, new IdExpressionResolver());
         RESOLVER_MAPPING.put(SearchExpressionConstants.ROOT_KEYWORD, new RootExpressionResolver());
+        RESOLVER_MAPPING.put(SearchExpressionConstants.OBSERVER_KEYWORD, new ObserverExpressionResolver());
     }
 
     /*
