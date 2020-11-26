@@ -29,7 +29,7 @@ public abstract void openDynamic(String outcome, Map<String,Object> options, Map
 public abstract void closeDynamic(Object data);
 ```
 
-**Configuration**
+## Configuration
 DF requires the following configuration to be present in faces-config.xml:
 
 ```xml
@@ -46,7 +46,8 @@ DF requires the following configuration to be present in faces-config.xml:
 </application>
 
 ```
-**Getting Started**
+
+## Getting Started
 Simplest use case of DF is opening an xhtml view like _cars.xhtml_ in a dialog;
 
 ```xhtml
@@ -78,7 +79,7 @@ public void view() {
 Once the response is received from the request caused by command button a dialog would be generated with the contents of viewCars.xhtml. 
 Title of the dialog is retrieved from the title element of the viewCars, in this case, Cars.
 
-**Dialog Configuration**
+## Dialog Configuration
 Overloaded openDialog method provides advanced configuration regarding the visuals of dialog
 along with parameters to send to the dialog content.
 
@@ -128,7 +129,7 @@ Here is the full list of configuration options;
 | onHide | null | String | Client side callback to execute when dialog is hidden. |
 
 
-**Data Communication**
+## Data Communication
 Page displayed in the dialog can pass data back to the parent page.
 The trigger component needs to have _dialogReturn_ ajax behavior event to hook-in when data is returned from dialog.
 
@@ -173,12 +174,12 @@ public void handleReturn(SelectEvent<Car> event) {
     Car car = event.getObject();
 }
 ```
-**Remarks on Dialog Framework**
+## Remarks on Dialog Framework
 
 - Calls to DialogFramework API within a non-ajax are ignored.
 - Content Width and Height can take percentage value like 100%.
 
-**Dialog Messages**
+## Dialog Messages
 Displaying FacesMessages in a Dialog is a common case, where a FacesMessage needs to be added
 to the context first, dialog content containing a message component needs to be updated and finally
 dialog gets shown with client side API. DF has a simple utility to bypass this process by providing a
