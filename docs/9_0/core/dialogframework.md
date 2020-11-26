@@ -99,32 +99,32 @@ Here is the full list of configuration options;
 
 | Name | Default | Type | Description | 
 | --- | --- | --- | --- |
-widgetVar | null | String | Custom widgetVar of the dialog, if not declared it will be automatically created as "id+dlgWidget".
-modal | false | Boolean | Controls modality of the dialog.
-resizable | true | Boolean | When enabled, makes dialog resizable.
-draggable | true | Boolean | When enabled, makes dialog draggable.
-width | auto | String | Width of the dialog.
-height | auto | String | Height of the dialog.
-contentWidth | 640 | String | Width of the dialog content.
-contentHeight | auto | String | Height of the dialog content.
-closable | true | Boolean | Whether the dialog can be closed or not.
-includeViewParams | false | Boolean | When enabled, includes the view parameters.
-headerElement | null | String | Client id of the element to display inside header.
-minimizable | false | Boolean | Makes dialog minimizable.
-maximizable | false | Boolean | Makes dialog maximizable.
-closeOnEscape | false | Boolean | Whether the dialog can be closed with escape key.
-minWidth | 150 | Integer | Minimum width of a resizable dialog.
-minHeight | 0 | Integer | Minimum height of a resizable dialog.
-appendTo | null | String | Appends the dialog to the element defined by the given search expression.
-dynamic | false | Boolean | Enables lazy loading of the content with ajax.
-showEffect | null | String | Effect to use when showing the dialog
-hideEffect | null | String | Effect to use when hiding the dialog
-position | null | String | Defines where the dialog should be displayed
-fitViewport | false | Boolean | Dialog size might exceeed viewport if content is bigger than viewport in terms of height. fitViewport option automatically adjusts height to fit dialog within the viewport.
-responsive | false | Boolean | In responsive mode, dialog adjusts itself based on screen width.
-focus | null | String | Defines which component to apply focus by search expression.
-onShow | null | String | Client side callback to execute when dialog is displayed.
-onHide | null | String | Client side callback to execute when dialog is hidden.
+| widgetVar | null | String | Custom widgetVar of the dialog, if not declared it will be automatically created as "id+dlgWidget". |
+| modal | false | Boolean | Controls modality of the dialog. |
+| resizable | true | Boolean | When enabled, makes dialog resizable. |
+| draggable | true | Boolean | When enabled, makes dialog draggable. |
+| width | auto | String | Width of the dialog. |
+| height | auto | String | Height of the dialog. |
+| contentWidth | 640 | String | Width of the dialog content. |
+| contentHeight | auto | String | Height of the dialog content. |
+| closable | true | Boolean | Whether the dialog can be closed or not. |
+| includeViewParams | false | Boolean | When enabled, includes the view parameters. |
+| headerElement | null | String | Client id of the element to display inside header. |
+| minimizable | false | Boolean | Makes dialog minimizable. |
+| maximizable | false | Boolean | Makes dialog maximizable. |
+| closeOnEscape | false | Boolean | Whether the dialog can be closed with escape key. |
+| minWidth | 150 | Integer | Minimum width of a resizable dialog. |
+| minHeight | 0 | Integer | Minimum height of a resizable dialog. |
+| appendTo | null | String | Appends the dialog to the element defined by the given search expression. |
+| dynamic | false | Boolean | Enables lazy loading of the content with ajax. |
+| showEffect | null | String | Effect to use when showing the dialog |
+| hideEffect | null | String | Effect to use when hiding the dialog |
+| position | null | String | Defines where the dialog should be displayed |
+| fitViewport | false | Boolean | Dialog size might exceeed viewport if content is bigger than viewport in terms of height. fitViewport option automatically adjusts height to | fit dialog within the viewport. |
+| responsive | false | Boolean | In responsive mode, dialog adjusts itself based on screen width. |
+| focus | null | String | Defines which component to apply focus by search expression. |
+| onShow | null | String | Client side callback to execute when dialog is displayed. |
+| onHide | null | String | Client side callback to execute when dialog is hidden. |
 
 **Data Communication**
 Page displayed in the dialog can pass data back to the parent page. The trigger component needs to
@@ -194,7 +194,6 @@ Using this shortcut it is just one line to implement the same functionality;
 ```java
 public void save() {
     //business logic
-    PrimeFaces.current().dialog().showMessageInDialog(new
-    FacesMessage(FacesMessage.SEVERITY_INFO, "What we do in life", "Echoes in eternity."););
+    PrimeFaces.current().dialog().showMessageInDialog(new FacesMessage(FacesMessage.SEVERITY_INFO, "What we do in life", "Echoes in eternity."););
 }
 ```
