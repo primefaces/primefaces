@@ -1371,8 +1371,13 @@ public class DataTable extends DataTableBase {
                 setRows(rows);
             }
 
-            updateSortByWithTableState(ts.getSortBy());
-            updateFilterByWithTableState(ts.getFilterBy());
+            if (ts.getSortBy() != null) {
+                updateSortByWithTableState(ts.getSortBy());
+            }
+
+            if (ts.getFilterBy() != null) {
+                updateFilterByWithTableState(ts.getFilterBy());
+            }
 
             if (isSelectionEnabled()) {
                 selectedRowKeys = ts.getRowKeys();
@@ -1452,20 +1457,18 @@ public class DataTable extends DataTableBase {
     }
 
     protected void updateSortByWithTableState(Map<String, SortMeta> tsSortBy) {
-        if (tsSortBy != null) {
-            boolean defaultSort = isDefaultSort();
-            for (Map.Entry<String, SortMeta> entry : tsSortBy.entrySet()) {
-                SortMeta intlSortBy = getSortByAsMap().get(entry.getKey());
-                if (intlSortBy != null) {
-                    SortMeta tsSortMeta = entry.getValue();
-                    intlSortBy.setPriority(tsSortMeta.getPriority());
-                    intlSortBy.setOrder(tsSortMeta.getOrder());
-                    defaultSort |= intlSortBy.isActive();
-                }
+        boolean defaultSort = isDefaultSort();
+        for (Map.Entry<String, SortMeta> entry : tsSortBy.entrySet()) {
+            SortMeta intlSortBy = getSortByAsMap().get(entry.getKey());
+            if (intlSortBy != null) {
+                SortMeta tsSortMeta = entry.getValue();
+                intlSortBy.setPriority(tsSortMeta.getPriority());
+                intlSortBy.setOrder(tsSortMeta.getOrder());
+                defaultSort |= intlSortBy.isActive();
             }
-
-            setDefaultSort(defaultSort);
         }
+
+        setDefaultSort(defaultSort);
     }
 
     protected void updateSortByWithUserSortBy(Map<String, SortMeta> intlSortBy, Object usrSortBy, AtomicBoolean sorted) {
@@ -1591,20 +1594,18 @@ public class DataTable extends DataTableBase {
         return filterBy;
     }
 
-    protected void updateFilterByWithTableState(Map<String, FilterMeta> tsSortBy) {
-        if (tsSortBy != null) {
-            boolean defaultFilter = isDefaultFilter();
-            for (Map.Entry<String, FilterMeta> entry : tsSortBy.entrySet()) {
-                FilterMeta intlSortBy = getFilterByAsMap().get(entry.getKey());
-                if (intlSortBy != null) {
-                    FilterMeta tsSortMeta = entry.getValue();
-                    intlSortBy.setFilterValue(tsSortMeta.getFilterValue());
-                    defaultFilter |= intlSortBy.isActive();
-                }
+    protected void updateFilterByWithTableState(Map<String, FilterMeta> tsFilterBy) {
+        boolean defaultFilter = isDefaultFilter();
+        for (Map.Entry<String, FilterMeta> entry : tsFilterBy.entrySet()) {
+            FilterMeta intlFilterBy = getFilterByAsMap().get(entry.getKey());
+            if (intlFilterBy != null) {
+                FilterMeta tsFilterMeta = entry.getValue();
+                intlFilterBy.setFilterValue(tsFilterMeta.getFilterValue());
+                defaultFilter |= intlFilterBy.isActive();
             }
-
-            setDefaultFilter(defaultFilter);
         }
+
+        setDefaultFilter(defaultFilter);
     }
 
     protected void updateFilterByWithUserFilterBy(Map<String, FilterMeta> intlFilterBy, Object usrFilterBy, AtomicBoolean filtered) {
