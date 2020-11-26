@@ -1,13 +1,11 @@
 # Dialog Framework
 
-Dialog Framework (DF) is used to open an external xhtml page in a dialog that is generated
-dynamically on runtime. This is quite different to regular usage of dialogs with declarative p:dialog
-components as DF is based on a programmatic API where dialogs are created and destroyed at
+Dialog Framework (DF) is used to open an external xhtml page in a dialog that is generated dynamically on runtime. 
+This is quite different to regular usage of dialogs with declarative p:dialog components as DF is based on a programmatic API where dialogs are created and destroyed at
 runtime.
 
-Note that DF and the declarative approach are two different ways and both can even be
-used together. Usage is quite simple, PrimeFaces.current().dialog() has _openDynamic_ and _closeDynamic_
-methods;
+Note that DF and the declarative approach are two different ways and both can even be used together. 
+Usage is quite simple, PrimeFaces.current().dialog() has _openDynamic_ and _closeDynamic_ methods;
 
 ```java
 /**
@@ -32,7 +30,7 @@ public abstract void closeDynamic(Object data);
 ```
 
 **Configuration**
-DF requires the following configuration to be present in faces config file.
+DF requires the following configuration to be present in faces-config.xml:
 
 ```xml
 <application>
@@ -46,10 +44,10 @@ DF requires the following configuration to be present in faces config file.
         org.primefaces.application.DialogViewHandler
     </view-handler>
 </application>
+
 ```
 **Getting Started**
 Simplest use case of DF is opening an xhtml view like _cars.xhtml_ in a dialog;
-
 
 ```xhtml
 <!DOCTYPE html>
@@ -65,19 +63,20 @@ xmlns:p="http://primefaces.org/ui">
     </h:body>
 </html>
 ```
-On the host page, call PrimeFaces.current().dialog().openDynamic("viewname");
+On the host page, call _PrimeFaces.current().dialog().openDynamic("viewname");_
 
 ```xhtml
 <p:commandButton value="View Cars" action="#{hostBean.view}" />
 ```
+
 ```java
 public void view() {
     PrimeFaces.current().dialog().openDynamic("viewCars");
 }
 ```
-Once the response is received from the request caused by command button a dialog would be
-generated with the contents of viewCars.xhtml. Title of the dialog is retrieved from the title element
-of the viewCars, in this case, Cars.
+
+Once the response is received from the request caused by command button a dialog would be generated with the contents of viewCars.xhtml. 
+Title of the dialog is retrieved from the title element of the viewCars, in this case, Cars.
 
 **Dialog Configuration**
 Overloaded openDialog method provides advanced configuration regarding the visuals of dialog
@@ -130,8 +129,8 @@ Here is the full list of configuration options;
 
 
 **Data Communication**
-Page displayed in the dialog can pass data back to the parent page. The trigger component needs to
-have _dialogReturn_ ajax behavior event to hook-in when data is returned from dialog.
+Page displayed in the dialog can pass data back to the parent page.
+The trigger component needs to have _dialogReturn_ ajax behavior event to hook-in when data is returned from dialog.
 
 ```xhtml
 <!DOCTYPE html>
@@ -180,9 +179,9 @@ public void handleReturn(SelectEvent<Car> event) {
 - Content Width and Height can take percentage value like 100%.
 
 **Dialog Messages**
-Displaying FacesMessages in a Dialog is a common case where a faces message needs to be added
+Displaying FacesMessages in a Dialog is a common case, where a FacesMessage needs to be added
 to the context first, dialog content containing a message component needs to be updated and finally
-dialog gets shown with client side api. DF has a simple utility to bypass this process by providing a
+dialog gets shown with client side API. DF has a simple utility to bypass this process by providing a
 shortcut;
 
 ```java
