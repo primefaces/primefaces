@@ -21,20 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.media;
+package org.primefaces.component.audio;
 
-import java.util.List;
+/**
+ * HTML5 supports three audio formats: MP3, WAV, and OGG.
+ */
+public enum AudioType {
 
-import org.primefaces.util.LangUtils;
+    MP3("mp3", "audio/mpeg"),
+    OGG("ogg", "audio/ogg"),
+    WAV("wav", "audio/wav");
 
-public class Media extends MediaBase {
+    private final String fileExtension;
+    private final String mediaType;
 
-    public static final String COMPONENT_TYPE = "org.primefaces.component.Media";
+    private AudioType (String fileExtension, String mediaType) {
+        this.fileExtension = fileExtension;
+        this.mediaType = mediaType;
+    }
 
-    //StyleClass is omitted
-    public static final List<String> MEDIA_ATTRS = LangUtils.unmodifiableList(
-        "height",
-        "width",
-        "style"
-    );
+    public String getFileExtension() {
+        return fileExtension;
+    }
+
+    public String getMediaType() {
+        return mediaType;
+    }
+
 }

@@ -207,6 +207,11 @@
     </component>
 
     <component>
+        <component-type>org.primefaces.component.Audio</component-type>
+        <component-class>org.primefaces.component.audio.Audio</component-class>
+    </component>
+
+    <component>
         <component-type>org.primefaces.component.AutoComplete</component-type>
         <component-class>org.primefaces.component.autocomplete.AutoComplete</component-class>
     </component>
@@ -957,6 +962,11 @@
     </component>
 
     <component>
+        <component-type>org.primefaces.component.Video</component-type>
+        <component-class>org.primefaces.component.video.Video</component-class>
+    </component>
+
+    <component>
         <component-type>org.primefaces.component.Watermark</component-type>
         <component-class>org.primefaces.component.watermark.Watermark</component-class>
     </component>
@@ -1021,6 +1031,11 @@
             <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.AjaxStatusRenderer</renderer-type>
             <renderer-class>org.primefaces.component.ajaxstatus.AjaxStatusRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.AudioRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.audio.AudioRenderer</renderer-class>
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>
@@ -1716,6 +1731,11 @@
             <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.WatermarkRenderer</renderer-type>
             <renderer-class>org.primefaces.component.watermark.WatermarkRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.VideoRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.video.VideoRenderer</renderer-class>
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>

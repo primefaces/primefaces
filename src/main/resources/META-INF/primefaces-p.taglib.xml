@@ -934,6 +934,112 @@
     </tag>
     <tag>
         <description>
+            <![CDATA[Audio component is used for embedding audio content such as MP3, OGG, WAV to JSF views.]]>
+        </description>
+        <tag-name>audio</tag-name>
+        <component>
+            <component-type>org.primefaces.component.Audio</component-type>
+            <renderer-type>org.primefaces.component.AudioRenderer</renderer-type>
+        </component>
+        <attribute>
+            <description>
+                <![CDATA[Unique identifier of the component in a namingContainer.]]>
+            </description>
+            <name>id</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
+            </description>
+            <name>rendered</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
+            </description>
+            <name>binding</name>
+            <required>false</required>
+            <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Media source to play.]]>
+            </description>
+            <name>value</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Type of the player, possible values are "mp3","ogg", and "wav".]]>
+            </description>
+            <name>player</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style of the player.]]>
+            </description>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the player.]]>
+            </description>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Controls browser caching mode of the resource. Default is true]]>
+            </description>
+            <name>cache</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether the audio/video should display controls (like play/pause etc.)]]>
+            </description>
+            <name>controls</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+       <attribute>
+            <description>
+                <![CDATA[Specifies that the video will start playing as soon as it is ready.)]]>
+            </description>
+            <name>autoplay</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Specifies that the video will start over again, every time it is finished.)]]>
+            </description>
+            <name>loop</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Specifies that the audio output of the video should be muted.)]]>
+            </description>
+            <name>muted</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+    </tag>
+    <tag>
+        <description>
             <![CDATA[AutoComplete provides live suggestions while an input is being typed.]]>
         </description>
         <tag-name>autoComplete</tag-name>
@@ -30033,6 +30139,144 @@
                 <![CDATA[Id of the component to attach the watermark.]]>
             </description>
             <name>for</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>
+    <tag>
+        <description>
+            <![CDATA[Video component is used for embedding video content such as MP4, OGG, WEBM to JSF views.]]>
+        </description>
+        <tag-name>video</tag-name>
+        <component>
+            <component-type>org.primefaces.component.Video</component-type>
+            <renderer-type>org.primefaces.component.VideoRenderer</renderer-type>
+        </component>
+        <attribute>
+            <description>
+                <![CDATA[Unique identifier of the component in a namingContainer.]]>
+            </description>
+            <name>id</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
+            </description>
+            <name>rendered</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
+            </description>
+            <name>binding</name>
+            <required>false</required>
+            <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Media source to play.]]>
+            </description>
+            <name>value</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Type of the player, possible values are "mp4","ogg", and "webm".]]>
+            </description>
+            <name>player</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style of the player.]]>
+            </description>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the player.]]>
+            </description>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Controls browser caching mode of the resource. Default is true]]>
+            </description>
+            <name>cache</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether the audio/video should display controls (like play/pause etc.)]]>
+            </description>
+            <name>controls</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+       <attribute>
+            <description>
+                <![CDATA[Specifies that the video will start playing as soon as it is ready.)]]>
+            </description>
+            <name>autoplay</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Specifies that the video will start over again, every time it is finished.)]]>
+            </description>
+            <name>loop</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Specifies that the audio output of the video should be muted.)]]>
+            </description>
+            <name>muted</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Specifies if and how the author thinks the video should be loaded when the page loads. Values "none", "auto", "metadata"]]>
+            </description>
+            <name>preload</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[A URL for an image to be shown while the video is downloading. If this attribute isn't specified, nothing is displayed until the first frame is available, then the first frame is shown as the poster frame.]]>
+            </description>
+            <name>poster</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Width of the player.]]>
+            </description>
+            <name>width</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Height of the player.]]>
+            </description>
+            <name>height</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>

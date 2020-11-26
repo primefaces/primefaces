@@ -21,20 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.media;
+package org.primefaces.component.audio;
 
-import java.util.List;
+import org.primefaces.component.api.UIMedia;
 
-import org.primefaces.util.LangUtils;
+public class Audio extends UIMedia {
 
-public class Media extends MediaBase {
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
+    public static final String DEFAULT_RENDERER = "org.primefaces.component.AudioRenderer";
+    public static final String COMPONENT_TYPE = "org.primefaces.component.Audio";
 
-    public static final String COMPONENT_TYPE = "org.primefaces.component.Media";
+    public static final String CONTAINER_CLASS = "ui-media ui-audio";
 
-    //StyleClass is omitted
-    public static final List<String> MEDIA_ATTRS = LangUtils.unmodifiableList(
-        "height",
-        "width",
-        "style"
-    );
+    public Audio() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+    @Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
 }
