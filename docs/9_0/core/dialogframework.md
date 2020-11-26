@@ -15,12 +15,14 @@ methods;
 * @param outcome The logical outcome used to resolve a navigation case.
 */
 public abstract void openDynamic(String outcome);
+
 /**
 * Open a view in dialog.
 * @param outcome The logical outcome used to resolve a navigation case.
 * @param options Configuration options for the dialog.
 * @param params Parameters to send to the view displayed in a dialog.
 */
+
 public abstract void openDynamic(String outcome, Map<String,Object> options, Map<String,List<String>> params);
 /**
 * Close a dialog.
@@ -154,6 +156,7 @@ public void selectCarFromDialog(Car car) {
     PrimeFaces.current().dialog().closeDynamic(car);
 }
 ```
+
 At host page, the button that triggered the dialog should have _dialogReturn_ event.
 
 ```xhtml
@@ -161,12 +164,14 @@ At host page, the button that triggered the dialog should have _dialogReturn_ ev
     <p:ajax event="dialogReturn" listener="#{hostBean.handleReturn}" />
 </p:commandButton>
 ```
+
 ```java
 public void view() {
     PrimeFaces.current().dialog().openDynamic("viewCars");
 }
-public void handleReturn(SelectEvent event) {
-    Car car = (Car) event.getObject();
+
+public void handleReturn(SelectEvent<Car> event) {
+    Car car = event.getObject();
 }
 ```
 **Remarks on Dialog Framework**
@@ -187,11 +192,13 @@ shortcut;
 */
 public abstract void showMessageInDialog(FacesMessage message);
 ```
+
 Using this shortcut it is just one line to implement the same functionality;
 
 ```xhtml
 <p:commandButton value="Show" action="#{bean.save}" />
 ```
+
 ```java
 public void save() {
     //business logic
