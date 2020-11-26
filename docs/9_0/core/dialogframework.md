@@ -22,8 +22,8 @@ public abstract void openDynamic(String outcome);
 * @param options Configuration options for the dialog.
 * @param params Parameters to send to the view displayed in a dialog.
 */
-
 public abstract void openDynamic(String outcome, Map<String,Object> options, Map<String,List<String>> params);
+
 /**
 * Close a dialog.
 * @param data Optional data to pass back to a dialogReturn event.
