@@ -1426,7 +1426,7 @@ public class DataTable extends DataTableBase {
 
     public static ValueExpression createValueExprFromVarField(FacesContext context, String var, String field) {
         if (LangUtils.isValueBlank(var) || LangUtils.isValueBlank(field)) {
-            throw new FacesException("var and field must be non null");
+            throw new FacesException("Table 'var' and Column 'field' attributes must be non null.");
         }
 
         return context.getApplication().getExpressionFactory()

@@ -24,7 +24,7 @@
 package org.primefaces.model.timeline;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 
 public class TimelineGroup<T> implements Serializable {
 
@@ -46,15 +46,15 @@ public class TimelineGroup<T> implements Serializable {
     private String title;
 
     /**
-     * root level of the nested groups.
+     * level of the nested groups.
      */
     private Integer treeLevel;
 
     /**
      *
-     * it is a set of ids of nested groups that a group or nested group contains.
+     * Ids of nested groups.
      */
-    private Set<String> nestedGroups;
+    private List<String> nestedGroups;
 
     /**
      * any custom style class for this event in UI (optional)
@@ -90,30 +90,23 @@ public class TimelineGroup<T> implements Serializable {
     }
 
     public TimelineGroup(String id, T data, String title) {
-        this.id = id;
-        this.data = data;
+        this(id, data);
         this.title = title;
     }
 
     public TimelineGroup(String id, T data, int treeLevel) {
-        this.id = id;
-        this.data = data;
+        this(id, data);
         this.treeLevel = treeLevel;
     }
 
-    public TimelineGroup(String id, T data, int treeLevel, Set<String> nestedGroups) {
-        this.id = id;
-        this.data = data;
-        this.treeLevel = treeLevel;
+    public TimelineGroup(String id, T data, int treeLevel, List<String> nestedGroups) {
+        this(id, data, treeLevel);
         this.nestedGroups = nestedGroups;
     }
 
-    public TimelineGroup(String id, T data, String title, int treeLevel, Set<String> nestedGroups) {
-        this.id = id;
-        this.data = data;
+    public TimelineGroup(String id, T data, String title, int treeLevel, List<String> nestedGroups) {
+        this(id, data, treeLevel, nestedGroups);
         this.title = title;
-        this.treeLevel = treeLevel;
-        this.nestedGroups = nestedGroups;
     }
 
     public String getId() {
@@ -140,11 +133,11 @@ public class TimelineGroup<T> implements Serializable {
         this.treeLevel = treeLevel;
     }
 
-    public Set<String> getNestedGroups() {
+    public List<String> getNestedGroups() {
         return nestedGroups;
     }
 
-    public void setNestedGroups(Set<String> nestedGroups) {
+    public void setNestedGroups(List<String> nestedGroups) {
         this.nestedGroups = nestedGroups;
     }
 

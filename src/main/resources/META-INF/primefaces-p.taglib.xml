@@ -104,6 +104,12 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>Defines the observer event, which will trigger the auto update.</description>
+            <name>on</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
 
     <tag>

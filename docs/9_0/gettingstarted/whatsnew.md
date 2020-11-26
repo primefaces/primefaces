@@ -11,4 +11,4 @@ This page contains a list of big features. Please check the GitHub issues for al
   * DatePicker: added (lazy) metamodel to set disabled and style class (see https://primefaces.github.io/primefaces/9_0/#/components/datepicker?id=date-metadata-model)
   * Audio: new component (see https://primefaces.github.io/primefaces/9_0/#/components/audio)
   * Video: new component (see https://primefaces.github.io/primefaces/9_0/#/components/video)
-
+  * Observer/Event based p:autoUpdate, inspired by https://github.com/encoway/edu

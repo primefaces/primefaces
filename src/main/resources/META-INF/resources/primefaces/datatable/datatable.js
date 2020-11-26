@@ -3061,6 +3061,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @param {JQuery} row A row (`TR`) to switch to edit mode. 
      */
     switchToRowEdit: function(row) {
+        // #1499 disable rowReorder while editing
+        if (this.cfg.draggableRows) {
+            this.tbody.sortable("disable");
+        }
+
         if(this.cfg.rowEditMode === "lazy") {
             this.lazyRowEditInit(row);
         }
@@ -3567,6 +3572,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                             }
 
                             this.updateRow(row, content);
+
+                            // #1499 enable rowReorder when done editing
+                            if (this.cfg.draggableRows && $('tr.ui-row-editing').length === 0) {
+                                this.tbody.sortable("enable");
+                            }
+
+                            // #258 must reflow after editing
+                            this.postUpdateData();
                         }
                     });
 
@@ -4316,7 +4329,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             },
             update: function(event, ui) {
                 var fromIndex = ui.item.data('ri'),
-                toIndex = $this.paginator ? $this.paginator.getFirst() + ui.item.index(): ui.item.index();
+                itemIndex = ui.item.index();
+                
+                // #5296 must not count header group rows
+                var groupHeaders = $this.tbody.children('.ui-rowgroup-header').length;
+                itemIndex = itemIndex - groupHeaders;
+                
+                var toIndex = $this.paginator ? $this.paginator.getFirst() + itemIndex: itemIndex;
 
                 $this.syncRowParity();
 
