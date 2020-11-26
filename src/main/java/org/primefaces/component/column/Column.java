@@ -39,10 +39,14 @@ public class Column extends ColumnBase {
     public CellEditor getCellEditor() {
         CellEditor cellEditor = null;
 
-        for (UIComponent child : getChildren()) {
-            if (child instanceof CellEditor && ((CellEditor) child).isRendered()) {
-                cellEditor = (CellEditor) child;
-                break;
+        int childCount = getChildCount();
+        if (childCount > 0) {
+            for (int i = 0; i < childCount; i++) {
+                UIComponent child = getChildren().get(i);
+                if (child instanceof CellEditor && ((CellEditor) child).isRendered()) {
+                    cellEditor = (CellEditor) child;
+                    break;
+                }
             }
         }
 

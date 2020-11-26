@@ -33,6 +33,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.GridLayoutUtils;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class DataGridRenderer extends DataRenderer {
@@ -72,9 +73,8 @@ public class DataGridRenderer extends DataRenderer {
     }
 
     protected void encodeScript(FacesContext context, DataGrid grid) throws IOException {
-        String clientId = grid.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("DataGrid", grid.resolveWidgetVar(context), clientId);
+        wb.init("DataGrid", grid);
 
         if (grid.isPaginator()) {
             encodePaginatorConfig(context, grid, wb);
@@ -96,11 +96,12 @@ public class DataGridRenderer extends DataRenderer {
         boolean empty = grid.getRowCount() == 0;
         String layout = grid.getLayout();
         String paginatorPosition = grid.getPaginatorPosition();
+        boolean flex = ComponentUtils.isFlex(context, grid);
+        String gridContentClass = flex ? DataGrid.FLEX_GRID_CONTENT_CLASS : DataGrid.GRID_CONTENT_CLASS;
         String style = grid.getStyle();
         String styleClass = grid.getStyleClass() == null ? DataGrid.DATAGRID_CLASS : DataGrid.DATAGRID_CLASS + " " + grid.getStyleClass();
-        String contentClass = empty
-                              ? DataGrid.EMPTY_CONTENT_CLASS
-                              : (layout.equals("tabular") ? DataGrid.TABLE_CONTENT_CLASS : DataGrid.GRID_CONTENT_CLASS);
+        String layoutClass = layout.equals("tabular") ? DataGrid.TABLE_CONTENT_CLASS : gridContentClass;
+        String contentClass = empty ? DataGrid.EMPTY_CONTENT_CLASS : layoutClass;
 
         if (hasPaginator) {
             grid.calculateFirst();
@@ -170,7 +171,29 @@ public class DataGridRenderer extends DataRenderer {
         int itemsToRender = rows != 0 ? rows : grid.getRowCount();
         int numberOfRowsToRender = (itemsToRender + columns - 1) / columns;
         int displayedItemsToRender = rowIndex + itemsToRender;
-        String columnClass = DataGrid.COLUMN_CLASS + " " + GridLayoutUtils.getColumnClass(columns);
+        String columnInlineStyle = grid.getRowStyle();
+        boolean flex = ComponentUtils.isFlex(context, grid);
+        String columnClass = DataGrid.COLUMN_CLASS + " ";
+        if (flex) {
+            columnClass += GridLayoutUtils.getFlexColumnClass(columns);
+        }
+        else {
+            columnClass += GridLayoutUtils.getColumnClass(columns);
+        }
+
+
+        if (!LangUtils.isValueBlank(grid.getRowStyleClass())) {
+            columnClass += " " + grid.getRowStyleClass();
+        }
+
+        writer.startElement("div", null);
+
+        if (flex) {
+            writer.writeAttribute("class", DataGrid.FLEX_GRID_ROW_CLASS, null);
+        }
+        else {
+            writer.writeAttribute("class", DataGrid.GRID_ROW_CLASS, null);
+        }
 
         for (int i = 0; i < numberOfRowsToRender; i++) {
             grid.setRowIndex(rowIndex);
@@ -178,12 +201,12 @@ public class DataGridRenderer extends DataRenderer {
                 break;
             }
 
-            writer.startElement("div", null);
-            writer.writeAttribute("class", DataGrid.GRID_ROW_CLASS, null);
-
             for (int j = 0; j < columns; j++) {
                 writer.startElement("div", null);
                 writer.writeAttribute("class", columnClass, null);
+                if (!LangUtils.isValueEmpty(columnInlineStyle)) {
+                    writer.writeAttribute("style", columnInlineStyle, null);
+                }
 
                 grid.setRowIndex(rowIndex);
                 if (grid.isRowAvailable()) {
@@ -197,9 +220,9 @@ public class DataGridRenderer extends DataRenderer {
                     break;
                 }
             }
-
-            writer.endElement("div");
         }
+
+        writer.endElement("div");
 
         grid.setRowIndex(-1); //cleanup
     }

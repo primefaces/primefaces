@@ -23,14 +23,13 @@
  */
 package org.primefaces.component.inputnumber;
 
-import javax.faces.component.html.HtmlInputText;
-
+import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LocaleUtils;
 
-public abstract class InputNumberBase extends HtmlInputText implements Widget, InputHolder {
+public abstract class InputNumberBase extends AbstractPrimeHtmlInputText implements Widget, InputHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -55,7 +54,8 @@ public abstract class InputNumberBase extends HtmlInputText implements Widget, I
         padControl,
         leadingZero,
         decimalSeparatorAlternative,
-        modifyValueOnWheel
+        modifyValueOnWheel,
+        inputMode
     }
 
     public InputNumberBase() {
@@ -158,7 +158,7 @@ public abstract class InputNumberBase extends HtmlInputText implements Widget, I
     }
 
     public String getEmptyValue() {
-        return (String) getStateHelper().eval(PropertyKeys.emptyValue, "empty");
+        return (String) getStateHelper().eval(PropertyKeys.emptyValue, "focus");
     }
 
     public void setEmptyValue(String emptyValue) {
@@ -211,5 +211,13 @@ public abstract class InputNumberBase extends HtmlInputText implements Widget, I
 
     public void setModifyValueOnWheel(boolean modifyValueOnWheel) {
         getStateHelper().put(PropertyKeys.modifyValueOnWheel, modifyValueOnWheel);
+    }
+
+    public String getInputMode() {
+        return (String) getStateHelper().eval(PropertyKeys.inputMode, null);
+    }
+
+    public void setInputMode(String inputMode) {
+        getStateHelper().put(PropertyKeys.inputMode, inputMode);
     }
 }

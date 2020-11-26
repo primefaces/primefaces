@@ -58,9 +58,8 @@ public class DialogRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, Dialog dialog) throws IOException {
-        String clientId = dialog.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Dialog", dialog.resolveWidgetVar(context), clientId);
+        wb.init("Dialog", dialog);
 
         wb.attr("visible", dialog.isVisible(), false)
                 .attr("draggable", dialog.isDraggable(), true)
@@ -154,7 +153,7 @@ public class DialogRenderer extends CoreRenderer {
         writer.endElement("span");
 
         if (dialog.isClosable()) {
-            encodeIcon(context, Dialog.TITLE_BAR_CLOSE_CLASS, Dialog.CLOSE_ICON_CLASS, MessageFactory.getMessage(Dialog.ARIA_CLOSE, null));
+            encodeIcon(context, Dialog.TITLE_BAR_CLOSE_CLASS, Dialog.CLOSE_ICON_CLASS, MessageFactory.getMessage(Dialog.ARIA_CLOSE));
         }
 
         if (dialog.isMaximizable()) {

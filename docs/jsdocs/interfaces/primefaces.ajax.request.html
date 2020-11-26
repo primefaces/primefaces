@@ -95,11 +95,14 @@
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter"><a href="primefaces.ajax.request.html#addformdata" class="tsd-kind-icon">add<wbr>Form<wbr>Data</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="primefaces.ajax.request.html#addformdatafrominput" class="tsd-kind-icon">add<wbr>Form<wbr>Data<wbr>From<wbr>Input</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter"><a href="primefaces.ajax.request.html#addparam" class="tsd-kind-icon">add<wbr>Param</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="primefaces.ajax.request.html#addparamfrominput" class="tsd-kind-icon">add<wbr>Param<wbr>From<wbr>Input</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter"><a href="primefaces.ajax.request.html#addparams" class="tsd-kind-icon">add<wbr>Params</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter"><a href="primefaces.ajax.request.html#arraycompare" class="tsd-kind-icon">array<wbr>Compare</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="primefaces.ajax.request.html#collectearlypostparams" class="tsd-kind-icon">collect<wbr>Early<wbr>Post<wbr>Params</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="primefaces.ajax.request.html#createfacesajaxformdata" class="tsd-kind-icon">create<wbr>Faces<wbr>Ajax<wbr>Form<wbr>Data</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="primefaces.ajax.request.html#extractparameternamespace" class="tsd-kind-icon">extract<wbr>Parameter<wbr>Namespace</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="primefaces.ajax.request.html#handle" class="tsd-kind-icon">handle</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="primefaces.ajax.request.html#resolvecomponentsforajaxcall" class="tsd-kind-icon">resolve<wbr>Components<wbr>For<wbr>Ajax<wbr>Call</a></li>
@@ -113,10 +116,10 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter">
-					<a name="addparam" class="tsd-anchor"></a>
-					<h3>add<wbr>Param</h3>
+					<a name="addformdata" class="tsd-anchor"></a>
+					<h3>add<wbr>Form<wbr>Data</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Param&lt;TValue&gt;<span class="tsd-signature-symbol">(</span>params<span class="tsd-signature-symbol">: </span><a href="primefaces.ajax.servercallbackparameter.html" class="tsd-signature-type">ServerCallbackParameter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span>, name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TValue</span>, parameterPrefix<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Form<wbr>Data&lt;TValue&gt;<span class="tsd-signature-symbol">(</span>formData<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">FormData</span>, name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TValue</span>, parameterPrefix<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -124,8 +127,112 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Adds a new server callback parameter to the given list of parameters. Optionally add a prefix to the
-									name.</p>
+									<p>Appends a request parameter to the given list of parameters.
+									Optionally add a prefix to the name, this is used for Portlet namespacing.</p>
+								</div>
+							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>TValue</h4>
+									<div class="tsd-comment tsd-typography">
+										<p>Defaults to <code>any</code>. Type of the parameter values.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>formData: <span class="tsd-signature-type">FormData</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the FormData.</p>
+									</div>
+								</li>
+								<li>
+									<h5>name: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Name of the new parameter to add.</p>
+									</div>
+								</li>
+								<li>
+									<h5>value: <span class="tsd-signature-type">TValue</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Value of the parameter to add.</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> parameterPrefix: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Optional prefix that is added in front of the name.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="addformdatafrominput" class="tsd-anchor"></a>
+					<h3>add<wbr>Form<wbr>Data<wbr>From<wbr>Input</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Form<wbr>Data<wbr>From<wbr>Input<span class="tsd-signature-symbol">(</span>formData<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">FormData</span>, name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, form<span class="tsd-signature-symbol">: </span><a href="../modules/jquery.html" class="tsd-signature-type">JQuery</a>, parameterPrefix<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Adds a new request parameter to the given FormData. The value of the parameter is taken from the input
+										element of the given form. The input element must have the same name as the name of the parameter to add.
+									Optionally add a prefix to the name, which used for Portlet namespacing.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>formData: <span class="tsd-signature-type">FormData</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The FormData.</p>
+									</div>
+								</li>
+								<li>
+									<h5>name: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Name of the new parameter to add</p>
+									</div>
+								</li>
+								<li>
+									<h5>form: <a href="../modules/jquery.html" class="tsd-signature-type">JQuery</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>An HTML FORM element that contains an INPUT element with the given name.</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> parameterPrefix: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Optional prefix that is added in front of the name.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter">
+					<a name="addparam" class="tsd-anchor"></a>
+					<h3>add<wbr>Param</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Param&lt;TValue&gt;<span class="tsd-signature-symbol">(</span>params<span class="tsd-signature-symbol">: </span><a href="primefaces.ajax.requestparameter.html" class="tsd-signature-type">RequestParameter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span>, name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TValue</span>, parameterPrefix<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Appends a request parameter to the given list of parameters.
+									Optionally add a prefix to the name, this is used for Portlet namespacing.</p>
 								</div>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -140,7 +247,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>params: <a href="primefaces.ajax.servercallbackparameter.html" class="tsd-signature-type">ServerCallbackParameter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>params: <a href="primefaces.ajax.requestparameter.html" class="tsd-signature-type">RequestParameter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>List of parameters to which a new
 										parameter is added.</p>
@@ -173,7 +280,7 @@
 					<a name="addparamfrominput" class="tsd-anchor"></a>
 					<h3>add<wbr>Param<wbr>From<wbr>Input</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Param<wbr>From<wbr>Input<span class="tsd-signature-symbol">(</span>params<span class="tsd-signature-symbol">: </span><a href="primefaces.ajax.servercallbackparameter.html" class="tsd-signature-type">ServerCallbackParameter</a><span class="tsd-signature-symbol">[]</span>, name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, form<span class="tsd-signature-symbol">: </span><a href="../modules/jquery.html" class="tsd-signature-type">JQuery</a>, parameterPrefix<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Param<wbr>From<wbr>Input<span class="tsd-signature-symbol">(</span>params<span class="tsd-signature-symbol">: </span><a href="primefaces.ajax.requestparameter.html" class="tsd-signature-type">RequestParameter</a><span class="tsd-signature-symbol">[]</span>, name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, form<span class="tsd-signature-symbol">: </span><a href="../modules/jquery.html" class="tsd-signature-type">JQuery</a>, parameterPrefix<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -181,17 +288,17 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Adds a new callback parameter to the given list. The value of the parameter is taken from the input
+									<p>Adds a new request parameter to the given list. The value of the parameter is taken from the input
 										element of the given form. The input element must have the same name as the name of the parameter to add.
-									Optionally add a prefix to the name.</p>
+									Optionally add a prefix to the name, which used for Portlet namespacing.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>params: <a href="primefaces.ajax.servercallbackparameter.html" class="tsd-signature-type">ServerCallbackParameter</a><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>params: <a href="primefaces.ajax.requestparameter.html" class="tsd-signature-type">RequestParameter</a><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>List of callback parameters to the new
+										<p>List of request parameters to the new
 										parameter is added.</p>
 									</div>
 								</li>
@@ -222,7 +329,7 @@
 					<a name="addparams" class="tsd-anchor"></a>
 					<h3>add<wbr>Params</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Params&lt;TValue&gt;<span class="tsd-signature-symbol">(</span>params<span class="tsd-signature-symbol">: </span><a href="primefaces.ajax.servercallbackparameter.html" class="tsd-signature-type">ServerCallbackParameter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span>, paramsToAdd<span class="tsd-signature-symbol">: </span><a href="primefaces.ajax.servercallbackparameter.html" class="tsd-signature-type">ServerCallbackParameter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span>, parameterPrefix<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Params&lt;TValue&gt;<span class="tsd-signature-symbol">(</span>params<span class="tsd-signature-symbol">: </span><a href="primefaces.ajax.requestparameter.html" class="tsd-signature-type">RequestParameter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span>, paramsToAdd<span class="tsd-signature-symbol">: </span><a href="primefaces.ajax.requestparameter.html" class="tsd-signature-type">RequestParameter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span>, parameterPrefix<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -246,14 +353,14 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>params: <a href="primefaces.ajax.servercallbackparameter.html" class="tsd-signature-type">ServerCallbackParameter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>params: <a href="primefaces.ajax.requestparameter.html" class="tsd-signature-type">RequestParameter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>List of callback parameters to which
 										parameters are added.</p>
 									</div>
 								</li>
 								<li>
-									<h5>paramsToAdd: <a href="primefaces.ajax.servercallbackparameter.html" class="tsd-signature-type">ServerCallbackParameter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>paramsToAdd: <a href="primefaces.ajax.requestparameter.html" class="tsd-signature-type">RequestParameter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>List of callback parameters to
 										add.</p>
@@ -275,7 +382,7 @@
 					<a name="arraycompare" class="tsd-anchor"></a>
 					<h3>array<wbr>Compare</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">array<wbr>Compare&lt;TValue&gt;<span class="tsd-signature-symbol">(</span>arr1<span class="tsd-signature-symbol">: </span><a href="primefaces.ajax.servercallbackparameter.html" class="tsd-signature-type">ServerCallbackParameter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span>, arr2<span class="tsd-signature-symbol">: </span><a href="primefaces.ajax.servercallbackparameter.html" class="tsd-signature-type">ServerCallbackParameter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="primefaces.ajax.servercallbackparameter.html" class="tsd-signature-type">ServerCallbackParameter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">array<wbr>Compare&lt;TValue&gt;<span class="tsd-signature-symbol">(</span>arr1<span class="tsd-signature-symbol">: </span><a href="primefaces.ajax.requestparameter.html" class="tsd-signature-type">RequestParameter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span>, arr2<span class="tsd-signature-symbol">: </span><a href="primefaces.ajax.requestparameter.html" class="tsd-signature-type">RequestParameter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="primefaces.ajax.requestparameter.html" class="tsd-signature-type">RequestParameter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -300,19 +407,19 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>arr1: <a href="primefaces.ajax.servercallbackparameter.html" class="tsd-signature-type">ServerCallbackParameter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>arr1: <a href="primefaces.ajax.requestparameter.html" class="tsd-signature-type">RequestParameter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>A list of parameters for comparison.</p>
 									</div>
 								</li>
 								<li>
-									<h5>arr2: <a href="primefaces.ajax.servercallbackparameter.html" class="tsd-signature-type">ServerCallbackParameter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>arr2: <a href="primefaces.ajax.requestparameter.html" class="tsd-signature-type">RequestParameter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>A list of additional parameters.</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="primefaces.ajax.servercallbackparameter.html" class="tsd-signature-type">ServerCallbackParameter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="primefaces.ajax.requestparameter.html" class="tsd-signature-type">RequestParameter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></h4>
 							<p>An list of parameters that are in the second
 							array, but not in the first.</p>
 						</li>
@@ -322,7 +429,7 @@
 					<a name="collectearlypostparams" class="tsd-anchor"></a>
 					<h3>collect<wbr>Early<wbr>Post<wbr>Params</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">collect<wbr>Early<wbr>Post<wbr>Params<span class="tsd-signature-symbol">(</span>cfg<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="primefaces.ajax.configuration.html" class="tsd-signature-type">Configuration</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="primefaces.ajax.servercallbackparameter.html" class="tsd-signature-type">ServerCallbackParameter</a><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">collect<wbr>Early<wbr>Post<wbr>Params<span class="tsd-signature-symbol">(</span>cfg<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="primefaces.ajax.configuration.html" class="tsd-signature-type">Configuration</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="primefaces.ajax.requestparameter.html" class="tsd-signature-type">RequestParameter</a><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -331,7 +438,7 @@
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Performs the early collection of post parameters (form element values) if the request is configured that
-									way.</p>
+									way. See: <a href="https://github.com/primefaces/primefaces/issues/109">https://github.com/primefaces/primefaces/issues/109</a></p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -344,8 +451,62 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="primefaces.ajax.servercallbackparameter.html" class="tsd-signature-type">ServerCallbackParameter</a><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="primefaces.ajax.requestparameter.html" class="tsd-signature-type">RequestParameter</a><span class="tsd-signature-symbol">[]</span></h4>
 							<p>The collected form element values to be sent with the request.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="createfacesajaxformdata" class="tsd-anchor"></a>
+					<h3>create<wbr>Faces<wbr>Ajax<wbr>Form<wbr>Data</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Faces<wbr>Ajax<wbr>Form<wbr>Data<span class="tsd-signature-symbol">(</span>form<span class="tsd-signature-symbol">: </span><a href="htmlelement.html" class="tsd-signature-type">HTMLElement</a>, parameterPrefix<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, source<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, process<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, update<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">FormData</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates a FormData which can be used for a Faces AJAX request on the current view.
+									It already contains all required parameters like ViewState or ClientWindow.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>form: <a href="htmlelement.html" class="tsd-signature-type">HTMLElement</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The cloest form of the request source.</p>
+									</div>
+								</li>
+								<li>
+									<h5>parameterPrefix: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The Portlet parameter namespace.</p>
+									</div>
+								</li>
+								<li>
+									<h5>source: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The id of the request source.</p>
+									</div>
+								</li>
+								<li>
+									<h5>process: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A comma seperated list of components which should be processed.</p>
+									</div>
+								</li>
+								<li>
+									<h5>update: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A comma seperated list of components which should be updated.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">FormData</span></h4>
+							<p>The created FormData.</p>
 						</li>
 					</ul>
 				</section>
@@ -361,8 +522,9 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Finds the namespace (prefix) for the parameters of the given form. This namespace is, for example,
-									prefixed to the name of the submitted input fields.</p>
+									<p>Finds the namespace (prefix) for the parameters of the given form.
+										This is required for Porlets as a Portlet contains multiple JSF views and we must only process and update the forms/inputs of the current view / application.
+									Later the namespace is used for all post params.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -384,7 +546,7 @@
 					<a name="handle" class="tsd-anchor"></a>
 					<h3>handle</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">handle<span class="tsd-signature-symbol">(</span>cfg<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="primefaces.ajax.configuration.html" class="tsd-signature-type">Configuration</a><span class="tsd-signature-symbol">&gt;</span>, ext<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/primefaces.ajax.html#configurationextender" class="tsd-signature-type">ConfigurationExtender</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">handle<span class="tsd-signature-symbol">(</span>cfg<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="primefaces.ajax.configuration.html" class="tsd-signature-type">Configuration</a><span class="tsd-signature-symbol">&gt;</span>, ext<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/primefaces.ajax.html#configurationextender" class="tsd-signature-type">ConfigurationExtender</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="primefaces.ajax.responsedata.html" class="tsd-signature-type">ResponseData</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -414,7 +576,11 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="primefaces.ajax.responsedata.html" class="tsd-signature-type">ResponseData</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>A promise that resolves once the AJAX requests is done.
+								Use this to run custom JavaScript logic. When the AJAX request succeeds, the promise is fulfilled.
+								Otherwise, when the AJAX request fails, the promise is rejected. If the promise is rejected, the
+							rejection handler receives an object of type <a href="primefaces.ajax.failedrequestdata.html">PrimeFaces.ajax.FailedRequestData</a>.</p>
 						</li>
 					</ul>
 				</section>
@@ -538,6 +704,9 @@
 								<a href="../modules/primefaces.ajax.html">ajax</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+								<a href="../modules/primefaces.clientwindow.html">clientwindow</a>
+							</li>
+							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="../modules/primefaces.csp.html">csp</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
@@ -556,10 +725,10 @@
 								<a href="../modules/primefaces.settings.html">settings</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="../modules/primefaces.util.html">util</a>
+								<a href="../modules/primefaces.utils.html">utils</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="../modules/primefaces.utils.html">utils</a>
+								<a href="../modules/primefaces.validation.html">validation</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="../modules/primefaces.widget.html">widget</a>
@@ -577,6 +746,9 @@
 						<a href="primefaces.ajax.configuration.html" class="tsd-kind-icon">Configuration</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="primefaces.ajax.failedrequestdata.html" class="tsd-kind-icon">Failed<wbr>Request<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="primefaces.ajax.queue.html" class="tsd-kind-icon">Queue</a>
 					</li>
 				</ul>
@@ -584,6 +756,12 @@
 					<li class="current tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="primefaces.ajax.request.html" class="tsd-kind-icon">Request</a>
 						<ul>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter">
+								<a href="primefaces.ajax.request.html#addformdata" class="tsd-kind-icon">add<wbr>Form<wbr>Data</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="primefaces.ajax.request.html#addformdatafrominput" class="tsd-kind-icon">add<wbr>Form<wbr>Data<wbr>From<wbr>Input</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter">
 								<a href="primefaces.ajax.request.html#addparam" class="tsd-kind-icon">add<wbr>Param</a>
 							</li>
@@ -598,6 +776,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
 								<a href="primefaces.ajax.request.html#collectearlypostparams" class="tsd-kind-icon">collect<wbr>Early<wbr>Post<wbr>Params</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="primefaces.ajax.request.html#createfacesajaxformdata" class="tsd-kind-icon">create<wbr>Faces<wbr>Ajax<wbr>Form<wbr>Data</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
 								<a href="primefaces.ajax.request.html#extractparameternamespace" class="tsd-kind-icon">extract<wbr>Parameter<wbr>Namespace</a>
@@ -618,20 +799,26 @@
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace tsd-has-type-parameter">
+						<a href="primefaces.ajax.requestparameter.html" class="tsd-kind-icon">Request<wbr>Parameter</a>
+					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="primefaces.ajax.response.html" class="tsd-kind-icon">Response</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-						<a href="primefaces.ajax.responseprocessor.html" class="tsd-kind-icon">Response<wbr>Processor</a>
+						<a href="primefaces.ajax.responsedata.html" class="tsd-kind-icon">Response<wbr>Data</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-namespace tsd-has-type-parameter">
-						<a href="primefaces.ajax.servercallbackparameter.html" class="tsd-kind-icon">Server<wbr>Callback<wbr>Parameter</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="primefaces.ajax.responseprocessor.html" class="tsd-kind-icon">Response<wbr>Processor</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace tsd-has-type-parameter">
 						<a href="primefaces.ajax.updatehandler.html" class="tsd-kind-icon">Update<wbr>Handler</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="primefaces.ajax.utils.html" class="tsd-kind-icon">Utils</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace tsd-has-type-parameter">
+						<a href="primefaces.ajax.pfxhr.html" class="tsd-kind-icon">pfXHR</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
 						<a href="../modules/primefaces.ajax.html#callbackoncomplete" class="tsd-kind-icon">Callback<wbr>Oncomplete</a>
@@ -657,8 +844,8 @@
 					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
 						<a href="../modules/primefaces.ajax.html#shorthandconfiguration" class="tsd-kind-icon">Shorthand<wbr>Configuration</a>
 					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
-						<a href="../modules/primefaces.ajax.html#pfxhr" class="tsd-kind-icon">pfXHR</a>
+					<li class=" tsd-kind-variable tsd-parent-kind-namespace">
+						<a href="../modules/primefaces.ajax.html#cfg_shortcuts" class="tsd-kind-icon">CFG_<wbr>SHORTCUTS</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-namespace">
 						<a href="../modules/primefaces.ajax.html#queue-1" class="tsd-kind-icon">Queue</a>
@@ -697,6 +884,7 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
@@ -713,6 +901,9 @@
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>

@@ -52,10 +52,7 @@ import javax.faces.convert.ConverterException;
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.util.CalendarUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.MessageFactory;
+import org.primefaces.util.*;
 
 public abstract class BaseCalendarRenderer extends InputRenderer {
 
@@ -157,6 +154,12 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
 
             // Java 8 Date/Time API
             if (Temporal.class.isAssignableFrom(type)) {
+                if (calendar.getTimeZone() != null) {
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            "'timeZone' attribute is not supported for " + type.getName() + ". Use an explicit converter instead of the built-in.",
+                            null);
+                    throw new ConverterException(message);
+                }
                 return convertToJava8DateTimeAPI(context, calendar, type, submittedValue);
             }
             else if (Date.class.isAssignableFrom(type)) {
@@ -259,7 +262,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         Object[] params = new Object[3];
         params[0] = submittedValue;
         params[1] = param1;
-        params[2] = MessageFactory.getLabel(context, calendar);
+        params[2] = ComponentUtils.getLabel(context, calendar);
 
         if (calendar.isTimeOnly()) {
             message = MessageFactory.getFacesMessage("javax.faces.converter.DateTimeConverter.TIME", FacesMessage.SEVERITY_ERROR, params);

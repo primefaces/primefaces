@@ -203,7 +203,7 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
         boolean allChildrenSelected = true;
         this.partialSelected = false;
 
-        for (int i = 0; i < this.getChildren().size(); i++) {
+        for (int i = 0; i < this.getChildCount(); i++) {
             TreeNode childNode = this.getChildren().get(i);
 
             boolean childSelected = childNode.isSelected();

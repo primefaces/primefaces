@@ -285,6 +285,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         if(this.cfg.expansion) {
+            this.initRowExpansion();
             this.updateExpandedRowsColspan();
         }
     },
@@ -347,6 +348,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.groupColumnIndexes) {
             this.groupRows();
             this.bindToggleRowGroupEvents();
+        }
+
+        if(this.cfg.expansion) {
+            this.initRowExpansion();
         }
     },
 
@@ -497,15 +502,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         this.sortableColumns.on('mouseenter.dataTable', function() {
             var column = $(this);
-
-            if(!column.hasClass('ui-state-active'))
-                column.addClass('ui-state-hover');
+            column.addClass('ui-state-hover');
         })
         .on('mouseleave.dataTable', function() {
             var column = $(this);
-
-            if(!column.hasClass('ui-state-active'))
-                column.removeClass('ui-state-hover');
+            column.removeClass('ui-state-hover');  
         })
         .on('blur.dataTable', function() {
             $(this).removeClass('ui-state-focus');
@@ -2042,7 +2043,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                             $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'descending')
                                 .attr('aria-label', $this.getSortMessage(ariaLabel, $this.otherMessage));
                         } else if (order === $this.SORT_ORDER.ASCENDING) {
-                            sortIcon.removeClass('ui-icon-carat-2-n-s').addClass('ui-icon-triangle-1-n');
+                            sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-n');
                             columnHeader.attr('aria-sort', 'ascending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.descMessage));
                             $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'ascending')
                                 .attr('aria-label', $this.getSortMessage(ariaLabel, $this.descMessage));
@@ -2845,6 +2846,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         handle: function(content) {
                             if(content && PrimeFaces.trim(content).length) {
                                 row.addClass('ui-expanded-row');
+                                this.rowExpansionLoaded(rowIndex);
                                 this.displayExpandedRow(row, content);
                             }
                         }
@@ -3059,6 +3061,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @param {JQuery} row A row (`TR`) to switch to edit mode. 
      */
     switchToRowEdit: function(row) {
+        // #1499 disable rowReorder while editing
+        if (this.cfg.draggableRows) {
+            this.tbody.sortable("disable");
+        }
+
         if(this.cfg.rowEditMode === "lazy") {
             this.lazyRowEditInit(row);
         }
@@ -3092,14 +3099,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         var inputs=row.find(':input:enabled');
         if (inputs.length > 0) {
-            inputs.first().trigger('focus');
+            inputs.first().triggerHandler('focus');
         }
     },
 
     /**
      * Finds the meta data for a given cell.
      * @param {JQuery} cell A cell for which to get the meta data.
-     * @return {string} The meta data of the given cell.
+     * @return {string} The meta data of the given cell or NULL if not found
      */
     getCellMeta: function(cell) {
         var rowMeta = this.getRowMeta(cell.closest('tr')),
@@ -3109,6 +3116,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             cellIndex = (this.scrollTbody.is(cell.closest('tbody'))) ? (cellIndex + $this.cfg.frozenColumns) : cellIndex;
         }
 
+        if (!rowMeta || !rowMeta.index) {
+            return null;
+        }
         var cellInfo = rowMeta.index + ',' + cellIndex;
         if(rowMeta.key) {
             cellInfo = cellInfo + ',' + rowMeta.key;
@@ -3160,7 +3170,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * When cell editing is enabeld, shows the cell editor for the given cell that lets the user edit the cell content.
+     * When cell editing is enabled, shows the cell editor for the given cell that lets the user edit the cell content.
      * @param {JQuery} c A cell (`TD`) of this data table to edit.
      */
     showCellEditor: function(c) {
@@ -3190,10 +3200,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
             if(this.hasBehavior('cellEditInit')) {
                 var cellInfo = this.getCellMeta(cell);
-                var ext = {
-                    params: [{name: this.id + '_cellInfo', value: cellInfo}]
-                };
-                this.callBehavior('cellEditInit', ext);
+                if (cellInfo) {
+                    var ext = {
+                        params: [{name: this.id + '_cellInfo', value: cellInfo}]
+                    };
+                    this.callBehavior('cellEditInit', ext);
+                }
             }
         }
     },
@@ -3225,7 +3237,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             cell.addClass('ui-state-highlight ui-cell-editing');
             displayContainer.hide();
             inputContainer.show();
-            inputs.eq(0).trigger('focus').trigger('select');
+            var input = inputs.eq(0);
+            input.triggerHandler('focus');
+            input.triggerHandler('select');
 
             //metadata
             if(multi) {
@@ -3558,6 +3572,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                             }
 
                             this.updateRow(row, content);
+                            
+                            // #1499 enable rowReorder when done editing
+                            if (this.cfg.draggableRows && $('tr.ui-row-editing').length === 0) {
+                                this.tbody.sortable("enable");
+                            }
                         }
                     });
 
@@ -4102,7 +4121,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         var $this = this;
 
-        $(this.jqId + ' thead th').draggable({
+        $(this.jqId + ' thead th.ui-draggable-column').draggable({
             appendTo: 'body',
             opacity: 0.75,
             cursor: 'move',
@@ -4559,6 +4578,41 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         //filter support
         this.clone.find('.ui-column-filter').prop('disabled', true);
+    },
+
+    /**
+     * Initializes the expansion state
+     * @private
+     */
+    initRowExpansion: function() {
+        var $this = this;
+
+        this.expansionHolder = $(this.jqId + '_rowExpansionState');
+        this.loadedExpansionRows = this.tbody.children('.ui-expanded-row-content').prev().map(function() {
+            return $this.getRowMeta($(this)).index;
+        }).get();
+
+        this.writeRowExpansions();
+    },
+
+    /**
+     * Write row expansion state.
+     * @private
+     */
+    writeRowExpansions: function() {
+        this.expansionHolder.val(this.loadedExpansionRows.join(','));
+    },
+
+    /**
+     * Detect if row expansion for this row has been loaded and if not load it.
+     * @protected
+     * @param {number} rowIndex The row index to check for expansion
+     */
+    rowExpansionLoaded: function(rowIndex) {
+        if(!PrimeFaces.inArray(this.loadedExpansionRows, rowIndex)) {
+            this.loadedExpansionRows.push(rowIndex);
+            this.writeRowExpansions();
+        }
     },
 
     /**

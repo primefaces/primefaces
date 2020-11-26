@@ -73,6 +73,8 @@
  * @prop {number} cfg.selectLimit Limits the number of simultaneously selected items. Default is unlimited.
  * @prop {number} cfg.scrollHeight Height of the container with the suggestion items.
  * @prop {boolean} cfg.unique Ensures uniqueness of the selected items.
+ * @prop {string} cfg.completeEndpoint REST-Endpoint for fetching autocomplete-suggestions. (instead of completeMethod)
+ * @prop {string} cfg.moreText The text shown in panel when the suggested list is greater than maxResults.
  */
 PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
@@ -587,6 +589,18 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             $this.checkMatchedItem = false;
         });
 
+        this.panel.on('click.emptyMessage', function() {
+            if (!this.children) {
+                return;
+            }
+            var item = $(this.children[0]),
+            isEmptyMessage = item.hasClass('ui-autocomplete-emptyMessage');
+
+            if(isEmptyMessage) {
+                $this.invokeEmptyMessageBehavior();
+            }
+        });
+
         if(PrimeFaces.env.browser.mobile) {
             this.items.on('touchstart', function() {
                 if(!$this.touchToDropdownButton) {
@@ -831,62 +845,96 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             this.itemtip.hide();
         }
 
-        var options = {
-            source: this.id,
-            process: this.id,
-            update: this.id,
-            formId: this.cfg.formId,
-            onsuccess: function(responseXML, status, xhr) {
-                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                    widget: $this,
-                    handle: function(content) {
-                        if(this.cfg.dynamic && !this.isDynamicLoaded) {
-                            this.panel = $(content);
-                            this.appendPanel();
-                            content = this.panel.get(0).innerHTML;
-                        }
-                        else {
-                            this.panel.html(content);
-                        }
+        var options;
 
-                        if (this.cfg.cache) {
-                            if (this.cfg.queryMode !== 'server' && !this.isDynamicLoaded && this.cache[query]) {
-                                this.panel.html(this.cache[query]);
+        if (!this.cfg.completeEndpoint) {
+            options = {
+                source: this.id,
+                process: this.id,
+                update: this.id,
+                formId: this.cfg.formId,
+                onsuccess: function (responseXML, status, xhr) {
+                    PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function (content) {
+                            if (this.cfg.dynamic && !this.isDynamicLoaded) {
+                                this.panel = $(content);
+                                this.appendPanel();
+                                content = this.panel.get(0).innerHTML;
+                            } else {
+                                this.panel.html(content);
                             }
-                            else {
-                                this.cache[query] = content;
+
+                            if (this.cfg.cache) {
+                                if (this.cfg.queryMode !== 'server' && !this.isDynamicLoaded && this.cache[query]) {
+                                    this.panel.html(this.cache[query]);
+                                } else {
+                                    this.cache[query] = content;
+                                }
                             }
+
+                            this.showSuggestions(query);
                         }
+                    });
 
-                        this.showSuggestions(query);
-                    }
-                });
+                    return true;
+                },
+                oncomplete: function () {
+                    $this.querying = false;
+                    $this.isDynamicLoaded = true;
+                }
+            };
 
-                return true;
-            },
-            oncomplete: function() {
-                $this.querying = false;
-                $this.isDynamicLoaded = true;
+            options.params = [
+                {name: this.id + '_query', value: query}
+            ];
+
+            if (this.cfg.queryMode === 'hybrid') {
+                options.params.push({name: this.id + '_clientCache', value: true});
             }
-        };
 
-        options.params = [
-          {name: this.id + '_query', value: query}
-        ];
-        
-        if (this.cfg.queryMode === 'hybrid') {
-            options.params.push({name: this.id + '_clientCache', value: true});
-        }
-
-        if (this.cfg.dynamic && !this.isDynamicLoaded) {
-            options.params.push({name: this.id + '_dynamicload', value: true});
+            if (this.cfg.dynamic && !this.isDynamicLoaded) {
+                options.params.push({name: this.id + '_dynamicload', value: true});
+            }
         }
 
         if (this.hasBehavior('query')) {
             this.callBehavior('query', options);
         }
         else {
-            PrimeFaces.ajax.Request.handle(options);
+            if (!!this.cfg.completeEndpoint) {
+                $.ajax({
+                        url: this.cfg.completeEndpoint,
+                        data: { query: query },
+                        dataType: 'json'
+                    })
+                    .done(function(suggestions) {
+                        var html = '<ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset">';
+                        suggestions.suggestions.forEach(function(suggestion) {
+                            var labelEncoded = $("<div>").text(suggestion.label).html();
+                            var itemValue = labelEncoded;
+                            if (!!suggestion.value) {
+                                itemValue = $("<div>").text(suggestion.value).html();
+                            }
+                            html += '<li class="ui-autocomplete-item ui-autocomplete-list-item ui-corner-all" data-item-value="' + itemValue + '" data-item-label="' + labelEncoded + '" role="option">' + labelEncoded + '</li>';
+                        });
+                        if (suggestions.moreAvailable == true && $this.cfg.moreText) {
+                            var moreTextEncoded = $("<div>").text($this.cfg.moreText).html();
+                            html += '<li class="ui-autocomplete-item ui-autocomplete-moretext ui-corner-all" role="option">' + moreTextEncoded + '</li>';
+                        }
+                        html += '</ul>';
+
+                        $this.panel.html(html);
+
+                        $this.showSuggestions(query);
+                    })
+                    .always(function() {
+                        $this.querying = false;
+                    });
+            }
+            else {
+                PrimeFaces.ajax.Request.handle(options);
+            }
         }
     },
 
@@ -957,14 +1005,30 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     invokeMoreTextBehavior: function() {
-        if(this.hasBehavior('moreText')) {
+        if(this.hasBehavior('moreTextSelect')) {
             var ext = {
                 params : [
-                    {name: this.id + '_moreText', value: true}
+                    {name: this.id + '_moreTextSelect', value: true}
                 ]
             };
 
-            this.callBehavior('moreText', ext);
+            this.callBehavior('moreTextSelect', ext);
+        }
+    },
+
+    /**
+     * Invokes the appropriate behavior for when empty message was selected.
+     * @private
+     */
+    invokeEmptyMessageBehavior: function() {
+        if(this.hasBehavior('emptyMessageSelect')) {
+            var ext = {
+                params : [
+                    {name: this.id + '_emptyMessageSelect', value: true}
+                ]
+            };
+
+            this.callBehavior('emptyMessageSelect', ext);
         }
     },
 
@@ -1330,6 +1394,19 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     (header.length ? header.eq(0).outherHTML : '') +
                     '<tbody>';
             this.wrapperEndTag = '</tbody></table>';
+        }
+    },
+
+    /**
+     * Clears the input field.
+     */
+    clear: function() {
+        this.input.val('');
+        if (this.cfg.multiple) {
+            this.removeAllItems();
+        }
+        else if (this.cfg.pojo) {
+            this.hinput.val('');
         }
     }
     

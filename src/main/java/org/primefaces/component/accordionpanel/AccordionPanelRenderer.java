@@ -121,11 +121,10 @@ public class AccordionPanelRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, AccordionPanel acco) throws IOException {
-        String clientId = acco.getClientId(context);
         boolean multiple = acco.isMultiple();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("AccordionPanel", acco.resolveWidgetVar(context), clientId);
+        wb.init("AccordionPanel", acco);
 
         if (acco.isDynamic()) {
             wb.attr("dynamic", true).attr("cache", acco.isCache());

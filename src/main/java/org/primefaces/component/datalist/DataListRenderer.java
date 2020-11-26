@@ -24,8 +24,8 @@
 package org.primefaces.component.datalist;
 
 import java.io.IOException;
-import javax.faces.FacesException;
 
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -136,9 +136,8 @@ public class DataListRenderer extends DataRenderer {
     }
 
     protected void encodeScript(FacesContext context, DataList list) throws IOException {
-        String clientId = list.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("DataList", list.resolveWidgetVar(context), clientId);
+        wb.init("DataList", list);
 
         if (list.isPaginator()) {
             encodePaginatorConfig(context, list, wb);

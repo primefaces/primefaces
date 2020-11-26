@@ -321,7 +321,10 @@ public class AutoCompleteRenderer extends InputRenderer {
         if (disabled) {
             writer.writeAttribute("disabled", "disabled", null);
         }
-        if (ac.getTabindex() != null) {
+        if (ac.getDropdownTabindex() != null) {
+            writer.writeAttribute("tabindex", ac.getDropdownTabindex(), null);
+        }
+        else if (ac.getTabindex() != null) {
             writer.writeAttribute("tabindex", ac.getTabindex(), null);
         }
 
@@ -714,9 +717,8 @@ public class AutoCompleteRenderer extends InputRenderer {
     }
 
     protected void encodeScript(FacesContext context, AutoComplete ac) throws IOException {
-        String clientId = ac.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("AutoComplete", ac.resolveWidgetVar(context), clientId);
+        wb.init("AutoComplete", ac);
 
         wb.attr("minLength", ac.getMinQueryLength(), 1)
                 .attr("delay", ac.getQueryDelay())
@@ -736,7 +738,9 @@ public class AutoCompleteRenderer extends InputRenderer {
                 .attr("dynamic", ac.isDynamic(), false)
                 .attr("autoSelection", ac.isAutoSelection(), true)
                 .attr("escape", ac.isEscape(), true)
-                .attr("queryMode", ac.getQueryMode());
+                .attr("queryMode", ac.getQueryMode())
+                .attr("completeEndpoint", ac.getCompleteEndpoint())
+                .attr("moreText", ac.getMoreText());
 
         if (ac.isCache()) {
             wb.attr("cache", true).attr("cacheTimeout", ac.getCacheTimeout());

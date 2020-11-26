@@ -75,7 +75,7 @@
 						<p>These settings comprise the regional settings that may be localised by a language package. They can be overridden
 						for individual instances:</p>
 					</div>
-					<pre><code class="language-javascript">$(selector).keypad({<span class="hljs-attr">backText</span>: <span class="hljs-string">"BS"</span>});</code></pre>
+					<pre><code class="language-javascript">$(selector).keypad({<span class="hljs-attr">backText</span>: <span class="hljs-string">&quot;BS&quot;</span>});</code></pre>
 				</div>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
@@ -470,16 +470,16 @@
 								<p>The default uses the standard JavaScript <code>toUpperCase</code> function.</p>
 								<pre><code class="language-javascript">$(selector).keypad({
   <span class="hljs-attr">layout</span>: [
-    <span class="hljs-string">"12345"</span>,
+    <span class="hljs-string">&quot;12345&quot;</span>,
     $.keypad.SHIFT
   ],
   <span class="hljs-attr">toUpper</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ch</span>) </span>{
     <span class="hljs-keyword">return</span> {
-      <span class="hljs-string">"1"</span>: <span class="hljs-string">"!"</span>,
-      <span class="hljs-string">"2"</span>: <span class="hljs-string">"@"</span>,
-      <span class="hljs-string">"3"</span>: <span class="hljs-string">"#"</span>,
-      <span class="hljs-string">"4"</span>: <span class="hljs-string">"$"</span>,
-      <span class="hljs-string">"5"</span>: <span class="hljs-string">"%"</span>
+      <span class="hljs-string">&quot;1&quot;</span>: <span class="hljs-string">&quot;!&quot;</span>,
+      <span class="hljs-string">&quot;2&quot;</span>: <span class="hljs-string">&quot;@&quot;</span>,
+      <span class="hljs-string">&quot;3&quot;</span>: <span class="hljs-string">&quot;#&quot;</span>,
+      <span class="hljs-string">&quot;4&quot;</span>: <span class="hljs-string">&quot;$&quot;</span>,
+      <span class="hljs-string">&quot;5&quot;</span>: <span class="hljs-string">&quot;%&quot;</span>
     }[ch] || ch;
   }
 });</code></pre>
@@ -622,6 +622,7 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
@@ -638,6 +639,9 @@
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>

@@ -19,10 +19,9 @@ DataTable displays data in tabular format.
 
 | Name                      | Default            | Type             | Description
 | ------------------------- | ------------------ | ---------------- | ------------------ |
-| allowUnsorting            | true               | Boolean          | Defines whether columns are allowed to be unsorted. Default is true.
+| allowUnsorting            | false              | Boolean          | Defines whether columns are allowed to be unsorted. Default is true.
 | ariaRowLabel              | null               | String           | Label to read by screen readers on checkbox selection.
 | binding                   | null               | Object           | An el expression that maps to a server side UIComponent instance in a backing bean
-| caseSensitiveSort         | false              | Boolean          | Case sensitivity for sorting, insensitive by default.
 | cellEditMode              | eager              | String           | Defines the cell edit behavior, valid values are "eager" (default) and "lazy".
 | cellSeparator             | null               | String           | Separator text to use in output mode of editable cells with multiple components.
 | clientCache               | false              | Boolean          | Caches the next page asynchronously, default is false.
@@ -41,7 +40,6 @@ DataTable displays data in tabular format.
 | editingRow                | false              | Boolean          | Defines if cell editors of row should be displayed as editable or not.
 | emptyMessage              | No records found.  | String           | Text to display when there is no data to display. Alternative is emptyMessage facet.
 | escapeText                | true               | Boolean          | Defines if headerText and footerText values on columns are escaped or not. Default is true.
-| expandableRowGroups       | false              | Boolean          | Makes row groups toggleable, default is false.
 | expandedRow               | false              | Boolean          | Defines if row should be rendered as expanded by default.
 | filterBy                  | null               | Map              | Map of filters; This also allows to filter the table by default.
 | filterDelay               | 300                | Integer          | Delay in milliseconds before sending an ajax filter query.
@@ -60,7 +58,6 @@ DataTable displays data in tabular format.
 | liveScrollBuffer          | 0                  | Integer          | Percentage height of the buffer between the bottom of the page and the scroll position to initiate the load for the new chunk. Value is defined in integer and default is 0.
 | multiViewState            | false              | Boolean          | Whether to keep table state across views, defaults to false.
 | nativeElements            | false              | Boolean          | Uses native radio-checkbox elements for row selection.
-| nullSortOrder             | 1                  | Integer          | Defines where the null values are placed in ascending sort order. Default value is "1"
 | onExpandStart             | null               | String           | Client side callback to execute before expansion.
 | onRowClick                | null               | String           | Client side callback to execute after clicking row.
 | pageLinks                 | 10                 | Integer          | Maximum number of page links to display.
@@ -70,6 +67,7 @@ DataTable displays data in tabular format.
 | paginatorTemplate         | null               | String           | Template of the paginator.
 | reflow                    | false              | Boolean          | Reflow mode is a responsive mode to display columns as stacked depending on screen size.
 | rendered                  | true               | Boolean          | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
+| renderEmptyFacets         | false              | Boolean          | Render facets even if their children are not rendered. Default is false. See https://github.com/primefaces/primefaces/issues/4840
 | resizableColumns          | false              | Boolean          | Enables column resizing.
 | resizeMode                | fit                | String           | Defines the resize behavior, valid values are "fit" (default) and expand.
 | rowDragSelector           | td,span:not(.ui-c) | String           | Defines the element used to reorder rows using dragdrop. Default selector is "td,span:not(.ui-c)"
@@ -91,13 +89,9 @@ DataTable displays data in tabular format.
 | scrollWidth               | null               | Integer          | Scroll viewport width.
 | scrollable                | false              | Boolean          | Makes data scrollable with fixed header.
 | selection                 | null               | Object           | Reference to the selection data.
-| selectionMode             | null               | String           | Enables row selection, valid values are “single” and “multiple”.
-| sortMode                  | single             | String           | Defines sorting mode, valid values are _single_ and _multiple_.
-| sortMeta                  | null               | Map              | Ordered map of sort information in _multiple_ sortMode; This also allows to sort the table by default.
-| sortBy                    | null               | Object           | Property to be used for default sorting in _single_ sortMode.
-| sortField                 | null               | String           | Name of the field to pass lazy load method for sorting. If not specified, sortBy expression is used to extract the name.
-| sortOrder                 | ascending          | String           | Sets sorting order in 'single' sortMode. Default is "ascending"
-| sortFunction              | null               |                  | Custom pluggable sortFunction for default sorting in 'single' sortMode.
+| selectionMode             | null               | String           | Enables row selection, valid values are “single" and “multiple".
+| sortMode                  | multiple           | String           | Defines sorting mode, valid values are _single_ and _multiple_.
+| sortBy                    | null               | Object           | Property to be used for default sorting. Expects a single or a collection of SortMeta.
 | skipChildren              | false              | Boolean          | Ignores processing of children during lifecycle, improves performance if table only has output components.
 | stickyHeader              | false              | Boolean          | Sticky header stays in window viewport during scrolling.
 | stickyTopAt               | null               | String           | Selector to position on the page according to other fixing elements on the top of the table. Default is null.
@@ -115,23 +109,28 @@ DataTable displays data in tabular format.
 
 ## Getting started with the DataTable
 We will be using the same Car and CarBean classes described in DataGrid section.
+Here is the simplest way to get started:
 
 ```xhtml
-<p:dataTable var="car" value="#{carBean.cars}">
-    <p:column>
-        <f:facet name="header">
-            <h:outputText value="Model" />
-        </f:facet>
-        <h:outputText value="#{car.model}" />
-    </p:column>
-    //more columns
+<p:dataTable var="car" value="#{dtBasicView.cars}">
+
+    <p:column field="id" headerText="Id" />
+
+    <p:column field="year" headerText="Year" />
+
+    <p:column field="brand" headerText="Brand" />
+
+    <p:column field="color" headerText="Color" />
+
 </p:dataTable>
 ```
+
+In case no children are present in columns, value from `var` and `field` will be displayed. 
+
 ## Header and Footer
 Both datatable itself and columns can have custom content in their headers and footers using header
 and footer facets respectively. Alternatively for columns there are headerText and footerText
 shortcuts to display simple texts.
-
 
 ```xhtml
 <p:dataTable var="car" value="#{carBean.cars}">
@@ -155,6 +154,7 @@ shortcuts to display simple texts.
         In total there are #{fn:length(carBean.cars)} cars.
     </f:facet>
 </p:dataTable>
+
 ```
 ## Pagination
 DataTable has a built-in ajax based paginator that is enabled by setting paginator option to true, see
@@ -165,11 +165,11 @@ pagination section in dataGrid documentation for more information about customiz
     //columns
 </p:dataTable>
 ```
-Optionally enabling clientCache property loads the next page asynchronously so that when user
+Optionally enabling `clientCache` property loads the next page asynchronously so that when user
 clicks the second page, data is displayed instantly from client side.
 
 ## Paginator Template
-Paginator is customized using paginatorTemplateOption that accepts various keys of UI controls.
+Paginator is customized using `paginatorTemplate` attribute accepting various keys of UI controls.
 
 - FirstPageLink
 - LastPageLink
@@ -181,12 +181,12 @@ Paginator is customized using paginatorTemplateOption that accepts various keys 
 - JumpToPageDropdown
 - JumpToPageInput
 
-**Note** that _{RowsPerPageDropdown}_ has it’s own template, options to display is provided via
+**Note** that _{RowsPerPageDropdown}_ has its own template, options to display is provided via
 rowsPerPageTemplate attribute (e.g. rowsPerPageTemplate="9,12,15").
 
-Also _{CurrentPageReport}_ has it’s own template defined with currentPageReportTemplate option.
+Also _{CurrentPageReport}_ has it's own template defined with currentPageReportTemplate option.
 You can use _{currentPage},{totalPages},{totalRecords},{startRecord},{endRecord}_ keyword
-within currentPageReportTemplate. Default is "_{currentPage}_ of _{totalPages}_". Default UI is;
+within currentPageReportTemplate. Default is "_{currentPage}_ of _{totalPages}_". Default UI is:
 
 which corresponds to the following template.
 
@@ -215,17 +215,19 @@ template.
 </p:dataTable>
 ```
 
-
 ## Sorting
-Defining _sortBy_ attribute enables ajax based sorting on that particular column. Sorting cycles through ascending,
+Defining _field_ or _sortBy_ attribute enables ajax based sorting on that particular column. Sorting cycles through ascending,
 descending and unsorted upon clicking on the column header.
 
 ```xhtml
 <p:dataTable var="car" value="#{carBean.cars}">
-    <p:column sortBy="#{car.model}" headerText="Model">
-        <h:outputText value="#{car.model}" />
-    </p:column>
-    ...more columns
+    <p:column field="id" headerText="Id" />
+    
+    <p:column field="year" headerText="Year" />
+
+    <p:column field="brand" headerText="Brand" />
+
+    <p:column sortBy="#{i18n[car.color]}" headerText="Color" />
 </p:dataTable>
 ```
 Instead of using the default sorting algorithm which uses a java comparator, you can plug-in your
@@ -239,34 +241,39 @@ public int sortByModel(Object car1, Object car2) {
 
 ```xhtml
 <p:dataTable var="car" value="#{carBean.cars}">
-    <p:column sortBy="#{car.model}" sortFunction="#{carBean.sortByModel}" headerText="Model">
+    <p:column field="model" sortFunction="#{carBean.sortByModel}" headerText="Model">
         <h:outputText value="#{car.model}" />
     </p:column>
     ...more columns
 </p:dataTable>
 ```
-Multiple sorting is enabled by setting _sortMode_ to _multiple_. In this mode, clicking a sort column
-while metakey is on adds sort column to the order group.
+Multiple sorting is enabled by default. In this mode, clicking a sort column
+while metakey is on adds sort column to the order group. Change attribute _sortMode_ to _single_ to allow only one column.
 
 ```xhtml
 <p:dataTable var="car" value="#{carBean.cars}" sortMode="multiple">
     //columns
 </p:dataTable>
 ```
-DataTable can display data sorted by default, to implement this use the _sortBy_ option of datatable
-and the optional _sortOrder._ Table below would be initially displayed as sorted by model.
+DataTable can display data sorted by default, by either setting default attributes on `p:column` or using _sortBy_ attribute of datatable. 
+Table below would be initially displayed as sorted by model.
 
 ```xhtml
-<p:dataTable var="car" value="#{carBean.cars}" sortBy="#{car.model}">
-    <p:column sortBy="#{car.model}" headerText=”Model”>
-        <h:outputText value="#{car.model}" />
-    </p:column>
-    <p:column sortBy="#{car.year}" headerText="Year">
-        <h:outputText value="#{car.year}" />
-    </p:column>
-    ...more columns
+<p:dataTable var="car" value="#{carBean.cars}">
+    <p:column field="model" headerText="Model" sortOrder="asc" sortPriority="1" />
+    <p:column field="year" headerText="Year" />
 </p:dataTable>
 ```
+
+Or
+
+```xhtml
+<p:dataTable var="car" value="#{carBean.cars}" sortBy="#{carBean.defaultSortBy}">
+    <p:column field="model" headerText="Model" />
+    <p:column field="year" headerText="Year" />
+</p:dataTable>
+```
+
 ## Filtering
 Ajax based filtering is enabled by setting _filterBy_ at column level and providing a list to keep the
 filtered sublist. It is suggested to use a scope longer than request like viewscope to keep the
@@ -280,13 +287,13 @@ filteredValue so that filtered list is still accessible after filtering.
     ...more columns
 </p:dataTable>
 ```
+
 Filtering is triggered with keyup event and filter inputs can be styled using _filterStyle_ ,
 _filterStyleClass_ attributes. If you’d like to use a dropdown instead of an input field to only allow
 predefined filter values use _filterOptions_ attribute and a collection/array of selectitems as value. In
 addition, _filterMatchMode_ defines the built-in matcher which is _startsWith_ by default.
 
-Following is a basic filtering datatable with these options demonstrated;
-
+Following is a basic filtering datatable with these options demonstrated:
 
 ```xhtml
 <p:dataTable var="car" value="#{carBean.cars}" filteredValue="#{carBean.filteredCars}" widgetVar="carsTable">
@@ -320,14 +327,13 @@ which is a reserved identifier for datatable.
 In addition to default filtering with generated elements, custom elements can also be used as a filter
 facet. Example below uses custom filter components in combination with generated elements.
 When a custom component is used as a filter facet, filtering needs to be called manually from a
-preferred event such as onchange="PF('carsTable').filter()". Also defining a converter might be
+preferred event such as `onchange="PF('carsTable').filter()"`. Also defining a converter might be
 necessary if the value of the filter facet is not defined.
 
 ```xhtml
 <p:dataTable id="dataTable" var="car" value="#{tableBean.carsSmall}" widgetVar="carsTable" filteredValue="#{tableBean.filteredCars}">
-    <p:column id="modelColumn" filterBy="#{car.model}" headerText="Model" footerText="contains" filterMatchMode="contains">
-        <h:outputText value="#{car.model}" />
-    </p:column>
+    <p:column id="modelColumn" field="model" headerText="Model" footerText="contains" filterMatchMode="contains" />
+
     <p:column id="yearColumn" filterBy="#{car.year}" headerText="Year" footerText="lte" filterMatchMode="lte">
         <f:facet name="filter">
             <p:spinner onchange="PF('carsTable').filter()" min="1960" max="2010">
@@ -355,10 +361,10 @@ necessary if the value of the filter facet is not defined.
     <p:column id="soldColumn" filterBy="#{car.sold}" headerText="Status" footerText="equals" filterMatchMode="equals">
         <f:facet name="filter">
             <p:selectOneButton onchange="PF('carsTable').filter()">
-            <f:converter converterId="javax.faces.Boolean" />
-            <f:selectItem itemLabel="All" itemValue="" />
-            <f:selectItem itemLabel="Sold" itemValue="true" />
-            <f:selectItem itemLabel="Sale" itemValue="false" />
+                <f:converter converterId="javax.faces.Boolean" />
+                <f:selectItem itemLabel="All" itemValue="" />
+                <f:selectItem itemLabel="Sold" itemValue="true" />
+                <f:selectItem itemLabel="Sale" itemValue="false" />
             </p:selectOneButton>
         </f:facet>
         <h:outputText value="#{car.sold? 'Sold': 'Sale'}" />
@@ -427,7 +433,6 @@ This method is implemented with a command component such as commandLink or
 commandButton. Selected row can be set to a server side instance by passing as a parameter if you
 are using EL 2.2 or using f:setPropertyActionListener.
 
-
 ```xhtml
 <p:dataTable var="car" value="#{carBean.cars}">
     <p:column>
@@ -438,6 +443,7 @@ are using EL 2.2 or using f:setPropertyActionListener.
     ...columns
 </p:dataTable>
 ```
+
 #### Single Selection with Row Click
 Previous method works when the button is clicked, if you’d like to enable selection wherever the
 row is clicked, use _selectionMode_ option.
@@ -447,6 +453,7 @@ row is clicked, use _selectionMode_ option.
     ...columns
 </p:dataTable>
 ```
+
 #### Multiple Selection with Row Click
 Multiple row selection is similar to single selection but selection should reference an array or a list
 of the domain object displayed and user needs to use press modifier key(e.g. ctrl) during selection *.
@@ -495,10 +502,7 @@ iterator variables called _var_ and _columnIndexVar_.
 
 ```xhtml
 <p:dataTable var="cars" value="#{tableBean.cars}">
-    <p:columns value="#{tableBean.columns}" var="column" sortBy="#{column.property}" filterBy="#{column.property}">
-        <f:facet name="header">
-            #{column.header}
-        </f:facet>
+    <p:columns value="#{tableBean.columns}" var="column" headerText="#{column.header}" sortBy="#{column.property}" filterBy="#{column.property}">
         <h:outputText value="#{cars[column.property]}" />
     </p:columns>
 </p:dataTable>
@@ -540,7 +544,6 @@ public class CarBean {
 ```
 ## Column Grouping
 Grouping is defined by ColumnGroup component used to combine datatable header and footers.
-
 
 ```xhtml
 <p:dataTable var="sale" value="#{carBean.sales}">
@@ -604,21 +607,15 @@ Rows can be grouped in two ways, using headerRow, summaryRow components or with 
 attribute on a column.
 
 ```xhtml
-<p:dataTable var="car" value="#{dtRowGroupView.cars}" sortBy="#{car.brand}">
-    <p:headerRow>
-        <p:column colspan="3">
-            <h:outputText value="#{car.brand}" />
-        </p:column>
-    </p:headerRow>
-    <p:column headerText="Year">
-        <h:outputText value="#{car.year}" />
-    </p:column>
-    <p:column headerText="Color">
-        <h:outputText value="#{car.color}" />
-    </p:column>
-    <p:column headerText="Id">
-        <h:outputText value="#{car.id}" />
-    </p:column>
+<p:dataTable var="car" value="#{dtRowGroupView.cars}">
+    <p:headerRow field="brand" />
+
+    <p:column field="year" headerText="Year" />
+
+    <p:column field="color" headerText="Color" />
+
+    <p:column field="id" headerText="Id" />
+
     <p:summaryRow>
         <p:column colspan="2" style="text-align:right">
             <h:outputText value="Total:" />
@@ -631,25 +628,17 @@ attribute on a column.
     </p:summaryRow>
 </p:dataTable>
 ```
-Optionally rows can be made toggleable using _expandableRowGroups_ property.
+Optionally rows can be made toggleable using `HeaderRow#expandable` property.
 
 Alternative approach is using row spans where a row can group multiple rows within the same
 group. To enable this method, set groupRow to true on the grouping column.
 
 ```xhtml
-<p:dataTable var="car" value="#{dtRowGroupView.cars}" sortBy="#{car.brand}">
-    <p:column headerText="Brand" groupRow="true">
-        <h:outputText value="#{car.brand}" />
-    </p:column>
-    <p:column headerText="Year">
-        <h:outputText value="#{car.year}" />
-    </p:column>
-    <p:column headerText="Color">
-        <h:outputText value="#{car.color}" />
-    </p:column>
-    <p:column headerText="Id">
-        <h:outputText value="#{car.id}" />
-    </p:column>
+<p:dataTable var="car" value="#{dtRowGroupView.cars}">
+    <p:column field="brand" headerText="Brand" groupRow="true" />
+    <p:column field="year" headerText="Year" />
+    <p:column field="color" headerText="Color" />
+    <p:column field="id" headerText="Id" />
 </p:dataTable>
 ```
 
@@ -787,19 +776,18 @@ public class CarBean {
 }
 ```
 DataTable calls your load implementation whenever a paging, sorting or filtering occurs with
-following parameters;
+following parameters:
 
 - **first**: Offset of first data to start from
 - **pageSize**: Number of data to load
-- **sortField**: Name of sort field
-- **sortOrder**: SortOrder enum.
-- **filter**: Filter map with field name as key (e.g. "model" for filterBy="#{car.model}") and value.
+- **sortBy**: Active sorters map (field as key)
+- **filterBy**: Active filters map (field as key).
 
 In addition to load method, totalRowCount needs to be provided so that paginator can display itself
 according to the logical number of rows to display.
 
 It is suggested to use _field_ attribute of column component to define the field names passed as
-sortField and filterFields, otherwise these fields would be tried to get extracted from the value
+sortBy and filterBy, otherwise these fields would be tried to get extracted from the value
 expression which is not possible in cases like composite components.
 
 ## Sticky Header
@@ -813,7 +801,6 @@ Sticky Header feature makes the datatable header visible on page scrolling.
 
 ## Column Toggler
 Visibility of columns can be toggled using the column toggler helper component.
-
 
 ```xhtml
 <p:dataTable var="car" value="#{tableBean.cars}">
@@ -940,7 +927,7 @@ For example, datatable below makes an ajax request when a row is selected with a
 
 ```xhtml
 <p:dataTable var="car" value="#{carBean.model}">
-    <p:ajax event=”rowSelect” update=”another_component” />
+    <p:ajax event="rowSelect" update="another_component" />
     //columns
 </p:dataTable>
 ```

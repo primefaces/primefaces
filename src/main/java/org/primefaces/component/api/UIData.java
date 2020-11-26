@@ -36,7 +36,6 @@ import javax.faces.application.StateManager;
 import javax.faces.component.*;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
-import javax.faces.component.visit.VisitHint;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
@@ -123,6 +122,10 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
         touchable;
     }
 
+    protected enum InternalPropertyKeys {
+        rowsInitialValue;
+    }
+
     public boolean isPaginator() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.paginator, false);
     }
@@ -157,6 +160,13 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
 
     @Override
     public void setRows(int rows) {
+        if (getStateHelper().eval(InternalPropertyKeys.rowsInitialValue) == null) {
+            int rowsOld = getRows();
+            if (rowsOld != 0) {
+                getStateHelper().put(UIData.InternalPropertyKeys.rowsInitialValue, rowsOld);
+            }
+        }
+
         if (rows < 0) {
             throw new IllegalArgumentException(String.valueOf(rows));
         }
@@ -259,7 +269,20 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
     }
 
     public void resetRows() {
-        getStateHelper().remove(PropertyKeys.rows);
+        ELContext elContext = getFacesContext().getELContext();
+        ValueExpression rowsVe = ValueExpressionAnalyzer.getExpression(
+                elContext, getValueExpression(PropertyKeys.rows.name()));
+        if (rowsVe != null) {
+            //ValueExpression --> remove state to ensure the VE is re-evaluated
+            getStateHelper().remove(PropertyKeys.rows);
+        }
+        else {
+            //normal attribute value --> restore inital rows
+            Object rows = getStateHelper().eval(InternalPropertyKeys.rowsInitialValue);
+            if (rows != null) {
+                setRows((int) rows);
+            }
+        }
     }
 
     public void calculateFirst() {
@@ -707,7 +730,8 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
         FacesContext context = getFacesContext();
 
         if (getChildCount() > 0) {
-            for (UIComponent kid : getChildren()) {
+            for (int i = 0; i < getChildCount(); i++) {
+                UIComponent kid = getChildren().get(i);
                 saveDescendantState(kid, context);
             }
         }
@@ -768,7 +792,8 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
 
         //save state for children
         if (component.getChildCount() > 0) {
-            for (UIComponent kid : component.getChildren()) {
+            for (int i = 0; i < component.getChildCount(); i++) {
+                UIComponent kid = component.getChildren().get(i);
                 saveDescendantState(kid, context);
             }
         }
@@ -786,7 +811,8 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
         FacesContext context = getFacesContext();
 
         if (getChildCount() > 0) {
-            for (UIComponent kid : getChildren()) {
+            for (int i = 0; i < getChildCount(); i++) {
+                UIComponent kid = getChildren().get(i);
                 restoreDescendantState(kid, context);
             }
         }
@@ -831,7 +857,8 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
 
         //restore state of children
         if (component.getChildCount() > 0) {
-            for (UIComponent kid : component.getChildren()) {
+            for (int i = 0; i < component.getChildCount(); i++) {
+                UIComponent kid = component.getChildren().get(i);
                 restoreDescendantState(kid, context);
             }
         }
@@ -921,7 +948,7 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
         }
 
         FacesContext facesContext = context.getFacesContext();
-        boolean visitRows = shouldVisitRows(facesContext, context);
+        boolean visitRows = !ComponentUtils.isSkipIteration(context, facesContext);
 
         int rowIndex = -1;
         if (visitRows) {
@@ -986,7 +1013,8 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
         }
 
         if (getChildCount() > 0) {
-            for (UIComponent child : getChildren()) {
+            for (int i = 0; i < getChildCount(); i++) {
+                UIComponent child = getChildren().get(i);
                 VisitResult result = context.invokeVisitCallback(child, callback); // visit the column directly
                 if (result == VisitResult.COMPLETE) {
                     return true;
@@ -996,8 +1024,8 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
                     if (child.getFacetCount() > 0) {
                         if (child instanceof Columns) {
                             Columns columns = (Columns) child;
-                            for (int i = 0; i < columns.getRowCount(); i++) {
-                                columns.setRowIndex(i);
+                            for (int j = 0; j < columns.getRowCount(); j++) {
+                                columns.setRowIndex(j);
                                 boolean value = visitColumnFacets(context, callback, child);
                                 if (value) {
                                     return true;
@@ -1025,9 +1053,11 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
 
     protected boolean visitColumnGroup(VisitContext context, VisitCallback callback, ColumnGroup group) {
         if (group.getChildCount() > 0) {
-            for (UIComponent row : group.getChildren()) {
+            for (int i = 0; i < group.getChildCount(); i++) {
+                UIComponent row = group.getChildren().get(i);
                 if (row.getChildCount() > 0) {
-                    for (UIComponent col : row.getChildren()) {
+                    for (int j = 0; j < row.getChildCount(); j++) {
+                        UIComponent col = row.getChildren().get(j);
                         if (col instanceof Column && col.getFacetCount() > 0) {
                             boolean value = visitColumnFacets(context, callback, col);
                             if (value) {
@@ -1075,13 +1105,13 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
             }
 
             if (getChildCount() > 0) {
-                for (UIComponent kid : getChildren()) {
-
+                for (int i = 0; i < getChildCount(); i++) {
+                    UIComponent kid = getChildren().get(i);
                     if (requiresColumns) {
                         if (kid instanceof Columns) {
                             Columns uicolumns = (Columns) kid;
-                            for (int i = 0; i < uicolumns.getRowCount(); i++) {
-                                uicolumns.setRowIndex(i);
+                            for (int j = 0; j < uicolumns.getRowCount(); j++) {
+                                uicolumns.setRowIndex(j);
 
                                 boolean value = visitColumnContent(context, callback, uicolumns);
                                 if (value) {
@@ -1118,7 +1148,8 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
 
     protected boolean visitColumnContent(VisitContext context, VisitCallback callback, UIComponent component) {
         if (component.getChildCount() > 0) {
-            for (UIComponent grandkid : component.getChildren()) {
+            for (int i = 0; i < component.getChildCount(); i++) {
+                UIComponent grandkid = component.getChildren().get(i);
                 if (grandkid.visitTree(context, callback)) {
                     return true;
                 }
@@ -1126,19 +1157,6 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
         }
 
         return false;
-    }
-
-    protected boolean shouldVisitRows(FacesContext context, VisitContext visitContext) {
-        try {
-            //JSF 2.1
-            VisitHint skipHint = VisitHint.valueOf("SKIP_ITERATION");
-            return !visitContext.getHints().contains(skipHint);
-        }
-        catch (IllegalArgumentException e) {
-            //JSF 2.0
-            Object skipHint = context.getAttributes().get("javax.faces.visit.SKIP_ITERATION");
-            return !Boolean.TRUE.equals(skipHint);
-        }
     }
 
     protected boolean requiresColumns() {

@@ -1,7 +1,7 @@
 # Download
 
-PrimeFaces has a single jar called **primefaces-{version}.jar**. There are two ways to download this
-jar, you can either download from PrimeFaces homepage or if you are a maven user you can define
+PrimeFaces has a single JAR called **primefaces-{version}.jar**. There are two ways to download this
+JAR, you can either download from PrimeFaces homepage or if you are a Maven user you can define
 it as a dependency.
 
 ## Download Manually

@@ -81,8 +81,8 @@
 					<p>Calendar is an input component used to select a date featuring display modes, paging, localization, ajax selection
 					and more.</p>
 					<p>To interact with the calendar, use the <code>timepicker</code> or <code>datetimepicker</code> JQuery plugin, for example:</p>
-					<pre><code class="language-javascript">PF(<span class="hljs-string">"calendarWidget"</span>).jqEl.datetimepicker(<span class="hljs-string">"getDate"</span>);
-PF(<span class="hljs-string">"calendarWidget"</span>).jqEl.datetimepicker(<span class="hljs-string">"setDate"</span>, <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>());</code></pre>
+					<pre><code class="language-javascript">PF(<span class="hljs-string">&quot;calendarWidget&quot;</span>).jqEl.datetimepicker(<span class="hljs-string">&quot;getDate&quot;</span>);
+PF(<span class="hljs-string">&quot;calendarWidget&quot;</span>).jqEl.datetimepicker(<span class="hljs-string">&quot;setDate&quot;</span>, <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>());</code></pre>
 				</div>
 			</section>
 			<section class="tsd-panel tsd-type-parameters">
@@ -142,6 +142,7 @@ PF(<span class="hljs-string">"calendarWidget"</span>).jqEl.datetimepicker(<span 
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="primefaces.widget.calendar.html#adddestroylistener" class="tsd-kind-icon">add<wbr>Destroy<wbr>Listener</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="primefaces.widget.calendar.html#addrefreshlistener" class="tsd-kind-icon">add<wbr>Refresh<wbr>Listener</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="primefaces.widget.calendar.html#alignpanel" class="tsd-kind-icon">align<wbr>Panel</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.calendar.html#applymask" class="tsd-kind-icon">apply<wbr>Mask</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.calendar.html#bindcloselistener" class="tsd-kind-icon">bind<wbr>Close<wbr>Listener</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.calendar.html#binddateselectlistener" class="tsd-kind-icon">bind<wbr>Date<wbr>Select<wbr>Listener</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.calendar.html#bindviewchangelistener" class="tsd-kind-icon">bind<wbr>View<wbr>Change<wbr>Listener</a></li>
@@ -504,6 +505,25 @@ PF(<span class="hljs-string">"calendarWidget"</span>).jqEl.datetimepicker(<span 
 								<div class="lead">
 									<p>Aligns the overlay panel with the date picker according to the current configuration. It is usually positioned
 									next to or below the input field to which it is attached.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="applymask" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> apply<wbr>Mask</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">apply<wbr>Mask<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Initializes the mask on the input if using a mask and not an inline picker.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -953,7 +973,7 @@ PF(<span class="hljs-string">"calendarWidget"</span>).jqEl.datetimepicker(<span 
 								<p>Please make sure to call the super method first before adding your own custom logic to the init method:</p>
 								<pre><code class="language-javascript">PrimeFaces.widget.MyWidget = PrimeFaces.widget.BaseWidget.extend({
   <span class="hljs-attr">init</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">cfg</span>) </span>{
-    <span class="hljs-keyword">this</span>._super(cfg);
+    <span class="hljs-built_in">this</span>._super(cfg);
     <span class="hljs-comment">// custom initialization</span>
   }
 });</code></pre>
@@ -1116,6 +1136,9 @@ PF(<span class="hljs-string">"calendarWidget"</span>).jqEl.datetimepicker(<span 
 								<a href="../modules/primefaces.ajax.html">ajax</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+								<a href="../modules/primefaces.clientwindow.html">clientwindow</a>
+							</li>
+							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="../modules/primefaces.csp.html">csp</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
@@ -1134,10 +1157,10 @@ PF(<span class="hljs-string">"calendarWidget"</span>).jqEl.datetimepicker(<span 
 								<a href="../modules/primefaces.settings.html">settings</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="../modules/primefaces.util.html">util</a>
+								<a href="../modules/primefaces.utils.html">utils</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="../modules/primefaces.utils.html">utils</a>
+								<a href="../modules/primefaces.validation.html">validation</a>
 							</li>
 							<li class="current tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="../modules/primefaces.widget.html">widget</a>
@@ -1199,6 +1222,9 @@ PF(<span class="hljs-string">"calendarWidget"</span>).jqEl.datetimepicker(<span 
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="primefaces.widget.calendar.html#alignpanel" class="tsd-kind-icon">align<wbr>Panel</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="primefaces.widget.calendar.html#applymask" class="tsd-kind-icon">apply<wbr>Mask</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="primefaces.widget.calendar.html#bindcloselistener" class="tsd-kind-icon">bind<wbr>Close<wbr>Listener</a>
@@ -1280,6 +1306,7 @@ PF(<span class="hljs-string">"calendarWidget"</span>).jqEl.datetimepicker(<span 
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
@@ -1300,6 +1327,9 @@ PF(<span class="hljs-string">"calendarWidget"</span>).jqEl.datetimepicker(<span 
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>

@@ -138,7 +138,7 @@
 					<a name="resolvecomponentsasselector" class="tsd-anchor"></a>
 					<h3>resolve<wbr>Components<wbr>AsSelector</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">resolve<wbr>Components<wbr>AsSelector<span class="tsd-signature-symbol">(</span>expressions<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/jquery.html" class="tsd-signature-type">JQuery</a></li>
+						<li class="tsd-signature tsd-kind-icon">resolve<wbr>Components<wbr>AsSelector<span class="tsd-signature-symbol">(</span>expressions<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><a href="htmlelement.html" class="tsd-signature-type">HTMLElement</a><span class="tsd-signature-symbol"> | </span><a href="../modules/jquery.html" class="tsd-signature-type">JQuery</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/jquery.html" class="tsd-signature-type">JQuery</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -154,7 +154,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>expressions: <span class="tsd-signature-type">string</span></h5>
+									<h5>expressions: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><a href="htmlelement.html" class="tsd-signature-type">HTMLElement</a><span class="tsd-signature-symbol"> | </span><a href="../modules/jquery.html" class="tsd-signature-type">JQuery</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>A search expression with one or multiple components to resolve.</p>
 									</div>
@@ -179,11 +179,11 @@
 								<div class="lead">
 									<p>Splits the given search expression into its components. The components of a search expression are separated
 									by either a comman or a whitespace.</p>
-									<pre><code class="language-javascript">splitExpressions(<span class="hljs-string">""</span>) <span class="hljs-comment">// =&gt; [""]</span>
-splitExpressions(<span class="hljs-string">"form"</span>) <span class="hljs-comment">// =&gt; ["form"]</span>
-splitExpressions(<span class="hljs-string">"form,input"</span>) <span class="hljs-comment">// =&gt; ["form", "input"]</span>
-splitExpressions(<span class="hljs-string">"form input"</span>) <span class="hljs-comment">// =&gt; ["form", "input"]</span>
-splitExpressions(<span class="hljs-string">"form,@child(1,2)"</span>) <span class="hljs-comment">// =&gt; ["form", "child(1,2)"]</span></code></pre>
+									<pre><code class="language-javascript">splitExpressions(<span class="hljs-string">&quot;&quot;</span>) <span class="hljs-comment">// =&gt; [&quot;&quot;]</span>
+splitExpressions(<span class="hljs-string">&quot;form&quot;</span>) <span class="hljs-comment">// =&gt; [&quot;form&quot;]</span>
+splitExpressions(<span class="hljs-string">&quot;form,input&quot;</span>) <span class="hljs-comment">// =&gt; [&quot;form&quot;, &quot;input&quot;]</span>
+splitExpressions(<span class="hljs-string">&quot;form input&quot;</span>) <span class="hljs-comment">// =&gt; [&quot;form&quot;, &quot;input&quot;]</span>
+splitExpressions(<span class="hljs-string">&quot;form,@child(1,2)&quot;</span>) <span class="hljs-comment">// =&gt; [&quot;form&quot;, &quot;child(1,2)&quot;]</span></code></pre>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -215,6 +215,9 @@ splitExpressions(<span class="hljs-string">"form,@child(1,2)"</span>) <span clas
 								<a href="../modules/primefaces.ajax.html">ajax</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+								<a href="../modules/primefaces.clientwindow.html">clientwindow</a>
+							</li>
+							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="../modules/primefaces.csp.html">csp</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
@@ -233,10 +236,10 @@ splitExpressions(<span class="hljs-string">"form,@child(1,2)"</span>) <span clas
 								<a href="../modules/primefaces.settings.html">settings</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="../modules/primefaces.util.html">util</a>
+								<a href="../modules/primefaces.utils.html">utils</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="../modules/primefaces.utils.html">utils</a>
+								<a href="../modules/primefaces.validation.html">validation</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="../modules/primefaces.widget.html">widget</a>
@@ -278,6 +281,7 @@ splitExpressions(<span class="hljs-string">"form,@child(1,2)"</span>) <span clas
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
@@ -294,6 +298,9 @@ splitExpressions(<span class="hljs-string">"form,@child(1,2)"</span>) <span clas
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>

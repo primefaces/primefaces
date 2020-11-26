@@ -89,9 +89,8 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
     }
 
     protected void encodeScript(FacesContext context, SelectManyMenu menu) throws IOException {
-        String clientId = menu.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectManyMenu", menu.resolveWidgetVar(context), clientId)
+        wb.init("SelectManyMenu", menu)
                 .attr("disabled", menu.isDisabled(), false)
                 .attr("showCheckbox", menu.isShowCheckbox(), false)
                 .attr("metaKeySelection", menu.isMetaKeySelection(), true);
@@ -324,7 +323,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
-        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER, null), null);
+        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER), null);
 
         if (disabled) {
             writer.writeAttribute("disabled", "disabled", null);

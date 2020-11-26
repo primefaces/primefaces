@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.spinner;
 
-import javax.faces.component.html.HtmlInputText;
+import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LocaleUtils;
 
-public abstract class SpinnerBase extends HtmlInputText implements Widget, InputHolder {
+public abstract class SpinnerBase extends AbstractPrimeHtmlInputText implements Widget, InputHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -47,7 +47,8 @@ public abstract class SpinnerBase extends HtmlInputText implements Widget, Input
         decimalPlaces,
         decimalSeparator,
         thousandSeparator,
-        rotate
+        rotate,
+        round
     }
 
     public SpinnerBase() {
@@ -147,5 +148,13 @@ public abstract class SpinnerBase extends HtmlInputText implements Widget, Input
 
     public void setRotate(boolean rotate) {
         getStateHelper().put(PropertyKeys.rotate, rotate);
+    }
+
+    public boolean isRound() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.round, false);
+    }
+
+    public void setRound(boolean round) {
+        getStateHelper().put(PropertyKeys.round, round);
     }
 }

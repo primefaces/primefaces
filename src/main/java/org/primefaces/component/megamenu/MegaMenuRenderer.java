@@ -44,10 +44,9 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         MegaMenu menu = (MegaMenu) abstractMenu;
-        String clientId = menu.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("MegaMenu", menu.resolveWidgetVar(context), clientId)
+        wb.init("MegaMenu", menu)
                 .attr("autoDisplay", menu.isAutoDisplay())
                 .attr("delay", menu.getDelay())
                 .attr("activeIndex", menu.getActiveIndex(), Integer.MIN_VALUE);

@@ -59,6 +59,8 @@ public class DataGrid extends DataGridBase {
     public static final String TABLE_CLASS = "ui-datagrid-data";
     public static final String TABLE_ROW_CLASS = "ui-datagrid-row";
     public static final String GRID_CONTENT_CLASS = "ui-datagrid-content ui-widget-content ui-grid ui-grid-responsive";
+    public static final String FLEX_GRID_CONTENT_CLASS = "ui-datagrid-content ui-widget-content p-grid";
+    public static final String FLEX_GRID_ROW_CLASS = "p-grid";
     public static final String GRID_ROW_CLASS = "ui-g";
     public static final String COLUMN_CLASS = "ui-datagrid-column";
 
@@ -84,7 +86,7 @@ public class DataGrid extends DataGridBase {
         if (model instanceof LazyDataModel) {
             LazyDataModel lazyModel = (LazyDataModel) model;
 
-            List<?> data = lazyModel.load(getFirst(), getRows(), null, null, Collections.emptyMap());
+            List<?> data = lazyModel.load(getFirst(), getRows(), Collections.emptyMap(), Collections.emptyMap());
 
             lazyModel.setPageSize(getRows());
             lazyModel.setWrappedData(data);

@@ -44,6 +44,7 @@ import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.event.*;
+import org.primefaces.event.data.FilterEvent;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.event.data.SortEvent;
 import org.primefaces.model.FilterMeta;
@@ -122,6 +123,7 @@ public class TreeTable extends TreeTableBase {
             .put("collapse", NodeCollapseEvent.class)
             .put("colResize", ColumnResizeEvent.class)
             .put("sort", SortEvent.class)
+            .put("filter", FilterEvent.class)
             .put("rowEdit", RowEditEvent.class)
             .put("rowEditInit", RowEditEvent.class)
             .put("rowEditCancel", RowEditEvent.class)
@@ -247,6 +249,9 @@ public class TreeTable extends TreeTableBase {
                 UIColumn sortColumn = findColumn(params.get(clientId + "_sortKey"));
 
                 wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), sortColumn, order, 0);
+            }
+            else if (eventName.equals("filter")) {
+                wrapperEvent = new FilterEvent(this, behaviorEvent.getBehavior(), null);
             }
             else if (eventName.equals("rowEdit") || eventName.equals("rowEditCancel") || eventName.equals("rowEditInit")) {
                 String nodeKey = params.get(clientId + "_rowEditIndex");
@@ -712,5 +717,10 @@ public class TreeTable extends TreeTableBase {
                 }
             }
         }
+    }
+
+    @Override
+    protected boolean requiresColumns() {
+        return true;
     }
 }

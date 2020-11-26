@@ -26,7 +26,6 @@ package org.primefaces.component.selectcheckboxmenu;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.List;
-import java.util.Objects;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
@@ -242,20 +241,19 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             int length = Array.getLength(valuesArray);
             for (int i = 0; i < length; i++) {
                 Object value = Array.get(valuesArray, i);
-                String itemValueAsString = getOptionAsString(context, menu, converter, value);
 
                 SelectItem selectedItem = null;
                 for (SelectItem item : selectItems) {
                     if (item instanceof SelectItemGroup) {
                         SelectItemGroup group = (SelectItemGroup) item;
                         for (SelectItem groupItem : group.getSelectItems()) {
-                            if (value.equals(groupItem.getValue())) {
+                            if (isSelectValueEqual(context, menu, value, groupItem.getValue(), converter)) {
                                 selectedItem = groupItem;
                                 break;
                             }
                         }
                     }
-                    else if (Objects.equals(value, item.getValue())) {
+                    else if (isSelectValueEqual(context, menu, value, item.getValue(), converter)) {
                         selectedItem = item;
                         break;
                     }
@@ -263,6 +261,14 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
 
                 // #5956 Do not render a chip for the value if no matching option exists
                 if (selectedItem != null) {
+                    String itemValueAsString;
+                    if (value == null || value instanceof String) {
+                        itemValueAsString = (String) value;
+                    }
+                    else {
+                        itemValueAsString = getOptionAsString(context, menu, converter, value);
+                    }
+
                     writer.startElement("li", null);
                     writer.writeAttribute("class", SelectCheckboxMenu.TOKEN_DISPLAY_CLASS, null);
                     writer.writeAttribute("data-item-value", itemValueAsString, null);
@@ -311,10 +317,8 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
     }
 
     protected void encodeScript(FacesContext context, SelectCheckboxMenu menu) throws IOException {
-        String clientId = menu.getClientId(context);
-
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectCheckboxMenu", menu.resolveWidgetVar(context), clientId)
+        wb.init("SelectCheckboxMenu", menu)
                 .callback("onShow", "function()", menu.getOnShow())
                 .callback("onHide", "function()", menu.getOnHide())
                 .callback("onChange", "function()", menu.getOnchange())

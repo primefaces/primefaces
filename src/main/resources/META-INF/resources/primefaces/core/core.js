@@ -8,7 +8,7 @@
     /**
      * This is the main global object for accessing the client-side API of PrimeFaces. Broadly speaking, it consists
      * of the following entries:
-     * 
+     *
      * - {@link PrimeFaces.ajax} The AJAX module with functionality for sending AJAX requests
      * - {@link PrimeFaces.clientwindow} The client window module for multiple window support in PrimeFaces applications.
      * - {@link PrimeFaces.csp} The  CSP module for the HTTP Content-Security-Policy (CSP) policy `script-src` directive.
@@ -21,9 +21,9 @@
      * - {@link PrimeFaces.widgets} The registry with all currently instantiated widgets
      * - Several other utility methods defined directly on the `PrimeFaces` object, such as
      * {@link PrimeFaces.monitorDownload}, {@link PrimeFaces.getWidgetById}, or {@link PrimeFaces.escapeHTML}.
-     * 
+     *
      * @namespace {PrimeFaces}
-     * 
+     *
      * @interface {PrimeFaces.DeferredRender} DeferredRender Represents a deferred render added for a deferred widget.
      * Some widgets need to compute their dimensions based on their parent element(s). This requires that such widgets
      * are not rendered until they have become visible. A widget may not be visible, for example, when it is inside a
@@ -34,7 +34,7 @@
      * @prop {string} DeferredRender.widget The ID of a deferred widget.
      * @prop {string} DeferredRender.container ID of the container that should be visible before the widget can be rendered.
      * @method DeferredRender.callback Callback that is invoked when the widget _may_ possibly have become visible.
-     * Checks whether the widget can be rendered and if so, renders it. 
+     * Checks whether the widget can be rendered and if so, renders it.
      * @return {boolean} DeferredRender.callback `true` when the widget was rendered, or `false` when the widget still
      * needs to be rendered later.
      */
@@ -43,10 +43,10 @@
         /**
          * Creates an ID to a CSS ID selector that matches elements with that ID. For example:
          * ```
-         * PrimeFaces.escapeClientId("form:input"); // => "#form\:input" 
-         * PrimeFaces.escapeClientId("form#input"); // => "#form#input" 
+         * PrimeFaces.escapeClientId("form:input"); // => "#form\:input"
+         * PrimeFaces.escapeClientId("form#input"); // => "#form#input"
          * ```
-         * 
+         *
          * __Please note that this method does not escape all characters that need to be escaped and will not work with arbitrary IDs__
          * @param {string} id ID to convert.
          * @return {string} A CSS ID selector for the given ID.
@@ -75,7 +75,7 @@
          * Finds a widget in the current page with the given ID.
          * @param {string} id ID of the widget to retrieve.
          * @return {PrimeFaces.widget.BaseWidget | null} The widget with the given ID, of `null` if no such widget was
-         * found.  
+         * found.
          */
         getWidgetById : function(id) {
             for (var widgetVar in PrimeFaces.widgets) {
@@ -89,8 +89,20 @@
         },
 
         /**
+         * Finds all widgets in the current page of the given type.
+         * @param {PrimeFaces.widget.BaseWidget} type The type of the widgets of interest.
+         * @return  {PrimeFaces.widget.BaseWidget[]} An array of widgets that are of the requested type. If no suitable
+         * widgets are found on the current page, an empty array will be returned.
+         */
+        getWidgetsByType: function(type) {
+            return $.map(this.widgets, function(widget, key) {
+                return type.prototype.isPrototypeOf(widget) ? widget : null;
+            });
+        },
+
+        /**
          * Adds hidden input elements to the given form. For each key-value pair, a new hidden input element is created
-         * with the given value and the key used as the name. 
+         * with the given value and the key used as the name.
          * @param {string} parent The ID of a FORM element.
          * @param {Record<string, string>} params An object with key-value pairs.
          * @return {typeof PrimeFaces} This object for chaining.
@@ -107,7 +119,7 @@
 
         /**
          * Submits the given form, and clears all `ui-submit-param`s after that to prevent dom caching issues.
-         * 
+         *
          * If a target is given, it is set on the form temporarily before it is submitted. Afterwards, the original
          * target attribute of the form is restored.
          * @param {string} formId ID of the FORM element.
@@ -132,14 +144,6 @@
                     form.removeAttr('target');
                 }
             }
-        },
-
-        /**
-         * Callback that is invoked after a POST request.
-         */
-        onPost : function() {
-            this.nonAjaxPosted = true;
-            this.abortXHRs();
         },
 
         /**
@@ -176,24 +180,29 @@
         },
 
         /**
-         * Sets the value of a given cookie. If using HTTPS will set secure=true and SameSite=Strict.
+         * Sets the value of a given cookie.
+         * It will set secure=true, if using HTTPS and session-config/cookie-config/secure is set to true in web.xml.
+         * It will set sameSite, if secure=true, with the value of the primefaces.COOKIES_SAME_SITE parameter.
          * @param {string} name Name of the cookie to set
-         * @param {string} value Value to set 
+         * @param {string} value Value to set
          * @param {Partial<Cookies.CookieAttributes>} [cfg] Configuration for this cookie: when it expires, its
          * paths and domain and whether it is secure cookie.
          */
         setCookie : function(name, value, cfg) {
-            if (location.protocol === 'https:') {
+            if (location.protocol === 'https:' && PrimeFaces.settings.cookiesSecure) {
                 cfg.secure = true;
-                cfg.sameSite = 'Strict';
+
+                if (PrimeFaces.settings.cookiesSameSite) {
+                    cfg.sameSite = PrimeFaces.settings.cookiesSameSite;
+                }
             }
             Cookies.set(name, value, cfg);
         },
 
         /**
          * Deletes the given cookie.
-         * @param {string} name Name of the cookie to delete 
-         * @param {Partial<Cookies.CookieAttributes>} [cfg] The cookie configuration used to set the cookie. 
+         * @param {string} name Name of the cookie to delete
+         * @param {Partial<Cookies.CookieAttributes>} [cfg] The cookie configuration used to set the cookie.
          */
         deleteCookie: function(name, cfg) {
             Cookies.remove(name, cfg);
@@ -341,7 +350,7 @@
             }).on("keyup", function() {
                 $(this).removeClass('ui-state-active');
             });
-            
+
             //aria
             var role = button.attr('role');
             if(!role) {
@@ -466,17 +475,43 @@
         },
 
         /**
+         * Gets the currently loaded PF Theme CSS Link.
+         * @return {string} the full URL to the theme CSS
+         */
+        getThemeLink : function() {
+            var themeLink = $('link[href*="' + PrimeFaces.RESOURCE_IDENTIFIER + '/theme.css"]');
+            // portlet
+            if (themeLink.length === 0) {
+                themeLink = $('link[href*="' + PrimeFaces.RESOURCE_IDENTIFIER + '=theme.css"]');
+            }
+            return themeLink;
+        },
+
+        /**
+         * Gets the currently loaded PF Theme.
+         * @return {string} the current theme like "omega" or "luna-amber".
+         */
+        getTheme : function() {
+            var themeLink = PrimeFaces.getThemeLink();
+            if (themeLink.length === 0) {
+                return "";
+            }
+
+            var themeURL = themeLink.attr('href'),
+                plainURL = themeURL.split('&')[0],
+                oldTheme = plainURL.split('ln=primefaces-')[1];
+
+            return oldTheme;
+        },
+
+        /**
          * Changes the current theme to the given theme (by exchanging CSS files). Requires that the theme was
          * installed and is available.
          * @param {string} newTheme The new theme, eg. `luna-amber`, `nova-dark`, or `omega`.
          */
         changeTheme: function(newTheme) {
             if(newTheme && newTheme !== '') {
-                var themeLink = $('link[href*="' + PrimeFaces.RESOURCE_IDENTIFIER + '/theme.css"]');
-                // portlet
-                if (themeLink.length === 0) {
-                    themeLink = $('link[href*="' + PrimeFaces.RESOURCE_IDENTIFIER + '=theme.css"]');
-                }
+                var themeLink = PrimeFaces.getThemeLink();
 
                 var themeURL = themeLink.attr('href'),
                     plainURL = themeURL.split('&')[0],
@@ -556,7 +591,7 @@
         /**
          * A shortcut for {@link createWidget}.
          * @param {string} widgetName Name of the widget class, as registered in {@link PrimeFaces.widget}.
-         * @param {string} widgetVar Widget variable of the widget 
+         * @param {string} widgetVar Widget variable of the widget
          * @param {PrimeFaces.widget.BaseWidgetCfg} cfg Configuration for the widget
          */
         cw : function(widgetName, widgetVar, cfg) {
@@ -580,7 +615,7 @@
          * registry {@link PrimeFaces.widgets}. If this method is called in response to an AJAX request and the method
          * exists already, it is refreshed.
          * @param {string} widgetName Name of the widget class, as registered in `PrimeFaces.widget`
-         * @param {string} widgetVar Widget variable of the widget 
+         * @param {string} widgetVar Widget variable of the widget
          * @param {PrimeFaces.widget.BaseWidgetCfg} cfg Configuration for the widget
          */
         createWidget : function(widgetName, widgetVar, cfg) {
@@ -612,7 +647,7 @@
          * Checks whether an items is contained in the given array. The items is compared against the array entries
          * via the `===` operator.
          * @template [T=any] Type of the array items
-         * @param {T[]} arr An array with items 
+         * @param {T[]} arr An array with items
          * @param {T} item An item to check
          * @return {boolean} `true` if the given item is in the given array, `false` otherwise.
          */
@@ -637,7 +672,7 @@
 
         /**
          * Attempts to put focus an element:
-         * 
+         *
          * - When `id` is given, puts focus on the element with that `id`
          * - Otherwise, when `context` is given, puts focus on the first focusable element within that context
          * (container)
@@ -704,11 +739,11 @@
          * Still, PrimeFaces provides a feature to monitor file downloads via this client-side function. This is done
          * by sending a cookie with the HTTP response of the file download request. On the client-side, polling is used
          * to check when the cookie is set.
-         * 
+         *
          * The example below displays a modal dialog when a download begins and hides it when the download is complete:
-         * 
+         *
          * Client-side callbacks:
-         * 
+         *
          * ```javascript
          * function showStatus() {
          *   PF('statusDialog').show();
@@ -717,9 +752,9 @@
          *   PF('statusDialog').hide();
          * }
          * ```
-         * 
+         *
          * Server-side XHTML view:
-         * 
+         *
          * ```xml
          * <p:commandButton value="Download" ajax="false" onclick="PrimeFaces.monitorDownload(showStatus, hideStatus)">
          *   <p:fileDownload value="#{fileDownloadController.file}"/>
@@ -874,7 +909,7 @@
         openDialog: function(cfg) {
         	PrimeFaces.dialog.DialogHandler.openDialog(cfg);
         },
-        
+
         /**
     	 * Deprecated, use `PrimeFaces.dialog.DialogHandler.closeDialog` instead.
          * @deprecated
@@ -909,9 +944,9 @@
          * widgets to render once they are visible. This is done by keeping a list of widgets that need to be rendered,
          * and checking on every change (AJAX request, tab change etc.) whether any of those have become visible. A
          * widgets should extend `PrimeFaces.widget.DeferredWidget` to make use of this functionality.
-         * 
+         *
          * This is the list of renders for widgets that are currently waiting to become visible.
-         * 
+         *
          * @type {PrimeFaces.DeferredRender[]}
          */
         deferredRenders: [],
@@ -923,9 +958,9 @@
          * widgets to render once they are visible. This is done by keeping a list of widgets that need to be rendered,
          * and checking on every change (AJAX request, tab change etc.) whether any of those have become visible. A
          * widgets should extend `PrimeFaces.widget.DeferredWidget` to make use of this functionality.
-         * 
+         *
          * Adds a deferred render to the global list.
-         * 
+         *
          * @param {string} widgetId The ID of a deferred widget.
          * @param {string} containerId ID of the container that should be visible before the widget can be rendered.
          * @param {() => boolean} fn Callback that is invoked when the widget _may_ possibly have become visible. Should
@@ -942,9 +977,9 @@
          * widgets to render once they are visible. This is done by keeping a list of widgets that need to be rendered,
          * and checking on every change (AJAX request, tab change etc.) whether any of those have become visible. A
          * widgets should extend `PrimeFaces.widget.DeferredWidget` to make use of this functionality.
-         * 
+         *
          * Removes a deferred render from the global list.
-         * 
+         *
          * @param {string} widgetId The ID of a deferred widget.
          */
         removeDeferredRenders: function(widgetId) {
@@ -964,11 +999,11 @@
          * widgets to render once they are visible. This is done by keeping a list of widgets that need to be rendered,
          * and checking on every change (AJAX request, tab change etc.) whether any of those have become visible. A
          * widgets should extend `PrimeFaces.widget.DeferredWidget` to make use of this functionality.
-         * 
+         *
          * Invokes all deferred renders. This is usually called when an action was performed that _may_ have resulted
          * in a container now being visible. This includes actions such as an AJAX request request was made or a tab
-         * change. 
-         * 
+         * change.
+         *
          * @param {string} containerId ID of the container that _may_ have become visible.
          */
         invokeDeferredRenders: function(containerId) {
@@ -1025,7 +1060,7 @@
         /**
          * For 4.0 jQuery deprecated $.trim in favor of PrimeFaces.trim however that does not handle
          * NULL and jQuery did so this function allows a drop in replacement.
-         * 
+         *
          * @param {string} value the String to trim
          * @return {string} trimmed value or "" if it was NULL
          */
@@ -1033,11 +1068,11 @@
             if (!value) {
                 return "";
             }
-            
+
             if (typeof value === 'string' || value instanceof String) {
                 return value.trim();
             }
-            
+
             // return original value if it was not a string
             return value;
         },
@@ -1046,7 +1081,7 @@
          * Generate a RFC-4122 compliant UUID to be used as a unique identifier.
          *
          * See https://www.ietf.org/rfc/rfc4122.txt
-         * 
+         *
          * @return {string} A random UUID.
          */
         uuid: function() {
@@ -1065,18 +1100,18 @@
         /**
          * Increment and return the next zindex for CSS as a String.
          * jQuery will no longer accept numeric values in $.css as of 4.0.
-         * 
+         *
          *  @return {string} the next zindex as a String
          */
         nextZindex: function() {
             return String(++PrimeFaces.zindex);
         },
-      
+
        /**
          * Converts a date into an ISO-8601 date without using the browser timezone offset.
-         * 
+         *
          * See https://stackoverflow.com/questions/10830357/javascript-toisostring-ignores-timezone-offset
-         * 
+         *
          * @param {Date} date the date to convert
          * @return {string} ISO-8601 version of the date
          */
@@ -1128,7 +1163,7 @@
         PARTIAL_UPDATE_PARAM : "javax.faces.partial.render",
 
         /**
-         * Name of the POST parameter that contains the list of components to process. 
+         * Name of the POST parameter that contains the list of components to process.
          * @type {string}
          * @readonly
          */
@@ -1224,13 +1259,13 @@
     /**
      * An object with some runtime settings, such as the current locale.
      * @namespace
-     * 
+     *
      * @prop {string} locale The current locale, such as `en`,`en_US`, or `ja`.
      * @readonly locale
-     * 
+     *
      * @prop {boolean} validateEmptyFields `true` if empty (input etc.) fields should be validated, or `false` otherwise.
      * @readonly validateEmptyFields
-     * 
+     *
      * @prop {boolean} considerEmptyStringNull `true` if the empty string and `null` should be treated the same way, or
      * `false` otherwise.
      * @readonly considerEmptyStringNull
@@ -1271,10 +1306,14 @@
             secondText: 'Second',
             currentText: 'Current Date',
             ampm: false,
+            year: 'Year',
             month: 'Month',
             week: 'Week',
             day: 'Day',
+            list: 'Agenda',
             allDayText: 'All Day',
+            moreLinkText: 'More...',
+            noEventsText: 'No Events',
             aria: {
                 'paginator.PAGE': 'Page {0}',
                 'calendar.BUTTON': 'Show Calendar',
@@ -1306,7 +1345,7 @@
 
     /**
      * Finds and returns a widget
-     * 
+     *
      * Note to typescript users: You should define a method that takes a widget variables and widget constructor, and
      * check whether the widget is of the given type. If so, you can return the widget and cast it to the desired type:
      * ```typescript

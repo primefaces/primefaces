@@ -75,7 +75,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The configuration for the <a href="../classes/primefaces.widget.fileupload.html"> FileUpload widget</a>.
+						<p>The configuration for the <a href="../classes/primefaces.widget.fileupload.html">FileUpload widget</a>.
 							You can access this configuration via <a href="../classes/primefaces.widget.basewidget.html#cfg">BaseWidget.cfg</a>. Please note that this
 						configuration is usually meant to be read-only and should not be modified.</p>
 					</div>
@@ -111,7 +111,9 @@
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="primefaces.widget.fileuploadcfg.html#id" class="tsd-kind-icon">id</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.fileuploadcfg.html#invalidfilemessage" class="tsd-kind-icon">invalid<wbr>File<wbr>Message</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.fileuploadcfg.html#invalidsizemessage" class="tsd-kind-icon">invalid<wbr>Size<wbr>Message</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.fileuploadcfg.html#maxchunksize" class="tsd-kind-icon">max<wbr>Chunk<wbr>Size</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.fileuploadcfg.html#maxfilesize" class="tsd-kind-icon">max<wbr>File<wbr>Size</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.fileuploadcfg.html#maxretries" class="tsd-kind-icon">max<wbr>Retries</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.fileuploadcfg.html#messagetemplate" class="tsd-kind-icon">message<wbr>Template</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.fileuploadcfg.html#onadd" class="tsd-kind-icon">on<wbr>Add</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.fileuploadcfg.html#oncancel" class="tsd-kind-icon">oncancel</a></li>
@@ -120,6 +122,8 @@
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.fileuploadcfg.html#onstart" class="tsd-kind-icon">onstart</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.fileuploadcfg.html#previewwidth" class="tsd-kind-icon">preview<wbr>Width</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.fileuploadcfg.html#process" class="tsd-kind-icon">process</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.fileuploadcfg.html#resumecontextpath" class="tsd-kind-icon">resume<wbr>Context<wbr>Path</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.fileuploadcfg.html#retrytimeout" class="tsd-kind-icon">retry<wbr>Timeout</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.fileuploadcfg.html#sequentialuploads" class="tsd-kind-icon">sequential<wbr>Uploads</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.fileuploadcfg.html#update" class="tsd-kind-icon">update</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="primefaces.widget.fileuploadcfg.html#widgetvar" class="tsd-kind-icon">widget<wbr>Var</a></li>
@@ -257,6 +261,20 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="maxchunksize" class="tsd-anchor"></a>
+					<h3>max<wbr>Chunk<wbr>Size</h3>
+					<div class="tsd-signature tsd-kind-icon">max<wbr>Chunk<wbr>Size<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>To upload large files in smaller chunks, set this option to a preferred maximum chunk
+								size. If set to <code>0</code>, <code>null</code> or <code>undefined</code>, or the browser does not support the required Blob API, files will be
+							uploaded as a whole.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="maxfilesize" class="tsd-anchor"></a>
 					<h3>max<wbr>File<wbr>Size</h3>
 					<div class="tsd-signature tsd-kind-icon">max<wbr>File<wbr>Size<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
@@ -265,6 +283,19 @@
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Maximum allowed size in bytes for files.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="maxretries" class="tsd-anchor"></a>
+					<h3>max<wbr>Retries</h3>
+					<div class="tsd-signature tsd-kind-icon">max<wbr>Retries<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Only for chunked file upload: Amount of retries when upload gets interrupted due to
+							e.g. an unstable network connection.</p>
 						</div>
 					</div>
 				</section>
@@ -369,6 +400,32 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="resumecontextpath" class="tsd-anchor"></a>
+					<h3>resume<wbr>Context<wbr>Path</h3>
+					<div class="tsd-signature tsd-kind-icon">resume<wbr>Context<wbr>Path<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Server-side path which provides information to resume chunked file upload.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="retrytimeout" class="tsd-anchor"></a>
+					<h3>retry<wbr>Timeout</h3>
+					<div class="tsd-signature tsd-kind-icon">retry<wbr>Timeout<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Only for chunked file upload: (Base) timeout in milliseconds to wait until the next
+								retry. It is multiplied with the retry count. (first retry: <code>retryTimeout * 1</code>, second retry: <code>retryTimeout * 2</code>,
+							...)</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="sequentialuploads" class="tsd-anchor"></a>
 					<h3>sequential<wbr>Uploads</h3>
 					<div class="tsd-signature tsd-kind-icon">sequential<wbr>Uploads<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
@@ -421,6 +478,9 @@
 								<a href="../modules/primefaces.ajax.html">ajax</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+								<a href="../modules/primefaces.clientwindow.html">clientwindow</a>
+							</li>
+							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="../modules/primefaces.csp.html">csp</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
@@ -439,10 +499,10 @@
 								<a href="../modules/primefaces.settings.html">settings</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="../modules/primefaces.util.html">util</a>
+								<a href="../modules/primefaces.utils.html">utils</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="../modules/primefaces.utils.html">utils</a>
+								<a href="../modules/primefaces.validation.html">validation</a>
 							</li>
 							<li class="current tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="../modules/primefaces.widget.html">widget</a>
@@ -494,7 +554,13 @@
 								<a href="primefaces.widget.fileuploadcfg.html#invalidsizemessage" class="tsd-kind-icon">invalid<wbr>Size<wbr>Message</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="primefaces.widget.fileuploadcfg.html#maxchunksize" class="tsd-kind-icon">max<wbr>Chunk<wbr>Size</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="primefaces.widget.fileuploadcfg.html#maxfilesize" class="tsd-kind-icon">max<wbr>File<wbr>Size</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="primefaces.widget.fileuploadcfg.html#maxretries" class="tsd-kind-icon">max<wbr>Retries</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="primefaces.widget.fileuploadcfg.html#messagetemplate" class="tsd-kind-icon">message<wbr>Template</a>
@@ -521,6 +587,12 @@
 								<a href="primefaces.widget.fileuploadcfg.html#process" class="tsd-kind-icon">process</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="primefaces.widget.fileuploadcfg.html#resumecontextpath" class="tsd-kind-icon">resume<wbr>Context<wbr>Path</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="primefaces.widget.fileuploadcfg.html#retrytimeout" class="tsd-kind-icon">retry<wbr>Timeout</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="primefaces.widget.fileuploadcfg.html#sequentialuploads" class="tsd-kind-icon">sequential<wbr>Uploads</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
@@ -543,6 +615,7 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
@@ -559,6 +632,9 @@
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>

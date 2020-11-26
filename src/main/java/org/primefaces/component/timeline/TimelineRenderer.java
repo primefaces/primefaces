@@ -30,10 +30,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -106,7 +103,6 @@ public class TimelineRenderer extends CoreRenderer {
         }
 
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = timeline.getClientId(context);
 
         ZoneId zoneId = CalendarUtils.calculateZoneId(timeline.getTimeZone());
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME.withZone(zoneId);
@@ -115,7 +111,7 @@ public class TimelineRenderer extends CoreRenderer {
         FastStringWriter fswHtml = new FastStringWriter();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Timeline", timeline.resolveWidgetVar(context), clientId);
+        wb.init("Timeline", timeline);
 
         List<TimelineEvent<Object>> events = model.getEvents();
         List<TimelineGroup<Object>> groups = calculateGroupsFromModel(model);
@@ -317,6 +313,25 @@ public class TimelineRenderer extends CoreRenderer {
             fsw.write(", content:\"" + groupsContent.get(group.getId()) + "\"");
         }
 
+        if (group.getTreeLevel() != null) {
+            fsw.write(", treeLevel:\"" + group.getTreeLevel() + "\"");
+
+            List<String> nestedGroups = group.getNestedGroups();
+            if (nestedGroups != null && !nestedGroups.isEmpty()) {
+                fsw.write(", nestedGroups: [");
+
+                for (Iterator<String> iter = nestedGroups.iterator(); iter.hasNext(); ) {
+                    fsw.write("\"" + EscapeUtils.forJavaScriptBlock(iter.next()) + "\"");
+
+                    if (iter.hasNext()) {
+                        fsw.write(",");
+                    }
+                }
+
+                fsw.write("]");
+            }
+        }
+
         if (timeline.getGroupStyle() != null) {
             fsw.write(", style: \"" + timeline.getGroupStyle() + "\"");
         }
@@ -332,6 +347,19 @@ public class TimelineRenderer extends CoreRenderer {
         if (order != null) {
             fsw.write(", order: " + order);
         }
+
+        if (!LangUtils.isValueBlank(group.getSubgroupOrder())) {
+            fsw.write(", subgroupOrder: \"" + EscapeUtils.forJavaScript(group.getSubgroupOrder()) + "\"");
+        }
+
+        if (!LangUtils.isValueBlank(group.getSubgroupStack())) {
+            fsw.write(", subgroupStack: " + EscapeUtils.forJavaScript(group.getSubgroupStack()));
+        }
+
+        if (!LangUtils.isValueBlank(group.getSubgroupVisibility())) {
+            fsw.write(", subgroupVisibility: " + EscapeUtils.forJavaScript(group.getSubgroupVisibility()));
+        }
+
         fsw.write("}");
 
         String groupJson = fsw.toString();
@@ -399,6 +427,10 @@ public class TimelineRenderer extends CoreRenderer {
 
         if (foundGroup != null) {
             fsw.write(", group: \"" + EscapeUtils.forJavaScript(foundGroup.getId()) + "\"");
+
+            if (!LangUtils.isValueBlank(event.getSubgroup())) {
+                fsw.write(", subgroup: \"" + EscapeUtils.forJavaScript(event.getSubgroup()) + "\"");
+            }
         }
         else {
             // no group for the event

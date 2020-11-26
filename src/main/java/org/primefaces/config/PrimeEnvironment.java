@@ -50,6 +50,8 @@ public class PrimeEnvironment {
 
     private final boolean atLeastBv11;
 
+    private final boolean atLeastServlet30;
+
     private final String buildVersion;
 
     private final boolean htmlSanitizerAvailable;
@@ -64,6 +66,8 @@ public class PrimeEnvironment {
         atLeastJsf21 = LangUtils.tryToLoadClassForName("javax.faces.component.TransientStateHolder") != null;
 
         atLeastBv11 = LangUtils.tryToLoadClassForName("javax.validation.executable.ExecutableValidator") != null;
+
+        atLeastServlet30 = LangUtils.tryToLoadClassForName("javax.servlet.SessionCookieConfig") != null;
 
         beanValidationAvailable = resolveBeanValidationAvailable();
 
@@ -139,6 +143,10 @@ public class PrimeEnvironment {
 
     public boolean isAtLeastJsf21() {
         return atLeastJsf21;
+    }
+
+    public boolean isAtLeastServlet30() {
+        return atLeastServlet30;
     }
 
     public boolean isMojarra() {

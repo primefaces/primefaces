@@ -21,7 +21,7 @@
  * @prop {PrimeFaces.widget.Schedule.ScheduleExtender} cfg.extender Name of JavaScript function to extend the options of
  * the underlying FullCalendar plugin. Access the this schedule widget via the this context, and change the FullCalendar
  * configuration stored in `this.cfg`.
- * @prop {import("@fullcalendar/core").CalendarOptions} cfg.calendarCfg The configuration object that is passed to the
+ * @prop {import("@fullcalendar/core").CalendarOptions} cfg.options The configuration object that is passed to the
  * FullCalendar upon initialization, see {@link CalendarOptions|CalendarOptions}.
  * @prop {string} cfg.formId Client ID of the form that is used for AJAX requests.
  * @prop {string} cfg.locale Locale code of the locale for the FullCalendar, such as `de` or `en`.
@@ -42,13 +42,12 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         this.cfg.formId = this.jq.closest('form').attr('id');
-        this.cfg.calendarCfg.themeSystem = 'standard';
-        this.cfg.calendarCfg.locale = FullCalendar.globalLocales[this.cfg.locale || "en"];
-        this.cfg.calendarCfg.slotLabelFormat = this.cfg.calendarCfg.slotLabelFormat || undefined; 
-        this.cfg.calendarCfg.viewClassNames = this.onViewChange.bind(this);
+        this.cfg.options.themeSystem = 'standard';
+        this.cfg.options.slotLabelFormat = this.cfg.options.slotLabelFormat || undefined; 
+        this.cfg.options.viewClassNames = this.onViewChange.bind(this);
         this.viewNameState = $(this.jqId + '_view');
         this.cfg.urlTarget = this.cfg.urlTarget || "_blank";
-        this.cfg.calendarCfg.plugins = [
+        this.cfg.options.plugins = [
             FullCalendar.interactionPlugin, 
             FullCalendar.dayGridPlugin,
             FullCalendar.timeGridPlugin,
@@ -58,6 +57,8 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         ];
 
         this.setupEventSource();
+
+        this.configureLocale();
 
         if(this.cfg.tooltip) {
             this.tip = $('<div class="ui-tooltip ui-widget ui-widget-content ui-shadow ui-corner-all"></div>').appendTo(document.body);
@@ -74,6 +75,9 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         this.setViewOptions();
 
         this.renderDeferred();
+
+        // must be done after FullCalendar is built
+        this.setupTitlebarHandlers();
     },
 
     /**
@@ -85,10 +89,42 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
     _render: function() {
         var _self = this;
         var calendarEl = document.getElementById(this.cfg.id);
-        _self.calendar = new FullCalendar.Calendar(calendarEl, this.cfg.calendarCfg);
+        _self.calendar = new FullCalendar.Calendar(calendarEl, this.cfg.options);
         _self.calendar.render();
     },
 
+    /**
+     * Localizes certain aspects of FullCalendar that are exposed. The rest are configured by "locale"
+     * setting and FullCalendar and Moment translations for that locale.
+     * @private
+     */
+    configureLocale: function() {
+        var options = this.cfg.options;
+
+        // #6496 must add all locales
+        options.locales = FullCalendar.globalLocales;
+
+        var lang = PrimeFaces.locales[this.cfg.locale];
+        if (lang) {
+            if (lang.firstDay !== undefined) { options.firstDay = lang.firstDay; }
+            if (lang.weekNumberTitle) { options.weekText = lang.weekNumberTitle; }
+            if (lang.allDayText) { options.allDayText = lang.allDayText; }
+            if (lang.moreLinkText) { options.moreLinkText = lang.moreLinkText; }
+            if (lang.noEventsText) { options.noEventsText = lang.noEventsText; }
+            
+            var buttonText = options.buttonText || {};
+            if (lang.prevText) { buttonText.prev = lang.prevText; }
+            if (lang.nextText) { buttonText.next = lang.nextText; }
+            if (lang.currentText) { buttonText.today = lang.currentText; }
+            if (lang.year) { buttonText.year = lang.year; }
+            if (lang.month) { buttonText.month = lang.month; }
+            if (lang.week) { buttonText.week = lang.week; }
+            if (lang.day) { buttonText.day = lang.day; }
+            if (lang.list) { buttonText.list = lang.list; }
+            options.buttonText = buttonText;
+        }
+    },
+    
     /**
      * Creates and sets the event listeners for the full calendar.
      * @private
@@ -96,7 +132,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
     setupEventHandlers: function() {
         var $this = this;
 
-        this.cfg.calendarCfg.dateClick = function(dateClickInfo) {
+        this.cfg.options.dateClick = function(dateClickInfo) {
             var currentDate = PrimeFaces.toISOString(dateClickInfo.date);
             var ext = {
                 params: [{
@@ -125,13 +161,14 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
             }
         };
         
-        this.cfg.calendarCfg.eventClick = function(eventClickInfo) {
+        this.cfg.options.eventClick = function(eventClickInfo) {
             if (eventClickInfo.event.url) {
                 var targetWindow = window.open('', $this.cfg.urlTarget);
                 if ($this.cfg.noOpener) {
                     targetWindow.opener = null;    
                 }
                 targetWindow.location = eventClickInfo.event.url;
+                eventClickInfo.jsEvent.preventDefault(); // don't let the browser navigate
                 return false;
             }
 
@@ -146,7 +183,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
             }
         };
 
-        this.cfg.calendarCfg.eventDrop = function(eventDropInfo) {
+        this.cfg.options.eventDrop = function(eventDropInfo) {
             if($this.hasBehavior('eventMove')) {
                 var ext = {
                     params: [
@@ -163,7 +200,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
             }
         };
 
-        this.cfg.calendarCfg.eventResize = function(eventResizeInfo) {
+        this.cfg.options.eventResize = function(eventResizeInfo) {
             if($this.hasBehavior('eventResize')) {
                 var ext = {
                     params: [
@@ -184,7 +221,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.cfg.tooltip) {
-            this.cfg.calendarCfg.eventMouseEnter = function(mouseEnterInfo) {
+            this.cfg.options.eventMouseEnter = function(mouseEnterInfo) {
                 if(mouseEnterInfo.event.extendedProps.description) {
                     $this.tipTimeout = setTimeout(function() {
                         $this.tip.css({
@@ -198,7 +235,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                 }
             };
 
-            this.cfg.calendarCfg.eventMouseLeave = function(mouseLeaveInfo) {
+            this.cfg.options.eventMouseLeave = function(mouseLeaveInfo) {
                 if($this.tipTimeout) {
                     clearTimeout($this.tipTimeout);
                 }
@@ -210,12 +247,23 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
             };
         } else {
             // PF #2795 default to regular tooltip
-            this.cfg.calendarCfg.eventDidMount = function(info) {
+            this.cfg.options.eventDidMount = function(info) {
                 if(info.event.description) {
                     element.attr('title', info.event.description);
                 }
             };
         }
+    },
+
+    /**
+     * Creates and sets the event listeners for the previous, next, and today buttons in the title bar.
+     * @private
+     */
+    setupTitlebarHandlers: function() {
+        var $this = this;
+        $('.fc-prev-button, .fc-next-button, .fc-today-button').on('click.' + this.id, function() {
+            $this.callBehavior('viewChange');
+        });
     },
 
     /**
@@ -225,13 +273,14 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
     setupEventSource: function() {
         var $this = this;
 
-        this.cfg.calendarCfg.events = function(fetchInfo, successCallback) {
+        this.cfg.options.events = function(fetchInfo, successCallback) {
             var options = {
                 source: $this.id,
                 process: $this.id,
                 update: $this.id,
                 formId: $this.cfg.formId,
                 params: [
+                    {name: $this.id + '_event', value: true},
                     {name: $this.id + '_start', value: PrimeFaces.toISOString(fetchInfo.start)},
                     {name: $this.id + '_end', value: PrimeFaces.toISOString(fetchInfo.end)}
                 ],
@@ -300,8 +349,8 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
             }
         }
 
-        this.cfg.calendarCfg.views = this.cfg.views||{};
-        $.extend(true, this.cfg.calendarCfg.views, views);
+        this.cfg.options.views = this.cfg.views||{};
+        $.extend(true, this.cfg.options.views, views);
     }
 
 });

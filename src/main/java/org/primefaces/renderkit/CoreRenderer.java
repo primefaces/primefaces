@@ -810,4 +810,12 @@ public abstract class CoreRenderer extends Renderer {
         writer.endElement("div");
     }
 
+    protected boolean endsWithLenghtUnit(String val) {
+        return val.endsWith("px") || val.endsWith("%") // most common first
+                || val.endsWith("cm") || val.endsWith("mm") || val.endsWith("in")
+                || val.endsWith("pt") || val.endsWith("pc")
+                || val.endsWith("em") || val.endsWith("ex") || val.endsWith("ch") || val.endsWith("rem")
+                || val.endsWith("vw") || val.endsWith("vh")
+                || val.endsWith("vmin") || val.endsWith("vmax");
+    }
 }

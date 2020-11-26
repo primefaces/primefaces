@@ -6,13 +6,14 @@ are many other third party libraries and plugins used to support features.
 | Library | Version | URL |
 | --- | --- | --- |
 | [AutoNumeric](../jsdocs/classes/autonumeric.html) | 4.5.9 | https://github.com/autoNumeric/autoNumeric |
-| [Chart.js](../jsdocs/classes/chart.html) | 2.9.3 | https://www.chartjs.org |
+| [Chart.js](../jsdocs/classes/chart.html) | 2.9.4 | https://www.chartjs.org |
 | [Color Picker](../jsdocs/modules/jquery.html#colorpicker) | (2012) | www.eyecon.ro |
 | [Cookie](../jsdocs/modules/cookies.html) | 3.0.0 | https://github.com/js-cookie/js-cookie |
 | [ContentFlow](../jsdocs/classes/contentflow.html) | 1.0.2 | http://www.jacksasylum.eu/ContentFlow |
 | [Cropper.js](../jsdocs/modules/jquery.html#cropper) | 1.5.6 | https://github.com/fengyuanchen/cropperjs |
+| Download.js | 4.2 | http://danml.com/download.html |
 | FontAwesome | 4.7.0 | https://fontawesome.com/ |
-| [FullCalendar](../jsdocs/modules/__fullcalendar_core_calendar_.html) | 5.1.0 | https://fullcalendar.io/ |
+| [FullCalendar](../jsdocs/modules/__fullcalendar_core_calendar_.html) | 5.3.2 | https://fullcalendar.io/ |
 | [Idle Timer](../jsdocs/modules/jquery.html#idletimer) | 1.1.0 - 2016-03-21 | https://github.com/thorst/jquery-idletimer |
 | [Input Mask](../jsdocs/modules/inputmask.html) | 5.0.5 | https://github.com/RobinHerbots/Inputmask |
 | jqPlot | 1.0.9 | http://www.jqplot.com/ |
@@ -32,14 +33,13 @@ are many other third party libraries and plugins used to support features.
 | [jQuery](../jsdocs/modules/jquery.html) | 3.5.0 | https://jquery.com/ |
 | [Jquery.print](../jsdocs/modules/jquery.html#print) | 1.6.0 | https://github.com/DoersGuild/jQuery.print |
 | [jScrollPane](../jsdocs/modules/jquery.html#jscrollpane) | 2.2.3 | https://github.com/vitch/jScrollPane |
-| [JSPlumb Diagram](../jsdocs/globals.html#jsplumb) | 2.1.0 | https://github.com/jsplumb/jsplumb |
+| [JSPlumb Diagram](../jsdocs/globals.html#jsplumb) | 2.14.6 | https://github.com/jsplumb/jsplumb |
 | [Keypad](../jsdocs/modules/jquery.html#keypad) | 2.1.0 | http://keith-wood.name/keypad.html |
 | [Moment](../jsdocs/modules/moment.html) | 2.22.2 | https://github.com/moment/moment |
 | moment-timezone.js | 0.5.25 | https://github.com/moment/moment-timezone |
 | [Quill Editor](../jsdocs/classes/quill.html) | 1.3.7 | https://quilljs.com/ |
 | [Raphaël](../jsdocs/interfaces/raphaelstatic.html) | 2.3.0 | http://raphaeljs.com |
 | [Signature](../jsdocs/modules/jquery.html#signature) | 1.2.0 | http://keith-wood.name/signature.html |
-| [Timeline](../jsdocs/classes/timeline.html) | 7.3.7 | https://github.com/visjs/vis-timeline |
+| [Timeline](../jsdocs/classes/timeline.html) | 7.3.10 | https://github.com/visjs/vis-timeline |
 | [TouchSwipe](../jsdocs/modules/jquery.html#swipe) | 1.6.18 | https://github.com/mattbryson/TouchSwipe-Jquery-Plugin |
 | [WebcamJS](../jsdocs/modules/webcam.html) | 1.0.26 | http://github.com/jhuckaby |
-

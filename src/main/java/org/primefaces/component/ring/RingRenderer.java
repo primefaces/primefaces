@@ -74,10 +74,8 @@ public class RingRenderer extends CoreRenderer {
     }
 
     public void encodeScript(FacesContext context, Ring ring) throws IOException {
-        String clientId = ring.getClientId(context);
-
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Ring", ring.resolveWidgetVar(context), clientId)
+        wb.init("Ring", ring)
                 .attr("startingChild", ring.getFirst())
                 .attr("easing", ring.getEasing(), null)
                 .attr("autoplay", ring.isAutoplay(), false)

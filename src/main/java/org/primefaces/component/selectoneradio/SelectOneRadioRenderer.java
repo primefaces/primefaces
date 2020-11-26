@@ -96,12 +96,11 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     }
 
     protected void encodeScript(FacesContext context, SelectOneRadio radio) throws IOException {
-        String clientId = radio.getClientId(context);
         String layout = radio.getLayout();
         boolean custom = layout != null && layout.equals("custom");
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectOneRadio", radio.resolveWidgetVar(context), clientId)
+        wb.init("SelectOneRadio", radio)
                 .attr("custom", custom, false)
                 .attr("unselectable", radio.isUnselectable()).finish();
     }

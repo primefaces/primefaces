@@ -43,6 +43,7 @@ lang | null | String | Code describing the language used in the generated markup
 maxlength | null | Integer | Maximum number of characters that may be entered in this field.
 onblur | null | String | Client side callback to execute when input element loses focus.
 onchange | null | String | Client side callback to execute when input element loses focus and its value has been modified since gaining focus.
+oninput | null | String | Client side callback to execute when an element gets user input.
 onclick | null | String | Client side callback to execute when input element is clicked.
 ondblclick | null | String | Client side callback to execute when input element is double clicked.
 onfocus | null | String | Client side callback to execute on input element focus.
@@ -54,7 +55,23 @@ onmousemove | null | String | Client side callback to execute when a pointer but
 onmouseout | null | String | Client side callback to execute when a pointer button is moved away from input element.
 onmouseover | null | String | Client side callback to execute when a pointer button is moved onto input element.
 onmouseup | null | String | Client side callback to execute when a pointer button is released over input element.
+onwheel | null | String | Client side callback to execute when the mouse wheel rolls up or down over an element.
 onselect | null | String | Client side callback to execute when text within input element is selected by user.
+oncut | null | String | Client side callback to execute when the user copies the content of an element.
+oncopy | null | String | Client side callback to execute when the user cuts the content of an element.
+onpaste | null | String | Client side callback to execute when the user pastes some content in an element.
+oncontextmenu | null | String | Client side callback to execute when a context menu is triggered.
+oninvalid | null | String | Client side callback to execute when an element is invalid.
+onreset | null | String | Client side callback to execute when the Reset button in a form is clicked.
+onsearch | null | String | Client side callback to execute when the user writes something in a search field.
+ondrag | null | String | Client side callback to execute when an element is dragged.
+ondragend | null | String | Client side callback to execute at the end of a drag operation.
+ondragenter | null | String | Client side callback to execute when an element has been dragged to a valid drop target.
+ondragleave | null | String | Client side callback to execute when an element leaves a valid drop target.
+ondragover | null | String | Client side callback to execute when an element is being dragged over a valid drop target.
+ondragstart | null | String | Client side callback to execute at the start of a drag operation.
+ondrop | null | String | Client side callback to execute when dragged element is being dropped.
+onscroll | null | String | Client side callback to execute when an element's scrollbar is being scrolled.
 placeholder | null | String | Specifies a short hint.
 readonly | false | Boolean | Flag indicating that this component will prevent changes by the user.
 size | null | Integer | Number of characters used to determine the width of the input element.
@@ -63,20 +80,22 @@ styleClass | null | String | Style class of the input element.
 tabindex | null | Integer | Position of the input element in the tabbing order.
 title | null | String | Advisory tooltip information.
 type | text | String | Input field type.
+decimalPlaces | 2 | String | Number of decimal places. If value is Integer/Long/Short/BigInteger number defaults to 0 else defaults to 2 only if the initial value is not `null`.
 decimalSeparator | *1 | String | Decimal separator char.
 decimalSeparatorAlternative | null | String | Allow to declare an alternative decimal separator which is automatically replaced by `decimalCharacter` when typed.
-thousandSeparator | *1 | String | Thousand separator char.
-symbol | none | String | Desired symbol or unit.
-symbolPosition | p | String | Position of the symbol. 'p' for prefix 's' for suffix
-minValue | -10000000000000 | String | Minimum value allowed
-maxValue | 10000000000000 | String | Maximum values allowed.
-roundMethod | Round-Half-Up-Symmetric | String | Controls the rounding method.
-decimalPlaces | 2 | String | Number of decimal places. If value is Integer/Long/Short number defaults to 0.
 emptyValue | focus | String | Defines what to display when the input value is empty (possible options are null, focus, press, always, min, max, zero, number, or a string representing a number)
+leadingZero | allow | Sting | Controls leading zero behavior. Valid values are "allow"(default), "deny" and "keep".
+inputMode | null | String | HTML5 inputmode attribute for hinting at the type of data this control has for touch devices. Default is 'numeric' if decimalPlaces==0, 'decimal' if decimalPlaces>0.
 inputStyle | null | String | Inline style of the input element.
 inputStyleClass | null | String | Style class of the input element.
-padControl | true | Boolean | Controls padding of the decimal places. If true, always pads the decimal with zeros.
+maxValue | 10000000000000 | String | Maximum values allowed.
+minValue | -10000000000000 | String | Minimum value. Warning: If minValue is greater than 0, then you will effectively prevent your users to entirely delete the content of their input.
 modifyValueOnWheel | true | Boolean | Allows the user to increment or decrement the element value with the mouse wheel.
+padControl | true | Boolean | Controls padding of the decimal places. If true, always pads the decimal with zeros.
+roundMethod | Round-Half-Up-Symmetric | String | Controls the rounding method.
+symbol | none | String | Desired symbol or unit.
+symbolPosition | p | String | Position of the symbol. 'p' for prefix 's' for suffix
+thousandSeparator | *1 | String | Thousand separator char.
 
 *1 Depends on locale defined via faces-config.xml
 
@@ -128,10 +147,10 @@ Here are some examples demonstrating various cases;
 
 ## Ajax Behavior Events
 
-The following AJAX behavior events are available for this component. If no event is specific the default event is called.  
+The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
   
-**Default Event:** valueChange  
-**Available Events:** blur, change, click, dblclick, focus, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, select, valueChange  
+**Default Event:** `valueChange`  
+**Available Events:** `blur, change, click, contextmenu, copy, cut, dblclick, drag, dragend, dragenter, dragleave, dragover, dragstart, drop, focus, input, invalid, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, paste, reset, scroll, search, select, valueChange, wheel`  
 
 ```xhtml
 <p:ajax event="valueChange" listener="#{bean.handlevalueChange}" update="msgs" />

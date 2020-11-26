@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-    <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>7</version>
-    </parent>
-
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces</artifactId>
     <packaging>jar</packaging>
@@ -221,7 +214,7 @@
         <dependency>
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast</artifactId>
-            <version>4.0.1</version>
+            <version>4.0.3</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -396,25 +389,32 @@
                 <artifactId>build-helper-maven-plugin</artifactId>
                 <version>3.1.0</version>
                 <executions>
-                  <execution>
-                    <id>parse-version</id>
-                    <goals>
-                      <goal>parse-version</goal>
-                    </goals>
-                  </execution>
+                    <execution>
+                        <id>parse-version</id>
+                        <goals>
+                            <goal>parse-version</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-                <version>4.2.1</version>
+                <version>5.1.1</version>
                 <extensions>true</extensions>
                 <configuration>
                     <supportedProjectTypes>
                         <supportedProjectType>jar</supportedProjectType>
                     </supportedProjectTypes>
                     <instructions>
-                        <Export-Package>org.primefaces.*;version="${project.version}</Export-Package>
+                        <Export-Package>
+                            org.primefaces.*;version="${project.version}",
+                            org.primefaces.shaded.json;version="${project.version}",
+                            org.primefaces.shaded.commons;version="${project.version}",
+                            org.primefaces.shaded.commons.io;version="${project.version}",
+                            org.primefaces.shaded.commons.io.input;version="${project.version}",
+                            org.primefaces.shaded.owasp.encoder;version="${project.version}"
+                        </Export-Package>
                         <Import-Package>
                             javax.faces.component.search;resolution:=optional,
                             javax.faces.component.search.*;resolution:=optional,
@@ -951,6 +951,24 @@
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
                             <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/diagram/diagram.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/diagram/0-jsplumb.min.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/diagram/1-diagram.js</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/diagram/diagram.css</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/diagram/0-jsplumbtoolkit-defaults.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/diagram/1-diagram.css</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/fileupload/fileupload.js</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/fileupload/0-jquery.iframe-transport.js</include>
@@ -994,6 +1012,15 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/texteditor/1-texteditor.js</include>
                             </includes>
                         </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/filedownload/filedownload.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/filedownload/0-download.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/filedownload/1-pf-filedownload.js</include>
+                            </includes>
+                        </aggregation>
                     </aggregations>
                 </configuration>
             </plugin>
@@ -1029,6 +1056,8 @@
                                 <include>org.apache.commons.io.FilenameUtils</include>
                                 <include>org.apache.commons.io.IOUtils</include>
                                 <include>org.apache.commons.io.input.BoundedInputStream</include>
+                                <include>org.apache.commons.io.output.StringBuilderWriter</include>
+                                <include>org.apache.commons.io.output.ByteArrayOutputStream</include>
                             </includes>
                         </relocation>
                     </relocations>
@@ -1039,12 +1068,13 @@
                                 <include>org/apache/commons/io/FilenameUtils.class</include>
                                 <include>org/apache/commons/io/IOUtils.class</include>
                                 <include>org/apache/commons/io/input/BoundedInputStream.class</include>
+                                <include>org/apache/commons/io/output/StringBuilderWriter.class</include>
+                                <include>org/apache/commons/io/output/ByteArrayOutputStream.class</include>
                             </includes>
                         </filter>
                         <filter>
                             <artifact>*:*</artifact>
                             <excludes>
-                                <exclude>META-INF/MANIFEST.MF</exclude>
                                 <exclude>META-INF/*.SF</exclude>
                                 <exclude>META-INF/*.DSA</exclude>
                                 <exclude>META-INF/*.RSA</exclude>
@@ -1138,10 +1168,13 @@
     </build>
 
     <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
         <repository>
-            <id>prime-repo</id>
-            <name>PrimeFaces Maven Repository</name>
-            <url>sftp://primefaces.org/var/www/repository</url>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
 
@@ -1160,7 +1193,7 @@
                     <plugin>
                         <groupId>org.owasp</groupId>
                         <artifactId>dependency-check-maven</artifactId>
-                        <version>5.3.2</version>
+                        <version>6.0.3</version>
                         <configuration>
                             <skipProvidedScope>false</skipProvidedScope>
                             <skipRuntimeScope>false</skipRuntimeScope>
@@ -1224,6 +1257,18 @@
             <build>
                 <plugins>
                     <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.8</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+
+                    <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
                         <version>3.2.0</version>
@@ -1262,7 +1307,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.4</version>
+                        <version>1.6</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -1294,11 +1339,13 @@
                                 <exclude>**/0-quill.min.js</exclude>
                                 <exclude>**/jquery.js</exclude>
                                 <exclude>**/fullcalendar.min.js</exclude>
+                                <exclude>**/0-jsplumb.min.js</exclude>
                                 <exclude>**/0-timeline.min.js</exclude>
                                 <exclude>**/0-chartjs.js</exclude>
                                 <exclude>**/0-jquery.inputmask.js</exclude>
                                 <exclude>**/raphael.js</exclude>
                                 <exclude>**/theme.css</exclude>
+                                <exclude>**/build/**</exclude>
                             </excludes>
                             <includes>
                                 <include>**/*.js</include>

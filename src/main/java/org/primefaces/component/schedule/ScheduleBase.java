@@ -27,9 +27,10 @@ import javax.faces.component.UIComponentBase;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 
-public abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+public abstract class ScheduleBase extends UIComponentBase implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -73,7 +74,9 @@ public abstract class ScheduleBase extends UIComponentBase implements Widget, Cl
         nextDayThreshold,
         slotEventOverlap,
         urlTarget,
-        noOpener
+        noOpener,
+        dir,
+        height
     }
 
     public ScheduleBase() {
@@ -379,5 +382,22 @@ public abstract class ScheduleBase extends UIComponentBase implements Widget, Cl
 
     public void setNoOpener(boolean noOpener) {
         getStateHelper().put(PropertyKeys.noOpener, noOpener);
+    }
+
+    @Override
+    public String getDir() {
+        return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
+    }
+
+    public void setDir(String dir) {
+        getStateHelper().put(PropertyKeys.dir, dir);
+    }
+
+    public String getHeight() {
+        return (String) getStateHelper().eval(PropertyKeys.height, null);
+    }
+
+    public void setHeight(String height) {
+        getStateHelper().put(PropertyKeys.height, height);
     }
 }

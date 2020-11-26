@@ -71,7 +71,7 @@ ajax selection and more.
 | onMonthChange | null | Function | Javascript function to invoke when month changes.
 | onYearChange | null | Function | Javascript function to invoke when year changes.
 | locale | null | Object | Locale to be used for labels and conversion.
-| timeZone | null | Time Zone | String a java.time.ZoneId instance or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to ZoneId.systemDefault().
+| timeZone | null | Time Zone | String a java.time.ZoneId instance or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to ZoneId.systemDefault(). (This attribute is only relevant for java.util.Date in combination with the built-in converter.)
 | pattern | MM/dd/yy | String | DateFormat pattern for localization (for the date part only)
 | mindate | null | java.time.LocalDate, java.time.LocalDateTime, java.time.LocalTime, java.util.Date (deprecated) or String | Sets DatePicker's minimum selectable value; Also used for validation on the server-side.
 | maxdate | null | java.time.LocalDate, java.time.LocalDateTime, java.time.LocalTime, java.util.Date (deprecated) or String | Sets DatePicker's maximum selectable value; Also used for validation on the server-side.
@@ -181,6 +181,15 @@ Multiple dates or a range of dates can be selected by setting the _selectionMode
 ```
 
 ## Ajax Behavior Events
+
+**Custom Events:**
+
+| Event | Listener Parameter | Fired |
+| --- | --- | --- |
+| close | - | When the popup is closed.
+| dateSelect | org.primefaces.event.SelectEvent | When a date is selected.
+| viewChange | org.primefaces.event.DateViewChangeEvent | When the date picker changed to a different month or year page.
+
 DatePicker provides a _dateSelect_ ajax behavior event to execute an instant ajax selection whenever a
 date is selected. If you define a method as a listener, it will be invoked by passing an
 _org.primefaces.event.SelectEvent_ instance.

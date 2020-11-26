@@ -25,6 +25,7 @@ package org.primefaces.component.tabview;
 
 import java.util.Collection;
 import java.util.Map;
+import javax.el.ELContext;
 
 import javax.el.ValueExpression;
 import javax.faces.application.ResourceDependency;
@@ -35,6 +36,7 @@ import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.event.TabCloseEvent;
 import org.primefaces.util.ComponentUtils;
@@ -165,8 +167,10 @@ public class TabView extends TabViewBase {
 
         super.processUpdates(context);
 
-        ValueExpression expr = getValueExpression(PropertyKeys.activeIndex.toString());
-        if (expr != null) {
+        ELContext elContext = getFacesContext().getELContext();
+        ValueExpression expr = ValueExpressionAnalyzer.getExpression(elContext,
+                getValueExpression(PropertyKeys.activeIndex.toString()));
+        if (expr != null && !expr.isReadOnly(elContext)) {
             expr.setValue(getFacesContext().getELContext(), getActiveIndex());
             resetActiveIndex();
         }

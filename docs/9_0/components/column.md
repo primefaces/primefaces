@@ -14,7 +14,7 @@ treetable and more.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 | id | null | String | Unique identifier of the component
 | rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -36,12 +36,13 @@ treetable and more.
 | selectionMode | null | String | Enables selection mode.
 | filterMaxLength | null | Integer | Maximum number of characters for an input filter.
 | resizable | true | Boolean | Specifies resizable feature at column level. Datatable's resizableColumns must be enabled to use this option.
-| width | null | String | Width in pixels or percentage.
+| width | null | String | The width of the column ('px' as default if no length unit is defined)
 | exportable | true | Boolean | Defines if the column should be exported by dataexporter.
 | filterValue | null | Object | Value of the filter field.
-| toggleable | true | Boolean | Defines if panel is toggleable by columnToggler component. Default value is true and a false value marks the column as static.
+| toggleable | true | Boolean | Defines if column is toggleable by columnToggler component. Default value is true and a false value marks the column as static.
+| draggable | true | Boolean | Defines if column is draggable if draggableColumns is set. Default true.
 | filterFunction | null | MethodExpr | Custom implementation to filter a value against a constraint.
-| field | null | String | Name of the field to pass lazy load method for filtering and sorting. If not specified, filterBy-sortBy values are used to identify the field name.
+| field | null | String | Name of the field associated to bean "var". If not specified, filterBy-sortBy values are used to identify the field name.
 | priority | 0 | Integer | Priority of the column defined as an integer, lower values have more priority.
 | sortable | true | Boolean | Boolean value to mark column as sortable.
 | filterable | true | Boolean | Boolean value to mark column as filterable.
@@ -52,6 +53,11 @@ treetable and more.
 | groupRow | false | Boolean | Speficies whether to group rows based on the column data.
 | exportHeaderValue | null | String | Defines if the header value of column to be exported.
 | exportFooterValue | null | String | Defines if the footer value of column to be exported.
+| nullSortOrder             | 1                  | Integer          | Defines where the null values are placed in ascending sort order. Default value is "1"
+| sortOrder                 | asc                | String           | Sets sorting order in 'single' sortMode. Default is "ascending"
+| sortFunction              | null               | MethodExpression | Custom pluggable sortFunction.
+| sortPriority              | Integer.MAX_VALUE  | Integer          | Sets default sorting priority over the other columns. Default is Integer.MAX_VALUE. Higher is less priority.
+| caseSensitiveSort         | false              | Boolean          | Case sensitivity for sorting, insensitive by default.
 
 ## Getting Started with Column
 As column is a reused component, see documentation of components that use a column.

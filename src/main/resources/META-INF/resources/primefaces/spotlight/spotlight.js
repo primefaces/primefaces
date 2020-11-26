@@ -50,6 +50,10 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
     show: function() {
         this.calculatePositions();
 
+        this.target.attr({
+            'role': 'dialog'
+            ,'aria-modal': true
+        });
         $(document.body).children('div.ui-spotlight').show();
 
         this.bindEvents();
@@ -70,8 +74,6 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
             'top': '0px',
             'width': documentBody.width() + 'px',
             'height': offset.top + 'px',
-            'pointer-events' : 'none',
-            'user-select': 'none',
             'z-index': zindex
         });
 
@@ -81,8 +83,6 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
             'top': bottomTop + 'px',
             'width': documentBody.width() + 'px',
             'height': (doc.height() - bottomTop) + 'px',
-            'pointer-events' : 'none',
-            'user-select': 'none',
             'z-index': zindex
         });
 
@@ -91,8 +91,6 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
             'top': offset.top + 'px',
             'width': offset.left + 'px',
             'height': this.target.outerHeight() + 'px',
-            'pointer-events' : 'none',
-            'user-select': 'none',
             'z-index': zindex
         });
 
@@ -102,8 +100,6 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
             'top': offset.top + 'px',
             'width': (documentBody.width() - rightLeft) + 'px',
             'height': this.target.outerHeight() + 'px',
-            'pointer-events' : 'none',
-            'user-select': 'none',
             'z-index': zindex
         });
     },
@@ -148,6 +144,10 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
         $(document.body).children('.ui-spotlight').hide();
         this.unbindEvents();
         this.target.css('z-index', String(this.target.zIndex()));
+        this.target.attr({
+            'role': ''
+            ,'aria-modal': false
+        });
     }
 
 });

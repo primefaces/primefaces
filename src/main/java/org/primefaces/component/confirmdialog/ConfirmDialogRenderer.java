@@ -75,10 +75,9 @@ public class ConfirmDialogRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, ConfirmDialog dialog) throws IOException {
-        String clientId = dialog.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
 
-        wb.init("ConfirmDialog", dialog.resolveWidgetVar(context), clientId)
+        wb.init("ConfirmDialog", dialog)
                 .attr("visible", dialog.isVisible(), false)
                 .attr("width", dialog.getWidth(), null)
                 .attr("height", dialog.getHeight(), null)
@@ -116,7 +115,7 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         writer.endElement("span");
 
         if (dialog.isClosable()) {
-            String ariaLabel = MessageFactory.getMessage(Dialog.ARIA_CLOSE, null);
+            String ariaLabel = MessageFactory.getMessage(Dialog.ARIA_CLOSE);
 
             writer.startElement("a", null);
             writer.writeAttribute("href", "#", null);

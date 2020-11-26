@@ -45,10 +45,9 @@ public class DockRenderer extends BaseMenuRenderer {
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu menu) throws IOException {
         Dock dock = (Dock) menu;
-        String clientId = dock.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Dock", dock.resolveWidgetVar(context), clientId)
+        wb.init("Dock", dock)
                 .attr("position", dock.getPosition())
                 .attr("halign", dock.getHalign())
                 .attr("blockScroll", dock.isBlockScroll(), false)

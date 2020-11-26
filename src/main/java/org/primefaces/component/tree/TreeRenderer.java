@@ -23,6 +23,8 @@
  */
 package org.primefaces.component.tree;
 
+import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
+
 import java.io.IOException;
 import java.util.*;
 
@@ -35,15 +37,13 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.UITree;
+import org.primefaces.model.MatchMode;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.filter.FilterConstraint;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.*;
-
-import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
-import org.primefaces.model.MatchMode;
 
 public class TreeRenderer extends CoreRenderer {
 
@@ -283,14 +283,13 @@ public class TreeRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, Tree tree) throws IOException {
-        String clientId = tree.getClientId(context);
         boolean dynamic = tree.isDynamic();
         String selectionMode = tree.getSelectionMode();
         boolean filter = (tree.getValueExpression("filterBy") != null);
         String widget = tree.getOrientation().equals("vertical") ? "VerticalTree" : "HorizontalTree";
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init(widget, tree.resolveWidgetVar(context), clientId);
+        wb.init(widget, tree);
 
         wb.attr("dynamic", dynamic)
                 .attr("highlight", tree.isHighlight(), true)
@@ -429,7 +428,7 @@ public class TreeRenderer extends CoreRenderer {
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute("class", Tree.FILTER_CLASS, null);
-        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER, null), null);
+        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER), null);
         writer.endElement("input");
 
         writer.startElement("span", null);

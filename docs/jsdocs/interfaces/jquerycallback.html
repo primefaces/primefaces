@@ -138,32 +138,32 @@
 									<dd><p>​ ````Use callbacks.add() to add new callbacks to a callback list:</p>
 										<pre><code class="language-javascript"><span class="hljs-comment">// A sample logging function to be added to a callbacks list</span>
 <span class="hljs-keyword">var</span> foo = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>) </span>{
-<span class="hljs-built_in">console</span>.log( <span class="hljs-string">"foo: "</span> + value );
+<span class="hljs-built_in">console</span>.log( <span class="hljs-string">&quot;foo: &quot;</span> + value );
 };
 ​
 <span class="hljs-comment">// Another function to also be added to the list</span>
 <span class="hljs-keyword">var</span> bar = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>) </span>{
-<span class="hljs-built_in">console</span>.log( <span class="hljs-string">"bar: "</span> + value );
+<span class="hljs-built_in">console</span>.log( <span class="hljs-string">&quot;bar: &quot;</span> + value );
 };
 ​
 <span class="hljs-keyword">var</span> callbacks = $.Callbacks();
 ​
-<span class="hljs-comment">// Add the function "foo" to the list</span>
+<span class="hljs-comment">// Add the function &quot;foo&quot; to the list</span>
 callbacks.add( foo );
 ​
 <span class="hljs-comment">// Fire the items on the list</span>
-callbacks.fire( <span class="hljs-string">"hello"</span> );
-<span class="hljs-comment">// Outputs: "foo: hello"</span>
+callbacks.fire( <span class="hljs-string">&quot;hello&quot;</span> );
+<span class="hljs-comment">// Outputs: &quot;foo: hello&quot;</span>
 ​
-<span class="hljs-comment">// Add the function "bar" to the list</span>
+<span class="hljs-comment">// Add the function &quot;bar&quot; to the list</span>
 callbacks.add( bar );
 ​
 <span class="hljs-comment">// Fire the items on the list again</span>
-callbacks.fire( <span class="hljs-string">"world"</span> );
+callbacks.fire( <span class="hljs-string">&quot;world&quot;</span> );
 ​
 <span class="hljs-comment">// Outputs:</span>
-<span class="hljs-comment">// "foo: world"</span>
-<span class="hljs-comment">// "bar: world"</span></code></pre>
+<span class="hljs-comment">// &quot;foo: world&quot;</span>
+<span class="hljs-comment">// &quot;bar: world&quot;</span></code></pre>
 									</dd>
 								</dl>
 							</div>
@@ -221,15 +221,15 @@ callbacks.fire( <span class="hljs-string">"world"</span> );
 callbacks.add( foo );
 ​
 <span class="hljs-comment">// Fire the items on the list</span>
-callbacks.fire( <span class="hljs-string">"foo"</span> );
+callbacks.fire( <span class="hljs-string">&quot;foo&quot;</span> );
 <span class="hljs-comment">// Outputs: foo</span>
 ​
 <span class="hljs-comment">// Disable further calls being possible</span>
 callbacks.disable();
 ​
-<span class="hljs-comment">// Attempt to fire with "foobar" as an argument</span>
-callbacks.fire( <span class="hljs-string">"foobar"</span> );
-<span class="hljs-comment">// foobar isn't output</span></code></pre>
+<span class="hljs-comment">// Attempt to fire with &quot;foobar&quot; as an argument</span>
+callbacks.fire( <span class="hljs-string">&quot;foobar&quot;</span> );
+<span class="hljs-comment">// foobar isn&#x27;t output</span></code></pre>
 									</dd>
 								</dl>
 							</div>
@@ -263,7 +263,7 @@ callbacks.fire( <span class="hljs-string">"foobar"</span> );
 									<dd><p>​ ````Use callbacks.disabled() to determine if the callbacks list has been disabled:</p>
 										<pre><code class="language-javascript"><span class="hljs-comment">// A sample logging function to be added to a callbacks list</span>
 <span class="hljs-keyword">var</span> foo = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>) </span>{
-<span class="hljs-built_in">console</span>.log( <span class="hljs-string">"foo:"</span> + value );
+<span class="hljs-built_in">console</span>.log( <span class="hljs-string">&quot;foo:&quot;</span> + value );
 };
 ​
 <span class="hljs-keyword">var</span> callbacks = $.Callbacks();
@@ -272,8 +272,8 @@ callbacks.fire( <span class="hljs-string">"foobar"</span> );
 callbacks.add( foo );
 ​
 <span class="hljs-comment">// Fire the items on the list, passing an argument</span>
-callbacks.fire( <span class="hljs-string">"hello"</span> );
-<span class="hljs-comment">// Outputs "foo: hello"</span>
+callbacks.fire( <span class="hljs-string">&quot;hello&quot;</span> );
+<span class="hljs-comment">// Outputs &quot;foo: hello&quot;</span>
 ​
 <span class="hljs-comment">// Disable the callbacks list</span>
 callbacks.disable();
@@ -314,12 +314,12 @@ callbacks.disable();
 									<dd><p>​ ````Use callbacks.empty() to empty a list of callbacks:</p>
 										<pre><code class="language-javascript"><span class="hljs-comment">// A sample logging function to be added to a callbacks list</span>
 <span class="hljs-keyword">var</span> foo = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value1, value2 </span>) </span>{
-<span class="hljs-built_in">console</span>.log( <span class="hljs-string">"foo: "</span> + value1 + <span class="hljs-string">","</span> + value2 );
+<span class="hljs-built_in">console</span>.log( <span class="hljs-string">&quot;foo: &quot;</span> + value1 + <span class="hljs-string">&quot;,&quot;</span> + value2 );
 };
 ​
 <span class="hljs-comment">// Another function to also be added to the list</span>
 <span class="hljs-keyword">var</span> bar = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value1, value2 </span>) </span>{
-<span class="hljs-built_in">console</span>.log( <span class="hljs-string">"bar: "</span> + value1 + <span class="hljs-string">","</span> + value2 );
+<span class="hljs-built_in">console</span>.log( <span class="hljs-string">&quot;bar: &quot;</span> + value1 + <span class="hljs-string">&quot;,&quot;</span> + value2 );
 };
 ​
 <span class="hljs-keyword">var</span> callbacks = $.Callbacks();
@@ -369,31 +369,31 @@ callbacks.empty();
 									<dd><p>​ ````Use callbacks.fire() to invoke the callbacks in a list with any arguments that have been passed:</p>
 										<pre><code class="language-javascript"><span class="hljs-comment">// A sample logging function to be added to a callbacks list</span>
 <span class="hljs-keyword">var</span> foo = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>) </span>{
-<span class="hljs-built_in">console</span>.log( <span class="hljs-string">"foo:"</span> + value );
+<span class="hljs-built_in">console</span>.log( <span class="hljs-string">&quot;foo:&quot;</span> + value );
 };
 ​
 <span class="hljs-keyword">var</span> callbacks = $.Callbacks();
 ​
-<span class="hljs-comment">// Add the function "foo" to the list</span>
+<span class="hljs-comment">// Add the function &quot;foo&quot; to the list</span>
 callbacks.add( foo );
 ​
 <span class="hljs-comment">// Fire the items on the list</span>
-callbacks.fire( <span class="hljs-string">"hello"</span> ); <span class="hljs-comment">// Outputs: "foo: hello"</span>
-callbacks.fire( <span class="hljs-string">"world"</span> ); <span class="hljs-comment">// Outputs: "foo: world"</span>
+callbacks.fire( <span class="hljs-string">&quot;hello&quot;</span> ); <span class="hljs-comment">// Outputs: &quot;foo: hello&quot;</span>
+callbacks.fire( <span class="hljs-string">&quot;world&quot;</span> ); <span class="hljs-comment">// Outputs: &quot;foo: world&quot;</span>
 ​
 <span class="hljs-comment">// Add another function to the list</span>
 <span class="hljs-keyword">var</span> bar = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>)</span>{
-<span class="hljs-built_in">console</span>.log( <span class="hljs-string">"bar:"</span> + value );
+<span class="hljs-built_in">console</span>.log( <span class="hljs-string">&quot;bar:&quot;</span> + value );
 };
 ​
 <span class="hljs-comment">// Add this function to the list</span>
 callbacks.add( bar );
 ​
 <span class="hljs-comment">// Fire the items on the list again</span>
-callbacks.fire( <span class="hljs-string">"hello again"</span> );
+callbacks.fire( <span class="hljs-string">&quot;hello again&quot;</span> );
 <span class="hljs-comment">// Outputs:</span>
-<span class="hljs-comment">// "foo: hello again"</span>
-<span class="hljs-comment">// "bar: hello again"</span></code></pre>
+<span class="hljs-comment">// &quot;foo: hello again&quot;</span>
+<span class="hljs-comment">// &quot;bar: hello again&quot;</span></code></pre>
 									</dd>
 								</dl>
 							</div>
@@ -436,7 +436,7 @@ callbacks.fire( <span class="hljs-string">"hello again"</span> );
 									<dd><p>​ ````Use callbacks.fireWith() to fire a list of callbacks with a specific context and an array of arguments:</p>
 										<pre><code class="language-javascript"><span class="hljs-comment">// A sample logging function to be added to a callbacks list</span>
 <span class="hljs-keyword">var</span> log = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value1, value2 </span>) </span>{
-<span class="hljs-built_in">console</span>.log( <span class="hljs-string">"Received: "</span> + value1 + <span class="hljs-string">","</span> + value2 );
+<span class="hljs-built_in">console</span>.log( <span class="hljs-string">&quot;Received: &quot;</span> + value1 + <span class="hljs-string">&quot;,&quot;</span> + value2 );
 };
 ​
 <span class="hljs-keyword">var</span> callbacks = $.Callbacks();
@@ -444,11 +444,11 @@ callbacks.fire( <span class="hljs-string">"hello again"</span> );
 <span class="hljs-comment">// Add the log method to the callbacks list</span>
 callbacks.add( log );
 ​
-<span class="hljs-comment">// Fire the callbacks on the list using the context "window"</span>
+<span class="hljs-comment">// Fire the callbacks on the list using the context &quot;window&quot;</span>
 <span class="hljs-comment">// and an arguments array</span>
 ​
-callbacks.fireWith( <span class="hljs-built_in">window</span>, [ <span class="hljs-string">"foo"</span>,<span class="hljs-string">"bar"</span> ] );
-<span class="hljs-comment">// Outputs: "Received: foo, bar"</span></code></pre>
+callbacks.fireWith( <span class="hljs-built_in">window</span>, [ <span class="hljs-string">&quot;foo&quot;</span>,<span class="hljs-string">&quot;bar&quot;</span> ] );
+<span class="hljs-comment">// Outputs: &quot;Received: foo, bar&quot;</span></code></pre>
 									</dd>
 								</dl>
 							</div>
@@ -497,17 +497,17 @@ callbacks.fireWith( <span class="hljs-built_in">window</span>, [ <span class="hl
 									<dd><p>​ ````Use callbacks.fired() to determine if the callbacks in a list have been called at least once:</p>
 										<pre><code class="language-javascript"><span class="hljs-comment">// A sample logging function to be added to a callbacks list</span>
 <span class="hljs-keyword">var</span> foo = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>) </span>{
-<span class="hljs-built_in">console</span>.log( <span class="hljs-string">"foo:"</span> + value );
+<span class="hljs-built_in">console</span>.log( <span class="hljs-string">&quot;foo:&quot;</span> + value );
 };
 ​
 <span class="hljs-keyword">var</span> callbacks = $.Callbacks();
 ​
-<span class="hljs-comment">// Add the function "foo" to the list</span>
+<span class="hljs-comment">// Add the function &quot;foo&quot; to the list</span>
 callbacks.add( foo );
 ​
 <span class="hljs-comment">// Fire the items on the list</span>
-callbacks.fire( <span class="hljs-string">"hello"</span> ); <span class="hljs-comment">// Outputs: "foo: hello"</span>
-callbacks.fire( <span class="hljs-string">"world"</span> ); <span class="hljs-comment">// Outputs: "foo: world"</span>
+callbacks.fire( <span class="hljs-string">&quot;hello&quot;</span> ); <span class="hljs-comment">// Outputs: &quot;foo: hello&quot;</span>
+callbacks.fire( <span class="hljs-string">&quot;world&quot;</span> ); <span class="hljs-comment">// Outputs: &quot;foo: world&quot;</span>
 ​
 <span class="hljs-comment">// Test to establish if the callbacks have been called</span>
 <span class="hljs-built_in">console</span>.log( callbacks.fired() );</code></pre>
@@ -544,12 +544,12 @@ callbacks.fire( <span class="hljs-string">"world"</span> ); <span class="hljs-co
 									<dd><p>​ ````Use callbacks.has() to check if a callback list contains a specific callback:</p>
 										<pre><code class="language-javascript"><span class="hljs-comment">// A sample logging function to be added to a callbacks list</span>
 <span class="hljs-keyword">var</span> foo = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value1, value2 </span>) </span>{
-<span class="hljs-built_in">console</span>.log( <span class="hljs-string">"Received: "</span> + value1 + <span class="hljs-string">","</span> + value2 );
+<span class="hljs-built_in">console</span>.log( <span class="hljs-string">&quot;Received: &quot;</span> + value1 + <span class="hljs-string">&quot;,&quot;</span> + value2 );
 };
 ​
 <span class="hljs-comment">// A second function which will not be added to the list</span>
 <span class="hljs-keyword">var</span> bar = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value1, value2 </span>) </span>{
-<span class="hljs-built_in">console</span>.log( <span class="hljs-string">"foobar"</span> );
+<span class="hljs-built_in">console</span>.log( <span class="hljs-string">&quot;foobar&quot;</span> );
 };
 ​
 <span class="hljs-keyword">var</span> callbacks = $.Callbacks();
@@ -604,7 +604,7 @@ callbacks.add( foo );
 									<dd><p>​ ````Use callbacks.lock() to lock a callback list to avoid further changes being made to the list state:</p>
 										<pre><code class="language-javascript"><span class="hljs-comment">// A sample logging function to be added to a callbacks list</span>
 <span class="hljs-keyword">var</span> foo = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>) </span>{
-<span class="hljs-built_in">console</span>.log( <span class="hljs-string">"foo:"</span> + value );
+<span class="hljs-built_in">console</span>.log( <span class="hljs-string">&quot;foo:&quot;</span> + value );
 };
 ​
 <span class="hljs-keyword">var</span> callbacks = $.Callbacks();
@@ -613,75 +613,75 @@ callbacks.add( foo );
 callbacks.add( foo );
 ​
 <span class="hljs-comment">// Fire the items on the list, passing an argument</span>
-callbacks.fire( <span class="hljs-string">"hello"</span> );
-<span class="hljs-comment">// Outputs "foo: hello"</span>
+callbacks.fire( <span class="hljs-string">&quot;hello&quot;</span> );
+<span class="hljs-comment">// Outputs &quot;foo: hello&quot;</span>
 ​
 <span class="hljs-comment">// Lock the callbacks list</span>
 callbacks.lock();
 ​
 <span class="hljs-comment">// Try firing the items again</span>
-callbacks.fire( <span class="hljs-string">"world"</span> );
+callbacks.fire( <span class="hljs-string">&quot;world&quot;</span> );
 ​
 <span class="hljs-comment">// As the list was locked, no items were called,</span>
-<span class="hljs-comment">// so "world" isn't logged</span></code></pre>
+<span class="hljs-comment">// so &quot;world&quot; isn&#x27;t logged</span></code></pre>
 									</dd>
 									<dt>example</dt>
 									<dd><p>​ ````Use callbacks.lock() to lock a callback list with &quot;memory,&quot; and then resume using the list:</p>
 										<pre><code class="language-html"><span class="hljs-meta">&lt;!doctype <span class="hljs-meta-keyword">html</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"utf-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;utf-8&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>callbacks.lock demo<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://code.jquery.com/jquery-3.3.1.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://code.jquery.com/jquery-3.3.1.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
 ​
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"log"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;log&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 ​
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
 <span class="hljs-comment">// Simple function for logging results</span>
 <span class="hljs-keyword">var</span> log = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>) </span>{
-$( <span class="hljs-string">"#log"</span> ).append( <span class="hljs-string">"&lt;p&gt;"</span> + value + <span class="hljs-string">"&lt;/p&gt;"</span> );
+$( <span class="hljs-string">&quot;#log&quot;</span> ).append( <span class="hljs-string">&quot;&lt;p&gt;&quot;</span> + value + <span class="hljs-string">&quot;&lt;/p&gt;&quot;</span> );
 };
 ​
 <span class="hljs-comment">// Two sample functions to be added to a callbacks list</span>
 <span class="hljs-keyword">var</span> foo = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>) </span>{
-log( <span class="hljs-string">"foo: "</span> + value );
+log( <span class="hljs-string">&quot;foo: &quot;</span> + value );
 };
 <span class="hljs-keyword">var</span> bar = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>) </span>{
-log( <span class="hljs-string">"bar: "</span> + value );
+log( <span class="hljs-string">&quot;bar: &quot;</span> + value );
 };
 ​
-<span class="hljs-comment">// Create the callbacks object with the "memory" flag</span>
-<span class="hljs-keyword">var</span> callbacks = $.Callbacks( <span class="hljs-string">"memory"</span> );
+<span class="hljs-comment">// Create the callbacks object with the &quot;memory&quot; flag</span>
+<span class="hljs-keyword">var</span> callbacks = $.Callbacks( <span class="hljs-string">&quot;memory&quot;</span> );
 ​
 <span class="hljs-comment">// Add the foo logging function to the callback list</span>
 callbacks.add( foo );
 ​
 <span class="hljs-comment">// Fire the items on the list, passing an argument</span>
-callbacks.fire( <span class="hljs-string">"hello"</span> );
-<span class="hljs-comment">// Outputs "foo: hello"</span>
+callbacks.fire( <span class="hljs-string">&quot;hello&quot;</span> );
+<span class="hljs-comment">// Outputs &quot;foo: hello&quot;</span>
 ​
 <span class="hljs-comment">// Lock the callbacks list</span>
 callbacks.lock();
 ​
 <span class="hljs-comment">// Try firing the items again</span>
-callbacks.fire( <span class="hljs-string">"world"</span> );
+callbacks.fire( <span class="hljs-string">&quot;world&quot;</span> );
 <span class="hljs-comment">// As the list was locked, no items were called,</span>
-<span class="hljs-comment">// so "foo: world" isn't logged</span>
+<span class="hljs-comment">// so &quot;foo: world&quot; isn&#x27;t logged</span>
 ​
 <span class="hljs-comment">// Add the foo function to the callback list again</span>
 callbacks.add( foo );
 ​
 <span class="hljs-comment">// Try firing the items again</span>
-callbacks.fire( <span class="hljs-string">"silentArgument"</span> );
-<span class="hljs-comment">// Outputs "foo: hello" because the argument value was stored in memory</span>
+callbacks.fire( <span class="hljs-string">&quot;silentArgument&quot;</span> );
+<span class="hljs-comment">// Outputs &quot;foo: hello&quot; because the argument value was stored in memory</span>
 ​
 <span class="hljs-comment">// Add the bar function to the callback list</span>
 callbacks.add( bar );
 ​
-callbacks.fire( <span class="hljs-string">"youHadMeAtHello"</span> );
-<span class="hljs-comment">// Outputs "bar: hello" because the list is still locked,</span>
+callbacks.fire( <span class="hljs-string">&quot;youHadMeAtHello&quot;</span> );
+<span class="hljs-comment">// Outputs &quot;bar: hello&quot; because the list is still locked,</span>
 <span class="hljs-comment">// and the argument value is still stored in memory</span>
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 ​
@@ -720,7 +720,7 @@ callbacks.fire( <span class="hljs-string">"youHadMeAtHello"</span> );
 									<dd><p>​ ````Use callbacks.locked() to determine the lock-state of a callback list:</p>
 										<pre><code class="language-javascript"><span class="hljs-comment">// A sample logging function to be added to a callbacks list</span>
 <span class="hljs-keyword">var</span> foo = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>) </span>{
-<span class="hljs-built_in">console</span>.log( <span class="hljs-string">"foo: "</span> + value );
+<span class="hljs-built_in">console</span>.log( <span class="hljs-string">&quot;foo: &quot;</span> + value );
 };
 ​
 <span class="hljs-keyword">var</span> callbacks = $.Callbacks();
@@ -729,8 +729,8 @@ callbacks.fire( <span class="hljs-string">"youHadMeAtHello"</span> );
 callbacks.add( foo );
 ​
 <span class="hljs-comment">// Fire the items on the list, passing an argument</span>
-callbacks.fire( <span class="hljs-string">"hello"</span> );
-<span class="hljs-comment">// Outputs "foo: hello"</span>
+callbacks.fire( <span class="hljs-string">&quot;hello&quot;</span> );
+<span class="hljs-comment">// Outputs &quot;foo: hello&quot;</span>
 ​
 <span class="hljs-comment">// Lock the callbacks list</span>
 callbacks.lock();
@@ -771,25 +771,25 @@ callbacks.lock();
 									<dd><p>​ ````Use callbacks.remove() to remove callbacks from a callback list:</p>
 										<pre><code class="language-javascript"><span class="hljs-comment">// A sample logging function to be added to a callbacks list</span>
 <span class="hljs-keyword">var</span> foo = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>) </span>{
-<span class="hljs-built_in">console</span>.log( <span class="hljs-string">"foo: "</span> + value );
+<span class="hljs-built_in">console</span>.log( <span class="hljs-string">&quot;foo: &quot;</span> + value );
 };
 ​
 <span class="hljs-keyword">var</span> callbacks = $.Callbacks();
 ​
-<span class="hljs-comment">// Add the function "foo" to the list</span>
+<span class="hljs-comment">// Add the function &quot;foo&quot; to the list</span>
 callbacks.add( foo );
 ​
 <span class="hljs-comment">// Fire the items on the list</span>
-callbacks.fire( <span class="hljs-string">"hello"</span> );
-<span class="hljs-comment">// Outputs: "foo: hello"</span>
+callbacks.fire( <span class="hljs-string">&quot;hello&quot;</span> );
+<span class="hljs-comment">// Outputs: &quot;foo: hello&quot;</span>
 ​
-<span class="hljs-comment">// Remove "foo" from the callback list</span>
+<span class="hljs-comment">// Remove &quot;foo&quot; from the callback list</span>
 callbacks.remove( foo );
 ​
 <span class="hljs-comment">// Fire the items on the list again</span>
-callbacks.fire( <span class="hljs-string">"world"</span> );
+callbacks.fire( <span class="hljs-string">&quot;world&quot;</span> );
 ​
-<span class="hljs-comment">// Nothing output as "foo" is no longer in the list</span></code></pre>
+<span class="hljs-comment">// Nothing output as &quot;foo&quot; is no longer in the list</span></code></pre>
 									</dd>
 								</dl>
 							</div>
@@ -870,6 +870,7 @@ callbacks.fire( <span class="hljs-string">"world"</span> );
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
@@ -886,6 +887,9 @@ callbacks.fire( <span class="hljs-string">"world"</span> );
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>

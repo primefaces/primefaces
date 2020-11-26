@@ -23,28 +23,28 @@
  */
 package org.primefaces.component.datatable.export;
 
-import com.lowagie.text.Font;
-import com.lowagie.text.*;
-import com.lowagie.text.pdf.PdfPCell;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
+import java.awt.Color;
+import java.io.IOException;
+import java.util.List;
+
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIPanel;
+import javax.faces.context.FacesContext;
+
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.ExporterOptions;
+import org.primefaces.component.export.PDFOptions;
+import org.primefaces.component.export.PDFOrientationType;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIPanel;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import java.awt.Color;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.List;
+import com.lowagie.text.*;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
 
 public class DataTablePDFExporter extends DataTableExporter {
 
@@ -52,7 +52,6 @@ public class DataTablePDFExporter extends DataTableExporter {
     private Font facetFont;
     private Color facetBgColor;
     private Document document;
-    private ByteArrayOutputStream baos;
 
     protected Document createDocument() {
         return new Document();
@@ -63,19 +62,25 @@ public class DataTablePDFExporter extends DataTableExporter {
     }
 
     @Override
-    protected void preExport(FacesContext context, ExportConfiguration config) throws IOException {
+    protected void preExport(FacesContext context, ExportConfiguration exportConfiguration) throws IOException {
         document = createDocument();
-        baos = new ByteArrayOutputStream();
 
         try {
-            PdfWriter.getInstance(document, baos);
+            PDFOptions options = (PDFOptions) exportConfiguration.getOptions();
+            if (options != null) {
+                if (PDFOrientationType.LANDSCAPE == options.getOrientation()) {
+                    document.setPageSize(PageSize.A4.rotate());
+                }
+            }
+
+            PdfWriter.getInstance(document, getOutputStream());
         }
         catch (DocumentException e) {
             throw new IOException(e);
         }
 
-        if (config.getPreProcessor() != null) {
-            config.getPreProcessor().invoke(context.getELContext(), new Object[]{document});
+        if (exportConfiguration.getPreProcessor() != null) {
+            exportConfiguration.getPreProcessor().invoke(context.getELContext(), new Object[]{document});
         }
 
         if (!document.isOpen()) {
@@ -84,7 +89,7 @@ public class DataTablePDFExporter extends DataTableExporter {
     }
 
     @Override
-    protected void doExport(FacesContext context, DataTable table, ExportConfiguration config, int index) throws IOException {
+    protected void doExport(FacesContext context, DataTable table, ExportConfiguration exportConfiguration, int index) throws IOException {
         try {
             // Add empty paragraph between each exported tables
             if (index > 0) {
@@ -93,7 +98,7 @@ public class DataTablePDFExporter extends DataTableExporter {
                 getDocument().add(preface);
             }
 
-            getDocument().add(exportTable(context, table, config));
+            getDocument().add(exportTable(context, table, exportConfiguration));
         }
         catch (DocumentException e) {
             throw new IOException(e.getMessage());
@@ -101,19 +106,25 @@ public class DataTablePDFExporter extends DataTableExporter {
     }
 
     @Override
-    protected void postExport(FacesContext context, ExportConfiguration config) throws IOException {
-        if (config.getPostProcessor() != null) {
-            config.getPostProcessor().invoke(context.getELContext(), new Object[]{document});
+    protected void postExport(FacesContext context, ExportConfiguration exportConfiguration) throws IOException {
+        if (exportConfiguration.getPostProcessor() != null) {
+            exportConfiguration.getPostProcessor().invoke(context.getELContext(), new Object[]{document});
         }
 
-        writePDFToResponse(context, baos, config.getOutputFileName());
+        getDocument().close();
 
-        reset();
+        document = null;
     }
 
-    protected void reset() {
-        document = null;
-        baos = null;
+
+    @Override
+    public String getContentType() {
+        return "application/pdf";
+    }
+
+    @Override
+    public String getFileExtension() {
+        return ".pdf";
     }
 
     protected PdfPTable exportTable(FacesContext context, DataTable table, ExportConfiguration config) {
@@ -268,7 +279,8 @@ public class DataTablePDFExporter extends DataTableExporter {
         FacesContext context = FacesContext.getCurrentInstance();
 
         if (column.getExportFunction() != null) {
-            pdfTable.addCell(new Paragraph(exportColumnByFunction(context, column), font));
+            PdfPCell cell = createCell(column, new Paragraph(exportColumnByFunction(context, column), font));
+            pdfTable.addCell(cell);
         }
         else {
             StringBuilder builder = new StringBuilder();
@@ -282,21 +294,9 @@ public class DataTablePDFExporter extends DataTableExporter {
                 }
             }
 
-            pdfTable.addCell(new Paragraph(builder.toString(), font));
+            PdfPCell cell = createCell(column, new Paragraph(builder.toString(), font));
+            pdfTable.addCell(cell);
         }
-    }
-
-    protected void writePDFToResponse(FacesContext context, ByteArrayOutputStream baos, String fileName) throws IOException {
-        ExternalContext externalContext = context.getExternalContext();
-        getDocument().close();
-
-        externalContext.setResponseContentType("application/pdf");
-        setResponseHeader(externalContext, ComponentUtils.createContentDisposition("attachment", fileName + ".pdf"));
-        externalContext.setResponseContentLength(baos.size());
-        addResponseCookie(context);
-        OutputStream out = externalContext.getResponseOutputStream();
-        baos.writeTo(out);
-        externalContext.responseFlushBuffer();
     }
 
     protected int getColumnsCount(DataTable table) {
@@ -381,5 +381,24 @@ public class DataTablePDFExporter extends DataTableExporter {
         }
         cellFont = FontFactory.getFont(newFont, encoding);
         facetFont = FontFactory.getFont(newFont, encoding, Font.DEFAULTSIZE, Font.BOLD);
+    }
+
+    protected PdfPCell createCell(final UIColumn column, Phrase phrase) {
+        PdfPCell cell = new PdfPCell(phrase);
+        return applyColumnAlignments(column, cell);
+    }
+
+    protected PdfPCell applyColumnAlignments(final UIColumn column, final PdfPCell cell) {
+        String[] styles = new String[] {column.getStyle(), column.getStyleClass()};
+        if (LangUtils.containsIgnoreCase(styles, "right")) {
+            cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        }
+        else  if (LangUtils.containsIgnoreCase(styles, "center")) {
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        }
+        else {
+            cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        }
+        return cell;
     }
 }

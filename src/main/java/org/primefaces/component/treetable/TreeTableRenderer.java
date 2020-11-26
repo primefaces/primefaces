@@ -23,6 +23,8 @@
  */
 package org.primefaces.component.treetable;
 
+import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
+
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -58,8 +60,6 @@ import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.*;
 import org.primefaces.visit.ResetInputVisitCallback;
-
-import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
 
 public class TreeTableRenderer extends DataRenderer {
 
@@ -188,7 +188,7 @@ public class TreeTableRenderer extends DataRenderer {
             String globalFilterParam = clientId + UINamingContainer.getSeparatorChar(context) + "globalFilter";
             String globalFilterValue = params.get(globalFilterParam);
 
-            filter(context, tt, root, tt.getFilterMetadata(), globalFilterValue);
+            filter(context, tt, tt.getValue(), tt.getFilterMetadata(), globalFilterValue);
 
             //sort new filtered data to restore sort state
             boolean sorted = (tt.getValueExpression("sortBy") != null || tt.getSortBy() != null);
@@ -196,7 +196,7 @@ public class TreeTableRenderer extends DataRenderer {
                 sort(tt);
             }
 
-            encodeTbody(context, tt, root, true);
+            encodeTbody(context, tt, tt.getValue(), true);
         }
         else if (tt.isSortRequest(context)) {
             encodeSort(context, tt, root);
@@ -227,10 +227,9 @@ public class TreeTableRenderer extends DataRenderer {
     }
 
     protected void encodeScript(FacesContext context, TreeTable tt) throws IOException {
-        String clientId = tt.getClientId(context);
         String selectionMode = tt.getSelectionMode();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("TreeTable", tt.resolveWidgetVar(context), clientId)
+        wb.init("TreeTable", tt)
                 .attr("selectionMode", selectionMode, null)
                 .attr("resizableColumns", tt.isResizableColumns(), false)
                 .attr("liveResize", tt.isLiveResize(), false)
@@ -750,7 +749,7 @@ public class TreeTableRenderer extends DataRenderer {
         }
 
         if (width != null) {
-            String unit = width.endsWith("%") ? "" : "px";
+            String unit = endsWithLenghtUnit(width) ? Constants.EMPTY_STRING : "px";
             if (style != null) {
                 style = style + ";width:" + width + unit;
             }
@@ -1207,7 +1206,7 @@ public class TreeTableRenderer extends DataRenderer {
 
         //Metadata for callback
         if (tt.isPaginator()) {
-            PrimeFaces.current().ajax().addCallbackParam("totalRecords", filteredNode.getChildren().size());
+            PrimeFaces.current().ajax().addCallbackParam("totalRecords", filteredNode.getChildCount());
         }
         if (tt.getSelectedRowKeysAsString() != null) {
             PrimeFaces.current().ajax().addCallbackParam("selection", tt.getSelectedRowKeysAsString());

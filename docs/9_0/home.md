@@ -1,7 +1,7 @@
 PrimeFaces is an open source JSF component suite with various extensions.
 
 - Rich set of components (HtmlEditor, Dialog, AutoComplete, Charts and many more).
-- Built-in Ajax based on standard JSF Ajax APIs.
+- Built-in AJAX based on standard JSF AJAX APIs.
 - Lightweight, one jar, zero-configuration and no required dependencies.
 - Automatic XSS and CSRF prevention.
 - Pluggable HTML sanitizing via OWASP.

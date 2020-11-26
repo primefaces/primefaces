@@ -23,75 +23,128 @@
  */
 package org.primefaces.component.headerrow;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
+import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.MessageFactory;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import java.io.IOException;
 
 public class HeaderRowRenderer extends CoreRenderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         HeaderRow row = (HeaderRow) component;
-        DataTable table = (DataTable) row.getParent();
         ResponseWriter writer = context.getResponseWriter();
-        boolean isExpandableRowGroups = table.isExpandableRowGroups();
+        boolean expandable = row.isExpandable();
+        boolean expanded = row.isExpanded();
 
         writer.startElement("tr", null);
         writer.writeAttribute("class", DataTable.HEADER_ROW_CLASS, null);
 
-        boolean isFirstColumn = true;
-        for (int i = 0; i < row.getChildCount(); i++) {
-            UIComponent child = row.getChildren().get(i);
-            if (child.isRendered() && child instanceof Column) {
-                Column column = (Column) child;
-                String style = column.getStyle();
-                String styleClass = column.getStyleClass();
-
-                writer.startElement("td", null);
-                if (style != null) {
-                    writer.writeAttribute("style", style, null);
+        if (row.getChildCount() > 0) {
+            boolean firstColumn = true;
+            for (int i = 0; i < row.getChildCount(); i++) {
+                UIComponent child = row.getChildren().get(i);
+                if (child.isRendered() && child instanceof Column) {
+                    Column column = (Column) child;
+                    encodeHeaderRowWithColumn(context, column, expandable, expanded, firstColumn);
+                    firstColumn = false;
                 }
-                if (styleClass != null) {
-                    writer.writeAttribute("class", styleClass, null);
-                }
-                if (column.getRowspan() != 1) {
-                    writer.writeAttribute("rowspan", column.getRowspan(), null);
-                }
-                if (column.getColspan() != 1) {
-                    writer.writeAttribute("colspan", column.getColspan(), null);
-                }
-
-                if (isExpandableRowGroups && isFirstColumn) {
-                    String ariaLabel = MessageFactory.getMessage(DataTable.ROW_GROUP_TOGGLER, null);
-
-                    writer.startElement("a", null);
-                    writer.writeAttribute("class", DataTable.ROW_GROUP_TOGGLER_CLASS, null);
-                    writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(true), null);
-                    writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
-                    writer.writeAttribute("href", "#", null);
-                    writer.startElement("span", null);
-                    writer.writeAttribute("class", DataTable.ROW_GROUP_TOGGLER_ICON_CLASS, null);
-                    writer.endElement("span");
-                    writer.endElement("a");
-
-                    isFirstColumn = false;
-                }
-
-                column.encodeAll(context);
-
-                writer.endElement("td");
             }
+        }
+        else {
+            DataTable table = (DataTable) component.getParent();
+            encodeHeaderRowWithoutColumn(context, row, table, expandable, expanded);
         }
 
         writer.endElement("tr");
+    }
+
+    protected void encodeToggleIcon(FacesContext context, boolean expanded) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String ariaLabel = MessageFactory.getMessage(DataTable.ROW_GROUP_TOGGLER);
+
+        writer.startElement("a", null);
+        writer.writeAttribute("class", DataTable.ROW_GROUP_TOGGLER_CLASS, null);
+        writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(expanded), null);
+        writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
+        writer.writeAttribute("href", "#", null);
+        writer.startElement("span", null);
+        writer.writeAttribute("class", expanded ? DataTable.ROW_GROUP_TOGGLER_OPEN_ICON_CLASS : DataTable.ROW_GROUP_TOGGLER_CLOSED_ICON_CLASS, null);
+        writer.endElement("span");
+        writer.endElement("a");
+    }
+
+    protected void encodeHeaderRowWithColumn(FacesContext context, UIColumn column, boolean expandable, boolean expanded, boolean first) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String style = column.getStyle();
+        String styleClass = column.getStyleClass();
+        int rowspan = column.getRowspan();
+        int colspan = column.getColspan();
+
+        writer.startElement("td", null);
+        if (style != null) {
+            writer.writeAttribute("style", style, null);
+        }
+        if (styleClass != null) {
+            writer.writeAttribute("class", styleClass, null);
+        }
+        if (rowspan != 1) {
+            writer.writeAttribute("rowspan", rowspan, null);
+        }
+        if (colspan != 1) {
+            writer.writeAttribute("colspan", colspan, null);
+        }
+
+        if (expandable && first) {
+            encodeToggleIcon(context, expanded);
+        }
+
+        column.encodeAll(context);
+
+        writer.endElement("td");
+    }
+
+    protected void encodeHeaderRowWithoutColumn(FacesContext context, HeaderRow row, DataTable table, boolean expandable, boolean expanded) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String style = row.getStyle();
+        String styleClass = row.getStyleClass();
+        Integer rowspan = row.getRowspan();
+        Integer colspan = row.getColspan();
+
+        writer.startElement("td", null);
+        if (style != null) {
+            writer.writeAttribute("style", style, null);
+        }
+        if (styleClass != null) {
+            writer.writeAttribute("class", styleClass, null);
+        }
+        if (rowspan != null) {
+            writer.writeAttribute("rowspan", rowspan, null);
+        }
+        if (colspan == null) {
+            colspan = table.getColumnsCount();
+        }
+        writer.writeAttribute("colspan", colspan, null);
+
+        if (expandable) {
+            encodeToggleIcon(context, expanded);
+        }
+
+        String field = row.getField();
+        Object value = !LangUtils.isValueBlank(field)
+                ? DataTable.createValueExprFromVarField(context, table.getVar(), field).getValue(context.getELContext())
+                : row.getGroupBy();
+        writer.writeText(value, null);
+
+        writer.endElement("td");
     }
 
     @Override
@@ -103,4 +156,5 @@ public class HeaderRowRenderer extends CoreRenderer {
     public boolean getRendersChildren() {
         return true;
     }
+
 }

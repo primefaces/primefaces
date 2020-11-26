@@ -26,12 +26,14 @@ package org.primefaces.util;
 import java.io.Serializable;
 import java.util.*;
 
+import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.context.PrimeRequestContext;
@@ -59,6 +61,19 @@ public class ResourceUtils {
     }
 
     /**
+     * Adds no cache pragma to the response to ensure it is not cached.  Dynamic downloads should always add this
+     * to prevent caching and for GDPR.
+     *
+     * @param context the ExternalContext we add the pragma to
+     * @see https://github.com/primefaces/primefaces/issues/6359
+     */
+    public static void addNoCacheControl(ExternalContext externalContext) {
+        externalContext.setResponseHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        externalContext.setResponseHeader("Pragma", "no-cache");
+        externalContext.setResponseHeader("Expires", "0");
+    }
+
+    /**
      * Adds the cookie represented by the arguments to the response. If the current HTTP conversation is secured
      * over SSL (e.g. https:) then the cookie is set to secure=true and sameSite=Strict.
      *
@@ -73,11 +88,12 @@ public class ResourceUtils {
             properties = new HashMap<>(2);
         }
 
-        final boolean secure = PrimeRequestContext.getCurrentInstance(context).isSecure();
-        if (secure) {
-            properties.put("secure", secure);
+        PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(context);
+
+        if (requestContext.isSecure() && requestContext.getApplicationContext().getConfig().isCookiesSecure()) {
+            properties.put("secure", true);
             // SameSite hopefully supported in Servlet 5.0
-            // properties.put("sameSite", "Strict");
+            // properties.put("sameSite", requestContext.getApplicationContext().getConfig().getCookiesSameSite());
         }
 
         context.getExternalContext().addResponseCookie(name, value, properties);
@@ -175,6 +191,17 @@ public class ResourceUtils {
         }
 
         return resource;
+    }
+
+    public static String getMonitorKeyCookieName(FacesContext context, ValueExpression monitorKey) {
+        String monitorKeyCookieName = Constants.DOWNLOAD_COOKIE + context.getViewRoot().getViewId().replace('/', '_');
+        if (monitorKey != null) {
+            String evaluated = (String) monitorKey.getValue(context.getELContext());
+            if (!LangUtils.isValueBlank(evaluated)) {
+                monitorKeyCookieName += "_" + evaluated;
+            }
+        }
+        return monitorKeyCookieName;
     }
 
     public static class ResourceInfo implements Serializable {

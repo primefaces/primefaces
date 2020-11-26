@@ -175,11 +175,10 @@ public class MessageRenderer extends UINotificationRenderer {
     protected void encodeScript(FacesContext context, Message uiMessage, UIComponent target) throws IOException {
         boolean tooltip = "tooltip".equals(uiMessage.getDisplay());
         if (tooltip || uiMessage.isShowDetail()) {
-            String clientId = uiMessage.getClientId(context);
             String targetClientId = (target instanceof InputHolder) ? ((InputHolder) target).getInputClientId() : target.getClientId(context);
             WidgetBuilder wb = getWidgetBuilder(context);
 
-            wb.init("Message", uiMessage.resolveWidgetVar(context), clientId)
+            wb.init("Message", uiMessage)
                     .attr("target", targetClientId)
                     .attr("tooltip", tooltip, false)
                     .finish();

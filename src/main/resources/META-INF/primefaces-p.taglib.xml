@@ -104,6 +104,12 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>Defines the observer event, which will trigger the auto update.</description>
+            <name>on</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
 
     <tag>
@@ -196,7 +202,7 @@
             <type>java.lang.Object</type>
         </attribute>
         <attribute>
-            <description>Specifies display mode, valid values are "attachment" (default) and "inline".</description>
+            <description>Specifies display mode (non-ajax), valid values are "attachment" (default) and "inline".</description>
             <name>contentDisposition</name>
             <required>false</required>
             <type>java.lang.String</type>
@@ -995,7 +1001,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -1107,6 +1113,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Client side callback to execute when input element loses focus.]]>
+            </description>
+            <name>onblur</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Client side callback to execute when input element loses focus and its value has been modified since gaining focus.]]>
             </description>
             <name>onchange</name>
@@ -1203,9 +1217,145 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Client side callback to execute when the mouse wheel rolls up or down over an element.]]>
+            </description>
+            <name>onwheel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Client side callback to execute when text within input element is selected by user.]]>
             </description>
             <name>onselect</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user copies the content of an element.]]>
+            </description>
+            <name>oncut</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user cuts the content of an element.]]>
+            </description>
+            <name>oncopy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user pastes some content in an element.]]>
+            </description>
+            <name>onpaste</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element gets user input.]]>
+            </description>
+            <name>oninput</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when a context menu is triggered.]]>
+            </description>
+            <name>oncontextmenu</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is invalid.]]>
+            </description>
+            <name>oninvalid</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the Reset button in a form is clicked.]]>
+            </description>
+            <name>onreset</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user writes something in a search field.]]>
+            </description>
+            <name>onsearch</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is dragged.]]>
+            </description>
+            <name>ondrag</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute at the end of a drag operation.]]>
+            </description>
+            <name>ondragend</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element has been dragged to a valid drop target.]]>
+            </description>
+            <name>ondragenter</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element leaves a valid drop target.]]>
+            </description>
+            <name>ondragleave</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is being dragged over a valid drop target.]]>
+            </description>
+            <name>ondragover</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute at the start of a drag operation.]]>
+            </description>
+            <name>ondragstart</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when dragged element is being dropped.]]>
+            </description>
+            <name>ondrop</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element's scrollbar is being scrolled.]]>
+            </description>
+            <name>onscroll</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -1599,6 +1749,22 @@
                 <![CDATA[Specifies query mode, valid values are "server" (default), "client" and "hybrid".]]>
             </description>
             <name>queryMode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Position of the dropdown button in the tabbing order.]]>
+            </description>
+            <name>dropdownTabindex</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[REST-endpoint for fetching autocomplete-suggestions. (instead of completeMethod)]]>
+            </description>
+            <name>completeEndpoint</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -2466,7 +2632,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -2674,9 +2840,145 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Client side callback to execute when the mouse wheel rolls up or down over an element.]]>
+            </description>
+            <name>onwheel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Client side callback to execute when text within input element is selected by user.]]>
             </description>
             <name>onselect</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user copies the content of an element.]]>
+            </description>
+            <name>oncut</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user cuts the content of an element.]]>
+            </description>
+            <name>oncopy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user pastes some content in an element.]]>
+            </description>
+            <name>onpaste</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element gets user input.]]>
+            </description>
+            <name>oninput</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when a context menu is triggered.]]>
+            </description>
+            <name>oncontextmenu</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is invalid.]]>
+            </description>
+            <name>oninvalid</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the Reset button in a form is clicked.]]>
+            </description>
+            <name>onreset</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user writes something in a search field.]]>
+            </description>
+            <name>onsearch</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is dragged.]]>
+            </description>
+            <name>ondrag</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute at the end of a drag operation.]]>
+            </description>
+            <name>ondragend</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element has been dragged to a valid drop target.]]>
+            </description>
+            <name>ondragenter</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element leaves a valid drop target.]]>
+            </description>
+            <name>ondragleave</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is being dragged over a valid drop target.]]>
+            </description>
+            <name>ondragover</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute at the start of a drag operation.]]>
+            </description>
+            <name>ondragstart</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when dragged element is being dropped.]]>
+            </description>
+            <name>ondrop</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element's scrollbar is being scrolled.]]>
+            </description>
+            <name>onscroll</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -3246,7 +3548,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -3873,7 +4175,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -4081,9 +4383,145 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Client side callback to execute when the mouse wheel rolls up or down over an element.]]>
+            </description>
+            <name>onwheel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Client side callback to execute when text within input element is selected by user.]]>
             </description>
             <name>onselect</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user copies the content of an element.]]>
+            </description>
+            <name>oncut</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user cuts the content of an element.]]>
+            </description>
+            <name>oncopy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user pastes some content in an element.]]>
+            </description>
+            <name>onpaste</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element gets user input.]]>
+            </description>
+            <name>oninput</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when a context menu is triggered.]]>
+            </description>
+            <name>oncontextmenu</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is invalid.]]>
+            </description>
+            <name>oninvalid</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the Reset button in a form is clicked.]]>
+            </description>
+            <name>onreset</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user writes something in a search field.]]>
+            </description>
+            <name>onsearch</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is dragged.]]>
+            </description>
+            <name>ondrag</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute at the end of a drag operation.]]>
+            </description>
+            <name>ondragend</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element has been dragged to a valid drop target.]]>
+            </description>
+            <name>ondragenter</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element leaves a valid drop target.]]>
+            </description>
+            <name>ondragleave</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is being dragged over a valid drop target.]]>
+            </description>
+            <name>ondragover</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute at the start of a drag operation.]]>
+            </description>
+            <name>ondragstart</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when dragged element is being dropped.]]>
+            </description>
+            <name>ondrop</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element's scrollbar is being scrolled.]]>
+            </description>
+            <name>onscroll</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -4318,7 +4756,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -4438,6 +4876,39 @@
             <name>sortBy</name>
             <required>false</required>
             <type>java.lang.Object</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Sets default sorting order. Possible values "asc", "desc" or null]]>
+            </description>
+            <name>sortOrder</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines where the null values are placed in ascending sort order. Default value is "1" meaning null values are placed at the end in ascending mode and
+                at beginning in descending mode. Set to "-1" for the opposite behavior.]]>
+            </description>
+            <name>nullSortOrder</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Sets default sorting priority over the other columns. Default is Integer.MAX_VALUE. Higher is less priority]]>
+            </description>
+            <name>sortPriority</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Case sensitivity for sorting, insensitive by default.]]>
+            </description>
+            <name>caseSensitiveSort</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -4593,9 +5064,17 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines if panel is toggleable by columnToggler component. Default value is true and a false value marks the column as static.]]>
+                <![CDATA[Defines if column is toggleable by columnToggler component. Default value is true and a false value marks the column as static.]]>
             </description>
             <name>toggleable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if column is draggable if draggableColumns is set. Default true.]]>
+            </description>
+            <name>draggable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -4609,7 +5088,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Name of the field to pass lazy load method for filtering and sorting. If not specified, filterBy-sortBy values are used to identify the field name.]]>
+                <![CDATA[Name of the field associated to bean "var".]]>
             </description>
             <name>field</name>
             <required>false</required>
@@ -4812,11 +5291,44 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Sets default sorting order. Possible values "asc", "desc" or null]]>
+            </description>
+            <name>sortOrder</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Sets default sorting priority over the other columns. Default is 0. Higher is less priority]]>
+            </description>
+            <name>sortPriority</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Custom pluggable sortFunction.]]>
             </description>
             <name>sortFunction</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines where the null values are placed in ascending sort order. Default value is "1" meaning null values are placed at the end in ascending mode and
+                at beginning in descending mode. Set to "-1" for the opposite behavior.]]>
+            </description>
+            <name>nullSortOrder</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Case sensitivity for sorting, insensitive by default.]]>
+            </description>
+            <name>caseSensitiveSort</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -4948,9 +5460,17 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines if panel is toggleable by columnToggler component. Default value is true and a false value marks the column as static.]]>
+                <![CDATA[Defines if columns are toggleable by columnToggler component. Default value is true and a false value marks the column as static.]]>
             </description>
             <name>toggleable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if columns are draggable if draggableColumns is set. Default true.]]>
+            </description>
+            <name>draggable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -6679,6 +7199,30 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Inline style of each row (grid-cell).]]>
+            </description>
+            <name>rowStyle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of each row (grid-cell).]]>
+            </description>
+            <name>rowStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Use modern PrimeFlex-Grid instead of classic Grid CSS.]]>
+            </description>
+            <name>flex</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -7314,6 +7858,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Property to configure default sorting. Expects a single or a collection of SortMeta]]>
+            </description>
+            <name>sortBy</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Defines sorting mode, valid values are "single" (default) and "multiple".]]>
             </description>
             <name>sortMode</name>
@@ -7327,55 +7879,6 @@
             <name>allowUnsorting</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Ordered map of sort information in "multiple" sortMode; This also allows to sort the table by default.]]>
-            </description>
-            <name>sortMeta</name>
-            <required>false</required>
-            <type>java.util.Map</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Property to be used for default sorting in "single" sortMode.]]>
-            </description>
-            <name>sortBy</name>
-            <required>false</required>
-            <type>java.lang.Object</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Sets sorting order in "single" sortMode. Default is "ascending"]]>
-            </description>
-            <name>sortOrder</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Custom pluggable sortFunction for default sorting in "single" sortMode.]]>
-            </description>
-            <name>sortFunction</name>
-            <required>false</required>
-            <type>javax.el.MethodExpression</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Name of the field to pass lazy load method for sorting in "single" sortMode. If not specified, sortBy expression is used to extract the name.]]>
-            </description>
-            <name>sortField</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Defines where the null values are placed in ascending sort order. Default value is "1" meaning null values are placed at the end in ascending mode and
-                at beginning in descending mode. Set to "-1" for the opposite behavior.]]>
-            </description>
-            <name>nullSortOrder</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
         </attribute>
         <attribute>
             <description>
@@ -7587,14 +8090,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Case sensitivity for sorting, insensitive by default.]]>
-            </description>
-            <name>caseSensitiveSort</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Ignores processing of children during lifecycle, improves performance if table only has output components, default is false.]]>
             </description>
             <name>skipChildren</name>
@@ -7724,14 +8219,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Makes row groups toggleable, default is false.]]>
-            </description>
-            <name>expandableRowGroups</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Loads data on demand as the scrollbar gets close to the bottom. Default is false.]]>
             </description>
             <name>virtualScroll</name>
@@ -7823,6 +8310,14 @@
                 <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
             </description>
             <name>touchable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Render facets even if their children are not rendered. Default is false.]]>
+            </description>
+            <name>renderEmptyFacets</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -8025,6 +8520,30 @@
                 <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
             </description>
             <name>touchable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Inline style of each row (grid-cell) in grid layout.]]>
+            </description>
+            <name>gridRowStyle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of each row (grid-cell) in grid layout.]]>
+            </description>
+            <name>gridRowStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Use modern PrimeFlex-Grid instead of classic Grid CSS.]]>
+            </description>
+            <name>flex</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -9363,7 +9882,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -9576,6 +10095,14 @@
             <name>dragDropSupport</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Callback to execute before the files are sent. If this callback returns false, the file upload request is not started.]]>
+            </description>
+            <name>onupload</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -10586,6 +11113,70 @@
             <required>false</required>
             <type>javax.faces.component.UIComponent</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of the field associated to bean "var".]]>
+            </description>
+            <name>field</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Property to be used for grouping.]]>
+            </description>
+            <name>groupBy</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Sets default sorting order. Possible values "asc", "desc" or null]]>
+            </description>
+            <name>sortOrder</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Inline style of the column.]]>
+            </description>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the column.]]>
+            </description>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Custom pluggable sortFunction.]]>
+            </description>
+            <name>sortFunction</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Makes row groups toggleable, default is false.]]>
+            </description>
+            <name>expandable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean value to specify whether the row group will be rendered expanded or closed. Default true.]]>
+            </description>
+            <name>expanded</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -11022,7 +11613,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -11420,11 +12011,19 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Defines if inplace is toggleable or not.]]>
             </description>
             <name>toggleable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines the default mode to display (input or ouput). Default: output.]]>
+            </description>
+            <name>mode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
@@ -11495,7 +12094,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -11703,9 +12302,145 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Client side callback to execute when the mouse wheel rolls up or down over an element.]]>
+            </description>
+            <name>onwheel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Client side callback to execute when text within input element is selected by user.]]>
             </description>
             <name>onselect</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user copies the content of an element.]]>
+            </description>
+            <name>oncut</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user cuts the content of an element.]]>
+            </description>
+            <name>oncopy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user pastes some content in an element.]]>
+            </description>
+            <name>onpaste</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element gets user input.]]>
+            </description>
+            <name>oninput</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when a context menu is triggered.]]>
+            </description>
+            <name>oncontextmenu</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is invalid.]]>
+            </description>
+            <name>oninvalid</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the Reset button in a form is clicked.]]>
+            </description>
+            <name>onreset</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user writes something in a search field.]]>
+            </description>
+            <name>onsearch</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is dragged.]]>
+            </description>
+            <name>ondrag</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute at the end of a drag operation.]]>
+            </description>
+            <name>ondragend</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element has been dragged to a valid drop target.]]>
+            </description>
+            <name>ondragenter</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element leaves a valid drop target.]]>
+            </description>
+            <name>ondragleave</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is being dragged over a valid drop target.]]>
+            </description>
+            <name>ondragover</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute at the start of a drag operation.]]>
+            </description>
+            <name>ondragstart</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when dragged element is being dropped.]]>
+            </description>
+            <name>ondrop</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element's scrollbar is being scrolled.]]>
+            </description>
+            <name>onscroll</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -11882,7 +12617,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -12090,9 +12825,145 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Client side callback to execute when the mouse wheel rolls up or down over an element.]]>
+            </description>
+            <name>onwheel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Client side callback to execute when text within input element is selected by user.]]>
             </description>
             <name>onselect</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user copies the content of an element.]]>
+            </description>
+            <name>oncut</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user cuts the content of an element.]]>
+            </description>
+            <name>oncopy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user pastes some content in an element.]]>
+            </description>
+            <name>onpaste</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element gets user input.]]>
+            </description>
+            <name>oninput</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when a context menu is triggered.]]>
+            </description>
+            <name>oncontextmenu</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is invalid.]]>
+            </description>
+            <name>oninvalid</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the Reset button in a form is clicked.]]>
+            </description>
+            <name>onreset</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user writes something in a search field.]]>
+            </description>
+            <name>onsearch</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is dragged.]]>
+            </description>
+            <name>ondrag</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute at the end of a drag operation.]]>
+            </description>
+            <name>ondragend</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element has been dragged to a valid drop target.]]>
+            </description>
+            <name>ondragenter</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element leaves a valid drop target.]]>
+            </description>
+            <name>ondragleave</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is being dragged over a valid drop target.]]>
+            </description>
+            <name>ondragover</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute at the start of a drag operation.]]>
+            </description>
+            <name>ondragstart</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when dragged element is being dropped.]]>
+            </description>
+            <name>ondrop</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element's scrollbar is being scrolled.]]>
+            </description>
+            <name>onscroll</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -12194,7 +13065,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Symbol suffix. Default is prefix.]]>
+                <![CDATA[Position of the symbol. 'p' for prefix 's' for suffix]]>
             </description>
             <name>symbolPosition</name>
             <required>false</required>
@@ -12202,7 +13073,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Minimum value. Warning: If minValue is greater than 0, then you will effectively prevent your users to entirely delete the content of their input.]]>
+                <![CDATA[Minimum value. Warning: If minValue is greater than 0, then you will effectively prevent your users to entirely delete the content of their input. Default is -10000000000000.]]>
             </description>
             <name>minValue</name>
             <required>false</required>
@@ -12210,7 +13081,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Maximum values. Default is 999999999.99.]]>
+                <![CDATA[Maximum values. Default is 10000000000000.]]>
             </description>
             <name>maxValue</name>
             <required>false</required>
@@ -12226,7 +13097,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Number of decimal places. Default is 2.]]>
+                <![CDATA[Number of decimal places. If value is Integer/Long/Short number defaults to 0 else defaults to 2.]]>
             </description>
             <name>decimalPlaces</name>
             <required>false</required>
@@ -12234,9 +13105,17 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Controls empty input display behavior, options are empty, zero, sign. Default is empty.]]>
+                <![CDATA[Defines what to display when the input value is empty (possible options are null, focus, press, always, min, max, zero, number, or a string representing a number). Default is focus.]]>
             </description>
             <name>emptyValue</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[HTML5 inputmode attribute for hinting at the type of data this control has for touch devices. Default is 'numeric' if decimalPlaces==0, 'decimal' if decimalPlaces>0.]]>
+            </description>
+            <name>inputMode</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -12357,7 +13236,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -12560,7 +13439,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -12768,9 +13647,145 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Client side callback to execute when the mouse wheel rolls up or down over an element.]]>
+            </description>
+            <name>onwheel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Client side callback to execute when text within input element is selected by user.]]>
             </description>
             <name>onselect</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user copies the content of an element.]]>
+            </description>
+            <name>oncut</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user cuts the content of an element.]]>
+            </description>
+            <name>oncopy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user pastes some content in an element.]]>
+            </description>
+            <name>onpaste</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element gets user input.]]>
+            </description>
+            <name>oninput</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when a context menu is triggered.]]>
+            </description>
+            <name>oncontextmenu</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is invalid.]]>
+            </description>
+            <name>oninvalid</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the Reset button in a form is clicked.]]>
+            </description>
+            <name>onreset</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user writes something in a search field.]]>
+            </description>
+            <name>onsearch</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is dragged.]]>
+            </description>
+            <name>ondrag</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute at the end of a drag operation.]]>
+            </description>
+            <name>ondragend</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element has been dragged to a valid drop target.]]>
+            </description>
+            <name>ondragenter</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element leaves a valid drop target.]]>
+            </description>
+            <name>ondragleave</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is being dragged over a valid drop target.]]>
+            </description>
+            <name>ondragover</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute at the start of a drag operation.]]>
+            </description>
+            <name>ondragstart</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when dragged element is being dropped.]]>
+            </description>
+            <name>ondrop</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element's scrollbar is being scrolled.]]>
+            </description>
+            <name>onscroll</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -12932,7 +13947,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -13124,9 +14139,145 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Client side callback to execute when the mouse wheel rolls up or down over an element.]]>
+            </description>
+            <name>onwheel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Client side callback to execute when text within input element is selected by user.]]>
             </description>
             <name>onselect</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user copies the content of an element.]]>
+            </description>
+            <name>oncut</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user cuts the content of an element.]]>
+            </description>
+            <name>oncopy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user pastes some content in an element.]]>
+            </description>
+            <name>onpaste</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element gets user input.]]>
+            </description>
+            <name>oninput</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when a context menu is triggered.]]>
+            </description>
+            <name>oncontextmenu</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is invalid.]]>
+            </description>
+            <name>oninvalid</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the Reset button in a form is clicked.]]>
+            </description>
+            <name>onreset</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user writes something in a search field.]]>
+            </description>
+            <name>onsearch</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is dragged.]]>
+            </description>
+            <name>ondrag</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute at the end of a drag operation.]]>
+            </description>
+            <name>ondragend</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element has been dragged to a valid drop target.]]>
+            </description>
+            <name>ondragenter</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element leaves a valid drop target.]]>
+            </description>
+            <name>ondragleave</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is being dragged over a valid drop target.]]>
+            </description>
+            <name>ondragover</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute at the start of a drag operation.]]>
+            </description>
+            <name>ondragstart</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when dragged element is being dropped.]]>
+            </description>
+            <name>ondrop</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element's scrollbar is being scrolled.]]>
+            </description>
+            <name>onscroll</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -13335,7 +14486,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -13543,9 +14694,145 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Client side callback to execute when the mouse wheel rolls up or down over an element.]]>
+            </description>
+            <name>onwheel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Client side callback to execute when text within input element is selected by user.]]>
             </description>
             <name>onselect</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user copies the content of an element.]]>
+            </description>
+            <name>oncut</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user cuts the content of an element.]]>
+            </description>
+            <name>oncopy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user pastes some content in an element.]]>
+            </description>
+            <name>onpaste</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element gets user input.]]>
+            </description>
+            <name>oninput</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when a context menu is triggered.]]>
+            </description>
+            <name>oncontextmenu</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is invalid.]]>
+            </description>
+            <name>oninvalid</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the Reset button in a form is clicked.]]>
+            </description>
+            <name>onreset</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user writes something in a search field.]]>
+            </description>
+            <name>onsearch</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is dragged.]]>
+            </description>
+            <name>ondrag</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute at the end of a drag operation.]]>
+            </description>
+            <name>ondragend</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element has been dragged to a valid drop target.]]>
+            </description>
+            <name>ondragenter</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element leaves a valid drop target.]]>
+            </description>
+            <name>ondragleave</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is being dragged over a valid drop target.]]>
+            </description>
+            <name>ondragover</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute at the start of a drag operation.]]>
+            </description>
+            <name>ondragstart</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when dragged element is being dropped.]]>
+            </description>
+            <name>ondrop</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element's scrollbar is being scrolled.]]>
+            </description>
+            <name>onscroll</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -13876,7 +15163,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -16219,7 +17506,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -16480,7 +17767,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -17732,7 +19019,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -17940,9 +19227,145 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Client side callback to execute when the mouse wheel rolls up or down over an element.]]>
+            </description>
+            <name>onwheel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Client side callback to execute when text within input element is selected by user.]]>
             </description>
             <name>onselect</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user copies the content of an element.]]>
+            </description>
+            <name>oncut</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user cuts the content of an element.]]>
+            </description>
+            <name>oncopy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user pastes some content in an element.]]>
+            </description>
+            <name>onpaste</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element gets user input.]]>
+            </description>
+            <name>oninput</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when a context menu is triggered.]]>
+            </description>
+            <name>oncontextmenu</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is invalid.]]>
+            </description>
+            <name>oninvalid</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the Reset button in a form is clicked.]]>
+            </description>
+            <name>onreset</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user writes something in a search field.]]>
+            </description>
+            <name>onsearch</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is dragged.]]>
+            </description>
+            <name>ondrag</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute at the end of a drag operation.]]>
+            </description>
+            <name>ondragend</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element has been dragged to a valid drop target.]]>
+            </description>
+            <name>ondragenter</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element leaves a valid drop target.]]>
+            </description>
+            <name>ondragleave</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is being dragged over a valid drop target.]]>
+            </description>
+            <name>ondragover</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute at the start of a drag operation.]]>
+            </description>
+            <name>ondragstart</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when dragged element is being dropped.]]>
+            </description>
+            <name>ondrop</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element's scrollbar is being scrolled.]]>
+            </description>
+            <name>onscroll</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -18168,7 +19591,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -18403,7 +19826,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -19246,7 +20669,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -20285,6 +21708,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Defines direction of schedule. Valid values are "ltr" (default) and "rtl".]]>
+            </description>
+            <name>dir</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Ratio of calendar width to height, higher the value shorter the height is.]]>
             </description>
             <name>aspectRatio</name>
@@ -20445,7 +21876,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Format for column headers. (eg "week:'dd DD MMM'" or "timeGridWeek: 'DD MM', timeGridDay: 'dd'")]]>
+                <![CDATA[Format for column headers. (eg `timeGridWeek: {weekday: 'narrow'}` or `timeGridWeek: {weekday: 'short'}, timeGridDay: {day: 'numeric'}`)]]>
             </description>
             <name>columnHeaderFormat</name>
             <required>false</required>
@@ -20534,6 +21965,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Determines the text that will be displayed within a time slot.]]>
+            </description>
+            <name>slotLabelFormat</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Target for events with urls. Clicking on such events in the schedule will not trigger the selectEvent but open the url using this target instead. Default is "_blank".]]>
             </description>
             <name>urlTarget</name>
@@ -20547,6 +21986,14 @@
             <name>noOpener</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Sets the height of the entire calendar, including header and footer. By default, this option is unset and the calendar's height is calculated by aspectRatio. If "auto" is specified, the view's contents will assume a natural height and no scrollbars will be used.]]>
+            </description>
+            <name>height</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
@@ -20683,7 +22130,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -20902,7 +22349,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -21113,7 +22560,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -21429,7 +22876,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -21600,7 +23047,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -21787,7 +23234,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -22038,7 +23485,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -22217,7 +23664,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -22452,7 +23899,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -22524,7 +23971,15 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Always display the 'label' value instead of the selected item label. Default is false.]]>
+            </description>
+            <name>alwaysDisplayLabel</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[User presentable name used in conjuction with 'alwaysDisplayLabel' to display instead of selected item.]]>
             </description>
             <name>label</name>
             <required>false</required>
@@ -22832,7 +24287,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -23232,7 +24687,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -23802,7 +25257,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -24010,9 +25465,145 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Client side callback to execute when the mouse wheel rolls up or down over an element.]]>
+            </description>
+            <name>onwheel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Client side callback to execute when text within input element is selected by user.]]>
             </description>
             <name>onselect</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user copies the content of an element.]]>
+            </description>
+            <name>oncut</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user cuts the content of an element.]]>
+            </description>
+            <name>oncopy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user pastes some content in an element.]]>
+            </description>
+            <name>onpaste</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element gets user input.]]>
+            </description>
+            <name>oninput</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when a context menu is triggered.]]>
+            </description>
+            <name>oncontextmenu</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is invalid.]]>
+            </description>
+            <name>oninvalid</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the Reset button in a form is clicked.]]>
+            </description>
+            <name>onreset</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user writes something in a search field.]]>
+            </description>
+            <name>onsearch</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is dragged.]]>
+            </description>
+            <name>ondrag</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute at the end of a drag operation.]]>
+            </description>
+            <name>ondragend</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element has been dragged to a valid drop target.]]>
+            </description>
+            <name>ondragenter</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element leaves a valid drop target.]]>
+            </description>
+            <name>ondragleave</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is being dragged over a valid drop target.]]>
+            </description>
+            <name>ondragover</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute at the start of a drag operation.]]>
+            </description>
+            <name>ondragstart</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when dragged element is being dropped.]]>
+            </description>
+            <name>ondrop</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element's scrollbar is being scrolled.]]>
+            </description>
+            <name>onscroll</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -24087,6 +25678,14 @@
             <name>stepFactor</name>
             <required>false</required>
             <type>java.lang.Double</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Round the value to the nearest stepFactor. Default is false.]]>
+            </description>
+            <name>round</name>
+            <required>false</required>
+            <type>boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -25795,7 +27394,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -26022,7 +27621,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -26901,7 +28500,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -28229,7 +29828,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -29182,7 +30781,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -29398,9 +30997,145 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Client side callback to execute when the mouse wheel rolls up or down over an element.]]>
+            </description>
+            <name>onwheel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Client side callback to execute when text within input element is selected by user.]]>
             </description>
             <name>onselect</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user copies the content of an element.]]>
+            </description>
+            <name>oncut</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user cuts the content of an element.]]>
+            </description>
+            <name>oncopy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user pastes some content in an element.]]>
+            </description>
+            <name>onpaste</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element gets user input.]]>
+            </description>
+            <name>oninput</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when a context menu is triggered.]]>
+            </description>
+            <name>oncontextmenu</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is invalid.]]>
+            </description>
+            <name>oninvalid</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the Reset button in a form is clicked.]]>
+            </description>
+            <name>onreset</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user writes something in a search field.]]>
+            </description>
+            <name>onsearch</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is dragged.]]>
+            </description>
+            <name>ondrag</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute at the end of a drag operation.]]>
+            </description>
+            <name>ondragend</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element has been dragged to a valid drop target.]]>
+            </description>
+            <name>ondragenter</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element leaves a valid drop target.]]>
+            </description>
+            <name>ondragleave</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is being dragged over a valid drop target.]]>
+            </description>
+            <name>ondragover</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute at the start of a drag operation.]]>
+            </description>
+            <name>ondragstart</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when dragged element is being dropped.]]>
+            </description>
+            <name>ondrop</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element's scrollbar is being scrolled.]]>
+            </description>
+            <name>onscroll</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -29926,6 +31661,14 @@
             <name>maskAutoClear</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Model with meta data for certain dates, like disabled.]]>
+            </description>
+            <name>model</name>
+            <required>false</required>
+            <type>org.primefaces.model.datepicker.DateMetadataModel</type>
         </attribute>
     </tag>
 </facelet-taglib>

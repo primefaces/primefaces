@@ -47,10 +47,8 @@ public class PolarAreaChartRenderer extends ChartRenderer {
     }
 
     protected void encodeScript(FacesContext context, PolarAreaChart chart) throws IOException {
-        String clientId = chart.getClientId(context);
-
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("PolarAreaChart", chart.resolveWidgetVar(context), clientId);
+        wb.init("PolarAreaChart", chart);
 
         encodeConfig(context, chart.getModel());
         encodeClientBehaviors(context, chart);

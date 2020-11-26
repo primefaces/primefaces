@@ -73,6 +73,7 @@
             panelStyleClass: null,
             monthNavigator: false,
             yearNavigator: false,
+            dateStyleClasses: null,
             disabledDates: null,
             disabledDays: null,
             minDate: null,
@@ -340,13 +341,13 @@
                     y = year + 1;
                 }
 
-                months.push(this.createMonth(m, y));
+                months.push(this.createMonth(m, y, i));
             }
 
             return months;
         },
 
-        createMonth: function (month, year) {
+        createMonth: function (month, year, index) {
             var dates = [];
             firstDay = this.getFirstDayOfMonthIndex(month, year);
             daysLength = this.getDaysCountInMonth(month, year);
@@ -402,7 +403,8 @@
             return {
                 month: month,
                 year: year,
-                dates: dates
+                dates: dates,
+                index: index
             };
         },
 
@@ -1105,6 +1107,9 @@
                     }
                 });
             }
+
+            // #6379 set state of navigator buttons
+            this.setNavigationState(this.viewDate);
         },
 
         renderTriggerButton: function () {
@@ -1159,8 +1164,8 @@
         },
 
         renderDateView: function () {
-            this.monthsMetaData = this.createMonths(this.viewDate.getMonth(), this.viewDate.getFullYear());
-            var months = this.renderMonths(this.monthsMetaData);
+            this.monthsMetadata = this.createMonths(this.viewDate.getMonth(), this.viewDate.getFullYear());
+            var months = this.renderMonths(this.monthsMetadata);
 
             return months;
         },
@@ -1252,23 +1257,23 @@
             return months;
         },
 
-        renderMonths: function (monthsMetaData) {
+        renderMonths: function (monthsMetadata) {
             var monthsHtml = '';
 
-            for (var i = 0; i < monthsMetaData.length; i++) {
-                monthsHtml += this.renderMonth(monthsMetaData[i], i);
+            for (var i = 0; i < monthsMetadata.length; i++) {
+                monthsHtml += this.renderMonth(monthsMetadata[i], i);
             }
 
             return monthsHtml;
         },
 
-        renderMonth: function (monthMetaData, index) {
+        renderMonth: function (monthMetadata, index) {
             var weekDaysMin = this.createWeekDaysMin(),
                 weekDays = this.createWeekDays(),
                 backwardNavigator = (index === 0) ? this.renderBackwardNavigator() : '',
                 forwardNavigator = (this.options.numberOfMonths === 1) || (index === this.options.numberOfMonths - 1) ? this.renderForwardNavigator() : '',
-                title = this.renderTitle(monthMetaData),
-                dateViewGrid = this.renderDateViewGrid(monthMetaData, weekDaysMin, weekDays);
+                title = this.renderTitle(monthMetadata),
+                dateViewGrid = this.renderDateViewGrid(monthMetadata, weekDaysMin, weekDays);
 
             return ('<div class="ui-datepicker-group ui-widget-content">' +
                 '<div class="ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-all">' +
@@ -1292,8 +1297,8 @@
                 '</a>';
         },
 
-        renderTitleMonthElement: function (month) {
-            if (this.options.monthNavigator && this.options.view !== 'month') {
+        renderTitleMonthElement: function (month, index) {
+            if (this.options.monthNavigator && this.options.view !== 'month' && index === 0) {
                 return '<select class="ui-datepicker-month">' + this.renderTitleOptions('month', this.options.locale.monthNamesShort) + '</select>';
             }
             else {
@@ -1301,8 +1306,8 @@
             }
         },
 
-        renderTitleYearElement: function (year) {
-            if (this.options.yearNavigator) {
+        renderTitleYearElement: function (year, index) {
+            if (this.options.yearNavigator && index === 0) {
                 var yearOptions = [],
                     years = this.options.yearRange.split(':'),
                     yearStart = parseInt(years[0], 10),
@@ -1343,9 +1348,9 @@
             return _options;
         },
 
-        renderTitle: function (monthMetaData) {
-            var month = this.renderTitleMonthElement(monthMetaData.month),
-                year = this.renderTitleYearElement(monthMetaData.year);
+        renderTitle: function (monthMetadata) {
+            var month = this.renderTitleMonthElement(monthMetadata.month, monthMetadata.index),
+                year = this.renderTitleYearElement(monthMetadata.year, monthMetadata.index);
 
             return (
                 '<div class="ui-datepicker-title">' +
@@ -1463,6 +1468,13 @@
 
         renderDateCellContent: function (date, dateClass) {
             var content = this.options.dateTemplate ? this.options.dateTemplate.call(this, date) : date.day;
+            var classes = this.options.dateStyleClasses;
+            if (classes !== null) {
+                var isoDateStr = this.toISODateString(new Date(date.year, date.month, date.day));
+                if (classes[isoDateStr]) {
+                    dateClass += ' ' + classes[isoDateStr];
+                }
+            }
             if (date.selectable) {
                 return '<a tabindex="0" class="' + dateClass + '">' + content + '</a>';
             }
@@ -1471,11 +1483,11 @@
             }
         },
 
-        renderDates: function (monthMetaData) {
+        renderDates: function (monthMetadata) {
             var datesHtml = '';
 
-            for (var i = 0; i < monthMetaData.dates.length; i++) {
-                var week = monthMetaData.dates[i];
+            for (var i = 0; i < monthMetadata.dates.length; i++) {
+                var week = monthMetadata.dates[i];
 
                 datesHtml += '<tr>' +
                     this.renderWeek(week) +
@@ -1485,9 +1497,9 @@
             return datesHtml;
         },
 
-        renderDateViewGrid: function (monthMetaData, weekDaysMin, weekDays) {
+        renderDateViewGrid: function (monthMetadata, weekDaysMin, weekDays) {
             var dayNames = this.renderDayNames(weekDaysMin, weekDays),
-                dates = this.renderDates(monthMetaData);
+                dates = this.renderDates(monthMetadata);
 
             return (
                 '<div class="ui-datepicker-calendar-container">' +
@@ -1598,6 +1610,16 @@
             return _classes;
         },
 
+        /**
+         * Converts a date object to an ISO date (only, no time) string. Useful to check if a dates matches with a date
+         * sent from the backend whithout needing to parse the backend date first.
+         * @private
+         * @param {Date} date The date to convert.
+         */
+        toISODateString: function (date) {
+            return date.toISOString().substring(0, 10);
+        },
+
         _bindEvents: function () {
             var $this = this;
             if (!this.options.inline) {
@@ -1674,12 +1696,12 @@
 
             var dateSelector = '.ui-datepicker-calendar td a';
             this.panel.off('click.datePicker-date', dateSelector).on('click.datePicker-date', dateSelector, null, function (event) {
-                if ($this.monthsMetaData) {
+                if ($this.monthsMetadata) {
                     var dayEl = $(this),
                         calendarIndex = dayEl.closest('.ui-datepicker-group').index(),
                         weekIndex = dayEl.closest('tr').index(),
                         dayIndex = dayEl.closest('td').index() - ($this.options.showWeek ? 1 : 0);
-                    $this.onDateSelect(event, $this.monthsMetaData[calendarIndex].dates[weekIndex][dayIndex]);
+                    $this.onDateSelect(event, $this.monthsMetadata[calendarIndex].dates[weekIndex][dayIndex]);
                 }
             });
         },
@@ -1825,6 +1847,8 @@
                 testDate.setMonth(testDate.getMonth()+1)
                 testDate.setHours(-1);
                 if (minDate && minDate > testDate) {
+                    this.setNavigationState(newViewDate);
+                    event.preventDefault();
                     return;
                 }
 
@@ -1876,6 +1900,8 @@
                 // #5967 check if month can be navigated to by checking first day next month
                 var maxDate = this.options.maxDate;
                 if (maxDate && maxDate < newViewDate) {
+                    this.setNavigationState(newViewDate);
+                    event.preventDefault();
                     return;
                 }
 
@@ -1905,6 +1931,40 @@
             this.updateViewDate(event, newViewDate);
 
             event.preventDefault();
+        },
+
+        setNavigationState: function(newViewDate) {
+            if (this.options.view !== 'date') {
+                return;
+            }
+
+            var navPrev = this.panel.find('.ui-datepicker-header > .ui-datepicker-prev');
+            var navNext = this.panel.find('.ui-datepicker-header > .ui-datepicker-next');
+
+            if (this.options.disabled) {
+                navPrev.addClass('ui-state-disabled');
+                navNext.addClass('ui-state-disabled');
+                return;
+            }
+
+            // previous
+            var testDate = new Date(newViewDate.getTime()),
+                minDate = this.options.minDate;
+            testDate.setMonth(testDate.getMonth()+1)
+            testDate.setHours(-1);
+            if (minDate && minDate > testDate) {
+                navPrev.addClass('ui-state-disabled');
+            } else {
+                navPrev.removeClass('ui-state-disabled');
+            }
+
+            // next
+            var maxDate = this.options.maxDate;
+            if (maxDate && maxDate < newViewDate) {
+                navNext.addClass('ui-state-disabled');
+            } else {
+                navNext.removeClass('ui-state-disabled');
+            }
         },
 
         onTimePickerElementMouseDown: function (event, type, direction) {

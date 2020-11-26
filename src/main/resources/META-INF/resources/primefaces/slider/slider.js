@@ -92,7 +92,7 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
         });
 
         if (this.input.parent().hasClass('ui-inputnumber')) {
-            this.input.parent().find('input:hidden').on('change', function () {
+            this.input.parent().find('input:hidden').off('change.slider').on('change.slider', function () {
                 $this.setValue($(this).val());
             });
         }
@@ -124,7 +124,10 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
 
                         //prevent letters and allow letters with meta key such as ctrl+c
                         //also allow '.' when the step is defined as decimal
-                        if(!isNumber && !metaKey && !($this.decimalStep && key === 190)) {
+                        // #6319 if number allow negative sign
+                        if(!isNumber && !metaKey &&
+                                !($this.cfg.min < 0 && key === 189) &&
+                                !($this.decimalStep && key === 190)) {
                             e.preventDefault();
                         }
                     break;

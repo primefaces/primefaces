@@ -29,6 +29,7 @@ multiViewState().clear(String viewId, String clientId) | Removes multiViewState 
 multiViewState().get(String viewId, String clientId, boolean create, Supplier<T> supplier) | Gets multiview state bean attached to a component in a specific view.
 ajax().addCallBackParam(String name, Object value) | Adds parameters to ajax callbacks like oncomplete.
 ajax().update(Collection<String>/String... expressions); | Specifies component(s) to update at runtime.
+ajax().update(UIComponent... components); | Specifies component(s) to update at runtime.
 
 
 ### Callback Parameters

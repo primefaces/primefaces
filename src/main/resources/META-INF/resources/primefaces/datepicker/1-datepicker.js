@@ -1,41 +1,41 @@
 /**
  * __PrimeFaces DatePicker Widget__
- * 
+ *
  * DatePicker is an input component used to select a date featuring display modes, paging, localization, ajax selection
  * and more.
- * 
+ *
  * DatePicker is designed to replace the old {@link Calendar|p:calendar} component.
- * 
+ *
  * To interact with the calendar, use the methods of this widget, or for more advanced usages, use the `datePicker`
  * JQueryUI widget plugin, for example:
- * 
+ *
  * ```javascript
  * PF("datePickerWidget").getDate();
  * PF("datePickerWidget").jq.datePicker("getDate");
- * 
+ *
  * PF("datePickerWidget").setDate(new Date());
  * PF("datePickerWidget").jq.datePicker("setDate", new Date());
- * 
+ *
  * PF("datePickerWidget").jq.datePicker("enableModality");
  * ```
- * 
+ *
  * @typedef PrimeFaces.widget.DatePicker.PreShowCallback User-defined callback invoked before the date picker overlay is
  * shown.
  * @this {PrimeFaces.widget.DatePickerCfg} PrimeFaces.widget.DatePicker.PreShowCallback
  * @param {JQueryPrimeDatePicker.PickerInstance} PrimeFaces.widget.DatePicker.PreShowCallback.datePicker The current
  * date picker instance.
- * 
+ *
  * @prop {JQuery} input The DOM element for the hidden input element with the selected date.
  * @prop {JQuery} jqEl The DOM element for the inline picker or the input.
  * @prop {boolean} refocusInput Whether focus should be put on the input again.
  * @prop {Date | Date[]} viewDateOption The date that is displayed in the date picker.
- * 
+ *
  * @interface {PrimeFaces.widget.DatePickerCfg} cfg The configuration for the {@link  DatePicker| DatePicker widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
- * @extends {JQueryPrimeDatePicker.PickerOptions} cfg 
- * 
+ * @extends {JQueryPrimeDatePicker.PickerOptions} cfg
+ *
  * @prop {string} cfg.mask Applies a mask using the pattern.
  * @prop {boolean} cfg.maskAutoClear Clears the field on blur when incomplete input is entered
  * @prop {string} cfg.maskSlotChar Placeholder in mask template.
@@ -67,7 +67,6 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         this.bindClearButtonListener();
         this.bindViewChangeListener();
         this.bindCloseListener();
-        this.applyMask();
 
         // is touch support enabled
         var touchEnabled = PrimeFaces.env.isTouchable(this.cfg) && !this.input.attr("readonly") && this.cfg.showIcon;
@@ -114,8 +113,11 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.panelStyleClass = (this.cfg.panelStyleClass || '') + ' p-datepicker-panel';
         this.cfg.viewDate = this.viewDateOption;
         this.cfg.appendTo = this.cfg.appendTo ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo) : null;
+        this.cfg.rangeSeparator = this.cfg.rangeSeparator||'-';
+        this.cfg.timeSeparator = this.cfg.timeSeparator||':';
 
         this.jq.datePicker(this.cfg);
+        this.applyMask(); // moved below datapicker initialization because of race condition in event handling. See https://github.com/primefaces/primefaces/issues/6445
 
         //extensions
         if(!this.cfg.inline && this.cfg.showIcon) {
@@ -139,7 +141,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         if(!this.cfg.inline) {
             this.jq.data('primefaces-overlay-target', this.id).find('*').data('primefaces-overlay-target', this.id);
         }
-        
+
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
@@ -185,7 +187,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             this.cfg.userLocale = locale;
         }
     },
-    
+
     /**
      * Initializes the mask on the input if using a mask and not an inline picker.
      * @private
@@ -278,33 +280,63 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         var _self = this;
         this.cfg.onViewDateChange = function(event, date) {
             _self.viewDateOption = date;
-
-            if(_self.hasBehavior('viewChange')) {
-                _self.fireViewChangeEvent(date.getFullYear(), date.getMonth());
-            }
+            _self.fireViewChangeEvent(date);
         };
     },
 
     /**
      * Triggers the event for when the date picker changed to a different month or year page.
      * @private
-     * @param {number} year The year to which the date picker changed.
-     * @param {number} month The year to which the date picker changed, starting with `0` for `Janurary`.
+     * @param {Date} date The date to which the date picker changed.
      */
-    fireViewChangeEvent: function(year, month) {
-        if(this.cfg.behaviors) {
-            var viewChangeBehavior = this.cfg.behaviors['viewChange'];
+    fireViewChangeEvent: function(date) {
+        var _self = this;
+        var lazy = this.cfg.lazyModel;
+        var options = {
+            params: [
+                {name: this.id + '_year', value: date.getFullYear()},
+                {name: this.id + '_month', value: date.getMonth()}
+            ]
+        }
+        if (lazy) {
+            options.onsuccess = function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                    widget: _self,
+                    handle: function(content) {
+                        var dateMetadata = JSON.parse(content).dateMetadata;
+                        var pdp = _self.jq.data().primeDatePicker;
+                        var disabledDates = [];
+                        var dateStyleClasses = {};
+                        for (date in dateMetadata) {
+                            var parsedDate = pdp.parseOptionValue(date);
+                            if (dateMetadata[date].disabled) {
+                                disabledDates.push(parsedDate);
+                            }
+                            if (dateMetadata[date].styleClass) {
+                                dateStyleClasses[pdp.toISODateString(parsedDate)] = dateMetadata[date].styleClass;
+                            }
+                        }
+                        pdp.options.dateStyleClasses = dateStyleClasses;
+                        _self.setDisabledDates(disabledDates);
+                    }
+                });
+                return true;
+            };
+        }
 
-            if(viewChangeBehavior) {
-                var ext = {
-                        params: [
-                            {name: this.id + '_month', value: month},
-                            {name: this.id + '_year', value: year}
-                        ]
-                };
-
-                viewChangeBehavior.call(this, ext);
+        if (this.hasBehavior('viewChange')) {
+            if (lazy) {
+                options.update = (options.update || '') + ' ' + this.id;
             }
+            this.callBehavior('viewChange', options);
+        }
+        else if (lazy) {
+            options.event = 'viewChange';
+            options.source = this.id;
+            options.process = this.id;
+            options.update = this.id;
+            options.formId = this.cfg.formId;
+            PrimeFaces.ajax.Request.handle(options);
         }
     },
 
@@ -353,7 +385,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Sets the displayed visible calendar date. This refers to the currently displayed month page.
-     * @param {string | Date | Date[]} date The date to be shown in the calendar. 
+     * @param {string | Date | Date[]} date The date to be shown in the calendar.
      */
     setViewDate: function(date) {
         var viewDate = this.jq.data().primeDatePicker.parseValue(date);
@@ -362,10 +394,43 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Gets the displayed visible calendar date. This refers to the currently displayed month page.
-     * @return {Date | Date[]} The currently displayed date or dates. 
+     * @return {Date | Date[]} The currently displayed date or dates.
      */
     getViewDate: function() {
         return this.jq.datePicker().data().primeDatePicker.viewDate;
+    },
+
+    /**
+     * Sets the disabled dates.
+     * @param {string[] | Date[]} disabledDates The dates to disable.
+     */
+    setDisabledDates: function(disabledDates) {
+        var pdp = this.jq.data().primeDatePicker;
+        pdp.options.disabledDates = disabledDates;
+        if (pdp.options.disabledDates) {
+            for (var i = 0; i < pdp.options.disabledDates.length; i++) {
+                pdp.options.disabledDates[i] = pdp.parseOptionValue(pdp.options.disabledDates[i]);
+            }
+        }
+        this.updatePanel();
+    },
+
+    /**
+     * Sets the disabled days.
+     * @param {number[]} disabledDays The days to disable.
+     */
+    setDisabledDays: function(disabledDays) {
+        this.jq.data().primeDatePicker.options.disabledDays = disabledDays;
+        this.updatePanel();
+    },
+
+    /**
+     * Update panel.
+     * @private
+     */
+    updatePanel: function() {
+        var pdp = this.jq.data().primeDatePicker;
+        pdp.panel.get(0).innerHTML = pdp.renderPanelElements();
     },
 
 });

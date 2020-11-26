@@ -47,10 +47,8 @@ public class LineChartRenderer extends ChartRenderer {
     }
 
     protected void encodeScript(FacesContext context, LineChart chart) throws IOException {
-        String clientId = chart.getClientId(context);
-
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("LineChart", chart.resolveWidgetVar(context), clientId);
+        wb.init("LineChart", chart);
 
         encodeConfig(context, chart.getModel());
         encodeClientBehaviors(context, chart);

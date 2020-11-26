@@ -25,20 +25,20 @@ package org.primefaces.component.datepicker;
 
 import java.time.*;
 import java.util.*;
-
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
-
 import org.primefaces.event.DateViewChangeEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.datepicker.DateMetadata;
+import org.primefaces.model.datepicker.DateMetadataModel;
+import org.primefaces.model.datepicker.LazyDateMetadataModel;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -52,16 +52,11 @@ public class DatePicker extends DatePickerBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.DatePicker";
     public static final String CONTAINER_EXTENSION_CLASS = "p-datepicker";
 
-    private static final Collection<String> EVENT_NAMES = LangUtils.unmodifiableList("blur", "change", "valueChange", "click", "dblclick",
-            "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select", "dateSelect", "viewChange",
-            "close");
-    private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("dateSelect", "viewChange", "close");
-
     private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>(1);
 
     @Override
     public Collection<String> getEventNames() {
-        return EVENT_NAMES;
+        return CALENDAR_EVENT_NAMES;
     }
 
     @Override
@@ -321,5 +316,42 @@ public class DatePicker extends DatePickerBase {
         }
 
         return super.saveState(context);
+    }
+
+    protected List<Object> getInitialDisabledDates(FacesContext context) {
+        List<Object> disabledDates = getDisabledDates();
+        if (disabledDates != null) {
+            return disabledDates;
+        }
+        DateMetadataModel model = getModel();
+        if (model != null) {
+            disabledDates = new ArrayList<>();
+            for (Map.Entry<LocalDate, DateMetadata> entry : model.getDateMetadata().entrySet()) {
+                if (entry.getValue().isDisabled()) {
+                    disabledDates.add(entry.getKey());
+                }
+            }
+        }
+        return disabledDates;
+    }
+
+    protected void loadInitialLazyMetadata(FacesContext context) {
+        DateMetadataModel model = getModel();
+        if (model instanceof LazyDateMetadataModel) {
+            LocalDate startDate = getInitalStartDate(context);
+            LocalDate endDate = startDate.plusMonths(getNumberOfMonths()).minusDays(1);
+
+            LazyDateMetadataModel lazyModel = ((LazyDateMetadataModel) model);
+            lazyModel.clear();
+            lazyModel.loadDateMetadata(startDate, endDate);
+        }
+    }
+
+    protected LocalDate getInitalStartDate(FacesContext context) {
+        LocalDate date = CalendarUtils.getObjectAsLocalDate(context, this, getValue());
+        if (date == null) {
+            date = LocalDate.from(CalendarUtils.now(this));
+        }
+        return date.withDayOfMonth(1);
     }
 }

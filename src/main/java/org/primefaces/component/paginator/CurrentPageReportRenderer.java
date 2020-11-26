@@ -24,6 +24,7 @@
 package org.primefaces.component.paginator;
 
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -32,6 +33,12 @@ import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.UIData;
 
 public class CurrentPageReportRenderer implements PaginatorElementRenderer {
+
+    private static final Pattern PATTERN_CURRENT_PAGE = Pattern.compile("\\{currentPage\\}");
+    private static final Pattern PATTERN_TOTAL_PAGES = Pattern.compile("\\{totalPages\\}");
+    private static final Pattern PATTERN_TOTAL_RECORDS = Pattern.compile("\\{totalRecords\\}");
+    private static final Pattern PATTERN_START_RECORD = Pattern.compile("\\{startRecord\\}");
+    private static final Pattern PATTERN_END_RECORD = Pattern.compile("\\{endRecord\\}");
 
     @Override
     public void render(FacesContext context, Pageable pageable) throws IOException {
@@ -43,11 +50,17 @@ public class CurrentPageReportRenderer implements PaginatorElementRenderer {
             pageCount = 1;
         }
 
-        String output = template.replaceAll("\\{currentPage\\}", Integer.toString(currentPage))
-                .replaceAll("\\{totalPages\\}", Integer.toString(pageCount))
-                .replaceAll("\\{totalRecords\\}", Integer.toString(pageable.getRowCount()))
-                .replaceAll("\\{startRecord\\}", Integer.toString(Math.min(pageable.getFirst() + 1, pageable.getRowCount())))
-                .replaceAll("\\{endRecord}", Integer.toString(Math.min(pageable.getFirst() + pageable.getRowsToRender(), pageable.getRowCount())));
+        String output = template;
+        output = PATTERN_CURRENT_PAGE.matcher(output).replaceAll(
+                Integer.toString(currentPage));
+        output = PATTERN_TOTAL_PAGES.matcher(output).replaceAll(
+                Integer.toString(pageCount));
+        output = PATTERN_TOTAL_RECORDS.matcher(output).replaceAll(
+                Integer.toString(pageable.getRowCount()));
+        output = PATTERN_START_RECORD.matcher(output).replaceAll(
+                Integer.toString(Math.min(pageable.getFirst() + 1, pageable.getRowCount())));
+        output = PATTERN_END_RECORD.matcher(output).replaceAll(
+                Integer.toString(Math.min(pageable.getFirst() + pageable.getRowsToRender(), pageable.getRowCount())));
 
         writer.startElement("span", null);
         writer.writeAttribute("class", UIData.PAGINATOR_CURRENT_CLASS, null);
