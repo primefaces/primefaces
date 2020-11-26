@@ -29,9 +29,11 @@ import org.primefaces.component.column.ColumnBase;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.component.headerrow.HeaderRowBase;
+import org.primefaces.util.LangUtils;
 
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.util.Objects;
@@ -102,6 +104,11 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
     public static SortMeta of(FacesContext context, String var, HeaderRow headerRow) {
         SortOrder order = SortOrder.of(headerRow.getSortOrder());
         ValueExpression groupByVE = headerRow.getValueExpression(HeaderRowBase.PropertyKeys.groupBy.name());
+
+        if (groupByVE == null && LangUtils.isValueBlank(headerRow.getField())) {
+            throw new FacesException("HeaderRow must have 'groupBy' or 'field' attribute value");
+        }
+
         groupByVE = groupByVE != null ? groupByVE : DataTable.createValueExprFromVarField(context, var, headerRow.getField());
 
         return new SortMeta(headerRow.getClientId(context),
