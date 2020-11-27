@@ -49,7 +49,7 @@ public class RangeFilterConstraint implements FilterConstraint {
         }
 
         throw new UnsupportedOperationException("Unsupported type: " + value.getClass() + ". " +
-                "Supported types: " + LocalDate.class.getName() + ", " + LocalDateTime.class.getName() + " and" + Date.class.getName());
+                "Supported types: " + LocalDate.class.getName() + ", " + LocalDateTime.class.getName() + " and " + Date.class.getName());
     }
 
     protected boolean isInRange(Date value, List filter) {
