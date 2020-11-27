@@ -69,7 +69,7 @@ public class FilterFeature implements DataTableFeature {
 
     @Override
     public boolean shouldDecode(FacesContext context, DataTable table) {
-        return false;
+        return isFilterRequest(context, table);
     }
 
     @Override
@@ -79,49 +79,28 @@ public class FilterFeature implements DataTableFeature {
 
     @Override
     public void decode(FacesContext context, DataTable table) {
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         // FilterMeta#column must be updated since local value
         // (from column) must be decoded by FilterFeature#decodeFilterValue
         Map<String, FilterMeta> filterBy = table.initFilterBy();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         char separator = UINamingContainer.getSeparatorChar(context);
 
         for (FilterMeta entry : filterBy.values()) {
             decodeFilterValue(context, table, entry, params, separator);
         }
-    }
 
-    @Override
-    public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-
-        //reset state
-        String clientId = table.getClientId(context);
-        table.updateFilteredValue(context, null);
-        table.setValue(null);
+        // reset state
         table.setFirst(0);
-        table.setRowIndex(-1);
 
-        //update rows with rpp value
+        // update rows with rpp value
+        String clientId = table.getClientId(context);
         String rppValue = params.get(clientId + "_rppDD");
         if (rppValue != null && !rppValue.equals("*")) {
             table.setRows(Integer.parseInt(rppValue));
         }
 
         if (table.isLazy()) {
-            if (table.isLiveScroll()) {
-                table.loadLazyScrollData(0, table.getScrollRows());
-            }
-            else if (table.isVirtualScroll()) {
-                int rows = table.getRows();
-                int scrollRows = table.getScrollRows();
-                int virtualScrollRows = (scrollRows * 2);
-                scrollRows = (rows == 0) ? virtualScrollRows : Math.min(virtualScrollRows, rows);
-
-                table.loadLazyScrollData(0, scrollRows);
-            }
-            else {
-                table.loadLazyData();
-            }
+            table.loadLazyData();
         }
         else {
             filter(context, table);
@@ -136,10 +115,7 @@ public class FilterFeature implements DataTableFeature {
 
         context.getApplication().publishEvent(context, PostFilterEvent.class, table);
 
-        renderer.encodeTbody(context, table, true);
-
         if (table.isMultiViewState()) {
-            Map<String, FilterMeta> filterBy = table.getFilterByAsMap();
             DataTableState ts = table.getMultiViewState(true);
             ts.setFilterBy(filterBy);
             if (table.isPaginator()) {
@@ -149,11 +125,16 @@ public class FilterFeature implements DataTableFeature {
         }
     }
 
+    @Override
+    public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
+        renderer.encodeTbody(context, table, true);
+    }
+
     public void filter(FacesContext context, DataTable table) {
-        Map<String, FilterMeta> filterBy = table.getFilterByAsMap();
-        List<Object> filteredData = new ArrayList<>();
+        List filteredData = new ArrayList();
         Locale filterLocale = table.resolveDataLocale();
         ELContext elContext = context.getELContext();
+        Map<String, FilterMeta> filterBy = table.getFilterByAsMap();
 
         for (int i = 0; i < table.getRowCount(); i++) {
             table.setRowIndex(i);
@@ -198,10 +179,7 @@ public class FilterFeature implements DataTableFeature {
 
         //save filtered data
         table.updateFilteredValue(context, filteredData);
-
-        //update value
-        table.updateValue(table.getFilteredValue());
-
+        table.setValue(filteredData);
         table.setRowIndex(-1);  //reset datamodel
     }
 

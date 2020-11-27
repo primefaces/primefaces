@@ -292,15 +292,6 @@ public class DataTable extends DataTableBase {
     }
 
     @Override
-    public void processValidators(FacesContext context) {
-        super.processValidators(context);
-
-        if (isFilterRequest(context)) {
-            FEATURES.get(DataTableFeatureKey.FILTER).decode(context, this);
-        }
-    }
-
-    @Override
     public void processUpdates(FacesContext context) {
         super.processUpdates(context);
 
@@ -528,60 +519,56 @@ public class DataTable extends DataTableBase {
     }
 
     public void loadLazyData() {
-        DataModel model = getDataModel();
+        int first = 0;
+        int rows = 0;
 
-        if (model instanceof LazyDataModel) {
-            LazyDataModel lazyModel = (LazyDataModel) model;
-
-            calculateFirst();
-
-            FacesContext context = getFacesContext();
-            int first = getFirst();
-            int rows = getRows();
-
-            if (isClientCacheRequest(context)) {
-                Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-                first = Integer.parseInt(params.get(getClientId(context) + "_first")) + getRows();
-            }
-
-            Map<String, SortMeta> sorters = getSortByAsMap().values().stream()
-                    .filter(SortMeta::isActive)
-                    .collect(Collectors.toMap(SortMeta::getField, Function.identity()));
-            Map<String, FilterMeta> filters = getFilterByAsMap().values().stream()
-                    .filter(FilterMeta::isActive)
-                    .collect(Collectors.toMap(FilterMeta::getField, Function.identity()));
-            List<?> data = lazyModel.load(first, rows, sorters, filters);
-            lazyModel.setPageSize(getRows());
-            lazyModel.setWrappedData(data);
-
-            //Update paginator/livescroller for callback
-            if (ComponentUtils.isRequestSource(this, context) && (isPaginator() || isLiveScroll() || isVirtualScroll())) {
-                PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
-            }
+        if (isLiveScroll()) {
+            rows = getScrollRows();
         }
+        else if (isVirtualScroll()) {
+            rows = getRows();
+            int scrollRows = getScrollRows();
+            int virtualScrollRows = (scrollRows * 2);
+            rows = (rows == 0) ? virtualScrollRows : Math.min(virtualScrollRows, rows);
+        }
+        else {
+            calculateFirst();
+            first = getFirst();
+            rows = getRows();
+        }
+
+        FacesContext context = getFacesContext();
+
+        if (isClientCacheRequest(context)) {
+            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+            first = Integer.parseInt(params.get(getClientId(context) + "_first")) + getRows();
+        }
+
+        loadLazyScrollData(first, rows);
     }
 
     public void loadLazyScrollData(int offset, int rows) {
         DataModel model = getDataModel();
+        if (!(model instanceof LazyDataModel)) {
+            throw new FacesException("Unexpected call, datatable " + getClientId(getFacesContext()) + " is not lazy.");
+        }
 
-        if (model instanceof LazyDataModel) {
-            LazyDataModel lazyModel = (LazyDataModel) model;
+        LazyDataModel lazyModel = (LazyDataModel) model;
 
-            Map<String, SortMeta> sorters = getSortByAsMap().values().stream()
-                    .filter(SortMeta::isActive)
-                    .collect(Collectors.toMap(SortMeta::getField, Function.identity()));
-            Map<String, FilterMeta> filters = getFilterByAsMap().values().stream()
-                    .filter(FilterMeta::isActive)
-                    .collect(Collectors.toMap(FilterMeta::getField, Function.identity()));
-            List<?> data = lazyModel.load(offset, rows, sorters, filters);
+        Map<String, SortMeta> sorters = getSortByAsMap().values().stream()
+                .filter(SortMeta::isActive)
+                .collect(Collectors.toMap(SortMeta::getField, Function.identity()));
+        Map<String, FilterMeta> filters = getFilterByAsMap().values().stream()
+                .filter(FilterMeta::isActive)
+                .collect(Collectors.toMap(FilterMeta::getField, Function.identity()));
+        List<?> data = lazyModel.load(offset, rows, sorters, filters);
 
-            lazyModel.setPageSize(rows);
-            lazyModel.setWrappedData(data);
+        lazyModel.setPageSize(rows);
+        lazyModel.setWrappedData(data);
 
-            //Update paginator/livescroller  for callback
-            if (ComponentUtils.isRequestSource(this, getFacesContext()) && (isPaginator() || isLiveScroll() || isVirtualScroll())) {
-                PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
-            }
+        //Update paginator/livescroller  for callback
+        if (ComponentUtils.isRequestSource(this, getFacesContext()) && (isPaginator() || isLiveScroll() || isVirtualScroll())) {
+            PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
         }
     }
 
@@ -1274,17 +1261,6 @@ public class DataTable extends DataTableBase {
         return iterableChildren;
     }
 
-    @Override
-    public void processEvent(ComponentSystemEvent event) {
-        super.processEvent(event);
-        if (!isLazy() && event instanceof PostRestoreStateEvent && (this == event.getComponent())) {
-            Object filteredValue = getFilteredValue();
-            if (filteredValue != null) {
-                updateValue(filteredValue);
-            }
-        }
-    }
-
     public void updateFilteredValue(FacesContext context, List<?> value) {
         ValueExpression ve = getValueExpression(PropertyKeys.filteredValue.toString());
 
@@ -1296,22 +1272,8 @@ public class DataTable extends DataTableBase {
         }
     }
 
-    public void updateValue(Object value) {
-        Object originalValue = getValue();
-        if (originalValue instanceof SelectableDataModel) {
-            setValue(new SelectableDataModelWrapper((SelectableDataModel) originalValue, value));
-        }
-        else {
-            setValue(value);
-        }
-    }
-
     @Override
     public Object saveState(FacesContext context) {
-        if (isFilteringEnabled()) {
-            setValue(null);
-        }
-
         // reset component for MyFaces view pooling
         columnsCountWithSpan = -1;
         reset = false;

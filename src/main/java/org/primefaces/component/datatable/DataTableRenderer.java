@@ -64,9 +64,7 @@ public class DataTableRenderer extends DataRenderer {
     public void decode(FacesContext context, UIComponent component) {
         DataTable table = (DataTable) component;
 
-        for (Iterator<DataTableFeature> it = DataTable.FEATURES.values().iterator(); it.hasNext(); ) {
-            DataTableFeature feature = it.next();
-
+        for (DataTableFeature feature : DataTable.FEATURES.values()) {
             if (feature.shouldDecode(context, table)) {
                 feature.decode(context, table);
             }
@@ -80,9 +78,7 @@ public class DataTableRenderer extends DataRenderer {
         DataTable table = (DataTable) component;
 
         if (table.shouldEncodeFeature(context)) {
-            for (Iterator<DataTableFeature> it = DataTable.FEATURES.values().iterator(); it.hasNext(); ) {
-                DataTableFeature feature = it.next();
-
+            for (DataTableFeature feature : DataTable.FEATURES.values()) {
                 if (feature.shouldEncode(context, table)) {
                     feature.encode(context, this, table);
                 }
@@ -112,26 +108,12 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         if (table.isLazy()) {
-            if (table.isLiveScroll()) {
-                table.loadLazyScrollData(0, table.getScrollRows());
-            }
-            else if (table.isVirtualScroll()) {
-                int rows = table.getRows();
-                int scrollRows = table.getScrollRows();
-                int virtualScrollRows = (scrollRows * 2);
-                scrollRows = (rows == 0) ? virtualScrollRows : Math.min(virtualScrollRows, rows);
-
-                table.loadLazyScrollData(0, scrollRows);
-            }
-            else {
-                table.loadLazyData();
-            }
+            table.loadLazyData();
         }
         else {
             if (defaultSorted) {
                 SortFeature sortFeature = (SortFeature) table.getFeature(DataTableFeatureKey.SORT);
                 sortFeature.sort(context, table);
-                table.setRowIndex(-1);
             }
 
             if (table.isDefaultFilter()) {
