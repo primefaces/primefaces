@@ -1242,21 +1242,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
             if(targetWidget.cfg.selectionMode && row.hasClass('ui-datatable-selectable')) {
                 targetWidget.onRowRightClick(e, this, cfg.selectionMode);
-
+                targetWidget.updateContextMenuCell(e, targetWidget);
                 menuWidget.show(e);
             }
             else if(targetWidget.cfg.editMode === 'cell') {
-                var target = $(e.target),
-                cell = target.is('td.ui-editable-column') ? target : target.parents('td.ui-editable-column:first');
-
-                if(targetWidget.contextMenuCell) {
-                    targetWidget.contextMenuCell.removeClass('ui-state-highlight');
-                }
-
-                targetWidget.contextMenuClick = true;
-                targetWidget.contextMenuCell = cell;
-                targetWidget.contextMenuCell.addClass('ui-state-highlight');
-
+                targetWidget.updateContextMenuCell(e, targetWidget);
                 menuWidget.show(e);
             }
             else if(row.hasClass('ui-datatable-empty-message') && !$this.cfg.disableContextMenuIfEmpty) {
@@ -1271,6 +1261,25 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
             });
         }
+    },
+
+    /**
+     * Updates the currently selected cell based on where the context menu right click occurred.
+     * @param {JQuery.Event} event Event that occurred. 
+     * @param {PrimeFaces.widget.DataTable} targetWidget the current widget
+     * @private
+     */
+    updateContextMenuCell: function(event, targetWidget) {
+        var target = $(event.target),
+        cell = target.is('td.ui-editable-column') ? target : target.parents('td.ui-editable-column:first');
+
+        if(targetWidget.contextMenuCell) {
+            targetWidget.contextMenuCell.removeClass('ui-state-highlight');
+        }
+
+        targetWidget.contextMenuClick = true;
+        targetWidget.contextMenuCell = cell;
+        targetWidget.contextMenuCell.addClass('ui-state-highlight');
     },
 
     /**
