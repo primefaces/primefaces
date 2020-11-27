@@ -24,9 +24,6 @@
 package org.primefaces.model.filter;
 
 import javax.faces.context.FacesContext;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -38,47 +35,16 @@ public class RangeFilterConstraint implements FilterConstraint {
             throw new IllegalArgumentException("Filter expects a " + List.class.getName() + " with a size equals to 2");
         }
 
-        if (value instanceof LocalDate) {
-            return isInRange((LocalDate) value, (List) filter);
-        }
-        else  if (value instanceof LocalDateTime) {
-            return isInRange((LocalDateTime) value, (List) filter);
-        }
-        else if (value instanceof Date) {
-            return isInRange((Date) value, (List) filter);
-        }
-        else if (value instanceof Comparable) {
+        if (value instanceof Comparable) {
             return isInRange((Comparable) value, (List) filter);
         }
 
-        throw new UnsupportedOperationException("Unsupported type: " + value.getClass() + ". Supported types: "
-                + LocalDate.class.getName() + ", "
-                + LocalDateTime.class.getName() + ", "
-                + Date.class.getName()
-                + Comparable.class.getName());
-    }
-
-    protected boolean isInRange(Date value, List filter) {
-        Date start = (Date) filter.get(0);
-        Date end = (Date) filter.get(1);
-        return value.after(start) && value.before(end);
-    }
-
-    protected boolean isInRange(LocalDateTime value, List filter) {
-        LocalDateTime start = (LocalDateTime) filter.get(0);
-        LocalDateTime end = (LocalDateTime) filter.get(1);
-        return value.isAfter(start) && value.isBefore(end);
-    }
-
-    protected boolean isInRange(LocalDate value, List filter) {
-        LocalDate start = (LocalDate) filter.get(0);
-        LocalDate end = (LocalDate) filter.get(1);
-        return value.isAfter(start) && value.isBefore(end);
+        throw new UnsupportedOperationException("Unsupported type: " + value.getClass() + ". Supported type: " + Comparable.class.getName());
     }
 
     protected boolean isInRange(Comparable value, List filter) {
         Comparable start = (Comparable) filter.get(0);
         Comparable end = (Comparable) filter.get(1);
-        return value.compareTo(start) > 0 && value.compareTo(end) < 0;
+        return value.compareTo(start) >= 0 && value.compareTo(end) <= 0;
     }
 }
