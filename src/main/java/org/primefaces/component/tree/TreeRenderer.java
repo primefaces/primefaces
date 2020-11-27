@@ -272,7 +272,7 @@ public class TreeRenderer extends CoreRenderer {
                 TreeNode childNode = node.getChildren().get(i);
                 requestMap.put(var, childNode.getData());
 
-                if (filterConstraint.applies(filterByVE.getValue(context.getELContext()), filteredValue, filterLocale)) {
+                if (filterConstraint.isMatching(context, filterByVE.getValue(context.getELContext()), filteredValue, filterLocale)) {
                     tree.getFilteredRowKeys().add(childNode.getRowKey());
                 }
                 encodeFilteredNodes(context, tree, childNode, filteredValue, filterLocale);
@@ -881,7 +881,7 @@ public class TreeRenderer extends CoreRenderer {
     public FilterConstraint getFilterConstraint(Tree tree) {
         String filterMatchMode = tree.getFilterMatchMode();
 
-        MatchMode matchMode = MatchMode.byName(filterMatchMode);
+        MatchMode matchMode = MatchMode.of(filterMatchMode);
         if (matchMode == null) {
             throw new FacesException("Illegal filter match mode:" + filterMatchMode);
         }

@@ -23,18 +23,20 @@
  */
 package org.primefaces.model.filter;
 
+import javax.el.MethodExpression;
 import javax.faces.context.FacesContext;
 import java.util.Locale;
 
-public class GreaterThanEqualsFilterConstraint implements FilterConstraint {
+public class FunctionFilterConstraint implements FilterConstraint {
+
+    private MethodExpression exprVE;
+
+    public FunctionFilterConstraint(MethodExpression exprVE) {
+        this.exprVE = exprVE;
+    }
 
     @Override
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
-        if (value instanceof Comparable) {
-            int compared = ((Comparable) value).compareTo(filter);
-            return compared >= 0;
-        }
-
-        return false;
+        return (boolean) exprVE.invoke(ctxt.getELContext(), new Object[]{value, filter, locale});
     }
 }

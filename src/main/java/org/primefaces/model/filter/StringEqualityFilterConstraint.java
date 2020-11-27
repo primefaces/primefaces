@@ -25,16 +25,20 @@ package org.primefaces.model.filter;
 
 import javax.faces.context.FacesContext;
 import java.util.Locale;
+import java.util.function.BiPredicate;
 
-public class GreaterThanEqualsFilterConstraint implements FilterConstraint {
+public class StringEqualityFilterConstraint implements FilterConstraint {
+
+    private BiPredicate<String, String> predicate;
+
+    public StringEqualityFilterConstraint(BiPredicate<String, String> predicate) {
+        this.predicate = predicate;
+    }
 
     @Override
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
-        if (value instanceof Comparable) {
-            int compared = ((Comparable) value).compareTo(filter);
-            return compared >= 0;
-        }
-
-        return false;
+        String str = filter == null ? null : filter.toString().trim().toLowerCase(locale);
+        String val = value == null ? null : value.toString().toLowerCase(locale);
+        return predicate.test(val, str);
     }
 }

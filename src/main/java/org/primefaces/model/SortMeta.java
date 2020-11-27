@@ -241,49 +241,50 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
 
     public static final class Builder {
 
-        private SortMeta sortMeta;
+        private SortMeta sortBy;
 
         private Builder() {
-            sortMeta = new SortMeta();
+            sortBy = new SortMeta();
         }
 
         public Builder field(String field) {
-            sortMeta.field = field;
+            sortBy.field = field;
             return this;
         }
 
         public Builder order(SortOrder sortOrder) {
-            sortMeta.order = sortOrder;
+            sortBy.order = sortOrder;
             return this;
         }
 
         public Builder sortBy(ValueExpression sortBy) {
-            sortMeta.sortBy = sortBy;
+            this.sortBy.sortBy = sortBy;
             return this;
         }
 
         public Builder function(MethodExpression sortFunction) {
-            sortMeta.function = sortFunction;
+            sortBy.function = sortFunction;
             return this;
         }
 
         public Builder priority(Integer priority) {
-            sortMeta.priority = priority;
+            sortBy.priority = priority;
             return this;
         }
 
         public Builder nullSortOrder(int nullSortOrder) {
-            sortMeta.nullSortOrder = nullSortOrder;
+            sortBy.nullSortOrder = nullSortOrder;
             return this;
         }
 
         public Builder caseSensitiveSort(boolean caseSensitiveSort) {
-            sortMeta.caseSensitiveSort = caseSensitiveSort;
+            sortBy.caseSensitiveSort = caseSensitiveSort;
             return this;
         }
 
         public SortMeta build() {
-            return sortMeta;
+            Objects.requireNonNull(sortBy.field, "Field is required");
+            return sortBy;
         }
     }
 }

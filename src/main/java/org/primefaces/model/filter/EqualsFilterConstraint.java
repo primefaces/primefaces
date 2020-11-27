@@ -23,20 +23,9 @@
  */
 package org.primefaces.model.filter;
 
-import java.util.Locale;
+public class EqualsFilterConstraint extends StringEqualityFilterConstraint {
 
-public class EqualsFilterConstraint implements FilterConstraint {
-
-    @Override
-    public boolean applies(Object value, Object filter, Locale locale) {
-        if (filter == null) {
-            return true;
-        }
-
-        if (value == null) {
-            return false;
-        }
-
-        return value.equals(filter);
+    public EqualsFilterConstraint() {
+        super(String::equals);
     }
 }

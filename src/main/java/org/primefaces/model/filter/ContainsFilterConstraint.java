@@ -23,23 +23,9 @@
  */
 package org.primefaces.model.filter;
 
-import java.util.Locale;
-import org.primefaces.util.LangUtils;
+public class ContainsFilterConstraint extends StringEqualityFilterConstraint {
 
-public class ContainsFilterConstraint implements FilterConstraint {
-
-    @Override
-    public boolean applies(Object value, Object filter, Locale locale) {
-        String filterText = (filter == null) ? null : filter.toString().trim().toLowerCase(locale);
-
-        if (LangUtils.isValueEmpty(filterText)) {
-            return true;
-        }
-
-        if (value == null) {
-            return false;
-        }
-
-        return value.toString().toLowerCase(locale).contains(filterText);
+    public ContainsFilterConstraint() {
+        super(String::contains);
     }
 }

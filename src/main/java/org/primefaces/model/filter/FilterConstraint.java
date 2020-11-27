@@ -23,9 +23,11 @@
  */
 package org.primefaces.model.filter;
 
+import javax.faces.context.FacesContext;
 import java.util.Locale;
 
+@FunctionalInterface
 public interface FilterConstraint {
 
-    boolean applies(Object value, Object filter, Locale locale);
+    boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale);
 }
