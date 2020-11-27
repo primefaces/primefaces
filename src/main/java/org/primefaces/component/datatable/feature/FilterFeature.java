@@ -60,6 +60,7 @@ public class FilterFeature implements DataTableFeature {
         .put(MatchMode.GREATER_THAN_EQUALS, new GreaterThanEqualsFilterConstraint())
         .put(MatchMode.EQUALS, new EqualsFilterConstraint())
         .put(MatchMode.IN, new InFilterConstraint())
+        .put(MatchMode.RANGE, new RangeFilterConstraint())
         .build();
 
     private boolean isFilterRequest(FacesContext context, DataTable table) {
