@@ -40,6 +40,7 @@ import org.primefaces.util.MapBuilder;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
@@ -131,7 +132,7 @@ public class FilterFeature implements DataTableFeature {
     }
 
     public void filter(FacesContext context, DataTable table) {
-        List filteredData = new ArrayList();
+        List filtered = new ArrayList();
         Locale filterLocale = table.resolveDataLocale();
         ELContext elContext = context.getELContext();
         Map<String, FilterMeta> filterBy = table.getFilterByAsMap();
@@ -168,18 +169,18 @@ public class FilterFeature implements DataTableFeature {
             }
 
             if (matching) {
-                filteredData.add(table.getRowData());
+                filtered.add(table.getRowData());
             }
         }
 
         //Metadata for callback
         if (table.isPaginator() || table.isVirtualScroll()) {
-            PrimeFaces.current().ajax().addCallbackParam("totalRecords", filteredData.size());
+            PrimeFaces.current().ajax().addCallbackParam("totalRecords", filtered.size());
         }
 
         //save filtered data
-        table.updateFilteredValue(context, filteredData);
-        table.setValue(filteredData);
+        table.updateFilteredValue(context, filtered);
+        table.setValue(filtered);
         table.setRowIndex(-1);  //reset datamodel
     }
 
@@ -197,7 +198,7 @@ public class FilterFeature implements DataTableFeature {
 
             UIComponent filterFacet = column.getFacet("filter");
             if (ComponentUtils.shouldRenderFacet(filterFacet)) {
-                filterValue = ((ValueHolder) filterFacet).getLocalValue();
+                filterValue = ((UIInput) filterFacet).getSubmittedValue();
             }
             else {
                 String valueHolderClientId = column instanceof DynamicColumn
