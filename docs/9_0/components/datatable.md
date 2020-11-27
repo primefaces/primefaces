@@ -384,7 +384,7 @@ for this attribute are;
 - **gte** : Checks if column value is greater than or equals the filter value.
 - **equals** : Checks if column value equals the filter value.
 - **in** : Checks if column value is in the collection of the filter value.
-- **range** : Checks if column value is within a provided range _(works only for dates)_
+- **range** : Checks if column value is within a provided range `(p:datePicker offers this functionality)`
 
 In case the built-in methods do not suffice, custom filtering can be implemented using
 filterFunction approach.

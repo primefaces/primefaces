@@ -47,9 +47,15 @@ public class RangeFilterConstraint implements FilterConstraint {
         else if (value instanceof Date) {
             return isInRange((Date) value, (List) filter);
         }
+        else if (value instanceof Comparable) {
+            return isInRange((Comparable) value, (List) filter);
+        }
 
-        throw new UnsupportedOperationException("Unsupported type: " + value.getClass() + ". " +
-                "Supported types: " + LocalDate.class.getName() + ", " + LocalDateTime.class.getName() + " and " + Date.class.getName());
+        throw new UnsupportedOperationException("Unsupported type: " + value.getClass() + ". Supported types: "
+                + LocalDate.class.getName() + ", "
+                + LocalDateTime.class.getName() + ", "
+                + Date.class.getName()
+                + Comparable.class.getName());
     }
 
     protected boolean isInRange(Date value, List filter) {
@@ -68,5 +74,11 @@ public class RangeFilterConstraint implements FilterConstraint {
         LocalDate start = (LocalDate) filter.get(0);
         LocalDate end = (LocalDate) filter.get(1);
         return value.isAfter(start) && value.isBefore(end);
+    }
+
+    protected boolean isInRange(Comparable value, List filter) {
+        Comparable start = (Comparable) filter.get(0);
+        Comparable end = (Comparable) filter.get(1);
+        return value.compareTo(start) > 0 && value.compareTo(end) < 0;
     }
 }
