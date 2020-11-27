@@ -42,7 +42,6 @@ import javax.el.ExpressionFactory;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.UINamingContainer;
-import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.lang.reflect.Array;
