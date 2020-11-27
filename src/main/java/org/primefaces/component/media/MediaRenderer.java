@@ -41,7 +41,6 @@ import org.primefaces.model.StreamedContent;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AgentUtils;
 import org.primefaces.util.DynamicContentSrcBuilder;
-import org.primefaces.util.HTML;
 
 public class MediaRenderer extends CoreRenderer {
 
@@ -96,7 +95,7 @@ public class MediaRenderer extends CoreRenderer {
             writer.writeAttribute("class", media.getStyleClass(), null);
         }
 
-        renderPassThruAttributes(context, media, HTML.MEDIA_ATTRS);
+        renderPassThruAttributes(context, media, Media.MEDIA_ATTRS);
 
         if (sourceParam != null) {
             encodeParam(writer, player.getSourceParam(), src, false);
