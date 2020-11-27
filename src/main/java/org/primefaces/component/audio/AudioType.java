@@ -35,7 +35,7 @@ public enum AudioType {
     private final String fileExtension;
     private final String mediaType;
 
-    private AudioType (String fileExtension, String mediaType) {
+    AudioType (String fileExtension, String mediaType) {
         this.fileExtension = fileExtension;
         this.mediaType = mediaType;
     }

@@ -35,7 +35,7 @@ public enum VideoType {
     private final String fileExtension;
     private final String mediaType;
 
-    private VideoType (String fileExtension, String mediaType) {
+    VideoType (String fileExtension, String mediaType) {
         this.fileExtension = fileExtension;
         this.mediaType = mediaType;
     }
