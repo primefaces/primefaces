@@ -51,8 +51,6 @@ import org.primefaces.component.row.Row;
 import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.summaryrow.SummaryRow;
 import org.primefaces.event.data.PostRenderEvent;
-import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 import org.primefaces.renderkit.DataRenderer;
@@ -101,6 +99,8 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void preRender(FacesContext context, DataTable table) {
+        table.initFilterBy();
+
         if (table.isMultiViewState()) {
             table.restoreMultiViewState();
         }
@@ -119,7 +119,7 @@ public class DataTableRenderer extends DataRenderer {
                 int rows = table.getRows();
                 int scrollRows = table.getScrollRows();
                 int virtualScrollRows = (scrollRows * 2);
-                scrollRows = (rows == 0) ? virtualScrollRows : ((virtualScrollRows > rows) ? rows : virtualScrollRows);
+                scrollRows = (rows == 0) ? virtualScrollRows : Math.min(virtualScrollRows, rows);
 
                 table.loadLazyScrollData(0, scrollRows);
             }
@@ -134,20 +134,9 @@ public class DataTableRenderer extends DataRenderer {
                 table.setRowIndex(-1);
             }
 
-            Map<String, FilterMeta> filterBy = table.getFilterBy();
-            if (!filterBy.isEmpty()) {
-                String globalFilter = table.getGlobalFilter();
-                if (globalFilter != null) {
-                    UIComponent globalFilterComponent = SearchExpressionFacade.resolveComponent(context, table,
-                            DataTable.PropertyKeys.globalFilter.toString());
-                    if (globalFilterComponent != null) {
-                        ((ValueHolder) globalFilterComponent).setValue(globalFilter);
-                    }
-                    filterBy.put("globalFilter", new FilterMeta("globalFilter", globalFilter));
-                }
-
+            if (table.isDefaultFilter()) {
                 FilterFeature filterFeature = (FilterFeature) table.getFeature(DataTableFeatureKey.FILTER);
-                filterFeature.filter(context, table, filterBy);
+                filterFeature.filter(context, table);
             }
         }
 
@@ -601,10 +590,8 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = column.getContainerClientId(context);
 
-        ValueExpression columnFilterByVE = column.getValueExpression(Column.PropertyKeys.filterBy.toString());
-
         boolean sortable = table.isColumnSortable(column);
-        boolean filterable = (columnFilterByVE != null && column.isFilterable());
+        boolean filterable = table.isColumnFilterable(column);
         String selectionMode = column.getSelectionMode();
         String sortIcon = null;
         boolean resizable = table.isResizableColumns() && column.isResizable();
@@ -679,8 +666,6 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         if (filterable) {
-            table.enableFiltering();
-
             String filterPosition = column.getFilterPosition();
 
             if (filterPosition.equals("bottom")) {
@@ -706,17 +691,8 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("th");
     }
 
-    protected Object findFilterValue(DataTable table, UIColumn column) {
-        Map<String, FilterMeta> filterBy = table.getFilterBy();
-        if (!filterBy.isEmpty()) {
-            for (FilterMeta filter : filterBy.values()) {
-                if (Objects.equals(filter.getColumnKey(), column.getColumnKey())) {
-                    return filter.getFilterValue();
-                }
-            }
-        }
-
-        return null;
+    protected Object getFilterValue(DataTable table, UIColumn column) {
+        return table.getFilterByAsMap().get(column.getColumnKey()).getFilterValue();
     }
 
     protected String resolveDefaultSortIcon(SortMeta sortMeta) {
@@ -770,7 +746,7 @@ public class DataTableRenderer extends DataRenderer {
             encodeDefaultFilter(context, table, column, writer);
         }
         else {
-            Object filterValue = findFilterValue(table, column);
+            Object filterValue = getFilterValue(table, column);
             if (filterValue != null) {
                 ((ValueHolder) filterFacet).setValue(filterValue);
             }
@@ -905,7 +881,7 @@ public class DataTableRenderer extends DataRenderer {
             filterValue = Constants.EMPTY_STRING;
         }
         else {
-            filterValue = findFilterValue(table, column);
+            filterValue = getFilterValue(table, column);
             if (filterValue == null) {
                 Map<String, String> params = context.getExternalContext().getRequestParameterMap();
                 if (params.containsKey(filterId)) {
@@ -1751,6 +1727,7 @@ public class DataTableRenderer extends DataRenderer {
     protected boolean hasColumnDefaultRendering(DataTable table, UIColumn column) {
         return column.getChildren().isEmpty()
                 && (table.getSortByAsMap().containsKey(column.getColumnKey())
+                || table.getFilterByAsMap().containsKey(column.getColumnKey())
                 || !LangUtils.isValueBlank(column.getField()));
 
     }

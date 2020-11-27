@@ -23,23 +23,6 @@
  */
 package org.primefaces.component.datatable;
 
-import java.lang.reflect.Array;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import javax.el.ELContext;
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.context.FacesContext;
-import javax.faces.event.*;
-import javax.faces.model.DataModel;
-
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
@@ -56,8 +39,30 @@ import org.primefaces.event.*;
 import org.primefaces.event.data.FilterEvent;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.event.data.SortEvent;
+import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.model.*;
 import org.primefaces.util.*;
+
+import javax.el.ELContext;
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.application.ResourceDependency;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
+import javax.faces.component.ValueHolder;
+import javax.faces.context.FacesContext;
+import javax.faces.event.*;
+import javax.faces.model.DataModel;
+import java.lang.reflect.Array;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -305,33 +310,6 @@ public class DataTable extends DataTableBase {
             selectionVE.setValue(context.getELContext(), getLocalSelection());
             setSelection(null);
         }
-
-        Map<String, FilterMeta> filterBy = getFilterBy();
-        if (!filterBy.isEmpty()) {
-            ELContext elContext = context.getELContext();
-            for (FilterMeta filter : filterBy.values()) {
-                UIColumn column = filter.getColumn();
-                if (column == null) {
-                    column = findColumn(filter.getColumnKey());
-                    filter.setColumn(column);
-                }
-
-                if (column != null) {
-                    ValueExpression columnFilterValueVE = column.getValueExpression(Column.PropertyKeys.filterValue.toString());
-                    if (columnFilterValueVE != null) {
-                        if (column.isDynamic()) {
-                            DynamicColumn dynamicColumn = (DynamicColumn) column;
-                            dynamicColumn.applyStatelessModel();
-                            columnFilterValueVE.setValue(elContext, filter.getFilterValue());
-                            dynamicColumn.cleanStatelessModel();
-                        }
-                        else {
-                            columnFilterValueVE.setValue(elContext, filter.getFilterValue());
-                        }
-                    }
-                }
-            }
-        }
     }
 
     @Override
@@ -568,8 +546,11 @@ public class DataTable extends DataTableBase {
 
             Map<String, SortMeta> sorters = getSortByAsMap().values().stream()
                     .filter(SortMeta::isActive)
-                    .collect(Collectors.toMap(SortMeta::getField, e -> e));
-            List<?> data = lazyModel.load(first, rows, sorters, getFilterBy());
+                    .collect(Collectors.toMap(SortMeta::getField, Function.identity()));
+            Map<String, FilterMeta> filters = getFilterByAsMap().values().stream()
+                    .filter(FilterMeta::isActive)
+                    .collect(Collectors.toMap(FilterMeta::getField, Function.identity()));
+            List<?> data = lazyModel.load(first, rows, sorters, filters);
             lazyModel.setPageSize(getRows());
             lazyModel.setWrappedData(data);
 
@@ -588,8 +569,11 @@ public class DataTable extends DataTableBase {
 
             Map<String, SortMeta> sorters = getSortByAsMap().values().stream()
                     .filter(SortMeta::isActive)
-                    .collect(Collectors.toMap(SortMeta::getField, e -> e));
-            List<?> data = lazyModel.load(offset, rows, sorters, getFilterBy());
+                    .collect(Collectors.toMap(SortMeta::getField, Function.identity()));
+            Map<String, FilterMeta> filters = getFilterByAsMap().values().stream()
+                    .filter(FilterMeta::isActive)
+                    .collect(Collectors.toMap(FilterMeta::getField, Function.identity()));
+            List<?> data = lazyModel.load(offset, rows, sorters, filters);
 
             lazyModel.setPageSize(rows);
             lazyModel.setWrappedData(data);
@@ -669,17 +653,12 @@ public class DataTable extends DataTableBase {
         reset = true;
         setDefaultSort(false);
         setSortByAsMap(null);
+        setFilterByAsMap(null);
         setScrollOffset(0);
     }
 
     public boolean isFilteringEnabled() {
-        Object value = getStateHelper().get("filtering");
-
-        return value != null;
-    }
-
-    public void enableFiltering() {
-        getStateHelper().put("filtering", true);
+        return !getFilterByAsMap().isEmpty();
     }
 
     public RowExpansion getRowExpansion() {
@@ -1140,6 +1119,14 @@ public class DataTable extends DataTableBase {
         getStateHelper().put("defaultSort", defaultSort);
     }
 
+    public boolean isDefaultFilter() {
+        return Boolean.TRUE.equals(getStateHelper().get("defaultFilter"));
+    }
+
+    public void setDefaultFilter(boolean defaultFilter) {
+        getStateHelper().put("defaultFilter", defaultFilter);
+    }
+
     public void setTogglableColumnsAsString(String togglableColumnsAsString) {
         this.togglableColumnsAsString = togglableColumnsAsString;
     }
@@ -1384,14 +1371,19 @@ public class DataTable extends DataTableBase {
                 setRows(rows);
             }
 
-            updateSortByWithTableState(ts.getSortBy());
+            if (ts.getSortBy() != null) {
+                updateSortByWithTableState(ts.getSortBy());
+            }
+
+            if (ts.getFilterBy() != null) {
+                updateFilterByWithTableState(ts.getFilterBy());
+            }
 
             if (isSelectionEnabled()) {
                 selectedRowKeys = ts.getRowKeys();
                 isRowKeyRestored = true;
             }
 
-            setFilterBy(ts.getFilterBy());
             setColumns(findOrderedColumns(ts.getOrderedColumnsAsString()));
             setTogglableColumnsAsString(ts.getTogglableColumnsAsString());
             setResizableColumnsAsString(ts.getResizableColumnsAsString());
@@ -1430,70 +1422,68 @@ public class DataTable extends DataTableBase {
         }
 
         return context.getApplication().getExpressionFactory()
-                .createValueExpression(context.getELContext(), "#{" + var + "." + field + "}", String.class);
+                .createValueExpression(context.getELContext(), "#{" + var + "." + field + "}", Object.class);
     }
 
-    protected Map<String, SortMeta> initSortBy(Object sortByTmp) {
+    protected Map<String, SortMeta> initSortBy() {
         Map<String, SortMeta> sortMeta = new HashMap<>();
-        boolean sorted = false;
+        AtomicBoolean sorted = new AtomicBoolean();
 
         HeaderRow headerRow = getHeaderRow();
         if (headerRow != null) {
             SortMeta s = SortMeta.of(getFacesContext(), getVar(), headerRow);
             sortMeta.put(s.getColumnKey(), s);
-            sorted = true;
+            sorted.set(true);
         }
 
-        for (UIColumn column : getColumns()) {
-            SortMeta s = SortMeta.of(getFacesContext(), getVar(), column);
-            if (s == null) {
-                continue;
+        char separator = UINamingContainer.getSeparatorChar(getFacesContext());
+        visitColumns(getFacesContext(), separator, this, c -> {
+            SortMeta s = SortMeta.of(getFacesContext(), getVar(), c);
+            if (s != null) {
+                sorted.set(sorted.get() || s.isActive());
+                sortMeta.put(s.getColumnKey(), s);
             }
-
-            sortMeta.put(s.getColumnKey(), s);
-            sorted |= s.isActive();
-        }
-
-        setDefaultSort(sorted);
+        });
 
         // merge internal sortBy with user sortBy
-        if (sortByTmp != null) {
-            Collection<SortMeta> sortBy;
-            if (sortByTmp instanceof SortMeta) {
-                sortBy = Collections.singletonList((SortMeta) sortByTmp);
-            }
-            else if (!(sortByTmp instanceof Collection)) {
-                throw new FacesException("DataTable#sortBy expects a single or a collection of SortMeta");
-            }
-            else {
-                sortBy = (Collection<SortMeta>) sortByTmp;
-            }
-
-            updateSortByWithUserSortBy(sortMeta, sortBy, sorted);
+        Object userSortBy = getSortBy();
+        if (userSortBy != null) {
+            updateSortByWithUserSortBy(sortMeta, userSortBy, sorted);
         }
+
+        setDefaultSort(sorted.get());
 
         return sortMeta;
     }
 
     protected void updateSortByWithTableState(Map<String, SortMeta> tsSortBy) {
-        if (tsSortBy != null) {
-            boolean defaultSort = isDefaultSort();
-            for (Map.Entry<String, SortMeta> entry : tsSortBy.entrySet()) {
-                SortMeta intlSortBy = getSortByAsMap().get(entry.getKey());
-                if (intlSortBy != null) {
-                    SortMeta tsSortMeta = entry.getValue();
-                    intlSortBy.setPriority(tsSortMeta.getPriority());
-                    intlSortBy.setOrder(tsSortMeta.getOrder());
-                    defaultSort |= intlSortBy.isActive();
-                }
+        boolean defaultSort = isDefaultSort();
+        for (Map.Entry<String, SortMeta> entry : tsSortBy.entrySet()) {
+            SortMeta intlSortBy = getSortByAsMap().get(entry.getKey());
+            if (intlSortBy != null) {
+                SortMeta tsSortMeta = entry.getValue();
+                intlSortBy.setPriority(tsSortMeta.getPriority());
+                intlSortBy.setOrder(tsSortMeta.getOrder());
+                defaultSort |= intlSortBy.isActive();
             }
-
-            setDefaultSort(defaultSort);
         }
+
+        setDefaultSort(defaultSort);
     }
 
-    protected void updateSortByWithUserSortBy(Map<String, SortMeta> intlSortBy, Collection<SortMeta> usrSortBy, boolean sorted) {
-        for (SortMeta userSM : usrSortBy) {
+    protected void updateSortByWithUserSortBy(Map<String, SortMeta> intlSortBy, Object usrSortBy, AtomicBoolean sorted) {
+        Collection<SortMeta> sortBy;
+        if (usrSortBy instanceof SortMeta) {
+            sortBy = Collections.singletonList((SortMeta) usrSortBy);
+        }
+        else if (!(usrSortBy instanceof Collection)) {
+            throw new FacesException("DataTable#sortBy expects a single or a collection of SortMeta");
+        }
+        else {
+            sortBy = (Collection<SortMeta>) usrSortBy;
+        }
+
+        for (SortMeta userSM : sortBy) {
             SortMeta intlSM = intlSortBy.values().stream()
                     .filter(o -> o.getField().equals(userSM.getField()))
                     .findAny()
@@ -1508,10 +1498,8 @@ public class DataTable extends DataTableBase {
             intlSM.setOrder(userSM.getOrder());
             intlSM.setSortBy(sortByVE);
             intlSM.setFunction(userSM.getFunction());
-            sorted |= userSM.isActive();
+            sorted.set(sorted.get() || userSM.isActive());
         }
-
-        setDefaultSort(sorted);
     }
 
     public SortMeta getHighestPriorityActiveSortMeta() {
@@ -1542,11 +1530,150 @@ public class DataTable extends DataTableBase {
         return true;
     }
 
+    protected void visitColumns(FacesContext context, char separator, UIComponent root, Consumer<UIColumn> visitor) {
+        for (int i = 0; i < root.getChildCount(); i++) {
+            UIComponent child = root.getChildren().get(i);
+            if (child.isRendered()) {
+                if (child instanceof Columns) {
+                    Columns columns = (Columns) child;
+                    String uiColumnsClientId = columns.getClientId(context);
+
+                    for (int j = 0; j < columns.getRowCount(); j++) {
+                        DynamicColumn dynaColumn = new DynamicColumn(j, columns);
+                        dynaColumn.setColumnKey(uiColumnsClientId + separator + j);
+                        visitor.accept(dynaColumn);
+                    }
+                }
+                else if (child instanceof UIColumn) {
+                    UIColumn column = (UIColumn) child;
+                    visitor.accept(column);
+                }
+                else if (child instanceof ColumnGroup) {
+                    visitColumns(context, separator, child, visitor);
+                }
+            }
+        }
+    }
+
+    public Map<String, FilterMeta> initFilterBy() {
+        boolean invalidate = getStateHelper().get("_filterBy") == null;
+        Map<String, FilterMeta> filterBy = invalidate ? new HashMap<>() : getFilterByAsMap();
+        AtomicBoolean filtered = invalidate ? new AtomicBoolean() : new AtomicBoolean(isDefaultFilter());
+
+        // build columns filterBy
+        char separator = UINamingContainer.getSeparatorChar(getFacesContext());
+
+        visitColumns(getFacesContext(), separator, this, c -> {
+            FilterMeta f = filterBy.get(c.getColumnKey());
+            if (f != null && !invalidate) {
+                f.setColumn(c);
+            }
+            else {
+                f = FilterMeta.of(getFacesContext(), getVar(), c);
+                if (f != null) {
+                    filterBy.put(f.getColumnKey(), f);
+                    filtered.set(filtered.get() || f.isActive());
+                }
+            }
+        });
+
+        // merge internal filterBy with user filterBy
+        Object userfilterBy = getFilterBy();
+        if (userfilterBy != null) {
+            updateFilterByWithUserFilterBy(filterBy, userfilterBy, filtered);
+        }
+
+        // build global filterBy
+        updateFilterByWithGlobalFilter(filterBy, filtered);
+
+        // finally set if default filtering is enabled
+        setDefaultFilter(filtered.get());
+
+        setFilterByAsMap(filterBy);
+
+        return filterBy;
+    }
+
+    protected void updateFilterByWithTableState(Map<String, FilterMeta> tsFilterBy) {
+        boolean defaultFilter = isDefaultFilter();
+        for (Map.Entry<String, FilterMeta> entry : tsFilterBy.entrySet()) {
+            FilterMeta intlFilterBy = getFilterByAsMap().get(entry.getKey());
+            if (intlFilterBy != null) {
+                FilterMeta tsFilterMeta = entry.getValue();
+                intlFilterBy.setFilterValue(tsFilterMeta.getFilterValue());
+                defaultFilter |= intlFilterBy.isActive();
+            }
+        }
+
+        setDefaultFilter(defaultFilter);
+    }
+
+    protected void updateFilterByWithUserFilterBy(Map<String, FilterMeta> intlFilterBy, Object usrFilterBy, AtomicBoolean filtered) {
+        Collection<FilterMeta> filterByTmp;
+        if (usrFilterBy instanceof FilterMeta) {
+            filterByTmp = Collections.singletonList((FilterMeta) usrFilterBy);
+        }
+        else if (!(usrFilterBy instanceof Collection)) {
+            throw new FacesException("DataTable#filterBy expects a single or a collection of FilterMeta");
+        }
+        else {
+            filterByTmp = (Collection<FilterMeta>) usrFilterBy;
+        }
+
+        for (FilterMeta userFM : filterByTmp) {
+            FilterMeta intlFM = intlFilterBy.values().stream()
+                    .filter(o -> o.getField().equals(userFM.getField()))
+                    .findAny()
+                    .orElseThrow(() -> new FacesException("No column with field '" + userFM.getField() + "' has been found"));
+
+            ValueExpression filterByVE = userFM.getFilterBy();
+            if (filterByVE == null) {
+                filterByVE = createValueExprFromVarField(getFacesContext(), getVar(), userFM.getField());
+            }
+
+            intlFM.setFilterValue(userFM.getFilterValue());
+            intlFM.setFilterBy(filterByVE);
+            intlFM.setConstraint(userFM.getConstraint());
+            intlFM.setMatchMode(userFM.getMatchMode());
+            filtered.set(filtered.get() || userFM.isActive());
+        }
+    }
+
+    protected void updateFilterByWithGlobalFilter(Map<String, FilterMeta> filterBy, AtomicBoolean filtered) {
+        String globalFilter = getGlobalFilter();
+        Set<SearchExpressionHint> hint = LangUtils.isValueBlank(globalFilter)
+                ? EnumSet.of(SearchExpressionHint.IGNORE_NO_RESULT)
+                : Collections.emptySet();
+        UIComponent globalFilterComponent = SearchExpressionFacade
+                .resolveComponent(getFacesContext(), this, DataTable.PropertyKeys.globalFilter.toString(), hint);
+        if (globalFilterComponent != null) {
+            if (globalFilterComponent instanceof ValueHolder) {
+                ((ValueHolder) globalFilterComponent).setValue(globalFilter);
+            }
+            FilterMeta globalFilterBy = FilterMeta.of(filterBy.values(), globalFilter, getGlobalFilterFunction());
+            filterBy.put(globalFilterBy.getColumnKey(), globalFilterBy);
+            filtered.set(filtered.get() || globalFilterBy.isActive());
+        }
+    }
+
+    public boolean isColumnFilterable(UIColumn column) {
+        Map<String, FilterMeta> filterBy = getFilterByAsMap();
+        return filterBy.containsKey(column.getColumnKey());
+    }
+
     public Map<String, SortMeta> getSortByAsMap() {
-        return ComponentUtils.computeIfAbsent(getStateHelper(), "_sortBy", () -> initSortBy(getSortBy()));
+        return ComponentUtils.computeIfAbsent(getStateHelper(), "_sortBy", this::initSortBy);
     }
 
     public void setSortByAsMap(Map<String, SortMeta> sortBy) {
         getStateHelper().put("_sortBy", sortBy);
+    }
+
+    public Map<String, FilterMeta> getFilterByAsMap() {
+        return ComponentUtils.eval(getStateHelper(), "_filterBy", Collections::emptyMap);
+    }
+
+    public void setFilterByAsMap(Map<String, FilterMeta> sortBy) {
+        getStateHelper().put("_filterBy", sortBy);
     }
 }
