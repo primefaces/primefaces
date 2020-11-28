@@ -528,60 +528,52 @@ public class DataTable extends DataTableBase {
     }
 
     public void loadLazyData() {
-        DataModel model = getDataModel();
+        LazyDataModel lazyModel = (LazyDataModel) getValue();
 
-        if (model instanceof LazyDataModel) {
-            LazyDataModel lazyModel = (LazyDataModel) model;
+        calculateFirst();
 
-            calculateFirst();
+        FacesContext context = getFacesContext();
+        int first = getFirst();
+        int rows = getRows();
 
-            FacesContext context = getFacesContext();
-            int first = getFirst();
-            int rows = getRows();
+        if (isClientCacheRequest(context)) {
+            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+            first = Integer.parseInt(params.get(getClientId(context) + "_first")) + getRows();
+        }
 
-            if (isClientCacheRequest(context)) {
-                Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-                first = Integer.parseInt(params.get(getClientId(context) + "_first")) + getRows();
-            }
+        Map<String, SortMeta> sorters = getSortByAsMap().values().stream()
+                .filter(SortMeta::isActive)
+                .collect(Collectors.toMap(SortMeta::getField, Function.identity()));
+        Map<String, FilterMeta> filters = getFilterByAsMap().values().stream()
+                .filter(FilterMeta::isActive)
+                .collect(Collectors.toMap(FilterMeta::getField, Function.identity()));
+        List<?> data = lazyModel.load(first, rows, sorters, filters);
+        lazyModel.setPageSize(getRows());
+        getDataModel().setWrappedData(data);
 
-            Map<String, SortMeta> sorters = getSortByAsMap().values().stream()
-                    .filter(SortMeta::isActive)
-                    .collect(Collectors.toMap(SortMeta::getField, Function.identity()));
-            Map<String, FilterMeta> filters = getFilterByAsMap().values().stream()
-                    .filter(FilterMeta::isActive)
-                    .collect(Collectors.toMap(FilterMeta::getField, Function.identity()));
-            List<?> data = lazyModel.load(first, rows, sorters, filters);
-            lazyModel.setPageSize(getRows());
-            lazyModel.setWrappedData(data);
-
-            //Update paginator/livescroller for callback
-            if (ComponentUtils.isRequestSource(this, context) && (isPaginator() || isLiveScroll() || isVirtualScroll())) {
-                PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
-            }
+        //Update paginator/livescroller for callback
+        if (ComponentUtils.isRequestSource(this, context) && (isPaginator() || isLiveScroll() || isVirtualScroll())) {
+            PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
         }
     }
 
     public void loadLazyScrollData(int offset, int rows) {
-        DataModel model = getDataModel();
+        LazyDataModel lazyModel = (LazyDataModel) getValue();
 
-        if (model instanceof LazyDataModel) {
-            LazyDataModel lazyModel = (LazyDataModel) model;
+        Map<String, SortMeta> sorters = getSortByAsMap().values().stream()
+                .filter(SortMeta::isActive)
+                .collect(Collectors.toMap(SortMeta::getField, Function.identity()));
+        Map<String, FilterMeta> filters = getFilterByAsMap().values().stream()
+                .filter(FilterMeta::isActive)
+                .collect(Collectors.toMap(FilterMeta::getField, Function.identity()));
+        List<?> data = lazyModel.load(offset, rows, sorters, filters);
 
-            Map<String, SortMeta> sorters = getSortByAsMap().values().stream()
-                    .filter(SortMeta::isActive)
-                    .collect(Collectors.toMap(SortMeta::getField, Function.identity()));
-            Map<String, FilterMeta> filters = getFilterByAsMap().values().stream()
-                    .filter(FilterMeta::isActive)
-                    .collect(Collectors.toMap(FilterMeta::getField, Function.identity()));
-            List<?> data = lazyModel.load(offset, rows, sorters, filters);
+        lazyModel.setPageSize(rows);
+        lazyModel.setWrappedData(data);
 
-            lazyModel.setPageSize(rows);
-            lazyModel.setWrappedData(data);
-
-            //Update paginator/livescroller  for callback
-            if (ComponentUtils.isRequestSource(this, getFacesContext()) && (isPaginator() || isLiveScroll() || isVirtualScroll())) {
-                PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
-            }
+        //Update paginator/livescroller  for callback
+        if (ComponentUtils.isRequestSource(this, getFacesContext()) && (isPaginator() || isLiveScroll() || isVirtualScroll())) {
+            PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
         }
     }
 
@@ -622,9 +614,8 @@ public class DataTable extends DataTableBase {
     }
 
     public void clearLazyCache() {
-        if (getDataModel() instanceof LazyDataModel) {
-            LazyDataModel model = (LazyDataModel) getDataModel();
-            model.setWrappedData(null);
+        if (isLazy()) {
+            getDataModel().setWrappedData(null);
         }
     }
 
@@ -706,46 +697,19 @@ public class DataTable extends DataTableBase {
     public Object getRowKeyFromModel(Object object) {
         DataModel model = getDataModel();
         if (!(model instanceof SelectableDataModel)) {
-            throw new FacesException("DataModel must implement org.primefaces.model.SelectableDataModel when selection is enabled.");
+            throw new FacesException("Unable to retrieve row key from data model. Selection is disabled.");
         }
 
         return ((SelectableDataModel) getDataModel()).getRowKey(object);
     }
 
     public Object getRowData(String rowKey) {
-
-        boolean hasRowKeyVe = getValueExpression(PropertyKeys.rowKey.toString()) != null;
         DataModel model = getDataModel();
-
-        // use rowKey if available and if != lazy
-        // lazy must implement #getRowData
-        if (hasRowKeyVe && !(model instanceof LazyDataModel)) {
-            Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
-            String var = getVar();
-            Collection data = (Collection) getDataModel().getWrappedData();
-
-            if (data != null) {
-                for (Iterator it = data.iterator(); it.hasNext(); ) {
-                    Object object = it.next();
-                    requestMap.put(var, object);
-
-                    if (String.valueOf(getRowKey()).equals(rowKey)) {
-                        return object;
-                    }
-                }
-            }
-
-            return null;
+        if (!(model instanceof SelectableDataModel)) {
+            throw new FacesException("Unable to retrieve data from row key. Selection is disabled.");
         }
-        else {
-            if (!(model instanceof SelectableDataModel)) {
-                throw new FacesException("DataModel must implement "
-                        + SelectableDataModel.class.getName()
-                        + " when selection is enabled or you need to define rowKey attribute");
-            }
 
-            return ((SelectableDataModel) model).getRowData(rowKey);
-        }
+        return ((SelectableDataModel) model).getRowData(rowKey);
     }
 
     public void findSelectedRowKeys() {
@@ -1454,6 +1418,29 @@ public class DataTable extends DataTableBase {
         setDefaultSort(sorted.get());
 
         return sortMeta;
+    }
+
+    @Override
+    protected DataModel getDataModel() {
+        DataModel model = super.getDataModel();
+        if (!(model instanceof SelectableDataModel) && isSelectionEnabled()) {
+            boolean hasRowKeyVe = getValueExpression(PropertyKeys.rowKey.toString()) != null;
+            if (hasRowKeyVe) {
+                Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
+                String var = getVar();
+                Function<Object, String> rowKeyTransformer = o -> {
+                    requestMap.put(var, o);
+                    return Objects.toString(getRowKey());
+                };
+
+                setDataModel(new DefaultSelectableDataModel(model, rowKeyTransformer));
+            }
+            else {
+                setDataModel(new DefaultSelectableDataModel(model));
+            }
+        }
+
+        return super.getDataModel();
     }
 
     protected void updateSortByWithTableState(Map<String, SortMeta> tsSortBy) {
