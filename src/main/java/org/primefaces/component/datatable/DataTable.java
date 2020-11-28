@@ -528,52 +528,60 @@ public class DataTable extends DataTableBase {
     }
 
     public void loadLazyData() {
-        LazyDataModel lazyModel = (LazyDataModel) getValue();
+        Object model = getValue();
 
-        calculateFirst();
+        if (model instanceof LazyDataModel) {
+            LazyDataModel lazyModel = (LazyDataModel) model;
 
-        FacesContext context = getFacesContext();
-        int first = getFirst();
-        int rows = getRows();
+            calculateFirst();
 
-        if (isClientCacheRequest(context)) {
-            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            first = Integer.parseInt(params.get(getClientId(context) + "_first")) + getRows();
-        }
+            FacesContext context = getFacesContext();
+            int first = getFirst();
+            int rows = getRows();
 
-        Map<String, SortMeta> sorters = getSortByAsMap().values().stream()
-                .filter(SortMeta::isActive)
-                .collect(Collectors.toMap(SortMeta::getField, Function.identity()));
-        Map<String, FilterMeta> filters = getFilterByAsMap().values().stream()
-                .filter(FilterMeta::isActive)
-                .collect(Collectors.toMap(FilterMeta::getField, Function.identity()));
-        List<?> data = lazyModel.load(first, rows, sorters, filters);
-        lazyModel.setPageSize(getRows());
-        getDataModel().setWrappedData(data);
+            if (isClientCacheRequest(context)) {
+                Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+                first = Integer.parseInt(params.get(getClientId(context) + "_first")) + getRows();
+            }
 
-        //Update paginator/livescroller for callback
-        if (ComponentUtils.isRequestSource(this, context) && (isPaginator() || isLiveScroll() || isVirtualScroll())) {
-            PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
+            Map<String, SortMeta> sorters = getSortByAsMap().values().stream()
+                    .filter(SortMeta::isActive)
+                    .collect(Collectors.toMap(SortMeta::getField, Function.identity()));
+            Map<String, FilterMeta> filters = getFilterByAsMap().values().stream()
+                    .filter(FilterMeta::isActive)
+                    .collect(Collectors.toMap(FilterMeta::getField, Function.identity()));
+            List<?> data = lazyModel.load(first, rows, sorters, filters);
+            lazyModel.setPageSize(getRows());
+            lazyModel.setWrappedData(data);
+
+            //Update paginator/livescroller for callback
+            if (ComponentUtils.isRequestSource(this, context) && (isPaginator() || isLiveScroll() || isVirtualScroll())) {
+                PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
+            }
         }
     }
 
     public void loadLazyScrollData(int offset, int rows) {
-        LazyDataModel lazyModel = (LazyDataModel) getValue();
+        Object model = getValue();
 
-        Map<String, SortMeta> sorters = getSortByAsMap().values().stream()
-                .filter(SortMeta::isActive)
-                .collect(Collectors.toMap(SortMeta::getField, Function.identity()));
-        Map<String, FilterMeta> filters = getFilterByAsMap().values().stream()
-                .filter(FilterMeta::isActive)
-                .collect(Collectors.toMap(FilterMeta::getField, Function.identity()));
-        List<?> data = lazyModel.load(offset, rows, sorters, filters);
+        if (model instanceof LazyDataModel) {
+            LazyDataModel lazyModel = (LazyDataModel) model;
 
-        lazyModel.setPageSize(rows);
-        lazyModel.setWrappedData(data);
+            Map<String, SortMeta> sorters = getSortByAsMap().values().stream()
+                    .filter(SortMeta::isActive)
+                    .collect(Collectors.toMap(SortMeta::getField, Function.identity()));
+            Map<String, FilterMeta> filters = getFilterByAsMap().values().stream()
+                    .filter(FilterMeta::isActive)
+                    .collect(Collectors.toMap(FilterMeta::getField, Function.identity()));
+            List<?> data = lazyModel.load(offset, rows, sorters, filters);
 
-        //Update paginator/livescroller  for callback
-        if (ComponentUtils.isRequestSource(this, getFacesContext()) && (isPaginator() || isLiveScroll() || isVirtualScroll())) {
-            PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
+            lazyModel.setPageSize(rows);
+            lazyModel.setWrappedData(data);
+
+            //Update paginator/livescroller  for callback
+            if (ComponentUtils.isRequestSource(this, getFacesContext()) && (isPaginator() || isLiveScroll() || isVirtualScroll())) {
+                PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
+            }
         }
     }
 
