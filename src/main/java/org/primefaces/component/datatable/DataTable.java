@@ -622,8 +622,8 @@ public class DataTable extends DataTableBase {
     }
 
     public void clearLazyCache() {
-        if (isLazy()) {
-            getDataModel().setWrappedData(null);
+        if (getValue() instanceof LazyDataModel) {
+            ((LazyDataModel) getValue()).setWrappedData(null);
         }
     }
 
