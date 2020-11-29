@@ -36,6 +36,8 @@ import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Objects;
@@ -52,7 +54,7 @@ public class FilterMeta implements Serializable {
     private ValueExpression filterBy;
     private Object filterValue;
     private MatchMode matchMode = MatchMode.CONTAINS;
-    private FilterConstraint constraint;
+    private transient FilterConstraint constraint;
 
     public FilterMeta() {
         // NOOP
@@ -281,5 +283,14 @@ public class FilterMeta implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(field, columnKey);
+    }
+
+    private void readObject(ObjectInputStream is) throws ClassNotFoundException, IOException {
+        is.defaultReadObject();
+
+        FilterConstraint c = FilterFeature.FILTER_CONSTRAINTS.get(matchMode);
+        if (c != null) {
+            this.constraint = c;
+        }
     }
 }
