@@ -1438,7 +1438,7 @@ public class DataTable extends DataTableBase {
                 String var = getVar();
                 Function<Object, String> rowKeyTransformer = o -> {
                     requestMap.put(var, o);
-                    return Objects.toString(getRowKey());
+                    return getRowKey();
                 };
 
                 setDataModel(new DefaultSelectableDataModel(model, rowKeyTransformer));

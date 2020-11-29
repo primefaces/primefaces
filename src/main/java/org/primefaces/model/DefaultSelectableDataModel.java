@@ -74,7 +74,7 @@ public class DefaultSelectableDataModel<T> extends DataModel<T> implements Selec
     }
 
     @Override
-    public Object getRowKey(T object) {
+    public String getRowKey(T object) {
         String rowKey = rowKeyTransformer.apply(object);
         //caching might not be necessary at this point since there is no use case that
         //requires to call DataTable#getRowKey and DataTable#getRowData in the same request
