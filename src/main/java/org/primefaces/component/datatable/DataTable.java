@@ -1441,14 +1441,16 @@ public class DataTable extends DataTableBase {
                     return getRowKey();
                 };
 
-                setDataModel(new DefaultSelectableDataModel(model, rowKeyTransformer));
+                model = new DefaultSelectableDataModel(model, rowKeyTransformer);
             }
             else {
-                setDataModel(new DefaultSelectableDataModel(model));
+                model = new DefaultSelectableDataModel(model);
             }
+
+            setDataModel(model);
         }
 
-        return super.getDataModel();
+        return model;
     }
 
     protected void updateSortByWithTableState(Map<String, SortMeta> tsSortBy) {
