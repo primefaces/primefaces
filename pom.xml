@@ -1104,6 +1104,7 @@
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                                 <transformer implementation="io.yupiik.maven.shade.transformer.RelocationTransformer">
                                     <delegates>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer"/>
                                         <transformer implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
                                             <resource>META-INF/faces-config.xml</resource>
                                         </transformer>
@@ -1146,6 +1147,50 @@
                                 <relocation>
                                     <pattern>javax.servlet</pattern>
                                     <shadedPattern>jakarta.servlet</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>javax.persistence</pattern>
+                                    <shadedPattern>jakarta.persistence</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>javax.enterprise</pattern>
+                                    <shadedPattern>jakarta.enterprise</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>javax.xml.bind</pattern>
+                                    <shadedPattern>jakarta.xml.bind</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>javax.validation</pattern>
+                                    <shadedPattern>jakarta.validation</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>javax.inject</pattern>
+                                    <shadedPattern>jakarta.inject</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>javax.activation</pattern>
+                                    <shadedPattern>jakarta.activation</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>javax.ws.rs</pattern>
+                                    <shadedPattern>jakarta.ws.rs</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>javax.jws</pattern>
+                                    <shadedPattern>jakarta.jws</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>javax.cache</pattern>
+                                    <shadedPattern>jakarta.cache</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>javax.xml.ws</pattern>
+                                    <shadedPattern>jakarta.xml.ws</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>javax.xml.soap</pattern>
+                                    <shadedPattern>jakarta.xml.soap</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
