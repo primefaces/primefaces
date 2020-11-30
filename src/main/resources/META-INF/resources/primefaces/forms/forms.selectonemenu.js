@@ -363,6 +363,17 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.panel, function() {
             $this.alignPanel();
         });
+
+        // GitHub #1173/#4609 keep panel with select while scrolling
+        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_align', function() {
+            if ($this.panel.is(':visible')) {
+                $this.panel.position({
+                    my: "left top",
+                    at: "left bottom",
+                    of: $this.jq
+                });
+            }
+        });
     },
 
     /**
