@@ -136,6 +136,8 @@ public class FilterFeature implements DataTableFeature {
         ELContext elContext = context.getELContext();
         Map<String, FilterMeta> filterBy = table.getFilterByAsMap();
 
+        table.setValue(null); // reset value (instead of filtering on already filtered value)
+
         for (int i = 0; i < table.getRowCount(); i++) {
             table.setRowIndex(i);
             boolean matching = true;
@@ -197,7 +199,8 @@ public class FilterFeature implements DataTableFeature {
 
             UIComponent filterFacet = column.getFacet("filter");
             if (ComponentUtils.shouldRenderFacet(filterFacet)) {
-                filterValue = ((UIInput) filterFacet).getSubmittedValue();
+                Object submittedValue = ((UIInput) filterFacet).getSubmittedValue();
+                filterValue = ComponentUtils.getConvertedValue(context, filterFacet, submittedValue);
             }
             else {
                 String valueHolderClientId = column instanceof DynamicColumn
