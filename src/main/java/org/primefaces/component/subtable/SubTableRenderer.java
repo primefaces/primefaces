@@ -35,6 +35,7 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.row.Row;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LangUtils;
 
 public class SubTableRenderer extends CoreRenderer {
 
@@ -75,9 +76,16 @@ public class SubTableRenderer extends CoreRenderer {
             for (UIComponent child : group.getChildren()) {
                 if (child.isRendered() && child instanceof Row) {
                     Row headerRow = (Row) child;
+                    String styleClass = "ui-widget-header";
+                    if (LangUtils.isNotBlank(headerRow.getStyleClass())) {
+                        styleClass = styleClass + " " + headerRow.getStyleClass();
+                    }
 
                     writer.startElement("tr", null);
-                    writer.writeAttribute("class", "ui-widget-header", null);
+                    writer.writeAttribute("class", styleClass, null);
+                    if (LangUtils.isNotBlank(headerRow.getStyle())) {
+                        writer.writeAttribute("style", headerRow.getStyle(), null);
+                    }
 
                     for (UIComponent headerRowChild : headerRow.getChildren()) {
                         if (headerRowChild.isRendered() && headerRowChild instanceof Column) {
@@ -152,9 +160,16 @@ public class SubTableRenderer extends CoreRenderer {
         for (UIComponent child : group.getChildren()) {
             if (child.isRendered() && child instanceof Row) {
                 Row footerRow = (Row) child;
+                String styleClass = "ui-widget-header";
+                if (LangUtils.isNotBlank(footerRow.getStyleClass())) {
+                    styleClass = styleClass + " " + footerRow.getStyleClass();
+                }
 
                 writer.startElement("tr", null);
-                writer.writeAttribute("class", "ui-widget-header", null);
+                writer.writeAttribute("class", styleClass, null);
+                if (LangUtils.isNotBlank(footerRow.getStyle())) {
+                    writer.writeAttribute("style", footerRow.getStyle(), null);
+                }
 
                 for (UIComponent footerRowChild : footerRow.getChildren()) {
                     if (footerRowChild.isRendered() && footerRowChild instanceof Column) {

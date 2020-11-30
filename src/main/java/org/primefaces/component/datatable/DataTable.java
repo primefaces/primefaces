@@ -643,7 +643,6 @@ public class DataTable extends DataTableBase {
     public void resetValue() {
         setValue(null);
         setFilteredValue(null);
-        setFilterBy(null);
     }
 
     public void reset() {
@@ -652,6 +651,7 @@ public class DataTable extends DataTableBase {
         resetRows();
         reset = true;
         setDefaultSort(false);
+        setDefaultFilter(false);
         setSortByAsMap(null);
         setFilterByAsMap(null);
         setScrollOffset(0);

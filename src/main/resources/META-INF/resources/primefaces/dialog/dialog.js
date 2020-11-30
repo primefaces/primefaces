@@ -332,7 +332,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         if(this.cfg.focus)
         	PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.focus).trigger('focus');
         else
-            this.jq.find(':not(:submit):not(:button):not(:radio):not(:checkbox):input:visible:enabled:first').trigger('focus');
+            PrimeFaces.focus(null, this.id);
     },
 
     /**

@@ -105,8 +105,6 @@ public class DataTableRenderer extends DataRenderer {
             table.restoreMultiViewState();
         }
 
-        boolean defaultSorted = table.isDefaultSort();
-
         if (table.isLiveScroll()) {
             table.setScrollOffset(0);
         }
@@ -128,7 +126,7 @@ public class DataTableRenderer extends DataRenderer {
             }
         }
         else {
-            if (defaultSorted) {
+            if (table.isDefaultSort()) {
                 SortFeature sortFeature = (SortFeature) table.getFeature(DataTableFeatureKey.SORT);
                 sortFeature.sort(context, table);
                 table.setRowIndex(-1);

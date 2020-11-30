@@ -21,31 +21,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.audio;
+package org.primefaces.model.filter;
 
-/**
- * HTML5 supports three audio formats: MP3, WAV, and OGG.
- */
-public enum AudioType {
+import javax.faces.context.FacesContext;
+import java.util.List;
+import java.util.Locale;
 
-    MP3("mp3", "audio/mpeg"),
-    OGG("ogg", "audio/ogg"),
-    WAV("wav", "audio/wav");
+public class RangeFilterConstraint implements FilterConstraint {
 
-    private final String fileExtension;
-    private final String mediaType;
+    @Override
+    public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
+        if (!(filter instanceof List) || ((List<?>) filter).size() != 2) {
+            throw new IllegalArgumentException("Filter expects a " + List.class.getName() + " with a size equals to 2");
+        }
 
-    AudioType (String fileExtension, String mediaType) {
-        this.fileExtension = fileExtension;
-        this.mediaType = mediaType;
+        if (value instanceof Comparable) {
+            return isInRange((Comparable) value, (List) filter);
+        }
+
+        throw new UnsupportedOperationException("Unsupported type: " + value.getClass() + ". Supported type: " + Comparable.class.getName());
     }
 
-    public String getFileExtension() {
-        return fileExtension;
+    protected boolean isInRange(Comparable value, List filter) {
+        Comparable start = (Comparable) filter.get(0);
+        Comparable end = (Comparable) filter.get(1);
+        return value.compareTo(start) >= 0 && value.compareTo(end) <= 0;
     }
-
-    public String getMediaType() {
-        return mediaType;
-    }
-
 }

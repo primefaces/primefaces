@@ -24,8 +24,8 @@
 package org.primefaces.component.picklist;
 
 import java.util.*;
-import javax.faces.FacesException;
 
+import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
@@ -38,11 +38,7 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.event.TransferEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.DualListModel;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.MapBuilder;
-import org.primefaces.util.MessageFactory;
+import org.primefaces.util.*;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -129,7 +125,7 @@ public class PickList extends PickListBase {
                 message = new FacesMessage(FacesMessage.SEVERITY_ERROR, requiredMessage, requiredMessage);
             }
             else {
-                message = MessageFactory.getFacesMessage(REQUIRED_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, new Object[] {label});
+                message = MessageFactory.getFacesMessage(REQUIRED_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, label);
             }
             facesContext.addMessage(clientId, message);
             setValid(false);
@@ -163,7 +159,7 @@ public class PickList extends PickListBase {
             boolean itemDisabled = isItemDisabled();
             // Check if disabled item has been moved from its former/original list
             if (itemDisabled && !oldEntries.contains(item)) {
-                FacesMessage message = MessageFactory.getFacesMessage(UPDATE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, new Object[] {label});
+                FacesMessage message = MessageFactory.getFacesMessage(UPDATE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, label);
                 facesContext.addMessage(clientId, message);
                 setValid(false);
                 break;
