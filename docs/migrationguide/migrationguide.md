@@ -12,4 +12,4 @@
 * [3.3 -> 3.4](../migrationguide/3_4.md)
 * [3.2 -> 3.3](../migrationguide/3_3.md)
 * [3.1 -> 3.2](../migrationguide/3_2.md)
-* [3.0 -> 1.1](../migrationguide/3_1.md)
+* [3.0 -> 3.1](../migrationguide/3_1.md)
