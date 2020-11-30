@@ -8,7 +8,7 @@
 * [5.1 / 5.2 / 5.3 -> 6.0](../migrationguide/6_0.md)
 * [4.0 -> 5.0](../migrationguide/5_0.md)
 * [3.5 -> 4.0](../migrationguide/4_0.md)
-* [3.4 -> 5.5](../migrationguide/3_5.md)
+* [3.4 -> 3.5](../migrationguide/3_5.md)
 * [3.3 -> 3.4](../migrationguide/3_4.md)
 * [3.2 -> 3.3](../migrationguide/3_3.md)
 * [3.1 -> 3.2](../migrationguide/3_2.md)
