@@ -71,6 +71,9 @@ public class FilterMeta implements Serializable {
         this.column = column;
     }
 
+    /**
+     * @deprecated Use FilterMeta#builder() instead
+     */
     @Deprecated
     public FilterMeta(String field, String columnKey, ValueExpression filterByVE, MatchMode filterMatchMode, Object filterValue) {
         this.field = field;
