@@ -1494,10 +1494,6 @@ public class DataTable extends DataTableBase {
         return getSortByAsMap().values().stream().anyMatch(SortMeta::isActive);
     }
 
-    public boolean isFilteringCurrentlyActive() {
-        return getFilterByAsMap().values().stream().anyMatch(FilterMeta::isActive);
-    }
-
     public boolean isColumnSortable(UIColumn column) {
         Map<String, SortMeta> sortBy = getSortByAsMap();
         if (sortBy.containsKey(column.getColumnKey())) {
