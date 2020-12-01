@@ -308,6 +308,8 @@ public class DataTable extends DataTableBase {
     public void processValidators(FacesContext context) {
         super.processValidators(context);
 
+        //filters need to be decoded during PROCESS_VALIDATIONS phase,
+        //so that local values of each filters are properly converted and validated
         FilterFeature filterFeature = (FilterFeature) FEATURES.get(DataTableFeatureKey.FILTER);
         if (filterFeature.isFilterRequest(context, this)) {
             filterFeature.decode(context, this);
