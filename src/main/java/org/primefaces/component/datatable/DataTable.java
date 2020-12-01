@@ -205,6 +205,7 @@ public class DataTable extends DataTableBase {
     private String resizableColumnsAsString;
     private Map<String, String> resizableColsMap;
     private Set<Integer> expandedRowsSet;
+    private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>(1);
 
     public DataTableFeature getFeature(DataTableFeatureKey key) {
         return FEATURES.get(key);
@@ -304,6 +305,20 @@ public class DataTable extends DataTableBase {
     }
 
     @Override
+    public void processValidators(FacesContext context) {
+        super.processValidators(context);
+
+        FilterFeature filterFeature = (FilterFeature) FEATURES.get(DataTableFeatureKey.FILTER);
+        if (filterFeature.isFilterRequest(context, this)) {
+            filterFeature.decode(context, this);
+            AjaxBehaviorEvent ajaxEvt = customEvents.get("filter");
+            FilterEvent evt = new FilterEvent(this, ajaxEvt.getBehavior(), getFilterByAsMap());
+            evt.setPhaseId(PhaseId.PROCESS_VALIDATIONS);
+            queueEvent(evt);
+        }
+    }
+
+    @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
@@ -348,7 +363,8 @@ public class DataTable extends DataTableBase {
                 wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), (UIColumn) meta.getComponent(), meta.getOrder(), sortColumnIndex);
             }
             else if (eventName.equals("filter")) {
-                wrapperEvent = new FilterEvent(this, behaviorEvent.getBehavior(), getFilteredValue());
+                customEvents.put("filter", (AjaxBehaviorEvent) event);
+                return;
             }
             else if (eventName.equals("rowEdit") || eventName.equals("rowEditCancel") || eventName.equals("rowEditInit")) {
                 int rowIndex = Integer.parseInt(params.get(clientId + "_rowEditIndex"));
@@ -1275,6 +1291,9 @@ public class DataTable extends DataTableBase {
     @Override
     public Object saveState(FacesContext context) {
         // reset component for MyFaces view pooling
+        if (customEvents != null) {
+            customEvents.clear();
+        }
         columnsCountWithSpan = -1;
         reset = false;
         selectedRowKeys = new ArrayList<>();

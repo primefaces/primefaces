@@ -40,8 +40,8 @@ import org.primefaces.util.MapBuilder;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
 import javax.faces.component.UINamingContainer;
+import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -63,13 +63,13 @@ public class FilterFeature implements DataTableFeature {
         .put(MatchMode.RANGE, new RangeFilterConstraint())
         .build();
 
-    private boolean isFilterRequest(FacesContext context, DataTable table) {
+    public boolean isFilterRequest(FacesContext context, DataTable table) {
         return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_filtering");
     }
 
     @Override
     public boolean shouldDecode(FacesContext context, DataTable table) {
-        return isFilterRequest(context, table);
+        return false;
     }
 
     @Override
@@ -199,8 +199,7 @@ public class FilterFeature implements DataTableFeature {
 
             UIComponent filterFacet = column.getFacet("filter");
             if (ComponentUtils.shouldRenderFacet(filterFacet)) {
-                Object submittedValue = ((UIInput) filterFacet).getSubmittedValue();
-                filterValue = ComponentUtils.getConvertedValue2(context, filterFacet, submittedValue);
+                filterValue = ((ValueHolder) filterFacet).getLocalValue();
             }
             else {
                 String valueHolderClientId = column instanceof DynamicColumn
