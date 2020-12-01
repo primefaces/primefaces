@@ -24,13 +24,15 @@
 package org.primefaces.component.treetable;
 
 import javax.faces.component.behavior.ClientBehaviorHolder;
+import org.primefaces.component.api.MultiViewStateAware;
 
 import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.UITree;
 import org.primefaces.component.api.Widget;
 
-public abstract class TreeTableBase extends UITree implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable {
+public abstract class TreeTableBase extends UITree implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable,
+        MultiViewStateAware<TreeTableState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -77,7 +79,8 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         filterEvent,
         filterDelay,
         cellEditMode,
-        editInitEvent
+        editInitEvent,
+        multiViewState
     }
 
     public TreeTableBase() {
@@ -419,4 +422,12 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         getStateHelper().put(PropertyKeys.editInitEvent, editInitEvent);
     }
 
+    @Override
+    public boolean isMultiViewState() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.multiViewState, false);
+    }
+
+    public void setMultiViewState(boolean multiViewState) {
+        getStateHelper().put(PropertyKeys.multiViewState, multiViewState);
+    }
 }

@@ -29433,7 +29433,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[Treetable is is used for displaying hierarchical data in tabular format.]]>
+            <![CDATA[TreeTable is is used for displaying hierarchical data in tabular format.]]>
         </description>
         <tag-name>treeTable</tag-name>
         <component>
@@ -29864,6 +29864,14 @@
             <name>editInitEvent</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to keep TreeTable state across views, defaults to false.]]>
+            </description>
+            <name>multiViewState</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
     </tag>
     <tag>

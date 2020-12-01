@@ -37,6 +37,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
+import org.primefaces.PrimeFaces;
 
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
@@ -722,5 +723,31 @@ public class TreeTable extends TreeTableBase {
     @Override
     protected boolean requiresColumns() {
         return true;
+    }
+
+    @Override
+    public void restoreMultiViewState() {
+        TreeTableState ts = getMultiViewState(false);
+        if (ts != null) {
+
+        }
+    }
+
+    @Override
+    public TreeTableState getMultiViewState(boolean create) {
+        FacesContext fc = getFacesContext();
+        String viewId = fc.getViewRoot().getViewId();
+
+        return PrimeFaces.current().multiViewState()
+                .get(viewId, getClientId(fc), create, TreeTableState::new);
+    }
+
+    @Override
+    public void resetMultiViewState() {
+        reset();
+    }
+
+    public void reset() {
+
     }
 }
