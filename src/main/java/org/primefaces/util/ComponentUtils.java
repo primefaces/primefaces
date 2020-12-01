@@ -184,51 +184,6 @@ public class ComponentUtils {
         return value;
     }
 
-    /**
-     * Copied from Mojarra 2.3.14 - UIInput#getConvertedValue
-     */
-    public static Object getConvertedValue2(FacesContext context,
-                                           UIComponent component,
-                                           Object newSubmittedValue) {
-        Renderer renderer = getRenderer(context, component);
-        Object newValue;
-
-        if (renderer != null) {
-            newValue = renderer.getConvertedValue(context, component,
-                    newSubmittedValue);
-        }
-        else if (newSubmittedValue instanceof String) {
-            // If there's no Renderer, and we've got a String,
-            // run it through the Converter (if any)
-            Converter converter = getConverter(context, component);
-            if (converter != null) {
-                newValue = converter.getAsObject(context, component,
-                        (String) newSubmittedValue);
-            }
-            else {
-                newValue = newSubmittedValue;
-            }
-        }
-        else {
-            newValue = newSubmittedValue;
-        }
-        return newValue;
-    }
-
-    /**
-     * Copied from Mojarra 2.3.14 - UIInput#getConvertedValue
-     */
-    private static Renderer getRenderer(FacesContext context, UIComponent component) {
-        Renderer renderer = null;
-
-        String rendererType = component.getRendererType();
-        if (rendererType != null) {
-            renderer = context.getRenderKit().getRenderer(component.getFamily(), rendererType);
-        }
-
-        return renderer;
-    }
-
     public static void decodeBehaviors(FacesContext context, UIComponent component) {
         if (!(component instanceof ClientBehaviorHolder)) {
             return;
