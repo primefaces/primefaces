@@ -196,17 +196,20 @@ public class ComponentUtils {
         if (renderer != null) {
             newValue = renderer.getConvertedValue(context, component,
                     newSubmittedValue);
-        } else if (newSubmittedValue instanceof String) {
+        }
+        else if (newSubmittedValue instanceof String) {
             // If there's no Renderer, and we've got a String,
             // run it through the Converter (if any)
             Converter converter = getConverter(context, component);
             if (converter != null) {
                 newValue = converter.getAsObject(context, component,
                         (String) newSubmittedValue);
-            } else {
+            }
+            else {
                 newValue = newSubmittedValue;
             }
-        } else {
+        }
+        else {
             newValue = newSubmittedValue;
         }
         return newValue;
