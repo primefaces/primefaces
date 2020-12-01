@@ -182,8 +182,11 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
                 }
             };
             
-            PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $('#ui-datepicker-div'), function() {
-                $this.alignPanel();
+            PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_hide', $('#ui-datepicker-div'), function() {
+                $.datepicker._hideDatepicker();
+            });
+            PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_hide', function() {
+                $.datepicker._hideDatepicker();
             });
         }
 

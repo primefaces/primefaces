@@ -48,6 +48,7 @@
      */
     init: function(cfg) {
         this._super(cfg);
+        var $this = this;
 
         this.input = $(this.jqId + '_input');
         this.cfg.popup = this.cfg.mode == 'popup';
@@ -70,6 +71,10 @@
             PrimeFaces.skinButton(this.jqEl);
             this.overlay = $(PrimeFaces.escapeClientId(this.jqEl.data('colorpickerId')));
             this.livePreview = $(this.jqId + '_livePreview');
+
+            PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_hide', function() {
+                $this.overlay.hide();
+            });
         }
 
         //pfs metadata
@@ -109,15 +114,7 @@
             $this.setupDialogSupport();
 
             //position the overlay relative to the button
-            $this.overlay.css({
-                        left:'',
-                        top:''
-                })
-                .position({
-                    my: 'left top'
-                    ,at: 'left bottom'
-                    ,of: $this.jqEl
-                });
+            $this.alignPanel();
 
             if($this.cfg.popup) {
                 $this.overlay.css({
@@ -168,5 +165,22 @@
                 this.overlay.css('position', 'fixed');
             }
         }
+    },
+
+    /**
+     * Aligns the overlay panel with the color picker according to the current configuration. It is usually positioned
+     * next to or below the input field to which it is attached.
+     */
+    alignPanel: function() {
+        this.overlay.css({
+                left: '',
+                top: ''
+            })
+            .position({
+                my: 'left top',
+                at: 'left bottom',
+                of: this.jqEl,
+                collision: 'flipfit'
+            });
     }
 });
