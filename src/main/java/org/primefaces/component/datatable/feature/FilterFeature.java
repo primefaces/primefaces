@@ -200,7 +200,7 @@ public class FilterFeature implements DataTableFeature {
             UIComponent filterFacet = column.getFacet("filter");
             if (ComponentUtils.shouldRenderFacet(filterFacet)) {
                 Object submittedValue = ((UIInput) filterFacet).getSubmittedValue();
-                filterValue = ComponentUtils.getConvertedValue(context, filterFacet, submittedValue);
+                filterValue = ComponentUtils.getConvertedValue2(context, filterFacet, submittedValue);
             }
             else {
                 String valueHolderClientId = column instanceof DynamicColumn
