@@ -43,6 +43,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.*;
@@ -69,7 +70,7 @@ public class FilterFeature implements DataTableFeature {
 
     @Override
     public boolean shouldDecode(FacesContext context, DataTable table) {
-        return false;
+        return context.getCurrentPhaseId() == PhaseId.PROCESS_VALIDATIONS && isFilterRequest(context, table);
     }
 
     @Override

@@ -205,7 +205,7 @@ public class DataTable extends DataTableBase {
     private String resizableColumnsAsString;
     private Map<String, String> resizableColsMap;
     private Set<Integer> expandedRowsSet;
-    private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>(1);
+    private Map<String, AjaxBehaviorEvent> deferredEvents = new HashMap<>(1);
 
     public DataTableFeature getFeature(DataTableFeatureKey key) {
         return FEATURES.get(key);
@@ -310,10 +310,10 @@ public class DataTable extends DataTableBase {
 
         //filters need to be decoded during PROCESS_VALIDATIONS phase,
         //so that local values of each filters are properly converted and validated
-        FilterFeature filterFeature = (FilterFeature) FEATURES.get(DataTableFeatureKey.FILTER);
-        if (filterFeature.isFilterRequest(context, this)) {
-            filterFeature.decode(context, this);
-            AjaxBehaviorEvent ajaxEvt = customEvents.get("filter");
+        DataTableFeature feature = FEATURES.get(DataTableFeatureKey.FILTER);
+        if (feature.shouldDecode(context, this)) {
+            feature.decode(context, this);
+            AjaxBehaviorEvent ajaxEvt = deferredEvents.get("filter");
             if (ajaxEvt != null) {
                 FilterEvent evt = new FilterEvent(this, ajaxEvt.getBehavior(), getFilterByAsMap());
                 evt.setPhaseId(PhaseId.PROCESS_VALIDATIONS);
@@ -352,22 +352,10 @@ public class DataTable extends DataTableBase {
                 wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), page);
             }
             else if (eventName.equals("sort")) {
-                SortMeta meta;
-                int sortColumnIndex = 0;
-
-                if (isMultiSort()) {
-                    String[] sortKeys = params.get(clientId + "_sortKey").split(",");
-                    meta = getSortByAsMap().get(sortKeys[sortKeys.length - 1]);
-                    sortColumnIndex = sortKeys.length - 1;
-                }
-                else {
-                    meta = getSortByAsMap().get(params.get(clientId + "_sortKey"));
-                }
-
-                wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), (UIColumn) meta.getComponent(), meta.getOrder(), sortColumnIndex);
+                wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), getSortByAsMap());
             }
             else if (eventName.equals("filter")) {
-                customEvents.put("filter", (AjaxBehaviorEvent) event);
+                deferredEvents.put("filter", (AjaxBehaviorEvent) event);
                 return;
             }
             else if (eventName.equals("rowEdit") || eventName.equals("rowEditCancel") || eventName.equals("rowEditInit")) {
@@ -1291,8 +1279,8 @@ public class DataTable extends DataTableBase {
     @Override
     public Object saveState(FacesContext context) {
         // reset component for MyFaces view pooling
-        if (customEvents != null) {
-            customEvents.clear();
+        if (deferredEvents != null) {
+            deferredEvents.clear();
         }
         columnsCountWithSpan = -1;
         reset = false;

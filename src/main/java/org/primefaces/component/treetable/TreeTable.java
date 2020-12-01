@@ -47,10 +47,7 @@ import org.primefaces.event.*;
 import org.primefaces.event.data.FilterEvent;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.event.data.SortEvent;
-import org.primefaces.model.FilterMeta;
-import org.primefaces.model.MatchMode;
-import org.primefaces.model.SortOrder;
-import org.primefaces.model.TreeNode;
+import org.primefaces.model.*;
 import org.primefaces.model.filter.*;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -248,7 +245,12 @@ public class TreeTable extends TreeTableBase {
                 SortOrder order = SortOrder.valueOf(params.get(clientId + "_sortDir"));
                 UIColumn sortColumn = findColumn(params.get(clientId + "_sortKey"));
 
-                wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), sortColumn, order, 0);
+                SortMeta s = SortMeta.of(getFacesContext(), getVar(), sortColumn);
+                s.setOrder(order);
+
+                wrapperEvent = new SortEvent(this,
+                        behaviorEvent.getBehavior(),
+                        Collections.singletonMap(sortColumn.getClientId(getFacesContext()), s));
             }
             else if (eventName.equals("filter")) {
                 wrapperEvent = new FilterEvent(this, behaviorEvent.getBehavior(), null);
