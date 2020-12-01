@@ -105,9 +105,8 @@ public class FilterFeature implements DataTableFeature {
         else {
             filter(context, table);
 
-            //sort new filtered data to restore sort state
-            boolean sorted = table.isSortingCurrentlyActive();
-            if (sorted) {
+            // update filtered value accordingly to take account sorting
+            if (table.isSortingCurrentlyActive()) {
                 SortFeature sortFeature = (SortFeature) table.getFeature(DataTableFeatureKey.SORT);
                 sortFeature.sort(context, table);
             }

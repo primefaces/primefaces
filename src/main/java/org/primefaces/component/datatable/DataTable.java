@@ -314,9 +314,11 @@ public class DataTable extends DataTableBase {
         if (filterFeature.isFilterRequest(context, this)) {
             filterFeature.decode(context, this);
             AjaxBehaviorEvent ajaxEvt = customEvents.get("filter");
-            FilterEvent evt = new FilterEvent(this, ajaxEvt.getBehavior(), getFilterByAsMap());
-            evt.setPhaseId(PhaseId.PROCESS_VALIDATIONS);
-            queueEvent(evt);
+            if (ajaxEvt != null) {
+                FilterEvent evt = new FilterEvent(this, ajaxEvt.getBehavior(), getFilterByAsMap());
+                evt.setPhaseId(PhaseId.PROCESS_VALIDATIONS);
+                queueEvent(evt);
+            }
         }
     }
 
@@ -1261,10 +1263,6 @@ public class DataTable extends DataTableBase {
         return LocaleUtils.resolveLocale(context, getDataLocale(), getClientId(context));
     }
 
-    private boolean isFilterRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_filtering");
-    }
-
     @Override
     protected List<UIComponent> getIterableChildren() {
         List<UIComponent> iterableChildren = new ArrayList<>(getChildCount());
@@ -1494,6 +1492,10 @@ public class DataTable extends DataTableBase {
 
     public boolean isSortingCurrentlyActive() {
         return getSortByAsMap().values().stream().anyMatch(SortMeta::isActive);
+    }
+
+    public boolean isFilteringCurrentlyActive() {
+        return getFilterByAsMap().values().stream().anyMatch(FilterMeta::isActive);
     }
 
     public boolean isColumnSortable(UIColumn column) {
