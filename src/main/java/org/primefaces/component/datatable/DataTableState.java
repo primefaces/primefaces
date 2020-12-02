@@ -40,7 +40,7 @@ public class DataTableState implements Serializable {
 
     private Map<String, SortMeta> sortBy;
 
-    private List<Object> rowKeys;
+    private List<Object> selectedRowKeys;
 
     private Map<String, FilterMeta> filterBy;
 
@@ -74,12 +74,12 @@ public class DataTableState implements Serializable {
         this.sortBy = sortBy;
     }
 
-    public List<Object> getRowKeys() {
-        return rowKeys;
+    public List<Object> getSelectedRowKeys() {
+        return selectedRowKeys;
     }
 
-    public void setRowKeys(List<Object> rowKeys) {
-        this.rowKeys = rowKeys;
+    public void setSelectedRowKeys(List<Object> selectionRowKeys) {
+        this.selectedRowKeys = selectionRowKeys;
     }
 
     public Map<String, FilterMeta> getFilterBy() {

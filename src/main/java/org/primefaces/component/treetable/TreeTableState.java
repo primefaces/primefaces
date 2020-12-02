@@ -40,15 +40,9 @@ public class TreeTableState implements Serializable {
 
     private Map<String, SortMeta> sortBy;
 
-    private List<Object> rowKeys;
+    private List<Object> selectedRowKeys;
 
     private Map<String, FilterMeta> filterBy;
-
-    private String orderedColumnsAsString;
-
-    private String togglableColumnsAsString;
-
-    private String resizableColumnsAsString;
 
     public int getFirst() {
         return first;
@@ -74,12 +68,12 @@ public class TreeTableState implements Serializable {
         this.sortBy = sortBy;
     }
 
-    public List<Object> getRowKeys() {
-        return rowKeys;
+    public List<Object> getSelectedRowKeys() {
+        return selectedRowKeys;
     }
 
-    public void setRowKeys(List<Object> rowKeys) {
-        this.rowKeys = rowKeys;
+    public void setSelectedRowKeys(List<Object> selectedRowKeys) {
+        this.selectedRowKeys = selectedRowKeys;
     }
 
     public Map<String, FilterMeta> getFilterBy() {
@@ -90,27 +84,4 @@ public class TreeTableState implements Serializable {
         this.filterBy = filterBy;
     }
 
-    public String getOrderedColumnsAsString() {
-        return orderedColumnsAsString;
-    }
-
-    public void setOrderedColumnsAsString(String orderedColumnsAsString) {
-        this.orderedColumnsAsString = orderedColumnsAsString;
-    }
-
-    public String getTogglableColumnsAsString() {
-        return togglableColumnsAsString;
-    }
-
-    public void setTogglableColumnsAsString(String togglableColumnsAsString) {
-        this.togglableColumnsAsString = togglableColumnsAsString;
-    }
-
-    public String getResizableColumnsAsString() {
-        return resizableColumnsAsString;
-    }
-
-    public void setResizableColumnsAsString(String resizableColumnsAsString) {
-        this.resizableColumnsAsString = resizableColumnsAsString;
-    }
 }

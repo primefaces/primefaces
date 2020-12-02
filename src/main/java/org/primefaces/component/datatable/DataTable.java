@@ -1217,7 +1217,7 @@ public class DataTable extends DataTableBase implements ColumnHolder {
             }
 
             if (isSelectionEnabled()) {
-                selectedRowKeys = ts.getRowKeys();
+                selectedRowKeys = ts.getSelectedRowKeys();
                 isRowKeyRestored = true;
             }
 
