@@ -213,12 +213,18 @@ public class FilterFeature implements DataTableFeature {
         }
         else {
             UIColumn column = filterBy.getColumn();
+            UIComponent filterFacet = column.getFacet("filter");
+            boolean hasCustomFilter = ComponentUtils.shouldRenderFacet(filterFacet);
             if (column instanceof DynamicColumn) {
-                ((DynamicColumn) column).applyStatelessModel();
+                if (hasCustomFilter) {
+                    ((DynamicColumn) column).applyModel();
+                }
+                else {
+                    ((DynamicColumn) column).applyStatelessModel();
+                }
             }
 
-            UIComponent filterFacet = column.getFacet("filter");
-            if (ComponentUtils.shouldRenderFacet(filterFacet)) {
+            if (hasCustomFilter) {
                 filterValue = ((ValueHolder) filterFacet).getLocalValue();
             }
             else {
