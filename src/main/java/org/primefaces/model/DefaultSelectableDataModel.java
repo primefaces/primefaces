@@ -60,7 +60,7 @@ public class DefaultSelectableDataModel<T> extends DataModel<T> implements Selec
         T rowData = cache.get(rowKey);
         if (rowData == null && cache.size() != getRowCount()) {
             List<T> list = (List<T>) getWrappedData();
-            for (int i = cache.size(); i < getRowCount(); i++) {
+            for (int i = cache.size(); i < list.size(); i++) {
                 T o = list.get(i);
                 String oRowKey = rowKeyTransformer.apply(o);
                 cache.put(oRowKey, o);
