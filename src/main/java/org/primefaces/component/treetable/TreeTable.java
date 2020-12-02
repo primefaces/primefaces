@@ -406,15 +406,15 @@ public class TreeTable extends TreeTableBase  implements ColumnHolder {
     }
 
     public void clearDefaultSorted() {
-        getStateHelper().remove("defaultSorted");
+        getStateHelper().remove(InternalPropertyKeys.defaultSorted.name());
     }
 
     public void setDefaultSorted() {
-        getStateHelper().put("defaultSorted", "defaultSorted");
+        getStateHelper().put(InternalPropertyKeys.defaultSorted.name(), InternalPropertyKeys.defaultSorted.name());
     }
 
     public boolean isDefaultSorted() {
-        return getStateHelper().get("defaultSorted") != null;
+        return getStateHelper().get(InternalPropertyKeys.defaultSorted.name()) != null;
     }
 
     public Locale resolveDataLocale() {

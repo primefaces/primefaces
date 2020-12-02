@@ -83,6 +83,10 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         multiViewState
     }
 
+    protected enum InternalPropertyKeys {
+        defaultSorted
+    }
+
     public TreeTableBase() {
         setRendererType(DEFAULT_RENDERER);
     }
