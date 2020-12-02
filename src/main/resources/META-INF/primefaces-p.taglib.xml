@@ -29619,22 +29619,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines default sorting order. Default is "ascending"]]>
-            </description>
-            <name>sortOrder</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Custom pluggable sortFunction for default sorting.]]>
-            </description>
-            <name>sortFunction</name>
-            <required>false</required>
-            <type>javax.el.MethodExpression</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[In native mode, treetable uses native checkboxes.]]>
             </description>
             <name>nativeElements</name>
@@ -29648,14 +29632,6 @@
             <name>dataLocale</name>
             <required>false</required>
             <type>java.lang.Object</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Case sensitivity for sorting, insensitive by default.]]>
-            </description>
-            <name>caseSensitiveSort</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -29872,6 +29848,30 @@
             <name>multiViewState</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Map of filters; This also allows to filter the table by default.]]>
+            </description>
+            <name>filterBy</name>
+            <required>false</required>
+            <type>java.util.Map</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Value of the global filter to use when filtering by default.]]>
+            </description>
+            <name>globalFilter</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Custom implementation to globally filter a value against a constraint.]]>
+            </description>
+            <name>globalFilterFunction</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
         </attribute>
     </tag>
     <tag>

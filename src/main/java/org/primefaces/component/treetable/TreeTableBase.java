@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.treetable;
 
+import javax.el.MethodExpression;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import org.primefaces.component.api.MultiViewStateAware;
 
@@ -53,11 +54,8 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         rowStyleClass,
         liveResize,
         sortBy,
-        sortOrder,
-        sortFunction,
         nativeElements,
         dataLocale,
-        caseSensitiveSort,
         expandMode,
         stickyHeader,
         editable,
@@ -75,6 +73,9 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         paginatorAlwaysVisible,
         rows,
         first,
+        filterBy,
+        globalFilter,
+        globalFilterFunction,
         filteredNode,
         filterEvent,
         filterDelay,
@@ -84,7 +85,10 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
     }
 
     protected enum InternalPropertyKeys {
-        defaultSorted
+        defaultFilter,
+        filterByAsMap,
+        defaultSort,
+        sortByAsMap;
     }
 
     public TreeTableBase() {
@@ -200,22 +204,6 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         getStateHelper().put(PropertyKeys.sortBy, sortBy);
     }
 
-    public String getSortOrder() {
-        return (String) getStateHelper().eval(PropertyKeys.sortOrder, "ascending");
-    }
-
-    public void setSortOrder(String sortOrder) {
-        getStateHelper().put(PropertyKeys.sortOrder, sortOrder);
-    }
-
-    public javax.el.MethodExpression getSortFunction() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.sortFunction, null);
-    }
-
-    public void setSortFunction(javax.el.MethodExpression sortFunction) {
-        getStateHelper().put(PropertyKeys.sortFunction, sortFunction);
-    }
-
     public boolean isNativeElements() {
         return (Boolean) getStateHelper().eval(PropertyKeys.nativeElements, false);
     }
@@ -230,14 +218,6 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
 
     public void setDataLocale(Object dataLocale) {
         getStateHelper().put(PropertyKeys.dataLocale, dataLocale);
-    }
-
-    public boolean isCaseSensitiveSort() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.caseSensitiveSort, false);
-    }
-
-    public void setCaseSensitiveSort(boolean caseSensitiveSort) {
-        getStateHelper().put(PropertyKeys.caseSensitiveSort, caseSensitiveSort);
     }
 
     public String getExpandMode() {
@@ -433,5 +413,29 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
 
     public void setMultiViewState(boolean multiViewState) {
         getStateHelper().put(PropertyKeys.multiViewState, multiViewState);
+    }
+
+    public Object getFilterBy() {
+        return getStateHelper().eval(PropertyKeys.filterBy);
+    }
+
+    public void setFilterBy(Object filterBy) {
+        getStateHelper().put(PropertyKeys.filterBy, filterBy);
+    }
+
+    public String getGlobalFilter() {
+        return (String) getStateHelper().eval(PropertyKeys.globalFilter, null);
+    }
+
+    public void setGlobalFilter(String globalFilter) {
+        getStateHelper().put(PropertyKeys.globalFilter, globalFilter);
+    }
+
+    public MethodExpression getGlobalFilterFunction() {
+        return (MethodExpression) getStateHelper().eval(PropertyKeys.globalFilterFunction, null);
+    }
+
+    public void setGlobalFilterFunction(MethodExpression globalFilterFunction) {
+        getStateHelper().put(PropertyKeys.globalFilterFunction, globalFilterFunction);
     }
 }
