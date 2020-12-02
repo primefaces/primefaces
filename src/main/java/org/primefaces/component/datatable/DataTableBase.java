@@ -108,6 +108,13 @@ public abstract class DataTableBase extends UIData
         renderEmptyFacets
     }
 
+    protected enum InternalPropertyKeys {
+        defaultFilter,
+        filterByAsMap,
+        defaultSort,
+        sortByAsMap;
+    }
+
     public DataTableBase() {
         setRendererType(DEFAULT_RENDERER);
     }

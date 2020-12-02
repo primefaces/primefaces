@@ -1112,19 +1112,19 @@ public class DataTable extends DataTableBase {
     }
 
     public boolean isDefaultSort() {
-        return getSortByAsMap() != null && Boolean.TRUE.equals(getStateHelper().get("defaultSort"));
+        return getSortByAsMap() != null && Boolean.TRUE.equals(getStateHelper().get(InternalPropertyKeys.defaultSort.name()));
     }
 
     public void setDefaultSort(boolean defaultSort) {
-        getStateHelper().put("defaultSort", defaultSort);
+        getStateHelper().put(InternalPropertyKeys.defaultSort.name(), defaultSort);
     }
 
     public boolean isDefaultFilter() {
-        return Boolean.TRUE.equals(getStateHelper().get("defaultFilter"));
+        return Boolean.TRUE.equals(getStateHelper().get(InternalPropertyKeys.defaultFilter.name()));
     }
 
     public void setDefaultFilter(boolean defaultFilter) {
-        getStateHelper().put("defaultFilter", defaultFilter);
+        getStateHelper().put(InternalPropertyKeys.defaultFilter.name(), defaultFilter);
     }
 
     public void setTogglableColumnsAsString(String togglableColumnsAsString) {
@@ -1556,7 +1556,7 @@ public class DataTable extends DataTableBase {
     }
 
     public Map<String, FilterMeta> initFilterBy() {
-        boolean invalidate = getStateHelper().get("_filterBy") == null;
+        boolean invalidate = getStateHelper().get(InternalPropertyKeys.filterByAsMap.name()) == null;
         Map<String, FilterMeta> filterBy = invalidate ? new HashMap<>() : getFilterByAsMap();
         AtomicBoolean filtered = invalidate ? new AtomicBoolean() : new AtomicBoolean(isDefaultFilter());
 
@@ -1662,18 +1662,18 @@ public class DataTable extends DataTableBase {
     }
 
     public Map<String, SortMeta> getSortByAsMap() {
-        return ComponentUtils.computeIfAbsent(getStateHelper(), "_sortBy", this::initSortBy);
+        return ComponentUtils.computeIfAbsent(getStateHelper(), InternalPropertyKeys.sortByAsMap.name(), this::initSortBy);
     }
 
     public void setSortByAsMap(Map<String, SortMeta> sortBy) {
-        getStateHelper().put("_sortBy", sortBy);
+        getStateHelper().put(InternalPropertyKeys.sortByAsMap.name(), sortBy);
     }
 
     public Map<String, FilterMeta> getFilterByAsMap() {
-        return ComponentUtils.eval(getStateHelper(), "_filterBy", Collections::emptyMap);
+        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.filterByAsMap.name(), Collections::emptyMap);
     }
 
     public void setFilterByAsMap(Map<String, FilterMeta> sortBy) {
-        getStateHelper().put("_filterBy", sortBy);
+        getStateHelper().put(InternalPropertyKeys.filterByAsMap.name(), sortBy);
     }
 }
