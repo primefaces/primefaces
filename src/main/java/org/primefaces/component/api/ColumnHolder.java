@@ -66,7 +66,8 @@ public interface ColumnHolder {
                 }
                 else if (child instanceof ColumnHolder) {
                     ColumnHolder columnHolder = (ColumnHolder) child;
-                    for (UIComponent columnHolderChild : ((UIComponent) columnHolder).getChildren()) {
+                    for (int j = 0; j < ((UIComponent) columnHolder).getChildCount(); j++) {
+                        UIComponent columnHolderChild = ((UIComponent) columnHolder).getChildren().get(j);
                         if (columnHolderChild.isRendered()) {
                             forEachColumn(context, separator, columnHolderChild, callback);
                         }
