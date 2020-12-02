@@ -78,8 +78,8 @@ public class DataTableState implements Serializable {
         return selectedRowKeys;
     }
 
-    public void setSelectedRowKeys(List<Object> selectionRowKeys) {
-        this.selectedRowKeys = selectionRowKeys;
+    public void setSelectedRowKeys(List<Object> selectedRowKeys) {
+        this.selectedRowKeys = selectedRowKeys;
     }
 
     public Map<String, FilterMeta> getFilterBy() {
