@@ -323,7 +323,7 @@ public class TreeTable extends TreeTableBase {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
         for (UIColumn column : tt.getColumns()) {
-            ValueExpression columnFilterByVE = column.getValueExpression("filterBy");
+            ValueExpression columnFilterByVE = column.getValueExpression(Column.PropertyKeys.filterBy.name());
 
             if (columnFilterByVE != null) {
                 UIComponent filterFacet = column.getFacet("filter");
