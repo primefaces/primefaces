@@ -119,8 +119,10 @@ public interface ColumnHolder {
             return null;
         }
 
-        for (UIComponent row : group.getChildren()) {
-            for (UIComponent rowChild : row.getChildren()) {
+        for (int i = 0; i < group.getChildCount(); i++) {
+            UIComponent row = group.getChildren().get(i);
+            for (int j = 0; j < row.getChildCount(); j++) {
+                UIComponent rowChild = row.getChildren().get(j);
                 if (rowChild instanceof Column) {
                     Column column = (Column) rowChild;
                     if (Objects.equals(column.getColumnKey(), columnKey)) {
@@ -128,9 +130,9 @@ public interface ColumnHolder {
                     }
                 }
                 else if (rowChild instanceof Columns) {
-                    Columns uiColumns = (Columns) rowChild;
-                    List<DynamicColumn> dynaColumns = uiColumns.getDynamicColumns();
-                    for (UIColumn column : dynaColumns) {
+                    Columns columns = (Columns) rowChild;
+                    List<DynamicColumn> dynamicColumns = columns.getDynamicColumns();
+                    for (UIColumn column : dynamicColumns) {
                         if (Objects.equals(column.getColumnKey(), columnKey)) {
                             return column;
                         }
@@ -142,14 +144,12 @@ public interface ColumnHolder {
         return null;
     }
 
-    default ColumnGroup getColumnGroup(String target) {
+    default ColumnGroup getColumnGroup(String type) {
         for (int i = 0; i < ((UIComponent) this).getChildCount(); i++) {
             UIComponent child = ((UIComponent) this).getChildren().get(i);
             if (child instanceof ColumnGroup) {
                 ColumnGroup colGroup = (ColumnGroup) child;
-                String type = colGroup.getType();
-
-                if (type != null && type.equals(target)) {
+                if (Objects.equals(type, colGroup.getType())) {
                     return colGroup;
                 }
             }
