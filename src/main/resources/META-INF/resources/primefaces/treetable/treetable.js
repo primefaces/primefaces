@@ -857,7 +857,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
      * @param {JQuery} node The node that was clicked. 
      */
     onRowRightClick: function(event, node) {
-        var selected = node.hasClass('ui-state-highlight');
+        var selected = node.hasClass('ui-state-highlight'),
+            nodeKey = node.attr('data-rk');
 
         if(this.isCheckboxSelection()) {
             if(!selected) {
@@ -870,9 +871,28 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             }
             this.selectNode(node);
         }
+        
+        this.fireSelectEvent(nodeKey, 'contextMenu');
 
         if(this.cfg.disabledTextSelection) {
             PrimeFaces.clearSelection();
+        }
+    },
+    
+    /**
+     * Sends a select event on server side to invoke a select listener if defined.
+     * @private
+     * @param {string} nodeKey The key of the node that was selected. 
+     * @param {string} behaviorEvent Name of the event to fire.
+     */
+    fireSelectEvent: function(nodeKey, behaviorEvent) {
+        if(this.hasBehavior(behaviorEvent)) {
+            var ext = {
+                    params: [{name: this.id + '_instantSelectedRowKey', value: nodeKey}
+                ]
+            };
+
+            this.callBehavior(behaviorEvent, ext);
         }
     },
 
@@ -1234,15 +1254,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             }
         }
         else {
-            if(this.hasBehavior('select')) {
-                var ext = {
-                    params: [
-                        {name: this.id + '_instantSelection', value: nodeKey}
-                    ]
-                };
-
-                this.callBehavior('select', ext);
-            }
+            this.fireSelectEvent(nodeKey, 'select');
         }
     },
 

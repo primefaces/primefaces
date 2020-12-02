@@ -118,6 +118,7 @@ expand | org.primefaces.event.NodeExpandEvent | When a node is expanded.
 collapse | org.primefaces.event.NodeCollapseEvent | When a node is collapsed.
 select | org.primefaces.event.NodeSelectEvent | When a node is selected.
 unselect | org.primefaces.event.NodeUnselectEvent | When a node is unselected.
+contextMenu | org.primefaces.event.NodeSelectEvent | ContextMenu display.
 colResize | org.primefaces.event.ColumnResizeEvent | When a column is resized.
 sort | org.primefaces.event.SortEvent | When data is sorted.
 filter | org.primefaces.event.FilterEvent | When data is filtered.

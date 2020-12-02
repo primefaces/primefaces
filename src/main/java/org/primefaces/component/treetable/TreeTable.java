@@ -23,6 +23,8 @@
  */
 package org.primefaces.component.treetable;
 
+import static org.primefaces.component.datatable.DataTable.createValueExprFromVarField;
+
 import java.lang.reflect.Array;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -39,32 +41,23 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
+
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.ColumnHolder;
 import org.primefaces.component.api.DynamicColumn;
-
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.datatable.DataTable;
-import static org.primefaces.component.datatable.DataTable.createValueExprFromVarField;
 import org.primefaces.event.*;
 import org.primefaces.event.data.FilterEvent;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.event.data.SortEvent;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionHint;
-import org.primefaces.model.FilterMeta;
-import org.primefaces.model.MatchMode;
-import org.primefaces.model.SortMeta;
-import org.primefaces.model.SortOrder;
-import org.primefaces.model.TreeNode;
+import org.primefaces.model.*;
 import org.primefaces.model.filter.*;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.LocaleUtils;
-import org.primefaces.util.MapBuilder;
+import org.primefaces.util.*;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -126,6 +119,7 @@ public class TreeTable extends TreeTableBase implements ColumnHolder {
             .build();
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
+            .put("contextMenu", NodeSelectEvent.class)
             .put("select", NodeSelectEvent.class)
             .put("unselect", NodeUnselectEvent.class)
             .put("expand", NodeExpandEvent.class)
@@ -227,7 +221,7 @@ public class TreeTable extends TreeTableBase implements ColumnHolder {
                 wrapperEvent = new NodeCollapseEvent(this, behaviorEvent.getBehavior(), node);
                 wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
-            else if (eventName.equals("select")) {
+            else if (eventName.equals("select") || eventName.equals("contextMenu")) {
                 String nodeKey = params.get(clientId + "_instantSelection");
                 setRowKey(root, nodeKey);
                 TreeNode node = getRowNode();
