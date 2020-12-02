@@ -49,11 +49,11 @@ public interface ColumnHolder {
             if (child.isRendered()) {
                 if (child instanceof Columns) {
                     Columns columns = (Columns) child;
-                    String uiColumnsClientId = columns.getClientId(context);
+                    String columnsClientId = columns.getClientId(context);
 
                     for (int j = 0; j < columns.getRowCount(); j++) {
                         DynamicColumn dynaColumn = new DynamicColumn(j, columns);
-                        dynaColumn.setColumnKey(uiColumnsClientId + separator + j);
+                        dynaColumn.setColumnKey(columnsClientId + separator + j);
                         callback.accept(dynaColumn);
                     }
                 }
