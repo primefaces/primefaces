@@ -1436,8 +1436,7 @@ public class DataTable extends DataTableBase {
             sorted.set(true);
         }
 
-        char separator = UINamingContainer.getSeparatorChar(getFacesContext());
-        visitColumns(getFacesContext(), separator, this, c -> {
+        forEachColumn(c -> {
             SortMeta s = SortMeta.of(getFacesContext(), getVar(), c);
             if (s != null) {
                 sorted.set(sorted.get() || s.isActive());
@@ -1530,6 +1529,11 @@ public class DataTable extends DataTableBase {
         return true;
     }
 
+    public void forEachColumn(Consumer<UIColumn> callback) {
+        char separator = UINamingContainer.getSeparatorChar(getFacesContext());
+        visitColumns(getFacesContext(), separator, this, callback);
+    }
+
     protected void visitColumns(FacesContext context, char separator, UIComponent root, Consumer<UIColumn> visitor) {
         for (int i = 0; i < root.getChildCount(); i++) {
             UIComponent child = root.getChildren().get(i);
@@ -1561,9 +1565,7 @@ public class DataTable extends DataTableBase {
         AtomicBoolean filtered = invalidate ? new AtomicBoolean() : new AtomicBoolean(isDefaultFilter());
 
         // build columns filterBy
-        char separator = UINamingContainer.getSeparatorChar(getFacesContext());
-
-        visitColumns(getFacesContext(), separator, this, c -> {
+        forEachColumn(c -> {
             FilterMeta f = filterBy.get(c.getColumnKey());
             if (f != null && !invalidate) {
                 f.setColumn(c);
