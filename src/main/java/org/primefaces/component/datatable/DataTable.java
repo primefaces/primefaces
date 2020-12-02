@@ -193,11 +193,9 @@ public class DataTable extends DataTableBase implements ColumnHolder {
     private static final Pattern OLD_SYNTAX_COLUMN_PROPERTY_REGEX = Pattern.compile("^#\\{\\w+\\[(.+)]}$");
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
-    private int columnsCountWithSpan = -1;
     private boolean reset = false;
     private List<Object> selectedRowKeys = new ArrayList<>();
     private boolean isRowKeyRestored = false;
-    private int columnsCount = -1;
     private List<UIColumn> columns;
     private Columns dynamicColumns;
     private String togglableColumnsAsString;
@@ -1154,11 +1152,9 @@ public class DataTable extends DataTableBase implements ColumnHolder {
         }
 
         // reset component for MyFaces view pooling
-        columnsCountWithSpan = -1;
         reset = false;
         selectedRowKeys = new ArrayList<>();
         isRowKeyRestored = false;
-        columnsCount = -1;
         columns = null;
         dynamicColumns = null;
         togglableColumnsAsString = null;
