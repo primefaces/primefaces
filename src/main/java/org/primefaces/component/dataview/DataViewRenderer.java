@@ -49,7 +49,7 @@ public class DataViewRenderer extends DataRenderer {
         dataview.findViewItems();
 
         if (dataview.isPaginationRequest(context)) {
-            dataview.updatePaginationData(context, dataview);
+            dataview.updatePaginationData(context);
 
             if (dataview.isLazy()) {
                 dataview.loadLazyData();

@@ -28,8 +28,8 @@ import org.primefaces.component.api.*;
 import javax.el.MethodExpression;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 
-public abstract class DataTableBase extends UIData
-        implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable, MultiViewStateAware<DataTableState> {
+public abstract class DataTableBase extends UIPageableData
+        implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder, MultiViewStateAware<DataTableState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
