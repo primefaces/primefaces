@@ -57,12 +57,12 @@ import javax.faces.model.DataModel;
 import java.lang.reflect.Array;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import org.primefaces.component.api.ColumnHolder;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -70,7 +70,7 @@ import java.util.stream.IntStream;
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "touch/touchswipe.js")
-public class DataTable extends DataTableBase {
+public class DataTable extends DataTableBase implements ColumnHolder {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataTable";
 
@@ -435,83 +435,6 @@ public class DataTable extends DataTableBase {
         }
     }
 
-    public UIColumn findColumn(String columnKey) {
-        if ("globalFilter".equals(columnKey)) {
-            return null;
-        }
-
-        List<UIColumn> columns = getColumns();
-
-        //body columns
-        for (int i = 0; i < columns.size(); i++) {
-            UIColumn column = columns.get(i);
-            if (Objects.equals(column.getColumnKey(), columnKey)) {
-                return column;
-            }
-        }
-
-        //header columns
-        if (getFrozenColumns() > 0) {
-            UIColumn column = findColumnInGroup(columnKey, getColumnGroup("frozenHeader"));
-            if (column == null) {
-                column = findColumnInGroup(columnKey, getColumnGroup("scrollableHeader"));
-            }
-
-            if (column != null) {
-                return column;
-            }
-        }
-        else {
-            return findColumnInGroup(columnKey, getColumnGroup("header"));
-        }
-
-        throw new FacesException("Cannot find column with key: " + columnKey);
-    }
-
-    public UIColumn findColumnInGroup(String columnKey, ColumnGroup group) {
-        if (group == null) {
-            return null;
-        }
-
-        for (UIComponent row : group.getChildren()) {
-            for (UIComponent rowChild : row.getChildren()) {
-                if (rowChild instanceof Column) {
-                    Column column = (Column) rowChild;
-                    if (Objects.equals(column.getColumnKey(), columnKey)) {
-                        return column;
-                    }
-                }
-                else if (rowChild instanceof Columns) {
-                    Columns uiColumns = (Columns) rowChild;
-                    List<DynamicColumn> dynaColumns = uiColumns.getDynamicColumns();
-                    for (UIColumn column : dynaColumns) {
-                        if (Objects.equals(column.getColumnKey(), columnKey)) {
-                            return column;
-                        }
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
-    public ColumnGroup getColumnGroup(String target) {
-        for (int i = 0; i < getChildCount(); i++) {
-            UIComponent child = getChildren().get(i);
-            if (child instanceof ColumnGroup) {
-                ColumnGroup colGroup = (ColumnGroup) child;
-                String type = colGroup.getType();
-
-                if (type != null && type.equals(target)) {
-                    return colGroup;
-                }
-            }
-        }
-
-        return null;
-    }
-
     public boolean hasFooterColumn() {
         for (int i = 0; i < getChildCount(); i++) {
             UIComponent child = getChildren().get(i);
@@ -836,108 +759,26 @@ public class DataTable extends DataTableBase {
         return null;
     }
 
-    public int getColumnsCount() {
-        if (columnsCount == -1) {
-            columnsCount = 0;
 
-            for (int i = 0; i < getChildCount(); i++) {
-                UIComponent kid = getChildren().get(i);
-                if (kid.isRendered()) {
-                    if (kid instanceof Columns) {
-                        int dynamicColumnsCount = ((Columns) kid).getDynamicColumns().size();
-                        if (dynamicColumnsCount > 0) {
-                            columnsCount += dynamicColumnsCount;
-                        }
-                    }
-                    else if (kid instanceof Column) {
-                        if (((UIColumn) kid).isVisible()) {
-                            columnsCount++;
-                        }
-                    }
-                    else if (kid instanceof SubTable) {
-                        SubTable subTable = (SubTable) kid;
-                        for (UIComponent subTableKid : subTable.getChildren()) {
-                            if (subTableKid.isRendered() && subTableKid instanceof Column) {
-                                columnsCount++;
-                            }
-                        }
-                    }
-                }
-            }
-        }
 
-        return columnsCount;
-    }
-
-    public int getColumnsCountWithSpan() {
-        if (columnsCountWithSpan == -1) {
-            columnsCountWithSpan = 0;
-
-            for (int i = 0; i < getChildCount(); i++) {
-                UIComponent kid = getChildren().get(i);
-                if (kid.isRendered()) {
-                    if (kid instanceof Columns) {
-                        int dynamicColumnsCount = ((Columns) kid).getDynamicColumns().size();
-                        if (dynamicColumnsCount > 0) {
-                            columnsCountWithSpan += dynamicColumnsCount;
-                        }
-                    }
-                    else if (kid instanceof Column) {
-                        Column col = (Column) kid;
-                        if (col.isVisible()) {
-                            columnsCountWithSpan += col.getColspan();
-                        }
-                    }
-                    else if (kid instanceof SubTable) {
-                        SubTable subTable = (SubTable) kid;
-                        for (UIComponent subTableKid : subTable.getChildren()) {
-                            if (subTableKid.isRendered() && subTableKid instanceof Column) {
-                                columnsCountWithSpan += ((Column) subTableKid).getColspan();
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return columnsCountWithSpan;
-    }
-
+    @Override
     public List<UIColumn> getColumns() {
         if (this.columns != null) {
             return this.columns;
         }
 
-        List<UIColumn> columns = new ArrayList<>();
-        FacesContext context = getFacesContext();
-        char separator = UINamingContainer.getSeparatorChar(context);
-
-        for (int i = 0; i < getChildCount(); i++) {
-            UIComponent child = getChildren().get(i);
-            if (child instanceof Column) {
-                columns.add((Column) child);
-            }
-            else if (child instanceof Columns) {
-                Columns uiColumns = (Columns) child;
-                String uiColumnsClientId = uiColumns.getClientId(context);
-
-                for (int j = 0; j < uiColumns.getRowCount(); j++) {
-                    DynamicColumn dynaColumn = new DynamicColumn(j, uiColumns);
-                    dynaColumn.setColumnKey(uiColumnsClientId + separator + j);
-                    columns.add(dynaColumn);
-                }
-            }
-        }
+        List<UIColumn> columns = initColumns();
 
         // lets cache it only when RENDER_RESPONSE is reached, the columns might change before reaching that phase
         // see https://github.com/primefaces/primefaces/issues/2110
-        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+        if (getFacesContext().getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
             this.columns = columns;
         }
 
         return columns;
     }
 
+    @Override
     public void setColumns(List<UIColumn> columns) {
         this.columns = columns;
     }
@@ -1529,36 +1370,6 @@ public class DataTable extends DataTableBase {
         return true;
     }
 
-    public void forEachColumn(Consumer<UIColumn> callback) {
-        char separator = UINamingContainer.getSeparatorChar(getFacesContext());
-        visitColumns(getFacesContext(), separator, this, callback);
-    }
-
-    protected void visitColumns(FacesContext context, char separator, UIComponent root, Consumer<UIColumn> visitor) {
-        for (int i = 0; i < root.getChildCount(); i++) {
-            UIComponent child = root.getChildren().get(i);
-            if (child.isRendered()) {
-                if (child instanceof Columns) {
-                    Columns columns = (Columns) child;
-                    String uiColumnsClientId = columns.getClientId(context);
-
-                    for (int j = 0; j < columns.getRowCount(); j++) {
-                        DynamicColumn dynaColumn = new DynamicColumn(j, columns);
-                        dynaColumn.setColumnKey(uiColumnsClientId + separator + j);
-                        visitor.accept(dynaColumn);
-                    }
-                }
-                else if (child instanceof UIColumn) {
-                    UIColumn column = (UIColumn) child;
-                    visitor.accept(column);
-                }
-                else if (child instanceof ColumnGroup) {
-                    visitColumns(context, separator, child, visitor);
-                }
-            }
-        }
-    }
-
     public Map<String, FilterMeta> initFilterBy() {
         boolean invalidate = getStateHelper().get(InternalPropertyKeys.filterByAsMap.name()) == null;
         Map<String, FilterMeta> filterBy = invalidate ? new HashMap<>() : getFilterByAsMap();
@@ -1677,5 +1488,10 @@ public class DataTable extends DataTableBase {
 
     public void setFilterByAsMap(Map<String, FilterMeta> sortBy) {
         getStateHelper().put(InternalPropertyKeys.filterByAsMap.name(), sortBy);
+    }
+
+    @Override
+    public int getFrozenColumnsCount() {
+        return getFrozenColumns();
     }
 }

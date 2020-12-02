@@ -27,7 +27,6 @@ import java.util.*;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
-import javax.faces.FacesException;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
@@ -38,11 +37,11 @@ import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import org.primefaces.PrimeFaces;
+import org.primefaces.component.api.ColumnHolder;
 
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
-import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.event.*;
 import org.primefaces.event.data.FilterEvent;
@@ -63,7 +62,7 @@ import org.primefaces.util.MapBuilder;
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class TreeTable extends TreeTableBase {
+public class TreeTable extends TreeTableBase  implements ColumnHolder {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.TreeTable";
 
@@ -135,7 +134,6 @@ public class TreeTable extends TreeTableBase {
             .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
-    private int columnsCount = -1;
     private UIColumn sortColumn;
     private List<UIColumn> columns;
     private Columns dynamicColumns;
@@ -357,26 +355,6 @@ public class TreeTable extends TreeTableBase {
         return filterBy;
     }
 
-    public UIColumn findColumn(String columnKey) {
-        for (UIColumn column : getColumns()) {
-            if (Objects.equals(column.getColumnKey(), columnKey)) {
-                return column;
-            }
-        }
-
-        FacesContext context = getFacesContext();
-        ColumnGroup headerGroup = getColumnGroup("header");
-        for (UIComponent row : headerGroup.getChildren()) {
-            for (UIComponent col : row.getChildren()) {
-                if (Objects.equals(col.getClientId(context), columnKey)) {
-                    return (UIColumn) col;
-                }
-            }
-        }
-
-        throw new FacesException("Cannot find column with key: " + columnKey);
-    }
-
     public boolean hasFooterColumn() {
         for (UIComponent child : getChildren()) {
             if (child instanceof Column && child.isRendered()) {
@@ -403,20 +381,6 @@ public class TreeTable extends TreeTableBase {
         String clientId = getClientId(context);
 
         return params.get(clientId + "_colResize") != null;
-    }
-
-    public int getColumnsCount() {
-        if (columnsCount == -1) {
-            columnsCount = 0;
-
-            for (UIComponent kid : getChildren()) {
-                if (kid.isRendered() && kid instanceof Column) {
-                    columnsCount++;
-                }
-            }
-        }
-
-        return columnsCount;
     }
 
     public String getScrollState() {
@@ -458,48 +422,24 @@ public class TreeTable extends TreeTableBase {
         return LocaleUtils.resolveLocale(context, getDataLocale(), getClientId(context));
     }
 
-    public ColumnGroup getColumnGroup(String target) {
-        for (UIComponent child : getChildren()) {
-            if (child instanceof ColumnGroup) {
-                ColumnGroup colGroup = (ColumnGroup) child;
-                String type = colGroup.getType();
-
-                if (type != null && type.equals(target)) {
-                    return colGroup;
-                }
-
-            }
+    @Override
+    public List<UIColumn> getColumns() {
+        if (this.columns != null) {
+            return this.columns;
         }
 
-        return null;
-    }
+        List<UIColumn> columns = initColumns();
 
-    public List<UIColumn> getColumns() {
-        if (columns == null) {
-            columns = new ArrayList<>();
-            FacesContext context = getFacesContext();
-            char separator = UINamingContainer.getSeparatorChar(context);
-
-            for (UIComponent child : getChildren()) {
-                if (child instanceof Column) {
-                    columns.add((Column) child);
-                }
-                else if (child instanceof Columns) {
-                    Columns uiColumns = (Columns) child;
-                    String uiColumnsClientId = uiColumns.getClientId(context);
-
-                    for (int i = 0; i < uiColumns.getRowCount(); i++) {
-                        DynamicColumn dynaColumn = new DynamicColumn(i, uiColumns);
-                        dynaColumn.setColumnKey(uiColumnsClientId + separator + i);
-                        columns.add(dynaColumn);
-                    }
-                }
-            }
+        // lets cache it only when RENDER_RESPONSE is reached, the columns might change before reaching that phase
+        // see https://github.com/primefaces/primefaces/issues/2110
+        if (getFacesContext().getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            this.columns = columns;
         }
 
         return columns;
     }
 
+    @Override
     public void setColumns(List<UIColumn> columns) {
         this.columns = columns;
     }
@@ -519,7 +459,6 @@ public class TreeTable extends TreeTableBase {
         }
 
         // reset component for MyFaces view pooling
-        columnsCount = -1;
         sortColumn = null;
         columns = null;
         dynamicColumns = null;
