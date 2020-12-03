@@ -23,9 +23,9 @@
  */
 package org.primefaces.validate.bean;
 
-import org.primefaces.util.HTML;
-
 import java.util.Map;
+
+import org.primefaces.util.HTML;
 
 public class NegativeOrZeroClientValidationConstraint extends AbstractClientValidationConstraint {
 
@@ -33,6 +33,7 @@ public class NegativeOrZeroClientValidationConstraint extends AbstractClientVali
     public static final String MESSAGE_METADATA = "data-p-negativeorzero-msg";
     public static final String CONSTRAINT_CLASS_NAME = CONSTRAINT_PACKAGE  + "." + CONSTRAINT_ID;
     public static final String MESSAGE_ID = "{" + CONSTRAINT_CLASS_NAME + ".message}";
+    public static final String MAX_VALUE = "0";
 
     public NegativeOrZeroClientValidationConstraint() {
         super(MESSAGE_ID, MESSAGE_METADATA);
