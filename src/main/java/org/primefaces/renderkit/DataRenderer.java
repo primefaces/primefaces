@@ -24,7 +24,6 @@
 package org.primefaces.renderkit;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
@@ -35,6 +34,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.UIData;
+import org.primefaces.component.api.UIPageableData;
 import org.primefaces.component.paginator.CurrentPageReportRenderer;
 import org.primefaces.component.paginator.FirstPageLinkRenderer;
 import org.primefaces.component.paginator.JumpToPageDropdownRenderer;
@@ -45,26 +45,21 @@ import org.primefaces.component.paginator.PageLinksRenderer;
 import org.primefaces.component.paginator.PaginatorElementRenderer;
 import org.primefaces.component.paginator.PrevPageLinkRenderer;
 import org.primefaces.component.paginator.RowsPerPageDropdownRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.MessageFactory;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.*;
 
 public class DataRenderer extends CoreRenderer {
 
-    private static final Map<String, PaginatorElementRenderer> PAGINATOR_ELEMENTS = new HashMap<>();
-
-    static {
-        PAGINATOR_ELEMENTS.put("{CurrentPageReport}", new CurrentPageReportRenderer());
-        PAGINATOR_ELEMENTS.put("{FirstPageLink}", new FirstPageLinkRenderer());
-        PAGINATOR_ELEMENTS.put("{PreviousPageLink}", new PrevPageLinkRenderer());
-        PAGINATOR_ELEMENTS.put("{NextPageLink}", new NextPageLinkRenderer());
-        PAGINATOR_ELEMENTS.put("{LastPageLink}", new LastPageLinkRenderer());
-        PAGINATOR_ELEMENTS.put("{PageLinks}", new PageLinksRenderer());
-        PAGINATOR_ELEMENTS.put("{RowsPerPageDropdown}", new RowsPerPageDropdownRenderer());
-        PAGINATOR_ELEMENTS.put("{JumpToPageDropdown}", new JumpToPageDropdownRenderer());
-        PAGINATOR_ELEMENTS.put("{JumpToPageInput}", new JumpToPageInputRenderer());
-    }
+    private static final Map<String, PaginatorElementRenderer> PAGINATOR_ELEMENTS = MapBuilder.<String, PaginatorElementRenderer>builder()
+            .put("{CurrentPageReport}", new CurrentPageReportRenderer())
+            .put("{FirstPageLink}", new FirstPageLinkRenderer())
+            .put("{PreviousPageLink}", new PrevPageLinkRenderer())
+            .put("{NextPageLink}", new NextPageLinkRenderer())
+            .put("{LastPageLink}", new LastPageLinkRenderer())
+            .put("{PageLinks}", new PageLinksRenderer())
+            .put("{RowsPerPageDropdown}", new RowsPerPageDropdownRenderer())
+            .put("{JumpToPageDropdown}", new JumpToPageDropdownRenderer())
+            .put("{JumpToPageInput}", new JumpToPageInputRenderer())
+            .build();
 
     public static void addPaginatorElement(String element, PaginatorElementRenderer renderer) {
         PAGINATOR_ELEMENTS.put(element, renderer);
@@ -86,7 +81,7 @@ public class DataRenderer extends CoreRenderer {
         UIComponent leftBottomContent = pageable.getFacet("paginatorBottomLeft");
         UIComponent rightBottomContent = pageable.getFacet("paginatorBottomRight");
 
-        String styleClass = isTop ? UIData.PAGINATOR_TOP_CONTAINER_CLASS : UIData.PAGINATOR_BOTTOM_CONTAINER_CLASS;
+        String styleClass = isTop ? UIPageableData.PAGINATOR_TOP_CONTAINER_CLASS : UIPageableData.PAGINATOR_BOTTOM_CONTAINER_CLASS;
         String id = pageable.getClientId(context) + "_paginator_" + position;
 
         //add corners
@@ -97,7 +92,7 @@ public class DataRenderer extends CoreRenderer {
             styleClass = styleClass + " ui-corner-top";
         }
 
-        String ariaMessage = MessageFactory.getMessage(UIData.ARIA_HEADER_LABEL);
+        String ariaMessage = MessageFactory.getMessage(UIPageableData.ARIA_HEADER_LABEL);
 
         writer.startElement("div", null);
         writer.writeAttribute("id", id, null);
@@ -107,14 +102,14 @@ public class DataRenderer extends CoreRenderer {
 
         if (isTop && ComponentUtils.shouldRenderFacet(leftTopContent)) {
             writer.startElement("div", null);
-            writer.writeAttribute("class", UIData.PAGINATOR_TOP_LEFT_CONTENT_CLASS, null);
+            writer.writeAttribute("class", UIPageableData.PAGINATOR_TOP_LEFT_CONTENT_CLASS, null);
             renderChild(context, leftTopContent);
             writer.endElement("div");
         }
 
         if (isTop && ComponentUtils.shouldRenderFacet(rightTopContent)) {
             writer.startElement("div", null);
-            writer.writeAttribute("class", UIData.PAGINATOR_TOP_RIGHT_CONTENT_CLASS, null);
+            writer.writeAttribute("class", UIPageableData.PAGINATOR_TOP_RIGHT_CONTENT_CLASS, null);
             renderChild(context, rightTopContent);
             writer.endElement("div");
         }
@@ -139,13 +134,13 @@ public class DataRenderer extends CoreRenderer {
         }
         if (!isTop && ComponentUtils.shouldRenderFacet(leftBottomContent)) {
             writer.startElement("div", null);
-            writer.writeAttribute("class", UIData.PAGINATOR_BOTTOM_LEFT_CONTENT_CLASS, null);
+            writer.writeAttribute("class", UIPageableData.PAGINATOR_BOTTOM_LEFT_CONTENT_CLASS, null);
             renderChild(context, leftBottomContent);
             writer.endElement("div");
         }
         if (!isTop && ComponentUtils.shouldRenderFacet(rightBottomContent)) {
             writer.startElement("div", null);
-            writer.writeAttribute("class", UIData.PAGINATOR_BOTTOM_RIGHT_CONTENT_CLASS, null);
+            writer.writeAttribute("class", UIPageableData.PAGINATOR_BOTTOM_RIGHT_CONTENT_CLASS, null);
             renderChild(context, rightBottomContent);
             writer.endElement("div");
         }

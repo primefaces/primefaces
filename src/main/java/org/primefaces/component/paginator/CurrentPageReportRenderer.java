@@ -30,7 +30,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.api.Pageable;
-import org.primefaces.component.api.UIData;
+import org.primefaces.component.api.UIPageableData;
 
 public class CurrentPageReportRenderer implements PaginatorElementRenderer {
 
@@ -63,7 +63,7 @@ public class CurrentPageReportRenderer implements PaginatorElementRenderer {
                 Integer.toString(Math.min(pageable.getFirst() + pageable.getRowsToRender(), pageable.getRowCount())));
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", UIData.PAGINATOR_CURRENT_CLASS, null);
+        writer.writeAttribute("class", UIPageableData.PAGINATOR_CURRENT_CLASS, null);
         writer.writeText(output, null);
         writer.endElement("span");
     }

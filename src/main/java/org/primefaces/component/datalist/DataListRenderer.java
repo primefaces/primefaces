@@ -46,7 +46,7 @@ public class DataListRenderer extends DataRenderer {
         DataList list = (DataList) component;
 
         if (list.isPaginationRequest(context)) {
-            list.updatePaginationData(context, list);
+            list.updatePaginationData(context);
 
             if (list.isLazy()) {
                 list.loadLazyData();
