@@ -165,10 +165,12 @@ public interface FilterableTable extends ColumnHolder {
         else {
             UIColumn column = filterMeta.getColumn();
             UIComponent filterFacet = column.getFacet("filter");
-            boolean hasCustomFilter = ComponentUtils.shouldRenderFacet(filterFacet);
+            boolean hasCustomFilter = filterFacet != null;
             if (column instanceof DynamicColumn) {
                 if (hasCustomFilter) {
                     ((DynamicColumn) column).applyModel();
+                    // UIColumn#rendered might change after restoring p:columns state at the right index
+                    hasCustomFilter = ComponentUtils.shouldRenderFacet(filterFacet);
                 }
                 else {
                     ((DynamicColumn) column).applyStatelessModel();
