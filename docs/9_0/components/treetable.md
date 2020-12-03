@@ -41,11 +41,8 @@ liveResize | false | Boolean | Columns are resized live in this mode without usi
 required | false | Boolean | Validation constraint for selection.
 requiredMessage | null | String | Message for required selection validation.
 sortBy | null | FilterMeta / Collection<FilterMeta> | Property to be used for default sorting. Expects a single or a collection of SortMeta.
-sortOrder | ascending | String | Defines default sorting order.
-sortFunction | null | MethodExpr | Custom pluggable sortFunction for default sorting.
 nativeElements | false | Boolean | In native mode, treetable uses native checkboxes.
 dataLocale | null | Object | Locale to be used in features such as sorting, defaults to view locale.
-caseSensitiveSort | false | Boolean | Case sensitivity for sorting, insensitive by default.
 skipChildren | false | Boolean | Ignores processing of children during lifecycle, improves performance if table only has output components.
 showUnselectableCheckbox | false | Boolean | Defines if in checkbox selection mode, a readonly checkbox should be displayed for an unselectable node.
 nodeVar | null | String | Name of the request-scoped variable that'll be used to refer current treenode using EL.
