@@ -23,48 +23,37 @@
  */
 package org.primefaces.component.subtable;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.component.UIComponent;
+import javax.faces.event.PhaseId;
+import org.primefaces.component.api.ColumnHolder;
+import org.primefaces.component.api.UIColumn;
 
-import org.primefaces.component.column.Column;
-import org.primefaces.component.columngroup.ColumnGroup;
-
-
-public class SubTable extends SubTableBase {
+public class SubTable extends SubTableBase implements ColumnHolder {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SubTable";
 
-    private List<Column> columns;
+    private List<UIColumn> columns;
 
-    public List<Column> getColumns() {
-        if (columns == null) {
-            columns = new ArrayList<>();
+    @Override
+    public List<UIColumn> getColumns() {
+        if (this.columns != null) {
+            return this.columns;
+        }
 
-            for (UIComponent child : getChildren()) {
-                if (child.isRendered() && child instanceof Column) {
-                    columns.add((Column) child);
-                }
-            }
+        List<UIColumn> columns = initColumns();
+
+        // lets cache it only when RENDER_RESPONSE is reached, the columns might change before reaching that phase
+        // see https://github.com/primefaces/primefaces/issues/2110
+        if (getFacesContext().getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            this.columns = columns;
         }
 
         return columns;
     }
 
-    public ColumnGroup getColumnGroup(String target) {
-        for (UIComponent child : getChildren()) {
-            if (child instanceof ColumnGroup) {
-                ColumnGroup colGroup = (ColumnGroup) child;
-                String type = colGroup.getType();
-
-                if (type != null && type.equals(target)) {
-                    return colGroup;
-                }
-
-            }
-        }
-
-        return null;
+    @Override
+    public void setColumns(List<UIColumn> columns) {
+        this.columns = columns;
     }
 }

@@ -7964,7 +7964,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Property to configure default sorting. Expects a single or a collection of SortMeta]]>
+                <![CDATA[Property to be used for default sorting. Expects a single or a collection of SortMeta.]]>
             </description>
             <name>sortBy</name>
             <required>false</required>
@@ -7980,7 +7980,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines whether columns are allowed to be unsorted. Default is true.]]>
+                <![CDATA[Defines whether columns are allowed to be unsorted. Default is false.]]>
             </description>
             <name>allowUnsorting</name>
             <required>false</required>
@@ -8301,7 +8301,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Map of filters; This also allows to filter the table by default.]]>
+                <![CDATA[Property to be used for default filtering. Expects a single or a collection of FilterMeta.]]>
             </description>
             <name>filterBy</name>
             <required>false</required>
@@ -29433,7 +29433,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[Treetable is is used for displaying hierarchical data in tabular format.]]>
+            <![CDATA[TreeTable is is used for displaying hierarchical data in tabular format.]]>
         </description>
         <tag-name>treeTable</tag-name>
         <component>
@@ -29611,27 +29611,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Expression for default sorting.]]>
+                <![CDATA[Property to be used for default sorting. Expects a single or a collection of SortMeta.]]>
             </description>
             <name>sortBy</name>
             <required>false</required>
             <type>java.lang.Object</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Defines default sorting order. Default is "ascending"]]>
-            </description>
-            <name>sortOrder</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Custom pluggable sortFunction for default sorting.]]>
-            </description>
-            <name>sortFunction</name>
-            <required>false</required>
-            <type>javax.el.MethodExpression</type>
         </attribute>
         <attribute>
             <description>
@@ -29648,14 +29632,6 @@
             <name>dataLocale</name>
             <required>false</required>
             <type>java.lang.Object</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Case sensitivity for sorting, insensitive by default.]]>
-            </description>
-            <name>caseSensitiveSort</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -29864,6 +29840,54 @@
             <name>editInitEvent</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to keep TreeTable state across views, defaults to false.]]>
+            </description>
+            <name>multiViewState</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Property to be used for default filtering. Expects a single or a collection of FilterMeta.]]>
+            </description>
+            <name>filterBy</name>
+            <required>false</required>
+            <type>java.util.Map</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Value of the global filter to use when filtering by default.]]>
+            </description>
+            <name>globalFilter</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Custom implementation to globally filter a value against a constraint.]]>
+            </description>
+            <name>globalFilterFunction</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines sorting mode, valid values are "single" (default) and "multiple".]]>
+            </description>
+            <name>sortMode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines whether columns are allowed to be unsorted. Default is false.]]>
+            </description>
+            <name>allowUnsorting</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
     </tag>
     <tag>

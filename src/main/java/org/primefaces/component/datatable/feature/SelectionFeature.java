@@ -69,7 +69,7 @@ public class SelectionFeature implements DataTableFeature {
         if (table.isMultiViewState()) {
             DataTableState ts = table.getMultiViewState(true);
             table.findSelectedRowKeys();
-            ts.setRowKeys(table.getSelectedRowKeys());
+            ts.setSelectedRowKeys(table.getSelectedRowKeys());
         }
     }
 

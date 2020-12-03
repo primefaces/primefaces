@@ -39,8 +39,6 @@ import org.primefaces.event.*;
 import org.primefaces.event.data.FilterEvent;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.event.data.SortEvent;
-import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.model.*;
 import org.primefaces.util.*;
 
@@ -50,19 +48,17 @@ import javax.faces.FacesException;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
-import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.event.*;
 import javax.faces.model.DataModel;
 import java.lang.reflect.Array;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import org.primefaces.component.api.ColumnHolder;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -70,7 +66,7 @@ import java.util.stream.IntStream;
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "touch/touchswipe.js")
-public class DataTable extends DataTableBase {
+public class DataTable extends DataTableBase implements ColumnHolder {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataTable";
 
@@ -193,11 +189,9 @@ public class DataTable extends DataTableBase {
     private static final Pattern OLD_SYNTAX_COLUMN_PROPERTY_REGEX = Pattern.compile("^#\\{\\w+\\[(.+)]}$");
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
-    private int columnsCountWithSpan = -1;
     private boolean reset = false;
     private List<Object> selectedRowKeys = new ArrayList<>();
     private boolean isRowKeyRestored = false;
-    private int columnsCount = -1;
     private List<UIColumn> columns;
     private Columns dynamicColumns;
     private String togglableColumnsAsString;
@@ -433,83 +427,6 @@ public class DataTable extends DataTableBase {
         else {
             super.queueEvent(event);
         }
-    }
-
-    public UIColumn findColumn(String columnKey) {
-        if ("globalFilter".equals(columnKey)) {
-            return null;
-        }
-
-        List<UIColumn> columns = getColumns();
-
-        //body columns
-        for (int i = 0; i < columns.size(); i++) {
-            UIColumn column = columns.get(i);
-            if (Objects.equals(column.getColumnKey(), columnKey)) {
-                return column;
-            }
-        }
-
-        //header columns
-        if (getFrozenColumns() > 0) {
-            UIColumn column = findColumnInGroup(columnKey, getColumnGroup("frozenHeader"));
-            if (column == null) {
-                column = findColumnInGroup(columnKey, getColumnGroup("scrollableHeader"));
-            }
-
-            if (column != null) {
-                return column;
-            }
-        }
-        else {
-            return findColumnInGroup(columnKey, getColumnGroup("header"));
-        }
-
-        throw new FacesException("Cannot find column with key: " + columnKey);
-    }
-
-    public UIColumn findColumnInGroup(String columnKey, ColumnGroup group) {
-        if (group == null) {
-            return null;
-        }
-
-        for (UIComponent row : group.getChildren()) {
-            for (UIComponent rowChild : row.getChildren()) {
-                if (rowChild instanceof Column) {
-                    Column column = (Column) rowChild;
-                    if (Objects.equals(column.getColumnKey(), columnKey)) {
-                        return column;
-                    }
-                }
-                else if (rowChild instanceof Columns) {
-                    Columns uiColumns = (Columns) rowChild;
-                    List<DynamicColumn> dynaColumns = uiColumns.getDynamicColumns();
-                    for (UIColumn column : dynaColumns) {
-                        if (Objects.equals(column.getColumnKey(), columnKey)) {
-                            return column;
-                        }
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
-    public ColumnGroup getColumnGroup(String target) {
-        for (int i = 0; i < getChildCount(); i++) {
-            UIComponent child = getChildren().get(i);
-            if (child instanceof ColumnGroup) {
-                ColumnGroup colGroup = (ColumnGroup) child;
-                String type = colGroup.getType();
-
-                if (type != null && type.equals(target)) {
-                    return colGroup;
-                }
-            }
-        }
-
-        return null;
     }
 
     public boolean hasFooterColumn() {
@@ -825,119 +742,36 @@ public class DataTable extends DataTableBase {
         return null;
     }
 
+    @Override
     public HeaderRow getHeaderRow() {
         for (int i = 0; i < getChildCount(); i++) {
-            UIComponent kid = getChildren().get(i);
-            if (kid.isRendered() && kid instanceof HeaderRow) {
-                return (HeaderRow) kid;
+            UIComponent child = getChildren().get(i);
+            if (child.isRendered() && child instanceof HeaderRow) {
+                return (HeaderRow) child;
             }
         }
 
         return null;
     }
 
-    public int getColumnsCount() {
-        if (columnsCount == -1) {
-            columnsCount = 0;
-
-            for (int i = 0; i < getChildCount(); i++) {
-                UIComponent kid = getChildren().get(i);
-                if (kid.isRendered()) {
-                    if (kid instanceof Columns) {
-                        int dynamicColumnsCount = ((Columns) kid).getDynamicColumns().size();
-                        if (dynamicColumnsCount > 0) {
-                            columnsCount += dynamicColumnsCount;
-                        }
-                    }
-                    else if (kid instanceof Column) {
-                        if (((UIColumn) kid).isVisible()) {
-                            columnsCount++;
-                        }
-                    }
-                    else if (kid instanceof SubTable) {
-                        SubTable subTable = (SubTable) kid;
-                        for (UIComponent subTableKid : subTable.getChildren()) {
-                            if (subTableKid.isRendered() && subTableKid instanceof Column) {
-                                columnsCount++;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return columnsCount;
-    }
-
-    public int getColumnsCountWithSpan() {
-        if (columnsCountWithSpan == -1) {
-            columnsCountWithSpan = 0;
-
-            for (int i = 0; i < getChildCount(); i++) {
-                UIComponent kid = getChildren().get(i);
-                if (kid.isRendered()) {
-                    if (kid instanceof Columns) {
-                        int dynamicColumnsCount = ((Columns) kid).getDynamicColumns().size();
-                        if (dynamicColumnsCount > 0) {
-                            columnsCountWithSpan += dynamicColumnsCount;
-                        }
-                    }
-                    else if (kid instanceof Column) {
-                        Column col = (Column) kid;
-                        if (col.isVisible()) {
-                            columnsCountWithSpan += col.getColspan();
-                        }
-                    }
-                    else if (kid instanceof SubTable) {
-                        SubTable subTable = (SubTable) kid;
-                        for (UIComponent subTableKid : subTable.getChildren()) {
-                            if (subTableKid.isRendered() && subTableKid instanceof Column) {
-                                columnsCountWithSpan += ((Column) subTableKid).getColspan();
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return columnsCountWithSpan;
-    }
-
+    @Override
     public List<UIColumn> getColumns() {
         if (this.columns != null) {
             return this.columns;
         }
 
-        List<UIColumn> columns = new ArrayList<>();
-        FacesContext context = getFacesContext();
-        char separator = UINamingContainer.getSeparatorChar(context);
-
-        for (int i = 0; i < getChildCount(); i++) {
-            UIComponent child = getChildren().get(i);
-            if (child instanceof Column) {
-                columns.add((Column) child);
-            }
-            else if (child instanceof Columns) {
-                Columns uiColumns = (Columns) child;
-                String uiColumnsClientId = uiColumns.getClientId(context);
-
-                for (int j = 0; j < uiColumns.getRowCount(); j++) {
-                    DynamicColumn dynaColumn = new DynamicColumn(j, uiColumns);
-                    dynaColumn.setColumnKey(uiColumnsClientId + separator + j);
-                    columns.add(dynaColumn);
-                }
-            }
-        }
+        List<UIColumn> columns = initColumns();
 
         // lets cache it only when RENDER_RESPONSE is reached, the columns might change before reaching that phase
         // see https://github.com/primefaces/primefaces/issues/2110
-        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+        if (getFacesContext().getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
             this.columns = columns;
         }
 
         return columns;
     }
 
+    @Override
     public void setColumns(List<UIColumn> columns) {
         this.columns = columns;
     }
@@ -964,8 +798,7 @@ public class DataTable extends DataTableBase {
 
     public boolean isMultiSort() {
         String sortMode = getSortMode();
-
-        return (sortMode != null && sortMode.equals("multiple"));
+        return sortMode != null && sortMode.equals("multiple");
     }
 
     public String resolveSelectionMode() {
@@ -1111,20 +944,24 @@ public class DataTable extends DataTableBase {
         }
     }
 
+    @Override
     public boolean isDefaultSort() {
-        return getSortByAsMap() != null && Boolean.TRUE.equals(getStateHelper().get("defaultSort"));
+        return getSortByAsMap() != null && Boolean.TRUE.equals(getStateHelper().get(InternalPropertyKeys.defaultSort.name()));
     }
 
+    @Override
     public void setDefaultSort(boolean defaultSort) {
-        getStateHelper().put("defaultSort", defaultSort);
+        getStateHelper().put(InternalPropertyKeys.defaultSort.name(), defaultSort);
     }
 
+    @Override
     public boolean isDefaultFilter() {
-        return Boolean.TRUE.equals(getStateHelper().get("defaultFilter"));
+        return Boolean.TRUE.equals(getStateHelper().get(InternalPropertyKeys.defaultFilter.name()));
     }
 
+    @Override
     public void setDefaultFilter(boolean defaultFilter) {
-        getStateHelper().put("defaultFilter", defaultFilter);
+        getStateHelper().put(InternalPropertyKeys.defaultFilter.name(), defaultFilter);
     }
 
     public void setTogglableColumnsAsString(String togglableColumnsAsString) {
@@ -1313,11 +1150,9 @@ public class DataTable extends DataTableBase {
         }
 
         // reset component for MyFaces view pooling
-        columnsCountWithSpan = -1;
         reset = false;
         selectedRowKeys = new ArrayList<>();
         isRowKeyRestored = false;
-        columnsCount = -1;
         columns = null;
         dynamicColumns = null;
         togglableColumnsAsString = null;
@@ -1372,15 +1207,15 @@ public class DataTable extends DataTableBase {
             }
 
             if (ts.getSortBy() != null) {
-                updateSortByWithTableState(ts.getSortBy());
+                updateSortByWithMVS(ts.getSortBy());
             }
 
             if (ts.getFilterBy() != null) {
-                updateFilterByWithTableState(ts.getFilterBy());
+                updateFilterByWithMVS(getFacesContext(), ts.getFilterBy());
             }
 
             if (isSelectionEnabled()) {
-                selectedRowKeys = ts.getRowKeys();
+                selectedRowKeys = ts.getSelectedRowKeys();
                 isRowKeyRestored = true;
             }
 
@@ -1411,11 +1246,6 @@ public class DataTable extends DataTableBase {
                 .collect(Collectors.joining(",", "[", "]"));
     }
 
-    public String getSortMetaAsString() {
-        return getSortByAsMap().keySet().stream()
-                .collect(Collectors.joining("','", "['", "']"));
-    }
-
     public static ValueExpression createValueExprFromVarField(FacesContext context, String var, String field) {
         if (LangUtils.isValueBlank(var) || LangUtils.isValueBlank(field)) {
             throw new FacesException("Table 'var' and Column 'field' attributes must be non null.");
@@ -1425,255 +1255,36 @@ public class DataTable extends DataTableBase {
                 .createValueExpression(context.getELContext(), "#{" + var + "." + field + "}", Object.class);
     }
 
-    protected Map<String, SortMeta> initSortBy() {
-        Map<String, SortMeta> sortMeta = new HashMap<>();
-        AtomicBoolean sorted = new AtomicBoolean();
 
-        HeaderRow headerRow = getHeaderRow();
-        if (headerRow != null) {
-            SortMeta s = SortMeta.of(getFacesContext(), getVar(), headerRow);
-            sortMeta.put(s.getColumnKey(), s);
-            sorted.set(true);
-        }
 
-        char separator = UINamingContainer.getSeparatorChar(getFacesContext());
-        visitColumns(getFacesContext(), separator, this, c -> {
-            SortMeta s = SortMeta.of(getFacesContext(), getVar(), c);
-            if (s != null) {
-                sorted.set(sorted.get() || s.isActive());
-                sortMeta.put(s.getColumnKey(), s);
-            }
-        });
 
-        // merge internal sortBy with user sortBy
-        Object userSortBy = getSortBy();
-        if (userSortBy != null) {
-            updateSortByWithUserSortBy(sortMeta, userSortBy, sorted);
-        }
-
-        setDefaultSort(sorted.get());
-
-        return sortMeta;
-    }
-
-    protected void updateSortByWithTableState(Map<String, SortMeta> tsSortBy) {
-        boolean defaultSort = isDefaultSort();
-        for (Map.Entry<String, SortMeta> entry : tsSortBy.entrySet()) {
-            SortMeta intlSortBy = getSortByAsMap().get(entry.getKey());
-            if (intlSortBy != null) {
-                SortMeta tsSortMeta = entry.getValue();
-                intlSortBy.setPriority(tsSortMeta.getPriority());
-                intlSortBy.setOrder(tsSortMeta.getOrder());
-                defaultSort |= intlSortBy.isActive();
-            }
-        }
-
-        setDefaultSort(defaultSort);
-    }
-
-    protected void updateSortByWithUserSortBy(Map<String, SortMeta> intlSortBy, Object usrSortBy, AtomicBoolean sorted) {
-        Collection<SortMeta> sortBy;
-        if (usrSortBy instanceof SortMeta) {
-            sortBy = Collections.singletonList((SortMeta) usrSortBy);
-        }
-        else if (!(usrSortBy instanceof Collection)) {
-            throw new FacesException("DataTable#sortBy expects a single or a collection of SortMeta");
-        }
-        else {
-            sortBy = (Collection<SortMeta>) usrSortBy;
-        }
-
-        for (SortMeta userSM : sortBy) {
-            SortMeta intlSM = intlSortBy.values().stream()
-                    .filter(o -> o.getField().equals(userSM.getField()))
-                    .findAny()
-                    .orElseThrow(() -> new FacesException("No column with field '" + userSM.getField() + "' has been found"));
-
-            ValueExpression sortByVE = userSM.getSortBy();
-            if (sortByVE == null) {
-                sortByVE = createValueExprFromVarField(getFacesContext(), getVar(), userSM.getField());
-            }
-
-            intlSM.setPriority(userSM.getPriority());
-            intlSM.setOrder(userSM.getOrder());
-            intlSM.setSortBy(sortByVE);
-            intlSM.setFunction(userSM.getFunction());
-            sorted.set(sorted.get() || userSM.isActive());
-        }
-    }
-
-    public SortMeta getHighestPriorityActiveSortMeta() {
-        return getSortByAsMap().values().stream()
-                .filter(SortMeta::isActive)
-                .min(Comparator.comparingInt(SortMeta::getPriority))
-                .orElse(null);
-    }
-
-    public boolean isSortingCurrentlyActive() {
-        return getSortByAsMap().values().stream().anyMatch(SortMeta::isActive);
-    }
-
-    public boolean isColumnSortable(UIColumn column) {
-        Map<String, SortMeta> sortBy = getSortByAsMap();
-        if (sortBy.containsKey(column.getColumnKey())) {
-            return true;
-        }
-
-        SortMeta s = SortMeta.of(getFacesContext(), getVar(), column);
-        if (s == null) {
-            return false;
-        }
-
-        // unlikely to happen, in case columns change between two ajax requests
-        sortBy.put(s.getColumnKey(), s);
-        setSortByAsMap(sortBy);
-        return true;
-    }
-
-    protected void visitColumns(FacesContext context, char separator, UIComponent root, Consumer<UIColumn> visitor) {
-        for (int i = 0; i < root.getChildCount(); i++) {
-            UIComponent child = root.getChildren().get(i);
-            if (child.isRendered()) {
-                if (child instanceof Columns) {
-                    Columns columns = (Columns) child;
-                    String uiColumnsClientId = columns.getClientId(context);
-
-                    for (int j = 0; j < columns.getRowCount(); j++) {
-                        DynamicColumn dynaColumn = new DynamicColumn(j, columns);
-                        dynaColumn.setColumnKey(uiColumnsClientId + separator + j);
-                        visitor.accept(dynaColumn);
-                    }
-                }
-                else if (child instanceof UIColumn) {
-                    UIColumn column = (UIColumn) child;
-                    visitor.accept(column);
-                }
-                else if (child instanceof ColumnGroup) {
-                    visitColumns(context, separator, child, visitor);
-                }
-            }
-        }
-    }
-
-    public Map<String, FilterMeta> initFilterBy() {
-        boolean invalidate = getStateHelper().get("_filterBy") == null;
-        Map<String, FilterMeta> filterBy = invalidate ? new HashMap<>() : getFilterByAsMap();
-        AtomicBoolean filtered = invalidate ? new AtomicBoolean() : new AtomicBoolean(isDefaultFilter());
-
-        // build columns filterBy
-        char separator = UINamingContainer.getSeparatorChar(getFacesContext());
-
-        visitColumns(getFacesContext(), separator, this, c -> {
-            FilterMeta f = filterBy.get(c.getColumnKey());
-            if (f != null && !invalidate) {
-                f.setColumn(c);
-            }
-            else {
-                f = FilterMeta.of(getFacesContext(), getVar(), c);
-                if (f != null) {
-                    filterBy.put(f.getColumnKey(), f);
-                    filtered.set(filtered.get() || f.isActive());
-                }
-            }
-        });
-
-        // merge internal filterBy with user filterBy
-        Object userfilterBy = getFilterBy();
-        if (userfilterBy != null) {
-            updateFilterByWithUserFilterBy(filterBy, userfilterBy, filtered);
-        }
-
-        // build global filterBy
-        updateFilterByWithGlobalFilter(filterBy, filtered);
-
-        // finally set if default filtering is enabled
-        setDefaultFilter(filtered.get());
-
-        setFilterByAsMap(filterBy);
-
-        return filterBy;
-    }
-
-    protected void updateFilterByWithTableState(Map<String, FilterMeta> tsFilterBy) {
-        boolean defaultFilter = isDefaultFilter();
-        for (Map.Entry<String, FilterMeta> entry : tsFilterBy.entrySet()) {
-            FilterMeta intlFilterBy = getFilterByAsMap().get(entry.getKey());
-            if (intlFilterBy != null) {
-                FilterMeta tsFilterMeta = entry.getValue();
-                intlFilterBy.setFilterValue(tsFilterMeta.getFilterValue());
-                defaultFilter |= intlFilterBy.isActive();
-            }
-        }
-
-        setDefaultFilter(defaultFilter);
-    }
-
-    protected void updateFilterByWithUserFilterBy(Map<String, FilterMeta> intlFilterBy, Object usrFilterBy, AtomicBoolean filtered) {
-        Collection<FilterMeta> filterByTmp;
-        if (usrFilterBy instanceof FilterMeta) {
-            filterByTmp = Collections.singletonList((FilterMeta) usrFilterBy);
-        }
-        else if (!(usrFilterBy instanceof Collection)) {
-            throw new FacesException("DataTable#filterBy expects a single or a collection of FilterMeta");
-        }
-        else {
-            filterByTmp = (Collection<FilterMeta>) usrFilterBy;
-        }
-
-        for (FilterMeta userFM : filterByTmp) {
-            FilterMeta intlFM = intlFilterBy.values().stream()
-                    .filter(o -> o.getField().equals(userFM.getField()))
-                    .findAny()
-                    .orElseThrow(() -> new FacesException("No column with field '" + userFM.getField() + "' has been found"));
-
-            ValueExpression filterByVE = userFM.getFilterBy();
-            if (filterByVE == null) {
-                filterByVE = createValueExprFromVarField(getFacesContext(), getVar(), userFM.getField());
-            }
-
-            intlFM.setFilterValue(userFM.getFilterValue());
-            intlFM.setFilterBy(filterByVE);
-            intlFM.setConstraint(userFM.getConstraint());
-            intlFM.setMatchMode(userFM.getMatchMode());
-            filtered.set(filtered.get() || userFM.isActive());
-        }
-    }
-
-    protected void updateFilterByWithGlobalFilter(Map<String, FilterMeta> filterBy, AtomicBoolean filtered) {
-        String globalFilter = getGlobalFilter();
-        Set<SearchExpressionHint> hint = LangUtils.isValueBlank(globalFilter)
-                ? EnumSet.of(SearchExpressionHint.IGNORE_NO_RESULT)
-                : Collections.emptySet();
-        UIComponent globalFilterComponent = SearchExpressionFacade
-                .resolveComponent(getFacesContext(), this, DataTable.PropertyKeys.globalFilter.toString(), hint);
-        if (globalFilterComponent != null) {
-            if (globalFilterComponent instanceof ValueHolder) {
-                ((ValueHolder) globalFilterComponent).setValue(globalFilter);
-            }
-            FilterMeta globalFilterBy = FilterMeta.of(filterBy.values(), globalFilter, getGlobalFilterFunction());
-            filterBy.put(globalFilterBy.getColumnKey(), globalFilterBy);
-            filtered.set(filtered.get() || globalFilterBy.isActive());
-        }
-    }
-
-    public boolean isColumnFilterable(UIColumn column) {
-        Map<String, FilterMeta> filterBy = getFilterByAsMap();
-        return filterBy.containsKey(column.getColumnKey());
-    }
-
+    @Override
     public Map<String, SortMeta> getSortByAsMap() {
-        return ComponentUtils.computeIfAbsent(getStateHelper(), "_sortBy", this::initSortBy);
+        return ComponentUtils.computeIfAbsent(getStateHelper(), InternalPropertyKeys.sortByAsMap.name(), () -> initSortBy(getFacesContext()));
     }
 
+    @Override
     public void setSortByAsMap(Map<String, SortMeta> sortBy) {
-        getStateHelper().put("_sortBy", sortBy);
+        getStateHelper().put(InternalPropertyKeys.sortByAsMap.name(), sortBy);
     }
 
+    @Override
     public Map<String, FilterMeta> getFilterByAsMap() {
-        return ComponentUtils.eval(getStateHelper(), "_filterBy", Collections::emptyMap);
+        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.filterByAsMap.name(), Collections::emptyMap);
     }
 
+    @Override
     public void setFilterByAsMap(Map<String, FilterMeta> sortBy) {
-        getStateHelper().put("_filterBy", sortBy);
+        getStateHelper().put(InternalPropertyKeys.filterByAsMap.name(), sortBy);
+    }
+
+    @Override
+    public int getFrozenColumnsCount() {
+        return getFrozenColumns();
+    }
+
+    @Override
+    public boolean isFilterByAsMapDefined() {
+        return getStateHelper().get(InternalPropertyKeys.filterByAsMap.name()) != null;
     }
 }

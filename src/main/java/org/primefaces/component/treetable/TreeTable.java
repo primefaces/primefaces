@@ -27,42 +27,33 @@ import java.util.*;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
-import javax.faces.FacesException;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 
-import org.primefaces.component.api.DynamicColumn;
+import org.primefaces.PrimeFaces;
+import org.primefaces.component.api.ColumnHolder;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
-import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.event.*;
 import org.primefaces.event.data.FilterEvent;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.event.data.SortEvent;
-import org.primefaces.model.FilterMeta;
-import org.primefaces.model.MatchMode;
-import org.primefaces.model.SortOrder;
-import org.primefaces.model.TreeNode;
+import org.primefaces.model.*;
 import org.primefaces.model.filter.*;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.LocaleUtils;
-import org.primefaces.util.MapBuilder;
+import org.primefaces.util.*;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class TreeTable extends TreeTableBase {
+public class TreeTable extends TreeTableBase implements ColumnHolder {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.TreeTable";
 
@@ -117,6 +108,7 @@ public class TreeTable extends TreeTableBase {
             .build();
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
+            .put("contextMenu", NodeSelectEvent.class)
             .put("select", NodeSelectEvent.class)
             .put("unselect", NodeUnselectEvent.class)
             .put("expand", NodeExpandEvent.class)
@@ -134,12 +126,9 @@ public class TreeTable extends TreeTableBase {
             .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
-    private int columnsCount = -1;
-    private UIColumn sortColumn;
     private List<UIColumn> columns;
     private Columns dynamicColumns;
     private List<String> filteredRowKeys = new ArrayList<>();
-    private List<FilterMeta> filterMetadata;
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
@@ -221,7 +210,7 @@ public class TreeTable extends TreeTableBase {
                 wrapperEvent = new NodeCollapseEvent(this, behaviorEvent.getBehavior(), node);
                 wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
-            else if (eventName.equals("select")) {
+            else if (eventName.equals("select") || eventName.equals("contextMenu")) {
                 String nodeKey = params.get(clientId + "_instantSelection");
                 setRowKey(root, nodeKey);
                 TreeNode node = getRowNode();
@@ -311,73 +300,18 @@ public class TreeTable extends TreeTableBase {
         super.processValidators(context);
 
         if (isFilterRequest(context)) {
-            List<FilterMeta> filterBy = populateFilterBy(context, this);
-            setFilterMetadata(filterBy);
-        }
-    }
-
-    public List<FilterMeta> populateFilterBy(FacesContext context, TreeTable tt) {
-        List<FilterMeta> filterBy = new ArrayList<>();
-        String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-
-        for (UIColumn column : tt.getColumns()) {
-            ValueExpression columnFilterByVE = column.getValueExpression("filterBy");
-
-            if (columnFilterByVE != null) {
-                UIComponent filterFacet = column.getFacet("filter");
-                ValueExpression filterByVE = columnFilterByVE;
-                Object filterValue = null;
-                String filterId = null;
-                String filterMatchMode = null;
-
-                if (column instanceof Column) {
-                    filterId = column.getClientId(context) + separator + "filter";
-                    filterValue = (filterFacet == null) ? params.get(filterId) : ((ValueHolder) filterFacet).getLocalValue();
-                    filterMatchMode = column.getFilterMatchMode();
-                }
-                else if (column instanceof DynamicColumn) {
-                    DynamicColumn dynamicColumn = (DynamicColumn) column;
-                    dynamicColumn.applyModel();
-                    filterId = dynamicColumn.getContainerClientId(context) + separator + "filter";
-                    filterValue = (filterFacet == null) ? params.get(filterId) : ((ValueHolder) filterFacet).getLocalValue();
-                    filterMatchMode = column.getFilterMatchMode();
-                    dynamicColumn.cleanModel();
-                }
-
-                filterBy.add(new FilterMeta(null,
-                        column.getColumnKey(),
-                        filterByVE,
-                        MatchMode.of(filterMatchMode),
-                        filterValue));
+            Map<String, FilterMeta> filterBy = initFilterBy(context);
+            for (FilterMeta meta : filterBy.values()) {
+                decodeFilterValue(context, meta);
             }
+
+            setFilterByAsMap(filterBy);
         }
-
-        return filterBy;
-    }
-
-    public UIColumn findColumn(String columnKey) {
-        for (UIColumn column : getColumns()) {
-            if (Objects.equals(column.getColumnKey(), columnKey)) {
-                return column;
-            }
-        }
-
-        FacesContext context = getFacesContext();
-        ColumnGroup headerGroup = getColumnGroup("header");
-        for (UIComponent row : headerGroup.getChildren()) {
-            for (UIComponent col : row.getChildren()) {
-                if (Objects.equals(col.getClientId(context), columnKey)) {
-                    return (UIColumn) col;
-                }
-            }
-        }
-
-        throw new FacesException("Cannot find column with key: " + columnKey);
     }
 
     public boolean hasFooterColumn() {
-        for (UIComponent child : getChildren()) {
+        for (int i = 0; i < getChildCount(); i++) {
+            UIComponent child = getChildren().get(i);
             if (child instanceof Column && child.isRendered()) {
                 Column column = (Column) child;
 
@@ -404,20 +338,6 @@ public class TreeTable extends TreeTableBase {
         return params.get(clientId + "_colResize") != null;
     }
 
-    public int getColumnsCount() {
-        if (columnsCount == -1) {
-            columnsCount = 0;
-
-            for (UIComponent kid : getChildren()) {
-                if (kid.isRendered() && kid instanceof Column) {
-                    columnsCount++;
-                }
-            }
-        }
-
-        return columnsCount;
-    }
-
     public String getScrollState() {
         Map<String, String> params = getFacesContext().getExternalContext().getRequestParameterMap();
         String name = getClientId() + "_scrollState";
@@ -432,73 +352,29 @@ public class TreeTable extends TreeTableBase {
         return selectionMode != null && selectionMode.equals("checkbox");
     }
 
-    public UIColumn getSortColumn() {
-        return sortColumn;
-    }
-
-    public void setSortColumn(UIColumn column) {
-        sortColumn = column;
-    }
-
-    public void clearDefaultSorted() {
-        getStateHelper().remove("defaultSorted");
-    }
-
-    public void setDefaultSorted() {
-        getStateHelper().put("defaultSorted", "defaultSorted");
-    }
-
-    public boolean isDefaultSorted() {
-        return getStateHelper().get("defaultSorted") != null;
-    }
-
     public Locale resolveDataLocale() {
         FacesContext context = getFacesContext();
         return LocaleUtils.resolveLocale(context, getDataLocale(), getClientId(context));
     }
 
-    public ColumnGroup getColumnGroup(String target) {
-        for (UIComponent child : getChildren()) {
-            if (child instanceof ColumnGroup) {
-                ColumnGroup colGroup = (ColumnGroup) child;
-                String type = colGroup.getType();
-
-                if (type != null && type.equals(target)) {
-                    return colGroup;
-                }
-
-            }
+    @Override
+    public List<UIColumn> getColumns() {
+        if (this.columns != null) {
+            return this.columns;
         }
 
-        return null;
-    }
+        List<UIColumn> columns = initColumns();
 
-    public List<UIColumn> getColumns() {
-        if (columns == null) {
-            columns = new ArrayList<>();
-            FacesContext context = getFacesContext();
-            char separator = UINamingContainer.getSeparatorChar(context);
-
-            for (UIComponent child : getChildren()) {
-                if (child instanceof Column) {
-                    columns.add((Column) child);
-                }
-                else if (child instanceof Columns) {
-                    Columns uiColumns = (Columns) child;
-                    String uiColumnsClientId = uiColumns.getClientId(context);
-
-                    for (int i = 0; i < uiColumns.getRowCount(); i++) {
-                        DynamicColumn dynaColumn = new DynamicColumn(i, uiColumns);
-                        dynaColumn.setColumnKey(uiColumnsClientId + separator + i);
-                        columns.add(dynaColumn);
-                    }
-                }
-            }
+        // lets cache it only when RENDER_RESPONSE is reached, the columns might change before reaching that phase
+        // see https://github.com/primefaces/primefaces/issues/2110
+        if (getFacesContext().getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            this.columns = columns;
         }
 
         return columns;
     }
 
+    @Override
     public void setColumns(List<UIColumn> columns) {
         this.columns = columns;
     }
@@ -518,12 +394,9 @@ public class TreeTable extends TreeTableBase {
         }
 
         // reset component for MyFaces view pooling
-        columnsCount = -1;
-        sortColumn = null;
         columns = null;
         dynamicColumns = null;
         filteredRowKeys = new ArrayList<>();
-        filterMetadata = null;
 
         return super.saveState(context);
     }
@@ -663,14 +536,6 @@ public class TreeTable extends TreeTableBase {
         this.filteredRowKeys = filteredRowKeys;
     }
 
-    public List<FilterMeta> getFilterMetadata() {
-        return filterMetadata;
-    }
-
-    public void setFilterMetadata(List<FilterMeta> filterMetadata) {
-        this.filterMetadata = filterMetadata;
-    }
-
     @Override
     protected void preDecode(FacesContext context) {
         resetDynamicColumns();
@@ -722,5 +587,102 @@ public class TreeTable extends TreeTableBase {
     @Override
     protected boolean requiresColumns() {
         return true;
+    }
+
+    @Override
+    public void restoreMultiViewState() {
+        TreeTableState ts = getMultiViewState(false);
+        if (ts != null) {
+            if (isPaginator()) {
+                setFirst(ts.getFirst());
+                int rows = (ts.getRows() == 0) ? getRows() : ts.getRows();
+                setRows(rows);
+            }
+
+            if (ts.getSortBy() != null) {
+                updateSortByWithMVS(ts.getSortBy());
+            }
+
+            if (ts.getFilterBy() != null) {
+                updateFilterByWithMVS(getFacesContext(), ts.getFilterBy());
+            }
+
+            // TODO selection
+        }
+    }
+
+    @Override
+    public TreeTableState getMultiViewState(boolean create) {
+        FacesContext fc = getFacesContext();
+        String viewId = fc.getViewRoot().getViewId();
+
+        return PrimeFaces.current().multiViewState()
+                .get(viewId, getClientId(fc), create, TreeTableState::new);
+    }
+
+    @Override
+    public void resetMultiViewState() {
+        reset();
+    }
+
+    public void reset() {
+        setValue(null);
+        setFilteredNode(null);
+
+        setFirst(0);
+        setDefaultSort(false);
+        setDefaultFilter(false);
+        setSortByAsMap(null);
+        setFilterByAsMap(null);
+    }
+
+    @Override
+    public Map<String, SortMeta> getSortByAsMap() {
+        return ComponentUtils.computeIfAbsent(getStateHelper(), InternalPropertyKeys.sortByAsMap.name(), () -> initSortBy(getFacesContext()));
+    }
+
+    @Override
+    public void setSortByAsMap(Map<String, SortMeta> sortBy) {
+        getStateHelper().put(InternalPropertyKeys.sortByAsMap.name(), sortBy);
+    }
+
+    @Override
+    public Map<String, FilterMeta> getFilterByAsMap() {
+        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.filterByAsMap.name(), Collections::emptyMap);
+    }
+
+    @Override
+    public void setFilterByAsMap(Map<String, FilterMeta> sortBy) {
+        getStateHelper().put(InternalPropertyKeys.filterByAsMap.name(), sortBy);
+    }
+
+    @Override
+    public boolean isDefaultSort() {
+        return getSortByAsMap() != null && Boolean.TRUE.equals(getStateHelper().get(InternalPropertyKeys.defaultSort.name()));
+    }
+
+    @Override
+    public void setDefaultSort(boolean defaultSort) {
+        getStateHelper().put(InternalPropertyKeys.defaultSort.name(), defaultSort);
+    }
+
+    @Override
+    public boolean isDefaultFilter() {
+        return Boolean.TRUE.equals(getStateHelper().get(InternalPropertyKeys.defaultFilter.name()));
+    }
+
+    @Override
+    public void setDefaultFilter(boolean defaultFilter) {
+        getStateHelper().put(InternalPropertyKeys.defaultFilter.name(), defaultFilter);
+    }
+
+    @Override
+    public boolean isFilterByAsMapDefined() {
+        return getStateHelper().get(InternalPropertyKeys.filterByAsMap.name()) != null;
+    }
+
+    public boolean isMultiSort() {
+        String sortMode = getSortMode();
+        return sortMode != null && sortMode.equals("multiple");
     }
 }

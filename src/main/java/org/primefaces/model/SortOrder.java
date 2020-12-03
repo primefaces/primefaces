@@ -29,9 +29,9 @@ import java.util.Set;
 
 public enum SortOrder {
 
-    ASCENDING(1, "asc", "1", "ascending"),
-    DESCENDING(-1, "desc", "-1", "descending"),
-    UNSORTED(0, "", null, "0", "unsorted");
+    ASCENDING(1, "asc", "1", "ascending", "ASCENDING"),
+    DESCENDING(-1, "desc", "-1", "descending", "DESCENDING"),
+    UNSORTED(0, "", null, "0", "unsorted", "UNSORTED");
 
     private final Set<Object> values;
 

@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.datatable;
+package org.primefaces.component.treetable;
 
 import java.io.Serializable;
 import java.util.List;
@@ -30,7 +30,7 @@ import java.util.Map;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortMeta;
 
-public class DataTableState implements Serializable {
+public class TreeTableState implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -43,12 +43,6 @@ public class DataTableState implements Serializable {
     private List<Object> selectedRowKeys;
 
     private Map<String, FilterMeta> filterBy;
-
-    private String orderedColumnsAsString;
-
-    private String togglableColumnsAsString;
-
-    private String resizableColumnsAsString;
 
     public int getFirst() {
         return first;
@@ -90,27 +84,4 @@ public class DataTableState implements Serializable {
         this.filterBy = filterBy;
     }
 
-    public String getOrderedColumnsAsString() {
-        return orderedColumnsAsString;
-    }
-
-    public void setOrderedColumnsAsString(String orderedColumnsAsString) {
-        this.orderedColumnsAsString = orderedColumnsAsString;
-    }
-
-    public String getTogglableColumnsAsString() {
-        return togglableColumnsAsString;
-    }
-
-    public void setTogglableColumnsAsString(String togglableColumnsAsString) {
-        this.togglableColumnsAsString = togglableColumnsAsString;
-    }
-
-    public String getResizableColumnsAsString() {
-        return resizableColumnsAsString;
-    }
-
-    public void setResizableColumnsAsString(String resizableColumnsAsString) {
-        this.resizableColumnsAsString = resizableColumnsAsString;
-    }
 }

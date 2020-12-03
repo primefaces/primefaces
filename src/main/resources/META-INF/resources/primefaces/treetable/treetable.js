@@ -1,36 +1,36 @@
 /**
  * __PrimeFaces TreeTable Widget__
- * 
+ *
  * TreeTable is is used for displaying hierarchical data in tabular format.
- * 
+ *
  * @typedef {"single" | "multiple" | "checkbox"} PrimeFaces.widget.TreeTable.SelectionMode Indicates how a row may be
  * selected.
  * - `single`: Only a single row may be selected at any time by clicking on it. Selecting another row will unselect the
  * currently selected row.
- * - `multiple`: Multiple rows can be selected via clicking while holding the ctrl or shift key. 
+ * - `multiple`: Multiple rows can be selected via clicking while holding the ctrl or shift key.
  * - `checkbox`: One or more rows can be selected by clicking on the checkbox next to each row.
- * 
+ *
  * @typedef {"ASCENDING" | "DESCENDING"} PrimeFaces.widget.TreeTable.SortOrder The order how the rows of a tree table
  * are sorted.
  * - `ASCENDING`: The rows are ordered in an ascending order, from the first to the last item.
  * - `DESCENDING`: The rows are ordered in an ascending order, from the last to the first item.
- * 
+ *
  * @typedef {"eager" | "lazy"} PrimeFaces.widget.TreeTable.CellEditMode If cell editing mode is enabled, whether the
  * cell editors are loaded lazily.
  * - `eager`: Cell editors are loaded with the original page load or when the tree table is loaded.
  * - `lazy`: Cell editors are loaded via AJAX when inline editing is requested.
- * 
+ *
  * @typedef {"row" | "cell"} PrimeFaces.widget.TreeTable.EditMode How the data in a tree table can be edited.
  * - `row`: A row is switched to edit mode and all cells can be edited at once.
- * - `cell`: An individual cell is switched to edit mode and can be edited. 
- * 
+ * - `cell`: An individual cell is switched to edit mode and can be edited.
+ *
  * @typedef {"children" | "self"} PrimeFaces.widget.TreeTable.ExpandMode Defines which rows are expanded when the expand
  * icon next to a row is clicked.
  * - `self`: Only the row itself is expanded.
  * - `children`: The row and its children are expanded.
 
  * @implements {PrimeFaces.widget.ContextMenu.ContextMenuProvider<PrimeFaces.widget.TreeTable>}
- * 
+ *
  * @prop {JQuery} bodyTable The DOM element for the main TABLE element.
  * @prop {JQuery} clone The DOM element for the  clone of the table head.
  * @prop {boolean} columnWidthsFixed Whether the width of all columns needs to stay fixed.
@@ -44,32 +44,32 @@
  * @prop {JQuery} headerCols The DOM element for the TH columns in the header.
  * @prop {JQuery} headerTable The DOM element for the TABLE element of the header.
  * @prop {boolean} incellClick Whether a click was performed inside a cell.
- * @prop {JQuery} jqSelection The DOM element for the hidden input storing the selected rows. 
+ * @prop {JQuery} jqSelection The DOM element for the hidden input storing the selected rows.
  * @prop {string} marginRight CSS unit for the right margin of this tree table, determined from the scrollbar width.
  * @prop {PrimeFaces.widget.Paginator} paginator The paginator widget instance used for filtering.
  * @prop {boolean} percentageScrollHeight Whether the scroll height was specified in percent.
  * @prop {boolean} percentageScrollWidth Whether the scroll width was specified in percent.
  * @prop {number} relativeHeight The height of the visible scroll area relative to the total height of this tree table.
- * @prop {JQuery} resizerHelper The DOM element for the draggable handle for resizing columns. 
+ * @prop {JQuery} resizerHelper The DOM element for the draggable handle for resizing columns.
  * @prop {JQuery} scrollBody The DOM element for the scrollable DIV with the body table.
  * @prop {JQuery} scrollFooter The DOM element for the scrollable DIV with the footer table.
  * @prop {JQuery} scrollFooterBox The DOM element for the container DIV of the footer table.
  * @prop {JQuery} scrollHeader The DOM element for the scrollable DIV with the header table.
- * @prop {JQuery} scrollHeaderBox The DOM element for the container DIV of the header table. 
- * @prop {JQuery} scrollStateHolder The DOM element for the hidden input storing the current scroll position.  
+ * @prop {JQuery} scrollHeaderBox The DOM element for the container DIV of the header table.
+ * @prop {JQuery} scrollStateHolder The DOM element for the hidden input storing the current scroll position.
  * @prop {string} scrollStateVal The value of the {@link scrollStateHolder}.
  * @prop {string[]} selections A list of row keys of the currently selected rows.
- * @prop {JQuery} sortableColumns The DOM elements for the list of sortable columns. 
+ * @prop {JQuery} sortableColumns The DOM elements for the list of sortable columns.
  * @prop {JQuery} stickyContainer The DOM element for the container with the sticky header.
  * @prop {JQuery} tbody The DOM element for the table body of this tree table.
  * @prop {JQuery} thead The DOM element for the table header of this tree table.
  * @prop {JQuery} theadClone The DOM element for the clone of the table header.
- * 
+ *
  * @interface {PrimeFaces.widget.TreeTableCfg} cfg The configuration for the {@link  TreeTable| TreeTable widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.DeferredWidgetCfg} cfg
- * 
+ *
  * @prop {PrimeFaces.widget.TreeTable.CellEditMode} cfg.cellEditMode Whether cell editors are loaded lazily.
  * @prop {string} cfg.cellSeparator Separator text to use in output mode of editable cells with multiple components.
  * @prop {boolean} cfg.disabledTextSelection Disables text selection on row click.
@@ -348,7 +348,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Handles a pagination event by updating this tree table and invoking the appropriate behaviors.
      * @private
-     * @param {PrimeFaces.widget.Paginator.PaginationState} newState The new pagination state to apply. 
+     * @param {PrimeFaces.widget.Paginator.PaginationState} newState The new pagination state to apply.
      */
     handlePagination: function(newState) {
         var $this = this,
@@ -451,10 +451,16 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     bindSortEvents: function() {
         var $this = this;
+
+        if(this.cfg.multiSort) {
+            this.sortMeta = [];
+        }
+
         this.sortableColumns = this.thead.find('> tr > th.ui-sortable-column');
 
         this.sortableColumns.filter('.ui-state-active').each(function() {
             var columnHeader = $(this),
+            columnHeaderId = columnHeader.attr('id'),
             sortIcon = columnHeader.children('span.ui-sortable-column-icon'),
             sortOrder = null;
 
@@ -464,6 +470,15 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 sortOrder = 'DESCENDING';
 
             columnHeader.data('sortorder', sortOrder);
+
+            if ($this.cfg.multiSort && $this.cfg.sortMetaOrder) {
+                var resolvedSortMetaIndex = $.inArray(columnHeaderId, $this.cfg.sortMetaOrder);
+
+                $this.sortMeta[resolvedSortMetaIndex] = {
+                    col: columnHeaderId,
+                    order: sortOrder
+                };
+            }
         });
 
         this.sortableColumns.on('mouseenter.treeTable', function() {
@@ -478,7 +493,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             if(!column.hasClass('ui-state-active'))
                 column.removeClass('ui-state-hover');
         })
-        .on('click.treeTable', function(e) {
+        .on('click.treeTable', function(e, metaKeyOn) {
             if(!$this.shouldSort(e, this)) {
                 return;
             }
@@ -486,14 +501,34 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             PrimeFaces.clearSelection();
 
             var columnHeader = $(this),
-            sortOrder = columnHeader.data('sortorder')||'DESCENDING';
+                metaKey = e.metaKey || e.ctrlKey || metaKeyOn,
+                sortOrder = columnHeader.data('sortorder') || 'DESCENDING';
 
             if(sortOrder === 'ASCENDING')
                 sortOrder = 'DESCENDING';
             else if(sortOrder === 'DESCENDING')
                 sortOrder = 'ASCENDING';
 
-            $this.sort(columnHeader, sortOrder);
+            if ($this.cfg.multiSort) {
+                if (metaKey) {
+                    $this.addSortMeta({
+                        col: columnHeader.attr('id'),
+                        order: sortOrder
+                    });
+                    $this.sort(columnHeader, sortOrder, true);
+                }
+                else {
+                    $this.sortMeta = [];
+                    $this.addSortMeta({
+                        col: columnHeader.attr('id'),
+                        order: sortOrder
+                    });
+                    $this.sort(columnHeader, sortOrder);
+                }
+            }
+            else {
+                $this.sort(columnHeader, sortOrder);
+            }
         });
     },
 
@@ -503,7 +538,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
      * @param {PrimeFaces.widget.ContextMenu} menuWidget
      * @param {PrimeFaces.widget.TreeTable} targetWidget
      * @param {string} targetId
-     * @param {PrimeFaces.widget.ContextMenuCfg} cfg 
+     * @param {PrimeFaces.widget.ContextMenuCfg} cfg
      */
     bindContextMenu : function(menuWidget, targetWidget, targetId, cfg) {
         var targetSelector = targetId + ' .ui-treetable-data > ' + (cfg.nodeType ? 'tr.ui-treetable-selectable-node.' + cfg.nodeType : 'tr.ui-treetable-selectable-node');
@@ -623,13 +658,13 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 .on(editEvent, cellSelector, null, function(e) {
                     if(!$(e.target).is('span.ui-treetable-toggler.ui-c')) {
                         $this.incellClick = true;
-				
+
                         var item = $(this);
                         var cell = item.hasClass('ui-editable-column') ? item : item.closest('.ui-editable-column');
-				        
+
                         if(!cell.hasClass('ui-cell-editing') && e.type === $this.cfg.editInitEvent) {
                             $this.showCellEditor($(this));
-				            
+
                             if($this.cfg.editInitEvent === "dblclick") {
                                 $this.incellClick = false;
                             }
@@ -652,18 +687,17 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Sort this tree table by the given column, either in ascending or descending order.
      * @param {JQuery} columnHeader A column to sort by, must be a TH element of the THEAD.
-     * @param {PrimeFaces.widget.TreeTable.SortOrder} order Whether to sort the rows in ascending or descending order. 
+     * @param {PrimeFaces.widget.TreeTable.SortOrder} order Whether to sort the rows in ascending or descending order.
+     * @param {boolean} multi `true` if sorting by multiple columns is enabled, or `false` otherwise.
      */
-    sort: function(columnHeader, order) {
+    sort: function(columnHeader, order, multi) {
         var $this = this,
         options = {
             source: this.id,
             update: this.id,
             process: this.id,
             params: [
-                {name: this.id + '_sorting', value: true},
-                {name: this.id + '_sortKey', value: columnHeader.attr('id')},
-                {name: this.id + '_sortDir', value: order}
+                {name: this.id + '_sorting', value: true}
             ],
             onsuccess: function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
@@ -671,8 +705,10 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                         handle: function(content) {
                             this.tbody.html(content);
 
-                            columnHeader.siblings().filter('.ui-state-active').removeData('sortorder').removeClass('ui-state-active')
-                                            .find('.ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s');
+                            if(!multi) {
+                                columnHeader.siblings().filter('.ui-state-active').removeData('sortorder').removeClass('ui-state-active')
+                                                .find('.ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s');
+                            }
 
                             columnHeader.removeClass('ui-state-hover').addClass('ui-state-active').data('sortorder', order);
                             var sortIcon = columnHeader.find('.ui-sortable-column-icon');
@@ -693,6 +729,16 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
             }
         };
+
+        if (multi) {
+            options.params.push({name: this.id + '_multiSorting', value: true});
+            options.params.push({name: this.id + '_sortKey', value: $this.joinSortMetaOption('col')});
+            options.params.push({name: this.id + '_sortDir', value: $this.joinSortMetaOption('order')});
+        }
+        else {
+            options.params.push({name: this.id + '_sortKey', value: columnHeader.attr('id')});
+            options.params.push({name: this.id + '_sortDir', value: order});
+        }
 
         if(this.hasBehavior('sort')) {
             this.callBehavior('sort', options);
@@ -778,7 +824,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.scrollable) {
             this.alignScrollBody();
         }
-  
+
         var options = {
             source: this.id,
             process: this.id,
@@ -812,8 +858,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Callback for when a row was clicked. Selects or unselects the row, if that feature is enabled.
      * @private
-     * @param {JQuery.Event} event The click event that occurred. 
-     * @param {JQuery} node The node that was clicked. 
+     * @param {JQuery.Event} event The click event that occurred.
+     * @param {JQuery} node The node that was clicked.
      */
     onRowClick: function(event, node) {
         if($(event.target).is('td,span:not(.ui-c)')) {
@@ -853,11 +899,12 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
      * Callback for when a right click was performed on a node. Selects or unselects the row, if that feature is
      * enabled.
      * @private
-     * @param {JQuery.Event} event The click event that occurred. 
-     * @param {JQuery} node The node that was clicked. 
+     * @param {JQuery.Event} event The click event that occurred.
+     * @param {JQuery} node The node that was clicked.
      */
     onRowRightClick: function(event, node) {
-        var selected = node.hasClass('ui-state-highlight');
+        var selected = node.hasClass('ui-state-highlight'),
+            nodeKey = node.attr('data-rk');
 
         if(this.isCheckboxSelection()) {
             if(!selected) {
@@ -871,15 +918,34 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             this.selectNode(node);
         }
 
+        this.fireSelectEvent(nodeKey, 'contextMenu');
+
         if(this.cfg.disabledTextSelection) {
             PrimeFaces.clearSelection();
         }
     },
 
     /**
+     * Sends a select event on server side to invoke a select listener if defined.
+     * @private
+     * @param {string} nodeKey The key of the node that was selected.
+     * @param {string} behaviorEvent Name of the event to fire.
+     */
+    fireSelectEvent: function(nodeKey, behaviorEvent) {
+        if(this.hasBehavior(behaviorEvent)) {
+            var ext = {
+                    params: [{name: this.id + '_instantSelectedRowKey', value: nodeKey}
+                ]
+            };
+
+            this.callBehavior(behaviorEvent, ext);
+        }
+    },
+
+    /**
      * Selects the given row. The {@link TreeTableCfg.selectionMode} must not be set to `checkbox`.
      * @param {JQuery} node A row to select, must be a TR element.
-     * @param {boolean} [silent] If set to `true`, does not trigger event listeners. 
+     * @param {boolean} [silent] If set to `true`, does not trigger event listeners.
      */
     selectNode: function(node, silent) {
         var nodeKey = node.attr('data-rk');
@@ -903,7 +969,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Unselects the given row. The {@link TreeTableCfg.selectionMode} must not be set to `checkbox`.
      * @param {JQuery} node A row to unselect, must be a TR element.
-     * @param {boolean} [silent] If set to `true`, does not trigger event listeners. 
+     * @param {boolean} [silent] If set to `true`, does not trigger event listeners.
      */
     unselectNode: function(node, silent) {
         var nodeKey = node.attr('data-rk');
@@ -1020,7 +1086,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
      * Finds all descendants of the given row, i.e. all children, grandchildren etc.
      * @param {JQuery} node A node for which to get the descendants.
      * @return {JQuery} The descendants of the given row. An empty jQuery instance in case the row does not have
-     * descendants. 
+     * descendants.
      */
     getDescendants: function(node) {
         var nodeKey = node.attr('data-rk'),
@@ -1139,7 +1205,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Removes the given row from the list of currenlty selected rows.
-     * @param {string} nodeKey A row that was unselected. 
+     * @param {string} nodeKey A row that was unselected.
      */
     removeSelection: function(nodeKey) {
         this.selections = $.grep(this.selections, function(value) {
@@ -1149,8 +1215,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Adds the given row to the list of currently selected rows.
-     * @private 
-     * @param {string} rowKey A row that was selected. 
+     * @private
+     * @param {string} rowKey A row that was selected.
      */
     addToSelection: function(rowKey) {
         if(!this.isSelected(rowKey)) {
@@ -1160,7 +1226,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Checks whether the given row is currently selected.
-     * @param {string} nodeKey Key of a row to check. 
+     * @param {string} nodeKey Key of a row to check.
      * @return {boolean} Whether the given row is selected.
      */
     isSelected: function(nodeKey) {
@@ -1202,7 +1268,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Callback for when a node was selected. Invokes the appropriate behaviors.
      * @private
-     * @param {string} nodeKey Key of the row that was selected. 
+     * @param {string} nodeKey Key of the row that was selected.
      */
     fireSelectNodeEvent: function(nodeKey) {
         if(this.isCheckboxSelection()) {
@@ -1234,22 +1300,14 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             }
         }
         else {
-            if(this.hasBehavior('select')) {
-                var ext = {
-                    params: [
-                        {name: this.id + '_instantSelection', value: nodeKey}
-                    ]
-                };
-
-                this.callBehavior('select', ext);
-            }
+            this.fireSelectEvent(nodeKey, 'select');
         }
     },
 
     /**
      * Callback for when a node was unselected. Invokes the appropriate behaviors.
      * @private
-     * @param {string} nodeKey Key of the row that was unselected. 
+     * @param {string} nodeKey Key of the row that was unselected.
      */
     fireUnselectNodeEvent: function(nodeKey) {
         if(this.hasBehavior('unselect')) {
@@ -1434,8 +1492,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Applies the given outer width to an element.
      * @private
-     * @param {JQuery} element An element to modify. 
-     * @param {number} width The new (outer) width for the element. 
+     * @param {JQuery} element An element to modify.
+     * @param {number} width The new (outer) width for the element.
      */
     setOuterWidth: function(element, width) {
         var diff = element.outerWidth() - element.width();
@@ -1643,7 +1701,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Switches a row to edit mode and displays the editors for that row.
-     * @param {JQuery} row A row for which to activate the editors. Must be a TR element. 
+     * @param {JQuery} row A row for which to activate the editors. Must be a TR element.
      */
     switchToRowEdit: function(row) {
         this.showRowEditors(row);
@@ -1769,7 +1827,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
      * Finds all editors of a row.
      * @private
      * @param {JQuery} row A row for which to find all cell editors.
-     * @return {JQuery} All cell editors of the given row. 
+     * @return {JQuery} All cell editors of the given row.
      */
     getRowEditors: function(row) {
         return row.find('div.ui-cell-editor');
@@ -1778,7 +1836,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Collapses the given row of this tree table after saving the contents of an inline editor.
      * @private
-     * @param {JQuery} row A row to collapse. 
+     * @param {JQuery} row A row to collapse.
      */
     collapseRow: function(row) {
         row.removeClass('ui-expanded-row').next('.ui-expanded-row-content').remove();
@@ -1908,7 +1966,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Callback for when the tab key is pressed, switches (focuses) to the next or previous cell editor.
      * @private
-     * @param {JQuery} cell The currently focused cell. 
+     * @param {JQuery} cell The currently focused cell.
      * @param {boolean} forward `true` to move to the next cell, or `false` to move to the previous cell.
      */
     tabCell: function(cell, forward) {
@@ -2157,5 +2215,39 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     isEmpty: function() {
         return this.tbody.children('tr.ui-treetable-empty-message').length === 1;
+    },
+
+    /**
+     * Adds the given sorting to the list of sortings. Each sorting describes a column by which to sort. This data table
+     * may be sorted by multiple columns.
+     * @param {PrimeFaces.widget.DataTable.SortMeta} meta Sorting to add.
+     * @private
+     */
+    addSortMeta: function(meta) {
+        this.sortMeta = $.grep(this.sortMeta, function(value) {
+            return value.col !== meta.col;
+        });
+
+        this.sortMeta.push(meta);
+    },
+
+    /**
+     * Serializes the option from the sort meta items.
+     * @private
+     * @param {keyof PrimeFaces.widget.DataTable.SortMeta} option Property of the sort meta to use.
+     * @return {string} All values from the current sort meta list for the given option.
+     */
+    joinSortMetaOption: function(option) {
+        var value = '';
+
+        for(var i = 0; i < this.sortMeta.length; i++) {
+            value += this.sortMeta[i][option];
+
+            if(i !== (this.sortMeta.length - 1)) {
+                value += ',';
+            }
+        }
+
+        return value;
     }
 });

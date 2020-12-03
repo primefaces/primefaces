@@ -28,6 +28,7 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.api.UIColumn;
 
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
@@ -113,21 +114,23 @@ public class SubTableRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId + "_row_" + rowIndex, null);
         writer.writeAttribute("class", DataTable.ROW_CLASS, null);
 
-        for (Column column : table.getColumns()) {
-            String style = column.getStyle();
-            String styleClass = column.getStyleClass();
+        for (UIColumn column : table.getColumns()) {
+            if (column instanceof Column) { //Columns are not supported yet
+                String style = column.getStyle();
+                String styleClass = column.getStyleClass();
 
-            writer.startElement("td", null);
-            if (style != null) {
-                writer.writeAttribute("style", style, null);
+                writer.startElement("td", null);
+                if (style != null) {
+                    writer.writeAttribute("style", style, null);
+                }
+                if (styleClass != null) {
+                    writer.writeAttribute("class", styleClass, null);
+                }
+
+                column.encodeAll(context);
+
+                writer.endElement("td");
             }
-            if (styleClass != null) {
-                writer.writeAttribute("class", styleClass, null);
-            }
-
-            column.encodeAll(context);
-
-            writer.endElement("td");
         }
 
         writer.endElement("tr");
