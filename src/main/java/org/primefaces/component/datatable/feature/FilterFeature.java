@@ -82,7 +82,7 @@ public class FilterFeature implements DataTableFeature {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         // FilterMeta#column must be updated since local value
         // (from column) must be decoded by FilterFeature#decodeFilterValue
-        Map<String, FilterMeta> filterBy = table.initFilterBy();
+        Map<String, FilterMeta> filterBy = table.initFilterBy(context);
         char separator = UINamingContainer.getSeparatorChar(context);
 
         for (FilterMeta entry : filterBy.values()) {

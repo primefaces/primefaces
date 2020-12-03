@@ -99,7 +99,7 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void preRender(FacesContext context, DataTable table) {
-        table.initFilterBy();
+        table.initFilterBy(context);
 
         if (table.isMultiViewState()) {
             table.restoreMultiViewState();
@@ -588,7 +588,7 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = column.getContainerClientId(context);
 
-        boolean sortable = table.isColumnSortable(column);
+        boolean sortable = table.isColumnSortable(context, column);
         boolean filterable = table.isColumnFilterable(column);
         String selectionMode = column.getSelectionMode();
         String sortIcon = null;
