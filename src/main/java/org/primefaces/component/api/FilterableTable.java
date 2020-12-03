@@ -84,7 +84,7 @@ public interface FilterableTable extends ColumnHolder {
         return filterBy;
     }
 
-    default void updateFilterByWithTableState(FacesContext context, Map<String, FilterMeta> tsFilterBy) {
+    default void updateFilterByWithMVS(FacesContext context, Map<String, FilterMeta> tsFilterBy) {
         boolean defaultFilter = isDefaultFilter();
         for (Map.Entry<String, FilterMeta> entry : tsFilterBy.entrySet()) {
             FilterMeta intlFilterBy = getFilterByAsMap().get(entry.getKey());

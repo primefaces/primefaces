@@ -195,6 +195,16 @@ public class TreeTableRenderer extends DataRenderer {
             }
 
             encodeTbody(context, tt, tt.getValue(), true);
+
+            if (tt.isMultiViewState()) {
+                Map<String, FilterMeta> filterBy = tt.getFilterByAsMap();
+                TreeTableState ts = tt.getMultiViewState(true);
+                ts.setFilterBy(filterBy);
+                if (tt.isPaginator()) {
+                    ts.setFirst(tt.getFirst());
+                    ts.setRows(tt.getRows());
+                }
+            }
         }
         else if (tt.isSortRequest(context)) {
             encodeSort(context, tt, root);
@@ -222,6 +232,10 @@ public class TreeTableRenderer extends DataRenderer {
         }
 
         tt.updateColumnsVisibility(context);
+
+        if (tt.isMultiViewState()) {
+            tt.restoreMultiViewState();
+        }
     }
 
     protected void encodeScript(FacesContext context, TreeTable tt) throws IOException {
@@ -1091,6 +1105,16 @@ public class TreeTableRenderer extends DataRenderer {
         sort(tt);
 
         encodeTbody(context, tt, root, true);
+
+        if (tt.isMultiViewState()) {
+            Map<String, SortMeta> sortMeta = tt.getSortByAsMap();
+            TreeTableState ts = tt.getMultiViewState(true);
+            ts.setSortBy(sortMeta);
+            if (tt.isPaginator()) {
+                ts.setFirst(tt.getFirst());
+                ts.setRows(tt.getRows());
+            }
+        }
     }
 
     public void sort(TreeTable tt) {

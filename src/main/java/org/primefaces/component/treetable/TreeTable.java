@@ -600,11 +600,11 @@ public class TreeTable extends TreeTableBase implements ColumnHolder {
             }
 
             if (ts.getSortBy() != null) {
-                updateSortByWithTableState(ts.getSortBy());
+                updateSortByWithMVS(ts.getSortBy());
             }
 
             if (ts.getFilterBy() != null) {
-                updateFilterByWithTableState(getFacesContext(), ts.getFilterBy());
+                updateFilterByWithMVS(getFacesContext(), ts.getFilterBy());
             }
 
             // TODO selection

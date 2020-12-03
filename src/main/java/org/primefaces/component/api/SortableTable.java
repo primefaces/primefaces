@@ -69,7 +69,7 @@ public interface SortableTable extends ColumnHolder {
         return sortMeta;
     }
 
-    default void updateSortByWithTableState(Map<String, SortMeta> tsSortBy) {
+    default void updateSortByWithMVS(Map<String, SortMeta> tsSortBy) {
         boolean defaultSort = isDefaultSort();
         for (Map.Entry<String, SortMeta> entry : tsSortBy.entrySet()) {
             SortMeta intlSortBy = getSortByAsMap().get(entry.getKey());
