@@ -205,14 +205,14 @@ public class FilterFeature implements DataTableFeature {
         table.setRowIndex(-1);  //reset datamodel
     }
 
-    protected void decodeFilterValue(FacesContext context, DataTable table, FilterMeta filterBy, Map<String, String> params, char separator) {
-        Object filterValue = null;
+    public static void decodeFilterValue(FacesContext context, UIComponent table, FilterMeta filterMeta, Map<String, String> params, char separator) {
+        Object filterValue;
 
-        if (filterBy.isGlobalFilter()) {
+        if (filterMeta.isGlobalFilter()) {
             filterValue = params.get(table.getClientId(context) + separator + FilterMeta.GLOBAL_FILTER_KEY);
         }
         else {
-            UIColumn column = filterBy.getColumn();
+            UIColumn column = filterMeta.getColumn();
             UIComponent filterFacet = column.getFacet("filter");
             boolean hasCustomFilter = ComponentUtils.shouldRenderFacet(filterFacet);
             if (column instanceof DynamicColumn) {
@@ -242,6 +242,6 @@ public class FilterFeature implements DataTableFeature {
             filterValue = null;
         }
 
-        filterBy.setFilterValue(filterValue);
+        filterMeta.setFilterValue(filterValue);
     }
 }

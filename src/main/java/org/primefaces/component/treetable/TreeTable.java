@@ -25,7 +25,6 @@ package org.primefaces.component.treetable;
 
 import static org.primefaces.component.datatable.DataTable.createValueExprFromVarField;
 
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -44,11 +43,11 @@ import javax.faces.event.PhaseId;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.ColumnHolder;
-import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.datatable.feature.FilterFeature;
 import org.primefaces.event.*;
 import org.primefaces.event.data.FilterEvent;
 import org.primefaces.event.data.PageEvent;
@@ -316,46 +315,13 @@ public class TreeTable extends TreeTableBase implements ColumnHolder {
 
             Map<String, FilterMeta> filterBy = initFilterBy();
             for (FilterMeta meta : filterBy.values()) {
-                decodeFilterValue(context, this, meta, context.getExternalContext().getRequestParameterMap(), seperator);
+                FilterFeature.decodeFilterValue(context, this, meta, context.getExternalContext().getRequestParameterMap(), seperator);
             }
 
             setFilterByAsMap(filterBy);
         }
     }
 
-    protected void decodeFilterValue(FacesContext context, TreeTable table, FilterMeta filterMeta, Map<String, String> params, char separator) {
-        Object filterValue = null;
-
-        if (filterMeta.isGlobalFilter()) {
-            filterValue = params.get(table.getClientId(context) + separator + FilterMeta.GLOBAL_FILTER_KEY);
-        }
-        else {
-            UIColumn column = filterMeta.getColumn();
-            if (column instanceof DynamicColumn) {
-                ((DynamicColumn) column).applyStatelessModel();
-            }
-
-            UIComponent filterFacet = column.getFacet("filter");
-            if (ComponentUtils.shouldRenderFacet(filterFacet)) {
-                filterValue = ((ValueHolder) filterFacet).getLocalValue();
-            }
-            else {
-                String valueHolderClientId = column instanceof DynamicColumn
-                        ? column.getContainerClientId(context) + separator + "filter"
-                        : column.getClientId(context) + separator + "filter";
-                filterValue = params.get(valueHolderClientId);
-            }
-        }
-
-        // returns null if empty string/array/object
-        if (filterValue != null
-                && (filterValue instanceof String && LangUtils.isValueBlank((String) filterValue)
-                || filterValue.getClass().isArray() && Array.getLength(filterValue) == 0)) {
-            filterValue = null;
-        }
-
-        filterMeta.setFilterValue(filterValue);
-    }
 
     public Map<String, FilterMeta> initFilterBy() {
         boolean invalidate = getStateHelper().get(InternalPropertyKeys.filterByAsMap.name()) == null;
