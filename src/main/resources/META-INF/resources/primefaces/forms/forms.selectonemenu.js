@@ -1347,15 +1347,17 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * Renders Panel-HTML-code for SelectItems.
      * @private
      * @param {JQuery} parentItem An parentItem (select, optgroup) for which to render HTML-code.
+     * @param {boolean} [isIndented] Tells whether the elements of the parentItem should be marked as indented.
      * @return {string} Rendered HTML-code.
      */
-    renderSelectItems: function(parentItem) {
+    renderSelectItems: function(parentItem, isIndented) {
         var $this = this;
         var content = "";
+        isIndented = isIndented || false;
 
         var opts = parentItem.children("option, optgroup");
         opts.each(function(index, element) {
-            content += $this.renderSelectItem(element);
+            content += $this.renderSelectItem(element, isIndented);
         });
         return content;
     },
@@ -1364,9 +1366,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * Renders Panel-HTML-code for one SelectItem(Group).
      * @private
      * @param {JQuery} item An option(group) for which to render HTML-code.
+     * @param {boolean} isIndented Tells whether the item should be marked as indented.
      * @return {string} Rendered HTML-code.
      */
-    renderSelectItem: function(item) {
+    renderSelectItem: function(item, isIndented) {
         var content = "";
         var $item = $(item);
         var label;
@@ -1392,6 +1395,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 label = $item.text();
             }
             cssClass = "ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all";
+            if (isIndented) {
+                cssClass += " ui-selectonemenu-item-group-children"
+            }
         }
 
         var dataLabel = label.replace(/(<([^>]+)>)/gi, "");
@@ -1412,7 +1418,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         content += '</li>';
 
         if (item.tagName === "OPTGROUP") {
-            content += this.renderSelectItems($item);
+            content += this.renderSelectItems($item, true);
         }
 
         return content;
