@@ -24,11 +24,14 @@
 package org.primefaces.component.api;
 
 import org.primefaces.component.inputtext.InputText;
+import org.primefaces.el.ValueExpressionAnalyzer;
 
+import javax.el.ELContext;
+import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
 import java.util.Map;
 
-public class UIPageableData extends UIData implements Pageable {
+public class UIPageableData extends UIData implements Pageable, TouchAware {
 
     public static final String PAGINATOR_TOP_CONTAINER_CLASS = "ui-paginator ui-paginator-top ui-widget-header";
     public static final String PAGINATOR_BOTTOM_CONTAINER_CLASS = "ui-paginator ui-paginator-bottom ui-widget-header";
@@ -60,6 +63,8 @@ public class UIPageableData extends UIData implements Pageable {
     public static final String ROWS_PER_PAGE_LABEL = "primefaces.paginator.aria.ROWS_PER_PAGE";
 
     public enum PropertyKeys {
+        rows, // #5068
+        touchable,
         paginator,
         paginatorTemplate,
         rowsPerPageTemplate,
@@ -70,69 +75,145 @@ public class UIPageableData extends UIData implements Pageable {
         paginatorAlwaysVisible,
     }
 
+    protected enum InternalPropertyKeys {
+        rowsInitialValue;
+    }
+
+    @Override
+    public boolean isTouchable() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, true);
+    }
+
+    @Override
+    public void setTouchable(boolean touchable) {
+        getStateHelper().put(PropertyKeys.touchable, touchable);
+    }
+
     public boolean isPaginator() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.paginator, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.paginator, false);
     }
 
-    public void setPaginator(boolean _paginator) {
-        getStateHelper().put(PropertyKeys.paginator, _paginator);
+    public void setPaginator(boolean paginator) {
+        getStateHelper().put(PropertyKeys.paginator, paginator);
     }
 
-    public java.lang.String getPaginatorTemplate() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.paginatorTemplate,
+    public String getPaginatorTemplate() {
+        return (String) getStateHelper().eval(PropertyKeys.paginatorTemplate,
                 "{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}");
     }
 
-    public void setPaginatorTemplate(java.lang.String _paginatorTemplate) {
-        getStateHelper().put(PropertyKeys.paginatorTemplate, _paginatorTemplate);
+    public void setPaginatorTemplate(String paginatorTemplate) {
+        getStateHelper().put(PropertyKeys.paginatorTemplate, paginatorTemplate);
     }
 
-    public java.lang.String getRowsPerPageTemplate() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.rowsPerPageTemplate, null);
+    public String getRowsPerPageTemplate() {
+        return (String) getStateHelper().eval(PropertyKeys.rowsPerPageTemplate, null);
     }
 
-    public void setRowsPerPageTemplate(java.lang.String _rowsPerPageTemplate) {
-        getStateHelper().put(PropertyKeys.rowsPerPageTemplate, _rowsPerPageTemplate);
+    public void setRowsPerPageTemplate(String rowsPerPageTemplate) {
+        getStateHelper().put(PropertyKeys.rowsPerPageTemplate, rowsPerPageTemplate);
     }
 
-    public java.lang.String getRowsPerPageLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.rowsPerPageLabel, null);
+    public String getRowsPerPageLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.rowsPerPageLabel, null);
     }
 
-    public void setRowsPerPageLabel(java.lang.String _rowsPerPageLabel) {
-        getStateHelper().put(PropertyKeys.rowsPerPageLabel, _rowsPerPageLabel);
+    public void setRowsPerPageLabel(String rowsPerPageLabel) {
+        getStateHelper().put(PropertyKeys.rowsPerPageLabel, rowsPerPageLabel);
     }
 
-    public java.lang.String getCurrentPageReportTemplate() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.currentPageReportTemplate, "({currentPage} of {totalPages})");
+    public String getCurrentPageReportTemplate() {
+        return (String) getStateHelper().eval(PropertyKeys.currentPageReportTemplate, "({currentPage} of {totalPages})");
     }
 
-    public void setCurrentPageReportTemplate(java.lang.String _currentPageReportTemplate) {
-        getStateHelper().put(PropertyKeys.currentPageReportTemplate, _currentPageReportTemplate);
+    public void setCurrentPageReportTemplate(String currentPageReportTemplate) {
+        getStateHelper().put(PropertyKeys.currentPageReportTemplate, currentPageReportTemplate);
     }
 
     public int getPageLinks() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.pageLinks, 10);
+        return (Integer) getStateHelper().eval(PropertyKeys.pageLinks, 10);
     }
 
-    public void setPageLinks(int _pageLinks) {
-        getStateHelper().put(PropertyKeys.pageLinks, _pageLinks);
+    public void setPageLinks(int pageLinks) {
+        getStateHelper().put(PropertyKeys.pageLinks, pageLinks);
     }
 
-    public java.lang.String getPaginatorPosition() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.paginatorPosition, "both");
+    public String getPaginatorPosition() {
+        return (String) getStateHelper().eval(PropertyKeys.paginatorPosition, "both");
     }
 
-    public void setPaginatorPosition(java.lang.String _paginatorPosition) {
-        getStateHelper().put(PropertyKeys.paginatorPosition, _paginatorPosition);
+    public void setPaginatorPosition(String paginatorPosition) {
+        getStateHelper().put(PropertyKeys.paginatorPosition, paginatorPosition);
     }
 
     public boolean isPaginatorAlwaysVisible() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.paginatorAlwaysVisible, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.paginatorAlwaysVisible, true);
     }
 
-    public void setPaginatorAlwaysVisible(boolean _paginatorAlwaysVisible) {
-        getStateHelper().put(PropertyKeys.paginatorAlwaysVisible, _paginatorAlwaysVisible);
+    public void setPaginatorAlwaysVisible(boolean paginatorAlwaysVisible) {
+        getStateHelper().put(PropertyKeys.paginatorAlwaysVisible, paginatorAlwaysVisible);
+    }
+
+    @Override
+    public int getRows() {
+        return (Integer) getStateHelper().eval(PropertyKeys.rows, 0);
+    }
+
+    @Override
+    public void setRows(int rows) {
+        if (getStateHelper().eval(InternalPropertyKeys.rowsInitialValue) == null) {
+            int rowsOld = getRows();
+            if (rowsOld != 0) {
+                getStateHelper().put(InternalPropertyKeys.rowsInitialValue, rowsOld);
+            }
+        }
+
+        if (rows < 0) {
+            throw new IllegalArgumentException(String.valueOf(rows));
+        }
+        ELContext elContext = getFacesContext().getELContext();
+        ValueExpression rowsVe = ValueExpressionAnalyzer.getExpression(
+                elContext, getValueExpression(PropertyKeys.rows.name()));
+        if (isWriteable(elContext, rowsVe)) {
+            rowsVe.setValue(elContext, rows);
+        }
+        else {
+            getStateHelper().put(PropertyKeys.rows, rows);
+        }
+    }
+
+    @Override
+    public void setFirst(int first) {
+        ELContext elContext = getFacesContext().getELContext();
+        ValueExpression firstVe = ValueExpressionAnalyzer.getExpression(
+                elContext, getValueExpression("first"));
+        if (isWriteable(elContext, firstVe)) {
+            firstVe.setValue(elContext, first);
+        }
+        else {
+            super.setFirst(first);
+        }
+    }
+
+    public void resetRows() {
+        ELContext elContext = getFacesContext().getELContext();
+        ValueExpression rowsVe = ValueExpressionAnalyzer.getExpression(
+                elContext, getValueExpression(PropertyKeys.rows.name()));
+        if (rowsVe != null) {
+            //ValueExpression --> remove state to ensure the VE is re-evaluated
+            getStateHelper().remove(PropertyKeys.rows);
+        }
+        else {
+            //normal attribute value --> restore inital rows
+            Object rows = getStateHelper().eval(InternalPropertyKeys.rowsInitialValue);
+            if (rows != null) {
+                setRows((int) rows);
+            }
+        }
+    }
+
+    private boolean isWriteable(ELContext elContext, ValueExpression ve) {
+        return ve != null && !ve.isReadOnly(elContext);
     }
 
     public void calculateFirst() {

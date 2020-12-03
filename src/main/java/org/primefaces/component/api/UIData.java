@@ -27,8 +27,6 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.*;
 
-import javax.el.ELContext;
-import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
@@ -48,7 +46,6 @@ import javax.faces.render.Renderer;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
-import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.model.CollectionDataModel;
 import org.primefaces.model.IterableDataModel;
 import org.primefaces.model.LazyDataModel;
@@ -61,7 +58,7 @@ import org.primefaces.util.SharedStringBuilder;
  * It also contains some methods of the Mojarra impl (e.g. setRowIndexRowStatePreserved), maybe can remove it in the future.
  */
 @SuppressWarnings("unchecked")
-public class UIData extends javax.faces.component.UIData implements TouchAware {
+public class UIData extends javax.faces.component.UIData {
 
     private static final String SB_ID = UIData.class.getName() + "#id";
 
@@ -75,115 +72,37 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
     private Object oldVar = null;
 
     public enum PropertyKeys {
-        rows,
         rowIndex,
         rowIndexVar,
         saved,
         lazy,
-        rowStatePreserved,
-        touchable;
-    }
-
-    protected enum InternalPropertyKeys {
-        rowsInitialValue;
-    }
-
-    @Override
-    public boolean isTouchable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, true);
-    }
-
-    @Override
-    public void setTouchable(boolean touchable) {
-        getStateHelper().put(PropertyKeys.touchable, touchable);
-    }
-
-    @Override
-    public int getRows() {
-        return (Integer) getStateHelper().eval(PropertyKeys.rows, 0);
-    }
-
-    @Override
-    public void setRows(int rows) {
-        if (getStateHelper().eval(InternalPropertyKeys.rowsInitialValue) == null) {
-            int rowsOld = getRows();
-            if (rowsOld != 0) {
-                getStateHelper().put(UIData.InternalPropertyKeys.rowsInitialValue, rowsOld);
-            }
-        }
-
-        if (rows < 0) {
-            throw new IllegalArgumentException(String.valueOf(rows));
-        }
-        ELContext elContext = getFacesContext().getELContext();
-        ValueExpression rowsVe = ValueExpressionAnalyzer.getExpression(
-                elContext, getValueExpression(PropertyKeys.rows.name()));
-        if (isWriteable(elContext, rowsVe)) {
-            rowsVe.setValue(elContext, rows);
-        }
-        else {
-            getStateHelper().put(UIData.PropertyKeys.rows, rows);
-        }
-    }
-
-    @Override
-    public void setFirst(int first) {
-        ELContext elContext = getFacesContext().getELContext();
-        ValueExpression firstVe = ValueExpressionAnalyzer.getExpression(
-                elContext, getValueExpression("first"));
-        if (isWriteable(elContext, firstVe)) {
-            firstVe.setValue(elContext, first);
-        }
-        else {
-            super.setFirst(first);
-        }
+        rowStatePreserved
     }
 
     public boolean isLazy() {
         return ComponentUtils.eval(getStateHelper(), PropertyKeys.lazy, () -> getValue() instanceof LazyDataModel);
     }
 
-    public void setLazy(boolean _lazy) {
-        getStateHelper().put(PropertyKeys.lazy, _lazy);
+    public void setLazy(boolean lazy) {
+        getStateHelper().put(PropertyKeys.lazy, lazy);
     }
 
     public String getRowIndexVar() {
         return (String) getStateHelper().eval(PropertyKeys.rowIndexVar, null);
     }
 
-    public void setRowIndexVar(String _rowIndexVar) {
-        getStateHelper().put(PropertyKeys.rowIndexVar, _rowIndexVar);
+    public void setRowIndexVar(String rowIndexVar) {
+        getStateHelper().put(PropertyKeys.rowIndexVar, rowIndexVar);
     }
 
     @Override
     public boolean isRowStatePreserved() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.rowStatePreserved, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.rowStatePreserved, false);
     }
 
     @Override
-    public void setRowStatePreserved(boolean _paginator) {
-        getStateHelper().put(PropertyKeys.rowStatePreserved, _paginator);
-    }
-
-    public void resetRows() {
-        ELContext elContext = getFacesContext().getELContext();
-        ValueExpression rowsVe = ValueExpressionAnalyzer.getExpression(
-                elContext, getValueExpression(PropertyKeys.rows.name()));
-        if (rowsVe != null) {
-            //ValueExpression --> remove state to ensure the VE is re-evaluated
-            getStateHelper().remove(PropertyKeys.rows);
-        }
-        else {
-            //normal attribute value --> restore inital rows
-            Object rows = getStateHelper().eval(InternalPropertyKeys.rowsInitialValue);
-            if (rows != null) {
-                setRows((int) rows);
-            }
-        }
-    }
-
-    private boolean isWriteable(ELContext elContext, ValueExpression ve) {
-        return ve != null && !ve.isReadOnly(elContext);
+    public void setRowStatePreserved(boolean paginator) {
+        getStateHelper().put(PropertyKeys.rowStatePreserved, paginator);
     }
 
     @Override
