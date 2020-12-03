@@ -23,9 +23,9 @@
  */
 package org.primefaces.validate.bean;
 
-import org.primefaces.util.HTML;
-
 import java.util.Map;
+
+import org.primefaces.util.HTML;
 
 public class NegativeClientValidationConstraint extends AbstractClientValidationConstraint {
 
@@ -33,6 +33,7 @@ public class NegativeClientValidationConstraint extends AbstractClientValidation
     public static final String MESSAGE_METADATA = "data-p-negative-msg";
     public static final String CONSTRAINT_CLASS_NAME = CONSTRAINT_PACKAGE  + "." + CONSTRAINT_ID;
     public static final String MESSAGE_ID = "{" + CONSTRAINT_CLASS_NAME + ".message}";
+    public static final String MAX_VALUE = "-0.0000001";
 
     public NegativeClientValidationConstraint() {
         super(MESSAGE_ID, MESSAGE_METADATA);
@@ -40,7 +41,6 @@ public class NegativeClientValidationConstraint extends AbstractClientValidation
 
     @Override
     protected void processMetadata(Map<String, Object> metadata, Map<String, Object> attrs) {
-        // TODO not sure if this limit is correct
         metadata.put(HTML.ValidationMetadata.MAX_VALUE, -Double.MIN_VALUE);
     }
 
