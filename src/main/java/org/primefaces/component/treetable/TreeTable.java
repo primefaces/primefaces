@@ -23,18 +23,12 @@
  */
 package org.primefaces.component.treetable;
 
-import static org.primefaces.component.datatable.DataTable.createValueExprFromVarField;
-
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
-import javax.faces.FacesException;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
@@ -46,14 +40,10 @@ import org.primefaces.component.api.ColumnHolder;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columns.Columns;
-import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.datatable.feature.FilterFeature;
 import org.primefaces.event.*;
 import org.primefaces.event.data.FilterEvent;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.event.data.SortEvent;
-import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.model.*;
 import org.primefaces.model.filter.*;
 import org.primefaces.util.*;
@@ -310,107 +300,18 @@ public class TreeTable extends TreeTableBase implements ColumnHolder {
         super.processValidators(context);
 
         if (isFilterRequest(context)) {
-
-            char seperator = UINamingContainer.getSeparatorChar(context);
-
-            Map<String, FilterMeta> filterBy = initFilterBy();
+            Map<String, FilterMeta> filterBy = initFilterBy(context);
             for (FilterMeta meta : filterBy.values()) {
-                FilterFeature.decodeFilterValue(context, this, meta, context.getExternalContext().getRequestParameterMap(), seperator);
+                decodeFilterValue(context, meta);
             }
 
             setFilterByAsMap(filterBy);
         }
     }
 
-
-    public Map<String, FilterMeta> initFilterBy() {
-        boolean invalidate = getStateHelper().get(InternalPropertyKeys.filterByAsMap.name()) == null;
-        Map<String, FilterMeta> filterBy = invalidate ? new HashMap<>() : getFilterByAsMap();
-        AtomicBoolean filtered = invalidate ? new AtomicBoolean() : new AtomicBoolean(isDefaultFilter());
-
-        // build columns filterBy
-        forEachColumn(c -> {
-            FilterMeta f = filterBy.get(c.getColumnKey());
-            if (f != null && !invalidate) {
-                f.setColumn(c);
-            }
-            else {
-                f = FilterMeta.of(getFacesContext(), getVar(), c);
-                if (f != null) {
-                    filterBy.put(f.getColumnKey(), f);
-                    filtered.set(filtered.get() || f.isActive());
-                }
-            }
-        });
-
-        // merge internal filterBy with user filterBy
-        Object userfilterBy = getFilterBy();
-        if (userfilterBy != null) {
-            updateFilterByWithUserFilterBy(filterBy, userfilterBy, filtered);
-        }
-
-        // build global filterBy
-        updateFilterByWithGlobalFilter(filterBy, filtered);
-
-        // finally set if default filtering is enabled
-        setDefaultFilter(filtered.get());
-
-        setFilterByAsMap(filterBy);
-
-        return filterBy;
-    }
-
-    protected void updateFilterByWithUserFilterBy(Map<String, FilterMeta> intlFilterBy, Object usrFilterBy, AtomicBoolean filtered) {
-        Collection<FilterMeta> filterByTmp;
-        if (usrFilterBy instanceof FilterMeta) {
-            filterByTmp = Collections.singletonList((FilterMeta) usrFilterBy);
-        }
-        else if (!(usrFilterBy instanceof Collection)) {
-            throw new FacesException("DataTable#filterBy expects a single or a collection of FilterMeta");
-        }
-        else {
-            filterByTmp = (Collection<FilterMeta>) usrFilterBy;
-        }
-
-        for (FilterMeta userFM : filterByTmp) {
-            FilterMeta intlFM = intlFilterBy.values().stream()
-                    .filter(o -> o.getField().equals(userFM.getField()))
-                    .findAny()
-                    .orElseThrow(() -> new FacesException("No column with field '" + userFM.getField() + "' has been found"));
-
-            ValueExpression filterByVE = userFM.getFilterBy();
-            if (filterByVE == null) {
-                filterByVE = createValueExprFromVarField(getFacesContext(), getVar(), userFM.getField());
-            }
-
-            intlFM.setFilterValue(userFM.getFilterValue());
-            intlFM.setFilterBy(filterByVE);
-            intlFM.setConstraint(userFM.getConstraint());
-            intlFM.setMatchMode(userFM.getMatchMode());
-            filtered.set(filtered.get() || userFM.isActive());
-        }
-    }
-
-    protected void updateFilterByWithGlobalFilter(Map<String, FilterMeta> filterBy, AtomicBoolean filtered) {
-        String globalFilter = getGlobalFilter();
-        Set<SearchExpressionHint> hint = LangUtils.isValueBlank(globalFilter)
-                ? EnumSet.of(SearchExpressionHint.IGNORE_NO_RESULT)
-                : Collections.emptySet();
-        UIComponent globalFilterComponent = SearchExpressionFacade
-                .resolveComponent(getFacesContext(), this, DataTable.PropertyKeys.globalFilter.toString(), hint);
-        if (globalFilterComponent != null) {
-            if (globalFilterComponent instanceof ValueHolder) {
-                ((ValueHolder) globalFilterComponent).setValue(globalFilter);
-            }
-            FilterMeta globalFilterBy = FilterMeta.of(filterBy.values(), globalFilter, getGlobalFilterFunction());
-            filterBy.put(globalFilterBy.getColumnKey(), globalFilterBy);
-            filtered.set(filtered.get() || globalFilterBy.isActive());
-        }
-    }
-
-
     public boolean hasFooterColumn() {
-        for (UIComponent child : getChildren()) {
+        for (int i = 0; i < getChildCount(); i++) {
+            UIComponent child = getChildren().get(i);
             if (child instanceof Column && child.isRendered()) {
                 Column column = (Column) child;
 

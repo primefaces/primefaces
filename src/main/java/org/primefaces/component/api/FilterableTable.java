@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.api;
 
+import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -34,12 +35,14 @@ import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import static org.primefaces.component.datatable.DataTable.createValueExprFromVarField;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.model.FilterMeta;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
 
 public interface FilterableTable extends ColumnHolder {
@@ -148,6 +151,49 @@ public interface FilterableTable extends ColumnHolder {
     default boolean isColumnFilterable(UIColumn column) {
         Map<String, FilterMeta> filterBy = getFilterByAsMap();
         return filterBy.containsKey(column.getColumnKey());
+    }
+
+    default void decodeFilterValue(FacesContext context, FilterMeta filterMeta) {
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        char separator = UINamingContainer.getSeparatorChar(context);
+
+        Object filterValue;
+
+        if (filterMeta.isGlobalFilter()) {
+            filterValue = params.get(((UIComponent) this).getClientId(context) + separator + FilterMeta.GLOBAL_FILTER_KEY);
+        }
+        else {
+            UIColumn column = filterMeta.getColumn();
+            UIComponent filterFacet = column.getFacet("filter");
+            boolean hasCustomFilter = ComponentUtils.shouldRenderFacet(filterFacet);
+            if (column instanceof DynamicColumn) {
+                if (hasCustomFilter) {
+                    ((DynamicColumn) column).applyModel();
+                }
+                else {
+                    ((DynamicColumn) column).applyStatelessModel();
+                }
+            }
+
+            if (hasCustomFilter) {
+                filterValue = ((ValueHolder) filterFacet).getLocalValue();
+            }
+            else {
+                String valueHolderClientId = column instanceof DynamicColumn
+                        ? column.getContainerClientId(context) + separator + "filter"
+                        : column.getClientId(context) + separator + "filter";
+                filterValue = params.get(valueHolderClientId);
+            }
+        }
+
+        // returns null if empty string/array/object
+        if (filterValue != null
+                && (filterValue instanceof String && LangUtils.isValueBlank((String) filterValue)
+                || filterValue.getClass().isArray() && Array.getLength(filterValue) == 0)) {
+            filterValue = null;
+        }
+
+        filterMeta.setFilterValue(filterValue);
     }
 
     boolean isDefaultFilter();
