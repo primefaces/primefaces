@@ -2900,13 +2900,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.hasBehavior('rowToggle')) {
             var ext = {
                 params: [
-                {
-                    name: this.id + '_collapsedRowIndex',
-                    value: rowIndex
-                }
+                    {name: this.id + '_collapsedRowIndex', value: rowIndex},
+                    {name: this.id + '_skipChildren', value: true}
                 ]
             };
-
             this.callBehavior('rowToggle', ext);
         }
     },
