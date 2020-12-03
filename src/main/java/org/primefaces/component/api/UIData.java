@@ -101,8 +101,8 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     @Override
-    public void setRowStatePreserved(boolean paginator) {
-        getStateHelper().put(PropertyKeys.rowStatePreserved, paginator);
+    public void setRowStatePreserved(boolean rowStatePreserved) {
+        getStateHelper().put(PropertyKeys.rowStatePreserved, rowStatePreserved);
     }
 
     @Override
