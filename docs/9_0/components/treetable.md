@@ -40,12 +40,9 @@ rowStyleClass | null | String | Style class for each row.
 liveResize | false | Boolean | Columns are resized live in this mode without using a resize helper.
 required | false | Boolean | Validation constraint for selection.
 requiredMessage | null | String | Message for required selection validation.
-sortBy | null | ValueExpr | Expression for default sorting.
-sortOrder | ascending | String | Defines default sorting order.
-sortFunction | null | MethodExpr | Custom pluggable sortFunction for default sorting.
+sortBy | null | FilterMeta / Collection<FilterMeta> | Property to be used for default sorting. Expects a single or a collection of SortMeta.
 nativeElements | false | Boolean | In native mode, treetable uses native checkboxes.
 dataLocale | null | Object | Locale to be used in features such as sorting, defaults to view locale.
-caseSensitiveSort | false | Boolean | Case sensitivity for sorting, insensitive by default.
 skipChildren | false | Boolean | Ignores processing of children during lifecycle, improves performance if table only has output components.
 showUnselectableCheckbox | false | Boolean | Defines if in checkbox selection mode, a readonly checkbox should be displayed for an unselectable node.
 nodeVar | null | String | Name of the request-scoped variable that'll be used to refer current treenode using EL.
@@ -66,6 +63,9 @@ first | 0 | Integer | Index of the first data to display.
 disabledTextSelection | true | Boolean | Disables text selection on row click.
 touchable | true | Boolean | Enable touch support if browser detection supports it.
 editInitEvent | null | String | Defines a client side event to open cell on editable treetable.
+filterBy | null | SortMeta / Collection<SortMeta> | Property to be used for default sorting. Expects a single or a collection of SortMeta.
+allowUnsorting | false | Boolean | Defines whether columns are allowed to be unsorted. Default is false.
+sortMode | multiple | String | Defines sorting mode, valid values are _single_ and _multiple_.
 
 ## Getting started with the TreeTable
 Similar to the Tree, TreeTable is populated with an _org.primefaces.model.TreeNode_ instance that
@@ -118,6 +118,7 @@ expand | org.primefaces.event.NodeExpandEvent | When a node is expanded.
 collapse | org.primefaces.event.NodeCollapseEvent | When a node is collapsed.
 select | org.primefaces.event.NodeSelectEvent | When a node is selected.
 unselect | org.primefaces.event.NodeUnselectEvent | When a node is unselected.
+contextMenu | org.primefaces.event.NodeSelectEvent | ContextMenu display.
 colResize | org.primefaces.event.ColumnResizeEvent | When a column is resized.
 sort | org.primefaces.event.SortEvent | When data is sorted.
 filter | org.primefaces.event.FilterEvent | When data is filtered.

@@ -25,15 +25,17 @@ package org.primefaces.component.treetable;
 
 import javax.el.MethodExpression;
 import javax.faces.component.behavior.ClientBehaviorHolder;
+import org.primefaces.component.api.FilterableTable;
 import org.primefaces.component.api.MultiViewStateAware;
 
 import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.SortableTable;
 import org.primefaces.component.api.UITree;
 import org.primefaces.component.api.Widget;
 
 public abstract class TreeTableBase extends UITree implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable,
-        MultiViewStateAware<TreeTableState> {
+        MultiViewStateAware<TreeTableState>, FilterableTable, SortableTable {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -81,7 +83,9 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         filterDelay,
         cellEditMode,
         editInitEvent,
-        multiViewState
+        multiViewState,
+        allowUnsorting,
+        sortMode
     }
 
     protected enum InternalPropertyKeys {
@@ -196,10 +200,12 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         getStateHelper().put(PropertyKeys.liveResize, liveResize);
     }
 
+    @Override
     public Object getSortBy() {
         return getStateHelper().eval(PropertyKeys.sortBy, null);
     }
 
+    @Override
     public void setSortBy(Object sortBy) {
         getStateHelper().put(PropertyKeys.sortBy, sortBy);
     }
@@ -415,27 +421,49 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         getStateHelper().put(PropertyKeys.multiViewState, multiViewState);
     }
 
+    @Override
     public Object getFilterBy() {
         return getStateHelper().eval(PropertyKeys.filterBy);
     }
 
+    @Override
     public void setFilterBy(Object filterBy) {
         getStateHelper().put(PropertyKeys.filterBy, filterBy);
     }
 
+    @Override
     public String getGlobalFilter() {
         return (String) getStateHelper().eval(PropertyKeys.globalFilter, null);
     }
 
+    @Override
     public void setGlobalFilter(String globalFilter) {
         getStateHelper().put(PropertyKeys.globalFilter, globalFilter);
     }
 
+    @Override
     public MethodExpression getGlobalFilterFunction() {
         return (MethodExpression) getStateHelper().eval(PropertyKeys.globalFilterFunction, null);
     }
 
+    @Override
     public void setGlobalFilterFunction(MethodExpression globalFilterFunction) {
         getStateHelper().put(PropertyKeys.globalFilterFunction, globalFilterFunction);
+    }
+
+    public boolean isAllowUnsorting() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.allowUnsorting, false);
+    }
+
+    public void setAllowUnsorting(boolean allowUnsorting) {
+        getStateHelper().put(PropertyKeys.allowUnsorting, allowUnsorting);
+    }
+
+    public String getSortMode() {
+        return (String) getStateHelper().eval(PropertyKeys.sortMode, "multiple");
+    }
+
+    public void setSortMode(String sortMode) {
+        getStateHelper().put(PropertyKeys.sortMode, sortMode);
     }
 }

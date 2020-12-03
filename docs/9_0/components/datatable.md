@@ -19,7 +19,7 @@ DataTable displays data in tabular format.
 
 | Name                      | Default            | Type             | Description
 | ------------------------- | ------------------ | ---------------- | ------------------ |
-| allowUnsorting            | false              | Boolean          | Defines whether columns are allowed to be unsorted. Default is true.
+| allowUnsorting            | false              | Boolean          | Defines whether columns are allowed to be unsorted. Default is false.
 | ariaRowLabel              | null               | String           | Label to read by screen readers on checkbox selection.
 | binding                   | null               | Object           | An el expression that maps to a server side UIComponent instance in a backing bean
 | cellEditMode              | eager              | String           | Defines the cell edit behavior, valid values are "eager" (default) and "lazy".
@@ -41,7 +41,7 @@ DataTable displays data in tabular format.
 | emptyMessage              | No records found.  | String           | Text to display when there is no data to display. Alternative is emptyMessage facet.
 | escapeText                | true               | Boolean          | Defines if headerText and footerText values on columns are escaped or not. Default is true.
 | expandedRow               | false              | Boolean          | Defines if row should be rendered as expanded by default.
-| filterBy                  | null               | Object           | Property to be used for default filtering. Expects a single or a collection of FilterMeta.
+| filterBy                  | null               | FilterMeta / Collection<FilterMeta> | Property to be used for default filtering. Expects a single or a collection of FilterMeta.
 | filterDelay               | 300                | Integer          | Delay in milliseconds before sending an ajax filter query.
 | filterEvent               | keyup              | String           | Event triggering filter for input filters.
 | filteredValue             | null               | List             | List to keep filtered data.
@@ -91,7 +91,7 @@ DataTable displays data in tabular format.
 | selection                 | null               | Object           | Reference to the selection data.
 | selectionMode             | null               | String           | Enables row selection, valid values are “single" and “multiple".
 | sortMode                  | multiple           | String           | Defines sorting mode, valid values are _single_ and _multiple_.
-| sortBy                    | null               | Object           | Property to be used for default sorting. Expects a single or a collection of SortMeta.
+| sortBy                    | null               | SortMeta / Collection<SortMeta> | Property to be used for default sorting. Expects a single or a collection of SortMeta.
 | skipChildren              | false              | Boolean          | Ignores processing of children during lifecycle, improves performance if table only has output components.
 | stickyHeader              | false              | Boolean          | Sticky header stays in window viewport during scrolling.
 | stickyTopAt               | null               | String           | Selector to position on the page according to other fixing elements on the top of the table. Default is null.
@@ -125,7 +125,7 @@ Here is the simplest way to get started:
 </p:dataTable>
 ```
 
-In case no children are present in columns, value from `var` and `field` will be displayed. 
+In case no children are present in columns, value from `var` and `field` will be displayed.
 
 ## Header and Footer
 Both datatable itself and columns can have custom content in their headers and footers using header
@@ -222,7 +222,7 @@ descending and unsorted upon clicking on the column header.
 ```xhtml
 <p:dataTable var="car" value="#{carBean.cars}">
     <p:column field="id" headerText="Id" />
-    
+
     <p:column field="year" headerText="Year" />
 
     <p:column field="brand" headerText="Brand" />
@@ -255,7 +255,7 @@ while metakey is on adds sort column to the order group. Change attribute _sortM
     //columns
 </p:dataTable>
 ```
-DataTable can display data sorted by default, by either setting default attributes on `p:column` or using _sortBy_ attribute of datatable. 
+DataTable can display data sorted by default, by either setting default attributes on `p:column` or using _sortBy_ attribute of datatable.
 Table below would be initially displayed as sorted by model.
 
 ```xhtml
@@ -297,7 +297,7 @@ Following is a basic filtering datatable with these options demonstrated:
 
 ```xhtml
 <p:dataTable var="car" value="#{carBean.cars}" filteredValue="#{carBean.filteredCars}" widgetVar="carsTable">
-    
+
     <f:facet name="header">
         <h:outputText value="Search all fields:" />
         <h:inputText id="globalFilter" onkeyup="PF('carsTable').filter()" />
@@ -308,9 +308,9 @@ Following is a basic filtering datatable with these options demonstrated:
     <p:column field="year" headerText="Year" footerText="startsWith" />
 
     <p:column field="manufacturer" headerText="Manufacturer" filterOptions="#{carBean.manufacturerOptions}" filterMatchMode="exact" />
-    
+
     <p:column field="color" headerText="Color" filterMatchMode="endsWith" />
-    
+
     <p:column field="price" headerText="Price" filterMatchMode="exact" />
 
 </p:dataTable>
@@ -327,7 +327,7 @@ necessary if the value of the filter facet is not defined.
 
 ```xhtml
 <p:dataTable id="dataTable" var="car" value="#{tableBean.carsSmall}" widgetVar="carsTable" filteredValue="#{tableBean.filteredCars}">
-    
+
 <p:column field="model" headerText="Model" footerText="contains" filterMatchMode="contains" />
 
     <p:column field="year" headerText="Year" footerText="lte" filterMatchMode="lte">

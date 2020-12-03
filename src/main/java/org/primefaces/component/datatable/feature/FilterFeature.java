@@ -24,8 +24,6 @@
 package org.primefaces.component.datatable.feature;
 
 import org.primefaces.PrimeFaces;
-import org.primefaces.component.api.DynamicColumn;
-import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.DataTableState;
@@ -33,18 +31,12 @@ import org.primefaces.event.data.PostFilterEvent;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.MatchMode;
 import org.primefaces.model.filter.*;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.LangUtils;
 import org.primefaces.util.MapBuilder;
 
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class FilterFeature implements DataTableFeature {
@@ -79,14 +71,12 @@ public class FilterFeature implements DataTableFeature {
 
     @Override
     public void decode(FacesContext context, DataTable table) {
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         // FilterMeta#column must be updated since local value
         // (from column) must be decoded by FilterFeature#decodeFilterValue
-        Map<String, FilterMeta> filterBy = table.initFilterBy();
-        char separator = UINamingContainer.getSeparatorChar(context);
+        Map<String, FilterMeta> filterBy = table.initFilterBy(context);
 
         for (FilterMeta entry : filterBy.values()) {
-            decodeFilterValue(context, table, entry, params, separator);
+            table.decodeFilterValue(context, entry);
         }
     }
 
@@ -203,45 +193,5 @@ public class FilterFeature implements DataTableFeature {
         table.updateValue(table.getFilteredValue());
 
         table.setRowIndex(-1);  //reset datamodel
-    }
-
-    protected void decodeFilterValue(FacesContext context, DataTable table, FilterMeta filterBy, Map<String, String> params, char separator) {
-        Object filterValue = null;
-
-        if (filterBy.isGlobalFilter()) {
-            filterValue = params.get(table.getClientId(context) + separator + FilterMeta.GLOBAL_FILTER_KEY);
-        }
-        else {
-            UIColumn column = filterBy.getColumn();
-            UIComponent filterFacet = column.getFacet("filter");
-            boolean hasCustomFilter = ComponentUtils.shouldRenderFacet(filterFacet);
-            if (column instanceof DynamicColumn) {
-                if (hasCustomFilter) {
-                    ((DynamicColumn) column).applyModel();
-                }
-                else {
-                    ((DynamicColumn) column).applyStatelessModel();
-                }
-            }
-
-            if (hasCustomFilter) {
-                filterValue = ((ValueHolder) filterFacet).getLocalValue();
-            }
-            else {
-                String valueHolderClientId = column instanceof DynamicColumn
-                        ? column.getContainerClientId(context) + separator + "filter"
-                        : column.getClientId(context) + separator + "filter";
-                filterValue = params.get(valueHolderClientId);
-            }
-        }
-
-        // returns null if empty string/array/object
-        if (filterValue != null
-                && (filterValue instanceof String && LangUtils.isValueBlank((String) filterValue)
-                || filterValue.getClass().isArray() && Array.getLength(filterValue) == 0)) {
-            filterValue = null;
-        }
-
-        filterBy.setFilterValue(filterValue);
     }
 }

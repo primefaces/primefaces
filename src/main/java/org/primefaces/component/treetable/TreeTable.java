@@ -23,48 +23,30 @@
  */
 package org.primefaces.component.treetable;
 
-import java.lang.reflect.Array;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
-import javax.faces.FacesException;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
+
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.ColumnHolder;
-import org.primefaces.component.api.DynamicColumn;
-
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columns.Columns;
-import org.primefaces.component.datatable.DataTable;
-import static org.primefaces.component.datatable.DataTable.createValueExprFromVarField;
 import org.primefaces.event.*;
 import org.primefaces.event.data.FilterEvent;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.event.data.SortEvent;
-import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.expression.SearchExpressionHint;
-import org.primefaces.model.FilterMeta;
-import org.primefaces.model.MatchMode;
-import org.primefaces.model.SortMeta;
-import org.primefaces.model.SortOrder;
-import org.primefaces.model.TreeNode;
+import org.primefaces.model.*;
 import org.primefaces.model.filter.*;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.LocaleUtils;
-import org.primefaces.util.MapBuilder;
+import org.primefaces.util.*;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -126,6 +108,7 @@ public class TreeTable extends TreeTableBase implements ColumnHolder {
             .build();
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
+            .put("contextMenu", NodeSelectEvent.class)
             .put("select", NodeSelectEvent.class)
             .put("unselect", NodeUnselectEvent.class)
             .put("expand", NodeExpandEvent.class)
@@ -227,7 +210,7 @@ public class TreeTable extends TreeTableBase implements ColumnHolder {
                 wrapperEvent = new NodeCollapseEvent(this, behaviorEvent.getBehavior(), node);
                 wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
-            else if (eventName.equals("select")) {
+            else if (eventName.equals("select") || eventName.equals("contextMenu")) {
                 String nodeKey = params.get(clientId + "_instantSelection");
                 setRowKey(root, nodeKey);
                 TreeNode node = getRowNode();
@@ -317,140 +300,18 @@ public class TreeTable extends TreeTableBase implements ColumnHolder {
         super.processValidators(context);
 
         if (isFilterRequest(context)) {
-
-            char seperator = UINamingContainer.getSeparatorChar(context);
-
-            Map<String, FilterMeta> filterBy = initFilterBy();
+            Map<String, FilterMeta> filterBy = initFilterBy(context);
             for (FilterMeta meta : filterBy.values()) {
-                decodeFilterValue(context, this, meta, context.getExternalContext().getRequestParameterMap(), seperator);
+                decodeFilterValue(context, meta);
             }
 
             setFilterByAsMap(filterBy);
         }
     }
 
-    protected void decodeFilterValue(FacesContext context, TreeTable table, FilterMeta filterMeta, Map<String, String> params, char separator) {
-        Object filterValue = null;
-
-        if (filterMeta.isGlobalFilter()) {
-            filterValue = params.get(table.getClientId(context) + separator + FilterMeta.GLOBAL_FILTER_KEY);
-        }
-        else {
-            UIColumn column = filterMeta.getColumn();
-            if (column instanceof DynamicColumn) {
-                ((DynamicColumn) column).applyStatelessModel();
-            }
-
-            UIComponent filterFacet = column.getFacet("filter");
-            if (ComponentUtils.shouldRenderFacet(filterFacet)) {
-                filterValue = ((ValueHolder) filterFacet).getLocalValue();
-            }
-            else {
-                String valueHolderClientId = column instanceof DynamicColumn
-                        ? column.getContainerClientId(context) + separator + "filter"
-                        : column.getClientId(context) + separator + "filter";
-                filterValue = params.get(valueHolderClientId);
-            }
-        }
-
-        // returns null if empty string/array/object
-        if (filterValue != null
-                && (filterValue instanceof String && LangUtils.isValueBlank((String) filterValue)
-                || filterValue.getClass().isArray() && Array.getLength(filterValue) == 0)) {
-            filterValue = null;
-        }
-
-        filterMeta.setFilterValue(filterValue);
-    }
-
-    public Map<String, FilterMeta> initFilterBy() {
-        boolean invalidate = getStateHelper().get(InternalPropertyKeys.filterByAsMap.name()) == null;
-        Map<String, FilterMeta> filterBy = invalidate ? new HashMap<>() : getFilterByAsMap();
-        AtomicBoolean filtered = invalidate ? new AtomicBoolean() : new AtomicBoolean(isDefaultFilter());
-
-        // build columns filterBy
-        forEachColumn(c -> {
-            FilterMeta f = filterBy.get(c.getColumnKey());
-            if (f != null && !invalidate) {
-                f.setColumn(c);
-            }
-            else {
-                f = FilterMeta.of(getFacesContext(), getVar(), c);
-                if (f != null) {
-                    filterBy.put(f.getColumnKey(), f);
-                    filtered.set(filtered.get() || f.isActive());
-                }
-            }
-        });
-
-        // merge internal filterBy with user filterBy
-        Object userfilterBy = getFilterBy();
-        if (userfilterBy != null) {
-            updateFilterByWithUserFilterBy(filterBy, userfilterBy, filtered);
-        }
-
-        // build global filterBy
-        updateFilterByWithGlobalFilter(filterBy, filtered);
-
-        // finally set if default filtering is enabled
-        setDefaultFilter(filtered.get());
-
-        setFilterByAsMap(filterBy);
-
-        return filterBy;
-    }
-
-    protected void updateFilterByWithUserFilterBy(Map<String, FilterMeta> intlFilterBy, Object usrFilterBy, AtomicBoolean filtered) {
-        Collection<FilterMeta> filterByTmp;
-        if (usrFilterBy instanceof FilterMeta) {
-            filterByTmp = Collections.singletonList((FilterMeta) usrFilterBy);
-        }
-        else if (!(usrFilterBy instanceof Collection)) {
-            throw new FacesException("DataTable#filterBy expects a single or a collection of FilterMeta");
-        }
-        else {
-            filterByTmp = (Collection<FilterMeta>) usrFilterBy;
-        }
-
-        for (FilterMeta userFM : filterByTmp) {
-            FilterMeta intlFM = intlFilterBy.values().stream()
-                    .filter(o -> o.getField().equals(userFM.getField()))
-                    .findAny()
-                    .orElseThrow(() -> new FacesException("No column with field '" + userFM.getField() + "' has been found"));
-
-            ValueExpression filterByVE = userFM.getFilterBy();
-            if (filterByVE == null) {
-                filterByVE = createValueExprFromVarField(getFacesContext(), getVar(), userFM.getField());
-            }
-
-            intlFM.setFilterValue(userFM.getFilterValue());
-            intlFM.setFilterBy(filterByVE);
-            intlFM.setConstraint(userFM.getConstraint());
-            intlFM.setMatchMode(userFM.getMatchMode());
-            filtered.set(filtered.get() || userFM.isActive());
-        }
-    }
-
-    protected void updateFilterByWithGlobalFilter(Map<String, FilterMeta> filterBy, AtomicBoolean filtered) {
-        String globalFilter = getGlobalFilter();
-        Set<SearchExpressionHint> hint = LangUtils.isValueBlank(globalFilter)
-                ? EnumSet.of(SearchExpressionHint.IGNORE_NO_RESULT)
-                : Collections.emptySet();
-        UIComponent globalFilterComponent = SearchExpressionFacade
-                .resolveComponent(getFacesContext(), this, DataTable.PropertyKeys.globalFilter.toString(), hint);
-        if (globalFilterComponent != null) {
-            if (globalFilterComponent instanceof ValueHolder) {
-                ((ValueHolder) globalFilterComponent).setValue(globalFilter);
-            }
-            FilterMeta globalFilterBy = FilterMeta.of(filterBy.values(), globalFilter, getGlobalFilterFunction());
-            filterBy.put(globalFilterBy.getColumnKey(), globalFilterBy);
-            filtered.set(filtered.get() || globalFilterBy.isActive());
-        }
-    }
-
-
     public boolean hasFooterColumn() {
-        for (UIComponent child : getChildren()) {
+        for (int i = 0; i < getChildCount(); i++) {
+            UIComponent child = getChildren().get(i);
             if (child instanceof Column && child.isRendered()) {
                 Column column = (Column) child;
 
@@ -739,11 +600,11 @@ public class TreeTable extends TreeTableBase implements ColumnHolder {
             }
 
             if (ts.getSortBy() != null) {
-                updateSortByWithTableState(ts.getSortBy());
+                updateSortByWithMVS(ts.getSortBy());
             }
 
             if (ts.getFilterBy() != null) {
-                updateFilterByWithTableState(ts.getFilterBy());
+                updateFilterByWithMVS(getFacesContext(), ts.getFilterBy());
             }
 
             // TODO selection
@@ -775,139 +636,53 @@ public class TreeTable extends TreeTableBase implements ColumnHolder {
         setFilterByAsMap(null);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    @Override
     public Map<String, SortMeta> getSortByAsMap() {
-        return ComponentUtils.computeIfAbsent(getStateHelper(), InternalPropertyKeys.sortByAsMap.name(), this::initSortBy);
+        return ComponentUtils.computeIfAbsent(getStateHelper(), InternalPropertyKeys.sortByAsMap.name(), () -> initSortBy(getFacesContext()));
     }
 
+    @Override
     public void setSortByAsMap(Map<String, SortMeta> sortBy) {
         getStateHelper().put(InternalPropertyKeys.sortByAsMap.name(), sortBy);
     }
 
+    @Override
     public Map<String, FilterMeta> getFilterByAsMap() {
         return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.filterByAsMap.name(), Collections::emptyMap);
     }
 
+    @Override
     public void setFilterByAsMap(Map<String, FilterMeta> sortBy) {
         getStateHelper().put(InternalPropertyKeys.filterByAsMap.name(), sortBy);
     }
 
-
-    protected Map<String, SortMeta> initSortBy() {
-        Map<String, SortMeta> sortMeta = new HashMap<>();
-        AtomicBoolean sorted = new AtomicBoolean();
-
-        forEachColumn(c -> {
-            SortMeta s = SortMeta.of(getFacesContext(), getVar(), c);
-            if (s != null) {
-                sorted.set(sorted.get() || s.isActive());
-                sortMeta.put(s.getColumnKey(), s);
-            }
-        });
-
-        // merge internal sortBy with user sortBy
-        Object userSortBy = getSortBy();
-        if (userSortBy != null) {
-            updateSortByWithUserSortBy(sortMeta, userSortBy, sorted);
-        }
-
-        setDefaultSort(sorted.get());
-
-        return sortMeta;
-    }
-
-
-
-    protected void updateSortByWithUserSortBy(Map<String, SortMeta> intlSortBy, Object usrSortBy, AtomicBoolean sorted) {
-        Collection<SortMeta> sortBy;
-        if (usrSortBy instanceof SortMeta) {
-            sortBy = Collections.singletonList((SortMeta) usrSortBy);
-        }
-        else if (!(usrSortBy instanceof Collection)) {
-            throw new FacesException("DataTable#sortBy expects a single or a collection of SortMeta");
-        }
-        else {
-            sortBy = (Collection<SortMeta>) usrSortBy;
-        }
-
-        for (SortMeta userSM : sortBy) {
-            SortMeta intlSM = intlSortBy.values().stream()
-                    .filter(o -> o.getField().equals(userSM.getField()))
-                    .findAny()
-                    .orElseThrow(() -> new FacesException("No column with field '" + userSM.getField() + "' has been found"));
-
-            ValueExpression sortByVE = userSM.getSortBy();
-            if (sortByVE == null) {
-                sortByVE = createValueExprFromVarField(getFacesContext(), getVar(), userSM.getField());
-            }
-
-            intlSM.setPriority(userSM.getPriority());
-            intlSM.setOrder(userSM.getOrder());
-            intlSM.setSortBy(sortByVE);
-            intlSM.setFunction(userSM.getFunction());
-            sorted.set(sorted.get() || userSM.isActive());
-        }
-    }
-
-
-
-    protected void updateSortByWithTableState(Map<String, SortMeta> tsSortBy) {
-        boolean defaultSort = isDefaultSort();
-        for (Map.Entry<String, SortMeta> entry : tsSortBy.entrySet()) {
-            SortMeta intlSortBy = getSortByAsMap().get(entry.getKey());
-            if (intlSortBy != null) {
-                SortMeta tsSortMeta = entry.getValue();
-                intlSortBy.setPriority(tsSortMeta.getPriority());
-                intlSortBy.setOrder(tsSortMeta.getOrder());
-                defaultSort |= intlSortBy.isActive();
-            }
-        }
-
-        setDefaultSort(defaultSort);
-    }
-
+    @Override
     public boolean isDefaultSort() {
         return getSortByAsMap() != null && Boolean.TRUE.equals(getStateHelper().get(InternalPropertyKeys.defaultSort.name()));
     }
 
+    @Override
     public void setDefaultSort(boolean defaultSort) {
         getStateHelper().put(InternalPropertyKeys.defaultSort.name(), defaultSort);
     }
 
+    @Override
     public boolean isDefaultFilter() {
         return Boolean.TRUE.equals(getStateHelper().get(InternalPropertyKeys.defaultFilter.name()));
     }
 
+    @Override
     public void setDefaultFilter(boolean defaultFilter) {
         getStateHelper().put(InternalPropertyKeys.defaultFilter.name(), defaultFilter);
     }
 
-    protected void updateFilterByWithTableState(Map<String, FilterMeta> tsFilterBy) {
-        boolean defaultFilter = isDefaultFilter();
-        for (Map.Entry<String, FilterMeta> entry : tsFilterBy.entrySet()) {
-            FilterMeta intlFilterBy = getFilterByAsMap().get(entry.getKey());
-            if (intlFilterBy != null) {
-                FilterMeta tsFilterMeta = entry.getValue();
-                intlFilterBy.setFilterValue(tsFilterMeta.getFilterValue());
-                defaultFilter |= intlFilterBy.isActive();
-            }
-        }
+    @Override
+    public boolean isFilterByAsMapDefined() {
+        return getStateHelper().get(InternalPropertyKeys.filterByAsMap.name()) != null;
+    }
 
-        setDefaultFilter(defaultFilter);
+    public boolean isMultiSort() {
+        String sortMode = getSortMode();
+        return sortMode != null && sortMode.equals("multiple");
     }
 }

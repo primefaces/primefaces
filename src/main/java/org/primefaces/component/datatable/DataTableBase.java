@@ -29,7 +29,8 @@ import javax.el.MethodExpression;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class DataTableBase extends UIPageableData
-        implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder, MultiViewStateAware<DataTableState> {
+        implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder, MultiViewStateAware<DataTableState>,
+        FilterableTable, SortableTable {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -308,10 +309,12 @@ public abstract class DataTableBase extends UIPageableData
         getStateHelper().put(PropertyKeys.sortMode, sortMode);
     }
 
+    @Override
     public Object getSortBy() {
         return getStateHelper().eval(PropertyKeys.sortBy, null);
     }
 
+    @Override
     public void setSortBy(Object sortBy) {
         getStateHelper().put(PropertyKeys.sortBy, sortBy);
     }
@@ -550,18 +553,22 @@ public abstract class DataTableBase extends UIPageableData
         getStateHelper().put(PropertyKeys.multiViewState, multiViewState);
     }
 
+    @Override
     public Object getFilterBy() {
         return getStateHelper().eval(PropertyKeys.filterBy);
     }
 
+    @Override
     public void setFilterBy(Object filterBy) {
         getStateHelper().put(PropertyKeys.filterBy, filterBy);
     }
 
+    @Override
     public String getGlobalFilter() {
         return (String) getStateHelper().eval(PropertyKeys.globalFilter, null);
     }
 
+    @Override
     public void setGlobalFilter(String globalFilter) {
         getStateHelper().put(PropertyKeys.globalFilter, globalFilter);
     }
@@ -654,10 +661,12 @@ public abstract class DataTableBase extends UIPageableData
         getStateHelper().put(PropertyKeys.stickyTopAt, stickyTopAt);
     }
 
+    @Override
     public MethodExpression getGlobalFilterFunction() {
         return (MethodExpression) getStateHelper().eval(PropertyKeys.globalFilterFunction, null);
     }
 
+    @Override
     public void setGlobalFilterFunction(MethodExpression globalFilterFunction) {
         getStateHelper().put(PropertyKeys.globalFilterFunction, globalFilterFunction);
     }
