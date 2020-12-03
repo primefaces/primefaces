@@ -83,7 +83,9 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         filterDelay,
         cellEditMode,
         editInitEvent,
-        multiViewState
+        multiViewState,
+        allowUnsorting,
+        sortMode
     }
 
     protected enum InternalPropertyKeys {
@@ -447,5 +449,21 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
     @Override
     public void setGlobalFilterFunction(MethodExpression globalFilterFunction) {
         getStateHelper().put(PropertyKeys.globalFilterFunction, globalFilterFunction);
+    }
+
+    public boolean isAllowUnsorting() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.allowUnsorting, true);
+    }
+
+    public void setAllowUnsorting(boolean allowUnsorting) {
+        getStateHelper().put(PropertyKeys.allowUnsorting, allowUnsorting);
+    }
+
+    public String getSortMode() {
+        return (String) getStateHelper().eval(PropertyKeys.sortMode, "multiple");
+    }
+
+    public void setSortMode(String sortMode) {
+        getStateHelper().put(PropertyKeys.sortMode, sortMode);
     }
 }

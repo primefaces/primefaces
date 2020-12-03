@@ -258,6 +258,12 @@ public class TreeTableRenderer extends DataRenderer {
                     .attr("filterDelay", tt.getFilterDelay(), Integer.MAX_VALUE);
         }
 
+        //MultiColumn Sorting
+        if (tt.isMultiSort()) {
+            wb.attr("multiSort", true)
+                    .nativeAttr("sortMetaOrder", tt.getSortMetaAsString(), null);
+        }
+
         if (tt.isPaginator()) {
             encodePaginatorConfig(context, tt, wb);
         }

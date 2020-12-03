@@ -40,7 +40,7 @@ rowStyleClass | null | String | Style class for each row.
 liveResize | false | Boolean | Columns are resized live in this mode without using a resize helper.
 required | false | Boolean | Validation constraint for selection.
 requiredMessage | null | String | Message for required selection validation.
-sortBy | null | ValueExpr | Expression for default sorting.
+sortBy | null | FilterMeta / Collection<FilterMeta> | Property to be used for default sorting. Expects a single or a collection of SortMeta.
 sortOrder | ascending | String | Defines default sorting order.
 sortFunction | null | MethodExpr | Custom pluggable sortFunction for default sorting.
 nativeElements | false | Boolean | In native mode, treetable uses native checkboxes.
@@ -66,6 +66,9 @@ first | 0 | Integer | Index of the first data to display.
 disabledTextSelection | true | Boolean | Disables text selection on row click.
 touchable | true | Boolean | Enable touch support if browser detection supports it.
 editInitEvent | null | String | Defines a client side event to open cell on editable treetable.
+filterBy | null | SortMeta / Collection<SortMeta> | Property to be used for default sorting. Expects a single or a collection of SortMeta.
+allowUnsorting | false | Boolean | Defines whether columns are allowed to be unsorted. Default is true.
+sortMode | multiple | String | Defines sorting mode, valid values are _single_ and _multiple_.
 
 ## Getting started with the TreeTable
 Similar to the Tree, TreeTable is populated with an _org.primefaces.model.TreeNode_ instance that

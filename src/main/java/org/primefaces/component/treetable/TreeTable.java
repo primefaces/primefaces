@@ -680,4 +680,9 @@ public class TreeTable extends TreeTableBase implements ColumnHolder {
     public boolean isFilterByAsMapDefined() {
         return getStateHelper().get(InternalPropertyKeys.filterByAsMap.name()) != null;
     }
+
+    public boolean isMultiSort() {
+        String sortMode = getSortMode();
+        return sortMode != null && sortMode.equals("multiple");
+    }
 }

@@ -29,6 +29,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -140,6 +141,11 @@ public interface SortableTable extends ColumnHolder {
         sortBy.put(s.getColumnKey(), s);
         setSortByAsMap(sortBy);
         return true;
+    }
+
+    default String getSortMetaAsString() {
+        return getSortByAsMap().keySet().stream()
+                .collect(Collectors.joining("','", "['", "']"));
     }
 
     default HeaderRow getHeaderRow() {

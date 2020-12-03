@@ -798,8 +798,7 @@ public class DataTable extends DataTableBase implements ColumnHolder {
 
     public boolean isMultiSort() {
         String sortMode = getSortMode();
-
-        return (sortMode != null && sortMode.equals("multiple"));
+        return sortMode != null && sortMode.equals("multiple");
     }
 
     public String resolveSelectionMode() {
@@ -1245,11 +1244,6 @@ public class DataTable extends DataTableBase implements ColumnHolder {
                 .filter(i -> getColumns().get(i).isGroupRow())
                 .mapToObj(Objects::toString)
                 .collect(Collectors.joining(",", "[", "]"));
-    }
-
-    public String getSortMetaAsString() {
-        return getSortByAsMap().keySet().stream()
-                .collect(Collectors.joining("','", "['", "']"));
     }
 
     public static ValueExpression createValueExprFromVarField(FacesContext context, String var, String field) {
