@@ -31,6 +31,9 @@ import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
 import java.util.Map;
 
+/**
+ * UIData for pageable components
+ */
 public class UIPageableData extends UIData implements Pageable, TouchAware {
 
     public static final String PAGINATOR_TOP_CONTAINER_CLASS = "ui-paginator ui-paginator-top ui-widget-header";
