@@ -64,7 +64,7 @@ disabledTextSelection | true | Boolean | Disables text selection on row click.
 touchable | true | Boolean | Enable touch support if browser detection supports it.
 editInitEvent | null | String | Defines a client side event to open cell on editable treetable.
 filterBy | null | SortMeta / Collection<SortMeta> | Property to be used for default sorting. Expects a single or a collection of SortMeta.
-allowUnsorting | false | Boolean | Defines whether columns are allowed to be unsorted. Default is true.
+allowUnsorting | false | Boolean | Defines whether columns are allowed to be unsorted. Default is false.
 sortMode | multiple | String | Defines sorting mode, valid values are _single_ and _multiple_.
 
 ## Getting started with the TreeTable

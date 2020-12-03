@@ -7980,7 +7980,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines whether columns are allowed to be unsorted. Default is true.]]>
+                <![CDATA[Defines whether columns are allowed to be unsorted. Default is false.]]>
             </description>
             <name>allowUnsorting</name>
             <required>false</required>
@@ -29883,7 +29883,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines whether columns are allowed to be unsorted. Default is true.]]>
+                <![CDATA[Defines whether columns are allowed to be unsorted. Default is false.]]>
             </description>
             <name>allowUnsorting</name>
             <required>false</required>

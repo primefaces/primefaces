@@ -452,7 +452,7 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
     }
 
     public boolean isAllowUnsorting() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.allowUnsorting, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.allowUnsorting, false);
     }
 
     public void setAllowUnsorting(boolean allowUnsorting) {

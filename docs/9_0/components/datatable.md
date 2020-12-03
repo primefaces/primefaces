@@ -19,7 +19,7 @@ DataTable displays data in tabular format.
 
 | Name                      | Default            | Type             | Description
 | ------------------------- | ------------------ | ---------------- | ------------------ |
-| allowUnsorting            | false              | Boolean          | Defines whether columns are allowed to be unsorted. Default is true.
+| allowUnsorting            | false              | Boolean          | Defines whether columns are allowed to be unsorted. Default is false.
 | ariaRowLabel              | null               | String           | Label to read by screen readers on checkbox selection.
 | binding                   | null               | Object           | An el expression that maps to a server side UIComponent instance in a backing bean
 | cellEditMode              | eager              | String           | Defines the cell edit behavior, valid values are "eager" (default) and "lazy".

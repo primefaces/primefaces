@@ -320,7 +320,7 @@ public abstract class DataTableBase extends UIData
     }
 
     public boolean isAllowUnsorting() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.allowUnsorting, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.allowUnsorting, false);
     }
 
     public void setAllowUnsorting(boolean allowUnsorting) {
