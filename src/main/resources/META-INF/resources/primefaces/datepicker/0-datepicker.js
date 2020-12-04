@@ -1047,11 +1047,6 @@
             }
             this.renderDatePickerPanel();
 
-            this.panel.css({
-                'display': this.options.inline ? 'block' : 'none',
-                'position': this.options.inline || this.options.touchUI ? '' : 'absolute'
-            });
-
             if (this.options.panelStyleClass) {
                 this.panel.addClass(this.options.panelStyleClass);
             }
@@ -1138,6 +1133,15 @@
 
             //render inner elements
             this.panel.get(0).innerHTML = this.renderPanelElements();
+
+            this.panel.css({
+                'display': this.options.inline ? 'block' : 'none',
+                'position': this.options.inline || this.options.touchUI ? '' : 'absolute'
+            });
+
+            if (this.options.onPanelCreate) {
+                this.options.onPanelCreate.call(this);
+            }
         },
 
         renderPanelElements: function () {
@@ -2046,7 +2050,7 @@
         },
 
         hideOverlay: function () {
-            if (this.panel) {
+            if (this.panel && this.panel.is(':visible')) {
                 if (this.options.onBeforeHide) {
                     this.options.onBeforeHide.call(this);
                 }
