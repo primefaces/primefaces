@@ -42,7 +42,7 @@ public class PageFeature implements DataTableFeature {
 
     @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
-        table.updatePaginationData(context, table);
+        table.updatePaginationData(context);
 
         boolean isPageState = table.isPageStateRequest(context);
 

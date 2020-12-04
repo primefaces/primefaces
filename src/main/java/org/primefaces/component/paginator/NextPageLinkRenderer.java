@@ -28,7 +28,7 @@ import java.io.IOException;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.Pageable;
-import org.primefaces.component.api.UIData;
+import org.primefaces.component.api.UIPageableData;
 import org.primefaces.util.MessageFactory;
 
 public class NextPageLinkRenderer extends PageLinkRenderer implements PaginatorElementRenderer {
@@ -40,8 +40,8 @@ public class NextPageLinkRenderer extends PageLinkRenderer implements PaginatorE
 
         boolean disabled = (currentPage == (pageCount - 1)) || (currentPage == 0 && pageCount == 0);
 
-        String ariaMessage = MessageFactory.getMessage(UIData.ARIA_NEXT_PAGE_LABEL);
+        String ariaMessage = MessageFactory.getMessage(UIPageableData.ARIA_NEXT_PAGE_LABEL);
 
-        super.render(context, pageable, UIData.PAGINATOR_NEXT_PAGE_LINK_CLASS, UIData.PAGINATOR_NEXT_PAGE_ICON_CLASS, disabled, ariaMessage);
+        super.render(context, pageable, UIPageableData.PAGINATOR_NEXT_PAGE_LINK_CLASS, UIPageableData.PAGINATOR_NEXT_PAGE_ICON_CLASS, disabled, ariaMessage);
     }
 }

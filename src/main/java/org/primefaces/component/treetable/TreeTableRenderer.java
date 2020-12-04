@@ -41,6 +41,7 @@ import javax.faces.FacesException;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
+import javax.faces.component.ValueHolder;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -187,12 +188,7 @@ public class TreeTableRenderer extends DataRenderer {
             }
 
             filter(context, tt, tt.getValue(), tt.getFilterByAsMap());
-
-            //sort new filtered data to restore sort state
-            boolean sorted = (tt.getValueExpression(TreeTable.PropertyKeys.sortBy.name()) != null || tt.getSortBy() != null);
-            if (sorted) {
-                sort(tt);
-            }
+            sort(tt);
 
             encodeTbody(context, tt, tt.getValue(), true);
 
@@ -220,12 +216,17 @@ public class TreeTableRenderer extends DataRenderer {
             encodeNodeChildren(context, tt, root, root, tt.getFirst(), tt.getRows());
         }
         else {
+            filter(context, tt, tt.getValue(), tt.getFilterByAsMap());
+            sort(tt);
+
             encodeMarkup(context, tt);
             encodeScript(context, tt);
         }
     }
 
     protected void preRender(FacesContext context, TreeTable tt) {
+        tt.initFilterBy(context);
+
         Columns dynamicCols = tt.getDynamicColumns();
         if (dynamicCols != null) {
             dynamicCols.setRowIndex(-1);
@@ -818,7 +819,6 @@ public class TreeTableRenderer extends DataRenderer {
     }
 
     protected void encodeFilter(FacesContext context, TreeTable tt, UIColumn column) throws IOException {
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         ResponseWriter writer = context.getResponseWriter();
         UIComponent filterFacet = column.getFacet("filter");
 
@@ -829,14 +829,8 @@ public class TreeTableRenderer extends DataRenderer {
             String filterId = column.getContainerClientId(context) + separator + "filter";
             String filterStyleClass = column.getFilterStyleClass();
 
-            Object filterValue = null;
-            if (params.containsKey(filterId)) {
-                filterValue = params.get(filterId);
-            }
-            else {
-                Object columnFilterValue = column.getFilterValue();
-                filterValue = (columnFilterValue == null) ? Constants.EMPTY_STRING : columnFilterValue.toString();
-            }
+            Object filterValue = tt.getFilterValue(column);
+            filterValue = (filterValue == null) ? Constants.EMPTY_STRING : filterValue.toString();
 
             filterStyleClass = filterStyleClass == null ? TreeTable.COLUMN_INPUT_FILTER_CLASS : TreeTable.COLUMN_INPUT_FILTER_CLASS + " " + filterStyleClass;
 
@@ -862,6 +856,11 @@ public class TreeTableRenderer extends DataRenderer {
             writer.endElement("input");
         }
         else {
+            Object filterValue = tt.getFilterValue(column);
+            if (filterValue != null) {
+                ((ValueHolder) filterFacet).setValue(filterValue);
+            }
+
             writer.startElement("div", null);
             writer.writeAttribute("class", TreeTable.COLUMN_CUSTOM_FILTER_CLASS, null);
             filterFacet.encodeAll(context);

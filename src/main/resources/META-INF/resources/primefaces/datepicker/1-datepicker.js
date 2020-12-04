@@ -63,6 +63,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         this.configureLocale();
 
         //events
+        this.bindPanelCreationListener();
         this.bindDateSelectListener();
         this.bindClearButtonListener();
         this.bindViewChangeListener();
@@ -112,7 +113,6 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         //Initialize datepicker
         this.cfg.panelStyleClass = (this.cfg.panelStyleClass || '') + ' p-datepicker-panel';
         this.cfg.viewDate = this.viewDateOption;
-        this.cfg.appendTo = this.cfg.appendTo ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo) : null;
         this.cfg.rangeSeparator = this.cfg.rangeSeparator||'-';
         this.cfg.timeSeparator = this.cfg.timeSeparator||':';
 
@@ -137,7 +137,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             PrimeFaces.skinButton(triggerButton);
         }
 
-        //mark target and descandants of target as a trigger for a primefaces overlay
+        //mark target and descendants of target as a trigger for a PrimeFaces overlay
         if(!this.cfg.inline) {
             this.jq.data('primefaces-overlay-target', this.id).find('*').data('primefaces-overlay-target', this.id);
         }
@@ -213,6 +213,23 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             }
             this.input.inputmask('remove').inputmask(maskCfg);
         }
+    },
+
+    /**
+     * Callback for after the overlay panel is created.
+     * @private
+     */
+    bindPanelCreationListener: function() {
+        var _self = this;
+
+        this.cfg.onPanelCreate = function() {
+            _self.panel = this.panel;
+            this.options.appendTo = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(PrimeFaces.utils.resolveAppendTo(_self));
+
+            PrimeFaces.utils.registerScrollHandler(_self, 'scroll.' + _self.id + '_hide', function() {
+                _self.jq.data().primeDatePicker.hideOverlay();
+            });
+        };
     },
 
     /**

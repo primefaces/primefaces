@@ -28,8 +28,8 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 import org.primefaces.component.api.*;
 import org.primefaces.component.datalist.DataListBase;
 
-public abstract class DataGridBase extends UIData
-        implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable, FlexAware, MultiViewStateAware<DataGridState> {
+public abstract class DataGridBase extends UIPageableData
+        implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, FlexAware, MultiViewStateAware<DataGridState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

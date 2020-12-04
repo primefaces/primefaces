@@ -197,16 +197,15 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      */
     renderPanel: function() {
         this.panel = $('<div id="' + this.panelId + '" class="ui-selectcheckboxmenu-panel ui-widget ui-widget-content ui-corner-all ui-helper-hidden ui-input-overlay" role="dialog"></div>');
-
-        PrimeFaces.utils.registerDynamicOverlay(this, this.panel, this.id + '_panel');
-
         if(this.cfg.panelStyle) {
             this.panel.attr('style', this.cfg.panelStyle);
         }
-
         if(this.cfg.panelStyleClass) {
             this.panel.addClass(this.cfg.panelStyleClass);
         }
+        this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this);
+
+        PrimeFaces.utils.registerDynamicOverlay(this, this.panel, this.id + '_panel');
 
         this.renderHeader();
 
@@ -461,8 +460,11 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 }
             });
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.panel, function() {
-            $this.alignPanel();
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_hide', $this.panel, function() {
+            $this.hide();
+        });
+        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_hide', function() {
+            $this.hide();
         });
     },
 
@@ -936,7 +938,9 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      * Brings up the overlay panel with the available checkbox options.
      */
     show: function() {
+        this.panel.css({'display':'block', 'opacity':'0', 'pointer-events': 'none'});
         this.alignPanel();
+        this.panel.css({'display':'none', 'opacity':'', 'pointer-events': '', 'z-index': PrimeFaces.nextZindex()});
         this.keyboardTarget.attr('aria-expanded', true);
         this.panel.show();
 
@@ -949,18 +953,19 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      */
     hide: function(animate) {
         var $this = this;
-
-        this.keyboardTarget.attr('aria-expanded', false);
-
-        if(animate) {
-            this.panel.fadeOut('fast', function() {
-                $this.postHide();
-            });
-        }
-
-        else {
-            this.panel.hide();
-            this.postHide();
+        if (this.panel.is(':visible')) {
+            this.keyboardTarget.attr('aria-expanded', false);
+    
+            if(animate) {
+                this.panel.fadeOut('fast', function() {
+                    $this.postHide();
+                });
+            }
+    
+            else {
+                this.panel.hide();
+                this.postHide();
+            }
         }
     },
 

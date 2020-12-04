@@ -75,9 +75,7 @@ public class FilterFeature implements DataTableFeature {
         // (from column) must be decoded by FilterFeature#decodeFilterValue
         Map<String, FilterMeta> filterBy = table.initFilterBy(context);
 
-        for (FilterMeta entry : filterBy.values()) {
-            table.decodeFilterValue(context, entry);
-        }
+        table.updateFilterByValuesWithFilterRequest(context, filterBy);
     }
 
     @Override

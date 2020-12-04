@@ -48,7 +48,7 @@ public class DataGridRenderer extends DataRenderer {
         DataGrid grid = (DataGrid) component;
 
         if (grid.isPaginationRequest(context)) {
-            grid.updatePaginationData(context, grid);
+            grid.updatePaginationData(context);
 
             if (grid.isLazy()) {
                 grid.loadLazyData();

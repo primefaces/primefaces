@@ -27,8 +27,8 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import org.primefaces.component.api.*;
 
-public abstract class DataViewBase extends UIData
-        implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable, MultiViewStateAware<DataViewState>, FlexAware {
+public abstract class DataViewBase extends UIPageableData
+        implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, MultiViewStateAware<DataViewState>, FlexAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

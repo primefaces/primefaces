@@ -101,7 +101,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.effectSpeed = this.cfg.effectSpeed||'normal';
         this.cfg.autoWidth = this.cfg.autoWidth === false ? false : true;
         this.cfg.dynamic = this.cfg.dynamic === true ? true : false;
-        this.cfg.appendTo = this.getAppendTo();
+        this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this);
         this.cfg.renderPanelContentOnClient = this.cfg.renderPanelContentOnClient === true;
         this.isDynamicLoaded = false;
 
@@ -360,19 +360,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 }
             });
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.panel, function() {
-            $this.alignPanel();
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_hide', $this.panel, function() {
+            $this.hide();
         });
 
         // GitHub #1173/#4609 keep panel with select while scrolling
-        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_align', function() {
-            if ($this.panel.is(':visible')) {
-                $this.panel.position({
-                    my: "left top",
-                    at: "left bottom",
-                    of: $this.jq
-                });
-            }
+        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_hide', function() {
+            $this.hide();
         });
     },
 
@@ -921,8 +915,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * Hides the overlay panel with the available selectable options.
      */
     hide: function() {
-        this.panel.css('z-index', '').hide();
-        this.jq.attr('aria-expanded', false);
+        if (this.panel.is(':visible')) {
+            this.panel.css('z-index', '').hide();
+            this.jq.attr('aria-expanded', false);
+        }
     },
 
     /**
@@ -1418,29 +1414,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         return content;
     },
 
-    /**
-     * Finds the element to which the overlay panel should be appended. If none is specified explicitly, append the
-     * panel to the body.
-     * @private
-     * @return {string} The search expression for the element to which the overlay panel should be appended.
-     */
-    getAppendTo: function() {
-        var dialog = this.jq[0].closest('.ui-dialog');
-        if (dialog) {
-            var $dialog = $(dialog);
-            //set position as fixed to scroll with dialog
-            if ($dialog.css('position') === 'fixed') {
-                this.panel.css('position', 'fixed');
-            }
-
-            //append to body if not already appended by user choice
-            if(!this.panel.parent().is(document.body)) {
-                return "@(body)";
-            }
-        }
-
-        return this.cfg.appendTo;
-    },
 
     /**
      * Updates the style class of the label that indicates the currently selected item.

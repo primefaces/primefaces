@@ -99,6 +99,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.ariaEmptyMessage = this.cfg.emptyMessage||'No search results are available.';
         this.cfg.dropdownMode = this.cfg.dropdownMode||'blank';
         this.cfg.autoHighlight = (this.cfg.autoHighlight === undefined) ? true : this.cfg.autoHighlight;
+        this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this);
         this.cfg.myPos = this.cfg.myPos||'left top';
         this.cfg.atPos = this.cfg.atPos||'left bottom';
         this.cfg.active = (this.cfg.active === false) ? false : true;
@@ -275,8 +276,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 }
             });
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.panel, function() {
-             $this.alignPanel();
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_hide', $this.panel, function() {
+            $this.hide();
+        });
+        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_hide', function() {
+            $this.hide();
         });
     },
 
@@ -487,7 +491,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }).on('paste.autoComplete', function() {
             $this.suppressInput = false;
             $this.checkMatchedItem = true;
-	}).on('change.autoComplete', function(e) {
+	    }).on('change.autoComplete', function(e) {
             if ($this.cfg.onChange && !$this.preventInputChangeEvent) {
                 $this.cfg.onChange.call(this);
             }
@@ -787,7 +791,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      */
     searchWithDropdown: function() {
         this.isSearchWithDropdown = true;
-        
+
         if(this.cfg.dropdownMode === 'current')
             this.search(this.input.val());
         else
@@ -943,7 +947,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     show: function() {
+        this.panel.css({'display':'block', 'opacity':'0', 'pointer-events': 'none'});
         this.alignPanel();
+        this.panel.css({'display':'none', 'opacity':'', 'pointer-events': '', 'z-index': PrimeFaces.nextZindex()});
 
         if(this.cfg.effect)
             this.panel.show(this.cfg.effect, {}, this.cfg.effectDuration);
@@ -956,8 +962,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     hide: function() {
-        this.panel.hide();
-        this.panel.css('height', 'auto');
+        if (this.panel.is(':visible')) {
+            this.panel.hide();
+            this.panel.css('height', 'auto');
+        }
 
         if(this.cfg.itemtip) {
             this.itemtip.hide();

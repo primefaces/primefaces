@@ -301,10 +301,7 @@ public class TreeTable extends TreeTableBase implements ColumnHolder {
 
         if (isFilterRequest(context)) {
             Map<String, FilterMeta> filterBy = initFilterBy(context);
-            for (FilterMeta meta : filterBy.values()) {
-                decodeFilterValue(context, meta);
-            }
-
+            updateFilterByValuesWithFilterRequest(context, filterBy);
             setFilterByAsMap(filterBy);
         }
     }
