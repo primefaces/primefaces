@@ -1347,17 +1347,17 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * Renders Panel-HTML-code for SelectItems.
      * @private
      * @param {JQuery} parentItem An parentItem (select, optgroup) for which to render HTML-code.
-     * @param {boolean} [isIndented] Tells whether the elements of the parentItem should be marked as indented.
+     * @param {boolean} [isGrouped] Tells whether the elements of the parentItem should be marked as grouped.
      * @return {string} Rendered HTML-code.
      */
-    renderSelectItems: function(parentItem, isIndented) {
+    renderSelectItems: function(parentItem, isGrouped) {
         var $this = this;
         var content = "";
-        isIndented = isIndented || false;
+        isGrouped = isGrouped || false;
 
         var opts = parentItem.children("option, optgroup");
         opts.each(function(index, element) {
-            content += $this.renderSelectItem(element, isIndented);
+            content += $this.renderSelectItem(element, isGrouped);
         });
         return content;
     },
@@ -1366,10 +1366,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * Renders Panel-HTML-code for one SelectItem(Group).
      * @private
      * @param {JQuery} item An option(group) for which to render HTML-code.
-     * @param {boolean} isIndented Tells whether the item should be marked as indented.
+     * @param {boolean} isGrouped Tells whether the item is part of a group.
      * @return {string} Rendered HTML-code.
      */
-    renderSelectItem: function(item, isIndented) {
+    renderSelectItem: function(item, isGrouped) {
         var content = "";
         var $item = $(item);
         var label;
@@ -1395,7 +1395,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 label = $item.text();
             }
             cssClass = "ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all";
-            if (isIndented) {
+            if (isGrouped) {
                 cssClass += " ui-selectonemenu-item-group-children"
             }
         }
