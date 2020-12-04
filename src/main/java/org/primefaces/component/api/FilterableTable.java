@@ -153,49 +153,55 @@ public interface FilterableTable extends ColumnHolder {
         return filterBy.containsKey(column.getColumnKey());
     }
 
-    default void decodeFilterValue(FacesContext context, FilterMeta filterMeta) {
+    default void updateFilterByValuesWithFilterRequest(FacesContext context, Map<String, FilterMeta> filterBy) {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         char separator = UINamingContainer.getSeparatorChar(context);
 
-        Object filterValue;
+        for (FilterMeta filterMeta : filterBy.values()) {
+            Object filterValue;
 
-        if (filterMeta.isGlobalFilter()) {
-            filterValue = params.get(((UIComponent) this).getClientId(context) + separator + FilterMeta.GLOBAL_FILTER_KEY);
-        }
-        else {
-            UIColumn column = filterMeta.getColumn();
-            UIComponent filterFacet = column.getFacet("filter");
-            boolean hasCustomFilter = filterFacet != null;
-            if (column instanceof DynamicColumn) {
-                if (hasCustomFilter) {
-                    ((DynamicColumn) column).applyModel();
-                    // UIColumn#rendered might change after restoring p:columns state at the right index
-                    hasCustomFilter = ComponentUtils.shouldRenderFacet(filterFacet);
-                }
-                else {
-                    ((DynamicColumn) column).applyStatelessModel();
-                }
-            }
-
-            if (hasCustomFilter) {
-                filterValue = ((ValueHolder) filterFacet).getLocalValue();
+            if (filterMeta.isGlobalFilter()) {
+                filterValue = params.get(((UIComponent) this).getClientId(context) + separator + FilterMeta.GLOBAL_FILTER_KEY);
             }
             else {
-                String valueHolderClientId = column instanceof DynamicColumn
-                        ? column.getContainerClientId(context) + separator + "filter"
-                        : column.getClientId(context) + separator + "filter";
-                filterValue = params.get(valueHolderClientId);
+                UIColumn column = filterMeta.getColumn();
+                UIComponent filterFacet = column.getFacet("filter");
+                boolean hasCustomFilter = filterFacet != null;
+                if (column instanceof DynamicColumn) {
+                    if (hasCustomFilter) {
+                        ((DynamicColumn) column).applyModel();
+                        // UIColumn#rendered might change after restoring p:columns state at the right index
+                        hasCustomFilter = ComponentUtils.shouldRenderFacet(filterFacet);
+                    }
+                    else {
+                        ((DynamicColumn) column).applyStatelessModel();
+                    }
+                }
+
+                if (hasCustomFilter) {
+                    filterValue = ((ValueHolder) filterFacet).getLocalValue();
+                }
+                else {
+                    String valueHolderClientId = column instanceof DynamicColumn
+                            ? column.getContainerClientId(context) + separator + "filter"
+                            : column.getClientId(context) + separator + "filter";
+                    filterValue = params.get(valueHolderClientId);
+                }
             }
-        }
 
-        // returns null if empty string/array/object
-        if (filterValue != null
-                && (filterValue instanceof String && LangUtils.isValueBlank((String) filterValue)
-                || filterValue.getClass().isArray() && Array.getLength(filterValue) == 0)) {
-            filterValue = null;
-        }
+            // returns null if empty string/array/object
+            if (filterValue != null
+                    && (filterValue instanceof String && LangUtils.isValueBlank((String) filterValue)
+                    || filterValue.getClass().isArray() && Array.getLength(filterValue) == 0)) {
+                filterValue = null;
+            }
 
-        filterMeta.setFilterValue(filterValue);
+            filterMeta.setFilterValue(filterValue);
+        }
+    }
+
+    default Object getFilterValue(UIColumn column) {
+        return getFilterByAsMap().get(column.getColumnKey()).getFilterValue();
     }
 
     boolean isDefaultFilter();

@@ -689,10 +689,6 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("th");
     }
 
-    protected Object getFilterValue(DataTable table, UIColumn column) {
-        return table.getFilterByAsMap().get(column.getColumnKey()).getFilterValue();
-    }
-
     protected String resolveDefaultSortIcon(SortMeta sortMeta) {
         SortOrder sortOrder = sortMeta.getOrder();
         String sortIcon = DataTable.SORTABLE_COLUMN_ICON_CLASS;
@@ -744,7 +740,7 @@ public class DataTableRenderer extends DataRenderer {
             encodeDefaultFilter(context, table, column, writer);
         }
         else {
-            Object filterValue = getFilterValue(table, column);
+            Object filterValue = table.getFilterValue(column);
             if (filterValue != null) {
                 ((ValueHolder) filterFacet).setValue(filterValue);
             }
@@ -879,7 +875,7 @@ public class DataTableRenderer extends DataRenderer {
             filterValue = Constants.EMPTY_STRING;
         }
         else {
-            filterValue = getFilterValue(table, column);
+            filterValue = table.getFilterValue(column);
             if (filterValue == null) {
                 Map<String, String> params = context.getExternalContext().getRequestParameterMap();
                 if (params.containsKey(filterId)) {
