@@ -241,6 +241,7 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
         }
     }
 
+    @Override
     public int getPage() {
         if (getRowCount() > 0) {
             int rows = getRowsToRender();
@@ -259,10 +260,12 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
         }
     }
 
+    @Override
     public int getPageCount() {
         return (int) Math.ceil(getRowCount() * 1d / getRowsToRender());
     }
 
+    @Override
     public int getRowsToRender() {
         int rows = getRows();
 
