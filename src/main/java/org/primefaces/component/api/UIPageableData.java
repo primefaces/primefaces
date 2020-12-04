@@ -100,6 +100,7 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
         getStateHelper().put(PropertyKeys.paginator, paginator);
     }
 
+    @Override
     public String getPaginatorTemplate() {
         return (String) getStateHelper().eval(PropertyKeys.paginatorTemplate,
                 "{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}");
@@ -109,6 +110,7 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
         getStateHelper().put(PropertyKeys.paginatorTemplate, paginatorTemplate);
     }
 
+    @Override
     public String getRowsPerPageTemplate() {
         return (String) getStateHelper().eval(PropertyKeys.rowsPerPageTemplate, null);
     }
@@ -117,6 +119,7 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
         getStateHelper().put(PropertyKeys.rowsPerPageTemplate, rowsPerPageTemplate);
     }
 
+    @Override
     public String getRowsPerPageLabel() {
         return (String) getStateHelper().eval(PropertyKeys.rowsPerPageLabel, null);
     }
@@ -125,6 +128,7 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
         getStateHelper().put(PropertyKeys.rowsPerPageLabel, rowsPerPageLabel);
     }
 
+    @Override
     public String getCurrentPageReportTemplate() {
         return (String) getStateHelper().eval(PropertyKeys.currentPageReportTemplate, "({currentPage} of {totalPages})");
     }
@@ -133,6 +137,7 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
         getStateHelper().put(PropertyKeys.currentPageReportTemplate, currentPageReportTemplate);
     }
 
+    @Override
     public int getPageLinks() {
         return (Integer) getStateHelper().eval(PropertyKeys.pageLinks, 10);
     }
@@ -141,6 +146,7 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
         getStateHelper().put(PropertyKeys.pageLinks, pageLinks);
     }
 
+    @Override
     public String getPaginatorPosition() {
         return (String) getStateHelper().eval(PropertyKeys.paginatorPosition, "both");
     }
@@ -149,6 +155,7 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
         getStateHelper().put(PropertyKeys.paginatorPosition, paginatorPosition);
     }
 
+    @Override
     public boolean isPaginatorAlwaysVisible() {
         return (Boolean) getStateHelper().eval(PropertyKeys.paginatorAlwaysVisible, true);
     }
