@@ -25,36 +25,23 @@ package org.primefaces.event.data;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import org.primefaces.component.api.UIColumn;
 import org.primefaces.event.AbstractAjaxBehaviorEvent;
-import org.primefaces.model.SortOrder;
+import org.primefaces.model.SortMeta;
+
+import java.util.Map;
 
 public class SortEvent extends AbstractAjaxBehaviorEvent {
 
     private static final long serialVersionUID = 1L;
 
-    private UIColumn sortColumn;
+    private Map<String, SortMeta> sortBy;
 
-    private SortOrder sortOrder;
-
-    private int sortColumnIndex;
-
-    public SortEvent(UIComponent component, Behavior behavior, UIColumn sortColumn, SortOrder order, int sortColumnIndex) {
+    public SortEvent(UIComponent component, Behavior behavior, Map<String, SortMeta> sortBy) {
         super(component, behavior);
-        this.sortColumn = sortColumn;
-        this.sortOrder = order;
-        this.sortColumnIndex = sortColumnIndex;
+        this.sortBy = sortBy;
     }
 
-    public SortOrder getSortOrder() {
-        return sortOrder;
-    }
-
-    public UIColumn getSortColumn() {
-        return sortColumn;
-    }
-
-    public int getSortColumnIndex() {
-        return sortColumnIndex;
+    public Map<String, SortMeta> getSortBy() {
+        return sortBy;
     }
 }

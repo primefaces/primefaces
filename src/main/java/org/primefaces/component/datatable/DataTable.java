@@ -199,6 +199,7 @@ public class DataTable extends DataTableBase implements ColumnHolder {
     private String resizableColumnsAsString;
     private Map<String, String> resizableColsMap;
     private Set<Integer> expandedRowsSet;
+    private Map<String, AjaxBehaviorEvent> deferredEvents = new HashMap<>(1);
 
     public DataTableFeature getFeature(DataTableFeatureKey key) {
         return FEATURES.get(key);
@@ -289,8 +290,17 @@ public class DataTable extends DataTableBase implements ColumnHolder {
     public void processValidators(FacesContext context) {
         super.processValidators(context);
 
-        if (isFilterRequest(context)) {
-            FEATURES.get(DataTableFeatureKey.FILTER).decode(context, this);
+        //filters need to be decoded during PROCESS_VALIDATIONS phase,
+        //so that local values of each filters are properly converted and validated
+        DataTableFeature feature = FEATURES.get(DataTableFeatureKey.FILTER);
+        if (feature.shouldDecode(context, this)) {
+            feature.decode(context, this);
+            AjaxBehaviorEvent ajaxEvt = deferredEvents.get("filter");
+            if (ajaxEvt != null) {
+                FilterEvent evt = new FilterEvent(this, ajaxEvt.getBehavior(), getFilterByAsMap());
+                evt.setPhaseId(PhaseId.PROCESS_VALIDATIONS);
+                queueEvent(evt);
+            }
         }
     }
 
@@ -336,22 +346,11 @@ public class DataTable extends DataTableBase implements ColumnHolder {
                 wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), page);
             }
             else if (eventName.equals("sort")) {
-                SortMeta meta;
-                int sortColumnIndex = 0;
-
-                if (isMultiSort()) {
-                    String[] sortKeys = params.get(clientId + "_sortKey").split(",");
-                    meta = getSortByAsMap().get(sortKeys[sortKeys.length - 1]);
-                    sortColumnIndex = sortKeys.length - 1;
-                }
-                else {
-                    meta = getSortByAsMap().get(params.get(clientId + "_sortKey"));
-                }
-
-                wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), (UIColumn) meta.getComponent(), meta.getOrder(), sortColumnIndex);
+                wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), getSortByAsMap());
             }
             else if (eventName.equals("filter")) {
-                wrapperEvent = new FilterEvent(this, behaviorEvent.getBehavior(), getFilteredValue());
+                deferredEvents.put("filter", (AjaxBehaviorEvent) event);
+                return;
             }
             else if (eventName.equals("rowEdit") || eventName.equals("rowEditCancel") || eventName.equals("rowEditInit")) {
                 int rowIndex = Integer.parseInt(params.get(clientId + "_rowEditIndex"));
@@ -1093,10 +1092,6 @@ public class DataTable extends DataTableBase implements ColumnHolder {
         return LocaleUtils.resolveLocale(context, getDataLocale(), getClientId(context));
     }
 
-    private boolean isFilterRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_filtering");
-    }
-
     @Override
     protected List<UIComponent> getIterableChildren() {
         List<UIComponent> iterableChildren = new ArrayList<>(getChildCount());
@@ -1111,17 +1106,6 @@ public class DataTable extends DataTableBase implements ColumnHolder {
         return iterableChildren;
     }
 
-    @Override
-    public void processEvent(ComponentSystemEvent event) {
-        super.processEvent(event);
-        if (!isLazy() && event instanceof PostRestoreStateEvent && (this == event.getComponent())) {
-            Object filteredValue = getFilteredValue();
-            if (filteredValue != null) {
-                updateValue(filteredValue);
-            }
-        }
-    }
-
     public void updateFilteredValue(FacesContext context, List<?> value) {
         ValueExpression ve = getValueExpression(PropertyKeys.filteredValue.toString());
 
@@ -1133,23 +1117,12 @@ public class DataTable extends DataTableBase implements ColumnHolder {
         }
     }
 
-    public void updateValue(Object value) {
-        Object originalValue = getValue();
-        if (originalValue instanceof SelectableDataModel) {
-            setValue(new SelectableDataModelWrapper((SelectableDataModel) originalValue, value));
-        }
-        else {
-            setValue(value);
-        }
-    }
-
     @Override
     public Object saveState(FacesContext context) {
-        if (isFilteringEnabled()) {
-            setValue(null);
-        }
-
         // reset component for MyFaces view pooling
+        if (deferredEvents != null) {
+            deferredEvents.clear();
+        }
         reset = false;
         selectedRowKeys = new ArrayList<>();
         isRowKeyRestored = false;
