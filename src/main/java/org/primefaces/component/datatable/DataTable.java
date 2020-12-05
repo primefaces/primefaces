@@ -299,7 +299,7 @@ public class DataTable extends DataTableBase implements ColumnHolder {
             if (ajaxEvt != null) {
                 FilterEvent evt = new FilterEvent(this, ajaxEvt.getBehavior(), getFilterByAsMap());
                 evt.setPhaseId(PhaseId.PROCESS_VALIDATIONS);
-                queueEvent(evt);
+                super.queueEvent(evt);
             }
         }
     }
