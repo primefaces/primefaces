@@ -522,7 +522,7 @@ keeps previous selections same as selecting a row with mouse click when metakey 
 RowKey must be a unique identifier from your data model and used by datatable to find the selected
 rows. By default, and if selection enabled, rowKey is set to his [identity hash code](https://docs.oracle.com/javase/8/docs/api/java/lang/System.html#identityHashCode-java.lang.Object-).
 You can either define your own key by using the rowKey attribute or by binding a data model
-which implements _org.primefaces.model.SelectableDataModel_.
+which implements _org.primefaces.model.RowKeyAble_.
 
 ## Dynamic Columns
 Dynamic columns is handy in case you can’t know how many columns to render. Columns
