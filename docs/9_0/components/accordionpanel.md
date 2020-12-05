@@ -159,8 +159,10 @@ Widget: _PrimeFaces.widget.AccordionPanel_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |
-| select(index) | index: Index of tab | void | Activates tab with given index.|
+| select(index) | index: Index of tab | boolean | Activates (opens) the tab with given index. This may fail by returning `false`, such as when a callback is registered that prevent the tab from being opened. |
+| selectAll() | none | void | Activates (opens) all the tabs if multiple mode is enabled and the first tab in single mode.|
 | unselect(index) | index: Index of tab | void | Deactivates tab with given index.|
+| unselectAll() | none | void | Deactivates (closes) all the tabs.|
 
 ## Skinning
 AccordionPanel resides in a main container element which _style_ and _styleClass_ options apply. As

@@ -153,7 +153,13 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
      * @return {boolean} `true` when the given panel is now active, `false` otherwise. 
      */
     select: function(index) {
-        var panel = this.panels.eq(index);
+        var panel = this.panels.eq(index),
+            header = panel.prev();
+
+        // don't select already selected panel
+        if (header.hasClass('ui-state-active')) {
+            return;
+        }
 
         //Call user onTabChange callback
         if(this.cfg.onTabChange) {
@@ -191,10 +197,31 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
+     * Activates (opens) all the tabs if multiple mode is enabled and the first tab in single mode.
+     */
+    selectAll: function() {
+        var $this = this;
+        this.panels.each(function(index) {
+            $this.select(index);
+            if (!$this.cfg.multiple) {
+                return false; // breaks
+            }
+        });
+    },
+
+    /**
      * Deactivates (closes) the tab with given index.
      * @param {number} index 0-based index of the tab to close. Must not be out of range.
      */
     unselect: function(index) {
+        var panel = this.panels.eq(index),
+            header = panel.prev();
+
+        // don't unselect already unselected panel
+        if (!header.hasClass('ui-state-active')) {
+            return;
+        }
+        
         if(this.cfg.controlled) {
             this.fireTabCloseEvent(index);
         }
@@ -206,12 +233,22 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
+     * Deactivates (closes) all the tabs.
+     */
+    unselectAll: function() {
+        var $this = this;
+        this.panels.each(function(index) {
+            $this.unselect(index);
+        });
+    },
+
+    /**
      * Hides other panels and makes the given panel visible, such as by adding or removing the appropriate CSS classes.
      * @private
      * @param {JQuery} panel A tab panel to show.
      */
     show: function(panel) {
-        var _self = this;
+        var $this = this;
 
         //deactivate current
         if(!this.cfg.multiple) {
@@ -220,8 +257,8 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
             oldHeader.attr('aria-selected', false);
             oldHeader.attr('aria-expanded', false).removeClass('ui-state-active ui-corner-top').addClass('ui-corner-all')
                 .next().attr('aria-hidden', true).slideUp(function(){
-                    if(_self.cfg.onTabClose)
-                        _self.cfg.onTabClose.call(_self, panel);
+                    if($this.cfg.onTabClose)
+                        $this.cfg.onTabClose.call($this, panel);
                 });
         }
 
@@ -232,7 +269,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
                 .children('.ui-icon').removeClass(this.cfg.collapsedIcon).addClass(this.cfg.expandedIcon);
 
         panel.attr('aria-hidden', false).slideDown('normal', function() {
-            _self.postTabShow(panel);
+            $this.postTabShow(panel);
         });
     },
 
@@ -242,7 +279,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
      * @param {number} index 0-based index of the panel to hide.
      */
     hide: function(index) {
-        var _self = this,
+        var $this = this,
         panel = this.panels.eq(index),
         header = panel.prev();
 
@@ -250,8 +287,8 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         header.attr('aria-expanded', false).children('.ui-icon').removeClass(this.cfg.expandedIcon).addClass(this.cfg.collapsedIcon);
         header.removeClass('ui-state-active ui-corner-top').addClass('ui-corner-all');
         panel.attr('aria-hidden', true).slideUp(function(){
-            if(_self.cfg.onTabClose)
-                _self.cfg.onTabClose.call(_self, panel);
+            if($this.cfg.onTabClose)
+                $this.cfg.onTabClose.call($this, panel);
         });
 
         this.removeFromSelection(index);
