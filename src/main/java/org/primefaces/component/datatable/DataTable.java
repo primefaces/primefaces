@@ -556,22 +556,22 @@ public class DataTable extends DataTableBase {
         return null;
     }
 
-    public Object getRowKeyFromModel(Object object) {
+    public Object getRowKey(Object object) {
         DataModel model = getDataModel();
-        if (!(model instanceof SelectableDataModel)) {
+        if (!(model instanceof RowKeyAble)) {
             throw new FacesException("Unable to retrieve row key from data model. Selection is disabled.");
         }
 
-        return ((SelectableDataModel) getDataModel()).getRowKey(object);
+        return ((RowKeyAble) getDataModel()).getRowKey(object);
     }
 
     public Object getRowData(String rowKey) {
         DataModel model = getDataModel();
-        if (!(model instanceof SelectableDataModel)) {
+        if (!(model instanceof RowKeyAble)) {
             throw new FacesException("Unable to retrieve data from row key. Selection is disabled.");
         }
 
-        return ((SelectableDataModel) model).getRowData(rowKey);
+        return ((RowKeyAble) model).getRowData(rowKey);
     }
 
     public void findSelectedRowKeys() {
@@ -615,7 +615,7 @@ public class DataTable extends DataTableBase {
     protected void addToSelectedRowKeys(Object object, Map<String, Object> requestMap, String var, boolean hasRowKey) {
         requestMap.put(var, object);
 
-        Object rowKey = hasRowKey ? getRowKey() : getRowKeyFromModel(object);
+        Object rowKey = hasRowKey ? getRowKey() : getRowKey(object);
 
         if (rowKey != null) {
             selectedRowKeys.add(rowKey);
@@ -1142,7 +1142,7 @@ public class DataTable extends DataTableBase {
     @Override
     protected DataModel getDataModel() {
         DataModel model = super.getDataModel();
-        if (!(model instanceof SelectableDataModel) && isSelectionEnabled()) {
+        if (!(model instanceof RowKeyAble) && isSelectionEnabled()) {
             boolean hasRowKeyVe = getValueExpression(PropertyKeys.rowKey.toString()) != null;
             if (hasRowKeyVe) {
                 Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
@@ -1152,10 +1152,10 @@ public class DataTable extends DataTableBase {
                     return getRowKey();
                 };
 
-                model = new DefaultSelectableDataModel(model, rowKeyTransformer);
+                model = new RowKeyAbleDataModel(model, rowKeyTransformer);
             }
             else {
-                model = new DefaultSelectableDataModel(model);
+                model = new RowKeyAbleDataModel(model);
             }
 
             setDataModel(model);

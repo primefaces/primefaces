@@ -23,7 +23,7 @@
  */
 package org.primefaces.model;
 
-public interface SelectableDataModel<T> {
+public interface RowKeyAble<T> {
 
     String getRowKey(T object);
 

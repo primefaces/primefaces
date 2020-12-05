@@ -29,7 +29,7 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class DefaultSelectableDataModel<T> extends DataModel<T> implements SelectableDataModel<T> {
+public class RowKeyAbleDataModel<T> extends DataModel<T> implements RowKeyAble<T> {
 
     private static final Function<Object, String> DEFAULT_ROWKEY_TRANSFORMER = o -> Objects.toString(System.identityHashCode(o));
 
@@ -39,35 +39,35 @@ public class DefaultSelectableDataModel<T> extends DataModel<T> implements Selec
 
     private Map<String, T> cache;
 
+    private Iterator<T> last;
+
     // for serialization
-    public DefaultSelectableDataModel() {
+    public RowKeyAbleDataModel() {
         // NOOP
     }
 
-    public DefaultSelectableDataModel(DataModel<T> wrapped, Function<Object, String> rowKeyTransformer) {
+    public RowKeyAbleDataModel(DataModel<T> wrapped, Function<Object, String> rowKeyTransformer) {
         this.wrapped = wrapped;
         this.rowKeyTransformer = rowKeyTransformer;
         this.cache = new HashMap<>();
+        this.last = wrapped.iterator();
         setWrappedData(wrapped.getWrappedData());
     }
 
-    public DefaultSelectableDataModel(DataModel<T> wrapped) {
+    public RowKeyAbleDataModel(DataModel<T> wrapped) {
         this(wrapped, DEFAULT_ROWKEY_TRANSFORMER);
     }
 
     @Override
     public T getRowData(String rowKey) {
         T rowData = cache.get(rowKey);
-        if (rowData == null && cache.size() != getRowCount()) {
-            List<T> list = (List<T>) getWrappedData();
-            for (int i = cache.size(); i < list.size(); i++) {
-                T o = list.get(i);
-                String oRowKey = rowKeyTransformer.apply(o);
-                cache.put(oRowKey, o);
-                if (Objects.equals(oRowKey, rowKey)) {
-                    rowData = o;
-                    break;
-                }
+        while (rowData == null && last.hasNext()) {
+            T o = last.next();
+            String oRowKey = getRowKey(o);
+            cache.put(oRowKey, o);
+            if (Objects.equals(oRowKey, rowKey)) {
+                rowData = o;
+                break;
             }
         }
         return rowData;

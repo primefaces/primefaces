@@ -1214,7 +1214,7 @@ public class DataTableRenderer extends DataRenderer {
         HeaderRow headerRow = table.getHeaderRow();
 
         if (selectionEnabled) {
-            rowKey = table.getRowKeyFromModel(table.getRowData());
+            rowKey = table.getRowKey(table.getRowData());
         }
 
         //Preselection
@@ -1561,7 +1561,7 @@ public class DataTableRenderer extends DataRenderer {
                 ariaRowLabel = MessageFactory.getMessage(DataTable.ARIA_HEADER_CHECKBOX_ALL);
             }
             else {
-                rowKey = table.getRowKeyFromModel(table.getRowData());
+                rowKey = table.getRowKey(table.getRowData());
             }
 
             writer.startElement("div", null);
