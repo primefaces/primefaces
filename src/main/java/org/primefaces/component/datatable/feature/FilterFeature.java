@@ -36,6 +36,7 @@ import org.primefaces.util.MapBuilder;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
 import java.io.IOException;
 import java.util.*;
 
@@ -61,7 +62,7 @@ public class FilterFeature implements DataTableFeature {
 
     @Override
     public boolean shouldDecode(FacesContext context, DataTable table) {
-        return false;
+        return context.getCurrentPhaseId() == PhaseId.PROCESS_VALIDATIONS && isFilterRequest(context, table);
     }
 
     @Override
@@ -76,20 +77,13 @@ public class FilterFeature implements DataTableFeature {
         Map<String, FilterMeta> filterBy = table.initFilterBy(context);
 
         table.updateFilterByValuesWithFilterRequest(context, filterBy);
-    }
 
-    @Override
-    public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-
-        //reset state
-        String clientId = table.getClientId(context);
-        table.updateFilteredValue(context, null);
-        table.setValue(null);
+        // reset state
         table.setFirst(0);
-        table.setRowIndex(-1);
 
-        //update rows with rpp value
+        // update rows with rpp value
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String clientId = table.getClientId(context);
         String rppValue = params.get(clientId + "_rppDD");
         if (rppValue != null && !rppValue.equals("*")) {
             table.setRows(Integer.parseInt(rppValue));
@@ -114,9 +108,8 @@ public class FilterFeature implements DataTableFeature {
         else {
             filter(context, table);
 
-            //sort new filtered data to restore sort state
-            boolean sorted = table.isSortingCurrentlyActive();
-            if (sorted) {
+            // update filtered value accordingly to take account sorting
+            if (table.isSortingCurrentlyActive()) {
                 SortFeature sortFeature = (SortFeature) table.getFeature(DataTableFeatureKey.SORT);
                 sortFeature.sort(context, table);
             }
@@ -124,10 +117,7 @@ public class FilterFeature implements DataTableFeature {
 
         context.getApplication().publishEvent(context, PostFilterEvent.class, table);
 
-        renderer.encodeTbody(context, table, true);
-
         if (table.isMultiViewState()) {
-            Map<String, FilterMeta> filterBy = table.getFilterByAsMap();
             DataTableState ts = table.getMultiViewState(true);
             ts.setFilterBy(filterBy);
             if (table.isPaginator()) {
@@ -137,11 +127,18 @@ public class FilterFeature implements DataTableFeature {
         }
     }
 
+    @Override
+    public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
+        renderer.encodeTbody(context, table, true);
+    }
+
     public void filter(FacesContext context, DataTable table) {
-        Map<String, FilterMeta> filterBy = table.getFilterByAsMap();
-        List<Object> filteredData = new ArrayList<>();
+        List<Object> filtered = new ArrayList<>();
         Locale filterLocale = table.resolveDataLocale();
         ELContext elContext = context.getELContext();
+        Map<String, FilterMeta> filterBy = table.getFilterByAsMap();
+
+        table.setValue(null); // reset value (instead of filtering on already filtered value)
 
         for (int i = 0; i < table.getRowCount(); i++) {
             table.setRowIndex(i);
@@ -175,21 +172,18 @@ public class FilterFeature implements DataTableFeature {
             }
 
             if (matching) {
-                filteredData.add(table.getRowData());
+                filtered.add(table.getRowData());
             }
         }
 
         //Metadata for callback
         if (table.isPaginator() || table.isVirtualScroll()) {
-            PrimeFaces.current().ajax().addCallbackParam("totalRecords", filteredData.size());
+            PrimeFaces.current().ajax().addCallbackParam("totalRecords", filtered.size());
         }
 
         //save filtered data
-        table.updateFilteredValue(context, filteredData);
-
-        //update value
-        table.updateValue(table.getFilteredValue());
-
+        table.updateFilteredValue(context, filtered);
+        table.setValue(filtered);
         table.setRowIndex(-1);  //reset datamodel
     }
 }

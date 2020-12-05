@@ -80,10 +80,7 @@ public class SortFeature implements DataTableFeature {
                 sortBy.setPriority(SortMeta.MIN_PRIORITY);
             }
         }
-    }
 
-    @Override
-    public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         table.setFirst(0);
 
         if (table.isLazy()) {
@@ -94,7 +91,7 @@ public class SortFeature implements DataTableFeature {
                 int rows = table.getRows();
                 int scrollRows = table.getScrollRows();
                 int virtualScrollRows = (scrollRows * 2);
-                scrollRows = (rows == 0) ? virtualScrollRows : ((virtualScrollRows > rows) ? rows : virtualScrollRows);
+                scrollRows = (rows == 0) ? virtualScrollRows : Math.min(virtualScrollRows, rows);
 
                 table.loadLazyScrollData(0, scrollRows);
             }
@@ -109,14 +106,13 @@ public class SortFeature implements DataTableFeature {
                 PrimeFaces.current().ajax().addCallbackParam("totalRecords", table.getRowCount());
             }
 
-            //save state
-            Object filteredValue = table.getFilteredValue();
-            if (!table.isLazy() && table.isFilteringEnabled() && filteredValue != null) {
-                table.updateFilteredValue(context, (List) filteredValue);
+            //update filtered value accordingly to take account sorting
+            if (table.isFilteringEnabled()) {
+                table.updateFilteredValue(context, resolveList(table.getValue()));
             }
         }
 
-        renderer.encodeTbody(context, table, true);
+        context.getApplication().publishEvent(context, PostSortEvent.class, table);
 
         if (table.isMultiViewState()) {
             Map<String, SortMeta> sortMeta = table.getSortByAsMap();
@@ -129,6 +125,11 @@ public class SortFeature implements DataTableFeature {
                 }
             }
         }
+    }
+
+    @Override
+    public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
+        renderer.encodeTbody(context, table, true);
     }
 
     public void sort(FacesContext context, DataTable table) {
@@ -168,8 +169,6 @@ public class SortFeature implements DataTableFeature {
         }
 
         list.sort(chainedComparator);
-
-        context.getApplication().publishEvent(context, PostSortEvent.class, table);
     }
 
     @Override

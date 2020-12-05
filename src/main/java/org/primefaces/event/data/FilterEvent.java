@@ -23,31 +23,25 @@
  */
 package org.primefaces.event.data;
 
-import java.util.List;
-import java.util.Map;
-import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.Behavior;
-import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.AbstractAjaxBehaviorEvent;
 import org.primefaces.model.FilterMeta;
+
+import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.Behavior;
+import java.util.Map;
 
 public class FilterEvent extends AbstractAjaxBehaviorEvent {
 
     private static final long serialVersionUID = 1L;
 
-    private List<?> data;
+    private Map<String, FilterMeta> filterBy;
 
-    public FilterEvent(UIComponent component, Behavior behavior, List<?> data) {
+    public FilterEvent(UIComponent component, Behavior behavior, Map<String, FilterMeta> filterBy) {
         super(component, behavior);
-        this.data = data;
-    }
-
-    @Deprecated
-    public List<?> getData() {
-        return this.data;
+        this.filterBy = filterBy;
     }
 
     public Map<String, FilterMeta> getFilterBy() {
-        return ((DataTable) this.source).getFilterByAsMap();
+        return filterBy;
     }
 }

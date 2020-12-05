@@ -234,10 +234,7 @@ public class TreeTable extends TreeTableBase implements ColumnHolder {
                 wrapperEvent = new ColumnResizeEvent(this, behaviorEvent.getBehavior(), width, height, findColumn(columnId));
             }
             else if (eventName.equals("sort")) {
-                SortOrder order = SortOrder.valueOf(params.get(clientId + "_sortDir"));
-                UIColumn sortColumn = findColumn(params.get(clientId + "_sortKey"));
-
-                wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), sortColumn, order, 0);
+                wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), getSortByAsMap());
             }
             else if (eventName.equals("filter")) {
                 wrapperEvent = new FilterEvent(this, behaviorEvent.getBehavior(), null);
