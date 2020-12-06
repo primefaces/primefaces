@@ -82,7 +82,6 @@ public abstract class DataTableBase extends UIPageableData
         caseSensitiveSort,
         skipChildren,
         disabledTextSelection,
-        initMode,
         tabindex,
         reflow,
         liveScrollBuffer,
@@ -470,14 +469,6 @@ public abstract class DataTableBase extends UIPageableData
 
     public void setDisabledTextSelection(boolean disabledTextSelection) {
         getStateHelper().put(PropertyKeys.disabledTextSelection, disabledTextSelection);
-    }
-
-    public String getInitMode() {
-        return (String) getStateHelper().eval(PropertyKeys.initMode, "load");
-    }
-
-    public void setInitMode(String initMode) {
-        getStateHelper().put(PropertyKeys.initMode, initMode);
     }
 
     public String getTabindex() {

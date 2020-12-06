@@ -51,7 +51,6 @@ DataTable displays data in tabular format.
 | globalFilter              | null               | String           | Value of the global filter to use when filtering by default.
 | globalFilterFunction      | null               | MethodExpression | Custom implementation to globally filter a value against a constraint.
 | id                        | null               | String           | Unique identifier of the component
-| initMode                  | load               | String           | Defines when the datatable is initiated at client side, valid values are "load" (default) and "immediate".
 | lazy                      | false              | Boolean          | Controls lazy loading. In most cases this is detected automatically based on value-binding to LazyDataModel. So no need to set this explicit.
 | liveResize                | false              | Boolean          | Columns are resized live in this mode without using a resize helper.
 | liveScroll                | false              | Boolean          | Enables live scrolling.
