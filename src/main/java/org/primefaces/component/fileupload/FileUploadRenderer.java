@@ -24,8 +24,12 @@
 package org.primefaces.component.fileupload;
 
 import java.io.IOException;
+import java.util.logging.Logger;
+import javax.faces.application.ProjectStage;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
+import javax.faces.component.html.HtmlForm;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
@@ -34,10 +38,13 @@ import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class FileUploadRenderer extends CoreRenderer {
+
+    private static final Logger LOGGER = Logger.getLogger(FileUploadRenderer.class.getName());
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -60,6 +67,22 @@ public class FileUploadRenderer extends CoreRenderer {
 
         encodeMarkup(context, fileUpload);
         encodeScript(context, fileUpload);
+
+        if (context.isProjectStage(ProjectStage.Development)) {
+            UIForm form = ComponentTraversalUtils.closestForm(context, fileUpload);
+            if (form == null) {
+                LOGGER.warning("FileUpload requires a parent form. ClientId: " + fileUpload.getClientId(context));
+            }
+            else {
+                if (form instanceof HtmlForm) {
+                    String enctype = ((HtmlForm) form).getEnctype();
+                    if (!"multipart/form-data".equalsIgnoreCase(enctype)) {
+                        LOGGER.warning("FileUpload requires a parent form with enctype=\"multipart/form-data\". ClientId: "
+                                + fileUpload.getClientId(context));
+                    }
+                }
+            }
+        }
     }
 
     protected void encodeScript(FacesContext context, FileUpload fileUpload) throws IOException {
