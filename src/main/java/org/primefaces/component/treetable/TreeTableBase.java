@@ -31,10 +31,10 @@ import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.UITree;
 import org.primefaces.component.api.Widget;
-import org.primefaces.component.api.UISortableFilterableTable;
+import org.primefaces.component.api.UITable;
 
 public abstract class TreeTableBase extends UITree implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable,
-        MultiViewStateAware<TreeTableState>, UISortableFilterableTable {
+        MultiViewStateAware<TreeTableState>, UITable {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

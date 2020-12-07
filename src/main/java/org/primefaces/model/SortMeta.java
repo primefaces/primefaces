@@ -36,7 +36,7 @@ import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.util.Objects;
-import org.primefaces.component.api.UISortableFilterableTable;
+import org.primefaces.component.api.UITable;
 
 public class SortMeta implements Serializable, Comparable<SortMeta> {
 
@@ -88,7 +88,7 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
 
         SortOrder order = SortOrder.of(column.getSortOrder());
         ValueExpression sortByVE = column.getValueExpression(ColumnBase.PropertyKeys.sortBy.name());
-        sortByVE = sortByVE != null ? sortByVE : UISortableFilterableTable.createValueExprFromVarField(context, var, field);
+        sortByVE = sortByVE != null ? sortByVE : UITable.createValueExprFromVarField(context, var, field);
 
         return new SortMeta(column.getColumnKey(),
                             field,
@@ -109,7 +109,7 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
             throw new FacesException("HeaderRow must have 'groupBy' or 'field' attribute value");
         }
 
-        groupByVE = groupByVE != null ? groupByVE : UISortableFilterableTable.createValueExprFromVarField(context, var, headerRow.getField());
+        groupByVE = groupByVE != null ? groupByVE : UITable.createValueExprFromVarField(context, var, headerRow.getField());
 
         return new SortMeta(headerRow.getClientId(context),
                             headerRow.getField(),
@@ -222,14 +222,14 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
             String field = column.getField();
             if (field == null) {
                 Object sortByProperty = column.getSortBy();
-                field = (sortByProperty == null) ? UISortableFilterableTable.resolveDynamicField(context, columnSortByVE) : sortByProperty.toString();
+                field = (sortByProperty == null) ? UITable.resolveDynamicField(context, columnSortByVE) : sortByProperty.toString();
             }
             return field;
         }
         else {
             String field = column.getField();
             if (field == null) {
-                field = (columnSortByVE == null) ? (String) column.getSortBy() : UISortableFilterableTable.resolveStaticField(columnSortByVE);
+                field = (columnSortByVE == null) ? (String) column.getSortBy() : UITable.resolveStaticField(columnSortByVE);
             }
             return field;
         }

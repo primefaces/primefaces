@@ -27,9 +27,9 @@ import java.util.List;
 
 import javax.faces.event.PhaseId;
 import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.api.UITable;
+import org.primefaces.component.api.ColumnAware;
 
-public class SubTable extends SubTableBase implements UITable {
+public class SubTable extends SubTableBase implements ColumnAware {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SubTable";
 

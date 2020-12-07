@@ -41,7 +41,6 @@ import javax.faces.model.SelectItem;
 
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.api.UISortableFilterableTable;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
@@ -56,6 +55,7 @@ import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.util.*;
+import org.primefaces.component.api.UITable;
 
 public class DataTableRenderer extends DataRenderer {
 
@@ -1346,7 +1346,7 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         if (hasColumnDefaultRendering(table, column)) {
-            Object value = UISortableFilterableTable.createValueExprFromVarField(context, table.getVar(), column.getField())
+            Object value = UITable.createValueExprFromVarField(context, table.getVar(), column.getField())
                     .getValue(context.getELContext());
             if (value != null) {
                 writer.writeText(value, null);
