@@ -23,25 +23,6 @@
  */
 package org.primefaces.context;
 
-import org.primefaces.cache.CacheProvider;
-import org.primefaces.cache.DefaultCacheProvider;
-import org.primefaces.component.fileupload.FileUploadDecoder;
-import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.config.PrimeEnvironment;
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.Lazy;
-import org.primefaces.virusscan.VirusScannerService;
-import org.primefaces.webapp.FileUploadChunksServlet;
-
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletRegistration;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.spi.FileTypeDetector;
@@ -53,6 +34,26 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletRegistration;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+
+import org.primefaces.cache.CacheProvider;
+import org.primefaces.cache.DefaultCacheProvider;
+import org.primefaces.component.fileupload.FileUploadDecoder;
+import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.config.PrimeEnvironment;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.Lazy;
+import org.primefaces.virusscan.VirusScannerService;
+import org.primefaces.webapp.FileUploadChunksServlet;
 
 /**
  * A {@link PrimeApplicationContext} is a contextual store for the current application.
@@ -132,9 +133,10 @@ public class PrimeApplicationContext {
 
         virusScannerService = new Lazy<>(() -> new VirusScannerService(applicationClassLoader));
 
-        if (environment.isTikaAvailable()) {
+        if (environment.isMimeTypesAvailable() || environment.isTikaAvailable()) {
             for (FileTypeDetector detector : ServiceLoader.load(FileTypeDetector.class)) {
-                if (PrimeEnvironment.TIKA_FILE_DETECTOR_CLASS.equals(detector.getClass().getName())) {
+                String detectorName = detector.getClass().getName();
+                if (PrimeEnvironment.MIMETYPES_FILE_DETECTOR_CLASS.equals(detectorName) || PrimeEnvironment.TIKA_FILE_DETECTOR_CLASS.equals(detectorName)) {
                     fileTypeDetector = detector;
                     break;
                 }

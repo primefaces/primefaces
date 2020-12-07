@@ -220,8 +220,9 @@ public class FileUploadUtils {
         }
 
         boolean tika = context.getEnvironment().isTikaAvailable();
-        if (!tika && LOGGER.isLoggable(Level.WARNING)) {
-            LOGGER.warning("Could not find Apache Tika in classpath which is recommended for reliable content type checking");
+        boolean mimeTypes = context.getEnvironment().isMimeTypesAvailable();
+        if (!tika && !mimeTypes && LOGGER.isLoggable(Level.WARNING)) {
+            LOGGER.warning("Could not find Apache Tika or Overview MimeTypes in classpath which is recommended for reliable content type checking");
         }
 
         //If Tika is in place, we drop the original file extension to avoid short circuit detection by just looking at the file extension

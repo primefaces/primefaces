@@ -12,6 +12,7 @@ any 3rd part work incorporated are compatible with the PrimeFaces Licenses.
 | Rome | com.rometools | rome | 1.13.0 | Optional | FeedReader |
 | Apache Commons FileUpload | commons-fileupload | commons-fileupload | 1.4 | Optional | FileUpload |
 | Apache Tika | org.apache.tika | tika-java7 | 1.25 | Optional | Advanced security (content type validation) for FileUpload |
+| Overview Mime Types | org.overviewproject | mime-types | 0.1.4 | Optional | Advanced security (content type validation) for FileUpload |
 | barcode4j-light | net.sf.barcode4j | barcode4j-light | 2.1 | Optional | Barcode |
 | qrgen | net.glxn | qrgen |  1.4 | Optional | QR Code support for Barcode |
 | owasp-java-html-sanitizer | com.googlecode.owasp-java-html-sanitizer | owasp-java-html-sanitizer |  20200713.1 | Optional | TextEditor |

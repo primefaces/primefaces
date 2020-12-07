@@ -23,19 +23,21 @@
  */
 package org.primefaces.config;
 
-import org.primefaces.util.LangUtils;
-
-import javax.faces.context.FacesContext;
-import javax.validation.Validation;
 import java.io.InputStream;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.faces.context.FacesContext;
+import javax.validation.Validation;
+
+import org.primefaces.util.LangUtils;
+
 public class PrimeEnvironment {
 
     public static final String TIKA_FILE_DETECTOR_CLASS = "org.apache.tika.filetypedetector.TikaFileTypeDetector";
+    public static final String MIMETYPES_FILE_DETECTOR_CLASS = "org.overviewproject.mime_types.FileTypeDetector";
     private static final Logger LOGGER = Logger.getLogger(PrimeEnvironment.class.getName());
 
     private final boolean beanValidationAvailable;
@@ -57,6 +59,7 @@ public class PrimeEnvironment {
     private final boolean htmlSanitizerAvailable;
 
     private final boolean tikaAvailable;
+    private final boolean mimeTypesAvailable;
 
     public PrimeEnvironment(FacesContext context) {
         atLeastEl22 = LangUtils.tryToLoadClassForName("javax.el.ValueReference") != null;
@@ -76,6 +79,7 @@ public class PrimeEnvironment {
         htmlSanitizerAvailable = LangUtils.tryToLoadClassForName("org.owasp.html.PolicyFactory") != null;
 
         tikaAvailable = LangUtils.tryToLoadClassForName(TIKA_FILE_DETECTOR_CLASS) != null;
+        mimeTypesAvailable = LangUtils.tryToLoadClassForName(MIMETYPES_FILE_DETECTOR_CLASS) != null;
 
         if (context == null || context.getExternalContext() == null) {
             mojarra = false;
@@ -167,5 +171,9 @@ public class PrimeEnvironment {
 
     public boolean isTikaAvailable() {
         return tikaAvailable;
+    }
+
+    public boolean isMimeTypesAvailable() {
+        return mimeTypesAvailable;
     }
 }

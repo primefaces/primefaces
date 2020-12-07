@@ -145,14 +145,17 @@ public class FileUploadUtilsTest {
         Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.mp4", "application/music", mp4)));
 
         when(fileUpload.getAccept()).thenReturn("image/png");
-        //FIXME PNG not recognized by Apache Tika?
-//        Assertions.assertTrue(FileUploadUtils.isValidType(fileUpload, "test.Png", png));
         Assertions.assertFalse(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.tif", "image/tiff", tif)));
 
         //Tampered - Apache Tika must be in the classpath for this to work
-        when(fileUpload.getAccept()).thenReturn("image/gif");
-        Assertions.assertFalse(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.gif", "image/gif", exe)));
-        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.png", "image/png", gif)));
+        if (appContext.getEnvironment().isTikaAvailable()) {
+            when(fileUpload.getAccept()).thenReturn("image/gif");
+            Assertions.assertFalse(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.gif", "image/gif", exe)));
+            Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.png", "image/png", gif)));
+        } else {
+            // PNG not recognized by Apache Tika?
+            Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.Png", "image/png", png)));
+        }
     }
 
     @Test

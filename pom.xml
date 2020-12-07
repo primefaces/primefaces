@@ -191,9 +191,9 @@
         </dependency>
         <!-- Content type validation in FileUploadUtilsTest -->
         <dependency>
-            <groupId>org.apache.tika</groupId>
-            <artifactId>tika-java7</artifactId>
-            <version>1.25</version>
+            <groupId>org.overviewproject</groupId>
+            <artifactId>mime-types</artifactId>
+            <version>0.1.4</version>
             <scope>test</scope>
         </dependency>
         <dependency>
