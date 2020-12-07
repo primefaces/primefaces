@@ -26,7 +26,6 @@ package org.primefaces.model;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.ColumnBase;
-import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.feature.FilterFeature;
 import org.primefaces.model.filter.FilterConstraint;
 import org.primefaces.model.filter.FunctionFilterConstraint;
@@ -41,6 +40,7 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Objects;
+import org.primefaces.component.api.UISortableFilterableTable;
 
 public class FilterMeta implements Serializable {
 
@@ -99,7 +99,7 @@ public class FilterMeta implements Serializable {
         }
 
         ValueExpression filterByVE = column.getValueExpression(ColumnBase.PropertyKeys.filterBy.name());
-        filterByVE = filterByVE != null ? filterByVE : DataTable.createValueExprFromVarField(context, var, field);
+        filterByVE = filterByVE != null ? filterByVE : UISortableFilterableTable.createValueExprFromVarField(context, var, field);
 
         MatchMode matchMode = MatchMode.of(column.getFilterMatchMode());
         FilterConstraint constraint = FilterFeature.FILTER_CONSTRAINTS.get(matchMode);
@@ -201,14 +201,14 @@ public class FilterMeta implements Serializable {
             String field = column.getField();
             if (field == null) {
                 Object filterBy = column.getFilterBy();
-                field = (filterBy == null) ? DataTable.resolveDynamicField(context, columnFilterByVE) : filterBy.toString();
+                field = (filterBy == null) ? UISortableFilterableTable.resolveDynamicField(context, columnFilterByVE) : filterBy.toString();
             }
             return field;
         }
         else {
             String field = column.getField();
             if (field == null) {
-                field = (columnFilterByVE == null) ? (String) column.getFilterBy() : DataTable.resolveStaticField(columnFilterByVE);
+                field = (columnFilterByVE == null) ? (String) column.getFilterBy() : UISortableFilterableTable.resolveStaticField(columnFilterByVE);
             }
             return field;
         }

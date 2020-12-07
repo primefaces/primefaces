@@ -35,6 +35,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import org.primefaces.component.api.UISortableFilterableTable;
 
 public class HeaderRowRenderer extends CoreRenderer {
 
@@ -140,7 +141,7 @@ public class HeaderRowRenderer extends CoreRenderer {
 
         String field = row.getField();
         Object value = !LangUtils.isValueBlank(field)
-                ? DataTable.createValueExprFromVarField(context, table.getVar(), field).getValue(context.getELContext())
+                ? UISortableFilterableTable.createValueExprFromVarField(context, table.getVar(), field).getValue(context.getELContext())
                 : row.getGroupBy();
         writer.writeText(value, null);
 

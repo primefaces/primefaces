@@ -42,7 +42,6 @@ import org.primefaces.event.data.SortEvent;
 import org.primefaces.model.*;
 import org.primefaces.util.*;
 
-import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.ResourceDependency;
@@ -54,11 +53,8 @@ import javax.faces.model.DataModel;
 import java.lang.reflect.Array;
 import java.util.*;
 import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import org.primefaces.component.api.ColumnHolder;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -66,7 +62,7 @@ import org.primefaces.component.api.ColumnHolder;
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "touch/touchswipe.js")
-public class DataTable extends DataTableBase implements ColumnHolder {
+public class DataTable extends DataTableBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataTable";
 
@@ -182,11 +178,6 @@ public class DataTable extends DataTableBase implements ColumnHolder {
             .put("liveScroll", PageEvent.class)
             .build();
 
-    /**
-     * Backward compatibility for column properties (e.g sortBy, filterBy)
-     * using old syntax #{car[column.property]}) instead of #{column.property}
-     */
-    private static final Pattern OLD_SYNTAX_COLUMN_PROPERTY_REGEX = Pattern.compile("^#\\{\\w+\\[(.+)]}$");
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     private boolean reset = false;
@@ -499,42 +490,6 @@ public class DataTable extends DataTableBase implements ColumnHolder {
                 PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
             }
         }
-    }
-
-    public static String resolveStaticField(ValueExpression expression) {
-        if (expression != null) {
-            String expressionString = expression.getExpressionString();
-            if (expressionString.startsWith("#{")) {
-                expressionString = expressionString.substring(2, expressionString.indexOf('}')); //Remove #{}
-                return expressionString.substring(expressionString.indexOf('.') + 1); //Remove var
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Get bean's property value from a value expression.
-     * Support old syntax (e.g #{car[column.property]}) instead of #{column.property}
-     * @param exprVE
-     * @return
-     */
-    public static String resolveDynamicField(FacesContext context, ValueExpression exprVE) {
-        if (exprVE == null) {
-            return null;
-        }
-
-        ELContext elContext = context.getELContext();
-        String exprStr = exprVE.getExpressionString();
-
-        Matcher matcher = OLD_SYNTAX_COLUMN_PROPERTY_REGEX.matcher(exprStr );
-        if (matcher.find()) {
-            exprStr = matcher.group(1);
-            exprVE = context.getApplication().getExpressionFactory()
-                    .createValueExpression(elContext, "#{" + exprStr  + "}", String.class);
-        }
-
-        return (String) exprVE.getValue(elContext);
     }
 
     public void clearLazyCache() {
@@ -1219,14 +1174,6 @@ public class DataTable extends DataTableBase implements ColumnHolder {
                 .collect(Collectors.joining(",", "[", "]"));
     }
 
-    public static ValueExpression createValueExprFromVarField(FacesContext context, String var, String field) {
-        if (LangUtils.isValueBlank(var) || LangUtils.isValueBlank(field)) {
-            throw new FacesException("Table 'var' and Column 'field' attributes must be non null.");
-        }
-
-        return context.getApplication().getExpressionFactory()
-                .createValueExpression(context.getELContext(), "#{" + var + "." + field + "}", Object.class);
-    }
 
 
 
