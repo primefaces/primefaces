@@ -216,7 +216,6 @@
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#monitordownload" class="tsd-kind-icon">monitor<wbr>Download</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#nextzindex" class="tsd-kind-icon">next<wbr>Zindex</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#onelementload" class="tsd-kind-icon">on<wbr>Element<wbr>Load</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#onpost" class="tsd-kind-icon">on<wbr>Post</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#opendialog" class="tsd-kind-icon">open<wbr>Dialog</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#removedeferredrenders" class="tsd-kind-icon">remove<wbr>Deferred<wbr>Renders</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.html#scrollinview" class="tsd-kind-icon">scroll<wbr>InView</a></li>
@@ -342,7 +341,7 @@
 						<div class="lead">
 							<p>Constructs a new type by binding the this context of <code>Base</code> to the <code>ThisContext</code>. Additionally, also adds a new
 							property <code>_super</code> to the this context of <code>Base</code> that is also of type <code>Base</code>.</p>
-							<pre><code class="language-typescript"><span class="hljs-keyword">type</span> X = {foo: <span class="hljs-built_in">string</span>, bar: <span class="hljs-built_in">number</span>};
+							<pre><code class="language-typescript"><span class="hljs-keyword">type</span> X = {<span class="hljs-attr">foo</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">bar</span>: <span class="hljs-built_in">number</span>};
 <span class="hljs-keyword">type</span> Y = <span class="hljs-function">(<span class="hljs-params"><span class="hljs-built_in">this</span>: <span class="hljs-built_in">string</span>, k: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-built_in">boolean</span>;
 <span class="hljs-keyword">type</span> Z = BindThis&lt;Y, X&gt;;
 <span class="hljs-comment">// type Z = (this: {foo: string, bar: number, _super: Y}, k: string) =&gt; boolean</span></code></pre>
@@ -548,7 +547,7 @@
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Constructs a new type by making all properties <code>Key</code> in <code>Base</code> optional.</p>
-							<pre><code class="language-typescript"><span class="hljs-keyword">type</span> X = {foo: <span class="hljs-built_in">string</span>, bar: <span class="hljs-built_in">string</span>, baz: <span class="hljs-built_in">string</span>};
+							<pre><code class="language-typescript"><span class="hljs-keyword">type</span> X = {<span class="hljs-attr">foo</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">bar</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">baz</span>: <span class="hljs-built_in">string</span>};
 <span class="hljs-keyword">type</span> Y = PartialBy&lt;X, <span class="hljs-string">&quot;foo&quot;</span> | <span class="hljs-string">&quot;baz&quot;</span>&gt;;
 <span class="hljs-comment">// type Y = {foo?: string, bar: string, baz?: string};</span></code></pre>
 						</div>
@@ -696,8 +695,8 @@
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Constructs a new type by renaming the properties in <code>Base</code> according to the <code>RenameMap</code>.</p>
-							<pre><code class="language-typescript"><span class="hljs-keyword">type</span> Z = { bar: <span class="hljs-built_in">RegExp</span>; foo: <span class="hljs-built_in">number</span>; };
-<span class="hljs-keyword">type</span> S = RenameKeys&lt;Z, {bar: <span class="hljs-string">&quot;b&quot;</span>, foo: <span class="hljs-string">&quot;f&quot;</span>}&gt;;
+							<pre><code class="language-typescript"><span class="hljs-keyword">type</span> Z = { <span class="hljs-attr">bar</span>: <span class="hljs-built_in">RegExp</span>; foo: <span class="hljs-built_in">number</span>; };
+<span class="hljs-keyword">type</span> S = RenameKeys&lt;Z, {<span class="hljs-attr">bar</span>: <span class="hljs-string">&quot;b&quot;</span>, <span class="hljs-attr">foo</span>: <span class="hljs-string">&quot;f&quot;</span>}&gt;;
 <span class="hljs-comment">// type S = { b: RegExp; f: number; }</span></code></pre>
 						</div>
 					</div>
@@ -808,7 +807,7 @@
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Constructs a new type that is the union of all types of each property in T.</p>
-							<pre><code class="language-typescript"><span class="hljs-keyword">type</span> X = {a: [<span class="hljs-string">&quot;bar&quot;</span>, <span class="hljs-built_in">RegExp</span>], b: [<span class="hljs-string">&quot;foo&quot;</span>, <span class="hljs-built_in">number</span>]};
+							<pre><code class="language-typescript"><span class="hljs-keyword">type</span> X = {<span class="hljs-attr">a</span>: [<span class="hljs-string">&quot;bar&quot;</span>, <span class="hljs-built_in">RegExp</span>], <span class="hljs-attr">b</span>: [<span class="hljs-string">&quot;foo&quot;</span>, <span class="hljs-built_in">number</span>]};
 <span class="hljs-keyword">type</span> Y = ValueOf&lt;X&gt;;
 <span class="hljs-comment">// type Y = [&quot;bar&quot;, RegExp] | [&quot;foo&quot;, number]</span></code></pre>
 						</div>
@@ -2374,9 +2373,9 @@
   PF(<span class="hljs-string">&#x27;statusDialog&#x27;</span>).hide();
 }</code></pre>
 								<p>Server-side XHTML view:</p>
-								<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">p:commandButton</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;Download&quot;</span> <span class="hljs-attr">ajax</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">onclick</span>=<span class="hljs-string">&quot;PrimeFaces.monitorDownload(showStatus, hideStatus)&quot;</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">p:fileDownload</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;#{fileDownloadController.file}&quot;</span>/&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">p:commandButton</span>&gt;</span></code></pre>
+								<pre><code class="language-xml">&lt;p:commandButton value=&quot;Download&quot; ajax=&quot;false&quot; onclick=&quot;PrimeFaces.monitorDownload(showStatus, hideStatus)&quot;&gt;
+  &lt;p:fileDownload value=&quot;#{fileDownloadController.file}&quot;/&gt;
+&lt;/p:commandButton&gt;</code></pre>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -2494,25 +2493,6 @@
 									</ul>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace">
-					<a name="onpost" class="tsd-anchor"></a>
-					<h3>on<wbr>Post</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Post<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Callback that is invoked after a POST request.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -3452,9 +3432,6 @@
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-namespace">
 						<a href="primefaces.html#onelementload" class="tsd-kind-icon">on<wbr>Element<wbr>Load</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-namespace">
-						<a href="primefaces.html#onpost" class="tsd-kind-icon">on<wbr>Post</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-namespace">
 						<a href="primefaces.html#opendialog" class="tsd-kind-icon">open<wbr>Dialog</a>

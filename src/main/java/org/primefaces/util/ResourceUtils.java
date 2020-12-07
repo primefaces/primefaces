@@ -64,7 +64,7 @@ public class ResourceUtils {
      * Adds no cache pragma to the response to ensure it is not cached.  Dynamic downloads should always add this
      * to prevent caching and for GDPR.
      *
-     * @param context the ExternalContext we add the pragma to
+     * @param externalContext the ExternalContext we add the pragma to
      * @see https://github.com/primefaces/primefaces/issues/6359
      */
     public static void addNoCacheControl(ExternalContext externalContext) {

@@ -35,7 +35,7 @@ import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
 
 import static org.mockito.Mockito.*;
-import org.primefaces.component.api.UISortableFilterableTable;
+import org.primefaces.component.api.UITable;
 
 public class DataTableTest {
 
@@ -51,19 +51,19 @@ public class DataTableTest {
         ValueExpression exprVE = mock(ValueExpression.class);
 
         when(exprVE.getExpressionString()).thenReturn("#{car.year}");
-        String field = UISortableFilterableTable.resolveStaticField(exprVE);
+        String field = UITable.resolveStaticField(exprVE);
         Assertions.assertEquals("year", field);
 
         when(exprVE.getExpressionString()).thenReturn("#{car.wrapper.year}");
-        field = UISortableFilterableTable.resolveStaticField(exprVE);
+        field = UITable.resolveStaticField(exprVE);
         Assertions.assertEquals("wrapper.year", field);
 
         when(exprVE.getExpressionString()).thenReturn("#{car}");
-        field = UISortableFilterableTable.resolveStaticField(exprVE);
+        field = UITable.resolveStaticField(exprVE);
         Assertions.assertEquals("car", field);
 
         when(exprVE.getExpressionString()).thenReturn("car.year");
-        field = UISortableFilterableTable.resolveStaticField(exprVE);
+        field = UITable.resolveStaticField(exprVE);
         Assertions.assertNull(field);
     }
 
@@ -83,12 +83,12 @@ public class DataTableTest {
         // old syntax
         ValueExpression exprVE = expFactory.createValueExpression(
                 context.getELContext(), "#{car[column.container.value]}", String.class);
-        String field = UISortableFilterableTable.resolveDynamicField(context, exprVE);
+        String field = UITable.resolveDynamicField(context, exprVE);
         Assertions.assertEquals("MyValue", field);
 
         // new syntax
         exprVE = expFactory.createValueExpression(context.getELContext(), "#{column.container.value}", String.class);
-        field = UISortableFilterableTable.resolveDynamicField(context, exprVE);
+        field = UITable.resolveDynamicField(context, exprVE);
         Assertions.assertEquals("MyValue", field);
     }
 }

@@ -23,7 +23,7 @@
  */
 package org.primefaces.model.filter;
 
-public class ContainsFilterConstraint extends StringEqualityFilterConstraint {
+public class ContainsFilterConstraint extends StringFilterConstraint {
 
     public ContainsFilterConstraint() {
         super(String::contains);

@@ -10,10 +10,8 @@
  * - `multiple`: Multiple rows can be selected via clicking while holding the ctrl or shift key.
  * - `checkbox`: One or more rows can be selected by clicking on the checkbox next to each row.
  *
- * @typedef {"ASCENDING" | "DESCENDING"} PrimeFaces.widget.TreeTable.SortOrder The order how the rows of a tree table
- * are sorted.
- * - `ASCENDING`: The rows are ordered in an ascending order, from the first to the last item.
- * - `DESCENDING`: The rows are ordered in an ascending order, from the last to the first item.
+ * @typedef {"ASCENDING" | "DESCENDING" | "UNSORTED"} PrimeFaces.widget.TreeTable.SortOrder The available sort order
+ * types for the data table.
  *
  * @typedef {"eager" | "lazy"} PrimeFaces.widget.TreeTable.CellEditMode If cell editing mode is enabled, whether the
  * cell editors are loaded lazily.
@@ -97,6 +95,17 @@
  * @prop {string} cfg.editInitEvent Event that triggers row/cell editing.
  */
 PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
+
+    /**
+     * Map between the sort order names and the multiplier for the comparator.
+     * @protected
+     * @type {Record<PrimeFaces.widget.DataTable.SortOrder, -1 | 0 | 1>}
+     */
+    SORT_ORDER: {
+        ASCENDING: 1,
+        DESCENDING: -1,
+        UNSORTED: 0
+    },
 
     /**
      * @override
@@ -458,16 +467,24 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
 
         this.sortableColumns = this.thead.find('> tr > th.ui-sortable-column');
 
-        this.sortableColumns.filter('.ui-state-active').each(function() {
+        this.sortableColumns.each(function() {
             var columnHeader = $(this),
             columnHeaderId = columnHeader.attr('id'),
             sortIcon = columnHeader.children('span.ui-sortable-column-icon'),
             sortOrder = null;
 
-            if(sortIcon.hasClass('ui-icon-triangle-1-n'))
-                sortOrder = 'ASCENDING';
-            else
-                sortOrder = 'DESCENDING';
+            if (sortIcon.hasClass('ui-icon-triangle-1-n')) {
+                sortOrder = $this.SORT_ORDER.ASCENDING;
+                columnHeader.attr('aria-sort', 'ascending');
+            }
+            else if (sortIcon.hasClass('ui-icon-triangle-1-s')) {
+                sortOrder = $this.SORT_ORDER.DESCENDING;
+                columnHeader.attr('aria-sort', 'descending');
+            }
+            else {
+                sortOrder = $this.SORT_ORDER.UNSORTED;
+                columnHeader.attr('aria-sort', 'other');
+            }
 
             columnHeader.data('sortorder', sortOrder);
 
@@ -500,14 +517,14 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
 
             PrimeFaces.clearSelection();
 
-            var columnHeader = $(this),
-                metaKey = e.metaKey || e.ctrlKey || metaKeyOn,
-                sortOrder = columnHeader.data('sortorder') || 'DESCENDING';
+            var unsorting = $this.cfg.allowUnsorting || $this.cfg.allowUnsorting == undefined;
 
-            if(sortOrder === 'ASCENDING')
-                sortOrder = 'DESCENDING';
-            else if(sortOrder === 'DESCENDING')
-                sortOrder = 'ASCENDING';
+            var columnHeader = $(this),
+                sortOrderData = columnHeader.data('sortorder'),
+                sortOrder = (sortOrderData === $this.SORT_ORDER.UNSORTED) ? $this.SORT_ORDER.ASCENDING :
+                    (sortOrderData === $this.SORT_ORDER.ASCENDING) ? $this.SORT_ORDER.DESCENDING :
+                        unsorting ? $this.SORT_ORDER.UNSORTED : $this.SORT_ORDER.ASCENDING,
+                metaKey = e.metaKey || e.ctrlKey || metaKeyOn;
 
             if ($this.cfg.multiSort) {
                 if (metaKey) {
@@ -711,12 +728,26 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                             }
 
                             columnHeader.removeClass('ui-state-hover').addClass('ui-state-active').data('sortorder', order);
-                            var sortIcon = columnHeader.find('.ui-sortable-column-icon');
+                            var sortIcon = columnHeader.find('.ui-sortable-column-icon'),
+                            ariaLabel = columnHeader.attr('aria-label');
 
-                            if(order === 'DESCENDING')
+                            if (order === $this.SORT_ORDER.DESCENDING) {
                                 sortIcon.removeClass('ui-icon-triangle-1-n').addClass('ui-icon-triangle-1-s');
-                            else if(order === 'ASCENDING')
+                                columnHeader.attr('aria-sort', 'descending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.otherMessage));
+                                $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'descending')
+                                    .attr('aria-label', $this.getSortMessage(ariaLabel, $this.otherMessage));
+                            } else if (order === $this.SORT_ORDER.ASCENDING) {
                                 sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-n');
+                                columnHeader.attr('aria-sort', 'ascending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.descMessage));
+                                $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'ascending')
+                                    .attr('aria-label', $this.getSortMessage(ariaLabel, $this.descMessage));
+                            } else {
+                                sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-carat-2-n-s');
+                                columnHeader.removeClass('ui-state-active ').attr('aria-sort', 'other')
+                                    .attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));
+                                $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'other')
+                                    .attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));
+                            }
                         }
                     });
 

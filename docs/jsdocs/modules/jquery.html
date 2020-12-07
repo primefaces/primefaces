@@ -12675,7 +12675,7 @@ $( <span class="hljs-string">&quot;p&quot;</span> ).trigger( <span class="hljs-s
 										<br></p>
 										<ul>
 											<li><code>handler</code> — A function to execute each time the event is triggered. <br></li>
-											<li><code>preventBubble</code> — Setting the third argument to false will attach a function that prevents the default action from<pre><code>              occurring <span class="hljs-keyword">and</span> stops the event <span class="hljs-keyword">from</span> bubbling. The<span class="hljs-built_in"> default </span>is `<span class="hljs-literal">true</span>`.</code></pre></li>
+											<li><code>preventBubble</code> — Setting the third argument to false will attach a function that prevents the default action from<pre><code>              occurring <span class="hljs-keyword">and</span> stops the <span class="hljs-keyword">event</span> <span class="hljs-keyword">from</span> bubbling. The <span class="hljs-literal">default</span> <span class="hljs-keyword">is</span> `<span class="hljs-literal">true</span>`.</code></pre></li>
 										</ul>
 									</div>
 								</li>
@@ -13032,7 +13032,7 @@ write <span class="hljs-tag">&lt;<span class="hljs-name">em</span>&gt;</span>the
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 ​
 <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">b</span>&gt;</span>w<span class="hljs-tag">&lt;/<span class="hljs-name">b</span>&gt;</span>rit<span class="hljs-tag">&lt;<span class="hljs-name">b</span>&gt;</span>e<span class="hljs-tag">&lt;/<span class="hljs-name">b</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span> the <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>demo,<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span> <span class="hljs-tag">&lt;<span class="hljs-name">button</span>&gt;</span>write
+<span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">b</span>&gt;</span>w<span class="hljs-tag">&lt;/<span class="hljs-name">b</span>&gt;<span class="hljs-name">rit</span></span><span class="hljs-tag">&lt;<span class="hljs-name">b</span>&gt;</span>e<span class="hljs-tag">&lt;/<span class="hljs-name">b</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span> the <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>demo,<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span> <span class="hljs-tag">&lt;<span class="hljs-name">button</span>&gt;</span>write
 the<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span> demo,
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 ​
@@ -13042,7 +13042,7 @@ This <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>th
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 ​
 <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>t<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>he <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>m<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>orning.
+<span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>t<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;<span class="hljs-name">he</span></span> <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>m<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;<span class="hljs-name">orning.</span></span>
 <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;results&quot;</span>&gt;</span>Found <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span> children in <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>TAG<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>.<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
@@ -22744,7 +22744,7 @@ $( <span class="hljs-string">&quot;p&quot;</span> ).on( <span class="hljs-string
 										<p><em>&#x40;param</em> <code>selector_data</code>
 										<br></p>
 										<ul>
-											<li><code>selector</code> — A selector string to filter the descendants of the selected elements that trigger the event. If the<pre><code>         selector <span class="hljs-keyword">is</span> <span class="hljs-literal">null</span> or omitted, the <span class="hljs-keyword">event</span> <span class="hljs-keyword">is</span> always triggered <span class="hljs-keyword">when</span> it reaches the selected element. &lt;br&gt;</code></pre></li>
+											<li><code>selector</code> — A selector string to filter the descendants of the selected elements that trigger the event. If the<pre><code>         selector <span class="hljs-keyword">is</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">or</span> omitted, the <span class="hljs-keyword">event</span> <span class="hljs-keyword">is</span> always triggered <span class="hljs-keyword">when</span> it reaches the selected element. &lt;br&gt;</code></pre></li>
 											<li><code>data</code> — Data to be passed to the handler in event.data when an event is triggered.</li>
 										</ul>
 									</div>
@@ -27948,7 +27948,7 @@ $( <span class="hljs-string">&quot;button&quot;</span> ).click( colorEm );
 									</dd>
 									<dt>example</dt>
 									<dd><p>​ ````Selects all paragraphs, then slices the selection to include only the third element.</p>
-										<pre><code class="language-javascript">$( <span class="hljs-string">&quot;p&quot;</span> ).slice( <span class="hljs-number">-1</span> ).wrapInner( <span class="hljs-string">&quot;&lt;b&gt;&lt;/b&gt;&quot;</span> );</code></pre>
+										<pre><code class="language-javascript">$( <span class="hljs-string">&quot;p&quot;</span> ).slice( -<span class="hljs-number">1</span> ).wrapInner( <span class="hljs-string">&quot;&lt;b&gt;&lt;/b&gt;&quot;</span> );</code></pre>
 									</dd>
 								</dl>
 							</div>

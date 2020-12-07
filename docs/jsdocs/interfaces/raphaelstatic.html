@@ -724,10 +724,10 @@ paper.circle(<span class="hljs-number">100</span>, <span class="hljs-number">100
 						<p><strong>Note to TypeScript users</strong></p>
 						<p>To declare your plugin, you should extend the <code>raphael</code> module and add to the <a href="raphaelelement.html">RaphaelElement</a>:</p>
 						<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { RaphaelElement } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;raphael&quot;</span>
-<span class="hljs-keyword">declare</span> <span class="hljs-keyword">module</span> &quot;raphael&quot; {
+<span class="hljs-keyword">declare</span> <span class="hljs-built_in">module</span> <span class="hljs-string">&quot;raphael&quot;</span> {
   <span class="hljs-keyword">interface</span> RaphaelElement {
     red(): <span class="hljs-built_in">void</span>;
-    colored(r: <span class="hljs-built_in">number</span>, g: <span class="hljs-built_in">number</span>, b: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">this</span>;
+    colored(r: <span class="hljs-built_in">number</span>, <span class="hljs-attr">g</span>: <span class="hljs-built_in">number</span>, <span class="hljs-attr">b</span>: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">this</span>;
    }
 }</code></pre>
 					</div>
@@ -765,9 +765,9 @@ paper.mystuff.star();</code></pre>
 						<p><strong>Note to TypeScript users</strong></p>
 						<p>To declare your plugin, you should extend the <code>raphael</code> module and add to the <a href="raphaelpaper.html">RaphaelPaper</a>:</p>
 						<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { RaphaelPaper, RaphaelPath } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;raphael&quot;</span>
-<span class="hljs-keyword">declare</span> <span class="hljs-keyword">module</span> &quot;raphael&quot; {
+<span class="hljs-keyword">declare</span> <span class="hljs-built_in">module</span> <span class="hljs-string">&quot;raphael&quot;</span> {
   <span class="hljs-keyword">interface</span> RaphaelPaper {
-    arrow(x1: <span class="hljs-built_in">number</span>, y1: <span class="hljs-built_in">number</span>, x2: <span class="hljs-built_in">number</span>, y2: <span class="hljs-built_in">number</span>, size: <span class="hljs-built_in">number</span>): RaphaelPath;
+    arrow(x1: <span class="hljs-built_in">number</span>, <span class="hljs-attr">y1</span>: <span class="hljs-built_in">number</span>, <span class="hljs-attr">x2</span>: <span class="hljs-built_in">number</span>, <span class="hljs-attr">y2</span>: <span class="hljs-built_in">number</span>, <span class="hljs-attr">size</span>: <span class="hljs-built_in">number</span>): RaphaelPath;
     mystuff: {
       arrow(flag: <span class="hljs-built_in">boolean</span>): <span class="hljs-built_in">number</span>;
       star(): <span class="hljs-built_in">void</span>;
@@ -815,10 +815,10 @@ paper.set(paper.circle(<span class="hljs-number">100</span>, <span class="hljs-n
 						<p><strong>Note to TypeScript users</strong></p>
 						<p>To declare your plugin, you should extend the <code>raphael</code> module and add to the <a href="raphaelset.html">RaphaelSet</a>:</p>
 						<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { RaphaelSet } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;raphael&quot;</span>
-<span class="hljs-keyword">declare</span> <span class="hljs-keyword">module</span> &quot;raphael&quot; {
+<span class="hljs-keyword">declare</span> <span class="hljs-built_in">module</span> <span class="hljs-string">&quot;raphael&quot;</span> {
   <span class="hljs-keyword">interface</span> RaphaelSet {
     green(): <span class="hljs-built_in">void</span>;
-    colorized(r: <span class="hljs-built_in">number</span>, g: <span class="hljs-built_in">number</span>, b: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">this</span>;
+    colorized(r: <span class="hljs-built_in">number</span>, <span class="hljs-attr">g</span>: <span class="hljs-built_in">number</span>, <span class="hljs-attr">b</span>: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">this</span>;
   }
 }</code></pre>
 					</div>
@@ -1186,7 +1186,7 @@ paper.path(Raphael.format(<span class="hljs-string">&quot;M{x},{y}h{dim.width}v{
   <span class="hljs-attr">dim</span>: {
     <span class="hljs-attr">width</span>: <span class="hljs-number">40</span>,
     <span class="hljs-attr">height</span>: <span class="hljs-number">50</span>,
-    <span class="hljs-string">&quot;negative width&quot;</span>: <span class="hljs-number">-40</span>
+    <span class="hljs-string">&quot;negative width&quot;</span>: -<span class="hljs-number">40</span>
   }
 }));</code></pre>
 							</div>

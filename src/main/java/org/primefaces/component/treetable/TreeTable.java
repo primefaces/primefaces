@@ -128,6 +128,7 @@ public class TreeTable extends TreeTableBase {
     private List<UIColumn> columns;
     private Columns dynamicColumns;
     private List<String> filteredRowKeys = new ArrayList<>();
+    private Map<String, AjaxBehaviorEvent> deferredEvents = new HashMap<>(1);
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
@@ -236,7 +237,8 @@ public class TreeTable extends TreeTableBase {
                 wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), getSortByAsMap());
             }
             else if (eventName.equals("filter")) {
-                wrapperEvent = new FilterEvent(this, behaviorEvent.getBehavior(), null);
+                deferredEvents.put("filter", (AjaxBehaviorEvent) event);
+                return;
             }
             else if (eventName.equals("rowEdit") || eventName.equals("rowEditCancel") || eventName.equals("rowEditInit")) {
                 String nodeKey = params.get(clientId + "_rowEditIndex");
@@ -299,6 +301,13 @@ public class TreeTable extends TreeTableBase {
             Map<String, FilterMeta> filterBy = initFilterBy(context);
             updateFilterByValuesWithFilterRequest(context, filterBy);
             setFilterByAsMap(filterBy);
+
+            AjaxBehaviorEvent event = deferredEvents.get("filter");
+            if (event != null) {
+                FilterEvent wrappedEvent = new FilterEvent(this, event.getBehavior(), getFilterByAsMap());
+                wrappedEvent.setPhaseId(PhaseId.PROCESS_VALIDATIONS);
+                super.queueEvent(wrappedEvent);
+            }
         }
     }
 
@@ -502,12 +511,7 @@ public class TreeTable extends TreeTableBase {
     }
 
     public boolean isFilteringEnabled() {
-        Object value = getStateHelper().get("filtering");
-        return value != null;
-    }
-
-    public void enableFiltering() {
-        getStateHelper().put("filtering", true);
+        return !getFilterByAsMap().isEmpty();
     }
 
     public void updateFilteredNode(FacesContext context, TreeNode node) {

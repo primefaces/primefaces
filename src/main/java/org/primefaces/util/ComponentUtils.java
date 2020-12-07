@@ -334,7 +334,7 @@ public class ComponentUtils {
     /**
      * Duplicate code from json-simple project under apache license
      * http://code.google.com/p/json-simple/source/browse/trunk/src/org/json/simple/JSONValue.java
-     * @deprecated Use {@link EscapeUtils.forJavaScript}
+     * @deprecated Use {@link EscapeUtils#forJavaScript}
      */
     @Deprecated
     public static String escapeText(String text) {
@@ -342,7 +342,7 @@ public class ComponentUtils {
     }
 
     /**
-     * @deprecated Use {@link EscapeUtils.forJavaScript}
+     * @deprecated Use {@link EscapeUtils#forJavaScript}
      */
     @Deprecated
     public static String escapeEcmaScriptText(String text) {
@@ -360,7 +360,7 @@ public class ComponentUtils {
      *
      * @param string The string to be escaped.
      * @return The escaped string.
-     * @deprecated Use {@link EscapeUtils.forXml}
+     * @deprecated Use {@link EscapeUtils#forXml}
      */
     @Deprecated
     public static String escapeXml(String string) {

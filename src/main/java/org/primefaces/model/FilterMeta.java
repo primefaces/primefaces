@@ -40,7 +40,7 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Objects;
-import org.primefaces.component.api.UISortableFilterableTable;
+import org.primefaces.component.api.UITable;
 
 public class FilterMeta implements Serializable {
 
@@ -99,7 +99,7 @@ public class FilterMeta implements Serializable {
         }
 
         ValueExpression filterByVE = column.getValueExpression(ColumnBase.PropertyKeys.filterBy.name());
-        filterByVE = filterByVE != null ? filterByVE : UISortableFilterableTable.createValueExprFromVarField(context, var, field);
+        filterByVE = filterByVE != null ? filterByVE : UITable.createValueExprFromVarField(context, var, field);
 
         MatchMode matchMode = MatchMode.of(column.getFilterMatchMode());
         FilterConstraint constraint = FilterFeature.FILTER_CONSTRAINTS.get(matchMode);
@@ -201,14 +201,14 @@ public class FilterMeta implements Serializable {
             String field = column.getField();
             if (field == null) {
                 Object filterBy = column.getFilterBy();
-                field = (filterBy == null) ? UISortableFilterableTable.resolveDynamicField(context, columnFilterByVE) : filterBy.toString();
+                field = (filterBy == null) ? UITable.resolveDynamicField(context, columnFilterByVE) : filterBy.toString();
             }
             return field;
         }
         else {
             String field = column.getField();
             if (field == null) {
-                field = (columnFilterByVE == null) ? (String) column.getFilterBy() : UISortableFilterableTable.resolveStaticField(columnFilterByVE);
+                field = (columnFilterByVE == null) ? (String) column.getFilterBy() : UITable.resolveStaticField(columnFilterByVE);
             }
             return field;
         }

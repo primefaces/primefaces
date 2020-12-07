@@ -23,7 +23,7 @@
  */
 package org.primefaces.model.filter;
 
-public class EndsWithFilterConstraint extends StringEqualityFilterConstraint {
+public class EndsWithFilterConstraint extends StringFilterConstraint {
 
     public EndsWithFilterConstraint() {
         super(String::endsWith);
