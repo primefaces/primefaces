@@ -68,7 +68,8 @@ public class FileUploadRenderer extends CoreRenderer {
         encodeMarkup(context, fileUpload);
         encodeScript(context, fileUpload);
 
-        if (context.isProjectStage(ProjectStage.Development)) {
+        // only check this on "simple" mode as "advanced" uses an own form and iframe
+        if (context.isProjectStage(ProjectStage.Development) && !fileUpload.getMode().equals("advanced")) {
             UIForm form = ComponentTraversalUtils.closestForm(context, fileUpload);
             if (form == null) {
                 LOGGER.warning("No parent form found on the server side for FileUpload. "
