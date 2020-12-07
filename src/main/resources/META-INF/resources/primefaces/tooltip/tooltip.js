@@ -22,7 +22,7 @@
  * @this {PrimeFaces.widget.Tooltip} PrimeFaces.widget.Tooltip.OnShowCallback 
  * 
  * @prop {string} globalTitle The text that is shown as the global title.
- * @prop {JQuery.Event} mouseEvent The mouse event that occurred for this tooltip.
+ * @prop {JQuery.TriggeredEvent} mouseEvent The mouse event that occurred for this tooltip.
  * @prop {JQuery} target The DOM element for the target component.
  * @prop {number} timeout The set-timeout timer ID of the time for the tooltip delay.
  * 

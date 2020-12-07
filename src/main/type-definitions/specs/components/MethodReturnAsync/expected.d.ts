@@ -5,13 +5,11 @@ declare namespace PrimeFaces.widget {
     export class MethodReturnAsync {
         /**
          * method bar
-         * 
          * @return bar retval
          */
         bar(): Promise<string>;
         /**
          * method foo
-         * 
          * @return foo retval
          */
         foo(): Promise<boolean>;

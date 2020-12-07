@@ -29,7 +29,7 @@ const SeveritySettings = createDefaultSeveritySettings({
  * @return {string[]}
  */
 function processInput(input, sourceName, sourceLocation, inclusionHandler) {
-    const program = parseJsProgram(input, sourceName, sourceLocation.ambient);
+    const program = parseJsProgram(input, sourceName, sourceLocation.ambient, "latest");
     const documentable = aggregateDocumentable(program, inclusionHandler, SeveritySettings, [
         aggregateHandlerWidgets,
         aggregateHandlerDefaults,

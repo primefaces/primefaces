@@ -742,7 +742,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Highlights the next option after the currently highlighted option in the overlay panel.
      * @private
-     * @param {JQuery.Event} event The event of the keypress.
+     * @param {JQuery.TriggeredEvent} event The event of the keypress.
      */
     highlightNext: function(event) {
         var activeItem = this.getActiveItem(),
@@ -771,7 +771,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Highlights the previous option before the currently highlighted option in the overlay panel.
      * @private
-     * @param {JQuery.Event} event The event of the keypress.
+     * @param {JQuery.TriggeredEvent} event The event of the keypress.
      */
     highlightPrev: function(event) {
         var activeItem = this.getActiveItem(),
@@ -795,7 +795,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Callback for when the enter key was pressed. Brings up the overlay panel or accepts the highlighted option.
      * @private
-     * @param {JQuery.Event} event The event of the keypress.
+     * @param {JQuery.TriggeredEvent} event The event of the keypress.
      */
     handleEnterKey: function(event) {
         if(this.panel.is(':visible')) {
@@ -809,7 +809,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Callback for when the space key was pressed. Brings up or hides the overlay panel.
      * @private
-     * @param {JQuery.Event} event The event of the keypress.
+     * @param {JQuery.TriggeredEvent} event The event of the keypress.
      */
     handleSpaceKey: function(event) {
         var target = $(event.target);
@@ -834,7 +834,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Callback for when the escape key was pressed. Hides the overlay panel.
      * @private
-     * @param {JQuery.Event} event The event of the keypress.
+     * @param {JQuery.TriggeredEvent} event The event of the keypress.
      */
     handleEscapeKey: function(event) {
         if(this.panel.is(':visible')) {
@@ -858,7 +858,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Callback that adjusts the label, invoked when the selected option has changed.
      * @private
-     * @param {JQuery.Event} event The event that triggered the change.
+     * @param {JQuery.TriggeredEvent} event The event that triggered the change.
      */
     handleLabelChange: function(event) {
         this.customInput = true;
@@ -1295,9 +1295,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Invokes the given method after making sure that the overlay panel was loaded (in case dynamic mode is enabled).
      * @private
-     * @param {(this: PrimeFaces.widget.SelectOneMenu, event: JQuery.Event) => void} handleMethod Callback method to
+     * @param {(this: PrimeFaces.widget.SelectOneMenu, event: JQuery.TriggeredEvent) => void} handleMethod Callback method to
      * invoke after the dynamic overlay panel was loaded. 
-     * @param {JQuery.Event} event An event that is passed to the callback. 
+     * @param {JQuery.TriggeredEvent} event An event that is passed to the callback. 
      */
     callHandleMethod: function(handleMethod, event) {
         var $this = this;

@@ -263,7 +263,7 @@ declare namespace JQuery {
          * Usually receives the following additional arguments:
          * - `elem` (JQuery): The element that the event was triggered on
          * - `obj` (object): A copy of the internal data used by idleTimer
-         * - `triggerevent` (JQuery.Event): The initial event that triggered the element to become active.
+         * - `triggerevent` (JQuery.TriggeredEvent): The initial event that triggered the element to become active.
          */
         ["active.idleTimer"]: JQueryIdleTimer.ActiveEvent<TDelegateTarget, TData, TCurrentTarget, TTarget>;
 

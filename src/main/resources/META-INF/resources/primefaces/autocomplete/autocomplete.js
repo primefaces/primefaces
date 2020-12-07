@@ -617,7 +617,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Callback for when a key event occurred.
      * @private
-     * @param {JQuery.Event} e Key event that occurred.
+     * @param {JQuery.TriggeredEvent} e Key event that occurred.
      */
     processKeyEvent: function(e) {
         var $this = this;
@@ -975,7 +975,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Invokes the appropriate behavior for when a suggestion item was selected.
      * @private
-     * @param {JQuery.Event} event The event that occurred.
+     * @param {JQuery.TriggeredEvent} event The event that occurred.
      * @param {string} itemValue Value of the selected item.
      */
     invokeItemSelectBehavior: function(event, itemValue) {
@@ -993,7 +993,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Invokes the appropriate behavior when a suggestion item was unselected.
      * @private
-     * @param {JQuery.Event} event The event that occurred.
+     * @param {JQuery.TriggeredEvent} event The event that occurred.
      * @param {string} itemValue Value of the unselected item.
      */
     invokeItemUnselectBehavior: function(event, itemValue) {
@@ -1043,7 +1043,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Removes the given suggestion item.
      * @private
-     * @param {JQuery.Event} event The event that occurred.
+     * @param {JQuery.TriggeredEvent} event The event that occurred.
      * @param {JQuery} item Suggestion item to remove.
      */
     removeItem: function(event, item) {

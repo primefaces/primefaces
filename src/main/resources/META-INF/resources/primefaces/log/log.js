@@ -175,7 +175,7 @@ PrimeFaces.widget.Log = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Callback for when a click occurred on the log message header.
      * @private
-     * @param {JQuery.Event} event The event that occurred.
+     * @param {JQuery.TriggeredEvent} event The event that occurred.
      * @param {string} severityClass Class for the severity of the log message.
      * @param {PrimeFaces.widget.Log.Severity} severity Severity of the log message. 
      * @param {JQuery} button The button that was pressed.

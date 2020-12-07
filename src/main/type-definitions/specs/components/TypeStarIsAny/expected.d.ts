@@ -9,7 +9,6 @@ declare namespace PrimeFaces.widget {
         hoge: any;
         /**
          * method hogera
-         * 
          * @param x hogera param x
          * @return hogera retval
          */
@@ -20,7 +19,6 @@ declare namespace PrimeFaces.widget {
         bar: any;
         /**
          * method foo
-         * 
          * @param x foo param x
          * @return foo retval
          */

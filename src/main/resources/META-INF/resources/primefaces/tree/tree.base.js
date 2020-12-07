@@ -17,15 +17,13 @@
  * {@link BaseTreeCfg.onNodeClick}.
  * @this {PrimeFaces.widget.BaseTree} PrimeFaces.widget.BaseTree.OnNodeClickCallback
  * @param {JQuery} PrimeFaces.widget.BaseTree.OnNodeClickCallback.node The tree node that was clicked.
- * @param {JQuery.Event} PrimeFaces.widget.BaseTree.OnNodeClickCallback.event The mouse click event that occurred.
+ * @param {JQuery.TriggeredEvent} PrimeFaces.widget.BaseTree.OnNodeClickCallback.event The mouse click event that occurred.
  * @return {boolean} PrimeFaces.widget.BaseTree.OnNodeClickCallback `true` to allow the node to be selected, `false` to
  * ignore the click.
  * 
  * @interface {PrimeFaces.widget.BaseTree.NodeIconSet} NodeIconSet A set of icons to be used for a certain node type.
  * @prop {string} NodeIconSet.expandedIcon Icon to be used when the node is expanded.
  * @prop {string} NodeIconSet.collapsedIcon Icon to be used when the node is collapsed.
- * 
- * @abstract
  * 
  * @implements {PrimeFaces.widget.ContextMenu.ContextMenuProvider<PrimeFaces.widget.BaseTree>}
  * 
@@ -249,8 +247,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Finds The DOM element for the container which contains the child nodes of the given node.
-     * @abstract
+     * Finds the DOM element for the container which contains the child nodes of the given node.
      * @protected
      * @param {JQuery} node A node for which to get the children container.
      * @return {JQuery} The container with the children of the given node.
@@ -261,7 +258,6 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Makes the children of the given node visible. Called when a node is expanded.
-     * @abstract
      * @protected
      * @param {JQuery} node Node with children to display.
      */
@@ -445,7 +441,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Invoked in response to a normal click on a node.
      * @protected
-     * @param {JQuery.Event} event Event of the click.
+     * @param {JQuery.TriggeredEvent} event Event of the click.
      * @param {JQuery} nodeContent Content of the clicked node.
      */
     nodeClick: function(event, nodeContent) {
@@ -513,7 +509,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Invoked in response to a right click on a node.
      * @protected
-     * @param {JQuery.Event} event Event of the right click.
+     * @param {JQuery.TriggeredEvent} event Event of the right click.
      * @param {JQuery} nodeContent Content of the clicked node.
      * @param {() => void} fnShowMenu Callback that is invoked when the context menu is shown. 
      * @return {boolean} `true` if the context menu was opened, or `false` otherwise.
@@ -548,7 +544,6 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
     /**
      * A sub class may perform any setup related to registering event handlers in this method, such as listening to
      * mouse clicks or keyboard presses.
-     * @abstract
      * @protected
      */
     bindEvents: function() {
@@ -558,7 +553,6 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
     /**
      * This method must select the given node. When `silent` is set to `true`, no events should be triggered in response
      * to this action.
-     * @abstract
      * @param {JQuery} node A node of this tree to select.
      * @param {boolean} [silent] `true` if no events should be triggered, or `false` otherwise. 
      */
@@ -569,7 +563,6 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
     /**
      * This method must unselect the given node. When `silent` is set to `true`, no events should be triggered in
      * response to this action.
-     * @abstract
      * @param {JQuery} node A node of this tree to unselect.
      * @param {boolean} [silent] `true` if no events should be triggered, or `false` otherwise. 
      */
@@ -579,7 +572,6 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * This method must unselect all nodes of this tree that are selected.
-     * @abstract
      */
     unselectAllNodes: function() {
         throw "Unsupported Operation";
@@ -587,7 +579,6 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Called once during widget initialization if this tree has got nodes with selectable checkboxes.
-     * @abstract
      * @protected
      */
     preselectCheckbox: function() {
@@ -605,7 +596,6 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Checks whether this tree is empty, that is, whether it contains any nodes.
-     * @abstract
      * @return {boolean} `true` if this tree has got no nodes, or `false` otherwise.
      */
     isEmpty: function() {
@@ -690,7 +680,6 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Puts focus on the given node.
-     * @abstract
      * @protected
      * @param {JQuery} node A node on which to put focus.
      */

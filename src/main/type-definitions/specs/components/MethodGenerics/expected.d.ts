@@ -5,7 +5,6 @@ declare namespace PrimeFaces.widget {
     export class MethodGenerics {
         /**
          * method hoge
-         * 
          * @typeparam T hoge type T
          * @typeparam K hoge type K
          * @typeparam R Defaults to `T`. hoge type R
@@ -18,7 +17,6 @@ declare namespace PrimeFaces.widget {
         hoge<T, K extends keyof T, R = T, S extends R = R>(t: T, k: K, r: R, s: S): void;
         /**
          * method foo
-         * 
          * @typeparam T foo type T
          * @typeparam K foo type K
          * @typeparam R Defaults to `T`. foo type R

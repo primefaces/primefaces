@@ -131,6 +131,7 @@ function createMethodCodeInfoFromTags(severitySettings, method, additionalTempla
         const templateInfo = tagToDocInfoTemplate(templates);
         return {
             abstract: method.abstract,
+            canCompleteNormally: true,
             arguments: argumentInfo,
             generics: templateInfo,
             isAsync: method.async,

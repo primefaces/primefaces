@@ -127,7 +127,6 @@ function handleAndGetError(key, severitySettings, messageSupplier) {
             return [];
         default: assertNever(level);
     }
-    return [];
 }
 
 module.exports = {

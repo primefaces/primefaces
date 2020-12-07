@@ -5,7 +5,6 @@ declare namespace PrimeFaces.widget {
     export class PropAsIface {
         /**
          * prop request
-         * 
          * @author John Doe
          */
         IfaceAsProp: PrimeFaces.propAsIface.ThePropAsIface;
@@ -14,13 +13,11 @@ declare namespace PrimeFaces.widget {
 declare namespace PrimeFaces.propAsIface {
     /**
      * the iface
-     * 
      * @author John Doe
      */
     export interface ThePropAsIface {
         /**
          * method send
-         * 
          * @param x param x
          * @return send retval
          */

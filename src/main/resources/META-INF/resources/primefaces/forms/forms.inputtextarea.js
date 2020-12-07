@@ -336,7 +336,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Callback that is invoked when the user has selected one of the suggested tokens.
      * @private
-     * @param {JQuery.Event} event Event that triggered the item selection (usually a click or enter press).
+     * @param {JQuery.TriggeredEvent} event Event that triggered the item selection (usually a click or enter press).
      * @param {string} itemValue Value of the suggestion that was selected.
      */
     invokeItemSelectBehavior: function(event, itemValue) {

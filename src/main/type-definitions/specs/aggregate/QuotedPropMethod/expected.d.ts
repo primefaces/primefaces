@@ -6,7 +6,6 @@ declare namespace Test.QuotedPropMethod {
     export interface Iface {
         /**
          * method foo-bar
-         * 
          * @param x param x
          * @return return value
          */
@@ -14,7 +13,6 @@ declare namespace Test.QuotedPropMethod {
 
         /**
          * method quote-"
-         * 
          * @param a param a
          * @return return value
          */

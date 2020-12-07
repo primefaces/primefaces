@@ -5,14 +5,12 @@ declare namespace PrimeFaces.widget {
     export class MethodRestParam {
         /**
          * method bar
-         * 
          * @param x bar param x
          * @param args bar param args
          */
         bar(x: number, ...args: string[]): void;
         /**
          * method foo
-         * 
          * @param x foo param x
          * @param args foo param args
          */

@@ -811,16 +811,19 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
  * @prop {string} ConfirmDialogMessage.message Main content of the dialog message.
  * @prop {boolean} ConfirmDialogMessage.escape If `true`, the message is escaped for HTML. If `false`, the message is
  * interpreted as an HTML string.
- * @prop {string} ConfirmDialogMessage.onShow A JavaScript code snippet that is be evaluated before the message is
- * shown.
+ * @prop {string} [ConfirmDialogMessage.icon] Optional icon that is shown to the left of the confirm dialog. When not given, defaults to
+ * `ui-icon-alert`. Must be a style class of some icon font.
+ * @prop {string} [ConfirmDialogMessage.beforeShow] Optional code that is run before the message is shown. Must be valid JavaScript code.
+ * It is evaluated via {@link PrimeFaces.csp.eval}.
  * 
  * @prop {JQuery} title DOM element of the title bar text.
  * @prop {JQuery} message DOM element of the confirmation message displayed in this confirm dialog.
  * @prop {JQuery} icon DOM element of the icon displayed next to the confirmation message.
  * 
- * @interface {PrimeFaces.widget.ConfirmDialogCfg} cfg The configuration for the {@link  ConfirmDialog| ConfirmDialog widget}.
- * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
- * configuration is usually meant to be read-only and should not be modified.
+ * @interface {PrimeFaces.widget.ConfirmDialogCfg} cfg The configuration for the
+ * {@link  ConfirmDialog| ConfirmDialog widget}. You can access this configuration via
+ * {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this configuration is usually meant to be
+ * read-only and should not be modified.
  * @extends {PrimeFaces.widget.DialogCfg} cfg
  */
 PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({

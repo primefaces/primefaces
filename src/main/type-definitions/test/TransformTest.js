@@ -33,7 +33,7 @@ const SeveritySettings = createDefaultSeveritySettings({
  * @return {string[]}
  */
 function processInput(input, sourceName, sourceLocation, inclusionHandler) {
-    const program = parseJsProgram(input, sourceName, sourceLocation.ambient);
+    const program = parseJsProgram(input, sourceName, sourceLocation.ambient, "latest");
     const firstNode = program.node.body.length === 1 && program.node.body[0];
     if (
         firstNode &&

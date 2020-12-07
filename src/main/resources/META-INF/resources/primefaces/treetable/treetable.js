@@ -889,7 +889,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Callback for when a row was clicked. Selects or unselects the row, if that feature is enabled.
      * @private
-     * @param {JQuery.Event} event The click event that occurred.
+     * @param {JQuery.TriggeredEvent} event The click event that occurred.
      * @param {JQuery} node The node that was clicked.
      */
     onRowClick: function(event, node) {
@@ -930,7 +930,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
      * Callback for when a right click was performed on a node. Selects or unselects the row, if that feature is
      * enabled.
      * @private
-     * @param {JQuery.Event} event The click event that occurred.
+     * @param {JQuery.TriggeredEvent} event The click event that occurred.
      * @param {JQuery} node The node that was clicked.
      */
     onRowRightClick: function(event, node) {
@@ -1681,7 +1681,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Callback for when a row was resized. Adjust the column widths.
      * @private
-     * @param {JQuery.Event} event Event that triggered the resize.
+     * @param {JQuery.TriggeredEvent} event Event that triggered the resize.
      * @param {JQueryUI.DraggableEventUIParams} ui Details about the resize.
      */
     resize: function(event, ui) {
@@ -2223,7 +2223,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Checks whether the tree table should be sorted.
      * @private
-     * @param {JQuery.Event} event Event that occurred.
+     * @param {JQuery.TriggeredEvent} event Event that occurred.
      * @param {JQuery} column Column that was clicked.
      * @return {boolean} Whether the tree table should be sorted.
      */

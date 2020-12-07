@@ -14,8 +14,6 @@
  * @return {boolean} PrimeFaces.widget.SelectListbox.FilterFunction `true` if the item label matches the filter value,
  * or `false` otherwise.
  * 
- * @abstract
- * 
  * @prop {JQuery} allItems All available items, including disabled options. These are not form elements, but the DOM
  * elements presented to the user.
  * @prop {PrimeFaces.widget.SelectListbox.FilterFunction} filterMatcher The filter that was selected and is currently

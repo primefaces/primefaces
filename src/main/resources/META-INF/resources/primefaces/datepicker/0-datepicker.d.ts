@@ -71,7 +71,7 @@ declare namespace JQueryPrimeDatePicker {
         /**
          * @param event The event that occurred.
          */
-        (this: PickerInstance, event: JQuery.Event) => void;
+        (this: PickerInstance, event: JQuery.TriggeredEvent) => void;
 
     /**
      * Callbacks for when a value has changed.
@@ -90,7 +90,7 @@ declare namespace JQueryPrimeDatePicker {
          * @param event The event that occurred.
          * @param newValues The value or set of values that represent the new state.
          */
-        (this: PickerInstance, event: JQuery.Event, ...newValues: T) => void;
+        (this: PickerInstance, event: JQuery.TriggeredEvent, ...newValues: T) => void;
 
     /**
      * A cardinal number, i.e. a number that represents an amount of something. Some common examples include the number
@@ -675,7 +675,7 @@ declare namespace JQueryPrimeDatePicker {
          * @param event The event that triggered the selection, such as a mouse click.
          * @param dateMeta The date that is to be selected.
          */
-        selectDate(event: JQuery.Event, dateMeta: DayInstantSelectable): void;
+        selectDate(event: JQuery.TriggeredEvent, dateMeta: DayInstantSelectable): void;
 
         /**
          * When the time picker up or down arrows are clicked and the mouse button is held down for a prolonged period
@@ -685,7 +685,7 @@ declare namespace JQueryPrimeDatePicker {
          * @param type Which part of the time is to be incremented or decremented (hour, minute, or second).
          * @param direction Whether to increment or decrement the time part.
          */
-        repeat(event: JQuery.Event, interval: Cardinal, type: ChangeTimeType, direction: OneDimensionalDirection): void;
+        repeat(event: JQuery.TriggeredEvent, interval: Cardinal, type: ChangeTimeType, direction: OneDimensionalDirection): void;
 
         /**
          * Updates the time display so that is shows the given time.
@@ -694,28 +694,28 @@ declare namespace JQueryPrimeDatePicker {
          * @param minute Current minute.
          * @param second Current second.
          */
-        updateTime(event: JQuery.Event, hour: HourOfTheDay, minute: MinuteOfTheHour, second: SecondOfTheMinute): void;
+        updateTime(event: JQuery.TriggeredEvent, hour: HourOfTheDay, minute: MinuteOfTheHour, second: SecondOfTheMinute): void;
 
         /**
          * After a time was entered, updates the time display so that is shows the given time.
          * @param event Event that occurred.
          * @param newDateTime The time to display.
          */
-        updateTimeAfterInput(event: JQuery.Event, newDateTime: Date): void;
+        updateTimeAfterInput(event: JQuery.TriggeredEvent, newDateTime: Date): void;
 
         /**
          * Updates the currently displayed date range.
          * @param event Event that occurred.
          * @param value The date to be displayed.
          */
-        updateViewDate(event: JQuery.Event, value: Date): void;
+        updateViewDate(event: JQuery.TriggeredEvent, value: Date): void;
 
         /**
          * Updates the hidden input field and saves the currently selected value.
          * @param event Event that occurred.
          * @param value Date that is selected.
          */
-        updateModel(event: JQuery.Event | null, value: Date | Date[] | null): void;
+        updateModel(event: JQuery.TriggeredEvent | null, value: Date | Date[] | null): void;
 
         // ===========================
         // === Date and time logic ===
@@ -1224,62 +1224,62 @@ declare namespace JQueryPrimeDatePicker {
          * Callback that is invoked when the date input was clicked.
          * @param event Event that occurred.
          */
-        onInputClick(event: JQuery.Event): void;
+        onInputClick(event: JQuery.TriggeredEvent): void;
 
         /**
          * Callback that is invoked when the date input was focused.
          * @param event Event that occurred.
          */
-        onInputFocus(event: JQuery.Event): void;
+        onInputFocus(event: JQuery.TriggeredEvent): void;
 
         /**
          * Callback that is invoked when the date input lost focus.
          * @param event Event that occurred.
          */
-        onInputBlur(event: JQuery.Event): void;
+        onInputBlur(event: JQuery.TriggeredEvent): void;
 
         /**
          * Callback that is invoked when a key was pressed in the date input.
          * @param event Event that occurred.
          */
-        onInputKeyDown(event: JQuery.Event): void;
+        onInputKeyDown(event: JQuery.TriggeredEvent): void;
 
         /**
          * Callback that is invoked when the user made an input.
          * @param event Event that occurred.
          */
-        onUserInput(event: JQuery.Event): void;
+        onUserInput(event: JQuery.TriggeredEvent): void;
 
         /**
          * Callback that is invoked when the trigger button was pressed.
          * @param event Event that occurred.
          */
-        onButtonClick(event: JQuery.Event): void;
+        onButtonClick(event: JQuery.TriggeredEvent): void;
 
         /**
          * Callback that is invoked when the date picker panel was clicked.
          * @param event Event that occurred.
          */
-        onPanelClick(event: JQuery.Event): void;
+        onPanelClick(event: JQuery.TriggeredEvent): void;
 
         /**
          * Callback that is invoked when a different month was selected in the dropdown menu in the title bar.
          * @param event Event that occurred.
          */
-        onMonthDropdownChange(event: JQuery.Event): void;
+        onMonthDropdownChange(event: JQuery.TriggeredEvent): void;
 
         /**
          * Callback that is invoked when a different year was selected in the dropdown menu in the title bar.
          * @param event Event that occurred.
          */
-        onYearDropdownChange(event: JQuery.Event): void;
+        onYearDropdownChange(event: JQuery.TriggeredEvent): void;
 
         /**
          * Callback that is invoked when a different month was selected by clicking on that month.
          * @param event Event that occurred.
          * @param month Month that was selected.
          */
-        onMonthSelect(event: JQuery.Event, month: MonthOfTheYear): void;
+        onMonthSelect(event: JQuery.TriggeredEvent, month: MonthOfTheYear): void;
 
         /**
          * Callback that is invoked when the left mouse button was pressed down while the cursor is over the time picker
@@ -1288,108 +1288,108 @@ declare namespace JQueryPrimeDatePicker {
          * @param type Whether the hour, minute, or second was clicked.
          * @param direction Whether the up or down button was clicked.
          */
-        onTimePickerElementMouseDown(event: JQuery.Event, type: ChangeTimeType, direction: OneDimensionalDirection): void;
+        onTimePickerElementMouseDown(event: JQuery.TriggeredEvent, type: ChangeTimeType, direction: OneDimensionalDirection): void;
 
         /**
          * Callback that is invoked when the left mouse button was release while the cursor is over the time picker
          * element.
          * @param event Event that occurred.
          */
-        onTimePickerElementMouseUp(event: JQuery.Event): void;
+        onTimePickerElementMouseUp(event: JQuery.TriggeredEvent): void;
 
         /**
          * Callback that is invoked when a date was selected by clicking on it.
          * @param event Event that occurred.
          * @param dateMeta Day that was clicked.
          */
-        onDateSelect(event: JQuery.Event, dateMeta: DayInstantSelectable): void;
+        onDateSelect(event: JQuery.TriggeredEvent, dateMeta: DayInstantSelectable): void;
 
         /**
          * Callback that is invoked when the today button was pressed.
          * @param event Event that occurred.
          */
-        onTodayButtonClick(event: JQuery.Event): void;
+        onTodayButtonClick(event: JQuery.TriggeredEvent): void;
 
         /**
          * Callback that is invoked when the clear button was pressed.
          * @param event Event that occurred.
          */
-        onClearButtonClick(event: JQuery.Event): void;
+        onClearButtonClick(event: JQuery.TriggeredEvent): void;
 
         /**
          * Callback that is invoked when a value was entered in the hour input.
          * @param input Hour input element.
          * @param event Event that occurred.
          */
-        handleHoursInput(input: HTMLElement, event: JQuery.Event): void;
+        handleHoursInput(input: HTMLElement, event: JQuery.TriggeredEvent): void;
 
         /**
          * Callback that is invoked when a value was entered in the minute input.
          * @param input Minute input element.
          * @param event Event that occurred.
          */
-        handleMinutesInput(input: HTMLElement, event: JQuery.Event): void;
+        handleMinutesInput(input: HTMLElement, event: JQuery.TriggeredEvent): void;
 
         /**
          * Callback that is invoked when a value was entered in the second input.
          * @param input Second input element.
          * @param event Event that occurred.
          */
-        handleSecondsInput(input: HTMLElement, event: JQuery.Event): void;
+        handleSecondsInput(input: HTMLElement, event: JQuery.TriggeredEvent): void;
 
         /**
          * Callback that is invoked when the up button of the hour input was pressed.
          * @param event Event that occurred.
          */
-        incrementHour(event: JQuery.Event): void;
+        incrementHour(event: JQuery.TriggeredEvent): void;
 
         /**
          * Callback that is invoked when the down button of the hour input was pressed.
          * @param event Event that occurred.
          */
-        decrementHour(event: JQuery.Event): void;
+        decrementHour(event: JQuery.TriggeredEvent): void;
 
         /**
          * Callback that is invoked when the up button of the minute input was pressed.
          * @param event Event that occurred.
          */
-        incrementMinute(event: JQuery.Event): void;
+        incrementMinute(event: JQuery.TriggeredEvent): void;
 
         /**
          * Callback that is invoked when the down button of the minute input was pressed.
          * @param event Event that occurred.
          */
-        decrementMinute(event: JQuery.Event): void;
+        decrementMinute(event: JQuery.TriggeredEvent): void;
 
         /**
          * Callback that is invoked when the up button of the second input was pressed.
          * @param event Event that occurred.
          */
-        incrementSecond(event: JQuery.Event): void;
+        incrementSecond(event: JQuery.TriggeredEvent): void;
 
         /**
          * Callback that is invoked when the down button of the second input was pressed.
          * @param event Event that occurred.
          */
-        decrementSecond(event: JQuery.Event): void;
+        decrementSecond(event: JQuery.TriggeredEvent): void;
 
         /**
          * Callback that is invoked when button for navigating to the previous month was pressed.
          * @param event Event that occurred.
          */
-        navBackward(event: JQuery.Event): void;
+        navBackward(event: JQuery.TriggeredEvent): void;
 
         /**
          * Callback that is invoked when button for navigating to the next month was pressed.
          * @param event Event that occurred.
          */
-        navForward(event: JQuery.Event): void;
+        navForward(event: JQuery.TriggeredEvent): void;
 
         /**
          * Callback that is invoked when the button for switching between `a.m.` and `p.m.` was pressed.
          * @param event Event that occurred.
          */
-        toggleAmPm(event: JQuery.Event): void;
+        toggleAmPm(event: JQuery.TriggeredEvent): void;
 
         // ============
         // === Misc ===

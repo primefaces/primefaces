@@ -6,13 +6,13 @@
  * @typedef PrimeFaces.widget.Draggable.OnStartCallback Callback for when dragging starts. See also {@link
  * DraggableCfg.onStart}.
  * @this {PrimeFaces.widget.Draggable} PrimeFaces.widget.Draggable.OnStartCallback 
- * @param {JQuery.Event} PrimeFaces.widget.Draggable.OnStartCallback.event The drag event that occurred.
+ * @param {JQuery.TriggeredEvent} PrimeFaces.widget.Draggable.OnStartCallback.event The drag event that occurred.
  * @param {JQueryUI.DraggableEventUIParams} PrimeFaces.widget.Draggable.OnStartCallback.ui Details about the drag event.
  * 
  * @typedef PrimeFaces.widget.Draggable.OnStopCallback Callback for when dragging ends. See also {@link
  * DraggableCfg.onStop}.
  * @this {PrimeFaces.widget.Draggable} PrimeFaces.widget.Draggable.OnStopCallback 
- * @param {JQuery.Event} PrimeFaces.widget.Draggable.OnStopCallback.event The drag event that occurred.
+ * @param {JQuery.TriggeredEvent} PrimeFaces.widget.Draggable.OnStopCallback.event The drag event that occurred.
  * @param {JQueryUI.DraggableEventUIParams} PrimeFaces.widget.Draggable.OnStopCallback.ui Details about the drag event.
  * 
  * @interface {PrimeFaces.widget.DraggableCfg} cfg The configuration for the {@link  Draggable| Draggable widget}.
@@ -69,7 +69,7 @@ PrimeFaces.widget.Draggable = PrimeFaces.widget.BaseWidget.extend({
  * @typedef PrimeFaces.widget.Droppable.OnDropCallback Callback for when an items is dropped. See also {@link
  * Droppable.onDrop}.
  * @this {PrimeFaces.widget.Droppable} PrimeFaces.widget.Droppable.OnDropCallback 
- * @param {JQuery.Event} PrimeFaces.widget.Droppable.OnDropCallback.event The drop event that occurred.
+ * @param {JQuery.TriggeredEvent} PrimeFaces.widget.Droppable.OnDropCallback.event The drop event that occurred.
  * @param {JQueryUI.DroppableEventUIParam} PrimeFaces.widget.Droppable.OnDropCallback.ui Details about the drop event.
  * 
  * @interface {PrimeFaces.widget.DroppableCfg} cfg The configuration for the {@link  Droppable| Droppable widget}.

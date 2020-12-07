@@ -6676,14 +6676,14 @@ declare namespace PrimeFaces {
      */
     export function clearSelection(): void;
     /**
-     * Deprecated, use `PrimeFaces.dialog.DialogHandler.closeDialog` instead.
+     * Deprecated, use {@link PrimeFaces.dialog.DialogHandler.closeDialog} instead.
      *
      * @param cfg Configuration of the dialog.
      * @deprecated
      */
     export function closeDialog(cfg: PrimeFaces.dialog.DialogHandlerCfg): void;
     /**
-     * Deprecated, use `PrimeFaces.dialog.DialogHandler.confirm` instead.
+     * Deprecated, use {@link PrimeFaces.dialog.DialogHandler.confirm} instead.
      *
      * @param msg Message to show with the confirm dialog.
      * @deprecated

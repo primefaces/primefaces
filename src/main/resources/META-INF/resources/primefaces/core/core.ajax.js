@@ -284,7 +284,7 @@ if (!PrimeFaces.ajax) {
              * A list of sent AJAX requests, i.e. HTTP requests that were already started. This is used, for example, to
              * abort requests that were sent already when that becomes necessary.
              *
-             * @type {PrimeFaces.ajax.pfXHR}
+             * @type {PrimeFaces.ajax.pfXHR[]}
              */
             xhrs: new Array(),
 
@@ -923,7 +923,7 @@ if (!PrimeFaces.ajax) {
              * Appends a request parameter to the given list of parameters.
              * Optionally add a prefix to the name, this is used for Portlet namespacing.
              * @template [TValue=any] Type of the parameter value.
-             * @param {PrimeFaces.ajax.RequestParameter<TValue>[]} params List of parameters to which a new
+             * @param {PrimeFaces.ajax.RequestParameter<string, TValue>[]} params List of parameters to which a new
              * parameter is added.
              * @param {string} name Name of the new parameter to add.
              * @param {TValue} value Value of the parameter to add.
@@ -963,9 +963,9 @@ if (!PrimeFaces.ajax) {
              * Adds a list of callback parameters to the given list. Optionally prepends a prefix to the name of each
              * added parameter.
              * @template [TValue=any] Type of the parameter values.
-             * @param {PrimeFaces.ajax.RequestParameter<TValue>[]} params List of callback parameters to which
+             * @param {PrimeFaces.ajax.RequestParameter<string, TValue>[]} params List of callback parameters to which
              * parameters are added.
-             * @param {PrimeFaces.ajax.RequestParameter<TValue>[]} paramsToAdd List of callback parameters to
+             * @param {PrimeFaces.ajax.RequestParameter<string, TValue>[]} paramsToAdd List of callback parameters to
              * add.
              * @param {string} [parameterPrefix] Optional prefix that is added in front of the name of the added
              * callback parameters.
@@ -1060,9 +1060,9 @@ if (!PrimeFaces.ajax) {
              * removes all parameters from the second array whose name is equal to one of the parameters in the first
              * array. The given input array are not modified.
              * @template [TValue=any] Type of the parameter values.
-             * @param {PrimeFaces.ajax.RequestParameter<TValue>[]} arr1 A list of parameters for comparison.
-             * @param {PrimeFaces.ajax.RequestParameter<TValue>[]} arr2 A list of additional parameters.
-             * @return {PrimeFaces.ajax.RequestParameter<TValue>[]} An list of parameters that are in the second
+             * @param {PrimeFaces.ajax.RequestParameter<string, TValue>[]} arr1 A list of parameters for comparison.
+             * @param {PrimeFaces.ajax.RequestParameter<string, TValue>[]} arr2 A list of additional parameters.
+             * @return {PrimeFaces.ajax.RequestParameter<string, TValue>[]} An list of parameters that are in the second
              * array, but not in the first.
              */
             arrayCompare: function(arr1, arr2) {

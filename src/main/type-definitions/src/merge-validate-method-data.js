@@ -20,7 +20,8 @@ function mergeAndValidateMethodReturnAndYield(method, methodCodeInfo, methodDocI
         methodDocInfo.return.typedef = "any";
         methodDocInfo.return.description = "";
     }
-    if (methodCodeInfo.return.node === undefined && methodDocInfo.return.hasReturn && !methodDocInfo.abstract) {
+    const abstractLike = methodDocInfo.abstract || !methodCodeInfo.canCompleteNormally;
+    if (methodCodeInfo.return.node === undefined && methodDocInfo.return.hasReturn && !abstractLike) {
         handleError("tagSuperfluousReturn", severitySettings, () => newMethodErrorMessage("@return tag was specified, but method is neither abstract nor does it contain an explicit return statement", method));
         methodDocInfo.return.hasReturn = false;
         methodDocInfo.return.typedef = "any";
@@ -33,7 +34,7 @@ function mergeAndValidateMethodReturnAndYield(method, methodCodeInfo, methodDocI
         methodDocInfo.yield.typedef = "any";
         methodDocInfo.yield.description = "";
     }
-    if (methodCodeInfo.yield.node === undefined && methodDocInfo.yield.hasYield && !methodDocInfo.abstract) {
+    if (methodCodeInfo.yield.node === undefined && methodDocInfo.yield.hasYield && !abstractLike) {
         handleError("tagSuperfluousYield", severitySettings, () => newMethodErrorMessage("@yield tag was specified, but method contains no explicit yield expression", method));
         methodDocInfo.yield.hasYield = false;
         methodDocInfo.yield.typedef = "any";
@@ -46,7 +47,7 @@ function mergeAndValidateMethodReturnAndYield(method, methodCodeInfo, methodDocI
         methodDocInfo.next.typedef = "any";
         methodDocInfo.next.description = "";
     }
-    if (methodCodeInfo.next.node === undefined && methodDocInfo.next.hasNext && !methodDocInfo.abstract) {
+    if (methodCodeInfo.next.node === undefined && methodDocInfo.next.hasNext && !abstractLike) {
         handleError("tagSuperfluousNext", severitySettings, () => newMethodErrorMessage("@next tag was specified, but method contains yield expression whose return value is used ", method));
         methodDocInfo.next.hasNext = false;
         methodDocInfo.next.typedef = "any";
@@ -54,7 +55,7 @@ function mergeAndValidateMethodReturnAndYield(method, methodCodeInfo, methodDocI
     }
     // JavaScript has got no concept of abstract methods, so they need an implementation. This is usually just a
     // 'throw new Error("must be overridden")' without a return statement, so we need to create one.
-    if (methodDocInfo.abstract && methodDocInfo.return.hasReturn && methodCodeInfo.return.node === undefined) {
+    if (abstractLike && methodDocInfo.return.hasReturn && methodCodeInfo.return.node === undefined) {
         methodCodeInfo.return.node = {
             argument: {
                 name: "syntheticReturn",

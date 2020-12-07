@@ -596,7 +596,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * Called in response to a click. Checks whether this data table should now be sorted. Returns `false` when there
      * are no items to be sorted, or when no sorting button was clicked.
      * @private
-     * @param {JQuery.Event} event (Click) event that occurred.
+     * @param {JQuery.TriggeredEvent} event (Click) event that occurred.
      * @param {JQuery} column Column Column of this data table on which the event occurred.
      * @return {boolean} `true` to perform a sorting operation, `false` otherwise.
      */
@@ -1266,7 +1266,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Updates the currently selected cell based on where the context menu right click occurred.
-     * @param {JQuery.Event} event Event that occurred.
+     * @param {JQuery.TriggeredEvent} event Event that occurred.
      * @param {PrimeFaces.widget.DataTable} targetWidget the current widget
      * @private
      */
@@ -2221,7 +2221,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Callback for a click event on a row.
      * @private
-     * @param {JQuery.Event} event Click event that occurred.
+     * @param {JQuery.TriggeredEvent} event Click event that occurred.
      * @param {HTMLElement} rowElement Row that was clicked
      * @param {boolean} silent `true` to prevent behaviors from being invoked, `false` otherwise.
      */
@@ -2274,7 +2274,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Callback for a double click event on a row.
      * @private
-     * @param {JQuery.Event} event Event that occurred.
+     * @param {JQuery.TriggeredEvent} event Event that occurred.
      * @param {JQuery} row Row that was clicked.
      */
     onRowDblclick: function(event, row) {
@@ -2293,7 +2293,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Callback for a right click event on a row. May bring up the context menu
      * @private
-     * @param {JQuery.Event} event Event that occurred.
+     * @param {JQuery.TriggeredEvent} event Event that occurred.
      * @param {JQuery} rowElement Row that was clicked.
      * @param {PrimeFaces.widget.DataTable.CmSelectionMode} cmSelMode The current selection mode.
      */
@@ -3962,7 +3962,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Resizes this data table, row, or columns in response to a drag event of a resizer element.
      * @protected
-     * @param {JQuery.Event} event Event triggered for the drag.
+     * @param {JQuery.TriggeredEvent} event Event triggered for the drag.
      * @param {JQueryUI.DraggableEventUIParams} ui Data for the drag event.
      */
     resize: function(event, ui) {
@@ -5630,7 +5630,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
      * @override
      * @protected
      * @inheritdoc
-     * @param {JQuery.Event} event
+     * @param {JQuery.TriggeredEvent} event
      * @param {JQueryUI.DraggableEventUIParams} ui
      */
     resize: function(event, ui) {

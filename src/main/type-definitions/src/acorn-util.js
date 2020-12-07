@@ -145,15 +145,18 @@ function parseToEstree(source, options) {
  * @param {string} sourceName Name of the program. 
  * @param {string} sourceLocation Location or source path of the script, does have to be a real file path. Added to the source
  * location of each node.
+ * @param {3 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 2015 | 2016 | 2017 | 2018 | 2019 | 2020 | 2021 | 'latest'} ecmaVersion
+ * Ecma version to use for parsing.
  * @return {CommentedAst<import("estree").Program>} The parsed programs with access to the doc comments.
  */
-function parseJsProgram(data, sourceName, sourceLocation) {
+function parseJsProgram(data, sourceName, sourceLocation, ecmaVersion) {
     /** @type {CommentData[]} */
     const comments = [];
     let program;
     /** @type {import("acorn").Options} */
     const overrideOptions = {
         sourceFile: sourceLocation,
+        ecmaVersion: ecmaVersion,
         onComment(isBlockComment, content, start, end) {
             comments.push({
                 isBlockComment,
@@ -178,14 +181,16 @@ function parseJsProgram(data, sourceName, sourceLocation) {
  * Takes a component and parses all JavaScript files it contains.
  * @param {string} basePath Base path (directory) with the files to parse.
  * @param {string[]} files One or more files to parse. If the path is relative, it must be relative to the given `basePath`
+ * @param {3 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 2015 | 2016 | 2017 | 2018 | 2019 | 2020 | 2021 | 'latest'} ecmaVersion
+ * Ecma version to use for parsing.
  * @return {AsyncIterable<CommentedAst<import("estree").Program>>} A list of parsed programs with access to the doc comments.
  */
-async function* parseJs(files, basePath = "/") {
+async function* parseJs(files, ecmaVersion, basePath = "/") {
     for (const file of files) {
         const sourceFile = join(basePath, file);
         const resolvedSourceFile = resolve(sourceFile);
         const source = await readFileUtf8(sourceFile);
-        const parsed = parseJsProgram(source, file, resolvedSourceFile);
+        const parsed = parseJsProgram(source, file, resolvedSourceFile, ecmaVersion);
         yield parsed;
     }
 }
@@ -409,6 +414,17 @@ function findFunctionYieldStatement(block) {
 }
 
 /**
+ * Checks whether a (function body) block can complete normally, either by finishing execution or returning.
+ * @param {import("estree").BlockStatement} block A block statement to check (usually a function body)
+ * @return {boolean} `true` if the block can complete normally, `false` otherwise.
+ */
+function isCanCompleteNormally(block) {
+    const singularThrow = block.body.length === 1 && block.body[0].type === "ThrowStatement";
+    return !singularThrow;
+    // further analyisis may be required in the future
+}
+
+/**
  * Parses the given string as a JavaScript (destructuring) pattern.
  * @param {string} pattern 
  * @return {import("estree").ArrayPattern | import("estree").ObjectPattern}
@@ -432,6 +448,7 @@ function parsePattern(pattern) {
 
 
 module.exports = {
+    isCanCompleteNormally,
     findAndParseLastBlockComment,
     findFunctionNonEmptyReturnStatement,
     findFunctionYieldExpression,

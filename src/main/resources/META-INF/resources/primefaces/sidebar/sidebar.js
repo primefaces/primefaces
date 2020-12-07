@@ -146,7 +146,7 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
     /**
      * Callback function that is invoked when this sidebar is hidden.
      * @private
-     * @param {JQuery.Event} event Currently unused.
+     * @param {JQuery.TriggeredEvent} event Currently unused.
      * @param {unknown} ui Currently unused.
      */
     onHide: function(event, ui) {

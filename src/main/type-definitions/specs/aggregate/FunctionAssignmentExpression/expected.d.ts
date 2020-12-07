@@ -1,7 +1,6 @@
 declare namespace PrimeFaces.FunctionAssignmentExpression {
     /**
      * function foo
-     * 
      * @param x foo param x
      * @return foo retval
      */
@@ -11,7 +10,6 @@ declare namespace PrimeFaces.FunctionAssignmentExpression {
 declare namespace PrimeFaces.FunctionAssignmentExpression.Other {
     /**
      * function bar
-     * 
      * @param x bar param x
      * @return bar retval
      */

@@ -265,7 +265,7 @@ interface CliArgs {
      * A comma separated list of third-party node modules that should be included in the generated documentation, such
      * as `jquery,chart.js`. Defaults to reading the dependencies of the `package.json`.
      */
-    includeModules: string[],
+    additionalEntries: string[],
     /**
      * Path to the directory with the individual components. Child directories must be the widget folders.
      */
@@ -533,6 +533,7 @@ interface MemberPathState {
 interface MethodCodeInfo {
     abstract: boolean;
     arguments: ArgumentInfo[];
+    canCompleteNormally: boolean;
     isAsync: boolean;
     isGenerator: boolean;
     generics: DocInfoTemplate[];

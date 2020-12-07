@@ -1307,7 +1307,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
     /**
      * Callback for when a drag&drop occurred. Invokes the appropriate behaviors.
      * @private
-     * @param {JQuery.Event} event Event that triggered the drag&drop.
+     * @param {JQuery.TriggeredEvent} event Event that triggered the drag&drop.
      */
     fireDragDropEvent: function(event) {
         var $this = this,

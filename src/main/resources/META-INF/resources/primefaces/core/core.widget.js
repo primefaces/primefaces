@@ -644,8 +644,6 @@ if (!PrimeFaces.widget) {
      * }
      * ```
      *
-     * @abstract
-     *
      * @interface {PrimeFaces.widget.DeferredWidgetCfg} cfg The configuration for the {@link  DeferredWidget| DeferredWidget widget}.
      * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that
      * this configuration is usually meant to be read-only and should not be modified.
@@ -701,7 +699,6 @@ if (!PrimeFaces.widget) {
          * __Must be overridden__, or an error will be thrown.
          *
          * @include
-         * @abstract
          * @protected
          */
         _render: function() {

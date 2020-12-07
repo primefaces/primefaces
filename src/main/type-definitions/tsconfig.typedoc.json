@@ -1,0 +1,12 @@
+{
+    "extends": "./tsconfig.json",
+    "include": [
+        "src/**/*",
+        "node_modules/@fullcalendar/**/*.d.ts",
+        "node_modules/vis-util/**/*.d.ts"
+    ],
+    "exclude": [
+        "test/**/*",
+        "**/*.spec.ts"
+    ]
+}

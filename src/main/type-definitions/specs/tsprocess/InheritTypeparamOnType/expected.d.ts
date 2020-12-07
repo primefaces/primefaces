@@ -1,7 +1,6 @@
 declare namespace InheritTypeparamOnType {
     /**
      * Type Foo
-     * 
      * @typeparam T The type T
      * @typeparam K The type K
      */
@@ -9,7 +8,6 @@ declare namespace InheritTypeparamOnType {
     }
     /**
      * Type Foo
-     * 
      * @typeparam T The type T
      * @typeparam K The type K
      */
@@ -17,7 +15,6 @@ declare namespace InheritTypeparamOnType {
     }
     /**
      * Type Foo
-     * 
      * @typeparam T The type T
      */
     interface Foobar<T> extends Foo<T, number> {

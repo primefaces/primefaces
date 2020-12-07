@@ -1,6 +1,6 @@
 //@ts-check
 
-const { findFunctionYieldStatement, findFunctionNonEmptyReturnStatement, findFunctionYieldExpression } = require("./acorn-util");
+const { findFunctionYieldStatement, findFunctionNonEmptyReturnStatement, findFunctionYieldExpression, isCanCompleteNormally } = require("./acorn-util");
 const { getArgVariableInfo, getArgumentInfo } = require("./create-code-info-params");
 
 /**
@@ -10,11 +10,13 @@ const { getArgVariableInfo, getArgumentInfo } = require("./create-code-info-para
  */
 function createMethodCodeInfo(name, method) {
     const returnStatement = findFunctionNonEmptyReturnStatement(method.body);
+    const canCompleteNormally = isCanCompleteNormally(method.body);
     const yieldStatement = findFunctionYieldExpression(method.body);
     const nextStatement = findFunctionYieldStatement(method.body);
     return {
         abstract: false,
         arguments: method.params.map(getArgumentInfo),
+        canCompleteNormally: canCompleteNormally,
         generics: [],
         isAsync: method.async !== undefined ? method.async : false,
         isGenerator: method.generator !== undefined ? method.generator : false,

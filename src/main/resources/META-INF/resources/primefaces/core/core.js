@@ -158,7 +158,7 @@
          * Attaches the given behaviors to the element. For each behavior, an event listener is registered on the
          * element. Then, when the event is triggered, the behavior callback is invoked.
          * @param {JQuery} element The element for which to attach the behaviors.
-         * @param {Record<string, (this: JQuery, event: JQuery.Event) => void>} behaviors An object with an event name
+         * @param {Record<string, (this: JQuery, event: JQuery.TriggeredEvent) => void>} behaviors An object with an event name
          * as the key and event handlers for that event as the value. Each event handler is called with the given
          * element as the this context and the event that occurred as the first argument.
          */
@@ -920,18 +920,18 @@
         },
 
         /**
-    	 * Deprecated, use `PrimeFaces.dialog.DialogHandler.showMessageInDialog` instead.
+    	 * Deprecated, use {@link PrimeFaces.dialog.DialogHandler.showMessageInDialog} instead.
          * @deprecated
-         * @param {string} msg Message to show in a dialog.
+         * @param {PrimeFaces.widget.ConfirmDialog.ConfirmDialogMessage} msg Message to show in a dialog.
          */
         showMessageInDialog: function(msg) {
         	PrimeFaces.dialog.DialogHandler.showMessageInDialog(msg);
         },
 
         /**
-    	 * Deprecated, use `PrimeFaces.dialog.DialogHandler.confirm` instead.
+    	 * Deprecated, use {@link PrimeFaces.dialog.DialogHandler.confirm} instead.
          * @deprecated
-         * @param {string} msg Message to show with the confirm dialog.
+         * @param {PrimeFaces.dialog.ExtendedConfirmDialogMessage} msg Message to show with the confirm dialog.
          */
         confirm: function(msg) {
         	PrimeFaces.dialog.DialogHandler.confirm(msg);

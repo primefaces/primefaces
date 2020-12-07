@@ -501,7 +501,7 @@ declare namespace ContentFlowGlobal {
         calcOpacity(this: ContentFlowGlobal.ContentFlow, item: ContentFlowItem): number;
     }
 
-    export interface AddOnMethods<TCfg = {}> {
+    export interface AddOnMethods<TCfg = Record<string, unknown>> {
         /**
          * Defaults for the configuration of the add-on.
          */
