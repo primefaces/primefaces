@@ -71,7 +71,9 @@ public class FileUploadRenderer extends CoreRenderer {
         if (context.isProjectStage(ProjectStage.Development)) {
             UIForm form = ComponentTraversalUtils.closestForm(context, fileUpload);
             if (form == null) {
-                LOGGER.warning("FileUpload requires a parent form. ClientId: " + fileUpload.getClientId(context));
+                LOGGER.warning("No parent form found on the server side for FileUpload. "
+                        + " We will try to find a fallback form on the client side."
+                        + " ClientId: " + fileUpload.getClientId(context));
             }
             else {
                 if (form instanceof HtmlForm) {
