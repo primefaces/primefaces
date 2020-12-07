@@ -23,7 +23,7 @@
  */
 package org.primefaces.model.filter;
 
-public class ExactFilterConstraint extends StringEqualityFilterConstraint {
+public class ExactFilterConstraint extends StringFilterConstraint {
 
     public ExactFilterConstraint() {
         super(String::equalsIgnoreCase);

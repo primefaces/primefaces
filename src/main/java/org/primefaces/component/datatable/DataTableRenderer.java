@@ -1348,7 +1348,9 @@ public class DataTableRenderer extends DataRenderer {
         if (hasColumnDefaultRendering(table, column)) {
             Object value = UISortableFilterableTable.createValueExprFromVarField(context, table.getVar(), column.getField())
                     .getValue(context.getELContext());
-            writer.writeText(value, null);
+            if (value != null) {
+                writer.writeText(value, null);
+            }
         }
         else if (column instanceof DynamicColumn) {
             column.encodeAll(context);

@@ -27,11 +27,11 @@ import javax.faces.context.FacesContext;
 import java.util.Locale;
 import java.util.function.BiPredicate;
 
-public class StringEqualityFilterConstraint implements FilterConstraint {
+public class StringFilterConstraint implements FilterConstraint {
 
     private BiPredicate<String, String> predicate;
 
-    public StringEqualityFilterConstraint(BiPredicate<String, String> predicate) {
+    public StringFilterConstraint(BiPredicate<String, String> predicate) {
         this.predicate = predicate;
     }
 
@@ -39,6 +39,6 @@ public class StringEqualityFilterConstraint implements FilterConstraint {
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
         String str = filter == null ? null : filter.toString().trim().toLowerCase(locale);
         String val = value == null ? null : value.toString().toLowerCase(locale);
-        return predicate.test(val, str);
+        return val != null && predicate.test(val, str);
     }
 }
