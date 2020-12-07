@@ -41,6 +41,7 @@ import javax.faces.model.SelectItem;
 
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.api.UISortableFilterableTable;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
@@ -1345,7 +1346,7 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         if (hasColumnDefaultRendering(table, column)) {
-            Object value = DataTable.createValueExprFromVarField(context, table.getVar(), column.getField())
+            Object value = UISortableFilterableTable.createValueExprFromVarField(context, table.getVar(), column.getField())
                     .getValue(context.getELContext());
             writer.writeText(value, null);
         }

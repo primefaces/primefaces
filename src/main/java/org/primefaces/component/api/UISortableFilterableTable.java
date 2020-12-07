@@ -32,7 +32,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -40,7 +43,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
-import static org.primefaces.component.datatable.DataTable.createValueExprFromVarField;
 import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionHint;
@@ -50,6 +52,61 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
 
 public interface UISortableFilterableTable extends UITable {
+
+    /**
+     * Backward compatibility for column properties (e.g sortBy, filterBy)
+     * using old syntax #{car[column.property]}) instead of #{column.property}
+     */
+    static final Pattern OLD_SYNTAX_COLUMN_PROPERTY_REGEX = Pattern.compile("^#\\{\\w+\\[(.+)]}$");
+
+    static String resolveStaticField(ValueExpression expression) {
+        if (expression != null) {
+            String expressionString = expression.getExpressionString();
+            if (expressionString.startsWith("#{")) {
+                expressionString = expressionString.substring(2, expressionString.indexOf('}')); //Remove #{}
+                return expressionString.substring(expressionString.indexOf('.') + 1); //Remove var
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Get bean's property value from a value expression.
+     * Support old syntax (e.g #{car[column.property]}) instead of #{column.property}
+     * @param context
+     * @param exprVE
+     * @return
+     */
+    static String resolveDynamicField(FacesContext context, ValueExpression exprVE) {
+        if (exprVE == null) {
+            return null;
+        }
+
+        ELContext elContext = context.getELContext();
+        String exprStr = exprVE.getExpressionString();
+
+        Matcher matcher = OLD_SYNTAX_COLUMN_PROPERTY_REGEX.matcher(exprStr );
+        if (matcher.find()) {
+            exprStr = matcher.group(1);
+            exprVE = context.getApplication().getExpressionFactory()
+                    .createValueExpression(elContext, "#{" + exprStr  + "}", String.class);
+        }
+
+        return (String) exprVE.getValue(elContext);
+    }
+
+    static ValueExpression createValueExprFromVarField(FacesContext context, String var, String field) {
+        if (LangUtils.isValueBlank(var) || LangUtils.isValueBlank(field)) {
+            throw new FacesException("Table 'var' and Column 'field' attributes must be non null.");
+        }
+
+        return context.getApplication().getExpressionFactory()
+                .createValueExpression(context.getELContext(), "#{" + var + "." + field + "}", Object.class);
+    }
+
+
+
 
     String getVar();
 
