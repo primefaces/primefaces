@@ -279,6 +279,11 @@ public class TreeTableRenderer extends DataRenderer {
                     .nativeAttr("sortMetaOrder", tt.getSortMetaAsString(), null);
         }
 
+        // by default cycling through sorting includes unsort, an attribute is needed when unsort should not be included
+        if (!tt.isAllowUnsorting()) {
+            wb.attr("allowUnsorting", false);
+        }
+
         if (tt.isPaginator()) {
             encodePaginatorConfig(context, tt, wb);
         }
@@ -730,9 +735,8 @@ public class TreeTableRenderer extends DataRenderer {
         String headerText = column.getHeaderText();
         int colspan = column.getColspan();
         int rowspan = column.getRowspan();
-        ValueExpression columnSortByVE = column.getValueExpression(Column.PropertyKeys.sortBy.name());
-        boolean sortable = columnSortByVE != null;
-        boolean filterable = (column.getValueExpression(Column.PropertyKeys.filterBy.name()) != null && column.isFilterable());
+        boolean sortable = tt.isColumnSortable(context, column);
+        boolean filterable = tt.isColumnFilterable(column);
         String sortIcon = null;
         String style = column.getStyle();
         String width = column.getWidth();
@@ -750,7 +754,7 @@ public class TreeTableRenderer extends DataRenderer {
 
         if (sortable) {
             SortMeta sortMeta = tt.getSortByAsMap().get(column.getColumnKey());
-            sortIcon = resolveSortIcon(columnSortByVE, columnSortByVE, sortMeta.getOrder());
+            sortIcon = resolveSortIcon(sortMeta);
 
             if (sortIcon == null) {
                 sortIcon = TreeTable.SORTABLE_COLUMN_ICON_CLASS;
@@ -811,7 +815,6 @@ public class TreeTableRenderer extends DataRenderer {
         }
 
         if (filterable) {
-            tt.enableFiltering();
             encodeFilter(context, tt, column);
         }
 
@@ -1048,21 +1051,16 @@ public class TreeTableRenderer extends DataRenderer {
         writer.endElement("input");
     }
 
-    protected String resolveSortIcon(ValueExpression columnSortBy, ValueExpression ttSortBy, SortOrder sortOrder) {
-        String columnSortByExpression = columnSortBy.getExpressionString();
-        String ttSortByExpression = ttSortBy.getExpressionString();
-        String sortIcon = null;
-
-        if (ttSortByExpression != null && ttSortByExpression.equals(columnSortByExpression)) {
-            if (sortOrder == SortOrder.ASCENDING) {
-                sortIcon = TreeTable.SORTABLE_COLUMN_ASCENDING_ICON_CLASS;
-            }
-            else if (sortOrder == SortOrder.DESCENDING) {
-                sortIcon = TreeTable.SORTABLE_COLUMN_DESCENDING_ICON_CLASS;
-            }
+    protected String resolveSortIcon(SortMeta sortMeta) {
+        SortOrder sortOrder = sortMeta.getOrder();
+        if (sortOrder == SortOrder.ASCENDING) {
+            return TreeTable.SORTABLE_COLUMN_ASCENDING_ICON_CLASS;
+        }
+        else if (sortOrder == SortOrder.DESCENDING) {
+            return TreeTable.SORTABLE_COLUMN_DESCENDING_ICON_CLASS;
         }
 
-        return sortIcon;
+        return null;
     }
 
     protected void decodeSort(FacesContext context, TreeTable tt) {
