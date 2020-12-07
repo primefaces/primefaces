@@ -26,8 +26,8 @@ package org.primefaces.expression;
 public enum SearchExpressionHint {
 
     /**
-     * Checks if the {@link UIComponent} has a renderer or not. This check is currently only useful for the update attributes, as a component without
-     * renderer can't be updated.
+     * Checks if the {@link javax.faces.component.UIComponent} has a renderer or not.
+     * This check is currently only useful for the update attributes, as a component without renderer can't be updated.
      */
     VALIDATE_RENDERER,
 

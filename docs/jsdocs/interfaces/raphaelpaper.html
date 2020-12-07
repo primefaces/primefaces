@@ -199,9 +199,9 @@ c.animate({<span class="hljs-attr">hsb</span>: <span class="hljs-string">&quot;1
 						<p><strong>Note to TypeScript users</strong></p>
 						<p>To declare your plugin, you should extend the <code>raphael</code> module and add to the <a href="raphaelattributes.html">RaphaelAttributes</a>:</p>
 						<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { RaphaelAttributes } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;raphael&quot;</span>
-<span class="hljs-keyword">declare</span> <span class="hljs-keyword">module</span> &quot;raphael&quot; {
+<span class="hljs-keyword">declare</span> <span class="hljs-built_in">module</span> <span class="hljs-string">&quot;raphael&quot;</span> {
   <span class="hljs-keyword">interface</span> RaphaelAttributes {
-    hue: <span class="hljs-built_in">number</span>;
+    <span class="hljs-attr">hue</span>: <span class="hljs-built_in">number</span>;
     hsb: <span class="hljs-built_in">string</span>;
   }
 }</code></pre>

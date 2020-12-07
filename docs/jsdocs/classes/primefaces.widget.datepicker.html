@@ -150,6 +150,7 @@ PF(<span class="hljs-string">&quot;datePickerWidget&quot;</span>).jq.datePicker(
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.datepicker.html#bindclearbuttonlistener" class="tsd-kind-icon">bind<wbr>Clear<wbr>Button<wbr>Listener</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.datepicker.html#bindcloselistener" class="tsd-kind-icon">bind<wbr>Close<wbr>Listener</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.datepicker.html#binddateselectlistener" class="tsd-kind-icon">bind<wbr>Date<wbr>Select<wbr>Listener</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.datepicker.html#bindpanelcreationlistener" class="tsd-kind-icon">bind<wbr>Panel<wbr>Creation<wbr>Listener</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.datepicker.html#bindviewchangelistener" class="tsd-kind-icon">bind<wbr>View<wbr>Change<wbr>Listener</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="primefaces.widget.datepicker.html#callbehavior" class="tsd-kind-icon">call<wbr>Behavior</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.datepicker.html#configurelocale" class="tsd-kind-icon">configure<wbr>Locale</a></li>
@@ -512,6 +513,25 @@ PF(<span class="hljs-string">&quot;datePickerWidget&quot;</span>).jq.datePicker(
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="bindpanelcreationlistener" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> bind<wbr>Panel<wbr>Creation<wbr>Listener</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">bind<wbr>Panel<wbr>Creation<wbr>Listener<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Callback for after the overlay panel is created.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
 					<a name="bindviewchangelistener" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> bind<wbr>View<wbr>Change<wbr>Listener</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
@@ -671,7 +691,7 @@ PF(<span class="hljs-string">&quot;datePickerWidget&quot;</span>).jq.datePicker(
 					<a name="fireviewchangeevent" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> fire<wbr>View<wbr>Change<wbr>Event</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">fire<wbr>View<wbr>Change<wbr>Event<span class="tsd-signature-symbol">(</span>year<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, month<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">fire<wbr>View<wbr>Change<wbr>Event<span class="tsd-signature-symbol">(</span>date<span class="tsd-signature-symbol">: </span><a href="../interfaces/date.html" class="tsd-signature-type">Date</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -685,15 +705,9 @@ PF(<span class="hljs-string">&quot;datePickerWidget&quot;</span>).jq.datePicker(
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>year: <span class="tsd-signature-type">number</span></h5>
+									<h5>date: <a href="../interfaces/date.html" class="tsd-signature-type">Date</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The year to which the date picker changed.</p>
-									</div>
-								</li>
-								<li>
-									<h5>month: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The year to which the date picker changed, starting with <code>0</code> for <code>Janurary</code>.</p>
+										<p>The date to which the date picker changed.</p>
 									</div>
 								</li>
 							</ul>
@@ -1222,6 +1236,9 @@ PF(<span class="hljs-string">&quot;datePickerWidget&quot;</span>).jq.datePicker(
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="primefaces.widget.datepicker.html#binddateselectlistener" class="tsd-kind-icon">bind<wbr>Date<wbr>Select<wbr>Listener</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="primefaces.widget.datepicker.html#bindpanelcreationlistener" class="tsd-kind-icon">bind<wbr>Panel<wbr>Creation<wbr>Listener</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="primefaces.widget.datepicker.html#bindviewchangelistener" class="tsd-kind-icon">bind<wbr>View<wbr>Change<wbr>Listener</a>

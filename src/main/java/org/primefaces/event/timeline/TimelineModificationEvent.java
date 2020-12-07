@@ -41,7 +41,8 @@ public class TimelineModificationEvent<T> extends AbstractAjaxBehaviorEvent {
     }
 
     /**
-     * Gets a cloned {@link TimelineEvent} with the modifications if any. You should update your {@link TimelineModel} with this instance to keep sync between
+     * Gets a cloned {@link TimelineEvent} with the modifications if any.
+     * You should update your {@link org.primefaces.model.timeline.TimelineModel} with this instance to keep sync between
      * UI and model.
      * @return
      */

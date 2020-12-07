@@ -129,6 +129,7 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="primefaces.widget.treetable.html#sort_order" class="tsd-kind-icon">SORT_<wbr>ORDER</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="primefaces.widget.treetable.html#bodytable" class="tsd-kind-icon">body<wbr>Table</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="primefaces.widget.treetable.html#cfg" class="tsd-kind-icon">cfg</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="primefaces.widget.treetable.html#clone" class="tsd-kind-icon">clone</a></li>
@@ -175,6 +176,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="primefaces.widget.treetable.html#adddeferredrender" class="tsd-kind-icon">add<wbr>Deferred<wbr>Render</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="primefaces.widget.treetable.html#adddestroylistener" class="tsd-kind-icon">add<wbr>Destroy<wbr>Listener</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="primefaces.widget.treetable.html#addrefreshlistener" class="tsd-kind-icon">add<wbr>Refresh<wbr>Listener</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.treetable.html#addsortmeta" class="tsd-kind-icon">add<wbr>Sort<wbr>Meta</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.treetable.html#addtoselection" class="tsd-kind-icon">add<wbr>ToSelection</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.treetable.html#adjustscrollheight" class="tsd-kind-icon">adjust<wbr>Scroll<wbr>Height</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.treetable.html#adjustscrollwidth" class="tsd-kind-icon">adjust<wbr>Scroll<wbr>Width</a></li>
@@ -202,6 +204,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.treetable.html#doroweditrequest" class="tsd-kind-icon">do<wbr>Row<wbr>Edit<wbr>Request</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="primefaces.widget.treetable.html#expandnode" class="tsd-kind-icon">expand<wbr>Node</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="primefaces.widget.treetable.html#filter" class="tsd-kind-icon">filter</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.treetable.html#fireselectevent" class="tsd-kind-icon">fire<wbr>Select<wbr>Event</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.treetable.html#fireselectnodeevent" class="tsd-kind-icon">fire<wbr>Select<wbr>Node<wbr>Event</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.treetable.html#fireunselectnodeevent" class="tsd-kind-icon">fire<wbr>Unselect<wbr>Node<wbr>Event</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.treetable.html#fixcolumnwidths" class="tsd-kind-icon">fix<wbr>Column<wbr>Widths</a></li>
@@ -226,6 +229,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="primefaces.widget.treetable.html#ismultipleselection" class="tsd-kind-icon">is<wbr>Multiple<wbr>Selection</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="primefaces.widget.treetable.html#isselected" class="tsd-kind-icon">is<wbr>Selected</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="primefaces.widget.treetable.html#issingleselection" class="tsd-kind-icon">is<wbr>Single<wbr>Selection</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.treetable.html#joinsortmetaoption" class="tsd-kind-icon">join<wbr>Sort<wbr>Meta<wbr>Option</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.treetable.html#onrowclick" class="tsd-kind-icon">on<wbr>Row<wbr>Click</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.treetable.html#onrowrightclick" class="tsd-kind-icon">on<wbr>Row<wbr>Right<wbr>Click</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="primefaces.widget.treetable.html#postrender" class="tsd-kind-icon">post<wbr>Render</a></li>
@@ -344,23 +348,31 @@
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-class">
 					<a name="sortorder" class="tsd-anchor"></a>
 					<h3>Sort<wbr>Order</h3>
-					<div class="tsd-signature tsd-kind-icon">Sort<wbr>Order<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"ASCENDING"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"DESCENDING"</span></div>
+					<div class="tsd-signature tsd-kind-icon">Sort<wbr>Order<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"ASCENDING"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"DESCENDING"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"UNSORTED"</span></div>
 					<aside class="tsd-sources">
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The order how the rows of a tree table
-							are sorted.</p>
-							<ul>
-								<li><code>ASCENDING</code>: The rows are ordered in an ascending order, from the first to the last item.</li>
-								<li><code>DESCENDING</code>: The rows are ordered in an ascending order, from the last to the first item.</li>
-							</ul>
+							<p>The available sort order
+							types for the data table.</p>
 						</div>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+					<a name="sort_order" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> SORT_<wbr>ORDER</h3>
+					<div class="tsd-signature tsd-kind-icon">SORT_<wbr>ORDER<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><a href="primefaces.widget.datatable.html#sortorder" class="tsd-signature-type">SortOrder</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">-1</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">0</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">1</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Map between the sort order names and the multiplier for the comparator.</p>
+						</div>
+					</div>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="bodytable" class="tsd-anchor"></a>
 					<h3>body<wbr>Table</h3>
@@ -981,6 +993,35 @@
 									<h5>listener: <a href="../modules/primefaces.widget.html#refreshlistener" class="tsd-signature-type">RefreshListener</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">this</span><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>A refresh listener to be registered.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="addsortmeta" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> add<wbr>Sort<wbr>Meta</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Sort<wbr>Meta<span class="tsd-signature-symbol">(</span>meta<span class="tsd-signature-symbol">: </span><a href="../interfaces/primefaces.widget.datatable.sortmeta.html" class="tsd-signature-type">SortMeta</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Adds the given sorting to the list of sortings. Each sorting describes a column by which to sort. This data table
+									may be sorted by multiple columns.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>meta: <a href="../interfaces/primefaces.widget.datatable.sortmeta.html" class="tsd-signature-type">SortMeta</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Sorting to add.</p>
 									</div>
 								</li>
 							</ul>
@@ -1703,6 +1744,40 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="fireselectevent" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> fire<wbr>Select<wbr>Event</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">fire<wbr>Select<wbr>Event<span class="tsd-signature-symbol">(</span>nodeKey<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, behaviorEvent<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Sends a select event on server side to invoke a select listener if defined.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>nodeKey: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The key of the node that was selected.</p>
+									</div>
+								</li>
+								<li>
+									<h5>behaviorEvent: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Name of the event to fire.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
 					<a name="fireselectnodeevent" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> fire<wbr>Select<wbr>Node<wbr>Event</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
@@ -2343,6 +2418,35 @@
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 							<p><code>true</code> if the <a href="../interfaces/primefaces.widget.treetablecfg.html#selectionmode">TreeTableCfg.selectionMode</a> is set to <code>single</code>, or <code>false</code> otherwise.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="joinsortmetaoption" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> join<wbr>Sort<wbr>Meta<wbr>Option</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">join<wbr>Sort<wbr>Meta<wbr>Option<span class="tsd-signature-symbol">(</span>option<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><a href="../interfaces/primefaces.widget.datatable.sortmeta.html" class="tsd-signature-type">SortMeta</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Serializes the option from the sort meta items.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>option: <span class="tsd-signature-symbol">keyof </span><a href="../interfaces/primefaces.widget.datatable.sortmeta.html" class="tsd-signature-type">SortMeta</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Property of the sort meta to use.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<p>All values from the current sort meta list for the given option.</p>
 						</li>
 					</ul>
 				</section>
@@ -3109,7 +3213,7 @@
 					<a name="sort" class="tsd-anchor"></a>
 					<h3>sort</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">sort<span class="tsd-signature-symbol">(</span>columnHeader<span class="tsd-signature-symbol">: </span><a href="../modules/jquery.html" class="tsd-signature-type">JQuery</a>, order<span class="tsd-signature-symbol">: </span><a href="primefaces.widget.treetable.html#sortorder" class="tsd-signature-type">SortOrder</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">sort<span class="tsd-signature-symbol">(</span>columnHeader<span class="tsd-signature-symbol">: </span><a href="../modules/jquery.html" class="tsd-signature-type">JQuery</a>, order<span class="tsd-signature-symbol">: </span><a href="primefaces.widget.treetable.html#sortorder" class="tsd-signature-type">SortOrder</a>, multi<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -3132,6 +3236,12 @@
 									<h5>order: <a href="primefaces.widget.treetable.html#sortorder" class="tsd-signature-type">SortOrder</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Whether to sort the rows in ascending or descending order.</p>
+									</div>
+								</li>
+								<li>
+									<h5>multi: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p><code>true</code> if sorting by multiple columns is enabled, or <code>false</code> otherwise.</p>
 									</div>
 								</li>
 							</ul>
@@ -3477,6 +3587,9 @@
 							<li class=" tsd-kind-type-alias tsd-parent-kind-class">
 								<a href="primefaces.widget.treetable.html#sortorder" class="tsd-kind-icon">Sort<wbr>Order</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="primefaces.widget.treetable.html#sort_order" class="tsd-kind-icon">SORT_<wbr>ORDER</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="primefaces.widget.treetable.html#bodytable" class="tsd-kind-icon">body<wbr>Table</a>
 							</li>
@@ -3601,6 +3714,9 @@
 								<a href="primefaces.widget.treetable.html#addrefreshlistener" class="tsd-kind-icon">add<wbr>Refresh<wbr>Listener</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="primefaces.widget.treetable.html#addsortmeta" class="tsd-kind-icon">add<wbr>Sort<wbr>Meta</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="primefaces.widget.treetable.html#addtoselection" class="tsd-kind-icon">add<wbr>ToSelection</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
@@ -3682,6 +3798,9 @@
 								<a href="primefaces.widget.treetable.html#filter" class="tsd-kind-icon">filter</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="primefaces.widget.treetable.html#fireselectevent" class="tsd-kind-icon">fire<wbr>Select<wbr>Event</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="primefaces.widget.treetable.html#fireselectnodeevent" class="tsd-kind-icon">fire<wbr>Select<wbr>Node<wbr>Event</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
@@ -3752,6 +3871,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="primefaces.widget.treetable.html#issingleselection" class="tsd-kind-icon">is<wbr>Single<wbr>Selection</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="primefaces.widget.treetable.html#joinsortmetaoption" class="tsd-kind-icon">join<wbr>Sort<wbr>Meta<wbr>Option</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="primefaces.widget.treetable.html#onrowclick" class="tsd-kind-icon">on<wbr>Row<wbr>Click</a>
@@ -3899,6 +4021,10 @@
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
 			</ul>
 			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+			</ul>
+			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
 			</ul>
@@ -3908,9 +4034,6 @@
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
 			</ul>
 		</div>
 	</div>

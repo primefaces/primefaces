@@ -1694,6 +1694,10 @@ declare namespace PrimeFaces.widget {
          */
         select(index: number): boolean;
         /**
+         * Activates (opens) all the tabs if multiple mode is enabled and the first tab in single mode.
+         */
+        selectAll(): void;
+        /**
          * Hides other panels and makes the given panel visible, such as by adding or removing the appropriate CSS classes.
          *
          * @param panel A tab panel to show.
@@ -1705,6 +1709,10 @@ declare namespace PrimeFaces.widget {
          * @param index 0-based index of the tab to close. Must not be out of range.
          */
         unselect(index: number): void;
+        /**
+         * Deactivates (closes) all the tabs.
+         */
+        unselectAll(): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -2083,6 +2091,10 @@ declare namespace PrimeFaces.widget {
          */
         private bindStaticEvents(): void;
         /**
+         * Clears the input field.
+         */
+        clear(): void;
+        /**
          * Clears the cache with the results of an autocomplete search.
          */
         private clearCache(): void;
@@ -2178,6 +2190,10 @@ declare namespace PrimeFaces.widget {
          * Initializes the cache that stores the retrieved suggestions for a search term.
          */
         private initCache(): void;
+        /**
+         * Invokes the appropriate behavior for when empty message was selected.
+         */
+        private invokeEmptyMessageBehavior(): void;
         /**
          * Invokes the appropriate behavior for when a suggestion item was selected.
          *
@@ -2323,6 +2339,10 @@ declare namespace PrimeFaces.widget {
          */
         cacheTimeout: number;
         /**
+         * REST-Endpoint for fetching autocomplete-suggestions. (instead of completeMethod)
+         */
+        completeEndpoint: string;
+        /**
          * The delay in milliseconds before an autocomplete search is triggered.
          */
         delay: number;
@@ -2376,6 +2396,10 @@ declare namespace PrimeFaces.widget {
          */
         minLength: number;
         /**
+         * The text shown in panel when the suggested list is greater than maxResults.
+         */
+        moreText: string;
+        /**
          * When `true`, enables multiple selection.
          */
         multiple: boolean;
@@ -2408,14 +2432,6 @@ declare namespace PrimeFaces.widget {
          * Ensures uniqueness of the selected items.
          */
         unique: boolean;
-        /**
-         * REST-endpoint for fetching autocomplete-suggestions. (instead of completeMethod)
-         */
-        completeEndpoint: string;
-        /**
-         * The text shown in panel when the suggested list is greater than maxResults.
-         */
-        moreText: string
     }
 }
 declare namespace PrimeFaces.widget {
@@ -4369,6 +4385,11 @@ declare namespace PrimeFaces.widget {
          * DOM element of the OVERLAY container.
          */
         overlay: JQuery;
+        /**
+         * Aligns the overlay panel with the color picker according to the current configuration. It is usually positioned
+         * next to or below the input field to which it is attached.
+         */
+        alignPanel(): void;
         /**
          * Sets up the event listeners required by this widget.
          */
@@ -7349,6 +7370,14 @@ declare namespace PrimeFaces.utils {
      */
     export function removeModal(widget: PrimeFaces.widget.BaseWidget, overlay: JQuery): void;
     /**
+     * Finds the element to which the overlay panel should be appended. If none is specified explicitly, append the
+     * panel to the body.
+     *
+     * @param widget A widget that has a panel to be appended.
+     * @return The search expression for the element to which the overlay panel should be appended.
+     */
+    export function resolveAppendTo(widget: PrimeFaces.widget.DynamicOverlayWidget): string;
+    /**
      * Finds the container element to which an overlay widget should be appended. This is either the element
      * specified by the widget configurations's `appendTo` attribute, or the document BODY element otherwise.
      *
@@ -9009,7 +9038,7 @@ declare namespace PrimeFaces.widget {
          * Finds the meta data for a given cell.
          *
          * @param cell A cell for which to get the meta data.
-         * @return The meta data of the given cell.
+         * @return The meta data of the given cell or NULL if not found
          */
         getCellMeta(cell: JQuery): string;
         /**
@@ -9143,6 +9172,10 @@ declare namespace PrimeFaces.widget {
          * Reflow mode is a responsive mode to display columns as stacked depending on screen size.
          */
         private initReflow(): void;
+        /**
+         * Initializes the expansion state
+         */
+        private initRowExpansion(): void;
         /**
          * Displays row editors in invalid format.
          *
@@ -9318,6 +9351,12 @@ declare namespace PrimeFaces.widget {
          */
         private restoreScrollState(): void;
         /**
+         * Detect if row expansion for this row has been loaded and if not load it.
+         *
+         * @param rowIndex The row index to check for expansion
+         */
+        protected rowExpansionLoaded(rowIndex: number): void;
+        /**
          * After the user is done editing a cell, saves the content of the given cell and switches back to view mode.
          *
          * @param cell A cell (`TD`) in edit mode.
@@ -9450,7 +9489,7 @@ declare namespace PrimeFaces.widget {
          */
         private shouldSort(event: JQuery.Event, column: JQuery): boolean;
         /**
-         * When cell editing is enabeld, shows the cell editor for the given cell that lets the user edit the cell content.
+         * When cell editing is enabled, shows the cell editor for the given cell that lets the user edit the cell content.
          *
          * @param c A cell (`TD`) of this data table to edit.
          */
@@ -9578,6 +9617,13 @@ declare namespace PrimeFaces.widget {
          */
         private updateColumnsView(): void;
         /**
+         * Updates the currently selected cell based on where the context menu right click occurred.
+         *
+         * @param event Event that occurred.
+         * @param targetWidget the current widget
+         */
+        private updateContextMenuCell(event: JQuery.Event, targetWidget: PrimeFaces.widget.DataTable): void;
+        /**
          * Sets the given HTML string as the content of the body of this data table. Afterwards, sets up all required event
          * listeners etc.
          *
@@ -9636,6 +9682,10 @@ declare namespace PrimeFaces.widget {
          * @param cell A cell of this data table.
          */
         private viewMode(cell: JQuery): void;
+        /**
+         * Write row expansion state.
+         */
+        private writeRowExpansions(): void;
         /**
          * Writes selected row ids to state holder
          */
@@ -11260,18 +11310,18 @@ declare namespace JQueryPrimeDatePicker {
         /**
          * Creates the HTML snippet for the given days.
          *
-         * @param monthsMetaData List of days to render.
+         * @param monthsMetadata List of days to render.
          * @return The rendered HTML snippet.
          */
-        renderMonths(monthsMetaData: DayListInMonth[]): string;
+        renderMonths(monthsMetadata: DayListInMonth[]): string;
         /**
          * Creates the HTML snippet for the given days in a month.
          *
-         * @param monthMetaData List of days to render
+         * @param monthMetadata List of days to render
          * @param index Month to which the days belong.
          * @return The rendered HTML snippet.
          */
-        renderMonth(monthMetaData: DayListInMonth, index: MonthOfTheYear): string;
+        renderMonth(monthMetadata: DayListInMonth, index: MonthOfTheYear): string;
         /**
          * Creates the HTML snippet for the button for navigating to the previous month.
          *
@@ -11319,10 +11369,10 @@ declare namespace JQueryPrimeDatePicker {
         /**
          * Creates the HTML snippet for the title bar of the given month.
          *
-         * @param monthMetaData Month to use.
+         * @param monthMetadata Month to use.
          * @return The rendered HTML snippet.
          */
-        renderTitle(monthMetaData: DayListInMonth): string;
+        renderTitle(monthMetadata: DayListInMonth): string;
         /**
          * Creates the HTML snippet for the names of the given days.
          *
@@ -11349,19 +11399,19 @@ declare namespace JQueryPrimeDatePicker {
         /**
          * Creates the HTML snippet for the given dates.
          *
-         * @param monthMetaData List of dates to render.
+         * @param monthMetadata List of dates to render.
          * @return The rendered HTML snippet.
          */
-        renderDates(monthMetaData: DayListInMonth): string;
+        renderDates(monthMetadata: DayListInMonth): string;
         /**
          * Creates the HTML snippet for the date view grid of the given month.
          *
-         * @param monthMetaData Month to use.
+         * @param monthMetadata Month to use.
          * @param weekDaysMin List of super short week day names.
          * @param weekDays List of long week names.
          * @return The rendered HTML snippet.
          */
-        renderDateViewGrid(monthMetaData: DayListInMonth, weekDaysMin: string[], weekDays: string[]): string;
+        renderDateViewGrid(monthMetadata: DayListInMonth, weekDaysMin: string[], weekDays: string[]): string;
         /**
          * Creates the HTML snippet for the hour picker for selecting an hour.
          *
@@ -11662,7 +11712,7 @@ declare namespace JQueryPrimeDatePicker {
         /**
          * List of all days in the current year.
          */
-        monthsMetaData: DayListInMonth[];
+        monthsMetadata: DayListInMonth[];
         /**
          * Mask for the modal overlay.
          */
@@ -11817,6 +11867,10 @@ declare namespace PrimeFaces.widget {
          */
         private bindDateSelectListener(): void;
         /**
+         * Callback for after the overlay panel is created.
+         */
+        private bindPanelCreationListener(): void;
+        /**
          * Sets up the event listener for when the date picker changes to a different month or year page.
          */
         private bindViewChangeListener(): void;
@@ -11851,10 +11905,9 @@ declare namespace PrimeFaces.widget {
         /**
          * Triggers the event for when the date picker changed to a different month or year page.
          *
-         * @param year The year to which the date picker changed.
-         * @param month The year to which the date picker changed, starting with `0` for `Janurary`.
+         * @param date The date to which the date picker changed.
          */
-        private fireViewChangeEvent(year: number, month: number): void;
+        private fireViewChangeEvent(date: Date): void;
         /**
          * Gets the currently selected date value of the date picker.
          *
@@ -14662,6 +14715,13 @@ declare namespace PrimeFaces.widget.FileUpload {
      */
     export type OnStartCallback = (this: PrimeFaces.widget.FileUpload) => void;
 }
+declare namespace PrimeFaces.widget.FileUpload {
+    /**
+     * Callback to execute before the files are sent.
+     * If this callback returns false, the file upload request is not started. See also {@link FileUploadCfg.onupload}.
+     */
+    export type OnUploadCallback = (this: PrimeFaces.widget.FileUpload) => void;
+}
 declare namespace PrimeFaces.widget {
     /**
      * __PrimeFaces FileUpload Widget__
@@ -14960,6 +15020,11 @@ declare namespace PrimeFaces.widget {
          * upload, when a file is sent to the server.
          */
         onstart: PrimeFaces.widget.FileUpload.OnStartCallback;
+        /**
+         * Callback to execute before the files are sent.
+         * If this callback returns false, the file upload request is not started.
+         */
+        onupload: PrimeFaces.widget.FileUpload.OnUploadCallback;
         /**
          * Width for image previews in pixels.
          */
@@ -17251,13 +17316,6 @@ declare namespace PrimeFaces.widget {
          */
         getActiveItem(): JQuery;
         /**
-         * Finds the element to which the overlay panel should be appended. If none is specified explicitly, append the
-         * panel to the body.
-         *
-         * @return The search expression for the element to which the overlay panel should be appended.
-         */
-        private getAppendTo(): string;
-        /**
          * Finds the label of the option with the given value.
          *
          * @param value The value of a selectable option.
@@ -17380,6 +17438,28 @@ declare namespace PrimeFaces.widget {
          * @return The value as returned by the `init` method, which is often `undefined`.
          */
         refresh(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+        /**
+         * Renders panel content based on hidden select.
+         *
+         * @param initContentsAndBindItemEvents Call initContents and bindItemEvents after rendering?
+         */
+        private renderPanelContentFromHiddenSelect(initContentsAndBindItemEvents: boolean): void;
+        /**
+         * Renders Panel-HTML-code for one SelectItem(Group).
+         *
+         * @param item An option(group) for which to render HTML-code.
+         * @param isGrouped Tells whether the item is part of a group.
+         * @return Rendered HTML-code.
+         */
+        private renderSelectItem(item: JQuery, isGrouped: boolean): string;
+        /**
+         * Renders Panel-HTML-code for SelectItems.
+         *
+         * @param parentItem An parentItem (select, optgroup) for which to render HTML-code.
+         * @param isGrouped Tells whether the elements of the parentItem should be marked as grouped.
+         * @return Rendered HTML-code.
+         */
+        private renderSelectItems(parentItem: JQuery, isGrouped?: boolean): string;
         /**
          * Finds the index of the given selectable option.
          *
@@ -17516,6 +17596,10 @@ declare namespace PrimeFaces.widget {
          * which is replaced with the value of the currently selected item.
          */
         labelTemplate: string;
+        /**
+         * Renders panel content on client.
+         */
+        renderPanelContentOnClient: boolean;
         /**
          * Updates the title of the component with the description of the selected item.
          */
@@ -20146,6 +20230,11 @@ declare namespace PrimeFaces.widget {
          * The initial, numerical value that is displayed, such as `0.0` or `5.3`.
          */
         valueToRender: string;
+        /**
+         * Binds input listener which fixes a browser AutoFill issue.
+         * See: https://github.com/autoNumeric/autoNumeric/issues/536
+         */
+        private bindInputEvents(): void;
         /**
          * Wraps the events on the external (visible) input to copy the value to the hidden input.
          *
@@ -28398,6 +28487,11 @@ declare namespace PrimeFaces.widget {
          */
         protected _render(): void;
         /**
+         * Localizes certain aspects of FullCalendar that are exposed. The rest are configured by "locale"
+         * setting and FullCalendar and Moment translations for that locale.
+         */
+        private configureLocale(): void;
+        /**
          * A widget class should not have an explicit constructor. Instead, this initialize method is called after the
          * widget was created. You can use this method to perform any initialization that is required. For widgets that
          * need to create custom HTML on the client-side this is also the place where you should call your render
@@ -28458,11 +28552,6 @@ declare namespace PrimeFaces.widget {
      */
     export interface ScheduleCfg extends PrimeFaces.widget.DeferredWidgetCfg {
         /**
-         * The configuration object that is passed to the
-         * FullCalendar upon initialization, see {@link CalendarOptions|CalendarOptions}.
-         */
-        calendarCfg: import("@fullcalendar/core").CalendarOptions;
-        /**
          * Name of JavaScript function to extend the options of
          * the underlying FullCalendar plugin. Access the this schedule widget via the this context, and change the FullCalendar
          * configuration stored in `this.cfg`.
@@ -28481,6 +28570,11 @@ declare namespace PrimeFaces.widget {
          * prevented (phishing protection), default value is `true`.
          */
         noOpener: boolean;
+        /**
+         * The configuration object that is passed to the
+         * FullCalendar upon initialization, see {@link CalendarOptions|CalendarOptions}.
+         */
+        options: import("@fullcalendar/core").CalendarOptions;
         /**
          * Theme system used for rendering the calendar.
          */
@@ -29906,6 +30000,14 @@ declare namespace PrimeFaces.widget {
          */
         private repeat(interval: number, dir: -1 | 1): void;
         /**
+         * If roundStep is enabled then round to the nearest step value.
+         * For example if step=5 and value=8 it would be rounded 10.
+         *
+         * @param value The value for this spinner.
+         * @return Original value if rounding disabled, else a rounded value.
+         */
+        private roundStep(value: number): number;
+        /**
          * Sets the value of this spinner to the given number.
          *
          * @param value The new value for this spinner.
@@ -29933,7 +30035,7 @@ declare namespace PrimeFaces.widget {
         /**
          * Number of decimal places.
          */
-        decimalPlaces: number;
+        decimalPlaces: string;
         /**
          * The character separating the integral and fractional parts of the number.
          */
@@ -33187,12 +33289,10 @@ declare namespace PrimeFaces.widget.TreeTable {
 }
 declare namespace PrimeFaces.widget.TreeTable {
     /**
-     * The order how the rows of a tree table
-     * are sorted.
-     * - `ASCENDING`: The rows are ordered in an ascending order, from the first to the last item.
-     * - `DESCENDING`: The rows are ordered in an ascending order, from the last to the first item.
+     * The available sort order
+     * types for the data table.
      */
-    export type SortOrder = "ASCENDING" | "DESCENDING";
+    export type SortOrder = "ASCENDING" | "DESCENDING" | "UNSORTED";
 }
 declare namespace PrimeFaces.widget {
     /**
@@ -33333,6 +33433,10 @@ declare namespace PrimeFaces.widget {
          */
         theadClone: JQuery;
         /**
+         * Map between the sort order names and the multiplier for the comparator.
+         */
+        protected SORT_ORDER: Record<PrimeFaces.widget.DataTable.SortOrder, -1 | 0 | 1>;
+        /**
          * This render method is called by this deferred widget once the widget container has become visible. You may
          * now proceed with widget initialization.
          *
@@ -33341,6 +33445,13 @@ declare namespace PrimeFaces.widget {
          * @override
          */
         protected _render(): void;
+        /**
+         * Adds the given sorting to the list of sortings. Each sorting describes a column by which to sort. This data table
+         * may be sorted by multiple columns.
+         *
+         * @param meta Sorting to add.
+         */
+        private addSortMeta(meta: PrimeFaces.widget.DataTable.SortMeta): void;
         /**
          * Adds the given row to the list of currently selected rows.
          *
@@ -33485,6 +33596,13 @@ declare namespace PrimeFaces.widget {
          */
         filter(): void;
         /**
+         * Sends a select event on server side to invoke a select listener if defined.
+         *
+         * @param nodeKey The key of the node that was selected.
+         * @param behaviorEvent Name of the event to fire.
+         */
+        private fireSelectEvent(nodeKey: string, behaviorEvent: string): void;
+        /**
          * Callback for when a node was selected. Invokes the appropriate behaviors.
          *
          * @param nodeKey Key of the row that was selected.
@@ -33627,6 +33745,13 @@ declare namespace PrimeFaces.widget {
          * @return `true` if the {@link TreeTableCfg.selectionMode} is set to `single`, or `false` otherwise.
          */
         isSingleSelection(): boolean;
+        /**
+         * Serializes the option from the sort meta items.
+         *
+         * @param option Property of the sort meta to use.
+         * @return All values from the current sort meta list for the given option.
+         */
+        private joinSortMetaOption(option: keyof PrimeFaces.widget.DataTable.SortMeta): string;
         /**
          * Callback for when a row was clicked. Selects or unselects the row, if that feature is enabled.
          *
@@ -33786,8 +33911,9 @@ declare namespace PrimeFaces.widget {
          *
          * @param columnHeader A column to sort by, must be a TH element of the THEAD.
          * @param order Whether to sort the rows in ascending or descending order.
+         * @param multi `true` if sorting by multiple columns is enabled, or `false` otherwise.
          */
-        sort(columnHeader: JQuery, order: PrimeFaces.widget.TreeTable.SortOrder): void;
+        sort(columnHeader: JQuery, order: PrimeFaces.widget.TreeTable.SortOrder, multi: boolean): void;
         /**
          * Switches a row to edit mode and displays the editors for that row.
          *

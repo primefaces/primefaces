@@ -306,6 +306,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="primefaces.widget.datatable.html#highlightrow" class="tsd-kind-icon">highlight<wbr>Row</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="primefaces.widget.datatable.html#init" class="tsd-kind-icon">init</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.datatable.html#initreflow" class="tsd-kind-icon">init<wbr>Reflow</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.datatable.html#initrowexpansion" class="tsd-kind-icon">init<wbr>Row<wbr>Expansion</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="primefaces.widget.datatable.html#invalidaterow" class="tsd-kind-icon">invalidate<wbr>Row</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="primefaces.widget.datatable.html#ischeckboxselectionenabled" class="tsd-kind-icon">is<wbr>Checkbox<wbr>Selection<wbr>Enabled</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="primefaces.widget.datatable.html#isdetached" class="tsd-kind-icon">is<wbr>Detached</a></li>
@@ -337,6 +338,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="primefaces.widget.datatable.html#resetvirtualscrollbody" class="tsd-kind-icon">reset<wbr>Virtual<wbr>Scroll<wbr>Body</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="primefaces.widget.datatable.html#resize" class="tsd-kind-icon">resize</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.datatable.html#restorescrollstate" class="tsd-kind-icon">restore<wbr>Scroll<wbr>State</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="primefaces.widget.datatable.html#rowexpansionloaded" class="tsd-kind-icon">row<wbr>Expansion<wbr>Loaded</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="primefaces.widget.datatable.html#savecell" class="tsd-kind-icon">save<wbr>Cell</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="primefaces.widget.datatable.html#savecolumnorder" class="tsd-kind-icon">save<wbr>Column<wbr>Order</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="primefaces.widget.datatable.html#saverowedit" class="tsd-kind-icon">save<wbr>Row<wbr>Edit</a></li>
@@ -383,6 +385,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.datatable.html#unselectrowwithcheckbox" class="tsd-kind-icon">unselect<wbr>Row<wbr>With<wbr>Checkbox</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.datatable.html#updatecolspan" class="tsd-kind-icon">update<wbr>Colspan</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.datatable.html#updatecolumnsview" class="tsd-kind-icon">update<wbr>Columns<wbr>View</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.datatable.html#updatecontextmenucell" class="tsd-kind-icon">update<wbr>Context<wbr>Menu<wbr>Cell</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="primefaces.widget.datatable.html#updatedata" class="tsd-kind-icon">update<wbr>Data</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.datatable.html#updateemptycolspan" class="tsd-kind-icon">update<wbr>Empty<wbr>Colspan</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.datatable.html#updateexpandedrowscolspan" class="tsd-kind-icon">update<wbr>Expanded<wbr>Rows<wbr>Colspan</a></li>
@@ -392,6 +395,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.datatable.html#updateresizablestate" class="tsd-kind-icon">update<wbr>Resizable<wbr>State</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="primefaces.widget.datatable.html#updaterow" class="tsd-kind-icon">update<wbr>Row</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.datatable.html#viewmode" class="tsd-kind-icon">view<wbr>Mode</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.datatable.html#writerowexpansions" class="tsd-kind-icon">write<wbr>Row<wbr>Expansions</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.datatable.html#writeselections" class="tsd-kind-icon">write<wbr>Selections</a></li>
 							</ul>
 						</section>
@@ -3048,7 +3052,7 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-							<p>The meta data of the given cell.</p>
+							<p>The meta data of the given cell or NULL if not found</p>
 						</li>
 					</ul>
 				</section>
@@ -3564,6 +3568,25 @@
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Reflow mode is a responsive mode to display columns as stacked depending on screen size.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="initrowexpansion" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> init<wbr>Row<wbr>Expansion</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">init<wbr>Row<wbr>Expansion<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Initializes the expansion state</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -4392,6 +4415,34 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<a name="rowexpansionloaded" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> row<wbr>Expansion<wbr>Loaded</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">row<wbr>Expansion<wbr>Loaded<span class="tsd-signature-symbol">(</span>rowIndex<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Detect if row expansion for this row has been loaded and if not load it.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>rowIndex: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The row index to check for expansion</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="savecell" class="tsd-anchor"></a>
 					<h3>save<wbr>Cell</h3>
@@ -4999,7 +5050,7 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>When cell editing is enabeld, shows the cell editor for the given cell that lets the user edit the cell content.</p>
+									<p>When cell editing is enabled, shows the cell editor for the given cell that lets the user edit the cell content.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -5572,6 +5623,40 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="updatecontextmenucell" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> update<wbr>Context<wbr>Menu<wbr>Cell</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Context<wbr>Menu<wbr>Cell<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><a href="../interfaces/jquery.event.html" class="tsd-signature-type">Event</a>, targetWidget<span class="tsd-signature-symbol">: </span><a href="primefaces.widget.datatable.html" class="tsd-signature-type">DataTable</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Updates the currently selected cell based on where the context menu right click occurred.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>event: <a href="../interfaces/jquery.event.html" class="tsd-signature-type">Event</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Event that occurred.</p>
+									</div>
+								</li>
+								<li>
+									<h5>targetWidget: <a href="primefaces.widget.datatable.html" class="tsd-signature-type">DataTable</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the current widget</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
 					<a name="updatedata" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> update<wbr>Data</h3>
@@ -5839,6 +5924,25 @@
 									</div>
 								</li>
 							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="writerowexpansions" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> write<wbr>Row<wbr>Expansions</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">write<wbr>Row<wbr>Expansions<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Write row expansion state.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -6423,6 +6527,9 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="primefaces.widget.datatable.html#initreflow" class="tsd-kind-icon">init<wbr>Reflow</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="primefaces.widget.datatable.html#initrowexpansion" class="tsd-kind-icon">init<wbr>Row<wbr>Expansion</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
 								<a href="primefaces.widget.datatable.html#invalidaterow" class="tsd-kind-icon">invalidate<wbr>Row</a>
 							</li>
@@ -6515,6 +6622,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="primefaces.widget.datatable.html#restorescrollstate" class="tsd-kind-icon">restore<wbr>Scroll<wbr>State</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+								<a href="primefaces.widget.datatable.html#rowexpansionloaded" class="tsd-kind-icon">row<wbr>Expansion<wbr>Loaded</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="primefaces.widget.datatable.html#savecell" class="tsd-kind-icon">save<wbr>Cell</a>
@@ -6654,6 +6764,9 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="primefaces.widget.datatable.html#updatecolumnsview" class="tsd-kind-icon">update<wbr>Columns<wbr>View</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="primefaces.widget.datatable.html#updatecontextmenucell" class="tsd-kind-icon">update<wbr>Context<wbr>Menu<wbr>Cell</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
 								<a href="primefaces.widget.datatable.html#updatedata" class="tsd-kind-icon">update<wbr>Data</a>
 							</li>
@@ -6680,6 +6793,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="primefaces.widget.datatable.html#viewmode" class="tsd-kind-icon">view<wbr>Mode</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="primefaces.widget.datatable.html#writerowexpansions" class="tsd-kind-icon">write<wbr>Row<wbr>Expansions</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="primefaces.widget.datatable.html#writeselections" class="tsd-kind-icon">write<wbr>Selections</a>

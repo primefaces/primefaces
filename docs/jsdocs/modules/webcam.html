@@ -511,7 +511,7 @@ Webcam.snap(<span class="hljs-function">() =&gt;</span> {
 								<p>The image data is uploaded as part of a standard multipart form post, and included as a form element named
 								webcam. To gain access to this data, write some server-side code like this (PHP shown):</p>
 								<pre><code class="language-php"><span class="hljs-comment">// be aware of file / directory permissions on your server</span>
-move_uploaded_file($_FILES[<span class="hljs-string">&#x27;webcam&#x27;</span>][<span class="hljs-string">&#x27;tmp_name&#x27;</span>], <span class="hljs-string">&#x27;webcam.jpg&#x27;</span>);</code></pre>
+move_uploaded_file(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;webcam&#x27;</span>][<span class="hljs-string">&#x27;tmp_name&#x27;</span>], <span class="hljs-string">&#x27;webcam.jpg&#x27;</span>);</code></pre>
 								<p>Treat the uploaded data as if you were receiving a standard form submission with a
 								<code>&lt;input type=&quot;file&quot; name=&quot;webcam&quot;&gt;</code> element. The data is sent in the same exact way.</p>
 							</div>
