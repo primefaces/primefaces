@@ -58,7 +58,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import org.primefaces.component.api.ColumnHolder;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -66,7 +65,7 @@ import org.primefaces.component.api.ColumnHolder;
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "touch/touchswipe.js")
-public class DataTable extends DataTableBase implements ColumnHolder {
+public class DataTable extends DataTableBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataTable";
 

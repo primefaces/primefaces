@@ -25,17 +25,16 @@ package org.primefaces.component.treetable;
 
 import javax.el.MethodExpression;
 import javax.faces.component.behavior.ClientBehaviorHolder;
-import org.primefaces.component.api.FilterableTable;
 import org.primefaces.component.api.MultiViewStateAware;
 
 import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
-import org.primefaces.component.api.SortableTable;
 import org.primefaces.component.api.UITree;
 import org.primefaces.component.api.Widget;
+import org.primefaces.component.api.UISortableFilterableTable;
 
 public abstract class TreeTableBase extends UITree implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable,
-        MultiViewStateAware<TreeTableState>, FilterableTable, SortableTable {
+        MultiViewStateAware<TreeTableState>, UISortableFilterableTable {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

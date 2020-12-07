@@ -36,7 +36,6 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 
 import org.primefaces.PrimeFaces;
-import org.primefaces.component.api.ColumnHolder;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columns.Columns;
@@ -53,7 +52,7 @@ import org.primefaces.util.*;
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class TreeTable extends TreeTableBase implements ColumnHolder {
+public class TreeTable extends TreeTableBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.TreeTable";
 

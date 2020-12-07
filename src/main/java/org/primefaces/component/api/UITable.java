@@ -36,7 +36,7 @@ import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 
-public interface ColumnHolder {
+public interface UITable {
 
     default void forEachColumn(Consumer<UIColumn> callback) {
         char separator = UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance());
@@ -64,8 +64,8 @@ public interface ColumnHolder {
                 else if (child instanceof ColumnGroup) {
                     forEachColumn(context, separator, child, callback);
                 }
-                else if (child instanceof ColumnHolder) {
-                    ColumnHolder columnHolder = (ColumnHolder) child;
+                else if (child instanceof UITable) {
+                    UITable columnHolder = (UITable) child;
                     for (int j = 0; j < ((UIComponent) columnHolder).getChildCount(); j++) {
                         UIComponent columnHolderChild = ((UIComponent) columnHolder).getChildren().get(j);
                         if (columnHolderChild.isRendered()) {

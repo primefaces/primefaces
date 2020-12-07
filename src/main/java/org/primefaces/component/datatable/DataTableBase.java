@@ -30,7 +30,7 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class DataTableBase extends UIPageableData
         implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder, MultiViewStateAware<DataTableState>,
-        FilterableTable, SortableTable {
+        UISortableFilterableTable {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

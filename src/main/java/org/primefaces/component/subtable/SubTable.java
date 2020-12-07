@@ -26,10 +26,10 @@ package org.primefaces.component.subtable;
 import java.util.List;
 
 import javax.faces.event.PhaseId;
-import org.primefaces.component.api.ColumnHolder;
 import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.api.UITable;
 
-public class SubTable extends SubTableBase implements ColumnHolder {
+public class SubTable extends SubTableBase implements UITable {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SubTable";
 
