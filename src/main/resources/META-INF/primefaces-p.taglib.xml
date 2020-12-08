@@ -29797,7 +29797,7 @@
             <description>
                 <![CDATA[Node to keep the filtered nodes if filtering is enabled.]]>
             </description>
-            <name>filteredNode</name>
+            <name>filteredValue</name>
             <required>false</required>
             <type>java.lang.Object</type>
         </attribute>
