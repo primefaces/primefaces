@@ -162,14 +162,21 @@ public class PrimeApplicationContext {
         String fileTypeDetectorTmp = config.getFileTypeDetector();
         ServiceLoader<FileTypeDetector> loader = ServiceLoader.load(FileTypeDetector.class, applicationClassLoader);
 
+        boolean found = false;
         LinkedList<FileTypeDetector> detectors = new LinkedList<>();
         for (FileTypeDetector detector : loader) {
             if (Objects.equals(detector.getClass().getName(), fileTypeDetectorTmp)) {
                 detectors.push(detector);
+                found = true;
             }
             else {
                 detectors.add(detector);
             }
+        }
+
+        if (LangUtils.isNotBlank(fileTypeDetectorTmp) && !found) {
+            LOGGER.warning(() -> "FileTypeDetector " + fileTypeDetectorTmp + " was not found in classpath. " +
+                    "Make sure it's been registered as a SPI service.");
         }
 
         fileTypeDetector = new FileTypeDetector() {
