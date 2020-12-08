@@ -438,7 +438,6 @@
                             org.krysalis.barcode4j.output;resolution:=optional,
                             org.owasp.html;resolution:=optional,
                             org.apache.myfaces.view.facelets;resolution:=optional,
-                            org.apache.tika.filetypedetector;resolution:=optional,
                             *;resolution:=optional
                         </Import-Package>
                         <Require-Capability>
