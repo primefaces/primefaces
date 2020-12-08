@@ -39,7 +39,7 @@ public class RangeFilterConstraint implements FilterConstraint {
             return isInRange((Comparable) value, (List) filter);
         }
 
-        throw new UnsupportedOperationException("Unsupported type: " + value.getClass() + ". Supported type: " + Comparable.class.getName());
+        throw new IllegalArgumentException("Invalid type: " + value.getClass() + ". Valid type: " + Comparable.class.getName());
     }
 
     protected boolean isInRange(Comparable value, List filter) {

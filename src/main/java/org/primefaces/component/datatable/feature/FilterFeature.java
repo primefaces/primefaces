@@ -34,7 +34,6 @@ import org.primefaces.model.filter.*;
 import org.primefaces.util.MapBuilder;
 
 import javax.el.ELContext;
-import javax.el.ExpressionFactory;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import java.io.IOException;
@@ -152,18 +151,6 @@ public class FilterFeature implements DataTableFeature {
                 FilterConstraint constraint = filter.getConstraint();
                 Object filterValue = filter.getFilterValue();
                 Object columnValue = filter.isGlobalFilter() ? table.getRowData() : filter.getLocalValue(elContext);
-
-                // case of default filter value using markup value (coerce into String by default)
-                if (!filter.isGlobalFilter()
-                        && filterValue != null
-                        && columnValue != null
-                        && !Objects.equals(filterValue.getClass(), columnValue.getClass())
-                        && !filterValue.getClass().isArray()
-                        && !(filterValue instanceof Collection)) {
-                    ExpressionFactory ef = context.getApplication().getExpressionFactory();
-                    filterValue = ef.coerceToType(filterValue, columnValue.getClass());
-                    filter.setFilterValue(filterValue);
-                }
 
                 matching = constraint.isMatching(context, columnValue, filterValue, filterLocale);
                 if (!matching) {
