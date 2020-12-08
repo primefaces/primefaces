@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -188,7 +189,7 @@ public class TreeTableRenderer extends DataRenderer {
             }
 
             filter(context, tt, tt.getValue(), tt.getFilterByAsMap());
-            sort(tt);
+            sort(tt, tt.getSortByAsMap());
 
             encodeTbody(context, tt, tt.getValue(), true);
 
@@ -217,7 +218,7 @@ public class TreeTableRenderer extends DataRenderer {
         }
         else {
             filter(context, tt, tt.getValue(), tt.getFilterByAsMap());
-            sort(tt);
+            sort(tt, tt.getSortByAsMap());
 
             encodeMarkup(context, tt);
             encodeScript(context, tt);
@@ -319,7 +320,7 @@ public class TreeTableRenderer extends DataRenderer {
 
         //default sort
         if (tt.isDefaultSort()) {
-            sort(tt);
+            sort(tt, tt.getSortByAsMap());
         }
 
         String containerClass = tt.isResizableColumns() ? TreeTable.RESIZABLE_CONTAINER_CLASS : TreeTable.CONTAINER_CLASS;
@@ -1099,7 +1100,7 @@ public class TreeTableRenderer extends DataRenderer {
     }
 
     protected void encodeSort(FacesContext context, TreeTable tt, TreeNode root) throws IOException {
-        sort(tt);
+        sort(tt, tt.getSortByAsMap());
 
         encodeTbody(context, tt, root, true);
 
@@ -1114,19 +1115,26 @@ public class TreeTableRenderer extends DataRenderer {
         }
     }
 
-    public void sort(TreeTable tt) {
+    public void sort(TreeTable tt, Map<String, SortMeta> sortBy) {
         TreeNode root = tt.getValue();
         if (root == null) {
             return;
         }
 
+        if (sortBy.isEmpty()) {
+            return;
+        }
+
+        Map<String, SortMeta> activeSortBy = sortBy.values().stream()
+                .filter(SortMeta::isActive)
+                .collect(Collectors.toMap(SortMeta::getField, Function.identity()));
+        if (activeSortBy.isEmpty()) {
+            return;
+        }
+
         Locale dataLocale = tt.resolveDataLocale();
 
-        for (SortMeta meta : tt.getSortByAsMap().values()) {
-            if (!meta.isActive()) {
-                continue;
-            }
-
+        for (SortMeta meta : activeSortBy.values()) {
             UIColumn sortColumn = (UIColumn) meta.getComponent();
             if (sortColumn != null && sortColumn.isDynamic()) {
                 ((DynamicColumn) sortColumn).applyStatelessModel();
@@ -1243,11 +1251,22 @@ public class TreeTableRenderer extends DataRenderer {
     }
 
     public void filter(FacesContext context, TreeTable tt, TreeNode root, Map<String, FilterMeta> filterBy) throws IOException {
+        if (filterBy.isEmpty()) {
+            return;
+        }
+
+        Map<String, FilterMeta> activeFilterBy = filterBy.values().stream()
+                .filter(FilterMeta::isActive)
+                .collect(Collectors.toMap(FilterMeta::getField, Function.identity()));
+        if (activeFilterBy.isEmpty()) {
+            return;
+        }
+
         Locale filterLocale = LocaleUtils.getCurrentLocale(context);
         TreeNode filteredNode = null;
 
         tt.getFilteredRowKeys().clear();
-        findFilteredRowKeys(context, tt, root, root, filterBy, filterLocale);
+        findFilteredRowKeys(context, tt, root, root, activeFilterBy, filterLocale);
 
         filteredNode = createNewNode(root, root.getParent());
 
