@@ -160,7 +160,7 @@ public class PrimeApplicationContext {
 
     private void resolveFileTypeDetector() {
         String fileTypeDetectorTmp = config.getFileTypeDetector();
-        ServiceLoader<FileTypeDetector> loader = ServiceLoader.load(FileTypeDetector.class);
+        ServiceLoader<FileTypeDetector> loader = ServiceLoader.load(FileTypeDetector.class, applicationClassLoader);
 
         LinkedList<FileTypeDetector> detectors = new LinkedList<>();
         for (FileTypeDetector detector : loader) {

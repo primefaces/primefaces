@@ -216,9 +216,8 @@ public class FileUploadUtils {
             return true;
         }
 
-        String tempFileSuffix = "." + FilenameUtils.getExtension(fileName);
         String tempFilePrefix = UUID.randomUUID().toString();
-        Path tempFile = Files.createTempFile(tempFilePrefix, tempFileSuffix);
+        Path tempFile = Files.createTempFile(tempFilePrefix, null);
 
         try {
             try (InputStream in = new PushbackInputStream(new BufferedInputStream(stream))) {
