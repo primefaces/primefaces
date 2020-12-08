@@ -42,12 +42,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.spi.FileTypeDetector;
-import java.util.Collection;
-import java.util.Map;
-import java.util.ServiceLoader;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -132,15 +133,6 @@ public class PrimeApplicationContext {
 
         virusScannerService = new Lazy<>(() -> new VirusScannerService(applicationClassLoader));
 
-        if (environment.isTikaAvailable()) {
-            for (FileTypeDetector detector : ServiceLoader.load(FileTypeDetector.class)) {
-                if (PrimeEnvironment.TIKA_FILE_DETECTOR_CLASS.equals(detector.getClass().getName())) {
-                    fileTypeDetector = detector;
-                    break;
-                }
-            }
-        }
-
         cacheProvider = new Lazy<>(() -> {
             String cacheProviderConfigValue = FacesContext.getCurrentInstance().getExternalContext()
                     .getInitParameter(Constants.ContextParams.CACHE_PROVIDER);
@@ -162,6 +154,28 @@ public class PrimeApplicationContext {
         resolveFileUploadDecoder();
 
         resolveFileUploadResumeUrl(facesContext);
+
+        resolveFileTypeDetector();
+    }
+
+    private void resolveFileTypeDetector() {
+        ServiceLoader<FileTypeDetector> loader = ServiceLoader.load(FileTypeDetector.class, applicationClassLoader);
+
+        fileTypeDetector = new FileTypeDetector() {
+
+            @Override
+            public String probeContentType(Path path) throws IOException {
+                for (FileTypeDetector detector: loader) {
+                    String result = detector.probeContentType(path);
+                    if (result != null) {
+                        return result;
+                    }
+                }
+
+                // fallback to default
+                return Files.probeContentType(path);
+            }
+        };
     }
 
     private void resolveFileUploadResumeUrl(FacesContext facesContext) {
