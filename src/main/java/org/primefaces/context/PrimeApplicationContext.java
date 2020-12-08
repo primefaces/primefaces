@@ -162,13 +162,13 @@ public class PrimeApplicationContext {
         String fileTypeDetectorTmp = config.getFileTypeDetector();
         ServiceLoader<FileTypeDetector> loader = ServiceLoader.load(FileTypeDetector.class);
 
-        LinkedList<FileTypeDetector> loaders = new LinkedList<>();
+        LinkedList<FileTypeDetector> detectors = new LinkedList<>();
         for (FileTypeDetector detector : loader) {
             if (Objects.equals(detector.getClass().getName(), fileTypeDetectorTmp)) {
-                loaders.push(detector);
+                detectors.push(detector);
             }
             else {
-                loaders.add(detector);
+                detectors.add(detector);
             }
         }
 
@@ -176,7 +176,7 @@ public class PrimeApplicationContext {
 
             @Override
             public String probeContentType(Path path) throws IOException {
-                for (FileTypeDetector detector: loaders) {
+                for (FileTypeDetector detector: detectors) {
                     String result = detector.probeContentType(path);
                     if (result != null) {
                         return result;
