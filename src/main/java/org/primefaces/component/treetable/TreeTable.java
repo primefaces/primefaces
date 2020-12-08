@@ -514,14 +514,14 @@ public class TreeTable extends TreeTableBase {
         return !getFilterByAsMap().isEmpty();
     }
 
-    public void updateFilteredNode(FacesContext context, TreeNode node) {
-        ValueExpression ve = getValueExpression("filteredNode");
+    public void updateFilteredValue(FacesContext context, TreeNode node) {
+        ValueExpression ve = getValueExpression(PropertyKeys.filteredValue.name());
 
         if (ve != null) {
             ve.setValue(context.getELContext(), node);
         }
         else {
-            setFilteredNode(node);
+            setFilteredValue(node);
         }
     }
 
@@ -624,7 +624,7 @@ public class TreeTable extends TreeTableBase {
 
     public void reset() {
         setValue(null);
-        setFilteredNode(null);
+        setFilteredValue(null);
 
         setFirst(0);
         setDefaultSort(false);

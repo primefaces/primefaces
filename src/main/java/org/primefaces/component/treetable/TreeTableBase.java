@@ -77,14 +77,15 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         filterBy,
         globalFilter,
         globalFilterFunction,
-        filteredNode,
+        filteredValue,
         filterEvent,
         filterDelay,
         cellEditMode,
         editInitEvent,
         multiViewState,
         allowUnsorting,
-        sortMode
+        sortMode,
+        cloneOnFilter
     }
 
     protected enum InternalPropertyKeys {
@@ -371,12 +372,12 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         getStateHelper().put(PropertyKeys.first, first);
     }
 
-    public Object getFilteredNode() {
-        return getStateHelper().eval(PropertyKeys.filteredNode, null);
+    public Object getFilteredValue() {
+        return getStateHelper().eval(PropertyKeys.filteredValue, null);
     }
 
-    public void setFilteredNode(Object filteredNode) {
-        getStateHelper().put(PropertyKeys.filteredNode, filteredNode);
+    public void setFilteredValue(Object filteredValue) {
+        getStateHelper().put(PropertyKeys.filteredValue, filteredValue);
     }
 
     public String getFilterEvent() {
@@ -464,5 +465,13 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
 
     public void setSortMode(String sortMode) {
         getStateHelper().put(PropertyKeys.sortMode, sortMode);
+    }
+
+    public boolean isCloneOnFilter() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.cloneOnFilter, false);
+    }
+
+    public void setCloneOnFilter(boolean cloneOnFilter) {
+        getStateHelper().put(PropertyKeys.cloneOnFilter, cloneOnFilter);
     }
 }
