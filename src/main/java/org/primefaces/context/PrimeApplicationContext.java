@@ -161,17 +161,11 @@ public class PrimeApplicationContext {
     private void resolveFileTypeDetector() {
         ServiceLoader<FileTypeDetector> loader = ServiceLoader.load(FileTypeDetector.class, applicationClassLoader);
 
-        // Save detectors into a list avoiding ServiceLoader#load to be call everytime a file mimetype is requested
-        List<FileTypeDetector> detectors = new ArrayList<>();
-        for (FileTypeDetector detector : loader) {
-            detectors.add(detector);
-        }
-
         fileTypeDetector = new FileTypeDetector() {
 
             @Override
             public String probeContentType(Path path) throws IOException {
-                for (FileTypeDetector detector: detectors) {
+                for (FileTypeDetector detector: loader) {
                     String result = detector.probeContentType(path);
                     if (result != null) {
                         return result;
