@@ -2,8 +2,6 @@
 
 DataTable displays data in tabular format.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.datatable.html)
-
 ## Info
 
 | Name | Value |
