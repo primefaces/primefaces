@@ -148,7 +148,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         var $this = this,
         selectedOption = this.options.filter(':selected'),
-        highlightedItem = this.items.eq(selectedOption.index());
+        highlightedItem = this.items.eq(this.options.index(selectedOption));
 
         //disable options
         this.options.filter(':disabled').each(function() {
