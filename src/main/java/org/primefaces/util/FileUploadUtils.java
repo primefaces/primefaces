@@ -216,7 +216,6 @@ public class FileUploadUtils {
             return true;
         }
 
-        //If Tika is in place, we drop the original file extension to avoid short circuit detection by just looking at the file extension
         String tempFileSuffix = "." + FilenameUtils.getExtension(fileName);
         String tempFilePrefix = UUID.randomUUID().toString();
         Path tempFile = Files.createTempFile(tempFilePrefix, tempFileSuffix);
