@@ -53,6 +53,7 @@ public class Constants {
         public static final String MARK_INPUT_AS_INVALID_ON_ERROR_MSG = "primefaces.MARK_INPUT_AS_INVALID_ON_ERROR_MSG";
         public static final String COOKIES_SAME_SITE = "primefaces.COOKIES_SAME_SITE";
         public static final String FLEX = "primefaces.FLEX";
+        public static final String FILE_TYPE_DECTECTOR = "primefaces.FILE_TYPE_DETECTOR";
 
         private ContextParams() {
 

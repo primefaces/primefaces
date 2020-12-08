@@ -57,6 +57,7 @@ public class PrimeConfiguration {
     private String[] exceptionTypesToIgnoreInLogging;
     private final String multiViewStateStore;
     private final boolean markInputAsInvalidOnErrorMsg;
+    private String fileTypeDetector;
 
     // internal config
     private final boolean stringConverterAvailable;
@@ -138,6 +139,8 @@ public class PrimeConfiguration {
         markInputAsInvalidOnErrorMsg = Boolean.parseBoolean(value);
 
         cookiesSameSite = externalContext.getInitParameter(Constants.ContextParams.COOKIES_SAME_SITE);
+
+        fileTypeDetector = externalContext.getInitParameter(Constants.ContextParams.FILE_TYPE_DECTECTOR);
 
         cookiesSecure = true;
         if (externalContext.getContext() instanceof ServletContext) {
@@ -265,5 +268,9 @@ public class PrimeConfiguration {
 
     public String getCookiesSameSite() {
         return cookiesSameSite;
+    }
+
+    public String getFileTypeDetector() {
+        return fileTypeDetector;
     }
 }

@@ -27,10 +27,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -219,13 +216,8 @@ public class FileUploadUtils {
             return true;
         }
 
-        boolean tika = context.getEnvironment().isTikaAvailable();
-        if (!tika && LOGGER.isLoggable(Level.WARNING)) {
-            LOGGER.warning("Could not find Apache Tika in classpath which is recommended for reliable content type checking");
-        }
-
         //If Tika is in place, we drop the original file extension to avoid short circuit detection by just looking at the file extension
-        String tempFileSuffix = tika ? null : "." + FilenameUtils.getExtension(fileName);
+        String tempFileSuffix = "." + FilenameUtils.getExtension(fileName);
         String tempFilePrefix = UUID.randomUUID().toString();
         Path tempFile = Files.createTempFile(tempFilePrefix, tempFileSuffix);
 
@@ -235,14 +227,8 @@ public class FileUploadUtils {
                     IOUtils.copyLarge(in, out);
                 }
             }
-            String contentType = null;
-            if (context.getFileTypeDetector() != null) {
-                contentType = context.getFileTypeDetector().probeContentType(tempFile);
-            }
-            else {
-                // use default Java fallback
-                contentType = Files.probeContentType(tempFile);
-            }
+
+            String contentType = context.getFileTypeDetector().probeContentType(tempFile);
 
             if (contentType == null) {
                 if (LOGGER.isLoggable(Level.WARNING)) {
