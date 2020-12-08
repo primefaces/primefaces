@@ -23,15 +23,16 @@
  */
 package org.primefaces.config;
 
-import org.primefaces.util.LangUtils;
-
-import javax.faces.context.FacesContext;
-import javax.validation.Validation;
 import java.io.InputStream;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.faces.context.FacesContext;
+import javax.validation.Validation;
+
+import org.primefaces.util.LangUtils;
 
 public class PrimeEnvironment {
 
@@ -55,6 +56,8 @@ public class PrimeEnvironment {
 
     private final boolean htmlSanitizerAvailable;
 
+    private final boolean tikaAvailable;
+
     public PrimeEnvironment(FacesContext context) {
         atLeastEl22 = LangUtils.tryToLoadClassForName("javax.el.ValueReference") != null;
 
@@ -71,6 +74,8 @@ public class PrimeEnvironment {
         buildVersion = resolveBuildVersion();
 
         htmlSanitizerAvailable = LangUtils.tryToLoadClassForName("org.owasp.html.PolicyFactory") != null;
+
+        tikaAvailable = LangUtils.tryToLoadClassForName("org.apache.tika.filetypedetector.TikaFileTypeDetector") != null;
 
         if (context == null || context.getExternalContext() == null) {
             mojarra = false;
@@ -158,5 +163,9 @@ public class PrimeEnvironment {
 
     public boolean isHtmlSanitizerAvailable() {
         return htmlSanitizerAvailable;
+    }
+
+    public boolean isTikaAvailable() {
+        return tikaAvailable;
     }
 }

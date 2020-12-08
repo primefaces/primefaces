@@ -27,7 +27,10 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -216,8 +219,10 @@ public class FileUploadUtils {
             return true;
         }
 
+        boolean tika = context.getEnvironment().isTikaAvailable();
         String tempFilePrefix = UUID.randomUUID().toString();
-        Path tempFile = Files.createTempFile(tempFilePrefix, null);
+        String tempFileSuffix = tika ? null : "." + FilenameUtils.getExtension(fileName);
+        Path tempFile = Files.createTempFile(tempFilePrefix, tempFileSuffix);
 
         try {
             try (InputStream in = new PushbackInputStream(new BufferedInputStream(stream))) {
