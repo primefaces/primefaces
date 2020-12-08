@@ -27,11 +27,14 @@ import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -66,6 +69,7 @@ import org.primefaces.visit.ResetInputVisitCallback;
 
 public class TreeTableRenderer extends DataRenderer {
 
+    private static final Logger LOGGER = Logger.getLogger(TreeTableRenderer.class.getName());
     private static final String SB_DECODE_SELECTION = TreeTableRenderer.class.getName() + "#decodeSelection";
 
     @Override
@@ -178,7 +182,7 @@ public class TreeTableRenderer extends DataRenderer {
             node.setExpanded(false);
         }
         else if (tt.isFilterRequest(context)) {
-            tt.updateFilteredNode(context, null);
+            tt.updateFilteredValue(context, null);
             tt.setValue(null);
             tt.setFirst(0);
 
@@ -1262,42 +1266,41 @@ public class TreeTableRenderer extends DataRenderer {
             return;
         }
 
+        for (FilterMeta filter : activeFilterBy.values()) {
+            if (filter.getColumn() == null) {
+                filter.setColumn(tt.findColumn(filter.getColumnKey()));
+            }
+        }
+
         Locale filterLocale = LocaleUtils.getCurrentLocale(context);
-        TreeNode filteredNode = null;
 
-        tt.getFilteredRowKeys().clear();
-        findFilteredRowKeys(context, tt, root, root, activeFilterBy, filterLocale);
-
-        filteredNode = createNewNode(root, root.getParent());
-
+        // collect filtered / valid node rowKeys
         List<String> filteredRowKeys = tt.getFilteredRowKeys();
+        filteredRowKeys.clear();
+        collectFilteredRowKeys(context, tt, root, root, activeFilterBy, filterLocale, filteredRowKeys);
 
-        createFilteredNodeFromRowKeys(tt, root, filteredNode, filteredRowKeys);
+        // recreate tree node
+        TreeNode filteredValue = cloneTreeNode(tt, root, root.getParent());
+        createFilteredValueFromRowKeys(tt, root, filteredValue, filteredRowKeys);
 
-        tt.updateFilteredNode(context, filteredNode);
-        tt.setValue(filteredNode);
+        tt.updateFilteredValue(context, filteredValue);
+        tt.setValue(filteredValue);
         tt.setRowKey(root, null);
 
         //Metadata for callback
         if (tt.isPaginator()) {
-            PrimeFaces.current().ajax().addCallbackParam("totalRecords", filteredNode.getChildCount());
+            PrimeFaces.current().ajax().addCallbackParam("totalRecords", filteredValue.getChildCount());
         }
         if (tt.getSelectedRowKeysAsString() != null) {
             PrimeFaces.current().ajax().addCallbackParam("selection", tt.getSelectedRowKeysAsString());
         }
     }
 
-    protected void findFilteredRowKeys(FacesContext context, TreeTable tt, TreeNode root, TreeNode node,  Map<String, FilterMeta> filterBy,
-            Locale filterLocale) throws IOException {
+    protected void collectFilteredRowKeys(FacesContext context, TreeTable tt, TreeNode root, TreeNode node,  Map<String, FilterMeta> filterBy,
+            Locale filterLocale, List<String> filteredRowKeys) throws IOException {
 
         int childCount = node.getChildCount();
         ELContext elContext = context.getELContext();
-
-        for (FilterMeta filter : filterBy.values()) {
-            if (filter.getColumn() == null && filter.isActive()) {
-                filter.setColumn(tt.findColumn(filter.getColumnKey()));
-            }
-        }
 
         for (int i = 0; i < childCount; i++) {
             TreeNode childNode = node.getChildren().get(i);
@@ -1306,21 +1309,20 @@ public class TreeTableRenderer extends DataRenderer {
             tt.setRowKey(root, rowKey);
 
             for (FilterMeta filter : filterBy.values()) {
-                UIColumn column = filter.getColumn();
-                if (column == null || !filter.isActive()) {
+                if (filter.getColumn() == null) {
                     continue;
                 }
 
-                if (column instanceof DynamicColumn) {
-                    ((DynamicColumn) column).applyStatelessModel();
+                if (filter.getColumn() instanceof DynamicColumn) {
+                    ((DynamicColumn) filter.getColumn()).applyStatelessModel();
                 }
 
-                MethodExpression filterFunction = column.getFilterFunction();
+                MethodExpression filterFunction = filter.getColumn().getFilterFunction();
                 ValueExpression filterByVE = filter.getFilterBy();
                 Object filterValue = filter.getFilterValue();
 
                 Object columnValue = filterByVE.getValue(elContext);
-                FilterConstraint filterConstraint = getFilterConstraint(column);
+                FilterConstraint filterConstraint = getFilterConstraint(filter.getColumn());
 
                 matching = filterFunction != null
                     ? (Boolean) filterFunction.invoke(elContext, new Object[]{columnValue, filterValue, filterLocale})
@@ -1332,14 +1334,14 @@ public class TreeTableRenderer extends DataRenderer {
             }
 
             if (matching) {
-                tt.getFilteredRowKeys().add(rowKey);
+                filteredRowKeys.add(rowKey);
             }
 
-            findFilteredRowKeys(context, tt, root, childNode, filterBy, filterLocale);
+            collectFilteredRowKeys(context, tt, root, childNode, filterBy, filterLocale, filteredRowKeys);
         }
     }
 
-    private void createFilteredNodeFromRowKeys(TreeTable tt, TreeNode node, TreeNode filteredNode, List<String> filteredRowKeys) {
+    private void createFilteredValueFromRowKeys(TreeTable tt, TreeNode node, TreeNode filteredNode, List<String> filteredRowKeys) {
         int childCount = node.getChildCount();
         for (int i = 0; i < childCount; i++) {
             TreeNode childNode = node.getChildren().get(i);
@@ -1347,30 +1349,81 @@ public class TreeTableRenderer extends DataRenderer {
 
             for (String rk : filteredRowKeys) {
                 if (rk.equals(rowKeyOfChildNode) || rk.startsWith(rowKeyOfChildNode + "_") || rowKeyOfChildNode.startsWith(rk + "_")) {
-                    TreeNode newNode = createNewNode(childNode, filteredNode);
+                    TreeNode newNode = cloneTreeNode(tt, childNode, filteredNode);
                     if (rk.startsWith(rowKeyOfChildNode + "_")) {
                         newNode.setExpanded(true);
                     }
 
-                    createFilteredNodeFromRowKeys(tt, childNode, newNode, filteredRowKeys);
+                    createFilteredValueFromRowKeys(tt, childNode, newNode, filteredRowKeys);
                     break;
                 }
             }
         }
     }
 
-    protected TreeNode createNewNode(TreeNode node, TreeNode parent) {
-        try {
-            Constructor<? extends TreeNode> ctor = node.getClass().getConstructor(String.class, Object.class, TreeNode.class);
-            TreeNode newNode = ctor.newInstance(node.getType(), node.getData(), parent);
+    protected TreeNode cloneTreeNode(TreeTable tt, TreeNode node, TreeNode parent) {
+        TreeNode clone = null;
 
-            newNode.setSelected(node.isSelected());
-            newNode.setExpanded(node.isExpanded());
-            return newNode;
+        if (node instanceof CheckboxTreeNode) {
+            clone = new CheckboxTreeNode(node.getType(), node.getData(), parent);
         }
-        catch (ReflectiveOperationException e) {
-            throw new FacesException(e);
+        else if (node instanceof DefaultTreeNode) {
+            clone = new DefaultTreeNode(node.getType(), node.getData(), parent);
         }
+
+        if (clone == null && tt.isCloneOnFilter()) {
+            if (node instanceof Cloneable) {
+                try {
+                    Method cloneMethod = node.getClass().getMethod("clone");
+                    if (cloneMethod != null) {
+                        cloneMethod.setAccessible(true);
+                        clone = (TreeNode) cloneMethod.invoke(node);
+                    }
+                }
+                catch (NoSuchMethodException e) {
+                    LOGGER.warning(node.getClass().getName() + " declares Cloneable but no clone() method found!");
+                }
+                catch (InvocationTargetException | IllegalAccessException e) {
+                    LOGGER.warning(node.getClass().getName() + "#clone() not accessible!");
+                }
+            }
+            else {
+                try {
+                    Constructor<? extends TreeNode> ctor = node.getClass().getConstructor(node.getClass());
+                    clone = ctor.newInstance(node);
+                }
+                catch (NoSuchMethodException e) {
+                    // ignore
+                }
+                catch (InvocationTargetException | IllegalAccessException | InstantiationException e) {
+                    LOGGER.warning("Could not clone " + node.getClass().getName()
+                            + " via public " + node.getClass().getSimpleName() + "() constructor!");
+                }
+
+                if (clone == null) {
+                    try {
+                        Constructor<? extends TreeNode> ctor = node.getClass().getConstructor(String.class, Object.class, TreeNode.class);
+                        clone = ctor.newInstance(node.getType(), node.getData(), parent);
+                    }
+                    catch (NoSuchMethodException e) {
+                        // ignore
+                    }
+                    catch (InvocationTargetException | IllegalAccessException | InstantiationException e) {
+                        LOGGER.warning("Could not clone " + node.getClass().getName()
+                                + " via public " + node.getClass().getSimpleName() + "(String type, Object data, TreeNode parent) constructor!");
+                    }
+                }
+            }
+        }
+
+        if (clone == null) {
+            clone = new DefaultTreeNode(node.getType(), node.getData(), parent);
+        }
+
+        clone.setSelected(node.isSelected());
+        clone.setExpanded(node.isExpanded());
+
+        return clone;
     }
 
     public FilterConstraint getFilterConstraint(UIColumn column) {

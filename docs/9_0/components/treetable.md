@@ -66,6 +66,8 @@ editInitEvent | null | String | Defines a client side event to open cell on edit
 filterBy | null | SortMeta / Collection<SortMeta> | Property to be used for default sorting. Expects a single or a collection of SortMeta.
 allowUnsorting | false | Boolean | Defines whether columns are allowed to be unsorted. Default is false.
 sortMode | multiple | String | Defines sorting mode, valid values are _single_ and _multiple_.
+filteredValue  | null | TreeNode | TreeNode to keep filtered data.
+cloneOnFilter | false | Boolean | Defines if nodes should be cloned on filter via Cloneable interface or Copy-Constructor (CustomNode(CustomNode original) or CustomNode(String type, Object data, TreeNode parent)). Normally the filtered nodes are new instanceof of DefaultTreeNode.
 
 ## Getting started with the TreeTable
 Similar to the Tree, TreeTable is populated with an _org.primefaces.model.TreeNode_ instance that

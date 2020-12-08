@@ -29797,7 +29797,7 @@
             <description>
                 <![CDATA[Node to keep the filtered nodes if filtering is enabled.]]>
             </description>
-            <name>filteredNode</name>
+            <name>filteredValue</name>
             <required>false</required>
             <type>java.lang.Object</type>
         </attribute>
@@ -29886,6 +29886,14 @@
                 <![CDATA[Defines whether columns are allowed to be unsorted. Default is false.]]>
             </description>
             <name>allowUnsorting</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if nodes should be cloned on filter via Cloneable interface or Copy-Constructor (CustomNode(CustomNode original) or CustomNode(String type, Object data, TreeNode parent)). Normally the filtered nodes are new instanceof of DefaultTreeNode. Default is false.]]>
+            </description>
+            <name>cloneOnFilter</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>

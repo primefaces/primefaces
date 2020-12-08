@@ -23,9 +23,22 @@
  */
 package org.primefaces.model.filter;
 
-public class LessThanEqualsFilterConstraint extends ComparableFilterConstraint {
+import javax.faces.context.FacesContext;
+import java.util.Locale;
+import java.util.function.BiPredicate;
 
-    public LessThanEqualsFilterConstraint() {
-        super((o1, o2) -> o1.compareTo(o2) <= 0);
+public class ComparableFilterConstraint extends StringFilterConstraint {
+
+    public ComparableFilterConstraint(BiPredicate<String, String> predicate) {
+        super(predicate);
+    }
+
+    @Override
+    public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
+        if (!(value instanceof Comparable) || !(filter instanceof Comparable)) {
+            throw new IllegalArgumentException("Invalid type: " + value.getClass() + ". Valid type: " + Comparable.class.getName());
+        }
+
+        return super.isMatching(ctxt, value, filter, locale);
     }
 }

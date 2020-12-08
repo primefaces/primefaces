@@ -23,18 +23,9 @@
  */
 package org.primefaces.model.filter;
 
-import javax.faces.context.FacesContext;
-import java.util.Locale;
+public class LessThanFilterConstraint extends ComparableFilterConstraint {
 
-public class LessThanFilterConstraint implements FilterConstraint {
-
-    @Override
-    public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
-        if (value instanceof Comparable) {
-            int compared = ((Comparable) value).compareTo(filter);
-            return compared < 0;
-        }
-
-        return false;
+    public LessThanFilterConstraint() {
+        super((o1, o2) -> o1.compareTo(o2) < 0);
     }
 }

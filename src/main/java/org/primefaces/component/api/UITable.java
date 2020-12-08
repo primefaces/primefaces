@@ -24,17 +24,12 @@
 package org.primefaces.component.api;
 
 import java.lang.reflect.Array;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
 import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
@@ -43,6 +38,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionHint;
@@ -57,7 +53,7 @@ public interface UITable extends ColumnAware {
      * Backward compatibility for column properties (e.g sortBy, filterBy)
      * using old syntax #{car[column.property]}) instead of #{column.property}
      */
-    static final Pattern OLD_SYNTAX_COLUMN_PROPERTY_REGEX = Pattern.compile("^#\\{\\w+\\[(.+)]}$");
+    Pattern OLD_SYNTAX_COLUMN_PROPERTY_REGEX = Pattern.compile("^#\\{\\w+\\[(.+)]}$");
 
     static String resolveStaticField(ValueExpression expression) {
         if (expression != null) {
@@ -198,9 +194,9 @@ public interface UITable extends ColumnAware {
 
     default void updateFilterByWithGlobalFilter(FacesContext context, Map<String, FilterMeta> filterBy, AtomicBoolean filtered) {
         String globalFilter = getGlobalFilter();
-        Set<SearchExpressionHint> hint = LangUtils.isValueBlank(globalFilter)
+        EnumSet<SearchExpressionHint> hint = LangUtils.isValueBlank(globalFilter)
                 ? EnumSet.of(SearchExpressionHint.IGNORE_NO_RESULT)
-                : Collections.emptySet();
+                : EnumSet.noneOf(SearchExpressionHint.class);
         UIComponent globalFilterComponent = SearchExpressionFacade
                 .resolveComponent(context, (UIComponent) this, "globalFilter", hint);
         if (globalFilterComponent != null) {
@@ -275,7 +271,7 @@ public interface UITable extends ColumnAware {
 
     Object getFilterBy();
 
-    public void setFilterBy(Object filterBy);
+    void setFilterBy(Object filterBy);
 
     boolean isFilterByAsMapDefined();
 
