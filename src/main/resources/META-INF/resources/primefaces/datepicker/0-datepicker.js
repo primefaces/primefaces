@@ -190,9 +190,8 @@
                 }
             }
 
-            if (this.options.yearRange === null && this.options.yearNavigator) {
-                var viewYear = this.viewDate.getFullYear();
-                this.options.yearRange = (viewYear - 10) + ':' + (viewYear + 10);
+            if (this.options.yearRange === null) {
+                this.updateYearNavigator();
             }
 
             if (this.options.disabledDates) {
@@ -1312,6 +1311,7 @@
 
         renderTitleYearElement: function (year, index) {
             if (this.options.yearNavigator && index === 0) {
+                this.updateYearNavigator();
                 var yearOptions = [],
                     years = this.options.yearRange.split(':'),
                     yearStart = parseInt(years[0], 10),
@@ -2542,6 +2542,13 @@
             return String(value).replace(/[&<>"'`=\/]/g, function (s) {
                 return entityMap[s];
             });
+        },
+
+        updateYearNavigator: function() {
+            if (this.options.yearNavigator) {
+                var viewYear = this.viewDate.getFullYear();
+                this.options.yearRange = (viewYear - 10) + ':' + (viewYear + 10);
+            }
         },
 
         updateViewDate: function (event, value) {
