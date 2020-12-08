@@ -113,8 +113,6 @@ public class FileUploadUtilsTest {
         Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload,createFile("adobe.pdf", "application/pdf", inputStream)));
     }
 
-    //TODO Once including Apache Tika as test scope dependency, we never check the default implementation which should work well also for the non-tampered cases
-    //TODO Can we somehow run specific tests with AND without Apache Tika in place, e.g. by differently configured executions of maven-surefire-plugin?
     @Test
     public void isValidTypeContentTypeCheck() throws IOException {
         InputStream tif = new ByteArrayInputStream(new byte[] { 0x49, 0x49, 0x2A, 0x00 });
@@ -144,12 +142,10 @@ public class FileUploadUtilsTest {
         Assertions.assertFalse(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.png", "image/png", png)));
         Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.mp4", "application/music", mp4)));
 
-        when(fileUpload.getAccept()).thenReturn("image/png");
-        //FIXME PNG not recognized by Apache Tika?
-//        Assertions.assertTrue(FileUploadUtils.isValidType(fileUpload, "test.Png", png));
-        Assertions.assertFalse(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.tif", "image/tiff", tif)));
+        when(fileUpload.getAccept()).thenReturn("image/tiff");
+        Assertions.assertFalse(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.png", "image/png", png)));
 
-        //Tampered - Apache Tika must be in the classpath for this to work
+        //Tampered - Apache Tika or Mime Type must be in the classpath for this to work
         when(fileUpload.getAccept()).thenReturn("image/gif");
         Assertions.assertFalse(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.gif", "image/gif", exe)));
         Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.png", "image/png", gif)));
