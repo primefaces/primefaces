@@ -31,6 +31,7 @@ converterMessage | null | String | Message to be displayed when conversion fails
 dir | null | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
 disabled | false | Boolean | Disables input field
 immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
+inputmode | null | String | Hint at the type of data this control has for touch devices to display appropriate virtual keyboard.
 label | null | String | A localized user presentable name.
 lang | null | String | Code describing the language used in the generated markup for this component.
 mask | null | String | Mask template

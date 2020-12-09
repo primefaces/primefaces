@@ -38,6 +38,7 @@ alt | null | String | Alternate textual description of the input field.
 autocomplete | null | String | Controls browser autocomplete behavior.
 dir | null | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
 disabled | false | Boolean | Disables input field
+inputmode | null | String | Hint at the type of data this control has for touch devices to display appropriate virtual keyboard.
 label | null | String | A localized user presentable name.
 lang | null | String | Code describing the language used in the generated markup for this component.
 onblur | null | String | Client side callback to execute when input element loses focus.

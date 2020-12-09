@@ -141,6 +141,7 @@ public class HTML {
         "lang",
         "maxlength",
         "placeholder",
+        "inputmode",
         "size",
         "tabindex",
         "title"
@@ -164,6 +165,7 @@ public class HTML {
         "alt",
         "autocomplete",
         "placeholder",
+        "inputmode",
         "dir",
         "lang",
         "size",

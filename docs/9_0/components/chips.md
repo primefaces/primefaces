@@ -63,6 +63,7 @@ Chips is used to enter multiple values on an inputfield.
 | ondragstart | null | String | Client side callback to execute at the start of a drag operation.
 | ondrop | null | String | Client side callback to execute when dragged element is being dropped.
 | onscroll | null | String | Client side callback to execute when an element's scrollbar is being scrolled.e input value.
+| inputmode | null | String | Hint at the type of data this control has for touch devices to display appropriate virtual keyboard.
 | max | null | Integer | Maximum number of entries allowed.
 | addOnBlur | false | Boolean | Whether to add an item when the input loses focus.
 | title | null | String | Advisory tooltip information.
