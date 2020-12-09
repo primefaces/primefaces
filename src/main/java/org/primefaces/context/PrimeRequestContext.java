@@ -230,7 +230,7 @@ public class PrimeRequestContext {
     }
 
     /**
-     * @return <code>true</code> if {@link AutoUpdatable} components should not be updated automatically in this request.
+     * @return <code>true</code> if auto-updatable components should not be updated automatically in this request.
      */
     public boolean isIgnoreAutoUpdate() {
         if (ignoreAutoUpdate == null) {
