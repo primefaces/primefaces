@@ -596,11 +596,8 @@ public class DataTableRenderer extends DataRenderer {
                 .add(!column.isToggleable(), DataTable.STATIC_COLUMN_CLASS)
                 .add(!isColVisible, DataTable.HIDDEN_COLUMN_CLASS)
                 .add(column.getStyleClass())
+                .add(priority > 0, "ui-column-p-" + priority)
                 .build();
-
-        if (priority > 0) {
-            columnClass = columnClass + " ui-column-p-" + priority;
-        }
 
         if (sortable) {
             SortMeta s = table.getSortByAsMap().get(column.getColumnKey());
