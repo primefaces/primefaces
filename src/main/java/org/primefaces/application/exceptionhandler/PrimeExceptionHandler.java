@@ -363,7 +363,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         errorPage = context.getApplication().evaluateExpressionGet(context, errorPage, String.class);
 
         String url = externalContext.getRequestContextPath() + errorPage;
-        url = externalContext.encodeRedirectURL(url, Collections.emptyMap());
+        url = externalContext.encodeActionURL(url);
 
         // workaround for mojarra -> mojarra doesn't reset PartialResponseWriter#inChanges if we call externalContext#resetResponse
         if (responseResetted && context.getPartialViewContext().isAjaxRequest()) {
