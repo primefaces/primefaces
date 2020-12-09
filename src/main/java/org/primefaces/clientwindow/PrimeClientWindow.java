@@ -37,6 +37,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.lifecycle.ClientWindow;
 import javax.faces.render.ResponseStateManager;
+import javax.servlet.http.HttpServletResponse;
 import org.primefaces.util.LangUtils;
 
 public class PrimeClientWindow extends ClientWindow {
@@ -118,8 +119,14 @@ public class PrimeClientWindow extends ClientWindow {
 
         url = appendParameters(externalContext, url, parameters);
 
-        //only #encodeResourceURL is portable currently
-        url = externalContext.encodeResourceURL(url);
+        // use servlet if available to avoid resource push
+        if (externalContext.getResponse() instanceof HttpServletResponse) {
+            url = ((HttpServletResponse) externalContext.getResponse()).encodeURL(url);
+        }
+        else {
+            //only #encodeResourceURL is portable currently, maybe Portlet doesnt implement resource push
+            url = externalContext.encodeResourceURL(url);
+        }
 
         return url;
     }
