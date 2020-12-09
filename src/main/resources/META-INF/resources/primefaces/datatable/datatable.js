@@ -383,10 +383,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         // #5582: destroy any current draggable items
-        var dragdrop = $.ui.ddmanager.current;
-        if (dragdrop) {
-            document.body.style.cursor = 'default';
-            dragdrop.cancel();
+        if (this.cfg.draggableColumns || this.cfg.draggableRows) {
+            var dragdrop = $.ui.ddmanager.current;
+            if (dragdrop) {
+                document.body.style.cursor = 'default';
+                dragdrop.cancel();
+            }
         }
     },
 
