@@ -385,7 +385,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         // #5582: destroy any current draggable items
         if (this.cfg.draggableColumns || this.cfg.draggableRows) {
             var dragdrop = $.ui.ddmanager.current;
-            if (dragdrop) {
+            if (dragdrop && ($.ui.ddmanager.current.currentItem.closest('.ui-datatable')[0] == this.jq[0])) {
                 document.body.style.cursor = 'default';
                 dragdrop.cancel();
             }
