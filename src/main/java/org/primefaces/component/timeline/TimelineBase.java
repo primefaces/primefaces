@@ -214,19 +214,19 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
         getStateHelper().put(PropertyKeys.maxHeight, maxHeight);
     }
 
-    public Boolean getHorizontalScroll() {
+    public boolean isHorizontalScroll() {
         return (Boolean) getStateHelper().eval(PropertyKeys.horizontalScroll, false);
     }
 
-    public void setHorizontalScroll(Boolean horizontalScroll) {
+    public void setHorizontalScroll(boolean horizontalScroll) {
         getStateHelper().put(PropertyKeys.horizontalScroll, horizontalScroll);
     }
 
-    public Boolean getVerticalScroll() {
+    public boolean isVerticalScroll() {
         return (Boolean) getStateHelper().eval(PropertyKeys.verticalScroll, false);
     }
 
-    public void setVerticalScroll(Boolean verticalScroll) {
+    public void setVerticalScroll(boolean verticalScroll) {
         getStateHelper().put(PropertyKeys.verticalScroll, verticalScroll);
     }
 
