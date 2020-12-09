@@ -28129,6 +28129,22 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Specifies the horizontal scrollable.Default is "false".]]>
+            </description>
+            <name>horizontalScroll</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Specifies the vertical scrollable.Default is "false".]]>
+            </description>
+            <name>verticalScroll</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[The width of the timeline in pixels or as a percentage. Default is "100%".]]>
             </description>
             <name>width</name>
