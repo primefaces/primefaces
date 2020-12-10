@@ -453,7 +453,8 @@ public class DataTable extends DataTableBase {
 
             Map<String, SortMeta> sorters = getSortByAsMap().values().stream()
                     .filter(SortMeta::isActive)
-                    .collect(Collectors.toMap(SortMeta::getField, Function.identity()));
+                    .sorted()
+                    .collect(Collectors.toMap(SortMeta::getField, Function.identity(), (o1, o2) -> o1, LinkedHashMap::new));
             Map<String, FilterMeta> filters = getFilterByAsMap().values().stream()
                     .filter(FilterMeta::isActive)
                     .collect(Collectors.toMap(FilterMeta::getField, Function.identity()));
@@ -476,7 +477,8 @@ public class DataTable extends DataTableBase {
 
             Map<String, SortMeta> sorters = getSortByAsMap().values().stream()
                     .filter(SortMeta::isActive)
-                    .collect(Collectors.toMap(SortMeta::getField, Function.identity()));
+                    .sorted()
+                    .collect(Collectors.toMap(SortMeta::getField, Function.identity(), (o1, o2) -> o1, LinkedHashMap::new));
             Map<String, FilterMeta> filters = getFilterByAsMap().values().stream()
                     .filter(FilterMeta::isActive)
                     .collect(Collectors.toMap(FilterMeta::getField, Function.identity()));
