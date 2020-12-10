@@ -395,9 +395,8 @@ public interface UITable extends ColumnAware {
     }
 
     default String getSortMetaAsString() {
-        return getSortByAsMap().entrySet().stream()
-                .filter(e -> e.getValue().isActive())
-                .map(Map.Entry::getValue)
+        return getSortByAsMap().values().stream()
+                .filter(SortMeta::isActive)
                 .sorted()
                 .map(SortMeta::getColumnKey)
                 .collect(Collectors.joining("','", "['", "']"));
