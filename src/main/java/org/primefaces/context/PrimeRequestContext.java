@@ -162,8 +162,8 @@ public class PrimeRequestContext {
      *  @return Shared StyleClassBuilder instance of the current request
      */
     public StyleClassBuilder getStyleClassBuilder() {
-        if (this.styleClassBuilder == null) {
-            this.styleClassBuilder = new StyleClassBuilder(context);
+        if (styleClassBuilder == null) {
+            styleClassBuilder = new StyleClassBuilder(context);
         }
 
         return styleClassBuilder;
