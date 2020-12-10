@@ -1005,8 +1005,7 @@
         },
 
         _destroy: function () {
-            this.restoreOverlayAppend();
-            this.onOverlayHide();
+            this.hideOverlay();
         },
 
         /**
