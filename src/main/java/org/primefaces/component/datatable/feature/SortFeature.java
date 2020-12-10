@@ -141,20 +141,9 @@ public class SortFeature implements DataTableFeature {
         List<?> list = resolveList(value);
         Locale locale = table.resolveDataLocale();
 
-        if (table.isMultiSort()) {
-            Map<String, SortMeta> sortedMeta = table.getSortByAsMap().entrySet().stream()
-                    .sorted(Map.Entry.comparingByValue())
-                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (o1, o2) -> o1, LinkedHashMap::new));
-            table.setSortByAsMap(sortedMeta);
-        }
-
         ChainedBeanPropertyComparator chainedComparator = new ChainedBeanPropertyComparator();
 
-        for (SortMeta meta : table.getSortByAsMap().values()) {
-            if (!meta.isActive()) {
-                continue;
-            }
-
+        for (SortMeta meta : table.getActiveSortMeta().values()) {
             BeanPropertyComparator comparator;
             Object source = meta.getComponent();
 
