@@ -28,8 +28,6 @@ import java.util.logging.Logger;
 import javax.faces.application.ProjectStage;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
-import javax.faces.component.html.HtmlForm;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
@@ -38,7 +36,6 @@ import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
@@ -49,6 +46,11 @@ public class FileUploadRenderer extends CoreRenderer {
     @Override
     public void decode(FacesContext context, UIComponent component) {
         if (!context.getExternalContext().getRequestContentType().toLowerCase().startsWith("multipart/")) {
+            if (!context.isProjectStage(ProjectStage.Production)) {
+                LOGGER.fine("Decoding FileUpload requires contentType \"multipart/form-data\". Skipping... ClientId: "
+                        + component.getClientId(context));
+            }
+
             return;
         }
 
@@ -67,25 +69,6 @@ public class FileUploadRenderer extends CoreRenderer {
 
         encodeMarkup(context, fileUpload);
         encodeScript(context, fileUpload);
-
-        // only check this on "simple" mode as "advanced" uses an own form and iframe
-        if (context.isProjectStage(ProjectStage.Development) && !fileUpload.getMode().equals("advanced")) {
-            UIForm form = ComponentTraversalUtils.closestForm(context, fileUpload);
-            if (form == null) {
-                LOGGER.warning("No parent form found on the server side for FileUpload. "
-                        + " We will try to find a fallback form on the client side."
-                        + " ClientId: " + fileUpload.getClientId(context));
-            }
-            else {
-                if (form instanceof HtmlForm) {
-                    String enctype = ((HtmlForm) form).getEnctype();
-                    if (!"multipart/form-data".equalsIgnoreCase(enctype)) {
-                        LOGGER.warning("FileUpload requires a parent form with enctype=\"multipart/form-data\". ClientId: "
-                                + fileUpload.getClientId(context));
-                    }
-                }
-            }
-        }
     }
 
     protected void encodeScript(FacesContext context, FileUpload fileUpload) throws IOException {
