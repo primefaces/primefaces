@@ -37,7 +37,10 @@ public class StyleClassBuilder {
 
     public StyleClassBuilder add(boolean condition, String styleClass) {
         if (condition) {
-            sb.append(Constants.SPACE).append(styleClass);
+            if (sb.length() != 0) {
+                sb.append(Constants.SPACE);
+            }
+            sb.append(styleClass);
         }
         return this;
     }
