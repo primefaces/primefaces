@@ -52,6 +52,7 @@ AutoComplete provides live suggestions while an input is being typed.
 | autocomplete | null | String | Controls browser autocomplete behavior.
 | dir | null | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
 | disabled | false | Boolean | Disables input field
+| inputmode | null | String | Hint at the type of data this control has for touch devices to display appropriate virtual keyboard.
 | label | null | String | A localized user presentable name.
 | lang | null | String | Code describing the language used in the generated markup for this component.
 | maxlength | null | Integer | Maximum number of characters that may be entered in this field.

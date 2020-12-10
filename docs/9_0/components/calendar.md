@@ -43,6 +43,7 @@ ajax selection and more.
 | effectDuration | normal | String | Duration of the effect.
 | focusOnSelect | false | Boolean | If enabled, the input is focused again after selecting a date. Default is false.
 | immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
+| inputmode | null | String | Hint at the type of data this control has for touch devices to display appropriate virtual keyboard.
 | inputStyle | null | String | Inline style of the input element. Used when mode is popup.
 | inputStyleClass | null | String | Style class of the input element. Used when mode is popup.
 | label | null | String | A localized user presentable name.
