@@ -26,6 +26,7 @@ package org.primefaces.component.api;
 import java.lang.reflect.Array;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -279,6 +280,16 @@ public interface UITable extends ColumnAware {
 
     void setFilterByAsMap(Map<String, FilterMeta> sortBy);
 
+/**
+     * Returns actives filter meta.
+     * @return map with {@link FilterMeta#getField()} as key and {@link FilterMeta} as value
+     */
+    default Map<String, FilterMeta> getActiveFilterMeta() {
+        return getFilterByAsMap().values().stream()
+                .filter(FilterMeta::isActive)
+                .collect(Collectors.toMap(FilterMeta::getField, Function.identity()));
+    }
+
     String getGlobalFilter();
 
     void setGlobalFilter(String globalFilter);
@@ -286,9 +297,6 @@ public interface UITable extends ColumnAware {
     MethodExpression getGlobalFilterFunction();
 
     void setGlobalFilterFunction(MethodExpression globalFilterFunction);
-
-
-
 
     default Map<String, SortMeta> initSortBy(FacesContext context) {
         Map<String, SortMeta> sortMeta = new HashMap<>();
@@ -373,6 +381,17 @@ public interface UITable extends ColumnAware {
                 .orElse(null);
     }
 
+    /**
+     * Returns actives sort meta. See {@link SortMeta#compareTo(SortMeta)}
+     * @return map with {@link SortMeta#getField()} as key and {@link SortMeta} as value
+     */
+    default Map<String, SortMeta> getActiveSortMeta() {
+        return getSortByAsMap().values().stream()
+                .filter(SortMeta::isActive)
+                .sorted()
+                .collect(Collectors.toMap(SortMeta::getField, Function.identity(), (o1, o2) -> o1, LinkedHashMap::new));
+    }
+
     default boolean isSortingCurrentlyActive() {
         return getSortByAsMap().values().stream().anyMatch(SortMeta::isActive);
     }
@@ -395,7 +414,8 @@ public interface UITable extends ColumnAware {
     }
 
     default String getSortMetaAsString() {
-        return getSortByAsMap().keySet().stream()
+        return getActiveSortMeta().values().stream()
+                .map(SortMeta::getColumnKey)
                 .collect(Collectors.joining("','", "['", "']"));
     }
 

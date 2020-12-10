@@ -219,15 +219,18 @@ public class DataTableRenderer extends DataRenderer {
                     .attr("rowEditMode", table.getRowEditMode(), "eager");
         }
 
-        //MultiColumn Sorting
-        if (table.isMultiSort()) {
-            wb.attr("multiSort", true)
-                    .nativeAttr("sortMetaOrder", table.getSortMetaAsString(), null);
-        }
+        //Sorting
+        if (table.isSortingEnabled()) {
+            wb.attr("sorting", true);
 
-        // by default cycling through sorting includes unsort, an attribute is needed when unsort should not be included
-        if (!table.isAllowUnsorting()) {
-            wb.attr("allowUnsorting", false);
+            if (table.isMultiSort()) {
+                wb.attr("multiSort", true)
+                        .nativeAttr("sortMetaOrder", table.getSortMetaAsString(), null);
+            }
+
+            if (table.isAllowUnsorting()) {
+                wb.attr("allowUnsorting", true);
+            }
         }
 
         if (table.isStickyHeader()) {
