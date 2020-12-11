@@ -41,7 +41,8 @@ public abstract class ChipsBase extends AbstractPrimeHtmlInputText implements Wi
         max,
         inputStyle,
         inputStyleClass,
-        addOnBlur
+        addOnBlur,
+        unique
     }
 
     public ChipsBase() {
@@ -99,5 +100,13 @@ public abstract class ChipsBase extends AbstractPrimeHtmlInputText implements Wi
 
     public void setAddOnBlur(boolean addOnBlur) {
         getStateHelper().put(PropertyKeys.addOnBlur, addOnBlur);
+    }
+
+    public boolean isUnique() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.unique, false);
+    }
+
+    public void setUnique(boolean unique) {
+        getStateHelper().put(PropertyKeys.unique, unique);
     }
 }
