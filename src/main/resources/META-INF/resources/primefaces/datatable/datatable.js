@@ -206,7 +206,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         if(this.cfg.sorting) {
-            this.bindSortEvents()
+            this.bindSortEvents();
         }
 
         if(this.cfg.rowHover) {

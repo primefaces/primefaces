@@ -33,7 +33,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -192,8 +191,8 @@ public class TreeTableRenderer extends DataRenderer {
                 tt.setRows(Integer.parseInt(rppValue));
             }
 
-            filter(context, tt, tt.getValue(), tt.getFilterByAsMap());
-            sort(tt, tt.getSortByAsMap());
+            filter(context, tt, tt.getValue());
+            sort(tt);
 
             encodeTbody(context, tt, tt.getValue(), true);
 
@@ -221,8 +220,8 @@ public class TreeTableRenderer extends DataRenderer {
             encodeNodeChildren(context, tt, root, root, tt.getFirst(), tt.getRows());
         }
         else {
-            filter(context, tt, tt.getValue(), tt.getFilterByAsMap());
-            sort(tt, tt.getSortByAsMap());
+            filter(context, tt, tt.getValue());
+            sort(tt);
 
             encodeMarkup(context, tt);
             encodeScript(context, tt);
@@ -278,15 +277,17 @@ public class TreeTableRenderer extends DataRenderer {
                     .attr("filterDelay", tt.getFilterDelay(), Integer.MAX_VALUE);
         }
 
-        //MultiColumn Sorting
-        if (tt.isMultiSort()) {
-            wb.attr("multiSort", true)
-                    .nativeAttr("sortMetaOrder", tt.getSortMetaAsString(), null);
-        }
+        if (tt.isSortingEnabled()) {
+            wb.attr("sorting", true);
 
-        // by default cycling through sorting includes unsort, an attribute is needed when unsort should not be included
-        if (!tt.isAllowUnsorting()) {
-            wb.attr("allowUnsorting", false);
+            if (tt.isMultiSort()) {
+                wb.attr("multiSort", true)
+                        .nativeAttr("sortMetaOrder", tt.getSortMetaAsString(), null);
+            }
+
+            if (tt.isAllowUnsorting()) {
+                wb.attr("allowUnsorting", true);
+            }
         }
 
         if (tt.isPaginator()) {
@@ -324,7 +325,7 @@ public class TreeTableRenderer extends DataRenderer {
 
         //default sort
         if (tt.isDefaultSort()) {
-            sort(tt, tt.getSortByAsMap());
+            sort(tt);
         }
 
         String containerClass = tt.isResizableColumns() ? TreeTable.RESIZABLE_CONTAINER_CLASS : TreeTable.CONTAINER_CLASS;
@@ -758,7 +759,7 @@ public class TreeTableRenderer extends DataRenderer {
         columnClass = filterable ? columnClass + " " + TreeTable.FILTER_COLUMN_CLASS : columnClass;
 
         if (sortable) {
-            SortMeta sortMeta = tt.getSortByAsMap().get(column.getColumnKey());
+            SortMeta sortMeta = tt.getActiveSortMeta().get(column.getColumnKey());
             sortIcon = resolveSortIcon(sortMeta);
 
             if (sortIcon == null) {
@@ -1057,6 +1058,10 @@ public class TreeTableRenderer extends DataRenderer {
     }
 
     protected String resolveSortIcon(SortMeta sortMeta) {
+        if (sortMeta == null) {
+            return null;
+        }
+
         SortOrder sortOrder = sortMeta.getOrder();
         if (sortOrder == SortOrder.ASCENDING) {
             return TreeTable.SORTABLE_COLUMN_ASCENDING_ICON_CLASS;
@@ -1104,7 +1109,7 @@ public class TreeTableRenderer extends DataRenderer {
     }
 
     protected void encodeSort(FacesContext context, TreeTable tt, TreeNode root) throws IOException {
-        sort(tt, tt.getSortByAsMap());
+        sort(tt);
 
         encodeTbody(context, tt, root, true);
 
@@ -1119,26 +1124,20 @@ public class TreeTableRenderer extends DataRenderer {
         }
     }
 
-    public void sort(TreeTable tt, Map<String, SortMeta> sortBy) {
+    public void sort(TreeTable tt) {
         TreeNode root = tt.getValue();
         if (root == null) {
             return;
         }
 
+        Map<String, SortMeta> sortBy = tt.getActiveSortMeta();
         if (sortBy.isEmpty()) {
-            return;
-        }
-
-        Map<String, SortMeta> activeSortBy = sortBy.values().stream()
-                .filter(SortMeta::isActive)
-                .collect(Collectors.toMap(SortMeta::getField, Function.identity()));
-        if (activeSortBy.isEmpty()) {
             return;
         }
 
         Locale dataLocale = tt.resolveDataLocale();
 
-        for (SortMeta meta : activeSortBy.values()) {
+        for (SortMeta meta : sortBy.values()) {
             UIColumn sortColumn = (UIColumn) meta.getComponent();
             if (sortColumn != null && sortColumn.isDynamic()) {
                 ((DynamicColumn) sortColumn).applyStatelessModel();
@@ -1254,19 +1253,13 @@ public class TreeTableRenderer extends DataRenderer {
         }
     }
 
-    public void filter(FacesContext context, TreeTable tt, TreeNode root, Map<String, FilterMeta> filterBy) throws IOException {
+    public void filter(FacesContext context, TreeTable tt, TreeNode root) throws IOException {
+        Map<String, FilterMeta> filterBy = tt.getActiveFilterMeta();
         if (filterBy.isEmpty()) {
             return;
         }
 
-        Map<String, FilterMeta> activeFilterBy = filterBy.values().stream()
-                .filter(FilterMeta::isActive)
-                .collect(Collectors.toMap(FilterMeta::getField, Function.identity()));
-        if (activeFilterBy.isEmpty()) {
-            return;
-        }
-
-        for (FilterMeta filter : activeFilterBy.values()) {
+        for (FilterMeta filter : filterBy.values()) {
             if (filter.getColumn() == null) {
                 filter.setColumn(tt.findColumn(filter.getColumnKey()));
             }
@@ -1277,7 +1270,7 @@ public class TreeTableRenderer extends DataRenderer {
         // collect filtered / valid node rowKeys
         List<String> filteredRowKeys = tt.getFilteredRowKeys();
         filteredRowKeys.clear();
-        collectFilteredRowKeys(context, tt, root, root, activeFilterBy, filterLocale, filteredRowKeys);
+        collectFilteredRowKeys(context, tt, root, root, filterBy, filterLocale, filteredRowKeys);
 
         // recreate tree node
         TreeNode filteredValue = cloneTreeNode(tt, root, root.getParent());

@@ -197,8 +197,9 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             this.bindSelectionEvents();
         }
 
-        //sorting
-        this.bindSortEvents();
+        if(this.cfg.sorting) {
+            this.bindSortEvents();
+        }
 
         if(this.cfg.paginator) {
             this.cfg.paginator.paginate = function(newState) {
@@ -461,9 +462,9 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     bindSortEvents: function() {
         var $this = this;
 
-        if(this.cfg.multiSort) {
-            this.sortMeta = [];
-        }
+        this.cfg.multiSort = this.cfg.multiSort||false;
+        this.cfg.allowUnsorting = this.cfg.allowUnsorting||false;
+        this.sortMeta = [];
 
         this.sortableColumns = this.thead.find('> tr > th.ui-sortable-column');
 
@@ -517,35 +518,23 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
 
             PrimeFaces.clearSelection();
 
-            var unsorting = $this.cfg.allowUnsorting || $this.cfg.allowUnsorting == undefined;
-
             var columnHeader = $(this),
                 sortOrderData = columnHeader.data('sortorder'),
                 sortOrder = (sortOrderData === $this.SORT_ORDER.UNSORTED) ? $this.SORT_ORDER.ASCENDING :
                     (sortOrderData === $this.SORT_ORDER.ASCENDING) ? $this.SORT_ORDER.DESCENDING :
-                        unsorting ? $this.SORT_ORDER.UNSORTED : $this.SORT_ORDER.ASCENDING,
+                        $this.cfg.allowUnsorting ? $this.SORT_ORDER.UNSORTED : $this.SORT_ORDER.ASCENDING,
                 metaKey = e.metaKey || e.ctrlKey || metaKeyOn;
 
-            if ($this.cfg.multiSort) {
-                if (metaKey) {
-                    $this.addSortMeta({
-                        col: columnHeader.attr('id'),
-                        order: sortOrder
-                    });
-                    $this.sort(columnHeader, sortOrder, true);
-                }
-                else {
-                    $this.sortMeta = [];
-                    $this.addSortMeta({
-                        col: columnHeader.attr('id'),
-                        order: sortOrder
-                    });
-                    $this.sort(columnHeader, sortOrder);
-                }
+            if (!$this.cfg.multiSort || !metaKey) {
+                $this.sortMeta = [];
             }
-            else {
-                $this.sort(columnHeader, sortOrder);
-            }
+
+            $this.addSortMeta({
+                col: columnHeader.attr('id'),
+                order: sortOrder
+            });
+
+            $this.sort(columnHeader, sortOrder, $this.cfg.multiSort && metaKey);
         });
     },
 
@@ -761,15 +750,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             }
         };
 
-        if (multi) {
-            options.params.push({name: this.id + '_multiSorting', value: true});
-            options.params.push({name: this.id + '_sortKey', value: $this.joinSortMetaOption('col')});
-            options.params.push({name: this.id + '_sortDir', value: $this.joinSortMetaOption('order')});
-        }
-        else {
-            options.params.push({name: this.id + '_sortKey', value: columnHeader.attr('id')});
-            options.params.push({name: this.id + '_sortDir', value: order});
-        }
+        options.params.push({name: this.id + '_sortKey', value: $this.joinSortMetaOption('col')});
+        options.params.push({name: this.id + '_sortDir', value: $this.joinSortMetaOption('order')});
 
         if(this.hasBehavior('sort')) {
             this.callBehavior('sort', options);

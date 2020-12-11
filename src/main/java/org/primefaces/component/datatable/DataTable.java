@@ -515,14 +515,6 @@ public class DataTable extends DataTableBase {
         setScrollOffset(0);
     }
 
-    public boolean isFilteringEnabled() {
-        return !getFilterByAsMap().isEmpty();
-    }
-
-    public boolean isSortingEnabled() {
-        return !getSortByAsMap().isEmpty();
-    }
-
     public RowExpansion getRowExpansion() {
         for (int i = 0; i < getChildCount(); i++) {
             UIComponent child = getChildren().get(i);

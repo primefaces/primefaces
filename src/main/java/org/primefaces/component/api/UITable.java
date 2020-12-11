@@ -266,6 +266,10 @@ public interface UITable extends ColumnAware {
         return getFilterByAsMap().get(column.getColumnKey()).getFilterValue();
     }
 
+    default boolean isSortingEnabled() {
+        return !getSortByAsMap().isEmpty();
+    }
+
     boolean isDefaultFilter();
 
     void setDefaultFilter(boolean defaultFilter);
@@ -426,6 +430,10 @@ public interface UITable extends ColumnAware {
     Map<String, SortMeta> getSortByAsMap();
 
     void setSortByAsMap(Map<String, SortMeta> sortBy);
+
+    default boolean isFilteringEnabled() {
+        return !getFilterByAsMap().isEmpty();
+    }
 
     Object getSortBy();
 
