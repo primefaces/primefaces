@@ -190,9 +190,8 @@
                 }
             }
 
-            if (this.options.yearRange === null) {
-                this.updateYearNavigator();
-            }
+            this.hasCustomYearRange = this.options.yearRange !== null;
+            this.updateYearNavigator();
 
             if (this.options.disabledDates) {
                 for (var i = 0; i < this.options.disabledDates.length; i++) {
@@ -2544,6 +2543,9 @@
         },
 
         updateYearNavigator: function() {
+            if (this.hasCustomYearRange) {
+                return;
+            }
             if (this.options.yearNavigator) {
                 var viewYear = this.viewDate.getFullYear();
                 this.options.yearRange = (viewYear - 10) + ':' + (viewYear + 10);
