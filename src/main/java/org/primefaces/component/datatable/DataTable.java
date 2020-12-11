@@ -52,7 +52,6 @@ import javax.faces.event.*;
 import javax.faces.model.DataModel;
 import java.lang.reflect.Array;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -451,13 +450,7 @@ public class DataTable extends DataTableBase {
                 first = Integer.parseInt(params.get(getClientId(context) + "_first")) + getRows();
             }
 
-            Map<String, SortMeta> sorters = getSortByAsMap().values().stream()
-                    .filter(SortMeta::isActive)
-                    .collect(Collectors.toMap(SortMeta::getField, Function.identity()));
-            Map<String, FilterMeta> filters = getFilterByAsMap().values().stream()
-                    .filter(FilterMeta::isActive)
-                    .collect(Collectors.toMap(FilterMeta::getField, Function.identity()));
-            List<?> data = lazyModel.load(first, rows, sorters, filters);
+            List<?> data = lazyModel.load(first, rows, getActiveSortMeta(), getActiveFilterMeta());
             lazyModel.setPageSize(getRows());
             lazyModel.setWrappedData(data);
 
@@ -474,13 +467,7 @@ public class DataTable extends DataTableBase {
         if (model instanceof LazyDataModel) {
             LazyDataModel lazyModel = (LazyDataModel) model;
 
-            Map<String, SortMeta> sorters = getSortByAsMap().values().stream()
-                    .filter(SortMeta::isActive)
-                    .collect(Collectors.toMap(SortMeta::getField, Function.identity()));
-            Map<String, FilterMeta> filters = getFilterByAsMap().values().stream()
-                    .filter(FilterMeta::isActive)
-                    .collect(Collectors.toMap(FilterMeta::getField, Function.identity()));
-            List<?> data = lazyModel.load(offset, rows, sorters, filters);
+            List<?> data = lazyModel.load(offset, rows, getActiveSortMeta(), getActiveFilterMeta());
 
             lazyModel.setPageSize(rows);
             lazyModel.setWrappedData(data);
@@ -526,10 +513,6 @@ public class DataTable extends DataTableBase {
         setSortByAsMap(null);
         setFilterByAsMap(null);
         setScrollOffset(0);
-    }
-
-    public boolean isFilteringEnabled() {
-        return !getFilterByAsMap().isEmpty();
     }
 
     public RowExpansion getRowExpansion() {
@@ -1173,10 +1156,6 @@ public class DataTable extends DataTableBase {
                 .mapToObj(Objects::toString)
                 .collect(Collectors.joining(",", "[", "]"));
     }
-
-
-
-
 
     @Override
     public Map<String, SortMeta> getSortByAsMap() {

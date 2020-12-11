@@ -184,18 +184,17 @@ public class InputNumberRenderer extends InputRenderer {
         String inputStyle = inputNumber.getInputStyle();
         String style = inputStyle;
         String styleClass = createStyleClass(inputNumber, InputNumber.PropertyKeys.inputStyleClass.name(), InputText.STYLE_CLASS) ;
-        String inputMode = inputNumber.getInputMode();
+        String inputMode = inputNumber.getInputmode();
         if (inputMode == null) {
             String decimalPlaces = getDecimalPlaces(inputNumber, inputNumber.getValue());
             inputMode = "0".equals(decimalPlaces) ? "numeric" : "decimal";
+            inputNumber.setInputmode(inputMode);
         }
-
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", inputNumber.getType(), null);
         writer.writeAttribute("value", valueToRender, null);
-        writer.writeAttribute("inputmode", inputMode, null);
 
         if (!isValueBlank(style)) {
             writer.writeAttribute("style", style, null);

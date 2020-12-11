@@ -1523,6 +1523,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[HTML5 inputmode attribute for hinting at the type of data this control has for touch devices to display appropriate virtual keyboard.]]>
+            </description>
+            <name>inputmode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Name of the client side widget.]]>
             </description>
             <name>widgetVar</name>
@@ -13219,9 +13227,9 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[HTML5 inputmode attribute for hinting at the type of data this control has for touch devices. Default is 'numeric' if decimalPlaces==0, 'decimal' if decimalPlaces>0.]]>
+                <![CDATA[HTML5 inputmode attribute for hinting at the type of data this control has for touch devices to display appropriate virtual keyboard. Default is 'numeric' if decimalPlaces==0, 'decimal' if decimalPlaces>0.]]>
             </description>
-            <name>inputMode</name>
+            <name>inputmode</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -13953,6 +13961,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[HTML5 inputmode attribute for hinting at the type of data this control has for touch devices to display appropriate virtual keyboard.]]>
+            </description>
+            <name>inputmode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Name of the client side widget.]]>
             </description>
             <name>widgetVar</name>
@@ -14440,6 +14456,14 @@
                 <![CDATA[The placeholder attribute specifies a short hint that describes the expected value of an input field.]]>
             </description>
             <name>placeholder</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[HTML5 inputmode attribute for hinting at the type of data this control has for touch devices to display appropriate virtual keyboard.]]>
+            </description>
+            <name>inputmode</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -14995,6 +15019,14 @@
                 <![CDATA[The placeholder attribute specifies a short hint that describes the expected value of an input field.]]>
             </description>
             <name>placeholder</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[HTML5 inputmode attribute for hinting at the type of data this control has for touch devices to display appropriate virtual keyboard.]]>
+            </description>
+            <name>inputmode</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -19528,6 +19560,14 @@
                 <![CDATA[The placeholder attribute specifies a short hint that describes the expected value of an input field.]]>
             </description>
             <name>placeholder</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[HTML5 inputmode attribute for hinting at the type of data this control has for touch devices to display appropriate virtual keyboard.]]>
+            </description>
+            <name>inputmode</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -24277,6 +24317,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[HTML5 inputmode attribute for hinting at the type of data this control has for touch devices to display appropriate virtual keyboard.]]>
+            </description>
+            <name>inputmode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Client side callback to execute when element receives focus.]]>
             </description>
             <name>onfocus</name>
@@ -25766,6 +25814,14 @@
                 <![CDATA[The placeholder attribute specifies a short hint that describes the expected value of an input field.]]>
             </description>
             <name>placeholder</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[HTML5 inputmode attribute for hinting at the type of data this control has for touch devices to display appropriate virtual keyboard.]]>
+            </description>
+            <name>inputmode</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -31468,6 +31524,14 @@
                 <![CDATA[The placeholder attribute specifies a short hint that describes the expected value of an input field.]]>
             </description>
             <name>placeholder</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[HTML5 inputmode attribute for hinting at the type of data this control has for touch devices to display appropriate virtual keyboard.]]>
+            </description>
+            <name>inputmode</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>

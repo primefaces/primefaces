@@ -205,7 +205,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             this.bindPaginator();
         }
 
-        this.bindSortEvents();
+        if(this.cfg.sorting) {
+            this.bindSortEvents();
+        }
 
         if(this.cfg.rowHover) {
             this.setupRowHover();
@@ -383,10 +385,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         // #5582: destroy any current draggable items
-        var dragdrop = $.ui.ddmanager.current;
-        if (dragdrop) {
-            document.body.style.cursor = 'default';
-            dragdrop.cancel();
+        if (this.cfg.draggableColumns || this.cfg.draggableRows) {
+            var dragdrop = $.ui.ddmanager.current;
+            if (dragdrop) {
+                var item = dragdrop.currentItem || dragdrop.element;
+                if(item.closest('.ui-datatable')[0] === this.jq[0]) {
+                    document.body.style.cursor = 'default';
+                    dragdrop.cancel();
+                }
+            }
         }
     },
 
@@ -428,6 +435,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this,
             hasAriaSort = false;
         this.cfg.tabindex = this.cfg.tabindex||'0';
+        this.cfg.multiSort = this.cfg.multiSort||false;
+        this.cfg.allowUnsorting = this.cfg.allowUnsorting||false;
         this.headers = this.thead.find('> tr > th');
         this.sortableColumns = this.headers.filter('.ui-sortable-column');
         this.sortableColumns.attr('tabindex', this.cfg.tabindex);
@@ -440,9 +449,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         //reflow dropdown
         this.reflowDD = $(this.jqId + '_reflowDD');
 
-        if(this.cfg.multiSort) {
-            this.sortMeta = [];
-        }
+        this.sortMeta = [];
 
         for(var i = 0; i < this.sortableColumns.length; i++) {
             var columnHeader = this.sortableColumns.eq(i),
@@ -530,35 +537,23 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
             PrimeFaces.clearSelection();
 
-            var unsorting = $this.cfg.allowUnsorting || $this.cfg.allowUnsorting == undefined;
-
             var columnHeader = $(this),
                 sortOrderData = columnHeader.data('sortorder'),
                 sortOrder = (sortOrderData === $this.SORT_ORDER.UNSORTED) ? $this.SORT_ORDER.ASCENDING :
                     (sortOrderData === $this.SORT_ORDER.ASCENDING) ? $this.SORT_ORDER.DESCENDING :
-                        unsorting ? $this.SORT_ORDER.UNSORTED : $this.SORT_ORDER.ASCENDING,
+                        $this.cfg.allowUnsorting ? $this.SORT_ORDER.UNSORTED : $this.SORT_ORDER.ASCENDING,
                 metaKey = e.metaKey || e.ctrlKey || metaKeyOn;
 
-            if($this.cfg.multiSort) {
-                if(metaKey) {
-                    $this.addSortMeta({
-                        col: columnHeader.attr('id'),
-                        order: sortOrder
-                    });
-                    $this.sort(columnHeader, sortOrder, true);
-                }
-                else {
-                    $this.sortMeta = [];
-                    $this.addSortMeta({
-                        col: columnHeader.attr('id'),
-                        order: sortOrder
-                    });
-                    $this.sort(columnHeader, sortOrder);
-                }
+            if(!$this.cfg.multiSort || !metaKey) {
+                $this.sortMeta = [];
             }
-            else {
-                $this.sort(columnHeader, sortOrder);
-            }
+
+            $this.addSortMeta({
+                col: columnHeader.attr('id'),
+                order: sortOrder
+            });
+
+            $this.sort(columnHeader, sortOrder, $this.cfg.multiSort && metaKey);
 
             if($this.cfg.scrollable) {
                 $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).trigger('focus');
@@ -2089,15 +2084,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
         };
 
-        if(multi) {
-            options.params.push({name: this.id + '_multiSorting', value: true});
-            options.params.push({name: this.id + '_sortKey', value: $this.joinSortMetaOption('col')});
-            options.params.push({name: this.id + '_sortDir', value: $this.joinSortMetaOption('order')});
-        }
-        else {
-            options.params.push({name: this.id + '_sortKey', value: columnHeader.attr('id')});
-            options.params.push({name: this.id + '_sortDir', value: order});
-        }
+        options.params.push({name: this.id + '_sortKey', value: $this.joinSortMetaOption('col')});
+        options.params.push({name: this.id + '_sortDir', value: $this.joinSortMetaOption('order')});
 
         if(this.hasBehavior('sort')) {
             this.callBehavior('sort', options);

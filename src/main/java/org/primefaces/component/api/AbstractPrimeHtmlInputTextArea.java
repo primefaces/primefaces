@@ -38,6 +38,7 @@ public abstract class AbstractPrimeHtmlInputTextArea extends HtmlInputTextarea {
 
     // new HTML5 events
     public enum PropertyKeys {
+        inputmode,
         oncut,
         oncopy,
         onpaste,
@@ -94,6 +95,14 @@ public abstract class AbstractPrimeHtmlInputTextArea extends HtmlInputTextarea {
     @Override
     public Collection<String> getEventNames() {
         return EVENT_NAMES;
+    }
+
+    public String getInputmode() {
+        return (String) getStateHelper().eval(PropertyKeys.inputmode, null);
+    }
+
+    public void setInputmode(String inputmode) {
+        getStateHelper().put(PropertyKeys.inputmode, inputmode);
     }
 
     public String getOncut() {
