@@ -44,7 +44,8 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExcelOptions;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.ExporterOptions;
-import org.primefaces.util.*;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LangUtils;
 
 
 public class DataTableExcelExporter extends DataTableExporter {
@@ -191,7 +192,7 @@ public class DataTableExcelExporter extends DataTableExporter {
         applyColumnAlignments(column, cell);
 
         if (column.getExportFunction() != null) {
-            cell.setCellValue(createRichTextString(exportColumnByFunction(context, column)));
+            updateCell(cell, exportColumnByFunction(context, column));
         }
         else {
             StringBuilder builder = new StringBuilder();
@@ -205,7 +206,16 @@ public class DataTableExcelExporter extends DataTableExporter {
                 }
             }
 
-            cell.setCellValue(createRichTextString(builder.toString()));
+            updateCell(cell, builder.toString());
+        }
+    }
+
+    protected void updateCell(Cell cell, String value) {
+        if (LangUtils.isNumeric(value)) {
+            cell.setCellValue(Double.parseDouble(value));
+        }
+        else {
+            cell.setCellValue(createRichTextString(value));
         }
     }
 

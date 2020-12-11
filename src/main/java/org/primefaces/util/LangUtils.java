@@ -411,4 +411,55 @@ public class LangUtils {
             throw new FacesException(e);
         }
     }
+
+
+    /**
+     * <p>Checks whether the given String is a parsable number.</p>
+     *
+     * <p>Parsable numbers include those Strings understood by {@link Integer#parseInt(String)},
+     * {@link Long#parseLong(String)}, {@link Float#parseFloat(String)} or
+     * {@link Double#parseDouble(String)}. This method can be used instead of catching {@link java.text.ParseException}
+     * when calling one of those methods.</p>
+     *
+     * <p>Hexadecimal and scientific notations are <strong>not</strong> considered parsable.
+     * See {@link #isCreatable(String)} on those cases.</p>
+     *
+     * <p>{@code Null} and empty String will return {@code false}.</p>
+     *
+     * @param str the String to check.
+     * @return {@code true} if the string is a parsable number.
+     * @since 3.4
+     */
+    public static boolean isNumeric(final String str) {
+        if (isValueEmpty(str)) {
+            return false;
+        }
+        if (str.charAt(str.length() - 1) == '.') {
+            return false;
+        }
+        if (str.charAt(0) == '-') {
+            if (str.length() == 1) {
+                return false;
+            }
+            return withDecimalsParsing(str, 1);
+        }
+        return withDecimalsParsing(str, 0);
+    }
+
+    private static boolean withDecimalsParsing(final String str, final int beginIdx) {
+        int decimalPoints = 0;
+        for (int i = beginIdx; i < str.length(); i++) {
+            final boolean isDecimalPoint = str.charAt(i) == '.';
+            if (isDecimalPoint) {
+                decimalPoints++;
+            }
+            if (decimalPoints > 1) {
+                return false;
+            }
+            if (!isDecimalPoint && !Character.isDigit(str.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
