@@ -21,9 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model;
+package org.primefaces.component.api;
 
-public interface RowKeyAble<T> {
+public interface RowKeyMapper<T> {
 
     String getRowKey(T object);
 

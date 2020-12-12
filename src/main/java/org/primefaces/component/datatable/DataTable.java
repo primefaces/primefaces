@@ -25,6 +25,7 @@ package org.primefaces.component.datatable;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
+import org.primefaces.component.api.RowKeyMapper;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
@@ -558,20 +559,20 @@ public class DataTable extends DataTableBase {
 
     public Object getRowKey(Object object) {
         DataModel model = getDataModel();
-        if (!(model instanceof RowKeyAble)) {
+        if (!(model instanceof RowKeyMapper)) {
             throw new FacesException("Unable to retrieve row key from data model. Selection is disabled.");
         }
 
-        return ((RowKeyAble) getDataModel()).getRowKey(object);
+        return ((RowKeyMapper) getDataModel()).getRowKey(object);
     }
 
     public Object getRowData(String rowKey) {
         DataModel model = getDataModel();
-        if (!(model instanceof RowKeyAble)) {
+        if (!(model instanceof RowKeyMapper)) {
             throw new FacesException("Unable to retrieve data from row key. Selection is disabled.");
         }
 
-        return ((RowKeyAble) model).getRowData(rowKey);
+        return ((RowKeyMapper) model).getRowData(rowKey);
     }
 
     public void findSelectedRowKeys() {
@@ -1142,7 +1143,7 @@ public class DataTable extends DataTableBase {
     @Override
     protected DataModel getDataModel() {
         DataModel model = super.getDataModel();
-        if (!(model instanceof RowKeyAble) && isSelectionEnabled()) {
+        if (!(model instanceof RowKeyMapper) && isSelectionEnabled()) {
             boolean hasRowKeyVe = getValueExpression(PropertyKeys.rowKey.toString()) != null;
             if (hasRowKeyVe) {
                 Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
@@ -1152,10 +1153,10 @@ public class DataTable extends DataTableBase {
                     return getRowKey();
                 };
 
-                model = new RowKeyAbleDataModel(model, rowKeyTransformer);
+                model = new RowKeyMapperDataModel(model, rowKeyTransformer);
             }
             else {
-                model = new RowKeyAbleDataModel(model);
+                model = new RowKeyMapperDataModel(model);
             }
 
             setDataModel(model);

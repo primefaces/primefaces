@@ -23,13 +23,15 @@
  */
 package org.primefaces.model;
 
+import org.primefaces.component.api.RowKeyMapper;
+
 import javax.faces.model.DataModel;
 import javax.faces.model.DataModelListener;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class RowKeyAbleDataModel<T> extends DataModel<T> implements RowKeyAble<T> {
+public class RowKeyMapperDataModel<T> extends DataModel<T> implements RowKeyMapper<T> {
 
     private static final Function<Object, String> DEFAULT_ROWKEY_TRANSFORMER = o -> Objects.toString(System.identityHashCode(o));
 
@@ -42,11 +44,11 @@ public class RowKeyAbleDataModel<T> extends DataModel<T> implements RowKeyAble<T
     private Iterator<T> last;
 
     // for serialization
-    public RowKeyAbleDataModel() {
+    public RowKeyMapperDataModel() {
         // NOOP
     }
 
-    public RowKeyAbleDataModel(DataModel<T> wrapped, Function<Object, String> rowKeyTransformer) {
+    public RowKeyMapperDataModel(DataModel<T> wrapped, Function<Object, String> rowKeyTransformer) {
         this.wrapped = wrapped;
         this.rowKeyTransformer = rowKeyTransformer;
         this.cache = new HashMap<>();
@@ -54,7 +56,7 @@ public class RowKeyAbleDataModel<T> extends DataModel<T> implements RowKeyAble<T
         setWrappedData(wrapped.getWrappedData());
     }
 
-    public RowKeyAbleDataModel(DataModel<T> wrapped) {
+    public RowKeyMapperDataModel(DataModel<T> wrapped) {
         this(wrapped, DEFAULT_ROWKEY_TRANSFORMER);
     }
 
