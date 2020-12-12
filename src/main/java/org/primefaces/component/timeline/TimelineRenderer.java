@@ -207,6 +207,8 @@ public class TimelineRenderer extends CoreRenderer {
         if (timeline.getMaxHeight() != null) {
             wb.attr("maxHeight", timeline.getMaxHeight());
         }
+        wb.attr("horizontalScroll", timeline.isHorizontalScroll(), false);
+        wb.attr("verticalScroll", timeline.isVerticalScroll(), false);
         wb.attr("width", timeline.getWidth());
         wb.nativeAttr("orientation", "{axis:'" + timeline.getOrientationAxis() + "',"
                 + "item:'" + timeline.getOrientationItem() + "'}" );
