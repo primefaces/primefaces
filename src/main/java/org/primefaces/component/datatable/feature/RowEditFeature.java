@@ -48,10 +48,6 @@ public class RowEditFeature implements DataTableFeature {
 
     @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
-        if (table.isSelectionEnabled()) {
-            table.findSelectedRowKeys();
-        }
-
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String clientId = table.getClientId(context);
         int editedRowId = Integer.parseInt(params.get(clientId + "_rowEditIndex"));

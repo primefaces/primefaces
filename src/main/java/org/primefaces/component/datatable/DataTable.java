@@ -153,7 +153,6 @@ public class DataTable extends DataTableBase {
             .put(DataTableFeatureKey.ADD_ROW, new AddRowFeature())
             .build();
 
-    private static final String SB_GET_SELECTED_ROW_KEYS_AS_STRING = DataTable.class.getName() + "#getSelectedRowKeysAsString";
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("page", PageEvent.class)
             .put("sort", SortEvent.class)
@@ -185,11 +184,19 @@ public class DataTable extends DataTableBase {
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     private boolean reset = false;
-    private List<Object> selectedRowKeys = new ArrayList<>();
-    private boolean isRowKeyRestored = false;
     private List<UIColumn> columns;
     private Set<Integer> expandedRowsSet;
     private Map<String, AjaxBehaviorEvent> deferredEvents = new HashMap<>(1);
+
+    protected enum InternalPropertyKeys {
+        defaultFilter,
+        filterByAsMap,
+        defaultSort,
+        sortByAsMap,
+        visibleColumnsAsMap,
+        resizableColumnsAsMap,
+        selectedRowKeys
+    }
 
     public DataTableFeature getFeature(DataTableFeatureKey key) {
         return FEATURES.get(key);
@@ -263,16 +270,13 @@ public class DataTable extends DataTableBase {
 
     public boolean isSingleSelectionMode() {
         String selectionMode = getSelectionMode();
-        String columnSelectionMode = getColumnSelectionMode();
 
-        if (selectionMode != null) {
+        if (LangUtils.isNotBlank(selectionMode)) {
             return selectionMode.equalsIgnoreCase("single");
         }
-        else if (columnSelectionMode != null) {
-            return columnSelectionMode.equalsIgnoreCase("single");
-        }
         else {
-            return false;
+            String columnSelectionMode = getColumnSelectionMode();
+            return "single".equalsIgnoreCase(columnSelectionMode);
         }
     }
 
@@ -291,18 +295,6 @@ public class DataTable extends DataTableBase {
                 evt.setPhaseId(PhaseId.PROCESS_VALIDATIONS);
                 super.queueEvent(evt);
             }
-        }
-    }
-
-    @Override
-    public void processUpdates(FacesContext context) {
-        super.processUpdates(context);
-
-        ValueExpression selectionVE = getValueExpression(PropertyKeys.selection.toString());
-
-        if (selectionVE != null) {
-            selectionVE.setValue(context.getELContext(), getLocalSelection());
-            setSelection(null);
         }
     }
 
@@ -512,6 +504,7 @@ public class DataTable extends DataTableBase {
         setDefaultFilter(false);
         setSortByAsMap(null);
         setFilterByAsMap(null);
+        setSelectedRowKeys(null);
         setScrollOffset(0);
     }
 
@@ -524,10 +517,6 @@ public class DataTable extends DataTableBase {
         }
 
         return null;
-    }
-
-    public Object getLocalSelection() {
-        return getStateHelper().get(PropertyKeys.selection);
     }
 
     @Override
@@ -557,7 +546,7 @@ public class DataTable extends DataTableBase {
         return null;
     }
 
-    public Object getRowKeyFromModel(Object object) {
+    public String getRowKey(Object object) {
         DataModel model = getDataModel();
         if (!(model instanceof SelectableDataModel)) {
             throw new FacesException("DataModel must implement org.primefaces.model.SelectableDataModel when selection is enabled.");
@@ -602,70 +591,16 @@ public class DataTable extends DataTableBase {
         }
     }
 
-    public void findSelectedRowKeys() {
-        Object selection = getSelection();
-        boolean hasRowKeyVe = getValueExpression(PropertyKeys.rowKey.toString()) != null;
-        String var = getVar();
-        Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
-
-        if (isMultiViewState() && selection == null && isRowKeyRestored && getSelectedRowKeys() != null) {
-            selectedRowKeys = getSelectedRowKeys();
-            isRowKeyRestored = false;
-        }
-        else {
-            selectedRowKeys = new ArrayList<>();
-        }
-
-        if (isSelectionEnabled() && selection != null) {
-            if (isSingleSelectionMode()) {
-                addToSelectedRowKeys(selection, requestMap, var, hasRowKeyVe);
-            }
-            else {
-                if (selection.getClass().isArray()) {
-                    for (int i = 0; i < Array.getLength(selection); i++) {
-                        addToSelectedRowKeys(Array.get(selection, i), requestMap, var, hasRowKeyVe);
-                    }
-                }
-                else {
-                    List<?> list = (List<?>) selection;
-
-                    for (Iterator<? extends Object> it = list.iterator(); it.hasNext(); ) {
-                        addToSelectedRowKeys(it.next(), requestMap, var, hasRowKeyVe);
-                    }
-                }
-
-            }
-
-            requestMap.remove(var);
-        }
+    public Set<String> getSelectedRowKeys() {
+        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.selectedRowKeys, Collections::emptySet);
     }
 
-    protected void addToSelectedRowKeys(Object object, Map<String, Object> requestMap, String var, boolean hasRowKey) {
-        requestMap.put(var, object);
-
-        Object rowKey = hasRowKey ? getRowKey() : getRowKeyFromModel(object);
-
-        if (rowKey != null) {
-            selectedRowKeys.add(rowKey);
-        }
-    }
-
-    public List<Object> getSelectedRowKeys() {
-        return selectedRowKeys;
+    public void setSelectedRowKeys(Set<String> selectedRowKeys) {
+        getStateHelper().put(InternalPropertyKeys.selectedRowKeys, selectedRowKeys);
     }
 
     public String getSelectedRowKeysAsString() {
-        StringBuilder builder = SharedStringBuilder.get(SB_GET_SELECTED_ROW_KEYS_AS_STRING);
-
-        for (int i = 0; i < getSelectedRowKeys().size(); i++) {
-            if (i > 0) {
-                builder.append(",");
-            }
-
-            builder.append(getSelectedRowKeys().get(i));
-        }
-
-        return builder.toString();
+        return String.join(",", getSelectedRowKeys());
     }
 
     public SummaryRow getSummaryRow() {
@@ -988,8 +923,6 @@ public class DataTable extends DataTableBase {
             deferredEvents.clear();
         }
         reset = false;
-        selectedRowKeys = new ArrayList<>();
-        isRowKeyRestored = false;
         columns = null;
         expandedRowsSet = null;
 
@@ -1039,12 +972,16 @@ public class DataTable extends DataTableBase {
             }
 
             if (isSelectionEnabled()) {
-                selectedRowKeys = ts.getSelectedRowKeys();
-                isRowKeyRestored = true;
+                updateSelectionWithMVS(ts.getSelectedRowKeys());
             }
 
             setColumnMeta(ts.getColumnMeta());
         }
+    }
+
+    public void updateSelectionWithMVS(Set<String> rowKeys) {
+        SelectionFeature feature = (SelectionFeature) FEATURES.get(DataTableFeatureKey.SELECT);
+        feature.decodeSelection(getFacesContext(), this, rowKeys);
     }
 
     @Override

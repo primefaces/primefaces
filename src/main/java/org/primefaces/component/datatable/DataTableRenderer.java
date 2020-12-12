@@ -138,6 +138,11 @@ public class DataTableRenderer extends DataRenderer {
                 FilterFeature filterFeature = (FilterFeature) table.getFeature(DataTableFeatureKey.FILTER);
                 filterFeature.filter(context, table);
             }
+
+            if (table.isSelectionEnabled()) {
+                SelectionFeature selectionFeature = (SelectionFeature) table.getFeature(DataTableFeatureKey.SELECT);
+                selectionFeature.decodeSelectionRowKeys(context, table);
+            }
         }
 
         if (table.isPaginator()) {
@@ -1057,10 +1062,6 @@ public class DataTableRenderer extends DataRenderer {
         String tbodyClientId = (tbodyId == null) ? clientId + "_data" : tbodyId;
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-        if (table.isSelectionEnabled()) {
-            table.findSelectedRowKeys();
-        }
-
         int rows = table.getRows();
         int first = table.isClientCacheRequest(context) ? Integer.valueOf(params.get(clientId + "_first")) + rows : table.getFirst();
         int rowCount = table.getRowCount();
@@ -1220,12 +1221,13 @@ public class DataTableRenderer extends DataRenderer {
 
         //Preselection
         boolean selected = table.getSelectedRowKeys().contains(rowKey);
+        boolean disabled = table.isDisabledSelection();
 
         String rowStyleClass = getStyleClassBuilder(context)
                 .add(DataTable.ROW_CLASS)
                 .add(rowIndex % 2 == 0, DataTable.EVEN_ROW_CLASS, DataTable.ODD_ROW_CLASS)
                 .add(selectionEnabled && !table.isDisabledSelection(), DataTable.SELECTABLE_ROW_CLASS)
-                .add(selected, "ui-state-highlight")
+                .add(selected && !disabled, "ui-state-highlight")
                 .add(table.isEditingRow(),  DataTable.EDITING_ROW_CLASS)
                 .add(table.getRowStyleClass())
                 .add(table.isExpandedRow(), DataTable.EXPANDED_ROW_CLASS)
@@ -1249,13 +1251,14 @@ public class DataTableRenderer extends DataRenderer {
             UIColumn column = columns.get(i);
 
             if (column instanceof Column) {
-                encodeCell(context, table, column, clientId, selected, rowIndex);
+                encodeCell(context, table, column, clientId, selected);
+                encodeCell(context, table, column, selected, disabled, rowIndex);
             }
             else if (column instanceof DynamicColumn) {
                 DynamicColumn dynamicColumn = (DynamicColumn) column;
                 dynamicColumn.applyModel();
 
-                encodeCell(context, table, dynamicColumn, null, false, rowIndex);
+                encodeCell(context, table, dynamicColumn, false, false, rowIndex);
             }
         }
 
@@ -1269,7 +1272,7 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void encodeCell(FacesContext context, DataTable table, UIColumn column, String clientId, boolean selected,
-            int rowIndex) throws IOException {
+            boolean disabled, int rowIndex) throws IOException {
         if (!column.isRendered()) {
             return;
         }
@@ -1321,7 +1324,7 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         if (selectionEnabled) {
-            encodeColumnSelection(context, table, clientId, column, selected);
+            encodeColumnSelection(context, table, column, selected, disabled);
         }
 
         if (hasColumnDefaultRendering(table, column)) {
@@ -1505,11 +1508,10 @@ public class DataTableRenderer extends DataRenderer {
         }
     }
 
-    protected void encodeColumnSelection(FacesContext context, DataTable table, String clientId, UIColumn column, boolean selected)
+    protected void encodeColumnSelection(FacesContext context, DataTable table, UIColumn column, boolean selected, boolean disabled)
             throws IOException {
 
         String selectionMode = column.getSelectionMode();
-        boolean disabled = table.isDisabledSelection();
 
         if (selectionMode.equalsIgnoreCase("single")) {
             encodeRadio(context, table, selected, disabled);

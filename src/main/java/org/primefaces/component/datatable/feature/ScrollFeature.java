@@ -63,10 +63,6 @@ public class ScrollFeature implements DataTableFeature {
             table.loadLazyScrollData(scrollOffset, scrollRows);
         }
 
-        if (table.isSelectionEnabled()) {
-            table.findSelectedRowKeys();
-        }
-
         int firstIndex = (isLazy && isVirtualScroll) ? 0 : scrollOffset;
         int lastIndex = (firstIndex + scrollRows);
 

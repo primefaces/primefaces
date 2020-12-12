@@ -40,10 +40,6 @@ public class AddRowFeature implements DataTableFeature {
 
     @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
-        if (table.isSelectionEnabled()) {
-            table.findSelectedRowKeys();
-        }
-
         String clientId = table.getClientId(context);
         int rowIndex = table.getRowCount() - 1;
         table.setRowIndex(table.getRowCount() - 1);
