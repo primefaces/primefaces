@@ -53,6 +53,7 @@ import javax.faces.event.*;
 import javax.faces.model.DataModel;
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
