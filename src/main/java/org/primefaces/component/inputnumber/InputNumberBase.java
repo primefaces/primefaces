@@ -42,6 +42,7 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
         type,
         symbol,
         symbolPosition,
+        signPosition,
         minValue,
         maxValue,
         roundMethod,
@@ -96,6 +97,14 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
 
     public void setSymbol(String symbol) {
         getStateHelper().put(PropertyKeys.symbol, symbol);
+    }
+
+    public String getSignPosition() {
+        return (String) getStateHelper().eval(PropertyKeys.signPosition, null);
+    }
+
+    public void setSignPosition(String signPosition) {
+        getStateHelper().put(PropertyKeys.signPosition, signPosition);
     }
 
     public String getSymbolPosition() {

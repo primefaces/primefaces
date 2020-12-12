@@ -95,6 +95,7 @@ padControl | true | Boolean | Controls padding of the decimal places. If true, a
 roundMethod | Round-Half-Up-Symmetric | String | Controls the rounding method.
 symbol | none | String | Desired symbol or unit.
 symbolPosition | p | String | Position of the symbol. 'p' for prefix 's' for suffix
+signPosition | null | String | Placement of the negative/positive sign relative to the symbolPosition option The sign is placed on either side of the symbolPosition, which can be placed on either side of the numbers. 'p' for prefix 's' for suffix 'l' for left 'r' for right
 thousandSeparator | *1 | String | Thousand separator char.
 
 *1 Depends on locale defined via faces-config.xml
