@@ -4968,15 +4968,17 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         // update the visibility of columns but ignore expanded rows
-        for(var i = 0; i < this.headers.length; i++) {
-            var header = this.headers.eq(i),
-                col = this.tbody.find('> tr:not(.ui-expanded-row-content) > td:nth-child(' + (header.index() + 1) + ')');
+        if(this.headers) {
+            for(var i = 0; i < this.headers.length; i++) {
+                var header = this.headers.eq(i),
+                    col = this.tbody.find('> tr:not(.ui-expanded-row-content) > td:nth-child(' + (header.index() + 1) + ')');
 
-            if(header.hasClass('ui-helper-hidden')) {
-                col.addClass('ui-helper-hidden');
-            }
-            else {
-                col.removeClass('ui-helper-hidden');
+                if(header.hasClass('ui-helper-hidden')) {
+                    col.addClass('ui-helper-hidden');
+                }
+                else {
+                    col.removeClass('ui-helper-hidden');
+                }
             }
         }
 
