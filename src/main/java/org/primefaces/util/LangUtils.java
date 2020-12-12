@@ -40,6 +40,8 @@ import javax.xml.bind.DatatypeConverter;
 
 public class LangUtils {
 
+    public static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
+
     private LangUtils() {
     }
 
@@ -253,9 +255,10 @@ public class LangUtils {
         return Collections.unmodifiableList(Arrays.asList(args));
     }
 
-    @SafeVarargs
-    public static <T> Set<T> unmodifiableSet(T... args) {
-        return Collections.unmodifiableSet(new HashSet<>(Arrays.asList(args)));
+    public static <E> Set<E> newHashSet(E... elements) {
+        Set<E> set = new HashSet<>(elements.length);
+        Collections.addAll(set, elements);
+        return set;
     }
 
     public static Class tryToLoadClassForName(String name) {

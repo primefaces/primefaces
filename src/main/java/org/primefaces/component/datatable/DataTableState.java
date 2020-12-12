@@ -25,7 +25,7 @@ package org.primefaces.component.datatable;
 
 import org.primefaces.component.api.UITableState;
 
-import java.util.List;
+import java.util.Set;
 
 public class DataTableState extends UITableState {
 
@@ -35,7 +35,7 @@ public class DataTableState extends UITableState {
 
     private int rows;
 
-    private List<Object> selectedRowKeys;
+    private Set<String> selectedRowKeys;
 
     public int getFirst() {
         return first;
@@ -53,11 +53,11 @@ public class DataTableState extends UITableState {
         this.rows = rows;
     }
 
-    public List<Object> getSelectedRowKeys() {
+    public Set<String> getSelectedRowKeys() {
         return selectedRowKeys;
     }
 
-    public void setSelectedRowKeys(List<Object> selectedRowKeys) {
+    public void setSelectedRowKeys(Set<String> selectedRowKeys) {
         this.selectedRowKeys = selectedRowKeys;
     }
 }

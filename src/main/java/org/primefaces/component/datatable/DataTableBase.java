@@ -107,15 +107,6 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         renderEmptyFacets
     }
 
-    protected enum InternalPropertyKeys {
-        defaultFilter,
-        filterByAsMap,
-        defaultSort,
-        sortByAsMap,
-        columnMeta,
-        width;
-    }
-
     public DataTableBase() {
         setRendererType(DEFAULT_RENDERER);
     }
