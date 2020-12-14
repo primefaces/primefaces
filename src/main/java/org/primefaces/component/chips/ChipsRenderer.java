@@ -194,7 +194,8 @@ public class ChipsRenderer extends InputRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Chips", chips)
                 .attr("max", chips.getMax(), Integer.MAX_VALUE)
-                .attr("addOnBlur", chips.isAddOnBlur(), false);
+                .attr("addOnBlur", chips.isAddOnBlur(), false)
+                .attr("unique", chips.isUnique(), false);
 
         encodeClientBehaviors(context, chips);
 

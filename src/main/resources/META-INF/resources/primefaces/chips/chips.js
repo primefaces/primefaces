@@ -15,6 +15,7 @@
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  * 
  * @prop {boolean} cfg.addOnBlur Whether to add an item when the input loses focus.
+ * @prop {boolean} cfg.unique Prevent duplicate entries from being added.
  * @prop {number} cfg.max Maximum number of entries allowed.
  */
 PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
@@ -60,7 +61,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
             $this.itemContainer.addClass('ui-state-focus');
         }).on('blur.chips', function() {
             $this.itemContainer.removeClass('ui-state-focus');
-            
+
             if ($this.cfg.addOnBlur) {
                 $this.addItem($(this).val(), false);
             }
@@ -72,7 +73,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
                 case 8:
                     if(value.length === 0 && $this.hinput.children('option') && $this.hinput.children('option').length > 0) {
                         var lastOption = $this.hinput.children('option:last'),
-                        index = lastOption.index();
+                            index = lastOption.index();
                         $this.removeItem($($this.itemContainer.children('li.ui-chips-token').get(index)));
                     }
                 break;
@@ -103,23 +104,49 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
      * @param {boolean} [refocus] `true` to put focus back on the INPUT again after the chip was added, or `false`
      * otherwise. 
      */
-    addItem : function(value, refocus) {
+    addItem: function(value, refocus) {
+        var $this = this;
         if(value && value.trim().length && (!this.cfg.max||this.cfg.max > this.hinput.children('option').length)) {
             var escapedValue = PrimeFaces.escapeHTML(value);
+
+            if (this.cfg.unique) {
+                var duplicateFound = false;
+                this.hinput.children('option').each(function() {
+                    if (this.value === escapedValue) {
+                        $this.refocus(refocus);
+                        duplicateFound = true;
+                        return false; // breaks
+                    }
+                });
+                if (duplicateFound) {
+                    return;
+                }
+            }
+
             var itemDisplayMarkup = '<li class="ui-chips-token ui-state-active ui-corner-all">';
             itemDisplayMarkup += '<span class="ui-chips-token-icon ui-icon ui-icon-close"></span>';
             itemDisplayMarkup += '<span class="ui-chips-token-label">' + escapedValue + '</span></li>';
 
             this.inputContainer.before(itemDisplayMarkup);
-            this.input.val('');
-            this.input.removeAttr('placeholder');
-            
-            if (refocus) {
-                this.input.trigger('focus');
-            }
+            this.refocus(refocus);
 
             this.hinput.append('<option value="' + escapedValue + '" selected="selected"></option>');
             this.invokeItemSelectBehavior(escapedValue);
+        }
+    },
+
+    /**
+     * Deletes the currently editing input value and refocus the input box if necessary.
+     * @param {boolean} [refocus] `true` to put focus back on the INPUT again after the chip was added, or `false`
+     * otherwise. 
+     * @private
+     */
+    refocus: function(refocus) {
+        this.input.val('');
+        this.input.removeAttr('placeholder');
+
+        if (refocus) {
+            this.input.trigger('focus');
         }
     },
 
@@ -142,7 +169,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
 
             $this.invokeItemUnselectBehavior(itemValue);
         });
-        
+
         // if empty return placeholder
         if (this.placeholder && this.hinput.children('option').length === 0) {
             this.input.attr('placeholder', this.placeholder);

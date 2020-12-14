@@ -4727,6 +4727,22 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to add an item when the input loses focus. Default false.]]>
+            </description>
+            <name>addOnBlur</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Prevent duplicate entries from being added. Default false.]]>
+            </description>
+            <name>unique</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
