@@ -112,7 +112,8 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         filterByAsMap,
         defaultSort,
         sortByAsMap,
-        visibleColumnsAsMap;
+        visibleColumnsAsMap,
+        resizableColumnsAsMap;
     }
 
     public DataTableBase() {

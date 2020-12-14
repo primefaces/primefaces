@@ -93,7 +93,8 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         filterByAsMap,
         defaultSort,
         sortByAsMap,
-        visibleColumnsAsMap;
+        visibleColumnsAsMap,
+        resizableColumnsAsMap;
     }
 
     public TreeTableBase() {

@@ -24,7 +24,6 @@
 package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
-import java.util.Map;
 import javax.faces.FacesException;
 
 import javax.faces.context.FacesContext;
@@ -37,11 +36,11 @@ public class ResizableColumnsFeature implements DataTableFeature {
 
     @Override
     public void decode(FacesContext context, DataTable table) {
+        table.decodeColumnResizeState(table, context);
+
         if (table.isMultiViewState()) {
-            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            String resizableColumnParam = params.get(table.getClientId(context) + "_resizableColumnState");
-            DataTableState ts = table.getMultiViewState(true);
-            ts.setResizableColumnsAsString(resizableColumnParam);
+            DataTableState state = table.getMultiViewState(true);
+            state.setResizableColumns(table.getResizableColumnsAsMap());
         }
     }
 

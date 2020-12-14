@@ -329,8 +329,12 @@ public class DataTableRenderer extends DataRenderer {
             encodeStateHolder(context, table, table.getClientId(context) + "_scrollState", table.getScrollState());
         }
 
-        if (resizable && table.isMultiViewState()) {
-            encodeStateHolder(context, table, table.getClientId(context) + "_resizableColumnState", table.getResizableColumnsAsString());
+        if (resizable) {
+            String state = table.getResizableColumnsAsMap().entrySet()
+                    .stream()
+                    .map(e -> e.getKey() + '_' + e.getValue())
+                    .collect(Collectors.joining(","));
+            encodeStateHolder(context, table, table.getClientId(context) + "_resizableColumnState", state);
         }
 
         if (table.getRowExpansion() != null) {
@@ -348,8 +352,8 @@ public class DataTableRenderer extends DataRenderer {
 
         String tableStyle = table.getTableStyle();
 
-        if (table.isMultiViewState() && table.isResizableColumns()) {
-            Map<String, String> resizableColsMap = table.getResizableColumnsMap();
+        if (table.isResizableColumns()) {
+            Map<String, String> resizableColsMap = table.getResizableColumnsAsMap();
             String width = resizableColsMap.get(table.getClientId(context) + "_tableWidthState");
 
             if (width != null) {
@@ -612,9 +616,8 @@ public class DataTableRenderer extends DataRenderer {
         String style = column.getStyle();
         String width = column.getWidth();
 
-        if (table.isMultiViewState() && resizable) {
-            Map<String, String> resizableColsMap = table.getResizableColumnsMap();
-            width = resizableColsMap.get(clientId) == null ? width : resizableColsMap.get(clientId);
+        if (resizable && table.getResizableColumnsAsMap().containsKey(column.getColumnKey())) {
+            width = table.getResizableColumnsAsMap().get(column.getColumnKey());
         }
 
         if (width != null) {

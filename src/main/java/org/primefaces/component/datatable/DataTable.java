@@ -184,8 +184,6 @@ public class DataTable extends DataTableBase {
     private boolean isRowKeyRestored = false;
     private List<UIColumn> columns;
     private Columns dynamicColumns;
-    private String resizableColumnsAsString;
-    private Map<String, String> resizableColsMap;
     private Set<Integer> expandedRowsSet;
     private Map<String, AjaxBehaviorEvent> deferredEvents = new HashMap<>(1);
 
@@ -918,42 +916,6 @@ public class DataTable extends DataTableBase {
         return expandedRowsSet;
     }
 
-    public String getResizableColumnsAsString() {
-        return resizableColumnsAsString;
-    }
-
-    public void setResizableColumnsAsString(String resizableColumnsAsString) {
-        this.resizableColumnsAsString = resizableColumnsAsString;
-    }
-
-    public Map getResizableColumnsMap() {
-        if (resizableColsMap == null) {
-            resizableColsMap = new HashMap<>();
-            boolean isValueBlank = LangUtils.isValueBlank(resizableColumnsAsString);
-
-            if (isValueBlank) {
-                FacesContext context = getFacesContext();
-                Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-                setResizableColumnsAsString(params.get(getClientId(context) + "_resizableColumnState"));
-            }
-
-            if (!isValueBlank) {
-                String[] colsArr = resizableColumnsAsString.split(",");
-                for (int i = 0; i < colsArr.length; i++) {
-                    String temp = colsArr[i];
-                    int sepIndex = temp.lastIndexOf('_');
-                    resizableColsMap.put(temp.substring(0, sepIndex), temp.substring(sepIndex + 1, temp.length()));
-                }
-            }
-        }
-
-        return resizableColsMap;
-    }
-
-    public void setResizableColumnsMap(Map<String, String> resizableColsMap) {
-        this.resizableColsMap = resizableColsMap;
-    }
-
     public List findOrderedColumns(String columnOrder) {
         FacesContext context = getFacesContext();
         List orderedColumns = null;
@@ -1032,8 +994,6 @@ public class DataTable extends DataTableBase {
         isRowKeyRestored = false;
         columns = null;
         dynamicColumns = null;
-        resizableColumnsAsString = null;
-        resizableColsMap = null;
         expandedRowsSet = null;
 
         return super.saveState(context);
@@ -1095,7 +1055,7 @@ public class DataTable extends DataTableBase {
             }
 
             setColumns(findOrderedColumns(ts.getOrderedColumnsAsString()));
-            setResizableColumnsAsString(ts.getResizableColumnsAsString());
+            setResizableColumnsAsMap(ts.getResizableColumns());
             setVisibleColumnsAsMap(ts.getVisibleColumns());
         }
     }
@@ -1159,5 +1119,15 @@ public class DataTable extends DataTableBase {
     @Override
     public void setVisibleColumnsAsMap(Map<String, Boolean> visibleColumnsAsMap) {
         getStateHelper().put(InternalPropertyKeys.visibleColumnsAsMap.name(), visibleColumnsAsMap);
+    }
+
+    @Override
+    public Map<String, String> getResizableColumnsAsMap() {
+        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.resizableColumnsAsMap.name(), Collections::emptyMap);
+    }
+
+    @Override
+    public void setResizableColumnsAsMap(Map<String, String> resizableColumnsAsMap) {
+        getStateHelper().put(InternalPropertyKeys.resizableColumnsAsMap.name(), resizableColumnsAsMap);
     }
 }

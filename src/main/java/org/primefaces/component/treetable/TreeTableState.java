@@ -46,6 +46,8 @@ public class TreeTableState implements Serializable {
 
     private Map<String, Boolean> visibleColumns;
 
+    private Map<String, String> resizableColumns;
+
     public int getFirst() {
         return first;
     }
@@ -92,5 +94,13 @@ public class TreeTableState implements Serializable {
 
     public void setVisibleColumns(Map<String, Boolean> visibleColumns) {
         this.visibleColumns = visibleColumns;
+    }
+
+    public Map<String, String> getResizableColumns() {
+        return resizableColumns;
+    }
+
+    public void setResizableColumns(Map<String, String> resizableColumns) {
+        this.resizableColumns = resizableColumns;
     }
 }

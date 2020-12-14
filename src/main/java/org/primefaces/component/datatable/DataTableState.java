@@ -48,7 +48,7 @@ public class DataTableState implements Serializable {
 
     private Map<String, Boolean> visibleColumns;
 
-    private String resizableColumnsAsString;
+    private Map<String, String> resizableColumns;
 
     public int getFirst() {
         return first;
@@ -106,11 +106,11 @@ public class DataTableState implements Serializable {
         this.visibleColumns = visibleColumns;
     }
 
-    public String getResizableColumnsAsString() {
-        return resizableColumnsAsString;
+    public Map<String, String> getResizableColumns() {
+        return resizableColumns;
     }
 
-    public void setResizableColumnsAsString(String resizableColumnsAsString) {
-        this.resizableColumnsAsString = resizableColumnsAsString;
+    public void setResizableColumns(Map<String, String> resizableColumns) {
+        this.resizableColumns = resizableColumns;
     }
 }

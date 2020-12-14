@@ -455,13 +455,13 @@ public interface UITable extends ColumnAware {
 
         HashMap<String, Boolean> visibleColumnsAsMap = new HashMap<>();
 
-        String[] togglableColumns = columnTogglerStateParam.split(",");
-        for (String togglableColumn : togglableColumns) {
-            int seperatorIndex = togglableColumn.lastIndexOf('_');
-            String toggableColumnKey = togglableColumn.substring(0, seperatorIndex);
-            boolean toggableColumnVisibility = Boolean.valueOf(togglableColumn.substring(seperatorIndex + 1));
+        String[] columnStates = columnTogglerStateParam.split(",");
+        for (String columnState : columnStates) {
+            int seperatorIndex = columnState.lastIndexOf('_');
+            String columnKey = columnState.substring(0, seperatorIndex);
+            boolean visible = Boolean.valueOf(columnState.substring(seperatorIndex + 1));
 
-            visibleColumnsAsMap.put(toggableColumnKey, toggableColumnVisibility);
+            visibleColumnsAsMap.put(columnKey, visible);
         }
 
         setVisibleColumnsAsMap(visibleColumnsAsMap);
@@ -470,4 +470,32 @@ public interface UITable extends ColumnAware {
     Map<String, Boolean> getVisibleColumnsAsMap();
 
     void setVisibleColumnsAsMap(Map<String, Boolean> visibleColumnsAsMap);
+
+
+
+
+    default void decodeColumnResizeState(UIComponent table, FacesContext context) {
+        String columnResizeStateParam = context.getExternalContext().getRequestParameterMap()
+                .get(table.getClientId(context) + "_resizableColumnState");
+        if (columnResizeStateParam == null) {
+            return;
+        }
+
+        HashMap<String, String> resizableColumnsMap = new HashMap<>();
+
+        String[] columnStates = columnResizeStateParam.split(",");
+        for (String columnState : columnStates) {
+            int seperatorIndex = columnState.lastIndexOf('_');
+            String columnKey = columnState.substring(0, seperatorIndex);
+            String width = columnState.substring(seperatorIndex + 1);
+
+            resizableColumnsMap.put(columnKey, width);
+        }
+
+        setResizableColumnsAsMap(resizableColumnsMap);
+    }
+
+    Map<String, String> getResizableColumnsAsMap();
+
+    void setResizableColumnsAsMap(Map<String, String> resizableColumnsAsMap);
 }

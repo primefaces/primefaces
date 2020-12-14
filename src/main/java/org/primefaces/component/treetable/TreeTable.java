@@ -678,4 +678,14 @@ public class TreeTable extends TreeTableBase {
     public void setVisibleColumnsAsMap(Map<String, Boolean> visibleColumnsAsMap) {
         getStateHelper().put(InternalPropertyKeys.visibleColumnsAsMap.name(), visibleColumnsAsMap);
     }
+
+    @Override
+    public Map<String, String> getResizableColumnsAsMap() {
+        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.resizableColumnsAsMap.name(), Collections::emptyMap);
+    }
+
+    @Override
+    public void setResizableColumnsAsMap(Map<String, String> resizableColumnsAsMap) {
+        getStateHelper().put(InternalPropertyKeys.resizableColumnsAsMap.name(), resizableColumnsAsMap);
+    }
 }
