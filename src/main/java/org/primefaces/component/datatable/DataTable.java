@@ -924,7 +924,7 @@ public class DataTable extends DataTableBase {
         return expandedRowsSet;
     }
 
-    public Map getTogglableColumnsMap() {
+    public Map<String, Boolean> getTogglableColumnsMap() {
         if (togglableColsMap == null) {
             togglableColsMap = new HashMap<>();
             boolean isValueBlank = LangUtils.isValueBlank(togglableColumnsAsString);
