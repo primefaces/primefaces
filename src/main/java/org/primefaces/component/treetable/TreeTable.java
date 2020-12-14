@@ -36,7 +36,6 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 
 import org.primefaces.PrimeFaces;
-import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columns.Columns;
@@ -566,33 +565,6 @@ public class TreeTable extends TreeTableBase {
         }
     }
 
-    public void updateColumnsVisibility(FacesContext context) {
-        String columnTogglerStateParam = context.getExternalContext().getRequestParameterMap()
-                .get(getClientId(context) + "_columnTogglerState");
-        if (columnTogglerStateParam == null) {
-            return;
-        }
-
-        String[] togglableColumns = columnTogglerStateParam.split(",");
-        forEachColumn(column -> {
-            for (String togglableColumn : togglableColumns) {
-                int seperatorIndex = togglableColumn.lastIndexOf('_');
-                String toggableColumnKey = togglableColumn.substring(0, seperatorIndex);
-
-                if (toggableColumnKey.equals(column.getColumnKey())) {
-                    boolean toggableColumnVisibility = Boolean.valueOf(togglableColumn.substring(seperatorIndex + 1));
-                    if (column instanceof Column) {
-                        ((Column) column).setVisible(toggableColumnVisibility);
-                    }
-                    else if (column instanceof DynamicColumn) {
-                        ((DynamicColumn) column).applyStatelessModel();
-                        ((DynamicColumn) column).setVisible(toggableColumnVisibility);
-                    }
-                }
-            }
-        });
-    }
-
     @Override
     protected boolean requiresColumns() {
         return true;
@@ -617,6 +589,8 @@ public class TreeTable extends TreeTableBase {
             }
 
             // TODO selection
+
+            setVisibleColumnsAsMap(ts.getVisibleColumns());
         }
     }
 
@@ -693,5 +667,15 @@ public class TreeTable extends TreeTableBase {
     public boolean isMultiSort() {
         String sortMode = getSortMode();
         return sortMode != null && sortMode.equals("multiple");
+    }
+
+    @Override
+    public Map<String, Boolean> getVisibleColumnsAsMap() {
+        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.visibleColumnsAsMap.name(), Collections::emptyMap);
+    }
+
+    @Override
+    public void setVisibleColumnsAsMap(Map<String, Boolean> visibleColumnsAsMap) {
+        getStateHelper().put(InternalPropertyKeys.visibleColumnsAsMap.name(), visibleColumnsAsMap);
     }
 }

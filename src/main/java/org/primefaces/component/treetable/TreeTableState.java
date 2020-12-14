@@ -44,6 +44,8 @@ public class TreeTableState implements Serializable {
 
     private Map<String, FilterMeta> filterBy;
 
+    private Map<String, Boolean> visibleColumns;
+
     public int getFirst() {
         return first;
     }
@@ -84,4 +86,11 @@ public class TreeTableState implements Serializable {
         this.filterBy = filterBy;
     }
 
+    public Map<String, Boolean> getVisibleColumns() {
+        return visibleColumns;
+    }
+
+    public void setVisibleColumns(Map<String, Boolean> visibleColumns) {
+        this.visibleColumns = visibleColumns;
+    }
 }

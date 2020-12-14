@@ -583,10 +583,9 @@ public class DataTableRenderer extends DataRenderer {
         boolean draggable = table.isDraggableColumns() && column.isDraggable();
         int priority = column.getPriority();
 
-        boolean isColVisible = column.isVisible();
-        if (table.isMultiViewState()) {
-            Map<String, Boolean> togglableColsMap = table.getTogglableColumnsMap();
-            isColVisible = togglableColsMap.get(clientId) == null ? isColVisible : togglableColsMap.get(clientId);
+        boolean columnVisible = column.isVisible();
+        if (table.getVisibleColumnsAsMap().containsKey(column.getColumnKey())) {
+            columnVisible = table.getVisibleColumnsAsMap().get(column.getColumnKey());
         }
 
         String columnClass = getStyleClassBuilder(context)
@@ -597,7 +596,7 @@ public class DataTableRenderer extends DataRenderer {
                 .add(resizable,  DataTable.RESIZABLE_COLUMN_CLASS)
                 .add(draggable, DataTable.DRAGGABLE_COLUMN_CLASS)
                 .add(!column.isToggleable(), DataTable.STATIC_COLUMN_CLASS)
-                .add(!isColVisible, DataTable.HIDDEN_COLUMN_CLASS)
+                .add(!columnVisible, DataTable.HIDDEN_COLUMN_CLASS)
                 .add(column.getStyleClass())
                 .add(priority > 0, "ui-column-p-" + priority)
                 .build();
@@ -897,20 +896,18 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = column.getContainerClientId(context);
 
         int priority = column.getPriority();
         String style = column.getStyle();
         String styleClass = column.getStyleClass();
         styleClass = styleClass == null ? DataTable.COLUMN_FOOTER_CLASS : DataTable.COLUMN_FOOTER_CLASS + " " + styleClass;
 
-        boolean isColVisible = column.isVisible();
-        if (table.isMultiViewState()) {
-            Map<String, Boolean> togglableColsMap = table.getTogglableColumnsMap();
-            isColVisible = togglableColsMap.get(clientId) == null ? isColVisible : togglableColsMap.get(clientId);
+        boolean columnVisible = column.isVisible();
+        if (table.getVisibleColumnsAsMap().containsKey(column.getColumnKey())) {
+            columnVisible = table.getVisibleColumnsAsMap().get(column.getColumnKey());
         }
 
-        if (!isColVisible) {
+        if (!columnVisible) {
             styleClass = styleClass + " " + DataTable.HIDDEN_COLUMN_CLASS;
         }
 
@@ -1271,13 +1268,9 @@ public class DataTableRenderer extends DataRenderer {
             return;
         }
 
-        boolean isColVisible = column.isVisible();
-        if (table.isMultiViewState()) {
-            Map<String, Boolean> togglableColsMap = table.getTogglableColumnsMap();
-            String colClientId = column.getContainerClientId(context);
-            char separatorChar = UINamingContainer.getSeparatorChar(context);
-            String colHeaderClientId = clientId + colClientId.substring(colClientId.lastIndexOf(separatorChar), colClientId.length());
-            isColVisible = togglableColsMap.get(colHeaderClientId) == null ? isColVisible : togglableColsMap.get(colHeaderClientId);
+        boolean columnVisible = column.isVisible();
+        if (table.getVisibleColumnsAsMap().containsKey(column.getColumnKey())) {
+            columnVisible = table.getVisibleColumnsAsMap().get(column.getColumnKey());
         }
 
         ResponseWriter writer = context.getResponseWriter();
@@ -1292,7 +1285,7 @@ public class DataTableRenderer extends DataRenderer {
                 .add(editorEnabled && editor.isDisabled(), DataTable.CELL_EDITOR_DISABLED_CLASS)
                 .add(editorEnabled && !editor.isDisabled(), DataTable.EDITABLE_COLUMN_CLASS)
                 .add(!column.isSelectRow(), DataTable.UNSELECTABLE_COLUMN_CLASS)
-                .add(!isColVisible, DataTable.HIDDEN_COLUMN_CLASS)
+                .add(!columnVisible, DataTable.HIDDEN_COLUMN_CLASS)
                 .add(column.getStyleClass())
                 .add(priority > 0, "ui-column-p-" + priority)
                 .build();

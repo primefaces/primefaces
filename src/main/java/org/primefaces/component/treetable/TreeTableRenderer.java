@@ -236,8 +236,6 @@ public class TreeTableRenderer extends DataRenderer {
             dynamicCols.setRowIndex(-1);
         }
 
-        tt.updateColumnsVisibility(context);
-
         if (tt.isMultiViewState()) {
             tt.restoreMultiViewState();
         }
@@ -660,12 +658,16 @@ public class TreeTableRenderer extends DataRenderer {
             }
 
             if (column.isRendered()) {
+                boolean columnVisible = column.isVisible();
+                if (tt.getVisibleColumnsAsMap().containsKey(column.getColumnKey())) {
+                    columnVisible = tt.getVisibleColumnsAsMap().get(column.getColumnKey());
+                }
+
                 String columnStyleClass = column.getStyleClass();
                 String columnStyle = column.getStyle();
                 int rowspan = column.getRowspan();
                 int colspan = column.getColspan();
                 int priority = column.getPriority();
-                boolean isColVisible = column.isVisible();
 
                 if (priority > 0) {
                     columnStyleClass = (columnStyleClass == null) ? "ui-column-p-" + priority : columnStyleClass + " ui-column-p-" + priority;
@@ -675,7 +677,7 @@ public class TreeTableRenderer extends DataRenderer {
                     columnStyleClass = (columnStyleClass == null) ? TreeTable.EDITABLE_COLUMN_CLASS : TreeTable.EDITABLE_COLUMN_CLASS + " " + columnStyleClass;
                 }
 
-                if (!isColVisible) {
+                if (!columnVisible) {
                     columnStyleClass = (columnStyleClass == null) ? TreeTable.HIDDEN_COLUMN_CLASS : columnStyleClass + " " + TreeTable.HIDDEN_COLUMN_CLASS;
                 }
 
@@ -739,6 +741,12 @@ public class TreeTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent header = column.getFacet("header");
         String headerText = column.getHeaderText();
+
+        boolean columnVisible = column.isVisible();
+        if (tt.getVisibleColumnsAsMap().containsKey(column.getColumnKey())) {
+            columnVisible = tt.getVisibleColumnsAsMap().get(column.getColumnKey());
+        }
+
         int colspan = column.getColspan();
         int rowspan = column.getRowspan();
         boolean sortable = tt.isColumnSortable(context, column);
@@ -747,7 +755,7 @@ public class TreeTableRenderer extends DataRenderer {
         String style = column.getStyle();
         String width = column.getWidth();
         String columnClass = sortable ? TreeTable.SORTABLE_COLUMN_HEADER_CLASS : TreeTable.COLUMN_HEADER_CLASS;
-        columnClass = !column.isVisible() ? columnClass + " " + TreeTable.HIDDEN_COLUMN_CLASS : columnClass;
+        columnClass = !columnVisible ? columnClass + " " + TreeTable.HIDDEN_COLUMN_CLASS : columnClass;
         columnClass = !column.isToggleable() ? columnClass + " " + TreeTable.STATIC_COLUMN_CLASS : columnClass;
         String userColumnClass = column.getStyleClass();
         if (column.isResizable()) {

@@ -442,4 +442,32 @@ public interface UITable extends ColumnAware {
     boolean isDefaultSort();
 
     void setDefaultSort(boolean defaultSort);
+
+
+
+
+    default void decodeColumnTogglerState(UIComponent table, FacesContext context) {
+        String columnTogglerStateParam = context.getExternalContext().getRequestParameterMap()
+                .get(table.getClientId(context) + "_columnTogglerState");
+        if (columnTogglerStateParam == null) {
+            return;
+        }
+
+        HashMap<String, Boolean> visibleColumnsAsMap = new HashMap<>();
+
+        String[] togglableColumns = columnTogglerStateParam.split(",");
+        for (String togglableColumn : togglableColumns) {
+            int seperatorIndex = togglableColumn.lastIndexOf('_');
+            String toggableColumnKey = togglableColumn.substring(0, seperatorIndex);
+            boolean toggableColumnVisibility = Boolean.valueOf(togglableColumn.substring(seperatorIndex + 1));
+
+            visibleColumnsAsMap.put(toggableColumnKey, toggableColumnVisibility);
+        }
+
+        setVisibleColumnsAsMap(visibleColumnsAsMap);
+    }
+
+    Map<String, Boolean> getVisibleColumnsAsMap();
+
+    void setVisibleColumnsAsMap(Map<String, Boolean> visibleColumnsAsMap);
 }
