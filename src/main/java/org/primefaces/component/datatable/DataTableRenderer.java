@@ -41,6 +41,7 @@ import javax.faces.model.SelectItem;
 
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.api.UITable;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
@@ -55,7 +56,6 @@ import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.util.*;
-import org.primefaces.component.api.UITable;
 
 public class DataTableRenderer extends DataRenderer {
 
@@ -1247,13 +1247,13 @@ public class DataTableRenderer extends DataRenderer {
             UIColumn column = columns.get(i);
 
             if (column instanceof Column) {
-                encodeCell(context, table, column, clientId, selected);
+                encodeCell(context, table, column, clientId, selected, rowIndex);
             }
             else if (column instanceof DynamicColumn) {
                 DynamicColumn dynamicColumn = (DynamicColumn) column;
                 dynamicColumn.applyModel();
 
-                encodeCell(context, table, dynamicColumn, null, false);
+                encodeCell(context, table, dynamicColumn, null, false, rowIndex);
             }
         }
 
@@ -1266,14 +1266,16 @@ public class DataTableRenderer extends DataRenderer {
         return true;
     }
 
-    protected void encodeCell(FacesContext context, DataTable table, UIColumn column, String clientId, boolean selected) throws IOException {
+    protected void encodeCell(FacesContext context, DataTable table, UIColumn column, String clientId, boolean selected, int rowIndex) throws IOException {
         if (!column.isRendered()) {
             return;
         }
 
+        Map<String, Boolean> visibleColumnsMap = table.getVisibleColumnsAsMap();
         boolean columnVisible = column.isVisible();
-        if (table.getVisibleColumnsAsMap().containsKey(column.getColumnKey())) {
-            columnVisible = table.getVisibleColumnsAsMap().get(column.getColumnKey());
+        String columnKey = column.getColumnKey().replace(":" + rowIndex + ":", ":");
+        if (visibleColumnsMap.containsKey(columnKey)) {
+            columnVisible = visibleColumnsMap.get(columnKey);
         }
 
         ResponseWriter writer = context.getResponseWriter();

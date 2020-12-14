@@ -650,6 +650,8 @@ public class TreeTableRenderer extends DataRenderer {
             writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(selected), null);
         }
 
+        Map<String, Boolean> visibleColumnsMap = tt.getVisibleColumnsAsMap();
+        String replaceRowKey = ":" + rowKey + ":";
         for (int i = 0; i < columns.size(); i++) {
             UIColumn column = columns.get(i);
 
@@ -659,8 +661,9 @@ public class TreeTableRenderer extends DataRenderer {
 
             if (column.isRendered()) {
                 boolean columnVisible = column.isVisible();
-                if (tt.getVisibleColumnsAsMap().containsKey(column.getColumnKey())) {
-                    columnVisible = tt.getVisibleColumnsAsMap().get(column.getColumnKey());
+                String columnKey = column.getColumnKey().replace(replaceRowKey, ":");
+                if (visibleColumnsMap.containsKey(columnKey)) {
+                    columnVisible = visibleColumnsMap.get(columnKey);
                 }
 
                 String columnStyleClass = column.getStyleClass();
