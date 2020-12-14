@@ -274,6 +274,10 @@ public class DynamicColumn implements UIColumn {
         return columns.isVisible();
     }
 
+    public void setVisible(boolean visible) {
+        columns.setVisible(visible);
+    }
+
     @Override
     public boolean isSelectRow() {
         return columns.isSelectRow();

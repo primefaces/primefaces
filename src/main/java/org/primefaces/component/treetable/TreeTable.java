@@ -36,6 +36,7 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columns.Columns;
@@ -566,19 +567,30 @@ public class TreeTable extends TreeTableBase {
     }
 
     public void updateColumnsVisibility(FacesContext context) {
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String columnTogglerParam = params.get(getClientId(context) + "_columnTogglerState");
-        if (columnTogglerParam != null) {
-            String[] togglableColumns = columnTogglerParam.split(",");
-            for (String togglableColumn : togglableColumns) {
-                int sepIndex = togglableColumn.lastIndexOf('_');
-                UIColumn column = findColumn(togglableColumn.substring(0, sepIndex));
+        String columnTogglerStateParam = context.getExternalContext().getRequestParameterMap()
+                .get(getClientId(context) + "_columnTogglerState");
+        if (columnTogglerStateParam == null) {
+            return;
+        }
 
-                if (column != null) {
-                    ((Column) column).setVisible(Boolean.valueOf(togglableColumn.substring(sepIndex + 1)));
+        String[] togglableColumns = columnTogglerStateParam.split(",");
+        forEachColumn(column -> {
+            for (String togglableColumn : togglableColumns) {
+                int seperatorIndex = togglableColumn.lastIndexOf('_');
+                String toggableColumnKey = togglableColumn.substring(0, seperatorIndex);
+
+                if (toggableColumnKey.equals(column.getColumnKey())) {
+                    boolean toggableColumnVisibility = Boolean.valueOf(togglableColumn.substring(seperatorIndex + 1));
+                    if (column instanceof Column) {
+                        ((Column) column).setVisible(toggableColumnVisibility);
+                    }
+                    else if (column instanceof DynamicColumn) {
+                        ((DynamicColumn) column).applyStatelessModel();
+                        ((DynamicColumn) column).setVisible(toggableColumnVisibility);
+                    }
                 }
             }
-        }
+        });
     }
 
     @Override

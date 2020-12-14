@@ -830,18 +830,18 @@ public class UIData extends javax.faces.component.UIData {
                     UIComponent kid = getChildren().get(i);
                     if (requiresColumns) {
                         if (kid instanceof Columns) {
-                            Columns uicolumns = (Columns) kid;
-                            for (int j = 0; j < uicolumns.getRowCount(); j++) {
-                                uicolumns.setRowIndex(j);
+                            Columns columns = (Columns) kid;
+                            for (int j = 0; j < columns.getRowCount(); j++) {
+                                columns.setRowIndex(j);
 
-                                boolean value = visitColumnContent(context, callback, uicolumns);
+                                boolean value = visitColumnContent(context, callback, columns);
                                 if (value) {
-                                    uicolumns.setRowIndex(-1);
+                                    columns.setRowIndex(-1);
                                     return true;
                                 }
                             }
 
-                            uicolumns.setRowIndex(-1);
+                            columns.setRowIndex(-1);
                         }
                         else {
                             boolean value = visitColumnContent(context, callback, kid);

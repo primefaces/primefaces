@@ -388,6 +388,7 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
         getStateHelper().put(PropertyKeys.sortOrder, order);
     }
 
+    @Override
     public int getSortPriority() {
         return (Integer) getStateHelper().eval(PropertyKeys.sortPriority, SortMeta.MIN_PRIORITY);
     }
@@ -396,6 +397,7 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
         getStateHelper().put(PropertyKeys.sortPriority, sortPriority);
     }
 
+    @Override
     public int getNullSortOrder() {
         return (Integer) getStateHelper().eval(PropertyKeys.nullSortOrder, 1);
     }
@@ -404,6 +406,7 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
         getStateHelper().put(PropertyKeys.nullSortOrder, nullSortOrder);
     }
 
+    @Override
     public boolean isCaseSensitiveSort() {
         return (Boolean) getStateHelper().eval(PropertyKeys.caseSensitiveSort, false);
     }
