@@ -173,18 +173,12 @@ public class DataGridRenderer extends DataRenderer {
         int displayedItemsToRender = rowIndex + itemsToRender;
         String columnInlineStyle = grid.getRowStyle();
         boolean flex = ComponentUtils.isFlex(context, grid);
-        String columnClass = DataGrid.COLUMN_CLASS + " ";
-        if (flex) {
-            columnClass += GridLayoutUtils.getFlexColumnClass(columns);
-        }
-        else {
-            columnClass += GridLayoutUtils.getColumnClass(columns);
-        }
 
-
-        if (!LangUtils.isValueBlank(grid.getRowStyleClass())) {
-            columnClass += " " + grid.getRowStyleClass();
-        }
+        String columnClass = getStyleClassBuilder(context)
+                .add(DataGrid.COLUMN_CLASS)
+                .add(flex, GridLayoutUtils.getFlexColumnClass(columns),  GridLayoutUtils.getColumnClass(columns))
+                .add(grid.getRowStyleClass())
+                .build();
 
         writer.startElement("div", null);
 

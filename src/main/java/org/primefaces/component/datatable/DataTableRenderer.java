@@ -267,23 +267,16 @@ public class DataTableRenderer extends DataRenderer {
         String summary = table.getSummary();
 
         //style class
-        String containerClass = scrollable ? DataTable.CONTAINER_CLASS + " " + DataTable.SCROLLABLE_CONTAINER_CLASS : DataTable.CONTAINER_CLASS;
-        containerClass = table.getStyleClass() != null ? containerClass + " " + table.getStyleClass() : containerClass;
-        if (resizable) {
-            containerClass = containerClass + " " + DataTable.RESIZABLE_CONTAINER_CLASS;
-        }
-        if (table.isStickyHeader()) {
-            containerClass = containerClass + " " + DataTable.STICKY_HEADER_CLASS;
-        }
-        if (ComponentUtils.isRTL(context, table)) {
-            containerClass = containerClass + " " + DataTable.RTL_CLASS;
-        }
-        if (table.isReflow()) {
-            containerClass = containerClass + " " + DataTable.REFLOW_CLASS;
-        }
-        if (hasFrozenColumns) {
-            containerClass = containerClass + " ui-datatable-frozencolumn";
-        }
+        String containerClass = getStyleClassBuilder(context)
+                .add(DataTable.CONTAINER_CLASS)
+                .add(scrollable, DataTable.SCROLLABLE_CONTAINER_CLASS)
+                .add(table.getStyleClass())
+                .add(resizable, DataTable.RESIZABLE_CONTAINER_CLASS)
+                .add(table.isStickyHeader(), DataTable.STICKY_HEADER_CLASS)
+                .add(ComponentUtils.isRTL(context, table), DataTable.RTL_CLASS)
+                .add(table.isReflow(), DataTable.REFLOW_CLASS)
+                .add(hasFrozenColumns, "ui-datatable-frozencolumn")
+                .build();
 
         //aria
         if (summary != null) {
@@ -596,18 +589,18 @@ public class DataTableRenderer extends DataRenderer {
             isColVisible = togglableColsMap.get(clientId) == null ? isColVisible : togglableColsMap.get(clientId);
         }
 
-        String columnClass = sortable ? DataTable.COLUMN_HEADER_CLASS + " " + DataTable.SORTABLE_COLUMN_CLASS : DataTable.COLUMN_HEADER_CLASS;
-        columnClass = filterable ? columnClass + " " + DataTable.FILTER_COLUMN_CLASS : columnClass;
-        columnClass = selectionMode != null ? columnClass + " " + DataTable.SELECTION_COLUMN_CLASS : columnClass;
-        columnClass = resizable ? columnClass + " " + DataTable.RESIZABLE_COLUMN_CLASS : columnClass;
-        columnClass = draggable ? columnClass + " " + DataTable.DRAGGABLE_COLUMN_CLASS : columnClass;
-        columnClass = !column.isToggleable() ? columnClass + " " + DataTable.STATIC_COLUMN_CLASS : columnClass;
-        columnClass = !isColVisible ? columnClass + " " + DataTable.HIDDEN_COLUMN_CLASS : columnClass;
-        columnClass = column.getStyleClass() != null ? columnClass + " " + column.getStyleClass() : columnClass;
-
-        if (priority > 0) {
-            columnClass = columnClass + " ui-column-p-" + priority;
-        }
+        String columnClass = getStyleClassBuilder(context)
+                .add(DataTable.COLUMN_HEADER_CLASS)
+                .add(sortable, DataTable.SORTABLE_COLUMN_CLASS)
+                .add(filterable, DataTable.FILTER_COLUMN_CLASS)
+                .add(selectionMode != null, DataTable.SELECTION_COLUMN_CLASS)
+                .add(resizable,  DataTable.RESIZABLE_COLUMN_CLASS)
+                .add(draggable, DataTable.DRAGGABLE_COLUMN_CLASS)
+                .add(!column.isToggleable(), DataTable.STATIC_COLUMN_CLASS)
+                .add(!isColVisible, DataTable.HIDDEN_COLUMN_CLASS)
+                .add(column.getStyleClass())
+                .add(priority > 0, "ui-column-p-" + priority)
+                .build();
 
         if (sortable) {
             SortMeta s = table.getSortByAsMap().get(column.getColumnKey());
@@ -1226,27 +1219,15 @@ public class DataTableRenderer extends DataRenderer {
         //Preselection
         boolean selected = table.getSelectedRowKeys().contains(rowKey);
 
-        String userRowStyleClass = table.getRowStyleClass();
-        String rowStyleClass = rowIndex % 2 == 0 ? DataTable.ROW_CLASS + " " + DataTable.EVEN_ROW_CLASS : DataTable.ROW_CLASS + " " + DataTable.ODD_ROW_CLASS;
-        if (selectionEnabled && !table.isDisabledSelection()) {
-            rowStyleClass = rowStyleClass + " " + DataTable.SELECTABLE_ROW_CLASS;
-        }
-
-        if (selected) {
-            rowStyleClass = rowStyleClass + " ui-state-highlight";
-        }
-
-        if (table.isEditingRow()) {
-            rowStyleClass = rowStyleClass + " " + DataTable.EDITING_ROW_CLASS;
-        }
-
-        if (userRowStyleClass != null) {
-            rowStyleClass = rowStyleClass + " " + userRowStyleClass;
-        }
-
-        if (table.isExpandedRow()) {
-            rowStyleClass = rowStyleClass + " " + DataTable.EXPANDED_ROW_CLASS;
-        }
+        String rowStyleClass = getStyleClassBuilder(context)
+                .add(DataTable.ROW_CLASS)
+                .add(rowIndex % 2 == 0, DataTable.EVEN_ROW_CLASS, DataTable.ODD_ROW_CLASS)
+                .add(selectionEnabled && !table.isDisabledSelection(), DataTable.SELECTABLE_ROW_CLASS)
+                .add(selected, "ui-state-highlight")
+                .add(table.isEditingRow(),  DataTable.EDITING_ROW_CLASS)
+                .add(table.getRowStyleClass())
+                .add(table.isExpandedRow(), DataTable.EXPANDED_ROW_CLASS)
+                .build();
 
         writer.startElement("tr", null);
         writer.writeAttribute("data-ri", rowIndex, null);
@@ -1305,22 +1286,16 @@ public class DataTableRenderer extends DataRenderer {
         boolean editorEnabled = editor != null && editor.isRendered();
         int priority = column.getPriority();
         String style = column.getStyle();
-        String styleClass = selectionEnabled
-                            ? DataTable.SELECTION_COLUMN_CLASS
-                            : (!editorEnabled) ? null : (editor.isDisabled()) ? DataTable.CELL_EDITOR_DISABLED_CLASS : DataTable.EDITABLE_COLUMN_CLASS;
-        styleClass = (column.isSelectRow())
-                     ? styleClass
-                     : (styleClass == null) ? DataTable.UNSELECTABLE_COLUMN_CLASS : styleClass + " " + DataTable.UNSELECTABLE_COLUMN_CLASS;
-        styleClass = (isColVisible)
-                     ? styleClass
-                     : (styleClass == null) ? DataTable.HIDDEN_COLUMN_CLASS : styleClass + " " + DataTable.HIDDEN_COLUMN_CLASS;
-        String userStyleClass = column.getStyleClass();
-        styleClass = userStyleClass == null
-                     ? styleClass : (styleClass == null) ? userStyleClass : styleClass + " " + userStyleClass;
 
-        if (priority > 0) {
-            styleClass = (styleClass == null) ? "ui-column-p-" + priority : styleClass + " ui-column-p-" + priority;
-        }
+        String styleClass = getStyleClassBuilder(context)
+                .add(selectionEnabled, DataTable.SELECTION_COLUMN_CLASS)
+                .add(editorEnabled && editor.isDisabled(), DataTable.CELL_EDITOR_DISABLED_CLASS)
+                .add(editorEnabled && !editor.isDisabled(), DataTable.EDITABLE_COLUMN_CLASS)
+                .add(!column.isSelectRow(), DataTable.UNSELECTABLE_COLUMN_CLASS)
+                .add(!isColVisible, DataTable.HIDDEN_COLUMN_CLASS)
+                .add(column.getStyleClass())
+                .add(priority > 0, "ui-column-p-" + priority)
+                .build();
 
         int colspan = column.getColspan();
         int rowspan = column.getRowspan();
