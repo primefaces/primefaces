@@ -93,9 +93,7 @@ public class ColumnToggler extends ColumnTogglerBase {
 
     public UIComponent getDataSourceComponent() {
         if (dataSourceComponent == null) {
-            FacesContext context = getFacesContext();
-            String tableId = SearchExpressionFacade.resolveClientIds(context, this, getDatasource());
-            dataSourceComponent = context.getViewRoot().findComponent(tableId);
+            dataSourceComponent = SearchExpressionFacade.resolveComponent(getFacesContext(), this, getDatasource());
         }
 
         return dataSourceComponent;
