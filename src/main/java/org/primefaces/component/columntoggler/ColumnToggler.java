@@ -101,4 +101,11 @@ public class ColumnToggler extends ColumnTogglerBase {
         return dataSourceComponent;
     }
 
+    @Override
+    public Object saveState(FacesContext context) {
+        // reset component for MyFaces view pooling
+        dataSourceComponent = null;
+
+        return super.saveState(context);
+    }
 }
