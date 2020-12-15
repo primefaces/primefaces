@@ -336,6 +336,7 @@ public class CustomizedDocumentsView implements Serializable {
         excelOpt.setFacetFontStyle("BOLD");
         excelOpt.setCellFontColor("#00ff00");
         excelOpt.setCellFontSize("8");
+        excelOpt.setStronglyTypedCells(true);
     }
     public ExcelOptions getExcelOpt() {
         return excelOpt;

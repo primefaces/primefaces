@@ -43,6 +43,8 @@ public class ExcelOptions implements ExporterOptions {
 
     private boolean autoSizeColumn = true;
 
+    private boolean stronglyTypedCells = true;
+
     public ExcelOptions() {
     }
 
@@ -146,5 +148,13 @@ public class ExcelOptions implements ExporterOptions {
 
     public void setAutoSizeColumn(boolean autoSizeColumn) {
         this.autoSizeColumn = autoSizeColumn;
+    }
+
+    public boolean isStronglyTypedCells() {
+        return stronglyTypedCells;
+    }
+
+    public void setStronglyTypedCells(boolean stronglyTypedCells) {
+        this.stronglyTypedCells = stronglyTypedCells;
     }
 }
