@@ -246,7 +246,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
      * Clear the filter input of this tree table and shows all rows again.
      */
     clearFilters: function() {
-        columnFilters = this.thead.find('> tr > th.ui-filter-column > .ui-column-filter').val('');
+        this.thead.find('> tr > th.ui-filter-column > .ui-column-filter').val('');
+        this.thead.find('> tr > th.ui-filter-column > .ui-column-customfilter :input').val('');
         $(this.jqId + '\\:globalFilter').val('');
         this.filter();
     },

@@ -3760,6 +3760,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     clearFilters: function() {
         this.thead.find('> tr > th.ui-filter-column > .ui-column-filter').val('');
+        this.thead.find('> tr > th.ui-filter-column > .ui-column-customfilter :input').val('');
         $(this.jqId + '\\:globalFilter').val('');
 
         this.filter();
