@@ -330,11 +330,7 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         if (resizable) {
-            String state = table.getResizableColumnsAsMap().entrySet()
-                    .stream()
-                    .map(e -> e.getKey() + '_' + e.getValue())
-                    .collect(Collectors.joining(","));
-            encodeStateHolder(context, table, table.getClientId(context) + "_resizableColumnState", state);
+            encodeStateHolder(context, table, table.getClientId(context) + "_resizableColumnState", table.getResizableColumnsAsString());
         }
 
         if (table.getRowExpansion() != null) {

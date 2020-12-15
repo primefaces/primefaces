@@ -84,6 +84,12 @@ public class TreeTableRenderer extends DataRenderer {
             decodeSort(context, tt);
         }
 
+        tt.decodeColumnResizeState(tt, context);
+        if (tt.isMultiViewState()) {
+            TreeTableState state = tt.getMultiViewState(true);
+            state.setResizableColumns(tt.getResizableColumnsAsMap());
+        }
+
         decodeBehaviors(context, component);
     }
 
@@ -301,6 +307,7 @@ public class TreeTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = tt.getClientId(context);
         boolean scrollable = tt.isScrollable();
+        boolean resizable = tt.isResizableColumns();
         TreeNode root = tt.getValue();
         boolean hasPaginator = tt.isPaginator();
 
@@ -351,6 +358,10 @@ public class TreeTableRenderer extends DataRenderer {
 
         if (scrollable) {
             encodeStateHolder(context, tt, clientId + "_scrollState", tt.getScrollState());
+        }
+
+        if (resizable) {
+            encodeStateHolder(context, tt, tt.getClientId(context) + "_resizableColumnState", tt.getResizableColumnsAsString());
         }
 
         writer.endElement("div");

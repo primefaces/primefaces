@@ -137,6 +137,13 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         if(this.cfg.resizableColumns) {
+            this.resizableStateHolder = $(this.jqId + '_resizableColumnState');
+            this.resizableState = [];
+
+            if(this.resizableStateHolder.attr('value')) {
+                this.resizableState = this.resizableStateHolder.val().split(',');
+            }
+
             this.setupResizableColumns();
         }
 
@@ -1439,6 +1446,10 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                     colIndex = headerCol.index(),
                     width = headerCol.width();
 
+                    if ($this.resizableState) {
+                        width = $this.findColWidthInResizableState(headerCol.attr('id')) || width;
+                    }
+
                     headerCol.width(width);
 
                     if($this.footerCols.length > 0) {
@@ -1448,10 +1459,13 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 });
             }
             else {
-                this.jq.find('> table > thead > tr > th').each(function() {
-                    var col = $(this);
-                    col.width(col.width());
-                });
+                var columns = this.jq.find('> table > thead > tr > th'),
+                    visibleColumns = columns.filter(':visible'),
+                    hiddenColumns = columns.filter(':hidden');
+
+                this.setColumnsWidth(visibleColumns);
+                /* IE fixes */
+                this.setColumnsWidth(hiddenColumns);
             }
 
             this.columnWidthsFixed = true;
@@ -1459,16 +1473,98 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Recomputes and applies the target width of all columns.
+     * Applies the appropriated width to all given column elements.
+     * @param {JQuery} columns A list of column elements.
      * @private
      */
-    updateColumnWidths: function() {
-        this.columnWidthsFixed = false;
-        this.jq.find('> table > thead > tr > th').each(function() {
-            var col = $(this);
-            col.css('width', '');
-        });
-        this.fixColumnWidths();
+    setColumnsWidth: function(columns) {
+        if(columns.length) {
+            var $this = this;
+
+            columns.each(function() {
+                var col = $(this),
+                colStyle = col[0].style,
+                width = colStyle.width||col.width();
+
+                if ($this.resizableState) {
+                    width = $this.findColWidthInResizableState(col.attr('id')) || width;
+                }
+
+                col.width(width);
+            });
+        }
+    },
+
+    /**
+     * Computes and saves the resizable state of this data table, ie. which columns have got which width. May be used
+     * later to restore the current column width after an AJAX update.
+     * @private
+     * @param {JQuery} columnHeader Element of a column header of this data table.
+     * @param {JQuery} nextColumnHeader Element of the column header next to the given column header.
+     * @param {JQuery} table The element for this data table.
+     * @param {number} newWidth New width to be applied.
+     * @param {number | null} nextColumnWidth Width of the column next to the given column header.
+     */
+    updateResizableState: function(columnHeader, nextColumnHeader, table, newWidth, nextColumnWidth) {
+        var expandMode = (this.cfg.resizeMode === 'expand'),
+        currentColumnId = columnHeader.attr('id'),
+        nextColumnId = nextColumnHeader.attr('id'),
+        tableId = this.id + "_tableWidthState",
+        currentColumnState = currentColumnId + '_' + newWidth,
+        nextColumnState = nextColumnId + '_' + nextColumnWidth,
+        tableState = tableId + '_' + parseInt(table.css('width')),
+        currentColumnMatch = false,
+        nextColumnMatch = false,
+        tableMatch = false;
+
+        for(var i = 0; i < this.resizableState.length; i++) {
+            var state = this.resizableState[i];
+            if(state.indexOf(currentColumnId) === 0) {
+                this.resizableState[i] = currentColumnState;
+                currentColumnMatch = true;
+            }
+            else if(!expandMode && state.indexOf(nextColumnId) === 0) {
+                this.resizableState[i] = nextColumnState;
+                nextColumnMatch = true;
+            }
+            else if(expandMode && state.indexOf(tableId) === 0) {
+                this.resizableState[i] = tableState;
+                tableMatch = true;
+            }
+        }
+
+        if(!currentColumnMatch) {
+            this.resizableState.push(currentColumnState);
+        }
+
+        if(!expandMode && !nextColumnMatch) {
+            this.resizableState.push(nextColumnState);
+        }
+
+        if(expandMode && !tableMatch) {
+            this.resizableState.push(tableState);
+        }
+
+        this.resizableStateHolder.val(this.resizableState.join(','));
+    },
+
+    /**
+     * Finds the saved width of the given column. The width of resizable columns may be saved to restore it after an
+     * AJAX update.
+     * @private
+     * @param {string} id ID of a column
+     * @return {string | undefined} The saved width of the given column in pixels. `undefined` when the given column
+     * does not exist.
+     */
+    findColWidthInResizableState: function(id) {
+        for (var i = 0; i < this.resizableState.length; i++) {
+            var state = this.resizableState[i];
+            if (state.indexOf(id) === 0) {
+                return state.substring(state.lastIndexOf('_') + 1, state.length);
+            }
+        }
+
+        return null;
     },
 
     /**
@@ -1668,8 +1764,11 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     resize: function(event, ui) {
         var columnHeader = ui.helper.parent(),
-        nextColumnHeader = columnHeader.next(),
-        change = null, newWidth = null, nextColumnWidth = null;
+            nextColumnHeader = columnHeader.next(),
+            table = this.thead.parent(),
+            change = null,
+            newWidth = null,
+            nextColumnWidth = null;
 
         if(this.cfg.liveResize) {
             change = columnHeader.outerWidth() - (event.pageX - columnHeader.offset().left),
@@ -1685,6 +1784,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         if(newWidth > 15 && nextColumnWidth > 15) {
             columnHeader.width(newWidth);
             nextColumnHeader.width(nextColumnWidth);
+            this.updateResizableState(columnHeader, nextColumnHeader, table, newWidth, nextColumnWidth);
+
             var colIndex = columnHeader.index();
 
             if(this.cfg.scrollable) {

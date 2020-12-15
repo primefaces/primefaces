@@ -498,4 +498,11 @@ public interface UITable extends ColumnAware {
     Map<String, String> getResizableColumnsAsMap();
 
     void setResizableColumnsAsMap(Map<String, String> resizableColumnsAsMap);
+
+    default String getResizableColumnsAsString() {
+        return getResizableColumnsAsMap().entrySet()
+                .stream()
+                .map(e -> e.getKey() + '_' + e.getValue())
+                .collect(Collectors.joining(","));
+    }
 }

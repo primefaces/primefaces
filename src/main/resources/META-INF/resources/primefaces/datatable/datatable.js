@@ -1672,8 +1672,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     headerStyle = headerCol[0].style,
                     width = headerStyle.width||headerCol.width();
 
-                    if($this.resizableStateHolder && $this.resizableStateHolder.attr('value')) {
-                        width = ($this.findColWidthInResizableState(headerCol.attr('id')) || width);
+                    if ($this.resizableState) {
+                        width = $this.findColWidthInResizableState(headerCol.attr('id')) || width;
                     }
 
                     $this.setOuterWidth(headerCol, width);
@@ -1712,8 +1712,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 colStyle = col[0].style,
                 width = colStyle.width||col.width();
 
-                if($this.resizableStateHolder && $this.resizableStateHolder.attr('value')) {
-                    width = ($this.findColWidthInResizableState(col.attr('id')) || width);
+                if ($this.resizableState) {
+                    width = $this.findColWidthInResizableState(col.attr('id')) || width;
                 }
 
                 col.width(width);
@@ -3898,8 +3898,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var colWidth = columnsOfFirstRow.eq(i).width() + 1,
             id = this.id + '_ghost_' + i;
 
-            if(this.resizableStateHolder.attr('value')) {
-                colWidth = (this.findColWidthInResizableState(id) || colWidth);
+            if (this.resizableState) {
+                colWidth = this.findColWidthInResizableState(id) || colWidth;
             }
 
             columnMarkup += '<th id="' + id + '" style="height:0px;border-bottom-width: 0px;border-top-width: 0px;padding-top: 0px;padding-bottom: 0px;outline: 0 none; width:' + colWidth + 'px" class="ui-resizable-column"></th>';
@@ -4948,12 +4948,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * does not exist.
      */
     findColWidthInResizableState: function(id) {
-        for(var i = 0; i < this.resizableState.length; i++) {
+        for (var i = 0; i < this.resizableState.length; i++) {
             var state = this.resizableState[i];
-            if(state.indexOf(id) === 0) {
+            if (state.indexOf(id) === 0) {
                 return state.substring(state.lastIndexOf('_') + 1, state.length);
             }
         }
+
+        return null;
     },
 
     /**

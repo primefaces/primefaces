@@ -591,6 +591,7 @@ public class TreeTable extends TreeTableBase {
             // TODO selection
 
             setVisibleColumnsAsMap(ts.getVisibleColumns());
+            setResizableColumnsAsMap(ts.getResizableColumns());
         }
     }
 
