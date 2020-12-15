@@ -32,11 +32,6 @@
             <source-class>javax.faces.application.Application</source-class>
         </system-event-listener>
         <system-event-listener>
-            <system-event-listener-class>org.primefaces.event.system.DynamicColumnsListener</system-event-listener-class>
-            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
-            <source-class>org.primefaces.component.columns.Columns</source-class>
-        </system-event-listener>
-        <system-event-listener>
             <system-event-listener-class>org.primefaces.component.timeline.TimelineListener</system-event-listener-class>
             <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
             <source-class>org.primefaces.component.timeline.Timeline</source-class>
@@ -995,7 +990,7 @@
         <component-type>org.primefaces.component.LineChart</component-type>
         <component-class>org.primefaces.component.linechart.LineChart</component-class>
     </component>
-    
+
     <component>
         <component-type>org.primefaces.component.ScatterChart</component-type>
         <component-class>org.primefaces.component.scatterchart.ScatterChart</component-class>
@@ -1015,12 +1010,12 @@
         <component-type>org.primefaces.component.RadarChart</component-type>
         <component-class>org.primefaces.component.radarchart.RadarChart</component-class>
     </component>
-    
+
     <component>
         <component-type>org.primefaces.component.DatePicker</component-type>
         <component-class>org.primefaces.component.datepicker.DatePicker</component-class>
     </component>
-    
+
     <render-kit>
         <renderer>
             <component-family>org.primefaces.component</component-family>
