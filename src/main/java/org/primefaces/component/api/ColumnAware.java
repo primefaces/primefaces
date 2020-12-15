@@ -39,19 +39,29 @@ import org.primefaces.component.columns.Columns;
 public interface ColumnAware {
 
     default void forEachColumn(Consumer<UIColumn> callback) {
-        char separator = UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance());
-        forEachColumn(FacesContext.getCurrentInstance(), separator, (UIComponent) this, callback);
+        forEachColumn(true, callback);
     }
 
-    default void forEachColumn(FacesContext context, char separator, UIComponent root, Consumer<UIColumn> callback) {
+    default void forEachColumn(boolean unwrapDynamicColumns, Consumer<UIColumn> callback) {
+        char separator = UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance());
+        forEachColumn(FacesContext.getCurrentInstance(), separator, (UIComponent) this, unwrapDynamicColumns, callback);
+    }
+
+    default void forEachColumn(FacesContext context, char separator, UIComponent root, boolean unwrapDynamicColumns,
+            Consumer<UIColumn> callback) {
         for (int i = 0; i < root.getChildCount(); i++) {
             UIComponent child = root.getChildren().get(i);
             if (child.isRendered()) {
                 if (child instanceof Columns) {
                     Columns columns = (Columns) child;
-                    for (int j = 0; j < columns.getRowCount(); j++) {
-                        DynamicColumn dynaColumn = new DynamicColumn(j, columns, context);
-                        callback.accept(dynaColumn);
+                    if (unwrapDynamicColumns) {
+                        for (int j = 0; j < columns.getRowCount(); j++) {
+                            DynamicColumn dynaColumn = new DynamicColumn(j, columns, context);
+                            callback.accept(dynaColumn);
+                        }
+                    }
+                    else {
+                        callback.accept(columns);
                     }
                 }
                 else if (child instanceof Column) {
@@ -59,14 +69,14 @@ public interface ColumnAware {
                     callback.accept(column);
                 }
                 else if (child instanceof ColumnGroup) {
-                    forEachColumn(context, separator, child, callback);
+                    forEachColumn(context, separator, child, unwrapDynamicColumns, callback);
                 }
                 else if (child instanceof ColumnAware) {
                     ColumnAware columnHolder = (ColumnAware) child;
                     for (int j = 0; j < ((UIComponent) columnHolder).getChildCount(); j++) {
                         UIComponent columnHolderChild = ((UIComponent) columnHolder).getChildren().get(j);
                         if (columnHolderChild.isRendered()) {
-                            forEachColumn(context, separator, columnHolderChild, callback);
+                            forEachColumn(context, separator, columnHolderChild, unwrapDynamicColumns, callback);
                         }
                     }
                 }
@@ -210,5 +220,14 @@ public interface ColumnAware {
         });
 
         return columnsCountWithSpan.intValue();
+    }
+
+    default void resetDynamicColumns() {
+        forEachColumn(false, column ->  {
+            if (column instanceof Columns) {
+                ((Columns) column).setRowIndex(-1);
+                setColumns(null);
+            }
+        });
     }
 }

@@ -38,7 +38,6 @@ import javax.faces.event.PhaseId;
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
-import org.primefaces.component.columns.Columns;
 import org.primefaces.event.*;
 import org.primefaces.event.data.FilterEvent;
 import org.primefaces.event.data.PageEvent;
@@ -126,7 +125,6 @@ public class TreeTable extends TreeTableBase {
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     private List<UIColumn> columns;
-    private Columns dynamicColumns;
     private List<String> filteredRowKeys = new ArrayList<>();
     private Map<String, AjaxBehaviorEvent> deferredEvents = new HashMap<>(1);
 
@@ -381,23 +379,12 @@ public class TreeTable extends TreeTableBase {
         this.columns = columns;
     }
 
-    public Columns getDynamicColumns() {
-        return dynamicColumns;
-    }
-
-    public void setDynamicColumns(Columns value) {
-        dynamicColumns = value;
-    }
-
     @Override
     public Object saveState(FacesContext context) {
-        if (dynamicColumns != null) {
-            dynamicColumns.setRowIndex(-1);
-        }
+        resetDynamicColumns();
 
         // reset component for MyFaces view pooling
         columns = null;
-        dynamicColumns = null;
         filteredRowKeys = new ArrayList<>();
 
         return super.saveState(context);
@@ -555,14 +542,6 @@ public class TreeTable extends TreeTableBase {
     protected void preEncode(FacesContext context) {
         resetDynamicColumns();
         super.preEncode(context);
-    }
-
-    private void resetDynamicColumns() {
-        Columns dynamicCols = this.getDynamicColumns();
-        if (dynamicCols != null && isNestedWithinIterator()) {
-            dynamicCols.setRowIndex(-1);
-            this.setColumns(null);
-        }
     }
 
     @Override

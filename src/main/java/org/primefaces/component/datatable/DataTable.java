@@ -183,7 +183,6 @@ public class DataTable extends DataTableBase {
     private List<Object> selectedRowKeys = new ArrayList<>();
     private boolean isRowKeyRestored = false;
     private List<UIColumn> columns;
-    private Columns dynamicColumns;
     private Set<Integer> expandedRowsSet;
     private Map<String, AjaxBehaviorEvent> deferredEvents = new HashMap<>(1);
 
@@ -754,14 +753,6 @@ public class DataTable extends DataTableBase {
         return true;
     }
 
-    public Columns getDynamicColumns() {
-        return dynamicColumns;
-    }
-
-    public void setDynamicColumns(Columns value) {
-        dynamicColumns = value;
-    }
-
     @Override
     protected void processColumnFacets(FacesContext context, PhaseId phaseId) {
         if (getChildCount() > 0) {
@@ -985,6 +976,8 @@ public class DataTable extends DataTableBase {
 
     @Override
     public Object saveState(FacesContext context) {
+        resetDynamicColumns();
+
         // reset component for MyFaces view pooling
         if (deferredEvents != null) {
             deferredEvents.clear();
@@ -993,7 +986,6 @@ public class DataTable extends DataTableBase {
         selectedRowKeys = new ArrayList<>();
         isRowKeyRestored = false;
         columns = null;
-        dynamicColumns = null;
         expandedRowsSet = null;
 
         return super.saveState(context);
@@ -1021,14 +1013,6 @@ public class DataTable extends DataTableBase {
     protected void preEncode(FacesContext context) {
         resetDynamicColumns();
         super.preEncode(context);
-    }
-
-    private void resetDynamicColumns() {
-        Columns dynamicCols = getDynamicColumns();
-        if (dynamicCols != null && isNestedWithinIterator()) {
-            dynamicCols.setRowIndex(-1);
-            setColumns(null);
-        }
     }
 
     @Override

@@ -143,10 +143,7 @@ public class DataTableRenderer extends DataRenderer {
             table.calculateFirst();
         }
 
-        Columns dynamicCols = table.getDynamicColumns();
-        if (dynamicCols != null) {
-            dynamicCols.setRowIndex(-1);
-        }
+        table.resetDynamicColumns();
     }
 
     protected void encodeScript(FacesContext context, DataTable table) throws IOException {
@@ -1127,12 +1124,9 @@ public class DataTableRenderer extends DataRenderer {
         SortMeta sort = table.getHighestPriorityActiveSortMeta();
         boolean encodeHeaderRow = headerRow != null && headerRow.isEnabled() && sort != null;
         boolean encodeSummaryRow = (summaryRow != null && sort != null);
-        Columns dynamicCols = table.getDynamicColumns();
 
         for (int i = first; i < last; i++) {
-            if (dynamicCols != null) {
-                dynamicCols.setRowIndex(-1);
-            }
+            table.resetDynamicColumns();
 
             table.setRowIndex(i);
             if (!table.isRowAvailable()) {

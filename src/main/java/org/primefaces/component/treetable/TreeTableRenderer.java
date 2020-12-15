@@ -237,10 +237,7 @@ public class TreeTableRenderer extends DataRenderer {
     protected void preRender(FacesContext context, TreeTable tt) {
         tt.initFilterBy(context);
 
-        Columns dynamicCols = tt.getDynamicColumns();
-        if (dynamicCols != null) {
-            dynamicCols.setRowIndex(-1);
-        }
+        tt.resetDynamicColumns();
 
         if (tt.isMultiViewState()) {
             tt.restoreMultiViewState();
