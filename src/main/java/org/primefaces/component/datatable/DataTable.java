@@ -921,7 +921,7 @@ public class DataTable extends DataTableBase {
         List<UIColumn> orderedColumns = null;
 
         if (columnOrder != null) {
-            orderedColumns = new ArrayList();
+            orderedColumns = new ArrayList<>();
 
             String[] order = columnOrder.split(",");
             String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
