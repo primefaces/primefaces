@@ -74,7 +74,9 @@ public class Columns extends ColumnsBase {
 
     @Override
     public String getColumnKey() {
-        return getClientId();
+        // dont use getClientId() as it could contain the rowIndex
+        FacesContext context = getFacesContext();
+        return getParent().getClientId(context) + UINamingContainer.getSeparatorChar(context) + getId();
     }
 
     @Override
@@ -86,14 +88,10 @@ public class Columns extends ColumnsBase {
         if (dynamicColumns == null) {
             FacesContext context = getFacesContext();
             setRowIndex(-1);
-            char separator = UINamingContainer.getSeparatorChar(context);
-            dynamicColumns = new ArrayList<>();
-            String clientId = getClientId(context);
+            dynamicColumns = new ArrayList<>(getRowCount());
 
             for (int i = 0; i < getRowCount(); i++) {
-                DynamicColumn dynaColumn = new DynamicColumn(i, this);
-                dynaColumn.setColumnKey(clientId + separator + i);
-
+                DynamicColumn dynaColumn = new DynamicColumn(i, this, context);
                 dynamicColumns.add(dynaColumn);
             }
         }

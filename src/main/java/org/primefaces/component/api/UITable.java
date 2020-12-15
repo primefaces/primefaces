@@ -455,13 +455,18 @@ public interface UITable extends ColumnAware {
 
         HashMap<String, Boolean> visibleColumnsAsMap = new HashMap<>();
 
-        String[] columnStates = columnTogglerStateParam.split(",");
-        for (String columnState : columnStates) {
-            int seperatorIndex = columnState.lastIndexOf('_');
-            String columnKey = columnState.substring(0, seperatorIndex);
-            boolean visible = Boolean.valueOf(columnState.substring(seperatorIndex + 1));
+        if (!LangUtils.isValueBlank(columnTogglerStateParam)) {
+            String[] columnStates = columnTogglerStateParam.split(",");
+            for (String columnState : columnStates) {
+                if (LangUtils.isValueBlank(columnState)) {
+                    continue;
+                }
+                int seperatorIndex = columnState.lastIndexOf('_');
+                String columnKey = columnState.substring(0, seperatorIndex);
+                boolean visible = Boolean.valueOf(columnState.substring(seperatorIndex + 1));
 
-            visibleColumnsAsMap.put(columnKey, visible);
+                visibleColumnsAsMap.put(columnKey, visible);
+            }
         }
 
         setVisibleColumnsAsMap(visibleColumnsAsMap);
@@ -483,13 +488,18 @@ public interface UITable extends ColumnAware {
 
         HashMap<String, String> resizableColumnsMap = new HashMap<>();
 
-        String[] columnStates = columnResizeStateParam.split(",");
-        for (String columnState : columnStates) {
-            int seperatorIndex = columnState.lastIndexOf('_');
-            String columnKey = columnState.substring(0, seperatorIndex);
-            String width = columnState.substring(seperatorIndex + 1);
+        if (!LangUtils.isValueBlank(columnResizeStateParam)) {
+            String[] columnStates = columnResizeStateParam.split(",");
+            for (String columnState : columnStates) {
+                if (LangUtils.isValueBlank(columnState)) {
+                    continue;
+                }
+                int seperatorIndex = columnState.lastIndexOf('_');
+                String columnKey = columnState.substring(0, seperatorIndex);
+                String width = columnState.substring(seperatorIndex + 1);
 
-            resizableColumnsMap.put(columnKey, width);
+                resizableColumnsMap.put(columnKey, width);
+            }
         }
 
         setResizableColumnsAsMap(resizableColumnsMap);

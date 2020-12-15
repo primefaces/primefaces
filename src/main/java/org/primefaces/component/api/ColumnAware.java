@@ -49,11 +49,8 @@ public interface ColumnAware {
             if (child.isRendered()) {
                 if (child instanceof Columns) {
                     Columns columns = (Columns) child;
-                    String columnsClientId = columns.getClientId(context);
-
                     for (int j = 0; j < columns.getRowCount(); j++) {
-                        DynamicColumn dynaColumn = new DynamicColumn(j, columns);
-                        dynaColumn.setColumnKey(columnsClientId + separator + j);
+                        DynamicColumn dynaColumn = new DynamicColumn(j, columns, context);
                         callback.accept(dynaColumn);
                     }
                 }
@@ -165,7 +162,6 @@ public interface ColumnAware {
     default List<UIColumn> initColumns() {
         List<UIColumn> columns = new ArrayList<>();
         FacesContext context = FacesContext.getCurrentInstance();
-        char separator = UINamingContainer.getSeparatorChar(context);
 
         for (int i = 0; i < ((UIComponent) this).getChildCount(); i++) {
             UIComponent child = ((UIComponent) this).getChildren().get(i);
@@ -174,11 +170,8 @@ public interface ColumnAware {
             }
             else if (child instanceof Columns) {
                 Columns uiColumns = (Columns) child;
-                String uiColumnsClientId = uiColumns.getClientId(context);
-
                 for (int j = 0; j < uiColumns.getRowCount(); j++) {
-                    DynamicColumn dynaColumn = new DynamicColumn(j, uiColumns);
-                    dynaColumn.setColumnKey(uiColumnsClientId + separator + j);
+                    DynamicColumn dynaColumn = new DynamicColumn(j, uiColumns, context);
                     columns.add(dynaColumn);
                 }
             }

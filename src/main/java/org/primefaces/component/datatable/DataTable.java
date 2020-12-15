@@ -916,9 +916,9 @@ public class DataTable extends DataTableBase {
         return expandedRowsSet;
     }
 
-    public List findOrderedColumns(String columnOrder) {
+    public List<UIColumn> findOrderedColumns(String columnOrder) {
         FacesContext context = getFacesContext();
-        List orderedColumns = null;
+        List<UIColumn> orderedColumns = null;
 
         if (columnOrder != null) {
             orderedColumns = new ArrayList();
@@ -930,7 +930,7 @@ public class DataTable extends DataTableBase {
 
                 for (UIComponent child : getChildren()) {
                     if (child instanceof Column && child.getClientId(context).equals(columnId)) {
-                        orderedColumns.add(child);
+                        orderedColumns.add((UIColumn) child);
                         break;
                     }
                     else if (child instanceof Columns) {
@@ -940,7 +940,7 @@ public class DataTable extends DataTableBase {
                             String[] ids = columnId.split(separator);
                             int index = Integer.parseInt(ids[ids.length - 1]);
 
-                            orderedColumns.add(new DynamicColumn(index, (Columns) child, (columnsClientId + separator + index)));
+                            orderedColumns.add(new DynamicColumn(index, (Columns) child, context));
                             break;
                         }
 
