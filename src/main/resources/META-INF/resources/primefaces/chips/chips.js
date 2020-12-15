@@ -69,8 +69,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
             var value = $(this).val();
 
             switch(e.which) {
-                //backspace
-                case 8:
+                case keyCode.BACKSPACE:
                     if(value.length === 0 && $this.hinput.children('option') && $this.hinput.children('option').length > 0) {
                         var lastOption = $this.hinput.children('option:last'),
                             index = lastOption.index();
@@ -78,10 +77,10 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
                     }
                 break;
 
-                //enter
-                case 13:
+                case keyCode.ENTER:
                     $this.addItem(value, true);
                     e.preventDefault();
+                    e.stopPropagation();
                 break;
 
                 default:
