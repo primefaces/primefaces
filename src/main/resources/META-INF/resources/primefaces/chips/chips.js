@@ -66,6 +66,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
                 $this.addItem($(this).val(), false);
             }
         }).on('keydown.chips', function(e) {
+            var keyCode = $.ui.keyCode;
             var value = $(this).val();
 
             switch(e.which) {
