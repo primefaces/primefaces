@@ -56,6 +56,7 @@ public class DataTableExcelExporter extends DataTableExporter {
     private CellStyle cellStyleCenterAlign;
     private CellStyle cellStyleLeftAlign;
     private CellStyle facetStyle;
+    private boolean stronglyTypedCells;
 
     @Override
     protected void preExport(FacesContext context, ExportConfiguration exportConfiguration) throws IOException {
@@ -79,9 +80,10 @@ public class DataTableExcelExporter extends DataTableExporter {
         }
 
         ExcelOptions options = (ExcelOptions) exportConfiguration.getOptions();
+        stronglyTypedCells = options.isStronglyTypedCells();
         Sheet sheet = createSheet(wb, sheetName, options);
-        applyOptions(wb, table, sheet, exportConfiguration.getOptions());
-        exportTable(context, table, sheet, exportConfiguration.isPageOnly(), exportConfiguration.isSelectionOnly());
+        applyOptions(wb, table, sheet, options);
+        exportTable(context, table, sheet, exportConfiguration);
 
         if (options == null || options.isAutoSizeColumn()) {
             short colIndex = 0;
@@ -210,8 +212,15 @@ public class DataTableExcelExporter extends DataTableExporter {
         }
     }
 
+    /**
+     * If ExcelOptions.isStronglyTypedCells = true then for cells that are all numbers make them a numeric cell
+     * instead of a String cell.  Possible future enhancement of Date cells as well.
+     *
+     * @param cell the cell to operate on
+     * @param value the String value to put in the cell
+     */
     protected void updateCell(Cell cell, String value) {
-        if (LangUtils.isNumeric(value)) {
+        if (stronglyTypedCells && LangUtils.isNumeric(value)) {
             cell.setCellValue(Double.parseDouble(value));
         }
         else {
@@ -245,14 +254,14 @@ public class DataTableExcelExporter extends DataTableExporter {
         return ".xls";
     }
 
-    public void exportTable(FacesContext context, UIComponent component, Sheet sheet, boolean pageOnly, boolean selectionOnly) {
+    public void exportTable(FacesContext context, UIComponent component, Sheet sheet, ExportConfiguration exportConfiguration) {
         DataTable table = (DataTable) component;
         addColumnFacets(table, sheet, DataTableExporter.ColumnType.HEADER);
 
-        if (pageOnly) {
+        if (exportConfiguration.isPageOnly()) {
             exportPageOnly(context, table, sheet);
         }
-        else if (selectionOnly) {
+        else if (exportConfiguration.isSelectionOnly()) {
             exportSelectionOnly(context, table, sheet);
         }
         else {
