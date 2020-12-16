@@ -870,22 +870,22 @@ public class DataTable extends DataTableBase {
 
     @Override
     public boolean isDefaultSort() {
-        return getSortByAsMap() != null && Boolean.TRUE.equals(getStateHelper().get(InternalPropertyKeys.defaultSort.name()));
+        return getSortByAsMap() != null && Boolean.TRUE.equals(getStateHelper().get(InternalPropertyKeys.defaultSort));
     }
 
     @Override
     public void setDefaultSort(boolean defaultSort) {
-        getStateHelper().put(InternalPropertyKeys.defaultSort.name(), defaultSort);
+        getStateHelper().put(InternalPropertyKeys.defaultSort, defaultSort);
     }
 
     @Override
     public boolean isDefaultFilter() {
-        return Boolean.TRUE.equals(getStateHelper().get(InternalPropertyKeys.defaultFilter.name()));
+        return Boolean.TRUE.equals(getStateHelper().get(InternalPropertyKeys.defaultFilter));
     }
 
     @Override
     public void setDefaultFilter(boolean defaultFilter) {
-        getStateHelper().put(InternalPropertyKeys.defaultFilter.name(), defaultFilter);
+        getStateHelper().put(InternalPropertyKeys.defaultFilter, defaultFilter);
     }
 
     public Set<Integer> getExpandedRowsSet() {
@@ -1067,22 +1067,22 @@ public class DataTable extends DataTableBase {
 
     @Override
     public Map<String, SortMeta> getSortByAsMap() {
-        return ComponentUtils.computeIfAbsent(getStateHelper(), InternalPropertyKeys.sortByAsMap.name(), () -> initSortBy(getFacesContext()));
+        return ComponentUtils.computeIfAbsent(getStateHelper(), InternalPropertyKeys.sortByAsMap, () -> initSortBy(getFacesContext()));
     }
 
     @Override
     public void setSortByAsMap(Map<String, SortMeta> sortBy) {
-        getStateHelper().put(InternalPropertyKeys.sortByAsMap.name(), sortBy);
+        getStateHelper().put(InternalPropertyKeys.sortByAsMap, sortBy);
     }
 
     @Override
     public Map<String, FilterMeta> getFilterByAsMap() {
-        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.filterByAsMap.name(), Collections::emptyMap);
+        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.filterByAsMap, Collections::emptyMap);
     }
 
     @Override
     public void setFilterByAsMap(Map<String, FilterMeta> sortBy) {
-        getStateHelper().put(InternalPropertyKeys.filterByAsMap.name(), sortBy);
+        getStateHelper().put(InternalPropertyKeys.filterByAsMap, sortBy);
     }
 
     @Override
@@ -1092,26 +1092,26 @@ public class DataTable extends DataTableBase {
 
     @Override
     public boolean isFilterByAsMapDefined() {
-        return getStateHelper().get(InternalPropertyKeys.filterByAsMap.name()) != null;
+        return getStateHelper().get(InternalPropertyKeys.filterByAsMap) != null;
     }
 
     @Override
     public Map<String, Boolean> getVisibleColumnsAsMap() {
-        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.visibleColumnsAsMap.name(), Collections::emptyMap);
+        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.visibleColumnsAsMap, Collections::emptyMap);
     }
 
     @Override
     public void setVisibleColumnsAsMap(Map<String, Boolean> visibleColumnsAsMap) {
-        getStateHelper().put(InternalPropertyKeys.visibleColumnsAsMap.name(), visibleColumnsAsMap);
+        getStateHelper().put(InternalPropertyKeys.visibleColumnsAsMap, visibleColumnsAsMap);
     }
 
     @Override
     public Map<String, String> getResizableColumnsAsMap() {
-        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.resizableColumnsAsMap.name(), Collections::emptyMap);
+        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.resizableColumnsAsMap, Collections::emptyMap);
     }
 
     @Override
     public void setResizableColumnsAsMap(Map<String, String> resizableColumnsAsMap) {
-        getStateHelper().put(InternalPropertyKeys.resizableColumnsAsMap.name(), resizableColumnsAsMap);
+        getStateHelper().put(InternalPropertyKeys.resizableColumnsAsMap, resizableColumnsAsMap);
     }
 }

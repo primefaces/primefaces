@@ -62,9 +62,7 @@ public class StyleClassBuilder {
 
     public String build() {
         String styleClass = sb.toString();
-
         sb.setLength(0);
-
         return styleClass;
     }
 }

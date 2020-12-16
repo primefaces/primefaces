@@ -102,12 +102,7 @@ public interface UITable extends ColumnAware {
                 .createValueExpression(context.getELContext(), "#{" + var + "." + field + "}", Object.class);
     }
 
-
-
-
     String getVar();
-
-
 
     default Map<String, FilterMeta> initFilterBy(FacesContext context) {
         boolean invalidate = !isFilterByAsMapDefined();
@@ -443,9 +438,6 @@ public interface UITable extends ColumnAware {
 
     void setDefaultSort(boolean defaultSort);
 
-
-
-
     default void decodeColumnTogglerState(UIComponent table, FacesContext context) {
         String columnTogglerStateParam = context.getExternalContext().getRequestParameterMap()
                 .get(table.getClientId(context) + "_columnTogglerState");
@@ -463,7 +455,7 @@ public interface UITable extends ColumnAware {
                 }
                 int seperatorIndex = columnState.lastIndexOf('_');
                 String columnKey = columnState.substring(0, seperatorIndex);
-                boolean visible = Boolean.valueOf(columnState.substring(seperatorIndex + 1));
+                boolean visible = Boolean.parseBoolean(columnState.substring(seperatorIndex + 1));
 
                 visibleColumnsAsMap.put(columnKey, visible);
             }
@@ -475,9 +467,6 @@ public interface UITable extends ColumnAware {
     Map<String, Boolean> getVisibleColumnsAsMap();
 
     void setVisibleColumnsAsMap(Map<String, Boolean> visibleColumnsAsMap);
-
-
-
 
     default void decodeColumnResizeState(UIComponent table, FacesContext context) {
         String columnResizeStateParam = context.getExternalContext().getRequestParameterMap()

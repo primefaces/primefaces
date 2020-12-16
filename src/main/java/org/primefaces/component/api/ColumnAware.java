@@ -30,7 +30,6 @@ import java.util.concurrent.atomic.LongAdder;
 import java.util.function.Consumer;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
@@ -43,12 +42,10 @@ public interface ColumnAware {
     }
 
     default void forEachColumn(boolean unwrapDynamicColumns, Consumer<UIColumn> callback) {
-        char separator = UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance());
-        forEachColumn(FacesContext.getCurrentInstance(), separator, (UIComponent) this, unwrapDynamicColumns, callback);
+        forEachColumn(FacesContext.getCurrentInstance(), (UIComponent) this, unwrapDynamicColumns, callback);
     }
 
-    default void forEachColumn(FacesContext context, char separator, UIComponent root, boolean unwrapDynamicColumns,
-            Consumer<UIColumn> callback) {
+    default void forEachColumn(FacesContext context, UIComponent root, boolean unwrapDynamicColumns, Consumer<UIColumn> callback) {
         for (int i = 0; i < root.getChildCount(); i++) {
             UIComponent child = root.getChildren().get(i);
             if (child.isRendered()) {
@@ -69,14 +66,14 @@ public interface ColumnAware {
                     callback.accept(column);
                 }
                 else if (child instanceof ColumnGroup) {
-                    forEachColumn(context, separator, child, unwrapDynamicColumns, callback);
+                    forEachColumn(context, child, unwrapDynamicColumns, callback);
                 }
                 else if (child instanceof ColumnAware) {
                     ColumnAware columnHolder = (ColumnAware) child;
                     for (int j = 0; j < ((UIComponent) columnHolder).getChildCount(); j++) {
                         UIComponent columnHolderChild = ((UIComponent) columnHolder).getChildren().get(j);
                         if (columnHolderChild.isRendered()) {
-                            forEachColumn(context, separator, columnHolderChild, unwrapDynamicColumns, callback);
+                            forEachColumn(context, columnHolderChild, unwrapDynamicColumns, callback);
                         }
                     }
                 }
