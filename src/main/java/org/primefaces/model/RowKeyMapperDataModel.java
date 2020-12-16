@@ -33,7 +33,7 @@ import java.util.function.Function;
 
 public class RowKeyMapperDataModel<T> extends DataModel<T> implements RowKeyMapper<T> {
 
-    private static final Function<Object, String> DEFAULT_ROWKEY_TRANSFORMER = o -> Objects.toString(System.identityHashCode(o));
+    private static final Function<Object, String> DEFAULT_ROWKEY_TRANSFORMER = o -> Objects.toString(Objects.hashCode(o));
 
     private DataModel<T> wrapped;
 
@@ -51,8 +51,8 @@ public class RowKeyMapperDataModel<T> extends DataModel<T> implements RowKeyMapp
     public RowKeyMapperDataModel(DataModel<T> wrapped, Function<Object, String> rowKeyTransformer) {
         this.wrapped = wrapped;
         this.rowKeyTransformer = rowKeyTransformer;
-        this.cache = new HashMap<>();
-        this.last = wrapped.iterator();
+        cache = new HashMap<>();
+        last = wrapped.iterator();
         setWrappedData(wrapped.getWrappedData());
     }
 
@@ -111,6 +111,11 @@ public class RowKeyMapperDataModel<T> extends DataModel<T> implements RowKeyMapp
 
     @Override
     public void setRowIndex(int i) {
+        if (i < 0) {
+            cache = null;
+            last = null;
+            rowKeyTransformer = null;
+        }
         wrapped.setRowIndex(i);
     }
 

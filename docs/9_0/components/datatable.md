@@ -520,9 +520,10 @@ keeps previous selections same as selecting a row with mouse click when metakey 
 
 ## RowKey
 RowKey must be a unique identifier from your data model and used by datatable to find the selected
-rows. By default, and if selection enabled, rowKey is set to his [identity hash code](https://docs.oracle.com/javase/8/docs/api/java/lang/System.html#identityHashCode-java.lang.Object-).
+rows. By default, and if selection enabled, rowKey is set to bean's [hash code](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#hashCode--) _(so better to have it implemented)_.
 You can either define your own key by using the rowKey attribute or by binding a data model which implements _org.primefaces.model.RowKeyMapper_.
-For multiviewstate datatables, it's better to define a deterministic rowKey if you want to be able to retrieve your previous selection.
+
+> In some scenarios, like multiviewstate or inline cell editing, it's better to define a deterministic rowKey _(e.g entity's id)_, to ensure you'll be able to retrieve your previous selection even though bean changed.
 
 ## Dynamic Columns
 Dynamic columns is handy in case you can’t know how many columns to render. Columns

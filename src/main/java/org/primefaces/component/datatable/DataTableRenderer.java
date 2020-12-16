@@ -1051,6 +1051,7 @@ public class DataTableRenderer extends DataRenderer {
             throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
+        String var = table.getVar();
         String rowIndexVar = table.getRowIndexVar();
         String clientId = table.getClientId(context);
         String emptyMessage = table.getEmptyMessage();
@@ -1126,6 +1127,9 @@ public class DataTableRenderer extends DataRenderer {
         table.setRowIndex(-1);
         if (rowIndexVar != null) {
             context.getExternalContext().getRequestMap().remove(rowIndexVar);
+        }
+        if (var != null) {
+            context.getExternalContext().getRequestMap().remove(var);
         }
     }
 
