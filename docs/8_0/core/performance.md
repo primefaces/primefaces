@@ -133,7 +133,7 @@ and Whitespace compression: https://myfaces.apache.org/#/coreConceptsWhitespaceC
 ## Patterns
 
 - Correctly define update/render and process/execute! Often this is a huge improvement as many times the whole form is updated instead only a small part. But also think about maintainability over performance here.
-- If you don't use ViewScoped beans, it's a good but small improvement to mark the view as stateless.
+- If you don't use `@ViewScoped` beans, it's a good but small improvement to mark the view as stateless. e.g. `<f:view transient="true">`
 - Try using HTML over JSF tags
     - Especially avoid using h:outputText if you don't need the escaping or other features like converters. Just use EL expressions inside your XHTML.
     - The same applies for some other components like p:outputPanel. Just use a plain div. If you need to make it updateable, you can still use "passtrough elements" (`<div jsf:id="...">...</div>`)
@@ -141,6 +141,7 @@ and Whitespace compression: https://myfaces.apache.org/#/coreConceptsWhitespaceC
 - Avoid logic (like inline if-statements) in EL expression! It's better to move those logic into the bean. It's faster and often easier to read and maintain.
 - Prefer AJAX over a full postback
 - If you have many p:outputLabel's on the page and you know that the input field is required or not, it's a good performance improvement to set the input to required=true or the outputLabel to indicateRequired=true|false. The default value for indicateRequired since 6.2 is auto, which tries to lookup BeanValidation constrains to check if @NotNull|@NotEmpty|@NotBlank are defined.
-- Cache data, which is required multiple times in the same view, in @RequestScoped beans.
-- Avoid abusing @SessionScoped, @ViewScoped and other long living scopes if not really required.
+- Cache data, which is required multiple times in the same view, in `@RequestScoped` beans.
+- Avoid abusing `@SessionScoped`, `@ViewScoped` and other long living scopes if not really required.
 - Try to put only small amount of data in such long living beans. Sometimes a small flag or id of an entity is enough information. Often people put many entities in such long living beans.
+
