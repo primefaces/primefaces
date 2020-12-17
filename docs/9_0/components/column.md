@@ -51,6 +51,7 @@ treetable and more.
 | ariaHeaderText | null | String | Label to read by screen readers, when not specified headerText is used.
 | exportFunction | null | MethodExpr | Custom pluggable exportFunction for data exporter.
 | groupRow | false | Boolean | Speficies whether to group rows based on the column data.
+| exportValue | null | String | Defines the value of the cell to be exported if you want something other than the cell contents or exportFunction.
 | exportHeaderValue | null | String | Defines if the header value of column to be exported.
 | exportFooterValue | null | String | Defines if the footer value of column to be exported.
 | nullSortOrder             | 1                  | Integer          | Defines where the null values are placed in ascending sort order. Default value is "1"

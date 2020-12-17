@@ -278,7 +278,11 @@ public class DataTablePDFExporter extends DataTableExporter {
     protected void addColumnValue(PdfPTable pdfTable, List<UIComponent> components, Font font, UIColumn column) {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        if (column.getExportFunction() != null) {
+        if (LangUtils.isNotBlank(column.getExportValue())) {
+            PdfPCell cell = createCell(column, new Paragraph(column.getExportValue(), font));
+            pdfTable.addCell(cell);
+        }
+        else if (column.getExportFunction() != null) {
             PdfPCell cell = createCell(column, new Paragraph(exportColumnByFunction(context, column), font));
             pdfTable.addCell(cell);
         }

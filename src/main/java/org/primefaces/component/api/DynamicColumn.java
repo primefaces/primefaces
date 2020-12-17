@@ -328,4 +328,10 @@ public class DynamicColumn implements UIColumn {
     public boolean isDraggable() {
         return columns.isDraggable();
     }
+
+    @Override
+    public String getExportValue() {
+        return columns.getExportValue();
+    }
+
 }

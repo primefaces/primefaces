@@ -69,6 +69,7 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         ariaHeaderText,
         exportFunction,
         groupRow,
+        exportValue,
         exportHeaderValue,
         exportFooterValue,
         sortOrder,
@@ -372,6 +373,15 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
 
     public void setGroupRow(boolean groupRow) {
         getStateHelper().put(PropertyKeys.groupRow, groupRow);
+    }
+
+    @Override
+    public String getExportValue() {
+        return (String) getStateHelper().eval(PropertyKeys.exportValue, null);
+    }
+
+    public void setExportValue(String exportValue) {
+        getStateHelper().put(PropertyKeys.exportValue, exportValue);
     }
 
     @Override

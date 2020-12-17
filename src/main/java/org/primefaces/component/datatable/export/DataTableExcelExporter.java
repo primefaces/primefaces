@@ -198,7 +198,10 @@ public class DataTableExcelExporter extends DataTableExporter {
 
         applyColumnAlignments(column, cell);
 
-        if (column.getExportFunction() != null) {
+        if (LangUtils.isNotBlank(column.getExportValue())) {
+            updateCell(cell, column.getExportValue());
+        }
+        else if (column.getExportFunction() != null) {
             updateCell(cell, exportColumnByFunction(context, column));
         }
         else {
