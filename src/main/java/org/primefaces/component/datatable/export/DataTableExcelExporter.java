@@ -80,7 +80,12 @@ public class DataTableExcelExporter extends DataTableExporter {
         }
 
         ExcelOptions options = (ExcelOptions) exportConfiguration.getOptions();
-        stronglyTypedCells = options.isStronglyTypedCells();
+        if (options == null) {
+            stronglyTypedCells = true;
+        }
+        else {
+            stronglyTypedCells = options.isStronglyTypedCells();
+        }
         Sheet sheet = createSheet(wb, sheetName, options);
         applyOptions(wb, table, sheet, options);
         exportTable(context, table, sheet, exportConfiguration);
