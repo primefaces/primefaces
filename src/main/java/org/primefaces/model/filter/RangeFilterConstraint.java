@@ -32,7 +32,7 @@ public class RangeFilterConstraint implements FilterConstraint {
     @Override
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
         if (!(filter instanceof List) || ((List<?>) filter).size() != 2) {
-            throw new IllegalArgumentException("Filter expects a " + List.class.getName() + " with a size equals to 2");
+            return false;
         }
 
         if (value instanceof Comparable) {
