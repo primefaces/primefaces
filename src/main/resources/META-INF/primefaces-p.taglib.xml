@@ -26749,6 +26749,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Allows the active index menu to remain executable. Default is false.]]>
+            </description>
+            <name>activeStepExecutable</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Defines whether items would be clickable or not. Default is true.]]>
             </description>
             <name>readonly</name>

@@ -25,6 +25,7 @@ model | null | MenuModel | MenuModel instance to build menu dynamically.
 style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the component.
 activeIndex | 0 | Integer | Index of the active tab.
+activeStepExecutable | false | boolean | Allows the active index menu to remain executable. Default is false.
 widgetVar | null | String | Name of the client side widget.
 readonly | true | Boolean | Defines whether items would be clickable or not.
 
