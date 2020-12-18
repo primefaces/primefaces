@@ -26,7 +26,10 @@ package org.primefaces.component.timeline;
 import java.io.IOException;
 import java.io.Serializable;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -137,9 +140,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
             map = new HashMap<>();
             context.getAttributes().put(TimelineUpdater.class.getName(), map);
         }
-        if (!map.containsKey(widgetVar)) {
-            map.put(widgetVar, this);
-        }
+        map.computeIfAbsent(widgetVar, k -> this);
     }
 
     private void processCrudOperations(FacesContext context) {

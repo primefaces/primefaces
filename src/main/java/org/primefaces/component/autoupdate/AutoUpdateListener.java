@@ -25,15 +25,12 @@ package org.primefaces.component.autoupdate;
 
 import java.util.HashMap;
 import java.util.Map;
-import javax.el.ValueExpression;
 
+import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ComponentSystemEvent;
-import javax.faces.event.ComponentSystemEventListener;
-import javax.faces.event.PostAddToViewEvent;
-import javax.faces.event.PreRenderComponentEvent;
+import javax.faces.event.*;
+
 import org.primefaces.util.LangUtils;
 
 /**
@@ -74,9 +71,7 @@ public class AutoUpdateListener implements ComponentSystemEventListener {
 
         Map<String, String> infos = getOrCreateAutoUpdateComponentInfos(context);
         if (disabled == null || !((boolean) disabled.getValue(context.getELContext()))) {
-            if (!infos.containsKey(clientId)) {
-                infos.put(clientId, on);
-            }
+            infos.computeIfAbsent(clientId, k -> on);
         }
         else {
             infos.remove(clientId);

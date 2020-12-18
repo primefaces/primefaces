@@ -32,12 +32,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.faces.context.FacesContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
+
 import org.primefaces.util.LangUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -199,10 +201,7 @@ public class WebXmlParser {
             String key = Throwable.class.getName().equals(exceptionType) ? null : exceptionType;
 
             String location = xpath.compile(LOCATION_EXPRESSION).evaluate(node.getParentNode()).trim();
-
-            if (!errorPages.containsKey(key)) {
-                errorPages.put(key, location);
-            }
+            errorPages.computeIfAbsent(key, k -> location);
         }
 
         if (!errorPages.containsKey(null)) {
