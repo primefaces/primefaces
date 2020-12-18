@@ -5290,6 +5290,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Defines the value of the cell to be exported if something other than the cell contents or exportFunction.]]>
+            </description>
+            <name>exportValue</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Defines if the header value of column to be exported.]]>
             </description>
             <name>exportHeaderValue</name>
@@ -5683,6 +5691,14 @@
             <name>groupRow</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines the value of the cell to be exported if something other than the cell contents or exportFunction.]]>
+            </description>
+            <name>exportValue</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>

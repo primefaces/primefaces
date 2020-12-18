@@ -65,6 +65,7 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
         ariaHeaderText,
         exportFunction,
         groupRow,
+        exportValue,
         exportHeaderValue,
         exportFooterValue,
         sortOrder,
@@ -359,6 +360,15 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
 
     public void setGroupRow(boolean groupRow) {
         getStateHelper().put(PropertyKeys.groupRow, groupRow);
+    }
+
+    @Override
+    public String getExportValue() {
+        return (String) getStateHelper().eval(PropertyKeys.exportValue, null);
+    }
+
+    public void setExportValue(String exportValue) {
+        getStateHelper().put(PropertyKeys.exportValue, exportValue);
     }
 
     @Override

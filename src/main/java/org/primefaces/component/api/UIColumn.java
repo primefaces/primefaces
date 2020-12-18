@@ -121,6 +121,8 @@ public interface UIColumn {
 
     MethodExpression getExportFunction();
 
+    String getExportValue();
+
     boolean isGroupRow();
 
     String getExportHeaderValue();
