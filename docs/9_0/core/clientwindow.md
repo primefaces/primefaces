@@ -34,12 +34,12 @@ Prime Client Window offers improved handling compared to JSF´s built in mechani
 * it uses sessionStorage to save and validate the windowId
 * the workflow is the same as Apache DeltaSpike lazy mode
 
-##Requirements
+## Requirements
 1. JSF 2.2 and up
 2. JSF - implementations
    1. Mojarra 2.3 and up
    2. MyFaces 2.2.13 (and up), 2.3.7 (and up), 3.0 and up
 
 
-##Further Notes
+## Further Notes
 JSF 4.0 also may add ClientWindowScoped OOTB - see https://github.com/eclipse-ee4j/faces-api/issues/1509
