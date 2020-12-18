@@ -54,6 +54,9 @@ import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import org.primefaces.component.api.table.ColumnDisplayState;
+import org.primefaces.component.api.table.ResizableColumnsFeature;
+import org.primefaces.component.api.table.UITableFeature;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -133,7 +136,7 @@ public class DataTable extends DataTableBase {
     public static final String SORT_DESC = "primefaces.datatable.SORT_DESC";
     public static final String ROW_GROUP_TOGGLER = "primefaces.rowgrouptoggler.aria.ROW_GROUP_TOGGLER";
 
-    static final Map<DataTableFeatureKey, DataTableFeature> FEATURES = MapBuilder.<DataTableFeatureKey, DataTableFeature>builder()
+    static final Map<DataTableFeatureKey, UITableFeature> FEATURES = MapBuilder.<DataTableFeatureKey, UITableFeature>builder()
             .put(DataTableFeatureKey.DRAGGABLE_COLUMNS, new DraggableColumnsFeature())
             .put(DataTableFeatureKey.FILTER, new FilterFeature())
             .put(DataTableFeatureKey.PAGE, new PageFeature())
@@ -186,7 +189,7 @@ public class DataTable extends DataTableBase {
     private Set<Integer> expandedRowsSet;
     private Map<String, AjaxBehaviorEvent> deferredEvents = new HashMap<>(1);
 
-    public DataTableFeature getFeature(DataTableFeatureKey key) {
+    public UITableFeature getFeature(DataTableFeatureKey key) {
         return FEATURES.get(key);
     }
 
@@ -277,7 +280,7 @@ public class DataTable extends DataTableBase {
 
         //filters need to be decoded during PROCESS_VALIDATIONS phase,
         //so that local values of each filters are properly converted and validated
-        DataTableFeature feature = FEATURES.get(DataTableFeatureKey.FILTER);
+        UITableFeature feature = FEATURES.get(DataTableFeatureKey.FILTER);
         if (feature.shouldDecode(context, this)) {
             feature.decode(context, this);
             AjaxBehaviorEvent ajaxEvt = deferredEvents.get("filter");
@@ -1025,22 +1028,13 @@ public class DataTable extends DataTableBase {
                 setRows(rows);
             }
 
-            if (ts.getSortBy() != null) {
-                updateSortByWithMVS(ts.getSortBy());
-            }
-
-            if (ts.getFilterBy() != null) {
-                updateFilterByWithMVS(getFacesContext(), ts.getFilterBy());
-            }
-
             if (isSelectionEnabled()) {
                 selectedRowKeys = ts.getSelectedRowKeys();
                 isRowKeyRestored = true;
             }
 
             setColumns(findOrderedColumns(ts.getOrderedColumnsAsString()));
-            setResizableColumnsAsMap(ts.getResizableColumns());
-            setVisibleColumnsAsMap(ts.getVisibleColumns());
+            setColumnDisplayState(ts.getColumnDiplayState());
         }
     }
 
@@ -1077,7 +1071,7 @@ public class DataTable extends DataTableBase {
 
     @Override
     public Map<String, FilterMeta> getFilterByAsMap() {
-        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.filterByAsMap, Collections::emptyMap);
+        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.filterByAsMap, () -> initFilterBy(getFacesContext()));
     }
 
     @Override
@@ -1096,22 +1090,27 @@ public class DataTable extends DataTableBase {
     }
 
     @Override
-    public Map<String, Boolean> getVisibleColumnsAsMap() {
-        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.visibleColumnsAsMap, Collections::emptyMap);
+    public Map<String, ColumnDisplayState> getColumnDisplayState() {
+        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.columnDisplayState, () -> new HashMap<>());
     }
 
     @Override
-    public void setVisibleColumnsAsMap(Map<String, Boolean> visibleColumnsAsMap) {
-        getStateHelper().put(InternalPropertyKeys.visibleColumnsAsMap, visibleColumnsAsMap);
+    public void setColumnDisplayState(Map<String, ColumnDisplayState> columnDisplayState) {
+        getStateHelper().put(InternalPropertyKeys.columnDisplayState, columnDisplayState);
     }
 
     @Override
-    public Map<String, String> getResizableColumnsAsMap() {
-        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.resizableColumnsAsMap, Collections::emptyMap);
+    public String getWidth() {
+        return (String) getStateHelper().eval(InternalPropertyKeys.width, null);
     }
 
     @Override
-    public void setResizableColumnsAsMap(Map<String, String> resizableColumnsAsMap) {
-        getStateHelper().put(InternalPropertyKeys.resizableColumnsAsMap, resizableColumnsAsMap);
+    public void setWidth(String width) {
+        getStateHelper().put(InternalPropertyKeys.width, width);
+    }
+
+    @Override
+    public boolean isSortByAsMapDefined() {
+        return getStateHelper().get(InternalPropertyKeys.sortByAsMap) != null;
     }
 }

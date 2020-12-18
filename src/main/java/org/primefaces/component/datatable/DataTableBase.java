@@ -29,7 +29,7 @@ import javax.el.MethodExpression;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class DataTableBase extends UIPageableData implements Widget, RTLAware, ClientBehaviorHolder,
-        PrimeClientBehaviorHolder, MultiViewStateAware<DataTableState>, UITable {
+        PrimeClientBehaviorHolder, UITable<DataTableState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -112,8 +112,8 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         filterByAsMap,
         defaultSort,
         sortByAsMap,
-        visibleColumnsAsMap,
-        resizableColumnsAsMap;
+        width,
+        columnDisplayState;
     }
 
     public DataTableBase() {

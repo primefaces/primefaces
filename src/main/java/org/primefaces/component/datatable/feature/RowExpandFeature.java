@@ -35,7 +35,7 @@ import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.rowexpansion.RowExpansion;
 import org.primefaces.model.LazyDataModel;
 
-public class RowExpandFeature implements DataTableFeature {
+public class RowExpandFeature extends DataTableFeature {
 
     @Override
     public void decode(FacesContext context, DataTable table) {

@@ -25,12 +25,9 @@ package org.primefaces.component.datatable;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
+import org.primefaces.component.api.table.UITableState;
 
-import org.primefaces.model.FilterMeta;
-import org.primefaces.model.SortMeta;
-
-public class DataTableState implements Serializable {
+public class DataTableState extends UITableState implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -38,17 +35,9 @@ public class DataTableState implements Serializable {
 
     private int rows;
 
-    private Map<String, SortMeta> sortBy;
-
     private List<Object> selectedRowKeys;
 
-    private Map<String, FilterMeta> filterBy;
-
     private String orderedColumnsAsString;
-
-    private Map<String, Boolean> visibleColumns;
-
-    private Map<String, String> resizableColumns;
 
     public int getFirst() {
         return first;
@@ -66,14 +55,6 @@ public class DataTableState implements Serializable {
         this.rows = rows;
     }
 
-    public Map<String, SortMeta> getSortBy() {
-        return sortBy;
-    }
-
-    public void setSortBy(Map<String, SortMeta> sortBy) {
-        this.sortBy = sortBy;
-    }
-
     public List<Object> getSelectedRowKeys() {
         return selectedRowKeys;
     }
@@ -82,35 +63,11 @@ public class DataTableState implements Serializable {
         this.selectedRowKeys = selectedRowKeys;
     }
 
-    public Map<String, FilterMeta> getFilterBy() {
-        return filterBy;
-    }
-
-    public void setFilterBy(Map<String, FilterMeta> filterBy) {
-        this.filterBy = filterBy;
-    }
-
     public String getOrderedColumnsAsString() {
         return orderedColumnsAsString;
     }
 
     public void setOrderedColumnsAsString(String orderedColumnsAsString) {
         this.orderedColumnsAsString = orderedColumnsAsString;
-    }
-
-    public Map<String, Boolean> getVisibleColumns() {
-        return visibleColumns;
-    }
-
-    public void setVisibleColumns(Map<String, Boolean> visibleColumns) {
-        this.visibleColumns = visibleColumns;
-    }
-
-    public Map<String, String> getResizableColumns() {
-        return resizableColumns;
-    }
-
-    public void setResizableColumns(Map<String, String> resizableColumns) {
-        this.resizableColumns = resizableColumns;
     }
 }

@@ -51,6 +51,7 @@ public class FilterMeta implements Serializable {
     private String field;
     private String columnKey;
     private transient UIColumn column;
+
     private ValueExpression filterBy;
     private Object filterValue;
     private MatchMode matchMode = MatchMode.CONTAINS;

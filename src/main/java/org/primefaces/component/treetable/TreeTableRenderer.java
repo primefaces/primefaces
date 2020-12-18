@@ -34,8 +34,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;
@@ -53,6 +51,9 @@ import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.UITree;
+import org.primefaces.component.api.table.ColumnDisplayState;
+import org.primefaces.component.api.table.ResizableColumnsFeature;
+import org.primefaces.component.api.table.SortableColumnsFeature;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
@@ -80,14 +81,12 @@ public class TreeTableRenderer extends DataRenderer {
             decodeSelection(context, tt, root);
         }
 
-        if (tt.isSortRequest(context)) {
-            decodeSort(context, tt);
+        if (SortableColumnsFeature.INSTANCE.shouldDecode(context, tt)) {
+            SortableColumnsFeature.INSTANCE.decode(context, tt);
         }
 
-        tt.decodeColumnResizeState(tt, context);
-        if (tt.isMultiViewState()) {
-            TreeTableState state = tt.getMultiViewState(true);
-            state.setResizableColumns(tt.getResizableColumnsAsMap());
+        if (ResizableColumnsFeature.INSTANCE.shouldDecode(context, tt)) {
+            ResizableColumnsFeature.INSTANCE.decode(context, tt);
         }
 
         decodeBehaviors(context, component);
@@ -235,8 +234,6 @@ public class TreeTableRenderer extends DataRenderer {
     }
 
     protected void preRender(FacesContext context, TreeTable tt) {
-        tt.initFilterBy(context);
-
         tt.resetDynamicColumns();
 
         if (tt.isMultiViewState()) {
@@ -667,8 +664,9 @@ public class TreeTableRenderer extends DataRenderer {
 
             if (column.isRendered()) {
                 boolean columnVisible = column.isVisible();
-                if (tt.getVisibleColumnsAsMap().containsKey(column.getColumnKey())) {
-                    columnVisible = tt.getVisibleColumnsAsMap().get(column.getColumnKey());
+                ColumnDisplayState columnDisplayState = tt.getColumnDisplayState().get(column.getColumnKey());
+                if (columnDisplayState != null && columnDisplayState.getVisisble() != null) {
+                    columnVisible = columnDisplayState.getVisisble();
                 }
 
                 String columnStyleClass = column.getStyleClass();
@@ -751,14 +749,15 @@ public class TreeTableRenderer extends DataRenderer {
         String headerText = column.getHeaderText();
 
         boolean columnVisible = column.isVisible();
-        if (tt.getVisibleColumnsAsMap().containsKey(column.getColumnKey())) {
-            columnVisible = tt.getVisibleColumnsAsMap().get(column.getColumnKey());
+        ColumnDisplayState columnDisplayState = tt.getColumnDisplayState().get(column.getColumnKey());
+        if (columnDisplayState != null && columnDisplayState.getVisisble() != null) {
+            columnVisible = columnDisplayState.getVisisble();
         }
 
         int colspan = column.getColspan();
         int rowspan = column.getRowspan();
         boolean sortable = tt.isColumnSortable(context, column);
-        boolean filterable = tt.isColumnFilterable(column);
+        boolean filterable = tt.isColumnFilterable(context, column);
         String sortIcon = null;
         String style = column.getStyle();
         String width = column.getWidth();
@@ -1089,41 +1088,6 @@ public class TreeTableRenderer extends DataRenderer {
         return null;
     }
 
-    protected void decodeSort(FacesContext context, TreeTable tt) {
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String clientId = tt.getClientId(context);
-        String sortKey = params.get(clientId + "_sortKey");
-        String sortDir = params.get(clientId + "_sortDir");
-
-        String[] sortKeys = sortKey.split(",");
-        String[] sortOrders = sortDir.split(",");
-
-        if (sortKeys.length != sortOrders.length) {
-            throw new FacesException("sortKeys != sortDirs");
-        }
-
-        Map<String, SortMeta> sortByMap = tt.getSortByAsMap();
-        Map<String, Integer> sortKeysIndexes = IntStream.range(0, sortKeys.length).boxed()
-                .collect(Collectors.toMap(i -> sortKeys[i], i -> i));
-
-        for (Map.Entry<String, SortMeta> entry : sortByMap.entrySet()) {
-            SortMeta sortBy = entry.getValue();
-            if (!(sortBy.getComponent() instanceof UIColumn)) {
-                continue;
-            }
-
-            Integer index = sortKeysIndexes.get(entry.getKey());
-            if (index != null) {
-                sortBy.setOrder(SortOrder.of(sortOrders[index]));
-                sortBy.setPriority(index);
-            }
-            else {
-                sortBy.setOrder(SortOrder.UNSORTED);
-                sortBy.setPriority(SortMeta.MIN_PRIORITY);
-            }
-        }
-    }
-
     protected void encodeSort(FacesContext context, TreeTable tt, TreeNode root) throws IOException {
         sort(tt);
 
@@ -1154,7 +1118,7 @@ public class TreeTableRenderer extends DataRenderer {
         Locale dataLocale = tt.resolveDataLocale();
 
         for (SortMeta meta : sortBy.values()) {
-            UIColumn sortColumn = (UIColumn) meta.getComponent();
+            UIColumn sortColumn = meta.getColumn();
             if (sortColumn != null && sortColumn.isDynamic()) {
                 ((DynamicColumn) sortColumn).applyStatelessModel();
             }

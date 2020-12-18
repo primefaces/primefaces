@@ -32,7 +32,7 @@ import javax.faces.context.FacesContext;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 
-public class ScrollFeature implements DataTableFeature {
+public class ScrollFeature extends DataTableFeature {
 
     @Override
     public void decode(FacesContext context, DataTable table) {

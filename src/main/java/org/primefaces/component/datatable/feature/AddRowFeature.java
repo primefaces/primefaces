@@ -24,19 +24,13 @@
 package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
-import javax.faces.FacesException;
 
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 
-public class AddRowFeature implements DataTableFeature {
-
-    @Override
-    public void decode(FacesContext context, DataTable table) {
-        throw new FacesException("AddRowFeature should not encode.");
-    }
+public class AddRowFeature extends DataTableFeature {
 
     @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
@@ -54,12 +48,12 @@ public class AddRowFeature implements DataTableFeature {
     }
 
     @Override
-    public boolean shouldDecode(FacesContext context, DataTable table) {
-        return false;
+    public boolean shouldEncode(FacesContext context, DataTable table) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_addrow");
     }
 
     @Override
-    public boolean shouldEncode(FacesContext context, DataTable table) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_addrow");
+    public boolean shouldDecode(FacesContext context, DataTable table) {
+        return false;
     }
 }

@@ -34,7 +34,7 @@ import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.DataTableState;
 import org.primefaces.util.LangUtils;
 
-public class DraggableColumnsFeature implements DataTableFeature {
+public class DraggableColumnsFeature extends DataTableFeature {
 
     @Override
     public void decode(FacesContext context, DataTable table) {
@@ -59,7 +59,7 @@ public class DraggableColumnsFeature implements DataTableFeature {
 
     @Override
     public boolean shouldDecode(FacesContext context, DataTable table) {
-        return table.isDraggableColumns();
+        return ((DataTable) table).isDraggableColumns();
     }
 
     @Override

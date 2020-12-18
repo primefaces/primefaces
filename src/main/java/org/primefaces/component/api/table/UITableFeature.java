@@ -21,19 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.datatable.feature;
-
-import java.io.IOException;
+package org.primefaces.component.api.table;
 
 import javax.faces.context.FacesContext;
-import org.primefaces.component.api.table.UITableFeature;
+import org.primefaces.component.api.UITable;
 
-import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.datatable.DataTableRenderer;
+public abstract class UITableFeature<T extends UITable> {
 
-public abstract class DataTableFeature extends UITableFeature<DataTable> {
+    public abstract boolean shouldDecode(FacesContext context, T table);
 
-    public abstract boolean shouldEncode(FacesContext context, DataTable table);
+    public void decode(FacesContext context, T table) {
 
-    public abstract void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException;
+    }
+
+    protected boolean isRequestParameterAvailable(FacesContext context, String name) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(name);
+    }
+
+    protected String getRequestParameter(FacesContext context, String name) {
+        return context.getExternalContext().getRequestParameterMap().get(name);
+    }
 }

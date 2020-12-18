@@ -47,20 +47,25 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
 
     private String columnKey;
     private String field;
+
+    private transient UIColumn column;
+
     private SortOrder order = SortOrder.UNSORTED;
     private ValueExpression sortBy;
     private MethodExpression function;
     private Integer priority = MIN_PRIORITY;
     private int nullSortOrder;
     private boolean caseSensitiveSort;
-    private transient Object component;
+
+    private boolean forHeaderRow;
+    private transient HeaderRow headerRow;
 
     public SortMeta() {
         // NOOP
     }
 
     SortMeta(String columnKey, String sortField, SortOrder sortOrder, MethodExpression sortFunction,
-             ValueExpression sortBy, Integer priority, int nullSortOrder, boolean caseSensitiveSort, Object component) {
+             ValueExpression sortBy, Integer priority, int nullSortOrder, boolean caseSensitiveSort, UIColumn column) {
         this.columnKey = columnKey;
         this.field = sortField;
         this.order = sortOrder;
@@ -69,7 +74,21 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
         this.priority = priority;
         this.nullSortOrder = nullSortOrder;
         this.caseSensitiveSort = caseSensitiveSort;
-        this.component = component;
+        this.column = column;
+    }
+
+    SortMeta(String columnKey, String sortField, SortOrder sortOrder, MethodExpression sortFunction,
+             ValueExpression sortBy, Integer priority, int nullSortOrder, boolean caseSensitiveSort, HeaderRow headerRow) {
+        this.columnKey = columnKey;
+        this.field = sortField;
+        this.order = sortOrder;
+        this.function = sortFunction;
+        this.sortBy = sortBy;
+        this.priority = priority;
+        this.nullSortOrder = nullSortOrder;
+        this.caseSensitiveSort = caseSensitiveSort;
+        this.forHeaderRow = true;
+        this.headerRow = headerRow;
     }
 
     public static SortMeta of(FacesContext context, String var, UIColumn column) {
@@ -171,8 +190,24 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
         this.priority = priority;
     }
 
-    public Object getComponent() {
-        return component;
+    public UIColumn getColumn() {
+        return column;
+    }
+
+    public void setColumn(UIColumn column) {
+        this.column = column;
+    }
+
+    public boolean isForHeaderRow() {
+        return forHeaderRow;
+    }
+
+    public HeaderRow getHeaderRow() {
+        return headerRow;
+    }
+
+    public void setHeaderRow(HeaderRow headerRow) {
+        this.headerRow = headerRow;
     }
 
     public String getColumnKey() {

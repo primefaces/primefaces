@@ -33,7 +33,7 @@ public class DynamicBeanPropertyComparator extends BeanPropertyComparator {
 
     public DynamicBeanPropertyComparator(String var, SortMeta sortMeta, Locale locale) {
         super(var, sortMeta, locale);
-        if (!(sortMeta.getComponent() instanceof DynamicColumn)) {
+        if (!(sortMeta.getColumn()instanceof DynamicColumn)) {
             throw new IllegalArgumentException();
         }
         this.sortMeta = sortMeta;
@@ -41,7 +41,7 @@ public class DynamicBeanPropertyComparator extends BeanPropertyComparator {
 
     @Override
     public int compare(Object obj1, Object obj2) {
-        ((DynamicColumn) sortMeta.getComponent()).applyStatelessModel();
+        ((DynamicColumn) sortMeta.getColumn()).applyStatelessModel();
 
         return super.compare(obj1, obj2);
     }

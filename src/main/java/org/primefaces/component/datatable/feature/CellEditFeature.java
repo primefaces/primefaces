@@ -34,12 +34,7 @@ import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 
-public class CellEditFeature implements DataTableFeature {
-
-    @Override
-    public void decode(FacesContext context, DataTable table) {
-        throw new FacesException("CellEditFeature should not decode.");
-    }
+public class CellEditFeature extends DataTableFeature {
 
     @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
@@ -85,12 +80,12 @@ public class CellEditFeature implements DataTableFeature {
     }
 
     @Override
-    public boolean shouldDecode(FacesContext context, DataTable table) {
-        return false;
+    public boolean shouldEncode(FacesContext context, DataTable table) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_cellInfo");
     }
 
     @Override
-    public boolean shouldEncode(FacesContext context, DataTable table) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_cellInfo");
+    public boolean shouldDecode(FacesContext context, DataTable table) {
+        return false;
     }
 }

@@ -38,8 +38,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import java.io.IOException;
 import java.util.*;
+import org.primefaces.component.api.table.FilterableColumnsFeature;
 
-public class FilterFeature implements DataTableFeature {
+public class FilterFeature extends DataTableFeature {
 
     public static final Map<MatchMode, FilterConstraint> FILTER_CONSTRAINTS = MapBuilder.<MatchMode, FilterConstraint>builder()
         .put(MatchMode.STARTS_WITH, new StartsWithFilterConstraint())
@@ -71,11 +72,7 @@ public class FilterFeature implements DataTableFeature {
 
     @Override
     public void decode(FacesContext context, DataTable table) {
-        // FilterMeta#column must be updated since local value
-        // (from column) must be decoded by FilterFeature#decodeFilterValue
-        Map<String, FilterMeta> filterBy = table.initFilterBy(context);
-
-        table.updateFilterByValuesWithFilterRequest(context, filterBy);
+        FilterableColumnsFeature.INSTANCE.decode(context, table);
 
         // reset state
         table.setFirst(0);
@@ -116,13 +113,10 @@ public class FilterFeature implements DataTableFeature {
 
         context.getApplication().publishEvent(context, PostFilterEvent.class, table);
 
-        if (table.isMultiViewState()) {
+        if (table.isPaginator() && table.isMultiViewState()) {
             DataTableState ts = table.getMultiViewState(true);
-            ts.setFilterBy(filterBy);
-            if (table.isPaginator()) {
-                ts.setFirst(table.getFirst());
-                ts.setRows(table.getRows());
-            }
+            ts.setFirst(table.getFirst());
+            ts.setRows(table.getRows());
         }
     }
 

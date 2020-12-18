@@ -37,6 +37,8 @@ import javax.faces.event.PhaseId;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.api.table.ColumnDisplayState;
+import org.primefaces.component.api.table.FilterableColumnsFeature;
 import org.primefaces.component.column.Column;
 import org.primefaces.event.*;
 import org.primefaces.event.data.FilterEvent;
@@ -296,9 +298,7 @@ public class TreeTable extends TreeTableBase {
         super.processValidators(context);
 
         if (isFilterRequest(context)) {
-            Map<String, FilterMeta> filterBy = initFilterBy(context);
-            updateFilterByValuesWithFilterRequest(context, filterBy);
-            setFilterByAsMap(filterBy);
+            FilterableColumnsFeature.INSTANCE.decode(context, this);
 
             AjaxBehaviorEvent event = deferredEvents.get("filter");
             if (event != null) {
@@ -497,10 +497,6 @@ public class TreeTable extends TreeTableBase {
         }
     }
 
-    public boolean isFilteringEnabled() {
-        return !getFilterByAsMap().isEmpty();
-    }
-
     public void updateFilteredValue(FacesContext context, TreeNode node) {
         ValueExpression ve = getValueExpression(PropertyKeys.filteredValue.name());
 
@@ -559,18 +555,9 @@ public class TreeTable extends TreeTableBase {
                 setRows(rows);
             }
 
-            if (ts.getSortBy() != null) {
-                updateSortByWithMVS(ts.getSortBy());
-            }
-
-            if (ts.getFilterBy() != null) {
-                updateFilterByWithMVS(getFacesContext(), ts.getFilterBy());
-            }
-
             // TODO selection
 
-            setVisibleColumnsAsMap(ts.getVisibleColumns());
-            setResizableColumnsAsMap(ts.getResizableColumns());
+            setColumnDisplayState(ts.getColumnDiplayState());
         }
     }
 
@@ -611,7 +598,7 @@ public class TreeTable extends TreeTableBase {
 
     @Override
     public Map<String, FilterMeta> getFilterByAsMap() {
-        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.filterByAsMap.name(), Collections::emptyMap);
+        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.filterByAsMap.name(), () -> initFilterBy(getFacesContext()));
     }
 
     @Override
@@ -650,22 +637,27 @@ public class TreeTable extends TreeTableBase {
     }
 
     @Override
-    public Map<String, Boolean> getVisibleColumnsAsMap() {
-        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.visibleColumnsAsMap.name(), Collections::emptyMap);
+    public Map<String, ColumnDisplayState> getColumnDisplayState() {
+        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.columnDisplayState, () -> new HashMap<>());
     }
 
     @Override
-    public void setVisibleColumnsAsMap(Map<String, Boolean> visibleColumnsAsMap) {
-        getStateHelper().put(InternalPropertyKeys.visibleColumnsAsMap.name(), visibleColumnsAsMap);
+    public void setColumnDisplayState(Map<String, ColumnDisplayState> columnDisplayState) {
+        getStateHelper().put(InternalPropertyKeys.columnDisplayState, columnDisplayState);
     }
 
     @Override
-    public Map<String, String> getResizableColumnsAsMap() {
-        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.resizableColumnsAsMap.name(), Collections::emptyMap);
+    public String getWidth() {
+        return (String) getStateHelper().eval(InternalPropertyKeys.width, null);
     }
 
     @Override
-    public void setResizableColumnsAsMap(Map<String, String> resizableColumnsAsMap) {
-        getStateHelper().put(InternalPropertyKeys.resizableColumnsAsMap.name(), resizableColumnsAsMap);
+    public void setWidth(String width) {
+        getStateHelper().put(InternalPropertyKeys.width, width);
+    }
+
+    @Override
+    public boolean isSortByAsMapDefined() {
+        return getStateHelper().get(InternalPropertyKeys.sortByAsMap) != null;
     }
 }

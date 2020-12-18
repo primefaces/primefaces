@@ -33,7 +33,7 @@ import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.DataTableState;
 import org.primefaces.event.data.PostPageEvent;
 
-public class PageFeature implements DataTableFeature {
+public class PageFeature extends DataTableFeature {
 
     @Override
     public void decode(FacesContext context, DataTable table) {

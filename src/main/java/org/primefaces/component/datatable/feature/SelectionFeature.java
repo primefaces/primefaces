@@ -38,7 +38,7 @@ import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.DataTableState;
 import org.primefaces.util.LangUtils;
 
-public class SelectionFeature implements DataTableFeature {
+public class SelectionFeature extends DataTableFeature {
 
     private static final String ALL_SELECTOR = "@all";
 

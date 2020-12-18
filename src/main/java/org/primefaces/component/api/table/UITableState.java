@@ -1,0 +1,70 @@
+/*
+ * The MIT License
+ *
+ * Copyright (c) 2009-2020 PrimeTek
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+package org.primefaces.component.api.table;
+
+import java.io.Serializable;
+import java.util.Map;
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.SortMeta;
+
+public class UITableState implements Serializable {
+
+    private String width;
+    private Map<String, ColumnDisplayState> columnDiplayState;
+    private Map<String, SortMeta> sortBy;
+    private Map<String, FilterMeta> filterBy;
+
+    public String getWidth() {
+        return width;
+    }
+
+    public void setWidth(String width) {
+        this.width = width;
+    }
+
+    public Map<String, ColumnDisplayState> getColumnDiplayState() {
+        return columnDiplayState;
+    }
+
+    public void setColumnDiplayState(Map<String, ColumnDisplayState> columnDiplayState) {
+        this.columnDiplayState = columnDiplayState;
+    }
+
+    public Map<String, SortMeta> getSortBy() {
+        return sortBy;
+    }
+
+    public void setSortBy(Map<String, SortMeta> sortBy) {
+        this.sortBy = sortBy;
+    }
+
+    public Map<String, FilterMeta> getFilterBy() {
+        return filterBy;
+    }
+
+    public void setFilterBy(Map<String, FilterMeta> filterBy) {
+        this.filterBy = filterBy;
+    }
+
+}

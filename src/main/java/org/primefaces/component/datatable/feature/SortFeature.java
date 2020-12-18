@@ -25,7 +25,6 @@ package org.primefaces.component.datatable.feature;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
-import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.DataTableState;
@@ -37,49 +36,18 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.ListDataModel;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import org.primefaces.component.api.table.SortableColumnsFeature;
 
-public class SortFeature implements DataTableFeature {
+public class SortFeature extends DataTableFeature {
 
-    private boolean isSortRequest(FacesContext context, DataTable table) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_sorting");
+    @Override
+    public boolean shouldDecode(FacesContext context, DataTable table) {
+        return SortableColumnsFeature.INSTANCE.shouldDecode(context, table);
     }
 
     @Override
     public void decode(FacesContext context, DataTable table) {
-        String clientId = table.getClientId(context);
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String sortKey = params.get(clientId + "_sortKey");
-        String sortDir = params.get(clientId + "_sortDir");
-
-        String[] sortKeys = sortKey.split(",");
-        String[] sortOrders = sortDir.split(",");
-
-        if (sortKeys.length != sortOrders.length) {
-            throw new FacesException("sortKeys != sortDirs");
-        }
-
-        Map<String, SortMeta> sortByMap = table.getSortByAsMap();
-        Map<String, Integer> sortKeysIndexes = IntStream.range(0, sortKeys.length).boxed()
-                .collect(Collectors.toMap(i -> sortKeys[i], i -> i));
-
-        for (Map.Entry<String, SortMeta> entry : sortByMap.entrySet()) {
-            SortMeta sortBy = entry.getValue();
-            if (!(sortBy.getComponent() instanceof UIColumn)) {
-                continue;
-            }
-
-            Integer index = sortKeysIndexes.get(entry.getKey());
-            if (index != null) {
-                sortBy.setOrder(SortOrder.of(sortOrders[index]));
-                sortBy.setPriority(index);
-            }
-            else {
-                sortBy.setOrder(SortOrder.UNSORTED);
-                sortBy.setPriority(SortMeta.MIN_PRIORITY);
-            }
-        }
+        SortableColumnsFeature.INSTANCE.decode(context, table);
 
         table.setFirst(0);
 
@@ -114,16 +82,10 @@ public class SortFeature implements DataTableFeature {
 
         context.getApplication().publishEvent(context, PostSortEvent.class, table);
 
-        if (table.isMultiViewState()) {
-            Map<String, SortMeta> sortMeta = table.getSortByAsMap();
-            if (!sortMeta.isEmpty()) {
-                DataTableState ts = table.getMultiViewState(true);
-                ts.setSortBy(sortMeta);
-                if (table.isPaginator()) {
-                    ts.setFirst(table.getFirst());
-                    ts.setRows(table.getRows());
-                }
-            }
+        if (table.isPaginator() && table.isMultiViewState()) {
+            DataTableState ts = table.getMultiViewState(true);
+            ts.setFirst(table.getFirst());
+            ts.setRows(table.getRows());
         }
     }
 
@@ -145,7 +107,7 @@ public class SortFeature implements DataTableFeature {
 
         for (SortMeta meta : table.getActiveSortMeta().values()) {
             BeanPropertyComparator comparator;
-            Object source = meta.getComponent();
+            Object source = meta.isForHeaderRow() ? meta.getHeaderRow() : meta.getColumn();
 
             if (source instanceof DynamicColumn) {
                 comparator = new DynamicBeanPropertyComparator(table.getVar(), meta, locale);
@@ -161,13 +123,8 @@ public class SortFeature implements DataTableFeature {
     }
 
     @Override
-    public boolean shouldDecode(FacesContext context, DataTable table) {
-        return isSortRequest(context, table);
-    }
-
-    @Override
     public boolean shouldEncode(FacesContext context, DataTable table) {
-        return isSortRequest(context, table);
+        return shouldDecode(context, table);
     }
 
     protected <T> List<T> resolveList(Object value) {

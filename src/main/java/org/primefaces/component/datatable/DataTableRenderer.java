@@ -56,6 +56,8 @@ import org.primefaces.model.SortOrder;
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.util.*;
 import org.primefaces.component.api.UITable;
+import org.primefaces.component.api.table.ColumnDisplayState;
+import org.primefaces.component.api.table.UITableFeature;
 
 public class DataTableRenderer extends DataRenderer {
 
@@ -65,8 +67,8 @@ public class DataTableRenderer extends DataRenderer {
     public void decode(FacesContext context, UIComponent component) {
         DataTable table = (DataTable) component;
 
-        for (Iterator<DataTableFeature> it = DataTable.FEATURES.values().iterator(); it.hasNext(); ) {
-            DataTableFeature feature = it.next();
+        for (Iterator<UITableFeature> it = DataTable.FEATURES.values().iterator(); it.hasNext(); ) {
+            UITableFeature feature = it.next();
 
             if (feature.shouldDecode(context, table)) {
                 feature.decode(context, table);
@@ -81,11 +83,12 @@ public class DataTableRenderer extends DataRenderer {
         DataTable table = (DataTable) component;
 
         if (table.shouldEncodeFeature(context)) {
-            for (Iterator<DataTableFeature> it = DataTable.FEATURES.values().iterator(); it.hasNext(); ) {
-                DataTableFeature feature = it.next();
-
-                if (feature.shouldEncode(context, table)) {
-                    feature.encode(context, this, table);
+            for (Iterator<UITableFeature> it = DataTable.FEATURES.values().iterator(); it.hasNext(); ) {
+                UITableFeature feature = it.next();
+                if (feature instanceof DataTableFeature) {
+                    if (((DataTableFeature) feature).shouldEncode(context, table)) {
+                        ((DataTableFeature) feature).encode(context, this, table);
+                    }
                 }
             }
         }
@@ -100,8 +103,6 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void preRender(FacesContext context, DataTable table) {
-        table.initFilterBy(context);
-
         if (table.isMultiViewState()) {
             table.restoreMultiViewState();
         }
@@ -346,9 +347,7 @@ public class DataTableRenderer extends DataRenderer {
         String tableStyle = table.getTableStyle();
 
         if (table.isResizableColumns()) {
-            Map<String, String> resizableColsMap = table.getResizableColumnsAsMap();
-            String width = resizableColsMap.get(table.getClientId(context) + "_tableWidthState");
-
+            String width = table.getWidth();
             if (width != null) {
                 if (tableStyle != null) {
                     tableStyle = tableStyle + ";width:" + width + "px";
@@ -573,7 +572,7 @@ public class DataTableRenderer extends DataRenderer {
         String clientId = column.getContainerClientId(context);
 
         boolean sortable = table.isColumnSortable(context, column);
-        boolean filterable = table.isColumnFilterable(column);
+        boolean filterable = table.isColumnFilterable(context, column);
         String selectionMode = column.getSelectionMode();
         String sortIcon = null;
         boolean resizable = table.isResizableColumns() && column.isResizable();
@@ -581,8 +580,9 @@ public class DataTableRenderer extends DataRenderer {
         int priority = column.getPriority();
 
         boolean columnVisible = column.isVisible();
-        if (table.getVisibleColumnsAsMap().containsKey(column.getColumnKey())) {
-            columnVisible = table.getVisibleColumnsAsMap().get(column.getColumnKey());
+        ColumnDisplayState columnDisplayState = table.getColumnDisplayState().get(column.getColumnKey());
+        if (columnDisplayState != null && columnDisplayState.getVisisble() != null) {
+            columnVisible = columnDisplayState.getVisisble();
         }
 
         String columnClass = getStyleClassBuilder(context)
@@ -608,9 +608,8 @@ public class DataTableRenderer extends DataRenderer {
 
         String style = column.getStyle();
         String width = column.getWidth();
-
-        if (resizable && table.getResizableColumnsAsMap().containsKey(column.getColumnKey())) {
-            width = table.getResizableColumnsAsMap().get(column.getColumnKey());
+        if (columnDisplayState != null && !LangUtils.isValueBlank(columnDisplayState.getWidth())) {
+            width = columnDisplayState.getWidth();
         }
 
         if (width != null) {
@@ -899,8 +898,9 @@ public class DataTableRenderer extends DataRenderer {
         styleClass = styleClass == null ? DataTable.COLUMN_FOOTER_CLASS : DataTable.COLUMN_FOOTER_CLASS + " " + styleClass;
 
         boolean columnVisible = column.isVisible();
-        if (table.getVisibleColumnsAsMap().containsKey(column.getColumnKey())) {
-            columnVisible = table.getVisibleColumnsAsMap().get(column.getColumnKey());
+        ColumnDisplayState columnDisplayState = table.getColumnDisplayState().get(column.getColumnKey());
+        if (columnDisplayState != null && columnDisplayState.getVisisble() != null) {
+            columnVisible = columnDisplayState.getVisisble();
         }
 
         if (!columnVisible) {
@@ -1262,8 +1262,9 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         boolean columnVisible = column.isVisible();
-        if (table.getVisibleColumnsAsMap().containsKey(column.getColumnKey())) {
-            columnVisible = table.getVisibleColumnsAsMap().get(column.getColumnKey());
+        ColumnDisplayState columnDisplayState = table.getColumnDisplayState().get(column.getColumnKey());
+        if (columnDisplayState != null && columnDisplayState.getVisisble() != null) {
+            columnVisible = columnDisplayState.getVisisble();
         }
 
         ResponseWriter writer = context.getResponseWriter();
@@ -1669,8 +1670,8 @@ public class DataTableRenderer extends DataRenderer {
 
     protected List<String> getSortableHeadersText(FacesContext context, DataTable table) {
         return table.getSortByAsMap().values().stream()
-                .filter(s -> s.getComponent() instanceof UIColumn)
-                .map(s -> getHeaderLabel(context, (UIColumn) s.getComponent()))
+                .filter(s -> s.getColumn() != null)
+                .map(s -> getHeaderLabel(context, (UIColumn) s.getColumn()))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }

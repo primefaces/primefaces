@@ -28,11 +28,9 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.api.UITable;
+import org.primefaces.component.api.table.ToggableColumnsFeature;
 
-import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.datatable.DataTableState;
-import org.primefaces.component.treetable.TreeTable;
-import org.primefaces.component.treetable.TreeTableState;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
@@ -45,22 +43,10 @@ public class ColumnTogglerRenderer extends CoreRenderer {
         ColumnToggler columnToggler = (ColumnToggler) component;
         UIComponent dataSource = columnToggler.getDataSourceComponent();
 
-        if (dataSource instanceof DataTable) {
-            DataTable dt = (DataTable) dataSource;
-            dt.decodeColumnTogglerState(dataSource, context);
-
-            if (dt.isMultiViewState()) {
-                DataTableState mvs = dt.getMultiViewState(true);
-                mvs.setVisibleColumns(dt.getVisibleColumnsAsMap());
-            }
-        }
-        else if (dataSource instanceof TreeTable) {
-            TreeTable tt = (TreeTable) dataSource;
-            tt.decodeColumnTogglerState(dataSource, context);
-
-            if (tt.isMultiViewState()) {
-                TreeTableState mvs = tt.getMultiViewState(true);
-                mvs.setVisibleColumns(tt.getVisibleColumnsAsMap());
+        if (dataSource instanceof UITable) {
+            UITable table = (UITable) dataSource;
+            if (ToggableColumnsFeature.INSTANCE.shouldDecode(context, table)) {
+                ToggableColumnsFeature.INSTANCE.decode(context, table);
             }
         }
 

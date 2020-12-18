@@ -36,7 +36,7 @@ import javax.faces.context.FacesContext;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 
-public class DraggableRowsFeature implements DataTableFeature {
+public class DraggableRowsFeature extends DataTableFeature {
 
     private static final Logger LOGGER = Logger.getLogger(DraggableRowsFeature.class.getName());
 

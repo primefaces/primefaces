@@ -23,7 +23,6 @@
  */
 package org.primefaces.component.api;
 
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
@@ -36,19 +35,19 @@ import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
+import org.primefaces.component.api.table.ColumnDisplayState;
+import org.primefaces.component.api.table.UITableState;
 
 import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortMeta;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
 
-public interface UITable extends ColumnAware {
+public interface UITable<T extends UITableState> extends ColumnAware, MultiViewStateAware<T> {
 
     /**
      * Backward compatibility for column properties (e.g sortBy, filterBy)
@@ -102,17 +101,18 @@ public interface UITable extends ColumnAware {
                 .createValueExpression(context.getELContext(), "#{" + var + "." + field + "}", Object.class);
     }
 
+    String getClientId(FacesContext context);
+
     String getVar();
 
     default Map<String, FilterMeta> initFilterBy(FacesContext context) {
-        boolean invalidate = !isFilterByAsMapDefined();
-        Map<String, FilterMeta> filterBy = invalidate ? new HashMap<>() : getFilterByAsMap();
-        AtomicBoolean filtered = invalidate ? new AtomicBoolean() : new AtomicBoolean(isDefaultFilter());
+        Map<String, FilterMeta> filterBy = new HashMap<>();
+        AtomicBoolean filtered = new AtomicBoolean();
 
         // build columns filterBy
         forEachColumn(c -> {
             FilterMeta f = filterBy.get(c.getColumnKey());
-            if (f != null && !invalidate) {
+            if (f != null) {
                 f.setColumn(c);
             }
             else {
@@ -133,26 +133,27 @@ public interface UITable extends ColumnAware {
         // build global filterBy
         updateFilterByWithGlobalFilter(context, filterBy, filtered);
 
+        // merge internal filterBy with MVS
+        UITableState mvs = getMultiViewState(false);
+        if (mvs != null) {
+            updateFilterByWithMVS(filterBy, mvs.getFilterBy(), filtered);
+        }
+
         // finally set if default filtering is enabled
         setDefaultFilter(filtered.get());
-
-        setFilterByAsMap(filterBy);
 
         return filterBy;
     }
 
-    default void updateFilterByWithMVS(FacesContext context, Map<String, FilterMeta> tsFilterBy) {
-        boolean defaultFilter = isDefaultFilter();
-        for (Map.Entry<String, FilterMeta> entry : tsFilterBy.entrySet()) {
-            FilterMeta intlFilterBy = getFilterByAsMap().get(entry.getKey());
-            if (intlFilterBy != null) {
-                FilterMeta tsFilterMeta = entry.getValue();
-                intlFilterBy.setFilterValue(tsFilterMeta.getFilterValue());
-                defaultFilter |= intlFilterBy.isActive();
+    default void updateFilterByWithMVS(Map<String, FilterMeta> filterBy, Map<String, FilterMeta> mvsFilerBy, AtomicBoolean filtered) {
+        for (Map.Entry<String, FilterMeta> entry : mvsFilerBy.entrySet()) {
+            FilterMeta filterMeta = filterBy.get(entry.getKey());
+            if (filterMeta != null) {
+                FilterMeta mvsFilterMeta = entry.getValue();
+                filterMeta.setFilterValue(mvsFilterMeta.getFilterValue());
+                filtered.set(filtered.get() || filterMeta.isActive());
             }
         }
-
-        setDefaultFilter(defaultFilter);
     }
 
     default void updateFilterByWithUserFilterBy(FacesContext context, Map<String, FilterMeta> intlFilterBy, Object usrFilterBy,
@@ -205,56 +206,21 @@ public interface UITable extends ColumnAware {
         }
     }
 
-    default boolean isColumnFilterable(UIColumn column) {
+    default boolean isColumnFilterable(FacesContext context, UIColumn column) {
         Map<String, FilterMeta> filterBy = getFilterByAsMap();
-        return filterBy.containsKey(column.getColumnKey());
-    }
-
-    default void updateFilterByValuesWithFilterRequest(FacesContext context, Map<String, FilterMeta> filterBy) {
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        char separator = UINamingContainer.getSeparatorChar(context);
-
-        for (FilterMeta filterMeta : filterBy.values()) {
-            Object filterValue;
-
-            if (filterMeta.isGlobalFilter()) {
-                filterValue = params.get(((UIComponent) this).getClientId(context) + separator + FilterMeta.GLOBAL_FILTER_KEY);
-            }
-            else {
-                UIColumn column = filterMeta.getColumn();
-                UIComponent filterFacet = column.getFacet("filter");
-                boolean hasCustomFilter = filterFacet != null;
-                if (column instanceof DynamicColumn) {
-                    if (hasCustomFilter) {
-                        ((DynamicColumn) column).applyModel();
-                        // UIColumn#rendered might change after restoring p:columns state at the right index
-                        hasCustomFilter = ComponentUtils.shouldRenderFacet(filterFacet);
-                    }
-                    else {
-                        ((DynamicColumn) column).applyStatelessModel();
-                    }
-                }
-
-                if (hasCustomFilter) {
-                    filterValue = ((ValueHolder) filterFacet).getLocalValue();
-                }
-                else {
-                    String valueHolderClientId = column instanceof DynamicColumn
-                            ? column.getContainerClientId(context) + separator + "filter"
-                            : column.getClientId(context) + separator + "filter";
-                    filterValue = params.get(valueHolderClientId);
-                }
-            }
-
-            // returns null if empty string/array/object
-            if (filterValue != null
-                    && (filterValue instanceof String && LangUtils.isValueBlank((String) filterValue)
-                    || filterValue.getClass().isArray() && Array.getLength(filterValue) == 0)) {
-                filterValue = null;
-            }
-
-            filterMeta.setFilterValue(filterValue);
+        if (filterBy.containsKey(column.getColumnKey())) {
+            return true;
         }
+
+        FilterMeta s = FilterMeta.of(context, getVar(), column);
+        if (s == null) {
+            return false;
+        }
+
+        // unlikely to happen, in case columns change between two ajax requests
+        filterBy.put(s.getColumnKey(), s);
+        setFilterByAsMap(filterBy);
+        return true;
     }
 
     default Object getFilterValue(UIColumn column) {
@@ -279,7 +245,7 @@ public interface UITable extends ColumnAware {
 
     void setFilterByAsMap(Map<String, FilterMeta> sortBy);
 
-/**
+    /**
      * Returns actives filter meta.
      * @return map with {@link FilterMeta#getField()} as key and {@link FilterMeta} as value
      */
@@ -298,13 +264,13 @@ public interface UITable extends ColumnAware {
     void setGlobalFilterFunction(MethodExpression globalFilterFunction);
 
     default Map<String, SortMeta> initSortBy(FacesContext context) {
-        Map<String, SortMeta> sortMeta = new HashMap<>();
+        Map<String, SortMeta> sortBy = new HashMap<>();
         AtomicBoolean sorted = new AtomicBoolean();
 
         HeaderRow headerRow = getHeaderRow();
         if (headerRow != null) {
             SortMeta s = SortMeta.of(context, getVar(), headerRow);
-            sortMeta.put(s.getColumnKey(), s);
+            sortBy.put(s.getColumnKey(), s);
             sorted.set(true);
         }
 
@@ -312,34 +278,37 @@ public interface UITable extends ColumnAware {
             SortMeta s = SortMeta.of(context, getVar(), c);
             if (s != null) {
                 sorted.set(sorted.get() || s.isActive());
-                sortMeta.put(s.getColumnKey(), s);
+                sortBy.put(s.getColumnKey(), s);
             }
         });
 
         // merge internal sortBy with user sortBy
         Object userSortBy = getSortBy();
         if (userSortBy != null) {
-            updateSortByWithUserSortBy(context, sortMeta, userSortBy, sorted);
+            updateSortByWithUserSortBy(context, sortBy, userSortBy, sorted);
+        }
+
+        // merge internal sortBy with MVS
+        UITableState mvs = getMultiViewState(false);
+        if (mvs != null) {
+            updateSortByWithMVS(sortBy, mvs.getSortBy(), sorted);
         }
 
         setDefaultSort(sorted.get());
 
-        return sortMeta;
+        return sortBy;
     }
 
-    default void updateSortByWithMVS(Map<String, SortMeta> tsSortBy) {
-        boolean defaultSort = isDefaultSort();
-        for (Map.Entry<String, SortMeta> entry : tsSortBy.entrySet()) {
-            SortMeta intlSortBy = getSortByAsMap().get(entry.getKey());
-            if (intlSortBy != null) {
-                SortMeta tsSortMeta = entry.getValue();
-                intlSortBy.setPriority(tsSortMeta.getPriority());
-                intlSortBy.setOrder(tsSortMeta.getOrder());
-                defaultSort |= intlSortBy.isActive();
+    default void updateSortByWithMVS(Map<String, SortMeta> sortBy, Map<String, SortMeta> mvsSortBy, AtomicBoolean sorted) {
+        for (Map.Entry<String, SortMeta> entry : mvsSortBy.entrySet()) {
+            SortMeta sortMeta = sortBy.get(entry.getKey());
+            if (sortMeta != null) {
+                SortMeta mvsSortMeta = entry.getValue();
+                sortMeta.setPriority(mvsSortMeta.getPriority());
+                sortMeta.setOrder(mvsSortMeta.getOrder());
+                sorted.set(sorted.get() || sortMeta.isActive());
             }
         }
-
-        setDefaultSort(defaultSort);
     }
 
     default void updateSortByWithUserSortBy(FacesContext context, Map<String, SortMeta> intlSortBy, Object usrSortBy, AtomicBoolean sorted) {
@@ -426,6 +395,8 @@ public interface UITable extends ColumnAware {
 
     void setSortByAsMap(Map<String, SortMeta> sortBy);
 
+    boolean isSortByAsMapDefined();
+
     default boolean isFilteringEnabled() {
         return !getFilterByAsMap().isEmpty();
     }
@@ -438,70 +409,21 @@ public interface UITable extends ColumnAware {
 
     void setDefaultSort(boolean defaultSort);
 
-    default void decodeColumnTogglerState(UIComponent table, FacesContext context) {
-        String columnTogglerStateParam = context.getExternalContext().getRequestParameterMap()
-                .get(table.getClientId(context) + "_columnTogglerState");
-        if (columnTogglerStateParam == null) {
-            return;
-        }
 
-        HashMap<String, Boolean> visibleColumnsAsMap = new HashMap<>();
 
-        if (!LangUtils.isValueBlank(columnTogglerStateParam)) {
-            String[] columnStates = columnTogglerStateParam.split(",");
-            for (String columnState : columnStates) {
-                if (LangUtils.isValueBlank(columnState)) {
-                    continue;
-                }
-                int seperatorIndex = columnState.lastIndexOf('_');
-                String columnKey = columnState.substring(0, seperatorIndex);
-                boolean visible = Boolean.parseBoolean(columnState.substring(seperatorIndex + 1));
 
-                visibleColumnsAsMap.put(columnKey, visible);
-            }
-        }
+    String getWidth();
 
-        setVisibleColumnsAsMap(visibleColumnsAsMap);
-    }
+    void setWidth(String width);
 
-    Map<String, Boolean> getVisibleColumnsAsMap();
+    Map<String, ColumnDisplayState> getColumnDisplayState();
 
-    void setVisibleColumnsAsMap(Map<String, Boolean> visibleColumnsAsMap);
-
-    default void decodeColumnResizeState(UIComponent table, FacesContext context) {
-        String columnResizeStateParam = context.getExternalContext().getRequestParameterMap()
-                .get(table.getClientId(context) + "_resizableColumnState");
-        if (columnResizeStateParam == null) {
-            return;
-        }
-
-        HashMap<String, String> resizableColumnsMap = new HashMap<>();
-
-        if (!LangUtils.isValueBlank(columnResizeStateParam)) {
-            String[] columnStates = columnResizeStateParam.split(",");
-            for (String columnState : columnStates) {
-                if (LangUtils.isValueBlank(columnState)) {
-                    continue;
-                }
-                int seperatorIndex = columnState.lastIndexOf('_');
-                String columnKey = columnState.substring(0, seperatorIndex);
-                String width = columnState.substring(seperatorIndex + 1);
-
-                resizableColumnsMap.put(columnKey, width);
-            }
-        }
-
-        setResizableColumnsAsMap(resizableColumnsMap);
-    }
-
-    Map<String, String> getResizableColumnsAsMap();
-
-    void setResizableColumnsAsMap(Map<String, String> resizableColumnsAsMap);
+    void setColumnDisplayState(Map<String, ColumnDisplayState> columnDisplayState);
 
     default String getResizableColumnsAsString() {
-        return getResizableColumnsAsMap().entrySet()
+        return getColumnDisplayState().entrySet()
                 .stream()
-                .map(e -> e.getKey() + '_' + e.getValue())
+                .map(e -> e.getKey() + '_' + e.getValue().getWidth())
                 .collect(Collectors.joining(","));
     }
 }

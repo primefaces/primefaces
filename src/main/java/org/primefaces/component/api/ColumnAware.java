@@ -34,6 +34,7 @@ import javax.faces.context.FacesContext;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
+import org.primefaces.util.LangUtils;
 
 public interface ColumnAware {
 
@@ -82,7 +83,7 @@ public interface ColumnAware {
     }
 
     default UIColumn findColumn(String columnKey) {
-        if ("globalFilter".equals(columnKey)) {
+        if (LangUtils.isValueBlank(columnKey) || "globalFilter".equals(columnKey)) {
             return null;
         }
 

@@ -39,7 +39,7 @@ import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.visit.ResetInputVisitCallback;
 
-public class RowEditFeature implements DataTableFeature {
+public class RowEditFeature extends DataTableFeature {
 
     @Override
     public void decode(FacesContext context, DataTable table) {
