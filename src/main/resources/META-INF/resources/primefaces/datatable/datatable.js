@@ -801,7 +801,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     bindRowEvents: function() {
-        var $this = this;
+        var $this = this,
+            hasDoubleClickBehavior = this.hasBehavior('rowDblselect');
 
         this.bindRowHover(this.rowSelector);
 
@@ -809,13 +810,30 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             $this.mousedownOnRow = true;
         })
         .on('click.dataTable', this.rowSelector, null, function(e) {
-            $this.onRowClick(e, this);
-            $this.mousedownOnRow = false;
+            if(hasDoubleClickBehavior) {
+                // GitHub #2061 must delay to see if double click so we do not fire 2 row clicks and a dlbclick
+                $this.doubleClick = this; // store current row clicked
+                clearInterval($this.clickTimer);
+                $this.clickTimer = setInterval(function() {
+                    if($this.doubleClick) {
+                        $this.onRowClick(e, $this.doubleClick);
+                        $this.mousedownOnRow = false;
+                        $this.doubleClick = null;
+                    }
+                    clearInterval($this.clickTimer);
+                }, 400);
+            }
+            else {
+                $this.onRowClick(e, this);
+                $this.mousedownOnRow = false;
+            }
         });
 
         //double click
-        if(this.hasBehavior('rowDblselect')) {
+        if(hasDoubleClickBehavior) {
             this.tbody.off('dblclick.dataTable', this.rowSelector).on('dblclick.dataTable', this.rowSelector, null, function(e) {
+                $this.doubleClick = null;
+                $this.onRowClick(e, this, true);
                 $this.onRowDblclick(e, $(this));
             });
         };
