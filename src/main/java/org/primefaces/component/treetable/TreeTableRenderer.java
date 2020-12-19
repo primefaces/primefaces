@@ -23,32 +23,6 @@
  */
 package org.primefaces.component.treetable;
 
-import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
-
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import javax.el.ELContext;
-import javax.el.MethodExpression;
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.component.ValueHolder;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
@@ -65,6 +39,31 @@ import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.*;
 import org.primefaces.visit.ResetInputVisitCallback;
+
+import javax.el.ELContext;
+import javax.el.MethodExpression;
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
+import javax.faces.component.ValueHolder;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
 
 public class TreeTableRenderer extends DataRenderer {
 
@@ -84,11 +83,7 @@ public class TreeTableRenderer extends DataRenderer {
             decodeSort(context, tt);
         }
 
-        tt.decodeColumnResizeState(tt, context);
-        if (tt.isMultiViewState()) {
-            TreeTableState state = tt.getMultiViewState(true);
-            state.setResizableColumns(tt.getResizableColumnsAsMap());
-        }
+        tt.decodeColumnResizeState(context);
 
         decodeBehaviors(context, component);
     }
@@ -358,7 +353,7 @@ public class TreeTableRenderer extends DataRenderer {
         }
 
         if (resizable) {
-            encodeStateHolder(context, tt, tt.getClientId(context) + "_resizableColumnState", tt.getResizableColumnsAsString());
+            encodeStateHolder(context, tt, tt.getClientId(context) + "_resizableColumnState", tt.getColumnsWidthForClientSide());
         }
 
         writer.endElement("div");
@@ -660,6 +655,7 @@ public class TreeTableRenderer extends DataRenderer {
 
         for (int i = 0; i < columns.size(); i++) {
             UIColumn column = columns.get(i);
+            ColumnMeta columnMeta = tt.getColumnMeta().get(column.getColumnKey());
 
             if (column.isDynamic()) {
                 ((DynamicColumn) column).applyModel();
@@ -667,8 +663,8 @@ public class TreeTableRenderer extends DataRenderer {
 
             if (column.isRendered()) {
                 boolean columnVisible = column.isVisible();
-                if (tt.getVisibleColumnsAsMap().containsKey(column.getColumnKey())) {
-                    columnVisible = tt.getVisibleColumnsAsMap().get(column.getColumnKey());
+                if (columnMeta != null && columnMeta.getVisible() != null) {
+                    columnVisible = columnMeta.getVisible();
                 }
 
                 String columnStyleClass = column.getStyleClass();
@@ -746,13 +742,15 @@ public class TreeTableRenderer extends DataRenderer {
             return;
         }
 
+        ColumnMeta columnMeta = tt.getColumnMeta().get(column.getColumnKey());
+
         ResponseWriter writer = context.getResponseWriter();
         UIComponent header = column.getFacet("header");
         String headerText = column.getHeaderText();
 
         boolean columnVisible = column.isVisible();
-        if (tt.getVisibleColumnsAsMap().containsKey(column.getColumnKey())) {
-            columnVisible = tt.getVisibleColumnsAsMap().get(column.getColumnKey());
+        if (columnMeta != null && columnMeta.getVisible() != null) {
+            columnVisible = columnMeta.getVisible();
         }
 
         int colspan = column.getColspan();

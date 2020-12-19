@@ -30,18 +30,12 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
-import org.primefaces.component.datatable.DataTableState;
 
 public class ResizableColumnsFeature implements DataTableFeature {
 
     @Override
     public void decode(FacesContext context, DataTable table) {
-        table.decodeColumnResizeState(table, context);
-
-        if (table.isMultiViewState()) {
-            DataTableState state = table.getMultiViewState(true);
-            state.setResizableColumns(table.getResizableColumnsAsMap());
-        }
+        table.decodeColumnResizeState(context);
     }
 
     @Override

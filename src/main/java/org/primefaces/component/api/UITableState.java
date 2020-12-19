@@ -21,52 +21,54 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.datatable;
+package org.primefaces.component.api;
 
-import org.primefaces.component.api.UITableState;
+import org.primefaces.model.ColumnMeta;
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.SortMeta;
 
-import java.util.List;
+import java.io.Serializable;
+import java.util.Map;
 
-public class DataTableState extends UITableState {
+public class UITableState implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private Map<String, SortMeta> sortBy;
 
-    private int first;
+    private Map<String, FilterMeta> filterBy;
 
-    private int rows;
+    private Map<String, ColumnMeta> columnMeta;
 
-    private List<Object> selectedRowKeys;
-    private String orderedColumnsAsString;
+    private String width;
 
-    public int getFirst() {
-        return first;
+    public Map<String, SortMeta> getSortBy() {
+        return sortBy;
     }
 
-    public void setFirst(int first) {
-        this.first = first;
+    public void setSortBy(Map<String, SortMeta> sortBy) {
+        this.sortBy = sortBy;
     }
 
-    public int getRows() {
-        return rows;
+    public Map<String, FilterMeta> getFilterBy() {
+        return filterBy;
     }
 
-    public void setRows(int rows) {
-        this.rows = rows;
+    public void setFilterBy(Map<String, FilterMeta> filterBy) {
+        this.filterBy = filterBy;
     }
 
-    public List<Object> getSelectedRowKeys() {
-        return selectedRowKeys;
+    public Map<String, ColumnMeta> getColumnMeta() {
+        return columnMeta;
     }
 
-    public void setSelectedRowKeys(List<Object> selectedRowKeys) {
-        this.selectedRowKeys = selectedRowKeys;
+    public void setColumnMeta(Map<String, ColumnMeta> columnMeta) {
+        this.columnMeta = columnMeta;
     }
 
-    public String getOrderedColumnsAsString() {
-        return orderedColumnsAsString;
+    public String getWidth() {
+        return width;
     }
 
-    public void setOrderedColumnsAsString(String orderedColumnsAsString) {
-        this.orderedColumnsAsString = orderedColumnsAsString;
+    public void setWidth(String width) {
+        this.width = width;
     }
 }

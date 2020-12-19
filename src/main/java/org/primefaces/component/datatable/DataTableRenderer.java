@@ -51,6 +51,7 @@ import org.primefaces.component.row.Row;
 import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.summaryrow.SummaryRow;
 import org.primefaces.event.data.PostRenderEvent;
+import org.primefaces.model.ColumnMeta;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 import org.primefaces.renderkit.DataRenderer;
@@ -327,7 +328,7 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         if (resizable) {
-            encodeStateHolder(context, table, table.getClientId(context) + "_resizableColumnState", table.getResizableColumnsAsString());
+            encodeStateHolder(context, table, table.getClientId(context) + "_resizableColumnState", table.getColumnsWidthForClientSide());
         }
 
         if (table.getRowExpansion() != null) {
@@ -346,9 +347,7 @@ public class DataTableRenderer extends DataRenderer {
         String tableStyle = table.getTableStyle();
 
         if (table.isResizableColumns()) {
-            Map<String, String> resizableColsMap = table.getResizableColumnsAsMap();
-            String width = resizableColsMap.get(table.getClientId(context) + "_tableWidthState");
-
+            String width = table.getWidth();
             if (width != null) {
                 if (tableStyle != null) {
                     tableStyle = tableStyle + ";width:" + width + "px";
@@ -569,6 +568,8 @@ public class DataTableRenderer extends DataRenderer {
             return;
         }
 
+        ColumnMeta columnMeta = table.getColumnMeta().get(column.getColumnKey());
+
         ResponseWriter writer = context.getResponseWriter();
         String clientId = column.getContainerClientId(context);
 
@@ -581,8 +582,8 @@ public class DataTableRenderer extends DataRenderer {
         int priority = column.getPriority();
 
         boolean columnVisible = column.isVisible();
-        if (table.getVisibleColumnsAsMap().containsKey(column.getColumnKey())) {
-            columnVisible = table.getVisibleColumnsAsMap().get(column.getColumnKey());
+        if (columnMeta != null && columnMeta.getVisible() != null) {
+            columnVisible = columnMeta.getVisible();
         }
 
         String columnClass = getStyleClassBuilder(context)
@@ -609,8 +610,8 @@ public class DataTableRenderer extends DataRenderer {
         String style = column.getStyle();
         String width = column.getWidth();
 
-        if (resizable && table.getResizableColumnsAsMap().containsKey(column.getColumnKey())) {
-            width = table.getResizableColumnsAsMap().get(column.getColumnKey());
+        if (columnMeta != null && columnMeta.getWidth() != null) {
+            width = columnMeta.getWidth();
         }
 
         if (width != null) {
@@ -891,6 +892,8 @@ public class DataTableRenderer extends DataRenderer {
             return;
         }
 
+        ColumnMeta columnMeta = table.getColumnMeta().get(column.getColumnKey());
+
         ResponseWriter writer = context.getResponseWriter();
 
         int priority = column.getPriority();
@@ -899,8 +902,8 @@ public class DataTableRenderer extends DataRenderer {
         styleClass = styleClass == null ? DataTable.COLUMN_FOOTER_CLASS : DataTable.COLUMN_FOOTER_CLASS + " " + styleClass;
 
         boolean columnVisible = column.isVisible();
-        if (table.getVisibleColumnsAsMap().containsKey(column.getColumnKey())) {
-            columnVisible = table.getVisibleColumnsAsMap().get(column.getColumnKey());
+        if (columnMeta != null && columnMeta.getVisible() != null) {
+            columnVisible = columnMeta.getVisible();
         }
 
         if (!columnVisible) {
@@ -1261,9 +1264,11 @@ public class DataTableRenderer extends DataRenderer {
             return;
         }
 
+        ColumnMeta columnMeta = table.getColumnMeta().get(column.getColumnKey());
+
         boolean columnVisible = column.isVisible();
-        if (table.getVisibleColumnsAsMap().containsKey(column.getColumnKey())) {
-            columnVisible = table.getVisibleColumnsAsMap().get(column.getColumnKey());
+        if (columnMeta != null && columnMeta.getVisible() != null) {
+            columnVisible = columnMeta.getVisible();
         }
 
         ResponseWriter writer = context.getResponseWriter();

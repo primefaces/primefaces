@@ -23,14 +23,13 @@
  */
 package org.primefaces.component.treetable;
 
-import java.io.Serializable;
+import org.primefaces.component.api.UITableState;
+import org.primefaces.model.SortMeta;
+
 import java.util.List;
 import java.util.Map;
 
-import org.primefaces.model.FilterMeta;
-import org.primefaces.model.SortMeta;
-
-public class TreeTableState implements Serializable {
+public class TreeTableState extends UITableState {
 
     private static final long serialVersionUID = 1L;
 
@@ -41,12 +40,6 @@ public class TreeTableState implements Serializable {
     private Map<String, SortMeta> sortBy;
 
     private List<Object> selectedRowKeys;
-
-    private Map<String, FilterMeta> filterBy;
-
-    private Map<String, Boolean> visibleColumns;
-
-    private Map<String, String> resizableColumns;
 
     public int getFirst() {
         return first;
@@ -78,29 +71,5 @@ public class TreeTableState implements Serializable {
 
     public void setSelectedRowKeys(List<Object> selectedRowKeys) {
         this.selectedRowKeys = selectedRowKeys;
-    }
-
-    public Map<String, FilterMeta> getFilterBy() {
-        return filterBy;
-    }
-
-    public void setFilterBy(Map<String, FilterMeta> filterBy) {
-        this.filterBy = filterBy;
-    }
-
-    public Map<String, Boolean> getVisibleColumns() {
-        return visibleColumns;
-    }
-
-    public void setVisibleColumns(Map<String, Boolean> visibleColumns) {
-        this.visibleColumns = visibleColumns;
-    }
-
-    public Map<String, String> getResizableColumns() {
-        return resizableColumns;
-    }
-
-    public void setResizableColumns(Map<String, String> resizableColumns) {
-        this.resizableColumns = resizableColumns;
     }
 }

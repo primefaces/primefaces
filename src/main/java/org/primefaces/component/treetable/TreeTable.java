@@ -23,7 +23,19 @@
  */
 package org.primefaces.component.treetable;
 
-import java.util.*;
+import org.primefaces.PrimeFaces;
+import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.column.Column;
+import org.primefaces.event.*;
+import org.primefaces.event.data.FilterEvent;
+import org.primefaces.event.data.PageEvent;
+import org.primefaces.event.data.SortEvent;
+import org.primefaces.model.*;
+import org.primefaces.model.filter.*;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LocaleUtils;
+import org.primefaces.util.MapBuilder;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
@@ -34,17 +46,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
-
-import org.primefaces.PrimeFaces;
-import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.column.Column;
-import org.primefaces.event.*;
-import org.primefaces.event.data.FilterEvent;
-import org.primefaces.event.data.PageEvent;
-import org.primefaces.event.data.SortEvent;
-import org.primefaces.model.*;
-import org.primefaces.model.filter.*;
-import org.primefaces.util.*;
+import java.util.*;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -569,8 +571,7 @@ public class TreeTable extends TreeTableBase {
 
             // TODO selection
 
-            setVisibleColumnsAsMap(ts.getVisibleColumns());
-            setResizableColumnsAsMap(ts.getResizableColumns());
+            setColumnMeta(ts.getColumnMeta());
         }
     }
 
@@ -650,22 +651,27 @@ public class TreeTable extends TreeTableBase {
     }
 
     @Override
-    public Map<String, Boolean> getVisibleColumnsAsMap() {
-        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.visibleColumnsAsMap.name(), Collections::emptyMap);
+    public Map<String, ColumnMeta> getColumnMeta() {
+        Map<String, ColumnMeta> value =
+                (Map<String, ColumnMeta>) getStateHelper().get(InternalPropertyKeys.columnMeta);
+        if (value == null) {
+            value = new HashMap<>();
+            setColumnMeta(value);
+        }
+        return value;
+    }
+
+    public void setColumnMeta(Map<String, ColumnMeta> columnMeta) {
+        getStateHelper().put(InternalPropertyKeys.columnMeta, columnMeta);
     }
 
     @Override
-    public void setVisibleColumnsAsMap(Map<String, Boolean> visibleColumnsAsMap) {
-        getStateHelper().put(InternalPropertyKeys.visibleColumnsAsMap.name(), visibleColumnsAsMap);
+    public String getWidth() {
+        return (String) getStateHelper().eval(InternalPropertyKeys.width, null);
     }
 
     @Override
-    public Map<String, String> getResizableColumnsAsMap() {
-        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.resizableColumnsAsMap.name(), Collections::emptyMap);
-    }
-
-    @Override
-    public void setResizableColumnsAsMap(Map<String, String> resizableColumnsAsMap) {
-        getStateHelper().put(InternalPropertyKeys.resizableColumnsAsMap.name(), resizableColumnsAsMap);
+    public void setWidth(String width) {
+        getStateHelper().put(InternalPropertyKeys.width, width);
     }
 }

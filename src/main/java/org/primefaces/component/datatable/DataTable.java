@@ -1039,8 +1039,7 @@ public class DataTable extends DataTableBase {
             }
 
             setColumns(findOrderedColumns(ts.getOrderedColumnsAsString()));
-            setResizableColumnsAsMap(ts.getResizableColumns());
-            setVisibleColumnsAsMap(ts.getVisibleColumns());
+            setColumnMeta(ts.getColumnMeta());
         }
     }
 
@@ -1096,22 +1095,27 @@ public class DataTable extends DataTableBase {
     }
 
     @Override
-    public Map<String, Boolean> getVisibleColumnsAsMap() {
-        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.visibleColumnsAsMap, Collections::emptyMap);
+    public Map<String, ColumnMeta> getColumnMeta() {
+        Map<String, ColumnMeta> value =
+                (Map<String, ColumnMeta>) getStateHelper().get(InternalPropertyKeys.columnMeta);
+        if (value == null) {
+            value = new HashMap<>();
+            setColumnMeta(value);
+        }
+        return value;
+    }
+
+    public void setColumnMeta(Map<String, ColumnMeta> columnMeta) {
+        getStateHelper().put(InternalPropertyKeys.columnMeta, columnMeta);
     }
 
     @Override
-    public void setVisibleColumnsAsMap(Map<String, Boolean> visibleColumnsAsMap) {
-        getStateHelper().put(InternalPropertyKeys.visibleColumnsAsMap, visibleColumnsAsMap);
+    public String getWidth() {
+        return (String) getStateHelper().eval(InternalPropertyKeys.width, null);
     }
 
     @Override
-    public Map<String, String> getResizableColumnsAsMap() {
-        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.resizableColumnsAsMap, Collections::emptyMap);
-    }
-
-    @Override
-    public void setResizableColumnsAsMap(Map<String, String> resizableColumnsAsMap) {
-        getStateHelper().put(InternalPropertyKeys.resizableColumnsAsMap, resizableColumnsAsMap);
+    public void setWidth(String width) {
+        getStateHelper().put(InternalPropertyKeys.width, width);
     }
 }

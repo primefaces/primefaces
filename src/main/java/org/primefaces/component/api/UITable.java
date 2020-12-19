@@ -43,12 +43,13 @@ import javax.faces.context.FacesContext;
 import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionHint;
+import org.primefaces.model.ColumnMeta;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortMeta;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
 
-public interface UITable extends ColumnAware {
+public interface UITable<T extends UITableState> extends ColumnAware, MultiViewStateAware<T> {
 
     /**
      * Backward compatibility for column properties (e.g sortBy, filterBy)
@@ -103,6 +104,9 @@ public interface UITable extends ColumnAware {
     }
 
     String getVar();
+
+    String getClientId(FacesContext context);
+
 
     default Map<String, FilterMeta> initFilterBy(FacesContext context) {
         boolean invalidate = !isFilterByAsMapDefined();
@@ -261,10 +265,6 @@ public interface UITable extends ColumnAware {
         return getFilterByAsMap().get(column.getColumnKey()).getFilterValue();
     }
 
-    default boolean isSortingEnabled() {
-        return !getSortByAsMap().isEmpty();
-    }
-
     boolean isDefaultFilter();
 
     void setDefaultFilter(boolean defaultFilter);
@@ -279,7 +279,7 @@ public interface UITable extends ColumnAware {
 
     void setFilterByAsMap(Map<String, FilterMeta> sortBy);
 
-/**
+    /**
      * Returns actives filter meta.
      * @return map with {@link FilterMeta#getField()} as key and {@link FilterMeta} as value
      */
@@ -296,6 +296,8 @@ public interface UITable extends ColumnAware {
     MethodExpression getGlobalFilterFunction();
 
     void setGlobalFilterFunction(MethodExpression globalFilterFunction);
+
+
 
     default Map<String, SortMeta> initSortBy(FacesContext context) {
         Map<String, SortMeta> sortMeta = new HashMap<>();
@@ -418,6 +420,10 @@ public interface UITable extends ColumnAware {
                 .collect(Collectors.joining("','", "['", "']"));
     }
 
+    default boolean isSortingEnabled() {
+        return !getSortByAsMap().isEmpty();
+    }
+
     default HeaderRow getHeaderRow() {
         return null;
     }
@@ -438,14 +444,17 @@ public interface UITable extends ColumnAware {
 
     void setDefaultSort(boolean defaultSort);
 
-    default void decodeColumnTogglerState(UIComponent table, FacesContext context) {
+
+
+    default void decodeColumnTogglerState(FacesContext context) {
         String columnTogglerStateParam = context.getExternalContext().getRequestParameterMap()
-                .get(table.getClientId(context) + "_columnTogglerState");
+                .get(getClientId(context) + "_columnTogglerState");
         if (columnTogglerStateParam == null) {
             return;
         }
 
-        HashMap<String, Boolean> visibleColumnsAsMap = new HashMap<>();
+        Map<String, ColumnMeta> columMeta = getColumnMeta();
+        columMeta.values().stream().forEach(s -> s.setVisible(null));
 
         if (!LangUtils.isValueBlank(columnTogglerStateParam)) {
             String[] columnStates = columnTogglerStateParam.split(",");
@@ -457,25 +466,28 @@ public interface UITable extends ColumnAware {
                 String columnKey = columnState.substring(0, seperatorIndex);
                 boolean visible = Boolean.parseBoolean(columnState.substring(seperatorIndex + 1));
 
-                visibleColumnsAsMap.put(columnKey, visible);
+                ColumnMeta meta = columMeta.computeIfAbsent(columnKey, k -> new ColumnMeta(k));
+                meta.setVisible(visible);
             }
         }
 
-        setVisibleColumnsAsMap(visibleColumnsAsMap);
+        if (isMultiViewState()) {
+            UITableState state = getMultiViewState(true);
+            state.setColumnMeta(columMeta);
+        }
     }
 
-    Map<String, Boolean> getVisibleColumnsAsMap();
-
-    void setVisibleColumnsAsMap(Map<String, Boolean> visibleColumnsAsMap);
-
-    default void decodeColumnResizeState(UIComponent table, FacesContext context) {
+    default void decodeColumnResizeState(FacesContext context) {
         String columnResizeStateParam = context.getExternalContext().getRequestParameterMap()
-                .get(table.getClientId(context) + "_resizableColumnState");
+                .get(getClientId(context) + "_resizableColumnState");
         if (columnResizeStateParam == null) {
             return;
         }
 
-        HashMap<String, String> resizableColumnsMap = new HashMap<>();
+        Map<String, ColumnMeta> columMeta = getColumnMeta();
+        columMeta.values().stream().forEach(s -> s.setWidth(null));
+
+        String tableWidth = null;
 
         if (!LangUtils.isValueBlank(columnResizeStateParam)) {
             String[] columnStates = columnResizeStateParam.split(",");
@@ -483,25 +495,41 @@ public interface UITable extends ColumnAware {
                 if (LangUtils.isValueBlank(columnState)) {
                     continue;
                 }
-                int seperatorIndex = columnState.lastIndexOf('_');
-                String columnKey = columnState.substring(0, seperatorIndex);
-                String width = columnState.substring(seperatorIndex + 1);
 
-                resizableColumnsMap.put(columnKey, width);
+                if (columnState.equals(getClientId(context) + "_tableWidthState")) {
+                    tableWidth = columnState;
+                    setWidth(tableWidth);
+                }
+                else {
+                    int seperatorIndex = columnState.lastIndexOf('_');
+                    String columnKey = columnState.substring(0, seperatorIndex);
+                    String width = columnState.substring(seperatorIndex + 1);
+
+                    ColumnMeta meta = columMeta.computeIfAbsent(columnKey, k -> new ColumnMeta(k));
+                    meta.setWidth(width);
+                }
             }
         }
 
-        setResizableColumnsAsMap(resizableColumnsMap);
+        if (isMultiViewState()) {
+            UITableState state = getMultiViewState(true);
+            state.setWidth(tableWidth);
+            state.setColumnMeta(columMeta);
+        }
     }
 
-    Map<String, String> getResizableColumnsAsMap();
+    Map<String, ColumnMeta> getColumnMeta();
 
-    void setResizableColumnsAsMap(Map<String, String> resizableColumnsAsMap);
+    void setColumnMeta(Map<String, ColumnMeta> columnMeta);
 
-    default String getResizableColumnsAsString() {
-        return getResizableColumnsAsMap().entrySet()
+    String getWidth();
+
+    void setWidth(String width);
+
+    default String getColumnsWidthForClientSide() {
+        return getColumnMeta().entrySet()
                 .stream()
-                .map(e -> e.getKey() + '_' + e.getValue())
+                .map(e -> e.getKey() + '_' + e.getValue().getWidth())
                 .collect(Collectors.joining(","));
     }
 }

@@ -21,52 +21,46 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.datatable;
+package org.primefaces.model;
 
-import org.primefaces.component.api.UITableState;
+import java.io.Serializable;
 
-import java.util.List;
+public class ColumnMeta implements Serializable {
 
-public class DataTableState extends UITableState {
+    private String columnKey;
 
-    private static final long serialVersionUID = 1L;
+    private String width;
+    private Boolean visible;
 
-    private int first;
+    public ColumnMeta() {
 
-    private int rows;
-
-    private List<Object> selectedRowKeys;
-    private String orderedColumnsAsString;
-
-    public int getFirst() {
-        return first;
     }
 
-    public void setFirst(int first) {
-        this.first = first;
+    public ColumnMeta(String columnKey) {
+        this.columnKey = columnKey;
     }
 
-    public int getRows() {
-        return rows;
+    public String getColumnKey() {
+        return columnKey;
     }
 
-    public void setRows(int rows) {
-        this.rows = rows;
+    public void setColumnKey(String columnKey) {
+        this.columnKey = columnKey;
     }
 
-    public List<Object> getSelectedRowKeys() {
-        return selectedRowKeys;
+    public String getWidth() {
+        return width;
     }
 
-    public void setSelectedRowKeys(List<Object> selectedRowKeys) {
-        this.selectedRowKeys = selectedRowKeys;
+    public void setWidth(String width) {
+        this.width = width;
     }
 
-    public String getOrderedColumnsAsString() {
-        return orderedColumnsAsString;
+    public Boolean getVisible() {
+        return visible;
     }
 
-    public void setOrderedColumnsAsString(String orderedColumnsAsString) {
-        this.orderedColumnsAsString = orderedColumnsAsString;
+    public void setVisible(Boolean visible) {
+        this.visible = visible;
     }
 }
