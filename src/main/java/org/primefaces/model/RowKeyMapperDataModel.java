@@ -77,11 +77,9 @@ public class RowKeyMapperDataModel<T> extends DataModel<T> implements RowKeyMapp
 
     @Override
     public String getRowKey(T object) {
-        String rowKey = rowKeyTransformer.apply(object);
         //caching might not be necessary at this point since there is no use case that
         //requires to call DataTable#getRowKey and DataTable#getRowData in the same request
-        //cache.computeIfAbsent(rowKey, k -> object);
-        return rowKey;
+        return rowKeyTransformer.apply(object);
     }
 
     @Override
@@ -111,11 +109,6 @@ public class RowKeyMapperDataModel<T> extends DataModel<T> implements RowKeyMapp
 
     @Override
     public void setRowIndex(int i) {
-        if (i < 0) {
-            cache = null;
-            last = null;
-            rowKeyTransformer = null;
-        }
         wrapped.setRowIndex(i);
     }
 
