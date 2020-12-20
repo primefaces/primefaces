@@ -195,7 +195,9 @@ public class DataTable extends DataTableBase {
         sortByAsMap,
         visibleColumnsAsMap,
         resizableColumnsAsMap,
-        selectedRowKeys
+        selectedRowKeys,
+        columnMeta,
+        width;
     }
 
     public DataTableFeature getFeature(DataTableFeatureKey key) {
