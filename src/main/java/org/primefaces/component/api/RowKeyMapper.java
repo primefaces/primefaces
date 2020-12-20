@@ -21,11 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model;
+package org.primefaces.component.api;
 
-public interface SelectableDataModel<T> {
+public interface RowKeyMapper<T> {
 
-    Object getRowKey(T object);
+    String getRowKey(T object);
 
     T getRowData(String rowKey);
 }
