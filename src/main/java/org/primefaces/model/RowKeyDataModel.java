@@ -23,15 +23,19 @@
  */
 package org.primefaces.model;
 
-import org.primefaces.component.api.RowKeyMapper;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.datatable.DataTableBase;
 
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
 import javax.faces.model.DataModel;
 import javax.faces.model.DataModelListener;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class RowKeyMapperDataModel<T> extends DataModel<T> implements RowKeyMapper<T> {
+public class RowKeyDataModel<T> extends DataModel<T> implements Converter<T> {
 
     private static final Function<Object, String> DEFAULT_ROWKEY_TRANSFORMER = o -> Objects.toString(Objects.hashCode(o));
 
@@ -39,34 +43,51 @@ public class RowKeyMapperDataModel<T> extends DataModel<T> implements RowKeyMapp
 
     private Function<Object, String> rowKeyTransformer;
 
-    private Map<String, T> cache;
+    private Map<String, T> seen;
 
     private Iterator<T> last;
 
     // for serialization
-    public RowKeyMapperDataModel() {
+    public RowKeyDataModel() {
         // NOOP
     }
 
-    public RowKeyMapperDataModel(DataModel<T> wrapped, Function<Object, String> rowKeyTransformer) {
+    public RowKeyDataModel(DataModel<T> wrapped, Function<Object, String> rowKeyTransformer) {
         this.wrapped = wrapped;
         this.rowKeyTransformer = rowKeyTransformer;
-        cache = new HashMap<>();
+        seen = new HashMap<>();
         last = wrapped.iterator();
         setWrappedData(wrapped.getWrappedData());
     }
 
-    public RowKeyMapperDataModel(DataModel<T> wrapped) {
+    public RowKeyDataModel(DataModel<T> wrapped) {
         this(wrapped, DEFAULT_ROWKEY_TRANSFORMER);
     }
 
+    public static <T> RowKeyDataModel<T> of(FacesContext context, DataTable table, DataModel<T> model) {
+        boolean hasRowKeyVe = table.getValueExpression(DataTableBase.PropertyKeys.rowKey.name()) != null;
+        if (hasRowKeyVe) {
+            Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+            String var = table.getVar();
+            Function<Object, String> rowKeyTransformer = o -> {
+                requestMap.put(var, o);
+                return table.getRowKey();
+            };
+
+            return new RowKeyDataModel<>(model, rowKeyTransformer);
+        }
+        else {
+            return new RowKeyDataModel<>(model);
+        }
+    }
+
     @Override
-    public T getRowData(String rowKey) {
-        T rowData = cache.get(rowKey);
+    public T getAsObject(FacesContext context, UIComponent component, String rowKey) {
+        T rowData = seen.get(rowKey);
         while (rowData == null && last.hasNext()) {
             T o = last.next();
-            String oRowKey = getRowKey(o);
-            cache.put(oRowKey, o);
+            String oRowKey = getAsString(context, component, o);
+            seen.put(oRowKey, o);
             if (Objects.equals(oRowKey, rowKey)) {
                 rowData = o;
                 break;
@@ -76,10 +97,10 @@ public class RowKeyMapperDataModel<T> extends DataModel<T> implements RowKeyMapp
     }
 
     @Override
-    public String getRowKey(T object) {
+    public String getAsString(FacesContext context, UIComponent component, T value) {
         //caching might not be necessary at this point since there is no use case that
         //requires to call DataTable#getRowKey and DataTable#getRowData in the same request
-        return rowKeyTransformer.apply(object);
+        return rowKeyTransformer.apply(value);
     }
 
     @Override

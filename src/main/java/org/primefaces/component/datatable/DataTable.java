@@ -25,7 +25,6 @@ package org.primefaces.component.datatable;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
-import org.primefaces.component.api.RowKeyMapper;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
@@ -49,11 +48,11 @@ import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
 import javax.faces.event.*;
 import javax.faces.model.DataModel;
 import java.lang.reflect.Array;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -560,20 +559,22 @@ public class DataTable extends DataTableBase {
 
     public Object getRowKey(Object object) {
         DataModel model = getDataModel();
-        if (!(model instanceof RowKeyMapper)) {
-            throw new FacesException("Unable to retrieve row key from data model. Selection is disabled.");
+        if (!(model instanceof Converter)) {
+            throw new FacesException("Unable to retrieve row key from data model. " +
+                    "DataModel does not implement " + Converter.class.getName());
         }
 
-        return ((RowKeyMapper) getDataModel()).getRowKey(object);
+        return ((Converter) getDataModel()).getAsString(getFacesContext(), this, object);
     }
 
     public Object getRowData(String rowKey) {
         DataModel model = getDataModel();
-        if (!(model instanceof RowKeyMapper)) {
-            throw new FacesException("Unable to retrieve data from row key. Selection is disabled.");
+        if (!(model instanceof Converter)) {
+            throw new FacesException("Unable to retrieve row key from data model. " +
+                    "DataModel does not implement " + Converter.class.getName());
         }
 
-        return ((RowKeyMapper) model).getRowData(rowKey);
+        return ((Converter) model).getAsObject(getFacesContext(), this, rowKey);
     }
 
     public void findSelectedRowKeys() {
@@ -1144,23 +1145,8 @@ public class DataTable extends DataTableBase {
     @Override
     protected DataModel getDataModel() {
         DataModel model = super.getDataModel();
-        if (!(model instanceof RowKeyMapper) && isSelectionEnabled()) {
-            boolean hasRowKeyVe = getValueExpression(PropertyKeys.rowKey.toString()) != null;
-            if (hasRowKeyVe) {
-                Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
-                String var = getVar();
-                Function<Object, String> rowKeyTransformer = o -> {
-                    requestMap.put(var, o);
-                    return getRowKey();
-                };
-
-                model = new RowKeyMapperDataModel(model, rowKeyTransformer);
-            }
-            else {
-                model = new RowKeyMapperDataModel(model);
-            }
-
-            setDataModel(model);
+        if (!(model instanceof Converter) && isSelectionEnabled()) {
+            model = RowKeyDataModel.of(getFacesContext(), this, model);
         }
 
         return model;
