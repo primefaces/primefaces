@@ -1040,7 +1040,6 @@ public class DataTableRenderer extends DataRenderer {
             throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
-        String var = table.getVar();
         String rowIndexVar = table.getRowIndexVar();
         String clientId = table.getClientId(context);
         String emptyMessage = table.getEmptyMessage();
@@ -1116,9 +1115,6 @@ public class DataTableRenderer extends DataRenderer {
         table.setRowIndex(-1);
         if (rowIndexVar != null) {
             context.getExternalContext().getRequestMap().remove(rowIndexVar);
-        }
-        if (var != null) {
-            context.getExternalContext().getRequestMap().remove(var);
         }
     }
 
@@ -1204,7 +1200,13 @@ public class DataTableRenderer extends DataRenderer {
         HeaderRow headerRow = table.getHeaderRow();
 
         if (selectionEnabled) {
-            rowKey = table.getRowKey(table.getRowData());
+            //try rowKey attribute
+            rowKey = table.getRowKey();
+
+            //ask selectable datamodel
+            if (rowKey == null) {
+                rowKey = table.getRowKeyFromModel(table.getRowData());
+            }
         }
 
         //Preselection
@@ -1520,7 +1522,7 @@ public class DataTableRenderer extends DataRenderer {
         }
         else {
             String ariaRowLabel = table.getAriaRowLabel();
-            Object rowKey = null;
+            Object rowKey = table.getRowKey();
             String boxClass = HTML.CHECKBOX_BOX_CLASS;
             boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
             boxClass = checked ? boxClass + " ui-state-active" : boxClass;
@@ -1529,9 +1531,6 @@ public class DataTableRenderer extends DataRenderer {
             if (isHeaderCheckbox) {
                 rowKey = "head";
                 ariaRowLabel = MessageFactory.getMessage(DataTable.ARIA_HEADER_CHECKBOX_ALL);
-            }
-            else {
-                rowKey = table.getRowKey(table.getRowData());
             }
 
             writer.startElement("div", null);

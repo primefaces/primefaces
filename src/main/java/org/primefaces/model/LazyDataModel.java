@@ -26,6 +26,8 @@ package org.primefaces.model;
 import java.io.Serializable;
 import java.util.*;
 
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.faces.model.DataModel;
 import javax.faces.model.DataModelEvent;
 import javax.faces.model.DataModelListener;
@@ -33,7 +35,7 @@ import javax.faces.model.DataModelListener;
 /**
  * Custom lazy loading DataModel to deal with huge datasets
  */
-public abstract class LazyDataModel<T> extends DataModel<T> implements Serializable {
+public abstract class LazyDataModel<T> extends DataModel<T> implements SelectableDataModel<T>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -134,6 +136,26 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Serializa
      * @return the data
      */
     public abstract List<T> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy);
+
+    @Override
+    public T getRowData(String rowKey) {
+        throw new UnsupportedOperationException(
+                getMessage("getRowData(String rowKey) must be implemented by %s when basic rowKey algorithm is not used [component=%s,view=%s]."));
+    }
+
+    @Override
+    public Object getRowKey(T object) {
+        throw new UnsupportedOperationException(
+                getMessage("getRowKey(T object) must be implemented by %s when basic rowKey algorithm is not used [component=%s,view=%s]."));
+    }
+
+    private String getMessage(String format) {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        String viewId = facesContext.getViewRoot().getViewId();
+        UIComponent component = UIComponent.getCurrentComponent(facesContext);
+        String clientId = component == null ? "<unknown>" : component.getClientId(facesContext);
+        return String.format(format, getClass().getName(), clientId, viewId);
+    }
 
     @Override
     public Iterator<T> iterator() {

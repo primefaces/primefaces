@@ -25,7 +25,6 @@ package org.primefaces.component.datatable;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
-import org.primefaces.component.api.RowKeyMapper;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
@@ -53,7 +52,6 @@ import javax.faces.event.*;
 import javax.faces.model.DataModel;
 import java.lang.reflect.Array;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -431,7 +429,7 @@ public class DataTable extends DataTableBase {
     }
 
     public void loadLazyData() {
-        Object model = getValue();
+        DataModel model = getDataModel();
 
         if (model instanceof LazyDataModel) {
             LazyDataModel lazyModel = (LazyDataModel) model;
@@ -459,7 +457,7 @@ public class DataTable extends DataTableBase {
     }
 
     public void loadLazyScrollData(int offset, int rows) {
-        Object model = getValue();
+        DataModel model = getDataModel();
 
         if (model instanceof LazyDataModel) {
             LazyDataModel lazyModel = (LazyDataModel) model;
@@ -477,8 +475,9 @@ public class DataTable extends DataTableBase {
     }
 
     public void clearLazyCache() {
-        if (getValue() instanceof LazyDataModel) {
-            ((LazyDataModel) getValue()).setWrappedData(null);
+        if (getDataModel() instanceof LazyDataModel) {
+            LazyDataModel model = (LazyDataModel) getDataModel();
+            model.setWrappedData(null);
         }
     }
 
@@ -553,22 +552,49 @@ public class DataTable extends DataTableBase {
         return null;
     }
 
-    public Object getRowKey(Object object) {
+    public Object getRowKeyFromModel(Object object) {
         DataModel model = getDataModel();
-        if (!(model instanceof RowKeyMapper)) {
-            throw new FacesException("Unable to retrieve row key from data model. Selection is disabled.");
+        if (!(model instanceof SelectableDataModel)) {
+            throw new FacesException("DataModel must implement org.primefaces.model.SelectableDataModel when selection is enabled.");
         }
 
-        return ((RowKeyMapper) getDataModel()).getRowKey(object);
+        return ((SelectableDataModel) getDataModel()).getRowKey(object);
     }
 
     public Object getRowData(String rowKey) {
-        DataModel model = getDataModel();
-        if (!(model instanceof RowKeyMapper)) {
-            throw new FacesException("Unable to retrieve data from row key. Selection is disabled.");
-        }
 
-        return ((RowKeyMapper) model).getRowData(rowKey);
+        boolean hasRowKeyVe = getValueExpression(PropertyKeys.rowKey.toString()) != null;
+        DataModel model = getDataModel();
+
+        // use rowKey if available and if != lazy
+        // lazy must implement #getRowData
+        if (hasRowKeyVe && !(model instanceof LazyDataModel)) {
+            Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
+            String var = getVar();
+            Collection data = (Collection) getDataModel().getWrappedData();
+
+            if (data != null) {
+                for (Iterator it = data.iterator(); it.hasNext(); ) {
+                    Object object = it.next();
+                    requestMap.put(var, object);
+
+                    if (String.valueOf(getRowKey()).equals(rowKey)) {
+                        return object;
+                    }
+                }
+            }
+
+            return null;
+        }
+        else {
+            if (!(model instanceof SelectableDataModel)) {
+                throw new FacesException("DataModel must implement "
+                        + SelectableDataModel.class.getName()
+                        + " when selection is enabled or you need to define rowKey attribute");
+            }
+
+            return ((SelectableDataModel) model).getRowData(rowKey);
+        }
     }
 
     public void findSelectedRowKeys() {
@@ -612,7 +638,7 @@ public class DataTable extends DataTableBase {
     protected void addToSelectedRowKeys(Object object, Map<String, Object> requestMap, String var, boolean hasRowKey) {
         requestMap.put(var, object);
 
-        Object rowKey = hasRowKey ? getRowKey() : getRowKey(object);
+        Object rowKey = hasRowKey ? getRowKey() : getRowKeyFromModel(object);
 
         if (rowKey != null) {
             selectedRowKeys.add(rowKey);
@@ -1046,31 +1072,6 @@ public class DataTable extends DataTableBase {
     @Override
     public void setSortByAsMap(Map<String, SortMeta> sortBy) {
         getStateHelper().put(InternalPropertyKeys.sortByAsMap, sortBy);
-    }
-
-    @Override
-    protected DataModel getDataModel() {
-        DataModel model = super.getDataModel();
-        if (!(model instanceof RowKeyMapper) && isSelectionEnabled()) {
-            boolean hasRowKeyVe = getValueExpression(PropertyKeys.rowKey.toString()) != null;
-            if (hasRowKeyVe) {
-                Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
-                String var = getVar();
-                Function<Object, String> rowKeyTransformer = o -> {
-                    requestMap.put(var, o);
-                    return getRowKey();
-                };
-
-                model = new RowKeyMapperDataModel(model, rowKeyTransformer);
-            }
-            else {
-                model = new RowKeyMapperDataModel(model);
-            }
-
-            setDataModel(model);
-        }
-
-        return model;
     }
 
     @Override
