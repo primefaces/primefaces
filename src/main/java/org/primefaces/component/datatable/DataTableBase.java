@@ -237,11 +237,11 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         getStateHelper().put(PropertyKeys.scrollRows, scrollRows);
     }
 
-    public String getRowKey() {
-        return (String) getStateHelper().eval(PropertyKeys.rowKey, null);
+    public Object getRowKey() {
+        return getStateHelper().eval(PropertyKeys.rowKey, null);
     }
 
-    public void setRowKey(String rowKey) {
+    public void setRowKey(Object rowKey) {
         getStateHelper().put(PropertyKeys.rowKey, rowKey);
     }
 
