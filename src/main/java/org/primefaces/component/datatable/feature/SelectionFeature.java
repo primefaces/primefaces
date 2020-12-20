@@ -104,8 +104,7 @@ public class SelectionFeature implements DataTableFeature {
 
                 // check if a row can be selectable
                 Consumer<Object> selectableRow = o -> {
-                    requestMap.put(var, o);
-                    String rowKey = table.getRowKey(); // table.getRowKeyFromModel #6169
+                    String rowKey = table.getRowKey(o);
                     if (LangUtils.isNotBlank(rowKey) && !table.isDisabledSelection()) {
                         rowKeys.add(rowKey);
                     }
@@ -176,7 +175,7 @@ public class SelectionFeature implements DataTableFeature {
             if (!rowKeys.isEmpty() && ALL_SELECTOR.equals(rowKeys.iterator().next())) {
                 for (int i = 0; i < table.getRowCount(); i++) {
                     table.setRowIndex(i);
-                    String rowKey = table.getRowKeyFromModel(table.getRowData());
+                    String rowKey = table.getRowKey(table.getRowData());
                     if (rowKey != null) {
                         Object rowData = table.getRowData();
                         rowKeys.add(rowKey);
