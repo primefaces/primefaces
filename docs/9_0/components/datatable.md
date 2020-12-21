@@ -777,8 +777,7 @@ Lazy Loading is an approach to deal with huge datasets efficiently, regular ajax
 works by rendering only a particular page but still requires all data to be loaded into memory. Lazy
 loading datatable renders a particular page similarly but also only loads the page data into memory
 not the whole dataset. In order to implement this, you’d need to bind a
-_org.primefaces.model.LazyDataModel_ as the value and implement _load_ method and enable _lazy_
-option. Also it is required to implement _getRowData_ and _getRowKey_ if you have selection enabled.
+_org.primefaces.model.LazyDataModel_ as the value.
 
 
 ```xhtml

@@ -1147,6 +1147,7 @@ public class DataTable extends DataTableBase {
         DataModel model = super.getDataModel();
         if (!(model instanceof Converter) && isSelectionEnabled()) {
             model = RowKeyDataModel.of(getFacesContext(), this, model);
+            setDataModel(model);
         }
 
         return model;
