@@ -56,6 +56,8 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
         height,
         minHeight,
         maxHeight,
+        horizontalScroll,
+        verticalScroll,
         width,
         responsive,
         orientationAxis,
@@ -210,6 +212,22 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
 
     public void setMaxHeight(Integer maxHeight) {
         getStateHelper().put(PropertyKeys.maxHeight, maxHeight);
+    }
+
+    public boolean isHorizontalScroll() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.horizontalScroll, false);
+    }
+
+    public void setHorizontalScroll(boolean horizontalScroll) {
+        getStateHelper().put(PropertyKeys.horizontalScroll, horizontalScroll);
+    }
+
+    public boolean isVerticalScroll() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.verticalScroll, false);
+    }
+
+    public void setVerticalScroll(boolean verticalScroll) {
+        getStateHelper().put(PropertyKeys.verticalScroll, verticalScroll);
     }
 
     public String getWidth() {

@@ -34,6 +34,8 @@ clientTimeZone | null | Object | Time zone the user would like to see dates in U
 height | null | String | The height of the timeline in pixels or as a percentage. When height is undefined or null, the height of the timeline is automatically adjusted to fit the contents. It is possible to set a maximum height using option maxHeight to prevent the timeline from getting too high in case of automatically calculated height.
 maxHeight | null | Integer | Specifies the maximum height for the Timeline in pixels.
 minHeight | 0 | Integer | Specifies a minimum height for the Timeline in pixels.
+horizontalScroll | false | Boolean | Specifies the horizontal scrollable.
+verticalScroll | false | Boolean | Specifies the vertical scrollable.
 width | 100% | String | The width of the timeline in pixels or as a percentage.
 responsive | true | Boolean | Check if the timeline container is resized, and if so, resize the timeline. Useful when the webpage (browser window) or a layout pane / unit containing the timeline component is resized.
 ~axisOnTop~ | false | Boolean | (Deprecated, use orientationAxis instead.) If false, the horizontal axis is drawn at the bottom. If true, the axis is drawn on top.
