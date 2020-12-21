@@ -557,7 +557,7 @@ public class DataTable extends DataTableBase {
         return null;
     }
 
-    public Object getRowKey(Object object) {
+    public String getRowKey(Object object) {
         DataModel model = getDataModel();
         if (!(model instanceof Converter)) {
             throw new FacesException("Unable to retrieve row key from data model. " +
