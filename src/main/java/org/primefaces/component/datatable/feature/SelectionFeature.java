@@ -50,7 +50,7 @@ public class SelectionFeature implements DataTableFeature {
         boolean isFiltered = (filteredValue != null);
 
         String selection = params.get(clientId + "_selection");
-        Set<String> rowKeys = LangUtils.newHashSet(selection.split(","));
+        Set<String> rowKeys = LangUtils.newLinkedHashSet(selection.split(","));
 
         if (isFiltered) {
             table.setValue(null);

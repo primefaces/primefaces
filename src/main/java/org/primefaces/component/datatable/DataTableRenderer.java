@@ -1205,18 +1205,12 @@ public class DataTableRenderer extends DataRenderer {
 
         ResponseWriter writer = context.getResponseWriter();
         boolean selectionEnabled = table.isSelectionEnabled();
-        Object rowKey = null;
+        String rowKey = null;
         List<UIColumn> columns = table.getColumns();
         HeaderRow headerRow = table.getHeaderRow();
 
         if (selectionEnabled) {
-            //try rowKey attribute
-            rowKey = table.getRowKey();
-
-            //ask selectable datamodel
-            if (rowKey == null) {
-                rowKey = table.getRowKeyFromModel(table.getRowData());
-            }
+            rowKey = table.getRowKey(table.getRowData());
         }
 
         //Preselection
@@ -1226,7 +1220,7 @@ public class DataTableRenderer extends DataRenderer {
         String rowStyleClass = getStyleClassBuilder(context)
                 .add(DataTable.ROW_CLASS)
                 .add(rowIndex % 2 == 0, DataTable.EVEN_ROW_CLASS, DataTable.ODD_ROW_CLASS)
-                .add(selectionEnabled && !table.isDisabledSelection(), DataTable.SELECTABLE_ROW_CLASS)
+                .add(selectionEnabled && !disabled, DataTable.SELECTABLE_ROW_CLASS)
                 .add(selected && !disabled, "ui-state-highlight")
                 .add(table.isEditingRow(),  DataTable.EDITING_ROW_CLASS)
                 .add(table.getRowStyleClass())
@@ -1534,7 +1528,7 @@ public class DataTableRenderer extends DataRenderer {
         }
         else {
             String ariaRowLabel = table.getAriaRowLabel();
-            Object rowKey = table.getRowKey();
+            Object rowKey = null;
             String boxClass = HTML.CHECKBOX_BOX_CLASS;
             boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
             boxClass = checked ? boxClass + " ui-state-active" : boxClass;
@@ -1543,6 +1537,9 @@ public class DataTableRenderer extends DataRenderer {
             if (isHeaderCheckbox) {
                 rowKey = "head";
                 ariaRowLabel = MessageFactory.getMessage(DataTable.ARIA_HEADER_CHECKBOX_ALL);
+            }
+            else {
+                rowKey = table.getRowKey();
             }
 
             writer.startElement("div", null);
