@@ -4737,11 +4737,27 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Whether to add the items immediately when pasting into the input. Default false.]]>
+            </description>
+            <name>addOnPaste</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Prevent duplicate entries from being added. Default false.]]>
             </description>
             <name>unique</name>
             <required>false</required>
             <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Separator character to allow multiple values such if a list is pasted into the input. Default is ','.]]>
+            </description>
+            <name>separator</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
