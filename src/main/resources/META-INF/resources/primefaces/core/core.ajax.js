@@ -251,7 +251,12 @@ if (!PrimeFaces.ajax) {
                     PrimeFaces.ajax.Utils.updateHead(content);
                 }
                 else {
-                    $(PrimeFaces.escapeClientId(id)).replaceWith(content);
+                    // Github #6700
+                    //$(PrimeFaces.escapeClientId(id)).replaceWith(content);
+                    var element = $(PrimeFaces.escapeClientId(id));
+                    element.css('display', 'none');
+                    element.before(content);
+                    element.remove();
                 }
             }
         },
