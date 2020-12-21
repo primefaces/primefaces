@@ -4368,6 +4368,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 else {
                     PrimeFaces.ajax.Request.handle(options);
                 }
+
+                // GitHub #2457 select row after it was moved
+                if($this.cfg.selectionMode === 'single') {
+                    $this.selectRow(fromNode, true);
+                }
             },
             change: function(event, ui) {
                 if($this.cfg.scrollable) {
