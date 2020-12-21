@@ -550,46 +550,49 @@ public class DataTable extends DataTableBase {
 
     public String getRowKey(Object object) {
         DataModel model = getDataModel();
-        if (!(model instanceof SelectableDataModel)) {
-            throw new FacesException("DataModel must implement org.primefaces.model.SelectableDataModel when selection is enabled.");
+        if (model instanceof SelectableDataModel) {
+            return ((SelectableDataModel) model).getRowKey(object);
         }
-
-        return ((SelectableDataModel) getDataModel()).getRowKey(object);
+        else if (!isLazy()) {
+            boolean hasRowKeyVe = getValueExpression(PropertyKeys.rowKey.toString()) != null;
+            if (!hasRowKeyVe) {
+                return String.valueOf(Objects.hashCode(object));
+            }
+            else {
+                Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
+                String var = getVar();
+                requestMap.put(var, object);
+                String rowKey = getRowKey();
+                requestMap.remove(var);
+                return rowKey;
+            }
+        }
+        else {
+            throw new FacesException("DataModel must implement "
+                    + SelectableDataModel.class.getName()
+                    + " when selection is enabled or you need to define rowKey attribute");
+        }
     }
 
     public Object getRowData(String rowKey) {
-
-        boolean hasRowKeyVe = getValueExpression(PropertyKeys.rowKey.toString()) != null;
         DataModel model = getDataModel();
-
-        // use rowKey if available and if != lazy
-        // lazy must implement #getRowData
-        if (hasRowKeyVe && !(model instanceof LazyDataModel)) {
-            Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
-            String var = getVar();
+        if (model instanceof SelectableDataModel) {
+            return ((SelectableDataModel) model).getRowData(rowKey);
+        }
+        else if (!isLazy()) {
             Collection data = (Collection) getDataModel().getWrappedData();
-
-            if (data != null) {
-                for (Iterator it = data.iterator(); it.hasNext(); ) {
-                    Object object = it.next();
-                    requestMap.put(var, object);
-
-                    if (String.valueOf(getRowKey()).equals(rowKey)) {
-                        return object;
-                    }
+            for (Object o : data) {
+                if (Objects.equals(rowKey, getRowKey(o))) {
+                    return o;
                 }
             }
 
             return null;
         }
         else {
-            if (!(model instanceof SelectableDataModel)) {
-                throw new FacesException("DataModel must implement "
-                        + SelectableDataModel.class.getName()
-                        + " when selection is enabled or you need to define rowKey attribute");
-            }
-
-            return ((SelectableDataModel) model).getRowData(rowKey);
+            throw new FacesException("DataModel must implement "
+                    + SelectableDataModel.class.getName()
+                    + " when selection is enabled or you need to define rowKey attribute");
         }
     }
 

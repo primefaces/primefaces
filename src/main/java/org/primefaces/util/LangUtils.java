@@ -255,8 +255,8 @@ public class LangUtils {
         return Collections.unmodifiableList(Arrays.asList(args));
     }
 
-    public static <E> Set<E> newHashSet(E... elements) {
-        Set<E> set = new HashSet<>(elements.length);
+    public static <E> Set<E> newLinkedHashSet(E... elements) {
+        Set<E> set = new LinkedHashSet<>(elements.length);
         Collections.addAll(set, elements);
         return set;
     }

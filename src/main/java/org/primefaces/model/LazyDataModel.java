@@ -144,7 +144,7 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
     }
 
     @Override
-    public Object getRowKey(T object) {
+    public String getRowKey(T object) {
         throw new UnsupportedOperationException(
                 getMessage("getRowKey(T object) must be implemented by %s when basic rowKey algorithm is not used [component=%s,view=%s]."));
     }
