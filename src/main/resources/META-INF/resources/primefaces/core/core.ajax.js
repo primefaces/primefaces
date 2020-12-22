@@ -251,12 +251,7 @@ if (!PrimeFaces.ajax) {
                     PrimeFaces.ajax.Utils.updateHead(content);
                 }
                 else {
-                    // Github #6700
-                    //$(PrimeFaces.escapeClientId(id)).replaceWith(content);
-                    var element = $(PrimeFaces.escapeClientId(id));
-                    element.css('display', 'none');
-                    element.before(content);
-                    element.remove();
+                    $(PrimeFaces.escapeClientId(id)).replaceWith(content);
                 }
             }
         },
