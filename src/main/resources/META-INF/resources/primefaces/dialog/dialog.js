@@ -780,6 +780,16 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 $this.positionInitialized = false;
             }
         });
+        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_align', function() {
+            if ($this.isVisible()) {
+                // instant reinit position
+                $this.initPosition();
+            }
+            else {
+                // reset, so the dialog will be positioned again when showing the dialog next time
+                $this.positionInitialized = false;
+            }
+        });
     },
 
     /**
