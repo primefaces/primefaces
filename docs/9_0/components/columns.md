@@ -13,7 +13,7 @@ Columns is used by datatable to create columns dynamically.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 | id | null | String | Unique identifier of the component
 | rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -59,6 +59,7 @@ Columns is used by datatable to create columns dynamically.
 | sortFunction              | null               | MethodExpression | Custom pluggable sortFunction.
 | sortPriority              | Integer.MAX_VALUE  | Integer          | Sets default sorting priority over the other columns. Default is Integer.MAX_VALUE. Higher is less priority.
 | caseSensitiveSort         | false              | Boolean          | Case sensitivity for sorting, insensitive by default.
+| displayPriority           | 0                  | Integer          | Defines the display priority, in which order the columns should be displayed.
 
 ## Getting Started with Columns
 See dynamic columns section in datatable documentation for detailed information.

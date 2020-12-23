@@ -518,10 +518,6 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         }
     }
 
-    Map<String, ColumnMeta> getColumnMeta();
-
-    void setColumnMeta(Map<String, ColumnMeta> columnMeta);
-
     String getWidth();
 
     void setWidth(String width);

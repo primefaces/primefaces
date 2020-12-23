@@ -75,7 +75,8 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         sortOrder,
         sortPriority,
         nullSortOrder,
-        caseSensitiveSort
+        caseSensitiveSort,
+        displayPriority
     }
 
     public ColumnBase() {
@@ -411,6 +412,7 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         getStateHelper().put(PropertyKeys.sortOrder, sortOrder);
     }
 
+    @Override
     public int getSortPriority() {
         return (Integer) getStateHelper().eval(PropertyKeys.sortPriority, SortMeta.MIN_PRIORITY);
     }
@@ -419,6 +421,7 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         getStateHelper().put(PropertyKeys.sortPriority, sortPriority);
     }
 
+    @Override
     public int getNullSortOrder() {
         return (Integer) getStateHelper().eval(PropertyKeys.nullSortOrder, 1);
     }
@@ -427,11 +430,21 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         getStateHelper().put(PropertyKeys.nullSortOrder, nullSortOrder);
     }
 
+    @Override
     public boolean isCaseSensitiveSort() {
         return (Boolean) getStateHelper().eval(PropertyKeys.caseSensitiveSort, false);
     }
 
     public void setCaseSensitiveSort(boolean caseSensitiveSort) {
         getStateHelper().put(PropertyKeys.caseSensitiveSort, caseSensitiveSort);
+    }
+
+    @Override
+    public int getDisplayPriority() {
+        return (Integer) getStateHelper().eval(PropertyKeys.displayPriority, 0);
+    }
+
+    public void setDisplayPriority(int displayPriority) {
+        getStateHelper().put(PropertyKeys.displayPriority, displayPriority);
     }
 }

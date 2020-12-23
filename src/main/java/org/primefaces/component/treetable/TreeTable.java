@@ -365,7 +365,7 @@ public class TreeTable extends TreeTableBase {
             return this.columns;
         }
 
-        List<UIColumn> columns = initColumns();
+        List<UIColumn> columns = collectColumns();
 
         // lets cache it only when RENDER_RESPONSE is reached, the columns might change before reaching that phase
         // see https://github.com/primefaces/primefaces/issues/2110

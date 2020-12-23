@@ -31,6 +31,7 @@ public class ColumnMeta implements Serializable {
 
     private String width;
     private Boolean visible;
+    private Integer displayPriority;
 
     public ColumnMeta() {
 
@@ -62,5 +63,13 @@ public class ColumnMeta implements Serializable {
 
     public void setVisible(Boolean visible) {
         this.visible = visible;
+    }
+
+    public Integer getDisplayPriority() {
+        return displayPriority;
+    }
+
+    public void setDisplayPriority(Integer displayPriority) {
+        this.displayPriority = displayPriority;
     }
 }

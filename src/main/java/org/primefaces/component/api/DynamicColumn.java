@@ -334,4 +334,9 @@ public class DynamicColumn implements UIColumn {
         return columns.getExportValue();
     }
 
+    @Override
+    public int getDisplayPriority() {
+        return columns.getDisplayPriority();
+    }
+
 }

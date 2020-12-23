@@ -692,7 +692,7 @@ public class DataTable extends DataTableBase {
             return this.columns;
         }
 
-        List<UIColumn> columns = initColumns();
+        List<UIColumn> columns = collectColumns();
 
         // lets cache it only when RENDER_RESPONSE is reached, the columns might change before reaching that phase
         // see https://github.com/primefaces/primefaces/issues/2110
@@ -1105,6 +1105,7 @@ public class DataTable extends DataTableBase {
         return value;
     }
 
+    @Override
     public void setColumnMeta(Map<String, ColumnMeta> columnMeta) {
         getStateHelper().put(InternalPropertyKeys.columnMeta, columnMeta);
     }

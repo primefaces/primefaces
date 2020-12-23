@@ -59,6 +59,7 @@ treetable and more.
 | sortFunction              | null               | MethodExpression | Custom pluggable sortFunction.
 | sortPriority              | Integer.MAX_VALUE  | Integer          | Sets default sorting priority over the other columns. Default is Integer.MAX_VALUE. Higher is less priority.
 | caseSensitiveSort         | false              | Boolean          | Case sensitivity for sorting, insensitive by default.
+| displayPriority           | 0                  | Integer          | Defines the display priority, in which order the columns should be displayed.
 
 ## Getting Started with Column
 As column is a reused component, see documentation of components that use a column.

@@ -71,7 +71,8 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
         sortOrder,
         sortPriority,
         nullSortOrder,
-        caseSensitiveSort
+        caseSensitiveSort,
+        displayPriority
     }
 
     public ColumnsBase() {
@@ -423,5 +424,14 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
 
     public void setCaseSensitiveSort(boolean caseSensitiveSort) {
         getStateHelper().put(PropertyKeys.caseSensitiveSort, caseSensitiveSort);
+    }
+
+    @Override
+    public int getDisplayPriority() {
+        return (Integer) getStateHelper().eval(PropertyKeys.displayPriority, 0);
+    }
+
+    public void setDisplayPriority(int displayPriority) {
+        getStateHelper().put(PropertyKeys.displayPriority, displayPriority);
     }
 }
