@@ -522,6 +522,33 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
     void setWidth(String width);
 
+    default void decodeColumnDisplayOrderState(FacesContext context) {
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String columnOrderParam = params.get(getClientId(context) + "_columnOrder");
+        if (LangUtils.isValueBlank(columnOrderParam)) {
+            return;
+        }
+
+        Map<String, ColumnMeta> columMeta = getColumnMeta();
+        columMeta.values().stream().forEach(s -> s.setDisplayPriority(0));
+
+        String[] columnKeys = columnOrderParam.split(",");
+        for (int i = 0; i < columnKeys.length; i++) {
+            String columnKey = columnKeys[i];
+            if (LangUtils.isValueBlank(columnKey)) {
+                continue;
+            }
+
+            ColumnMeta meta = columMeta.computeIfAbsent(columnKey, k -> new ColumnMeta(k));
+            meta.setDisplayPriority(i);
+        }
+
+        if (isMultiViewState()) {
+            UITableState ts = getMultiViewState(true);
+            ts.setColumnMeta(columMeta);
+        }
+    }
+
     default String getColumnsWidthForClientSide() {
         return getColumnMeta().entrySet()
                 .stream()

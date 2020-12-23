@@ -24,45 +24,18 @@
 package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
-import java.util.Map;
 import javax.faces.FacesException;
 
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
-import org.primefaces.component.datatable.DataTableState;
-import org.primefaces.model.ColumnMeta;
-import org.primefaces.util.LangUtils;
 
 public class DraggableColumnsFeature implements DataTableFeature {
 
     @Override
     public void decode(FacesContext context, DataTable table) {
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String columnOrderParam = params.get(table.getClientId(context) + "_columnOrder");
-        if (LangUtils.isValueBlank(columnOrderParam)) {
-            return;
-        }
-
-        Map<String, ColumnMeta> columMeta = table.getColumnMeta();
-        columMeta.values().stream().forEach(s -> s.setDisplayPriority(0));
-
-        String[] columnKeys = columnOrderParam.split(",");
-        for (int i = 0; i < columnKeys.length; i++) {
-            String columnKey = columnKeys[i];
-            if (LangUtils.isValueBlank(columnKey)) {
-                continue;
-            }
-
-            ColumnMeta meta = columMeta.computeIfAbsent(columnKey, k -> new ColumnMeta(k));
-            meta.setDisplayPriority(i);
-        }
-
-        if (table.isMultiViewState()) {
-            DataTableState ts = table.getMultiViewState(true);
-            ts.setColumnMeta(columMeta);
-        }
+        table.decodeColumnDisplayOrderState(context);
     }
 
     @Override
