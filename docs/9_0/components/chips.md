@@ -29,6 +29,7 @@ Chips is used to enter multiple values on an inputfield.
 | inputmode | null | String | Hint at the type of data this control has for touch devices to display appropriate virtual keyboard.
 | max | null | Integer | Maximum number of entries allowed.
 | addOnBlur | false | Boolean | Whether to add an item when the input loses focus.
+| addOnPaste | false | Boolean | Whether to add the items immediately when pasting into the input. Default false.
 | onblur | null | String | Client side callback to execute when input element loses focus.
 | onchange | null | String | Client side callback to execute when input element loses focus and its value has been modified since gaining focus.
 | onclick | null | String | Client side callback to execute when input element is clicked.
@@ -63,6 +64,7 @@ Chips is used to enter multiple values on an inputfield.
 | rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 | required | false | Boolean | Marks component as required.
 | requiredMessage | null | String | Message to be displayed when required field validation fails.
+| separator | , | String | Separator character to allow multiple values such if a list is pasted into the input. Default is ','.
 | title | null | String | Advisory tooltip information.
 | unique | false | Boolean | Prevent duplicate entries from being added. Default false.
 | validator | null | MethodExpr | A method expression that refers to a method for validation the input.
@@ -105,6 +107,16 @@ The following AJAX behavior events are available for this component. If no event
 | --- | --- | --- |
 | itemSelect | org.primefaces.event.SelectEvent | When an item is added.
 | itemUnselect | org.primefaces.event.UnselectEvent | When an item is removed.
+
+## Client Side API
+Widget: _PrimeFaces.widget.Chips_
+
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
+| toggleEditor() | none | void | Converts the current list into a separator delimited list for mass editing while keeping original order of the items or closes the editor turning the values back into chips.|
+| addItem(value) | value: to add | void | Adds a new item (chip) to the list of currently displayed items. |
+| removeItem(value) | value: to remove | void | Removes an item (chip) from the list of currently displayed items. |
+
 
 ## Skinning
 Following is the list of structural style classes;

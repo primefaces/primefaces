@@ -204,7 +204,9 @@ public class ChipsRenderer extends InputRenderer {
         wb.init("Chips", chips)
                 .attr("max", chips.getMax(), Integer.MAX_VALUE)
                 .attr("addOnBlur", chips.isAddOnBlur(), false)
-                .attr("unique", chips.isUnique(), false);
+                .attr("addOnPaste", chips.isAddOnPaste(), false)
+                .attr("unique", chips.isUnique(), false)
+                .attr("separator", chips.getSeparator(), ",");
 
         encodeClientBehaviors(context, chips);
 
