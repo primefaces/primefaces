@@ -1038,7 +1038,6 @@ public class DataTable extends DataTableBase {
                 isRowKeyRestored = true;
             }
 
-            setColumns(findOrderedColumns(ts.getOrderedColumnsAsString()));
             setColumnMeta(ts.getColumnMeta());
         }
     }

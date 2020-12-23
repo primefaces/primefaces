@@ -36,7 +36,6 @@ public class DataTableState extends UITableState {
     private int rows;
 
     private List<Object> selectedRowKeys;
-    private String orderedColumnsAsString;
 
     public int getFirst() {
         return first;
@@ -60,13 +59,5 @@ public class DataTableState extends UITableState {
 
     public void setSelectedRowKeys(List<Object> selectedRowKeys) {
         this.selectedRowKeys = selectedRowKeys;
-    }
-
-    public String getOrderedColumnsAsString() {
-        return orderedColumnsAsString;
-    }
-
-    public void setOrderedColumnsAsString(String orderedColumnsAsString) {
-        this.orderedColumnsAsString = orderedColumnsAsString;
     }
 }

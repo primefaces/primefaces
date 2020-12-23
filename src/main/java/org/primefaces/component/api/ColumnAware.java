@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.LongAdder;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -259,4 +260,11 @@ public interface ColumnAware {
     Map<String, ColumnMeta> getColumnMeta();
 
     void setColumnMeta(Map<String, ColumnMeta> columnMeta);
+
+    default String getOrderedColumnKeys() {
+        return getColumns()
+                .stream()
+                .map(e -> e.getColumnKey())
+                .collect(Collectors.joining(","));
+    }
 }

@@ -32,6 +32,7 @@ import javax.faces.context.FacesContext;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.DataTableState;
+import org.primefaces.model.ColumnMeta;
 import org.primefaces.util.LangUtils;
 
 public class DraggableColumnsFeature implements DataTableFeature {
@@ -44,11 +45,23 @@ public class DraggableColumnsFeature implements DataTableFeature {
             return;
         }
 
-        table.setColumns(table.findOrderedColumns(columnOrderParam));
+        Map<String, ColumnMeta> columMeta = table.getColumnMeta();
+        columMeta.values().stream().forEach(s -> s.setDisplayPriority(0));
+
+        String[] columnKeys = columnOrderParam.split(",");
+        for (int i = 0; i < columnKeys.length; i++) {
+            String columnKey = columnKeys[i];
+            if (LangUtils.isValueBlank(columnKey)) {
+                continue;
+            }
+
+            ColumnMeta meta = columMeta.computeIfAbsent(columnKey, k -> new ColumnMeta(k));
+            meta.setDisplayPriority(i);
+        }
 
         if (table.isMultiViewState()) {
             DataTableState ts = table.getMultiViewState(true);
-            ts.setOrderedColumnsAsString(columnOrderParam);
+            ts.setColumnMeta(columMeta);
         }
     }
 
