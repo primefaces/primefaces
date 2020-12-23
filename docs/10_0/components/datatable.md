@@ -82,7 +82,7 @@ DataTable displays data in tabular format.
 | rows                      | null               | Integer          | Number of rows to display per page.
 | rowsPerPageLabel          | null               | String           | Label for the rowsPerPage dropdown.
 | rowsPerPageTemplate       | null               | String           | Template of the rowsPerPage dropdown.
-| saveOnCellBlur            | true               | Boolean          | Saves the changes in cell editing on blur, when set to false changes are discarded..
+| saveOnCellBlur            | true               | Boolean          | Saves the changes in cell editing on blur, when set to false changes are discarded.
 | scrollHeight              | null               | Integer          | Scroll viewport height.
 | scrollRows                | 0                  | Integer          | Number of rows to load on live scroll.
 | scrollWidth               | null               | Integer          | Scroll viewport width.
