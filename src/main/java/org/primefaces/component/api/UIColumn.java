@@ -107,7 +107,7 @@ public interface UIColumn {
 
     String getField();
 
-    int getPriority();
+    int getResponsivePriority();
 
     boolean isSortable();
 

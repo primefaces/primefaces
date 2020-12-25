@@ -43,7 +43,7 @@ treetable and more.
 | draggable | true | Boolean | Defines if column is draggable if draggableColumns is set. Default true.
 | filterFunction | null | MethodExpr | Custom implementation to filter a value against a constraint.
 | field | null | String | Name of the field associated to bean "var". If not specified, filterBy-sortBy values are used to identify the field name.
-| priority | 0 | Integer | Priority of the column defined as an integer, lower values have more priority.
+| responsivePriority | 0 | Integer | Responsive priority of the column, lower values have more priority.
 | sortable | true | Boolean | Boolean value to mark column as sortable.
 | filterable | true | Boolean | Boolean value to mark column as filterable.
 | visible | true | Boolean | Controls the visibilty of the column.

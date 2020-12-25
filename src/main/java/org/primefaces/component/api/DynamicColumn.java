@@ -251,8 +251,8 @@ public class DynamicColumn implements UIColumn {
     }
 
     @Override
-    public int getPriority() {
-        return columns.getPriority();
+    public int getResponsivePriority() {
+        return columns.getResponsivePriority();
     }
 
     @Override

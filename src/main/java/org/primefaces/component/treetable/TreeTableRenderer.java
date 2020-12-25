@@ -671,10 +671,12 @@ public class TreeTableRenderer extends DataRenderer {
                 String columnStyle = column.getStyle();
                 int rowspan = column.getRowspan();
                 int colspan = column.getColspan();
-                int priority = column.getPriority();
+                int responsivePriority = column.getResponsivePriority();
 
-                if (priority > 0) {
-                    columnStyleClass = (columnStyleClass == null) ? "ui-column-p-" + priority : columnStyleClass + " ui-column-p-" + priority;
+                if (responsivePriority > 0) {
+                    columnStyleClass = (columnStyleClass == null)
+                            ? "ui-column-p-" + responsivePriority
+                            : columnStyleClass + " ui-column-p-" + responsivePriority;
                 }
 
                 if (column.getCellEditor() != null) {
@@ -784,9 +786,9 @@ public class TreeTableRenderer extends DataRenderer {
             }
         }
 
-        int priority = column.getPriority();
-        if (priority > 0) {
-            columnClass = columnClass + " ui-column-p-" + priority;
+        int responsivePriority = column.getResponsivePriority();
+        if (responsivePriority > 0) {
+            columnClass = columnClass + " ui-column-p-" + responsivePriority;
         }
 
         if (width != null) {
@@ -1023,9 +1025,9 @@ public class TreeTableRenderer extends DataRenderer {
         String columnStyleClass = column.getStyleClass();
         columnStyleClass = (columnStyleClass == null) ? TreeTable.COLUMN_HEADER_CLASS : TreeTable.COLUMN_HEADER_CLASS + " " + columnStyleClass;
 
-        int priority = column.getPriority();
-        if (priority > 0) {
-            columnStyleClass = columnStyleClass + " ui-column-p-" + priority;
+        int responsivePriority = column.getResponsivePriority();
+        if (responsivePriority > 0) {
+            columnStyleClass = columnStyleClass + " ui-column-p-" + responsivePriority;
         }
 
         writer.startElement("td", null);
