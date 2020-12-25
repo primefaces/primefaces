@@ -74,7 +74,7 @@ public class SelectionFeature implements DataTableFeature {
 
         if (table.isSingleSelectionMode()) {
             if (rowKeys.size() > 1) {
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException("DataTable '" + table.getClientId(context) + "' is configured for single selection while multiple rows have been selected");
             }
 
             if (!rowKeys.isEmpty()) {
@@ -84,12 +84,6 @@ public class SelectionFeature implements DataTableFeature {
         else {
             decodeMultipleSelection(context, table, rowKeys);
         }
-
-        table.setSelectedRowKeys(rowKeys);
-
-        // In case user wants to have his new row selected by default,
-        // user's selection needs to be decoded to keep rowKeys synchronized
-        decodeSelectionRowKeys(context, table);
     }
 
     public void decodeSelectionRowKeys(FacesContext context, DataTable table) {
@@ -142,7 +136,7 @@ public class SelectionFeature implements DataTableFeature {
                 Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
                 String var = table.getVar();
                 if (isSelectable(table, var, requestMap, o)) {
-                    setSelection(context, table, o);
+                    setSelection(context, table, false, Collections.singletonList(o));
                 }
                 table.setSelectedRowKeys(Collections.singleton(rowKey));
             }
@@ -150,21 +144,8 @@ public class SelectionFeature implements DataTableFeature {
     }
 
     protected void decodeMultipleSelection(FacesContext context, DataTable table, Set<String> rowKeys) {
-        ValueExpression selectionByVE = table.getValueExpression(DataTableBase.PropertyKeys.selection.toString());
-        Class<?> clazz = selectionByVE == null ? null : selectionByVE.getType(context.getELContext());
-        boolean isArray = clazz != null && clazz.isArray();
-
-        if (clazz != null && !isArray && !List.class.isAssignableFrom(clazz)) {
-            throw new FacesException("Multiple selection reference must be an Array or a List for datatable " + table.getClientId());
-        }
-
         if (rowKeys.isEmpty()) {
-            if (isArray) {
-                setSelection(context, table, LangUtils.EMPTY_OBJECT_ARRAY);
-            }
-            else {
-                setSelection(context, table, Collections.emptyList());
-            }
+            setSelection(context, table, true, Collections.emptyList());
         }
         else {
             Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
@@ -194,13 +175,7 @@ public class SelectionFeature implements DataTableFeature {
                 }
             }
 
-            if (isArray) {
-                Object selectionArray = Array.newInstance(clazz.getComponentType(), selection.size());
-                setSelection(context, table, selection.toArray((Object[]) selectionArray));
-            }
-            else {
-                setSelection(context, table, selection);
-            }
+            setSelection(context, table, true, selection);
 
             requestMap.remove(var);
         }
@@ -226,13 +201,35 @@ public class SelectionFeature implements DataTableFeature {
         return !table.isDisabledSelection();
     }
 
-    protected void setSelection(FacesContext context, DataTable table, Object o) {
-        ValueExpression selectionByVE = table.getValueExpression(DataTableBase.PropertyKeys.selection.name());
-        if (selectionByVE != null) {
-            selectionByVE.setValue(context.getELContext(), o);
+    protected void setSelection(FacesContext context, DataTable table, boolean multiple, List<Object> o) {
+        ValueExpression selectionVE = table.getValueExpression(DataTableBase.PropertyKeys.selection.toString());
+        Class<?> clazz = selectionVE == null ? null : selectionVE.getType(context.getELContext());
+        boolean isArray = clazz != null && clazz.isArray();
+
+        if (multiple && clazz != null && !isArray && !List.class.isAssignableFrom(clazz)) {
+            throw new FacesException("Multiple selection reference must be an Array or a List for datatable " + table.getClientId());
+        }
+
+        Object selection = null;
+        if (o.isEmpty()) {
+            if (multiple) {
+                selection = isArray ? LangUtils.EMPTY_OBJECT_ARRAY : Collections.emptyList();
+            }
         }
         else {
-            table.setSelection(o);
+            if (multiple) {
+                selection = isArray ? Array.newInstance(clazz.getComponentType(), o.size()) : o;
+            }
+            else {
+                selection = o.get(0);
+            }
+        }
+
+        if (selectionVE != null) {
+            selectionVE.setValue(context.getELContext(), selection);
+        }
+        else {
+            table.setSelection(selection);
         }
     }
 }

@@ -38,7 +38,8 @@ public class CellEditFeature implements DataTableFeature {
 
     @Override
     public void decode(FacesContext context, DataTable table) {
-        throw new FacesException("CellEditFeature should not decode.");
+        SelectionFeature feature = (SelectionFeature) DataTable.FEATURES.get(DataTableFeatureKey.SELECT);
+        feature.decodeSelectionRowKeys(context, table);
     }
 
     @Override
@@ -86,11 +87,16 @@ public class CellEditFeature implements DataTableFeature {
 
     @Override
     public boolean shouldDecode(FacesContext context, DataTable table) {
-        return false;
+        return isCellEditRequest(context, table)
+                && table.isSelectionEnabled();
     }
 
     @Override
     public boolean shouldEncode(FacesContext context, DataTable table) {
+        return isCellEditRequest(context, table);
+    }
+
+    protected boolean isCellEditRequest(FacesContext context, DataTable table) {
         return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_cellInfo");
     }
 }

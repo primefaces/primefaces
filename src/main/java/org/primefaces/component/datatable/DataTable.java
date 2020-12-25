@@ -138,7 +138,7 @@ public class DataTable extends DataTableBase {
     public static final String SORT_DESC = "primefaces.datatable.SORT_DESC";
     public static final String ROW_GROUP_TOGGLER = "primefaces.rowgrouptoggler.aria.ROW_GROUP_TOGGLER";
 
-    static final Map<DataTableFeatureKey, DataTableFeature> FEATURES = MapBuilder.<DataTableFeatureKey, DataTableFeature>builder()
+    public static final Map<DataTableFeatureKey, DataTableFeature> FEATURES = MapBuilder.<DataTableFeatureKey, DataTableFeature>builder()
             .put(DataTableFeatureKey.DRAGGABLE_COLUMNS, new DraggableColumnsFeature())
             .put(DataTableFeatureKey.FILTER, new FilterFeature())
             .put(DataTableFeatureKey.PAGE, new PageFeature())
@@ -553,8 +553,8 @@ public class DataTable extends DataTableBase {
         if (model instanceof SelectableDataModel) {
             return ((SelectableDataModel) model).getRowKey(object);
         }
-        else if (!isLazy()) {
-            boolean hasRowKeyVe = getValueExpression(PropertyKeys.rowKey.toString()) != null;
+        else {
+            boolean hasRowKeyVe = getValueExpression(PropertyKeys.rowKey.name()) != null;
             if (!hasRowKeyVe) {
                 return String.valueOf(Objects.hashCode(object));
             }
@@ -567,11 +567,6 @@ public class DataTable extends DataTableBase {
                 return rowKey;
             }
         }
-        else {
-            throw new FacesException("DataModel must implement "
-                    + SelectableDataModel.class.getName()
-                    + " when selection is enabled or you need to define rowKey attribute");
-        }
     }
 
     public Object getRowData(String rowKey) {
@@ -579,7 +574,7 @@ public class DataTable extends DataTableBase {
         if (model instanceof SelectableDataModel) {
             return ((SelectableDataModel) model).getRowData(rowKey);
         }
-        else if (!isLazy()) {
+        else {
             Collection data = (Collection) getDataModel().getWrappedData();
             for (Object o : data) {
                 if (Objects.equals(rowKey, getRowKey(o))) {
@@ -588,11 +583,6 @@ public class DataTable extends DataTableBase {
             }
 
             return null;
-        }
-        else {
-            throw new FacesException("DataModel must implement "
-                    + SelectableDataModel.class.getName()
-                    + " when selection is enabled or you need to define rowKey attribute");
         }
     }
 
