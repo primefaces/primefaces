@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.api;
 
+import com.sun.faces.facelets.component.UIRepeat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,11 +33,14 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.model.ColumnMeta;
+import org.primefaces.util.ComponentUtils;
 
 public interface ColumnAware {
 
@@ -71,17 +75,38 @@ public interface ColumnAware {
                 else if (child instanceof ColumnGroup) {
                     // columnGroup must contain p:row(s) as child
                     for (int j = 0; j < child.getChildCount(); j++) {
-                        forEachColumn(context, child.getChildren().get(j), unwrapDynamicColumns, callback);
+                        UIComponent row = ((UIComponent) child).getChildren().get(j);
+                        if (row.isRendered()) {
+                            forEachColumn(context, row, unwrapDynamicColumns, callback);
+                        }
                     }
                 }
                 else if (child instanceof ColumnAware) {
-                    ColumnAware columnHolder = (ColumnAware) child;
-                    for (int j = 0; j < ((UIComponent) columnHolder).getChildCount(); j++) {
-                        UIComponent columnHolderChild = ((UIComponent) columnHolder).getChildren().get(j);
-                        if (columnHolderChild.isRendered()) {
-                            forEachColumn(context, columnHolderChild, unwrapDynamicColumns, callback);
+                    ColumnAware columnAware = (ColumnAware) child;
+                    for (int j = 0; j < ((UIComponent) columnAware).getChildCount(); j++) {
+                        UIComponent columnAwareChild = ((UIComponent) columnAware).getChildren().get(j);
+                        if (columnAwareChild.isRendered()) {
+                            forEachColumn(context, columnAwareChild, unwrapDynamicColumns, callback);
                         }
                     }
+                }
+                else if (child instanceof UIRepeat) {
+                    UIRepeat repeat = (UIRepeat) child;
+                    VisitContext visitContext = VisitContext.createVisitContext(context, null,
+                            ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
+                    repeat.visitTree(visitContext, (ctx, target) -> {
+                        if (target instanceof UIRepeat) {
+                            return VisitResult.ACCEPT;
+                        }
+
+                        // for now just support basic p:column in ui:repeat
+                        if (target instanceof Column) {
+                            Column column = (Column) target;
+                            callback.accept(column);
+                        }
+
+                        return VisitResult.REJECT;
+                    });
                 }
             }
         }
