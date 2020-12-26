@@ -69,7 +69,10 @@ public interface ColumnAware {
                     callback.accept(column);
                 }
                 else if (child instanceof ColumnGroup) {
-                    forEachColumn(context, child, unwrapDynamicColumns, callback);
+                    // columnGroup must contain p:row(s) as child
+                    for (int j = 0; j < child.getChildCount(); j++) {
+                        forEachColumn(context, child.getChildren().get(j), unwrapDynamicColumns, callback);
+                    }
                 }
                 else if (child instanceof ColumnAware) {
                     ColumnAware columnHolder = (ColumnAware) child;
