@@ -23,7 +23,6 @@
  */
 package org.primefaces.component.api;
 
-import com.sun.faces.facelets.component.UIRepeat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -90,12 +89,11 @@ public interface ColumnAware {
                         }
                     }
                 }
-                else if (child instanceof UIRepeat) {
-                    UIRepeat repeat = (UIRepeat) child;
+                else if (child.getClass().getName().endsWith("UIRepeat")) {
                     VisitContext visitContext = VisitContext.createVisitContext(context, null,
                             ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
-                    repeat.visitTree(visitContext, (ctx, target) -> {
-                        if (target instanceof UIRepeat) {
+                    child.visitTree(visitContext, (ctx, target) -> {
+                        if (target.getClass().getName().endsWith("UIRepeat")) {
                             return VisitResult.ACCEPT;
                         }
 
