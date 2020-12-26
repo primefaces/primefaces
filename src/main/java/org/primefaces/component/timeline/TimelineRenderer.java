@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -491,7 +492,22 @@ public class TimelineRenderer extends CoreRenderer {
 
     // convert from UTC to locale date
     private String encodeDate(DateTimeFormatter dateTimeFormatter, LocalDateTime date) {
-        return "new Date('" + dateTimeFormatter.format(date.atZone(dateTimeFormatter.getZone())) + "')";
+        String encoded;
+        ZonedDateTime zdt = date.atZone(dateTimeFormatter.getZone());
+        String formatted = dateTimeFormatter.format(zdt);
+        if (formatted.startsWith("-")) {
+            // GitHub #6721: B.C. Dates can't use JS constructor with String
+            encoded = "new Date(" + zdt.getYear() +
+                        ", " + (zdt.getMonthValue() - 1) +
+                        ", " + zdt.getDayOfMonth() +
+                        ", " + zdt.getHour() +
+                        ", " + zdt.getMinute() +
+                        ", " + zdt.getSecond() + ", 0)";
+        }
+        else {
+            encoded = "new Date('" + formatted + "')";
+        }
+        return encoded;
     }
 
     @Override
