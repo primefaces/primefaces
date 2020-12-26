@@ -31,6 +31,7 @@ import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.celleditor.CellEditor;
+import org.primefaces.util.ComponentTraversalUtils;
 
 public class Column extends ColumnBase {
 
@@ -63,7 +64,9 @@ public class Column extends ColumnBase {
     public String getColumnKey() {
         // dont use getClientId() as it could contain the rowIndex
         FacesContext context = getFacesContext();
-        return getParent().getClientId(context) + UINamingContainer.getSeparatorChar(context) + getId();
+        return ComponentTraversalUtils.closestNamingContainer(this).getClientId(context)
+                + UINamingContainer.getSeparatorChar(context)
+                + getId();
     }
 
     @Override
