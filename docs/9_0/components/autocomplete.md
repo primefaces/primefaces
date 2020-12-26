@@ -368,14 +368,16 @@ Widget: _PrimeFaces.widget.AutoComplete_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |
-| search(value) | value: keyword for search | void | Initiates a search with given value |
+| activate() | - | void | Activates search behavior |
+| addItem(item) | JQuery or String | void | Adds the given suggestion item. |
+| clear() | - | void | Clears the input field |
 | close() | - | void | Hides suggested items menu |
+| deactivate() | - | void | Deactivates search behavior |
 | disable() | - | void | Disables the input field |
 | enable() | - | void | Enables the input field |
-| deactivate() | - | void | Deactivates search behavior |
-| activate() | - | void | Activates search behavior |
 | removeAllItems() | - | void | In multiple mode removes all selected items |
-| clear() | - | void | Clears the input field |
+| removeItem(item) | JQuery or String | void | Removes the given suggestion item. |
+| search(value) | value: keyword for search | void | Initiates a search with given value |
 
 ## Skinning
 Following is the list of structural style classes;
