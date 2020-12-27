@@ -74,7 +74,8 @@ public class SelectionFeature implements DataTableFeature {
 
         if (table.isSingleSelectionMode()) {
             if (rowKeys.size() > 1) {
-                throw new IllegalArgumentException("DataTable '" + table.getClientId(context) + "' is configured for single selection while multiple rows have been selected");
+                throw new IllegalArgumentException("DataTable '" + table.getClientId(context)
+                        + "' is configured for single selection while multiple rows have been selected");
             }
 
             if (!rowKeys.isEmpty()) {

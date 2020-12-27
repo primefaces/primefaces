@@ -1245,14 +1245,13 @@ public class DataTableRenderer extends DataRenderer {
             UIColumn column = columns.get(i);
 
             if (column instanceof Column) {
-                encodeCell(context, table, column, clientId, selected);
                 encodeCell(context, table, column, selected, disabled, rowIndex);
             }
             else if (column instanceof DynamicColumn) {
                 DynamicColumn dynamicColumn = (DynamicColumn) column;
                 dynamicColumn.applyModel();
 
-                encodeCell(context, table, dynamicColumn, false, false, rowIndex);
+                encodeCell(context, table, dynamicColumn, false, disabled, rowIndex);
             }
         }
 
@@ -1265,7 +1264,7 @@ public class DataTableRenderer extends DataRenderer {
         return true;
     }
 
-    protected void encodeCell(FacesContext context, DataTable table, UIColumn column, String clientId, boolean selected,
+    protected void encodeCell(FacesContext context, DataTable table, UIColumn column, boolean selected,
             boolean disabled, int rowIndex) throws IOException {
         if (!column.isRendered()) {
             return;
