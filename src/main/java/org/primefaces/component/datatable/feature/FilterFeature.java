@@ -38,6 +38,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class FilterFeature implements DataTableFeature {
 
@@ -138,27 +139,30 @@ public class FilterFeature implements DataTableFeature {
         Map<String, FilterMeta> filterBy = table.getFilterByAsMap();
 
         table.setValue(null); // reset value (instead of filtering on already filtered value)
+        AtomicBoolean matching = new AtomicBoolean();
 
         for (int i = 0; i < table.getRowCount(); i++) {
             table.setRowIndex(i);
-            boolean matching = true;
+            matching.set(true);
 
-            for (FilterMeta filter : filterBy.values()) {
-                if (!filter.isActive()) {
-                    continue;
+            final int rowIndex = i;
+            table.forEachColumn(column -> {
+                FilterMeta filter = filterBy.get(column.getColumnKey(table, rowIndex));
+                if (filter == null || !filter.isActive()) {
+                    return;
                 }
 
                 FilterConstraint constraint = filter.getConstraint();
                 Object filterValue = filter.getFilterValue();
                 Object columnValue = filter.isGlobalFilter() ? table.getRowData() : filter.getLocalValue(elContext);
 
-                matching = constraint.isMatching(context, columnValue, filterValue, filterLocale);
-                if (!matching) {
-                    break;
+                matching.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
+                if (!matching.get()) {
+                    return;
                 }
-            }
+            });
 
-            if (matching) {
+            if (matching.get()) {
                 filtered.add(table.getRowData());
             }
         }

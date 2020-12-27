@@ -216,6 +216,11 @@ public class DynamicColumn implements UIColumn {
     }
 
     @Override
+    public String getColumnKey(UIComponent parent, String rowIndex) {
+        return getColumnKey().replace(parent.getId() + ":" + rowIndex + ":", parent.getId() + ":");
+    }
+
+    @Override
     public String getWidth() {
         return columns.getWidth();
     }

@@ -1240,13 +1240,13 @@ public class DataTableRenderer extends DataRenderer {
             UIColumn column = columns.get(i);
 
             if (column instanceof Column) {
-                encodeCell(context, table, column, clientId, selected);
+                encodeCell(context, table, column, clientId, selected, rowIndex);
             }
             else if (column instanceof DynamicColumn) {
                 DynamicColumn dynamicColumn = (DynamicColumn) column;
                 dynamicColumn.applyModel();
 
-                encodeCell(context, table, dynamicColumn, null, false);
+                encodeCell(context, table, dynamicColumn, null, false, rowIndex);
             }
         }
 
@@ -1259,12 +1259,13 @@ public class DataTableRenderer extends DataRenderer {
         return true;
     }
 
-    protected void encodeCell(FacesContext context, DataTable table, UIColumn column, String clientId, boolean selected) throws IOException {
+    protected void encodeCell(FacesContext context, DataTable table, UIColumn column, String clientId, boolean selected,
+            int rowIndex) throws IOException {
         if (!column.isRendered()) {
             return;
         }
 
-        ColumnMeta columnMeta = table.getColumnMeta().get(column.getColumnKey());
+        ColumnMeta columnMeta = table.getColumnMeta().get(column.getColumnKey(table, rowIndex));
 
         boolean columnVisible = column.isVisible();
         if (columnMeta != null && columnMeta.getVisible() != null) {
