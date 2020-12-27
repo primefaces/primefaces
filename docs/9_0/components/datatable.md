@@ -916,11 +916,11 @@ at server side.
     //columns
 </p:dataTable>
 ```
+
 ## Responsive DataTable
-DataTable has two responsive modes; priority and reflow. In priority mode, responsiveness is based
-on column priorities that vary between 1 and 6. Lower value means higher priority. On the other
-hand in reflow mode that is enabled by setting reflow to true, all columns will be visible but
-displayed as stacked.
+DataTable has two responsive modes: `responsivePriority` and `reflow`.
+In priority mode, responsiveness is based on column priorities that vary between 1 and 6. Lower value means higher priority. 
+On the other hand in reflow mode that is enabled by setting reflow to true, all columns will be visible but displayed as stacked.
 
 
 ## Ajax Behavior Events

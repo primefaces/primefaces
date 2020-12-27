@@ -126,6 +126,8 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                     filtered.set(filtered.get() || f.isActive());
                 }
             }
+
+            return true;
         });
 
         // merge internal filterBy with user filterBy
@@ -218,14 +220,18 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         char separator = UINamingContainer.getSeparatorChar(context);
 
-        for (FilterMeta filterMeta : filterBy.values()) {
+        forEachColumn(column -> {
+            FilterMeta filterMeta = filterBy.get(column.getColumnKey());
+            if (filterMeta == null) {
+                return true;
+            }
+
             Object filterValue;
 
             if (filterMeta.isGlobalFilter()) {
                 filterValue = params.get(((UIComponent) this).getClientId(context) + separator + FilterMeta.GLOBAL_FILTER_KEY);
             }
             else {
-                UIColumn column = filterMeta.getColumn();
                 UIComponent filterFacet = column.getFacet("filter");
                 boolean hasCustomFilter = filterFacet != null;
                 if (column instanceof DynamicColumn) {
@@ -258,7 +264,9 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             }
 
             filterMeta.setFilterValue(filterValue);
-        }
+
+            return true;
+        });
     }
 
     default Object getFilterValue(UIColumn column) {
@@ -316,6 +324,8 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 sorted.set(sorted.get() || s.isActive());
                 sortMeta.put(s.getColumnKey(), s);
             }
+
+            return true;
         });
 
         // merge internal sortBy with user sortBy

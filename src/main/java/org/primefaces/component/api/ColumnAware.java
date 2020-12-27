@@ -28,27 +28,30 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.LongAdder;
-import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.model.ColumnMeta;
+import org.primefaces.util.ComponentUtils;
 
 public interface ColumnAware {
 
-    default void forEachColumn(Consumer<UIColumn> callback) {
+    default void forEachColumn(Function<UIColumn, Boolean> callback) {
         forEachColumn(true, callback);
     }
 
-    default void forEachColumn(boolean unwrapDynamicColumns, Consumer<UIColumn> callback) {
+    default void forEachColumn(boolean unwrapDynamicColumns, Function<UIColumn, Boolean> callback) {
         forEachColumn(FacesContext.getCurrentInstance(), (UIComponent) this, unwrapDynamicColumns, callback);
     }
 
-    default void forEachColumn(FacesContext context, UIComponent root, boolean unwrapDynamicColumns, Consumer<UIColumn> callback) {
+    default boolean forEachColumn(FacesContext context, UIComponent root, boolean unwrapDynamicColumns, Function<UIColumn, Boolean> callback) {
         for (int i = 0; i < root.getChildCount(); i++) {
             UIComponent child = root.getChildren().get(i);
             if (child.isRendered()) {
@@ -57,31 +60,68 @@ public interface ColumnAware {
                     if (unwrapDynamicColumns) {
                         for (int j = 0; j < columns.getRowCount(); j++) {
                             DynamicColumn dynaColumn = new DynamicColumn(j, columns, context);
-                            callback.accept(dynaColumn);
+                            if (!callback.apply(dynaColumn)) {
+                                return false;
+                            }
                         }
                     }
                     else {
-                        callback.accept(columns);
+                        if (!callback.apply(columns)) {
+                            return false;
+                        }
                     }
                 }
                 else if (child instanceof Column) {
                     Column column = (Column) child;
-                    callback.accept(column);
+                    if (!callback.apply(column)) {
+                        return false;
+                    }
                 }
                 else if (child instanceof ColumnGroup) {
-                    forEachColumn(context, child, unwrapDynamicColumns, callback);
-                }
-                else if (child instanceof ColumnAware) {
-                    ColumnAware columnHolder = (ColumnAware) child;
-                    for (int j = 0; j < ((UIComponent) columnHolder).getChildCount(); j++) {
-                        UIComponent columnHolderChild = ((UIComponent) columnHolder).getChildren().get(j);
-                        if (columnHolderChild.isRendered()) {
-                            forEachColumn(context, columnHolderChild, unwrapDynamicColumns, callback);
+                    // columnGroup must contain p:row(s) as child
+                    for (int j = 0; j < child.getChildCount(); j++) {
+                        UIComponent row = ((UIComponent) child).getChildren().get(j);
+                        if (row.isRendered()) {
+                            if (!forEachColumn(context, row, unwrapDynamicColumns, callback)) {
+                                return false;
+                            }
                         }
                     }
                 }
+                else if (child instanceof ColumnAware) {
+                    ColumnAware columnAware = (ColumnAware) child;
+                    for (int j = 0; j < ((UIComponent) columnAware).getChildCount(); j++) {
+                        UIComponent columnAwareChild = ((UIComponent) columnAware).getChildren().get(j);
+                        if (columnAwareChild.isRendered()) {
+                            if (!forEachColumn(context, columnAwareChild, unwrapDynamicColumns, callback)) {
+                                return false;
+                            }
+                        }
+                    }
+                }
+                else if (child.getClass().getName().endsWith("UIRepeat")) {
+                    VisitContext visitContext = VisitContext.createVisitContext(context, null,
+                            ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
+                    child.visitTree(visitContext, (ctx, target) -> {
+                        if (target.getClass().getName().endsWith("UIRepeat")) {
+                            return VisitResult.ACCEPT;
+                        }
+
+                        // for now just support basic p:column in ui:repeat
+                        if (target instanceof Column) {
+                            Column column = (Column) target;
+                            if (!callback.apply(column)) {
+                                return VisitResult.COMPLETE;
+                            }
+                        }
+
+                        return VisitResult.REJECT;
+                    });
+                }
             }
         }
+
+        return true;
     }
 
     default UIColumn findColumn(String columnKey) {
@@ -227,6 +267,7 @@ public interface ColumnAware {
             if (!visibleOnly || column.isVisible()) {
                 columnsCount.increment();
             }
+            return true;
         });
 
         return columnsCount.intValue();
@@ -243,6 +284,7 @@ public interface ColumnAware {
             if (!visibleOnly || column.isVisible()) {
                 columnsCountWithSpan.add(column.getColspan());
             }
+            return true;
         });
 
         return columnsCountWithSpan.intValue();
@@ -254,6 +296,7 @@ public interface ColumnAware {
                 ((Columns) column).setRowIndex(-1);
                 setColumns(null);
             }
+            return true;
         });
     }
 

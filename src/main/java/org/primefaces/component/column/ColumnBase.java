@@ -61,7 +61,7 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         draggable,
         filterFunction,
         field,
-        priority,
+        responsivePriority,
         sortable,
         filterable,
         visible,
@@ -305,12 +305,12 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
     }
 
     @Override
-    public int getPriority() {
-        return (Integer) getStateHelper().eval(PropertyKeys.priority, 0);
+    public int getResponsivePriority() {
+        return (Integer) getStateHelper().eval(PropertyKeys.responsivePriority, 0);
     }
 
-    public void setPriority(int priority) {
-        getStateHelper().put(PropertyKeys.priority, priority);
+    public void setResponsivePriority(int responsivePriority) {
+        getStateHelper().put(PropertyKeys.responsivePriority, responsivePriority);
     }
 
     @Override

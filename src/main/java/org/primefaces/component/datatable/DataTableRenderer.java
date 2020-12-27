@@ -579,7 +579,7 @@ public class DataTableRenderer extends DataRenderer {
         String sortIcon = null;
         boolean resizable = table.isResizableColumns() && column.isResizable();
         boolean draggable = table.isDraggableColumns() && column.isDraggable();
-        int priority = column.getPriority();
+        int responsivePriority = column.getResponsivePriority();
 
         boolean columnVisible = column.isVisible();
         if (columnMeta != null && columnMeta.getVisible() != null) {
@@ -596,7 +596,7 @@ public class DataTableRenderer extends DataRenderer {
                 .add(!column.isToggleable(), DataTable.STATIC_COLUMN_CLASS)
                 .add(!columnVisible, DataTable.HIDDEN_COLUMN_CLASS)
                 .add(column.getStyleClass())
-                .add(priority > 0, "ui-column-p-" + priority)
+                .add(responsivePriority > 0, "ui-column-p-" + responsivePriority)
                 .build();
 
         if (sortable) {
@@ -896,7 +896,7 @@ public class DataTableRenderer extends DataRenderer {
 
         ResponseWriter writer = context.getResponseWriter();
 
-        int priority = column.getPriority();
+        int responsivePriority = column.getResponsivePriority();
         String style = column.getStyle();
         String styleClass = column.getStyleClass();
         styleClass = styleClass == null ? DataTable.COLUMN_FOOTER_CLASS : DataTable.COLUMN_FOOTER_CLASS + " " + styleClass;
@@ -910,8 +910,8 @@ public class DataTableRenderer extends DataRenderer {
             styleClass = styleClass + " " + DataTable.HIDDEN_COLUMN_CLASS;
         }
 
-        if (priority > 0) {
-            styleClass = styleClass + " ui-column-p-" + priority;
+        if (responsivePriority > 0) {
+            styleClass = styleClass + " ui-column-p-" + responsivePriority;
         }
 
         writer.startElement("td", null);
@@ -1240,13 +1240,13 @@ public class DataTableRenderer extends DataRenderer {
             UIColumn column = columns.get(i);
 
             if (column instanceof Column) {
-                encodeCell(context, table, column, clientId, selected);
+                encodeCell(context, table, column, clientId, selected, rowIndex);
             }
             else if (column instanceof DynamicColumn) {
                 DynamicColumn dynamicColumn = (DynamicColumn) column;
                 dynamicColumn.applyModel();
 
-                encodeCell(context, table, dynamicColumn, null, false);
+                encodeCell(context, table, dynamicColumn, null, false, rowIndex);
             }
         }
 
@@ -1259,12 +1259,13 @@ public class DataTableRenderer extends DataRenderer {
         return true;
     }
 
-    protected void encodeCell(FacesContext context, DataTable table, UIColumn column, String clientId, boolean selected) throws IOException {
+    protected void encodeCell(FacesContext context, DataTable table, UIColumn column, String clientId, boolean selected,
+            int rowIndex) throws IOException {
         if (!column.isRendered()) {
             return;
         }
 
-        ColumnMeta columnMeta = table.getColumnMeta().get(column.getColumnKey());
+        ColumnMeta columnMeta = table.getColumnMeta().get(column.getColumnKey(table, rowIndex));
 
         boolean columnVisible = column.isVisible();
         if (columnMeta != null && columnMeta.getVisible() != null) {
@@ -1275,7 +1276,7 @@ public class DataTableRenderer extends DataRenderer {
         boolean selectionEnabled = column.getSelectionMode() != null;
         CellEditor editor = column.getCellEditor();
         boolean editorEnabled = editor != null && editor.isRendered();
-        int priority = column.getPriority();
+        int responsivePriority = column.getResponsivePriority();
         String style = column.getStyle();
 
         String styleClass = getStyleClassBuilder(context)
@@ -1285,7 +1286,7 @@ public class DataTableRenderer extends DataRenderer {
                 .add(!column.isSelectRow(), DataTable.UNSELECTABLE_COLUMN_CLASS)
                 .add(!columnVisible, DataTable.HIDDEN_COLUMN_CLASS)
                 .add(column.getStyleClass())
-                .add(priority > 0, "ui-column-p-" + priority)
+                .add(responsivePriority > 0, "ui-column-p-" + responsivePriority)
                 .build();
 
         int colspan = column.getColspan();

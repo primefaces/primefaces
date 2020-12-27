@@ -5242,9 +5242,9 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Priority of the column defined as an integer, lower values have more priority.]]>
+                <![CDATA[Responsive priority of the column, lower values have more priority.]]>
             </description>
-            <name>priority</name>
+            <name>responsivePriority</name>
             <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
@@ -5654,9 +5654,9 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Priority of the column defined as an integer, lower values have more priority.]]>
+                <![CDATA[Responive priority of the column, lower values have more priority.]]>
             </description>
-            <name>priority</name>
+            <name>responsivePriority</name>
             <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
@@ -26778,6 +26778,14 @@
             <name>activeIndex</name>
             <required>false</required>
             <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Allows the active index menu to remain executable. Default is false.]]>
+            </description>
+            <name>activeStepExecutable</name>
+            <required>false</required>
+            <type>boolean</type>
         </attribute>
         <attribute>
             <description>

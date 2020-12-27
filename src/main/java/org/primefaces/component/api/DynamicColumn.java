@@ -216,6 +216,11 @@ public class DynamicColumn implements UIColumn {
     }
 
     @Override
+    public String getColumnKey(UIComponent parent, String rowIndex) {
+        return getColumnKey().replace(parent.getId() + ":" + rowIndex + ":", parent.getId() + ":");
+    }
+
+    @Override
     public String getWidth() {
         return columns.getWidth();
     }
@@ -251,8 +256,8 @@ public class DynamicColumn implements UIColumn {
     }
 
     @Override
-    public int getPriority() {
-        return columns.getPriority();
+    public int getResponsivePriority() {
+        return columns.getResponsivePriority();
     }
 
     @Override
