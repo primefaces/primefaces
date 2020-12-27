@@ -149,7 +149,7 @@ public class FilterFeature implements DataTableFeature {
             table.forEachColumn(column -> {
                 FilterMeta filter = filterBy.get(column.getColumnKey(table, rowIndex));
                 if (filter == null || !filter.isActive()) {
-                    return;
+                    return true;
                 }
 
                 FilterConstraint constraint = filter.getConstraint();
@@ -157,9 +157,7 @@ public class FilterFeature implements DataTableFeature {
                 Object columnValue = filter.isGlobalFilter() ? table.getRowData() : filter.getLocalValue(elContext);
 
                 matching.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
-                if (!matching.get()) {
-                    return;
-                }
+                return matching.get();
             });
 
             if (matching.get()) {

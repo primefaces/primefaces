@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.LongAdder;
-import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -43,15 +43,15 @@ import org.primefaces.util.ComponentUtils;
 
 public interface ColumnAware {
 
-    default void forEachColumn(Consumer<UIColumn> callback) {
+    default void forEachColumn(Function<UIColumn, Boolean> callback) {
         forEachColumn(true, callback);
     }
 
-    default void forEachColumn(boolean unwrapDynamicColumns, Consumer<UIColumn> callback) {
+    default void forEachColumn(boolean unwrapDynamicColumns, Function<UIColumn, Boolean> callback) {
         forEachColumn(FacesContext.getCurrentInstance(), (UIComponent) this, unwrapDynamicColumns, callback);
     }
 
-    default void forEachColumn(FacesContext context, UIComponent root, boolean unwrapDynamicColumns, Consumer<UIColumn> callback) {
+    default boolean forEachColumn(FacesContext context, UIComponent root, boolean unwrapDynamicColumns, Function<UIColumn, Boolean> callback) {
         for (int i = 0; i < root.getChildCount(); i++) {
             UIComponent child = root.getChildren().get(i);
             if (child.isRendered()) {
@@ -60,23 +60,31 @@ public interface ColumnAware {
                     if (unwrapDynamicColumns) {
                         for (int j = 0; j < columns.getRowCount(); j++) {
                             DynamicColumn dynaColumn = new DynamicColumn(j, columns, context);
-                            callback.accept(dynaColumn);
+                            if (!callback.apply(dynaColumn)) {
+                                return false;
+                            }
                         }
                     }
                     else {
-                        callback.accept(columns);
+                        if (!callback.apply(columns)) {
+                            return false;
+                        }
                     }
                 }
                 else if (child instanceof Column) {
                     Column column = (Column) child;
-                    callback.accept(column);
+                    if (!callback.apply(column)) {
+                        return false;
+                    }
                 }
                 else if (child instanceof ColumnGroup) {
                     // columnGroup must contain p:row(s) as child
                     for (int j = 0; j < child.getChildCount(); j++) {
                         UIComponent row = ((UIComponent) child).getChildren().get(j);
                         if (row.isRendered()) {
-                            forEachColumn(context, row, unwrapDynamicColumns, callback);
+                            if (!forEachColumn(context, row, unwrapDynamicColumns, callback)) {
+                                return false;
+                            }
                         }
                     }
                 }
@@ -85,7 +93,9 @@ public interface ColumnAware {
                     for (int j = 0; j < ((UIComponent) columnAware).getChildCount(); j++) {
                         UIComponent columnAwareChild = ((UIComponent) columnAware).getChildren().get(j);
                         if (columnAwareChild.isRendered()) {
-                            forEachColumn(context, columnAwareChild, unwrapDynamicColumns, callback);
+                            if (!forEachColumn(context, columnAwareChild, unwrapDynamicColumns, callback)) {
+                                return false;
+                            }
                         }
                     }
                 }
@@ -100,7 +110,9 @@ public interface ColumnAware {
                         // for now just support basic p:column in ui:repeat
                         if (target instanceof Column) {
                             Column column = (Column) target;
-                            callback.accept(column);
+                            if (!callback.apply(column)) {
+                                return VisitResult.COMPLETE;
+                            }
                         }
 
                         return VisitResult.REJECT;
@@ -108,6 +120,8 @@ public interface ColumnAware {
                 }
             }
         }
+
+        return true;
     }
 
     default UIColumn findColumn(String columnKey) {
@@ -253,6 +267,7 @@ public interface ColumnAware {
             if (!visibleOnly || column.isVisible()) {
                 columnsCount.increment();
             }
+            return true;
         });
 
         return columnsCount.intValue();
@@ -269,6 +284,7 @@ public interface ColumnAware {
             if (!visibleOnly || column.isVisible()) {
                 columnsCountWithSpan.add(column.getColspan());
             }
+            return true;
         });
 
         return columnsCountWithSpan.intValue();
@@ -280,6 +296,7 @@ public interface ColumnAware {
                 ((Columns) column).setRowIndex(-1);
                 setColumns(null);
             }
+            return true;
         });
     }
 

@@ -126,6 +126,8 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                     filtered.set(filtered.get() || f.isActive());
                 }
             }
+
+            return true;
         });
 
         // merge internal filterBy with user filterBy
@@ -221,7 +223,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         forEachColumn(column -> {
             FilterMeta filterMeta = filterBy.get(column.getColumnKey());
             if (filterMeta == null) {
-                return;
+                return true;
             }
 
             Object filterValue;
@@ -262,6 +264,8 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             }
 
             filterMeta.setFilterValue(filterValue);
+
+            return true;
         });
     }
 
@@ -320,6 +324,8 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 sorted.set(sorted.get() || s.isActive());
                 sortMeta.put(s.getColumnKey(), s);
             }
+
+            return true;
         });
 
         // merge internal sortBy with user sortBy

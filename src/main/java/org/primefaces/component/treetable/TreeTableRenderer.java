@@ -59,6 +59,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -1310,17 +1311,16 @@ public class TreeTableRenderer extends DataRenderer {
 
         int childCount = node.getChildCount();
         ELContext elContext = context.getELContext();
+        AtomicBoolean matching = new AtomicBoolean();
 
         for (int i = 0; i < childCount; i++) {
             TreeNode childNode = node.getChildren().get(i);
-            boolean matching = true;
             String rowKey = childNode.getRowKey();
             tt.setRowKey(root, rowKey);
+            matching.set(true);
 
-            for (FilterMeta filter : filterBy.values()) {
-                if (filter.getColumn() == null) {
-                    continue;
-                }
+            tt.forEachColumn(column -> {
+                FilterMeta filter = filterBy.get(column.getColumnKey(tt, rowKey));
 
                 if (filter.getColumn() instanceof DynamicColumn) {
                     ((DynamicColumn) filter.getColumn()).applyStatelessModel();
@@ -1333,16 +1333,14 @@ public class TreeTableRenderer extends DataRenderer {
                 Object columnValue = filterByVE.getValue(elContext);
                 FilterConstraint filterConstraint = getFilterConstraint(filter.getColumn());
 
-                matching = filterFunction != null
+                matching.set(filterFunction != null
                     ? (Boolean) filterFunction.invoke(elContext, new Object[]{columnValue, filterValue, filterLocale})
-                    : filterConstraint.isMatching(context, columnValue, filterValue, filterLocale);
+                    : filterConstraint.isMatching(context, columnValue, filterValue, filterLocale));
 
-                if (!matching) {
-                    break;
-                }
-            }
+                return matching.get();
+            });
 
-            if (matching) {
+            if (matching.get()) {
                 filteredRowKeys.add(rowKey);
             }
 
