@@ -91,12 +91,15 @@ public class HeadRenderer extends Renderer {
             theme = (String) ve.getValue(elContext);
         }
         else {
-            theme = "nova-light";   //default
+            theme = "saga";     //default
         }
 
         if (theme != null && !theme.equals("none")) {
             encodeCSS(context, "primefaces-" + theme, "theme.css");
         }
+
+        //Icons
+        encodeCSS(context, "primefaces", "primeicons/primeicons.css");
 
         if (applicationContext.getConfig().isFontAwesomeEnabled()) {
             encodeCSS(context, "primefaces", "fa/font-awesome.css");
