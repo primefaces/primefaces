@@ -3,7 +3,7 @@ if (!PrimeFaces.csp) {
     /**
      * The object with functionality related to handling the `script-src` directive of the HTTP Content-Security-Policy
      * (CSP) policy. This makes use of a nonce (number used once). The server must generate a unique nonce value each
-     * time it transmits a policy. 
+     * time it transmits a policy.
      * @namespace
      */
     PrimeFaces.csp = {
@@ -20,6 +20,13 @@ if (!PrimeFaces.csp) {
          * @type {string}
          */
         NONCE_VALUE : "",
+
+        /**
+         * Map containing a boolean indicator per element and event. Indicates for which elements and events there are
+         * registered ajaxified events listeners.
+         * @type {Map<string, Map<string, boolean>>}
+         */
+        REGISTERED_AJAXIFIED_EVENT_LISTENERS: new Map(),
 
         /**
          * Sets the given nonce to all forms on the current page.
@@ -63,7 +70,33 @@ if (!PrimeFaces.csp) {
                 };
 
                 $(element).off(jqEvent).on(jqEvent, jsWrapper);
+
+                //Collect some basic information about registered ajaxified event listeners
+                if (!PrimeFaces.csp.REGISTERED_AJAXIFIED_EVENT_LISTENERS.has(id)) {
+                    PrimeFaces.csp.REGISTERED_AJAXIFIED_EVENT_LISTENERS.set(id, new Map())
+                }
+
+                var jsAsString = js.toString();
+                var ajaxified = (jsAsString.indexOf("PrimeFaces.ab(")>=0) || (jsAsString.indexOf("pf.ab(")>=0) || (jsAsString.indexOf("mojarra.ab(")>=0) || (jsAsString.indexOf("jsf.ajax.request")>=0);
+                PrimeFaces.csp.REGISTERED_AJAXIFIED_EVENT_LISTENERS.get(id).set(jqEvent, ajaxified);
             }
+        },
+
+        /**
+         * Has the element with the given id an registered event listener for the given event?
+         * This may be used by PrimeFaces Selenium to detect weather there is an CSP event bound to an element.
+         * @param {string} id ID of an element
+         * @param {string} [event] Event to listen to, with the `on` prefix, such as `onclick` or `onblur`.
+         * @return {boolean} Has the element with the given id an registered ajaxified event listener for the given event?
+         */
+        hasRegisteredAjaxifiedEvent: function(id, event) {
+            if (PrimeFaces.csp.REGISTERED_AJAXIFIED_EVENT_LISTENERS.has(id)) {
+                var shortenedEvent = event.substring(2, event.length),
+                    jqEvent = shortenedEvent + '.' + id;
+
+                return PrimeFaces.csp.REGISTERED_AJAXIFIED_EVENT_LISTENERS.get(id).get(jqEvent);
+            }
+            return false;
         },
 
         /**
@@ -84,7 +117,7 @@ if (!PrimeFaces.csp) {
             // evaluate the script
             $.globalEval(js, options);
         },
-        
+
         /**
          * Perform a CSP safe `eval()` with a return result value.
          *
@@ -121,7 +154,7 @@ if (!PrimeFaces.csp) {
         /**
          * GitHub #5790: When using jQuery to trigger a click event on a button while using CSP
          * we must set preventDefault or else it will trigger a non-ajax button click.
-         * 
+         *
          * @return {JQuery.Event} the JQuery click event
          */
         clickEvent: function() {
