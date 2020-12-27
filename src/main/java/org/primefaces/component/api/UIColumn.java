@@ -50,7 +50,7 @@ public interface UIColumn {
      * @return 
      */
     default String getColumnKey(UIComponent parent, int rowIndex) {
-        return getColumnKey(parent, "" + rowIndex);
+        return getColumnKey(parent, String.valueOf(rowIndex));
     }
 
     /**
