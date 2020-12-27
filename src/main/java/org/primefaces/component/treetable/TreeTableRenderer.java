@@ -41,7 +41,6 @@ import org.primefaces.util.*;
 import org.primefaces.visit.ResetInputVisitCallback;
 
 import javax.el.ELContext;
-import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.EditableValueHolder;
@@ -1330,16 +1329,12 @@ public class TreeTableRenderer extends DataRenderer {
                     ((DynamicColumn) column).applyStatelessModel();
                 }
 
-                MethodExpression filterFunction = column.getFilterFunction();
-                ValueExpression filterByVE = filter.getFilterBy();
+                FilterConstraint constraint = filter.getConstraint();
                 Object filterValue = filter.getFilterValue();
-
+                ValueExpression filterByVE = filter.getFilterBy();
                 Object columnValue = filterByVE.getValue(elContext);
-                FilterConstraint filterConstraint = filter.getConstraint();
 
-                matching.set(filterFunction != null
-                    ? (Boolean) filterFunction.invoke(elContext, new Object[]{columnValue, filterValue, filterLocale})
-                    : filterConstraint.isMatching(context, columnValue, filterValue, filterLocale));
+                matching.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
 
                 return matching.get();
             });
