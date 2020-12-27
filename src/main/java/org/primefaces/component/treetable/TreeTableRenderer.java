@@ -776,7 +776,7 @@ public class TreeTableRenderer extends DataRenderer {
         columnClass = filterable ? columnClass + " " + TreeTable.FILTER_COLUMN_CLASS : columnClass;
 
         if (sortable) {
-            SortMeta sortMeta = tt.getActiveSortMeta().get(column.getColumnKey());
+            SortMeta sortMeta = tt.getSortByAsMap().get(column.getColumnKey());
             sortIcon = resolveSortIcon(sortMeta);
 
             if (sortIcon == null) {
@@ -1147,17 +1147,21 @@ public class TreeTableRenderer extends DataRenderer {
             return;
         }
 
-        Map<String, SortMeta> sortBy = tt.getActiveSortMeta();
+        Map<String, SortMeta> sortBy = tt.getSortByAsMap();
         if (sortBy.isEmpty()) {
             return;
         }
 
         Locale dataLocale = tt.resolveDataLocale();
 
-        for (SortMeta meta : sortBy.values()) {
-            UIColumn sortColumn = (UIColumn) meta.getComponent();
-            if (sortColumn != null && sortColumn.isDynamic()) {
-                ((DynamicColumn) sortColumn).applyStatelessModel();
+        tt.forEachColumn(column -> {
+            SortMeta meta = sortBy.get(column.getColumnKey());
+            if (meta == null || !meta.isActive()) {
+                return true;
+            }
+
+            if (column instanceof DynamicColumn) {
+                ((DynamicColumn) column).applyStatelessModel();
             }
 
             TreeUtils.sortNode(root, new TreeNodeComparator(
@@ -1168,7 +1172,9 @@ public class TreeTableRenderer extends DataRenderer {
                     meta.isCaseSensitiveSort(),
                     dataLocale));
             tt.updateRowKeys(root);
-        }
+
+            return true;
+        });
 
         String selectedRowKeys = tt.getSelectedRowKeysAsString();
         if (selectedRowKeys != null) {
@@ -1271,15 +1277,9 @@ public class TreeTableRenderer extends DataRenderer {
     }
 
     public void filter(FacesContext context, TreeTable tt, TreeNode root) throws IOException {
-        Map<String, FilterMeta> filterBy = tt.getActiveFilterMeta();
+        Map<String, FilterMeta> filterBy = tt.getFilterByAsMap();
         if (filterBy.isEmpty()) {
             return;
-        }
-
-        for (FilterMeta filter : filterBy.values()) {
-            if (filter.getColumn() == null) {
-                filter.setColumn(tt.findColumn(filter.getColumnKey()));
-            }
         }
 
         Locale filterLocale = LocaleUtils.getCurrentLocale(context);
@@ -1321,17 +1321,21 @@ public class TreeTableRenderer extends DataRenderer {
 
             tt.forEachColumn(column -> {
                 FilterMeta filter = filterBy.get(column.getColumnKey(tt, rowKey));
+                if (filter == null || !filter.isActive()) {
+                    return true;
+                }
+                filter.setColumn(column);
 
-                if (filter.getColumn() instanceof DynamicColumn) {
-                    ((DynamicColumn) filter.getColumn()).applyStatelessModel();
+                if (column instanceof DynamicColumn) {
+                    ((DynamicColumn) column).applyStatelessModel();
                 }
 
-                MethodExpression filterFunction = filter.getColumn().getFilterFunction();
+                MethodExpression filterFunction = column.getFilterFunction();
                 ValueExpression filterByVE = filter.getFilterBy();
                 Object filterValue = filter.getFilterValue();
 
                 Object columnValue = filterByVE.getValue(elContext);
-                FilterConstraint filterConstraint = getFilterConstraint(filter.getColumn());
+                FilterConstraint filterConstraint = filter.getConstraint();
 
                 matching.set(filterFunction != null
                     ? (Boolean) filterFunction.invoke(elContext, new Object[]{columnValue, filterValue, filterLocale})
@@ -1431,21 +1435,5 @@ public class TreeTableRenderer extends DataRenderer {
         clone.setExpanded(node.isExpanded());
 
         return clone;
-    }
-
-    public FilterConstraint getFilterConstraint(UIColumn column) {
-        String filterMatchMode = column.getFilterMatchMode();
-
-        MatchMode matchMode = MatchMode.of(filterMatchMode);
-        if (matchMode == null) {
-            throw new FacesException("Illegal filter match mode:" + filterMatchMode);
-        }
-
-        FilterConstraint filterConstraint = TreeTable.FILTER_CONSTRAINTS.get(matchMode);
-        if (filterConstraint == null) {
-            throw new FacesException("Illegal filter match mode:" + filterMatchMode);
-        }
-
-        return filterConstraint;
     }
 }
