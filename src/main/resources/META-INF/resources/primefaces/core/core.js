@@ -444,6 +444,14 @@
         },
 
         /**
+         * Checks whether the current application is running in a non production environment.
+         * @return {boolean} `true` if this is a non production environment, `false` otherwise.
+         */
+        isNotProductionStage: function() {
+            return PrimeFaces.settings.projectStage === 'Development' || PrimeFaces.settings.projectStage === 'UnitTest' || PrimeFaces.settings.projectStage === 'SystemTest';
+        },
+
+        /**
          * Handles the error case when a widget was requested that is not available. Currently just logs an error
          * message.
          * @param {string} widgetVar Widget variables of a widget

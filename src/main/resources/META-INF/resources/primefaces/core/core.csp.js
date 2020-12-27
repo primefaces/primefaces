@@ -71,20 +71,23 @@ if (!PrimeFaces.csp) {
 
                 $(element).off(jqEvent).on(jqEvent, jsWrapper);
 
-                //Collect some basic information about registered ajaxified event listeners
-                if (!PrimeFaces.csp.REGISTERED_AJAXIFIED_EVENT_LISTENERS.has(id)) {
-                    PrimeFaces.csp.REGISTERED_AJAXIFIED_EVENT_LISTENERS.set(id, new Map())
-                }
+                if (PrimeFaces.isNotProductionStage()) {
+                    //Collect some basic information about registered ajaxified event listeners
+                    if (!PrimeFaces.csp.REGISTERED_AJAXIFIED_EVENT_LISTENERS.has(id)) {
+                        PrimeFaces.csp.REGISTERED_AJAXIFIED_EVENT_LISTENERS.set(id, new Map())
+                    }
 
-                var jsAsString = js.toString();
-                var ajaxified = (jsAsString.indexOf("PrimeFaces.ab(")>=0) || (jsAsString.indexOf("pf.ab(")>=0) || (jsAsString.indexOf("mojarra.ab(")>=0) || (jsAsString.indexOf("jsf.ajax.request")>=0);
-                PrimeFaces.csp.REGISTERED_AJAXIFIED_EVENT_LISTENERS.get(id).set(jqEvent, ajaxified);
+                    var jsAsString = js.toString();
+                    var ajaxified = (jsAsString.indexOf("PrimeFaces.ab(") >= 0) || (jsAsString.indexOf("pf.ab(") >= 0) || (jsAsString.indexOf("mojarra.ab(") >= 0) || (jsAsString.indexOf("jsf.ajax.request") >= 0);
+                    PrimeFaces.csp.REGISTERED_AJAXIFIED_EVENT_LISTENERS.get(id).set(jqEvent, ajaxified);
+                }
             }
         },
 
         /**
          * Has the element with the given id an registered event listener for the given event?
          * This may be used by PrimeFaces Selenium to detect weather there is an CSP event bound to an element.
+         * Attention: This information is only available for not-production JSF-stages!
          * @param {string} id ID of an element
          * @param {string} [event] Event to listen to, with the `on` prefix, such as `onclick` or `onblur`.
          * @return {boolean} Has the element with the given id an registered ajaxified event listener for the given event?
