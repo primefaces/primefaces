@@ -24,7 +24,6 @@
 package org.primefaces.component.datatable.feature;
 
 import org.primefaces.PrimeFaces;
-import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
@@ -36,9 +35,13 @@ import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.faces.model.ListDataModel;
 import java.io.IOException;
+import java.text.Collator;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import javax.el.ValueExpression;
+import org.primefaces.component.api.DynamicColumn;
 
 public class SortFeature implements DataTableFeature {
 
@@ -140,24 +143,70 @@ public class SortFeature implements DataTableFeature {
 
         List<?> list = resolveList(value);
         Locale locale = table.resolveDataLocale();
+        String var = table.getVar();
+        Collator collator = Collator.getInstance(locale);
+        AtomicInteger comparisonResult = new AtomicInteger();
 
-        ChainedBeanPropertyComparator chainedComparator = new ChainedBeanPropertyComparator();
+        for (SortMeta sortMeta : table.getActiveSortMeta().values()) {
+            list.sort((o1, o2) -> {
+                comparisonResult.set(0);
 
-        for (SortMeta meta : table.getActiveSortMeta().values()) {
-            BeanPropertyComparator comparator;
-            Object source = meta.getComponent();
+                table.invokeOnColumn(sortMeta.getColumnKey(), column -> {
+                    if (column instanceof DynamicColumn) {
+                        ((DynamicColumn) column).applyStatelessModel();
+                    }
 
-            if (source instanceof DynamicColumn) {
-                comparator = new DynamicBeanPropertyComparator(table.getVar(), meta, locale);
-            }
-            else {
-                comparator = new BeanPropertyComparator(table.getVar(), meta, locale);
-            }
+                    ValueExpression ve = sortMeta.getSortBy();
 
-            chainedComparator.addComparator(comparator);
+                    try {
+                        context.getExternalContext().getRequestMap().put(var, o1);
+                        Object value1 = ve.getValue(context.getELContext());
+
+                        context.getExternalContext().getRequestMap().put(var, o2);
+                        Object value2 = ve.getValue(context.getELContext());
+
+                        int result;
+
+                        if (sortMeta.getFunction() == null) {
+                            //Empty check
+                            if (value1 == null && value2 == null) {
+                                result = 0;
+                            }
+                            else if (value1 == null) {
+                                result = sortMeta.getNullSortOrder();
+                            }
+                            else if (value2 == null) {
+                                result = -1 * sortMeta.getNullSortOrder();
+                            }
+                            else if (value1 instanceof String && value2 instanceof String) {
+                                if (sortMeta.isCaseSensitiveSort()) {
+                                    result = collator.compare(value1, value2);
+                                }
+                                else {
+                                    String str1 = (((String) value1).toLowerCase(locale));
+                                    String str2 = (((String) value2).toLowerCase(locale));
+
+                                    result = collator.compare(str1, str2);
+                                }
+                            }
+                            else {
+                                result = ((Comparable<Object>) value1).compareTo(value2);
+                            }
+                        }
+                        else {
+                            result = (Integer) sortMeta.getFunction().invoke(context.getELContext(), new Object[]{value1, value2});
+                        }
+
+                        comparisonResult.set(sortMeta.getOrder().isAscending() ? result : -1 * result);
+                    }
+                    catch (Exception e) {
+                        throw new FacesException(e);
+                    }
+                });
+
+                return comparisonResult.get();
+            });
         }
-
-        list.sort(chainedComparator);
     }
 
     @Override

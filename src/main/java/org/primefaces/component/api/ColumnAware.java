@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.LongAdder;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.faces.FacesException;
@@ -122,6 +123,26 @@ public interface ColumnAware {
         }
 
         return true;
+    }
+
+    default void invokeOnColumn(String columnKey, Consumer<UIColumn> callback) {
+        forEachColumn((column) -> {
+            if (column.getColumnKey().equals(columnKey)) {
+                callback.accept(column);
+                return false;
+            }
+            return true;
+        });
+    }
+
+    default void invokeOnColumn(String columnKey, int rowIndex, Consumer<UIColumn> callback) {
+        forEachColumn((column) -> {
+            if (column.getColumnKey((UIComponent) this, rowIndex).equals(columnKey)) {
+                callback.accept(column);
+                return false;
+            }
+            return true;
+        });
     }
 
     default UIColumn findColumn(String columnKey) {
