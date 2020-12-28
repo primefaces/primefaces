@@ -2380,7 +2380,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
 
         // remove all indicator numbers first
-        $this.sortableColumns.find('.ui-sort-priority').text('').addClass('ui-helper-hidden');
+        $this.sortableColumns.find('.ui-sortable-column-badge').text('').addClass('ui-helper-hidden');
 
         // add 1,2,3 etc to columns if more than 1 column is sorted
         var sortMeta =  $this.sortMeta;
@@ -2389,7 +2389,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 var id = $(this).attr("id");
                 for (var i = 0; i < sortMeta.length; i++) {
                     if (sortMeta[i].col == id) {
-                        $(this).find('.ui-sort-priority').text(i + 1).removeClass('ui-helper-hidden');
+                        $(this).find('.ui-sortable-column-badge').text(i + 1).removeClass('ui-helper-hidden');
                     }
                 }
             });

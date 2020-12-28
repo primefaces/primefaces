@@ -323,7 +323,7 @@
 }
 
 /* Multiple sort number badges */
-.ui-datatable .ui-sort-priority {
+.ui-datatable .ui-sortable-column-badge {
     display: -ms-inline-flexbox;
     display: inline-flex;
     -ms-flex-align: center;

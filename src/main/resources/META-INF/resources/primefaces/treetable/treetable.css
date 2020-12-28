@@ -268,7 +268,7 @@
 } 
 
 /* Multiple sort number badges */
-.ui-treetable .ui-sort-priority {
+.ui-treetable .ui-sortable-column-badge {
     display: -ms-inline-flexbox;
     display: inline-flex;
     -ms-flex-align: center;
