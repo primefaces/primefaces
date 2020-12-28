@@ -403,18 +403,6 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 .collect(Collectors.toMap(SortMeta::getField, Function.identity(), (o1, o2) -> o1, LinkedHashMap::new));
     }
 
-    /**
-     * Used for actual sorting, this is required to start with the lowest sortPriority.
-     *
-     * @return map with {@link SortMeta#getColumnKey()} as key and {@link SortMeta} as value
-     */
-    default Map<String, SortMeta> getActiveSortMetaReverse() {
-        return getSortByAsMap().values().stream()
-                .filter(SortMeta::isActive)
-                .sorted()
-                .collect(Collectors.toMap(SortMeta::getColumnKey, Function.identity(), (o1, o2) -> o1, LinkedHashMap::new));
-    }
-
     default boolean isSortingCurrentlyActive() {
         return getSortByAsMap().values().stream().anyMatch(SortMeta::isActive);
     }

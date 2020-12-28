@@ -146,9 +146,12 @@ public class SortFeature implements DataTableFeature {
         String var = table.getVar();
         Collator collator = Collator.getInstance(locale);
         AtomicInteger comparisonResult = new AtomicInteger();
+        Map<String, SortMeta> sortBy = table.getActiveSortMeta();
 
-        for (SortMeta sortMeta : table.getActiveSortMetaReverse().values()) {
-            list.sort((o1, o2) -> {
+        Object varBackup = context.getExternalContext().getRequestMap().get(var);
+
+        list.sort((o1, o2) -> {
+            for (SortMeta sortMeta : sortBy.values()) {
                 comparisonResult.set(0);
 
                 table.invokeOnColumn(sortMeta.getColumnKey(), column -> {
@@ -156,56 +159,74 @@ public class SortFeature implements DataTableFeature {
                         ((DynamicColumn) column).applyStatelessModel();
                     }
 
-                    ValueExpression ve = sortMeta.getSortBy();
-
-                    try {
-                        context.getExternalContext().getRequestMap().put(var, o1);
-                        Object value1 = ve.getValue(context.getELContext());
-
-                        context.getExternalContext().getRequestMap().put(var, o2);
-                        Object value2 = ve.getValue(context.getELContext());
-
-                        int result;
-
-                        if (sortMeta.getFunction() == null) {
-                            //Empty check
-                            if (value1 == null && value2 == null) {
-                                result = 0;
-                            }
-                            else if (value1 == null) {
-                                result = sortMeta.getNullSortOrder();
-                            }
-                            else if (value2 == null) {
-                                result = -1 * sortMeta.getNullSortOrder();
-                            }
-                            else if (value1 instanceof String && value2 instanceof String) {
-                                if (sortMeta.isCaseSensitiveSort()) {
-                                    result = collator.compare(value1, value2);
-                                }
-                                else {
-                                    String str1 = (((String) value1).toLowerCase(locale));
-                                    String str2 = (((String) value2).toLowerCase(locale));
-
-                                    result = collator.compare(str1, str2);
-                                }
-                            }
-                            else {
-                                result = ((Comparable<Object>) value1).compareTo(value2);
-                            }
-                        }
-                        else {
-                            result = (Integer) sortMeta.getFunction().invoke(context.getELContext(), new Object[]{value1, value2});
-                        }
-
-                        comparisonResult.set(sortMeta.getOrder().isAscending() ? result : -1 * result);
-                    }
-                    catch (Exception e) {
-                        throw new FacesException(e);
-                    }
+                    int result = compare(context, var, column, sortMeta, o1, o2, collator, locale);
+                    comparisonResult.set(result);
                 });
 
-                return comparisonResult.get();
-            });
+                if (comparisonResult.get() != 0) {
+                    return comparisonResult.get();
+                }
+            }
+
+            return 0;
+        });
+
+        if (varBackup == null) {
+            context.getExternalContext().getRequestMap().remove(var);
+        }
+        else {
+            context.getExternalContext().getRequestMap().put(var, varBackup);
+        }
+    }
+
+    protected int compare(FacesContext context, String var, UIColumn column, SortMeta sortMeta, Object o1, Object o2,
+            Collator collator, Locale locale) {
+
+        try {
+            ValueExpression ve = sortMeta.getSortBy();
+
+            context.getExternalContext().getRequestMap().put(var, o1);
+            Object value1 = ve.getValue(context.getELContext());
+
+            context.getExternalContext().getRequestMap().put(var, o2);
+            Object value2 = ve.getValue(context.getELContext());
+
+            int result;
+
+            if (sortMeta.getFunction() == null) {
+                //Empty check
+                if (value1 == null && value2 == null) {
+                    result = 0;
+                }
+                else if (value1 == null) {
+                    result = sortMeta.getNullSortOrder();
+                }
+                else if (value2 == null) {
+                    result = -1 * sortMeta.getNullSortOrder();
+                }
+                else if (value1 instanceof String && value2 instanceof String) {
+                    if (sortMeta.isCaseSensitiveSort()) {
+                        result = collator.compare(value1, value2);
+                    }
+                    else {
+                        String str1 = (((String) value1).toLowerCase(locale));
+                        String str2 = (((String) value2).toLowerCase(locale));
+
+                        result = collator.compare(str1, str2);
+                    }
+                }
+                else {
+                    result = ((Comparable<Object>) value1).compareTo(value2);
+                }
+            }
+            else {
+                result = (Integer) sortMeta.getFunction().invoke(context.getELContext(), new Object[]{value1, value2});
+            }
+
+            return sortMeta.getOrder().isAscending() ? result : -1 * result;
+        }
+        catch (Exception e) {
+            throw new FacesException(e);
         }
     }
 
