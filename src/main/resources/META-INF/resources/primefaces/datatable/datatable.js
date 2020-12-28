@@ -562,6 +562,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             $this.updateReflowDD(columnHeader, sortOrder);
         });
 
+        $this.updateSortPriorityIndicators();
+
         if(this.reflowDD && this.cfg.reflow) {
             PrimeFaces.skinSelect(this.reflowDD);
             this.reflowDD.on('change', function(e) {
@@ -2059,6 +2061,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                             $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'other')
                                 .attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));
                         }
+
+                        $this.updateSortPriorityIndicators();
                     }
                 }
 
@@ -2092,6 +2096,32 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
+        }
+    },
+    
+    /**
+     * In multi-sort mode this will add number indicators to let the user know the current 
+     * sort order. If only one column is sorted then no indicator is displayed and will
+     * only be displayed once more than one column is sorted.
+     * @private
+     */
+    updateSortPriorityIndicators: function() {
+        var $this = this;
+
+        // remove all indicator numbers first
+        $this.sortableColumns.find('.ui-sort-priority').text('').addClass('ui-helper-hidden');
+
+        // add 1,2,3 etc to columns if more than 1 column is sorted
+        var sortMeta =  $this.sortMeta;
+        if (sortMeta && sortMeta.length > 1) {
+            $this.sortableColumns.each(function() {
+                var id = $(this).attr("id");
+                for (var i = 0; i < sortMeta.length; i++) {
+                    if (sortMeta[i].col == id) {
+                        $(this).find('.ui-sort-priority').text(i + 1).removeClass('ui-helper-hidden');
+                    }
+                }
+            });
         }
     },
 
