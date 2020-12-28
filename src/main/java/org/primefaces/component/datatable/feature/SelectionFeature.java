@@ -97,16 +97,13 @@ public class SelectionFeature implements DataTableFeature {
                 String var = table.getVar();
                 Set<String> rowKeys = new HashSet<>(table.getSelectedRowKeys());
 
-                // check if a row can be selectable
-                Consumer<Object> selectableRow = o -> {
+                Consumer<Object> computeRowKey = o -> {
                     String rowKey = table.getRowKey(o);
-                    if (LangUtils.isNotBlank(rowKey) && !table.isDisabledSelection()) {
-                        rowKeys.add(rowKey);
-                    }
+                    rowKeys.add(rowKey);
                 };
 
                 if (table.isSingleSelectionMode()) {
-                    selectableRow.accept(selection);
+                    computeRowKey.accept(selection);
                 }
                 else {
                     Class<?> clazz = selection.getClass();
@@ -119,7 +116,7 @@ public class SelectionFeature implements DataTableFeature {
                     List<Object> selectionTmp = isArray ? Arrays.asList((Object[]) selection) : (List<Object>) selection;
                     for (int i = 0; i < selectionTmp.size(); i++) {
                         Object o = selectionTmp.get(i);
-                        selectableRow.accept(o);
+                        computeRowKey.accept(o);
                     }
                 }
 
