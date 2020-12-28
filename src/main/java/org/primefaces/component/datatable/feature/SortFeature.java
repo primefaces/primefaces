@@ -147,7 +147,7 @@ public class SortFeature implements DataTableFeature {
         Collator collator = Collator.getInstance(locale);
         AtomicInteger comparisonResult = new AtomicInteger();
 
-        for (SortMeta sortMeta : table.getActiveSortMeta().values()) {
+        for (SortMeta sortMeta : table.getActiveSortMetaReverse().values()) {
             list.sort((o1, o2) -> {
                 comparisonResult.set(0);
 
