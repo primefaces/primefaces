@@ -41,6 +41,7 @@ import javax.faces.model.SelectItem;
 
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.api.UITable;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
@@ -56,7 +57,6 @@ import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.util.*;
-import org.primefaces.component.api.UITable;
 
 public class DataTableRenderer extends DataRenderer {
 
@@ -576,7 +576,7 @@ public class DataTableRenderer extends DataRenderer {
         boolean sortable = table.isColumnSortable(context, column);
         boolean filterable = table.isColumnFilterable(column);
         String selectionMode = column.getSelectionMode();
-        String sortIcon = null;
+        SortMeta sortMeta = null;
         boolean resizable = table.isResizableColumns() && column.isResizable();
         boolean draggable = table.isDraggableColumns() && column.isDraggable();
         int responsivePriority = column.getResponsivePriority();
@@ -600,9 +600,8 @@ public class DataTableRenderer extends DataRenderer {
                 .build();
 
         if (sortable) {
-            SortMeta s = table.getSortByAsMap().get(column.getColumnKey());
-            sortIcon = resolveDefaultSortIcon(s);
-            if (s.isActive()) {
+            sortMeta = table.getSortByAsMap().get(column.getColumnKey());
+            if (sortMeta.isActive()) {
                 columnClass += " ui-state-active";
             }
         }
@@ -650,19 +649,19 @@ public class DataTableRenderer extends DataRenderer {
             String filterPosition = column.getFilterPosition();
 
             if (filterPosition.equals("bottom")) {
-                encodeColumnHeaderContent(context, table, column, sortIcon);
+                encodeColumnHeaderContent(context, table, column, sortMeta);
                 encodeFilter(context, table, column);
             }
             else if (filterPosition.equals("top")) {
                 encodeFilter(context, table, column);
-                encodeColumnHeaderContent(context, table, column, sortIcon);
+                encodeColumnHeaderContent(context, table, column, sortMeta);
             }
             else {
                 throw new FacesException(filterPosition + " is an invalid option for filterPosition, valid values are 'bottom' or 'top'.");
             }
         }
         else {
-            encodeColumnHeaderContent(context, table, column, sortIcon);
+            encodeColumnHeaderContent(context, table, column, sortMeta);
         }
 
         if (selectionMode != null && selectionMode.equalsIgnoreCase("multiple")) {
@@ -685,7 +684,8 @@ public class DataTableRenderer extends DataRenderer {
         return sortIcon;
     }
 
-    protected void encodeColumnHeaderContent(FacesContext context, DataTable table, UIColumn column, String sortIcon) throws IOException {
+    protected void encodeColumnHeaderContent(FacesContext context, DataTable table, UIColumn column,
+                SortMeta sortMeta) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         UIComponent header = column.getFacet("header");
@@ -708,10 +708,19 @@ public class DataTableRenderer extends DataRenderer {
 
         writer.endElement("span");
 
-        if (sortIcon != null) {
-            writer.startElement("span", null);
-            writer.writeAttribute("class", sortIcon, null);
-            writer.endElement("span");
+        if (sortMeta != null) {
+            String sortIcon = resolveDefaultSortIcon(sortMeta);
+            if (sortIcon != null) {
+                writer.startElement("span", null);
+                writer.writeAttribute("class", sortIcon, null);
+                writer.endElement("span");
+
+                if (table.isMultiSort()) {
+                    writer.startElement("span", null);
+                    writer.writeAttribute("class", DataTable.SORTABLE_PRIORITY_CLASS, null);
+                    writer.endElement("span");
+                }
+            }
         }
     }
 

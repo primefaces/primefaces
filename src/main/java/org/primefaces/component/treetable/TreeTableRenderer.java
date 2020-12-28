@@ -23,6 +23,32 @@
  */
 package org.primefaces.component.treetable;
 
+import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
+
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import javax.el.ELContext;
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
+import javax.faces.component.ValueHolder;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
@@ -39,31 +65,6 @@ import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.*;
 import org.primefaces.visit.ResetInputVisitCallback;
-
-import javax.el.ELContext;
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.component.ValueHolder;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
 
 public class TreeTableRenderer extends DataRenderer {
 
@@ -759,7 +760,7 @@ public class TreeTableRenderer extends DataRenderer {
         int rowspan = column.getRowspan();
         boolean sortable = tt.isColumnSortable(context, column);
         boolean filterable = tt.isColumnFilterable(column);
-        String sortIcon = null;
+        SortMeta sortMeta = null;
         String style = column.getStyle();
         String width = column.getWidth();
         String columnClass = sortable ? TreeTable.SORTABLE_COLUMN_HEADER_CLASS : TreeTable.COLUMN_HEADER_CLASS;
@@ -775,13 +776,8 @@ public class TreeTableRenderer extends DataRenderer {
         columnClass = filterable ? columnClass + " " + TreeTable.FILTER_COLUMN_CLASS : columnClass;
 
         if (sortable) {
-            SortMeta sortMeta = tt.getSortByAsMap().get(column.getColumnKey());
-            sortIcon = resolveSortIcon(sortMeta);
-
-            if (sortIcon == null) {
-                sortIcon = TreeTable.SORTABLE_COLUMN_ICON_CLASS;
-            }
-            else {
+            sortMeta = tt.getSortByAsMap().get(column.getColumnKey());
+            if (sortMeta.isActive()) {
                 columnClass += " ui-state-active";
             }
         }
@@ -830,10 +826,19 @@ public class TreeTableRenderer extends DataRenderer {
 
         writer.endElement("span");
 
-        if (sortable) {
-            writer.startElement("span", null);
-            writer.writeAttribute("class", sortIcon, null);
-            writer.endElement("span");
+        if (sortable && sortMeta != null) {
+            String sortIcon = resolveDefaultSortIcon(sortMeta);
+            if (sortIcon != null) {
+                writer.startElement("span", null);
+                writer.writeAttribute("class", sortIcon, null);
+                writer.endElement("span");
+
+                if (tt.isMultiSort()) {
+                    writer.startElement("span", null);
+                    writer.writeAttribute("class", TreeTable.SORTABLE_PRIORITY_CLASS, null);
+                    writer.endElement("span");
+                }
+            }
         }
 
         if (filterable) {
@@ -841,6 +846,18 @@ public class TreeTableRenderer extends DataRenderer {
         }
 
         writer.endElement("th");
+    }
+
+    protected String resolveDefaultSortIcon(SortMeta sortMeta) {
+        SortOrder sortOrder = sortMeta.getOrder();
+        String sortIcon = TreeTable.SORTABLE_COLUMN_ICON_CLASS;
+        if (sortOrder.isAscending()) {
+            sortIcon = TreeTable.SORTABLE_COLUMN_ASCENDING_ICON_CLASS;
+        }
+        else if (sortOrder.isDescending()) {
+            sortIcon = TreeTable.SORTABLE_COLUMN_DESCENDING_ICON_CLASS;
+        }
+        return sortIcon;
     }
 
     protected void encodeFilter(FacesContext context, TreeTable tt, UIColumn column) throws IOException {
