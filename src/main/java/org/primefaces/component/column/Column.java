@@ -64,6 +64,11 @@ public class Column extends ColumnBase {
     }
 
     @Override
+    public String getColumnKey(UIComponent parent, String rowIndex) {
+        return getColumnKey().replace(parent.getId() + ":" + rowIndex + ":", parent.getId() + ":");
+    }
+
+    @Override
     public List getElements() {
         return getChildren();
     }

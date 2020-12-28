@@ -23,7 +23,19 @@
  */
 package org.primefaces.component.treetable;
 
-import java.util.*;
+import org.primefaces.PrimeFaces;
+import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.column.Column;
+import org.primefaces.event.*;
+import org.primefaces.event.data.FilterEvent;
+import org.primefaces.event.data.PageEvent;
+import org.primefaces.event.data.SortEvent;
+import org.primefaces.model.*;
+import org.primefaces.model.filter.*;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LocaleUtils;
+import org.primefaces.util.MapBuilder;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
@@ -34,18 +46,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
-
-import org.primefaces.PrimeFaces;
-import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.column.Column;
-import org.primefaces.component.columns.Columns;
-import org.primefaces.event.*;
-import org.primefaces.event.data.FilterEvent;
-import org.primefaces.event.data.PageEvent;
-import org.primefaces.event.data.SortEvent;
-import org.primefaces.model.*;
-import org.primefaces.model.filter.*;
-import org.primefaces.util.*;
+import java.util.*;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -126,7 +127,6 @@ public class TreeTable extends TreeTableBase {
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     private List<UIColumn> columns;
-    private Columns dynamicColumns;
     private List<String> filteredRowKeys = new ArrayList<>();
     private Map<String, AjaxBehaviorEvent> deferredEvents = new HashMap<>(1);
 
@@ -365,7 +365,7 @@ public class TreeTable extends TreeTableBase {
             return this.columns;
         }
 
-        List<UIColumn> columns = initColumns();
+        List<UIColumn> columns = collectColumns();
 
         // lets cache it only when RENDER_RESPONSE is reached, the columns might change before reaching that phase
         // see https://github.com/primefaces/primefaces/issues/2110
@@ -381,23 +381,12 @@ public class TreeTable extends TreeTableBase {
         this.columns = columns;
     }
 
-    public Columns getDynamicColumns() {
-        return dynamicColumns;
-    }
-
-    public void setDynamicColumns(Columns value) {
-        dynamicColumns = value;
-    }
-
     @Override
     public Object saveState(FacesContext context) {
-        if (dynamicColumns != null) {
-            dynamicColumns.setRowIndex(-1);
-        }
+        resetDynamicColumns();
 
         // reset component for MyFaces view pooling
         columns = null;
-        dynamicColumns = null;
         filteredRowKeys = new ArrayList<>();
 
         return super.saveState(context);
@@ -557,30 +546,6 @@ public class TreeTable extends TreeTableBase {
         super.preEncode(context);
     }
 
-    private void resetDynamicColumns() {
-        Columns dynamicCols = this.getDynamicColumns();
-        if (dynamicCols != null && isNestedWithinIterator()) {
-            dynamicCols.setRowIndex(-1);
-            this.setColumns(null);
-        }
-    }
-
-    public void updateColumnsVisibility(FacesContext context) {
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String columnTogglerParam = params.get(getClientId(context) + "_columnTogglerState");
-        if (columnTogglerParam != null) {
-            String[] togglableColumns = columnTogglerParam.split(",");
-            for (String togglableColumn : togglableColumns) {
-                int sepIndex = togglableColumn.lastIndexOf('_');
-                UIColumn column = findColumn(togglableColumn.substring(0, sepIndex));
-
-                if (column != null) {
-                    ((Column) column).setVisible(Boolean.valueOf(togglableColumn.substring(sepIndex + 1)));
-                }
-            }
-        }
-    }
-
     @Override
     protected boolean requiresColumns() {
         return true;
@@ -605,6 +570,8 @@ public class TreeTable extends TreeTableBase {
             }
 
             // TODO selection
+
+            setColumnMeta(ts.getColumnMeta());
         }
     }
 
@@ -681,5 +648,30 @@ public class TreeTable extends TreeTableBase {
     public boolean isMultiSort() {
         String sortMode = getSortMode();
         return sortMode != null && sortMode.equals("multiple");
+    }
+
+    @Override
+    public Map<String, ColumnMeta> getColumnMeta() {
+        Map<String, ColumnMeta> value =
+                (Map<String, ColumnMeta>) getStateHelper().get(InternalPropertyKeys.columnMeta);
+        if (value == null) {
+            value = new HashMap<>();
+            setColumnMeta(value);
+        }
+        return value;
+    }
+
+    public void setColumnMeta(Map<String, ColumnMeta> columnMeta) {
+        getStateHelper().put(InternalPropertyKeys.columnMeta, columnMeta);
+    }
+
+    @Override
+    public String getWidth() {
+        return (String) getStateHelper().eval(InternalPropertyKeys.width, null);
+    }
+
+    @Override
+    public void setWidth(String width) {
+        getStateHelper().put(InternalPropertyKeys.width, width);
     }
 }

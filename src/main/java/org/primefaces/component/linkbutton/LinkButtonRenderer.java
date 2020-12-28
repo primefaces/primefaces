@@ -61,7 +61,7 @@ public class LinkButtonRenderer extends OutcomeTargetRenderer {
         if (title != null) {
             writer.writeAttribute("title", title, "title");
         }
-        renderPassThruAttributes(context, linkButton, HTML.OUTPUT_EVENTS);
+        renderPassThruAttributes(context, linkButton, HTML.OUTPUT_EVENTS_WITHOUT_CLICK);
 
         if (disabled) {
             renderContent(context, linkButton);

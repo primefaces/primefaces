@@ -183,11 +183,6 @@ public class DataTable extends DataTableBase {
     private List<Object> selectedRowKeys = new ArrayList<>();
     private boolean isRowKeyRestored = false;
     private List<UIColumn> columns;
-    private Columns dynamicColumns;
-    private String togglableColumnsAsString;
-    private Map<String, Boolean> togglableColsMap;
-    private String resizableColumnsAsString;
-    private Map<String, String> resizableColsMap;
     private Set<Integer> expandedRowsSet;
     private Map<String, AjaxBehaviorEvent> deferredEvents = new HashMap<>(1);
 
@@ -697,7 +692,7 @@ public class DataTable extends DataTableBase {
             return this.columns;
         }
 
-        List<UIColumn> columns = initColumns();
+        List<UIColumn> columns = collectColumns();
 
         // lets cache it only when RENDER_RESPONSE is reached, the columns might change before reaching that phase
         // see https://github.com/primefaces/primefaces/issues/2110
@@ -756,14 +751,6 @@ public class DataTable extends DataTableBase {
     @Override
     protected boolean requiresColumns() {
         return true;
-    }
-
-    public Columns getDynamicColumns() {
-        return dynamicColumns;
-    }
-
-    public void setDynamicColumns(Columns value) {
-        dynamicColumns = value;
     }
 
     @Override
@@ -883,26 +870,22 @@ public class DataTable extends DataTableBase {
 
     @Override
     public boolean isDefaultSort() {
-        return getSortByAsMap() != null && Boolean.TRUE.equals(getStateHelper().get(InternalPropertyKeys.defaultSort.name()));
+        return getSortByAsMap() != null && Boolean.TRUE.equals(getStateHelper().get(InternalPropertyKeys.defaultSort));
     }
 
     @Override
     public void setDefaultSort(boolean defaultSort) {
-        getStateHelper().put(InternalPropertyKeys.defaultSort.name(), defaultSort);
+        getStateHelper().put(InternalPropertyKeys.defaultSort, defaultSort);
     }
 
     @Override
     public boolean isDefaultFilter() {
-        return Boolean.TRUE.equals(getStateHelper().get(InternalPropertyKeys.defaultFilter.name()));
+        return Boolean.TRUE.equals(getStateHelper().get(InternalPropertyKeys.defaultFilter));
     }
 
     @Override
     public void setDefaultFilter(boolean defaultFilter) {
-        getStateHelper().put(InternalPropertyKeys.defaultFilter.name(), defaultFilter);
-    }
-
-    public void setTogglableColumnsAsString(String togglableColumnsAsString) {
-        this.togglableColumnsAsString = togglableColumnsAsString;
+        getStateHelper().put(InternalPropertyKeys.defaultFilter, defaultFilter);
     }
 
     public Set<Integer> getExpandedRowsSet() {
@@ -924,76 +907,12 @@ public class DataTable extends DataTableBase {
         return expandedRowsSet;
     }
 
-    public Map getTogglableColumnsMap() {
-        if (togglableColsMap == null) {
-            togglableColsMap = new HashMap<>();
-            boolean isValueBlank = LangUtils.isValueBlank(togglableColumnsAsString);
-
-            if (isValueBlank) {
-                FacesContext context = getFacesContext();
-                Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-                setTogglableColumnsAsString(params.get(getClientId(context) + "_columnTogglerState"));
-            }
-
-            if (!isValueBlank) {
-                String[] colsArr = togglableColumnsAsString.split(",");
-                for (int i = 0; i < colsArr.length; i++) {
-                    String temp = colsArr[i];
-                    int sepIndex = temp.lastIndexOf('_');
-                    togglableColsMap.put(temp.substring(0, sepIndex), Boolean.parseBoolean(temp.substring(sepIndex + 1, temp.length())));
-                }
-            }
-        }
-
-        return togglableColsMap;
-    }
-
-    public void setTogglableColumnsMap(Map<String, Boolean> togglableColsMap) {
-        this.togglableColsMap = togglableColsMap;
-    }
-
-    public String getResizableColumnsAsString() {
-        return resizableColumnsAsString;
-    }
-
-    public void setResizableColumnsAsString(String resizableColumnsAsString) {
-        this.resizableColumnsAsString = resizableColumnsAsString;
-    }
-
-    public Map getResizableColumnsMap() {
-        if (resizableColsMap == null) {
-            resizableColsMap = new HashMap<>();
-            boolean isValueBlank = LangUtils.isValueBlank(resizableColumnsAsString);
-
-            if (isValueBlank) {
-                FacesContext context = getFacesContext();
-                Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-                setResizableColumnsAsString(params.get(getClientId(context) + "_resizableColumnState"));
-            }
-
-            if (!isValueBlank) {
-                String[] colsArr = resizableColumnsAsString.split(",");
-                for (int i = 0; i < colsArr.length; i++) {
-                    String temp = colsArr[i];
-                    int sepIndex = temp.lastIndexOf('_');
-                    resizableColsMap.put(temp.substring(0, sepIndex), temp.substring(sepIndex + 1, temp.length()));
-                }
-            }
-        }
-
-        return resizableColsMap;
-    }
-
-    public void setResizableColumnsMap(Map<String, String> resizableColsMap) {
-        this.resizableColsMap = resizableColsMap;
-    }
-
-    public List findOrderedColumns(String columnOrder) {
+    public List<UIColumn> findOrderedColumns(String columnOrder) {
         FacesContext context = getFacesContext();
-        List orderedColumns = null;
+        List<UIColumn> orderedColumns = null;
 
         if (columnOrder != null) {
-            orderedColumns = new ArrayList();
+            orderedColumns = new ArrayList<>();
 
             String[] order = columnOrder.split(",");
             String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
@@ -1002,7 +921,7 @@ public class DataTable extends DataTableBase {
 
                 for (UIComponent child : getChildren()) {
                     if (child instanceof Column && child.getClientId(context).equals(columnId)) {
-                        orderedColumns.add(child);
+                        orderedColumns.add((UIColumn) child);
                         break;
                     }
                     else if (child instanceof Columns) {
@@ -1012,7 +931,7 @@ public class DataTable extends DataTableBase {
                             String[] ids = columnId.split(separator);
                             int index = Integer.parseInt(ids[ids.length - 1]);
 
-                            orderedColumns.add(new DynamicColumn(index, (Columns) child, (columnsClientId + separator + index)));
+                            orderedColumns.add(new DynamicColumn(index, (Columns) child, context));
                             break;
                         }
 
@@ -1057,6 +976,8 @@ public class DataTable extends DataTableBase {
 
     @Override
     public Object saveState(FacesContext context) {
+        resetDynamicColumns();
+
         // reset component for MyFaces view pooling
         if (deferredEvents != null) {
             deferredEvents.clear();
@@ -1065,11 +986,6 @@ public class DataTable extends DataTableBase {
         selectedRowKeys = new ArrayList<>();
         isRowKeyRestored = false;
         columns = null;
-        dynamicColumns = null;
-        togglableColumnsAsString = null;
-        togglableColsMap = null;
-        resizableColumnsAsString = null;
-        resizableColsMap = null;
         expandedRowsSet = null;
 
         return super.saveState(context);
@@ -1099,14 +1015,6 @@ public class DataTable extends DataTableBase {
         super.preEncode(context);
     }
 
-    private void resetDynamicColumns() {
-        Columns dynamicCols = getDynamicColumns();
-        if (dynamicCols != null && isNestedWithinIterator()) {
-            dynamicCols.setRowIndex(-1);
-            setColumns(null);
-        }
-    }
-
     @Override
     public void restoreMultiViewState() {
         DataTableState ts = getMultiViewState(false);
@@ -1130,9 +1038,7 @@ public class DataTable extends DataTableBase {
                 isRowKeyRestored = true;
             }
 
-            setColumns(findOrderedColumns(ts.getOrderedColumnsAsString()));
-            setTogglableColumnsAsString(ts.getTogglableColumnsAsString());
-            setResizableColumnsAsString(ts.getResizableColumnsAsString());
+            setColumnMeta(ts.getColumnMeta());
         }
     }
 
@@ -1159,22 +1065,22 @@ public class DataTable extends DataTableBase {
 
     @Override
     public Map<String, SortMeta> getSortByAsMap() {
-        return ComponentUtils.computeIfAbsent(getStateHelper(), InternalPropertyKeys.sortByAsMap.name(), () -> initSortBy(getFacesContext()));
+        return ComponentUtils.computeIfAbsent(getStateHelper(), InternalPropertyKeys.sortByAsMap, () -> initSortBy(getFacesContext()));
     }
 
     @Override
     public void setSortByAsMap(Map<String, SortMeta> sortBy) {
-        getStateHelper().put(InternalPropertyKeys.sortByAsMap.name(), sortBy);
+        getStateHelper().put(InternalPropertyKeys.sortByAsMap, sortBy);
     }
 
     @Override
     public Map<String, FilterMeta> getFilterByAsMap() {
-        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.filterByAsMap.name(), Collections::emptyMap);
+        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.filterByAsMap, Collections::emptyMap);
     }
 
     @Override
     public void setFilterByAsMap(Map<String, FilterMeta> sortBy) {
-        getStateHelper().put(InternalPropertyKeys.filterByAsMap.name(), sortBy);
+        getStateHelper().put(InternalPropertyKeys.filterByAsMap, sortBy);
     }
 
     @Override
@@ -1184,6 +1090,32 @@ public class DataTable extends DataTableBase {
 
     @Override
     public boolean isFilterByAsMapDefined() {
-        return getStateHelper().get(InternalPropertyKeys.filterByAsMap.name()) != null;
+        return getStateHelper().get(InternalPropertyKeys.filterByAsMap) != null;
+    }
+
+    @Override
+    public Map<String, ColumnMeta> getColumnMeta() {
+        Map<String, ColumnMeta> value =
+                (Map<String, ColumnMeta>) getStateHelper().get(InternalPropertyKeys.columnMeta);
+        if (value == null) {
+            value = new HashMap<>();
+            setColumnMeta(value);
+        }
+        return value;
+    }
+
+    @Override
+    public void setColumnMeta(Map<String, ColumnMeta> columnMeta) {
+        getStateHelper().put(InternalPropertyKeys.columnMeta, columnMeta);
+    }
+
+    @Override
+    public String getWidth() {
+        return (String) getStateHelper().eval(InternalPropertyKeys.width, null);
+    }
+
+    @Override
+    public void setWidth(String width) {
+        getStateHelper().put(InternalPropertyKeys.width, width);
     }
 }

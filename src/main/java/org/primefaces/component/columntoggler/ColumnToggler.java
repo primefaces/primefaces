@@ -93,12 +93,17 @@ public class ColumnToggler extends ColumnTogglerBase {
 
     public UIComponent getDataSourceComponent() {
         if (dataSourceComponent == null) {
-            FacesContext context = getFacesContext();
-            String tableId = SearchExpressionFacade.resolveClientIds(context, this, getDatasource());
-            dataSourceComponent = context.getViewRoot().findComponent(tableId);
+            dataSourceComponent = SearchExpressionFacade.resolveComponent(getFacesContext(), this, getDatasource());
         }
 
         return dataSourceComponent;
     }
 
+    @Override
+    public Object saveState(FacesContext context) {
+        // reset component for MyFaces view pooling
+        dataSourceComponent = null;
+
+        return super.saveState(context);
+    }
 }

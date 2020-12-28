@@ -43,7 +43,7 @@ treetable and more.
 | draggable | true | Boolean | Defines if column is draggable if draggableColumns is set. Default true.
 | filterFunction | null | MethodExpr | Custom implementation to filter a value against a constraint.
 | field | null | String | Name of the field associated to bean "var". If not specified, filterBy-sortBy values are used to identify the field name.
-| priority | 0 | Integer | Priority of the column defined as an integer, lower values have more priority.
+| responsivePriority | 0 | Integer | Responsive priority of the column, lower values have more priority.
 | sortable | true | Boolean | Boolean value to mark column as sortable.
 | filterable | true | Boolean | Boolean value to mark column as filterable.
 | visible | true | Boolean | Controls the visibilty of the column.
@@ -51,6 +51,7 @@ treetable and more.
 | ariaHeaderText | null | String | Label to read by screen readers, when not specified headerText is used.
 | exportFunction | null | MethodExpr | Custom pluggable exportFunction for data exporter.
 | groupRow | false | Boolean | Speficies whether to group rows based on the column data.
+| exportValue | null | String | Defines the value of the cell to be exported if you want something other than the cell contents or exportFunction.
 | exportHeaderValue | null | String | Defines if the header value of column to be exported.
 | exportFooterValue | null | String | Defines if the footer value of column to be exported.
 | nullSortOrder             | 1                  | Integer          | Defines where the null values are placed in ascending sort order. Default value is "1"
@@ -58,6 +59,7 @@ treetable and more.
 | sortFunction              | null               | MethodExpression | Custom pluggable sortFunction.
 | sortPriority              | Integer.MAX_VALUE  | Integer          | Sets default sorting priority over the other columns. Default is Integer.MAX_VALUE. Higher is less priority.
 | caseSensitiveSort         | false              | Boolean          | Case sensitivity for sorting, insensitive by default.
+| displayPriority           | 0                  | Integer          | Defines the display priority, in which order the columns should be displayed.
 
 ## Getting Started with Column
 As column is a reused component, see documentation of components that use a column.

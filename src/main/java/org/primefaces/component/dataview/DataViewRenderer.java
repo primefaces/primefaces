@@ -91,9 +91,10 @@ public class DataViewRenderer extends DataRenderer {
         boolean hasPaginator = dataview.isPaginator();
         String paginatorPosition = dataview.getPaginatorPosition();
         String style = dataview.getStyle();
-        String styleClass = dataview.getStyleClass();
-        styleClass = (styleClass == null) ? DataView.DATAVIEW_CLASS : DataView.DATAVIEW_CLASS + " " + styleClass;
-        styleClass += " " + (layout.contains("grid") ? DataView.GRID_LAYOUT_CLASS : DataView.LIST_LAYOUT_CLASS);
+        String styleClass = getStyleClassBuilder(context)
+                .add(DataView.DATAVIEW_CLASS, dataview.getStyleClass())
+                .add(layout.contains("grid"), DataView.GRID_LAYOUT_CLASS, DataView.LIST_LAYOUT_CLASS)
+                .build();
 
         if (hasPaginator) {
             dataview.calculateFirst();
@@ -241,19 +242,14 @@ public class DataViewRenderer extends DataRenderer {
             int itemsToRender = rows != 0 ? rows : dataview.getRowCount();
             int numberOfRowsToRender = (itemsToRender + columns - 1) / columns;
             boolean flex = ComponentUtils.isFlex(context, dataview);
-            String columnClass = DataView.GRID_LAYOUT_COLUMN_CLASS + " ";
-            if (flex) {
-                columnClass += GridLayoutUtils.getFlexColumnClass(columns);
-            }
-            else {
-                columnClass += GridLayoutUtils.getColumnClass(columns);
-            }
+
+            String columnClass = getStyleClassBuilder(context)
+                    .add(DataView.GRID_LAYOUT_COLUMN_CLASS)
+                    .add(flex, GridLayoutUtils.getFlexColumnClass(columns),  GridLayoutUtils.getColumnClass(columns))
+                    .add(dataview.getGridRowStyleClass())
+                    .build();
 
             String columnInlineStyle = dataview.getGridRowStyle();
-
-            if (!LangUtils.isValueBlank(dataview.getGridRowStyleClass())) {
-                columnClass += " " + dataview.getGridRowStyleClass();
-            }
 
             writer.startElement("div", null);
             if (flex) {

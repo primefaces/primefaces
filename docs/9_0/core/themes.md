@@ -10,7 +10,7 @@ To activate your theme simply use the `primefaces.THEME`  web.xml context parame
 ```xml
 <context-param>
     <param-name>primefaces.THEME</param-name>
-    <param-value>nova-light</param-value>
+    <param-value>saga</param-value>
 </context-param>
 ```
 
@@ -19,14 +19,17 @@ To activate your theme simply use the `primefaces.THEME`  web.xml context parame
 
 PrimeFaces comes built-in with themes ready to use of out the box. They include:
 
-- luna-green
+- arya
 - luna-amber
 - luna-blue
+- luna-green
 - luna-pink
 - nova-colored
 - nova-dark
-- nova-light (DEFAULT)
+- nova-light
 - omega
+- saga (DEFAULT)
+- vela
 
 
 ## Premium Themes

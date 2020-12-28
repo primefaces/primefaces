@@ -107,6 +107,8 @@ public class Constants {
         }
     }
 
+    public static final String SPACE = " ";
+
     public static final String EMPTY_STRING = "";
 
     public static final String CLIENT_BEHAVIOR_RENDERING_MODE = "CLIENT_BEHAVIOR_RENDERING_MODE";

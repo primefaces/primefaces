@@ -43,12 +43,13 @@ import javax.faces.context.FacesContext;
 import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionHint;
+import org.primefaces.model.ColumnMeta;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortMeta;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
 
-public interface UITable extends ColumnAware {
+public interface UITable<T extends UITableState> extends ColumnAware, MultiViewStateAware<T> {
 
     /**
      * Backward compatibility for column properties (e.g sortBy, filterBy)
@@ -102,11 +103,9 @@ public interface UITable extends ColumnAware {
                 .createValueExpression(context.getELContext(), "#{" + var + "." + field + "}", Object.class);
     }
 
-
-
-
     String getVar();
 
+    String getClientId(FacesContext context);
 
 
     default Map<String, FilterMeta> initFilterBy(FacesContext context) {
@@ -127,6 +126,8 @@ public interface UITable extends ColumnAware {
                     filtered.set(filtered.get() || f.isActive());
                 }
             }
+
+            return true;
         });
 
         // merge internal filterBy with user filterBy
@@ -219,14 +220,18 @@ public interface UITable extends ColumnAware {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         char separator = UINamingContainer.getSeparatorChar(context);
 
-        for (FilterMeta filterMeta : filterBy.values()) {
+        forEachColumn(column -> {
+            FilterMeta filterMeta = filterBy.get(column.getColumnKey());
+            if (filterMeta == null) {
+                return true;
+            }
+
             Object filterValue;
 
             if (filterMeta.isGlobalFilter()) {
                 filterValue = params.get(((UIComponent) this).getClientId(context) + separator + FilterMeta.GLOBAL_FILTER_KEY);
             }
             else {
-                UIColumn column = filterMeta.getColumn();
                 UIComponent filterFacet = column.getFacet("filter");
                 boolean hasCustomFilter = filterFacet != null;
                 if (column instanceof DynamicColumn) {
@@ -259,15 +264,13 @@ public interface UITable extends ColumnAware {
             }
 
             filterMeta.setFilterValue(filterValue);
-        }
+
+            return true;
+        });
     }
 
     default Object getFilterValue(UIColumn column) {
         return getFilterByAsMap().get(column.getColumnKey()).getFilterValue();
-    }
-
-    default boolean isSortingEnabled() {
-        return !getSortByAsMap().isEmpty();
     }
 
     boolean isDefaultFilter();
@@ -284,7 +287,7 @@ public interface UITable extends ColumnAware {
 
     void setFilterByAsMap(Map<String, FilterMeta> sortBy);
 
-/**
+    /**
      * Returns actives filter meta.
      * @return map with {@link FilterMeta#getField()} as key and {@link FilterMeta} as value
      */
@@ -301,6 +304,8 @@ public interface UITable extends ColumnAware {
     MethodExpression getGlobalFilterFunction();
 
     void setGlobalFilterFunction(MethodExpression globalFilterFunction);
+
+
 
     default Map<String, SortMeta> initSortBy(FacesContext context) {
         Map<String, SortMeta> sortMeta = new HashMap<>();
@@ -319,6 +324,8 @@ public interface UITable extends ColumnAware {
                 sorted.set(sorted.get() || s.isActive());
                 sortMeta.put(s.getColumnKey(), s);
             }
+
+            return true;
         });
 
         // merge internal sortBy with user sortBy
@@ -423,6 +430,10 @@ public interface UITable extends ColumnAware {
                 .collect(Collectors.joining("','", "['", "']"));
     }
 
+    default boolean isSortingEnabled() {
+        return !getSortByAsMap().isEmpty();
+    }
+
     default HeaderRow getHeaderRow() {
         return null;
     }
@@ -442,4 +453,116 @@ public interface UITable extends ColumnAware {
     boolean isDefaultSort();
 
     void setDefaultSort(boolean defaultSort);
+
+
+
+    default void decodeColumnTogglerState(FacesContext context) {
+        String columnTogglerStateParam = context.getExternalContext().getRequestParameterMap()
+                .get(getClientId(context) + "_columnTogglerState");
+        if (columnTogglerStateParam == null) {
+            return;
+        }
+
+        Map<String, ColumnMeta> columMeta = getColumnMeta();
+        columMeta.values().stream().forEach(s -> s.setVisible(null));
+
+        if (!LangUtils.isValueBlank(columnTogglerStateParam)) {
+            String[] columnStates = columnTogglerStateParam.split(",");
+            for (String columnState : columnStates) {
+                if (LangUtils.isValueBlank(columnState)) {
+                    continue;
+                }
+                int seperatorIndex = columnState.lastIndexOf('_');
+                String columnKey = columnState.substring(0, seperatorIndex);
+                boolean visible = Boolean.parseBoolean(columnState.substring(seperatorIndex + 1));
+
+                ColumnMeta meta = columMeta.computeIfAbsent(columnKey, k -> new ColumnMeta(k));
+                meta.setVisible(visible);
+            }
+        }
+
+        if (isMultiViewState()) {
+            UITableState state = getMultiViewState(true);
+            state.setColumnMeta(columMeta);
+        }
+    }
+
+    default void decodeColumnResizeState(FacesContext context) {
+        String columnResizeStateParam = context.getExternalContext().getRequestParameterMap()
+                .get(getClientId(context) + "_resizableColumnState");
+        if (columnResizeStateParam == null) {
+            return;
+        }
+
+        Map<String, ColumnMeta> columMeta = getColumnMeta();
+        columMeta.values().stream().forEach(s -> s.setWidth(null));
+
+        String tableWidth = null;
+
+        if (!LangUtils.isValueBlank(columnResizeStateParam)) {
+            String[] columnStates = columnResizeStateParam.split(",");
+            for (String columnState : columnStates) {
+                if (LangUtils.isValueBlank(columnState)) {
+                    continue;
+                }
+
+                if (columnState.equals(getClientId(context) + "_tableWidthState")) {
+                    tableWidth = columnState;
+                    setWidth(tableWidth);
+                }
+                else {
+                    int seperatorIndex = columnState.lastIndexOf('_');
+                    String columnKey = columnState.substring(0, seperatorIndex);
+                    String width = columnState.substring(seperatorIndex + 1);
+
+                    ColumnMeta meta = columMeta.computeIfAbsent(columnKey, k -> new ColumnMeta(k));
+                    meta.setWidth(width);
+                }
+            }
+        }
+
+        if (isMultiViewState()) {
+            UITableState state = getMultiViewState(true);
+            state.setWidth(tableWidth);
+            state.setColumnMeta(columMeta);
+        }
+    }
+
+    String getWidth();
+
+    void setWidth(String width);
+
+    default void decodeColumnDisplayOrderState(FacesContext context) {
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String columnOrderParam = params.get(getClientId(context) + "_columnOrder");
+        if (LangUtils.isValueBlank(columnOrderParam)) {
+            return;
+        }
+
+        Map<String, ColumnMeta> columMeta = getColumnMeta();
+        columMeta.values().stream().forEach(s -> s.setDisplayPriority(0));
+
+        String[] columnKeys = columnOrderParam.split(",");
+        for (int i = 0; i < columnKeys.length; i++) {
+            String columnKey = columnKeys[i];
+            if (LangUtils.isValueBlank(columnKey)) {
+                continue;
+            }
+
+            ColumnMeta meta = columMeta.computeIfAbsent(columnKey, k -> new ColumnMeta(k));
+            meta.setDisplayPriority(i);
+        }
+
+        if (isMultiViewState()) {
+            UITableState ts = getMultiViewState(true);
+            ts.setColumnMeta(columMeta);
+        }
+    }
+
+    default String getColumnsWidthForClientSide() {
+        return getColumnMeta().entrySet()
+                .stream()
+                .map(e -> e.getKey() + '_' + e.getValue().getWidth())
+                .collect(Collectors.joining(","));
+    }
 }

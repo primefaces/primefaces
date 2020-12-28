@@ -24,7 +24,9 @@
 package org.primefaces.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
@@ -87,6 +89,29 @@ public class LangUtilsTest {
         assertEquals(SENTENCE, LangUtils.substring(SENTENCE, 0, 80));
         assertEquals("", LangUtils.substring(SENTENCE, 2, 2));
         assertEquals("b", LangUtils.substring("abc", -2, -1));
+    }
+
+    @Test
+    public void testIsParsable() {
+        assertFalse(LangUtils.isNumeric(null));
+        assertFalse(LangUtils.isNumeric(""));
+        assertFalse(LangUtils.isNumeric("0xC1AB"));
+        assertFalse(LangUtils.isNumeric("65CBA2"));
+        assertFalse(LangUtils.isNumeric("pendro"));
+        assertFalse(LangUtils.isNumeric("64, 2"));
+        assertFalse(LangUtils.isNumeric("64.2.2"));
+        assertFalse(LangUtils.isNumeric("64."));
+        assertFalse(LangUtils.isNumeric("64L"));
+        assertFalse(LangUtils.isNumeric("-"));
+        assertFalse(LangUtils.isNumeric("--2"));
+        assertTrue(LangUtils.isNumeric("64.2"));
+        assertTrue(LangUtils.isNumeric("64"));
+        assertTrue(LangUtils.isNumeric("018"));
+        assertTrue(LangUtils.isNumeric(".18"));
+        assertTrue(LangUtils.isNumeric("-65"));
+        assertTrue(LangUtils.isNumeric("-018"));
+        assertTrue(LangUtils.isNumeric("-018.2"));
+        assertTrue(LangUtils.isNumeric("-.236"));
     }
 
     class SimpleClass {

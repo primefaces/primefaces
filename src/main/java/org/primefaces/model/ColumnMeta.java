@@ -23,26 +23,53 @@
  */
 package org.primefaces.model;
 
-import org.primefaces.component.api.DynamicColumn;
+import java.io.Serializable;
 
-import java.util.Locale;
+public class ColumnMeta implements Serializable {
 
-public class DynamicBeanPropertyComparator extends BeanPropertyComparator {
+    private String columnKey;
 
-    private SortMeta sortMeta;
+    private String width;
+    private Boolean visible;
+    private Integer displayPriority;
 
-    public DynamicBeanPropertyComparator(String var, SortMeta sortMeta, Locale locale) {
-        super(var, sortMeta, locale);
-        if (!(sortMeta.getComponent() instanceof DynamicColumn)) {
-            throw new IllegalArgumentException();
-        }
-        this.sortMeta = sortMeta;
+    public ColumnMeta() {
+
     }
 
-    @Override
-    public int compare(Object obj1, Object obj2) {
-        ((DynamicColumn) sortMeta.getComponent()).applyStatelessModel();
+    public ColumnMeta(String columnKey) {
+        this.columnKey = columnKey;
+    }
 
-        return super.compare(obj1, obj2);
+    public String getColumnKey() {
+        return columnKey;
+    }
+
+    public void setColumnKey(String columnKey) {
+        this.columnKey = columnKey;
+    }
+
+    public String getWidth() {
+        return width;
+    }
+
+    public void setWidth(String width) {
+        this.width = width;
+    }
+
+    public Boolean getVisible() {
+        return visible;
+    }
+
+    public void setVisible(Boolean visible) {
+        this.visible = visible;
+    }
+
+    public Integer getDisplayPriority() {
+        return displayPriority;
+    }
+
+    public void setDisplayPriority(Integer displayPriority) {
+        this.displayPriority = displayPriority;
     }
 }

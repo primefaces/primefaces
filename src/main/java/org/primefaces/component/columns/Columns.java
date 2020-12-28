@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.DynamicColumn;
@@ -78,6 +77,11 @@ public class Columns extends ColumnsBase {
     }
 
     @Override
+    public String getColumnKey(UIComponent parent, String rowIndex) {
+        return getColumnKey().replace(parent.getId() + ":" + rowIndex + ":", parent.getId() + ":");
+    }
+
+    @Override
     public void renderChildren(FacesContext context) throws IOException {
         encodeChildren(context);
     }
@@ -86,14 +90,10 @@ public class Columns extends ColumnsBase {
         if (dynamicColumns == null) {
             FacesContext context = getFacesContext();
             setRowIndex(-1);
-            char separator = UINamingContainer.getSeparatorChar(context);
-            dynamicColumns = new ArrayList<>();
-            String clientId = getClientId(context);
+            dynamicColumns = new ArrayList<>(getRowCount());
 
             for (int i = 0; i < getRowCount(); i++) {
-                DynamicColumn dynaColumn = new DynamicColumn(i, this);
-                dynaColumn.setColumnKey(clientId + separator + i);
-
+                DynamicColumn dynaColumn = new DynamicColumn(i, this, context);
                 dynamicColumns.add(dynaColumn);
             }
         }

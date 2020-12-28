@@ -4727,6 +4727,38 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to add an item when the input loses focus. Default false.]]>
+            </description>
+            <name>addOnBlur</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to add the items immediately when pasting into the input. Default false.]]>
+            </description>
+            <name>addOnPaste</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Prevent duplicate entries from being added. Default false.]]>
+            </description>
+            <name>unique</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Separator character to allow multiple values such if a list is pasted into the input. Default is ','.]]>
+            </description>
+            <name>separator</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -5210,9 +5242,9 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Priority of the column defined as an integer, lower values have more priority.]]>
+                <![CDATA[Responsive priority of the column, lower values have more priority.]]>
             </description>
-            <name>priority</name>
+            <name>responsivePriority</name>
             <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
@@ -5274,6 +5306,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Defines the value of the cell to be exported if something other than the cell contents or exportFunction.]]>
+            </description>
+            <name>exportValue</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Defines if the header value of column to be exported.]]>
             </description>
             <name>exportHeaderValue</name>
@@ -5287,6 +5327,14 @@
             <name>exportFooterValue</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines the display priority, in which order the columns should be displayed.]]>
+            </description>
+            <name>displayPriority</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
         </attribute>
     </tag>
     <tag>
@@ -5606,9 +5654,9 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Priority of the column defined as an integer, lower values have more priority.]]>
+                <![CDATA[Responive priority of the column, lower values have more priority.]]>
             </description>
-            <name>priority</name>
+            <name>responsivePriority</name>
             <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
@@ -5670,6 +5718,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Defines the value of the cell to be exported if something other than the cell contents or exportFunction.]]>
+            </description>
+            <name>exportValue</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Defines if the header value of column to be exported.]]>
             </description>
             <name>exportHeaderValue</name>
@@ -5683,6 +5739,14 @@
             <name>exportFooterValue</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines the display priority, in which order the columns should be displayed.]]>
+            </description>
+            <name>displayPriority</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
         </attribute>
     </tag>
     <tag>
@@ -13182,6 +13246,14 @@
                 <![CDATA[Position of the symbol. 'p' for prefix 's' for suffix]]>
             </description>
             <name>symbolPosition</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Placement of the negative/positive sign relative to the symbolPosition option The sign is placed on either side of the symbolPosition, which can be placed on either side of the numbers. 'p' for prefix 's' for suffix 'l' for left 'r' for right ]]>
+            </description>
+            <name>signPosition</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -26706,6 +26778,14 @@
             <name>activeIndex</name>
             <required>false</required>
             <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Allows the active index menu to remain executable. Default is false.]]>
+            </description>
+            <name>activeStepExecutable</name>
+            <required>false</required>
+            <type>boolean</type>
         </attribute>
         <attribute>
             <description>

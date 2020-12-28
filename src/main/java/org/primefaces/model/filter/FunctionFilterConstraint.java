@@ -29,14 +29,14 @@ import java.util.Locale;
 
 public class FunctionFilterConstraint implements FilterConstraint {
 
-    private MethodExpression exprVE;
+    private MethodExpression methodExpression;
 
-    public FunctionFilterConstraint(MethodExpression exprVE) {
-        this.exprVE = exprVE;
+    public FunctionFilterConstraint(MethodExpression methodExpression) {
+        this.methodExpression = methodExpression;
     }
 
     @Override
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
-        return (boolean) exprVE.invoke(ctxt.getELContext(), new Object[]{value, filter, locale});
+        return (boolean) methodExpression.invoke(ctxt.getELContext(), new Object[]{value, filter, locale});
     }
 }

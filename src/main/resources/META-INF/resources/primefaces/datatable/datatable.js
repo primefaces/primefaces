@@ -238,7 +238,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             this.initReflow();
         }
 
-        if(this.cfg.multiViewState && this.cfg.resizableColumns) {
+        if(this.cfg.resizableColumns) {
             this.resizableStateHolder = $(this.jqId + '_resizableColumnState');
             this.resizableState = [];
 
@@ -387,7 +387,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         // #5582: destroy any current draggable items
         if (this.cfg.draggableColumns || this.cfg.draggableRows) {
             var dragdrop = $.ui.ddmanager.current;
-            if (dragdrop) {
+            if (dragdrop && dragdrop.helper) {
                 var item = dragdrop.currentItem || dragdrop.element;
                 if(item.closest('.ui-datatable')[0] === this.jq[0]) {
                     document.body.style.cursor = 'default';
@@ -1672,8 +1672,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     headerStyle = headerCol[0].style,
                     width = headerStyle.width||headerCol.width();
 
-                    if($this.cfg.multiViewState && $this.resizableStateHolder && $this.resizableStateHolder.attr('value')) {
-                        width = ($this.findColWidthInResizableState(headerCol.attr('id')) || width);
+                    if ($this.resizableState) {
+                        width = $this.findColWidthInResizableState(headerCol.attr('id')) || width;
                     }
 
                     $this.setOuterWidth(headerCol, width);
@@ -1712,8 +1712,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 colStyle = col[0].style,
                 width = colStyle.width||col.width();
 
-                if($this.cfg.multiViewState && $this.resizableStateHolder && $this.resizableStateHolder.attr('value')) {
-                    width = ($this.findColWidthInResizableState(col.attr('id')) || width);
+                if ($this.resizableState) {
+                    width = $this.findColWidthInResizableState(col.attr('id')) || width;
                 }
 
                 col.width(width);
@@ -3760,6 +3760,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     clearFilters: function() {
         this.thead.find('> tr > th.ui-filter-column > .ui-column-filter').val('');
+        this.thead.find('> tr > th.ui-filter-column > .ui-column-customfilter :input').val('');
         $(this.jqId + '\\:globalFilter').val('');
 
         this.filter();
@@ -3898,8 +3899,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var colWidth = columnsOfFirstRow.eq(i).width() + 1,
             id = this.id + '_ghost_' + i;
 
-            if(this.cfg.multiViewState && this.resizableStateHolder.attr('value')) {
-                colWidth = (this.findColWidthInResizableState(id) || colWidth);
+            if (this.resizableState) {
+                colWidth = this.findColWidthInResizableState(id) || colWidth;
             }
 
             columnMarkup += '<th id="' + id + '" style="height:0px;border-bottom-width: 0px;border-top-width: 0px;padding-top: 0px;padding-bottom: 0px;outline: 0 none; width:' + colWidth + 'px" class="ui-resizable-column"></th>';
@@ -4897,48 +4898,46 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @param {number | null} nextColumnWidth Width of the column next to the given column header.
      */
     updateResizableState: function(columnHeader, nextColumnHeader, table, newWidth, nextColumnWidth) {
-        if(this.cfg.multiViewState) {
-            var expandMode = (this.cfg.resizeMode === 'expand'),
-            currentColumnId = columnHeader.attr('id'),
-            nextColumnId = nextColumnHeader.attr('id'),
-            tableId = this.id + "_tableWidthState",
-            currentColumnState = currentColumnId + '_' + newWidth,
-            nextColumnState = nextColumnId + '_' + nextColumnWidth,
-            tableState = tableId + '_' + parseInt(table.css('width')),
-            currentColumnMatch = false,
-            nextColumnMatch = false,
-            tableMatch = false;
+        var expandMode = (this.cfg.resizeMode === 'expand'),
+        currentColumnId = columnHeader.attr('id'),
+        nextColumnId = nextColumnHeader.attr('id'),
+        tableId = this.id + "_tableWidthState",
+        currentColumnState = currentColumnId + '_' + newWidth,
+        nextColumnState = nextColumnId + '_' + nextColumnWidth,
+        tableState = tableId + '_' + parseInt(table.css('width')),
+        currentColumnMatch = false,
+        nextColumnMatch = false,
+        tableMatch = false;
 
-            for(var i = 0; i < this.resizableState.length; i++) {
-                var state = this.resizableState[i];
-                if(state.indexOf(currentColumnId) === 0) {
-                    this.resizableState[i] = currentColumnState;
-                    currentColumnMatch = true;
-                }
-                else if(!expandMode && state.indexOf(nextColumnId) === 0) {
-                    this.resizableState[i] = nextColumnState;
-                    nextColumnMatch = true;
-                }
-                else if(expandMode && state.indexOf(tableId) === 0) {
-                    this.resizableState[i] = tableState;
-                    tableMatch = true;
-                }
+        for(var i = 0; i < this.resizableState.length; i++) {
+            var state = this.resizableState[i];
+            if(state.indexOf(currentColumnId) === 0) {
+                this.resizableState[i] = currentColumnState;
+                currentColumnMatch = true;
             }
-
-            if(!currentColumnMatch) {
-                this.resizableState.push(currentColumnState);
+            else if(!expandMode && state.indexOf(nextColumnId) === 0) {
+                this.resizableState[i] = nextColumnState;
+                nextColumnMatch = true;
             }
-
-            if(!expandMode && !nextColumnMatch) {
-                this.resizableState.push(nextColumnState);
+            else if(expandMode && state.indexOf(tableId) === 0) {
+                this.resizableState[i] = tableState;
+                tableMatch = true;
             }
-
-            if(expandMode && !tableMatch) {
-                this.resizableState.push(tableState);
-            }
-
-            this.resizableStateHolder.val(this.resizableState.join(','));
         }
+
+        if(!currentColumnMatch) {
+            this.resizableState.push(currentColumnState);
+        }
+
+        if(!expandMode && !nextColumnMatch) {
+            this.resizableState.push(nextColumnState);
+        }
+
+        if(expandMode && !tableMatch) {
+            this.resizableState.push(tableState);
+        }
+
+        this.resizableStateHolder.val(this.resizableState.join(','));
     },
 
     /**
@@ -4950,12 +4949,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * does not exist.
      */
     findColWidthInResizableState: function(id) {
-        for(var i = 0; i < this.resizableState.length; i++) {
+        for (var i = 0; i < this.resizableState.length; i++) {
             var state = this.resizableState[i];
-            if(state.indexOf(id) === 0) {
+            if (state.indexOf(id) === 0) {
                 return state.substring(state.lastIndexOf('_') + 1, state.length);
             }
         }
+
+        return null;
     },
 
     /**
@@ -4968,15 +4969,17 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         // update the visibility of columns but ignore expanded rows
-        for(var i = 0; i < this.headers.length; i++) {
-            var header = this.headers.eq(i),
-                col = this.tbody.find('> tr:not(.ui-expanded-row-content) > td:nth-child(' + (header.index() + 1) + ')');
+        if(this.headers) {
+            for(var i = 0; i < this.headers.length; i++) {
+                var header = this.headers.eq(i),
+                    col = this.tbody.find('> tr:not(.ui-expanded-row-content) > td:nth-child(' + (header.index() + 1) + ')');
 
-            if(header.hasClass('ui-helper-hidden')) {
-                col.addClass('ui-helper-hidden');
-            }
-            else {
-                col.removeClass('ui-helper-hidden');
+                if(header.hasClass('ui-helper-hidden')) {
+                    col.addClass('ui-helper-hidden');
+                }
+                else {
+                    col.removeClass('ui-helper-hidden');
+                }
             }
         }
 

@@ -85,7 +85,7 @@ public class DataListRenderer extends DataRenderer {
         boolean hasPaginator = list.isPaginator();
         boolean empty = (list.getRowCount() == 0);
         String paginatorPosition = list.getPaginatorPosition();
-        String styleClass = list.getStyleClass() == null ? DataList.DATALIST_CLASS : DataList.DATALIST_CLASS + " " + list.getStyleClass();
+        String styleClass = getStyleClassBuilder(context).add(DataList.DATALIST_CLASS).add(list.getStyleClass()).build();
         String style = list.getStyle();
 
         if (hasPaginator) {
@@ -179,8 +179,7 @@ public class DataListRenderer extends DataRenderer {
 
         list.forEachRow((status) -> {
             try {
-                String itemStyleClass = list.getItemStyleClass();
-                itemStyleClass = (itemStyleClass == null) ? DataList.LIST_ITEM_CLASS : DataList.LIST_ITEM_CLASS + " " + itemStyleClass;
+                String itemStyleClass = getStyleClassBuilder(context).add(DataList.LIST_ITEM_CLASS, list.getItemStyleClass()).build();
 
                 writer.startElement(listItemTag, null);
                 writer.writeAttribute("class", itemStyleClass, null);

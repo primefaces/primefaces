@@ -891,18 +891,18 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         if (getChildCount() > 0) {
             for (UIComponent child : getChildren()) {
                 if (child instanceof Columns) {
-                    Columns uicolumns = (Columns) child;
-                    for (int i = 0; i < uicolumns.getRowCount(); i++) {
-                        uicolumns.setRowIndex(i);
+                    Columns columns = (Columns) child;
+                    for (int i = 0; i < columns.getRowCount(); i++) {
+                        columns.setRowIndex(i);
 
-                        boolean value = visitColumnContent(context, callback, uicolumns);
+                        boolean value = visitColumnContent(context, callback, columns);
                         if (value) {
-                            uicolumns.setRowIndex(-1);
+                            columns.setRowIndex(-1);
                             return true;
                         }
                     }
 
-                    uicolumns.setRowIndex(-1);
+                    columns.setRowIndex(-1);
                 }
                 else if (child instanceof UIColumn) {
                     if (child instanceof UITreeNode) {

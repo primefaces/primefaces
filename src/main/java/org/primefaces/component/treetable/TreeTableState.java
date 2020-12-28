@@ -23,14 +23,13 @@
  */
 package org.primefaces.component.treetable;
 
-import java.io.Serializable;
+import org.primefaces.component.api.UITableState;
+import org.primefaces.model.SortMeta;
+
 import java.util.List;
 import java.util.Map;
 
-import org.primefaces.model.FilterMeta;
-import org.primefaces.model.SortMeta;
-
-public class TreeTableState implements Serializable {
+public class TreeTableState extends UITableState {
 
     private static final long serialVersionUID = 1L;
 
@@ -41,8 +40,6 @@ public class TreeTableState implements Serializable {
     private Map<String, SortMeta> sortBy;
 
     private List<Object> selectedRowKeys;
-
-    private Map<String, FilterMeta> filterBy;
 
     public int getFirst() {
         return first;
@@ -75,13 +72,4 @@ public class TreeTableState implements Serializable {
     public void setSelectedRowKeys(List<Object> selectedRowKeys) {
         this.selectedRowKeys = selectedRowKeys;
     }
-
-    public Map<String, FilterMeta> getFilterBy() {
-        return filterBy;
-    }
-
-    public void setFilterBy(Map<String, FilterMeta> filterBy) {
-        this.filterBy = filterBy;
-    }
-
 }

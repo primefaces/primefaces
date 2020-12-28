@@ -21,33 +21,54 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model;
+package org.primefaces.component.api;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import org.primefaces.model.ColumnMeta;
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.SortMeta;
 
-public class ChainedBeanPropertyComparator implements Comparator<Object> {
+import java.io.Serializable;
+import java.util.Map;
 
-    private List<BeanPropertyComparator> comparators;
+public class UITableState implements Serializable {
 
-    public ChainedBeanPropertyComparator() {
-        comparators = new ArrayList<>();
+    private Map<String, SortMeta> sortBy;
+
+    private Map<String, FilterMeta> filterBy;
+
+    private Map<String, ColumnMeta> columnMeta;
+
+    private String width;
+
+    public Map<String, SortMeta> getSortBy() {
+        return sortBy;
     }
 
-    public void addComparator(BeanPropertyComparator comparator) {
-        comparators.add(comparator);
+    public void setSortBy(Map<String, SortMeta> sortBy) {
+        this.sortBy = sortBy;
     }
 
-    @Override
-    public int compare(Object obj1, Object obj2) {
-        for (BeanPropertyComparator comparator : comparators) {
-            int result = comparator.compare(obj1, obj2);
-            if (result != 0) {
-                return result;
-            }
-        }
+    public Map<String, FilterMeta> getFilterBy() {
+        return filterBy;
+    }
 
-        return 0;
+    public void setFilterBy(Map<String, FilterMeta> filterBy) {
+        this.filterBy = filterBy;
+    }
+
+    public Map<String, ColumnMeta> getColumnMeta() {
+        return columnMeta;
+    }
+
+    public void setColumnMeta(Map<String, ColumnMeta> columnMeta) {
+        this.columnMeta = columnMeta;
+    }
+
+    public String getWidth() {
+        return width;
+    }
+
+    public void setWidth(String width) {
+        this.width = width;
     }
 }
