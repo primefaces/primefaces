@@ -72,6 +72,9 @@ To control this behavior use _cache_ option.
 </p:accordionPanel>
 ```
 
+> :warning: **If you attach `p:ajax event="tabChange"`, please make sure you dont _update_ the AccordionPanel or a parent. Otherwise the AccordionPanel is broken after re-rendering.**
+
+
 ## Client Side Callbacks
 _onTabChange_ is called before a tab is shown and _onTabShow_ is called after. Both receive container
 element of the tab to show as the parameter.
