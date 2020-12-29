@@ -61,23 +61,25 @@ TabView requires one more child tab components to display. Titles can also be de
     </p:tab>
 </p:tabView>
 ```
-## Dynamic Tabs
-There’re two toggleModes in tabview, _non-dynamic_ (default) and _dynamic_. By default, all tab
-contents are rendered to the client, on the other hand in dynamic mode, only the active tab contents
-are rendered and when an inactive tab header is selected, content is loaded with ajax. Dynamic
-mode is handy in reducing page size, since inactive tabs are lazy loaded, pages will load faster. To
-enable dynamic loading, simply set _dynamic_ option to true.
 
+## Dynamic Tabs
+There’re two toggleModes in TabView, _non-dynamic_ (default) and _dynamic_.
+By default, all tab contents are rendered to the client. On the other hand in dynamic mode, only the active tab contents
+are rendered and when an inactive/unloaded tab header is selected, content is loaded with AJAX.
+Dynamic mode is handy in reducing page size, since inactive tabs are lazy loaded, pages will load faster. To
+enable dynamic loading, simply set _dynamic_ option to true.
 
 ```xhtml
 <p:tabView dynamic="true">
     //tabs
 </p:tabView>
 ```
+
+> :warning: **If you attach `p:ajax event="tabChange"`, please make sure you dont _update_ the TabView or a parent. Otherwise the TabView is broken**
+
 ## Content Caching
-Dynamically loaded tabs cache their contents by default, by doing so, reactivating a tab doesn’t
-result in an ajax request since contents are cached. If you want to reload content of a tab each time a
-tab is selected, turn off caching by _cache_ to false.
+Dynamically loaded Tabs cache their contents by default, by doing so, reactivating a Tab doesn’t result in an AJAX request since contents are cached.
+If you want to reload content of a Tab, each time a Tab is selected, turn off caching by _cache_ to false.
 
 ## Effects
 Content transition effects are controlled with _effect_ and _effectDuration_ attributes. EffectDuration
@@ -88,8 +90,9 @@ specifies the speed of the effect, _slow_ , _normal_ (default) and _fast_ are th
     //tabs
 </p:tabView>
 ```
-## Ajax Behavior Events
-_tabChange_ and _tabClose_ are the ajax behavior events of tabview that are executed when a tab is
+
+## AJAX Behavior Events
+_tabChange_ and _tabClose_ are the ajax behavior events of TabView that are executed when a Tab is
 changed and closed respectively. Here is an example of a tabChange behavior implementation;
 
 ```xhtml
@@ -105,7 +108,7 @@ public void onChange(TabChangeEvent event) {
 }
 ```
 Your listener(if defined) will be invoked with an _org.primefaces.event.TabChangeEvent_ instance
-that contains a reference to the new active tab and the accordion panel itself. For tabClose event,
+that contains a reference to the new active tab and the AccordionPanel itself. For tabClose event,
 listener will be passed an instance of _org.primefaces.event.TabCloseEvent._
 
 ## Dynamic Number of Tabs
@@ -128,6 +131,7 @@ Four different orientations are available; _top(default)_ , _left_ , _right_ and
     //tabs
 </p:tabView>
 ```
+
 ## Scrollable Tabs
 Tab headers wrap to the next line in case there is not enough space at header area by default. Using
 scrollable feature, it is possible to keep headers aligned horizontally and use navigation buttons to
@@ -138,10 +142,11 @@ access hidden headers.
     //tabs
 </p:tabView>
 ```
+
 ## Client Side Callbacks
-Tabview has three callbacks for client side. _onTabChange_ is executed when an inactive tab is
-clicked, _onTabShow_ is executed when an inactive tab becomes active to be shown and _onTabClose_
-when a closable tab is closed. All these callbacks receive index parameter as the index of tab.
+TabView has three callbacks for client side. _onTabChange_ is executed when an inactive Tab is
+clicked, _onTabShow_ is executed when an inactive Tab becomes active to be shown and _onTabClose_
+when a closable Tab is closed. All these callbacks receive index parameter as the index of Tab.
 
 ```xhtml
 <p:tabView onTabChange="handleTabChange(index)">
@@ -153,6 +158,7 @@ function handleTabChange(i) {
     //i = Index of the new tab
 }
 ```
+
 ## Client Side API
 Widget: _PrimeFaces.widget.TabView_
 
