@@ -7972,6 +7972,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[When using paginator and checkbox selection mode the select all checkbox in header will select the current page if true or all rows if false. Default true.]]>
+            </description>
+            <name>selectionPageOnly</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Name of iterator to refer each row index.]]>
             </description>
             <name>rowIndexVar</name>
