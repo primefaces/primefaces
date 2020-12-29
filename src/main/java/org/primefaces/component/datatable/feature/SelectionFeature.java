@@ -154,12 +154,12 @@ public class SelectionFeature implements DataTableFeature {
             if (!rowKeys.isEmpty() && ALL_SELECTOR.equals(rowKeys.iterator().next())) {
                 for (int i = 0; i < table.getRowCount(); i++) {
                     table.setRowIndex(i);
-                    String rowKey = table.getRowKey(table.getRowData());
+                    Object rowData = table.getRowData();
+                    String rowKey = table.getRowKey(rowData);
                     if (rowKey != null) {
-                        Object rowData = table.getRowData();
                         rowKeys.add(rowKey);
                         if (rowData != null && isSelectable(table, var, requestMap, rowData)) {
-                            selection.add(table.getRowData());
+                            selection.add(rowData);
                         }
                     }
                 }
@@ -195,8 +195,18 @@ public class SelectionFeature implements DataTableFeature {
     }
 
     protected boolean isSelectable(DataTable table, String var, Map<String, Object> requestMap, Object o) {
-        requestMap.put(var, o);
-        return !table.isDisabledSelection();
+        boolean containsVar = requestMap.containsKey(var);
+        if (!containsVar) {
+            requestMap.put(var, o);
+        }
+
+        boolean selectable = !table.isDisabledSelection();
+
+        if (!containsVar) {
+            requestMap.remove(var);
+        }
+
+        return selectable;
     }
 
     protected void setSelection(FacesContext context, DataTable table, boolean multiple, List<Object> o) {
