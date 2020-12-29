@@ -43,9 +43,9 @@ PrimeFaces.widget.BreadCrumb = PrimeFaces.widget.BaseWidget.extend({
      * @param {number} index of the menu item to insert the expander before.
      */
     addExpander: function(index) {
-        var chevron = $('li', this.jq).eq(1).clone();
+        var chevron = $('li:visible', this.jq).eq(1).clone();
         var expander = $('<li class=expander><a tabindex=0 class="ui-menuitem-link ui-corner-all" href="#"><span class=ui-menuitem-text>…</span></a></li>');
-        var before = $('li', this.jq).eq(index * 2);
+        var before = $('li:visible', this.jq).eq(index * 2);
         expander.click(function(){
            chevron.remove();
            expander.remove();
