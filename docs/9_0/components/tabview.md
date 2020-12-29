@@ -75,7 +75,7 @@ enable dynamic loading, simply set _dynamic_ option to true.
 </p:tabView>
 ```
 
-> :warning: **If you attach `p:ajax event="tabChange"`, please make sure you dont _update_ the TabView or a parent. Otherwise the TabView is broken**
+> :warning: **If you attach `p:ajax event="tabChange"`, please make sure you dont _update_ the TabView or a parent. Otherwise the TabView is broken after re-rendering.**
 
 ## Content Caching
 Dynamically loaded Tabs cache their contents by default, by doing so, reactivating a Tab doesn’t result in an AJAX request since contents are cached.
