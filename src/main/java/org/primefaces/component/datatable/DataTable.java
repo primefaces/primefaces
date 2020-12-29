@@ -560,9 +560,17 @@ public class DataTable extends DataTableBase {
             else {
                 Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
                 String var = getVar();
-                requestMap.put(var, object);
+                boolean containsVar = requestMap.containsKey(var);
+                if (!containsVar) {
+                    requestMap.put(var, object);
+                }
+
                 String rowKey = getRowKey();
-                requestMap.remove(var);
+
+                if (!containsVar) {
+                    requestMap.remove(var);
+                }
+
                 return rowKey;
             }
         }
