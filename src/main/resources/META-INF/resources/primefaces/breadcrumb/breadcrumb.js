@@ -26,7 +26,7 @@ PrimeFaces.widget.BreadCrumb = PrimeFaces.widget.BaseWidget.extend({
      */
     limit: function(limit) {
         var items = $('li[role=menuitem]', this.jq);
-        var start = (this.cfg.permaRoot ? 1 : 0);
+        var start = (this.cfg.alwaysShowRoot ? 1 : 0);
         if (items.length <= limit - start) {
             return;
         }

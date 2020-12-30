@@ -2178,9 +2178,9 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Boolean flag indicating whether the root should be permanently visible when a limit is set. Default is true.]]>
+                <![CDATA[Boolean flag indicating whether the root should always be shown when a limit is set. Default is true.]]>
             </description>
-            <name>permaRoot</name>
+            <name>alwaysShowRoot</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>

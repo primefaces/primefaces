@@ -126,7 +126,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
         if (breadCrumb.getLimit() != null) {
             wb.attr("limit", breadCrumb.getLimit());
         }
-        wb.attr("permaRoot", breadCrumb.isPermaRoot());
+        wb.attr("alwaysShowRoot", breadCrumb.isAlwaysShowRoot());
         wb.finish();
     }
 

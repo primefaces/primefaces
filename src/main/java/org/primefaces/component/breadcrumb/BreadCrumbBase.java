@@ -41,7 +41,7 @@ public abstract class BreadCrumbBase extends AbstractMenu implements Widget {
         tabindex,
         lastItemDisabled,
         limit,
-        permaRoot;
+        alwaysShowRoot;
     }
 
     public BreadCrumbBase() {
@@ -112,11 +112,11 @@ public abstract class BreadCrumbBase extends AbstractMenu implements Widget {
         getStateHelper().put(PropertyKeys.limit, limit);
     }
 
-    public boolean isPermaRoot() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.permaRoot, true);
+    public boolean isAlwaysShowRoot() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.alwaysShowRoot, true);
     }
 
-    public void setPermaRoot(boolean permaRoot) {
-        getStateHelper().put(PropertyKeys.permaRoot, permaRoot);
+    public void setAlwaysShowRoot(boolean alwaysShowRoot) {
+        getStateHelper().put(PropertyKeys.alwaysShowRoot, alwaysShowRoot);
     }
 }
