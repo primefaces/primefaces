@@ -593,6 +593,9 @@ For frozen columns, use _frozenHeader_ , _frozenFooter_ , _scrollableHeader_ and
 Rows can be grouped in two ways, using headerRow, summaryRow components or with groupRow
 attribute on a column.
 
+!> Row Grouping does not work with Lazy loading or LiveScroll as the grouping needs to know about all rows to properly 
+group the rows.
+
 ```xhtml
 <p:dataTable var="car" value="#{dtRowGroupView.cars}" sortBy="#{car.brand}">
     <p:headerRow>
