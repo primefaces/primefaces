@@ -2170,7 +2170,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Number is items to limit the breadcrumb to. Default is null.]]>
+                <![CDATA[Number of items to limit the breadcrumb to. Default is null.]]>
             </description>
             <name>limit</name>
             <required>false</required>
