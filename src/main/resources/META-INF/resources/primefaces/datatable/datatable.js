@@ -1496,7 +1496,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.theadClone = this.cloneTableHeader(this.thead, this.bodyTable);
 
         //reflect events from clone to original
-        if(this.sortableColumns.length) {
+        if(this.cfg.sorting) {
             this.sortableColumns.removeAttr('tabindex').off('blur.dataTable focus.dataTable keydown.dataTable');
 
             var clonedColumns = this.theadClone.find('> tr > th'),
