@@ -28,6 +28,8 @@ in the workflow.
 | homeDisplay | icon | String | Defines display mode of root link, valid values are "icon" default and "text".
 | tabindex | 0 | String | Position of the items in the tabbing order. Default is 0.
 | lastItemDisabled | false | Boolean | Boolean flag indicating whether the last item should be disabled.
+| limit | null | Integer | Number is items to limit the breadcrumb to.
+| alwaysShowRoot | true | Boolean | Boolean flag indicating whether the root should always be shown when a limit is set.
 
 ## Getting Started with BreadCrumb
 Steps are defined as child menuitem components in breadcrumb.
