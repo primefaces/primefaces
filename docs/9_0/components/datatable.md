@@ -935,6 +935,7 @@ Columns can be ordered via _displayPriority_. Lower value means higher priority.
     </p:column>
     //columns
 </p:dataTable>
+```
 
 ## Responsive DataTable
 DataTable has two responsive modes: `responsivePriority` and `reflow`.
