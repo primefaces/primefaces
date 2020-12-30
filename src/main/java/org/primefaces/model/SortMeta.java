@@ -88,6 +88,10 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
         }
 
         SortOrder order = SortOrder.of(column.getSortOrder());
+        if (order.isUnsorted() && column.isGroupRow()) {
+            order = SortOrder.ASCENDING;
+        }
+
         ValueExpression sortByVE = column.getValueExpression(ColumnBase.PropertyKeys.sortBy.name());
         sortByVE = sortByVE != null ? sortByVE : UITable.createValueExprFromVarField(context, var, field);
 
