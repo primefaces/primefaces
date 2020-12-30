@@ -57,9 +57,9 @@ Columns is used by datatable to create columns dynamically.
 | nullSortOrder             | 1                  | Integer          | Defines where the null values are placed in ascending sort order. Default value is "1"
 | sortOrder                 | asc                | String           | Sets sorting order in 'single' sortMode. Default is "ascending"
 | sortFunction              | null               | MethodExpression | Custom pluggable sortFunction.
-| sortPriority              | Integer.MAX_VALUE  | Integer          | Sets default sorting priority over the other columns. Default is Integer.MAX_VALUE. Higher is less priority.
+| sortPriority              | Integer.MAX_VALUE  | Integer          | Sets default sorting priority over the other columns. Default is Integer.MAX_VALUE. Lower values have more priority.
 | caseSensitiveSort         | false              | Boolean          | Case sensitivity for sorting, insensitive by default.
-| displayPriority           | 0                  | Integer          | Defines the display priority, in which order the columns should be displayed.
+| displayPriority           | 0                  | Integer          | Defines the display priority, in which order the columns should be displayed. Lower values have more priority.
 
 ## Getting Started with Columns
 See dynamic columns section in datatable documentation for detailed information.

@@ -634,7 +634,7 @@ For frozen columns, use _frozenHeader_ , _frozenFooter_ , _scrollableHeader_ and
 Rows can be grouped in two ways, using headerRow, summaryRow components or with groupRow
 attribute on a column.
 
-!> Row Grouping does not work with Lazy loading or LiveScroll as the grouping needs to know about all rows to properly 
+!> Row Grouping does not work with Lazy loading or LiveScroll as the grouping needs to know about all rows to properly
 group the rows.
 
 ```xhtml
@@ -854,6 +854,7 @@ Visibility of columns can be toggled using the column toggler helper component.
     </p:column>
 </p:dataTable>
 ```
+
 On page load, column chooser finds all columns of datatable and generates the ui. If you'd like
 some of the columns to be ignored, set _toggleable_ option of a column as false and for certain ones to
 be hidden by default, set _visible_ as false. Optional _toggle_ ajax behavior is provided by
@@ -906,6 +907,7 @@ public class TableBean {
     }
 }
 ```
+
 ## Reordering Columns
 Columns of the table can be reordered using drag&drop as well. Set draggableColumns attribute to
 true to enable this feature. Optional _colReorder_ ajax behavior is provided to listen to reorder events
@@ -920,9 +922,23 @@ at server side.
 </p:dataTable>
 ```
 
+## Column Order / Priorities
+Columns can be ordered via _displayPriority_. Lower value means higher priority.
+
+```xhtml
+<p:dataTable var="car" value="#{tableBean.cars}" draggableColumns="true">
+    <p:column headerText="Model" displayPriority="4">
+        #{car.model}
+    </p:column>
+    <p:column headerText="Brand" displayPriority="0">
+        #{car.brand}
+    </p:column>
+    //columns
+</p:dataTable>
+
 ## Responsive DataTable
 DataTable has two responsive modes: `responsivePriority` and `reflow`.
-In priority mode, responsiveness is based on column priorities that vary between 1 and 6. Lower value means higher priority. 
+In priority mode, responsiveness is based on column _responsivePriority_ that vary between 1 and 6. Lower value means higher priority.
 On the other hand in reflow mode that is enabled by setting reflow to true, all columns will be visible but displayed as stacked.
 
 
