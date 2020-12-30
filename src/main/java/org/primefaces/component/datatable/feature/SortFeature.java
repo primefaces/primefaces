@@ -42,6 +42,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.el.ValueExpression;
 import org.primefaces.component.api.DynamicColumn;
+import org.primefaces.component.headerrow.HeaderRow;
 
 public class SortFeature implements DataTableFeature {
 
@@ -154,14 +155,23 @@ public class SortFeature implements DataTableFeature {
             for (SortMeta sortMeta : sortBy.values()) {
                 comparisonResult.set(0);
 
-                table.invokeOnColumn(sortMeta.getColumnKey(), column -> {
-                    if (column instanceof DynamicColumn) {
-                        ((DynamicColumn) column).applyStatelessModel();
-                    }
-
-                    int result = compare(context, var, column, sortMeta, o1, o2, collator, locale);
+                if (sortMeta.getComponent() instanceof HeaderRow) {
+                    int result = compare(context, var, sortMeta, o1, o2, collator, locale);
                     comparisonResult.set(result);
-                });
+                }
+                else {
+                    // Currently ColumnGrouping supports ui:repeat, therefore we have to use a callback
+                    // and can't use sortMeta.getComponent()
+                    // Later when we refactored ColumnGrouping, we may remove #invokeOnColumn as we dont support ui:repeat in other cases
+                    table.invokeOnColumn(sortMeta.getColumnKey(), column -> {
+                        if (column instanceof DynamicColumn) {
+                            ((DynamicColumn) column).applyStatelessModel();
+                        }
+
+                        int result = compare(context, var, sortMeta, o1, o2, collator, locale);
+                        comparisonResult.set(result);
+                    });
+                }
 
                 if (comparisonResult.get() != 0) {
                     return comparisonResult.get();
@@ -179,7 +189,7 @@ public class SortFeature implements DataTableFeature {
         }
     }
 
-    protected int compare(FacesContext context, String var, UIColumn column, SortMeta sortMeta, Object o1, Object o2,
+    protected int compare(FacesContext context, String var, SortMeta sortMeta, Object o1, Object o2,
             Collator collator, Locale locale) {
 
         try {
