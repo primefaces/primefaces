@@ -149,9 +149,22 @@ DataTable section for detailed information.
 TreeTable supports dynamic columns via p:columns component, refer to dynamic columns in
 DataTable section for detailed information.
 
-## Colum Priorities
-Similar to DataTable, TreeTable columns can also be hidden depending on their priorities with
-respect to screen size.
+## Column Order / Priorities
+Columns can be ordered via _displayPriority_. Lower value means higher priority.
+
+```xhtml
+<p:treeTable value="#{bean.root}" var="document">
+    <p:column displayPriority="4">
+        <h:outputText value="#{document.name}" />
+    </p:column>
+    <p:column displayPriority="0">
+        <h:outputText value="#{document.type}" />
+    </p:column>
+</p:treeTable>
+```
+
+## Responsive TreeTable
+In priority mode, responsiveness is based on column _responsivePriority_ that vary between 1 and 6. Lower value means higher priority.
 
 ## Sorting
 Sorting is enabled by setting _sortBy_ expressions at column level.

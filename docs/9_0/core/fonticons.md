@@ -1,21 +1,16 @@
 # Font Icons
 
-Icon fonts are fonts that contain symbols and glyphs instead of letters or numbers. They are popular
- for web designers since you can style them with CSS the same way as regular text. Also, since they are
- vectors they are easily scale-able. They are small, so they load quickly and (bonus!) they are 
- supported in all browsers.
+Icon fonts are fonts that contain symbols and glyphs instead of letters or numbers.
+They are popular for web designers since you can style them with CSS the same way as regular text.
+Also, since they are vectors they are easily scale-able.
+They are small, so they load quickly and they are supported in all browsers.
 
 PrimeFaces provides support for both PrimeIcons and FontAwesome web fonts.
 
 ## PrimeIcons
 
 PrimeIcons is PrimeTek's web font used in PrimeFaces, PrimeNG, PrimeVue, and PrimeReact.
-It comes built into PrimeFaces JAR and some PrimeFaces Premium Themes require it.
-To enable PrimeIcons simply add the CSS to your page with the following line:
-
-```xml
-<h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
-```
+It comes built into PrimeFaces JAR and they are always added to the view as newer Themes are based on it.
 
 ## FontAwesome 4.7 (built-in)
 
@@ -28,6 +23,7 @@ FontAwesome is disabled by default and a global parameter is required to turn it
     <param-value>true</param-value>
 </context-param>
 ```
+
 ## FontAwesome 5.X (or higher)
 FontAwesome 4 is older and PrimeFaces has decided not to upgrade it.  If you would prefer FontAwesome 5 or higher
 which has 8000+ icons it is possible.  Make sure the above primefaces.FONT_AWESOME is set to FALSE.

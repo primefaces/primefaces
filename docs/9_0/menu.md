@@ -65,7 +65,7 @@
   - [Chips](/components/chips.md)
   - [Clock](/components/clock.md)
   - [Collector](/components/collector.md)
-  - [Color Picker](/components/colorpicker.md)
+  - [ColorPicker](/components/colorpicker.md)
   - [Column](/components/column.md)
   - [Columns](/components/columns.md)
   - [ColumnGroup](/components/columngroup.md)

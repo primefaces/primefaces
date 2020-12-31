@@ -5042,7 +5042,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Sets default sorting priority over the other columns. Default is Integer.MAX_VALUE. Higher is less priority]]>
+                <![CDATA[Sets default sorting priority over the other columns. Default is Integer.MAX_VALUE. Lower values have more priority.]]>
             </description>
             <name>sortPriority</name>
             <required>false</required>
@@ -5461,7 +5461,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Sets default sorting priority over the other columns. Default is 0. Higher is less priority]]>
+                <![CDATA[Sets default sorting priority over the other columns. Default is Integer.MAX_VALUE. Lower values have more priority.]]>
             </description>
             <name>sortPriority</name>
             <required>false</required>
