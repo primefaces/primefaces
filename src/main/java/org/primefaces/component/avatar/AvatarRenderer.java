@@ -28,6 +28,7 @@ import org.primefaces.renderkit.CoreRenderer;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import java.io.IOException;
 
 public class AvatarRenderer extends CoreRenderer {
@@ -36,25 +37,14 @@ public class AvatarRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Avatar avatar = (Avatar) component;
         ResponseWriter writer = context.getResponseWriter();
-        String styleClass = avatar.getStyleClass();
-        styleClass = styleClass == null ? Avatar.DEFAULT_STYLE_CLASS : Avatar.DEFAULT_STYLE_CLASS + " " + styleClass;
-
-        if (avatar.getImage() != null) {
-            styleClass += " " + Avatar.IMAGE_CLASS;
-        }
-        if (avatar.getShape().equals("circle")) {
-            styleClass += " " + Avatar.CIRCLE_CLASS;
-        }
-
-        if (avatar.getSize() != null) {
-            if (avatar.getSize().equals("large")) {
-                styleClass += " " + Avatar.SIZE_LARGE_CLASS;
-            }
-
-            else if (avatar.getSize().equals("xlarge")) {
-                styleClass += " " + Avatar.SIZE_XLARGE_CLASS;
-            }
-        }
+        String styleClass = getStyleClassBuilder(context)
+                .add(Avatar.DEFAULT_STYLE_CLASS)
+                .add(avatar.getStyleClass())
+                .add(avatar.getImage() != null, Avatar.IMAGE_CLASS)
+                .add("circle".equals(avatar.getShape()), Avatar.CIRCLE_CLASS)
+                .add("large".equals(avatar.getSize()), Avatar.SIZE_LARGE_CLASS)
+                .add("xlarge".equals(avatar.getSize()), Avatar.SIZE_XLARGE_CLASS)
+                .build();
 
         writer.startElement("div", avatar);
         writer.writeAttribute("id", avatar.getClientId(context), "id");

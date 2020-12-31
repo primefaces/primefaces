@@ -29,6 +29,7 @@ import org.primefaces.util.WidgetBuilder;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import java.io.IOException;
 
 public class SplitterRenderer extends CoreRenderer {
@@ -43,17 +44,13 @@ public class SplitterRenderer extends CoreRenderer {
 
     protected void encodeMarkup(FacesContext context, Splitter splitter) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String styleClass = splitter.getStyleClass();
-        styleClass = styleClass == null ? Splitter.DEFAULT_STYLE_CLASS : Splitter.DEFAULT_STYLE_CLASS + " " + styleClass;
         String layout = splitter.getLayout();
-        int childCount = splitter.getChildCount();
-
-        if (layout.equals("vertical")) {
-            styleClass += " " + Splitter.LAYOUT_VERTICAL_CLASS;
-        }
-        else if (layout.equals("horizontal")) {
-            styleClass += " " + Splitter.LAYOUT_HORIZONTAL_CLASS;
-        }
+        String styleClass = getStyleClassBuilder(context)
+                    .add(Splitter.DEFAULT_STYLE_CLASS)
+                    .add(splitter.getStyleClass())
+                    .add("vertical".equals(layout), Splitter.LAYOUT_VERTICAL_CLASS)
+                    .add("horizontal".equals(layout), Splitter.LAYOUT_HORIZONTAL_CLASS)
+                    .build();
 
         writer.startElement("div", splitter);
         writer.writeAttribute("id", splitter.getClientId(context), "id");
@@ -63,6 +60,7 @@ public class SplitterRenderer extends CoreRenderer {
             writer.writeAttribute("style", splitter.getStyle(), "style");
         }
 
+        int childCount = splitter.getChildCount();
         for (int i = 0; i < childCount; i++) {
             UIComponent component = splitter.getChildren().get(i);
 
@@ -95,8 +93,6 @@ public class SplitterRenderer extends CoreRenderer {
 
     protected void encodePanel(FacesContext context, SplitterPanel splitterPanel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String styleClass = splitterPanel.getStyleClass();
-        styleClass = styleClass == null ? SplitterPanel.DEFAULT_STYLE_CLASS : SplitterPanel.DEFAULT_STYLE_CLASS + " " + styleClass;
         boolean isNested = false;
         for (UIComponent child: splitterPanel.getChildren()) {
             if (child instanceof Splitter) {
@@ -104,9 +100,11 @@ public class SplitterRenderer extends CoreRenderer {
                 break;
             }
         }
-        if (isNested) {
-            styleClass += " " + SplitterPanel.NESTED_CLASS;
-        }
+        String styleClass = getStyleClassBuilder(context)
+                    .add(SplitterPanel.DEFAULT_STYLE_CLASS)
+                    .add(splitterPanel.getStyleClass())
+                    .add(isNested, SplitterPanel.NESTED_CLASS)
+                    .build();
 
         writer.startElement("div", splitterPanel);
         writer.writeAttribute("class", styleClass, "styleClass");

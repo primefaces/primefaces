@@ -28,6 +28,7 @@ import org.primefaces.renderkit.CoreRenderer;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import java.io.IOException;
 
 public class DividerRenderer extends CoreRenderer {
@@ -36,54 +37,25 @@ public class DividerRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Divider divider = (Divider) component;
         ResponseWriter writer = context.getResponseWriter();
-        String styleClass = divider.getStyleClass();
-        styleClass = styleClass == null ? Divider.DEFAULT_STYLE_CLASS : Divider.DEFAULT_STYLE_CLASS + " " + styleClass;
         String layout = divider.getLayout();
         String align = divider.getAlign();
-
-        if (layout.equals("horizontal")) {
-            styleClass += " " + Divider.HORIZONTAL_CLASS;
-        }
-        else if (layout.equals("vertical")) {
-            styleClass += " " + Divider.VERTICAL_CLASS;
-        }
-
-        switch (divider.getType()) {
-            case "solid":
-                styleClass += " " + Divider.SOLID_CLASS;
-                break;
-            case "dashed":
-                styleClass += " " + Divider.DASHED_CLASS;
-                break;
-            case "dotted":
-                styleClass += " " + Divider.DOTTED_CLASS;
-                break;
-        }
-
-        if (layout.equals("horizontal") && align == null) {
-            styleClass += " " + Divider.ALING_LEFT_CLASS;
-        }
-        else if (layout.equals("vertical") && align == null) {
-            styleClass += " " + Divider.ALING_CENTER_CLASS;
-        }
-        else if (layout.equals("horizontal") && align.equals("left")) {
-            styleClass += " " + Divider.ALING_LEFT_CLASS;
-        }
-        else if (layout.equals("horizontal") && align.equals("center")) {
-            styleClass += " " + Divider.ALING_CENTER_CLASS;
-        }
-        else if (layout.equals("horizontal") && align.equals("right")) {
-            styleClass += " " + Divider.ALING_RIGHT_CLASS;
-        }
-        else if (layout.equals("vertical") && align.equals("top")) {
-            styleClass += " " + Divider.ALING_TOP_CLASS;
-        }
-        else if (layout.equals("vertical") && align.equals("center")) {
-            styleClass += " " + Divider.ALING_CENTER_CLASS;
-        }
-        else if (layout.equals("vertical") && align.equals("bottom")) {
-            styleClass += " " + Divider.ALING_BOTTOM_CLASS;
-        }
+        String type = divider.getType();
+        boolean isHorizontal = "horizontal".equals(layout);
+        boolean isVertical = "vertical".equals(layout);
+        String styleClass = getStyleClassBuilder(context)
+                    .add(Divider.DEFAULT_STYLE_CLASS)
+                    .add(divider.getStyleClass())
+                    .add(isHorizontal, Divider.HORIZONTAL_CLASS)
+                    .add(isVertical, Divider.VERTICAL_CLASS)
+                    .add("solid".equals(type), Divider.SOLID_CLASS)
+                    .add("dashed".equals(type), Divider.DASHED_CLASS)
+                    .add("dotted".equals(type), Divider.DOTTED_CLASS)
+                    .add((isHorizontal && align == null) || "left".equals(align), Divider.ALING_LEFT_CLASS)
+                    .add((isVertical && align == null) || "center".equals(align), Divider.ALING_CENTER_CLASS)
+                    .add(isHorizontal && "right".equals(align), Divider.ALING_RIGHT_CLASS)
+                    .add(isVertical && "top".equals(align), Divider.ALING_TOP_CLASS)
+                    .add(isVertical && "bottom".equals(align), Divider.ALING_BOTTOM_CLASS)
+                    .build();
 
         writer.startElement("div", divider);
         writer.writeAttribute("id", divider.getClientId(context), "id");
