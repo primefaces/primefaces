@@ -78,8 +78,7 @@ public class ScrollFeature implements DataTableFeature {
 
     @Override
     public boolean shouldDecode(FacesContext context, DataTable table) {
-        return table.isScrollingRequest(context)
-                && table.isSelectionEnabled();
+        return table.isScrollingRequest(context) && table.isSelectionEnabled();
     }
 
     @Override

@@ -50,8 +50,7 @@ public class AddRowFeature implements DataTableFeature {
 
     @Override
     public boolean shouldDecode(FacesContext context, DataTable table) {
-        return isAddRowRequest(context, table)
-                && table.isSelectionEnabled();
+        return isAddRowRequest(context, table) && table.isSelectionEnabled();
     }
 
     @Override

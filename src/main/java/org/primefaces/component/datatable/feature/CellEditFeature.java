@@ -87,8 +87,7 @@ public class CellEditFeature implements DataTableFeature {
 
     @Override
     public boolean shouldDecode(FacesContext context, DataTable table) {
-        return isCellEditRequest(context, table)
-                && table.isSelectionEnabled();
+        return isCellEditRequest(context, table) && table.isSelectionEnabled();
     }
 
     @Override
