@@ -1,0 +1,25 @@
+.ui-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    font-size: 1rem;
+}
+
+.ui-avatar.ui-avatar-image {
+    background-color: transparent;
+}
+
+.ui-avatar-circle {
+    border-radius: 50%;
+}
+
+.ui-avatar .ui-avatar-icon {
+    font-size: 1rem;
+}
+
+.ui-avatar img {
+    width: 100%;
+    height: 100%;
+}

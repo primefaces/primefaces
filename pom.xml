@@ -653,6 +653,12 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.ui.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.ui.timepicker.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.ui.pfextensions.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/avatar/avatar.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/avatargroup/avatargroup.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/badge/badge.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/chip/chip.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/tag/tag.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/skeleton/skeleton.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/accordion/accordion.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/autocomplete/autocomplete.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/blockui/blockui.css</include>
@@ -664,6 +670,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/datascroller/datascroller.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/datatable/datatable.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/dialog/dialog.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/divider/divider.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/fieldset/fieldset.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/inputgroup.css</include>
@@ -683,7 +690,9 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/picklist/picklist.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/progressbar/progressbar.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/rating/rating.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/scrolltop/scrolltop.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/spinner/spinner.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/splitter/splitter.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tabview/tabview.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tagcloud/tagcloud.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/toolbar/toolbar.css</include>
@@ -787,6 +796,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/resizable/resizable.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/slider/slider.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/spinner/spinner.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/splitter/splitter.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/spotlight/spotlight.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/sticky/sticky.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tabview/tabview.js</include>
@@ -798,7 +808,9 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/treetable/treetable.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/wizard/wizard.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tristatecheckbox/tristatecheckbox.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/chip/chip.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/chips/chips.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/scrolltop/scrolltop.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/sidebar/sidebar.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/dataview/dataview.js</include>
                             </includes>

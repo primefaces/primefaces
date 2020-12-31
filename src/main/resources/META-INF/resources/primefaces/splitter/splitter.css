@@ -1,0 +1,58 @@
+.ui-splitter {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.ui-splitter-vertical {
+    flex-direction: column;
+}
+
+.ui-splitter-panel {
+    flex-grow: 1;
+}
+
+.ui-splitter-panel-nested {
+    display: flex;
+}
+
+.ui-splitter-panel .ui-splitter {
+    flex-grow: 1;
+    border: 0 none;
+}
+
+.ui-splitter-gutter {
+    flex-grow: 0;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: col-resize;
+}
+
+.ui-splitter-horizontal.ui-splitter-resizing {
+    cursor: col-resize;
+    user-select: none;
+}
+
+.ui-splitter-horizontal > .ui-splitter-gutter > .ui-splitter-gutter-handle {
+    height: 24px;
+    width: 100%;
+}
+
+.ui-splitter-horizontal > .ui-splitter-gutter {
+    cursor: col-resize;
+}
+
+.ui-splitter-vertical.ui-splitter-resizing {
+    cursor: row-resize;
+    user-select: none;
+}
+
+.ui-splitter-vertical > .ui-splitter-gutter {
+    cursor: row-resize;
+}
+
+.ui-splitter-vertical > .ui-splitter-gutter > .ui-splitter-gutter-handle {
+    width: 24px;
+    height: 100%;
+}
