@@ -43,7 +43,8 @@ public class RowEditFeature implements DataTableFeature {
 
     @Override
     public void decode(FacesContext context, DataTable table) {
-        throw new FacesException("RowEditFeature should not encode.");
+        SelectionFeature feature = (SelectionFeature) DataTable.FEATURES.get(DataTableFeatureKey.SELECT);
+        feature.decodeSelectionRowKeys(context, table);
     }
 
     @Override
@@ -86,7 +87,7 @@ public class RowEditFeature implements DataTableFeature {
 
     @Override
     public boolean shouldDecode(FacesContext context, DataTable table) {
-        return false;
+        return (table.isRowEditRequest(context) || table.isRowEditInitRequest(context)) && table.isSelectionEnabled();
     }
 
     @Override
