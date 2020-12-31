@@ -25,7 +25,6 @@ package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
 import java.util.Map;
-import javax.faces.FacesException;
 
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
