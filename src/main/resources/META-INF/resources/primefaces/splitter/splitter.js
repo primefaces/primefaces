@@ -62,6 +62,10 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
         this.bindResizeEvent();
     },
 
+    /**
+     * Initialize panels size.
+     * @private
+     */
     initPanelSize: function () {
         var $this = this;
         var initialized = false;
@@ -77,6 +81,10 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Add resize event to the splitter gutters.
+     * @private
+     */
     bindResizeEvent: function() {
         var $this = this;
         $this.gutters.off('mousedown').on('mousedown', function(e) {
@@ -96,6 +104,15 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Resize splitter panels.
+     * @private
+     * @param {number} startPos start position of the cursor in resize event.
+     * @param {number} prevPanelSize size of the splitter panel previous of the selected gutter.
+     * @param {number} nextPanelSize size of the splitter panel next of the selected gutter.
+     * @param {JQuery} prevPanelElement DOM element of the splitter panel previous of the selected gutter element.
+     * @param {JQuery} nextPanelElement DOM element of the splitter panel next of the selected gutter element.
+     */
     onResize: function (startPos, prevPanelSize, nextPanelSize, prevPanelElement, nextPanelElement) {
         var $this = this;
         $(document).off('mousemove', '.ui-splitter').on('mousemove', '.ui-splitter', function(e) {
@@ -110,6 +127,11 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Toggles the expansion state of this panel.
+     * @private
+     * @param {JQuery} gutterElement DOM element of the selected gutter element in the resize event.
+     */
     onResizeEnd: function (gutterElement) {
         var $this = this;
         $(document).off('mouseup').on('mouseup', function() {
@@ -129,12 +151,20 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Save current panel sizes to the storage.
+     * @private
+     */
     saveState: function () {
         var $this = this;
         console.log(JSON.stringify(this.panelSizes));
         $this.getStorage().setItem($this.stateKey, JSON.stringify(this.panelSizes));
     },
 
+    /**
+     * Restore panel sizes from storage.
+     * @return {boolean} if state restore operation is successful returns true, if not returns false
+     */
     restoreState: function () {
         var $this = this;
         var storage = $this.getStorage();
@@ -152,6 +182,10 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
         return false;
     },
 
+    /**
+     * Return localStorage or sessionStorage based on components stateStorage type.
+     * @return {Storage} localStorage or sessionStorage.
+     */
     getStorage: function () {
         var $this = this;
         switch($this.stateStorage) {
