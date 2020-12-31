@@ -28,6 +28,7 @@ import org.primefaces.renderkit.CoreRenderer;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import java.io.IOException;
 
 public class TagRenderer extends CoreRenderer {
@@ -36,27 +37,16 @@ public class TagRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Tag tag = (Tag) component;
         ResponseWriter writer = context.getResponseWriter();
-        String styleClass = tag.getStyleClass();
-        styleClass = styleClass == null ? Tag.DEFAULT_STYLE_CLASS : Tag.DEFAULT_STYLE_CLASS + " " + styleClass;
-
-        if (tag.getSeverity() != null) {
-            switch (tag.getSeverity()) {
-                case "info":
-                    styleClass += " " + Tag.SEVERITY_INFO_CLASS;
-                    break;
-                case "success":
-                    styleClass += " " + Tag.SEVERITY_SUCCESS_CLASS;
-                    break;
-                case "warning":
-                    styleClass += " " + Tag.SEVERITY_WARNING_CLASS;
-                    break;
-                case "danger":
-                    styleClass += " " + Tag.SEVERITY_DANGER_CLASS;
-                    break;
-            }
-        }
-
-        if (tag.getRounded()) styleClass += " " + Tag.ROUNDED_CLASS;
+        String severity = tag.getSeverity();
+        String styleClass = getStyleClassBuilder(context)
+                    .add(Tag.DEFAULT_STYLE_CLASS)
+                    .add(tag.getStyleClass())
+                    .add("info".equals(severity), Tag.SEVERITY_INFO_CLASS)
+                    .add("success".equals(severity), Tag.SEVERITY_SUCCESS_CLASS)
+                    .add("warning".equals(severity), Tag.SEVERITY_WARNING_CLASS)
+                    .add("danger".equals(severity), Tag.SEVERITY_DANGER_CLASS)
+                    .add(tag.isRounded(), Tag.ROUNDED_CLASS)
+                    .build();
 
         writer.startElement("div", tag);
         writer.writeAttribute("id", tag.getClientId(context), "id");

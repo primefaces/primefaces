@@ -29,6 +29,7 @@ import org.primefaces.util.WidgetBuilder;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import java.io.IOException;
 
 public class ChipRenderer extends CoreRenderer {
@@ -50,10 +51,11 @@ public class ChipRenderer extends CoreRenderer {
 
     protected void encodeMarkup(FacesContext context, Chip chip) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String styleClass = chip.getStyleClass();
-        styleClass = styleClass == null ? Chip.DEFAULT_STYLE_CLASS : Chip.DEFAULT_STYLE_CLASS + " " + styleClass;
-
-        if (chip.getImage() != null) styleClass += " " + Chip.IMAGE_CLASS;
+        String styleClass = getStyleClassBuilder(context)
+                    .add(Chip.DEFAULT_STYLE_CLASS)
+                    .add(chip.getStyleClass())
+                    .add(chip.getImage() != null, Chip.IMAGE_CLASS)
+                    .build();
 
         writer.startElement("div", chip);
         writer.writeAttribute("id", chip.getClientId(context), "id");

@@ -28,6 +28,7 @@ import org.primefaces.renderkit.CoreRenderer;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import java.io.IOException;
 
 public class BadgeRenderer extends CoreRenderer {
@@ -41,52 +42,23 @@ public class BadgeRenderer extends CoreRenderer {
 
     protected void encodeMarkup(FacesContext context, Badge badge) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String styleClass = badge.getStyleClass();
-        styleClass = styleClass == null ? Badge.DEFAULT_STYLE_CLASS : Badge.DEFAULT_STYLE_CLASS + " " + styleClass;
+        String value = badge.getValue();
         boolean hasChild = badge.getChildCount() > 0;
-
-        if (!hasChild) {
-            if (badge.getValue() == null) {
-                styleClass += " " + Badge.DOT_CLASS;
-            }
-            else if (badge.getValue().chars().allMatch(Character::isDigit) || badge.getValue().length() == 1) {
-                styleClass += " " + Badge.NO_GUTTER_CLASS;
-            }
-            else {
-                styleClass += " " + Badge.DOT_CLASS;
-            }
-        }
-        else if (badge.getValue() == null) {
-            styleClass += " " + Badge.DOT_CLASS;
-        }
-
-        if (badge.getSize() != null) {
-            switch (badge.getSize()) {
-                case "large":
-                    styleClass += " " + Badge.SIZE_LARGE_CLASS;
-                    break;
-                case "xlarge":
-                    styleClass += " " + Badge.SIZE_XLARGE_CLASS;
-                    break;
-            }
-        }
-
-        if (badge.getSeverity() != null) {
-            switch (badge.getSeverity()) {
-                case "info":
-                    styleClass += " " + Badge.SEVERITY_INFO_CLASS;
-                    break;
-                case "success":
-                    styleClass += " " + Badge.SEVERITY_SUCCESS_CLASS;
-                    break;
-                case "warning":
-                    styleClass += " " + Badge.SEVERITY_WARNING_CLASS;
-                    break;
-                case "danger":
-                    styleClass += " " + Badge.SEVERITY_DANGER_CLASS;
-                    break;
-            }
-        }
+        boolean noGutter = value != null && (value.chars().allMatch(Character::isDigit) || value.length() == 1);
+        String severity = badge.getSeverity();
+        String size = badge.getSize();
+        String styleClass = getStyleClassBuilder(context)
+                    .add(Badge.DEFAULT_STYLE_CLASS)
+                    .add(badge.getStyleClass())
+                    .add(value == null || !noGutter, Badge.DOT_CLASS)
+                    .add(!hasChild && noGutter, Badge.NO_GUTTER_CLASS)
+                    .add("large".equals(size), Badge.SIZE_LARGE_CLASS)
+                    .add("xlarge".equals(size), Badge.SIZE_XLARGE_CLASS)
+                    .add("info".equals(severity), Badge.SEVERITY_INFO_CLASS)
+                    .add("success".equals(severity), Badge.SEVERITY_SUCCESS_CLASS)
+                    .add("warning".equals(severity), Badge.SEVERITY_WARNING_CLASS)
+                    .add("danger".equals(severity), Badge.SEVERITY_DANGER_CLASS)
+                    .build();
 
         if (hasChild) {
             writer.startElement("div", badge);
@@ -99,8 +71,8 @@ public class BadgeRenderer extends CoreRenderer {
         if (badge.getStyle() != null) {
             writer.writeAttribute("style", badge.getStyle(), "style");
         }
-        if (badge.getValue() != null) {
-            writer.write(badge.getValue());
+        if (value != null) {
+            writer.write(value);
         }
         writer.endElement("span");
 
