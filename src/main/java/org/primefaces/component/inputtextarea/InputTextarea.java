@@ -23,10 +23,9 @@
  */
 package org.primefaces.component.inputtextarea;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 
 import javax.el.MethodExpression;
 import javax.faces.application.ResourceDependency;
@@ -34,9 +33,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 
-import org.primefaces.event.SelectEvent;
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -88,7 +88,7 @@ public class InputTextarea extends InputTextareaBase {
         if (eventName != null && event instanceof AjaxBehaviorEvent) {
             AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName.equals("itemSelect")) {
+            if ("itemSelect".equals(eventName)) {
                 String selectedItemValue = params.get(getClientId(context) + "_itemSelect");
                 SelectEvent selectEvent = new SelectEvent(this, ajaxBehaviorEvent.getBehavior(), selectedItemValue);
                 selectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());

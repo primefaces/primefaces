@@ -23,18 +23,18 @@
  */
 package org.primefaces.component.datagrid;
 
-import java.io.IOException;
+import org.primefaces.renderkit.DataRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.GridLayoutUtils;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.WidgetBuilder;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.renderkit.DataRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.GridLayoutUtils;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
+import java.io.IOException;
 
 public class DataGridRenderer extends DataRenderer {
 
@@ -100,7 +100,7 @@ public class DataGridRenderer extends DataRenderer {
         String gridContentClass = flex ? DataGrid.FLEX_GRID_CONTENT_CLASS : DataGrid.GRID_CONTENT_CLASS;
         String style = grid.getStyle();
         String styleClass = grid.getStyleClass() == null ? DataGrid.DATAGRID_CLASS : DataGrid.DATAGRID_CLASS + " " + grid.getStyleClass();
-        String layoutClass = layout.equals("tabular") ? DataGrid.TABLE_CONTENT_CLASS : gridContentClass;
+        String layoutClass = "tabular".equals(layout) ? DataGrid.TABLE_CONTENT_CLASS : gridContentClass;
         String contentClass = empty ? DataGrid.EMPTY_CONTENT_CLASS : layoutClass;
 
         if (hasPaginator) {
@@ -116,7 +116,7 @@ public class DataGridRenderer extends DataRenderer {
 
         encodeFacet(context, grid, "header", DataGrid.HEADER_CLASS);
 
-        if (hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
+        if (hasPaginator && !"bottom".equalsIgnoreCase(paginatorPosition)) {
             encodePaginatorMarkup(context, grid, "top");
         }
 
@@ -139,7 +139,7 @@ public class DataGridRenderer extends DataRenderer {
 
         writer.endElement("div");
 
-        if (hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
+        if (hasPaginator && !"top".equalsIgnoreCase(paginatorPosition)) {
             encodePaginatorMarkup(context, grid, "bottom");
         }
 
@@ -151,10 +151,10 @@ public class DataGridRenderer extends DataRenderer {
     protected void encodeContent(FacesContext context, DataGrid grid) throws IOException {
         String layout = grid.getLayout();
 
-        if (layout.equals("tabular")) {
+        if ("tabular".equals(layout)) {
             encodeTable(context, grid);
         }
-        else if (layout.equals("grid")) {
+        else if ("grid".equals(layout)) {
             encodeGrid(context, grid);
         }
         else {

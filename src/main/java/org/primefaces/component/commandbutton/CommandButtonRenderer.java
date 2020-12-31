@@ -23,7 +23,12 @@
  */
 package org.primefaces.component.commandbutton;
 
-import java.io.IOException;
+import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.CSVBuilder;
+import org.primefaces.util.ComponentTraversalUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -32,12 +37,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 
-import org.primefaces.context.PrimeRequestContext;
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.CSVBuilder;
-import org.primefaces.util.ComponentTraversalUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
+import java.io.IOException;
 
 public class CommandButtonRenderer extends CoreRenderer {
 
@@ -68,7 +68,7 @@ public class CommandButtonRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = button.getClientId(context);
         String type = button.getType();
-        boolean pushButton = (type.equals("reset") || type.equals("button"));
+        boolean pushButton = ("reset".equals(type) || "button".equals(type));
         Object value = button.getValue();
         String icon = button.getIcon();
         String title = button.getTitle();

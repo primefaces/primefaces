@@ -23,16 +23,16 @@
  */
 package org.primefaces.component.mindmap;
 
-import java.io.IOException;
-import java.util.List;
+import org.primefaces.model.mindmap.MindmapNode;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.model.mindmap.MindmapNode;
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
+import java.io.IOException;
+import java.util.List;
 
 public class MindmapRenderer extends CoreRenderer {
 
@@ -114,7 +114,7 @@ public class MindmapRenderer extends CoreRenderer {
             writer.write(",\"children\":[");
 
             for (int i = 0; i < size; i++) {
-                String childKey = (nodeKey.equals("root")) ? String.valueOf(i) : nodeKey + "_" + i;
+                String childKey = ("root".equals(nodeKey)) ? String.valueOf(i) : nodeKey + "_" + i;
 
                 MindmapNode child = children.get(i);
                 encodeNode(context, map, child, childKey);

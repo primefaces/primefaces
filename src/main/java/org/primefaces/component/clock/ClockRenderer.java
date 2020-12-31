@@ -23,23 +23,23 @@
  */
 package org.primefaces.component.clock;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
-import java.util.Date;
-import java.util.Locale;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.PrimeFaces;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.WidgetBuilder;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
+import java.util.Date;
+import java.util.Locale;
 
 public class ClockRenderer extends CoreRenderer {
 
@@ -90,7 +90,7 @@ public class ClockRenderer extends CoreRenderer {
                 .attr("displayMode", clock.getDisplayMode())
                 .attr("locale", locale.toString());
 
-        if (mode.equals("server")) {
+        if ("server".equals(mode)) {
             wb.attr("value", getValueWithTimeZone(locale, clock));
 
             if (clock.isAutoSync()) {

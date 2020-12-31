@@ -28,6 +28,7 @@ import org.primefaces.renderkit.CoreRenderer;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import java.io.IOException;
 
 public class DividerRenderer extends CoreRenderer {
@@ -41,10 +42,10 @@ public class DividerRenderer extends CoreRenderer {
         String layout = divider.getLayout();
         String align = divider.getAlign();
 
-        if (layout.equals("horizontal")) {
+        if ("horizontal".equals(layout)) {
             styleClass += " " + Divider.HORIZONTAL_CLASS;
         }
-        else if (layout.equals("vertical")) {
+        else if ("vertical".equals(layout)) {
             styleClass += " " + Divider.VERTICAL_CLASS;
         }
 
@@ -60,28 +61,28 @@ public class DividerRenderer extends CoreRenderer {
                 break;
         }
 
-        if (layout.equals("horizontal") && align == null) {
+        if ("horizontal".equals(layout) && align == null) {
             styleClass += " " + Divider.ALING_LEFT_CLASS;
         }
-        else if (layout.equals("vertical") && align == null) {
+        else if ("vertical".equals(layout) && align == null) {
             styleClass += " " + Divider.ALING_CENTER_CLASS;
         }
-        else if (layout.equals("horizontal") && align.equals("left")) {
+        else if ("horizontal".equals(layout) && "left".equals(align)) {
             styleClass += " " + Divider.ALING_LEFT_CLASS;
         }
-        else if (layout.equals("horizontal") && align.equals("center")) {
+        else if ("horizontal".equals(layout) && "center".equals(align)) {
             styleClass += " " + Divider.ALING_CENTER_CLASS;
         }
-        else if (layout.equals("horizontal") && align.equals("right")) {
+        else if ("horizontal".equals(layout) && "right".equals(align)) {
             styleClass += " " + Divider.ALING_RIGHT_CLASS;
         }
-        else if (layout.equals("vertical") && align.equals("top")) {
+        else if ("vertical".equals(layout) && "top".equals(align)) {
             styleClass += " " + Divider.ALING_TOP_CLASS;
         }
-        else if (layout.equals("vertical") && align.equals("center")) {
+        else if ("vertical".equals(layout) && "center".equals(align)) {
             styleClass += " " + Divider.ALING_CENTER_CLASS;
         }
-        else if (layout.equals("vertical") && align.equals("bottom")) {
+        else if ("vertical".equals(layout) && "bottom".equals(align)) {
             styleClass += " " + Divider.ALING_BOTTOM_CLASS;
         }
 

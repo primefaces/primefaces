@@ -23,9 +23,12 @@
  */
 package org.primefaces.component.message;
 
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.Objects;
+import org.primefaces.component.api.InputHolder;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.renderkit.UINotificationRenderer;
+import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
@@ -33,12 +36,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.component.api.InputHolder;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.renderkit.UINotificationRenderer;
-import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.Objects;
 
 public class MessageRenderer extends UINotificationRenderer {
 
@@ -56,9 +56,9 @@ public class MessageRenderer extends UINotificationRenderer {
     protected void encodeMarkup(FacesContext context, Message uiMessage, String targetClientId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String display = uiMessage.getDisplay();
-        boolean iconOnly = display.equals("icon");
+        boolean iconOnly = "icon".equals(display);
         String style = uiMessage.getStyle();
-        String containerClass = display.equals("tooltip") ? "ui-message ui-helper-hidden" : "ui-message";
+        String containerClass = "tooltip".equals(display) ? "ui-message ui-helper-hidden" : "ui-message";
         String styleClass = uiMessage.getStyleClass();
         styleClass = styleClass == null ? containerClass : styleClass + " " + containerClass;
 
@@ -117,7 +117,7 @@ public class MessageRenderer extends UINotificationRenderer {
 
                 writer.startElement("div", null);
 
-                if (!display.equals("text")) {
+                if (!"text".equals(display)) {
                     encodeIcon(writer, severityKey, msg.getDetail(), iconOnly);
                 }
 

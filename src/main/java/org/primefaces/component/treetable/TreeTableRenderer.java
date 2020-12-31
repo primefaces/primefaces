@@ -25,30 +25,6 @@ package org.primefaces.component.treetable;
 
 import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
 
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import javax.el.ELContext;
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.component.ValueHolder;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
@@ -65,6 +41,30 @@ import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.*;
 import org.primefaces.visit.ResetInputVisitCallback;
+
+import javax.el.ELContext;
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
+import javax.faces.component.ValueHolder;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class TreeTableRenderer extends DataRenderer {
 
@@ -97,7 +97,7 @@ public class TreeTableRenderer extends DataRenderer {
         //decode selection
         if (selectionMode != null) {
             String selectionValue = params.get(tt.getClientId(context) + "_selection");
-            boolean isSingle = selectionMode.equalsIgnoreCase("single");
+            boolean isSingle = "single".equalsIgnoreCase(selectionMode);
 
             if (isValueBlank(selectionValue)) {
                 if (isSingle) {
@@ -189,7 +189,7 @@ public class TreeTableRenderer extends DataRenderer {
 
             //update rows with rpp value
             String rppValue = params.get(clientId + "_rppDD");
-            if (rppValue != null && !rppValue.equals("*")) {
+            if (rppValue != null && !"*".equals(rppValue)) {
                 tt.setRows(Integer.parseInt(rppValue));
             }
 
@@ -369,7 +369,7 @@ public class TreeTableRenderer extends DataRenderer {
         encodeScrollAreaStart(context, tt, TreeTable.SCROLLABLE_HEADER_CLASS, TreeTable.SCROLLABLE_HEADER_BOX_CLASS,
                 tableStyle, tableStyleClass, "header", TreeTable.HEADER_CLASS);
 
-        if (hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
+        if (hasPaginator && !"bottom".equalsIgnoreCase(paginatorPosition)) {
             encodePaginatorMarkup(context, tt, "top");
         }
 
@@ -382,7 +382,7 @@ public class TreeTableRenderer extends DataRenderer {
                 tableStyle, tableStyleClass, "footer", TreeTable.FOOTER_CLASS);
         encodeTfoot(context, tt);
 
-        if (hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
+        if (hasPaginator && !"top".equalsIgnoreCase(paginatorPosition)) {
             encodePaginatorMarkup(context, tt, "bottom");
         }
         encodeScrollAreaEnd(context);
@@ -451,7 +451,7 @@ public class TreeTableRenderer extends DataRenderer {
 
         encodeFacet(context, tt, tt.getFacet("header"), TreeTable.HEADER_CLASS);
 
-        if (tt.isPaginator() && !paginatorPosition.equalsIgnoreCase("bottom")) {
+        if (tt.isPaginator() && !"bottom".equalsIgnoreCase(paginatorPosition)) {
             encodePaginatorMarkup(context, tt, "top");
         }
 
@@ -470,7 +470,7 @@ public class TreeTableRenderer extends DataRenderer {
 
         writer.endElement("table");
 
-        if (hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
+        if (hasPaginator && !"top".equalsIgnoreCase(paginatorPosition)) {
             encodePaginatorMarkup(context, tt, "bottom");
         }
 
@@ -615,7 +615,7 @@ public class TreeTableRenderer extends DataRenderer {
         String selectionMode = tt.getSelectionMode();
         boolean selectionEnabled = selectionMode != null;
         boolean selectable = treeNode.isSelectable() && selectionEnabled;
-        boolean checkboxSelection = selectionEnabled && selectionMode.equals("checkbox");
+        boolean checkboxSelection = selectionEnabled && "checkbox".equals(selectionMode);
         boolean selected = treeNode.isSelected();
         boolean partialSelected = treeNode.isPartialSelected();
         boolean nativeElements = tt.isNativeElements();
@@ -1225,7 +1225,7 @@ public class TreeTableRenderer extends DataRenderer {
         tt.setRowKey(root, editedRowKey);
         TreeNode node = tt.getRowNode();
 
-        if (action.equals("cancel")) {
+        if ("cancel".equals(action)) {
             VisitContext visitContext = null;
 
             for (UIColumn column : tt.getColumns()) {

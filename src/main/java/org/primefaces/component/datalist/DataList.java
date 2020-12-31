@@ -23,11 +23,14 @@
  */
 package org.primefaces.component.datalist;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
+import org.primefaces.PrimeFaces;
+import org.primefaces.component.api.IterationStatus;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.data.PageEvent;
+import org.primefaces.model.LazyDataModel;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.MapBuilder;
 
 import javax.faces.FacesException;
 import javax.faces.application.ResourceDependency;
@@ -39,14 +42,11 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.model.DataModel;
 
-import org.primefaces.PrimeFaces;
-import org.primefaces.component.api.IterationStatus;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.event.data.PageEvent;
-import org.primefaces.model.LazyDataModel;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -87,16 +87,16 @@ public class DataList extends DataListBase {
     public String getListTag() {
         String type = getType();
 
-        if (type.equalsIgnoreCase("unordered")) {
+        if ("unordered".equalsIgnoreCase(type)) {
             return "ul";
         }
-        else if (type.equalsIgnoreCase("ordered")) {
+        else if ("ordered".equalsIgnoreCase(type)) {
             return "ol";
         }
-        else if (type.equalsIgnoreCase("definition")) {
+        else if ("definition".equalsIgnoreCase(type)) {
             return "dl";
         }
-        else if (type.equalsIgnoreCase("none")) {
+        else if ("none".equalsIgnoreCase(type)) {
             return null;
         }
         else {
@@ -136,7 +136,7 @@ public class DataList extends DataListBase {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-            if (eventName.equals("page")) {
+            if ("page".equals(eventName)) {
                 String clientId = getClientId(context);
                 int rows = getRowsToRender();
                 int first = Integer.parseInt(params.get(clientId + "_first"));
@@ -147,7 +147,7 @@ public class DataList extends DataListBase {
 
                 super.queueEvent(pageEvent);
             }
-            else if (eventName.equals("tap") || eventName.equals("taphold")) {
+            else if ("tap".equals(eventName) || "taphold".equals(eventName)) {
                 String clientId = getClientId(context);
                 int index = Integer.parseInt(params.get(clientId + "_item"));
                 setRowIndex(index);

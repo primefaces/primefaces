@@ -23,14 +23,6 @@
  */
 package org.primefaces.component.datepicker;
 
-import java.time.*;
-import java.util.*;
-import javax.faces.application.FacesMessage;
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.PhaseId;
 import org.primefaces.event.DateViewChangeEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.datepicker.DateMetadata;
@@ -39,6 +31,16 @@ import org.primefaces.model.datepicker.LazyDateMetadataModel;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.application.ResourceDependency;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.FacesEvent;
+import javax.faces.event.PhaseId;
+
+import java.time.*;
+import java.util.*;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -75,10 +77,10 @@ public class DatePicker extends DatePickerBase {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
             if (eventName != null) {
-                if (eventName.equals("dateSelect") || eventName.equals("close")) {
+                if ("dateSelect".equals(eventName) || "close".equals(eventName)) {
                     customEvents.put(eventName, (AjaxBehaviorEvent) event);
                 }
-                else if (eventName.equals("viewChange")) {
+                else if ("viewChange".equals(eventName)) {
                     int month = Integer.parseInt(params.get(clientId + "_month"));
                     int year = Integer.parseInt(params.get(clientId + "_year"));
                     DateViewChangeEvent dateViewChangeEvent = new DateViewChangeEvent(this, behaviorEvent.getBehavior(), month, year);

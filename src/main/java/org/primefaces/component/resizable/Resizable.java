@@ -23,8 +23,10 @@
  */
 package org.primefaces.component.resizable;
 
-import java.util.Collection;
-import java.util.Map;
+import org.primefaces.event.ResizeEvent;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.MapBuilder;
 
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
@@ -32,10 +34,8 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 
-import org.primefaces.event.ResizeEvent;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
+import java.util.Collection;
+import java.util.Map;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -76,7 +76,7 @@ public class Resizable extends ResizableBase {
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = getClientId(context);
 
-            if (eventName.equals("resize")) {
+            if ("resize".equals(eventName)) {
                 AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
                 int width = Integer.parseInt(params.get(clientId + "_width"));
                 int height = Integer.parseInt(params.get(clientId + "_height"));

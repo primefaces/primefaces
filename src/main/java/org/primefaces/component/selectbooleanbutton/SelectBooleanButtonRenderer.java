@@ -23,18 +23,18 @@
  */
 package org.primefaces.component.selectbooleanbutton;
 
-import java.io.IOException;
-import java.util.Objects;
+import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
 
-import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
+import java.io.IOException;
+import java.util.Objects;
 
 public class SelectBooleanButtonRenderer extends InputRenderer {
 
@@ -50,7 +50,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
 
         String clientId = button.getClientId(context);
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
-        boolean checked = submittedValue != null && submittedValue.equalsIgnoreCase("on");
+        boolean checked = submittedValue != null && "on".equalsIgnoreCase(submittedValue);
         button.setSubmittedValue(checked);
     }
 

@@ -23,18 +23,6 @@
  */
 package org.primefaces.component.tabview;
 
-import java.util.Collection;
-import java.util.Map;
-import javax.el.ELContext;
-
-import javax.el.ValueExpression;
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.FacesEvent;
-
 import org.primefaces.PrimeFaces;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.event.TabChangeEvent;
@@ -43,6 +31,18 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.ConsumerThree;
 import org.primefaces.util.MapBuilder;
+
+import javax.el.ELContext;
+import javax.el.ValueExpression;
+import javax.faces.application.ResourceDependency;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.BehaviorEvent;
+import javax.faces.event.FacesEvent;
+
+import java.util.Collection;
+import java.util.Map;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -111,7 +111,7 @@ public class TabView extends TabViewBase {
             boolean repeating = isRepeating();
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName.equals("tabChange")) {
+            if ("tabChange".equals(eventName)) {
                 String tabClientId = params.get(clientId + "_newTab");
                 TabChangeEvent changeEvent = new TabChangeEvent(this, behaviorEvent.getBehavior(), findTab(tabClientId));
 
@@ -130,7 +130,7 @@ public class TabView extends TabViewBase {
                     setIndex(-1);
                 }
             }
-            else if (eventName.equals("tabClose")) {
+            else if ("tabClose".equals(eventName)) {
                 String tabClientId = params.get(clientId + "_closeTab");
                 TabCloseEvent closeEvent = new TabCloseEvent(this, behaviorEvent.getBehavior(), findTab(tabClientId));
 

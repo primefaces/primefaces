@@ -23,15 +23,19 @@
  */
 package org.primefaces.renderkit;
 
-import java.io.IOException;
-import java.util.List;
+import org.primefaces.clientwindow.PrimeClientWindow;
+import org.primefaces.clientwindow.PrimeClientWindowUtils;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LocaleUtils;
+
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;
-
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
@@ -41,12 +45,9 @@ import javax.faces.lifecycle.ClientWindow;
 import javax.faces.render.Renderer;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import org.primefaces.clientwindow.PrimeClientWindowUtils;
-import org.primefaces.clientwindow.PrimeClientWindow;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.context.PrimeRequestContext;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.LocaleUtils;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Renders head content based on the following order
@@ -94,7 +95,7 @@ public class HeadRenderer extends Renderer {
             theme = "saga";     //default
         }
 
-        if (theme != null && !theme.equals("none")) {
+        if (theme != null && !"none".equals(theme)) {
             encodeCSS(context, "primefaces-" + theme, "theme.css");
         }
 

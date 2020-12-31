@@ -23,8 +23,13 @@
  */
 package org.primefaces.component.panel;
 
-import java.util.Collection;
-import java.util.Map;
+import org.primefaces.component.menu.Menu;
+import org.primefaces.event.CloseEvent;
+import org.primefaces.event.ToggleEvent;
+import org.primefaces.model.Visibility;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.MapBuilder;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
@@ -35,13 +40,8 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 
-import org.primefaces.component.menu.Menu;
-import org.primefaces.event.CloseEvent;
-import org.primefaces.event.ToggleEvent;
-import org.primefaces.model.Visibility;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
+import java.util.Collection;
+import java.util.Map;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -104,7 +104,7 @@ public class Panel extends PanelBase {
         if (ComponentUtils.isRequestSource(this, context)) {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName.equals("toggle")) {
+            if ("toggle".equals(eventName)) {
                 boolean collapsed = Boolean.parseBoolean(params.get(clientId + "_collapsed"));
                 Visibility visibility = collapsed ? Visibility.HIDDEN : Visibility.VISIBLE;
 
@@ -113,7 +113,7 @@ public class Panel extends PanelBase {
                 super.queueEvent(new ToggleEvent(this, behaviorEvent.getBehavior(), visibility));
 
             }
-            else if (eventName.equals("close")) {
+            else if ("close".equals(eventName)) {
                 CloseEvent eventToQueue = new CloseEvent(this, behaviorEvent.getBehavior());
                 eventToQueue.setPhaseId(behaviorEvent.getPhaseId());
                 super.queueEvent(eventToQueue);

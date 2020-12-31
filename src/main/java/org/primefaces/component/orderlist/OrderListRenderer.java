@@ -23,10 +23,11 @@
  */
 package org.primefaces.component.orderlist;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import org.primefaces.component.column.Column;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -34,11 +35,10 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
-import org.primefaces.component.column.Column;
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class OrderListRenderer extends CoreRenderer {
 
@@ -89,13 +89,13 @@ public class OrderListRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-g", null);
 
-        if (controlsLocation.equals("left")) {
+        if ("left".equals(controlsLocation)) {
             encodeControls(context, ol);
         }
 
         encodeList(context, ol);
 
-        if (controlsLocation.equals("right")) {
+        if ("right".equals(controlsLocation)) {
             encodeControls(context, ol);
         }
 

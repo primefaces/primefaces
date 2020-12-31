@@ -23,8 +23,12 @@
  */
 package org.primefaces.component.dashboard;
 
-import java.util.Collection;
-import java.util.Map;
+import org.primefaces.event.DashboardReorderEvent;
+import org.primefaces.model.DashboardColumn;
+import org.primefaces.model.DashboardModel;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.MapBuilder;
 
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
@@ -32,12 +36,8 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 
-import org.primefaces.event.DashboardReorderEvent;
-import org.primefaces.model.DashboardColumn;
-import org.primefaces.model.DashboardModel;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
+import java.util.Collection;
+import java.util.Map;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -77,7 +77,7 @@ public class Dashboard extends DashboardBase {
             String clientId = getClientId(context);
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName.equals("reorder")) {
+            if ("reorder".equals(eventName)) {
                 String widgetClientId = params.get(clientId + "_widgetId");
                 Integer itemIndex = Integer.valueOf(params.get(clientId + "_itemIndex"));
                 Integer receiverColumnIndex = Integer.valueOf(params.get(clientId + "_receiverColumnIndex"));

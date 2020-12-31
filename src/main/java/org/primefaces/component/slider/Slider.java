@@ -23,8 +23,9 @@
  */
 package org.primefaces.component.slider;
 
-import java.util.Collection;
-import java.util.Map;
+import org.primefaces.event.SlideEndEvent;
+import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.util.*;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ResourceDependency;
@@ -35,13 +36,8 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 
-import org.primefaces.event.SlideEndEvent;
-import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.MapBuilder;
-import org.primefaces.util.MessageFactory;
+import java.util.Collection;
+import java.util.Map;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -85,7 +81,7 @@ public class Slider extends SliderBase {
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName.equals("slideEnd")) {
+            if ("slideEnd".equals(eventName)) {
                 double sliderValue = Double.parseDouble(params.get(clientId + "_slideValue"));
                 SlideEndEvent slideEndEvent = new SlideEndEvent(this, behaviorEvent.getBehavior(), sliderValue);
                 slideEndEvent.setPhaseId(behaviorEvent.getPhaseId());

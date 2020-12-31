@@ -23,16 +23,16 @@
  */
 package org.primefaces.component.inputswitch;
 
-import java.io.IOException;
+import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
+import java.io.IOException;
 
 public class InputSwitchRenderer extends InputRenderer {
 
@@ -148,6 +148,6 @@ public class InputSwitchRenderer extends InputRenderer {
 
     protected boolean isChecked(String value) {
         return value != null
-                && (value.equalsIgnoreCase("on") || value.equalsIgnoreCase("yes") || value.equalsIgnoreCase("true"));
+                && ("on".equalsIgnoreCase(value) || "yes".equalsIgnoreCase(value) || "true".equalsIgnoreCase(value));
     }
 }

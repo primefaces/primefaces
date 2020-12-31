@@ -23,29 +23,20 @@
  */
 package org.primefaces.renderkit;
 
-import java.io.IOException;
-import java.util.Map;
+import org.primefaces.component.api.Pageable;
+import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.api.UIData;
+import org.primefaces.component.api.UIPageableData;
+import org.primefaces.component.paginator.*;
+import org.primefaces.util.*;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.component.api.Pageable;
-import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.api.UIData;
-import org.primefaces.component.api.UIPageableData;
-import org.primefaces.component.paginator.CurrentPageReportRenderer;
-import org.primefaces.component.paginator.FirstPageLinkRenderer;
-import org.primefaces.component.paginator.JumpToPageDropdownRenderer;
-import org.primefaces.component.paginator.JumpToPageInputRenderer;
-import org.primefaces.component.paginator.LastPageLinkRenderer;
-import org.primefaces.component.paginator.NextPageLinkRenderer;
-import org.primefaces.component.paginator.PageLinksRenderer;
-import org.primefaces.component.paginator.PaginatorElementRenderer;
-import org.primefaces.component.paginator.PrevPageLinkRenderer;
-import org.primefaces.component.paginator.RowsPerPageDropdownRenderer;
-import org.primefaces.util.*;
+import java.io.IOException;
+import java.util.Map;
 
 public class DataRenderer extends CoreRenderer {
 
@@ -75,7 +66,7 @@ public class DataRenderer extends CoreRenderer {
         }
 
         ResponseWriter writer = context.getResponseWriter();
-        boolean isTop = position.equals("top");
+        boolean isTop = "top".equals(position);
         UIComponent leftTopContent = pageable.getFacet("paginatorTopLeft");
         UIComponent rightTopContent = pageable.getFacet("paginatorTopRight");
         UIComponent leftBottomContent = pageable.getFacet("paginatorBottomLeft");
@@ -154,7 +145,7 @@ public class DataRenderer extends CoreRenderer {
         String paginatorContainers = null;
         String currentPageTemplate = pageable.getCurrentPageReportTemplate();
 
-        if (paginatorPosition.equalsIgnoreCase("both")) {
+        if ("both".equalsIgnoreCase(paginatorPosition)) {
             paginatorContainers = "'" + clientId + "_paginator_top','" + clientId + "_paginator_bottom'";
         }
         else {

@@ -23,9 +23,12 @@
  */
 package org.primefaces.component.selectcheckboxmenu;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.List;
+import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.renderkit.SelectManyRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
@@ -38,12 +41,9 @@ import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import javax.faces.render.Renderer;
 
-import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.renderkit.SelectManyRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.List;
 
 public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
 
@@ -193,7 +193,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             writer.writeAttribute("class", "ui-state-disabled", null);
         }
 
-        if (itemLabel.equals("&nbsp;")) {
+        if ("&nbsp;".equals(itemLabel)) {
             writer.write(itemLabel);
         }
         else {

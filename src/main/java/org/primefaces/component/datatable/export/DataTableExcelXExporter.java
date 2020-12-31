@@ -23,12 +23,11 @@
  */
 package org.primefaces.component.datatable.export;
 
-import java.awt.Color;
-
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.xssf.usermodel.*;
 import org.primefaces.component.export.ExporterOptions;
+
+import java.awt.Color;
 
 public class DataTableExcelXExporter extends DataTableExcelExporter {
 
@@ -59,10 +58,10 @@ public class DataTableExcelXExporter extends DataTableExcelExporter {
         if (options != null) {
             String facetFontStyle = options.getFacetFontStyle();
             if (facetFontStyle != null) {
-                if (facetFontStyle.equalsIgnoreCase("BOLD")) {
+                if ("BOLD".equalsIgnoreCase(facetFontStyle)) {
                     facetFont.setBold(true);
                 }
-                if (facetFontStyle.equalsIgnoreCase("ITALIC")) {
+                if ("ITALIC".equalsIgnoreCase(facetFontStyle)) {
                     facetFont.setItalic(true);
                 }
             }
@@ -107,10 +106,10 @@ public class DataTableExcelXExporter extends DataTableExcelExporter {
 
             String cellFontStyle = options.getCellFontStyle();
             if (cellFontStyle != null) {
-                if (cellFontStyle.equalsIgnoreCase("BOLD")) {
+                if ("BOLD".equalsIgnoreCase(cellFontStyle)) {
                     cellFont.setBold(true);
                 }
-                if (cellFontStyle.equalsIgnoreCase("ITALIC")) {
+                if ("ITALIC".equalsIgnoreCase(cellFontStyle)) {
                     cellFont.setItalic(true);
                 }
             }

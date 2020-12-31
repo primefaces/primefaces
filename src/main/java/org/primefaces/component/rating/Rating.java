@@ -23,9 +23,9 @@
  */
 package org.primefaces.component.rating;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import org.primefaces.event.RateEvent;
+import org.primefaces.util.Constants;
+import org.primefaces.util.MapBuilder;
 
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
@@ -33,9 +33,9 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 
-import org.primefaces.event.RateEvent;
-import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -81,10 +81,10 @@ public class Rating extends RatingBase {
         if (event instanceof AjaxBehaviorEvent) {
             String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-            if (eventName.equals("rate")) {
+            if ("rate".equals(eventName)) {
                 customEvents.put(eventName, (AjaxBehaviorEvent) event);
             }
-            else if (eventName.equals("cancel")) {
+            else if ("cancel".equals(eventName)) {
                 super.queueEvent(event);
             }
         }

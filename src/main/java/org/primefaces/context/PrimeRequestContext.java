@@ -23,18 +23,19 @@
  */
 package org.primefaces.context;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.primefaces.util.*;
+
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
-import org.primefaces.util.*;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A {@link PrimeRequestContext} is a contextual store for the current request.
@@ -262,7 +263,7 @@ public class PrimeRequestContext {
                 ValueExpression expression = expressionFactory.createValueExpression(elContext, param, String.class);
                 String expressionValue = (String) expression.getValue(elContext);
 
-                rtl = (expressionValue != null) && expressionValue.equalsIgnoreCase("rtl");
+                rtl = "rtl".equalsIgnoreCase(expressionValue);
             }
         }
 

@@ -63,8 +63,8 @@
         </module>
 
         <module name="ModifierOrderCheck" />
-		
-		<module name="HideUtilityClassConstructor"/>
+
+        <module name="HideUtilityClassConstructor"/>
 
         <module name="MethodLength">
             <property name="max" value="300" />
@@ -128,9 +128,9 @@
           <property name="message" value="Line has trailing spaces."/>
       </module>
         -->
+        <module name="EqualsAvoidNullCheck"/>
         <module name="UpperEll"/>
-		
-		<module name="ArrayTypeStyle"/>
+        <module name="ArrayTypeStyle"/>
 
         <module name="WhitespaceAround">
             <property name="tokens" value=""/>

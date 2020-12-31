@@ -23,13 +23,14 @@
  */
 package org.primefaces.component.api;
 
-import java.lang.reflect.Array;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
+import org.primefaces.component.headerrow.HeaderRow;
+import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionHint;
+import org.primefaces.model.ColumnMeta;
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.SortMeta;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LangUtils;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;
@@ -40,14 +41,13 @@ import javax.faces.component.UINamingContainer;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.component.headerrow.HeaderRow;
-import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.expression.SearchExpressionHint;
-import org.primefaces.model.ColumnMeta;
-import org.primefaces.model.FilterMeta;
-import org.primefaces.model.SortMeta;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.LangUtils;
+import java.lang.reflect.Array;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public interface UITable<T extends UITableState> extends ColumnAware, MultiViewStateAware<T> {
 
@@ -506,7 +506,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                     continue;
                 }
 
-                if (columnState.equals(getClientId(context) + "_tableWidthState")) {
+                if ((getClientId(context) + "_tableWidthState").equals(columnState)) {
                     tableWidth = columnState;
                     setWidth(tableWidth);
                 }

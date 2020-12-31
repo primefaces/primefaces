@@ -23,6 +23,18 @@
  */
 package org.primefaces.component.schedule;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.primefaces.model.LazyScheduleModel;
+import org.primefaces.model.ScheduleEvent;
+import org.primefaces.model.ScheduleModel;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.*;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -33,18 +45,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.primefaces.model.LazyScheduleModel;
-import org.primefaces.model.ScheduleEvent;
-import org.primefaces.model.ScheduleModel;
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.*;
 
 public class ScheduleRenderer extends CoreRenderer {
 
@@ -223,7 +223,7 @@ public class ScheduleRenderer extends CoreRenderer {
 
         String displayEventEnd = schedule.getDisplayEventEnd();
         if (displayEventEnd != null) {
-            if (displayEventEnd.equals("true") || displayEventEnd.equals("false")) {
+            if ("true".equals(displayEventEnd) || "false".equals(displayEventEnd)) {
                 wb.nativeAttr("displayEventEnd", displayEventEnd);
             }
             else {
@@ -235,7 +235,7 @@ public class ScheduleRenderer extends CoreRenderer {
             String weekNumCalculation = schedule.getWeekNumberCalculation();
             String weekNumCalculator = schedule.getWeekNumberCalculator();
 
-            if (weekNumCalculation.equals("custom")) {
+            if ("custom".equals(weekNumCalculation)) {
                 if (weekNumCalculator != null) {
                     wb.append(",weekNumberCalculation: function(date){ return ")
                             .append(schedule.getWeekNumberCalculator())

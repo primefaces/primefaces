@@ -23,8 +23,11 @@
  */
 package org.primefaces.component.dnd;
 
-import java.util.Collection;
-import java.util.Map;
+import org.primefaces.event.DragDropEvent;
+import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.MapBuilder;
 
 import javax.faces.FacesException;
 import javax.faces.application.ResourceDependency;
@@ -36,11 +39,8 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 
-import org.primefaces.event.DragDropEvent;
-import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
+import java.util.Collection;
+import java.util.Map;
 
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
@@ -84,7 +84,7 @@ public class Droppable extends DroppableBase {
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName.equals("drop")) {
+            if ("drop".equals(eventName)) {
                 String dragId = params.get(clientId + "_dragId");
                 String dropId = params.get(clientId + "_dropId");
                 DragDropEvent dndEvent = null;

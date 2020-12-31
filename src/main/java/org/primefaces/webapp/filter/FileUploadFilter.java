@@ -23,20 +23,7 @@
  */
 package org.primefaces.webapp.filter;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.fileupload.FileItemFactory;
-
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.FileCleanerCleanup;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -45,6 +32,14 @@ import org.primefaces.config.PrimeEnvironment;
 import org.primefaces.config.StartupPrimeEnvironment;
 import org.primefaces.util.Constants;
 import org.primefaces.webapp.MultipartRequest;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class FileUploadFilter implements Filter {
 
@@ -64,14 +59,14 @@ public class FileUploadFilter implements Filter {
     public void init(FilterConfig filterConfig) throws ServletException {
         String uploader = filterConfig.getServletContext().getInitParameter(Constants.ContextParams.UPLOADER);
 
-        if (uploader == null || uploader.equals("auto")) {
+        if (uploader == null || "auto".equals(uploader)) {
             PrimeEnvironment environment = new StartupPrimeEnvironment();
             bypass = environment.isAtLeastJsf22();
         }
-        else if (uploader.equals("native")) {
+        else if ("native".equals(uploader)) {
             bypass = true;
         }
-        else if (uploader.equals("commons")) {
+        else if ("commons".equals(uploader)) {
             bypass = false;
         }
 

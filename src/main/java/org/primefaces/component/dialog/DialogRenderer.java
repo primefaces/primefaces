@@ -23,12 +23,6 @@
  */
 package org.primefaces.component.dialog;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
@@ -36,6 +30,12 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+
+import java.io.IOException;
 
 public class DialogRenderer extends CoreRenderer {
 
@@ -107,7 +107,7 @@ public class DialogRenderer extends CoreRenderer {
             styleClass += " ui-dialog-rtl";
         }
 
-        if (positionType.equals("absolute")) {
+        if ("absolute".equals(positionType)) {
             styleClass += " ui-dialog-absolute";
         }
 

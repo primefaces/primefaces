@@ -23,16 +23,16 @@
  */
 package org.primefaces.component.datalist;
 
-import java.io.IOException;
+import org.primefaces.renderkit.DataRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.WidgetBuilder;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.renderkit.DataRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.WidgetBuilder;
+import java.io.IOException;
 
 public class DataListRenderer extends DataRenderer {
 
@@ -101,7 +101,7 @@ public class DataListRenderer extends DataRenderer {
 
         encodeFacet(context, list, "header", DataList.HEADER_CLASS);
 
-        if (hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
+        if (hasPaginator && !"bottom".equalsIgnoreCase(paginatorPosition)) {
             encodePaginatorMarkup(context, list, "top");
         }
 
@@ -126,7 +126,7 @@ public class DataListRenderer extends DataRenderer {
 
         writer.endElement("div");
 
-        if (hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
+        if (hasPaginator && !"top".equalsIgnoreCase(paginatorPosition)) {
             encodePaginatorMarkup(context, list, "bottom");
         }
 
@@ -163,7 +163,7 @@ public class DataListRenderer extends DataRenderer {
         boolean renderDefinition = isDefinition && ComponentUtils.shouldRenderFacet(definitionFacet);
         String itemType = list.getItemType();
         String listClass = DataList.LIST_CLASS;
-        if (itemType != null && itemType.equals("none")) {
+        if (itemType != null && "none".equals(itemType)) {
             listClass = listClass + " " + DataList.NO_BULLETS_CLASS;
         }
 

@@ -23,16 +23,16 @@
  */
 package org.primefaces.component.progressbar;
 
-import java.io.IOException;
-import java.util.Map;
+import org.primefaces.PrimeFaces;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.PrimeFaces;
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
+import java.io.IOException;
+import java.util.Map;
 
 public class ProgressBarRenderer extends CoreRenderer {
 
@@ -69,7 +69,7 @@ public class ProgressBarRenderer extends CoreRenderer {
         String style = progressBar.getStyle();
         String styleClass = progressBar.getStyleClass();
         styleClass = styleClass == null ? ProgressBar.CONTAINER_CLASS : ProgressBar.CONTAINER_CLASS + " " + styleClass;
-        styleClass = styleClass + " " + (mode.equals("determinate") ? ProgressBar.DETERMINATE_CLASS : ProgressBar.INDETERMINATE_CLASS);
+        styleClass = styleClass + " " + ("determinate".equals(mode) ? ProgressBar.DETERMINATE_CLASS : ProgressBar.INDETERMINATE_CLASS);
 
         if (progressBar.isDisabled()) {
             styleClass = styleClass + " ui-state-disabled";

@@ -23,14 +23,6 @@
  */
 package org.primefaces.component.messages;
 
-import java.io.IOException;
-import java.util.*;
-
-import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
@@ -38,6 +30,14 @@ import org.primefaces.renderkit.UINotificationRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.MessageFactory;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+
+import java.io.IOException;
+import java.util.*;
 
 public class MessagesRenderer extends UINotificationRenderer {
 
@@ -210,7 +210,7 @@ public class MessagesRenderer extends UINotificationRenderer {
             String forType = uiMessages.getForType();
 
             // key case
-            if (forType == null || forType.equals("key")) {
+            if (forType == null || "key".equals(forType)) {
                 String[] keys = SearchExpressionFacade.split(context, _for, SearchExpressionFacade.EXPRESSION_SEPARATORS);
                 for (String key : keys) {
                     Iterator<FacesMessage> messagesIterator = context.getMessages(key);
@@ -224,7 +224,7 @@ public class MessagesRenderer extends UINotificationRenderer {
             }
 
             // clientId / SearchExpression case
-            if (forType == null || forType.equals("expression")) {
+            if (forType == null || "expression".equals(forType)) {
                 List<UIComponent> forComponents = SearchExpressionFacade.resolveComponents(context, uiMessages, _for,
                         SearchExpressionUtils.SET_IGNORE_NO_RESULT);
                 for (int i = 0; i < forComponents.size(); i++) {

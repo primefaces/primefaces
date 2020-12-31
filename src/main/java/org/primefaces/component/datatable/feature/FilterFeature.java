@@ -36,8 +36,12 @@ import org.primefaces.util.MapBuilder;
 import javax.el.ELContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
+
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class FilterFeature implements DataTableFeature {
@@ -85,7 +89,7 @@ public class FilterFeature implements DataTableFeature {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String clientId = table.getClientId(context);
         String rppValue = params.get(clientId + "_rppDD");
-        if (rppValue != null && !rppValue.equals("*")) {
+        if (rppValue != null && !"*".equals(rppValue)) {
             table.setRows(Integer.parseInt(rppValue));
         }
 

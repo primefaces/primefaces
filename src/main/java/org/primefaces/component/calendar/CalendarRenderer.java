@@ -23,16 +23,16 @@
  */
 package org.primefaces.component.calendar;
 
-import java.io.IOException;
-import java.util.Locale;
-
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
+
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+
+import java.io.IOException;
+import java.util.Locale;
 
 public class CalendarRenderer extends BaseCalendarRenderer {
 
@@ -129,7 +129,7 @@ public class CalendarRenderer extends BaseCalendarRenderer {
         }
 
         String showOn = calendar.getShowOn();
-        if (!showOn.equalsIgnoreCase("focus")) {
+        if (!"focus".equalsIgnoreCase(showOn)) {
             wb.attr("showOn", showOn).attr("buttonTabindex", calendar.getButtonTabindex());
         }
 
@@ -163,14 +163,14 @@ public class CalendarRenderer extends BaseCalendarRenderer {
                     .attr("millisec", calendar.getDefaultMillisec());
 
             String timeControlObject = calendar.getTimeControlObject();
-            if (timeControlObject != null && timeControlType.equalsIgnoreCase("custom")) {
+            if (timeControlObject != null && "custom".equalsIgnoreCase(timeControlType)) {
                 wb.nativeAttr("timeControlObject", timeControlObject);
             }
         }
 
-        if (mask != null && !mask.equals("false")) {
+        if (mask != null && !"false".equals(mask)) {
             String patternTemplate = calendar.getPattern() == null ? pattern : calendar.getPattern();
-            String maskTemplate = (mask.equals("true")) ? calendar.convertPattern(patternTemplate) : mask;
+            String maskTemplate = ("true".equals(mask)) ? calendar.convertPattern(patternTemplate) : mask;
             wb.attr("mask", maskTemplate).attr("maskSlotChar", calendar.getMaskSlotChar(), "_").attr("maskAutoClear", calendar.isMaskAutoClear(), true);
         }
 

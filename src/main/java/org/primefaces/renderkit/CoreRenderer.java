@@ -23,11 +23,16 @@
  */
 package org.primefaces.renderkit;
 
-import java.io.IOException;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
+import org.primefaces.component.api.AjaxSource;
+import org.primefaces.component.api.ClientBehaviorRenderingMode;
+import org.primefaces.component.api.MixedClientBehaviorHolder;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.convert.ClientConverter;
+import org.primefaces.util.*;
+import org.primefaces.validate.ClientValidator;
+import org.primefaces.validate.bean.BeanValidationMetadata;
+import org.primefaces.validate.bean.BeanValidationMetadataMapper;
 
 import javax.el.PropertyNotFoundException;
 import javax.faces.component.*;
@@ -40,16 +45,11 @@ import javax.faces.convert.Converter;
 import javax.faces.render.Renderer;
 import javax.faces.validator.Validator;
 
-import org.primefaces.component.api.AjaxSource;
-import org.primefaces.component.api.ClientBehaviorRenderingMode;
-import org.primefaces.component.api.MixedClientBehaviorHolder;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.context.PrimeRequestContext;
-import org.primefaces.convert.ClientConverter;
-import org.primefaces.util.*;
-import org.primefaces.validate.ClientValidator;
-import org.primefaces.validate.bean.BeanValidationMetadata;
-import org.primefaces.validate.bean.BeanValidationMetadataMapper;
+import java.io.IOException;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public abstract class CoreRenderer extends Renderer {
 
@@ -155,7 +155,7 @@ public abstract class CoreRenderer extends Renderer {
             boolean hasEventValue = (eventValue != null);
             boolean hasEventBehaviors = (eventBehaviors != null && !eventBehaviors.isEmpty());
 
-            if (domEvent.equals("onchange") && !hasEventBehaviors) {
+            if ("onchange".equals(domEvent) && !hasEventBehaviors) {
                 eventBehaviors = behaviors.get("valueChange");
                 hasEventBehaviors = (eventBehaviors != null && !eventBehaviors.isEmpty());
                 if (hasEventBehaviors) {

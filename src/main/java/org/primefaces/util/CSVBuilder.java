@@ -23,10 +23,11 @@
  */
 package org.primefaces.util;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 
 /**
  * Helper to generate javascript code of a client side validation*
@@ -47,7 +48,7 @@ public class CSVBuilder {
     }
 
     public CSVBuilder source(String source) {
-        if (source == null || source.equals("this")) {
+        if (source == null || "this".equals(source)) {
             buffer.append("s:").append("this");
         }
         else {

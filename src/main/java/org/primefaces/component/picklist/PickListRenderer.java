@@ -23,17 +23,6 @@
  */
 package org.primefaces.component.picklist;
 
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
-
 import org.primefaces.component.column.Column;
 import org.primefaces.model.DualListModel;
 import org.primefaces.renderkit.InputRenderer;
@@ -42,6 +31,17 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
+
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public class PickListRenderer extends InputRenderer {
 
@@ -189,7 +189,7 @@ public class PickListRenderer extends InputRenderer {
 
     protected void encodeButton(FacesContext context, String title, String styleClass, String icon, String labelDisplay) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        boolean tooltip = labelDisplay.equals("tooltip");
+        boolean tooltip = "tooltip".equals(labelDisplay);
         String buttonClass = tooltip ? HTML.BUTTON_ICON_ONLY_BUTTON_CLASS : HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS;
 
         writer.startElement("button", null);

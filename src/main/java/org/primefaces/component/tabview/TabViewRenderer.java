@@ -23,19 +23,19 @@
  */
 package org.primefaces.component.tabview;
 
-import java.io.IOException;
-import java.util.Map;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.WidgetBuilder;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
+import java.io.IOException;
+import java.util.Map;
 
 public class TabViewRenderer extends CoreRenderer {
 
@@ -145,7 +145,7 @@ public class TabViewRenderer extends CoreRenderer {
 
         writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
 
-        if (orientation.equals("bottom")) {
+        if ("bottom".equals(orientation)) {
             encodeContents(context, tabView);
             encodeHeaders(context, tabView);
         }

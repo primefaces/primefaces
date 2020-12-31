@@ -23,14 +23,6 @@
  */
 package org.primefaces.component.datatable.export;
 
-import java.awt.Color;
-import java.io.IOException;
-import java.util.List;
-
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIPanel;
-import javax.faces.context.FacesContext;
-
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.columngroup.ColumnGroup;
@@ -42,6 +34,14 @@ import org.primefaces.component.export.PDFOrientationType;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
+
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIPanel;
+import javax.faces.context.FacesContext;
+
+import java.awt.Color;
+import java.io.IOException;
+import java.util.List;
 
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfPCell;
@@ -420,13 +420,13 @@ public class DataTablePDFExporter extends DataTableExporter {
 
     protected void setFontStyle(Font cellFont, String cellFontStyle) {
         if (cellFontStyle != null) {
-            if (cellFontStyle.equalsIgnoreCase("NORMAL")) {
+            if ("NORMAL".equalsIgnoreCase(cellFontStyle)) {
                 cellFontStyle = "" + Font.NORMAL;
             }
-            if (cellFontStyle.equalsIgnoreCase("BOLD")) {
+            if ("BOLD".equalsIgnoreCase(cellFontStyle)) {
                 cellFontStyle = "" + Font.BOLD;
             }
-            if (cellFontStyle.equalsIgnoreCase("ITALIC")) {
+            if ("ITALIC".equalsIgnoreCase(cellFontStyle)) {
                 cellFontStyle = "" + Font.ITALIC;
             }
 

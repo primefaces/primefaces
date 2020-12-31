@@ -23,8 +23,11 @@
  */
 package org.primefaces.component.columntoggler;
 
-import java.util.Collection;
-import java.util.Map;
+import org.primefaces.event.ToggleEvent;
+import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.model.Visibility;
+import org.primefaces.util.Constants;
+import org.primefaces.util.MapBuilder;
 
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
@@ -33,11 +36,8 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 
-import org.primefaces.event.ToggleEvent;
-import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.model.Visibility;
-import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
+import java.util.Collection;
+import java.util.Map;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -79,7 +79,7 @@ public class ColumnToggler extends ColumnTogglerBase {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-        if (event instanceof AjaxBehaviorEvent && eventName.equals("toggle")) {
+        if (event instanceof AjaxBehaviorEvent && "toggle".equals(eventName)) {
             String clientId = getClientId(context);
             Visibility visibility = Visibility.valueOf(params.get(clientId + "_visibility"));
             int index = Integer.parseInt(params.get(clientId + "_index"));

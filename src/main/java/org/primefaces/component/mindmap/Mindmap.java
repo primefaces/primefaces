@@ -23,8 +23,11 @@
  */
 package org.primefaces.component.mindmap;
 
-import java.util.Collection;
-import java.util.Map;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.model.mindmap.MindmapNode;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.MapBuilder;
 
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
@@ -32,11 +35,8 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 
-import org.primefaces.event.SelectEvent;
-import org.primefaces.model.mindmap.MindmapNode;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
+import java.util.Collection;
+import java.util.Map;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -84,9 +84,9 @@ public class Mindmap extends MindmapBase {
         AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
         String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-        if (eventName.equals("select") || eventName.equals("dblselect")) {
+        if ("select".equals(eventName) || "dblselect".equals(eventName)) {
             String nodeKey = params.get(clientId + "_nodeKey");
-            MindmapNode node = nodeKey.equals("root") ? getValue() : findNode(getValue(), nodeKey);
+            MindmapNode node = "root".equals(nodeKey) ? getValue() : findNode(getValue(), nodeKey);
             selectedNode = node;
 
             super.queueEvent(new SelectEvent(this, behaviorEvent.getBehavior(), node));
@@ -119,6 +119,6 @@ public class Mindmap extends MindmapBase {
         }
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
-        return eventName.equals("select");
+        return "select".equals(eventName);
     }
 }

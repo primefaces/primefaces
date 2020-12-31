@@ -23,13 +23,14 @@
  */
 package org.primefaces.application.resource.barcode;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.krysalis.barcode4j.HumanReadablePlacement;
+import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
+import org.krysalis.barcode4j.output.svg.SVGCanvasProvider;
+import org.primefaces.application.resource.BaseDynamicContentHandler;
+import org.primefaces.util.AgentUtils;
+import org.primefaces.util.Constants;
+import org.w3c.dom.DocumentFragment;
+
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.xml.XMLConstants;
@@ -38,13 +39,13 @@ import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 
-import org.krysalis.barcode4j.HumanReadablePlacement;
-import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
-import org.krysalis.barcode4j.output.svg.SVGCanvasProvider;
-import org.primefaces.application.resource.BaseDynamicContentHandler;
-import org.primefaces.util.AgentUtils;
-import org.primefaces.util.Constants;
-import org.w3c.dom.DocumentFragment;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class BarcodeHandler extends BaseDynamicContentHandler {
 
@@ -94,7 +95,7 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
 
                 handleCache(externalContext, cache);
 
-                if (format.equals("png")) {
+                if ("png".equals(format)) {
                     externalContext.setResponseContentType("image/png");
 
                     BitmapCanvasProvider bitmapCanvasProvider = new BitmapCanvasProvider(
@@ -102,7 +103,7 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
                     generator.generate(bitmapCanvasProvider, value);
                     bitmapCanvasProvider.finish();
                 }
-                else if (format.equals("svg")) {
+                else if ("svg".equals(format)) {
                     externalContext.setResponseContentType("image/svg+xml");
 
                     SVGCanvasProvider svgCanvasProvider = new SVGCanvasProvider(false, orientation);

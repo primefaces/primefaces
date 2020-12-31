@@ -23,9 +23,13 @@
  */
 package org.primefaces.component.api;
 
-import java.io.IOException;
-import java.sql.ResultSet;
-import java.util.*;
+import org.primefaces.component.tabview.Tab;
+import org.primefaces.model.CollectionDataModel;
+import org.primefaces.model.IterableDataModel;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.SharedStringBuilder;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -40,13 +44,9 @@ import javax.faces.event.*;
 import javax.faces.model.*;
 import javax.faces.render.Renderer;
 
-import org.primefaces.component.tabview.Tab;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.SharedStringBuilder;
-import org.primefaces.model.CollectionDataModel;
-import org.primefaces.model.IterableDataModel;
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.util.*;
 
 /**
  * UITabPanel is a specialized version of UIRepeat focusing on components that repeat tabs like tabView and accordionPanel.
@@ -198,10 +198,10 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         if (name == null) {
             throw new NullPointerException("name");
         }
-        else if (name.equals("value")) {
+        else if ("value".equals(name)) {
             _dataModelMap.clear();
         }
-        else if (name.equals("rowIndex")) {
+        else if ("rowIndex".equals(name)) {
             throw new IllegalArgumentException("name " + name);
         }
         super.setValueExpression(name, binding);

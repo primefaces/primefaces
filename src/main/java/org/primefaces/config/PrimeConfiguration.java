@@ -23,15 +23,15 @@
  */
 package org.primefaces.config;
 
-import java.util.Map;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 
 import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
+import java.util.Map;
 
 /**
  * Container for all config parameters.
@@ -172,7 +172,7 @@ public class PrimeConfiguration {
             param = param.toLowerCase();
         }
 
-        return (param.equals("auto") && environment.isBeanValidationAvailable()) || param.equals("true");
+        return ("auto".equals(param) && environment.isBeanValidationAvailable()) || "true".equals(param);
     }
 
     public boolean isValidateEmptyFields() {

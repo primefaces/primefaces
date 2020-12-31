@@ -29,6 +29,7 @@ import org.primefaces.util.WidgetBuilder;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import java.io.IOException;
 
 public class SplitterRenderer extends CoreRenderer {
@@ -48,10 +49,10 @@ public class SplitterRenderer extends CoreRenderer {
         String layout = splitter.getLayout();
         int childCount = splitter.getChildCount();
 
-        if (layout.equals("vertical")) {
+        if ("vertical".equals(layout)) {
             styleClass += " " + Splitter.LAYOUT_VERTICAL_CLASS;
         }
-        else if (layout.equals("horizontal")) {
+        else if ("horizontal".equals(layout)) {
             styleClass += " " + Splitter.LAYOUT_HORIZONTAL_CLASS;
         }
 
@@ -72,10 +73,10 @@ public class SplitterRenderer extends CoreRenderer {
                 if (i + 1 != childCount) {
                     writer.startElement("div", splitter);
                     writer.writeAttribute("class", Splitter.GUTTER_CLASS, "styleClass");
-                    if (layout.equals("horizontal")) {
+                    if ("horizontal".equals(layout)) {
                         writer.writeAttribute("style", "width: " + splitter.getGutterSize() + "px", "style");
                     }
-                    else if (layout.equals("vertical")) {
+                    else if ("vertical".equals(layout)) {
                         writer.writeAttribute("style", "height: " + splitter.getGutterSize() + "px", "style");
                     }
                     writer.startElement("div", splitter);

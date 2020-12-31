@@ -23,20 +23,23 @@
  */
 package org.primefaces.component.orderlist;
 
-import java.util.*;
-import javax.faces.FacesException;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.MapBuilder;
 
+import javax.faces.FacesException;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 
-import org.primefaces.event.SelectEvent;
-import org.primefaces.event.UnselectEvent;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -108,17 +111,17 @@ public class OrderList extends OrderListBase {
                 List<?> list = (List) getValue();
                 FacesEvent wrapperEvent = null;
 
-                if (eventName.equals("select")) {
+                if ("select".equals(eventName)) {
                     int itemIndex = Integer.parseInt(params.get(clientId + "_itemIndex"));
                     boolean metaKey = Boolean.parseBoolean(params.get(clientId + "_metaKey"));
                     boolean ctrlKey = Boolean.parseBoolean(params.get(clientId + "_ctrlKey"));
                     wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), list.get(itemIndex), metaKey, ctrlKey);
                 }
-                else if (eventName.equals("unselect")) {
+                else if ("unselect".equals(eventName)) {
                     int itemIndex = Integer.parseInt(params.get(clientId + "_itemIndex"));
                     wrapperEvent = new UnselectEvent(this, behaviorEvent.getBehavior(), list.get(itemIndex));
                 }
-                else if (eventName.equals("reorder")) {
+                else if ("reorder".equals(eventName)) {
                     wrapperEvent = behaviorEvent;
                 }
 

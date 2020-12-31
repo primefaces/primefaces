@@ -23,11 +23,6 @@
  */
 package org.primefaces.component.column.renderer;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.datatable.DataTable;
@@ -35,6 +30,11 @@ import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.component.treetable.TreeTableRenderer;
 import org.primefaces.util.ComponentUtils;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+
+import java.io.IOException;
 
 public class ColumnGroupHelperRenderer implements HelperColumnRenderer {
 
@@ -70,10 +70,10 @@ public class ColumnGroupHelperRenderer implements HelperColumnRenderer {
                 DataTable.DEFAULT_RENDERER);
 
         String type = group.getType();
-        if (type.equals("header") || type.equals("frozenHeader") || type.equals("scrollableHeader")) {
+        if ("header".equals(type) || "frozenHeader".equals(type) || "scrollableHeader".equals(type)) {
             renderer.encodeColumnHeader(context, dataTable, column);
         }
-        else if (type.equals("footer") || type.equals("frozenFooter") || type.equals("scrollableFooter")) {
+        else if ("footer".equals(type) || "frozenFooter".equals(type) || "scrollableFooter".equals(type)) {
             renderer.encodeColumnFooter(context, dataTable, column);
         }
     }
@@ -85,10 +85,10 @@ public class ColumnGroupHelperRenderer implements HelperColumnRenderer {
                 TreeTable.DEFAULT_RENDERER);
 
         String type = group.getType();
-        if (type.equals("header")) {
+        if ("header".equals(type)) {
             renderer.encodeColumnHeader(context, treeTable, column);
         }
-        else if (type.equals("footer")) {
+        else if ("footer".equals(type)) {
             renderer.encodeColumnFooter(context, treeTable, column);
         }
     }

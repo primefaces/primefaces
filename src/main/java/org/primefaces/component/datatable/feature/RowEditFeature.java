@@ -23,21 +23,21 @@
  */
 package org.primefaces.component.datatable.feature;
 
-import java.io.IOException;
-import java.util.Map;
-import javax.faces.FacesException;
-
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.UIComponent;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.context.FacesContext;
-
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.visit.ResetInputVisitCallback;
+
+import javax.faces.FacesException;
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.UIComponent;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.context.FacesContext;
+
+import java.io.IOException;
+import java.util.Map;
 
 public class RowEditFeature implements DataTableFeature {
 
@@ -60,7 +60,7 @@ public class RowEditFeature implements DataTableFeature {
         if (table.isRowEditRequest(context)) {
             String action = params.get(clientId + "_rowEditAction");
 
-            if (action.equals("cancel")) {
+            if ("cancel".equals(action)) {
                 VisitContext visitContext = null;
 
                 for (UIColumn column : table.getColumns()) {

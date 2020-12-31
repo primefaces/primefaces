@@ -23,16 +23,6 @@
  */
 package org.primefaces.component.organigram;
 
-import java.util.Collection;
-import java.util.Map;
-import javax.faces.FacesException;
-
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.FacesEvent;
-
 import org.primefaces.event.organigram.OrganigramNodeCollapseEvent;
 import org.primefaces.event.organigram.OrganigramNodeDragDropEvent;
 import org.primefaces.event.organigram.OrganigramNodeExpandEvent;
@@ -41,6 +31,16 @@ import org.primefaces.model.OrganigramNode;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.MapBuilder;
+
+import javax.faces.FacesException;
+import javax.faces.application.ResourceDependency;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.BehaviorEvent;
+import javax.faces.event.FacesEvent;
+
+import java.util.Collection;
+import java.util.Map;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -88,24 +88,24 @@ public class Organigram extends OrganigramBase {
             FacesEvent wrapperEvent = null;
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName.equals("expand")) {
+            if ("expand".equals(eventName)) {
                 OrganigramNode node = findTreeNode(getValue(), params.get(clientId + "_expandNode"));
                 node.setExpanded(true);
 
                 wrapperEvent = new OrganigramNodeExpandEvent(this, behaviorEvent.getBehavior(), node);
             }
-            else if (eventName.equals("collapse")) {
+            else if ("collapse".equals(eventName)) {
                 OrganigramNode node = findTreeNode(getValue(), params.get(clientId + "_collapseNode"));
                 node.setExpanded(false);
 
                 wrapperEvent = new OrganigramNodeCollapseEvent(this, behaviorEvent.getBehavior(), node);
             }
-            else if (eventName.equals("select") || eventName.equals("contextmenu")) {
+            else if ("select".equals(eventName) || "contextmenu".equals(eventName)) {
                 OrganigramNode node = findTreeNode(getValue(), params.get(clientId + "_selectNode"));
 
                 wrapperEvent = new OrganigramNodeSelectEvent(this, behaviorEvent.getBehavior(), node);
             }
-            else if (eventName.equals("dragdrop")) {
+            else if ("dragdrop".equals(eventName)) {
                 OrganigramNode dragNode = findTreeNode(getValue(), params.get(clientId + "_dragNode"));
                 OrganigramNode dropNode = findTreeNode(getValue(), params.get(clientId + "_dropNode"));
 
@@ -139,7 +139,7 @@ public class Organigram extends OrganigramBase {
 
 
     public OrganigramNode findTreeNode(OrganigramNode searchRoot, String rowKey) {
-        if (rowKey != null && rowKey.equals("root")) {
+        if ("root".equals(rowKey)) {
             return getValue();
         }
 

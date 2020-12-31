@@ -23,22 +23,6 @@
  */
 package org.primefaces.component.datatable;
 
-import java.io.IOException;
-import java.util.*;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
-
-import javax.el.ELContext;
-import javax.el.MethodExpression;
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.component.ValueHolder;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.model.SelectItem;
-
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.UITable;
@@ -57,6 +41,22 @@ import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.util.*;
+
+import javax.el.ELContext;
+import javax.el.MethodExpression;
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
+import javax.faces.component.ValueHolder;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.model.SelectItem;
+
+import java.io.IOException;
+import java.util.*;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class DataTableRenderer extends DataRenderer {
 
@@ -298,7 +298,7 @@ public class DataTableRenderer extends DataRenderer {
 
         encodeFacet(context, table, table.getHeader(), DataTable.HEADER_CLASS);
 
-        if (hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
+        if (hasPaginator && !"bottom".equalsIgnoreCase(paginatorPosition)) {
             encodePaginatorMarkup(context, table, "top");
         }
 
@@ -309,7 +309,7 @@ public class DataTableRenderer extends DataRenderer {
             encodeRegularTable(context, table);
         }
 
-        if (hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
+        if (hasPaginator && !"top".equalsIgnoreCase(paginatorPosition)) {
             encodePaginatorMarkup(context, table, "bottom");
         }
 
@@ -648,11 +648,11 @@ public class DataTableRenderer extends DataRenderer {
         if (filterable) {
             String filterPosition = column.getFilterPosition();
 
-            if (filterPosition.equals("bottom")) {
+            if ("bottom".equals(filterPosition)) {
                 encodeColumnHeaderContent(context, table, column, sortMeta);
                 encodeFilter(context, table, column);
             }
-            else if (filterPosition.equals("top")) {
+            else if ("top".equals(filterPosition)) {
                 encodeFilter(context, table, column);
                 encodeColumnHeaderContent(context, table, column, sortMeta);
             }
@@ -664,7 +664,7 @@ public class DataTableRenderer extends DataRenderer {
             encodeColumnHeaderContent(context, table, column, sortMeta);
         }
 
-        if (selectionMode != null && selectionMode.equalsIgnoreCase("multiple")) {
+        if (selectionMode != null && "multiple".equalsIgnoreCase(selectionMode)) {
             encodeCheckbox(context, table, false, false, HTML.CHECKBOX_ALL_CLASS, true);
         }
 
@@ -1511,10 +1511,10 @@ public class DataTableRenderer extends DataRenderer {
         String selectionMode = column.getSelectionMode();
         boolean disabled = table.isDisabledSelection();
 
-        if (selectionMode.equalsIgnoreCase("single")) {
+        if ("single".equalsIgnoreCase(selectionMode)) {
             encodeRadio(context, table, selected, disabled);
         }
-        else if (selectionMode.equalsIgnoreCase("multiple")) {
+        else if ("multiple".equalsIgnoreCase(selectionMode)) {
             encodeCheckbox(context, table, selected, disabled, HTML.CHECKBOX_CLASS, false);
         }
         else {

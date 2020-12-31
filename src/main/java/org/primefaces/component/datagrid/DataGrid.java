@@ -23,10 +23,12 @@
  */
 package org.primefaces.component.datagrid;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import org.primefaces.PrimeFaces;
+import org.primefaces.event.data.PageEvent;
+import org.primefaces.model.LazyDataModel;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.MapBuilder;
 
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
@@ -35,12 +37,10 @@ import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.model.DataModel;
 
-import org.primefaces.PrimeFaces;
-import org.primefaces.event.data.PageEvent;
-import org.primefaces.model.LazyDataModel;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -107,7 +107,7 @@ public class DataGrid extends DataGridBase {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-            if (eventName.equals("page")) {
+            if ("page".equals(eventName)) {
                 AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
                 String clientId = getClientId(context);
                 int rows = getRowsToRender();

@@ -23,15 +23,15 @@
  */
 package org.primefaces.component.dataview;
 
-import java.io.IOException;
-import java.util.Map;
+import org.primefaces.renderkit.DataRenderer;
+import org.primefaces.util.*;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.renderkit.DataRenderer;
-import org.primefaces.util.*;
+import java.io.IOException;
+import java.util.Map;
 
 public class DataViewRenderer extends DataRenderer {
 
@@ -109,13 +109,13 @@ public class DataViewRenderer extends DataRenderer {
 
         encodeHeader(context, dataview);
 
-        if (hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
+        if (hasPaginator && !"bottom".equalsIgnoreCase(paginatorPosition)) {
             encodePaginatorMarkup(context, dataview, "top");
         }
 
         encodeContent(context, dataview);
 
-        if (hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
+        if (hasPaginator && !"top".equalsIgnoreCase(paginatorPosition)) {
             encodePaginatorMarkup(context, dataview, "bottom");
         }
 

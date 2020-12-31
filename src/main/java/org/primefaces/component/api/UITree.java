@@ -23,8 +23,15 @@
  */
 package org.primefaces.component.api;
 
-import java.io.IOException;
-import java.util.*;
+import org.primefaces.component.column.Column;
+import org.primefaces.component.columngroup.ColumnGroup;
+import org.primefaces.component.columns.Columns;
+import org.primefaces.component.tree.UITreeNode;
+import org.primefaces.model.CheckboxTreeNode;
+import org.primefaces.model.TreeNode;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.MessageFactory;
+import org.primefaces.util.SharedStringBuilder;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -38,15 +45,8 @@ import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.event.*;
 
-import org.primefaces.component.column.Column;
-import org.primefaces.component.columngroup.ColumnGroup;
-import org.primefaces.component.columns.Columns;
-import org.primefaces.component.tree.UITreeNode;
-import org.primefaces.model.CheckboxTreeNode;
-import org.primefaces.model.TreeNode;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.MessageFactory;
-import org.primefaces.util.SharedStringBuilder;
+import java.io.IOException;
+import java.util.*;
 
 public abstract class UITree extends UIComponentBase implements NamingContainer {
 
@@ -315,7 +315,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             if (preselection != null) {
                 String selectionMode = getSelectionMode();
                 if (selectionMode != null) {
-                    if (selectionMode.equals("single")) {
+                    if ("single".equals(selectionMode)) {
                         if (!preselection.isEmpty()) {
                             ve.setValue(FacesContext.getCurrentInstance().getELContext(), preselection.get(0));
                         }
@@ -360,7 +360,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         String selectionMode = getSelectionMode();
 
         if (selection != null) {
-            if (selectionMode.equals("single")) {
+            if ("single".equals(selectionMode)) {
                 TreeNode node = (TreeNode) selection;
                 value = node.getRowKey();
             }
@@ -487,7 +487,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             boolean valid = true;
             Object selection = getSelection();
 
-            if (selectionMode.equals("single")) {
+            if ("single".equals(selectionMode)) {
                 if (selection == null) {
                     valid = false;
                 }
@@ -545,7 +545,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             Object selection = getLocalSelectedNodes();
             Object previousSelection = selectionVE.getValue(context.getELContext());
 
-            if (selectionMode.equals("single")) {
+            if ("single".equals(selectionMode)) {
                 if (previousSelection != null) {
                     ((TreeNode) previousSelection).setSelected(false);
                 }

@@ -23,8 +23,11 @@
  */
 package org.primefaces.component.selectmanycheckbox;
 
-import java.io.IOException;
-import java.util.List;
+import org.primefaces.renderkit.SelectManyRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.GridLayoutUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -39,11 +42,8 @@ import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import javax.faces.render.Renderer;
 
-import org.primefaces.renderkit.SelectManyRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.GridLayoutUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
+import java.io.IOException;
+import java.util.List;
 
 public class SelectManyCheckboxRenderer extends SelectManyRenderer {
 
@@ -70,7 +70,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         if (layout == null) {
             layout = "lineDirection";
         }
-        boolean custom = (layout.equals("custom"));
+        boolean custom = ("custom".equals(layout));
 
         if (custom) {
             writer.startElement("span", checkbox);
@@ -80,7 +80,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
             encodeCustomLayout(context, checkbox);
             writer.endElement("span");
         }
-        else if (layout.equals("responsive")) {
+        else if ("responsive".equals(layout)) {
             encodeResponsiveLayout(context, checkbox);
         }
         else {
@@ -91,7 +91,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
     protected void encodeScript(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
         String layout = checkbox.getLayout();
-        boolean custom = (layout != null && layout.equals("custom"));
+        boolean custom = (layout != null && "custom".equals(layout));
 
         wb.init("SelectManyCheckbox", checkbox)
                 .attr("custom", custom, false).finish();
@@ -307,13 +307,13 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
     }
 
     protected void encodeSelectItems(FacesContext context, SelectManyCheckbox checkbox, String layout) throws IOException {
-        if (layout.equals("lineDirection")) {
+        if ("lineDirection".equals(layout)) {
             encodeLineLayout(context, checkbox);
         }
-        else if (layout.equals("pageDirection")) {
+        else if ("pageDirection".equals(layout)) {
             encodePageLayout(context, checkbox);
         }
-        else if (layout.equals("grid")) {
+        else if ("grid".equals(layout)) {
             encodeGridLayout(context, checkbox);
         }
         else {

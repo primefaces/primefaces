@@ -23,8 +23,11 @@
  */
 package org.primefaces.component.selectcheckboxmenu;
 
-import java.util.Collection;
-import java.util.Map;
+import org.primefaces.event.ToggleSelectEvent;
+import org.primefaces.event.UnselectEvent;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.MapBuilder;
 
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
@@ -32,11 +35,8 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 
-import org.primefaces.event.ToggleSelectEvent;
-import org.primefaces.event.UnselectEvent;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
+import java.util.Collection;
+import java.util.Map;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -92,7 +92,7 @@ public class SelectCheckboxMenu extends SelectCheckboxMenuBase {
 
         if (eventName != null && event instanceof AjaxBehaviorEvent) {
             AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;
-            if (eventName.equals("toggleSelect")) {
+            if ("toggleSelect".equals(eventName)) {
                 String clientId = getClientId(context);
                 boolean checked = Boolean.parseBoolean(params.get(clientId + "_checked"));
                 ToggleSelectEvent toggleSelectEvent = new ToggleSelectEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), checked);
@@ -100,7 +100,7 @@ public class SelectCheckboxMenu extends SelectCheckboxMenuBase {
 
                 super.queueEvent(toggleSelectEvent);
             }
-            else if (eventName.equals("itemUnselect")) {
+            else if ("itemUnselect".equals(eventName)) {
                 Object unselectedItemValue = ComponentUtils.getConvertedValue(context, this, params.get(getClientId(context) + "_itemUnselect"));
                 UnselectEvent unselectEvent = new UnselectEvent(this, ajaxBehaviorEvent.getBehavior(), unselectedItemValue);
                 unselectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());

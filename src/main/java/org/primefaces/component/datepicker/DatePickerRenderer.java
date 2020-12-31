@@ -23,21 +23,6 @@
  */
 package org.primefaces.component.datepicker;
 
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.convert.ConverterException;
-
 import org.json.JSONObject;
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.calendar.BaseCalendarRenderer;
@@ -49,6 +34,21 @@ import org.primefaces.model.datepicker.LazyDateMetadataModel;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.convert.ConverterException;
+
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class DatePickerRenderer extends BaseCalendarRenderer {
 
@@ -255,9 +255,9 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         }
 
         String mask = datePicker.getMask();
-        if (mask != null && !mask.equals("false")) {
+        if (mask != null && !"false".equals(mask)) {
             String patternTemplate = datePicker.calculatePattern();
-            String maskTemplate = (mask.equals("true")) ? datePicker.convertPattern(patternTemplate) : mask;
+            String maskTemplate = ("true".equals(mask)) ? datePicker.convertPattern(patternTemplate) : mask;
             wb.attr("mask", maskTemplate)
                 .attr("maskSlotChar", datePicker.getMaskSlotChar(), "_")
                 .attr("maskAutoClear", datePicker.isMaskAutoClear(), true);
