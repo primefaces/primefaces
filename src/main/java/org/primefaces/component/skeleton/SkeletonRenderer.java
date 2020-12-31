@@ -28,6 +28,7 @@ import org.primefaces.renderkit.CoreRenderer;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import java.io.IOException;
 
 public class SkeletonRenderer extends CoreRenderer {
@@ -41,19 +42,16 @@ public class SkeletonRenderer extends CoreRenderer {
 
     protected void encodeMarkup(FacesContext context, Skeleton skeleton) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String styleClass = skeleton.getStyleClass();
-        styleClass = styleClass == null ? Skeleton.DEFAULT_STYLE_CLASS : Skeleton.DEFAULT_STYLE_CLASS + " " + styleClass;
+        String styleClass = getStyleClassBuilder(context)
+                    .add(Skeleton.DEFAULT_STYLE_CLASS)
+                    .add(skeleton.getStyleClass())
+                    .add("circle".equals(skeleton.getShape()), Skeleton.CIRCLE_CLASS)
+                    .add("none".equals(skeleton.getAnimation()), Skeleton.NONE_ANIMATION_CLASS)
+                    .build();
         String style = skeleton.getStyle();
         style = style == null ? "" : style + " ";
         String size = skeleton.getSize();
         String borderRadius = skeleton.getBorderRadius();
-
-        if (skeleton.getShape().equals("circle")) {
-            styleClass += " " + Skeleton.CIRCLE_CLASS;
-        }
-        if (skeleton.getAnimation().equals("none")) {
-            styleClass += " " + Skeleton.NONE_ANIMATION_CLASS;
-        }
 
         if (size != null) {
             style += "width: " + size + "; height: " + size + ";";

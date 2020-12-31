@@ -72,7 +72,7 @@ public abstract class TagBase extends UIComponentBase {
         getStateHelper().put(TagBase.PropertyKeys.severity, severity);
     }
 
-    public boolean getRounded() {
+    public boolean isRounded() {
         return (Boolean) getStateHelper().eval(TagBase.PropertyKeys.rounded, false);
     }
 

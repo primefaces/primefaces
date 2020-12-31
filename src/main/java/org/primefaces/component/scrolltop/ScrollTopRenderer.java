@@ -29,6 +29,7 @@ import org.primefaces.util.WidgetBuilder;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import java.io.IOException;
 
 public class ScrollTopRenderer extends CoreRenderer {
@@ -42,12 +43,11 @@ public class ScrollTopRenderer extends CoreRenderer {
 
     protected void encodeMarkup(FacesContext context, ScrollTop scrollTop) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String styleClass = scrollTop.getStyleClass();
-        styleClass = styleClass == null ? ScrollTop.DEFAULT_STYLE_CLASS : ScrollTop.DEFAULT_STYLE_CLASS + " " + styleClass;
-
-        if (scrollTop.getTarget().equals("parent")) {
-            styleClass += " " + ScrollTop.STICKY_CLASS;
-        }
+        String styleClass = getStyleClassBuilder(context)
+                    .add(ScrollTop.DEFAULT_STYLE_CLASS)
+                    .add(scrollTop.getStyleClass())
+                    .add("parent".equals(scrollTop.getTarget()), ScrollTop.STICKY_CLASS)
+                    .build();
 
         writer.startElement("a", scrollTop);
         writer.writeAttribute("id", scrollTop.getClientId(context), "id");
