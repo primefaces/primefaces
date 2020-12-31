@@ -157,7 +157,6 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
      */
     saveState: function () {
         var $this = this;
-        console.log(JSON.stringify(this.panelSizes));
         $this.getStorage().setItem($this.stateKey, JSON.stringify(this.panelSizes));
     },
 
