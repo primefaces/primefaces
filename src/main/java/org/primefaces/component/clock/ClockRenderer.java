@@ -90,7 +90,7 @@ public class ClockRenderer extends CoreRenderer {
                 .attr("displayMode", clock.getDisplayMode())
                 .attr("locale", locale.toString());
 
-        if (mode.equals("server")) {
+        if ("server".equals(mode)) {
             wb.attr("value", getValueWithTimeZone(locale, clock));
 
             if (clock.isAutoSync()) {

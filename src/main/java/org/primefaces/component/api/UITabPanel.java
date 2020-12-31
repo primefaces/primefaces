@@ -198,10 +198,10 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         if (name == null) {
             throw new NullPointerException("name");
         }
-        else if (name.equals("value")) {
+        else if ("value".equals(name)) {
             _dataModelMap.clear();
         }
-        else if (name.equals("rowIndex")) {
+        else if ("rowIndex".equals(name)) {
             throw new IllegalArgumentException("name " + name);
         }
         super.setValueExpression(name, binding);

@@ -115,7 +115,7 @@ public class AccordionPanel extends AccordionPanelBase {
             boolean repeating = isRepeating();
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName.equals("tabChange")) {
+            if ("tabChange".equals(eventName)) {
                 String tabClientId = params.get(clientId + "_newTab");
                 TabChangeEvent changeEvent = new TabChangeEvent(this, behaviorEvent.getBehavior(), findTab(tabClientId));
 
@@ -134,7 +134,7 @@ public class AccordionPanel extends AccordionPanelBase {
                     setIndex(-1);
                 }
             }
-            else if (eventName.equals("tabClose")) {
+            else if ("tabClose".equals(eventName)) {
                 String tabClientId = params.get(clientId + "_tabId");
                 TabCloseEvent closeEvent = new TabCloseEvent(this, behaviorEvent.getBehavior(), findTab(tabClientId));
 

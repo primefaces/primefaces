@@ -69,7 +69,7 @@ public class Fieldset extends FieldsetBase {
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName.equals("toggle")) {
+            if ("toggle".equals(eventName)) {
                 Visibility visibility = isCollapsed() ? Visibility.HIDDEN : Visibility.VISIBLE;
 
                 super.queueEvent(new ToggleEvent(this, behaviorEvent.getBehavior(), visibility));

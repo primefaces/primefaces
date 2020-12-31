@@ -64,14 +64,14 @@ public class FileUploadFilter implements Filter {
     public void init(FilterConfig filterConfig) throws ServletException {
         String uploader = filterConfig.getServletContext().getInitParameter(Constants.ContextParams.UPLOADER);
 
-        if (uploader == null || uploader.equals("auto")) {
+        if (uploader == null || "auto".equals(uploader)) {
             PrimeEnvironment environment = new StartupPrimeEnvironment();
             bypass = environment.isAtLeastJsf22();
         }
-        else if (uploader.equals("native")) {
+        else if ("native".equals(uploader)) {
             bypass = true;
         }
-        else if (uploader.equals("commons")) {
+        else if ("commons".equals(uploader)) {
             bypass = false;
         }
 

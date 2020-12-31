@@ -45,7 +45,7 @@ public class NumberConverter extends javax.faces.convert.NumberConverter impleme
         if (minFractionDigits != 0) metadata.put(HTML.ValidationMetadata.MIN_FRACTION_DIGITS, minFractionDigits);
         if (integerOnly) metadata.put(HTML.ValidationMetadata.INTEGER_ONLY, "true");
 
-        if (type.equals("currency")) {
+        if ("currency".equals(type)) {
             String currencySymbol = this.getCurrencySymbol();
 
             if (currencySymbol != null) {

@@ -506,7 +506,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                     continue;
                 }
 
-                if (columnState.equals(getClientId(context) + "_tableWidthState")) {
+                if ((getClientId(context) + "_tableWidthState").equals(columnState)) {
                     tableWidth = columnState;
                     setWidth(tableWidth);
                 }

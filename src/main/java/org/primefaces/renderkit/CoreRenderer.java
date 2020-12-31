@@ -155,7 +155,7 @@ public abstract class CoreRenderer extends Renderer {
             boolean hasEventValue = (eventValue != null);
             boolean hasEventBehaviors = (eventBehaviors != null && !eventBehaviors.isEmpty());
 
-            if (domEvent.equals("onchange") && !hasEventBehaviors) {
+            if ("onchange".equals(domEvent) && !hasEventBehaviors) {
                 eventBehaviors = behaviors.get("valueChange");
                 hasEventBehaviors = (eventBehaviors != null && !eventBehaviors.isEmpty());
                 if (hasEventBehaviors) {

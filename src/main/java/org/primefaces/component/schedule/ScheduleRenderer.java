@@ -223,7 +223,7 @@ public class ScheduleRenderer extends CoreRenderer {
 
         String displayEventEnd = schedule.getDisplayEventEnd();
         if (displayEventEnd != null) {
-            if (displayEventEnd.equals("true") || displayEventEnd.equals("false")) {
+            if ("true".equals(displayEventEnd) || "false".equals(displayEventEnd)) {
                 wb.nativeAttr("displayEventEnd", displayEventEnd);
             }
             else {
@@ -235,7 +235,7 @@ public class ScheduleRenderer extends CoreRenderer {
             String weekNumCalculation = schedule.getWeekNumberCalculation();
             String weekNumCalculator = schedule.getWeekNumberCalculator();
 
-            if (weekNumCalculation.equals("custom")) {
+            if ("custom".equals(weekNumCalculation)) {
                 if (weekNumCalculator != null) {
                     wb.append(",weekNumberCalculation: function(date){ return ")
                             .append(schedule.getWeekNumberCalculator())

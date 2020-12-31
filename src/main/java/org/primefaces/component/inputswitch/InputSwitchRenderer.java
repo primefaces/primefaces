@@ -148,6 +148,6 @@ public class InputSwitchRenderer extends InputRenderer {
 
     protected boolean isChecked(String value) {
         return value != null
-                && (value.equalsIgnoreCase("on") || value.equalsIgnoreCase("yes") || value.equalsIgnoreCase("true"));
+                && ("on".equalsIgnoreCase(value) || "yes".equalsIgnoreCase(value) || "true".equalsIgnoreCase(value));
     }
 }

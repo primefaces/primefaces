@@ -145,7 +145,7 @@ public class TabViewRenderer extends CoreRenderer {
 
         writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
 
-        if (orientation.equals("bottom")) {
+        if ("bottom".equals(orientation)) {
             encodeContents(context, tabView);
             encodeHeaders(context, tabView);
         }

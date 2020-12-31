@@ -88,7 +88,7 @@ public class InputTextarea extends InputTextareaBase {
         if (eventName != null && event instanceof AjaxBehaviorEvent) {
             AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName.equals("itemSelect")) {
+            if ("itemSelect".equals(eventName)) {
                 String selectedItemValue = params.get(getClientId(context) + "_itemSelect");
                 SelectEvent selectEvent = new SelectEvent(this, ajaxBehaviorEvent.getBehavior(), selectedItemValue);
                 selectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());

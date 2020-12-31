@@ -89,13 +89,13 @@ public class OrderListRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-g", null);
 
-        if (controlsLocation.equals("left")) {
+        if ("left".equals(controlsLocation)) {
             encodeControls(context, ol);
         }
 
         encodeList(context, ol);
 
-        if (controlsLocation.equals("right")) {
+        if ("right".equals(controlsLocation)) {
             encodeControls(context, ol);
         }
 

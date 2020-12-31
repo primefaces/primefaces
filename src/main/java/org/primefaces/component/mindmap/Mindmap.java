@@ -84,9 +84,9 @@ public class Mindmap extends MindmapBase {
         AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
         String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-        if (eventName.equals("select") || eventName.equals("dblselect")) {
+        if ("select".equals(eventName) || "dblselect".equals(eventName)) {
             String nodeKey = params.get(clientId + "_nodeKey");
-            MindmapNode node = nodeKey.equals("root") ? getValue() : findNode(getValue(), nodeKey);
+            MindmapNode node = "root".equals(nodeKey) ? getValue() : findNode(getValue(), nodeKey);
             selectedNode = node;
 
             super.queueEvent(new SelectEvent(this, behaviorEvent.getBehavior(), node));
@@ -119,6 +119,6 @@ public class Mindmap extends MindmapBase {
         }
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
-        return eventName.equals("select");
+        return "select".equals(eventName);
     }
 }

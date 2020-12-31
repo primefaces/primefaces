@@ -189,7 +189,7 @@ public class PickListRenderer extends InputRenderer {
 
     protected void encodeButton(FacesContext context, String title, String styleClass, String icon, String labelDisplay) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        boolean tooltip = labelDisplay.equals("tooltip");
+        boolean tooltip = "tooltip".equals(labelDisplay);
         String buttonClass = tooltip ? HTML.BUTTON_ICON_ONLY_BUTTON_CLASS : HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS;
 
         writer.startElement("button", null);

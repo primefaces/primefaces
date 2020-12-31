@@ -68,7 +68,7 @@ public class CommandButtonRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = button.getClientId(context);
         String type = button.getType();
-        boolean pushButton = (type.equals("reset") || type.equals("button"));
+        boolean pushButton = ("reset".equals(type) || "button".equals(type));
         Object value = button.getValue();
         String icon = button.getIcon();
         String title = button.getTitle();

@@ -193,7 +193,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             writer.writeAttribute("class", "ui-state-disabled", null);
         }
 
-        if (itemLabel.equals("&nbsp;")) {
+        if ("&nbsp;".equals(itemLabel)) {
             writer.write(itemLabel);
         }
         else {

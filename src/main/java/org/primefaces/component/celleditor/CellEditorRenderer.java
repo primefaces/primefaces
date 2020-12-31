@@ -58,7 +58,7 @@ public class CellEditorRenderer extends CoreRenderer {
                 cellEditMode = dt.getCellEditMode();
 
                 String rowEditMode = dt.getRowEditMode();
-                isLazyRowEdit = rowEditMode != null && editMode.equals("row") && rowEditMode.equals("lazy")
+                isLazyRowEdit = "row".equals(editMode) && "lazy".equals(rowEditMode)
                         && !dt.isRowEditInitRequest(context) && !context.isValidationFailed();
             }
             else if (parentTable instanceof TreeTable) {
@@ -67,7 +67,7 @@ public class CellEditorRenderer extends CoreRenderer {
                 cellEditMode = tt.getCellEditMode();
             }
 
-            isLazyEdit = editMode != null && (cellEditMode != null && editMode.equals("cell") && cellEditMode.equals("lazy") || isLazyRowEdit);
+            isLazyEdit = ("cell".equals(editMode) && "lazy".equals(cellEditMode) || isLazyRowEdit);
         }
 
         writer.startElement("div", null);

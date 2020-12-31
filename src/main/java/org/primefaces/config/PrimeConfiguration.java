@@ -172,7 +172,7 @@ public class PrimeConfiguration {
             param = param.toLowerCase();
         }
 
-        return (param.equals("auto") && environment.isBeanValidationAvailable()) || param.equals("true");
+        return ("auto".equals(param) && environment.isBeanValidationAvailable()) || "true".equals(param);
     }
 
     public boolean isValidateEmptyFields() {
