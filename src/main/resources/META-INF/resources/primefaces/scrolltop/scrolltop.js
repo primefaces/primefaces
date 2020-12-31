@@ -14,7 +14,7 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  *
- * @prop {integer} cfg.threshold Value of the vertical scroll position of the target to toggle the visibility.
+ * @prop {number} cfg.threshold Value of the vertical scroll position of the target to toggle the visibility.
  * @prop {string} cfg.target Target of the ScrollTop.
  * @prop {string} cfg.behavior Scrolling behavior of the ScrollTop.
  */
