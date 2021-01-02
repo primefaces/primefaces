@@ -84,7 +84,7 @@ public class Droppable extends DroppableBase {
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName.equals("drop")) {
+            if ("drop".equals(eventName)) {
                 String dragId = params.get(clientId + "_dragId");
                 String dropId = params.get(clientId + "_dropId");
                 DragDropEvent dndEvent = null;

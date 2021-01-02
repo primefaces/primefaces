@@ -54,7 +54,7 @@ public class BarcodeRenderer extends CoreRenderer {
         String src = null;
         Object value = barcode.getValue();
         String type = barcode.getType();
-        DynamicContentType dynamicContentType = type.equals("qr") ? DynamicContentType.QR_CODE : DynamicContentType.BARCODE;
+        DynamicContentType dynamicContentType = "qr".equals(type) ? DynamicContentType.QR_CODE : DynamicContentType.BARCODE;
 
         if (value == null) {
             return;

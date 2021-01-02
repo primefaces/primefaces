@@ -420,13 +420,13 @@ public class DataTablePDFExporter extends DataTableExporter {
 
     protected void setFontStyle(Font cellFont, String cellFontStyle) {
         if (cellFontStyle != null) {
-            if (cellFontStyle.equalsIgnoreCase("NORMAL")) {
+            if ("NORMAL".equalsIgnoreCase(cellFontStyle)) {
                 cellFontStyle = "" + Font.NORMAL;
             }
-            if (cellFontStyle.equalsIgnoreCase("BOLD")) {
+            if ("BOLD".equalsIgnoreCase(cellFontStyle)) {
                 cellFontStyle = "" + Font.BOLD;
             }
-            if (cellFontStyle.equalsIgnoreCase("ITALIC")) {
+            if ("ITALIC".equalsIgnoreCase(cellFontStyle)) {
                 cellFontStyle = "" + Font.ITALIC;
             }
 

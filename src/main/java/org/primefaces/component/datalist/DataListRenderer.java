@@ -101,7 +101,7 @@ public class DataListRenderer extends DataRenderer {
 
         encodeFacet(context, list, "header", DataList.HEADER_CLASS);
 
-        if (hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
+        if (hasPaginator && !"bottom".equalsIgnoreCase(paginatorPosition)) {
             encodePaginatorMarkup(context, list, "top");
         }
 
@@ -126,7 +126,7 @@ public class DataListRenderer extends DataRenderer {
 
         writer.endElement("div");
 
-        if (hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
+        if (hasPaginator && !"top".equalsIgnoreCase(paginatorPosition)) {
             encodePaginatorMarkup(context, list, "bottom");
         }
 
@@ -163,7 +163,7 @@ public class DataListRenderer extends DataRenderer {
         boolean renderDefinition = isDefinition && ComponentUtils.shouldRenderFacet(definitionFacet);
         String itemType = list.getItemType();
         String listClass = DataList.LIST_CLASS;
-        if (itemType != null && itemType.equals("none")) {
+        if ("none".equals(itemType)) {
             listClass = listClass + " " + DataList.NO_BULLETS_CLASS;
         }
 

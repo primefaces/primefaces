@@ -107,7 +107,7 @@ public class DataGrid extends DataGridBase {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-            if (eventName.equals("page")) {
+            if ("page".equals(eventName)) {
                 AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
                 String clientId = getClientId(context);
                 int rows = getRowsToRender();

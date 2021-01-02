@@ -59,10 +59,10 @@ public class DataTableExcelXExporter extends DataTableExcelExporter {
         if (options != null) {
             String facetFontStyle = options.getFacetFontStyle();
             if (facetFontStyle != null) {
-                if (facetFontStyle.equalsIgnoreCase("BOLD")) {
+                if ("BOLD".equalsIgnoreCase(facetFontStyle)) {
                     facetFont.setBold(true);
                 }
-                if (facetFontStyle.equalsIgnoreCase("ITALIC")) {
+                if ("ITALIC".equalsIgnoreCase(facetFontStyle)) {
                     facetFont.setItalic(true);
                 }
             }
@@ -107,10 +107,10 @@ public class DataTableExcelXExporter extends DataTableExcelExporter {
 
             String cellFontStyle = options.getCellFontStyle();
             if (cellFontStyle != null) {
-                if (cellFontStyle.equalsIgnoreCase("BOLD")) {
+                if ("BOLD".equalsIgnoreCase(cellFontStyle)) {
                     cellFont.setBold(true);
                 }
-                if (cellFontStyle.equalsIgnoreCase("ITALIC")) {
+                if ("ITALIC".equalsIgnoreCase(cellFontStyle)) {
                     cellFont.setItalic(true);
                 }
             }

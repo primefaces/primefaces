@@ -68,7 +68,7 @@ public class TextEditorRenderer extends InputRenderer {
             }
         }
 
-        if (value != null && value.equals("<br/>")) {
+        if ("<br/>".equals(value)) {
             value = Constants.EMPTY_STRING;
         }
 

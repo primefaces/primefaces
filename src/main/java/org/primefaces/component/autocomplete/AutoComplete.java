@@ -104,19 +104,19 @@ public class AutoComplete extends AutoCompleteBase {
         if (eventName != null && event instanceof AjaxBehaviorEvent) {
             AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName.equals("itemSelect")) {
+            if ("itemSelect".equals(eventName)) {
                 Object selectedItemValue = ComponentUtils.getConvertedValue(context, this, params.get(getClientId(context) + "_itemSelect"));
                 SelectEvent selectEvent = new SelectEvent(this, ajaxBehaviorEvent.getBehavior(), selectedItemValue);
                 selectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(selectEvent);
             }
-            else if (eventName.equals("itemUnselect")) {
+            else if ("itemUnselect".equals(eventName)) {
                 Object unselectedItemValue = ComponentUtils.getConvertedValue(context, this, params.get(getClientId(context) + "_itemUnselect"));
                 UnselectEvent unselectEvent = new UnselectEvent(this, ajaxBehaviorEvent.getBehavior(), unselectedItemValue);
                 unselectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(unselectEvent);
             }
-            else if (eventName.equals("moreTextSelect") || eventName.equals("emptyMessageSelect") || eventName.equals("clear")) {
+            else if ("moreTextSelect".equals(eventName) || "emptyMessageSelect".equals(eventName) || "clear".equals(eventName)) {
                 ajaxBehaviorEvent.setPhaseId(event.getPhaseId());
                 super.queueEvent(ajaxBehaviorEvent);
             }

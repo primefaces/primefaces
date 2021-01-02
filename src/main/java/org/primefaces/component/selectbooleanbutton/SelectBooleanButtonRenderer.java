@@ -50,7 +50,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
 
         String clientId = button.getClientId(context);
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
-        boolean checked = submittedValue != null && submittedValue.equalsIgnoreCase("on");
+        boolean checked = "on".equalsIgnoreCase(submittedValue);
         button.setSubmittedValue(checked);
     }
 

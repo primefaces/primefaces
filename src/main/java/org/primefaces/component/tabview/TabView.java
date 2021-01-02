@@ -111,7 +111,7 @@ public class TabView extends TabViewBase {
             boolean repeating = isRepeating();
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName.equals("tabChange")) {
+            if ("tabChange".equals(eventName)) {
                 String tabClientId = params.get(clientId + "_newTab");
                 TabChangeEvent changeEvent = new TabChangeEvent(this, behaviorEvent.getBehavior(), findTab(tabClientId));
 
@@ -130,7 +130,7 @@ public class TabView extends TabViewBase {
                     setIndex(-1);
                 }
             }
-            else if (eventName.equals("tabClose")) {
+            else if ("tabClose".equals(eventName)) {
                 String tabClientId = params.get(clientId + "_closeTab");
                 TabCloseEvent closeEvent = new TabCloseEvent(this, behaviorEvent.getBehavior(), findTab(tabClientId));
 

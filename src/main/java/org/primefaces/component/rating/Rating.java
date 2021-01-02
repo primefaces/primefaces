@@ -81,10 +81,10 @@ public class Rating extends RatingBase {
         if (event instanceof AjaxBehaviorEvent) {
             String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-            if (eventName.equals("rate")) {
+            if ("rate".equals(eventName)) {
                 customEvents.put(eventName, (AjaxBehaviorEvent) event);
             }
-            else if (eventName.equals("cancel")) {
+            else if ("cancel".equals(eventName)) {
                 super.queueEvent(event);
             }
         }

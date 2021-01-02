@@ -107,7 +107,7 @@ public class DialogRenderer extends CoreRenderer {
             styleClass += " ui-dialog-rtl";
         }
 
-        if (positionType.equals("absolute")) {
+        if ("absolute".equals(positionType)) {
             styleClass += " ui-dialog-absolute";
         }
 

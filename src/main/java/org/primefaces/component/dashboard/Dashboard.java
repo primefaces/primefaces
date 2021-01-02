@@ -77,7 +77,7 @@ public class Dashboard extends DashboardBase {
             String clientId = getClientId(context);
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName.equals("reorder")) {
+            if ("reorder".equals(eventName)) {
                 String widgetClientId = params.get(clientId + "_widgetId");
                 Integer itemIndex = Integer.valueOf(params.get(clientId + "_itemIndex"));
                 Integer receiverColumnIndex = Integer.valueOf(params.get(clientId + "_receiverColumnIndex"));

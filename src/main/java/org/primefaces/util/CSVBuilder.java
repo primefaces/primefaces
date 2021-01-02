@@ -47,7 +47,7 @@ public class CSVBuilder {
     }
 
     public CSVBuilder source(String source) {
-        if (source == null || source.equals("this")) {
+        if (source == null || "this".equals(source)) {
             buffer.append("s:").append("this");
         }
         else {

@@ -94,7 +94,7 @@ public class HeadRenderer extends Renderer {
             theme = "saga";     //default
         }
 
-        if (theme != null && !theme.equals("none")) {
+        if (theme != null && !"none".equals(theme)) {
             encodeCSS(context, "primefaces-" + theme, "theme.css");
         }
 

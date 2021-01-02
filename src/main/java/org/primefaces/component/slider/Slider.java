@@ -85,7 +85,7 @@ public class Slider extends SliderBase {
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName.equals("slideEnd")) {
+            if ("slideEnd".equals(eventName)) {
                 double sliderValue = Double.parseDouble(params.get(clientId + "_slideValue"));
                 SlideEndEvent slideEndEvent = new SlideEndEvent(this, behaviorEvent.getBehavior(), sliderValue);
                 slideEndEvent.setPhaseId(behaviorEvent.getPhaseId());

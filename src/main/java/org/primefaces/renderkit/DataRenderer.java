@@ -75,7 +75,7 @@ public class DataRenderer extends CoreRenderer {
         }
 
         ResponseWriter writer = context.getResponseWriter();
-        boolean isTop = position.equals("top");
+        boolean isTop = "top".equals(position);
         UIComponent leftTopContent = pageable.getFacet("paginatorTopLeft");
         UIComponent rightTopContent = pageable.getFacet("paginatorTopRight");
         UIComponent leftBottomContent = pageable.getFacet("paginatorBottomLeft");
@@ -154,7 +154,7 @@ public class DataRenderer extends CoreRenderer {
         String paginatorContainers = null;
         String currentPageTemplate = pageable.getCurrentPageReportTemplate();
 
-        if (paginatorPosition.equalsIgnoreCase("both")) {
+        if ("both".equalsIgnoreCase(paginatorPosition)) {
             paginatorContainers = "'" + clientId + "_paginator_top','" + clientId + "_paginator_bottom'";
         }
         else {

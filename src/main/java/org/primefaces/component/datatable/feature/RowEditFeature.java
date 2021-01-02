@@ -60,7 +60,7 @@ public class RowEditFeature implements DataTableFeature {
         if (table.isRowEditRequest(context)) {
             String action = params.get(clientId + "_rowEditAction");
 
-            if (action.equals("cancel")) {
+            if ("cancel".equals(action)) {
                 VisitContext visitContext = null;
 
                 for (UIColumn column : table.getColumns()) {
