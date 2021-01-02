@@ -4,7 +4,7 @@ This page contains a list of big features. Please check the GitHub issues for al
 
 ## 10.0
 
-  * new themes: saga, arya and vela
+  * new themes: saga (new default theme), arya and vela
   * new components: Avatar, Badge, Chip, Divider, ScrollTop, Skeleton, Splitter, SplitterPanel, Tag
   * FileUpload: supports chunking and resume (see https://primefaces.github.io/primefaces/10_0/#/components/fileupload?id=chunking-and-resume)
   * FileDownload: supports AJAX (so `ajax="false"` is not required anymore) (see https://primefaces.github.io/primefaces/10_0/#/components/filedownload?id=ajax-downloading)
