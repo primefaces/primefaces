@@ -24,11 +24,11 @@
 package org.primefaces.component.menu;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Map.Entry;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.apache.commons.collections4.keyvalue.DefaultMapEntry;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
@@ -66,7 +66,7 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
     }
 
     protected void encodeMenuItem(FacesContext context, AbstractMenu menu, MenuItem menuitem, String tabindex) throws IOException {
-        encodeMenuItem(context, menu, menuitem, tabindex, new DefaultMapEntry<>(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM));
+        encodeMenuItem(context, menu, menuitem, tabindex, Map.entry(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM));
     }
 
     protected void encodeMenuItem(FacesContext context, AbstractMenu menu, MenuItem menuitem, String tabindex, Entry<String, String> aria) throws IOException {
