@@ -42,7 +42,7 @@ For a full list of the available downloads, please visit the [download page](htt
 
 ##### Maven
 
-- Official release
+- Official release (javax)
 
 	```xml
 	<dependency>
@@ -52,7 +52,18 @@ For a full list of the available downloads, please visit the [download page](htt
 	</dependency>
 	```
 
-- Snapshot (should NOT be used in production environments!)
+- Official release (jakarta; not yet released)
+
+  ```xml
+  <dependency>
+      <groupId>org.primefaces</groupId>
+      <artifactId>primefaces</artifactId>
+      <version>10.0</version>
+      <classifier>jakarta</classifier>
+  </dependency>
+  ```
+
+- Snapshot (javax; should NOT be used in production environments!)
 
 	```xml
 	<dependency>
@@ -69,6 +80,23 @@ For a full list of the available downloads, please visit the [download page](htt
 	</repositories>
 	```
 
+- Snapshot (jakarta; should NOT be used in production environments!)
+
+  ```xml
+  <dependency>
+      <groupId>com.github.primefaces</groupId>
+      <artifactId>primefaces</artifactId>
+      <version>master-SNAPSHOT</version>
+      <classifier>jakarta</classifier>  
+  </dependency>
+
+  <repositories>
+      <repository>
+          <id>jitpack.io</id>
+          <url>https://jitpack.io</url>
+      </repository>
+  </repositories>
+  ```
 ### Usage
 ***
 
