@@ -141,9 +141,11 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.chips.html#invokeitemselectbehavior" class="tsd-kind-icon">invoke<wbr>Item<wbr>Select<wbr>Behavior</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.chips.html#invokeitemunselectbehavior" class="tsd-kind-icon">invoke<wbr>Item<wbr>Unselect<wbr>Behavior</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="primefaces.widget.chips.html#isdetached" class="tsd-kind-icon">is<wbr>Detached</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.chips.html#refocus" class="tsd-kind-icon">refocus</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="primefaces.widget.chips.html#refresh" class="tsd-kind-icon">refresh</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="primefaces.widget.chips.html#removeitem" class="tsd-kind-icon">remove<wbr>Item</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="primefaces.widget.chips.html#removescriptelement" class="tsd-kind-icon">remove<wbr>Script<wbr>Element</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="primefaces.widget.chips.html#toggleeditor" class="tsd-kind-icon">toggle<wbr>Editor</a></li>
 							</ul>
 						</section>
 					</div>
@@ -727,6 +729,35 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="refocus" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> refocus</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">refocus<span class="tsd-signature-symbol">(</span>refocus<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Deletes the currently editing input value and refocus the input box if necessary.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> refocus: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p><code>true</code> to put focus back on the INPUT again after the chip was added, or <code>false</code>
+										otherwise.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="refresh" class="tsd-anchor"></a>
 					<h3>refresh</h3>
@@ -770,7 +801,7 @@
 					<a name="removeitem" class="tsd-anchor"></a>
 					<h3>remove<wbr>Item</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">remove<wbr>Item<span class="tsd-signature-symbol">(</span>item<span class="tsd-signature-symbol">: </span><a href="../modules/jquery.html" class="tsd-signature-type">JQuery</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">remove<wbr>Item<span class="tsd-signature-symbol">(</span>item<span class="tsd-signature-symbol">: </span><a href="../modules/jquery.html" class="tsd-signature-type">JQuery</a>, silent<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -787,6 +818,12 @@
 									<h5>item: <a href="../modules/jquery.html" class="tsd-signature-type">JQuery</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>An item  (LI element) that should be removed.</p>
+									</div>
+								</li>
+								<li>
+									<h5>silent: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>flag indicating whether to animate and fire AJAX event</p>
 									</div>
 								</li>
 							</ul>
@@ -820,6 +857,26 @@
 									</div>
 								</li>
 							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="toggleeditor" class="tsd-anchor"></a>
+					<h3>toggle<wbr>Editor</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">toggle<wbr>Editor<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Converts the current list into a separator delimited list for mass editing while keeping original
+									order of the items or closes the editor turning the values back into chips.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -953,6 +1010,9 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="primefaces.widget.chips.html#isdetached" class="tsd-kind-icon">is<wbr>Detached</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="primefaces.widget.chips.html#refocus" class="tsd-kind-icon">refocus</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="primefaces.widget.chips.html#refresh" class="tsd-kind-icon">refresh</a>
 							</li>
@@ -961,6 +1021,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="primefaces.widget.chips.html#removescriptelement" class="tsd-kind-icon">remove<wbr>Script<wbr>Element</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="primefaces.widget.chips.html#toggleeditor" class="tsd-kind-icon">toggle<wbr>Editor</a>
 							</li>
 						</ul>
 					</li>
