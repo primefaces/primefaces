@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.api.Pageable;
-import org.primefaces.component.api.UIData;
+import org.primefaces.component.api.UIPageableData;
 import org.primefaces.util.HTML;
 import org.primefaces.util.MessageFactory;
 
@@ -57,7 +57,7 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
                 LOGGER.info("RowsPerPageLabel attribute is deprecated, use 'primefaces.paginator.aria.ROWS_PER_PAGE' key instead to override default message.");
             }
             else {
-                label = MessageFactory.getMessage(UIData.ROWS_PER_PAGE_LABEL, null);
+                label = MessageFactory.getMessage(UIPageableData.ROWS_PER_PAGE_LABEL);
             }
 
             String clientId = pageable.getClientId(context);
@@ -71,7 +71,7 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
                 writer.startElement("label", null);
                 writer.writeAttribute("id", labelId, null);
                 writer.writeAttribute("for", ddId, null);
-                writer.writeAttribute("class", UIData.PAGINATOR_RPP_LABEL_CLASS, null);
+                writer.writeAttribute("class", UIPageableData.PAGINATOR_RPP_LABEL_CLASS, null);
                 writer.writeText(label, null);
                 writer.endElement("label");
             }
@@ -82,7 +82,7 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
             if (label != null) {
                 writer.writeAttribute(HTML.ARIA_LABELLEDBY, labelId, null);
             }
-            writer.writeAttribute("class", UIData.PAGINATOR_RPP_OPTIONS_CLASS, null);
+            writer.writeAttribute("class", UIPageableData.PAGINATOR_RPP_OPTIONS_CLASS, null);
             writer.writeAttribute("autocomplete", "off", null);
 
             for (String option : options) {

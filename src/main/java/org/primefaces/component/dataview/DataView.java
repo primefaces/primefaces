@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -63,6 +63,7 @@ public class DataView extends DataViewBase {
     public static final String LIST_LAYOUT_CONTAINER_CLASS = "ui-dataview-list-container";
     public static final String ROW_CLASS = "ui-dataview-row";
     public static final String GRID_LAYOUT_ROW_CLASS = "ui-dataview-row ui-g";
+    public static final String FLEX_GRID_LAYOUT_ROW_CLASS = "ui-dataview-row p-grid";
     public static final String GRID_LAYOUT_COLUMN_CLASS = "ui-dataview-column";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
@@ -102,7 +103,7 @@ public class DataView extends DataViewBase {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-            if (eventName.equals("page")) {
+            if ("page".equals(eventName)) {
                 AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
                 String clientId = getClientId(context);
                 int rows = getRowsToRender();
@@ -145,7 +146,7 @@ public class DataView extends DataViewBase {
         DataModel model = getDataModel();
         if (model instanceof LazyDataModel) {
             LazyDataModel lazyModel = (LazyDataModel) model;
-            List<?> data = lazyModel.load(getFirst(), getRows(), null, null, Collections.emptyMap());
+            List<?> data = lazyModel.load(getFirst(), getRows(), Collections.emptyMap(), Collections.emptyMap());
 
             lazyModel.setPageSize(getRows());
             lazyModel.setWrappedData(data);

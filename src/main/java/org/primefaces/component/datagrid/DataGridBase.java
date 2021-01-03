@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,8 +28,8 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 import org.primefaces.component.api.*;
 import org.primefaces.component.datalist.DataListBase;
 
-public abstract class DataGridBase extends UIData
-        implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable, MultiViewStateAware<DataGridState> {
+public abstract class DataGridBase extends UIPageableData
+        implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, FlexAware, MultiViewStateAware<DataGridState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -44,7 +44,8 @@ public abstract class DataGridBase extends UIData
         emptyMessage,
         layout,
         rowStyle,
-        rowStyleClass
+        rowStyleClass,
+        flex
     }
 
     public DataGridBase() {
@@ -127,5 +128,14 @@ public abstract class DataGridBase extends UIData
 
     public void setRowStyleClass(String rowStyleClass) {
         getStateHelper().put(PropertyKeys.rowStyleClass, rowStyleClass);
+    }
+
+    @Override
+    public boolean isFlex() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.flex, false);
+    }
+
+    public void setFlex(boolean flex) {
+        getStateHelper().put(PropertyKeys.flex, flex);
     }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.DynamicColumn;
@@ -37,6 +36,7 @@ import org.primefaces.component.celleditor.CellEditor;
 public class Columns extends ColumnsBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Columns";
+
     private CellEditor cellEditor = null;
     private List<DynamicColumn> dynamicColumns;
 
@@ -77,6 +77,11 @@ public class Columns extends ColumnsBase {
     }
 
     @Override
+    public String getColumnKey(UIComponent parent, String rowIndex) {
+        return getColumnKey().replace(parent.getId() + ":" + rowIndex + ":", parent.getId() + ":");
+    }
+
+    @Override
     public void renderChildren(FacesContext context) throws IOException {
         encodeChildren(context);
     }
@@ -85,14 +90,10 @@ public class Columns extends ColumnsBase {
         if (dynamicColumns == null) {
             FacesContext context = getFacesContext();
             setRowIndex(-1);
-            char separator = UINamingContainer.getSeparatorChar(context);
-            dynamicColumns = new ArrayList<>();
-            String clientId = getClientId(context);
+            dynamicColumns = new ArrayList<>(getRowCount());
 
             for (int i = 0; i < getRowCount(); i++) {
-                DynamicColumn dynaColumn = new DynamicColumn(i, this);
-                dynaColumn.setColumnKey(clientId + separator + i);
-
+                DynamicColumn dynaColumn = new DynamicColumn(i, this, context);
                 dynamicColumns.add(dynaColumn);
             }
         }

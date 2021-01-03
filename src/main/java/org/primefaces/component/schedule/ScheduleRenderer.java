@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,29 +23,28 @@
  */
 package org.primefaces.component.schedule;
 
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.CalendarUtils;
-import org.primefaces.util.EscapeUtils;
-import org.primefaces.util.LocaleUtils;
-import org.primefaces.util.WidgetBuilder;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import org.primefaces.util.*;
 
 public class ScheduleRenderer extends CoreRenderer {
 
@@ -67,7 +66,7 @@ public class ScheduleRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Schedule schedule = (Schedule) component;
 
-        if (context.getExternalContext().getRequestParameterMap().containsKey(schedule.getClientId(context))) {
+        if (ComponentUtils.isRequestSource(schedule, context) && schedule.isEventRequest(context)) {
             encodeEvents(context, schedule);
         }
         else {
@@ -151,13 +150,13 @@ public class ScheduleRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, Schedule schedule) throws IOException {
-        String clientId = schedule.getClientId(context);
+        Locale locale = schedule.calculateLocale(context);
         WidgetBuilder wb = getWidgetBuilder(context);
 
-        wb.init("Schedule", schedule.resolveWidgetVar(context), clientId)
+        wb.init("Schedule", schedule)
                 .attr("urlTarget", schedule.getUrlTarget(), "_blank")
                 .attr("noOpener", schedule.isNoOpener(), true)
-                .attr("locale", LocaleUtils.toJavascriptLocale(schedule.calculateLocale(context)))
+                .attr("locale", locale.toString())
                 .attr("tooltip", schedule.isTooltip(), false);
 
         String columnFormat = schedule.getColumnHeaderFormat() != null ? schedule.getColumnHeaderFormat() : schedule.getColumnFormat();
@@ -170,7 +169,8 @@ public class ScheduleRenderer extends CoreRenderer {
             wb.nativeAttr("extender", extender);
         }
 
-        wb.append(",calendarCfg:{");
+        wb.append(",options:{");
+        wb.append("locale:\"").append(LocaleUtils.toJavascriptLocale(locale)).append("\",");
         wb.append("initialView:\"").append(EscapeUtils.forJavaScript(translateViewName(schedule.getView().trim()))).append("\"");
         wb.attr("dayMaxEventRows", schedule.getValue().isEventLimit(), false);
 
@@ -194,9 +194,14 @@ public class ScheduleRenderer extends CoreRenderer {
             wb.attr("headerToolbar", false);
         }
 
+        if (ComponentUtils.isRTL(context, schedule)) {
+            wb.attr("direction", "rtl");
+        }
+
         boolean isShowWeekNumbers = schedule.isShowWeekNumbers();
 
         wb.attr("allDaySlot", schedule.isAllDaySlot(), true)
+                .attr("height", schedule.getHeight(), null)
                 .attr("slotDuration", schedule.getSlotDuration(), "00:30:00")
                 .attr("scrollTime", schedule.getScrollTime(), "06:00:00")
                 .attr("timeZone", schedule.getClientTimeZone(), "local")
@@ -207,15 +212,18 @@ public class ScheduleRenderer extends CoreRenderer {
                 .attr("eventStartEditable", schedule.isDraggable())
                 .attr("eventDurationEditable", schedule.isResizable())
                 .attr("slotLabelInterval", schedule.getSlotLabelInterval(), null)
-                .attr("slotLabelFormat", schedule.getSlotLabelFormat(), null)
                 .attr("eventTimeFormat", schedule.getTimeFormat(), null) //https://momentjs.com/docs/#/displaying/
                 .attr("weekNumbers", isShowWeekNumbers, false)
                 .attr("nextDayThreshold", schedule.getNextDayThreshold(), "09:00:00")
                 .attr("slotEventOverlap", schedule.isSlotEventOverlap(), true);
 
+        if (!LangUtils.isValueBlank(schedule.getSlotLabelFormat())) {
+            wb.nativeAttr("slotLabelFormat", schedule.getSlotLabelFormat());
+        }
+
         String displayEventEnd = schedule.getDisplayEventEnd();
         if (displayEventEnd != null) {
-            if (displayEventEnd.equals("true") || displayEventEnd.equals("false")) {
+            if ("true".equals(displayEventEnd) || "false".equals(displayEventEnd)) {
                 wb.nativeAttr("displayEventEnd", displayEventEnd);
             }
             else {
@@ -227,7 +235,7 @@ public class ScheduleRenderer extends CoreRenderer {
             String weekNumCalculation = schedule.getWeekNumberCalculation();
             String weekNumCalculator = schedule.getWeekNumberCalculator();
 
-            if (weekNumCalculation.equals("custom")) {
+            if ("custom".equals(weekNumCalculation)) {
                 if (weekNumCalculator != null) {
                     wb.append(",weekNumberCalculation: function(date){ return ")
                             .append(schedule.getWeekNumberCalculator())

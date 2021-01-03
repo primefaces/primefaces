@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -89,13 +89,15 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
     @Override
     public boolean isAjaxRequest() {
         return getWrapped().isAjaxRequest()
-                || FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().containsKey("javax.faces.partial.ajax");
+                || FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().containsKey(
+                        Constants.RequestParams.PARTIAL_REQUEST_PARAM);
     }
 
     @Override
     public boolean isPartialRequest() {
         return getWrapped().isPartialRequest()
-                || FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().containsKey("javax.faces.partial.execute");
+                || FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().containsKey(
+                        Constants.RequestParams.PARTIAL_PROCESS_PARAM);
     }
 
     /**

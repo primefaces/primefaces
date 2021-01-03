@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,13 +25,14 @@ package org.primefaces.component.datatable.export;
 
 import java.io.IOException;
 
-import javax.faces.context.FacesContext;
-
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.primefaces.component.export.ExcelOptions;
+import org.primefaces.component.export.ExportConfiguration;
+
+import javax.faces.context.FacesContext;
 
 /**
  * Different implementation of ExcelXExporter using the POI streaming API:
@@ -50,9 +51,10 @@ public class DataTableExcelXStreamExporter extends DataTableExcelXExporter {
     }
 
     @Override
-    protected void writeExcelToResponse(FacesContext context, Workbook generatedExcel, String filename) throws IOException {
-        super.writeExcelToResponse(context, generatedExcel, filename);
-        ((SXSSFWorkbook) generatedExcel).dispose();
+    protected void postExport(FacesContext context, ExportConfiguration exportConfiguration) throws IOException {
+        SXSSFWorkbook sxssfWorkbook =  ((SXSSFWorkbook) wb);
+        super.postExport(context, exportConfiguration);
+        sxssfWorkbook.dispose();
     }
 
     @Override

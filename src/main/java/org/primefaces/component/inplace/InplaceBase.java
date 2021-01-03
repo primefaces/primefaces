@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,6 +35,9 @@ public abstract class InplaceBase extends UIComponentBase implements Widget, Cli
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.InplaceRenderer";
 
+    public static final String MODE_OUTPUT = "output";
+    public static final String MODE_INPUT = "input";
+
     public enum PropertyKeys {
 
         widgetVar,
@@ -49,7 +52,8 @@ public abstract class InplaceBase extends UIComponentBase implements Widget, Cli
         saveLabel,
         cancelLabel,
         event,
-        toggleable
+        toggleable,
+        mode
     }
 
     public InplaceBase() {
@@ -163,5 +167,13 @@ public abstract class InplaceBase extends UIComponentBase implements Widget, Cli
 
     public void setToggleable(boolean toggleable) {
         getStateHelper().put(PropertyKeys.toggleable, toggleable);
+    }
+
+    public String getMode() {
+        return (String) getStateHelper().eval(PropertyKeys.mode, MODE_OUTPUT);
+    }
+
+    public void setMode(String mode) {
+        getStateHelper().put(PropertyKeys.mode, mode);
     }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -193,7 +193,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             writer.writeAttribute("class", "ui-state-disabled", null);
         }
 
-        if (itemLabel.equals("&nbsp;")) {
+        if ("&nbsp;".equals(itemLabel)) {
             writer.write(itemLabel);
         }
         else {
@@ -317,10 +317,8 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
     }
 
     protected void encodeScript(FacesContext context, SelectCheckboxMenu menu) throws IOException {
-        String clientId = menu.getClientId(context);
-
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectCheckboxMenu", menu.resolveWidgetVar(context), clientId)
+        wb.init("SelectCheckboxMenu", menu)
                 .callback("onShow", "function()", menu.getOnShow())
                 .callback("onHide", "function()", menu.getOnHide())
                 .callback("onChange", "function()", menu.getOnchange())

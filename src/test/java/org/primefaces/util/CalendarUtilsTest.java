@@ -24,6 +24,7 @@
 package org.primefaces.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -200,5 +201,13 @@ public class CalendarUtilsTest {
         when(datePicker.getTimeZone()).thenReturn(ZoneId.systemDefault());
         Date now = (Date) CalendarUtils.now(datePicker, java.util.Date.class);
         assertTrue(new Date().compareTo(now) >= 0);
+    }
+    
+    @Test
+    public void convertPattern() {
+        assertNull(CalendarUtils.convertPattern(null));
+        assertEquals("", CalendarUtils.convertPattern(""));
+        assertEquals("mm/dd/yy HH:mm:ss", CalendarUtils.convertPattern("MM/dd/yyyy HH:mm:ss"));
+        // more in-depth tests are in DateTimePatternConverterTest
     }
 }

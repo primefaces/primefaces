@@ -322,6 +322,17 @@
     margin: auto 0;
 }
 
+/* Multiple sort number badges */
+.ui-datatable .ui-sortable-column-badge {
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    vertical-align: middle;
+}
+
 @media ( max-width: 640px ) {
     .ui-datatable-reflow thead th,
     .ui-datatable-reflow tfoot td {

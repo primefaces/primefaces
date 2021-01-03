@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -42,6 +42,7 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
         type,
         symbol,
         symbolPosition,
+        signPosition,
         minValue,
         maxValue,
         roundMethod,
@@ -96,6 +97,14 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
 
     public void setSymbol(String symbol) {
         getStateHelper().put(PropertyKeys.symbol, symbol);
+    }
+
+    public String getSignPosition() {
+        return (String) getStateHelper().eval(PropertyKeys.signPosition, null);
+    }
+
+    public void setSignPosition(String signPosition) {
+        getStateHelper().put(PropertyKeys.signPosition, signPosition);
     }
 
     public String getSymbolPosition() {
@@ -157,7 +166,7 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
     }
 
     public String getEmptyValue() {
-        return (String) getStateHelper().eval(PropertyKeys.emptyValue, "empty");
+        return (String) getStateHelper().eval(PropertyKeys.emptyValue, "focus");
     }
 
     public void setEmptyValue(String emptyValue) {
@@ -211,4 +220,5 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
     public void setModifyValueOnWheel(boolean modifyValueOnWheel) {
         getStateHelper().put(PropertyKeys.modifyValueOnWheel, modifyValueOnWheel);
     }
+
 }

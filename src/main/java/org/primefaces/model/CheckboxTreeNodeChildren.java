@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -227,7 +227,7 @@ public class CheckboxTreeNodeChildren extends TreeNodeList {
         boolean allChildrenSelected = true;
         boolean partialSelected = false;
 
-        for (int i = 0; i < node.getChildren().size(); i++) {
+        for (int i = 0; i < node.getChildCount(); i++) {
             TreeNode childNode = node.getChildren().get(i);
 
             boolean childSelected = childNode.isSelected();

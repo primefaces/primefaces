@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,14 +41,12 @@ import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.render.Renderer;
 
-import org.primefaces.component.api.RTLAware;
-import org.primefaces.component.api.TouchAware;
-import org.primefaces.component.api.UITabPanel;
-import org.primefaces.component.api.Widget;
+import org.primefaces.component.api.*;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
@@ -197,13 +195,13 @@ public class ComponentUtils {
         }
 
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String behaviorEvent = params.get("javax.faces.behavior.event");
+        String behaviorEvent = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
         if (null != behaviorEvent) {
             List<ClientBehavior> behaviorsForEvent = behaviors.get(behaviorEvent);
 
             if (behaviorsForEvent != null && !behaviorsForEvent.isEmpty()) {
-                String behaviorSource = params.get("javax.faces.source");
+                String behaviorSource = params.get(Constants.RequestParams.PARTIAL_SOURCE_PARAM);
                 String clientId = component.getClientId(context);
 
                 if (behaviorSource != null && clientId.equals(behaviorSource)) {
@@ -220,15 +218,15 @@ public class ComponentUtils {
     }
 
     public static boolean isRTL(FacesContext context, RTLAware component) {
-        boolean globalValue = PrimeRequestContext.getCurrentInstance(context).isRTL();
-
-        return globalValue || component.isRTL();
+        return component.isRTL() || PrimeRequestContext.getCurrentInstance(context).isRTL();
     }
 
     public static boolean isTouchable(FacesContext context, TouchAware component) {
-        boolean globalValue = PrimeRequestContext.getCurrentInstance(context).isTouchable();
+        return component.isTouchable() || PrimeRequestContext.getCurrentInstance(context).isTouchable();
+    }
 
-        return globalValue || component.isTouchable();
+    public static boolean isFlex(FacesContext context, FlexAware component) {
+        return component.isFlex() || PrimeRequestContext.getCurrentInstance(context).isFlex();
     }
 
     public static void processDecodesOfFacetsAndChilds(UIComponent component, FacesContext context) {
@@ -336,7 +334,7 @@ public class ComponentUtils {
     /**
      * Duplicate code from json-simple project under apache license
      * http://code.google.com/p/json-simple/source/browse/trunk/src/org/json/simple/JSONValue.java
-     * @deprecated Use {@link EscapeUtils.forJavaScript}
+     * @deprecated Use {@link EscapeUtils#forJavaScript}
      */
     @Deprecated
     public static String escapeText(String text) {
@@ -344,7 +342,7 @@ public class ComponentUtils {
     }
 
     /**
-     * @deprecated Use {@link EscapeUtils.forJavaScript}
+     * @deprecated Use {@link EscapeUtils#forJavaScript}
      */
     @Deprecated
     public static String escapeEcmaScriptText(String text) {
@@ -362,7 +360,7 @@ public class ComponentUtils {
      *
      * @param string The string to be escaped.
      * @return The escaped string.
-     * @deprecated Use {@link EscapeUtils.forXml}
+     * @deprecated Use {@link EscapeUtils#forXml}
      */
     @Deprecated
     public static String escapeXml(String string) {
@@ -460,15 +458,34 @@ public class ComponentUtils {
     }
 
     public static boolean isRequestSource(UIComponent component, FacesContext context) {
-        return component.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
+        String partialSource = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM);
+        return component.getClientId(context).equals(partialSource);
+    }
+
+    public static boolean isRequestSource(UIComponent component, FacesContext context, String event) {
+        ExternalContext externalContext = context.getExternalContext();
+        String partialSource = externalContext.getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM);
+        String partialEvent = externalContext.getRequestParameterMap().get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
+        return component.getClientId(context).equals(partialSource) && partialEvent.equals(event);
+    }
+
+    public static Object getLabel(FacesContext facesContext, UIComponent component) {
+        String label = (String) component.getAttributes().get("label");
+
+        if (label == null) {
+            label = component.getClientId(facesContext);
+        }
+
+        return label;
     }
 
     /**
-     * Checks if the facet and one of the first level child's is rendered.
+     * Checks if the facet and one of the first level children is rendered.
      * @param facet The Facet component to check
-     * @return true when facet and one of the first level child's is rendered.
+     * @param ignoreChildren flag to ignore children and only check the facet itself
+     * @return true if the facet should be rendered, false if not
      */
-    public static boolean shouldRenderFacet(UIComponent facet) {
+    public static boolean shouldRenderFacet(UIComponent facet, boolean ignoreChildren) {
         if (facet == null || !facet.isRendered()) {
             // For any future version of JSF where the f:facet gets a rendered attribute (https://github.com/javaserverfaces/mojarra/issues/4299)
             // or there is only 1 child.
@@ -476,11 +493,20 @@ public class ComponentUtils {
         }
 
         // Facet has no child but is rendered
-        if (facet.getChildren().isEmpty()) {
+        if (ignoreChildren || facet.getChildCount() == 0) {
             return true;
         }
 
         return shouldRenderChildren(facet);
+    }
+
+    /**
+     * Checks if the facet and one of the first level children is rendered.
+     * @param facet The Facet component to check
+     * @return true when facet and one of the first level children is rendered.
+     */
+    public static boolean shouldRenderFacet(UIComponent facet) {
+        return shouldRenderFacet(facet, false);
     }
 
     /**
@@ -489,7 +515,7 @@ public class ComponentUtils {
      * @return true if one of the first level child's is rendered.
      */
     public static boolean shouldRenderChildren(UIComponent component) {
-        for (int i = 0; i < component.getChildren().size(); i++) {
+        for (int i = 0; i < component.getChildCount(); i++) {
             if (component.getChildren().get(i).isRendered()) {
                 return true;
             }
@@ -514,6 +540,27 @@ public class ComponentUtils {
         T value = (T) stateHelper.eval(key, null);
         if (value == null) {
             value = defaultValueSupplier.get();
+        }
+        return value;
+    }
+
+    /**
+     * Tries to retrieve value from stateHelper by key first. If the value is not present (or is null),
+     * then it is retrieved from defaultValueSupplier.
+     *
+     * Should be removed when {@link StateHelper} is extended with similar functionality.
+     * (see https://github.com/eclipse-ee4j/mojarra/issues/4568 for details)
+     * @param stateHelper The stateHelper to try to retrieve value from
+     * @param key The key under which value is stored in the stateHelper
+     * @param defaultValueSupplier The object, from which default value is retrieved
+     * @param <T> the expected type of returned value
+     * @return value from stateHelper or defaultValueSupplier
+     */
+    public static <T> T computeIfAbsent(StateHelper stateHelper, Serializable key, Supplier<T> defaultValueSupplier) {
+        T value = (T) stateHelper.get(key);
+        if (value == null) {
+            value = defaultValueSupplier.get();
+            stateHelper.put(key, value);
         }
         return value;
     }

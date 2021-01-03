@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -36,16 +37,12 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
+
 import org.apache.commons.io.IOUtils;
 import org.primefaces.PrimeFaces;
 import org.primefaces.application.resource.DynamicContentType;
-import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.model.StreamedContent;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.DynamicContentSrcBuilder;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.ResourceUtils;
+import org.primefaces.util.*;
 
 public class FileDownloadActionListener implements ActionListener, StateHolder {
 
@@ -77,41 +74,37 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
         }
 
         if (PrimeFaces.current().isAjaxRequest()) {
-            ajaxDownload(context, elContext, content);
+            ajaxDownload(context,  content);
         }
         else {
-            regularDownload(context, elContext, content);
+            regularDownload(context, content);
         }
     }
 
-    protected void ajaxDownload(FacesContext context, ELContext elContext, StreamedContent content) {
+    protected void ajaxDownload(FacesContext context, StreamedContent content) {
         String uri = DynamicContentSrcBuilder.build(context, content, null, false, DynamicContentType.STREAMED_CONTENT, true, value);
-        String monitorKeyCookieName = getMonitorKeyCookieName(context, elContext);
+        String monitorKeyCookieName = ResourceUtils.getMonitorKeyCookieName(context, monitorKey);
         PrimeFaces.current().executeScript(String.format("PrimeFaces.download('%s', '%s', '%s', '%s')",
                 uri, content.getContentType(), content.getName(), monitorKeyCookieName));
     }
 
-    protected void regularDownload(FacesContext context, ELContext elContext, StreamedContent content) {
+    protected void regularDownload(FacesContext context, StreamedContent content) {
         ExternalContext externalContext = context.getExternalContext();
         externalContext.setResponseContentType(content.getContentType());
-        String contentDispositionValue = contentDisposition != null ? (String) contentDisposition.getValue(elContext) : "attachment";
+        String contentDispositionValue = contentDisposition != null ? (String) contentDisposition.getValue(context.getELContext()) : "attachment";
         externalContext.setResponseHeader("Content-Disposition", ComponentUtils.createContentDisposition(contentDispositionValue, content.getName()));
 
-        String monitorKeyCookieName = getMonitorKeyCookieName(context, elContext);
+        String monitorKeyCookieName = ResourceUtils.getMonitorKeyCookieName(context, monitorKey);
 
         Map<String, Object> cookieOptions = new HashMap<>(4);
         cookieOptions.put("path", LangUtils.isValueBlank(externalContext.getRequestContextPath())
                 ? "/"
                 : externalContext.getRequestContextPath()); // Always add cookies to context root; see #3108
         ResourceUtils.addResponseCookie(context, monitorKeyCookieName, "true", cookieOptions);
+        ResourceUtils.addNoCacheControl(externalContext);
 
         if (content.getContentLength() != null) {
             externalContext.setResponseContentLength(content.getContentLength());
-        }
-
-        if (PrimeRequestContext.getCurrentInstance(context).isSecure()) {
-            externalContext.setResponseHeader("Cache-Control", "public");
-            externalContext.setResponseHeader("Pragma", "public");
         }
 
         try (InputStream is = content.getStream()) {
@@ -127,17 +120,6 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
         catch (IOException e) {
             throw new FacesException(e);
         }
-    }
-
-    protected String getMonitorKeyCookieName(FacesContext context, ELContext elContext) {
-        String monitorKeyCookieName = Constants.DOWNLOAD_COOKIE + context.getViewRoot().getViewId().replace('/', '_');
-        if (monitorKey != null) {
-            String evaluated = (String) monitorKey.getValue(elContext);
-            if (!LangUtils.isValueBlank(evaluated)) {
-                monitorKeyCookieName += "_" + evaluated;
-            }
-        }
-        return monitorKeyCookieName;
     }
 
     @Override

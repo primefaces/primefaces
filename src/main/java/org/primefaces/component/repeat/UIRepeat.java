@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,10 +40,8 @@ import javax.faces.component.ContextCallback;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
-import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
-import javax.faces.component.visit.VisitHint;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
@@ -62,6 +60,8 @@ import org.primefaces.component.api.IterationStatus;
 import org.primefaces.component.api.SavedState;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.model.IterableDataModel;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 
 /**
  * Copied from Mojarra, to port bugfixes from newer Mojarra versions, to users of older Mojarra versions.
@@ -728,12 +728,14 @@ public class UIRepeat extends UINamingContainer {
     }
 
     private boolean requiresRowIteration(VisitContext ctx) {
-        boolean shouldIterate = !ctx.getHints().contains(VisitHint.SKIP_ITERATION); 
+        FacesContext facesContext = ctx.getFacesContext();
+        boolean shouldIterate = !ComponentUtils.isSkipIteration(ctx, facesContext);
         if (!shouldIterate) {
-            FacesContext faces = ctx.getFacesContext();  
-            String sourceId = faces.getExternalContext().getRequestParameterMap().get(
-                    ClientBehaviorContext.BEHAVIOR_SOURCE_PARAM_NAME);  
-            boolean containsSource = sourceId != null ? sourceId.startsWith(super.getClientId(faces) + getSeparatorChar(faces)): false;  
+            String sourceId = facesContext.getExternalContext().getRequestParameterMap().get(
+                    Constants.RequestParams.PARTIAL_SOURCE_PARAM);  
+            boolean containsSource = sourceId != null
+                    ? sourceId.startsWith(super.getClientId(facesContext) + getSeparatorChar(facesContext))
+                    : false;  
             return containsSource;
         } else {
             return shouldIterate;

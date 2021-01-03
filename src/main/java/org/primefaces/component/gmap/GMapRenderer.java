@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -71,13 +71,12 @@ public class GMapRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, GMap map) throws IOException {
-        String clientId = map.getClientId(context);
         String widgetVar = map.resolveWidgetVar(context);
         GMapInfoWindow infoWindow = map.getInfoWindow();
 
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("GMap", map.resolveWidgetVar(context), clientId)
+        wb.init("GMap", map)
                 .nativeAttr("mapTypeId", "google.maps.MapTypeId." + map.getType().toUpperCase())
                 .nativeAttr("center", "new google.maps.LatLng(" + map.getCenter() + ")")
                 .attr("zoom", map.getZoom());

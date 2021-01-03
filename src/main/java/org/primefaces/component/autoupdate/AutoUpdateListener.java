@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,8 +23,8 @@
  */
 package org.primefaces.component.autoupdate;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import javax.el.ValueExpression;
 
 import javax.faces.component.UIComponent;
@@ -34,6 +34,7 @@ import javax.faces.event.ComponentSystemEvent;
 import javax.faces.event.ComponentSystemEventListener;
 import javax.faces.event.PostAddToViewEvent;
 import javax.faces.event.PreRenderComponentEvent;
+import org.primefaces.util.LangUtils;
 
 /**
  * Registers components to auto update
@@ -45,6 +46,7 @@ public class AutoUpdateListener implements ComponentSystemEventListener {
     private static final AutoUpdateListener INSTANCE = new AutoUpdateListener();
 
     private ValueExpression disabled;
+    private String on;
 
     public AutoUpdateListener() {
     }
@@ -54,41 +56,66 @@ public class AutoUpdateListener implements ComponentSystemEventListener {
         this.disabled = disabled;
     }
 
+    public AutoUpdateListener(String on) {
+        this();
+        this.on = on;
+    }
+
+    public AutoUpdateListener(ValueExpression disabled, String on) {
+        this();
+        this.disabled = disabled;
+        this.on = on;
+    }
+
     @Override
     public void processEvent(ComponentSystemEvent cse) throws AbortProcessingException {
         FacesContext context = FacesContext.getCurrentInstance();
         String clientId = ((UIComponent) cse.getSource()).getClientId(context);
 
-        List<String> clientIds = getOrCreateAutoUpdateComponentClientIds(context);
+        Map<String, String> infos = getOrCreateAutoUpdateComponentInfos(context);
         if (disabled == null || !((boolean) disabled.getValue(context.getELContext()))) {
-            if (!clientIds.contains(clientId)) {
-                clientIds.add(clientId);
+            if (!infos.containsKey(clientId)) {
+                infos.put(clientId, on);
             }
         }
         else {
-            clientIds.remove(clientId);
+            infos.remove(clientId);
         }
     }
 
-    public static List<String> getOrCreateAutoUpdateComponentClientIds(FacesContext context) {
-        List<String> clientIds = getAutoUpdateComponentClientIds(context);
-        if (clientIds == null) {
-            clientIds = new ArrayList<>();
-            context.getViewRoot().getAttributes().put(COMPONENT_CLIENT_IDS, clientIds);
+    public static Map<String, String> getOrCreateAutoUpdateComponentInfos(FacesContext context) {
+        Map<String, String> infos = getAutoUpdateComponentInfos(context);
+        if (infos == null) {
+            infos = new HashMap<>();
+            context.getViewRoot().getAttributes().put(COMPONENT_CLIENT_IDS, infos);
         }
-        return clientIds;
+        return infos;
     }
 
-    public static List<String> getAutoUpdateComponentClientIds(FacesContext context) {
-        return (List<String>) context.getViewRoot().getAttributes().get(COMPONENT_CLIENT_IDS);
+    public static Map<String, String> getAutoUpdateComponentInfos(FacesContext context) {
+        return (Map<String, String>) context.getViewRoot().getAttributes().get(COMPONENT_CLIENT_IDS);
     }
 
     public static void subscribe(UIComponent component) {
         subscribe(component, INSTANCE);
     }
 
+    public static void subscribe(UIComponent component, String on) {
+        if (LangUtils.isValueBlank(on)) {
+            subscribe(component, INSTANCE);
+        }
+        else {
+            subscribe(component, new AutoUpdateListener(on));
+        }
+    }
+
     public static void subscribe(UIComponent component, ValueExpression disabled) {
         AutoUpdateListener listener = new AutoUpdateListener(disabled);
+        subscribe(component, listener);
+    }
+
+    public static void subscribe(UIComponent component, ValueExpression disabled, String on) {
+        AutoUpdateListener listener = new AutoUpdateListener(disabled, on);
         subscribe(component, listener);
     }
 

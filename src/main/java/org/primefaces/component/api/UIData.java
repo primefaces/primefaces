@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,8 +27,6 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.*;
 
-import javax.el.ELContext;
-import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
@@ -36,7 +34,6 @@ import javax.faces.application.StateManager;
 import javax.faces.component.*;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
-import javax.faces.component.visit.VisitHint;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
@@ -49,8 +46,6 @@ import javax.faces.render.Renderer;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
-import org.primefaces.component.inputtext.InputText;
-import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.model.CollectionDataModel;
 import org.primefaces.model.IterableDataModel;
 import org.primefaces.model.LazyDataModel;
@@ -63,36 +58,7 @@ import org.primefaces.util.SharedStringBuilder;
  * It also contains some methods of the Mojarra impl (e.g. setRowIndexRowStatePreserved), maybe can remove it in the future.
  */
 @SuppressWarnings("unchecked")
-public class UIData extends javax.faces.component.UIData implements TouchAware {
-
-    public static final String PAGINATOR_TOP_CONTAINER_CLASS = "ui-paginator ui-paginator-top ui-widget-header";
-    public static final String PAGINATOR_BOTTOM_CONTAINER_CLASS = "ui-paginator ui-paginator-bottom ui-widget-header";
-    public static final String PAGINATOR_PAGES_CLASS = "ui-paginator-pages";
-    public static final String PAGINATOR_TOP_LEFT_CONTENT_CLASS = "ui-paginator-top-left-content";
-    public static final String PAGINATOR_TOP_RIGHT_CONTENT_CLASS = "ui-paginator-top-right-content";
-    public static final String PAGINATOR_BOTTOM_LEFT_CONTENT_CLASS = "ui-paginator-bottom-left-content";
-    public static final String PAGINATOR_BOTTOM_RIGHT_CONTENT_CLASS = "ui-paginator-bottom-right-content";
-    public static final String PAGINATOR_PAGE_CLASS = "ui-paginator-page ui-state-default ui-corner-all";
-    public static final String PAGINATOR_ACTIVE_PAGE_CLASS = "ui-paginator-page ui-state-default ui-state-active ui-corner-all";
-    public static final String PAGINATOR_CURRENT_CLASS = "ui-paginator-current";
-    public static final String PAGINATOR_RPP_OPTIONS_CLASS = "ui-paginator-rpp-options ui-widget ui-state-default ui-corner-left";
-    public static final String PAGINATOR_RPP_LABEL_CLASS = "ui-paginator-rpp-label ui-helper-hidden";
-    public static final String PAGINATOR_JTP_SELECT_CLASS = "ui-paginator-jtp-select ui-widget ui-state-default ui-corner-left";
-    public static final String PAGINATOR_JTP_INPUT_CLASS = "ui-paginator-jtp-input " + InputText.STYLE_CLASS;
-    public static final String PAGINATOR_FIRST_PAGE_LINK_CLASS = "ui-paginator-first ui-state-default ui-corner-all";
-    public static final String PAGINATOR_FIRST_PAGE_ICON_CLASS = "ui-icon ui-icon-seek-first";
-    public static final String PAGINATOR_PREV_PAGE_LINK_CLASS = "ui-paginator-prev ui-state-default ui-corner-all";
-    public static final String PAGINATOR_PREV_PAGE_ICON_CLASS = "ui-icon ui-icon-seek-prev";
-    public static final String PAGINATOR_NEXT_PAGE_LINK_CLASS = "ui-paginator-next ui-state-default ui-corner-all";
-    public static final String PAGINATOR_NEXT_PAGE_ICON_CLASS = "ui-icon ui-icon-seek-next";
-    public static final String PAGINATOR_LAST_PAGE_LINK_CLASS = "ui-paginator-last ui-state-default ui-corner-all";
-    public static final String PAGINATOR_LAST_PAGE_ICON_CLASS = "ui-icon ui-icon-seek-end";
-    public static final String ARIA_HEADER_LABEL = "primefaces.paginator.aria.HEADER";
-    public static final String ARIA_FIRST_PAGE_LABEL = "primefaces.paginator.aria.FIRST_PAGE";
-    public static final String ARIA_PREVIOUS_PAGE_LABEL = "primefaces.paginator.aria.PREVIOUS_PAGE";
-    public static final String ARIA_NEXT_PAGE_LABEL = "primefaces.paginator.aria.NEXT_PAGE";
-    public static final String ARIA_LAST_PAGE_LABEL = "primefaces.paginator.aria.LAST_PAGE";
-    public static final String ROWS_PER_PAGE_LABEL = "primefaces.paginator.aria.ROWS_PER_PAGE";
+public class UIData extends javax.faces.component.UIData {
 
     private static final String SB_ID = UIData.class.getName() + "#id";
 
@@ -106,259 +72,37 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
     private Object oldVar = null;
 
     public enum PropertyKeys {
-        paginator,
-        paginatorTemplate,
-        rows,
-        rowsPerPageTemplate,
-        rowsPerPageLabel,
-        currentPageReportTemplate,
-        pageLinks,
-        paginatorPosition,
-        paginatorAlwaysVisible,
         rowIndex,
         rowIndexVar,
         saved,
         lazy,
-        rowStatePreserved,
-        touchable;
-    }
-
-    public boolean isPaginator() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.paginator, false);
-    }
-
-    public void setPaginator(boolean _paginator) {
-        getStateHelper().put(PropertyKeys.paginator, _paginator);
-    }
-
-    public java.lang.String getPaginatorTemplate() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.paginatorTemplate,
-                 "{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}");
-    }
-
-    public void setPaginatorTemplate(java.lang.String _paginatorTemplate) {
-        getStateHelper().put(PropertyKeys.paginatorTemplate, _paginatorTemplate);
-    }
-
-    @Override
-    public boolean isTouchable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, true);
-    }
-
-    @Override
-    public void setTouchable(boolean touchable) {
-        getStateHelper().put(PropertyKeys.touchable, touchable);
-    }
-
-    @Override
-    public int getRows() {
-        return (Integer) getStateHelper().eval(PropertyKeys.rows, 0);
-    }
-
-    @Override
-    public void setRows(int rows) {
-        if (rows < 0) {
-            throw new IllegalArgumentException(String.valueOf(rows));
-        }
-        ELContext elContext = getFacesContext().getELContext();
-        ValueExpression rowsVe = ValueExpressionAnalyzer.getExpression(
-                elContext, getValueExpression(PropertyKeys.rows.name()));
-        if (isWriteable(elContext, rowsVe)) {
-            rowsVe.setValue(elContext, rows);
-        }
-        else {
-            getStateHelper().put(UIData.PropertyKeys.rows, rows);
-        }
-    }
-
-    @Override
-    public void setFirst(int first) {
-        ELContext elContext = getFacesContext().getELContext();
-        ValueExpression firstVe = ValueExpressionAnalyzer.getExpression(
-                elContext, getValueExpression("first"));
-        if (isWriteable(elContext, firstVe)) {
-            firstVe.setValue(elContext, first);
-        }
-        else {
-            super.setFirst(first);
-        }
-    }
-
-    public java.lang.String getRowsPerPageTemplate() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.rowsPerPageTemplate, null);
-    }
-
-    public void setRowsPerPageTemplate(java.lang.String _rowsPerPageTemplate) {
-        getStateHelper().put(PropertyKeys.rowsPerPageTemplate, _rowsPerPageTemplate);
-    }
-
-    public java.lang.String getRowsPerPageLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.rowsPerPageLabel, null);
-    }
-
-    public void setRowsPerPageLabel(java.lang.String _rowsPerPageLabel) {
-        getStateHelper().put(PropertyKeys.rowsPerPageLabel, _rowsPerPageLabel);
-    }
-
-    public java.lang.String getCurrentPageReportTemplate() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.currentPageReportTemplate, "({currentPage} of {totalPages})");
-    }
-
-    public void setCurrentPageReportTemplate(java.lang.String _currentPageReportTemplate) {
-        getStateHelper().put(PropertyKeys.currentPageReportTemplate, _currentPageReportTemplate);
-    }
-
-    public int getPageLinks() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.pageLinks, 10);
-    }
-
-    public void setPageLinks(int _pageLinks) {
-        getStateHelper().put(PropertyKeys.pageLinks, _pageLinks);
-    }
-
-    public java.lang.String getPaginatorPosition() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.paginatorPosition, "both");
-    }
-
-    public void setPaginatorPosition(java.lang.String _paginatorPosition) {
-        getStateHelper().put(PropertyKeys.paginatorPosition, _paginatorPosition);
-    }
-
-    public boolean isPaginatorAlwaysVisible() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.paginatorAlwaysVisible, true);
-    }
-
-    public void setPaginatorAlwaysVisible(boolean _paginatorAlwaysVisible) {
-        getStateHelper().put(PropertyKeys.paginatorAlwaysVisible, _paginatorAlwaysVisible);
+        rowStatePreserved
     }
 
     public boolean isLazy() {
         return ComponentUtils.eval(getStateHelper(), PropertyKeys.lazy, () -> getValue() instanceof LazyDataModel);
     }
 
-    public void setLazy(boolean _lazy) {
-        getStateHelper().put(PropertyKeys.lazy, _lazy);
+    public void setLazy(boolean lazy) {
+        getStateHelper().put(PropertyKeys.lazy, lazy);
     }
 
-    public java.lang.String getRowIndexVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.rowIndexVar, null);
+    public String getRowIndexVar() {
+        return (String) getStateHelper().eval(PropertyKeys.rowIndexVar, null);
     }
 
-    public void setRowIndexVar(java.lang.String _rowIndexVar) {
-        getStateHelper().put(PropertyKeys.rowIndexVar, _rowIndexVar);
+    public void setRowIndexVar(String rowIndexVar) {
+        getStateHelper().put(PropertyKeys.rowIndexVar, rowIndexVar);
     }
 
     @Override
     public boolean isRowStatePreserved() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.rowStatePreserved, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.rowStatePreserved, false);
     }
 
     @Override
-    public void setRowStatePreserved(boolean _paginator) {
-        getStateHelper().put(PropertyKeys.rowStatePreserved, _paginator);
-    }
-
-    public void resetRows() {
-        getStateHelper().remove(PropertyKeys.rows);
-    }
-
-    public void calculateFirst() {
-        int rows = getRows();
-
-        if (rows > 0) {
-            int first = getFirst();
-            int rowCount = getRowCount();
-
-            if (rowCount > 0 && first >= rowCount) {
-                int numberOfPages = (int) Math.ceil(rowCount * 1d / rows);
-
-                setFirst(Math.max((numberOfPages - 1) * rows, 0));
-            }
-        }
-    }
-
-    public int getPage() {
-        if (getRowCount() > 0) {
-            int rows = getRowsToRender();
-
-            if (rows > 0) {
-                int first = getFirst();
-
-                return first / rows;
-            }
-            else {
-                return 0;
-            }
-        }
-        else {
-            return 0;
-        }
-    }
-
-    public int getPageCount() {
-        return (int) Math.ceil(getRowCount() * 1d / getRowsToRender());
-    }
-
-    public int getRowsToRender() {
-        int rows = getRows();
-
-        return rows == 0 ? getRowCount() : rows;
-    }
-
-    public boolean isPaginationRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_pagination");
-    }
-
-    private boolean isRowsPerPageValid(UIData data, String rowsParam) {
-
-        if (rowsParam == null) {
-            return true;
-        }
-
-        String rowsPerPageTemplate = data.getRowsPerPageTemplate();
-
-        if (rowsPerPageTemplate != null) {
-            String[] options = rowsPerPageTemplate.split("[,]+");
-
-            for (String option : options) {
-                String opt = option.trim();
-
-                if (opt.equals(rowsParam) || (opt.startsWith("{ShowAll|") && "*".equals(rowsParam))) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        int rows = data.getRows();
-
-        if (rows > 0) {
-            return Integer.toString(rows).equals(rowsParam);
-        }
-
-        return true;
-    }
-
-    public void updatePaginationData(FacesContext context, UIData data) {
-        data.setRowIndex(-1);
-        String componentClientId = data.getClientId(context);
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-
-        String firstParam = params.get(componentClientId + "_first");
-        String rowsParam = params.get(componentClientId + "_rows");
-
-        if (!isRowsPerPageValid(data, rowsParam)) {
-            throw new IllegalArgumentException("Unsupported rows per page value: " + rowsParam);
-        }
-
-        data.setFirst(Integer.parseInt(firstParam));
-        int newRowsValue = "*".equals(rowsParam) ? getRowCount() : Integer.parseInt(rowsParam);
-        data.setRows(newRowsValue);
-    }
-
-    private boolean isWriteable(ELContext elContext, ValueExpression ve) {
-        return ve != null && !ve.isReadOnly(elContext);
+    public void setRowStatePreserved(boolean rowStatePreserved) {
+        getStateHelper().put(PropertyKeys.rowStatePreserved, rowStatePreserved);
     }
 
     @Override
@@ -925,7 +669,7 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
         }
 
         FacesContext facesContext = context.getFacesContext();
-        boolean visitRows = shouldVisitRows(facesContext, context);
+        boolean visitRows = !ComponentUtils.isSkipIteration(context, facesContext);
 
         int rowIndex = -1;
         if (visitRows) {
@@ -1086,18 +830,18 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
                     UIComponent kid = getChildren().get(i);
                     if (requiresColumns) {
                         if (kid instanceof Columns) {
-                            Columns uicolumns = (Columns) kid;
-                            for (int j = 0; j < uicolumns.getRowCount(); j++) {
-                                uicolumns.setRowIndex(j);
+                            Columns columns = (Columns) kid;
+                            for (int j = 0; j < columns.getRowCount(); j++) {
+                                columns.setRowIndex(j);
 
-                                boolean value = visitColumnContent(context, callback, uicolumns);
+                                boolean value = visitColumnContent(context, callback, columns);
                                 if (value) {
-                                    uicolumns.setRowIndex(-1);
+                                    columns.setRowIndex(-1);
                                     return true;
                                 }
                             }
 
-                            uicolumns.setRowIndex(-1);
+                            columns.setRowIndex(-1);
                         }
                         else {
                             boolean value = visitColumnContent(context, callback, kid);
@@ -1134,19 +878,6 @@ public class UIData extends javax.faces.component.UIData implements TouchAware {
         }
 
         return false;
-    }
-
-    protected boolean shouldVisitRows(FacesContext context, VisitContext visitContext) {
-        try {
-            //JSF 2.1
-            VisitHint skipHint = VisitHint.valueOf("SKIP_ITERATION");
-            return !visitContext.getHints().contains(skipHint);
-        }
-        catch (IllegalArgumentException e) {
-            //JSF 2.0
-            Object skipHint = context.getAttributes().get("javax.faces.visit.SKIP_ITERATION");
-            return !Boolean.TRUE.equals(skipHint);
-        }
     }
 
     protected boolean requiresColumns() {

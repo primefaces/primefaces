@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,19 +23,20 @@
  */
 package org.primefaces.component.panelgrid;
 
-import org.primefaces.component.column.Column;
-import org.primefaces.component.row.Row;
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.GridLayoutUtils;
+import java.io.IOException;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import java.io.IOException;
+
+import org.primefaces.component.column.Column;
+import org.primefaces.component.row.Row;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.GridLayoutUtils;
 
 public class PanelGridRenderer extends CoreRenderer {
 
@@ -196,6 +197,10 @@ public class PanelGridRenderer extends CoreRenderer {
                     child.encodeAll(context);
                 }
             }
+        }
+
+        if (i == 0) {
+            throw new FacesException("PanelGrid without a 'columns' attribute expects at least one <p:row> element.");
         }
 
         context.getAttributes().remove(Constants.HELPER_RENDERER);

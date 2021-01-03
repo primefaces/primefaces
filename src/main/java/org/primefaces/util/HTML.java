@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -132,13 +132,6 @@ public class HTML {
         "type"
     );
 
-    //StyleClass is omitted
-    public static final List<String> MEDIA_ATTRS = LangUtils.unmodifiableList(
-        "height",
-        "width",
-        "style"
-    );
-
     //disabled, readonly, style, styleClass handles by component renderer
     public static final List<String> INPUT_TEXT_ATTRS_WITHOUT_EVENTS = LangUtils.unmodifiableList(
         "accesskey",
@@ -148,6 +141,7 @@ public class HTML {
         "lang",
         "maxlength",
         "placeholder",
+        "inputmode",
         "size",
         "tabindex",
         "title"
@@ -171,6 +165,7 @@ public class HTML {
         "alt",
         "autocomplete",
         "placeholder",
+        "inputmode",
         "dir",
         "lang",
         "size",
@@ -197,6 +192,45 @@ public class HTML {
         "onload",
         "onunload"
     ));
+
+    public static final List<String> MEDIA_ATTRS = LangUtils.unmodifiableList(
+        "autoplay",
+        "controls",
+        "crossOrigin",
+        "currentTime",
+        "defaultMuted",
+        "defaultPlaybackRate",
+        "loop",
+        "muted",
+        "playbackRate",
+        "preload",
+        "volume"
+    );
+
+    public static final List<String> MEDIA_EVENTS = LangUtils.unmodifiableList(
+        "onabort",
+        "oncanplay",
+        "oncanplaythrough",
+        "ondurationchange",
+        "onemptied",
+        "onended",
+        "onerror",
+        "onloadeddata",
+        "onloadedmetadata",
+        "onloadstart",
+        "onpause",
+        "onplay",
+        "onplaying",
+        "onprogress",
+        "onratechange",
+        "onseeked",
+        "onseeking",
+        "onstalled",
+        "onsuspend",
+        "ontimeupdate",
+        "onvolumechange",
+        "onwaiting"
+    );
 
     public static final List<String> COMMON_EVENTS = LangUtils.concat(COMMON_EVENTS_WITHOUT_CLICK, CLICK_EVENT);
 
@@ -226,6 +260,8 @@ public class HTML {
 
     public static final List<String> SELECT_ATTRS = LangUtils.concat(
             SELECT_ATTRS_WITHOUT_EVENTS, COMMON_EVENTS, CHANGE_SELECT_EVENTS, BLUR_FOCUS_EVENTS);
+
+    public static final List<String> MEDIA_ATTRS_WITH_EVENTS = LangUtils.concat(MEDIA_ATTRS, MEDIA_EVENTS);
 
     public static final String ARIA_ACTIVEDESCENDANT = "aria-activedescendant";
     public static final String ARIA_ATOMIC = "aria-atomic";

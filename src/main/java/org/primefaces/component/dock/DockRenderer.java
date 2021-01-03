@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -45,10 +45,9 @@ public class DockRenderer extends BaseMenuRenderer {
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu menu) throws IOException {
         Dock dock = (Dock) menu;
-        String clientId = dock.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Dock", dock.resolveWidgetVar(context), clientId)
+        wb.init("Dock", dock)
                 .attr("position", dock.getPosition())
                 .attr("halign", dock.getHalign())
                 .attr("blockScroll", dock.isBlockScroll(), false)

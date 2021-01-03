@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,11 +34,12 @@ import javax.faces.component.*;
 import javax.faces.component.UIColumn;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
-import javax.faces.component.visit.VisitHint;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.event.*;
 
+import org.primefaces.component.column.Column;
+import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.tree.UITreeNode;
 import org.primefaces.model.CheckboxTreeNode;
@@ -82,6 +83,10 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 
     public String getRowKey() {
         return rowKey;
+    }
+
+    public void setRowKey(String rowKey) {
+        setRowKey(getValue(), rowKey);
     }
 
     public void setRowKey(TreeNode root, String rowKey) {
@@ -240,7 +245,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         }
 
         int childIndex = Integer.parseInt(paths[0]);
-        if (childIndex >= searchRoot.getChildren().size()) {
+        if (childIndex >= searchRoot.getChildCount()) {
             return null;
         }
 
@@ -310,7 +315,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             if (preselection != null) {
                 String selectionMode = getSelectionMode();
                 if (selectionMode != null) {
-                    if (selectionMode.equals("single")) {
+                    if ("single".equals(selectionMode)) {
                         if (!preselection.isEmpty()) {
                             ve.setValue(FacesContext.getCurrentInstance().getELContext(), preselection.get(0));
                         }
@@ -355,7 +360,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         String selectionMode = getSelectionMode();
 
         if (selection != null) {
-            if (selectionMode.equals("single")) {
+            if ("single".equals(selectionMode)) {
                 TreeNode node = (TreeNode) selection;
                 value = node.getRowKey();
             }
@@ -482,7 +487,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             boolean valid = true;
             Object selection = getSelection();
 
-            if (selectionMode.equals("single")) {
+            if ("single".equals(selectionMode)) {
                 if (selection == null) {
                     valid = false;
                 }
@@ -502,7 +507,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
                     msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, requiredMessage, requiredMessage);
                 }
                 else {
-                    msg = MessageFactory.getFacesMessage(REQUIRED_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, new Object[]{getClientId(context)});
+                    msg = MessageFactory.getFacesMessage(REQUIRED_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, getClientId(context));
                 }
 
                 context.addMessage(getClientId(context), msg);
@@ -540,7 +545,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             Object selection = getLocalSelectedNodes();
             Object previousSelection = selectionVE.getValue(context.getELContext());
 
-            if (selectionMode.equals("single")) {
+            if ("single".equals(selectionMode)) {
                 if (previousSelection != null) {
                     ((TreeNode) previousSelection).setSelected(false);
                 }
@@ -804,7 +809,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         }
 
         FacesContext facesContext = context.getFacesContext();
-        boolean visitNodes = requiresIteration(facesContext, context);
+        boolean visitNodes = !ComponentUtils.isSkipIteration(context, facesContext);
         TreeNode root = getValue();
 
         String oldRowKey = getRowKey();
@@ -823,6 +828,10 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 
             if ((result == VisitResult.ACCEPT) && doVisitChildren(context)) {
                 if (visitFacets(context, root, callback, visitNodes)) {
+                    return true;
+                }
+
+                if (requiresColumns() && visitColumnsAndColumnFacets(context, callback, visitNodes, root)) {
                     return true;
                 }
 
@@ -882,18 +891,18 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         if (getChildCount() > 0) {
             for (UIComponent child : getChildren()) {
                 if (child instanceof Columns) {
-                    Columns uicolumns = (Columns) child;
-                    for (int i = 0; i < uicolumns.getRowCount(); i++) {
-                        uicolumns.setRowIndex(i);
+                    Columns columns = (Columns) child;
+                    for (int i = 0; i < columns.getRowCount(); i++) {
+                        columns.setRowIndex(i);
 
-                        boolean value = visitColumnContent(context, callback, uicolumns);
+                        boolean value = visitColumnContent(context, callback, columns);
                         if (value) {
-                            uicolumns.setRowIndex(-1);
+                            columns.setRowIndex(-1);
                             return true;
                         }
                     }
 
-                    uicolumns.setRowIndex(-1);
+                    columns.setRowIndex(-1);
                 }
                 else if (child instanceof UIColumn) {
                     if (child instanceof UITreeNode) {
@@ -966,6 +975,81 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         return false;
     }
 
+    protected boolean requiresColumns() {
+        return false;
+    }
+
+    protected boolean visitColumnsAndColumnFacets(VisitContext context, VisitCallback callback, boolean visitRows, TreeNode root) {
+        if (visitRows) {
+            setRowKey(root, null);
+        }
+
+        if (getChildCount() > 0) {
+            for (UIComponent child : getChildren()) {
+                VisitResult result = context.invokeVisitCallback(child, callback); // visit the column directly
+                if (result == VisitResult.COMPLETE) {
+                    return true;
+                }
+
+                if (child instanceof org.primefaces.component.api.UIColumn) {
+                    if (child.getFacetCount() > 0) {
+                        if (child instanceof Columns) {
+                            Columns columns = (Columns) child;
+                            for (int i = 0; i < columns.getRowCount(); i++) {
+                                columns.setRowIndex(i);
+                                boolean value = visitColumnFacets(context, callback, child);
+                                if (value) {
+                                    return true;
+                                }
+                            }
+                            columns.setRowIndex(-1);
+                        }
+                        else {
+                            boolean value = visitColumnFacets(context, callback, child);
+                            if (value) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+                else if (child instanceof ColumnGroup) {
+                    visitColumnGroup(context, callback, (ColumnGroup) child);
+                }
+            }
+        }
+
+        return false;
+    }
+
+    protected boolean visitColumnFacets(VisitContext context, VisitCallback callback, UIComponent component) {
+        for (UIComponent columnFacet : component.getFacets().values()) {
+            if (columnFacet.visitTree(context, callback)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    protected boolean visitColumnGroup(VisitContext context, VisitCallback callback, ColumnGroup group) {
+        if (group.getChildCount() > 0) {
+            for (UIComponent row : group.getChildren()) {
+                if (row.getChildCount() > 0) {
+                    for (UIComponent col : row.getChildren()) {
+                        if (col instanceof Column && col.getFacetCount() > 0) {
+                            boolean value = visitColumnFacets(context, callback, col);
+                            if (value) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
     public boolean isRTLRendering() {
         return rtl;
     }
@@ -976,19 +1060,6 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 
     protected boolean shouldVisitNode(TreeNode node) {
         return (node.isExpanded() || node.getParent() == null);
-    }
-
-    protected boolean requiresIteration(FacesContext context, VisitContext visitContext) {
-        try {
-            //JSF 2.1
-            VisitHint skipHint = VisitHint.valueOf("SKIP_ITERATION");
-            return !visitContext.getHints().contains(skipHint);
-        }
-        catch (IllegalArgumentException e) {
-            //JSF 2.0
-            Object skipHint = context.getAttributes().get("javax.faces.visit.SKIP_ITERATION");
-            return !Boolean.TRUE.equals(skipHint);
-        }
     }
 
     @Override

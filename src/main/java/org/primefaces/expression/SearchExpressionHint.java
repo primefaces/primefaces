@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,8 +26,8 @@ package org.primefaces.expression;
 public enum SearchExpressionHint {
 
     /**
-     * Checks if the {@link UIComponent} has a renderer or not. This check is currently only useful for the update attributes, as a component without
-     * renderer can't be updated.
+     * Checks if the {@link javax.faces.component.UIComponent} has a renderer or not.
+     * This check is currently only useful for the update attributes, as a component without renderer can't be updated.
      */
     VALIDATE_RENDERER,
 

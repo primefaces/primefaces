@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,12 +25,14 @@ package org.primefaces.component.autocomplete;
 
 import java.io.IOException;
 import java.util.*;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.event.PhaseId;
+
 import org.primefaces.component.column.Column;
 import org.primefaces.event.AutoCompleteEvent;
 import org.primefaces.expression.SearchExpressionFacade;
@@ -715,9 +717,8 @@ public class AutoCompleteRenderer extends InputRenderer {
     }
 
     protected void encodeScript(FacesContext context, AutoComplete ac) throws IOException {
-        String clientId = ac.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("AutoComplete", ac.resolveWidgetVar(context), clientId);
+        wb.init("AutoComplete", ac);
 
         wb.attr("minLength", ac.getMinQueryLength(), 1)
                 .attr("delay", ac.getQueryDelay())
@@ -737,7 +738,9 @@ public class AutoCompleteRenderer extends InputRenderer {
                 .attr("dynamic", ac.isDynamic(), false)
                 .attr("autoSelection", ac.isAutoSelection(), true)
                 .attr("escape", ac.isEscape(), true)
-                .attr("queryMode", ac.getQueryMode());
+                .attr("queryMode", ac.getQueryMode())
+                .attr("completeEndpoint", ac.getCompleteEndpoint())
+                .attr("moreText", ac.getMoreText());
 
         if (ac.isCache()) {
             wb.attr("cache", true).attr("cacheTimeout", ac.getCacheTimeout());

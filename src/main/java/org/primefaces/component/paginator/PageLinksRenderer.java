@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.api.Pageable;
-import org.primefaces.component.api.UIData;
+import org.primefaces.component.api.UIPageableData;
 
 public class PageLinksRenderer implements PaginatorElementRenderer {
 
@@ -50,10 +50,10 @@ public class PageLinksRenderer implements PaginatorElementRenderer {
         start = Math.max(0, start - delta);
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", UIData.PAGINATOR_PAGES_CLASS, null);
+        writer.writeAttribute("class", UIPageableData.PAGINATOR_PAGES_CLASS, null);
 
         for (int i = start; i <= end; i++) {
-            String styleClass = currentPage == i ? UIData.PAGINATOR_ACTIVE_PAGE_CLASS : UIData.PAGINATOR_PAGE_CLASS;
+            String styleClass = currentPage == i ? UIPageableData.PAGINATOR_ACTIVE_PAGE_CLASS : UIPageableData.PAGINATOR_PAGE_CLASS;
 
             writer.startElement("a", null);
             writer.writeAttribute("class", styleClass, null);

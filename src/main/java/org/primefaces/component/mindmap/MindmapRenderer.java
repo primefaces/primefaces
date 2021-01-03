@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -58,11 +58,10 @@ public class MindmapRenderer extends CoreRenderer {
 
     protected void encodeScript(FacesContext context, Mindmap map) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = map.getClientId(context);
         MindmapNode root = map.getValue();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Mindmap", map.resolveWidgetVar(context), clientId)
+        wb.init("Mindmap", map)
                 .attr("effectSpeed", map.getEffectSpeed());
 
         if (root != null) {
@@ -115,7 +114,7 @@ public class MindmapRenderer extends CoreRenderer {
             writer.write(",\"children\":[");
 
             for (int i = 0; i < size; i++) {
-                String childKey = (nodeKey.equals("root")) ? String.valueOf(i) : nodeKey + "_" + i;
+                String childKey = ("root".equals(nodeKey)) ? String.valueOf(i) : nodeKey + "_" + i;
 
                 MindmapNode child = children.get(i);
                 encodeNode(context, map, child, childKey);

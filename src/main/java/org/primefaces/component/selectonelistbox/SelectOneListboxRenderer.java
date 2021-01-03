@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -88,9 +88,8 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
     }
 
     protected void encodeScript(FacesContext context, SelectOneListbox listbox) throws IOException {
-        String clientId = listbox.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectOneListbox", listbox.resolveWidgetVar(context), clientId)
+        wb.init("SelectOneListbox", listbox)
                 .attr("disabled", listbox.isDisabled(), false);
 
         if (listbox.isFilter()) {
@@ -306,7 +305,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
-        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER, null), null);
+        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER), null);
         if (disabled) {
             writer.writeAttribute("disabled", "disabled", null);
         }

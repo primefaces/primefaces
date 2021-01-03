@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -88,24 +88,24 @@ public class Organigram extends OrganigramBase {
             FacesEvent wrapperEvent = null;
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName.equals("expand")) {
+            if ("expand".equals(eventName)) {
                 OrganigramNode node = findTreeNode(getValue(), params.get(clientId + "_expandNode"));
                 node.setExpanded(true);
 
                 wrapperEvent = new OrganigramNodeExpandEvent(this, behaviorEvent.getBehavior(), node);
             }
-            else if (eventName.equals("collapse")) {
+            else if ("collapse".equals(eventName)) {
                 OrganigramNode node = findTreeNode(getValue(), params.get(clientId + "_collapseNode"));
                 node.setExpanded(false);
 
                 wrapperEvent = new OrganigramNodeCollapseEvent(this, behaviorEvent.getBehavior(), node);
             }
-            else if (eventName.equals("select") || eventName.equals("contextmenu")) {
+            else if ("select".equals(eventName) || "contextmenu".equals(eventName)) {
                 OrganigramNode node = findTreeNode(getValue(), params.get(clientId + "_selectNode"));
 
                 wrapperEvent = new OrganigramNodeSelectEvent(this, behaviorEvent.getBehavior(), node);
             }
-            else if (eventName.equals("dragdrop")) {
+            else if ("dragdrop".equals(eventName)) {
                 OrganigramNode dragNode = findTreeNode(getValue(), params.get(clientId + "_dragNode"));
                 OrganigramNode dropNode = findTreeNode(getValue(), params.get(clientId + "_dropNode"));
 
@@ -139,7 +139,7 @@ public class Organigram extends OrganigramBase {
 
 
     public OrganigramNode findTreeNode(OrganigramNode searchRoot, String rowKey) {
-        if (rowKey != null && rowKey.equals("root")) {
+        if ("root".equals(rowKey)) {
             return getValue();
         }
 

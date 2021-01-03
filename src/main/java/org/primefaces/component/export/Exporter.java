@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,9 +26,21 @@ package org.primefaces.component.export;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 public interface Exporter<T extends UIComponent> {
 
-    void export(FacesContext facesContext, List<T> component, ExportConfiguration config) throws IOException;
+    void export(FacesContext facesContext, List<T> component, OutputStream outputStream, ExportConfiguration exportConfiguration) throws IOException;
+
+    /**
+     * Content-type (MIME-type) excluding charset. (eg 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+     */
+    String getContentType();
+
+    /**
+     * File-extension of the exported file including a leading dot. (eg '.xlsx')
+     */
+    String getFileExtension();
+
 }

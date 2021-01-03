@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -53,9 +53,8 @@ public class RibbonRenderer extends CoreRenderer {
     }
 
     private void encodeScript(FacesContext context, Ribbon ribbon) throws IOException {
-        String clientId = ribbon.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Ribbon", ribbon.resolveWidgetVar(context), clientId);
+        wb.init("Ribbon", ribbon);
 
         encodeClientBehaviors(context, ribbon);
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -172,7 +172,7 @@ public class PrimeConfiguration {
             param = param.toLowerCase();
         }
 
-        return (param.equals("auto") && environment.isBeanValidationAvailable()) || param.equals("true");
+        return ("auto".equals(param) && environment.isBeanValidationAvailable()) || "true".equals(param);
     }
 
     public boolean isValidateEmptyFields() {

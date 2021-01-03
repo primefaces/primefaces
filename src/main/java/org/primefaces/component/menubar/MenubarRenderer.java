@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,10 +40,9 @@ public class MenubarRenderer extends TieredMenuRenderer {
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         Menubar menubar = (Menubar) abstractMenu;
-        String clientId = menubar.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Menubar", menubar.resolveWidgetVar(context), clientId)
+        wb.init("Menubar", menubar)
                 .attr("autoDisplay", menubar.isAutoDisplay())
                 .attr("delay", menubar.getDelay())
                 .attr("toggleEvent", menubar.getToggleEvent(), null);

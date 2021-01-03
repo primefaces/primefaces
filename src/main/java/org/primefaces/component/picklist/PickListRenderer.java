@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -141,9 +141,8 @@ public class PickListRenderer extends InputRenderer {
     }
 
     protected void encodeScript(FacesContext context, PickList pickList) throws IOException {
-        String clientId = pickList.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("PickList", pickList.resolveWidgetVar(context), clientId)
+        wb.init("PickList", pickList)
                 .attr("effect", pickList.getEffect())
                 .attr("effectSpeed", pickList.getEffectSpeed())
                 .attr("escape", pickList.isEscape())
@@ -190,7 +189,7 @@ public class PickListRenderer extends InputRenderer {
 
     protected void encodeButton(FacesContext context, String title, String styleClass, String icon, String labelDisplay) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        boolean tooltip = labelDisplay.equals("tooltip");
+        boolean tooltip = "tooltip".equals(labelDisplay);
         String buttonClass = tooltip ? HTML.BUTTON_ICON_ONLY_BUTTON_CLASS : HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS;
 
         writer.startElement("button", null);
@@ -373,7 +372,7 @@ public class PickListRenderer extends InputRenderer {
         writer.writeAttribute("name", name, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("class", styleClass, null);
-        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER, null), null);
+        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER), null);
         writer.endElement("input");
 
         writer.startElement("span", null);

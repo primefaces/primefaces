@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -96,8 +96,8 @@ public final class OrganigramHelper {
      * @param node The root node.
      */
     public static void buildRowKeys(OrganigramNode node) {
-        if (node.getChildren() != null && !node.getChildren().isEmpty()) {
-            for (int i = 0; i < node.getChildren().size(); i++) {
+        if (node.getChildren() != null && node.getChildCount() > 0) {
+            for (int i = 0; i < node.getChildCount(); i++) {
                 OrganigramNode childNode = node.getChildren().get(i);
 
                 String childRowKey = (node.getParent() == null) ? String.valueOf(i) : node.getRowKey() + "_" + i;

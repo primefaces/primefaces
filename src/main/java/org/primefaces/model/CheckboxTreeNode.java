@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -203,7 +203,7 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
         boolean allChildrenSelected = true;
         this.partialSelected = false;
 
-        for (int i = 0; i < this.getChildren().size(); i++) {
+        for (int i = 0; i < this.getChildCount(); i++) {
             TreeNode childNode = this.getChildren().get(i);
 
             boolean childSelected = childNode.isSelected();

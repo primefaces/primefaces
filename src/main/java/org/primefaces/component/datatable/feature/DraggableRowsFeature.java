@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -75,8 +75,8 @@ public class DraggableRowsFeature implements DataTableFeature {
                 }
             }
             else {
-                LOGGER.info("Row reordering is only available for list backed datatables, "
-                        + "use rowReorder ajax behavior with listener for manual handling of model update.");
+                LOGGER.info("Row reordering is only available for list backed datatables. "
+                            + "Use rowReorder AJAX behavior with listener and manually handle the model update.");
             }
         }
     }

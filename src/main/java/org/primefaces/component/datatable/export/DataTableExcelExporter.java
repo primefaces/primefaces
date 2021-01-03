@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,60 +23,75 @@
  */
 package org.primefaces.component.datatable.export;
 
-import org.apache.poi.hssf.usermodel.*;
+import java.awt.Color;
+import java.io.IOException;
+import java.util.List;
+
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIPanel;
+import javax.faces.context.FacesContext;
+
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFPalette;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.WorkbookUtil;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExcelOptions;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.ExporterOptions;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIPanel;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import java.awt.Color;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.List;
 
 public class DataTableExcelExporter extends DataTableExporter {
 
     protected static final String DEFAULT_FONT = HSSFFont.FONT_ARIAL;
-    private CellStyle cellStyle;
+    protected Workbook wb;
+    private CellStyle cellStyleRightAlign;
+    private CellStyle cellStyleCenterAlign;
+    private CellStyle cellStyleLeftAlign;
     private CellStyle facetStyle;
-    private Workbook wb;
+    private boolean stronglyTypedCells;
 
     @Override
-    protected void preExport(FacesContext context, ExportConfiguration config) throws IOException {
+    protected void preExport(FacesContext context, ExportConfiguration exportConfiguration) throws IOException {
         wb = createWorkBook();
 
-        if (config.getPreProcessor() != null) {
-            config.getPreProcessor().invoke(context.getELContext(), new Object[]{wb});
+        if (exportConfiguration.getPreProcessor() != null) {
+            exportConfiguration.getPreProcessor().invoke(context.getELContext(), new Object[]{wb});
         }
     }
 
     @Override
-    public void doExport(FacesContext context, DataTable table, ExportConfiguration config, int index) throws IOException {
+    public void doExport(FacesContext context, DataTable table, ExportConfiguration exportConfiguration, int index) throws IOException {
         String sheetName = getSheetName(context, table);
         if (sheetName == null) {
             sheetName = table.getId() + (index + 1);
         }
 
         sheetName = WorkbookUtil.createSafeSheetName(sheetName);
-        if (sheetName.equals("empty") || sheetName.equals("null")) {
+        if ("empty".equals(sheetName) || "null".equals(sheetName)) {
             sheetName = "Sheet (" + (index + 1) + ")";
         }
 
-        ExcelOptions options = (ExcelOptions) config.getOptions();
+        ExcelOptions options = (ExcelOptions) exportConfiguration.getOptions();
+        if (options == null) {
+            stronglyTypedCells = true;
+        }
+        else {
+            stronglyTypedCells = options.isStronglyTypedCells();
+        }
         Sheet sheet = createSheet(wb, sheetName, options);
-        applyOptions(wb, table, sheet, config.getOptions());
-        exportTable(context, table, sheet, config.isPageOnly(), config.isSelectionOnly());
+        applyOptions(wb, table, sheet, options);
+        exportTable(context, table, sheet, exportConfiguration);
 
         if (options == null || options.isAutoSizeColumn()) {
             short colIndex = 0;
@@ -94,17 +109,13 @@ public class DataTableExcelExporter extends DataTableExporter {
     }
 
     @Override
-    protected void postExport(FacesContext context, ExportConfiguration config) throws IOException {
-        if (config.getPostProcessor() != null) {
-            config.getPostProcessor().invoke(context.getELContext(), new Object[]{wb});
+    protected void postExport(FacesContext context, ExportConfiguration exportConfiguration) throws IOException {
+        if (exportConfiguration.getPostProcessor() != null) {
+            exportConfiguration.getPostProcessor().invoke(context.getELContext(), new Object[]{wb});
         }
 
-        writeExcelToResponse(context, wb, config.getOutputFileName());
+        wb.write(getOutputStream());
 
-        reset();
-    }
-
-    protected void reset() throws IOException {
         wb.close();
         wb = null;
     }
@@ -127,9 +138,7 @@ public class DataTableExcelExporter extends DataTableExporter {
     }
 
     protected void addColumnFacets(DataTable table, Sheet sheet, DataTableExporter.ColumnType columnType) {
-        int sheetRowIndex = columnType == DataTableExporter.ColumnType.HEADER
-                ? 0
-                : sheet.getLastRowNum() + 1;
+        int sheetRowIndex = sheet.getLastRowNum() + 1;
         Row rowHeader = sheet.createRow(sheetRowIndex);
 
         for (UIColumn col : table.getColumns()) {
@@ -161,9 +170,52 @@ public class DataTableExcelExporter extends DataTableExporter {
                     addColumnValue(rowHeader, facet);
                 }
                 else {
-                    addColumnValue(rowHeader, "");
+                    addColumnValue(rowHeader, Constants.EMPTY_STRING);
                 }
             }
+        }
+    }
+
+    protected void addTableFacets(FacesContext context, DataTable table, Sheet sheet, DataTableExporter.ColumnType columnType) {
+        String facetText = null;
+        UIComponent facet = table.getFacet(columnType.facet());
+        if (ComponentUtils.shouldRenderFacet(facet)) {
+            if (facet instanceof UIPanel) {
+                for (UIComponent child : facet.getChildren()) {
+                    if (child.isRendered()) {
+                        String value = ComponentUtils.getValueToRender(context, child);
+
+                        if (value != null) {
+                            facetText = value;
+                            break;
+                        }
+                    }
+                }
+            }
+            else {
+                facetText = ComponentUtils.getValueToRender(context, facet);
+            }
+        }
+
+        if (facetText != null) {
+            int colspan = 0;
+
+            for (UIColumn col : table.getColumns()) {
+                if (col.isRendered() && col.isExportable()) {
+                    colspan++;
+                }
+            }
+
+            int rowIndex = sheet.getLastRowNum() + 1;
+            Row rowHeader = sheet.createRow(rowIndex);
+
+            sheet.addMergedRegion(new CellRangeAddress(
+                        rowIndex, // first row (0-based)
+                        rowIndex, // last row (0-based)
+                        0, // first column (0-based)
+                        colspan - 1 // last column (0-based)
+            ));
+            addColumnValue(rowHeader, 0, facetText);
         }
     }
 
@@ -173,14 +225,14 @@ public class DataTableExcelExporter extends DataTableExporter {
     }
 
     protected void addColumnValue(Row row, String value) {
-        int cellIndex = row.getLastCellNum() == -1 ? 0 : row.getLastCellNum();
-        Cell cell = row.createCell(cellIndex);
+        int col = row.getLastCellNum() == -1 ? 0 : row.getLastCellNum();
+        addColumnValue(row, col, value);
+    }
 
-        cell.setCellValue(createRichTextString(value));
-
-        if (facetStyle != null) {
-            cell.setCellStyle(facetStyle);
-        }
+    protected void addColumnValue(Row row, int col, String text) {
+        Cell cell = row.createCell(col);
+        cell.setCellValue(createRichTextString(text));
+        cell.setCellStyle(facetStyle);
     }
 
     protected void addColumnValue(Row row, List<UIComponent> components, UIColumn column) {
@@ -188,8 +240,13 @@ public class DataTableExcelExporter extends DataTableExporter {
         Cell cell = row.createCell(cellIndex);
         FacesContext context = FacesContext.getCurrentInstance();
 
-        if (column.getExportFunction() != null) {
-            cell.setCellValue(createRichTextString(exportColumnByFunction(context, column)));
+        applyColumnAlignments(column, cell);
+
+        if (LangUtils.isNotBlank(column.getExportValue())) {
+            updateCell(cell, column.getExportValue());
+        }
+        else if (column.getExportFunction() != null) {
+            updateCell(cell, exportColumnByFunction(context, column));
         }
         else {
             StringBuilder builder = new StringBuilder();
@@ -203,11 +260,116 @@ public class DataTableExcelExporter extends DataTableExporter {
                 }
             }
 
-            cell.setCellValue(createRichTextString(builder.toString()));
+            updateCell(cell, builder.toString());
         }
+    }
 
-        if (cellStyle != null) {
-            cell.setCellStyle(cellStyle);
+    protected boolean addColumnGroup(DataTable table, Sheet sheet, DataTableExporter.ColumnType columnType) {
+        ColumnGroup cg = table.getColumnGroup(columnType.facet());
+        if (cg == null || cg.getChildCount() == 0) {
+            return false;
+        }
+        for (UIComponent component : cg.getChildren()) {
+            if (!(component instanceof org.primefaces.component.row.Row)) {
+                continue;
+            }
+            org.primefaces.component.row.Row row = (org.primefaces.component.row.Row) component;
+            int rowIndex = sheet.getLastRowNum() + 1;
+            Row xlRow = sheet.createRow(rowIndex);
+            int colIndex = 0;
+            for (UIComponent rowComponent : row.getChildren()) {
+                if (!(rowComponent instanceof UIColumn)) {
+                    // most likely a ui:repeat which won't work here
+                    continue;
+                }
+                UIColumn column = (UIColumn) rowComponent;
+                if (!column.isRendered() || !column.isExportable()) {
+                    continue;
+                }
+
+                String text = null;
+                switch (columnType) {
+                    case HEADER:
+                        text = (column.getExportHeaderValue() != null) ? column.getExportHeaderValue() : column.getHeaderText();
+                        break;
+
+                    case FOOTER:
+                        text = (column.getExportFooterValue() != null) ? column.getExportFooterValue() : column.getFooterText();
+                        break;
+
+                    default:
+                        text = null;
+                        break;
+                }
+
+                // by default column has 1 rowspan && colspan
+                int rowSpan = column.getRowspan() - 1;
+                int colSpan = column.getColspan() - 1;
+
+                if (rowSpan > 0 && colSpan > 0) {
+                    colIndex = calculateColumnOffset(sheet, rowIndex, colIndex);
+                    sheet.addMergedRegion(new CellRangeAddress(
+                                rowIndex, // first row (0-based)
+                                rowIndex + rowSpan, // last row (0-based)
+                                colIndex, // first column (0-based)
+                                colIndex + colSpan // last column (0-based)
+                    ));
+                    addColumnValue(xlRow, (short) colIndex, text);
+                    colIndex = colIndex + colSpan;
+                }
+                else if (rowSpan > 0) {
+                    sheet.addMergedRegion(new CellRangeAddress(
+                                rowIndex, // first row (0-based)
+                                rowIndex + rowSpan, // last row (0-based)
+                                colIndex, // first column (0-based)
+                                colIndex // last column (0-based)
+                    ));
+                    addColumnValue(xlRow, (short) colIndex, text);
+                }
+                else if (colSpan > 0) {
+                    colIndex = calculateColumnOffset(sheet, rowIndex, colIndex);
+                    sheet.addMergedRegion(new CellRangeAddress(
+                                rowIndex, // first row (0-based)
+                                rowIndex, // last row (0-based)
+                                colIndex, // first column (0-based)
+                                colIndex + colSpan // last column (0-based)
+                    ));
+                    addColumnValue(xlRow, (short) colIndex, text);
+                    colIndex = colIndex + colSpan;
+                }
+                else {
+                    colIndex = calculateColumnOffset(sheet, rowIndex, colIndex);
+                    addColumnValue(xlRow, (short) colIndex, text);
+                }
+                colIndex++;
+            }
+        }
+        return true;
+    }
+
+    protected int calculateColumnOffset(Sheet sheet, int row, int col) {
+        for (int j = 0; j < sheet.getNumMergedRegions(); j++) {
+            CellRangeAddress merged = sheet.getMergedRegion(j);
+            if (merged.isInRange(row, col)) {
+                col = merged.getLastColumn() + 1;
+            }
+        }
+        return col;
+    }
+
+    /**
+     * If ExcelOptions.isStronglyTypedCells = true then for cells that are all numbers make them a numeric cell
+     * instead of a String cell.  Possible future enhancement of Date cells as well.
+     *
+     * @param cell the cell to operate on
+     * @param value the String value to put in the cell
+     */
+    protected void updateCell(Cell cell, String value) {
+        if (stronglyTypedCells && LangUtils.isNumeric(value)) {
+            cell.setCellValue(Double.parseDouble(value));
+        }
+        else {
+            cell.setCellValue(createRichTextString(value));
         }
     }
 
@@ -227,41 +389,39 @@ public class DataTableExcelExporter extends DataTableExporter {
         return wb.createSheet(sheetName);
     }
 
-    protected void writeExcelToResponse(FacesContext context, Workbook generatedExcel, String filename) throws IOException {
-        ExternalContext externalContext = context.getExternalContext();
-        externalContext.setResponseContentType(getContentType());
-        setResponseHeader(externalContext, getContentDisposition(filename));
-        addResponseCookie(context);
-
-        OutputStream out = externalContext.getResponseOutputStream();
-        generatedExcel.write(out);
-    }
-
-    protected String getContentType() {
+    @Override
+    public String getContentType() {
         return "application/vnd.ms-excel";
     }
 
-    protected String getContentDisposition(String filename) {
-        return ComponentUtils.createContentDisposition("attachment", filename + ".xls");
+    @Override
+    public String getFileExtension() {
+        return ".xls";
     }
 
-    public void exportTable(FacesContext context, UIComponent component, Sheet sheet, boolean pageOnly, boolean selectionOnly) {
+    public void exportTable(FacesContext context, UIComponent component, Sheet sheet, ExportConfiguration exportConfiguration) {
         DataTable table = (DataTable) component;
-        addColumnFacets(table, sheet, DataTableExporter.ColumnType.HEADER);
+        addTableFacets(context, table, sheet, DataTableExporter.ColumnType.HEADER);
+        boolean headerGroup = addColumnGroup(table, sheet, DataTableExporter.ColumnType.HEADER);
+        if (!headerGroup) {
+            addColumnFacets(table, sheet, DataTableExporter.ColumnType.HEADER);
+        }
 
-        if (pageOnly) {
+        if (exportConfiguration.isPageOnly()) {
             exportPageOnly(context, table, sheet);
         }
-        else if (selectionOnly) {
+        else if (exportConfiguration.isSelectionOnly()) {
             exportSelectionOnly(context, table, sheet);
         }
         else {
             exportAll(context, table, sheet);
         }
 
+        addColumnGroup(table, sheet, DataTableExporter.ColumnType.FOOTER);
         if (table.hasFooterColumn()) {
             addColumnFacets(table, sheet, DataTableExporter.ColumnType.FOOTER);
         }
+        addTableFacets(context, table, sheet, DataTableExporter.ColumnType.FOOTER);
 
         table.setRowIndex(-1);
     }
@@ -276,10 +436,20 @@ public class DataTableExcelExporter extends DataTableExporter {
         facetStyle.setWrapText(true);
         applyFacetOptions(wb, options, facetStyle);
 
-        cellStyle = wb.createCellStyle();
-        cellStyle.setFont(font);
-        cellStyle.setAlignment(HorizontalAlignment.LEFT);
-        applyCellOptions(wb, options, cellStyle);
+        cellStyleLeftAlign = wb.createCellStyle();
+        cellStyleLeftAlign.setFont(font);
+        cellStyleLeftAlign.setAlignment(HorizontalAlignment.LEFT);
+        applyCellOptions(wb, options, cellStyleLeftAlign);
+
+        cellStyleCenterAlign = wb.createCellStyle();
+        cellStyleCenterAlign.setFont(font);
+        cellStyleCenterAlign.setAlignment(HorizontalAlignment.CENTER);
+        applyCellOptions(wb, options, cellStyleCenterAlign);
+
+        cellStyleRightAlign = wb.createCellStyle();
+        cellStyleRightAlign.setFont(font);
+        cellStyleRightAlign.setAlignment(HorizontalAlignment.RIGHT);
+        applyCellOptions(wb, options, cellStyleRightAlign);
 
         PrintSetup printSetup = sheet.getPrintSetup();
         printSetup.setLandscape(true);
@@ -293,10 +463,10 @@ public class DataTableExcelExporter extends DataTableExporter {
         if (options != null) {
             String facetFontStyle = options.getFacetFontStyle();
             if (facetFontStyle != null) {
-                if (facetFontStyle.equalsIgnoreCase("BOLD")) {
+                if ("BOLD".equalsIgnoreCase(facetFontStyle)) {
                     facetFont.setBold(true);
                 }
-                if (facetFontStyle.equalsIgnoreCase("ITALIC")) {
+                if ("ITALIC".equalsIgnoreCase(facetFontStyle)) {
                     facetFont.setItalic(true);
                 }
             }
@@ -347,16 +517,30 @@ public class DataTableExcelExporter extends DataTableExporter {
 
             String cellFontStyle = options.getCellFontStyle();
             if (cellFontStyle != null) {
-                if (cellFontStyle.equalsIgnoreCase("BOLD")) {
+                if ("BOLD".equalsIgnoreCase(cellFontStyle)) {
                     cellFont.setBold(true);
                 }
-                if (cellFontStyle.equalsIgnoreCase("ITALIC")) {
+                if ("ITALIC".equalsIgnoreCase(cellFontStyle)) {
                     cellFont.setItalic(true);
                 }
             }
         }
 
         cellStyle.setFont(cellFont);
+    }
+
+    protected Cell applyColumnAlignments(UIColumn column, Cell cell) {
+        String[] styles = new String[] {column.getStyle(), column.getStyleClass()};
+        if (LangUtils.containsIgnoreCase(styles, "right")) {
+            cell.setCellStyle(cellStyleRightAlign);
+        }
+        else  if (LangUtils.containsIgnoreCase(styles, "center")) {
+            cell.setCellStyle(cellStyleCenterAlign);
+        }
+        else {
+            cell.setCellStyle(cellStyleLeftAlign);
+        }
+        return cell;
     }
 
     public String getSheetName(FacesContext context, UIComponent table) {

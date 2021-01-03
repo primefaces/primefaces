@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -165,11 +165,10 @@ public class DataScrollerRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, DataScroller ds, int chunkSize) throws IOException {
-        String clientId = ds.getClientId(context);
         String loadEvent = ds.getFacet("loader") == null ? "scroll" : "manual";
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("DataScroller", ds.resolveWidgetVar(context), clientId)
+        wb.init("DataScroller", ds)
                 .attr("chunkSize", chunkSize)
                 .attr("totalSize", ds.getRowCount())
                 .attr("loadEvent", loadEvent)
@@ -226,7 +225,7 @@ public class DataScrollerRenderer extends CoreRenderer {
         LazyDataModel lazyModel = (LazyDataModel) ds.getValue();
 
         if (lazyModel != null) {
-            List<?> data = lazyModel.load(start, size, null, null, Collections.emptyMap());
+            List<?> data = lazyModel.load(start, size, Collections.emptyMap(), Collections.emptyMap());
             lazyModel.setPageSize(size);
             lazyModel.setWrappedData(data);
 

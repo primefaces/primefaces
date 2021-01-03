@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -84,11 +84,10 @@ public class PhotoCamRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, PhotoCam cam) throws IOException {
-        String clientId = cam.getClientId(context);
         String camera = getResourceRequestPath(context, "photocam/webcam.swf");
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("PhotoCam", cam.resolveWidgetVar(context), clientId)
+        wb.init("PhotoCam", cam)
                 .attr("camera", camera)
                 .attr("width", cam.getWidth(), 320)
                 .attr("height", cam.getHeight(), 240)

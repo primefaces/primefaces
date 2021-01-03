@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,11 @@
  */
 package org.primefaces.model.filter;
 
+import javax.faces.context.FacesContext;
 import java.util.Locale;
 
+@FunctionalInterface
 public interface FilterConstraint {
 
-    boolean applies(Object value, Object filter, Locale locale);
+    boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale);
 }

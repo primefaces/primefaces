@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,7 @@
 package org.primefaces.component.datatable.export;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Collection;
@@ -39,7 +40,6 @@ import javax.faces.component.html.HtmlGraphicImage;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 
@@ -51,9 +51,10 @@ import org.primefaces.component.overlaypanel.OverlayPanel;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.ResourceUtils;
 
 public abstract class DataTableExporter implements Exporter<DataTable> {
+
+    private OutputStream outputStream;
 
     protected enum ColumnType {
         HEADER("header"),
@@ -295,11 +296,11 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
         }
     }
 
-    protected void preExport(FacesContext context, ExportConfiguration config) throws IOException {
+    protected void preExport(FacesContext context, ExportConfiguration exportConfiguration) throws IOException {
         // NOOP
     }
 
-    protected void postExport(FacesContext context, ExportConfiguration config) throws IOException {
+    protected void postExport(FacesContext context, ExportConfiguration exportConfiguration) throws IOException {
         // NOOP
     }
 
@@ -314,28 +315,32 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
     protected abstract void exportCells(DataTable table, Object document);
 
     @Override
-    public void export(FacesContext context, List<DataTable> tables, ExportConfiguration config) throws IOException {
-        preExport(context,  config);
+    public void export(FacesContext context, List<DataTable> tables, OutputStream outputStream, ExportConfiguration exportConfiguration) throws IOException {
+        this.outputStream = outputStream;
+
+        preExport(context, exportConfiguration);
 
         int index = 0;
         for (DataTable table : tables) {
-            DataTableVisitCallBack visitCallback = new DataTableVisitCallBack(table, config, index);
+            DataTableVisitCallBack visitCallback = new DataTableVisitCallBack(table, exportConfiguration, index);
             int nbTables = visitCallback.invoke(context);
             index += nbTables;
         }
 
-        postExport(context, config);
+        postExport(context, exportConfiguration);
+
+        this.outputStream = null;
     }
 
     /**
      * Export datatable
      * @param facesContext faces context
      * @param table datatable to export
-     * @param config export configuration
+     * @param exportConfiguration export configuration
      * @param index datatable current index during export process
      * @throws IOException
      */
-    protected abstract void doExport(FacesContext facesContext, DataTable table, ExportConfiguration config, int index) throws IOException;
+    protected abstract void doExport(FacesContext facesContext, DataTable table, ExportConfiguration exportConfiguration, int index) throws IOException;
 
     private class DataTableVisitCallBack implements VisitCallback {
 
@@ -383,15 +388,8 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
         }
     }
 
-    protected void setResponseHeader(ExternalContext externalContext , String contentDisposition) {
-        externalContext.setResponseHeader("Expires", "0");
-        externalContext.setResponseHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
-        externalContext.setResponseHeader("Pragma", "public");
-        externalContext.setResponseHeader("Content-disposition", contentDisposition);
-    }
-
-    protected void addResponseCookie(FacesContext context) {
-        ResourceUtils.addResponseCookie(context, Constants.DOWNLOAD_COOKIE, "true", null);
+    protected OutputStream getOutputStream() {
+        return outputStream;
     }
 
 }

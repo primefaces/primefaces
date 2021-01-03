@@ -30,22 +30,19 @@ import org.primefaces.el.MyBean;
 import org.primefaces.el.MyContainer;
 import org.primefaces.mock.FacesContextMock;
 
-import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
-import java.io.Serializable;
-
 import static org.mockito.Mockito.*;
+import org.primefaces.component.api.UITable;
 
 public class DataTableTest {
 
     @Test
     public void testAllowUnsorting() {
         DataTable table = new DataTable();
-        Assertions.assertEquals(true,table.getAllowUnsorting());
+        Assertions.assertEquals(false, table.isAllowUnsorting());
     }
 
     @Test
@@ -54,25 +51,24 @@ public class DataTableTest {
         ValueExpression exprVE = mock(ValueExpression.class);
 
         when(exprVE.getExpressionString()).thenReturn("#{car.year}");
-        String field = table.resolveStaticField(exprVE);
+        String field = UITable.resolveStaticField(exprVE);
         Assertions.assertEquals("year", field);
 
         when(exprVE.getExpressionString()).thenReturn("#{car.wrapper.year}");
-        field = table.resolveStaticField(exprVE);
+        field = UITable.resolveStaticField(exprVE);
         Assertions.assertEquals("wrapper.year", field);
 
         when(exprVE.getExpressionString()).thenReturn("#{car}");
-        field = table.resolveStaticField(exprVE);
+        field = UITable.resolveStaticField(exprVE);
         Assertions.assertEquals("car", field);
 
         when(exprVE.getExpressionString()).thenReturn("car.year");
-        field = table.resolveStaticField(exprVE);
+        field = UITable.resolveStaticField(exprVE);
         Assertions.assertNull(field);
     }
 
     @Test
     public void testResolveDynamicField() {
-        DataTable table = new DataTable();
         FacesContext context = new FacesContextMock();
         ExpressionFactory expFactory = context.getApplication().getExpressionFactory();
 
@@ -87,12 +83,12 @@ public class DataTableTest {
         // old syntax
         ValueExpression exprVE = expFactory.createValueExpression(
                 context.getELContext(), "#{car[column.container.value]}", String.class);
-        String field = table.resolveDynamicField(exprVE);
+        String field = UITable.resolveDynamicField(context, exprVE);
         Assertions.assertEquals("MyValue", field);
 
         // new syntax
         exprVE = expFactory.createValueExpression(context.getELContext(), "#{column.container.value}", String.class);
-        field = table.resolveDynamicField(exprVE);
+        field = UITable.resolveDynamicField(context, exprVE);
         Assertions.assertEquals("MyValue", field);
     }
 }

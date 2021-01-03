@@ -104,6 +104,12 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>Defines the observer event, which will trigger the auto update.</description>
+            <name>on</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
 
     <tag>
@@ -928,6 +934,112 @@
     </tag>
     <tag>
         <description>
+            <![CDATA[Audio component is used for embedding audio content such as MP3, OGG, WAV to JSF views.]]>
+        </description>
+        <tag-name>audio</tag-name>
+        <component>
+            <component-type>org.primefaces.component.Audio</component-type>
+            <renderer-type>org.primefaces.component.AudioRenderer</renderer-type>
+        </component>
+        <attribute>
+            <description>
+                <![CDATA[Unique identifier of the component in a namingContainer.]]>
+            </description>
+            <name>id</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
+            </description>
+            <name>rendered</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
+            </description>
+            <name>binding</name>
+            <required>false</required>
+            <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Media source to play.]]>
+            </description>
+            <name>value</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Type of the player, possible values are "mp3","ogg", and "wav".]]>
+            </description>
+            <name>player</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style of the player.]]>
+            </description>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the player.]]>
+            </description>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Controls browser caching mode of the resource. Default is true]]>
+            </description>
+            <name>cache</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether the audio/video should display controls (like play/pause etc.)]]>
+            </description>
+            <name>controls</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+       <attribute>
+            <description>
+                <![CDATA[Specifies that the video will start playing as soon as it is ready.)]]>
+            </description>
+            <name>autoplay</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Specifies that the video will start over again, every time it is finished.)]]>
+            </description>
+            <name>loop</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Specifies that the audio output of the video should be muted.)]]>
+            </description>
+            <name>muted</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+    </tag>
+    <tag>
+        <description>
             <![CDATA[AutoComplete provides live suggestions while an input is being typed.]]>
         </description>
         <tag-name>autoComplete</tag-name>
@@ -995,7 +1107,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -1411,6 +1523,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[HTML5 inputmode attribute for hinting at the type of data this control has for touch devices to display appropriate virtual keyboard.]]>
+            </description>
+            <name>inputmode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Name of the client side widget.]]>
             </description>
             <name>widgetVar</name>
@@ -1751,6 +1871,14 @@
                 <![CDATA[Position of the dropdown button in the tabbing order.]]>
             </description>
             <name>dropdownTabindex</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[REST-endpoint for fetching autocomplete-suggestions. (instead of completeMethod)]]>
+            </description>
+            <name>completeEndpoint</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -2626,7 +2754,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -3542,7 +3670,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -4169,7 +4297,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -4607,6 +4735,38 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to add an item when the input loses focus. Default false.]]>
+            </description>
+            <name>addOnBlur</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to add the items immediately when pasting into the input. Default false.]]>
+            </description>
+            <name>addOnPaste</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Prevent duplicate entries from being added. Default false.]]>
+            </description>
+            <name>unique</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Separator character to allow multiple values such if a list is pasted into the input. Default is ','.]]>
+            </description>
+            <name>separator</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -4750,7 +4910,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -4870,6 +5030,39 @@
             <name>sortBy</name>
             <required>false</required>
             <type>java.lang.Object</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Sets default sorting order. Possible values "asc", "desc" or null]]>
+            </description>
+            <name>sortOrder</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines where the null values are placed in ascending sort order. Default value is "1" meaning null values are placed at the end in ascending mode and
+                at beginning in descending mode. Set to "-1" for the opposite behavior.]]>
+            </description>
+            <name>nullSortOrder</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Sets default sorting priority over the other columns. Default is Integer.MAX_VALUE. Lower values have more priority.]]>
+            </description>
+            <name>sortPriority</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Case sensitivity for sorting, insensitive by default.]]>
+            </description>
+            <name>caseSensitiveSort</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -5025,9 +5218,17 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines if panel is toggleable by columnToggler component. Default value is true and a false value marks the column as static.]]>
+                <![CDATA[Defines if column is toggleable by columnToggler component. Default value is true and a false value marks the column as static.]]>
             </description>
             <name>toggleable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if column is draggable if draggableColumns is set. Default true.]]>
+            </description>
+            <name>draggable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -5041,7 +5242,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Name of the field to pass lazy load method for filtering and sorting. If not specified, filterBy-sortBy values are used to identify the field name.]]>
+                <![CDATA[Name of the field associated to bean "var".]]>
             </description>
             <name>field</name>
             <required>false</required>
@@ -5049,9 +5250,9 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Priority of the column defined as an integer, lower values have more priority.]]>
+                <![CDATA[Responsive priority of the column, lower values have more priority.]]>
             </description>
-            <name>priority</name>
+            <name>responsivePriority</name>
             <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
@@ -5113,6 +5314,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Defines the value of the cell to be exported if something other than the cell contents or exportFunction.]]>
+            </description>
+            <name>exportValue</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Defines if the header value of column to be exported.]]>
             </description>
             <name>exportHeaderValue</name>
@@ -5126,6 +5335,14 @@
             <name>exportFooterValue</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines the display priority, in which order the columns should be displayed.]]>
+            </description>
+            <name>displayPriority</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
         </attribute>
     </tag>
     <tag>
@@ -5244,11 +5461,44 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Sets default sorting order. Possible values "asc", "desc" or null]]>
+            </description>
+            <name>sortOrder</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Sets default sorting priority over the other columns. Default is Integer.MAX_VALUE. Lower values have more priority.]]>
+            </description>
+            <name>sortPriority</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Custom pluggable sortFunction.]]>
             </description>
             <name>sortFunction</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines where the null values are placed in ascending sort order. Default value is "1" meaning null values are placed at the end in ascending mode and
+                at beginning in descending mode. Set to "-1" for the opposite behavior.]]>
+            </description>
+            <name>nullSortOrder</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Case sensitivity for sorting, insensitive by default.]]>
+            </description>
+            <name>caseSensitiveSort</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -5380,9 +5630,17 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines if panel is toggleable by columnToggler component. Default value is true and a false value marks the column as static.]]>
+                <![CDATA[Defines if columns are toggleable by columnToggler component. Default value is true and a false value marks the column as static.]]>
             </description>
             <name>toggleable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if columns are draggable if draggableColumns is set. Default true.]]>
+            </description>
+            <name>draggable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -5404,9 +5662,9 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Priority of the column defined as an integer, lower values have more priority.]]>
+                <![CDATA[Responive priority of the column, lower values have more priority.]]>
             </description>
-            <name>priority</name>
+            <name>responsivePriority</name>
             <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
@@ -5468,6 +5726,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Defines the value of the cell to be exported if something other than the cell contents or exportFunction.]]>
+            </description>
+            <name>exportValue</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Defines if the header value of column to be exported.]]>
             </description>
             <name>exportHeaderValue</name>
@@ -5481,6 +5747,14 @@
             <name>exportFooterValue</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines the display priority, in which order the columns should be displayed.]]>
+            </description>
+            <name>displayPriority</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
         </attribute>
     </tag>
     <tag>
@@ -7127,6 +7401,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Use modern PrimeFlex-Grid instead of classic Grid CSS.]]>
+            </description>
+            <name>flex</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -7762,6 +8044,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Property to be used for default sorting. Expects a single or a collection of SortMeta.]]>
+            </description>
+            <name>sortBy</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Defines sorting mode, valid values are "single" (default) and "multiple".]]>
             </description>
             <name>sortMode</name>
@@ -7770,60 +8060,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines whether columns are allowed to be unsorted. Default is true.]]>
+                <![CDATA[Defines whether columns are allowed to be unsorted. Default is false.]]>
             </description>
             <name>allowUnsorting</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Ordered map of sort information in "multiple" sortMode; This also allows to sort the table by default.]]>
-            </description>
-            <name>sortMeta</name>
-            <required>false</required>
-            <type>java.util.Map</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Property to be used for default sorting in "single" sortMode.]]>
-            </description>
-            <name>sortBy</name>
-            <required>false</required>
-            <type>java.lang.Object</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Sets sorting order in "single" sortMode. Default is "ascending"]]>
-            </description>
-            <name>sortOrder</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Custom pluggable sortFunction for default sorting in "single" sortMode.]]>
-            </description>
-            <name>sortFunction</name>
-            <required>false</required>
-            <type>javax.el.MethodExpression</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Name of the field to pass lazy load method for sorting in "single" sortMode. If not specified, sortBy expression is used to extract the name.]]>
-            </description>
-            <name>sortField</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Defines where the null values are placed in ascending sort order. Default value is "1" meaning null values are placed at the end in ascending mode and
-                at beginning in descending mode. Set to "-1" for the opposite behavior.]]>
-            </description>
-            <name>nullSortOrder</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
         </attribute>
         <attribute>
             <description>
@@ -8035,14 +8276,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Case sensitivity for sorting, insensitive by default.]]>
-            </description>
-            <name>caseSensitiveSort</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Ignores processing of children during lifecycle, improves performance if table only has output components, default is false.]]>
             </description>
             <name>skipChildren</name>
@@ -8148,7 +8381,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Map of filters; This also allows to filter the table by default.]]>
+                <![CDATA[Property to be used for default filtering. Expects a single or a collection of FilterMeta.]]>
             </description>
             <name>filterBy</name>
             <required>false</required>
@@ -8169,14 +8402,6 @@
             <name>cellEditMode</name>
             <required>false</required>
             <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Makes row groups toggleable, default is false.]]>
-            </description>
-            <name>expandableRowGroups</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -8271,6 +8496,14 @@
                 <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
             </description>
             <name>touchable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Render facets even if their children are not rendered. Default is false.]]>
+            </description>
+            <name>renderEmptyFacets</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -8491,6 +8724,14 @@
             <name>gridRowStyleClass</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Use modern PrimeFlex-Grid instead of classic Grid CSS.]]>
+            </description>
+            <name>flex</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
     </tag>
     <tag>
@@ -9827,7 +10068,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -10040,6 +10281,14 @@
             <name>dragDropSupport</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Callback to execute before the files are sent. If this callback returns false, the file upload request is not started.]]>
+            </description>
+            <name>onupload</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -11050,6 +11299,70 @@
             <required>false</required>
             <type>javax.faces.component.UIComponent</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of the field associated to bean "var".]]>
+            </description>
+            <name>field</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Property to be used for grouping.]]>
+            </description>
+            <name>groupBy</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Sets default sorting order. Possible values "asc", "desc" or null]]>
+            </description>
+            <name>sortOrder</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Inline style of the column.]]>
+            </description>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the column.]]>
+            </description>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Custom pluggable sortFunction.]]>
+            </description>
+            <name>sortFunction</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Makes row groups toggleable, default is false.]]>
+            </description>
+            <name>expandable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean value to specify whether the row group will be rendered expanded or closed. Default true.]]>
+            </description>
+            <name>expanded</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -11486,7 +11799,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -11884,11 +12197,19 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Defines if inplace is toggleable or not.]]>
             </description>
             <name>toggleable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines the default mode to display (input or ouput). Default: output.]]>
+            </description>
+            <name>mode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
@@ -11959,7 +12280,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -12482,7 +12803,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -12938,6 +13259,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Placement of the negative/positive sign relative to the symbolPosition option The sign is placed on either side of the symbolPosition, which can be placed on either side of the numbers. 'p' for prefix 's' for suffix 'l' for left 'r' for right ]]>
+            </description>
+            <name>signPosition</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Minimum value. Warning: If minValue is greater than 0, then you will effectively prevent your users to entirely delete the content of their input. Default is -10000000000000.]]>
             </description>
             <name>minValue</name>
@@ -12970,9 +13299,17 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines what to display when the input value is empty (possible options are null, focus, press, always, min, max, zero, number, or a string representing a number)]]>
+                <![CDATA[Defines what to display when the input value is empty (possible options are null, focus, press, always, min, max, zero, number, or a string representing a number). Default is focus.]]>
             </description>
             <name>emptyValue</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[HTML5 inputmode attribute for hinting at the type of data this control has for touch devices to display appropriate virtual keyboard. Default is 'numeric' if decimalPlaces==0, 'decimal' if decimalPlaces>0.]]>
+            </description>
+            <name>inputmode</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -13093,7 +13430,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -13296,7 +13633,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -13704,6 +14041,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[HTML5 inputmode attribute for hinting at the type of data this control has for touch devices to display appropriate virtual keyboard.]]>
+            </description>
+            <name>inputmode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Name of the client side widget.]]>
             </description>
             <name>widgetVar</name>
@@ -13804,7 +14149,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -14196,6 +14541,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[HTML5 inputmode attribute for hinting at the type of data this control has for touch devices to display appropriate virtual keyboard.]]>
+            </description>
+            <name>inputmode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Name of the client side widget.]]>
             </description>
             <name>widgetVar</name>
@@ -14343,7 +14696,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -14751,6 +15104,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[HTML5 inputmode attribute for hinting at the type of data this control has for touch devices to display appropriate virtual keyboard.]]>
+            </description>
+            <name>inputmode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Name of the client side widget.]]>
             </description>
             <name>widgetVar</name>
@@ -15020,7 +15381,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -17363,7 +17724,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -17624,7 +17985,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -18876,7 +19237,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -19284,6 +19645,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[HTML5 inputmode attribute for hinting at the type of data this control has for touch devices to display appropriate virtual keyboard.]]>
+            </description>
+            <name>inputmode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Name of the client side widget.]]>
             </description>
             <name>widgetVar</name>
@@ -19448,7 +19817,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -19683,7 +20052,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -20526,7 +20895,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -21565,6 +21934,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Defines direction of schedule. Valid values are "ltr" (default) and "rtl".]]>
+            </description>
+            <name>dir</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Ratio of calendar width to height, higher the value shorter the height is.]]>
             </description>
             <name>aspectRatio</name>
@@ -21814,6 +22191,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Determines the text that will be displayed within a time slot.]]>
+            </description>
+            <name>slotLabelFormat</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Target for events with urls. Clicking on such events in the schedule will not trigger the selectEvent but open the url using this target instead. Default is "_blank".]]>
             </description>
             <name>urlTarget</name>
@@ -21827,6 +22212,14 @@
             <name>noOpener</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Sets the height of the entire calendar, including header and footer. By default, this option is unset and the calendar's height is calculated by aspectRatio. If "auto" is specified, the view's contents will assume a natural height and no scrollbars will be used.]]>
+            </description>
+            <name>height</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
@@ -21963,7 +22356,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -22182,7 +22575,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -22393,7 +22786,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -22709,7 +23102,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -22880,7 +23273,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -23067,7 +23460,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -23318,7 +23711,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -23497,7 +23890,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -23732,7 +24125,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -23804,7 +24197,15 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Always display the 'label' value instead of the selected item label. Default is false.]]>
+            </description>
+            <name>alwaysDisplayLabel</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[User presentable name used in conjuction with 'alwaysDisplayLabel' to display instead of selected item.]]>
             </description>
             <name>label</name>
             <required>false</required>
@@ -23996,6 +24397,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[HTML5 inputmode attribute for hinting at the type of data this control has for touch devices to display appropriate virtual keyboard.]]>
+            </description>
+            <name>inputmode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Client side callback to execute when element receives focus.]]>
             </description>
             <name>onfocus</name>
@@ -24112,7 +24521,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -24512,7 +24921,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -25082,7 +25491,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -25490,6 +25899,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[HTML5 inputmode attribute for hinting at the type of data this control has for touch devices to display appropriate virtual keyboard.]]>
+            </description>
+            <name>inputmode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Name of the client side widget.]]>
             </description>
             <name>widgetVar</name>
@@ -25503,6 +25920,14 @@
             <name>stepFactor</name>
             <required>false</required>
             <type>java.lang.Double</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Round the value to the nearest stepFactor. Default is false.]]>
+            </description>
+            <name>round</name>
+            <required>false</required>
+            <type>boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -26364,6 +26789,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Allows the active index menu to remain executable. Default is false.]]>
+            </description>
+            <name>activeStepExecutable</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Defines whether items would be clickable or not. Default is true.]]>
             </description>
             <name>readonly</name>
@@ -27211,7 +27644,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -27438,7 +27871,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -27837,6 +28270,22 @@
             <name>maxHeight</name>
             <required>false</required>
             <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Specifies the horizontal scrollable.Default is "false".]]>
+            </description>
+            <name>horizontalScroll</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Specifies the vertical scrollable.Default is "false".]]>
+            </description>
+            <name>verticalScroll</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -28317,7 +28766,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -29144,7 +29593,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[Treetable is is used for displaying hierarchical data in tabular format.]]>
+            <![CDATA[TreeTable is is used for displaying hierarchical data in tabular format.]]>
         </description>
         <tag-name>treeTable</tag-name>
         <component>
@@ -29322,27 +29771,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Expression for default sorting.]]>
+                <![CDATA[Property to be used for default sorting. Expects a single or a collection of SortMeta.]]>
             </description>
             <name>sortBy</name>
             <required>false</required>
             <type>java.lang.Object</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Defines default sorting order. Default is "ascending"]]>
-            </description>
-            <name>sortOrder</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Custom pluggable sortFunction for default sorting.]]>
-            </description>
-            <name>sortFunction</name>
-            <required>false</required>
-            <type>javax.el.MethodExpression</type>
         </attribute>
         <attribute>
             <description>
@@ -29359,14 +29792,6 @@
             <name>dataLocale</name>
             <required>false</required>
             <type>java.lang.Object</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Case sensitivity for sorting, insensitive by default.]]>
-            </description>
-            <name>caseSensitiveSort</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -29532,7 +29957,7 @@
             <description>
                 <![CDATA[Node to keep the filtered nodes if filtering is enabled.]]>
             </description>
-            <name>filteredNode</name>
+            <name>filteredValue</name>
             <required>false</required>
             <type>java.lang.Object</type>
         </attribute>
@@ -29575,6 +30000,62 @@
             <name>editInitEvent</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to keep TreeTable state across views, defaults to false.]]>
+            </description>
+            <name>multiViewState</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Property to be used for default filtering. Expects a single or a collection of FilterMeta.]]>
+            </description>
+            <name>filterBy</name>
+            <required>false</required>
+            <type>java.util.Map</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Value of the global filter to use when filtering by default.]]>
+            </description>
+            <name>globalFilter</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Custom implementation to globally filter a value against a constraint.]]>
+            </description>
+            <name>globalFilterFunction</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines sorting mode, valid values are "single" (default) and "multiple".]]>
+            </description>
+            <name>sortMode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines whether columns are allowed to be unsorted. Default is false.]]>
+            </description>
+            <name>allowUnsorting</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if nodes should be cloned on filter via Cloneable interface or Copy-Constructor (CustomNode(CustomNode original) or CustomNode(String type, Object data, TreeNode parent)). Normally the filtered nodes are new instanceof of DefaultTreeNode. Default is false.]]>
+            </description>
+            <name>cloneOnFilter</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
     </tag>
     <tag>
@@ -29645,7 +30126,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -29850,6 +30331,144 @@
                 <![CDATA[Id of the component to attach the watermark.]]>
             </description>
             <name>for</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>
+    <tag>
+        <description>
+            <![CDATA[Video component is used for embedding video content such as MP4, OGG, WEBM to JSF views.]]>
+        </description>
+        <tag-name>video</tag-name>
+        <component>
+            <component-type>org.primefaces.component.Video</component-type>
+            <renderer-type>org.primefaces.component.VideoRenderer</renderer-type>
+        </component>
+        <attribute>
+            <description>
+                <![CDATA[Unique identifier of the component in a namingContainer.]]>
+            </description>
+            <name>id</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
+            </description>
+            <name>rendered</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
+            </description>
+            <name>binding</name>
+            <required>false</required>
+            <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Media source to play.]]>
+            </description>
+            <name>value</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Type of the player, possible values are "mp4","ogg", and "webm".]]>
+            </description>
+            <name>player</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style of the player.]]>
+            </description>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the player.]]>
+            </description>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Controls browser caching mode of the resource. Default is true]]>
+            </description>
+            <name>cache</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether the audio/video should display controls (like play/pause etc.)]]>
+            </description>
+            <name>controls</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+       <attribute>
+            <description>
+                <![CDATA[Specifies that the video will start playing as soon as it is ready.)]]>
+            </description>
+            <name>autoplay</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Specifies that the video will start over again, every time it is finished.)]]>
+            </description>
+            <name>loop</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Specifies that the audio output of the video should be muted.)]]>
+            </description>
+            <name>muted</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Specifies if and how the author thinks the video should be loaded when the page loads. Values "none", "auto", "metadata"]]>
+            </description>
+            <name>preload</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[A URL for an image to be shown while the video is downloading. If this attribute isn't specified, nothing is displayed until the first frame is available, then the first frame is shown as the poster frame.]]>
+            </description>
+            <name>poster</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Width of the player.]]>
+            </description>
+            <name>width</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Height of the player.]]>
+            </description>
+            <name>height</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -30598,7 +31217,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
+                <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
             <required>false</required>
@@ -31009,6 +31628,14 @@
                 <![CDATA[The placeholder attribute specifies a short hint that describes the expected value of an input field.]]>
             </description>
             <name>placeholder</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[HTML5 inputmode attribute for hinting at the type of data this control has for touch devices to display appropriate virtual keyboard.]]>
+            </description>
+            <name>inputmode</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -31478,6 +32105,809 @@
             <name>maskAutoClear</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Model with meta data for certain dates, like disabled.]]>
+            </description>
+            <name>model</name>
+            <required>false</required>
+            <type>org.primefaces.model.datepicker.DateMetadataModel</type>
+        </attribute>
+    </tag>
+    <tag>
+        <description>
+            <![CDATA[]]>
+        </description>
+        <tag-name>avatar</tag-name>
+        <component>
+            <component-type>org.primefaces.component.Avatar</component-type>
+            <renderer-type>org.primefaces.component.AvatarRenderer</renderer-type>
+        </component>
+        <attribute>
+            <description>
+                <![CDATA[Unique identifier of the component in a namingContainer.]]>
+            </description>
+            <name>id</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
+            </description>
+            <name>rendered</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
+            </description>
+            <name>binding</name>
+            <required>false</required>
+            <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines the text to display.]]>
+            </description>
+            <name>label</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines the icon to display.]]>
+            </description>
+            <name>icon</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines the image to display.]]>
+            </description>
+            <name>image</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Size of the element, valid options are "large" and "xlarge".]]>
+            </description>
+            <name>size</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Shape of the element, valid options are "square" and "circle".]]>
+            </description>
+            <name>shape</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Inline style of the component.]]>
+            </description>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the component.]]>
+            </description>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>
+    <tag>
+        <description>
+            <![CDATA[]]>
+        </description>
+        <tag-name>avatarGroup</tag-name>
+        <component>
+            <component-type>org.primefaces.component.AvatarGroup</component-type>
+            <renderer-type>org.primefaces.component.AvatarGroupRenderer</renderer-type>
+        </component>
+        <attribute>
+            <description>
+                <![CDATA[Unique identifier of the component in a namingContainer.]]>
+            </description>
+            <name>id</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
+            </description>
+            <name>rendered</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
+            </description>
+            <name>binding</name>
+            <required>false</required>
+            <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Inline style of the component.]]>
+            </description>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the component.]]>
+            </description>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>
+    <tag>
+        <description>
+            <![CDATA[]]>
+        </description>
+        <tag-name>badge</tag-name>
+        <component>
+            <component-type>org.primefaces.component.Badge</component-type>
+            <renderer-type>org.primefaces.component.BadgeRenderer</renderer-type>
+        </component>
+        <attribute>
+            <description>
+                <![CDATA[Unique identifier of the component in a namingContainer.]]>
+            </description>
+            <name>id</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
+            </description>
+            <name>rendered</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
+            </description>
+            <name>binding</name>
+            <required>false</required>
+            <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Value to display inside the badge.]]>
+            </description>
+            <name>value</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Severity type of the badge.]]>
+            </description>
+            <name>severity</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Size of the badge, valid options are "large" and "xlarge".]]>
+            </description>
+            <name>size</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Inline style of the component.]]>
+            </description>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the component.]]>
+            </description>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>
+    <tag>
+        <description>
+            <![CDATA[]]>
+        </description>
+        <tag-name>chip</tag-name>
+        <component>
+            <component-type>org.primefaces.component.Chip</component-type>
+            <renderer-type>org.primefaces.component.ChipRenderer</renderer-type>
+        </component>
+        <attribute>
+            <description>
+                <![CDATA[Unique identifier of the component in a namingContainer.]]>
+            </description>
+            <name>id</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
+            </description>
+            <name>rendered</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
+            </description>
+            <name>binding</name>
+            <required>false</required>
+            <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of the client side widget.]]>
+            </description>
+            <name>widgetVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines the text to display.]]>
+            </description>
+            <name>label</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines the icon to display.]]>
+            </description>
+            <name>icon</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines the image to display.]]>
+            </description>
+            <name>image</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to display a remove icon.]]>
+            </description>
+            <name>removable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Icon of the remove element.]]>
+            </description>
+            <name>removeIconClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Inline style of the component.]]>
+            </description>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the component.]]>
+            </description>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>
+    <tag>
+        <description>
+            <![CDATA[]]>
+        </description>
+        <tag-name>tag</tag-name>
+        <component>
+            <component-type>org.primefaces.component.Tag</component-type>
+            <renderer-type>org.primefaces.component.TagRenderer</renderer-type>
+        </component>
+        <attribute>
+            <description>
+                <![CDATA[Unique identifier of the component in a namingContainer.]]>
+            </description>
+            <name>id</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
+            </description>
+            <name>rendered</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
+            </description>
+            <name>binding</name>
+            <required>false</required>
+            <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Value to display inside the tag.]]>
+            </description>
+            <name>value</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Severity type of the tag.]]>
+            </description>
+            <name>severity</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether the corners of the tag are rounded.]]>
+            </description>
+            <name>rounded</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Icon of the tag to display next to the value.]]>
+            </description>
+            <name>icon</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Inline style of the component.]]>
+            </description>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the component.]]>
+            </description>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>
+    <tag>
+        <description>
+            <![CDATA[]]>
+        </description>
+        <tag-name>skeleton</tag-name>
+        <component>
+            <component-type>org.primefaces.component.Skeleton</component-type>
+            <renderer-type>org.primefaces.component.SkeletonRenderer</renderer-type>
+        </component>
+        <attribute>
+            <description>
+                <![CDATA[Unique identifier of the component in a namingContainer.]]>
+            </description>
+            <name>id</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
+            </description>
+            <name>rendered</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
+            </description>
+            <name>binding</name>
+            <required>false</required>
+            <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Shape of the element, options are "rectangle" and "circle".]]>
+            </description>
+            <name>shape</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Size of the Circle or Square.]]>
+            </description>
+            <name>size</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Width of the element.]]>
+            </description>
+            <name>width</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Height of the element.]]>
+            </description>
+            <name>height</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Inline style of the component.]]>
+            </description>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the component.]]>
+            </description>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>
+    <tag>
+        <description>
+            <![CDATA[]]>
+        </description>
+        <tag-name>divider</tag-name>
+        <component>
+            <component-type>org.primefaces.component.Divider</component-type>
+            <renderer-type>org.primefaces.component.DividerRenderer</renderer-type>
+        </component>
+        <attribute>
+            <description>
+                <![CDATA[Unique identifier of the component in a namingContainer.]]>
+            </description>
+            <name>id</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
+            </description>
+            <name>rendered</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
+            </description>
+            <name>binding</name>
+            <required>false</required>
+            <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Alignment of the content, options are "left", "center", "right" for horizontal layout and "top", "center", "bottom" for vertical.]]>
+            </description>
+            <name>align</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Specifies the orientation, valid values are "horizontal" and "vertical".]]>
+            </description>
+            <name>layout</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Border style type, default is "solid" and other options are "dashed" and "dotted".]]>
+            </description>
+            <name>type</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Inline style of the component.]]>
+            </description>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the component.]]>
+            </description>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>
+    <tag>
+        <description>
+            <![CDATA[]]>
+        </description>
+        <tag-name>scrollTop</tag-name>
+        <component>
+            <component-type>org.primefaces.component.ScrollTop</component-type>
+            <renderer-type>org.primefaces.component.ScrollTopRenderer</renderer-type>
+        </component>
+        <attribute>
+            <description>
+                <![CDATA[Unique identifier of the component in a namingContainer.]]>
+            </description>
+            <name>id</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
+            </description>
+            <name>rendered</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
+            </description>
+            <name>binding</name>
+            <required>false</required>
+            <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of the client side widget.]]>
+            </description>
+            <name>widgetVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Target of the ScrollTop, valid values are "window" and "parent".]]>
+            </description>
+            <name>target</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines the threshold value of the vertical scroll position of the target to toggle the visibility.]]>
+            </description>
+            <name>threshold</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Icon to display.]]>
+            </description>
+            <name>icon</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines the scrolling behavior, "smooth" adds an animation and "auto" scrolls with a jump.]]>
+            </description>
+            <name>behavior</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Inline style of the component.]]>
+            </description>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the component.]]>
+            </description>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>
+    <tag>
+        <description>
+            <![CDATA[]]>
+        </description>
+        <tag-name>splitter</tag-name>
+        <component>
+            <component-type>org.primefaces.component.Splitter</component-type>
+            <renderer-type>org.primefaces.component.SplitterRenderer</renderer-type>
+        </component>
+        <attribute>
+            <description>
+                <![CDATA[Unique identifier of the component in a namingContainer.]]>
+            </description>
+            <name>id</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
+            </description>
+            <name>rendered</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
+            </description>
+            <name>binding</name>
+            <required>false</required>
+            <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of the client side widget.]]>
+            </description>
+            <name>widgetVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Orientation of the panels, valid values are "horizontal" and "vertical".]]>
+            </description>
+            <name>layout</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Size of the divider in pixels.]]>
+            </description>
+            <name>gutterSize</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Storage identifier of a stateful Splitter.]]>
+            </description>
+            <name>stateKey</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines where a stateful splitter keeps its state, valid values are "session" for sessionStorage and "local" for localStorage.]]>
+            </description>
+            <name>stateStorage</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Inline style of the component.]]>
+            </description>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the component.]]>
+            </description>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>
+    <tag>
+        <description>
+            <![CDATA[]]>
+        </description>
+        <tag-name>splitterPanel</tag-name>
+        <component>
+            <component-type>org.primefaces.component.SplitterPanel</component-type>
+        </component>
+        <attribute>
+            <description>
+                <![CDATA[Unique identifier of the component in a namingContainer.]]>
+            </description>
+            <name>id</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
+            </description>
+            <name>rendered</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
+            </description>
+            <name>binding</name>
+            <required>false</required>
+            <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Size of the element relative to 100%.]]>
+            </description>
+            <name>size</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Minimum size of the element relative to 100%.]]>
+            </description>
+            <name>minSize</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Inline style of the component.]]>
+            </description>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the component.]]>
+            </description>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
 </facelet-taglib>

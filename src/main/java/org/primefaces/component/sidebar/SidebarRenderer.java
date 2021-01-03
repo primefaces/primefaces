@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -88,9 +88,8 @@ public class SidebarRenderer extends CoreRenderer {
     }
 
     private void encodeScript(FacesContext context, Sidebar bar) throws IOException {
-        String clientId = bar.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Sidebar", bar.resolveWidgetVar(context), clientId)
+        wb.init("Sidebar", bar)
                 .attr("visible", bar.isVisible(), false)
                 .attr("blockScroll", bar.isBlockScroll(), false)
                 .attr("baseZIndex", bar.getBaseZIndex(), 0)

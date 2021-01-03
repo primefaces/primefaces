@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -42,6 +42,8 @@ public class ExcelOptions implements ExporterOptions {
     private String fontName;
 
     private boolean autoSizeColumn = true;
+
+    private boolean stronglyTypedCells = true;
 
     public ExcelOptions() {
     }
@@ -146,5 +148,13 @@ public class ExcelOptions implements ExporterOptions {
 
     public void setAutoSizeColumn(boolean autoSizeColumn) {
         this.autoSizeColumn = autoSizeColumn;
+    }
+
+    public boolean isStronglyTypedCells() {
+        return stronglyTypedCells;
+    }
+
+    public void setStronglyTypedCells(boolean stronglyTypedCells) {
+        this.stronglyTypedCells = stronglyTypedCells;
     }
 }

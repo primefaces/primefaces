@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -86,9 +86,8 @@ public class SignatureRenderer extends InputRenderer {
     }
 
     protected void encodeScript(FacesContext context, Signature signature) throws IOException {
-        String clientId = signature.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Signature", signature.resolveWidgetVar(context), clientId)
+        wb.init("Signature", signature)
                 .attr("background", signature.getBackgroundColor(), null)
                 .attr("color", signature.getColor(), null)
                 .attr("thickness", signature.getThickness(), 2)

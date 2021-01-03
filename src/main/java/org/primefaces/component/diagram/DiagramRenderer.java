@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -181,7 +181,7 @@ public class DiagramRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Diagram diagram) throws IOException {
         String clientId = diagram.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Diagram", diagram.resolveWidgetVar(context), clientId);
+        wb.init("Diagram", diagram);
 
         DiagramModel model = (DiagramModel) diagram.getValue();
         if (model != null) {

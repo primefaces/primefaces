@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -116,10 +116,10 @@ public class ContentFlowRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
 
         if (context.isPostback()) {
-            wb.init("ContentFlow", cf.resolveWidgetVar(context), cf.getClientId(context));
+            wb.init("ContentFlow", cf);
         }
         else {
-            wb.initWithWindowLoad("ContentFlow", cf.resolveWidgetVar(context), cf.getClientId(context));
+            wb.initWithWindowLoad("ContentFlow", cf);
         }
 
         wb.finish();

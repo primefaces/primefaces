@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -142,13 +142,12 @@ public class InputSwitchRenderer extends InputRenderer {
     }
 
     protected void encodeScript(FacesContext context, InputSwitch inputSwitch) throws IOException {
-        String clientId = inputSwitch.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("InputSwitch", inputSwitch.resolveWidgetVar(context), clientId).finish();
+        wb.init("InputSwitch", inputSwitch).finish();
     }
 
     protected boolean isChecked(String value) {
         return value != null
-                && (value.equalsIgnoreCase("on") || value.equalsIgnoreCase("yes") || value.equalsIgnoreCase("true"));
+                && ("on".equalsIgnoreCase(value) || "yes".equalsIgnoreCase(value) || "true".equalsIgnoreCase(value));
     }
 }

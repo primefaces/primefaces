@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,9 +22,6 @@
  * THE SOFTWARE.
  */
 package org.primefaces.component.carousel;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
@@ -57,8 +54,6 @@ public class Carousel extends CarouselBase {
     public static final String RESPONSIVE_DROPDOWN_CLASS = "ui-carousel-dropdown-responsive ui-widget ui-state-default ui-corner-left";
     public static final String TOGGLER_LINK_CLASS = "ui-carousel-titlebar-icon ui-corner-all ui-state-default";
 
-    private static final Logger LOGGER = Logger.getLogger(Carousel.class.getName());
-
     public int getRenderedChildCount() {
         int i = 0;
 
@@ -69,13 +64,5 @@ public class Carousel extends CarouselBase {
         }
 
         return i;
-    }
-
-    @Override
-    public void setRows(int rows) {
-        super.setRows(rows);
-        setNumVisible(rows);
-
-        LOGGER.log(Level.WARNING, "rows is deprecated, use numVisible instead.");
     }
 }

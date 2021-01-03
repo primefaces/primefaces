@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -55,7 +55,7 @@ public class KeyFilterRenderer extends CoreRenderer {
         String targetClientId = target instanceof InputHolder ? ((InputHolder) target).getInputClientId() : target.getClientId();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init(KeyFilter.class.getSimpleName(), keyFilter.resolveWidgetVar(context), keyFilter.getClientId(context));
+        wb.init(KeyFilter.class.getSimpleName(), keyFilter);
         wb.attr("target", targetClientId);
 
         if (keyFilter.getRegEx() != null) {

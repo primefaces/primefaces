@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -94,7 +94,7 @@ public class ClamDaemonScanner implements VirusScanner {
     }
 
     protected String createErrorMessage(UploadedFile file, String response) {
-        return MessageFactory.getMessage("primefaces.fileupload.CLAM_AV_FILE", new Object[] {file.getFileName(), response});
+        return MessageFactory.getMessage("primefaces.fileupload.CLAM_AV_FILE", file.getFileName(), response);
     }
 
     /**

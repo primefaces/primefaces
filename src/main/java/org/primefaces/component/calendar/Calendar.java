@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -80,10 +80,10 @@ public class Calendar extends CalendarBase {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
             if (eventName != null) {
-                if (eventName.equals("dateSelect") || eventName.equals("close")) {
+                if ("dateSelect".equals(eventName) || "close".equals(eventName)) {
                     customEvents.put(eventName, (AjaxBehaviorEvent) event);
                 }
-                else if (eventName.equals("viewChange")) {
+                else if ("viewChange".equals(eventName)) {
                     int month = Integer.parseInt(params.get(clientId + "_month"));
                     int year = Integer.parseInt(params.get(clientId + "_year"));
                     DateViewChangeEvent dateViewChangeEvent = new DateViewChangeEvent(this, behaviorEvent.getBehavior(), month, year);

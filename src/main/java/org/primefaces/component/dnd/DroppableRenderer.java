@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -51,7 +51,7 @@ public class DroppableRenderer extends CoreRenderer {
                 context, droppable, droppable.getFor(), SearchExpressionUtils.SET_PARENT_FALLBACK);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Droppable", droppable.resolveWidgetVar(context), clientId)
+        wb.init("Droppable", droppable)
                 .attr("target", target.getClientId(context))
                 .attr("disabled", droppable.isDisabled(), false)
                 .attr("hoverClass", droppable.getHoverStyleClass(), null)

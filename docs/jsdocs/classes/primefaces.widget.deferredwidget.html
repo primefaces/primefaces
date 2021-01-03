@@ -85,7 +85,7 @@
 						method once it is. Make sure you actually override the <a href="primefaces.widget.deferredwidget.html#_render">_render</a> method, as the default implementation
 					throws an error.</p>
 					<pre><code class="language-javascript"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyWidget</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">PrimeFaces</span>.<span class="hljs-title">widget</span>.<span class="hljs-title">DeferredWidget</span> </span>{
-  init(cfg) {
+  <span class="hljs-function"><span class="hljs-title">init</span>(<span class="hljs-params">cfg</span>)</span> {
     <span class="hljs-built_in">super</span>.init(cfg);
 
     <span class="hljs-comment">// more code if needed</span>
@@ -95,7 +95,7 @@
     <span class="hljs-built_in">this</span>.renderDeferred();
   }
 
-  _render() {
+  <span class="hljs-function"><span class="hljs-title">_render</span>(<span class="hljs-params"></span>)</span> {
     <span class="hljs-comment">// Perform your render logic here, create DOM elements etc.</span>
   }
 }</code></pre>

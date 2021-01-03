@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -416,6 +416,23 @@ public class PrimeFaces {
             }
 
             update(Arrays.asList(expressions));
+        }
+
+        /**
+         * Updates all the given components.
+         *
+         * @param components the {@link UIComponent}s.
+         */
+        public void update(UIComponent... components) {
+            if (components == null || components.length == 0) {
+                return;
+            }
+
+            FacesContext facesContext = getFacesContext();
+
+            for (UIComponent component : components) {
+                facesContext.getPartialViewContext().getRenderIds().add(component.getClientId(facesContext));
+            }
         }
     }
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -154,10 +154,9 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
     }
 
     protected void encodeScript(FacesContext context, MultiSelectListbox listbox) throws IOException {
-        String clientId = listbox.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
 
-        wb.init("MultiSelectListbox", listbox.resolveWidgetVar(context), clientId)
+        wb.init("MultiSelectListbox", listbox)
                 .attr("effect", listbox.getEffect(), null)
                 .attr("showHeaders", listbox.isShowHeaders(), false);
         encodeClientBehaviors(context, listbox);

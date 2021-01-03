@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,8 +25,8 @@ package org.primefaces.component.tabview;
 
 import java.io.IOException;
 import java.util.Map;
-import javax.faces.FacesException;
 
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -95,11 +95,10 @@ public class TabViewRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, TabView tabView) throws IOException {
-        String clientId = tabView.getClientId(context);
         boolean dynamic = tabView.isDynamic();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("TabView", tabView.resolveWidgetVar(context), clientId);
+        wb.init("TabView", tabView);
 
         if (dynamic) {
             wb.attr("dynamic", true).attr("cache", tabView.isCache());
@@ -146,7 +145,7 @@ public class TabViewRenderer extends CoreRenderer {
 
         writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
 
-        if (orientation.equals("bottom")) {
+        if ("bottom".equals(orientation)) {
             encodeContents(context, tabView);
             encodeHeaders(context, tabView);
         }

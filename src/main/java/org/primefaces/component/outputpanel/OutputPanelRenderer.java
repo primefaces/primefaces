@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -78,9 +78,8 @@ public class OutputPanelRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, OutputPanel panel) throws IOException {
-        String clientId = panel.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("OutputPanel", panel.resolveWidgetVar(context), clientId);
+        wb.init("OutputPanel", panel);
 
         wb.attr("deferred", true)
                 .attr("deferredMode", panel.getDeferredMode());

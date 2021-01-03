@@ -283,11 +283,18 @@ if (!PrimeFaces.dialog) {
             dlgsLength = dlgs.length,
             dlg = dlgs.eq(dlgsLength - 1),
             parentDlg = dlgsLength > 1 ? dlgs.eq(dlgsLength - 2) : null,
-            dlgWidget = rootWindow.PF(dlg.data('widget')),
-            sourceWidgetVar = dlgWidget.cfg.sourceWidgetVar,
-            sourceComponentId = dlgWidget.cfg.sourceComponentId,
             dialogReturnBehavior = null,
             windowContext = null;
+
+            var dlgWidget = rootWindow.PF(dlg.data('widget'));
+            if(!dlgWidget) {
+                // GitHub #2039 dialog may already be closed on slow internet
+                PrimeFaces.error('Dialog widget was not found to close.');
+                return;
+            }
+
+            var sourceWidgetVar = dlgWidget.cfg.sourceWidgetVar,
+                sourceComponentId = dlgWidget.cfg.sourceComponentId;
 
             dlg.attr('data-queuedforremoval', true);
 
@@ -313,7 +320,13 @@ if (!PrimeFaces.dialog) {
             else if(sourceComponentId) {
                 var dialogReturnBehaviorStr = $(windowContext.document.getElementById(sourceComponentId)).data('dialogreturn');
                 if(dialogReturnBehaviorStr) {
-                    dialogReturnBehavior = windowContext.eval('(function(ext){this.' + dialogReturnBehaviorStr + '})');
+                    var dialogFunction = '(function(ext){this.' + dialogReturnBehaviorStr + '})';
+                    if (PrimeFaces.csp.NONCE_VALUE) {
+                        dialogReturnBehavior = PrimeFaces.csp.evalResult(dialogFunction);
+                    }
+                    else {
+                        dialogReturnBehavior = windowContext.eval(dialogFunction);
+                    }
                 }
             }
 

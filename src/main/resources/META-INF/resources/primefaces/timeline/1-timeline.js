@@ -457,7 +457,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
                 });
 
                 // check if draggable is within a data iteration component
-                var uiData = ui.draggable.closest(".ui-datatable, .ui-datagrid, .ui-datalist, .ui-carousel");
+                var uiData = ui.draggable.closest(".ui-datatable, .ui-datagrid, .ui-datalist, .ui-carousel, .ui-treetable");
                 if (uiData.length > 0) {
                     params.push({
                         name: this.id + '_uiDataId',

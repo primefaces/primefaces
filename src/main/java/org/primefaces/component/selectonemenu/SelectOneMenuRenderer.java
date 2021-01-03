@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -44,11 +44,7 @@ import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.SelectOneRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.MessageFactory;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.*;
 
 public class SelectOneMenuRenderer extends SelectOneRenderer {
 
@@ -69,12 +65,9 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             // #2862 check if it matches a label and if so use the value
             if (!LangUtils.isValueBlank(editorInput)) {
                 List<SelectItem> selectItems = getSelectItems(context, menu);
-                for (int i = 0; i < selectItems.size(); i++) {
-                    SelectItem item = selectItems.get(i);
-                    if (item.getLabel().equalsIgnoreCase(editorInput)) {
-                        menu.setSubmittedValue(getOptionAsString(context, menu, menu.getConverter(), item.getValue()));
-                        break;
-                    }
+                Object foundValue = findEditableValue(context, selectItems, editorInput);
+                if (foundValue != null) {
+                    menu.setSubmittedValue(getOptionAsString(context, menu, menu.getConverter(), foundValue));
                 }
             }
 
@@ -83,6 +76,36 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         else {
             super.decode(context, component);
         }
+    }
+
+    /**
+     * Recursive method used when editable="true" to detect whether the submitted value
+     * matches a value in one of the SelectItems. GitHub #2862 and #6507
+     * @param context FacesContext
+     * @param selectItems the List of SelectItems
+     * @param editorInput the editor input value to search for
+     * @return either the value found or NULL if no item found
+     */
+    protected Object findEditableValue(FacesContext context, List<SelectItem> selectItems, String editorInput) {
+        Object foundValue = null;
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem item = selectItems.get(i);
+            if (item instanceof SelectItemGroup) {
+                SelectItemGroup selectItemGroup = (SelectItemGroup) item;
+                foundValue = findEditableValue(context, Arrays.asList(selectItemGroup.getSelectItems()), editorInput);
+                if (foundValue != null) {
+                    break;
+                }
+            }
+            else {
+                if (item.getLabel().equalsIgnoreCase(editorInput)) {
+                    foundValue = item.getValue();
+                    break;
+                }
+            }
+        }
+
+        return foundValue;
     }
 
     @Override
@@ -273,6 +296,10 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             if (menu.getPlaceholder() != null) {
                 writer.writeAttribute("data-placeholder", menu.getPlaceholder(), null);
             }
+            String label = menu.getLabel();
+            if (label != null) {
+                writer.writeText(label, null);
+            }
             writer.write("&nbsp;");
             writer.endElement("label");
         }
@@ -353,12 +380,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             writer.endElement("table");
         }
         else {
-            writer.startElement("ul", null);
-            writer.writeAttribute("id", menu.getClientId(context) + "_items", null);
-            writer.writeAttribute("class", SelectOneMenu.LIST_CLASS, null);
-            writer.writeAttribute("role", "listbox", null);
-            encodeOptionsAsList(context, menu, selectItems);
-            writer.endElement("ul");
+            // Rendering was moved to the client - see renderPanelContentFromHiddenSelect as part of forms.selectonemenu.js
         }
     }
 
@@ -484,69 +506,22 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         context.getExternalContext().getRequestMap().put(var, null);
     }
 
-    protected void encodeOptionsAsList(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
-        for (int i = 0; i < selectItems.size(); i++) {
-            SelectItem selectItem = selectItems.get(i);
-
-            if (selectItem instanceof SelectItemGroup) {
-                SelectItemGroup group = (SelectItemGroup) selectItem;
-
-                encodeItem(context, menu, group, SelectOneMenu.ITEM_GROUP_CLASS);
-                encodeOptionsAsList(context, menu, Arrays.asList(group.getSelectItems()));
-            }
-            else {
-                encodeItem(context, menu, selectItem, SelectOneMenu.ITEM_CLASS);
-            }
-        }
-    }
-
-    protected void encodeItem(FacesContext context, SelectOneMenu menu, SelectItem selectItem, String styleClass) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String itemLabel = selectItem.getLabel();
-        itemLabel = isValueBlank(itemLabel) ? "&nbsp;" : itemLabel;
-        String itemStyleClass = styleClass;
-        if (selectItem.isNoSelectionOption()) {
-            itemStyleClass = itemStyleClass + " ui-noselection-option";
-        }
-
-        writer.startElement("li", null);
-        writer.writeAttribute("class", itemStyleClass, null);
-        writer.writeAttribute("data-label", itemLabel, null);
-        writer.writeAttribute("tabindex", "-1", null);
-        writer.writeAttribute("role", "option", null);
-        if (selectItem.getDescription() != null) {
-            writer.writeAttribute("title", selectItem.getDescription(), null);
-        }
-
-        if (itemLabel.equals("&nbsp;")) {
-            writer.write(itemLabel);
-        }
-        else {
-            if (selectItem.isEscape()) {
-                writer.writeText(itemLabel, "value");
-            }
-            else {
-                writer.write(itemLabel);
-            }
-        }
-
-        writer.endElement("li");
-    }
-
     protected void encodeScript(FacesContext context, SelectOneMenu menu) throws IOException {
-        String clientId = menu.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectOneMenu", menu.resolveWidgetVar(context), clientId)
+        wb.init("SelectOneMenu", menu)
                 .attr("effect", menu.getEffect(), null)
                 .attr("effectSpeed", menu.getEffectSpeed(), null)
                 .attr("editable", menu.isEditable(), false)
                 .attr("appendTo", SearchExpressionFacade.resolveClientId(context, menu, menu.getAppendTo(),
                         SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
                 .attr("syncTooltip", menu.isSyncTooltip(), false)
+                .attr("alwaysDisplayLabel", menu.isAlwaysDisplayLabel(), false)
+                .attr("label", menu.getLabel(), null)
                 .attr("labelTemplate", menu.getLabelTemplate(), null)
                 .attr("autoWidth", menu.isAutoWidth(), true)
                 .attr("dynamic", menu.isDynamic(), false)
-                .attr("touchable", ComponentUtils.isTouchable(context, menu),  true);
+                .attr("touchable", ComponentUtils.isTouchable(context, menu),  true)
+                .attr("renderPanelContentOnClient", menu.getVar() == null,  false);
 
         if (menu.isFilter()) {
             wb.attr("filter", true)
@@ -563,27 +538,51 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
     protected void encodeSelectItems(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems, Object values,
                                      Object submittedValues, Converter converter) throws IOException {
 
+        boolean isInitialDynamic = menu.isDynamic() && !menu.isDynamicLoadRequest(context);
+
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
-            encodeOption(context, menu, selectItem, values, submittedValues, converter, i);
+            boolean selected = encodeOption(context, menu, selectItem, values, submittedValues, converter, i);
+            if (selected && isInitialDynamic) {
+                return;
+            }
         }
     }
 
-    protected void encodeOption(FacesContext context, SelectOneMenu menu, SelectItem option, Object values, Object submittedValues,
-                                Converter converter, int itemIndex) throws IOException {
+    /**
+     * Encodes one SelectItem.
+     * @return true if SelectItem is selected.
+     * @throws IOException
+     */
+    protected boolean encodeOption(FacesContext context, SelectOneMenu menu, SelectItem option, Object values, Object submittedValues,
+                                   Converter converter, int itemIndex) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
 
         if (option instanceof SelectItemGroup) {
             SelectItemGroup group = (SelectItemGroup) option;
+
+            writer.startElement("optgroup", null);
+            writer.writeAttribute("label", group.getLabel(), null);
+            if (group.isDisabled()) {
+                writer.writeAttribute("disabled", "disabled", null);
+            }
+            writer.writeAttribute("data-escape", String.valueOf(group.isEscape()), null);
+            if (option.getDescription() != null) {
+                writer.writeAttribute("data-title", option.getDescription(), null);
+            }
             for (SelectItem groupItem : group.getSelectItems()) {
                 encodeOption(context, menu, groupItem, values, submittedValues, converter, itemIndex);
             }
+            writer.endElement("optgroup");
+
+            return false;
         }
         else {
             String itemValueAsString = getOptionAsString(context, menu, converter, option.getValue());
             boolean disabled = option.isDisabled();
             boolean isEscape = option.isEscape();
+            boolean isNoSelectionOption = option.isNoSelectionOption();
 
             Object valuesArray;
             Object itemValue;
@@ -607,19 +606,22 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 if (selected) {
                     writer.writeAttribute("selected", "selected", null);
                 }
+                if (isNoSelectionOption) {
+                    writer.writeAttribute("data-noselection-option", "true", null);
+                }
                 writer.writeAttribute("data-escape", String.valueOf(isEscape), null);
+                if (option.getDescription() != null) {
+                    writer.writeAttribute("data-title", option.getDescription(), null);
+                }
 
                 if (!isValueBlank(option.getLabel())) {
-                    if (isEscape) {
-                        writer.writeText(option.getLabel(), "value");
-                    }
-                    else {
-                        writer.write(option.getLabel());
-                    }
+                    writer.writeText(option.getLabel(), null);
                 }
 
                 writer.endElement("option");
             }
+
+            return selected;
         }
     }
 
@@ -653,7 +655,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute(HTML.ARIA_AUTOCOMPLETE, "list", null);
         writer.writeAttribute(HTML.ARIA_CONTROLS, menu.getClientId(context) + "_table", null);
-        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER, null), null);
+        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER), null);
 
         if (menu.getFilterPlaceholder() != null) {
             writer.writeAttribute("placeholder", menu.getFilterPlaceholder(), null);

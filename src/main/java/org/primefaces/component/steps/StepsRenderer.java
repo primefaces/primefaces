@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,16 +23,17 @@
  */
 package org.primefaces.component.steps;
 
-import org.primefaces.component.menu.AbstractMenu;
-import org.primefaces.component.menu.BaseMenuRenderer;
-import org.primefaces.model.menu.MenuElement;
-import org.primefaces.model.menu.MenuItem;
+import java.io.IOException;
+import java.util.List;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import java.io.IOException;
-import java.util.List;
+
+import org.primefaces.component.menu.AbstractMenu;
+import org.primefaces.component.menu.BaseMenuRenderer;
+import org.primefaces.model.menu.MenuElement;
+import org.primefaces.model.menu.MenuItem;
 
 public class StepsRenderer extends BaseMenuRenderer {
 
@@ -81,7 +82,12 @@ public class StepsRenderer extends BaseMenuRenderer {
         }
         else {
             if (index == activeIndex) {
-                itemClass = Steps.ACTIVE_ITEM_CLASS;
+                if (steps.isActiveStepExecutable()) {
+                    itemClass = Steps.VISITED_ITEM_CLASS;
+                }
+                else {
+                    itemClass = Steps.ACTIVE_ITEM_CLASS;
+                }
             }
             else if (index < activeIndex) {
                 itemClass = Steps.VISITED_ITEM_CLASS;
@@ -118,7 +124,6 @@ public class StepsRenderer extends BaseMenuRenderer {
         String styleClass = getLinkStyleClass(menuitem);
 
         writer.startElement("a", null);
-        writer.writeAttribute("tabindex", "-1", null);
         if (shouldRenderId(menuitem)) {
             writer.writeAttribute("id", menuitem.getClientId(), null);
         }
@@ -132,11 +137,14 @@ public class StepsRenderer extends BaseMenuRenderer {
             writer.writeAttribute("style", style, null);
         }
 
-        if (steps.isReadonly() || menuitem.isDisabled() || (activeIndex <= index)) {
+        boolean isDisabled = steps.isActiveStepExecutable() ?  activeIndex < index : activeIndex <= index;
+        if (steps.isReadonly() || menuitem.isDisabled() || isDisabled) {
+            writer.writeAttribute("tabindex", "-1", null);
             writer.writeAttribute("href", "#", null);
             writer.writeAttribute("onclick", "return false;", null);
         }
         else {
+            writer.writeAttribute("tabindex", steps.getTabindex(), null);
             encodeOnClick(context, steps, menuitem);
         }
 

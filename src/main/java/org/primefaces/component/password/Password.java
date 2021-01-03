@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,6 +28,7 @@ import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.MessageFactory;
 
@@ -65,8 +66,8 @@ public class Password extends PasswordBase {
                 }
                 else {
                     Object[] params = new Object[2];
-                    params[0] = MessageFactory.getLabel(context, this);
-                    params[1] = MessageFactory.getLabel(context, matchWith);
+                    params[0] = ComponentUtils.getLabel(context, this);
+                    params[1] = ComponentUtils.getLabel(context, matchWith);
 
                     msg = MessageFactory.getFacesMessage(Password.INVALID_MATCH_KEY, FacesMessage.SEVERITY_ERROR, params);
                 }

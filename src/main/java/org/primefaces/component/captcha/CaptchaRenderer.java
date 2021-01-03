@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -85,9 +85,8 @@ public class CaptchaRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, Captcha captcha, String publicKey) throws IOException {
-        String clientId = captcha.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Captcha", captcha.resolveWidgetVar(context), clientId);
+        wb.init("Captcha", captcha);
 
         wb.attr("sitekey", publicKey)
                 .attr("theme", captcha.getTheme(), "light")

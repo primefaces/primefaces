@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -86,9 +86,8 @@ public class TagCloudRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, TagCloud tagCloud) throws IOException {
-        String clientId = tagCloud.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("TagCloud", tagCloud.resolveWidgetVar(context), clientId);
+        wb.init("TagCloud", tagCloud);
 
         encodeClientBehaviors(context, tagCloud);
 

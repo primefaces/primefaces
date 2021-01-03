@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,7 +47,7 @@ public class DraggableRenderer extends CoreRenderer {
                 context, draggable, draggable.getFor(), SearchExpressionUtils.SET_PARENT_FALLBACK);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Draggable", draggable.resolveWidgetVar(context), clientId)
+        wb.init("Draggable", draggable)
                 .attr("target", target.getClientId(context))
                 .attr("cursor", draggable.getCursor())
                 .attr("disabled", draggable.isDisabled(), false)

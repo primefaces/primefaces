@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,6 +28,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
+import org.primefaces.component.api.UITree;
 
 public class UIDataContextCallback implements ContextCallback {
 
@@ -40,12 +41,21 @@ public class UIDataContextCallback implements ContextCallback {
 
     @Override
     public void invokeContextCallback(FacesContext fc, UIComponent component) {
-        UIData uiData = (UIData) component;
         String[] idTokens = dragId.split(String.valueOf(UINamingContainer.getSeparatorChar(fc)));
-        int rowIndex = Integer.parseInt(idTokens[idTokens.length - 2]);
-        uiData.setRowIndex(rowIndex);
-        data = uiData.getRowData();
-        uiData.setRowIndex(-1);
+        String dataId = idTokens[idTokens.length - 2];
+
+        if (component instanceof UITree) {
+            UITree uiTree = (UITree) component;
+            uiTree.setRowKey(dataId);
+            data = uiTree.getRowNode();
+            uiTree.setRowKey(null);
+        }
+        else {
+            UIData uiData = (UIData) component;
+            uiData.setRowIndex(Integer.parseInt(dataId));
+            data = uiData.getRowData();
+            uiData.setRowIndex(-1);
+        }
     }
 
     public Object getData() {

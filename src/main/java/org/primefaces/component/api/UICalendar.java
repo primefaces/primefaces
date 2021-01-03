@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,10 +36,7 @@ import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.util.CalendarUtils;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.LocaleUtils;
-import org.primefaces.util.MessageFactory;
+import org.primefaces.util.*;
 
 public abstract class UICalendar extends AbstractPrimeHtmlInputText implements InputHolder, TouchAware {
 
@@ -327,7 +324,7 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
     protected void createFacesMessageFromValidationResult(FacesContext context, ValidationResult validationResult) {
         FacesMessage msg = null;
         String validatorMessage = getValidatorMessage();
-        Object[] params = new Object[] {MessageFactory.getLabel(context, this),
+        Object[] params = new Object[] {ComponentUtils.getLabel(context, this),
                 CalendarUtils.getValueAsString(context, this, getMindate()),
                 CalendarUtils.getValueAsString(context, this, getMaxdate())};
         if (validatorMessage != null) {

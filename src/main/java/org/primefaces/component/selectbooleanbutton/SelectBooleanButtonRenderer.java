@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -50,7 +50,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
 
         String clientId = button.getClientId(context);
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
-        boolean checked = submittedValue != null && submittedValue.equalsIgnoreCase("on");
+        boolean checked = "on".equalsIgnoreCase(submittedValue);
         button.setSubmittedValue(checked);
     }
 
@@ -137,9 +137,8 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         String onLabel = button.getOnLabel();
         String offLabel = button.getOffLabel();
 
-        String clientId = button.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectBooleanButton", button.resolveWidgetVar(context), clientId)
+        wb.init("SelectBooleanButton", button)
                 .attr("onLabel", isValueBlank(onLabel) ? "ui-button" : onLabel)
                 .attr("offLabel", isValueBlank(offLabel) ? "ui-button" : offLabel)
                 .attr("onIcon", button.getOnIcon(), null)

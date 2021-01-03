@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -201,9 +201,8 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
     }
 
     protected void encodeScript(FacesContext context, SplitButton button) throws IOException {
-        String clientId = button.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SplitButton", button.resolveWidgetVar(context), clientId);
+        wb.init("SplitButton", button);
         wb.attr("appendTo", SearchExpressionFacade.resolveClientId(context, button, button.getAppendTo(),
                 SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null);
 
@@ -404,7 +403,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
-        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER, null), null);
+        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER), null);
 
         if (button.getFilterPlaceholder() != null) {
             writer.writeAttribute("placeholder", button.getFilterPlaceholder(), null);

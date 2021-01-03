@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -105,7 +105,7 @@ public class VirusTotalReportScanner implements VirusScanner {
     }
 
     protected String createErrorMessage(UploadedFile file, JSONObject json) {
-        return MessageFactory.getMessage("primefaces.fileupload.VIRUS_TOTAL_FILE", new Object[]{file.getFileName()});
+        return MessageFactory.getMessage("primefaces.fileupload.VIRUS_TOTAL_FILE", file.getFileName());
     }
 
     protected URLConnection openConnection(UploadedFile file) throws IOException {

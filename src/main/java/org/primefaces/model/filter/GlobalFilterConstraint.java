@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,23 +23,43 @@
  */
 package org.primefaces.model.filter;
 
-import java.util.Locale;
-import org.primefaces.util.LangUtils;
+import org.primefaces.model.FilterMeta;
 
-public class GlobalFilterConstraint implements FilterConstraint {
+import javax.faces.context.FacesContext;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Locale;
+
+public class GlobalFilterConstraint extends ContainsFilterConstraint {
+
+    private final Collection<FilterMeta> filterBy;
+
+    public GlobalFilterConstraint(Collection<FilterMeta> filterBy) {
+        this.filterBy = filterBy;
+    }
+
+    public GlobalFilterConstraint() {
+        this(Collections.emptyList());
+    }
 
     @Override
-    public boolean applies(Object value, Object filter, Locale locale) {
-        String filterText = (filter == null) ? null : filter.toString().trim().toLowerCase(locale);
-
-        if (LangUtils.isValueEmpty(filterText)) {
-            return true;
+    public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
+        // tweak for treetable (to remove once TreeTable filtering is cleaned up)
+        if (filterBy == null || filterBy.isEmpty()) {
+            return super.isMatching(ctxt, value, filter, locale);
         }
 
-        if (value == null) {
-            return false;
+        for (FilterMeta f : filterBy) {
+            if (f.isGlobalFilter()) {
+                continue;
+            }
+
+            Object o = f.getLocalValue(ctxt.getELContext());
+            if (super.isMatching(ctxt, o, filter, locale)) {
+                return true;
+            }
         }
 
-        return value.toString().toLowerCase(locale).contains(filterText);
+        return false;
     }
 }

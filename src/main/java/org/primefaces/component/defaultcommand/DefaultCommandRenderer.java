@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,9 +40,8 @@ public class DefaultCommandRenderer extends CoreRenderer {
 
         UIComponent target = SearchExpressionFacade.resolveComponent(context, command, command.getTarget());
 
-        String clientId = command.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("DefaultCommand", command.resolveWidgetVar(context), clientId)
+        wb.init("DefaultCommand", command)
                 .attr("target", target.getClientId(context));
 
         String scope = command.getScope();

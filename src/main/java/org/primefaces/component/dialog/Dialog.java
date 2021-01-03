@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -105,20 +105,20 @@ public class Dialog extends DialogBase {
             AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;
             String clientId = getClientId(context);
 
-            if (eventName.equals("close")) {
+            if ("close".equals(eventName)) {
                 setVisible(false);
                 CloseEvent closeEvent = new CloseEvent(this, ((AjaxBehaviorEvent) event).getBehavior());
                 closeEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(closeEvent);
             }
-            else if (eventName.equals("move")) {
+            else if ("move".equals(eventName)) {
                 int top = Double.valueOf(params.get(clientId + "_top")).intValue();
                 int left = Double.valueOf(params.get(clientId + "_left")).intValue();
                 MoveEvent moveEvent = new MoveEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), top, left);
                 moveEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(moveEvent);
             }
-            else if (eventName.equals("resizeStart") || eventName.equals("resizeStop")) {
+            else if ("resizeStart".equals(eventName) || "resizeStop".equals(eventName)) {
                 int width = Double.valueOf(params.get(clientId + "_width")).intValue();
                 int height = Double.valueOf(params.get(clientId + "_height")).intValue();
                 ResizeEvent resizeEvent = new ResizeEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), width, height);

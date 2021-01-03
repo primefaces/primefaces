@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,7 +41,8 @@ public class TimelineModificationEvent<T> extends AbstractAjaxBehaviorEvent {
     }
 
     /**
-     * Gets a cloned {@link TimelineEvent} with the modifications if any. You should update your {@link TimelineModel} with this instance to keep sync between
+     * Gets a cloned {@link TimelineEvent} with the modifications if any.
+     * You should update your {@link org.primefaces.model.timeline.TimelineModel} with this instance to keep sync between
      * UI and model.
      * @return
      */
