@@ -17,6 +17,7 @@ This page contains a list of big features. Please check the GitHub issues for al
   * DataTable
     * supports new filter constraint "range" allowing to filter within a provided range
     * refactoring of filter and sort (see https://primefaces.github.io/primefaces/10_0/#/../migrationguide/10_0?id=datatable)
+    * additional quick way of declaring columns with way less markup (`<p:column field="category" headerText="Category" />`, see https://primefaces.github.io/primefaces/10_0/#/components/datatable?id=getting-started-with-the-datatable)
   * TreeTable
     * refactoring of filter and sort (see https://primefaces.github.io/primefaces/10_0/#/../migrationguide/10_0?id=treetable)
   * DataExporter: new layout-features and AJAX-support (so `ajax="false"` is not required anymore) (see https://primefaces.github.io/primefaces/10_0/#/../migrationguide/10_0?id=dataexporter)
