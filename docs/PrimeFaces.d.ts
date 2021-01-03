@@ -2067,6 +2067,12 @@ declare namespace PrimeFaces.widget {
          */
         activate(): void;
         /**
+         * Add the given suggestion item.
+         *
+         * @param item Suggestion item to add.
+         */
+        addItem(item: JQuery | string): void;
+        /**
          * Aligns (positions) the overlay panel that shows the found suggestions.
          */
         alignPanel(): void;
@@ -2197,17 +2203,15 @@ declare namespace PrimeFaces.widget {
         /**
          * Invokes the appropriate behavior for when a suggestion item was selected.
          *
-         * @param event The event that occurred.
          * @param itemValue Value of the selected item.
          */
-        private invokeItemSelectBehavior(event: JQuery.Event, itemValue: string): void;
+        private invokeItemSelectBehavior(itemValue: string): void;
         /**
          * Invokes the appropriate behavior when a suggestion item was unselected.
          *
-         * @param event The event that occurred.
          * @param itemValue Value of the unselected item.
          */
-        private invokeItemUnselectBehavior(event: JQuery.Event, itemValue: string): void;
+        private invokeItemUnselectBehavior(itemValue: string): void;
         /**
          * Invokes the appropriate behavior for when more text was selected.
          */
@@ -2254,10 +2258,9 @@ declare namespace PrimeFaces.widget {
         /**
          * Removes the given suggestion item.
          *
-         * @param event The event that occurred.
          * @param item Suggestion item to remove.
          */
-        private removeItem(event: JQuery.Event, item: JQuery): void;
+        removeItem(item: JQuery | string): void;
         /**
          * Initiates a search with given value, that is, look for matching options and present the options that were found
          * to the user.
@@ -3723,6 +3726,66 @@ declare namespace PrimeFaces.widget {
 }
 declare namespace PrimeFaces.widget {
     /**
+     * __PrimeFaces Chip Widget__
+     *
+     * Chip represents entities using icons, labels and images.
+     *
+     * @typeparam TCfg Defaults to `ChipCfg`. Type of the configuration object for this widget.
+     */
+    export class Chip<TCfg extends ChipCfg = ChipCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
+        /**
+         * DOM element of the chip.
+         */
+        chip: JQuery;
+        /**
+         * DOM element of the icon for closing this chip, when this chip is closable (an `x` by
+         * default).
+         */
+        removeIcon: JQuery;
+        /**
+         * Sets up all event listeners required for this widget.
+         */
+        private bindEvents(): void;
+        /**
+         * Closes the chip.
+         */
+        private close(): void;
+        /**
+         * A widget class should not have an explicit constructor. Instead, this initialize method is called after the
+         * widget was created. You can use this method to perform any initialization that is required. For widgets that
+         * need to create custom HTML on the client-side this is also the place where you should call your render
+         * method.
+         *
+         * Please make sure to call the super method first before adding your own custom logic to the init method:
+         *
+         * ```javascript
+         * PrimeFaces.widget.MyWidget = PrimeFaces.widget.BaseWidget.extend({
+         *   init: function(cfg) {
+         *     this._super(cfg);
+         *     // custom initialization
+         *   }
+         * });
+         * ```
+         *
+         * @override
+         * @param cfg The widget configuration to be used for this widget instance.
+         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * component.
+         */
+        init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+    }
+}
+declare namespace PrimeFaces.widget {
+    /**
+     * The configuration for the {@link  Chip| Chip widget}.
+     * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+     * configuration is usually meant to be read-only and should not be modified.
+     */
+    export interface ChipCfg extends PrimeFaces.widget.BaseWidgetCfg {
+    }
+}
+declare namespace PrimeFaces.widget {
+    /**
      * __PrimeFaces Chips Widget__
      *
      * Chips is used to enter multiple values on an inputfield.
@@ -3798,11 +3861,24 @@ declare namespace PrimeFaces.widget {
          */
         private invokeItemUnselectBehavior(itemValue: string): void;
         /**
+         * Deletes the currently editing input value and refocus the input box if necessary.
+         *
+         * @param refocus `true` to put focus back on the INPUT again after the chip was added, or `false`
+         * otherwise.
+         */
+        private refocus(refocus?: boolean): void;
+        /**
          * Removes an item (chip) from the list of currently displayed items.
          *
          * @param item An item  (LI element) that should be removed.
+         * @param silent flag indicating whether to animate and fire AJAX event
          */
-        removeItem(item: JQuery): void;
+        removeItem(item: JQuery, silent: boolean): void;
+        /**
+         * Converts the current list into a separator delimited list for mass editing while keeping original
+         * order of the items or closes the editor turning the values back into chips.
+         */
+        toggleEditor(): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -3820,6 +3896,14 @@ declare namespace PrimeFaces.widget {
          * Maximum number of entries allowed.
          */
         max: number;
+        /**
+         * Separator character to allow multiple values such if a list is pasted into the input. Default is ','.
+         */
+        separator: string;
+        /**
+         * Prevent duplicate entries from being added.
+         */
+        unique: boolean;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -9331,9 +9415,9 @@ declare namespace PrimeFaces.widget {
         /**
          * Remove given row from the list of selected rows.
          *
-         * @param rowIndex Key of the row to remove.
+         * @param rowKey Key of the row to remove.
          */
-        private removeSelection(rowIndex: string): void;
+        private removeSelection(rowKey: string): void;
         /**
          * Resets the scroll state of the body to a non-scrolled state.
          */
@@ -9676,6 +9760,12 @@ declare namespace PrimeFaces.widget {
          * @param content HTML string to set on the row.
          */
         protected updateRow(row: JQuery, content: string): void;
+        /**
+         * In multi-sort mode this will add number indicators to let the user know the current
+         * sort order. If only one column is sorted then no indicator is displayed and will
+         * only be displayed once more than one column is sorted.
+         */
+        private updateSortPriorityIndicators(): void;
         /**
          * Switches the given cell to its view mode (not editable).
          *
@@ -29138,6 +29228,93 @@ declare namespace PrimeFaces.widget {
     export interface ScrollPanelCfg extends JQueryJScrollPane.JScrollPaneSettings, PrimeFaces.widget.DeferredWidgetCfg {
     }
 }
+declare namespace PrimeFaces.widget {
+    /**
+     * __PrimeFaces ScrollTop Widget__
+     *
+     * ScrollTop gets displayed after a certain scroll position and used to navigates to the top of the page quickly.
+     *
+     * @typeparam TCfg Defaults to `ScrollTopCfg`. Type of the configuration object for this widget.
+     */
+    export class ScrollTop<TCfg extends ScrollTopCfg = ScrollTopCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
+        /**
+         * Window or parent element of the ScrollTop.
+         */
+        scrollElement: string;
+        /**
+         * DOM element of the scrollTop.
+         */
+        scrollTop: JQuery;
+        /**
+         * Target element of the ScrollTop.
+         */
+        target: string;
+        /**
+         * The scroll threshold for displaying the ScrollTop element.
+         */
+        threshold: JQuery;
+        /**
+         * Whether the ScrollTop element is visible or not.
+         */
+        visible: JQuery;
+        /**
+         * Sets up all event listeners required for this widget.
+         */
+        private bindEvents(): void;
+        /**
+         * Sets up scroll to top event to the ScrollTop element.
+         */
+        private bindScrollEvent(): void;
+        /**
+         * Checks visibility of the ScrollTop element.
+         */
+        private checkVisibility(): void;
+        /**
+         * A widget class should not have an explicit constructor. Instead, this initialize method is called after the
+         * widget was created. You can use this method to perform any initialization that is required. For widgets that
+         * need to create custom HTML on the client-side this is also the place where you should call your render
+         * method.
+         *
+         * Please make sure to call the super method first before adding your own custom logic to the init method:
+         *
+         * ```javascript
+         * PrimeFaces.widget.MyWidget = PrimeFaces.widget.BaseWidget.extend({
+         *   init: function(cfg) {
+         *     this._super(cfg);
+         *     // custom initialization
+         *   }
+         * });
+         * ```
+         *
+         * @override
+         * @param cfg The widget configuration to be used for this widget instance.
+         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * component.
+         */
+        init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+    }
+}
+declare namespace PrimeFaces.widget {
+    /**
+     * The configuration for the {@link  ScrollTop| ScrollTop widget}.
+     * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+     * configuration is usually meant to be read-only and should not be modified.
+     */
+    export interface ScrollTopCfg extends PrimeFaces.widget.BaseWidgetCfg {
+        /**
+         * Scrolling behavior of the ScrollTop.
+         */
+        behavior: string;
+        /**
+         * Target of the ScrollTop.
+         */
+        target: string;
+        /**
+         * Value of the vertical scroll position of the target to toggle the visibility.
+         */
+        threshold: number;
+    }
+}
 declare namespace PrimeFaces.widget.Sidebar {
     /**
      * Callback that is invoked when the sidebar is opened. See also
@@ -30081,6 +30258,145 @@ declare namespace PrimeFaces.widget {
          * digits.
          */
         thousandSeparator: string;
+    }
+}
+declare namespace PrimeFaces.widget {
+    /**
+     * __PrimeFaces Splitter Widget__
+     *
+     * Splitter represents entities using icons, labels and images.
+     *
+     * @typeparam TCfg Defaults to `SplitterCfg`. Type of the configuration object for this widget.
+     */
+    export class Splitter<TCfg extends SplitterCfg = SplitterCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
+        /**
+         * DOM elements of the gutter elements in splitter.
+         */
+        gutters: JQuery;
+        /**
+         * Whether splitter element is horizontal or vertical.
+         */
+        horizontal: JQuery;
+        /**
+         * Whether splitter element is stateful or not.
+         */
+        isStateful: JQuery;
+        /**
+         * Array of the panels size for save and restore state.
+         */
+        panelSizes: JQuery;
+        /**
+         * DOM elements of the splitter panels in splitter.
+         */
+        panels: JQuery;
+        /**
+         * Length of the panels array.
+         */
+        panelsLength: JQuery;
+        /**
+         * Size of the splitter element.
+         */
+        parentElementSize: JQuery;
+        /**
+         * When pressed on gutter value is true, default value is false.
+         */
+        pressed: JQuery;
+        /**
+         * DOM element of the splitter.
+         */
+        splitter: JQuery;
+        /**
+         * Sets up all event listeners required for this widget.
+         */
+        private bindEvents(): void;
+        /**
+         * Add resize event to the splitter gutters.
+         */
+        private bindResizeEvent(): void;
+        /**
+         * Return localStorage or sessionStorage based on components stateStorage type.
+         *
+         * @return localStorage or sessionStorage.
+         */
+        getStorage(): Storage;
+        /**
+         * A widget class should not have an explicit constructor. Instead, this initialize method is called after the
+         * widget was created. You can use this method to perform any initialization that is required. For widgets that
+         * need to create custom HTML on the client-side this is also the place where you should call your render
+         * method.
+         *
+         * Please make sure to call the super method first before adding your own custom logic to the init method:
+         *
+         * ```javascript
+         * PrimeFaces.widget.MyWidget = PrimeFaces.widget.BaseWidget.extend({
+         *   init: function(cfg) {
+         *     this._super(cfg);
+         *     // custom initialization
+         *   }
+         * });
+         * ```
+         *
+         * @override
+         * @param cfg The widget configuration to be used for this widget instance.
+         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * component.
+         */
+        init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+        /**
+         * Initialize panels size.
+         */
+        private initPanelSize(): void;
+        /**
+         * Resize splitter panels.
+         *
+         * @param startPos start position of the cursor in resize event.
+         * @param prevPanelSize size of the splitter panel previous of the selected gutter.
+         * @param nextPanelSize size of the splitter panel next of the selected gutter.
+         * @param prevPanelElement DOM element of the splitter panel previous of the selected gutter element.
+         * @param nextPanelElement DOM element of the splitter panel next of the selected gutter element.
+         */
+        private onResize(startPos: number, prevPanelSize: number, nextPanelSize: number, prevPanelElement: JQuery, nextPanelElement: JQuery): void;
+        /**
+         * Toggles the expansion state of this panel.
+         *
+         * @param gutterElement DOM element of the selected gutter element in the resize event.
+         */
+        private onResizeEnd(gutterElement: JQuery): void;
+        /**
+         * Restore panel sizes from storage.
+         *
+         * @return if state restore operation is successful returns true, if not returns false
+         */
+        restoreState(): boolean;
+        /**
+         * Save current panel sizes to the storage.
+         */
+        private saveState(): void;
+    }
+}
+declare namespace PrimeFaces.widget {
+    /**
+     * The configuration for the {@link  Splitter| Splitter widget}.
+     * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+     * configuration is usually meant to be read-only and should not be modified.
+     */
+    export interface SplitterCfg extends PrimeFaces.widget.BaseWidgetCfg {
+        /**
+         * Defines Size of the divider in pixels.
+         */
+        gutterSize: number;
+        /**
+         * Defines orientation of the panels, "horizontal" or "vertical".
+         */
+        layout: string;
+        /**
+         * Defines storage identifier of a stateful Splitter.
+         */
+        stateKey: string;
+        /**
+         * Defines where a stateful splitter keeps its state, "session" or "local".
+         */
+        stateStorage: string;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -33596,6 +33912,15 @@ declare namespace PrimeFaces.widget {
          */
         filter(): void;
         /**
+         * Finds the saved width of the given column. The width of resizable columns may be saved to restore it after an
+         * AJAX update.
+         *
+         * @param id ID of a column
+         * @return The saved width of the given column in pixels. `undefined` when the given column
+         * does not exist.
+         */
+        private findColWidthInResizableState(id: string): string | undefined;
+        /**
          * Sends a select event on server side to invoke a select listener if defined.
          *
          * @param nodeKey The key of the node that was selected.
@@ -33852,6 +34177,12 @@ declare namespace PrimeFaces.widget {
          */
         private selectNodesInRange(node: JQuery): void;
         /**
+         * Applies the appropriated width to all given column elements.
+         *
+         * @param columns A list of column elements.
+         */
+        private setColumnsWidth(columns: JQuery): void;
+        /**
          * Applies the given outer width to an element.
          *
          * @param element An element to modify.
@@ -33946,9 +34277,16 @@ declare namespace PrimeFaces.widget {
          */
         unselectNode(node: JQuery, silent?: boolean): void;
         /**
-         * Recomputes and applies the target width of all columns.
+         * Computes and saves the resizable state of this data table, ie. which columns have got which width. May be used
+         * later to restore the current column width after an AJAX update.
+         *
+         * @param columnHeader Element of a column header of this data table.
+         * @param nextColumnHeader Element of the column header next to the given column header.
+         * @param table The element for this data table.
+         * @param newWidth New width to be applied.
+         * @param nextColumnWidth Width of the column next to the given column header.
          */
-        private updateColumnWidths(): void;
+        private updateResizableState(columnHeader: JQuery, nextColumnHeader: JQuery, table: JQuery, newWidth: number, nextColumnWidth: number | null): void;
         /**
          * Updates a row with the given HTML content.
          *
@@ -33956,6 +34294,12 @@ declare namespace PrimeFaces.widget {
          * @param content The new HTML content of the row.
          */
         private updateRows(row: JQuery, content: string | HTMLElement | HTMLElement[] | JQuery): void;
+        /**
+         * In multi-sort mode this will add number indicators to let the user know the current
+         * sort order. If only one column is sorted then no indicator is displayed and will
+         * only be displayed once more than one column is sorted.
+         */
+        private updateSortPriorityIndicators(): void;
         /**
          * Updates the vertical scroll position and adjusts the margin.
          */
