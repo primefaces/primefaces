@@ -42,7 +42,7 @@ For a full list of the available downloads, please visit the [download page](htt
 
 ##### Maven
 
-- Official release (javax)
+- Official release (javax; JSF 2.0 - JSF 2.3)
 
 	```xml
 	<dependency>
@@ -52,7 +52,7 @@ For a full list of the available downloads, please visit the [download page](htt
 	</dependency>
 	```
 
-- Official release (jakarta; not yet released)
+- Official release (jakarta; JSF 3.0; not yet released)
 
   ```xml
   <dependency>
@@ -63,7 +63,7 @@ For a full list of the available downloads, please visit the [download page](htt
   </dependency>
   ```
 
-- Snapshot (javax; should NOT be used in production environments!)
+- Snapshot (javax; JSF 2.0 - JSF 2.3; should NOT be used in production environments!)
 
 	```xml
 	<dependency>
@@ -80,7 +80,7 @@ For a full list of the available downloads, please visit the [download page](htt
 	</repositories>
 	```
 
-- Snapshot (jakarta; should NOT be used in production environments!)
+- Snapshot (jakarta; JSF 3.0; should NOT be used in production environments!)
 
   ```xml
   <dependency>
