@@ -24,7 +24,7 @@
 package org.primefaces.component.menu;
 
 import java.io.IOException;
-import java.util.Map;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -66,7 +66,7 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
     }
 
     protected void encodeMenuItem(FacesContext context, AbstractMenu menu, MenuItem menuitem, String tabindex) throws IOException {
-        encodeMenuItem(context, menu, menuitem, tabindex, Map.entry(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM));
+        encodeMenuItem(context, menu, menuitem, tabindex, new SimpleEntry<>(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM));
     }
 
     protected void encodeMenuItem(FacesContext context, AbstractMenu menu, MenuItem menuitem, String tabindex, Entry<String, String> aria) throws IOException {

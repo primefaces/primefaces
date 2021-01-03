@@ -24,8 +24,8 @@
 package org.primefaces.component.breadcrumb;
 
 import java.io.IOException;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -81,7 +81,10 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
                         encodeDisabledMenuItem(context, item);
                     }
                     else {
-                        Entry<String, String> attr = last ? Map.entry(HTML.ARIA_CURRENT, HTML.ARIA_CURRENT_PAGE) : null;
+                        Entry<String, String> attr = null;
+                        if (last) {
+                            attr = new SimpleEntry<>(HTML.ARIA_CURRENT, HTML.ARIA_CURRENT_PAGE);
+                        }
                         encodeMenuItem(context, menu, item, menu.getTabindex(), attr);
                     }
 
