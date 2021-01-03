@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -58,7 +58,7 @@ public class CellEditorRenderer extends CoreRenderer {
                 cellEditMode = dt.getCellEditMode();
 
                 String rowEditMode = dt.getRowEditMode();
-                isLazyRowEdit = rowEditMode != null && editMode.equals("row") && rowEditMode.equals("lazy")
+                isLazyRowEdit = "row".equals(editMode) && "lazy".equals(rowEditMode)
                         && !dt.isRowEditInitRequest(context) && !context.isValidationFailed();
             }
             else if (parentTable instanceof TreeTable) {
@@ -67,7 +67,7 @@ public class CellEditorRenderer extends CoreRenderer {
                 cellEditMode = tt.getCellEditMode();
             }
 
-            isLazyEdit = editMode != null && (cellEditMode != null && editMode.equals("cell") && cellEditMode.equals("lazy") || isLazyRowEdit);
+            isLazyEdit = ("cell".equals(editMode) && "lazy".equals(cellEditMode) || isLazyRowEdit);
         }
 
         writer.startElement("div", null);

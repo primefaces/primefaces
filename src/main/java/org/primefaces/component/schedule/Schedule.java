@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -98,7 +98,7 @@ public class Schedule extends ScheduleBase {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
             FacesEvent wrapperEvent = null;
 
-            if (eventName.equals("dateSelect") || eventName.equals("dateDblSelect")) {
+            if ("dateSelect".equals(eventName) || "dateDblSelect".equals(eventName)) {
                 String selectedDateStr = params.get(clientId + "_selectedDate");
                 ZoneId zoneId = CalendarUtils.calculateZoneId(this.getTimeZone());
                 LocalDateTime selectedDate =  CalendarUtils.toLocalDateTime(zoneId, selectedDateStr);
@@ -107,13 +107,13 @@ public class Schedule extends ScheduleBase {
 
                 wrapperEvent = selectEvent;
             }
-            else if (eventName.equals("eventSelect")) {
+            else if ("eventSelect".equals(eventName)) {
                 String selectedEventId = params.get(clientId + "_selectedEventId");
                 ScheduleEvent<?> selectedEvent = getValue().getEvent(selectedEventId);
 
                 wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), selectedEvent);
             }
-            else if (eventName.equals("eventMove")) {
+            else if ("eventMove".equals(eventName)) {
                 String movedEventId = params.get(clientId + "_movedEventId");
                 ScheduleEvent<?> movedEvent = getValue().getEvent(movedEventId);
                 int yearDelta = Double.valueOf(params.get(clientId + "_yearDelta")).intValue();
@@ -133,7 +133,7 @@ public class Schedule extends ScheduleBase {
                 wrapperEvent = new ScheduleEntryMoveEvent(this, behaviorEvent.getBehavior(), movedEvent,
                         yearDelta, monthDelta, dayDelta, minuteDelta);
             }
-            else if (eventName.equals("eventResize")) {
+            else if ("eventResize".equals(eventName)) {
                 String resizedEventId = params.get(clientId + "_resizedEventId");
                 ScheduleEvent<?> resizedEvent = getValue().getEvent(resizedEventId);
 
@@ -159,7 +159,7 @@ public class Schedule extends ScheduleBase {
                         startDeltaYear, startDeltaMonth, startDeltaDay, startDeltaMinute,
                         endDeltaYear, endDeltaMonth, endDeltaDay, endDeltaMinute);
             }
-            else if (eventName.equals("viewChange")) {
+            else if ("viewChange".equals(eventName)) {
                 wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), getView());
             }
 

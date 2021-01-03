@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -71,7 +71,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         if (layout == null) {
             layout = "lineDirection";
         }
-        boolean custom = layout.equals("custom");
+        boolean custom = "custom".equals(layout);
 
         if (custom) {
             String style = radio.getStyle();
@@ -87,7 +87,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             encodeCustomLayout(context, radio);
             writer.endElement("span");
         }
-        else if (layout.equals("responsive")) {
+        else if ("responsive".equals(layout)) {
             encodeResponsiveLayout(context, radio);
         }
         else {
@@ -97,7 +97,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
     protected void encodeScript(FacesContext context, SelectOneRadio radio) throws IOException {
         String layout = radio.getLayout();
-        boolean custom = layout != null && layout.equals("custom");
+        boolean custom = layout != null && "custom".equals(layout);
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("SelectOneRadio", radio)
@@ -193,13 +193,13 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     protected void encodeSelectItems(FacesContext context, SelectOneRadio radio, List<SelectItem> selectItems, String layout)
             throws IOException {
 
-        if (layout.equals("lineDirection")) {
+        if ("lineDirection".equals(layout)) {
             encodeLineLayout(context, radio, selectItems);
         }
-        else if (layout.equals("pageDirection")) {
+        else if ("pageDirection".equals(layout)) {
             encodePageLayout(context, radio, selectItems);
         }
-        else if (layout.equals("grid")) {
+        else if ("grid".equals(layout)) {
             encodeGridLayout(context, radio, selectItems);
         }
         else {

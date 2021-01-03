@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -85,7 +85,7 @@ public class FilterFeature implements DataTableFeature {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String clientId = table.getClientId(context);
         String rppValue = params.get(clientId + "_rppDD");
-        if (rppValue != null && !rppValue.equals("*")) {
+        if (rppValue != null && !"*".equals(rppValue)) {
             table.setRows(Integer.parseInt(rppValue));
         }
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -70,10 +70,10 @@ public class SplitterRenderer extends CoreRenderer {
                 if (i + 1 != childCount) {
                     writer.startElement("div", splitter);
                     writer.writeAttribute("class", Splitter.GUTTER_CLASS, "styleClass");
-                    if (layout.equals("horizontal")) {
+                    if ("horizontal".equals(layout)) {
                         writer.writeAttribute("style", "width: " + splitter.getGutterSize() + "px", "style");
                     }
-                    else if (layout.equals("vertical")) {
+                    else if ("vertical".equals(layout)) {
                         writer.writeAttribute("style", "height: " + splitter.getGutterSize() + "px", "style");
                     }
                     writer.startElement("div", splitter);

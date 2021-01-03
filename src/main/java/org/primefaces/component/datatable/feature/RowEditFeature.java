@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -60,7 +60,7 @@ public class RowEditFeature implements DataTableFeature {
         if (table.isRowEditRequest(context)) {
             String action = params.get(clientId + "_rowEditAction");
 
-            if (action.equals("cancel")) {
+            if ("cancel".equals(action)) {
                 VisitContext visitContext = null;
 
                 for (UIColumn column : table.getColumns()) {

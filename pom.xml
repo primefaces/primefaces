@@ -5,7 +5,7 @@
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces</artifactId>
     <packaging>jar</packaging>
-    <version>9.0-SNAPSHOT</version>
+    <version>10.0-SNAPSHOT</version>
 
     <name>PrimeFaces</name>
     <url>https://www.primefaces.org</url>
@@ -490,7 +490,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.1.1</version>
                 <configuration>
                     <consoleOutput>true</consoleOutput>
                     <configLocation>${project.basedir}/src/conf/checkstyle.xml</configLocation>
@@ -511,7 +511,7 @@
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>8.29</version>
+                        <version>8.38</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -534,7 +534,7 @@
             <plugin>
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
-                <version>4.0.rc1</version>
+                <version>4.0.rc2</version>
                 <configuration>
                     <header>src/conf/header.txt</header>
                     <includes>

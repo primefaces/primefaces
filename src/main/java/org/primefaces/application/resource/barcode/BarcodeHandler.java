@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -94,7 +94,7 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
 
                 handleCache(externalContext, cache);
 
-                if (format.equals("png")) {
+                if ("png".equals(format)) {
                     externalContext.setResponseContentType("image/png");
 
                     BitmapCanvasProvider bitmapCanvasProvider = new BitmapCanvasProvider(
@@ -102,7 +102,7 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
                     generator.generate(bitmapCanvasProvider, value);
                     bitmapCanvasProvider.finish();
                 }
-                else if (format.equals("svg")) {
+                else if ("svg".equals(format)) {
                     externalContext.setResponseContentType("image/svg+xml");
 
                     SVGCanvasProvider svgCanvasProvider = new SVGCanvasProvider(false, orientation);

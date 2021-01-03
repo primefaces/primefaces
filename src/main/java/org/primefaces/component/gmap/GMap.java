@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -86,7 +86,7 @@ public class GMap extends GMapBase {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
             FacesEvent wrapperEvent = null;
 
-            if (eventName.equals("overlaySelect") || eventName.equals("overlayDblSelect")) {
+            if ("overlaySelect".equals(eventName) || "overlayDblSelect".equals(eventName)) {
                 wrapperEvent = new OverlaySelectEvent(this, behaviorEvent.getBehavior(), getModel().findOverlay(params.get(clientId + "_overlayId")));
 
                 //if there is info window, update and show it
@@ -95,7 +95,7 @@ public class GMap extends GMapBase {
                     PrimeFaces.current().ajax().update(infoWindow.getClientId(context));
                 }
             }
-            else if (eventName.equals("stateChange")) {
+            else if ("stateChange".equals(eventName)) {
                 String[] centerLoc = params.get(clientId + "_center").split(",");
                 String[] northeastLoc = params.get(clientId + "_northeast").split(",");
                 String[] southwestLoc = params.get(clientId + "_southwest").split(",");
@@ -107,13 +107,13 @@ public class GMap extends GMapBase {
 
                 wrapperEvent = new StateChangeEvent(this, behaviorEvent.getBehavior(), new LatLngBounds(northeast, southwest), zoomLevel, center);
             }
-            else if (eventName.equals("pointSelect") || eventName.equals("pointDblSelect")) {
+            else if ("pointSelect".equals(eventName) || "pointDblSelect".equals(eventName)) {
                 String[] latlng = params.get(clientId + "_pointLatLng").split(",");
                 LatLng position = new LatLng(Double.valueOf(latlng[0]), Double.valueOf(latlng[1]));
 
                 wrapperEvent = new PointSelectEvent(this, behaviorEvent.getBehavior(), position);
             }
-            else if (eventName.equals("markerDrag")) {
+            else if ("markerDrag".equals(eventName)) {
                 Marker marker = (Marker) getModel().findOverlay(params.get(clientId + "_markerId"));
                 double lat = Double.parseDouble(params.get(clientId + "_lat"));
                 double lng = Double.parseDouble(params.get(clientId + "_lng"));
@@ -121,7 +121,7 @@ public class GMap extends GMapBase {
 
                 wrapperEvent = new MarkerDragEvent(this, behaviorEvent.getBehavior(), marker);
             }
-            else if (eventName.equals("geocode")) {
+            else if ("geocode".equals(eventName)) {
                 List<GeocodeResult> results = new ArrayList<>();
                 String query = params.get(clientId + "_query");
                 String[] addresses = params.get(clientId + "_addresses").split("_primefaces_");
@@ -134,7 +134,7 @@ public class GMap extends GMapBase {
 
                 wrapperEvent = new GeocodeEvent(this, behaviorEvent.getBehavior(), query, results);
             }
-            else if (eventName.equals("reverseGeocode")) {
+            else if ("reverseGeocode".equals(eventName)) {
                 String[] results = params.get(clientId + "_address").split("_primefaces_");
                 List<String> addresses = Arrays.asList(results);
 

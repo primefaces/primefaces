@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -69,7 +69,7 @@ public class Fieldset extends FieldsetBase {
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName.equals("toggle")) {
+            if ("toggle".equals(eventName)) {
                 Visibility visibility = isCollapsed() ? Visibility.HIDDEN : Visibility.VISIBLE;
 
                 super.queueEvent(new ToggleEvent(this, behaviorEvent.getBehavior(), visibility));

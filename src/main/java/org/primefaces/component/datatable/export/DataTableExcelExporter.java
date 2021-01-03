@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -78,7 +78,7 @@ public class DataTableExcelExporter extends DataTableExporter {
         }
 
         sheetName = WorkbookUtil.createSafeSheetName(sheetName);
-        if (sheetName.equals("empty") || sheetName.equals("null")) {
+        if ("empty".equals(sheetName) || "null".equals(sheetName)) {
             sheetName = "Sheet (" + (index + 1) + ")";
         }
 
@@ -463,10 +463,10 @@ public class DataTableExcelExporter extends DataTableExporter {
         if (options != null) {
             String facetFontStyle = options.getFacetFontStyle();
             if (facetFontStyle != null) {
-                if (facetFontStyle.equalsIgnoreCase("BOLD")) {
+                if ("BOLD".equalsIgnoreCase(facetFontStyle)) {
                     facetFont.setBold(true);
                 }
-                if (facetFontStyle.equalsIgnoreCase("ITALIC")) {
+                if ("ITALIC".equalsIgnoreCase(facetFontStyle)) {
                     facetFont.setItalic(true);
                 }
             }
@@ -517,10 +517,10 @@ public class DataTableExcelExporter extends DataTableExporter {
 
             String cellFontStyle = options.getCellFontStyle();
             if (cellFontStyle != null) {
-                if (cellFontStyle.equalsIgnoreCase("BOLD")) {
+                if ("BOLD".equalsIgnoreCase(cellFontStyle)) {
                     cellFont.setBold(true);
                 }
-                if (cellFontStyle.equalsIgnoreCase("ITALIC")) {
+                if ("ITALIC".equalsIgnoreCase(cellFontStyle)) {
                     cellFont.setItalic(true);
                 }
             }

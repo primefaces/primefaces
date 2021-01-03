@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -69,7 +69,7 @@ public class ProgressBarRenderer extends CoreRenderer {
         String style = progressBar.getStyle();
         String styleClass = progressBar.getStyleClass();
         styleClass = styleClass == null ? ProgressBar.CONTAINER_CLASS : ProgressBar.CONTAINER_CLASS + " " + styleClass;
-        styleClass = styleClass + " " + (mode.equals("determinate") ? ProgressBar.DETERMINATE_CLASS : ProgressBar.INDETERMINATE_CLASS);
+        styleClass = styleClass + " " + ("determinate".equals(mode) ? ProgressBar.DETERMINATE_CLASS : ProgressBar.INDETERMINATE_CLASS);
 
         if (progressBar.isDisabled()) {
             styleClass = styleClass + " ui-state-disabled";

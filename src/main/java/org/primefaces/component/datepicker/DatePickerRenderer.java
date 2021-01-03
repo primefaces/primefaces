@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -255,9 +255,9 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         }
 
         String mask = datePicker.getMask();
-        if (mask != null && !mask.equals("false")) {
+        if (mask != null && !"false".equals(mask)) {
             String patternTemplate = datePicker.calculatePattern();
-            String maskTemplate = (mask.equals("true")) ? datePicker.convertPattern(patternTemplate) : mask;
+            String maskTemplate = ("true".equals(mask)) ? datePicker.convertPattern(patternTemplate) : mask;
             wb.attr("mask", maskTemplate)
                 .attr("maskSlotChar", datePicker.getMaskSlotChar(), "_")
                 .attr("maskAutoClear", datePicker.isMaskAutoClear(), true);

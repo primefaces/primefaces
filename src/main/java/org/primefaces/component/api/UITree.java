@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -315,7 +315,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             if (preselection != null) {
                 String selectionMode = getSelectionMode();
                 if (selectionMode != null) {
-                    if (selectionMode.equals("single")) {
+                    if ("single".equals(selectionMode)) {
                         if (!preselection.isEmpty()) {
                             ve.setValue(FacesContext.getCurrentInstance().getELContext(), preselection.get(0));
                         }
@@ -360,7 +360,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         String selectionMode = getSelectionMode();
 
         if (selection != null) {
-            if (selectionMode.equals("single")) {
+            if ("single".equals(selectionMode)) {
                 TreeNode node = (TreeNode) selection;
                 value = node.getRowKey();
             }
@@ -487,7 +487,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             boolean valid = true;
             Object selection = getSelection();
 
-            if (selectionMode.equals("single")) {
+            if ("single".equals(selectionMode)) {
                 if (selection == null) {
                     valid = false;
                 }
@@ -545,7 +545,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             Object selection = getLocalSelectedNodes();
             Object previousSelection = selectionVE.getValue(context.getELContext());
 
-            if (selectionMode.equals("single")) {
+            if ("single".equals(selectionMode)) {
                 if (previousSelection != null) {
                     ((TreeNode) previousSelection).setSelected(false);
                 }

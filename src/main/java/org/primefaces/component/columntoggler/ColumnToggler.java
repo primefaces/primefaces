@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -79,7 +79,7 @@ public class ColumnToggler extends ColumnTogglerBase {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-        if (event instanceof AjaxBehaviorEvent && eventName.equals("toggle")) {
+        if (event instanceof AjaxBehaviorEvent && "toggle".equals(eventName)) {
             String clientId = getClientId(context);
             Visibility visibility = Visibility.valueOf(params.get(clientId + "_visibility"));
             int index = Integer.parseInt(params.get(clientId + "_index"));
