@@ -19,7 +19,7 @@ any 3rd part work incorporated are compatible with the PrimeFaces Licenses.
 dependencies may also work but not tested.
 
 ## JSF Runtime ##
-PrimeFaces supports JSF 2.0, 2.1, 2.2 and 2.3 runtimes at the same time using feature detection and
+PrimeFaces supports JSF 2.0, 2.1, 2.2, 2.3 and 3.0 runtimes at the same time using feature detection and
 by not having compile time dependency to a specific version. As a result some features are only
 available depending on the runtime.
 
