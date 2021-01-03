@@ -60,7 +60,7 @@ Similarly a more graphical presentation would be to use a `commandlink` with an 
 ```
 
 ## AJAX downloading
-Before PrimeFaces 9, you had to disable AJAX on commandButton and commandLink. As of version 9 that's no longer needed.
+Before PrimeFaces 10, you had to disable AJAX on commandButton and commandLink. As of version 10 that's no longer needed.
 
 The AJAX download uses the same principle you may know from the _p:graphicImage_ component. Basically we generate a URI
 based on the _DefaultStreamedContent_ which is handled by JavaScript triggering a download.
