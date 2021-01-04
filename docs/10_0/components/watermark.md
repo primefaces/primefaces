@@ -29,7 +29,7 @@ for | null | String | Component to attach the watermark
 
 
 ## Getting started with Watermark
-Watermark requires a target of the input component.
+Watermark requires a input component as target.
 
 ```xhtml
 <h:inputText id="txt" value="#{bean.searchKeyword}" />
