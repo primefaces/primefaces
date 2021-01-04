@@ -1,7 +1,6 @@
 # Tab
 
-Tab is a generic container component used by other PrimeFaces components such as tabView and
-accordionPanel.
+Tab is a generic container component used by other components such as _tabView_ and _accordionPanel_.
 
 ## Info
 
@@ -14,7 +13,7 @@ accordionPanel.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component.
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -27,6 +26,7 @@ closable | false | Boolean | Makes the tab closable when enabled.
 titletip | null | String | Tooltip of the tab header.
 
 ## Getting started with the Tab
-See the sections of components who utilize tab component for more information. As tab is a shared
-component, not all attributes may apply to the components that use tab.
+See the sections of components who utilize _tab_ component for more information.
+As _tab_ is a shared component, not all attributes may be respected by the parent component like _tabView_.
 
+> :warning: **As it's a shared component, the parent component like _tabView_ is responsible to render the content. Therefore a _tab_ is not updateable via AJAX.**

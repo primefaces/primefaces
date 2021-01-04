@@ -62,6 +62,8 @@ TabView requires one more child tab components to display. Titles can also be de
 </p:tabView>
 ```
 
+> :warning: **Updating a single _tab_ via AJAX is not possible. Please update the whole _tabView_ or a container inside the _tab_!**
+
 ## Dynamic Tabs
 There’re two toggleModes in TabView, _non-dynamic_ (default) and _dynamic_.
 By default, all tab contents are rendered to the client. On the other hand in dynamic mode, only the active tab contents

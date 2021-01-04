@@ -371,6 +371,7 @@ public class PickListRenderer extends InputRenderer {
         writer.writeAttribute("id", name, null);
         writer.writeAttribute("name", name, null);
         writer.writeAttribute("type", "text", null);
+        writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER), null);
         writer.endElement("input");

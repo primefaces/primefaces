@@ -2,6 +2,8 @@
 
 Watermark applies a HTML5 placeholder attribute on an target input field.
 
+> :warning: **This component should only be used in environments, where no passthrough attributes are available yet (pre JSF 2.2)!**
+
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.watermark.html)
 
 ## Info
@@ -27,10 +29,15 @@ for | null | String | Component to attach the watermark
 
 
 ## Getting started with Watermark
-Watermark requires a target of the input component.
+Watermark requires a input component as target.
 
 ```xhtml
 <h:inputText id="txt" value="#{bean.searchKeyword}" />
 <p:watermark for="txt" value="Search with a keyword" />
+```
+
+Preferred way since JSF2.2+, which results in better performance and less memory used:
+```xhtml
+<h:inputText id="txt" value="#{bean.searchKeyword}" pt:placeholder="Search with a keyword" />
 ```
 

@@ -6,7 +6,7 @@ any 3rd part work incorporated are compatible with the PrimeFaces Licenses.
 
 | Dependency | GroupId | ArtifactId | Version | Type | Description |
 | --- | --- | --- | --- | --- | --- |
-| JSF runtime | | |  2.0, 2.1, 2.2, 2.3 | Required | Apache MyFaces or Eclipse (former Oracle) Mojarra |
+| JSF runtime | | |  2.0, 2.1, 2.2, 2.3, 3.0 | Required | Apache MyFaces or Eclipse (former Oracle) Mojarra |
 | Libre OpenPDF | com.github.librepdf | openpdf | 1.3.23 | Optional | DataExporter (PDF) |
 | Apache POI | org.apache.poi | poi | 4.1.2 | Optional | DataExporter (Excel or XML) |
 | Rome | com.rometools | rome | 1.13.0 | Optional | FeedReader |
@@ -19,7 +19,7 @@ any 3rd part work incorporated are compatible with the PrimeFaces Licenses.
 dependencies may also work but not tested.
 
 ## JSF Runtime ##
-PrimeFaces supports JSF 2.0, 2.1, 2.2 and 2.3 runtimes at the same time using feature detection and
+PrimeFaces supports JSF 2.0, 2.1, 2.2, 2.3 and 3.0 runtimes at the same time using feature detection and
 by not having compile time dependency to a specific version. As a result some features are only
 available depending on the runtime.
 

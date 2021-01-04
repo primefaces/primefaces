@@ -57,6 +57,8 @@ defined with “title” facet.
 </p:accordionPanel>
 ```
 
+> :warning: **Updating a single _tab_ via AJAX is not possible. Please update the whole _accordionPanel_ or a container inside the _tab_!**
+
 ## Dynamic Content Loading
 AccordionPanel supports lazy loading of tab content, when dynamic option is set true, only active
 tab contents will be rendered to the client side and clicking an inactive tab header will do an ajax
