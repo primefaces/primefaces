@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -210,7 +210,7 @@ public class MessagesRenderer extends UINotificationRenderer {
             String forType = uiMessages.getForType();
 
             // key case
-            if (forType == null || forType.equals("key")) {
+            if (forType == null || "key".equals(forType)) {
                 String[] keys = SearchExpressionFacade.split(context, _for, SearchExpressionFacade.EXPRESSION_SEPARATORS);
                 for (String key : keys) {
                     Iterator<FacesMessage> messagesIterator = context.getMessages(key);
@@ -224,7 +224,7 @@ public class MessagesRenderer extends UINotificationRenderer {
             }
 
             // clientId / SearchExpression case
-            if (forType == null || forType.equals("expression")) {
+            if (forType == null || "expression".equals(forType)) {
                 List<UIComponent> forComponents = SearchExpressionFacade.resolveComponents(context, uiMessages, _for,
                         SearchExpressionUtils.SET_IGNORE_NO_RESULT);
                 for (int i = 0; i < forComponents.size(); i++) {

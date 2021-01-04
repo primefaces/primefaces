@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,20 +23,21 @@
  */
 package org.primefaces.model;
 
-import org.primefaces.component.api.DynamicColumn;
-import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.column.ColumnBase;
-import org.primefaces.component.headerrow.HeaderRow;
-import org.primefaces.component.headerrow.HeaderRowBase;
-import org.primefaces.util.LangUtils;
+import java.io.Serializable;
+import java.util.Objects;
 
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
-import java.io.Serializable;
-import java.util.Objects;
+
+import org.primefaces.component.api.DynamicColumn;
+import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.UITable;
+import org.primefaces.component.column.ColumnBase;
+import org.primefaces.component.headerrow.HeaderRow;
+import org.primefaces.component.headerrow.HeaderRowBase;
+import org.primefaces.util.LangUtils;
 
 public class SortMeta implements Serializable, Comparable<SortMeta> {
 
@@ -50,7 +51,7 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
     private SortOrder order = SortOrder.UNSORTED;
     private ValueExpression sortBy;
     private MethodExpression function;
-    private Integer priority = MIN_PRIORITY;
+    private int priority = MIN_PRIORITY;
     private int nullSortOrder;
     private boolean caseSensitiveSort;
     private transient Object component;
@@ -60,7 +61,7 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
     }
 
     SortMeta(String columnKey, String sortField, SortOrder sortOrder, MethodExpression sortFunction,
-             ValueExpression sortBy, Integer priority, int nullSortOrder, boolean caseSensitiveSort, Object component) {
+             ValueExpression sortBy, int priority, int nullSortOrder, boolean caseSensitiveSort, Object component) {
         this.columnKey = columnKey;
         this.field = sortField;
         this.order = sortOrder;
@@ -87,6 +88,10 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
         }
 
         SortOrder order = SortOrder.of(column.getSortOrder());
+        if (order.isUnsorted() && column.isGroupRow()) {
+            order = SortOrder.ASCENDING;
+        }
+
         ValueExpression sortByVE = column.getValueExpression(ColumnBase.PropertyKeys.sortBy.name());
         sortByVE = sortByVE != null ? sortByVE : UITable.createValueExprFromVarField(context, var, field);
 
@@ -124,7 +129,7 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
 
     @Override
     public int compareTo(SortMeta o) {
-        int result = getPriority().compareTo(o.priority);
+        int result = Integer.compare(getPriority(), o.priority);
         if (result == 0) {
             return -1 * Boolean.compare(isActive(), o.isActive());
         }
@@ -163,11 +168,11 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
         this.order = order;
     }
 
-    public Integer getPriority() {
+    public int getPriority() {
         return priority;
     }
 
-    public void setPriority(Integer priority) {
+    public void setPriority(int priority) {
         this.priority = priority;
     }
 
@@ -267,7 +272,7 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
             return this;
         }
 
-        public Builder priority(Integer priority) {
+        public Builder priority(int priority) {
             sortBy.priority = priority;
             return this;
         }

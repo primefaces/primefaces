@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -420,13 +420,13 @@ public class DataTablePDFExporter extends DataTableExporter {
 
     protected void setFontStyle(Font cellFont, String cellFontStyle) {
         if (cellFontStyle != null) {
-            if (cellFontStyle.equalsIgnoreCase("NORMAL")) {
+            if ("NORMAL".equalsIgnoreCase(cellFontStyle)) {
                 cellFontStyle = "" + Font.NORMAL;
             }
-            if (cellFontStyle.equalsIgnoreCase("BOLD")) {
+            if ("BOLD".equalsIgnoreCase(cellFontStyle)) {
                 cellFontStyle = "" + Font.BOLD;
             }
-            if (cellFontStyle.equalsIgnoreCase("ITALIC")) {
+            if ("ITALIC".equalsIgnoreCase(cellFontStyle)) {
                 cellFontStyle = "" + Font.ITALIC;
             }
 

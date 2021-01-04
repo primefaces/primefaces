@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -262,7 +262,7 @@ public class PrimeRequestContext {
                 ValueExpression expression = expressionFactory.createValueExpression(elContext, param, String.class);
                 String expressionValue = (String) expression.getValue(elContext);
 
-                rtl = (expressionValue != null) && expressionValue.equalsIgnoreCase("rtl");
+                rtl = "rtl".equalsIgnoreCase(expressionValue);
             }
         }
 

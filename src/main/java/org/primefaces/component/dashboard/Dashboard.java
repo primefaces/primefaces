@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -77,7 +77,7 @@ public class Dashboard extends DashboardBase {
             String clientId = getClientId(context);
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName.equals("reorder")) {
+            if ("reorder".equals(eventName)) {
                 String widgetClientId = params.get(clientId + "_widgetId");
                 Integer itemIndex = Integer.valueOf(params.get(clientId + "_itemIndex"));
                 Integer receiverColumnIndex = Integer.valueOf(params.get(clientId + "_receiverColumnIndex"));

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -56,9 +56,9 @@ public class MessageRenderer extends UINotificationRenderer {
     protected void encodeMarkup(FacesContext context, Message uiMessage, String targetClientId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String display = uiMessage.getDisplay();
-        boolean iconOnly = display.equals("icon");
+        boolean iconOnly = "icon".equals(display);
         String style = uiMessage.getStyle();
-        String containerClass = display.equals("tooltip") ? "ui-message ui-helper-hidden" : "ui-message";
+        String containerClass = "tooltip".equals(display) ? "ui-message ui-helper-hidden" : "ui-message";
         String styleClass = uiMessage.getStyleClass();
         styleClass = styleClass == null ? containerClass : styleClass + " " + containerClass;
 
@@ -117,7 +117,7 @@ public class MessageRenderer extends UINotificationRenderer {
 
                 writer.startElement("div", null);
 
-                if (!display.equals("text")) {
+                if (!"text".equals(display)) {
                     encodeIcon(writer, severityKey, msg.getDetail(), iconOnly);
                 }
 

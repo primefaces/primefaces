@@ -1496,7 +1496,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.theadClone = this.cloneTableHeader(this.thead, this.bodyTable);
 
         //reflect events from clone to original
-        if(this.sortableColumns.length) {
+        if(this.cfg.sorting) {
             this.sortableColumns.removeAttr('tabindex').off('blur.dataTable focus.dataTable keydown.dataTable');
 
             var clonedColumns = this.theadClone.find('> tr > th'),
@@ -4095,12 +4095,25 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Remove given row from the list of selected rows.
      * @private
-     * @param {string} rowIndex Key of the row to remove.
+     * @param {string} rowKey Key of the row to remove.
      */
-    removeSelection: function(rowIndex) {
-        this.selection = $.grep(this.selection, function(value) {
-            return value != rowIndex;
-        });
+    removeSelection: function(rowKey) {
+        if(this.selection.includes('@all')) {
+            // GitHub #3535 if @all was previously selected just select values on page
+            this.clearSelection();
+            var rows = this.tbody.children('tr');
+            for(var i = 0; i < rows.length; i++) {
+                var rowMeta = this.getRowMeta(rows.eq(i));
+                if(rowMeta.key !== rowKey) {
+                    this.addSelection(rowMeta.key);
+                }
+            }
+        }
+        else {
+            this.selection = $.grep(this.selection, function(value) {
+                return value !== rowKey;
+            });
+        }
     },
 
     /**
