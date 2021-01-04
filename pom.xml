@@ -107,22 +107,22 @@
             <version>4.1.2</version>
             <scope>provided</scope>
             <exclusions>
-            	<exclusion>
-            		<groupId>org.apache.commons</groupId>
-            		<artifactId>commons-collections4</artifactId>
-            	</exclusion>
-            	<exclusion>
-            		<groupId>org.apache.commons</groupId>
-            		<artifactId>commons-math3</artifactId>
-            	</exclusion>
-            	<exclusion>
-            		<groupId>commons-codec</groupId>
-            		<artifactId>commons-codec</artifactId>
-            	</exclusion>
-            	<exclusion>
-            		<groupId>com.zaxxer</groupId>
-            		<artifactId>SparseBitSet</artifactId>
-            	</exclusion>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-collections4</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-math3</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-codec</groupId>
+                    <artifactId>commons-codec</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.zaxxer</groupId>
+                    <artifactId>SparseBitSet</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -131,14 +131,14 @@
             <version>4.1.2</version>
             <scope>provided</scope>
             <exclusions>
-            	<exclusion>
-            		<groupId>org.apache.commons</groupId>
-            		<artifactId>commons-compress</artifactId>
-            	</exclusion>
-            	<exclusion>
-            		<groupId>com.github.virtuald</groupId>
-            		<artifactId>curvesapi</artifactId>
-            	</exclusion>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-compress</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.github.virtuald</groupId>
+                    <artifactId>curvesapi</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
