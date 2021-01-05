@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,6 +34,7 @@ import javax.faces.application.Resource;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.lifecycle.ClientWindow;
@@ -90,12 +91,15 @@ public class HeadRenderer extends Renderer {
             theme = (String) ve.getValue(elContext);
         }
         else {
-            theme = "nova-light";   //default
+            theme = "saga";     //default
         }
 
-        if (theme != null && !theme.equals("none")) {
+        if (theme != null && !"none".equals(theme)) {
             encodeCSS(context, "primefaces-" + theme, "theme.css");
         }
+
+        //Icons
+        encodeCSS(context, "primefaces", "primeicons/primeicons.css");
 
         if (applicationContext.getConfig().isFontAwesomeEnabled()) {
             encodeCSS(context, "primefaces", "fa/font-awesome.css");
@@ -140,6 +144,7 @@ public class HeadRenderer extends Renderer {
 
     protected void encodeCSS(FacesContext context, String library, String resource) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        ExternalContext externalContext = context.getExternalContext();
 
         Resource cssResource = context.getApplication().getResourceHandler().createResource(resource, library);
         if (cssResource == null) {
@@ -149,19 +154,20 @@ public class HeadRenderer extends Renderer {
             writer.startElement("link", null);
             writer.writeAttribute("type", "text/css", null);
             writer.writeAttribute("rel", "stylesheet", null);
-            writer.writeAttribute("href", cssResource.getRequestPath(), null);
+            writer.writeAttribute("href", externalContext.encodeResourceURL(cssResource.getRequestPath()), null);
             writer.endElement("link");
         }
     }
 
     protected void encodeValidationResources(FacesContext context, boolean beanValidationEnabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        ExternalContext externalContext = context.getExternalContext();
         Resource resource = context.getApplication().getResourceHandler().createResource("validation/validation.js", "primefaces");
 
         if (resource != null) {
             writer.startElement("script", null);
             writer.writeAttribute("type", "text/javascript", null);
-            writer.writeAttribute("src", resource.getRequestPath(), null);
+            writer.writeAttribute("src", externalContext.encodeResourceURL(resource.getRequestPath()), null);
             writer.endElement("script");
         }
 
@@ -171,7 +177,7 @@ public class HeadRenderer extends Renderer {
             if (resource != null) {
                 writer.startElement("script", null);
                 writer.writeAttribute("type", "text/javascript", null);
-                writer.writeAttribute("src", resource.getRequestPath(), null);
+                writer.writeAttribute("src", externalContext.encodeResourceURL(resource.getRequestPath()), null);
                 writer.endElement("script");
             }
         }

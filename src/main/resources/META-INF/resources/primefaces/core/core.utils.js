@@ -7,6 +7,34 @@ if (!PrimeFaces.utils) {
     PrimeFaces.utils = {
 
         /**
+         * Finds the element to which the overlay panel should be appended. If none is specified explicitly, append the
+         * panel to the body.
+         * @param {PrimeFaces.widget.DynamicOverlayWidget} widget A widget that has a panel to be appended.
+         * @return {string} The search expression for the element to which the overlay panel should be appended.
+         */
+        resolveAppendTo: function(widget) {
+            var dialog = widget.jq[0].closest('.ui-dialog');
+            var panel = widget.panel;
+
+            if (dialog && panel && panel.length) {
+                var $dialog = $(dialog);
+
+                //set position as fixed to scroll with dialog
+                if ($dialog.css('position') === 'fixed') {
+                    panel.css('position', 'fixed');
+                }
+
+                //append to body if not already appended by user choice
+                if(!panel.parent().is(document.body)) {
+                    widget.cfg.appendTo = "@(body)"
+                    return widget.cfg.appendTo;
+                }
+            }
+
+            return widget.cfg.appendTo;
+        },
+
+        /**
          * Finds the container element to which an overlay widget should be appended. This is either the element
          * specified by the widget configurations's `appendTo` attribute, or the document BODY element otherwise.
          * @param {PrimeFaces.widget.DynamicOverlayWidget} widget A widget to be displayed as an overlay.
@@ -349,7 +377,7 @@ if (!PrimeFaces.utils) {
         registerScrollHandler: function(widget, scrollNamespace, scrollCallback) {
 
             var scrollParent = widget.getJQ().scrollParent();
-            if (scrollParent.is('body') || scrollParent.is('html')) {
+            if (scrollParent.is('body') || scrollParent.is('html') || scrollParent[0].nodeType === 9) { // nodeType 9 is for document element
                 scrollParent = $(window);
             }
 

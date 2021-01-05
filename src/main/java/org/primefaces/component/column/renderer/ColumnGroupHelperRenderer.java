@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -70,10 +70,10 @@ public class ColumnGroupHelperRenderer implements HelperColumnRenderer {
                 DataTable.DEFAULT_RENDERER);
 
         String type = group.getType();
-        if (type.equals("header") || type.equals("frozenHeader") || type.equals("scrollableHeader")) {
+        if ("header".equals(type) || "frozenHeader".equals(type) || "scrollableHeader".equals(type)) {
             renderer.encodeColumnHeader(context, dataTable, column);
         }
-        else if (type.equals("footer") || type.equals("frozenFooter") || type.equals("scrollableFooter")) {
+        else if ("footer".equals(type) || "frozenFooter".equals(type) || "scrollableFooter".equals(type)) {
             renderer.encodeColumnFooter(context, dataTable, column);
         }
     }
@@ -85,10 +85,10 @@ public class ColumnGroupHelperRenderer implements HelperColumnRenderer {
                 TreeTable.DEFAULT_RENDERER);
 
         String type = group.getType();
-        if (type.equals("header")) {
+        if ("header".equals(type)) {
             renderer.encodeColumnHeader(context, treeTable, column);
         }
-        else if (type.equals("footer")) {
+        else if ("footer".equals(type)) {
             renderer.encodeColumnFooter(context, treeTable, column);
         }
     }

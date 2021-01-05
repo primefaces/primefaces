@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,9 @@
  */
 package org.primefaces.model;
 
+/**
+ * Built-in filter operators
+ */
 public enum MatchMode {
 
     STARTS_WITH("startsWith"),
@@ -35,21 +38,22 @@ public enum MatchMode {
     GREATER_THAN_EQUALS("gte"),
     EQUALS("equals"),
     IN("in"),
+    RANGE("range"),
     GLOBAL("global");
 
-    private final String name;
+    private final String operator;
 
-    MatchMode(String name) {
-        this.name = name;
+    MatchMode(String operator) {
+        this.operator = operator;
     }
 
-    public String getName() {
-        return name;
+    public String operator() {
+        return operator;
     }
 
-    public static MatchMode byName(String name) {
+    public static MatchMode of(String operator) {
         for (MatchMode mode : MatchMode.values()) {
-            if (mode.getName().equals(name)) {
+            if (mode.operator().equals(operator)) {
                 return mode;
             }
         }

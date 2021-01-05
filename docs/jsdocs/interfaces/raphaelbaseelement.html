@@ -1639,7 +1639,7 @@
 										translation does not change x or y of the rectangle. The format of transformation string is similar to the
 									path string syntax:</p>
 								</div>
-								<pre><code>"t<span class="hljs-number">100,100r30,100</span>,<span class="hljs-number">100s2,2,100</span>,<span class="hljs-number">100r45s1.5</span>"</code></pre><p>Each letter is a command. There are four commands:</p>
+								<pre><code>&quot;t<span class="hljs-number">100,100r30,100</span>,<span class="hljs-number">100s2,2,100</span>,<span class="hljs-number">100r45s1.5</span>&quot;</code></pre><p>Each letter is a command. There are four commands:</p>
 								<ul>
 									<li><code>t</code> is for translate</li>
 									<li><code>r</code> is for rotate,</li>
@@ -1647,11 +1647,11 @@
 									<li><code>m</code> is for matrix.</li>
 								</ul>
 								<p>So, the example line above could be read like</p>
-								<pre><code>translate by <span class="hljs-number">100</span>, <span class="hljs-number">100</span>;
-rotate <span class="hljs-number">30</span>° around <span class="hljs-number">100</span>, <span class="hljs-number">100</span>;
-scale twice around <span class="hljs-number">100</span>, <span class="hljs-number">100</span>;
-rotate <span class="hljs-number">45</span>° around centre;
-scale <span class="hljs-number">1.5</span> times relative to centre</code></pre><p>As you can see rotate and scale commands have origin coordinates as optional parameters, the default is the
+								<pre><code><span class="hljs-attribute">translate</span> by <span class="hljs-number">100</span>, <span class="hljs-number">100</span>;
+<span class="hljs-attribute">rotate</span> <span class="hljs-number">30</span>° around <span class="hljs-number">100</span>, <span class="hljs-number">100</span>;
+<span class="hljs-attribute">scale</span> twice around <span class="hljs-number">100</span>, <span class="hljs-number">100</span>;
+<span class="hljs-attribute">rotate</span> <span class="hljs-number">45</span>° around centre;
+<span class="hljs-attribute">scale</span> <span class="hljs-number">1</span>.<span class="hljs-number">5</span> times relative to centre</code></pre><p>As you can see rotate and scale commands have origin coordinates as optional parameters, the default is the
 								centre point of the element. Matrix accepts six parameters.</p>
 								<pre><code class="language-javascript"><span class="hljs-comment">// to get current value call it without parameters</span>
 <span class="hljs-built_in">console</span>.log(el.transform());</code></pre>
@@ -1667,7 +1667,7 @@ scale <span class="hljs-number">1.5</span> times relative to centre</code></pre>
 									<p>Adds transformation to this element which is separate to other attributes, i.e. translation does not change x
 									or y of the rectangle. The format of transformation string is similar to the path string syntax:</p>
 								</div>
-								<pre><code>"t<span class="hljs-number">100,100r30,100</span>,<span class="hljs-number">100s2,2,100</span>,<span class="hljs-number">100r45s1.5</span>"</code></pre><p>Each letter is a command. There are four commands:</p>
+								<pre><code>&quot;t<span class="hljs-number">100,100r30,100</span>,<span class="hljs-number">100s2,2,100</span>,<span class="hljs-number">100r45s1.5</span>&quot;</code></pre><p>Each letter is a command. There are four commands:</p>
 								<ul>
 									<li><code>t</code> is for translate</li>
 									<li><code>r</code> is for rotate,</li>
@@ -1675,26 +1675,26 @@ scale <span class="hljs-number">1.5</span> times relative to centre</code></pre>
 									<li><code>m</code> is for matrix.</li>
 								</ul>
 								<p>So, the example line above could be read like</p>
-								<pre><code>translate by <span class="hljs-number">100</span>, <span class="hljs-number">100</span>;
-rotate <span class="hljs-number">30</span>° around <span class="hljs-number">100</span>, <span class="hljs-number">100</span>;
-scale twice around <span class="hljs-number">100</span>, <span class="hljs-number">100</span>;
-rotate <span class="hljs-number">45</span>° around centre;
-scale <span class="hljs-number">1.5</span> times relative to centre</code></pre><p>As you can see rotate and scale commands have origin coordinates as optional parameters, the default is the
+								<pre><code><span class="hljs-attribute">translate</span> by <span class="hljs-number">100</span>, <span class="hljs-number">100</span>;
+<span class="hljs-attribute">rotate</span> <span class="hljs-number">30</span>° around <span class="hljs-number">100</span>, <span class="hljs-number">100</span>;
+<span class="hljs-attribute">scale</span> twice around <span class="hljs-number">100</span>, <span class="hljs-number">100</span>;
+<span class="hljs-attribute">rotate</span> <span class="hljs-number">45</span>° around centre;
+<span class="hljs-attribute">scale</span> <span class="hljs-number">1</span>.<span class="hljs-number">5</span> times relative to centre</code></pre><p>As you can see rotate and scale commands have origin coordinates as optional parameters, the default is the
 								centre point of the element. Matrix accepts six parameters.</p>
 								<pre><code class="language-javascript"><span class="hljs-keyword">var</span> el = paper.rect(<span class="hljs-number">10</span>, <span class="hljs-number">20</span>, <span class="hljs-number">300</span>, <span class="hljs-number">200</span>);
 
 <span class="hljs-comment">// translate 100, 100, rotate 45°, translate -100, 0</span>
-el.transform(<span class="hljs-string">"t100,100r45t-100,0"</span>);
+el.transform(<span class="hljs-string">&quot;t100,100r45t-100,0&quot;</span>);
 
 <span class="hljs-comment">// if you want you can append or prepend transformations</span>
-el.transform(<span class="hljs-string">"...t50,50"</span>);
-el.transform(<span class="hljs-string">"s2..."</span>);
+el.transform(<span class="hljs-string">&quot;...t50,50&quot;</span>);
+el.transform(<span class="hljs-string">&quot;s2...&quot;</span>);
 
 <span class="hljs-comment">// or even wrap</span>
-el.transform(<span class="hljs-string">"t50,50...t-50-50"</span>);
+el.transform(<span class="hljs-string">&quot;t50,50...t-50-50&quot;</span>);
 
 <span class="hljs-comment">// to reset transformation call method with empty string</span>
-el.transform(<span class="hljs-string">""</span>);</code></pre>
+el.transform(<span class="hljs-string">&quot;&quot;</span>);</code></pre>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -2303,6 +2303,7 @@ el.transform(<span class="hljs-string">""</span>);</code></pre>
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
@@ -2319,6 +2320,9 @@ el.transform(<span class="hljs-string">""</span>);</code></pre>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>

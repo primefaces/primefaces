@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,8 +25,8 @@ package org.primefaces.component.poll;
 
 import java.io.IOException;
 import java.time.Duration;
-import javax.faces.FacesException;
 
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -57,7 +57,6 @@ public class PollRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Poll poll = (Poll) component;
-        String clientId = poll.getClientId(context);
 
         String request = preConfiguredAjaxRequestBuilder(context, poll)
                 .params(poll)
@@ -85,7 +84,7 @@ public class PollRenderer extends CoreRenderer {
         }
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Poll", poll.resolveWidgetVar(context), clientId)
+        wb.init("Poll", poll)
                 .attr("frequency", convertedInterval)
                 .attr("autoStart", poll.isAutoStart())
                 .attr("intervalType", poll.getIntervalType(), "second")

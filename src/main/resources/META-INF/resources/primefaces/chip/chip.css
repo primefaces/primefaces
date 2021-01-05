@@ -1,0 +1,21 @@
+.ui-chip {
+    display: inline-flex;
+    align-items: center;
+}
+
+.ui-chip-text {
+    line-height: 1.5;
+}
+
+.ui-chip-icon.pi {
+    line-height: 1.5;
+}
+
+.pi-chip-remove-icon {
+    line-height: 1.5;
+    cursor: pointer;
+}
+
+.ui-chip img {
+    border-radius: 50%;
+}

@@ -296,11 +296,11 @@
 								the empty string providing the default (English) settings. Each entry is an object with the localized
 							messages. Language packages load new entries into this array and automatically apply them as global defaults.</p>
 						</div>
-						<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/javascript"</span>  <span class="hljs-attr">src</span>=<span class="hljs-string">"jquery.keypad-fr.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+						<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text/javascript&quot;</span>  <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;jquery.keypad-fr.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
 						<p>If necessary, you can then revert to the default language settings with</p>
-						<pre><code class="language-javascript">$.keypad.setDefaults($.keypad.regionalOptions[<span class="hljs-string">""</span>]);</code></pre>
+						<pre><code class="language-javascript">$.keypad.setDefaults($.keypad.regionalOptions[<span class="hljs-string">&quot;&quot;</span>]);</code></pre>
 						<p>and apply the language settings to individual fields with</p>
-						<pre><code class="language-javascript">$(<span class="hljs-string">"#frenchKeypad"</span>).keypad($.keypad.regionalOptions[<span class="hljs-string">"fr"</span>]);</code></pre>
+						<pre><code class="language-javascript">$(<span class="hljs-string">&quot;#frenchKeypad&quot;</span>).keypad($.keypad.regionalOptions[<span class="hljs-string">&quot;fr&quot;</span>]);</code></pre>
 						<dl class="tsd-comment-tags">
 							<dt>since</dt>
 							<dd><p>2.0.0 - previously called regional.</p>
@@ -325,17 +325,17 @@
 								<div class="lead">
 									<p>Define a new action key for use on the keypad. Up to 32 keys may be defined, including the built-in ones.</p>
 								</div>
-								<pre><code class="language-javascript">$.keypad.addKeyDef(<span class="hljs-string">"UPPER"</span>, <span class="hljs-string">"upper"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">inst</span>) </span>{
-  <span class="hljs-keyword">this</span>.val(<span class="hljs-keyword">this</span>.val().toUpperCase()).focus();
+								<pre><code class="language-javascript">$.keypad.addKeyDef(<span class="hljs-string">&quot;UPPER&quot;</span>, <span class="hljs-string">&quot;upper&quot;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">inst</span>) </span>{
+  <span class="hljs-built_in">this</span>.val(<span class="hljs-built_in">this</span>.val().toUpperCase()).focus();
 });
-$(<span class="hljs-string">"#keypad"</span>).keypad({
-  <span class="hljs-attr">upperText</span>: <span class="hljs-string">"U/C"</span>,
-  <span class="hljs-attr">upperStatus</span>: <span class="hljs-string">"Convert to upper case"</span>,
+$(<span class="hljs-string">&quot;#keypad&quot;</span>).keypad({
+  <span class="hljs-attr">upperText</span>: <span class="hljs-string">&quot;U/C&quot;</span>,
+  <span class="hljs-attr">upperStatus</span>: <span class="hljs-string">&quot;Convert to upper case&quot;</span>,
   <span class="hljs-attr">layout</span>: [
-    <span class="hljs-string">"abc"</span> + $.keypad.CLOSE,
-    <span class="hljs-string">"def"</span> + $.keypad.CLEAR,
-    <span class="hljs-string">"ghi"</span> + $.keypad.BACK,
-    <span class="hljs-string">"jkl"</span> + $.keypad.UPPER
+    <span class="hljs-string">&quot;abc&quot;</span> + $.keypad.CLOSE,
+    <span class="hljs-string">&quot;def&quot;</span> + $.keypad.CLEAR,
+    <span class="hljs-string">&quot;ghi&quot;</span> + $.keypad.BACK,
+    <span class="hljs-string">&quot;jkl&quot;</span> + $.keypad.UPPER
   ]
 });</code></pre>
 								<dl class="tsd-comment-tags">
@@ -665,6 +665,7 @@ $(<span class="hljs-string">"#keypad"</span>).keypad({
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
@@ -681,6 +682,9 @@ $(<span class="hljs-string">"#keypad"</span>).keypad({
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>

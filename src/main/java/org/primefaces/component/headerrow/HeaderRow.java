@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,4 +26,13 @@ package org.primefaces.component.headerrow;
 public class HeaderRow extends HeaderRowBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.HeaderRow";
+
+    public boolean isEnabled() {
+        return isRendered()
+                && (getField() != null
+                || getGroupBy() != null
+                || getValueExpression(PropertyKeys.field.name()) != null
+                || getValueExpression(PropertyKeys.groupBy.name()) != null);
+
+    }
 }

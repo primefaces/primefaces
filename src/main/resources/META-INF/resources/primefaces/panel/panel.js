@@ -233,7 +233,9 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
             PrimeFaces.invokeDeferredRenders($this.id);
         });
 
-        this.visibleStateHolder.val(true);
+        if(this.visibleStateHolder) {
+            this.visibleStateHolder.val(true);
+        }
     },
 
     /**

@@ -74,6 +74,7 @@
  * @prop {string} cfg.labelTemplate Displays label of the element in a custom template. Valid placeholder is `{0}`,
  * which is replaced with the value of the currently selected item.
  * @prop {boolean} cfg.syncTooltip Updates the title of the component with the description of the selected item.
+ * @prop {boolean} cfg.renderPanelContentOnClient Renders panel content on client.
  */
 PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
@@ -94,16 +95,17 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.panel = $(this.panelId);
         this.disabled = this.jq.hasClass('ui-state-disabled');
         this.itemsWrapper = this.panel.children('.ui-selectonemenu-items-wrapper');
-        this.options = this.input.children('option');
+        this.options = this.input.find('option');
         this.cfg.effect = this.cfg.effect||'fade';
 
         this.cfg.effectSpeed = this.cfg.effectSpeed||'normal';
         this.cfg.autoWidth = this.cfg.autoWidth === false ? false : true;
         this.cfg.dynamic = this.cfg.dynamic === true ? true : false;
-        this.cfg.appendTo = this.getAppendTo();
+        this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this);
+        this.cfg.renderPanelContentOnClient = this.cfg.renderPanelContentOnClient === true;
         this.isDynamicLoaded = false;
 
-        if(this.cfg.dynamic) {
+        if(this.cfg.dynamic || (this.itemsWrapper.children().length === 0)) {
             var selectedOption = this.options.filter(':selected'),
             labelVal = this.cfg.editable ? this.label.val() : selectedOption.text();
 
@@ -146,7 +148,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         var $this = this,
         selectedOption = this.options.filter(':selected'),
-        highlightedItem = this.items.eq(selectedOption.index());
+        highlightedItem = this.items.eq(this.options.index(selectedOption));
 
         //disable options
         this.options.filter(':disabled').each(function() {
@@ -358,8 +360,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 }
             });
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.panel, function() {
-            $this.alignPanel();
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_hide', $this.panel, function() {
+            $this.hide();
+        });
+
+        // GitHub #1173/#4609 keep panel with select while scrolling
+        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_hide', function() {
+            $this.hide();
         });
     },
 
@@ -568,7 +575,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                     }
 
                     var matchedOptions = null,
-                    metaKey = e.metaKey||e.ctrlKey||e.shiftKey||e.altKey;
+                    metaKey = e.metaKey||e.ctrlKey||e.altKey;
 
                     if(!metaKey) {
                         clearTimeout($this.searchTimer);
@@ -577,7 +584,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                         var text = $(this).val();
                         matchedOptions = $this.matchOptions(text);
                         if(matchedOptions.length) {
-                            var highlightItem = $this.items.eq(matchedOptions.index());
+                            var matchIndex = matchedOptions[0].index;
+                            var highlightItem = $this.items.eq(matchIndex);
                             if($this.panel.is(':hidden')) {
                                 $this.selectItem(highlightItem);
                             }
@@ -596,7 +604,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                                 // is current selection one of our matches?
                                 matchedOptions.each(function() {
                                    var option = $(this);
-                                   var currentIndex = option.index();
+                                   var currentIndex = option[0].index;
                                    var currentItem = $this.items.eq(currentIndex);
                                    if (currentItem.hasClass('ui-state-highlight')) {
                                        selectedIndex = currentIndex;
@@ -606,7 +614,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
                                 matchedOptions.each(function() {
                                     var option = $(this);
-                                    var currentIndex = option.index();
+                                    var currentIndex = option[0].index;
                                     var currentItem = $this.items.eq(currentIndex);
 
                                     // select next item after the current selection
@@ -640,9 +648,18 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @return {JQuery} All selectable options that match (contain) the given search string. 
      */
     matchOptions: function(text) {
+        if(!text) {
+            return false;
+        }
         return this.options.filter(function() {
             var option = $(this);
-            return (option.is(':not(:disabled)') && (option.text().toLowerCase().indexOf(text) === 0));
+            if(option.is(':disabled')) {
+                return false;
+            }
+            if(option.text().toLowerCase().indexOf(text.toLowerCase()) !== 0) {
+                return false;
+            }
+            return true;
         });
     },
 
@@ -908,8 +925,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * Hides the overlay panel with the available selectable options.
      */
     hide: function() {
-        this.panel.css('z-index', '').hide();
-        this.jq.attr('aria-expanded', false);
+        if (this.panel.is(':visible')) {
+            this.panel.css('z-index', '').hide();
+            this.jq.attr('aria-expanded', false);
+        }
     },
 
     /**
@@ -1014,6 +1033,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
             var hasPlaceholder = this.label[0].hasAttribute('placeholder');
             this.updatePlaceholderClass((hasPlaceholder && value === '&nbsp;'));
+        }
+        else if (this.cfg.alwaysDisplayLabel && this.cfg.label) {
+            this.label.text(this.cfg.label);
         }
         else {
             var labelText = this.label.data('placeholder');
@@ -1269,6 +1291,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 $this.isDynamicLoaded = true;
                 $this.input = $($this.jqId + '_input');
                 $this.options = $this.input.children('option');
+
+                $this.renderPanelContentFromHiddenSelect(false);
+
                 $this.initContents();
                 $this.bindItemEvents();
             }
@@ -1298,33 +1323,113 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             }, 10);
         }
         else {
+            this.renderPanelContentFromHiddenSelect(true);
+
             handleMethod.call(this, event);
         }
     },
 
     /**
-     * Finds the element to which the overlay panel should be appended. If none is specified explicitly, append the
-     * panel to the body.
+     * Renders panel content based on hidden select.
+     * @param {boolean} initContentsAndBindItemEvents Call initContents and bindItemEvents after rendering?
      * @private
-     * @return {string} The search expression for the element to which the overlay panel should be appended.
      */
-    getAppendTo: function() {
-        var dialog = this.jq[0].closest('.ui-dialog');
-        if (dialog) {
-            var $dialog = $(dialog);
-            //set position as fixed to scroll with dialog
-            if ($dialog.css('position') === 'fixed') {
-                this.panel.css('position', 'fixed');
-            }
+    renderPanelContentFromHiddenSelect: function(initContentsAndBindItemEvents) {
+         if (this.cfg.renderPanelContentOnClient && this.itemsWrapper.children().length === 0) {
+             var panelContent = '<ul id="' + this.id + '_items" class="ui-selectonemenu-items ui-selectonemenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset" role="listbox">';
+             panelContent += this.renderSelectItems(this.input);
+             panelContent += '</ul>';
 
-            //append to body if not already appended by user choice
-            if(!this.panel.parent().is(document.body)) {
-                return "@(body)";
+             this.itemsWrapper.append(panelContent);
+
+             if (initContentsAndBindItemEvents) {
+                 this.initContents();
+                 this.bindItemEvents();
+             }
+         }
+    },
+
+    /**
+     * Renders Panel-HTML-code for SelectItems.
+     * @private
+     * @param {JQuery} parentItem An parentItem (select, optgroup) for which to render HTML-code.
+     * @param {boolean} [isGrouped] Tells whether the elements of the parentItem should be marked as grouped.
+     * @return {string} Rendered HTML-code.
+     */
+    renderSelectItems: function(parentItem, isGrouped) {
+        var $this = this;
+        var content = "";
+        isGrouped = isGrouped || false;
+
+        var opts = parentItem.children("option, optgroup");
+        opts.each(function(index, element) {
+            content += $this.renderSelectItem(element, isGrouped);
+        });
+        return content;
+    },
+
+    /**
+     * Renders Panel-HTML-code for one SelectItem(Group).
+     * @private
+     * @param {JQuery} item An option(group) for which to render HTML-code.
+     * @param {boolean} isGrouped Tells whether the item is part of a group.
+     * @return {string} Rendered HTML-code.
+     */
+    renderSelectItem: function(item, isGrouped) {
+        var content = "";
+        var $item = $(item);
+        var label;
+        var title = $item.data("title");
+        var escape = $item.data("escape");
+        var cssClass;
+
+        if (item.tagName === "OPTGROUP") {
+            label = $item.attr("label");
+            if (escape) {
+                label = $("<div>").text(label).html();
+            }
+            cssClass = "ui-selectonemenu-item-group ui-corner-all";
+        }
+        else { //OPTION
+            if (escape) {
+                label = $item.html();
+                if ($item.text() === "&nbsp;") {
+                    label = $item.text();
+                }
+            }
+            else {
+                label = $item.text();
+            }
+            cssClass = "ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all";
+            if (isGrouped) {
+                cssClass += " ui-selectonemenu-item-group-children"
             }
         }
 
-        return this.cfg.appendTo;
+        var dataLabel = label.replace(/(<([^>]+)>)/gi, "");
+        if ($item.data("noselection-option")) {
+            cssClass += " ui-noselection-option";
+        }
+
+        content += '<li class="' + cssClass + '" tabindex="-1" role="option"';
+        if (title) {
+            content += ' title="' + title + '"';
+        }
+        if ($item.is(':disabled')) {
+            content += ' disabled';
+        }
+        content += ' data-label="' + dataLabel + '"';
+        content += '>';
+        content += label;
+        content += '</li>';
+
+        if (item.tagName === "OPTGROUP") {
+            content += this.renderSelectItems($item, true);
+        }
+
+        return content;
     },
+
 
     /**
      * Updates the style class of the label that indicates the currently selected item.

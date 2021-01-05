@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,10 +24,7 @@
 package org.primefaces.component.chips;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -88,7 +85,6 @@ public class ChipsRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = chips.getClientId(context);
         String inputId = clientId + "_input";
-        List values = (List) chips.getValue();
         List<String> stringValues = new ArrayList<>();
         String title = chips.getTitle();
 
@@ -98,6 +94,20 @@ public class ChipsRenderer extends InputRenderer {
 
         String inputStyle = chips.getInputStyle();
         String listClass = createStyleClass(chips, Chips.PropertyKeys.inputStyleClass.name(), Chips.CONTAINER_CLASS);
+
+        Collection values;
+        if (chips.isValid()) {
+            values = (Collection) chips.getValue();
+        }
+        else {
+            Object submittedValue = chips.getSubmittedValue();
+            try {
+                values = (Collection) getConvertedValue(context, chips, submittedValue);
+            }
+            catch (ConverterException ce) {
+                values = Arrays.asList((String[]) submittedValue);
+            }
+        }
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
@@ -119,9 +129,8 @@ public class ChipsRenderer extends InputRenderer {
         if (values != null && !values.isEmpty()) {
             Converter converter = ComponentUtils.getConverter(context, chips);
 
-            for (Iterator<Object> it = values.iterator(); it.hasNext(); ) {
-                Object value = it.next();
-
+            Collection<Object> items = chips.isUnique() ? new HashSet<>(values) : values;
+            for (Object value : items) {
                 String tokenValue = converter != null ? converter.getAsString(context, chips, value) : String.valueOf(value);
 
                 writer.startElement("li", null);
@@ -191,11 +200,13 @@ public class ChipsRenderer extends InputRenderer {
     }
 
     protected void encodeScript(FacesContext context, Chips chips) throws IOException {
-        String clientId = chips.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Chips", chips.resolveWidgetVar(context), clientId)
+        wb.init("Chips", chips)
                 .attr("max", chips.getMax(), Integer.MAX_VALUE)
-                .attr("addOnBlur", chips.isAddOnBlur(), false);
+                .attr("addOnBlur", chips.isAddOnBlur(), false)
+                .attr("addOnPaste", chips.isAddOnPaste(), false)
+                .attr("unique", chips.isUnique(), false)
+                .attr("separator", chips.getSeparator(), ",");
 
         encodeClientBehaviors(context, chips);
 

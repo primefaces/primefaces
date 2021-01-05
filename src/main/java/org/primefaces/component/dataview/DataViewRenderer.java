@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,10 +31,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.DataRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.GridLayoutUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.*;
 
 public class DataViewRenderer extends DataRenderer {
 
@@ -52,7 +49,7 @@ public class DataViewRenderer extends DataRenderer {
         dataview.findViewItems();
 
         if (dataview.isPaginationRequest(context)) {
-            dataview.updatePaginationData(context, dataview);
+            dataview.updatePaginationData(context);
 
             if (dataview.isLazy()) {
                 dataview.loadLazyData();
@@ -94,9 +91,10 @@ public class DataViewRenderer extends DataRenderer {
         boolean hasPaginator = dataview.isPaginator();
         String paginatorPosition = dataview.getPaginatorPosition();
         String style = dataview.getStyle();
-        String styleClass = dataview.getStyleClass();
-        styleClass = (styleClass == null) ? DataView.DATAVIEW_CLASS : DataView.DATAVIEW_CLASS + " " + styleClass;
-        styleClass += " " + (layout.contains("grid") ? DataView.GRID_LAYOUT_CLASS : DataView.LIST_LAYOUT_CLASS);
+        String styleClass = getStyleClassBuilder(context)
+                .add(DataView.DATAVIEW_CLASS, dataview.getStyleClass())
+                .add(layout.contains("grid"), DataView.GRID_LAYOUT_CLASS, DataView.LIST_LAYOUT_CLASS)
+                .build();
 
         if (hasPaginator) {
             dataview.calculateFirst();
@@ -111,13 +109,13 @@ public class DataViewRenderer extends DataRenderer {
 
         encodeHeader(context, dataview);
 
-        if (hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
+        if (hasPaginator && !"bottom".equalsIgnoreCase(paginatorPosition)) {
             encodePaginatorMarkup(context, dataview, "top");
         }
 
         encodeContent(context, dataview);
 
-        if (hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
+        if (hasPaginator && !"top".equalsIgnoreCase(paginatorPosition)) {
             encodePaginatorMarkup(context, dataview, "bottom");
         }
 
@@ -238,13 +236,28 @@ public class DataViewRenderer extends DataRenderer {
 
         if (grid != null) {
             ResponseWriter writer = context.getResponseWriter();
-
             int columns = grid.getColumns();
             int rowIndex = dataview.getFirst();
             int rows = dataview.getRows();
             int itemsToRender = rows != 0 ? rows : dataview.getRowCount();
             int numberOfRowsToRender = (itemsToRender + columns - 1) / columns;
-            String columnClass = DataView.GRID_LAYOUT_COLUMN_CLASS + " " + GridLayoutUtils.getColumnClass(columns);
+            boolean flex = ComponentUtils.isFlex(context, dataview);
+
+            String columnClass = getStyleClassBuilder(context)
+                    .add(DataView.GRID_LAYOUT_COLUMN_CLASS)
+                    .add(flex, GridLayoutUtils.getFlexColumnClass(columns),  GridLayoutUtils.getColumnClass(columns))
+                    .add(dataview.getGridRowStyleClass())
+                    .build();
+
+            String columnInlineStyle = dataview.getGridRowStyle();
+
+            writer.startElement("div", null);
+            if (flex) {
+                writer.writeAttribute("class", DataView.FLEX_GRID_LAYOUT_ROW_CLASS, null);
+            }
+            else {
+                writer.writeAttribute("class", DataView.GRID_LAYOUT_ROW_CLASS, null);
+            }
 
             for (int i = 0; i < numberOfRowsToRender; i++) {
                 dataview.setRowIndex(rowIndex);
@@ -252,12 +265,12 @@ public class DataViewRenderer extends DataRenderer {
                     break;
                 }
 
-                writer.startElement("div", null);
-                writer.writeAttribute("class", DataView.GRID_LAYOUT_ROW_CLASS, null);
-
                 for (int j = 0; j < columns; j++) {
                     writer.startElement("div", null);
                     writer.writeAttribute("class", columnClass, null);
+                    if (!LangUtils.isValueEmpty(columnInlineStyle)) {
+                        writer.writeAttribute("style", columnInlineStyle, null);
+                    }
 
                     dataview.setRowIndex(rowIndex);
                     if (dataview.isRowAvailable()) {
@@ -267,9 +280,9 @@ public class DataViewRenderer extends DataRenderer {
 
                     writer.endElement("div");
                 }
-
-                writer.endElement("div");
             }
+
+            writer.endElement("div");
 
             dataview.setRowIndex(-1); //cleanup
         }
@@ -314,9 +327,8 @@ public class DataViewRenderer extends DataRenderer {
     }
 
     protected void encodeScript(FacesContext context, DataView dataview) throws IOException {
-        String clientId = dataview.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("DataView", dataview.resolveWidgetVar(context), clientId);
+        wb.init("DataView", dataview);
 
         if (dataview.isPaginator()) {
             encodePaginatorConfig(context, dataview, wb);

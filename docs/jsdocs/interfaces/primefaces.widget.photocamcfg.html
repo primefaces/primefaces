@@ -75,7 +75,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The configuration for the <a href="../classes/primefaces.widget.photocam.html"> PhotoCam widget</a>.
+						<p>The configuration for the <a href="../classes/primefaces.widget.photocam.html">PhotoCam widget</a>.
 							You can access this configuration via <a href="../classes/primefaces.widget.basewidget.html#cfg">BaseWidget.cfg</a>. Please note that this
 						configuration is usually meant to be read-only and should not be modified.</p>
 					</div>
@@ -104,11 +104,13 @@
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.photocamcfg.html#autostart" class="tsd-kind-icon">auto<wbr>Start</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="primefaces.widget.photocamcfg.html#behaviors" class="tsd-kind-icon">behaviors</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.photocamcfg.html#camera" class="tsd-kind-icon">camera</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.photocamcfg.html#device" class="tsd-kind-icon">device</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.photocamcfg.html#forceflash" class="tsd-kind-icon">force<wbr>Flash</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.photocamcfg.html#format" class="tsd-kind-icon">format</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.photocamcfg.html#height" class="tsd-kind-icon">height</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="primefaces.widget.photocamcfg.html#id" class="tsd-kind-icon">id</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.photocamcfg.html#jpegquality" class="tsd-kind-icon">jpeg<wbr>Quality</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.photocamcfg.html#oncameraerror" class="tsd-kind-icon">on<wbr>Camera<wbr>Error</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.photocamcfg.html#photoheight" class="tsd-kind-icon">photo<wbr>Height</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.photocamcfg.html#photowidth" class="tsd-kind-icon">photo<wbr>Width</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.widget.photocamcfg.html#process" class="tsd-kind-icon">process</a></li>
@@ -158,6 +160,18 @@
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>URL to the <code>swf</code> flash fallback.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="device" class="tsd-anchor"></a>
+					<h3>device</h3>
+					<div class="tsd-signature tsd-kind-icon">device<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The id of device to retrieve images</p>
 						</div>
 					</div>
 				</section>
@@ -221,6 +235,18 @@
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Quality of the image between <code>0</code> and <code>100</code> when the format is <code>jpeg</code>, default value is <code>90</code>.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="oncameraerror" class="tsd-anchor"></a>
+					<h3>on<wbr>Camera<wbr>Error</h3>
+					<div class="tsd-signature tsd-kind-icon">on<wbr>Camera<wbr>Error<span class="tsd-signature-symbol">:</span> <a href="../classes/primefaces.widget.photocam.html#oncameraerror" class="tsd-signature-type">onCameraError</a></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Custom Webcam.js error handler</p>
 						</div>
 					</div>
 				</section>
@@ -313,6 +339,9 @@
 								<a href="../modules/primefaces.ajax.html">ajax</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+								<a href="../modules/primefaces.clientwindow.html">clientwindow</a>
+							</li>
+							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="../modules/primefaces.csp.html">csp</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
@@ -331,10 +360,10 @@
 								<a href="../modules/primefaces.settings.html">settings</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="../modules/primefaces.util.html">util</a>
+								<a href="../modules/primefaces.utils.html">utils</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="../modules/primefaces.utils.html">utils</a>
+								<a href="../modules/primefaces.validation.html">validation</a>
 							</li>
 							<li class="current tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="../modules/primefaces.widget.html">widget</a>
@@ -365,6 +394,9 @@
 								<a href="primefaces.widget.photocamcfg.html#camera" class="tsd-kind-icon">camera</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="primefaces.widget.photocamcfg.html#device" class="tsd-kind-icon">device</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="primefaces.widget.photocamcfg.html#forceflash" class="tsd-kind-icon">force<wbr>Flash</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
@@ -378,6 +410,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="primefaces.widget.photocamcfg.html#jpegquality" class="tsd-kind-icon">jpeg<wbr>Quality</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="primefaces.widget.photocamcfg.html#oncameraerror" class="tsd-kind-icon">on<wbr>Camera<wbr>Error</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="primefaces.widget.photocamcfg.html#photoheight" class="tsd-kind-icon">photo<wbr>Height</a>
@@ -411,6 +446,7 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
@@ -427,6 +463,9 @@
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>

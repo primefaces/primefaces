@@ -4,7 +4,6 @@
 /// <reference types="googlemaps" />
 /// <reference types="jquery" />
 /// <reference types="jqueryui" />
-/// <reference types="jquery.cleditor" />
 /// <reference types="moment-timezone" />
 // Type definitions for PrimeFaces
 // Project: PrimeFaces https://github.com/primefaces
@@ -435,25 +434,6 @@ declare namespace PrimeFaces {
          */
         severityText?: string;
     }
-    /**
-     * When an element is invalid due to a validation error, the user needs to be informed. A highlight handler is
-     * responsible for changing the visual state of an element so that the user notices the invalid element. A highlight
-     * handler is usually registered for a particular type of element or widget.
-     */
-    export interface HighlightHandler {
-        /**
-         * When an element is invalid due to a validation error, the user needs to be informed. This method must
-         * highlight the given element in a way that makes the user notice that the element is invalid.
-         *
-         * @param element An element to highlight.
-         */
-        highlight(element: JQuery): void;
-        /**
-         * When an element is invalid due to a validation error, the user needs to be informed. This method must
-         * remove the highlighting of the given element that was added by `highlight`.
-         */
-        unhighlight(element: JQuery): void;
-    }
     /*
          * __Note__: Do not parametrize the this context via a type parameter. This would require changing the return type
          * of BaseWidget#getBehavior to "PrimeFaces.Behavior<this>"". If that were done, however, it would not be longer be
@@ -628,7 +608,7 @@ declare namespace PrimeFaces.ajax {
      * @typeparam T Type of the value of the callback parameter. Please note that it will be converted to string
      * before it is passed to the server.
      */
-    export interface ServerCallbackParameter<T = any> {
+    export interface RequestParameter<T = any> {
         /**
          * The name of the parameter to pass to the server.
          */
@@ -655,7 +635,7 @@ declare namespace PrimeFaces.ajax {
          *
          * @param content The new HTML content from the update.
          */
-        handler(this: TWidget, content: string): void;
+        handle(this: TWidget, content: string): void;
     }
     /**
      * Represents the selection of an INPUT or TEXTAREA element.
@@ -747,7 +727,7 @@ declare namespace PrimeFaces.ajax {
          * final String myParam = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("myParam");
          * ```
          */
-        params: ServerCallbackParameter[];
+        params: RequestParameter[];
         /**
          * `true` to perform a partial submit and not send the entire form data, but only the processed components;
          * or `false` to send the entire form data. Defaults to `false`.
@@ -803,7 +783,7 @@ declare namespace PrimeFaces.ajax {
          * @param componentPostParams The serialized values of a component.
          * @return The filtered values that are to be sent to the server.
          */
-        partialSubmitParameterFilter(this: Request, componentPostParams: ServerCallbackParameter[]): ServerCallbackParameter[];
+        partialSubmitParameterFilter(this: Request, componentPostParams: RequestParameter[]): RequestParameter[];
     };
     /**
      * Options passed to AJAX calls made by PrimeFaces. This is the same as `Configuration`, but with shorter
@@ -831,6 +811,81 @@ declare namespace PrimeFaces.ajax {
         onerror: "oner";
         onsuccess: "onsu";
         oncomplete: "onco";
+    }>;
+}
+declare namespace PrimeFaces.validation {
+    /**
+     * When an element is invalid due to a validation error, the user needs to be informed. A highlight handler is
+     * responsible for changing the visual state of an element so that the user notices the invalid element. A highlight
+     * handler is usually registered for a particular type of element or widget.
+     */
+    export interface Highlighter {
+        /**
+         * When an element is invalid due to a validation error, the user needs to be informed. This method must
+         * highlight the given element in a way that makes the user notice that the element is invalid.
+         *
+         * @param element An element to highlight.
+         */
+        highlight(element: JQuery): void;
+        /**
+         * When an element is invalid due to a validation error, the user needs to be informed. This method must
+         * remove the highlighting of the given element that was added by `highlight`.
+         */
+        unhighlight(element: JQuery): void;
+    }
+    /**
+     * The options that can be passed to the Validation method. Note that you do not have to provide a value
+     * for all these property. Most methods methods such as `PrimeFaces.vb` have got sensible defaults in case you
+     * do not.
+     */
+    export interface Configuration {
+        /**
+         * The source that triggered the validationt.
+         */
+        source: string | JQuery | HTMLElement;
+        /**
+         * `true` if the validation is triggered by AJAXified compoment. Defaults to `false`.
+         */
+        ajax: boolean;
+        /**
+         * A (client-side) PrimeFaces search expression for the components to process in the validation.
+         */
+        process: string;
+        /**
+         * A (client-side) PrimeFaces search expression for the components to update in the validation.
+         */
+        update: string;
+        /**
+         * `true` if invalid elements should be highlighted as invalid. Default is `true`.
+         */
+        highlight: boolean;
+        /**
+         * `true` if the first invalid element should be focussed. Default is `true`.
+         */
+        focus: boolean;
+        /**
+         * `true` if messages should be rendered. Default is `true`.
+         */
+        renderMessages: boolean;
+        /**
+         * `true` if invisible elements should be validated. Default is `false`.
+         */
+        validateInvisibleElements: boolean;
+    }
+    /**
+     * Options passed to `PrimeFaces.vb` as shortcut. This is the same as `Configuration`, but with shorter
+     * option names and is used mainly by the method `PrimeFaces.vb`. See `Configuration` for a detailed description
+     * of these options.
+     */
+    export type ShorthandConfiguration = RenameKeys<Configuration, {
+        source: "s";
+        ajax: "a";
+        process: "p";
+        update: "u";
+        highlight: "h";
+        focus: "f";
+        renderMessages: "r";
+        validateInvisibleElements: "v";
     }>;
 }
 // JQuery extensions
@@ -1639,6 +1694,10 @@ declare namespace PrimeFaces.widget {
          */
         select(index: number): boolean;
         /**
+         * Activates (opens) all the tabs if multiple mode is enabled and the first tab in single mode.
+         */
+        selectAll(): void;
+        /**
          * Hides other panels and makes the given panel visible, such as by adding or removing the appropriate CSS classes.
          *
          * @param panel A tab panel to show.
@@ -1650,6 +1709,10 @@ declare namespace PrimeFaces.widget {
          * @param index 0-based index of the tab to close. Must not be out of range.
          */
         unselect(index: number): void;
+        /**
+         * Deactivates (closes) all the tabs.
+         */
+        unselectAll(): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -2004,6 +2067,12 @@ declare namespace PrimeFaces.widget {
          */
         activate(): void;
         /**
+         * Add the given suggestion item.
+         *
+         * @param item Suggestion item to add.
+         */
+        addItem(item: JQuery | string): void;
+        /**
          * Aligns (positions) the overlay panel that shows the found suggestions.
          */
         alignPanel(): void;
@@ -2027,6 +2096,10 @@ declare namespace PrimeFaces.widget {
          * Sets up all global event listeners for the overlay.
          */
         private bindStaticEvents(): void;
+        /**
+         * Clears the input field.
+         */
+        clear(): void;
         /**
          * Clears the cache with the results of an autocomplete search.
          */
@@ -2124,19 +2197,21 @@ declare namespace PrimeFaces.widget {
          */
         private initCache(): void;
         /**
+         * Invokes the appropriate behavior for when empty message was selected.
+         */
+        private invokeEmptyMessageBehavior(): void;
+        /**
          * Invokes the appropriate behavior for when a suggestion item was selected.
          *
-         * @param event The event that occurred.
          * @param itemValue Value of the selected item.
          */
-        private invokeItemSelectBehavior(event: JQuery.Event, itemValue: string): void;
+        private invokeItemSelectBehavior(itemValue: string): void;
         /**
          * Invokes the appropriate behavior when a suggestion item was unselected.
          *
-         * @param event The event that occurred.
          * @param itemValue Value of the unselected item.
          */
-        private invokeItemUnselectBehavior(event: JQuery.Event, itemValue: string): void;
+        private invokeItemUnselectBehavior(itemValue: string): void;
         /**
          * Invokes the appropriate behavior for when more text was selected.
          */
@@ -2177,12 +2252,15 @@ declare namespace PrimeFaces.widget {
          */
         refresh(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
         /**
+         * Removes all items if in multiple mode.
+         */
+        removeAllItems(): void;
+        /**
          * Removes the given suggestion item.
          *
-         * @param event The event that occurred.
          * @param item Suggestion item to remove.
          */
-        private removeItem(event: JQuery.Event, item: JQuery): void;
+        removeItem(item: JQuery | string): void;
         /**
          * Initiates a search with given value, that is, look for matching options and present the options that were found
          * to the user.
@@ -2264,6 +2342,10 @@ declare namespace PrimeFaces.widget {
          */
         cacheTimeout: number;
         /**
+         * REST-Endpoint for fetching autocomplete-suggestions. (instead of completeMethod)
+         */
+        completeEndpoint: string;
+        /**
          * The delay in milliseconds before an autocomplete search is triggered.
          */
         delay: number;
@@ -2316,6 +2398,10 @@ declare namespace PrimeFaces.widget {
          * Minimum length before an autocomplete search is triggered.
          */
         minLength: number;
+        /**
+         * The text shown in panel when the suggested list is greater than maxResults.
+         */
+        moreText: string;
         /**
          * When `true`, enables multiple selection.
          */
@@ -2550,6 +2636,10 @@ declare namespace PrimeFaces.widget {
          * next to or below the input field to which it is attached.
          */
         alignPanel(): void;
+        /**
+         * Initializes the mask on the input if using a mask and not an inline picker.
+         */
+        private applyMask(): void;
         /**
          * Sets up the event listeners for when this calendar is closed.
          */
@@ -3636,6 +3726,66 @@ declare namespace PrimeFaces.widget {
 }
 declare namespace PrimeFaces.widget {
     /**
+     * __PrimeFaces Chip Widget__
+     *
+     * Chip represents entities using icons, labels and images.
+     *
+     * @typeparam TCfg Defaults to `ChipCfg`. Type of the configuration object for this widget.
+     */
+    export class Chip<TCfg extends ChipCfg = ChipCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
+        /**
+         * DOM element of the chip.
+         */
+        chip: JQuery;
+        /**
+         * DOM element of the icon for closing this chip, when this chip is closable (an `x` by
+         * default).
+         */
+        removeIcon: JQuery;
+        /**
+         * Sets up all event listeners required for this widget.
+         */
+        private bindEvents(): void;
+        /**
+         * Closes the chip.
+         */
+        private close(): void;
+        /**
+         * A widget class should not have an explicit constructor. Instead, this initialize method is called after the
+         * widget was created. You can use this method to perform any initialization that is required. For widgets that
+         * need to create custom HTML on the client-side this is also the place where you should call your render
+         * method.
+         *
+         * Please make sure to call the super method first before adding your own custom logic to the init method:
+         *
+         * ```javascript
+         * PrimeFaces.widget.MyWidget = PrimeFaces.widget.BaseWidget.extend({
+         *   init: function(cfg) {
+         *     this._super(cfg);
+         *     // custom initialization
+         *   }
+         * });
+         * ```
+         *
+         * @override
+         * @param cfg The widget configuration to be used for this widget instance.
+         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * component.
+         */
+        init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+    }
+}
+declare namespace PrimeFaces.widget {
+    /**
+     * The configuration for the {@link  Chip| Chip widget}.
+     * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+     * configuration is usually meant to be read-only and should not be modified.
+     */
+    export interface ChipCfg extends PrimeFaces.widget.BaseWidgetCfg {
+    }
+}
+declare namespace PrimeFaces.widget {
+    /**
      * __PrimeFaces Chips Widget__
      *
      * Chips is used to enter multiple values on an inputfield.
@@ -3711,11 +3861,24 @@ declare namespace PrimeFaces.widget {
          */
         private invokeItemUnselectBehavior(itemValue: string): void;
         /**
+         * Deletes the currently editing input value and refocus the input box if necessary.
+         *
+         * @param refocus `true` to put focus back on the INPUT again after the chip was added, or `false`
+         * otherwise.
+         */
+        private refocus(refocus?: boolean): void;
+        /**
          * Removes an item (chip) from the list of currently displayed items.
          *
          * @param item An item  (LI element) that should be removed.
+         * @param silent flag indicating whether to animate and fire AJAX event
          */
-        removeItem(item: JQuery): void;
+        removeItem(item: JQuery, silent: boolean): void;
+        /**
+         * Converts the current list into a separator delimited list for mass editing while keeping original
+         * order of the items or closes the editor turning the values back into chips.
+         */
+        toggleEditor(): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -3733,6 +3896,14 @@ declare namespace PrimeFaces.widget {
          * Maximum number of entries allowed.
          */
         max: number;
+        /**
+         * Separator character to allow multiple values such if a list is pasted into the input. Default is ','.
+         */
+        separator: string;
+        /**
+         * Prevent duplicate entries from being added.
+         */
+        unique: boolean;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -4298,6 +4469,11 @@ declare namespace PrimeFaces.widget {
          * DOM element of the OVERLAY container.
          */
         overlay: JQuery;
+        /**
+         * Aligns the overlay panel with the color picker according to the current configuration. It is usually positioned
+         * next to or below the input field to which it is attached.
+         */
+        alignPanel(): void;
         /**
          * Sets up the event listeners required by this widget.
          */
@@ -5548,25 +5724,6 @@ declare namespace PrimeFaces.widget {
     export interface ContentFlowCfg extends PrimeFaces.widget.DeferredWidgetCfg {
     }
 }
-/**
- * Namespace for the cookie Javascript Cookie, available as `Cookies.set` and `Cookies.get`.
- *
- * Contains some additional types and interfaces required for the typings.
- * https://github.com/js-cookie/js-cookie
- */
-declare namespace Cookies {
-    /**
-     * Represents the properties of a cookie, other that its name and value.
-     */
-    export interface CookieAttributes {
-    }
-}
-declare namespace PrimeFaces {
-    /**
-     * AJAX parameter shortcut mapping for the method `PrimeFaces.ab` that sends an AJAX request.
-     */
-    export let AB_MAPPING: Record<string, string>;
-}
 declare namespace PrimeFaces {
     /**
      * A shortcut for `PrimeFaces.ajax.Request.handle(cfg, ext)`, with shorter option names. Sends an AJAX request to
@@ -5590,6 +5747,10 @@ declare namespace PrimeFaces {
  * includes creating new DOM elements, deleting or updating existing elements, or executing some JavaScript.
  */
 declare namespace PrimeFaces.ajax {
+    /**
+     * Parameter shortcut mapping for the method `PrimeFaces.ab`.
+     */
+    export let CFG_SHORTCUTS: Record<string, string>;
     /**
      * This object contains functionality related to queuing AJAX requests to ensure that they are (a) sent in the
      * proper order and (b) that each response is processed in the same order as the requests were sent.
@@ -5714,8 +5875,30 @@ declare namespace PrimeFaces.ajax {
      */
     export interface Request {
         /**
-         * Adds a new server callback parameter to the given list of parameters. Optionally add a prefix to the
-         * name.
+         * Appends a request parameter to the given list of parameters.
+         * Optionally add a prefix to the name, this is used for Portlet namespacing.
+         *
+         * @typeparam TValue Defaults to `any`. Type of the parameter values.
+         * @param formData the FormData.
+         * @param name Name of the new parameter to add.
+         * @param value Value of the parameter to add.
+         * @param parameterPrefix Optional prefix that is added in front of the name.
+         */
+        addFormData<TValue = any>(formData: FormData, name: string, value: TValue, parameterPrefix?: string): void;
+        /**
+         * Adds a new request parameter to the given FormData. The value of the parameter is taken from the input
+         * element of the given form. The input element must have the same name as the name of the parameter to add.
+         * Optionally add a prefix to the name, which used for Portlet namespacing.
+         *
+         * @param formData The FormData.
+         * @param name Name of the new parameter to add
+         * @param form An HTML FORM element that contains an INPUT element with the given name.
+         * @param parameterPrefix Optional prefix that is added in front of the name.
+         */
+        addFormDataFromInput(formData: FormData, name: string, form: JQuery, parameterPrefix?: string): void;
+        /**
+         * Appends a request parameter to the given list of parameters.
+         * Optionally add a prefix to the name, this is used for Portlet namespacing.
          *
          * @typeparam TValue Defaults to `any`. Type of the parameter value.
          * @param params List of parameters to which a new
@@ -5724,19 +5907,19 @@ declare namespace PrimeFaces.ajax {
          * @param value Value of the parameter to add.
          * @param parameterPrefix Optional prefix that is added in front of the name.
          */
-        addParam<TValue = any>(params: PrimeFaces.ajax.ServerCallbackParameter<TValue>[], name: string, value: TValue, parameterPrefix?: string): void;
+        addParam<TValue = any>(params: PrimeFaces.ajax.RequestParameter<TValue>[], name: string, value: TValue, parameterPrefix?: string): void;
         /**
-         * Adds a new callback parameter to the given list. The value of the parameter is taken from the input
+         * Adds a new request parameter to the given list. The value of the parameter is taken from the input
          * element of the given form. The input element must have the same name as the name of the parameter to add.
-         * Optionally add a prefix to the name.
+         * Optionally add a prefix to the name, which used for Portlet namespacing.
          *
-         * @param params List of callback parameters to the new
+         * @param params List of request parameters to the new
          * parameter is added.
          * @param name Name of the new parameter to add
          * @param form An HTML FORM element that contains an INPUT element with the given name.
          * @param parameterPrefix Optional prefix that is added in front of the name.
          */
-        addParamFromInput(params: PrimeFaces.ajax.ServerCallbackParameter[], name: string, form: JQuery, parameterPrefix?: string): void;
+        addParamFromInput(params: PrimeFaces.ajax.RequestParameter[], name: string, form: JQuery, parameterPrefix?: string): void;
         /**
          * Adds a list of callback parameters to the given list. Optionally prepends a prefix to the name of each
          * added parameter.
@@ -5749,7 +5932,7 @@ declare namespace PrimeFaces.ajax {
          * @param parameterPrefix Optional prefix that is added in front of the name of the added
          * callback parameters.
          */
-        addParams<TValue = any>(params: PrimeFaces.ajax.ServerCallbackParameter<TValue>[], paramsToAdd: PrimeFaces.ajax.ServerCallbackParameter<TValue>[], parameterPrefix?: string): void;
+        addParams<TValue = any>(params: PrimeFaces.ajax.RequestParameter<TValue>[], paramsToAdd: PrimeFaces.ajax.RequestParameter<TValue>[], parameterPrefix?: string): void;
         /**
          * Creates a new array with all parameters from the second array that are not in the first array. That is,
          * removes all parameters from the second array whose name is equal to one of the parameters in the first
@@ -5761,7 +5944,7 @@ declare namespace PrimeFaces.ajax {
          * @return An list of parameters that are in the second
          * array, but not in the first.
          */
-        arrayCompare<TValue = any>(arr1: PrimeFaces.ajax.ServerCallbackParameter<TValue>[], arr2: PrimeFaces.ajax.ServerCallbackParameter<TValue>[]): PrimeFaces.ajax.ServerCallbackParameter<TValue>[];
+        arrayCompare<TValue = any>(arr1: PrimeFaces.ajax.RequestParameter<TValue>[], arr2: PrimeFaces.ajax.RequestParameter<TValue>[]): PrimeFaces.ajax.RequestParameter<TValue>[];
         /**
          * Performs the early collection of post parameters (form element values) if the request is configured that
          * way. See: https://github.com/primefaces/primefaces/issues/109
@@ -5770,10 +5953,23 @@ declare namespace PrimeFaces.ajax {
          * the HTTP method, the URL, and the content of the request.
          * @return The collected form element values to be sent with the request.
          */
-        collectEarlyPostParams(cfg: Partial<PrimeFaces.ajax.Configuration>): PrimeFaces.ajax.ServerCallbackParameter[];
+        collectEarlyPostParams(cfg: Partial<PrimeFaces.ajax.Configuration>): PrimeFaces.ajax.RequestParameter[];
         /**
-         * Finds the namespace (prefix) for the parameters of the given form. This namespace is, for example,
-         * prefixed to the name of the submitted input fields.
+         * Creates a FormData which can be used for a Faces AJAX request on the current view.
+         * It already contains all required parameters like ViewState or ClientWindow.
+         *
+         * @param form The cloest form of the request source.
+         * @param parameterPrefix The Portlet parameter namespace.
+         * @param source The id of the request source.
+         * @param process A comma seperated list of components which should be processed.
+         * @param update A comma seperated list of components which should be updated.
+         * @return The created FormData.
+         */
+        createFacesAjaxFormData(form: HTMLElement, parameterPrefix: string, source: string, process: string, update: string): FormData;
+        /**
+         * Finds the namespace (prefix) for the parameters of the given form.
+         * This is required for Porlets as a Portlet contains multiple JSF views and we must only process and update the forms/inputs of the current view / application.
+         * Later the namespace is used for all post params.
          *
          * @param form An HTML FORM element.
          * @return The namespace for the parameters of the given form, or `null` when the form does
@@ -5937,15 +6133,32 @@ declare namespace PrimeFaces.ajax {
      */
     export interface Utils {
         /**
-         * Iterates over all immediate children of the given node and returns the concatenated content (
-         * `node value`) of each such child node. For the document itself, the node value is `null`. For text,
-         * comment, and CDATA nodes, the `node value` is the (text) content of the node. For attribute nodes, the
-         * value of the attribute is used.
+         * Iterates over all immediate children of the given node and returns the concatenated content (`node value`)
+         * of each such child node. For the document itself, the node value is `null`.
+         * For text, comment, and CDATA nodes, the `node value` is the (text) content of the node.
+         * For attribute nodes, the value of the attribute is used.
          *
          * @param node An HTML node for which to retrieve the content.
          * @return The content of all immediate child nodes, concatenated together.
          */
         getContent(node: HTMLElement): string;
+        /**
+         * Gets a selector to resolve all forms which needs to be updated with a new ViewState.
+         * This is required in Portlets as the DOM contains forms of multiple JSF views / applications.
+         *
+         * @param form The closest form of the request source.
+         * @param parameterPrefix The Portlet parameter prefix.
+         * @return null or a selector.
+         */
+        getPorletForms(form: JQuery, parameterPrefix: string): string;
+        /**
+         * Resolves the URL which should be used for the POST.
+         * In Portlet a different URL is used.
+         *
+         * @param form The closest form of the request source.
+         * @return The POST url.
+         */
+        getPostUrl(form: JQuery): string;
         /**
          * Updates the HTML `body` element of the current document with the content received from an AJAX request.
          *
@@ -6048,7 +6261,7 @@ declare namespace PrimeFaces.clientwindow {
      */
     export function init(clientWindowId: string, initialRedirect: boolean): void;
     /**
-     * Given an URL, removes all URL parameters with the given name, adds a new URL parameter with the given value,
+     * Given a URL, removes all URL parameters with the given name, adds a new URL parameter with the given value,
      * and returns the new URL with the replaced parameter. If the URL contains multiple URL parameters with the
      * same name, they are all removed.
      *
@@ -6304,7 +6517,7 @@ declare namespace PrimeFaces.expressions {
          * @param expressions A search expression with one or multiple components to resolve.
          * @return A list with the resolved components.
          */
-        resolveComponentsAsSelector(expressions: string): JQuery;
+        resolveComponentsAsSelector(expressions: string | HTMLElement | JQuery): JQuery;
         /**
          * Splits the given search expression into its components. The components of a search expression are separated
          * by either a comman or a whitespace.
@@ -6695,6 +6908,18 @@ declare namespace PrimeFaces {
      */
     export function getSelection(): string | Selection;
     /**
+     * Gets the currently loaded PF Theme.
+     *
+     * @return the current theme like "omega" or "luna-amber".
+     */
+    export function getTheme(): string;
+    /**
+     * Gets the currently loaded PF Theme CSS Link.
+     *
+     * @return the full URL to the theme CSS
+     */
+    export function getThemeLink(): string;
+    /**
      * Finds a widget in the current page with the given ID.
      *
      * @param id ID of the widget to retrieve.
@@ -6702,6 +6927,14 @@ declare namespace PrimeFaces {
      * found.
      */
     export function getWidgetById(id: string): PrimeFaces.widget.BaseWidget | null;
+    /**
+     * Finds all widgets in the current page of the given type.
+     *
+     * @param type The type of the widgets of interest.
+     * @return An array of widgets that are of the requested type. If no suitable
+     * widgets are found on the current page, an empty array will be returned.
+     */
+    export function getWidgetsByType(type: PrimeFaces.widget.BaseWidget): PrimeFaces.widget.BaseWidget[];
     /**
      * Checks whether any text on the current page is selected by the user.
      *
@@ -6787,6 +7020,13 @@ declare namespace PrimeFaces {
      */
     export function monitorDownload(start: () => void, complete: () => void, monitorKey?: string): void;
     /**
+     * Increment and return the next zindex for CSS as a String.
+     * jQuery will no longer accept numeric values in $.css as of 4.0.
+     *
+     * @return the next zindex as a String
+     */
+    export function nextZindex(): string;
+    /**
      * Registeres a listener that will be called as soon as the given element was loaded completely. Please note the
      * listener may be called synchronously (immediately) or asynchronously, depending on whether the element is
      * already loaded.
@@ -6795,10 +7035,6 @@ declare namespace PrimeFaces {
      * @param listener Listener to call once the element is loaded
      */
     export function onElementLoad(element: JQuery, listener: () => void): void;
-    /**
-     * Callback that is invoked after a POST request.
-     */
-    export function onPost(): void;
     /**
      * Deprecated, use `PrimeFaces.dialog.DialogHandler.openDialog` instead.
      *
@@ -6839,7 +7075,9 @@ declare namespace PrimeFaces {
      */
     export function setCaretToEnd(element: JQuery): void;
     /**
-     * Sets the value of a given cookie. If using HTTPS will set secure=true and SameSite=Strict.
+     * Sets the value of a given cookie.
+     * It will set secure=true, if using HTTPS and session-config/cookie-config/secure is set to true in web.xml.
+     * It will set sameSite, if secure=true, with the value of the primefaces.COOKIES_SAME_SITE parameter.
      *
      * @param name Name of the cookie to set
      * @param value Value to set
@@ -7046,15 +7284,15 @@ declare namespace PrimeFaces.resources {
 declare namespace PrimeFaces.utils {
     /**
      * Creates a new (empty) container for a modal overlay. A modal overlay is an overlay that blocks the content
-     * belown it. To remove the modal overlay, use `PrimeFaces.utils.removeModal`.
+     * below it. To remove the modal overlay, use `PrimeFaces.utils.removeModal`.
      *
      * @param widget An overlay widget instance.
-     * @param zIndex The z-index to set on the modal overlay.
+     * @param overlay The modal overlay element should be a DIV.
      * @param tabbablesCallback A supplier function that return a list of tabbable elements. A
      * tabbable element is an element to which the user can navigate to via the tab key.
      * @return The DOM element for the newly added modal overlay container.
      */
-    export function addModal(widget: PrimeFaces.widget.BaseWidget, zIndex: number, tabbablesCallback: () => JQuery): JQuery;
+    export function addModal(widget: PrimeFaces.widget.BaseWidget, overlay: JQuery, tabbablesCallback: () => JQuery): JQuery;
     /**
      * An overlay widget is moved in the DOM to the position as specified by the `appendTo` attribute. This function
      * moves the widget to its position in the DOM and removes old elements from previous AJAX updates.
@@ -7212,8 +7450,17 @@ declare namespace PrimeFaces.utils {
      * made by `PrimeFaces.utils.addModal`.
      *
      * @param widget A modal overlay widget instance.
+     * @param overlay The modal overlay element should be a DIV.
      */
-    export function removeModal(widget: PrimeFaces.widget.BaseWidget): void;
+    export function removeModal(widget: PrimeFaces.widget.BaseWidget, overlay: JQuery): void;
+    /**
+     * Finds the element to which the overlay panel should be appended. If none is specified explicitly, append the
+     * panel to the body.
+     *
+     * @param widget A widget that has a panel to be appended.
+     * @return The search expression for the element to which the overlay panel should be appended.
+     */
+    export function resolveAppendTo(widget: PrimeFaces.widget.DynamicOverlayWidget): string;
     /**
      * Finds the container element to which an overlay widget should be appended. This is either the element
      * specified by the widget configurations's `appendTo` attribute, or the document BODY element otherwise.
@@ -7653,13 +7900,17 @@ declare namespace PrimeFaces.widget {
         /**
          * Disabled modality for this widget and removes the modal overlay element, but does not change whether the
          * overlay is currently displayed.
+         *
+         * @param overlay The target overlay, if null default to this.jq.
          */
-        disableModality(): void;
+        disableModality(overlay: JQuery): void;
         /**
          * Enables modality for this widget and creates the modal overlay element, but does not change whether the
          * overlay is currently displayed.
+         *
+         * @param overlay The target overlay, if null default to this.jq.
          */
-        enableModality(): void;
+        enableModality(overlay: JQuery): void;
         /**
          * This class makes sure a user cannot tab out of the modal and it stops events from targets outside of the
          * overlay element. This requires that we switch back to the modal in case a user tabs out of it. What must
@@ -8871,7 +9122,7 @@ declare namespace PrimeFaces.widget {
          * Finds the meta data for a given cell.
          *
          * @param cell A cell for which to get the meta data.
-         * @return The meta data of the given cell.
+         * @return The meta data of the given cell or NULL if not found
          */
         getCellMeta(cell: JQuery): string;
         /**
@@ -9005,6 +9256,10 @@ declare namespace PrimeFaces.widget {
          * Reflow mode is a responsive mode to display columns as stacked depending on screen size.
          */
         private initReflow(): void;
+        /**
+         * Initializes the expansion state
+         */
+        private initRowExpansion(): void;
         /**
          * Displays row editors in invalid format.
          *
@@ -9160,9 +9415,9 @@ declare namespace PrimeFaces.widget {
         /**
          * Remove given row from the list of selected rows.
          *
-         * @param rowIndex Key of the row to remove.
+         * @param rowKey Key of the row to remove.
          */
-        private removeSelection(rowIndex: string): void;
+        private removeSelection(rowKey: string): void;
         /**
          * Resets the scroll state of the body to a non-scrolled state.
          */
@@ -9179,6 +9434,12 @@ declare namespace PrimeFaces.widget {
          * updates.
          */
         private restoreScrollState(): void;
+        /**
+         * Detect if row expansion for this row has been loaded and if not load it.
+         *
+         * @param rowIndex The row index to check for expansion
+         */
+        protected rowExpansionLoaded(rowIndex: number): void;
         /**
          * After the user is done editing a cell, saves the content of the given cell and switches back to view mode.
          *
@@ -9312,7 +9573,7 @@ declare namespace PrimeFaces.widget {
          */
         private shouldSort(event: JQuery.Event, column: JQuery): boolean;
         /**
-         * When cell editing is enabeld, shows the cell editor for the given cell that lets the user edit the cell content.
+         * When cell editing is enabled, shows the cell editor for the given cell that lets the user edit the cell content.
          *
          * @param c A cell (`TD`) of this data table to edit.
          */
@@ -9440,6 +9701,13 @@ declare namespace PrimeFaces.widget {
          */
         private updateColumnsView(): void;
         /**
+         * Updates the currently selected cell based on where the context menu right click occurred.
+         *
+         * @param event Event that occurred.
+         * @param targetWidget the current widget
+         */
+        private updateContextMenuCell(event: JQuery.Event, targetWidget: PrimeFaces.widget.DataTable): void;
+        /**
          * Sets the given HTML string as the content of the body of this data table. Afterwards, sets up all required event
          * listeners etc.
          *
@@ -9493,11 +9761,21 @@ declare namespace PrimeFaces.widget {
          */
         protected updateRow(row: JQuery, content: string): void;
         /**
+         * In multi-sort mode this will add number indicators to let the user know the current
+         * sort order. If only one column is sorted then no indicator is displayed and will
+         * only be displayed once more than one column is sorted.
+         */
+        private updateSortPriorityIndicators(): void;
+        /**
          * Switches the given cell to its view mode (not editable).
          *
          * @param cell A cell of this data table.
          */
         private viewMode(cell: JQuery): void;
+        /**
+         * Write row expansion state.
+         */
+        private writeRowExpansions(): void;
         /**
          * Writes selected row ids to state holder
          */
@@ -11122,18 +11400,18 @@ declare namespace JQueryPrimeDatePicker {
         /**
          * Creates the HTML snippet for the given days.
          *
-         * @param monthsMetaData List of days to render.
+         * @param monthsMetadata List of days to render.
          * @return The rendered HTML snippet.
          */
-        renderMonths(monthsMetaData: DayListInMonth[]): string;
+        renderMonths(monthsMetadata: DayListInMonth[]): string;
         /**
          * Creates the HTML snippet for the given days in a month.
          *
-         * @param monthMetaData List of days to render
+         * @param monthMetadata List of days to render
          * @param index Month to which the days belong.
          * @return The rendered HTML snippet.
          */
-        renderMonth(monthMetaData: DayListInMonth, index: MonthOfTheYear): string;
+        renderMonth(monthMetadata: DayListInMonth, index: MonthOfTheYear): string;
         /**
          * Creates the HTML snippet for the button for navigating to the previous month.
          *
@@ -11181,10 +11459,10 @@ declare namespace JQueryPrimeDatePicker {
         /**
          * Creates the HTML snippet for the title bar of the given month.
          *
-         * @param monthMetaData Month to use.
+         * @param monthMetadata Month to use.
          * @return The rendered HTML snippet.
          */
-        renderTitle(monthMetaData: DayListInMonth): string;
+        renderTitle(monthMetadata: DayListInMonth): string;
         /**
          * Creates the HTML snippet for the names of the given days.
          *
@@ -11211,19 +11489,19 @@ declare namespace JQueryPrimeDatePicker {
         /**
          * Creates the HTML snippet for the given dates.
          *
-         * @param monthMetaData List of dates to render.
+         * @param monthMetadata List of dates to render.
          * @return The rendered HTML snippet.
          */
-        renderDates(monthMetaData: DayListInMonth): string;
+        renderDates(monthMetadata: DayListInMonth): string;
         /**
          * Creates the HTML snippet for the date view grid of the given month.
          *
-         * @param monthMetaData Month to use.
+         * @param monthMetadata Month to use.
          * @param weekDaysMin List of super short week day names.
          * @param weekDays List of long week names.
          * @return The rendered HTML snippet.
          */
-        renderDateViewGrid(monthMetaData: DayListInMonth, weekDaysMin: string[], weekDays: string[]): string;
+        renderDateViewGrid(monthMetadata: DayListInMonth, weekDaysMin: string[], weekDays: string[]): string;
         /**
          * Creates the HTML snippet for the hour picker for selecting an hour.
          *
@@ -11524,7 +11802,7 @@ declare namespace JQueryPrimeDatePicker {
         /**
          * List of all days in the current year.
          */
-        monthsMetaData: DayListInMonth[];
+        monthsMetadata: DayListInMonth[];
         /**
          * Mask for the modal overlay.
          */
@@ -11663,6 +11941,10 @@ declare namespace PrimeFaces.widget {
          */
         viewDateOption: Date | Date[];
         /**
+         * Initializes the mask on the input if using a mask and not an inline picker.
+         */
+        private applyMask(): void;
+        /**
          * Sets up the event listener for when the Clear button is selected.
          */
         private bindClearButtonListener(): void;
@@ -11674,6 +11956,10 @@ declare namespace PrimeFaces.widget {
          * Sets up the event listener for when another date was selected.
          */
         private bindDateSelectListener(): void;
+        /**
+         * Callback for after the overlay panel is created.
+         */
+        private bindPanelCreationListener(): void;
         /**
          * Sets up the event listener for when the date picker changes to a different month or year page.
          */
@@ -11709,10 +11995,9 @@ declare namespace PrimeFaces.widget {
         /**
          * Triggers the event for when the date picker changed to a different month or year page.
          *
-         * @param year The year to which the date picker changed.
-         * @param month The year to which the date picker changed, starting with `0` for `Janurary`.
+         * @param date The date to which the date picker changed.
          */
-        private fireViewChangeEvent(year: number, month: number): void;
+        private fireViewChangeEvent(date: Date): void;
         /**
          * Gets the currently selected date value of the date picker.
          *
@@ -11776,11 +12061,27 @@ declare namespace PrimeFaces.widget {
          */
         setDate(date: Date | string): void;
         /**
+         * Sets the disabled dates.
+         *
+         * @param disabledDates The dates to disable.
+         */
+        setDisabledDates(disabledDates: string[] | Date[]): void;
+        /**
+         * Sets the disabled days.
+         *
+         * @param disabledDays The days to disable.
+         */
+        setDisabledDays(disabledDays: number[]): void;
+        /**
          * Sets the displayed visible calendar date. This refers to the currently displayed month page.
          *
          * @param date The date to be shown in the calendar.
          */
         setViewDate(date: string | Date | Date[]): void;
+        /**
+         * Update panel.
+         */
+        private updatePanel(): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -11799,6 +12100,18 @@ declare namespace PrimeFaces.widget {
          */
         focusOnSelect: boolean;
         /**
+         * Applies a mask using the pattern.
+         */
+        mask: string;
+        /**
+         * Clears the field on blur when incomplete input is entered
+         */
+        maskAutoClear: boolean;
+        /**
+         * Placeholder in mask template.
+         */
+        maskSlotChar: string;
+        /**
          * User-defined callback that may be overridden by the
          * user. Invoked before the date picker overlay is shown.
          */
@@ -11809,292 +12122,6 @@ declare namespace PrimeFaces.widget {
         triggerButtonIcon: string;
     }
 }
-// Type definitions for jsPlumb 2.1.0
-// Ron Newcomb
-// Note: The newer versions of jsPlumb (since 2.5) ship with a type declaration file
-// Use that when upgrading jsPlumb (npm i jsplumb and include it via --includemodules when generating the declarations)
-declare namespace JsPlumb {
-    export interface PaintStyle {
-        strokeStyle?: string;
-        fillStyle?: string;
-        lineWidth?: number;
-        outlineWidth: number;
-        outlineColor: string;
-    }
-    export type Selector = string;
-    export type UUID = string;
-    export type ElementId = string;
-    export type ElementRef = ElementId | Element;
-    export type ElementGroupRef = ElementId | Element | ElementId[] | Element[];
-    export class jsPlumbInstance {
-        addEndpoint(el: ElementGroupRef, params?: EndpointOptions, referenceParams?: EndpointOptions): Endpoint | Endpoint[];
-        addEndpoints(target: ElementGroupRef, endpoints: EndpointOptions[], referenceParams?: EndpointOptions): Endpoint[];
-        animate(el: ElementRef, properties?: Record<string, any>, options?: Record<string, any>): void;
-        batch(fn: (...args: any) => any, doNotRepaintAfterwards?: boolean): void;
-        bind(event: "connection", callback: (info: ConnectionMadeEventInfo, originalEvent: Event) => void, insertAtStart?: boolean): void;
-        bind(event: "click", callback: (info: Connection, originalEvent: Event) => void, insertAtStart?: boolean): void;
-        bind(event: string, callback: (info: OnConnectionBindInfo, originalEvent: Event) => void, insertAtStart?: boolean): void;
-        cleanupListeners(): void;
-        connect(params: ConnectParams, referenceParams?: Partial<ConnectParams>): Connection;
-        deleteEndpoint(object: UUID | Endpoint, doNotRepaintAfterwards?: boolean): jsPlumbInstance;
-        deleteEveryEndpoint(): jsPlumbInstance;
-        detach(conn: Connection): void;
-        detachEveryConnection(): void;
-        detachAllConnections(element: string): void;
-        doWhileSuspended(): jsPlumbInstance;
-        draggable(el: string | HTMLElement | ArrayLike<string | HTMLElement>, options?: DragOptions): jsPlumbInstance;
-        empty(el: string | Element | Selector): void;
-        fire(event: string, value: any, originalEvent: Event): void;
-        getAllConnections(): Connection[];
-        getConnections(scope: string, options: any, scope2?: string | string, source?: string | string | Selector, target?: string | string | Selector, flat?: boolean): any[] | Map<any, any>;
-        getContainer(): Element;
-        getDefaultScope(): string;
-        getEndpoint(uuid: string): Endpoint;
-        getEndpoints(element: string | Element): Endpoint[] | null;
-        getInstance(_defaults?: Defaults): any;
-        getScope(Element: Element | string): string;
-        getSelector(context?: Element | Selector, spec?: string): void;
-        getSourceScope(Element: Element | string): string;
-        getTargetScope(Element: Element | string): string;
-        getType(id: string, typeDescriptor: string): any;
-        hide(el: string | Element | Selector, changeEndpoints?: boolean): jsPlumbInstance;
-        importDefaults(defaults: Defaults): jsPlumbInstance;
-        isHoverSuspended(): boolean;
-        isSource(el: string | Element | Selector): boolean;
-        isSourceEnabled(el: string | Element | Selector, connectionType?: string): boolean;
-        isSuspendDrawing(): boolean;
-        isSuspendEvents(): boolean;
-        isTarget(el: string | Element | Selector): boolean;
-        isTargetEnabled(el: string | Element | Selector): boolean;
-        makeSource(el: string | Element | Selector, params: Record<string, any>, endpoint?: string | any[], parent?: string | Element, scope?: string, dragOptions?: Record<string, any>, deleteEndpointsOnDetach?: boolean, filter?: (...args: any) => any): void;
-        makeTarget(el: string | Element | Selector, params: Record<string, any>, endpoint?: string | any[], scope?: string, dropOptions?: Record<string, any>, deleteEndpointsOnDetach?: boolean, maxConnections?: number, onMaxConnections?: (...args: any) => any): void;
-        off(el: Element | Element | string, event: string, fn: (...args: any) => any): jsPlumbInstance;
-        on(el: Element | Element | string, children?: string, event?: string, fn?: (...args: any) => any): jsPlumbInstance;
-        ready(fn: (...args: any) => any): void;
-        recalculateOffsets(el: string | Element | Selector): void;
-        registerConnectionType(typeId: string, type: any): void;
-        registerConnectionTypes(types: any[]): void;
-        registerEndpointType(typeId: string, type: any): void;
-        registerEndpointTypes(types: any[]): void;
-        remove(el: string | Element | Selector): void;
-        removeAllEndpoints(el: string | Element | Selector, recurse?: boolean): jsPlumbInstance;
-        repaint(el: string | Element | Selector): jsPlumbInstance;
-        repaintEverything(clearEdits?: boolean): jsPlumbInstance;
-        reset(): void;
-        restoreDefaults(): jsPlumbInstance;
-        revalidate(el: string | Element | Selector): void;
-        select(params?: Record<string, any>, scope?: string | string, source?: string | string, target?: string | string, connections?: Connection[]): {
-            each(fn: (conn: Connection) => void): void;
-        };
-        getHoverPaintStyle(params?: Record<string, any>, scope?: string, source?: string | Element | Selector | any[], target?: string | Element | Selector | any[], element?: string | Element | Selector | any[]): Selection;
-        setHover(container: string | Element | Selector): void;
-        setDefaultScope(scope: string): jsPlumbInstance;
-        setDraggable(el: string | Record<string, any> | any[], draggable: boolean): void;
-        setHoverSuspended(hover: boolean): void;
-        setIdChanged(oldId: string, newId: string): void;
-        setParent(el: Selector | Element, newParent: Selector | Element | string): void;
-        setScope(el: Element | string, scope: string): void;
-        setSource(connection: Connection, source: string | Element | Endpoint, doNotRepaint?: boolean): jsPlumbInstance;
-        setSourceEnabled(el: string | Element | Selector, state: boolean): jsPlumbInstance;
-        setSourceScope(el: Element | string, scope: string, connectionType?: string): void;
-        setSuspendDrawing(val: boolean, repaintAfterwards?: boolean): boolean;
-        setSuspendEvents(val: boolean): void;
-        setTarget(connection: Connection, target: string | Element | Endpoint, doNotRepaint?: boolean): jsPlumbInstance;
-        setTargetEnabled(el: string | Element | Selector, state: boolean): jsPlumbInstance;
-        setTargetScope(el: Element | string, scope: string, connectionType?: string): void;
-        show(el: string | Element | Selector, changeEndpoints?: boolean): jsPlumbInstance;
-        toggleDraggable(el: string | Element | Selector): boolean;
-        toggleSourceEnabled(el: string | Element | Selector): boolean;
-        toggleTargetEnabled(el: string | Element | Selector): boolean;
-        toggleVisible(el: string | Element | Selector, changeEndpoints?: boolean): void;
-        unbind(eventOrListener?: string | ((...args: any) => any), listener?: (...args: any) => any): void;
-        unmakeEverySource(): jsPlumbInstance;
-        unmakeEveryTarget(): jsPlumbInstance;
-        unmakeSource(el: string | Element | Selector): jsPlumbInstance;
-        unmakeTarget(el: string | Element | Selector): jsPlumbInstance;
-    }
-    export interface ConnectionMadeEventInfo {
-        connection: Connection;
-        source: HTMLDivElement;
-        sourceEndpoint: Endpoint;
-        sourceId: string;
-        target: HTMLDivElement;
-        targetEndpoint: Endpoint;
-        targetId: string;
-    }
-    export interface OnConnectionBindInfo {
-        connection: Connection;
-        sourceId: number;
-        originalSourceId: number;
-        newSourceId: number;
-        targetId: number;
-        originalTargetId: number;
-        newTargetId: number;
-        source: Element;
-        target: Element;
-        sourceEndpoint: Endpoint;
-        newSourceEndpoint: Endpoint;
-        targetEndpoint: Endpoint;
-        newTargetEndpoint: Endpoint;
-    }
-    export interface Defaults {
-        Endpoint?: any;
-        Endpoints?: any[];
-        Anchor?: any;
-        Anchors?: any[];
-        PaintStyle?: PaintStyle;
-        HoverPaintStyle?: PaintStyle;
-        ConnectionsDetachable?: boolean;
-        ReattachConnections?: boolean;
-        ConnectionOverlays?: any[][];
-        Container?: any;
-        DragOptions?: DragOptions;
-    }
-    export interface Connections {
-        detach(): void;
-        length: number;
-        each(e: (c: Connection) => void): void;
-    }
-    export interface ConnectParams {
-        uuids?: [UUID, UUID];
-        source?: ElementRef | Endpoint;
-        target?: ElementRef | Endpoint;
-        detachable?: boolean;
-        deleteEndpointsOnDetach?: boolean;
-        endpoint?: EndpointSpec;
-        anchor?: AnchorSpec;
-        anchors?: [AnchorSpec, AnchorSpec];
-        label?: string;
-    }
-    export interface DragOptions {
-        containment?: string;
-        start?(...args: any): any;
-        drag?(...args: any): any;
-        stop?(...args: any): any;
-    }
-    export interface DropOptions {
-        hoverClass: string;
-    }
-    export interface Connection {
-        id: string;
-        setDetachable(detachable: boolean): void;
-        setParameter(name: string, value: any): void;
-        endpoints: [Endpoint, Endpoint];
-        getOverlay(s: string): Overlay;
-        showOverlay(s: string): void;
-        hideOverlay(s: string): void;
-        setLabel(s: string): void;
-        getElement(): Connection;
-    }
-    /* -------------------------------------------- CONNECTORS ---------------------------------------------------- */
-    export interface ConnectorOptions {
-    }
-    export type UserDefinedConnectorId = string;
-    export type ConnectorId = "Bezier" | "StateMachine" | "Flowchart" | "Straight" | UserDefinedConnectorId;
-    export type ConnectorSpec = ConnectorId | [ConnectorId, ConnectorOptions];
-    /* -------------------------------------------- ENDPOINTS ------------------------------------------------------ */
-    export type EndpointId = "Rectangle" | "Dot" | "Blank" | UserDefinedEndpointId;
-    export type UserDefinedEndpointId = string;
-    export type EndpointSpec = EndpointId | [EndpointId, EndpointOptions];
-    export interface EndpointOptions {
-        anchor?: AnchorSpec;
-        endpoint?: Endpoint;
-        enabled?: boolean;
-        paintStyle?: PaintStyle;
-        hoverPaintStyle?: PaintStyle;
-        cssClass?: string;
-        hoverClass?: string;
-        maxConnections: number;
-        dragOptions?: DragOptions;
-        dropOptions?: DropOptions;
-        connectorStyle?: PaintStyle;
-        connectorHoverStyle?: PaintStyle;
-        connector?: ConnectorSpec;
-        connectorOverlays?: OverlaySpec[];
-        connectorClass?: string;
-        connectorHoverClass?: string;
-        connectionsDetachable?: boolean;
-        isSource?: boolean;
-        isTarget?: boolean;
-        reattach?: boolean;
-        parameters: Record<string, any>;
-        "connector-pointer-events"?: string;
-        connectionType?: string;
-        dragProxy?: string | string[];
-        id: string;
-        scope: string;
-        reattachConnections: boolean;
-        type: string;
-    }
-    export class Endpoint {
-        anchor: Anchor;
-        connections?: Connection[];
-        maxConnections: number;
-        id: string;
-        scope: string;
-        type: EndpointId;
-        detachAll(): void;
-        detach(spec: EndpointSpec): void;
-        setEndpoint(spec: EndpointSpec): void;
-        connectorSelector(): Connection;
-        isEnabled(): boolean;
-        setEnabled(enabled: boolean): void;
-        setHover(hover: boolean): void;
-        getElement(): Element;
-        setElement(el: Element): void;
-    }
-    /**
-     * The actual component that does the rendering.
-     */
-    export interface EndpointRenderer {
-    }
-    /* -------------------------------------------- ANCHORS -------------------------------------------------------- */
-    export interface AnchorOptions {
-    }
-    export type AnchorOrientationHint = -1 | 0 | 1;
-    export interface Anchor {
-        type: AnchorId;
-        cssClass: string;
-        elementId: string;
-        id: string;
-        locked: boolean;
-        offsets: [number, number];
-        orientation: [AnchorOrientationHint, AnchorOrientationHint];
-        x: number;
-        y: number;
-    }
-    export type AnchorId = "Assign" | "AutoDefault" | "Bottom" | "BottomCenter" | "BottomLeft" | "BottomRight" | "Center" | "Continuous" | "ContinuousBottom" | "ContinuousLeft" | "ContinuousRight" | "ContinuousTop" | "Left" | "LeftMiddle" | "Perimeter" | "Right" | "RightMiddle" | "Top" | "TopCenter" | "TopLeft" | "TopRight";
-    export type AnchorSpec = AnchorId | [AnchorId, AnchorOptions];
-    /* --------------------------------------- OVERLAYS ------------------------------------------------------------- */
-    export interface OverlayOptions {
-    }
-    export interface ArrowOverlayOptions extends OverlayOptions {
-        width?: number;
-        length?: number;
-        location?: number;
-        direction?: number;
-        foldback?: number;
-        paintStyle?: PaintStyle;
-    }
-    export interface LabelOverlayOptions extends OverlayOptions {
-        label: string;
-        cssClass?: string;
-        location?: number;
-        labelStyle?: {
-            font?: string;
-            color?: string;
-            fill?: string;
-            borderStyle?: string;
-            borderWidth?: number;
-            padding?: number;
-        };
-    }
-    export type OverlayId = "Label" | "Arrow" | "PlainArrow" | "Custom";
-    export type OverlaySpec = OverlayId | [OverlayId, OverlayOptions];
-    export interface Overlay {
-    }
-}
-declare const jsPlumb: JsPlumb.jsPlumbInstance;
 declare namespace PrimeFaces.widget {
     /**
      * __PrimeFaces Diagram Widget__
@@ -12105,7 +12132,7 @@ declare namespace PrimeFaces.widget {
         /**
          * The JSPlumb instance for this diagram.
          */
-        canvas: JsPlumb.jsPlumbInstance;
+        canvas: import("jsplumb").jsPlumbInstance;
         /**
          * Internal state whether the connection was changed before a connect event.
          */
@@ -12190,7 +12217,7 @@ declare namespace PrimeFaces.widget {
         /**
          * Overlays for the connections (arrows, labels, etc.)
          */
-        connectionOverlays: JsPlumb.OverlaySpec[];
+        connectionOverlays: import("jsplumb").OverlaySpec[];
         /**
          * List of initial connections to be established between nodes.
          */
@@ -12208,18 +12235,18 @@ declare namespace PrimeFaces.widget {
         /**
          * Connector (straight lines, bezier curves, etc.) to use by default.
          */
-        defaultConnector: JsPlumb.ConnectorSpec;
+        defaultConnector: import("jsplumb").ConnectorSpec;
         /**
          * A list of endpoints (ports) of
          * all diagram nodes.
          */
-        endPoints: (JsPlumb.EndpointOptions & {
-            element: JsPlumb.ElementGroupRef;
+        endPoints: (import("jsplumb").EndpointOptions & {
+            element: import("jsplumb").ElementGroupRef;
         })[];
         /**
          * Paint style to use when hovering.
          */
-        hoverPaintStyle: JsPlumb.PaintStyle;
+        hoverPaintStyle: import("jsplumb").PaintStyle;
         /**
          * Maximum number of allowed connections (per node).
          */
@@ -12227,7 +12254,7 @@ declare namespace PrimeFaces.widget {
         /**
          * Paint style to use when not hovering.
          */
-        paintStyle: JsPlumb.PaintStyle;
+        paintStyle: import("jsplumb").PaintStyle;
     }
 }
 declare namespace PrimeFaces.widget.Diagram {
@@ -12990,112 +13017,6 @@ declare namespace PrimeFaces.widget {
          * ID of the target of this droppable.
          */
         target: string;
-    }
-}
-declare namespace PrimeFaces.widget {
-    /**
-     * __PrimeFaces Editor Widget__
-     *
-     * Editor is an input component with rich text editing capabilities.
-     *
-     * __Deprecated__: Use {@link TextEditor} instead.
-     *
-     * @typeparam TCfg Defaults to `EditorCfg`. Type of the configuration object for this widget.
-     */
-    export class Editor<TCfg extends EditorCfg = EditorCfg> extends PrimeFaces.widget.DeferredWidget<TCfg> {
-        /**
-         * The DOM element with the editor UI.
-         */
-        editor: JQuery;
-        /**
-         * The DOM element for the hidden input field.
-         */
-        jqInput: JQuery;
-        /**
-         * This render method is called by this deferred widget once the widget container has become visible. You may
-         * now proceed with widget initialization.
-         *
-         * __Must be overridden__, or an error will be thrown.
-         *
-         * @override
-         */
-        protected _render(): void;
-        /**
-         * Sets up the event listener for when the maximum length is reached.
-         */
-        private bindMaxlength(): void;
-        /**
-         * Clears the content of the editor, so that is becomes empty.
-         */
-        clear(): void;
-        /**
-         * Disables the editor and prevents the user from entering text.
-         */
-        disable(): void;
-        /**
-         * Enables the editor and allows the user to enter text.
-         */
-        enable(): void;
-        /**
-         * Puts focus on this editor widget.
-         */
-        focus(): void;
-        /**
-         * Fetches the currently selected content of this editor widget as an HTML string.
-         *
-         * @return The currently selected content of this editor widget as an HTML string.
-         */
-        getSelectedHTML(): string;
-        /**
-         * Fetches the currently selected content as plain text (without markup).
-         *
-         * @return The currently selected content as plain text (without markup).
-         */
-        getSelectedText(): string;
-        /**
-         * A widget class should not have an explicit constructor. Instead, this initialize method is called after the
-         * widget was created. You can use this method to perform any initialization that is required. For widgets that
-         * need to create custom HTML on the client-side this is also the place where you should call your render
-         * method.
-         *
-         * Please make sure to call the super method first before adding your own custom logic to the init method:
-         *
-         * ```javascript
-         * PrimeFaces.widget.MyWidget = PrimeFaces.widget.BaseWidget.extend({
-         *   init: function(cfg) {
-         *     this._super(cfg);
-         *     // custom initialization
-         *   }
-         * });
-         * ```
-         *
-         * @override
-         * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
-         * component.
-         */
-        init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
-        /**
-         * Marks this editor widget as invalid, i.e. having validation errors.
-         */
-        private invalidate(): void;
-        /**
-         * Saves the current content of the editor.
-         */
-        saveHTML(): void;
-        /**
-         * Selects the entire text of this editor.
-         */
-        selectAll(): void;
-    }
-}
-declare namespace PrimeFaces.widget {
-    /**
-     * The configuration for the {@link  Editor| Editor widget}.
-     * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
-     * configuration is usually meant to be read-only and should not be modified.
-     */
-    export interface EditorCfg extends PrimeFaces.widget.DeferredWidgetCfg {
     }
 }
 declare namespace PrimeFaces.widget.Effect {
@@ -14884,6 +14805,13 @@ declare namespace PrimeFaces.widget.FileUpload {
      */
     export type OnStartCallback = (this: PrimeFaces.widget.FileUpload) => void;
 }
+declare namespace PrimeFaces.widget.FileUpload {
+    /**
+     * Callback to execute before the files are sent.
+     * If this callback returns false, the file upload request is not started. See also {@link FileUploadCfg.onupload}.
+     */
+    export type OnUploadCallback = (this: PrimeFaces.widget.FileUpload) => void;
+}
 declare namespace PrimeFaces.widget {
     /**
      * __PrimeFaces FileUpload Widget__
@@ -14998,7 +14926,7 @@ declare namespace PrimeFaces.widget {
          *
          * @return Parameters to post when upload the files.
          */
-        private createPostData(): PrimeFaces.ajax.ServerCallbackParameter;
+        private createPostData(): PrimeFaces.ajax.RequestParameter;
         /**
          * Creates a unique identifier (file key) for a given file. That identifier consists e.g. of the name of the
          * uploaded file, its last modified-attribute etc. This is used by the server to identify uploaded files.
@@ -15183,6 +15111,11 @@ declare namespace PrimeFaces.widget {
          */
         onstart: PrimeFaces.widget.FileUpload.OnStartCallback;
         /**
+         * Callback to execute before the files are sent.
+         * If this callback returns false, the file upload request is not started.
+         */
+        onupload: PrimeFaces.widget.FileUpload.OnUploadCallback;
+        /**
          * Width for image previews in pixels.
          */
         previewWidth: number;
@@ -15298,6 +15231,10 @@ declare namespace PrimeFaces.widget {
          * Brings up the native file selection dialog.
          */
         show(): void;
+        /**
+         * Uploads all selected files via AJAX.
+         */
+        private upload(): void;
         /**
          * Validates the given file against the current validation settings
          *
@@ -15456,7 +15393,7 @@ declare namespace PrimeFaces.widget {
      * __PrimeFaces DefaultCommand Widget__
      *
      * Which command to submit the form with when enter key is pressed a common problem in web apps not just specific to
-     * JSF. Browsers tend to behave differently as there doesnâ€™t seem to be a standard and even if a standard exists,
+     * JSF. Browsers tend to behave differently as there doesn’t seem to be a standard and even if a standard exists,
      * IE probably will not care about it. There are some ugly workarounds like placing a hidden button and writing
      * JavaScript for every form in your app. `DefaultCommand` solves this problem by normalizing the command (e.g. button
      * or link) to submit the form with on enter key press.
@@ -15512,72 +15449,6 @@ declare namespace PrimeFaces.widget {
          * Identifier of the default command component.
          */
         target: string;
-    }
-}
-declare namespace PrimeFaces.widget {
-    /**
-     * __PrimeFaces InputMask Widget__
-     *
-     * InputMask forces an input to fit in a defined mask template.
-     *
-     * @typeparam TCfg Defaults to `InputMaskCfg`. Type of the configuration object for this widget.
-     */
-    export class InputMask<TCfg extends InputMaskCfg = InputMaskCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
-        /**
-         * Returns the current value of this input field including the mask like "12/31/1999".
-         *
-         * @return The current value of this input field with mask.
-         */
-        getValue(): string;
-        /**
-         * Returns the current value of this input field without the mask like "12311999".
-         *
-         * @return The current value of this input field without mask.
-         */
-        getValueUnmasked(): string;
-        /**
-         * A widget class should not have an explicit constructor. Instead, this initialize method is called after the
-         * widget was created. You can use this method to perform any initialization that is required. For widgets that
-         * need to create custom HTML on the client-side this is also the place where you should call your render
-         * method.
-         *
-         * Please make sure to call the super method first before adding your own custom logic to the init method:
-         *
-         * ```javascript
-         * PrimeFaces.widget.MyWidget = PrimeFaces.widget.BaseWidget.extend({
-         *   init: function(cfg) {
-         *     this._super(cfg);
-         *     // custom initialization
-         *   }
-         * });
-         * ```
-         *
-         * @override
-         * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
-         * component.
-         */
-        init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
-        /**
-         * Sets the value of this input field to the given value. If the value does not fit the mask, it is adjusted
-         * appropriately.
-         *
-         * @param value New value to set on this input field
-         */
-        setValue(value: string): void;
-    }
-}
-declare namespace PrimeFaces.widget {
-    /**
-     * The configuration for the {@link  InputMask| InputMask widget}.
-     * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
-     * configuration is usually meant to be read-only and should not be modified.
-     */
-    export interface InputMaskCfg extends Inputmask.Options, PrimeFaces.widget.BaseWidgetCfg {
-        /**
-         * The mask template to use.
-         */
-        mask: string;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -16095,6 +15966,10 @@ declare namespace PrimeFaces.widget {
          */
         goodLabel: string;
         /**
+         * Event hiding the feedback overlay. Default is 'blur'.
+         */
+        hideEvent: string;
+        /**
          * Displays feedback inline rather than using a popup.
          */
         inline: boolean;
@@ -16102,6 +15977,10 @@ declare namespace PrimeFaces.widget {
          * Label of the password prompt.
          */
         promptLabel: string;
+        /**
+         * Event displaying the feedback overlay. Default is 'focus'.
+         */
+        showEvent: string;
         /**
          * Text of the hint when the password is judged to be strong.
          */
@@ -17527,13 +17406,6 @@ declare namespace PrimeFaces.widget {
          */
         getActiveItem(): JQuery;
         /**
-         * Finds the element to which the overlay panel should be appended. If none is specified explicitly, append the
-         * panel to the body.
-         *
-         * @return The search expression for the element to which the overlay panel should be appended.
-         */
-        private getAppendTo(): string;
-        /**
          * Finds the label of the option with the given value.
          *
          * @param value The value of a selectable option.
@@ -17656,6 +17528,28 @@ declare namespace PrimeFaces.widget {
          * @return The value as returned by the `init` method, which is often `undefined`.
          */
         refresh(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+        /**
+         * Renders panel content based on hidden select.
+         *
+         * @param initContentsAndBindItemEvents Call initContents and bindItemEvents after rendering?
+         */
+        private renderPanelContentFromHiddenSelect(initContentsAndBindItemEvents: boolean): void;
+        /**
+         * Renders Panel-HTML-code for one SelectItem(Group).
+         *
+         * @param item An option(group) for which to render HTML-code.
+         * @param isGrouped Tells whether the item is part of a group.
+         * @return Rendered HTML-code.
+         */
+        private renderSelectItem(item: JQuery, isGrouped: boolean): string;
+        /**
+         * Renders Panel-HTML-code for SelectItems.
+         *
+         * @param parentItem An parentItem (select, optgroup) for which to render HTML-code.
+         * @param isGrouped Tells whether the elements of the parentItem should be marked as grouped.
+         * @return Rendered HTML-code.
+         */
+        private renderSelectItems(parentItem: JQuery, isGrouped?: boolean): string;
         /**
          * Finds the index of the given selectable option.
          *
@@ -17792,6 +17686,10 @@ declare namespace PrimeFaces.widget {
          * which is replaced with the value of the currently selected item.
          */
         labelTemplate: string;
+        /**
+         * Renders panel content on client.
+         */
+        renderPanelContentOnClient: boolean;
         /**
          * Updates the title of the component with the description of the selected item.
          */
@@ -18501,14 +18399,16 @@ declare namespace PrimeFaces.widget {
          *
          * @param event The event that occurred.
          * @param overlay The shape that was selected.
+         * @param clickCount whether it was single or double click
          */
-        private fireOverlaySelectEvent(event: google.maps.MouseEvent | google.maps.IconMouseEvent, overlay: PrimeFaces.widget.GMap.Overlay): void;
+        private fireOverlaySelectEvent(event: google.maps.MouseEvent | google.maps.IconMouseEvent, overlay: PrimeFaces.widget.GMap.Overlay, clickCount: number): void;
         /**
          * Triggers the behavior for when a point on the map was selected.
          *
          * @param event The event that triggered the point selection.
+         * @param clickCount whether it was single or double click
          */
-        private firePointSelectEvent(event: google.maps.MouseEvent | google.maps.IconMouseEvent): void;
+        private firePointSelectEvent(event: google.maps.MouseEvent | google.maps.IconMouseEvent, clickCount: number): void;
         /**
          * Triggers the behavior for when the state of this map has changed.
          *
@@ -18663,7 +18563,7 @@ declare namespace PrimeFaces.widget {
     /**
      * __PrimeFaces Growl Widget__
      *
-     * Growl is based on the Macâ€™s growl notification widget and used to display FacesMessages in an overlay.
+     * Growl is based on the Mac’s growl notification widget and used to display FacesMessages in an overlay.
      *
      * @typeparam TCfg Defaults to `GrowlCfg`. Type of the configuration object for this widget.
      */
@@ -19209,10 +19109,6 @@ declare namespace PrimeFaces.widget {
      * configuration is usually meant to be read-only and should not be modified.
      */
     export interface IdleMonitorCfg extends PrimeFaces.widget.BaseWidgetCfg {
-        /**
-         * The context path of the web application.
-         */
-        contextPath: string;
         /**
          * When set to true, the lastAccessed state will be shared between all browser
          * windows for the same servlet context.
@@ -20317,6 +20213,72 @@ declare namespace PrimeFaces.widget {
         toggleable: boolean;
     }
 }
+declare namespace PrimeFaces.widget {
+    /**
+     * __PrimeFaces InputMask Widget__
+     *
+     * InputMask forces an input to fit in a defined mask template.
+     *
+     * @typeparam TCfg Defaults to `InputMaskCfg`. Type of the configuration object for this widget.
+     */
+    export class InputMask<TCfg extends InputMaskCfg = InputMaskCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
+        /**
+         * Returns the current value of this input field including the mask like "12/31/1999".
+         *
+         * @return The current value of this input field with mask.
+         */
+        getValue(): string;
+        /**
+         * Returns the current value of this input field without the mask like "12311999".
+         *
+         * @return The current value of this input field without mask.
+         */
+        getValueUnmasked(): string;
+        /**
+         * A widget class should not have an explicit constructor. Instead, this initialize method is called after the
+         * widget was created. You can use this method to perform any initialization that is required. For widgets that
+         * need to create custom HTML on the client-side this is also the place where you should call your render
+         * method.
+         *
+         * Please make sure to call the super method first before adding your own custom logic to the init method:
+         *
+         * ```javascript
+         * PrimeFaces.widget.MyWidget = PrimeFaces.widget.BaseWidget.extend({
+         *   init: function(cfg) {
+         *     this._super(cfg);
+         *     // custom initialization
+         *   }
+         * });
+         * ```
+         *
+         * @override
+         * @param cfg The widget configuration to be used for this widget instance.
+         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * component.
+         */
+        init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+        /**
+         * Sets the value of this input field to the given value. If the value does not fit the mask, it is adjusted
+         * appropriately.
+         *
+         * @param value New value to set on this input field
+         */
+        setValue(value: string): void;
+    }
+}
+declare namespace PrimeFaces.widget {
+    /**
+     * The configuration for the {@link  InputMask| InputMask widget}.
+     * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+     * configuration is usually meant to be read-only and should not be modified.
+     */
+    export interface InputMaskCfg extends Inputmask.Options, PrimeFaces.widget.BaseWidgetCfg {
+        /**
+         * The mask template to use.
+         */
+        mask: string;
+    }
+}
 declare namespace PrimeFaces.widget.InputNumber {
     /**
      * Alias for the AutoNumeric
@@ -20358,6 +20320,11 @@ declare namespace PrimeFaces.widget {
          * The initial, numerical value that is displayed, such as `0.0` or `5.3`.
          */
         valueToRender: string;
+        /**
+         * Binds input listener which fixes a browser AutoFill issue.
+         * See: https://github.com/autoNumeric/autoNumeric/issues/536
+         */
+        private bindInputEvents(): void;
         /**
          * Wraps the events on the external (visible) input to copy the value to the hidden input.
          *
@@ -20778,117 +20745,6 @@ interface JQuery {
      * @return The current position of the cursor in pixels, relative to the top left of the element.
      */
     getCaretPosition(): JQueryCaretposition.CaretPosition;
-}
-/**
- * Namespace for the masked input JQueryUI plugin.
- *
- * It allows a user to more easily enter fixed width input where you would like them to enter the data in a certain
- * format (dates,phone numbers, etc).
- */
-declare namespace JQueryMaskedInput {
-    /**
-     * A mask is defined by a format made up of mask literals and mask definitions. Any character not in the definitions
-     * list below is considered a mask literal. Mask literals will be automatically entered for the user as they type
-     * and will not be able to be removed by the user.The following mask definitions are predefined:
-     *
-     * - `a` - Represents an alpha character (A-Z,a-z)
-     * - `9` - Represents a numeric character (0-9)
-     * - `*` - Represents an alphanumeric character (A-Z,a-z,0-9)
-     *
-     * You can have part of your mask be optional. Anything listed after `?` within the mask is considered optional user
-     * input. The common example for this is phone number `+` optional extension.
-     *
-     * You can also supply your own mask definitions by extending the `$.mask.definitions` object.
-     *
-     * Examples for valid masks:
-     *
-     * - Date: `99/99/9999`
-     * - Phone: `(999) 999-9999`
-     * - Phone + Ext: `(999) 999-9999? x99999`
-     * - Product Key: `a*-999-a999`
-     * - Eye Script: `~9.99 ~9.99 999`
-     */
-    export type MaskString = string;
-    /**
-     * Settings for the mask when setting up an input field with a mask.
-     */
-    export interface MaskSettings {
-        /**
-         * If `true`, the input field will be cleared when the user leaves the input field and did not enter some input
-         * that completed the mask. If `false`, the partially entered text will remaing in the input field.
-         */
-        autoclear: boolean;
-        /**
-         * Placeholder string that is shown when no text is entered in the input field.
-         */
-        placeholder: string;
-        /**
-         * Callback that is invoked once the mask has been completed (every character required by the mask was entered).
-         */
-        completed(this: JQuery): void;
-        /**
-         * Callback that is invoked when the value of the input has changed.
-         *
-         * @param event Event that triggered the change.
-         */
-        onChange(this: JQuery, event: JQuery.Event): void;
-    }
-    /**
-     * Global settings for the masked input plugin available in `$.mask`. Also contains the default values for the
-     * `MaskSettings`.
-     */
-    export interface GlobalSettings extends MaskSettings {
-        /**
-         * An object with custom mask character definition. The key must be a (single) character used in a mask
-         * definition. The value must be a RegExp string (converted to a RegExp via `new RegExp`) and match those
-         * characters to which the mask character applies. For example, default definitions are as follows:
-         *
-         * ```javascript
-         * {
-         *   "9": "[0-9]",
-         *   "a": "[A-Za-z]",
-         *   "*": "[A-Za-z0-9]",
-         * }
-         * ```
-         */
-        definitions: Record<string, string>;
-        /**
-         * Name of the HTML data attribute used for storing information related to the masked input in the DOM element.
-         */
-        dataName: string;
-    }
-}
-interface JQuery {
-    /**
-     * Selects the text at the given range. If end is not given, just moves the cursor to the start position,
-     *
-     * @param begin 0-based index of the start of the range, inclusive.
-     * @param end 0-based index of the end of the range, exclusive.
-     * @return this for chaining.
-     */
-    caret(begin: number, end?: number): this;
-    /**
-     * Removes the mask from the input field, returning it to the previous state before the masked input plugin was
-     * initialized.
-     *
-     * @return this for chaining.
-     */
-    unmask(): this;
-    /**
-     * Sets up the masked input plugin on this INPUT element. The user must now enter data in the given mask format.
-     *
-     * @param mask Mask to use for the input, such as `99/99/9999` or `(999) 999-9999? x99999`.
-     * @param settings Additional settings for the mask.
-     * @return this for chaining.
-     */
-    mask(mask: JQueryMaskedInput.MaskString, settings?: Partial<JQueryMaskedInput.MaskSettings>): this;
-}
-interface JQueryStatic {
-    /**
-     * Global settings for the masked input plugin available in `$.mask`. Also contains the default values for the
-     * `MaskSettings`.
-     */
-    mask: JQueryMaskedInput.GlobalSettings;
 }
 /**
  * Namespace for the jQuery Mouse Wheel plugin.
@@ -23335,3044 +23191,6 @@ declare namespace PrimeFaces.widget.Knob {
      */
     export const colorThemes: PrimeFaces.widget.Knob.ColorThemes;
 }
-/**
- * Namespace for the jQuery UI layout plugin.
- *
- * This plug-in was inspired by the extJS border-layout, and recreates that functionality as a jQuery plug-in. The UI
- * Layout plug-in can create any UI look you want - from simple headers or sidebars, to a complex application with
- * toolbars, menus, help-panels, status bars, sub-forms, etc.
- *
- * Combine it with other jQuery UI widgets to create a sophisticated application. There are no limitations or issues -
- * this widget is ready for production use. All feedback and requests are welcome as development is ongoing. If you
- * create a good looking application using UI Layout, please let us know.
- *
- * See http://layout.jquery-dev.com/index.cfm and https://github.com/GedMarc/layout
- */
-declare namespace JQueryLayout {
-    /**
-     * Names for the four border panes, used as an identifier in various settings and methods.
-     */
-    export type BorderPane = "north" | "east" | "south" | "west";
-    /**
-     * Name of the center pane, used as an identifier in various settings and methods.
-     */
-    export type CenterPane = "center";
-    /**
-     * A callback specifier for the callbacks offered by the layout widget. Either the name of a function that is
-     * available on the global window object, or the callback function itself.
-     */
-    /**
-     * The `start` callback fires BEFORE the event starts, so for exapmle, `onopen_start` fires before the pane starts
-     * to open.
-     *
-     * If a `start` callback function returns `false`, the event will be cancelled.
-     *
-     * __NOTE__: If an event is 'automatically triggered' by layout logic â€“ like closing a pane when there is
-     * insufficient room â€“ then the event cannot be cancelled. In this case, returning false will have no effect.
-     */
-    export type OnStartCallback =
-    /**
-     * @param paneName Type of the pane where the event was triggered.
-     * @param paneElement The DOM element of the pane where the event was triggered.
-     * @param paneState The state of the pane where the event was triggered.
-     * @param paneOptions The options of the pane where the event was triggered.
-     * @param layoutName If a `name` was specified when creating the layout, else returns an empty string.
-     * @return `true` to cancel the event and further actions, `false` or `undefined` otherwise.
-     */
-    (paneName: BorderPane, paneElement: JQuery, paneState: BorderPaneState, paneOptions: BorderSubKeyLayoutSettings, layoutName: string) => boolean | undefined;
-    /**
-     * The `end` callback fires AFTER the event completes. So for example, `onopen_end` will fire after the pane has
-     * opened, including the completion of all animations.
-     *
-     * Callback options without a suffix are really `end` callbacks, so `onopen` is the same as `onopen_end`. These
-     * options exist for backwards compatibility, and for simpler code, since most of the time it will be the `end`
-     * callbacks you will use.
-     *
-     * __NOTE__: If BOTH `onopen` and `onopen_end` options are set, the `onopen_end` option takes precidence and the
-     * `onopen` option is ignored.
-     */
-    export type OnEndCallback =
-    /**
-     * @param paneName Type of the pane where the event was triggered.
-     * @param paneElement The DOM element of the pane where the event was triggered.
-     * @param paneState The state of the pane where the event was triggered.
-     * @param paneOptions The options of the pane where the event was triggered.
-     * @param layoutName If a `name` was specified when creating the layout, else returns an empty string.
-     */
-    (paneName: BorderPane, paneElement: JQuery, paneState: BorderPaneState, paneOptions: BorderSubKeyLayoutSettings, layoutName: string) => void;
-    /**
-     * Settings for the `fxSettings` option. Lets you specify the settings for the default jQuery UI effects.
-     */
-    export type FxSettings = JQueryUI.EffectOptions | JQueryUI.BlindEffect | JQueryUI.BounceEffect | JQueryUI.ClipEffect | JQueryUI.DropEffect | JQueryUI.ExplodeEffect | JQueryUI.FadeEffect | JQueryUI.FoldEffect | JQueryUI.HighlightEffect | JQueryUI.PuffEffect | JQueryUI.PulsateEffect | JQueryUI.ScaleEffect | JQueryUI.ShakeEffect | JQueryUI.SizeEffect | JQueryUI.SlideEffect | JQueryUI.TransferEffect;
-    /**
-     * Settings for the `effects` options. Lets you defined the settings for the various different effects offered by
-     * JQuery UI.
-     */
-    export interface EffectSettings {
-        /**
-         * Settings for the blind effect.
-         */
-        blind: ByPaneEffectSettings<JQueryUI.BlindEffect>;
-        /**
-         * Settings for the bounce effect.
-         */
-        bounce: ByPaneEffectSettings<JQueryUI.BounceEffect>;
-        /**
-         * Settings for the clip effect.
-         */
-        clip: ByPaneEffectSettings<JQueryUI.ClipEffect>;
-        /**
-         * Settings for the drop effect.
-         */
-        drop: ByPaneEffectSettings<JQueryUI.DropEffect>;
-        /**
-         * Settings for the explode effect.
-         */
-        explode: ByPaneEffectSettings<JQueryUI.ExplodeEffect>;
-        /**
-         * Settings for the fade effect.
-         */
-        fade: ByPaneEffectSettings<JQueryUI.FadeEffect>;
-        /**
-         * Settings for the fold effect.
-         */
-        fold: ByPaneEffectSettings<JQueryUI.FoldEffect>;
-        /**
-         * Settings for the highlight effect.
-         */
-        highlight: ByPaneEffectSettings<JQueryUI.HighlightEffect>;
-        /**
-         * Settings for the puff effect.
-         */
-        puff: ByPaneEffectSettings<JQueryUI.PuffEffect>;
-        /**
-         * Settings for the pulsate effect.
-         */
-        pulsate: ByPaneEffectSettings<JQueryUI.PulsateEffect>;
-        /**
-         * Settings for the scale effect.
-         */
-        scale: ByPaneEffectSettings<JQueryUI.ScaleEffect>;
-        /**
-         * Settings for the shake effect.
-         */
-        shake: ByPaneEffectSettings<JQueryUI.ShakeEffect>;
-        /**
-         * Settings for the size effect.
-         */
-        size: ByPaneEffectSettings<JQueryUI.SizeEffect>;
-        /**
-         * Settings for the slide effect.
-         */
-        slide: ByPaneEffectSettings<JQueryUI.SlideEffect>;
-        /**
-         * Settings for the transfer effect.
-         */
-        transfer: ByPaneEffectSettings<JQueryUI.TransferEffect>;
-    }
-    /**
-     * Settings for the `effects` option that may be specified globally for all panes of separately for each pane.
-     */
-    export interface ByPaneEffectSettings<T> {
-        /**
-         * Effect options for all panes.
-         */
-        all?: Partial<T & JQueryUI.EffectOptions>;
-        /**
-         * Effect options for the east pane.
-         */
-        east?: Partial<T & JQueryUI.EffectOptions>;
-        /**
-         * Effect options for the north pane.
-         */
-        north?: Partial<T & JQueryUI.EffectOptions>;
-        /**
-         * Effect options for the south pane.
-         */
-        south?: Partial<T & JQueryUI.EffectOptions>;
-        /**
-         * Effect options for the west pane.
-         */
-        west?: Partial<T & JQueryUI.EffectOptions>;
-    }
-    /**
-     * Possible values for a position, such as the alignment of the toggler button.
-     */
-    export type PositionKeyword = "left" | "center" | "right" | "top" | "middle" | "bottom";
-    /**
-     * Sub key version of the settings for the layout widget. Contains a set of options for each type of pane.
-     */
-    export interface SubKeyLayoutSettings {
-        /**
-         * Default settings that apply to each pane. Can be overriden for individual panes.
-         */
-        defaults: Partial<DefaultSubKeyLayoutSettings>;
-        /**
-         * Settings for the north pane.
-         */
-        north: Partial<BorderSubKeyLayoutSettings>;
-        /**
-         * Settings for the south pane.
-         */
-        south: Partial<BorderSubKeyLayoutSettings>;
-        /**
-         * Settings for the east pane.
-         */
-        east: Partial<BorderSubKeyLayoutSettings>;
-        /**
-         * Settings for the west pane.
-         */
-        west: Partial<BorderSubKeyLayoutSettings>;
-        /**
-         * Settings for the center pane.
-         */
-        center: Partial<CenterSubKeyLayoutSettings>;
-    }
-    /**
-     * List version of the settings for the layout widget. The type of pane is added as a prefix to each option name.
-     */
-    export interface ListLayoutSettings {
-        /**
-         * When this is enabled, the layout will apply basic styles directly to resizers & buttons. This is intended for
-         * quick mock-ups, so that you can `see` your layout immediately. Normally this should be set as a default
-         * option, but it can be set 'per-pane':
-         */
-        applyDefaultStyles: boolean;
-        /**
-         * If `true`, then when moused-over, the pane's zIndex is raised and overflow is set to `visible`. This allows
-         * pop-ups and drop-downs to overlap adjacent panes.
-         *
-         * __WARNING__: Enable this only for panes that do not scroll!
-         */
-        showOverflowOnHover: boolean;
-        /**
-         * MUST be a `child` of one of the panes.
-         *
-         * Selector string for INNER div/element. This div will auto-size so only it scrolls, and not the entire pane.
-         *
-         * Same class-name could be used for divs inside all panes.
-         */
-        contentSelector: string;
-        /**
-         * Selector string for INNER divs/elements. These elements will be `ignored` when calculations are done to
-         * auto-size the content element. This may be necessary if there are elements inside the pane that are
-         * absolutely-positioned and intended to `overlay` other elements.
-         *
-         * Same class-name could be used for elements inside all panes
-         */
-        contentIgnoreSelector: string;
-        /**
-         * Used for auto-generated classNames for each 'layout pane'. Defaults to `ui-layout-pane`.
-         */
-        paneClass: string;
-        /**
-         * This is used as a prefix when generating classNames for 'custom buttons'. Do not confuse with normal
-         * 'toggler-buttons'. Defaults to `ui-layout-button`.
-         */
-        buttonClass: string;
-        /**
-         * This option handles of bookmarks that are passed on the URL of the page:
-         * http://www.site.com/page.html#myBookmark
-         *
-         * The default functionality of bookmarks is broken when using a layout because the position and scrolling of
-         * pane elements are altered after the page loads. Enabling this option (enabled by default) causes the bookmark
-         * to be re-applied after the layout is created, causing the `pane` containing the bookmark/anchor to be
-         * scrolled to bring it into view.
-         *
-         * This option should be left enabled in most cases, but if content in the layout-panes is never bookmarked,
-         * then you could disabled it.
-         */
-        scrollToBookmarkOnLoad: boolean;
-        /**
-         * Extends the `default` layout effects by specifying the options for the desired effect:
-         *
-         * ```javascript
-         * $("body").layout({
-         *   effects: {
-         *     // MODIFY a standard effect
-         *     slide: {
-         *       all: { duration: 500, easing: "bounceInOut" },
-         *     },
-         *     // ADD a new effect
-         *     blind: {
-         *       all: {},
-         *       north: { direction: "vertical" },
-         *       south: { direction: "vertical" },
-         *       east:  { direction: "horizontal" },
-         *       west:  { direction: "horizontal" },
-         *     }
-         *   }
-         * });
-         * ```
-         */
-        effects: Partial<EffectSettings>;
-        /**
-         * When this is enabled, the layout will apply basic styles directly to resizers & buttons. This is intended for
-         * quick mock-ups, so that you can `see` your layout immediately. Normally this should be set as a default
-         * option, but it can be set 'per-pane':
-         */
-        center__applyDefaultStyles: boolean;
-        /**
-         * If `true`, then when moused-over, the pane's zIndex is raised and overflow is set to `visible`. This allows
-         * pop-ups and drop-downs to overlap adjacent panes.
-         *
-         * __WARNING__: Enable this only for panes that do not scroll!
-         */
-        center__showOverflowOnHover: boolean;
-        /**
-         * MUST be a `child` of one of the panes.
-         *
-         * Selector string for INNER div/element. This div will auto-size so only it scrolls, and not the entire pane.
-         *
-         * Same class-name could be used for divs inside all panes.
-         */
-        center__contentSelector: string;
-        /**
-         * Selector string for INNER divs/elements. These elements will be `ignored` when calculations are done to
-         * auto-size the content element. This may be necessary if there are elements inside the pane that are
-         * absolutely-positioned and intended to `overlay` other elements.
-         *
-         * Same class-name could be used for elements inside all panes
-         */
-        center__contentIgnoreSelector: string;
-        /**
-         * Used for auto-generated classNames for each 'layout pane'. Defaults to `ui-layout-pane`.
-         */
-        center__paneClass: string;
-        /**
-         * This is used as a prefix when generating classNames for 'custom buttons'. Do not confuse with normal
-         * 'toggler-buttons'. Defaults to `ui-layout-button`.
-         */
-        center__buttonClass: string;
-        /**
-         * Minimum width of the center pane in pixels.
-         */
-        center__minWidth: number;
-        /**
-         * Minimum height of the center pane in pixels.
-         */
-        center__minHeight: number;
-        /**
-         * Maximum width of the center pane in pixels.
-         */
-        center__maxWidth: number;
-        /**
-         * Maximum height of the center pane in pixels.
-         */
-        center__maxHeight: number;
-        /**
-         * Default values are: ".ui-layout-north", ".ui-layout-west", etc. Any valid jQuery selector string can be used
-         * - classNames, IDs, etc.
-         *
-         * To allow for `nesting` of layouts, there are rules for how pane-elements are related to the layout-container.
-         * More flexibility was added in version 1.1.2 to handle panes are nested inside a `form` or other element.
-         *
-         * Rules for the relationship between a pane and its container:
-         *
-         * 1. When an `ID` is specified for paneSelector, the pane-element only needs to be a descendant of the
-         * container - it does NOT have to be a `child`.
-         * 1. When a 'class-name' is specified for paneSelector, the pane-element must be EITHER:
-         *     - a child of the container, or...
-         *     - a child of a form-element that is a child of the container (must be the 'first form' inside the container)
-         */
-        center__paneSelector: string;
-        /**
-         * When this is enabled, the layout will apply basic styles directly to resizers & buttons. This is intended for
-         * quick mock-ups, so that you can `see` your layout immediately. Normally this should be set as a default
-         * option, but it can be set 'per-pane':
-         */
-        north__applyDefaultStyles: boolean;
-        /**
-         * If `true`, then when moused-over, the pane's zIndex is raised and overflow is set to `visible`. This allows
-         * pop-ups and drop-downs to overlap adjacent panes.
-         *
-         * __WARNING__: Enable this only for panes that do not scroll!
-         */
-        north__showOverflowOnHover: boolean;
-        /**
-         * MUST be a `child` of one of the panes.
-         *
-         * Selector string for INNER div/element. This div will auto-size so only it scrolls, and not the entire pane.
-         *
-         * Same class-name could be used for divs inside all panes.
-         */
-        north__contentSelector: string;
-        /**
-         * Selector string for INNER divs/elements. These elements will be `ignored` when calculations are done to
-         * auto-size the content element. This may be necessary if there are elements inside the pane that are
-         * absolutely-positioned and intended to `overlay` other elements.
-         *
-         * Same class-name could be used for elements inside all panes
-         */
-        north__contentIgnoreSelector: string;
-        /**
-         * Used for auto-generated classNames for each 'layout pane'. Defaults to `ui-layout-pane`.
-         */
-        north__paneClass: string;
-        /**
-         * This is used as a prefix when generating classNames for 'custom buttons'. Do not confuse with normal
-         * 'toggler-buttons'. Defaults to `ui-layout-button`.
-         */
-        north__buttonClass: string;
-        /**
-         * Can a pane be closed?
-         */
-        north__closable: boolean;
-        /**
-         * When open, can a pane be resized?
-         */
-        north__resizable: boolean;
-        /**
-         * When closed, can a pane 'slide open' over adjacent panes?
-         */
-        north__slidable: boolean;
-        /**
-         * Used for auto-generated classNames for each 'resizer-bar'. Defaults to `ui-layout-resizer`.
-         */
-        north__resizerClass: string;
-        /**
-         * Used for auto-generated classNames for each 'toggler-button'. Defaults to `ui-layout-toggler`.
-         */
-        north__togglerClass: string;
-        /**
-         * Specifies the initial size of the panes - `height` for north & south panes - `width` for east and west. If
-         * `auto`, then pane will size to fit its content - most useful for north/south panes (to auto-fit your banner
-         * or toolbar), but also works for east/west panes.
-         *
-         * You normally will want different sizes for the panes, but a 'default size' can be set
-         *
-         * Defaults to `auto` for north and south panes, and to `200` for east and west panes.
-         */
-        north__size: string;
-        /**
-         * Minimum-size limit when resizing a pane (0 = as small as pane can go).
-         */
-        north__minSize: number;
-        /**
-         * Maximum-size limit when resizing a pane (0 = as large as pane can go).
-         */
-        north__maxSize: number;
-        /**
-         * Spacing between pane and adjacent pane - when pane is `open`.
-         */
-        north__spacing_open: number;
-        /**
-         * Spacing between pane and adjacent pane - when pane is `closed`.
-         */
-        north__spacing_closed: number;
-        /**
-         * Tooltip when resizer-bar can be `dragged` to resize a pane.
-         */
-        north__resizerTip: string;
-        /**
-         * Opacity of resizer bar when `dragging` to resize a pane. Defaults to `1`.
-         *
-         * This value is passed to the ui.draggable widget
-         *
-         * Leave this set to `1` if you want to use CSS to control opacity. Otherwise you must use `!important` to
-         * override the specified opacity.
-         */
-        north__resizerDragOpacity: number;
-        /**
-         * When enabled, layout will `mask` iframes on the page when the resizer-bar is `dragged` to resize a pane. This
-         * solves problems related to dragging an element over an iframe.
-         */
-        north__maskIframesOnResize: boolean;
-        /**
-         * Tooltip when the resizer-bar will trigger 'sliding open'.
-         */
-        north__sliderTip: string;
-        /**
-         * Cursor when resizer-bar will trigger 'sliding open' - ie, when pane is `closed`. Defaults to `pointer`.
-         */
-        north__sliderCursor: string;
-        /**
-         * Trigger events to 'slide open' a pane. Defaults to `click`.
-         */
-        north__slideTrigger_open: string;
-        /**
-         * Trigger events to 'slide close' a pane. Defaults to `mouseout`.
-         */
-        north__slideTrigger_close: string;
-        /**
-         * Tooltip on toggler when pane is `open`.
-         */
-        north__togglerTip_open: string;
-        /**
-         * Tooltip on toggler when pane is `closed`.
-         */
-        north__togglerTip_closed: string;
-        /**
-         * Length of toggler button when pane is `open`. Length means `width` for north/south togglers, and `height` for
-         * east/west togglers.
-         *
-         * `100%` OR `-1` means 'full height/width of resizer bar' - `0` means `hidden`.
-         */
-        north__togglerLength_open: number | string;
-        /**
-         * Length of toggler button when pane is `closed`. Length means `width` for north/south togglers, and `height`
-         * for east/west togglers.
-         *
-         * `100%` OR `-1` means 'full height/width of resizer bar' - `0` means `hidden`.
-         */
-        north__togglerLength_closed: number;
-        /**
-         * If true, the toggler-button is hidden when a pane is 'slid-open'. This makes sense because the user only
-         * needs to 'mouse-off' to close the pane.
-         */
-        north__hideTogglerOnSlide: boolean;
-        /**
-         * Alignment of toggler button inside the resizer-bar when pane is `open`. Defaults to `center`.
-         *
-         * A positive integer means a pixel offset from top or left.
-         *
-         * A negative integer means a pixel offset from bottom or right.
-         */
-        north__togglerAlign_open: number | PositionKeyword;
-        /**
-         * Alignment of toggler button inside the resizer-bar when pane is `closed`. Defaults to `center`.
-         *
-         * A positive integer means a pixel offset from top or left.
-         *
-         * A negative integer means a pixel offset from bottom or right.
-         */
-        north__togglerAlign_closed: number | PositionKeyword;
-        /**
-         * Usually a background-image is set in CSS to customize a toggler-button. However, you can also put text inside
-         * a toggler by using these options. The text is wrapped in a SPAN, which is then added inside the toggler DIV.
-         * The SPAN classes identify them as either `open` or `closed` content:
-         */
-        north__togglerContent_open: string;
-        /**
-         * Usually a background-image is set in CSS to customize a toggler-button. However, you can also put text inside
-         * a toggler by using these options. The text is wrapped in a SPAN, which is then added inside the toggler DIV.
-         * The SPAN classes identify them as either `open` or `closed` content:
-         */
-        north__togglerContent_closed: string;
-        /**
-         * If `true`, then 'cursor hotkeys' are enabled. Can be set per-pane if desired.
-         *
-         * These default hotkeys cannot be changed - only enabled or disabled.
-         *
-         * The cursor/arrow key must be pressed in combination with CTRL -or- SHIFT
-         *
-         * - Toggle North-pane: `CTRL+Up` or `SHIFT+Up`
-         * - Toggle South-pane: `CTRL+Down`  or `SHIFT+Down`
-         * - Toggle West-pane: `CTRL+Left` or `SHIFT+Left`
-         * - Toggle East-pane: `CTRL+Right` or `SHIFT+Right`
-         *
-         * The SHIFT+ARROW combinations are ignored if pressed while the cursor is in a form field, allowing users to
-         * 'select text' â€” eg: SHIFT+Right in a TEXTAREA.
-         */
-        north__enableCursorHotkey: boolean;
-        /**
-         * Custom hotkeys must be pressed in combination with either the CTRL or SHIFT key - or both together. Use this
-         * option to choose which modifier-key(s) to use with the `customHotKey`.
-         *
-         * Defaults to `SHIFT`.
-         *
-         * If this option is missing or invalid, `CTRL+SHIFT` is assumed.
-         *
-         * NOTE: The ALT key cannot be used because it is not detected by some browsers.
-         */
-        north__customHotkeyModifier: string;
-        /**
-         * Animation effect for open/close. Choose a preset effect OR can specify a custom fxName as long as you also
-         * specify fxSettings (even if fxSettings is just empty - {}).
-         *
-         * Defaults to `slide`.
-         */
-        north__fxName: string;
-        /**
-         * Animation effect for open. Choose a preset effect OR can specify a custom fxName as long as you also
-         * specify fxSettings (even if fxSettings is just empty - {}).
-         *
-         * Defaults to `slide`.
-         */
-        north__fxName_open: string;
-        /**
-         * Animation effect for close. Choose a preset effect OR can specify a custom fxName as long as you also
-         * specify fxSettings (even if fxSettings is just empty - {}).
-         *
-         * Defaults to `slide`.
-         */
-        north__fxName_close: string;
-        /**
-         * Animation effect for size. Choose a preset effect OR can specify a custom fxName as long as you also
-         * specify fxSettings (even if fxSettings is just empty - {}).
-         */
-        north__fxName_size: string;
-        /**
-         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
-         */
-        north__fxSpeed: number | string;
-        /**
-         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
-         */
-        north__fxSpeed_open: number | string;
-        /**
-         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
-         */
-        north__fxSpeed_close: number | string;
-        /**
-         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
-         */
-        north__fxSpeed_size: number | string;
-        /**
-         * You can customize the default animation settings by passing new settings.
-         *
-         * If a non-standard effect is specified, then fxSettings is REQUIRED (can be an empty object though).
-         */
-        north__fxSettings: Partial<FxSettings>;
-        /**
-         * You can customize the default animation settings by passing new settings.
-         *
-         * If a non-standard effect is specified, then fxSettings is REQUIRED (can be an empty object though).
-         */
-        north__fxSettings_open: Partial<FxSettings>;
-        /**
-         * You can customize the default animation settings by passing new settings.
-         *
-         * If a non-standard effect is specified, then fxSettings is REQUIRED (can be an empty object though).
-         */
-        north__fxSettings_close: Partial<FxSettings>;
-        /**
-         * You can customize the default animation settings by passing new settings.
-         *
-         * If a non-standard effect is specified, then fxSettings is REQUIRED (can be an empty object though).
-         */
-        north__fxSettings_size: Partial<FxSettings>;
-        /**
-         * If `true`, then pane is `closed` when layout is created.
-         */
-        north__initClosed: boolean;
-        /**
-         * If `true`, then pane is `hidden` when layout is created - no resizer or spacing is visible, as if the pane
-         * did not exist!
-         */
-        north__initHidden: boolean;
-        /**
-         * Default values are: ".ui-layout-north", ".ui-layout-west", etc. Any valid jQuery selector string can be used
-         * - classNames, IDs, etc.
-         *
-         * To allow for `nesting` of layouts, there are rules for how pane-elements are related to the layout-container.
-         * More flexibility was added in version 1.1.2 to handle panes are nested inside a `form` or other element.
-         *
-         * Rules for the relationship between a pane and its container:
-         *
-         * 1. When an `ID` is specified for paneSelector, the pane-element only needs to be a descendant of the
-         * container - it does NOT have to be a `child`.
-         * 1. When a 'class-name' is specified for paneSelector, the pane-element must be EITHER:
-         *     - a child of the container, or...
-         *     - a child of a form-element that is a child of the container (must be the 'first form' inside the container)
-         */
-        north__paneSelector: string;
-        /**
-         * This is the cursor when the mouse is over the 'resizer-bar'. However, if the mouse is over the
-         * 'toggler-button' inside the resizer bar, then the cursor is a `pointer` - ie, the togglerCursor instead of
-         * the resizerCursor.
-         */
-        north__resizerCursor: string;
-        /**
-         * If a hotkey is specified, it is automatically enabled. It does not matter whether 'cursor hotkeys' are also
-         * enabled â€“ those are separate.
-         *
-         * You can specify any of the following values:
-         *
-         * - letter from A to Z
-         * - number from 0 to 9
-         * - Javascript charCode value for the key
-         */
-        north__customHotkey: string;
-        /**
-         * Callback for when pane is `shown`, invoked immeditately after it is shown.
-         */
-        north__onshow: OnEndCallback | null;
-        /**
-         * Callback for when pane is `shown`, invoked immeditately before it is shown.
-         */
-        north__onshow_start: OnStartCallback | null;
-        /**
-         * Callback for when pane is `shown`, invoked immeditately after it is shown.
-         */
-        north__onshow_end: OnEndCallback | null;
-        /**
-         * Callback for when pane is `hidden`, invoked immeditately after it is hidden.
-         */
-        north__onhide: OnEndCallback | null;
-        /**
-         * Callback for when pane is `hidden`, invoked immeditately before it is hidden.
-         */
-        north__onhide_start: OnStartCallback | null;
-        /**
-         * Callback for when pane is `hidden`, invoked immeditately after it is hidden.
-         */
-        north__onhide_end: OnEndCallback | null;
-        /**
-         * Callback for when pane is `opened`, invoked immeditately after it is opened.
-         */
-        north__onopen: OnEndCallback | null;
-        /**
-         * Callback for when pane is `opened`, invoked immeditately before it is opened.
-         */
-        north__onopen_start: OnStartCallback | null;
-        /**
-         * Callback for when pane is `opened`, invoked immeditately after it is opened.
-         */
-        north__onopen_end: OnEndCallback | null;
-        /**
-         * Callback for when pane is `closed`, invoked immeditately after it is closed.
-         */
-        north__onclose: OnEndCallback | null;
-        /**
-         * Callback for when pane is `closed`, invoked immeditately before it is closed.
-         */
-        north__onclose_start: OnStartCallback | null;
-        /**
-         * Callback for when pane is `closed`, invoked immeditately after it is closed.
-         */
-        north__onclose_end: OnEndCallback | null;
-        /**
-         * Callback for when pane is `resized`, invoked immeditately after it is resized.
-         */
-        north__onresize: OnEndCallback | null;
-        /**
-         * Callback for when pane is `resized`, invoked immeditately before it is resized.
-         */
-        north__onresize_start: OnStartCallback | null;
-        /**
-         * Callback for when pane is `resized`, invoked immeditately after it is resized.
-         */
-        north__onresize_end: OnEndCallback | null;
-        /**
-         * Callback for when pane is `swapped`, invoked immeditately after it is swapped.
-         */
-        north__onswap: OnEndCallback | null;
-        /**
-         * Callback for when pane is `swapped`, invoked immeditately before it is swapped.
-         */
-        north__onswap_start: OnStartCallback | null;
-        /**
-         * Callback for when pane is `swapped`, invoked immeditately after it is swapped.
-         */
-        north__onswap_end: OnEndCallback | null;
-        /**
-         * When this is enabled, the layout will apply basic styles directly to resizers & buttons. This is intended for
-         * quick mock-ups, so that you can `see` your layout immediately. Normally this should be set as a default
-         * option, but it can be set 'per-pane':
-         */
-        east__applyDefaultStyles: boolean;
-        /**
-         * If `true`, then when moused-over, the pane's zIndex is raised and overflow is set to `visible`. This allows
-         * pop-ups and drop-downs to overlap adjacent panes.
-         *
-         * __WARNING__: Enable this only for panes that do not scroll!
-         */
-        east__showOverflowOnHover: boolean;
-        /**
-         * MUST be a `child` of one of the panes.
-         *
-         * Selector string for INNER div/element. This div will auto-size so only it scrolls, and not the entire pane.
-         *
-         * Same class-name could be used for divs inside all panes.
-         */
-        east__contentSelector: string;
-        /**
-         * Selector string for INNER divs/elements. These elements will be `ignored` when calculations are done to
-         * auto-size the content element. This may be necessary if there are elements inside the pane that are
-         * absolutely-positioned and intended to `overlay` other elements.
-         *
-         * Same class-name could be used for elements inside all panes
-         */
-        east__contentIgnoreSelector: string;
-        /**
-         * Used for auto-generated classNames for each 'layout pane'. Defaults to `ui-layout-pane`.
-         */
-        east__paneClass: string;
-        /**
-         * This is used as a prefix when generating classNames for 'custom buttons'. Do not confuse with normal
-         * 'toggler-buttons'. Defaults to `ui-layout-button`.
-         */
-        east__buttonClass: string;
-        /**
-         * Can a pane be closed?
-         */
-        east__closable: boolean;
-        /**
-         * When open, can a pane be resized?
-         */
-        east__resizable: boolean;
-        /**
-         * When closed, can a pane 'slide open' over adjacent panes?
-         */
-        east__slidable: boolean;
-        /**
-         * Used for auto-generated classNames for each 'resizer-bar'. Defaults to `ui-layout-resizer`.
-         */
-        east__resizerClass: string;
-        /**
-         * Used for auto-generated classNames for each 'toggler-button'. Defaults to `ui-layout-toggler`.
-         */
-        east__togglerClass: string;
-        /**
-         * Specifies the initial size of the panes - `height` for north & south panes - `width` for east and west. If
-         * `auto`, then pane will size to fit its content - most useful for north/south panes (to auto-fit your banner
-         * or toolbar), but also works for east/west panes.
-         *
-         * You normally will want different sizes for the panes, but a 'default size' can be set
-         *
-         * Defaults to `auto` for north and south panes, and to `200` for east and west panes.
-         */
-        east__size: string;
-        /**
-         * Minimum-size limit when resizing a pane (0 = as small as pane can go).
-         */
-        east__minSize: number;
-        /**
-         * Maximum-size limit when resizing a pane (0 = as large as pane can go).
-         */
-        east__maxSize: number;
-        /**
-         * Spacing between pane and adjacent pane - when pane is `open`.
-         */
-        east__spacing_open: number;
-        /**
-         * Spacing between pane and adjacent pane - when pane is `closed`.
-         */
-        east__spacing_closed: number;
-        /**
-         * Tooltip when resizer-bar can be `dragged` to resize a pane.
-         */
-        east__resizerTip: string;
-        /**
-         * Opacity of resizer bar when `dragging` to resize a pane. Defaults to `1`.
-         *
-         * This value is passed to the ui.draggable widget
-         *
-         * Leave this set to `1` if you want to use CSS to control opacity. Otherwise you must use `!important` to
-         * override the specified opacity.
-         */
-        east__resizerDragOpacity: number;
-        /**
-         * When enabled, layout will `mask` iframes on the page when the resizer-bar is `dragged` to resize a pane. This
-         * solves problems related to dragging an element over an iframe.
-         */
-        east__maskIframesOnResize: boolean;
-        /**
-         * Tooltip when the resizer-bar will trigger 'sliding open'.
-         */
-        east__sliderTip: string;
-        /**
-         * Cursor when resizer-bar will trigger 'sliding open' - ie, when pane is `closed`. Defaults to `pointer`.
-         */
-        east__sliderCursor: string;
-        /**
-         * Trigger events to 'slide open' a pane. Defaults to `click`.
-         */
-        east__slideTrigger_open: string;
-        /**
-         * Trigger events to 'slide close' a pane. Defaults to `mouseout`.
-         */
-        east__slideTrigger_close: string;
-        /**
-         * Tooltip on toggler when pane is `open`.
-         */
-        east__togglerTip_open: string;
-        /**
-         * Tooltip on toggler when pane is `closed`.
-         */
-        east__togglerTip_closed: string;
-        /**
-         * Length of toggler button when pane is `open`. Length means `width` for north/south togglers, and `height` for
-         * east/west togglers.
-         *
-         * `100%` OR `-1` means 'full height/width of resizer bar' - `0` means `hidden`.
-         */
-        east__togglerLength_open: number | string;
-        /**
-         * Length of toggler button when pane is `closed`. Length means `width` for north/south togglers, and `height`
-         * for east/west togglers.
-         *
-         * `100%` OR `-1` means 'full height/width of resizer bar' - `0` means `hidden`.
-         */
-        east__togglerLength_closed: number;
-        /**
-         * If true, the toggler-button is hidden when a pane is 'slid-open'. This makes sense because the user only
-         * needs to 'mouse-off' to close the pane.
-         */
-        east__hideTogglerOnSlide: boolean;
-        /**
-         * Alignment of toggler button inside the resizer-bar when pane is `open`. Defaults to `center`.
-         *
-         * A positive integer means a pixel offset from top or left.
-         *
-         * A negative integer means a pixel offset from bottom or right.
-         */
-        east__togglerAlign_open: number | PositionKeyword;
-        /**
-         * Alignment of toggler button inside the resizer-bar when pane is `closed`. Defaults to `center`.
-         *
-         * A positive integer means a pixel offset from top or left.
-         *
-         * A negative integer means a pixel offset from bottom or right.
-         */
-        east__togglerAlign_closed: number | PositionKeyword;
-        /**
-         * Usually a background-image is set in CSS to customize a toggler-button. However, you can also put text inside
-         * a toggler by using these options. The text is wrapped in a SPAN, which is then added inside the toggler DIV.
-         * The SPAN classes identify them as either `open` or `closed` content:
-         */
-        east__togglerContent_open: string;
-        /**
-         * Usually a background-image is set in CSS to customize a toggler-button. However, you can also put text inside
-         * a toggler by using these options. The text is wrapped in a SPAN, which is then added inside the toggler DIV.
-         * The SPAN classes identify them as either `open` or `closed` content:
-         */
-        east__togglerContent_closed: string;
-        /**
-         * If `true`, then 'cursor hotkeys' are enabled. Can be set per-pane if desired.
-         *
-         * These default hotkeys cannot be changed - only enabled or disabled.
-         *
-         * The cursor/arrow key must be pressed in combination with CTRL -or- SHIFT
-         *
-         * - Toggle North-pane: `CTRL+Up` or `SHIFT+Up`
-         * - Toggle South-pane: `CTRL+Down`  or `SHIFT+Down`
-         * - Toggle West-pane: `CTRL+Left` or `SHIFT+Left`
-         * - Toggle East-pane: `CTRL+Right` or `SHIFT+Right`
-         *
-         * The SHIFT+ARROW combinations are ignored if pressed while the cursor is in a form field, allowing users to
-         * 'select text' â€” eg: SHIFT+Right in a TEXTAREA.
-         */
-        east__enableCursorHotkey: boolean;
-        /**
-         * Custom hotkeys must be pressed in combination with either the CTRL or SHIFT key - or both together. Use this
-         * option to choose which modifier-key(s) to use with the `customHotKey`.
-         *
-         * Defaults to `SHIFT`.
-         *
-         * If this option is missing or invalid, `CTRL+SHIFT` is assumed.
-         *
-         * NOTE: The ALT key cannot be used because it is not detected by some browsers.
-         */
-        east__customHotkeyModifier: string;
-        /**
-         * Animation effect for open/close. Choose a preset effect OR can specify a custom fxName as long as you also
-         * specify fxSettings (even if fxSettings is just empty - {}).
-         *
-         * Defaults to `slide`.
-         */
-        east__fxName: string;
-        /**
-         * Animation effect for open. Choose a preset effect OR can specify a custom fxName as long as you also
-         * specify fxSettings (even if fxSettings is just empty - {}).
-         *
-         * Defaults to `slide`.
-         */
-        east__fxName_open: string;
-        /**
-         * Animation effect for close. Choose a preset effect OR can specify a custom fxName as long as you also
-         * specify fxSettings (even if fxSettings is just empty - {}).
-         *
-         * Defaults to `slide`.
-         */
-        east__fxName_close: string;
-        /**
-         * Animation effect for size. Choose a preset effect OR can specify a custom fxName as long as you also
-         * specify fxSettings (even if fxSettings is just empty - {}).
-         */
-        east__fxName_size: string;
-        /**
-         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
-         */
-        east__fxSpeed: number | string;
-        /**
-         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
-         */
-        east__fxSpeed_open: number | string;
-        /**
-         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
-         */
-        east__fxSpeed_close: number | string;
-        /**
-         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
-         */
-        east__fxSpeed_size: number | string;
-        /**
-         * You can customize the default animation settings by passing new settings.
-         *
-         * If a non-standard effect is specified, then fxSettings is REQUIRED (can be an empty object though).
-         */
-        east__fxSettings: Partial<FxSettings>;
-        /**
-         * You can customize the default animation settings by passing new settings.
-         *
-         * If a non-standard effect is specified, then fxSettings is REQUIRED (can be an empty object though).
-         */
-        east__fxSettings_open: Partial<FxSettings>;
-        /**
-         * You can customize the default animation settings by passing new settings.
-         *
-         * If a non-standard effect is specified, then fxSettings is REQUIRED (can be an empty object though).
-         */
-        east__fxSettings_close: Partial<FxSettings>;
-        /**
-         * You can customize the default animation settings by passing new settings.
-         *
-         * If a non-standard effect is specified, then fxSettings is REQUIRED (can be an empty object though).
-         */
-        east__fxSettings_size: Partial<FxSettings>;
-        /**
-         * If `true`, then pane is `closed` when layout is created.
-         */
-        east__initClosed: boolean;
-        /**
-         * If `true`, then pane is `hidden` when layout is created - no resizer or spacing is visible, as if the pane
-         * did not exist!
-         */
-        east__initHidden: boolean;
-        /**
-         * Default values are: ".ui-layout-north", ".ui-layout-west", etc. Any valid jQuery selector string can be used
-         * - classNames, IDs, etc.
-         *
-         * To allow for `nesting` of layouts, there are rules for how pane-elements are related to the layout-container.
-         * More flexibility was added in version 1.1.2 to handle panes are nested inside a `form` or other element.
-         *
-         * Rules for the relationship between a pane and its container:
-         *
-         * 1. When an `ID` is specified for paneSelector, the pane-element only needs to be a descendant of the
-         * container - it does NOT have to be a `child`.
-         * 1. When a 'class-name' is specified for paneSelector, the pane-element must be EITHER:
-         *     - a child of the container, or...
-         *     - a child of a form-element that is a child of the container (must be the 'first form' inside the container)
-         */
-        east__paneSelector: string;
-        /**
-         * This is the cursor when the mouse is over the 'resizer-bar'. However, if the mouse is over the
-         * 'toggler-button' inside the resizer bar, then the cursor is a `pointer` - ie, the togglerCursor instead of
-         * the resizerCursor.
-         */
-        east__resizerCursor: string;
-        /**
-         * If a hotkey is specified, it is automatically enabled. It does not matter whether 'cursor hotkeys' are also
-         * enabled â€“ those are separate.
-         *
-         * You can specify any of the following values:
-         *
-         * - letter from A to Z
-         * - number from 0 to 9
-         * - Javascript charCode value for the key
-         */
-        east__customHotkey: string;
-        /**
-         * Callback for when pane is `shown`, invoked immeditately after it is shown.
-         */
-        east__onshow: OnEndCallback | null;
-        /**
-         * Callback for when pane is `shown`, invoked immeditately before it is shown.
-         */
-        east__onshow_start: OnStartCallback | null;
-        /**
-         * Callback for when pane is `shown`, invoked immeditately after it is shown.
-         */
-        east__onshow_end: OnEndCallback | null;
-        /**
-         * Callback for when pane is `hidden`, invoked immeditately after it is hidden.
-         */
-        east__onhide: OnEndCallback | null;
-        /**
-         * Callback for when pane is `hidden`, invoked immeditately before it is hidden.
-         */
-        east__onhide_start: OnStartCallback | null;
-        /**
-         * Callback for when pane is `hidden`, invoked immeditately after it is hidden.
-         */
-        east__onhide_end: OnEndCallback | null;
-        /**
-         * Callback for when pane is `opened`, invoked immeditately after it is opened.
-         */
-        east__onopen: OnEndCallback | null;
-        /**
-         * Callback for when pane is `opened`, invoked immeditately before it is opened.
-         */
-        east__onopen_start: OnStartCallback | null;
-        /**
-         * Callback for when pane is `opened`, invoked immeditately after it is opened.
-         */
-        east__onopen_end: OnEndCallback | null;
-        /**
-         * Callback for when pane is `closed`, invoked immeditately after it is closed.
-         */
-        east__onclose: OnEndCallback | null;
-        /**
-         * Callback for when pane is `closed`, invoked immeditately before it is closed.
-         */
-        east__onclose_start: OnStartCallback | null;
-        /**
-         * Callback for when pane is `closed`, invoked immeditately after it is closed.
-         */
-        east__onclose_end: OnEndCallback | null;
-        /**
-         * Callback for when pane is `resized`, invoked immeditately after it is resized.
-         */
-        east__onresize: OnEndCallback | null;
-        /**
-         * Callback for when pane is `resized`, invoked immeditately before it is resized.
-         */
-        east__onresize_start: OnStartCallback | null;
-        /**
-         * Callback for when pane is `resized`, invoked immeditately after it is resized.
-         */
-        east__onresize_end: OnEndCallback | null;
-        /**
-         * Callback for when pane is `swapped`, invoked immeditately after it is swapped.
-         */
-        east__onswap: OnEndCallback | null;
-        /**
-         * Callback for when pane is `swapped`, invoked immeditately before it is swapped.
-         */
-        east__onswap_start: OnStartCallback | null;
-        /**
-         * Callback for when pane is `swapped`, invoked immeditately after it is swapped.
-         */
-        east__onswap_end: OnEndCallback | null;
-        /**
-         * When this is enabled, the layout will apply basic styles directly to resizers & buttons. This is intended for
-         * quick mock-ups, so that you can `see` your layout immediately. Normally this should be set as a default
-         * option, but it can be set 'per-pane':
-         */
-        south__applyDefaultStyles: boolean;
-        /**
-         * If `true`, then when moused-over, the pane's zIndex is raised and overflow is set to `visible`. This allows
-         * pop-ups and drop-downs to overlap adjacent panes.
-         *
-         * __WARNING__: Enable this only for panes that do not scroll!
-         */
-        south__showOverflowOnHover: boolean;
-        /**
-         * MUST be a `child` of one of the panes.
-         *
-         * Selector string for INNER div/element. This div will auto-size so only it scrolls, and not the entire pane.
-         *
-         * Same class-name could be used for divs inside all panes.
-         */
-        south__contentSelector: string;
-        /**
-         * Selector string for INNER divs/elements. These elements will be `ignored` when calculations are done to
-         * auto-size the content element. This may be necessary if there are elements inside the pane that are
-         * absolutely-positioned and intended to `overlay` other elements.
-         *
-         * Same class-name could be used for elements inside all panes
-         */
-        south__contentIgnoreSelector: string;
-        /**
-         * Used for auto-generated classNames for each 'layout pane'. Defaults to `ui-layout-pane`.
-         */
-        south__paneClass: string;
-        /**
-         * This is used as a prefix when generating classNames for 'custom buttons'. Do not confuse with normal
-         * 'toggler-buttons'. Defaults to `ui-layout-button`.
-         */
-        south__buttonClass: string;
-        /**
-         * Can a pane be closed?
-         */
-        south__closable: boolean;
-        /**
-         * When open, can a pane be resized?
-         */
-        south__resizable: boolean;
-        /**
-         * When closed, can a pane 'slide open' over adjacent panes?
-         */
-        south__slidable: boolean;
-        /**
-         * Used for auto-generated classNames for each 'resizer-bar'. Defaults to `ui-layout-resizer`.
-         */
-        south__resizerClass: string;
-        /**
-         * Used for auto-generated classNames for each 'toggler-button'. Defaults to `ui-layout-toggler`.
-         */
-        south__togglerClass: string;
-        /**
-         * Specifies the initial size of the panes - `height` for north & south panes - `width` for east and west. If
-         * `auto`, then pane will size to fit its content - most useful for north/south panes (to auto-fit your banner
-         * or toolbar), but also works for east/west panes.
-         *
-         * You normally will want different sizes for the panes, but a 'default size' can be set
-         *
-         * Defaults to `auto` for north and south panes, and to `200` for east and west panes.
-         */
-        south__size: string;
-        /**
-         * Minimum-size limit when resizing a pane (0 = as small as pane can go).
-         */
-        south__minSize: number;
-        /**
-         * Maximum-size limit when resizing a pane (0 = as large as pane can go).
-         */
-        south__maxSize: number;
-        /**
-         * Spacing between pane and adjacent pane - when pane is `open`.
-         */
-        south__spacing_open: number;
-        /**
-         * Spacing between pane and adjacent pane - when pane is `closed`.
-         */
-        south__spacing_closed: number;
-        /**
-         * Tooltip when resizer-bar can be `dragged` to resize a pane.
-         */
-        south__resizerTip: string;
-        /**
-         * Opacity of resizer bar when `dragging` to resize a pane. Defaults to `1`.
-         *
-         * This value is passed to the ui.draggable widget
-         *
-         * Leave this set to `1` if you want to use CSS to control opacity. Otherwise you must use `!important` to
-         * override the specified opacity.
-         */
-        south__resizerDragOpacity: number;
-        /**
-         * When enabled, layout will `mask` iframes on the page when the resizer-bar is `dragged` to resize a pane. This
-         * solves problems related to dragging an element over an iframe.
-         */
-        south__maskIframesOnResize: boolean;
-        /**
-         * Tooltip when the resizer-bar will trigger 'sliding open'.
-         */
-        south__sliderTip: string;
-        /**
-         * Cursor when resizer-bar will trigger 'sliding open' - ie, when pane is `closed`. Defaults to `pointer`.
-         */
-        south__sliderCursor: string;
-        /**
-         * Trigger events to 'slide open' a pane. Defaults to `click`.
-         */
-        south__slideTrigger_open: string;
-        /**
-         * Trigger events to 'slide close' a pane. Defaults to `mouseout`.
-         */
-        south__slideTrigger_close: string;
-        /**
-         * Tooltip on toggler when pane is `open`.
-         */
-        south__togglerTip_open: string;
-        /**
-         * Tooltip on toggler when pane is `closed`.
-         */
-        south__togglerTip_closed: string;
-        /**
-         * Length of toggler button when pane is `open`. Length means `width` for north/south togglers, and `height` for
-         * east/west togglers.
-         *
-         * `100%` OR `-1` means 'full height/width of resizer bar' - `0` means `hidden`.
-         */
-        south__togglerLength_open: number | string;
-        /**
-         * Length of toggler button when pane is `closed`. Length means `width` for north/south togglers, and `height`
-         * for east/west togglers.
-         *
-         * `100%` OR `-1` means 'full height/width of resizer bar' - `0` means `hidden`.
-         */
-        south__togglerLength_closed: number;
-        /**
-         * If true, the toggler-button is hidden when a pane is 'slid-open'. This makes sense because the user only
-         * needs to 'mouse-off' to close the pane.
-         */
-        south__hideTogglerOnSlide: boolean;
-        /**
-         * Alignment of toggler button inside the resizer-bar when pane is `open`. Defaults to `center`.
-         *
-         * A positive integer means a pixel offset from top or left.
-         *
-         * A negative integer means a pixel offset from bottom or right.
-         */
-        south__togglerAlign_open: number | PositionKeyword;
-        /**
-         * Alignment of toggler button inside the resizer-bar when pane is `closed`. Defaults to `center`.
-         *
-         * A positive integer means a pixel offset from top or left.
-         *
-         * A negative integer means a pixel offset from bottom or right.
-         */
-        south__togglerAlign_closed: number | PositionKeyword;
-        /**
-         * Usually a background-image is set in CSS to customize a toggler-button. However, you can also put text inside
-         * a toggler by using these options. The text is wrapped in a SPAN, which is then added inside the toggler DIV.
-         * The SPAN classes identify them as either `open` or `closed` content:
-         */
-        south__togglerContent_open: string;
-        /**
-         * Usually a background-image is set in CSS to customize a toggler-button. However, you can also put text inside
-         * a toggler by using these options. The text is wrapped in a SPAN, which is then added inside the toggler DIV.
-         * The SPAN classes identify them as either `open` or `closed` content:
-         */
-        south__togglerContent_closed: string;
-        /**
-         * If `true`, then 'cursor hotkeys' are enabled. Can be set per-pane if desired.
-         *
-         * These default hotkeys cannot be changed - only enabled or disabled.
-         *
-         * The cursor/arrow key must be pressed in combination with CTRL -or- SHIFT
-         *
-         * - Toggle North-pane: `CTRL+Up` or `SHIFT+Up`
-         * - Toggle South-pane: `CTRL+Down`  or `SHIFT+Down`
-         * - Toggle West-pane: `CTRL+Left` or `SHIFT+Left`
-         * - Toggle East-pane: `CTRL+Right` or `SHIFT+Right`
-         *
-         * The SHIFT+ARROW combinations are ignored if pressed while the cursor is in a form field, allowing users to
-         * 'select text' â€” eg: SHIFT+Right in a TEXTAREA.
-         */
-        south__enableCursorHotkey: boolean;
-        /**
-         * Custom hotkeys must be pressed in combination with either the CTRL or SHIFT key - or both together. Use this
-         * option to choose which modifier-key(s) to use with the `customHotKey`.
-         *
-         * Defaults to `SHIFT`.
-         *
-         * If this option is missing or invalid, `CTRL+SHIFT` is assumed.
-         *
-         * NOTE: The ALT key cannot be used because it is not detected by some browsers.
-         */
-        south__customHotkeyModifier: string;
-        /**
-         * Animation effect for open/close. Choose a preset effect OR can specify a custom fxName as long as you also
-         * specify fxSettings (even if fxSettings is just empty - {}).
-         *
-         * Defaults to `slide`.
-         */
-        south__fxName: string;
-        /**
-         * Animation effect for open. Choose a preset effect OR can specify a custom fxName as long as you also
-         * specify fxSettings (even if fxSettings is just empty - {}).
-         *
-         * Defaults to `slide`.
-         */
-        south__fxName_open: string;
-        /**
-         * Animation effect for close. Choose a preset effect OR can specify a custom fxName as long as you also
-         * specify fxSettings (even if fxSettings is just empty - {}).
-         *
-         * Defaults to `slide`.
-         */
-        south__fxName_close: string;
-        /**
-         * Animation effect for size. Choose a preset effect OR can specify a custom fxName as long as you also
-         * specify fxSettings (even if fxSettings is just empty - {}).
-         */
-        south__fxName_size: string;
-        /**
-         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
-         */
-        south__fxSpeed: number | string;
-        /**
-         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
-         */
-        south__fxSpeed_open: number | string;
-        /**
-         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
-         */
-        south__fxSpeed_close: number | string;
-        /**
-         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
-         */
-        south__fxSpeed_size: number | string;
-        /**
-         * You can customize the default animation settings by passing new settings.
-         *
-         * If a non-standard effect is specified, then fxSettings is REQUIRED (can be an empty object though).
-         */
-        south__fxSettings: Partial<FxSettings>;
-        /**
-         * You can customize the default animation settings by passing new settings.
-         *
-         * If a non-standard effect is specified, then fxSettings is REQUIRED (can be an empty object though).
-         */
-        south__fxSettings_open: Partial<FxSettings>;
-        /**
-         * You can customize the default animation settings by passing new settings.
-         *
-         * If a non-standard effect is specified, then fxSettings is REQUIRED (can be an empty object though).
-         */
-        south__fxSettings_close: Partial<FxSettings>;
-        /**
-         * You can customize the default animation settings by passing new settings.
-         *
-         * If a non-standard effect is specified, then fxSettings is REQUIRED (can be an empty object though).
-         */
-        south__fxSettings_size: Partial<FxSettings>;
-        /**
-         * If `true`, then pane is `closed` when layout is created.
-         */
-        south__initClosed: boolean;
-        /**
-         * If `true`, then pane is `hidden` when layout is created - no resizer or spacing is visible, as if the pane
-         * did not exist!
-         */
-        south__initHidden: boolean;
-        /**
-         * Default values are: ".ui-layout-north", ".ui-layout-west", etc. Any valid jQuery selector string can be used
-         * - classNames, IDs, etc.
-         *
-         * To allow for `nesting` of layouts, there are rules for how pane-elements are related to the layout-container.
-         * More flexibility was added in version 1.1.2 to handle panes are nested inside a `form` or other element.
-         *
-         * Rules for the relationship between a pane and its container:
-         *
-         * 1. When an `ID` is specified for paneSelector, the pane-element only needs to be a descendant of the
-         * container - it does NOT have to be a `child`.
-         * 1. When a 'class-name' is specified for paneSelector, the pane-element must be EITHER:
-         *     - a child of the container, or...
-         *     - a child of a form-element that is a child of the container (must be the 'first form' inside the container)
-         */
-        south__paneSelector: string;
-        /**
-         * This is the cursor when the mouse is over the 'resizer-bar'. However, if the mouse is over the
-         * 'toggler-button' inside the resizer bar, then the cursor is a `pointer` - ie, the togglerCursor instead of
-         * the resizerCursor.
-         */
-        south__resizerCursor: string;
-        /**
-         * If a hotkey is specified, it is automatically enabled. It does not matter whether 'cursor hotkeys' are also
-         * enabled â€“ those are separate.
-         *
-         * You can specify any of the following values:
-         *
-         * - letter from A to Z
-         * - number from 0 to 9
-         * - Javascript charCode value for the key
-         */
-        south__customHotkey: string;
-        /**
-         * Callback for when pane is `shown`, invoked immeditately after it is shown.
-         */
-        south__onshow: OnEndCallback | null;
-        /**
-         * Callback for when pane is `shown`, invoked immeditately before it is shown.
-         */
-        south__onshow_start: OnStartCallback | null;
-        /**
-         * Callback for when pane is `shown`, invoked immeditately after it is shown.
-         */
-        south__onshow_end: OnEndCallback | null;
-        /**
-         * Callback for when pane is `hidden`, invoked immeditately after it is hidden.
-         */
-        south__onhide: OnEndCallback | null;
-        /**
-         * Callback for when pane is `hidden`, invoked immeditately before it is hidden.
-         */
-        south__onhide_start: OnStartCallback | null;
-        /**
-         * Callback for when pane is `hidden`, invoked immeditately after it is hidden.
-         */
-        south__onhide_end: OnEndCallback | null;
-        /**
-         * Callback for when pane is `opened`, invoked immeditately after it is opened.
-         */
-        south__onopen: OnEndCallback | null;
-        /**
-         * Callback for when pane is `opened`, invoked immeditately before it is opened.
-         */
-        south__onopen_start: OnStartCallback | null;
-        /**
-         * Callback for when pane is `opened`, invoked immeditately after it is opened.
-         */
-        south__onopen_end: OnEndCallback | null;
-        /**
-         * Callback for when pane is `closed`, invoked immeditately after it is closed.
-         */
-        south__onclose: OnEndCallback | null;
-        /**
-         * Callback for when pane is `closed`, invoked immeditately before it is closed.
-         */
-        south__onclose_start: OnStartCallback | null;
-        /**
-         * Callback for when pane is `closed`, invoked immeditately after it is closed.
-         */
-        south__onclose_end: OnEndCallback | null;
-        /**
-         * Callback for when pane is `resized`, invoked immeditately after it is resized.
-         */
-        south__onresize: OnEndCallback | null;
-        /**
-         * Callback for when pane is `resized`, invoked immeditately before it is resized.
-         */
-        south__onresize_start: OnStartCallback | null;
-        /**
-         * Callback for when pane is `resized`, invoked immeditately after it is resized.
-         */
-        south__onresize_end: OnEndCallback | null;
-        /**
-         * Callback for when pane is `swapped`, invoked immeditately after it is swapped.
-         */
-        south__onswap: OnEndCallback | null;
-        /**
-         * Callback for when pane is `swapped`, invoked immeditately before it is swapped.
-         */
-        south__onswap_start: OnStartCallback | null;
-        /**
-         * Callback for when pane is `swapped`, invoked immeditately after it is swapped.
-         */
-        south__onswap_end: OnEndCallback | null;
-        /**
-         * When this is enabled, the layout will apply basic styles directly to resizers & buttons. This is intended for
-         * quick mock-ups, so that you can `see` your layout immediately. Normally this should be set as a default
-         * option, but it can be set 'per-pane':
-         */
-        west__applyDefaultStyles: boolean;
-        /**
-         * If `true`, then when moused-over, the pane's zIndex is raised and overflow is set to `visible`. This allows
-         * pop-ups and drop-downs to overlap adjacent panes.
-         *
-         * __WARNING__: Enable this only for panes that do not scroll!
-         */
-        west__showOverflowOnHover: boolean;
-        /**
-         * MUST be a `child` of one of the panes.
-         *
-         * Selector string for INNER div/element. This div will auto-size so only it scrolls, and not the entire pane.
-         *
-         * Same class-name could be used for divs inside all panes.
-         */
-        west__contentSelector: string;
-        /**
-         * Selector string for INNER divs/elements. These elements will be `ignored` when calculations are done to
-         * auto-size the content element. This may be necessary if there are elements inside the pane that are
-         * absolutely-positioned and intended to `overlay` other elements.
-         *
-         * Same class-name could be used for elements inside all panes
-         */
-        west__contentIgnoreSelector: string;
-        /**
-         * Used for auto-generated classNames for each 'layout pane'. Defaults to `ui-layout-pane`.
-         */
-        west__paneClass: string;
-        /**
-         * This is used as a prefix when generating classNames for 'custom buttons'. Do not confuse with normal
-         * 'toggler-buttons'. Defaults to `ui-layout-button`.
-         */
-        west__buttonClass: string;
-        /**
-         * Can a pane be closed?
-         */
-        west__closable: boolean;
-        /**
-         * When open, can a pane be resized?
-         */
-        west__resizable: boolean;
-        /**
-         * When closed, can a pane 'slide open' over adjacent panes?
-         */
-        west__slidable: boolean;
-        /**
-         * Used for auto-generated classNames for each 'resizer-bar'. Defaults to `ui-layout-resizer`.
-         */
-        west__resizerClass: string;
-        /**
-         * Used for auto-generated classNames for each 'toggler-button'. Defaults to `ui-layout-toggler`.
-         */
-        west__togglerClass: string;
-        /**
-         * Specifies the initial size of the panes - `height` for north & south panes - `width` for east and west. If
-         * `auto`, then pane will size to fit its content - most useful for north/south panes (to auto-fit your banner
-         * or toolbar), but also works for east/west panes.
-         *
-         * You normally will want different sizes for the panes, but a 'default size' can be set
-         *
-         * Defaults to `auto` for north and south panes, and to `200` for east and west panes.
-         */
-        west__size: string;
-        /**
-         * Minimum-size limit when resizing a pane (0 = as small as pane can go).
-         */
-        west__minSize: number;
-        /**
-         * Maximum-size limit when resizing a pane (0 = as large as pane can go).
-         */
-        west__maxSize: number;
-        /**
-         * Spacing between pane and adjacent pane - when pane is `open`.
-         */
-        west__spacing_open: number;
-        /**
-         * Spacing between pane and adjacent pane - when pane is `closed`.
-         */
-        west__spacing_closed: number;
-        /**
-         * Tooltip when resizer-bar can be `dragged` to resize a pane.
-         */
-        west__resizerTip: string;
-        /**
-         * Opacity of resizer bar when `dragging` to resize a pane. Defaults to `1`.
-         *
-         * This value is passed to the ui.draggable widget
-         *
-         * Leave this set to `1` if you want to use CSS to control opacity. Otherwise you must use `!important` to
-         * override the specified opacity.
-         */
-        west__resizerDragOpacity: number;
-        /**
-         * When enabled, layout will `mask` iframes on the page when the resizer-bar is `dragged` to resize a pane. This
-         * solves problems related to dragging an element over an iframe.
-         */
-        west__maskIframesOnResize: boolean;
-        /**
-         * Tooltip when the resizer-bar will trigger 'sliding open'.
-         */
-        west__sliderTip: string;
-        /**
-         * Cursor when resizer-bar will trigger 'sliding open' - ie, when pane is `closed`. Defaults to `pointer`.
-         */
-        west__sliderCursor: string;
-        /**
-         * Trigger events to 'slide open' a pane. Defaults to `click`.
-         */
-        west__slideTrigger_open: string;
-        /**
-         * Trigger events to 'slide close' a pane. Defaults to `mouseout`.
-         */
-        west__slideTrigger_close: string;
-        /**
-         * Tooltip on toggler when pane is `open`.
-         */
-        west__togglerTip_open: string;
-        /**
-         * Tooltip on toggler when pane is `closed`.
-         */
-        west__togglerTip_closed: string;
-        /**
-         * Length of toggler button when pane is `open`. Length means `width` for north/south togglers, and `height` for
-         * east/west togglers.
-         *
-         * `100%` OR `-1` means 'full height/width of resizer bar' - `0` means `hidden`.
-         */
-        west__togglerLength_open: number | string;
-        /**
-         * Length of toggler button when pane is `closed`. Length means `width` for north/south togglers, and `height`
-         * for east/west togglers.
-         *
-         * `100%` OR `-1` means 'full height/width of resizer bar' - `0` means `hidden`.
-         */
-        west__togglerLength_closed: number;
-        /**
-         * If true, the toggler-button is hidden when a pane is 'slid-open'. This makes sense because the user only
-         * needs to 'mouse-off' to close the pane.
-         */
-        west__hideTogglerOnSlide: boolean;
-        /**
-         * Alignment of toggler button inside the resizer-bar when pane is `open`. Defaults to `center`.
-         *
-         * A positive integer means a pixel offset from top or left.
-         *
-         * A negative integer means a pixel offset from bottom or right.
-         */
-        west__togglerAlign_open: number | PositionKeyword;
-        /**
-         * Alignment of toggler button inside the resizer-bar when pane is `closed`. Defaults to `center`.
-         *
-         * A positive integer means a pixel offset from top or left.
-         *
-         * A negative integer means a pixel offset from bottom or right.
-         */
-        west__togglerAlign_closed: number | PositionKeyword;
-        /**
-         * Usually a background-image is set in CSS to customize a toggler-button. However, you can also put text inside
-         * a toggler by using these options. The text is wrapped in a SPAN, which is then added inside the toggler DIV.
-         * The SPAN classes identify them as either `open` or `closed` content:
-         */
-        west__togglerContent_open: string;
-        /**
-         * Usually a background-image is set in CSS to customize a toggler-button. However, you can also put text inside
-         * a toggler by using these options. The text is wrapped in a SPAN, which is then added inside the toggler DIV.
-         * The SPAN classes identify them as either `open` or `closed` content:
-         */
-        west__togglerContent_closed: string;
-        /**
-         * If `true`, then 'cursor hotkeys' are enabled. Can be set per-pane if desired.
-         *
-         * These default hotkeys cannot be changed - only enabled or disabled.
-         *
-         * The cursor/arrow key must be pressed in combination with CTRL -or- SHIFT
-         *
-         * - Toggle North-pane: `CTRL+Up` or `SHIFT+Up`
-         * - Toggle South-pane: `CTRL+Down`  or `SHIFT+Down`
-         * - Toggle West-pane: `CTRL+Left` or `SHIFT+Left`
-         * - Toggle East-pane: `CTRL+Right` or `SHIFT+Right`
-         *
-         * The SHIFT+ARROW combinations are ignored if pressed while the cursor is in a form field, allowing users to
-         * 'select text' â€” eg: SHIFT+Right in a TEXTAREA.
-         */
-        west__enableCursorHotkey: boolean;
-        /**
-         * Custom hotkeys must be pressed in combination with either the CTRL or SHIFT key - or both together. Use this
-         * option to choose which modifier-key(s) to use with the `customHotKey`.
-         *
-         * Defaults to `SHIFT`.
-         *
-         * If this option is missing or invalid, `CTRL+SHIFT` is assumed.
-         *
-         * NOTE: The ALT key cannot be used because it is not detected by some browsers.
-         */
-        west__customHotkeyModifier: string;
-        /**
-         * Animation effect for open/close. Choose a preset effect OR can specify a custom fxName as long as you also
-         * specify fxSettings (even if fxSettings is just empty - {}).
-         *
-         * Defaults to `slide`.
-         */
-        west__fxName: string;
-        /**
-         * Animation effect for open. Choose a preset effect OR can specify a custom fxName as long as you also
-         * specify fxSettings (even if fxSettings is just empty - {}).
-         *
-         * Defaults to `slide`.
-         */
-        west__fxName_open: string;
-        /**
-         * Animation effect for close. Choose a preset effect OR can specify a custom fxName as long as you also
-         * specify fxSettings (even if fxSettings is just empty - {}).
-         *
-         * Defaults to `slide`.
-         */
-        west__fxName_close: string;
-        /**
-         * Animation effect for size. Choose a preset effect OR can specify a custom fxName as long as you also
-         * specify fxSettings (even if fxSettings is just empty - {}).
-         */
-        west__fxName_size: string;
-        /**
-         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
-         */
-        west__fxSpeed: number | string;
-        /**
-         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
-         */
-        west__fxSpeed_open: number | string;
-        /**
-         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
-         */
-        west__fxSpeed_close: number | string;
-        /**
-         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
-         */
-        west__fxSpeed_size: number | string;
-        /**
-         * You can customize the default animation settings by passing new settings.
-         *
-         * If a non-standard effect is specified, then fxSettings is REQUIRED (can be an empty object though).
-         */
-        west__fxSettings: Partial<FxSettings>;
-        /**
-         * You can customize the default animation settings by passing new settings.
-         *
-         * If a non-standard effect is specified, then fxSettings is REQUIRED (can be an empty object though).
-         */
-        west__fxSettings_open: Partial<FxSettings>;
-        /**
-         * You can customize the default animation settings by passing new settings.
-         *
-         * If a non-standard effect is specified, then fxSettings is REQUIRED (can be an empty object though).
-         */
-        west__fxSettings_close: Partial<FxSettings>;
-        /**
-         * You can customize the default animation settings by passing new settings.
-         *
-         * If a non-standard effect is specified, then fxSettings is REQUIRED (can be an empty object though).
-         */
-        west__fxSettings_size: Partial<FxSettings>;
-        /**
-         * If `true`, then pane is `closed` when layout is created.
-         */
-        west__initClosed: boolean;
-        /**
-         * If `true`, then pane is `hidden` when layout is created - no resizer or spacing is visible, as if the pane
-         * did not exist!
-         */
-        west__initHidden: boolean;
-        /**
-         * Default values are: ".ui-layout-north", ".ui-layout-west", etc. Any valid jQuery selector string can be used
-         * - classNames, IDs, etc.
-         *
-         * To allow for `nesting` of layouts, there are rules for how pane-elements are related to the layout-container.
-         * More flexibility was added in version 1.1.2 to handle panes are nested inside a `form` or other element.
-         *
-         * Rules for the relationship between a pane and its container:
-         *
-         * 1. When an `ID` is specified for paneSelector, the pane-element only needs to be a descendant of the
-         * container - it does NOT have to be a `child`.
-         * 1. When a 'class-name' is specified for paneSelector, the pane-element must be EITHER:
-         *     - a child of the container, or...
-         *     - a child of a form-element that is a child of the container (must be the 'first form' inside the container)
-         */
-        west__paneSelector: string;
-        /**
-         * This is the cursor when the mouse is over the 'resizer-bar'. However, if the mouse is over the
-         * 'toggler-button' inside the resizer bar, then the cursor is a `pointer` - ie, the togglerCursor instead of
-         * the resizerCursor.
-         */
-        west__resizerCursor: string;
-        /**
-         * If a hotkey is specified, it is automatically enabled. It does not matter whether 'cursor hotkeys' are also
-         * enabled â€“ those are separate.
-         *
-         * You can specify any of the following values:
-         *
-         * - letter from A to Z
-         * - number from 0 to 9
-         * - Javascript charCode value for the key
-         */
-        west__customHotkey: string;
-        /**
-         * Callback for when pane is `shown`, invoked immeditately after it is shown.
-         */
-        west__onshow: OnEndCallback | null;
-        /**
-         * Callback for when pane is `shown`, invoked immeditately before it is shown.
-         */
-        west__onshow_start: OnStartCallback | null;
-        /**
-         * Callback for when pane is `shown`, invoked immeditately after it is shown.
-         */
-        west__onshow_end: OnEndCallback | null;
-        /**
-         * Callback for when pane is `hidden`, invoked immeditately after it is hidden.
-         */
-        west__onhide: OnEndCallback | null;
-        /**
-         * Callback for when pane is `hidden`, invoked immeditately before it is hidden.
-         */
-        west__onhide_start: OnStartCallback | null;
-        /**
-         * Callback for when pane is `hidden`, invoked immeditately after it is hidden.
-         */
-        west__onhide_end: OnEndCallback | null;
-        /**
-         * Callback for when pane is `opened`, invoked immeditately after it is opened.
-         */
-        west__onopen: OnEndCallback | null;
-        /**
-         * Callback for when pane is `opened`, invoked immeditately before it is opened.
-         */
-        west__onopen_start: OnStartCallback | null;
-        /**
-         * Callback for when pane is `opened`, invoked immeditately after it is opened.
-         */
-        west__onopen_end: OnEndCallback | null;
-        /**
-         * Callback for when pane is `closed`, invoked immeditately after it is closed.
-         */
-        west__onclose: OnEndCallback | null;
-        /**
-         * Callback for when pane is `closed`, invoked immeditately before it is closed.
-         */
-        west__onclose_start: OnStartCallback | null;
-        /**
-         * Callback for when pane is `closed`, invoked immeditately after it is closed.
-         */
-        west__onclose_end: OnEndCallback | null;
-        /**
-         * Callback for when pane is `resized`, invoked immeditately after it is resized.
-         */
-        west__onresize: OnEndCallback | null;
-        /**
-         * Callback for when pane is `resized`, invoked immeditately before it is resized.
-         */
-        west__onresize_start: OnStartCallback | null;
-        /**
-         * Callback for when pane is `resized`, invoked immeditately after it is resized.
-         */
-        west__onresize_end: OnEndCallback | null;
-        /**
-         * Callback for when pane is `swapped`, invoked immeditately after it is swapped.
-         */
-        west__onswap: OnEndCallback | null;
-        /**
-         * Callback for when pane is `swapped`, invoked immeditately before it is swapped.
-         */
-        west__onswap_start: OnStartCallback | null;
-        /**
-         * Callback for when pane is `swapped`, invoked immeditately after it is swapped.
-         */
-        west__onswap_end: OnEndCallback | null;
-    }
-    /**
-     * Settings that apply to all panees and can also be set globally.
-     */
-    export interface BaseSubKeyLayoutSettings {
-        /**
-         * When this is enabled, the layout will apply basic styles directly to resizers & buttons. This is intended for
-         * quick mock-ups, so that you can `see` your layout immediately. Normally this should be set as a default
-         * option, but it can be set 'per-pane':
-         */
-        applyDefaultStyles: boolean;
-        /**
-         * If `true`, then when moused-over, the pane's zIndex is raised and overflow is set to `visible`. This allows
-         * pop-ups and drop-downs to overlap adjacent panes.
-         *
-         * __WARNING__: Enable this only for panes that do not scroll!
-         */
-        showOverflowOnHover: boolean;
-        /**
-         * MUST be a `child` of one of the panes.
-         *
-         * Selector string for INNER div/element. This div will auto-size so only it scrolls, and not the entire pane.
-         *
-         * Same class-name could be used for divs inside all panes.
-         */
-        contentSelector: string;
-        /**
-         * Selector string for INNER divs/elements. These elements will be `ignored` when calculations are done to
-         * auto-size the content element. This may be necessary if there are elements inside the pane that are
-         * absolutely-positioned and intended to `overlay` other elements.
-         *
-         * Same class-name could be used for elements inside all panes
-         */
-        contentIgnoreSelector: string;
-        /**
-         * Used for auto-generated classNames for each 'layout pane'. Defaults to `ui-layout-pane`.
-         */
-        paneClass: string;
-        /**
-         * This is used as a prefix when generating classNames for 'custom buttons'. Do not confuse with normal
-         * 'toggler-buttons'. Defaults to `ui-layout-button`.
-         */
-        buttonClass: string;
-    }
-    /**
-     * Settings that need to be specified separately for each border or center pane.
-     */
-    export interface BorderAndCenterPaneSubKeyLayoutSettings {
-        /**
-         * Default values are: ".ui-layout-north", ".ui-layout-west", etc. Any valid jQuery selector string can be used
-         * - classNames, IDs, etc.
-         *
-         * To allow for `nesting` of layouts, there are rules for how pane-elements are related to the layout-container.
-         * More flexibility was added in version 1.1.2 to handle panes are nested inside a `form` or other element.
-         *
-         * Rules for the relationship between a pane and its container:
-         *
-         * 1. When an `ID` is specified for paneSelector, the pane-element only needs to be a descendant of the
-         * container - it does NOT have to be a `child`.
-         * 1. When a 'class-name' is specified for paneSelector, the pane-element must be EITHER:
-         *     - a child of the container, or...
-         *     - a child of a form-element that is a child of the container (must be the 'first form' inside the container)
-         */
-        paneSelector: string;
-    }
-    /**
-     * Settings that can be specified either globally or separately for each border pane.
-     */
-    export interface DefaultAndBorderPaneSubKeyLayoutSettings {
-        /**
-         * Can a pane be closed?
-         */
-        closable: boolean;
-        /**
-         * When open, can a pane be resized?
-         */
-        resizable: boolean;
-        /**
-         * When closed, can a pane 'slide open' over adjacent panes?
-         */
-        slidable: boolean;
-        /**
-         * Used for auto-generated classNames for each 'resizer-bar'. Defaults to `ui-layout-resizer`.
-         */
-        resizerClass: string;
-        /**
-         * Used for auto-generated classNames for each 'toggler-button'. Defaults to `ui-layout-toggler`.
-         */
-        togglerClass: string;
-        /**
-         * Specifies the initial size of the panes - `height` for north & south panes - `width` for east and west. If
-         * `auto`, then pane will size to fit its content - most useful for north/south panes (to auto-fit your banner
-         * or toolbar), but also works for east/west panes.
-         *
-         * You normally will want different sizes for the panes, but a 'default size' can be set
-         *
-         * Defaults to `auto` for north and south panes, and to `200` for east and west panes.
-         */
-        size: string;
-        /**
-         * Minimum-size limit when resizing a pane (0 = as small as pane can go).
-         */
-        minSize: number;
-        /**
-         * Maximum-size limit when resizing a pane (0 = as large as pane can go).
-         */
-        maxSize: number;
-        /**
-         * Spacing between pane and adjacent pane - when pane is `open`.
-         */
-        spacing_open: number;
-        /**
-         * Spacing between pane and adjacent pane - when pane is `closed`.
-         */
-        spacing_closed: number;
-        /**
-         * Tooltip when resizer-bar can be `dragged` to resize a pane.
-         */
-        resizerTip: string;
-        /**
-         * Opacity of resizer bar when `dragging` to resize a pane. Defaults to `1`.
-         *
-         * This value is passed to the ui.draggable widget
-         *
-         * Leave this set to `1` if you want to use CSS to control opacity. Otherwise you must use `!important` to
-         * override the specified opacity.
-         */
-        resizerDragOpacity: number;
-        /**
-         * When enabled, layout will `mask` iframes on the page when the resizer-bar is `dragged` to resize a pane. This
-         * solves problems related to dragging an element over an iframe.
-         */
-        maskIframesOnResize: boolean;
-        /**
-         * Tooltip when the resizer-bar will trigger 'sliding open'.
-         */
-        sliderTip: string;
-        /**
-         * Cursor when resizer-bar will trigger 'sliding open' - ie, when pane is `closed`. Defaults to `pointer`.
-         */
-        sliderCursor: string;
-        /**
-         * Trigger events to 'slide open' a pane. Defaults to `click`.
-         */
-        slideTrigger_open: string;
-        /**
-         * Trigger events to 'slide close' a pane. Defaults to `mouseout`.
-         */
-        slideTrigger_close: string;
-        /**
-         * Tooltip on toggler when pane is `open`.
-         */
-        togglerTip_open: string;
-        /**
-         * Tooltip on toggler when pane is `closed`.
-         */
-        togglerTip_closed: string;
-        /**
-         * Length of toggler button when pane is `open`. Length means `width` for north/south togglers, and `height` for
-         * east/west togglers.
-         *
-         * `100%` OR `-1` means 'full height/width of resizer bar' - `0` means `hidden`.
-         */
-        togglerLength_open: number | string;
-        /**
-         * Length of toggler button when pane is `closed`. Length means `width` for north/south togglers, and `height`
-         * for east/west togglers.
-         *
-         * `100%` OR `-1` means 'full height/width of resizer bar' - `0` means `hidden`.
-         */
-        togglerLength_closed: number;
-        /**
-         * If true, the toggler-button is hidden when a pane is 'slid-open'. This makes sense because the user only
-         * needs to 'mouse-off' to close the pane.
-         */
-        hideTogglerOnSlide: boolean;
-        /**
-         * Alignment of toggler button inside the resizer-bar when pane is `open`. Defaults to `center`.
-         *
-         * A positive integer means a pixel offset from top or left.
-         *
-         * A negative integer means a pixel offset from bottom or right.
-         */
-        togglerAlign_open: number | PositionKeyword;
-        /**
-         * Alignment of toggler button inside the resizer-bar when pane is `closed`. Defaults to `center`.
-         *
-         * A positive integer means a pixel offset from top or left.
-         *
-         * A negative integer means a pixel offset from bottom or right.
-         */
-        togglerAlign_closed: number | PositionKeyword;
-        /**
-         * Usually a background-image is set in CSS to customize a toggler-button. However, you can also put text inside
-         * a toggler by using these options. The text is wrapped in a SPAN, which is then added inside the toggler DIV.
-         * The SPAN classes identify them as either `open` or `closed` content:
-         */
-        togglerContent_open: string;
-        /**
-         * Usually a background-image is set in CSS to customize a toggler-button. However, you can also put text inside
-         * a toggler by using these options. The text is wrapped in a SPAN, which is then added inside the toggler DIV.
-         * The SPAN classes identify them as either `open` or `closed` content:
-         */
-        togglerContent_closed: string;
-        /**
-         * If `true`, then 'cursor hotkeys' are enabled. Can be set per-pane if desired.
-         *
-         * These default hotkeys cannot be changed - only enabled or disabled.
-         *
-         * The cursor/arrow key must be pressed in combination with CTRL -or- SHIFT
-         *
-         * - Toggle North-pane: `CTRL+Up` or `SHIFT+Up`
-         * - Toggle South-pane: `CTRL+Down`  or `SHIFT+Down`
-         * - Toggle West-pane: `CTRL+Left` or `SHIFT+Left`
-         * - Toggle East-pane: `CTRL+Right` or `SHIFT+Right`
-         *
-         * The SHIFT+ARROW combinations are ignored if pressed while the cursor is in a form field, allowing users to
-         * 'select text' â€” eg: SHIFT+Right in a TEXTAREA.
-         */
-        enableCursorHotkey: boolean;
-        /**
-         * Custom hotkeys must be pressed in combination with either the CTRL or SHIFT key - or both together. Use this
-         * option to choose which modifier-key(s) to use with the `customHotKey`.
-         *
-         * Defaults to `SHIFT`.
-         *
-         * If this option is missing or invalid, `CTRL+SHIFT` is assumed.
-         *
-         * NOTE: The ALT key cannot be used because it is not detected by some browsers.
-         */
-        customHotkeyModifier: string;
-        /**
-         * Animation effect for open/close. Choose a preset effect OR can specify a custom fxName as long as you also
-         * specify fxSettings (even if fxSettings is just empty - {}).
-         *
-         * Defaults to `slide`.
-         */
-        fxName: string;
-        /**
-         * Animation effect for open. Choose a preset effect OR can specify a custom fxName as long as you also
-         * specify fxSettings (even if fxSettings is just empty - {}).
-         *
-         * Defaults to `slide`.
-         */
-        fxName_open: string;
-        /**
-         * Animation effect for close. Choose a preset effect OR can specify a custom fxName as long as you also
-         * specify fxSettings (even if fxSettings is just empty - {}).
-         *
-         * Defaults to `slide`.
-         */
-        fxName_close: string;
-        /**
-         * Animation effect for size. Choose a preset effect OR can specify a custom fxName as long as you also
-         * specify fxSettings (even if fxSettings is just empty - {}).
-         */
-        fxName_size: string;
-        /**
-         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
-         */
-        fxSpeed: number | string;
-        /**
-         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
-         */
-        fxSpeed_open: number | string;
-        /**
-         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
-         */
-        fxSpeed_close: number | string;
-        /**
-         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
-         */
-        fxSpeed_size: number | string;
-        /**
-         * You can customize the default animation settings by passing new settings.
-         *
-         * If a non-standard effect is specified, then fxSettings is REQUIRED (can be an empty object though).
-         */
-        fxSettings: Partial<FxSettings>;
-        /**
-         * You can customize the default animation settings by passing new settings.
-         *
-         * If a non-standard effect is specified, then fxSettings is REQUIRED (can be an empty object though).
-         */
-        fxSettings_open: Partial<FxSettings>;
-        /**
-         * You can customize the default animation settings by passing new settings.
-         *
-         * If a non-standard effect is specified, then fxSettings is REQUIRED (can be an empty object though).
-         */
-        fxSettings_close: Partial<FxSettings>;
-        /**
-         * You can customize the default animation settings by passing new settings.
-         *
-         * If a non-standard effect is specified, then fxSettings is REQUIRED (can be an empty object though).
-         */
-        fxSettings_size: Partial<FxSettings>;
-        /**
-         * If `true`, then pane is `closed` when layout is created.
-         */
-        initClosed: boolean;
-        /**
-         * If `true`, then pane is `hidden` when layout is created - no resizer or spacing is visible, as if the pane
-         * did not exist!
-         */
-        initHidden: boolean;
-    }
-    /**
-     * Settings that can be specified either globally or separately for each center pane.
-     */
-    export interface DefaultAndCenterPaneSubKeyLayoutSettings {
-    }
-    /**
-     * Settings that can be specified globally (`default`).
-     */
-    export interface DefaultSubKeyLayoutSettings extends BaseSubKeyLayoutSettings {
-        /**
-         * This option handles of bookmarks that are passed on the URL of the page:
-         * http://www.site.com/page.html#myBookmark
-         *
-         * The default functionality of bookmarks is broken when using a layout because the position and scrolling of
-         * pane elements are altered after the page loads. Enabling this option (enabled by default) causes the bookmark
-         * to be re-applied after the layout is created, causing the `pane` containing the bookmark/anchor to be
-         * scrolled to bring it into view.
-         *
-         * This option should be left enabled in most cases, but if content in the layout-panes is never bookmarked,
-         * then you could disabled it.
-         */
-        scrollToBookmarkOnLoad: boolean;
-        /**
-         * Extends the `default` layout effects by specifying the options for the desired effect:
-         *
-         * ```javascript
-         * $("body").layout({
-         *   effects: {
-         *     // MODIFY a standard effect
-         *     slide: {
-         *       all: { duration: 500, easing: "bounceInOut" },
-         *     },
-         *     // ADD a new effect
-         *     blind: {
-         *       all: {},
-         *       north: { direction: "vertical" },
-         *       south: { direction: "vertical" },
-         *       east:  { direction: "horizontal" },
-         *       west:  { direction: "horizontal" },
-         *     }
-         *   }
-         * });
-         * ```
-         */
-        effects: Partial<EffectSettings>;
-    }
-    /**
-     * Settings that can be specified for the center pane (`default`).
-     */
-    export interface CenterSubKeyLayoutSettings extends BaseSubKeyLayoutSettings, DefaultAndCenterPaneSubKeyLayoutSettings, BorderAndCenterPaneSubKeyLayoutSettings {
-        /**
-         * Minimum width of the center pane in pixels.
-         */
-        minWidth: number;
-        /**
-         * Minimum height of the center pane in pixels.
-         */
-        minHeight: number;
-        /**
-         * Maximum width of the center pane in pixels.
-         */
-        maxWidth: number;
-        /**
-         * Maximum height of the center pane in pixels.
-         */
-        maxHeight: number;
-    }
-    /**
-     * Settings that can be specified for the border panes (`north`, `east`, `south`, or `west`).
-     */
-    export interface BorderSubKeyLayoutSettings extends BaseSubKeyLayoutSettings, DefaultAndBorderPaneSubKeyLayoutSettings, BorderAndCenterPaneSubKeyLayoutSettings {
-        /**
-         * This is the cursor when the mouse is over the 'resizer-bar'. However, if the mouse is over the
-         * 'toggler-button' inside the resizer bar, then the cursor is a `pointer` - ie, the togglerCursor instead of
-         * the resizerCursor.
-         */
-        resizerCursor: string;
-        /**
-         * If a hotkey is specified, it is automatically enabled. It does not matter whether 'cursor hotkeys' are also
-         * enabled â€“ those are separate.
-         *
-         * You can specify any of the following values:
-         *
-         * - letter from A to Z
-         * - number from 0 to 9
-         * - Javascript charCode value for the key
-         */
-        customHotkey: string;
-        /**
-         * Callback for when pane is `shown`, invoked immeditately after it is shown.
-         */
-        onshow: OnEndCallback | null;
-        /**
-         * Callback for when pane is `shown`, invoked immeditately before it is shown.
-         */
-        onshow_start: OnStartCallback | null;
-        /**
-         * Callback for when pane is `shown`, invoked immeditately after it is shown.
-         */
-        onshow_end: OnEndCallback | null;
-        /**
-         * Callback for when pane is `hidden`, invoked immeditately after it is hidden.
-         */
-        onhide: OnEndCallback | null;
-        /**
-         * Callback for when pane is `hidden`, invoked immeditately before it is hidden.
-         */
-        onhide_start: OnStartCallback | null;
-        /**
-         * Callback for when pane is `hidden`, invoked immeditately after it is hidden.
-         */
-        onhide_end: OnEndCallback | null;
-        /**
-         * Callback for when pane is `opened`, invoked immeditately after it is opened.
-         */
-        onopen: OnEndCallback | null;
-        /**
-         * Callback for when pane is `opened`, invoked immeditately before it is opened.
-         */
-        onopen_start: OnStartCallback | null;
-        /**
-         * Callback for when pane is `opened`, invoked immeditately after it is opened.
-         */
-        onopen_end: OnEndCallback | null;
-        /**
-         * Callback for when pane is `closed`, invoked immeditately after it is closed.
-         */
-        onclose: OnEndCallback | null;
-        /**
-         * Callback for when pane is `closed`, invoked immeditately before it is closed.
-         */
-        onclose_start: OnStartCallback | null;
-        /**
-         * Callback for when pane is `closed`, invoked immeditately after it is closed.
-         */
-        onclose_end: OnEndCallback | null;
-        /**
-         * Callback for when pane is `resized`, invoked immeditately after it is resized.
-         */
-        onresize: OnEndCallback | null;
-        /**
-         * Callback for when pane is `resized`, invoked immeditately before it is resized.
-         */
-        onresize_start: OnStartCallback | null;
-        /**
-         * Callback for when pane is `resized`, invoked immeditately after it is resized.
-         */
-        onresize_end: OnEndCallback | null;
-        /**
-         * Callback for when pane is `swapped`, invoked immeditately after it is swapped.
-         */
-        onswap: OnEndCallback | null;
-        /**
-         * Callback for when pane is `swapped`, invoked immeditately before it is swapped.
-         */
-        onswap_start: OnStartCallback | null;
-        /**
-         * Callback for when pane is `swapped`, invoked immeditately after it is swapped.
-         */
-        onswap_end: OnEndCallback | null;
-    }
-    /**
-     * An object that contains the DOM elements for all existing panes.
-     */
-    export interface PaneElements {
-        /**
-         * The DOM element for the north pane, if it exists, or `false` otherwise.
-         */
-        north: JQuery | false;
-        /**
-         * The DOM element for the south pane, if it exists, or `false` otherwise.
-         */
-        south: JQuery | false;
-        /**
-         * The DOM element for the east pane, if it exists, or `false` otherwise.
-         */
-        east: JQuery | false;
-        /**
-         * The DOM element for the west pane, if it exists, or `false` otherwise.
-         */
-        west: JQuery | false;
-        /**
-         * The DOM element for the center pane.
-         */
-        center: JQuery;
-    }
-    /**
-     * An object that contains the DOM elements for the content of all existing panes.
-     */
-    export interface PaneContents {
-        /**
-         * The DOM element(s) with the contents of the north pane, or `false` otherwise.
-         */
-        north: JQuery | false;
-        /**
-         * The DOM element(s) with the contents of the south pane, or `false` otherwise.
-         */
-        south: JQuery | false;
-        /**
-         * The DOM element(s) with the contents of the east pane, or `false` otherwise.
-         */
-        east: JQuery | false;
-        /**
-         * The DOM element(s) with the contents of the west pane, or `false` otherwise.
-         */
-        west: JQuery | false;
-        /**
-         * The DOM element(s) with the contents of the center pane, or `false` otherwise.
-         */
-        center: JQuery;
-    }
-    /**
-     * An object that contains the DOM elements for the resizers of all existing panes.
-     */
-    export interface PaneResizers {
-        /**
-         * The DOM element(s) with the resizer for the north pane, or `false` otherwise.
-         */
-        north: JQuery | false;
-        /**
-         * The DOM element(s) with the resizer for the south pane, or `false` otherwise.
-         */
-        south: JQuery | false;
-        /**
-         * The DOM element(s) with the resizer for the east pane, or `false` otherwise.
-         */
-        east: JQuery | false;
-        /**
-         * The DOM element(s) with the resizer for the west pane, or `false` otherwise.
-         */
-        west: JQuery | false;
-        /**
-         * The DOM element(s) with the resizer for the center pane, or `false` otherwise.
-         */
-        center: JQuery;
-    }
-    /**
-     * An object that contains the DOM elements for the togglers of all existing panes.
-     */
-    export interface PaneTogglers {
-        /**
-         * The DOM element(s) with the toggler for the north pane, or `false` otherwise.
-         */
-        north: JQuery | false;
-        /**
-         * The DOM element(s) with the toggler for the south pane, or `false` otherwise.
-         */
-        south: JQuery | false;
-        /**
-         * The DOM element(s) with the toggler for the east pane, or `false` otherwise.
-         */
-        east: JQuery | false;
-        /**
-         * The DOM element(s) with the toggler for the west pane, or `false` otherwise.
-         */
-        west: JQuery | false;
-        /**
-         * The DOM element(s) with the toggler for the center pane, or `false` otherwise.
-         */
-        center: JQuery;
-    }
-    /**
-     * An object containing the dimensions of all the elements, including the layout container.
-     */
-    export interface LayoutState {
-        /**
-         * The ID of this layout.
-         */
-        id: string;
-        /**
-         * Whether this layout widget is already initialized.
-         */
-        initialized: boolean;
-        /**
-         * Whether a pane is currently being resized.
-         */
-        paneResizing: boolean;
-        /**
-         * Whether a pane is currently in the process of sliding.
-         */
-        panesSliding: boolean;
-        /**
-         * Dimensions of the layout container with all panes.
-         */
-        container: ContainerState;
-        /**
-         * The state and current dimensions of the north pane, if it exists.
-         */
-        north: BorderPaneState;
-        /**
-         * The state and current dimensions of the south pane, if it exists.
-         */
-        south: BorderPaneState;
-        /**
-         * The state and current dimensions of the west pane, if it exists.
-         */
-        west: BorderPaneState;
-        /**
-         * The state and current dimensions of the east pane, if it exists.
-         */
-        east: BorderPaneState;
-        /**
-         * The state and current dimensions of the center pane.
-         */
-        center: CenterPaneState;
-    }
-    /**
-     * Describes an inset around an element, in pixels.
-     */
-    export interface Inset {
-        /**
-         * Inset to the left, in pixels.
-         */
-        left: number;
-        /**
-         * Inset to the right, in pixels.
-         */
-        right: number;
-        /**
-         * Inset to the top, in pixels.
-         */
-        top: number;
-        /**
-         * Inset to the bototm, in pixels.
-         */
-        bottom: number;
-    }
-    /**
-     * Describes the  limit for the position of the resizer, in pixels.
-     */
-    export interface ResizerPositionLimit {
-        /**
-         * Minimum value for the resizer position, in pixels.
-         */
-        min: number;
-        /**
-         * Maximum value for the resizer position, in pixels.
-         */
-        max: number;
-    }
-    /**
-     * Represents the current state shared by container, border panes and center panes, such as its computed dimensions.
-     */
-    export interface BaseState {
-        /**
-         * The CSS styles for this pane or container.
-         */
-        css: Record<string, string | number>;
-        /**
-         * The inner height of this pane or container in pixels.
-         */
-        innerHeight: number;
-        /**
-         * The inner width of this pane or container in pixels.
-         */
-        innerWidth: number;
-        /**
-         * The inset of this pane or container in pixels.
-         */
-        inset: Inset;
-        /**
-         * The outer height of this pane or container, in pixels.
-         */
-        outerHeight: number;
-        /**
-         * The outer width of this pane or container, in pixels.
-         */
-        outerWidth: number;
-        /**
-         * The layoutted height of this pane or container, in pixels.
-         */
-        layoutHeight: number;
-        /**
-         * The layoutted width of this pane or container, in pixels.
-         */
-        layoutWidth: number;
-        /**
-         * The left ofset of this pane or container, in pixels.
-         */
-        offsetLeft: number;
-        /**
-         * The top ofset of this pane or container, in pixels.
-         */
-        offsetTop: number;
-        /**
-         * The tag name of the HTML element for this pane or container.
-         */
-        tagName: string;
-    }
-    /**
-     * Represents the current state shared by both a border and center pane, such as its type.
-     */
-    export interface BasePaneState extends BaseState {
-        /**
-         * The index of this pane.
-         */
-        childIdx: number;
-        /**
-         * The type of this pane, whether it is a center or a border pane.
-         */
-        edge: BorderPane | CenterPane;
-        /**
-         * Whether this pane is currently visible.
-         */
-        isVisible: boolean;
-        /**
-         * When there is 'not enough room' for a pane to be displayed, it is automatically hidden. In this case,
-         * isHidden=true AND noRoom=true.
-         *
-         * This is different than hiding a pane using the hide() command, because when there is enough room for the pane
-         * to appear (by resizing or closing a pane), the hidden pane will reappear automatically.
-         *
-         * This is the only logic var that also applies to the 'center-pane'.
-         */
-        noRoom: boolean;
-        /**
-         * The width of the north and bottom or the height east and west resizer, in pixels.
-         */
-        resizerLength: number;
-    }
-    /**
-     * Represents the current state of a border pane, such as its computed dimensions.
-     */
-    export interface BorderPaneState extends BasePaneState {
-        /**
-         * Whether this pane resizes itself automatically.
-         */
-        autoResize: boolean;
-        /**
-         * Whether this border pane is currently closed.
-         */
-        isClosed: boolean;
-        /**
-         * A 'hidden pane' is not the same as a 'closed pane'. When a pane is hidden, it is as if it does not exist -
-         * there is no resizer-bar or toggler-button visible, and the 'pane spacing' collapses.
-         *
-         * So if a pane is hidden, you must have some other way to make it visible again. This means a custom button or
-         * some other custom code that calls the show() command.
-         */
-        isHidden: boolean;
-        /**
-         * This is only true when the user is in the process of `dragging` the resizer bar.
-         */
-        isResizing: boolean;
-        /**
-         * When a pane is `sliding`, it was opened by sliding over-top of other panes. The pane is `open`, but only
-         * temporarily - until the user moves their mouse off.
-         *
-         * This is different from when a pane is 'opened normally', and becomes fixed in place, and all adjacent panes
-         * are resized.
-         *
-         * When isSliding=true, isClosed=false - when it slides closed again, isClosed=true.
-         *
-         * When a pane is 'opened normally', isClosed=false AND isSliding=false.
-         */
-        isSliding: boolean;
-        /**
-         * The maximum allowed size of border pane, in pixels.
-         */
-        maxSize: number;
-        /**
-         * The minimum allowed size of border pane, in pixels.
-         */
-        minSize: number;
-        /**
-         * List of CSS selectors for all pins that were added to this border pane.
-         */
-        pins: string[];
-        /**
-         * The limits for the resizer position, in pixels
-         */
-        resizerPosition: ResizerPositionLimit;
-        /**
-         * The current size of this border pane, in pixels.
-         */
-        size: number;
-    }
-    /**
-     * Represents the current state of a center pane, such as its computed dimensions.
-     */
-    export interface CenterPaneState extends BasePaneState {
-        /**
-         * The maximum height of this center pane, in pixels.
-         */
-        maxHeight: number;
-        /**
-         * The maximum width of this center pane, in pixels.
-         */
-        maxWidth: number;
-        /**
-         * The minimum height of this center pane, in pixels.
-         */
-        minHeight: number;
-        /**
-         * The minimum width of this center pane, in pixels.
-         */
-        minWidth: number;
-    }
-    /**
-     * Represents the current state of a layout container, such as its ID and class name.
-     */
-    export interface ContainerState extends BaseState {
-        /**
-         * One or more CSS classes of this container.
-         */
-        className: string;
-        /**
-         * A selector for this container.
-         */
-        selector: string;
-        /**
-         * Element referenced by this container, e.g. `BODY`.
-         */
-        ref: string;
-        /**
-         * The ID of this container.
-         */
-        id: string;
-        /**
-         * Whether this container is the BODY HTML element.
-         */
-        isBody: boolean;
-    }
-    export interface LayoutInstance {
-        /**
-         * The container DOM element of this layout widget.
-         */
-        container: JQuery;
-        /**
-         * The DOM elements representing the content of each pane.
-         */
-        contents: PaneContents;
-        /**
-         * The current settings of this layout widget.
-         */
-        options: Partial<SubKeyLayoutSettings>;
-        /**
-         * The DOM container elements for each pane.
-         */
-        panes: PaneElements;
-        /**
-         * The DOM elements representing the resizers for each pane.
-         */
-        resizers: PaneResizers;
-        /**
-         * The current layout state, such as the computed dimensions or whether the individual panes are visible.
-         */
-        state: LayoutState;
-        /**
-         * The DOM elements representing the togglers for each pane.
-         */
-        togglers: PaneTogglers;
-        /**
-         * Toggle the specified pane open or closed - the opposite of its current state.
-         *
-         * @param pane A pane to toggle.
-         */
-        toggle(pane: BorderPane): void;
-        /**
-         * Open the specified pane. If the pane is already open, nothing happens. If the pane is currently `hidden` (not
-         * just `closed`), then the pane will be unhidden and opened.
-         *
-         * @param pane A pane to open.
-         */
-        open(pane: BorderPane): void;
-        /**
-         * Close the specified pane. If the pane is already closed, nothing happens.
-         *
-         * @param pane A pane to close.
-         */
-        close(pane: BorderPane): void;
-        /**
-         * Hide the specified pane. When a pane is hidden, it has no spacing or resizer bar or toggler button - it is
-         * completely invisible, as if it did not exist.
-         *
-         * @param pane A pane to hide.
-         */
-        hide(pane: BorderPane): void;
-        /**
-         * Un-hide the specified pane. Normally also opens the pane, but if you pass `false` as the second parameter,
-         * then pane will un-hide, but be `closed` (slider-bar and toggler now visible).
-         *
-         * @param pane A pane to shown.
-         * @param openPane Whether the pane is also opened.
-         */
-        show(pane: BorderPane, openPane?: boolean): void;
-        /**
-         * This sizes the pane in the direction it opens and closes - for north and south panes, `size=outerHeight`, for
-         * east and west panes, `size=outerWidth`. The pane will only resize within its minSize and maxSize limits.
-         *
-         * @param pane A pane to resize.
-         * @param sizeInPixels The new size in pixels for the pane.
-         */
-        sizePane(pane: BorderPane, sizeInPixels: number): void;
-        /**
-         * Resizes the `content container` inside the specified pane. Content is resized automatically when the pane is
-         * resized or opened, so this method only needs to be called manually if something changes the height of a
-         * header or footer element in the pane.
-         *
-         * @param pane A pane with content to resize.
-         */
-        resizeContent(pane: BorderPane | CenterPane): void;
-        /**
-         * Resizes the entire layout to fit its container. This method runs automatically for all layouts when the
-         * browser window is resized. When a layout is inside another element (its `container`), and that container
-         * element can be sized without resizing the entire window, then `layout.resizeAll()` should be called so the
-         * inner layout will resize when its container resizes.
-         */
-        resizeAll(): void;
-        /**
-         * Adds a button that can close a pane.
-         *
-         * First create the elements to use as a button, then call this method and pass the button.
-         *
-         * @param selector A jQuery selector string to access the button elements.
-         * @param pane Pane to which to add the buttons.
-         */
-        addCloseBtn(selector: string, pane: BorderPane): void;
-        /**
-         * Adds a button that can open a pane.
-         *
-         * First create the elements to use as a button, then call this method and pass the button.
-         *
-         * @param selector A jQuery selector string to access the button elements.
-         * @param pane Pane to which to add the buttons.
-         */
-        addOpenBtn(selector: string, pane: BorderPane): void;
-        /**
-         * Adds a button that can toggle a pane (opening or closing it).
-         *
-         * First create the elements to use as a button, then call this method and pass the button.
-         *
-         * @param selector A jQuery selector string to access the button elements.
-         * @param pane Pane to which to add the buttons.
-         */
-        addToggleBtn(selector: string, pane: BorderPane): void;
-        /**
-         * Makes an element act like a `pin button` for the given pane.
-         *
-         * @param selector A jQuery selector string to access the button elements.
-         * @param pane Pane to which to add the buttons.
-         */
-        addPinBtn(selector: string, pane: BorderPane): void;
-        /**
-         * Raises a pane's z-index so popups work properly.
-         *
-         * @param pane Pane for which to allow overflow.
-         */
-        allowOverflow(pane: BorderPane | CenterPane | JQuery): void;
-        /**
-         * Undoes the modifications made by `allowOverflow`, resetting the z-index to its orignal value.
-         *
-         * @param pane Pane for which to reset the overflow.
-         */
-        resetOverflow(pane: BorderPane | CenterPane | JQuery): void;
-    }
-    export interface LayoutStatics {
-        /**
-         * The version of the layout plugin, as a string, e.g. `1.5.12`
-         */
-        version: string;
-        /**
-         * The version of the layout plugin, as a number, e.g. `1.0512`
-         */
-        revision: number;
-    }
-}
-interface JQuery {
-    /**
-     * Initializes jQuery layout plugin on the current set of elements.
-     *
-     * @param settings Settings for customizing the layout.
-     * @return this jQuery instance for chaining, or `false` if the layout widget could not be initialized, e.g. if it
-     * was already initialized.
-     */
-    layout(settings?: Partial<JQueryLayout.SubKeyLayoutSettings | JQueryLayout.ListLayoutSettings>): false | JQueryLayout.LayoutInstance;
-}
-interface JQueryStatic {
-    /**
-     * Static utility constants and methods used by the jQuery layout plugin.
-     */
-    layout: JQueryLayout.LayoutStatics;
-}
-declare namespace PrimeFaces.widget.Layout {
-    /**
-     * Callback that is invoked when a border pane is closed. See also
-     * {@link LayoutCfg.onClose}.
-     */
-    export type OnCloseCallback =
-    /**
-     * @param state The state of the border pane
-     * that was closed.
-     */
-    (this: PrimeFaces.widget.Layout, state: JQueryLayout.BorderPaneState) => void;
-}
-declare namespace PrimeFaces.widget.Layout {
-    /**
-     * Callback that is invoked when a border pane is opened. See also
-     * {@link LayoutCfg.onResize}.
-     */
-    export type OnResizeCallback =
-    /**
-     * @param state The state of the border pane
-     * that was opened.
-     */
-    (this: PrimeFaces.widget.Layout, state: JQueryLayout.BorderPaneState) => void;
-}
-declare namespace PrimeFaces.widget.Layout {
-    /**
-     * Callback that is invoked when a border pane is opened or closed.
-     * See also {@link LayoutCfg.onToggle}.
-     */
-    export type OnToggleCallback =
-    /**
-     * @param state The state of the border pane
-     * that was opened or closed.
-     */
-    (this: PrimeFaces.widget.Layout, state: JQueryLayout.BorderPaneState) => void;
-}
-declare namespace PrimeFaces.widget {
-    /**
-     * __PrimeFaces Layout Widget__
-     *
-     * Layout component features a highly customizable borderLayout model making it very easy to create complex layouts even
-     * if youâ€™re not familiar with web design.
-     *
-     * > __Layout and LayoutUnit are deprecated__, use FlexGrid or GridCSS instead. They'll be removed on 9.0.
-     *
-     * @typeparam TCfg Defaults to `LayoutCfg`. Type of the configuration object for this widget.
-     * @deprecated
-     */
-    export class Layout<TCfg extends LayoutCfg = LayoutCfg> extends PrimeFaces.widget.DeferredWidget<TCfg> {
-        /**
-         * The layout instance that was created.
-         */
-        layout: JQueryLayout.LayoutInstance;
-        /**
-         * This render method is called by this deferred widget once the widget container has become visible. You may
-         * now proceed with widget initialization.
-         *
-         * __Must be overridden__, or an error will be thrown.
-         *
-         * @override
-         */
-        protected _render(): void;
-        /**
-         * Sets up all event listeners that are required by this widget.
-         */
-        private bindEvents(): void;
-        /**
-         * Fires the appropriate behaviors for when a border pane is shown or hidden.
-         *
-         * @param location The type of border pane that was resized.
-         * @param collapsed `true` if the pane was hidden (collapsed), `false` if it was shown (expanded).
-         */
-        private fireToggleEvent(location: JQueryLayout.BorderPane, collapsed: boolean): void;
-        /**
-         * Hides given border pane, if not already hidden.
-         *
-         * @param location The border pane to hide.
-         */
-        hide(location: JQueryLayout.BorderPane): void;
-        /**
-         * A widget class should not have an explicit constructor. Instead, this initialize method is called after the
-         * widget was created. You can use this method to perform any initialization that is required. For widgets that
-         * need to create custom HTML on the client-side this is also the place where you should call your render
-         * method.
-         *
-         * Please make sure to call the super method first before adding your own custom logic to the init method:
-         *
-         * ```javascript
-         * PrimeFaces.widget.MyWidget = PrimeFaces.widget.BaseWidget.extend({
-         *   init: function(cfg) {
-         *     this._super(cfg);
-         *     // custom initialization
-         *   }
-         * });
-         * ```
-         *
-         * @override
-         * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
-         * component.
-         */
-        init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
-        /**
-         * Callback that is invoked when a border pane is closed.
-         *
-         * @param location The type of border pane that was closed.
-         * @param pane DOM element of the pane that was closed.
-         * @param state UI state of the pane that was closed.
-         */
-        private onclose(location: JQueryLayout.BorderPane, pane: JQuery, state: JQueryLayout.BorderPaneState): void;
-        /**
-         * Callback that is invoked when a border pane is hidden. Invokes the appropriate behaviors.
-         *
-         * @param location The type of border pane that was hidden.
-         * @param pane DOM element of the pane that was hidden.
-         * @param state UI state of the pane that was hidden.
-         */
-        private onhide(location: JQueryLayout.BorderPane, pane: JQuery, state: JQueryLayout.BorderPaneState): void;
-        /**
-         * Callback that is invoked when a border pane is opened.
-         *
-         * @param location The type of border pane that was opened.
-         * @param pane DOM element of the pane that was opened.
-         * @param state UI state of the pane that was opened.
-         */
-        private onopen(location: JQueryLayout.BorderPane, pane: JQuery, state: JQueryLayout.BorderPaneState): void;
-        /**
-         * Callback that is invoked when a border pane is resized.
-         *
-         * @param location The type of border pane that was resized.
-         * @param pane DOM element of the pane that was resized.
-         * @param state UI state of the pane that was resized.
-         */
-        private onresize(location: JQueryLayout.BorderPane, pane: JQuery, state: JQueryLayout.BorderPaneState): void;
-        /**
-         * Callback that is invoked when a border pane is shown.
-         *
-         * @param location The type of border pane that was shown.
-         * @param pane DOM element of the pane that was shown.
-         * @param state UI state of the pane that was shown.
-         */
-        private onshow(location: JQueryLayout.BorderPane, pane: JQuery, state: JQueryLayout.BorderPaneState): void;
-        /**
-         * Shows given border pane, if not already visible.
-         *
-         * @param location The border pane to show.
-         */
-        show(location: JQueryLayout.BorderPane): void;
-        /**
-         * Toggles the given border pane, either hiding it or showing it.
-         *
-         * @param location The border pane to toggle.
-         */
-        toggle(location: JQueryLayout.BorderPane): void;
-    }
-}
-declare namespace PrimeFaces.widget {
-    /**
-     * The configuration for the {@link  Layout| Layout widget}.
-     * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
-     * configuration is usually meant to be read-only and should not be modified.
-     */
-    export interface LayoutCfg extends JQueryLayout.SubKeyLayoutSettings, PrimeFaces.widget.DeferredWidgetCfg {
-        /**
-         * Specifies whether layout should span all page or not.
-         */
-        full: boolean;
-        /**
-         * Callback that is invoked when a border pane is closed.
-         */
-        onClose: PrimeFaces.widget.Layout.OnCloseCallback;
-        /**
-         * Callback that is invoked when a border pane is
-         * opened.
-         */
-        onResize: PrimeFaces.widget.Layout.OnResizeCallback;
-        /**
-         * Callback that is invoked when a border pane is opened
-         * or closed.
-         */
-        onToggle: PrimeFaces.widget.Layout.OnToggleCallback;
-        /**
-         * ID of the element on which this layout widget should be initialized.
-         */
-        parent: string;
-    }
-}
 declare namespace PrimeFaces.widget {
     /**
      * __PrimeFaces Lifecycle Widget__
@@ -26722,7 +23540,7 @@ declare namespace PrimeFaces.widget {
      *
      * Log component is a visual console to display logs on JSF pages.
      *
-     * The Log API is also available via global PrimeFaces object in case youâ€™d like to use the log component to display
+     * The Log API is also available via global PrimeFaces object in case you’d like to use the log component to display
      * your logs:
      *
      * ```javascript
@@ -27311,7 +24129,7 @@ declare namespace PrimeFaces.widget {
      *
      * @typeparam TCfg Defaults to `MenuButtonCfg`. Type of the configuration object for this widget.
      */
-    export class MenuButton<TCfg extends MenuButton = MenuButton> extends PrimeFaces.widget.TieredMenu<TCfg> {
+    export class MenuButton<TCfg extends MenuButtonCfg = MenuButtonCfg> extends PrimeFaces.widget.TieredMenu<TCfg> {
         /**
          * The DOM element for the menu button.
          */
@@ -27335,9 +24153,11 @@ declare namespace PrimeFaces.widget {
         /**
          * Sets up all event listeners that are required by this widget.
          */
-        private bindEvents(): void;
+        private bindButtonEvents(): void;
         /**
          * Hides the overlay menu with the menu items, as if the user clicked outside the menu.
+         *
+         * @override
          */
         hide(): void;
         /**
@@ -27385,8 +24205,18 @@ declare namespace PrimeFaces.widget {
         refresh(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
         /**
          * Brings up the overlay menu with the menu items, as if the menu button were pressed.
+         *
+         * @override
          */
         show(): void;
+        /**
+         * Shows the given submenu of a menu item.
+         *
+         * @override
+         * @param menuitem A menu item (`LI`) with children.
+         * @param submenu A child of the menu item.
+         */
+        showSubmenu(menuitem: JQuery, submenu: JQuery): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -27395,7 +24225,7 @@ declare namespace PrimeFaces.widget {
      * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
      * configuration is usually meant to be read-only and should not be modified.
      */
-    export interface MenuButtonCfg extends PrimeFaces.widget.BaseWidgetCfg {
+    export interface MenuButtonCfg extends PrimeFaces.widget.TieredMenuCfg {
         /**
          * When the positioned element overflows the window in some direction, move it to an
          * alternative position. Similar to my and at, this accepts a single value or a pair for horizontal/vertical,
@@ -31208,13 +28038,13 @@ declare namespace JQueryRoundabout {
         dropCallback: RoundaboutCallback;
         /**
          * The length of time (in milliseconds) the animation will take to animate Roundabout to the appropriate child
-         * when the Roundabout is â€œdropped.â€�
+         * when the Roundabout is “dropped.”
          *
          * Defaults to `600`.
          */
         dropDuration: number;
         /**
-         * The easing function to use when animating Roundabout after it has been â€œdropped.â€� With no other plugins, the
+         * The easing function to use when animating Roundabout after it has been “dropped.” With no other plugins, the
          * standard jQuery easing functions are available. When using the jQuery easing plugin all of its easing functions will also be available.
          *
          * Defaults to `swing`.
@@ -31280,21 +28110,21 @@ declare namespace JQueryRoundabout {
         maxZ: number;
         /**
          * The lowest opacity that will be assigned to a moving element. This occurs when the moving element is opposite
-         * of (that is, 180Â° away from) the focusBearing.
+         * of (that is, 180° away from) the focusBearing.
          *
          * Defaults to `0.4`.
          */
         minOpacity: number;
         /**
          * The lowest size (relative to its starting size) that will be assigned to a moving element. This occurs when
-         * the moving element is opposite of (that is, 180Â° away from) the focusBearing.
+         * the moving element is opposite of (that is, 180° away from) the focusBearing.
          *
          * Defaults to `0.4`.
          */
         minScale: number;
         /**
          * The lowest z-index that will be assigned to a moving element. This occurs when the moving element is opposite
-         * of (that is, 180Â° away from) the focusBearing.
+         * of (that is, 180° away from) the focusBearing.
          *
          * Defaults to `100`.
          */
@@ -31407,9 +28237,9 @@ interface JQuery {
      * in focus.
      *
      * @param method The method to call on the Roundabout instance.
-     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundaboutâ€™s
+     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundabout’s
      * configured duration if no value is set here
-     * @param easing The name of the easing function to use for movement; uses Roundaboutâ€™s configured easing if no
+     * @param easing The name of the easing function to use for movement; uses Roundabout’s configured easing if no
      * value is set here.
      * @param onChangeComplete Callback function that is invoked once the change completes.
      * @return this jQuery instance for chaining.
@@ -31430,9 +28260,9 @@ interface JQuery {
      *
      * @param method The method to call on the Roundabout instance.
      * @param childPosition The zero-based child to which Roundabout will animate.
-     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundaboutâ€™s
+     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundabout’s
      * configured duration if no value is set here
-     * @param easing The name of the easing function to use for movement; uses Roundaboutâ€™s configured easing if no
+     * @param easing The name of the easing function to use for movement; uses Roundabout’s configured easing if no
      * value is set here.
      * @param onChangeComplete Callback function that is invoked once the change completes.
      * @return this jQuery instance for chaining.
@@ -31452,9 +28282,9 @@ interface JQuery {
      * Animates the Roundabout to the next child element.
      *
      * @param method The method to call on the Roundabout instance.
-     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundaboutâ€™s
+     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundabout’s
      * configured duration if no value is set here
-     * @param easing The name of the easing function to use for movement; uses Roundaboutâ€™s configured easing if no
+     * @param easing The name of the easing function to use for movement; uses Roundabout’s configured easing if no
      * value is set here.
      * @param onChangeComplete Callback function that is invoked once the change completes.
      * @return this jQuery instance for chaining.
@@ -31472,9 +28302,9 @@ interface JQuery {
      * Animates the Roundabout to the previous child element.
      *
      * @param method The method to call on the Roundabout instance.
-     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundaboutâ€™s
+     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundabout’s
      * configured duration if no value is set here
-     * @param easing The name of the easing function to use for movement; uses Roundaboutâ€™s configured easing if no
+     * @param easing The name of the easing function to use for movement; uses Roundabout’s configured easing if no
      * value is set here.
      * @param onChangeComplete Callback function that is invoked once the change completes.
      * @return this jQuery instance for chaining.
@@ -31494,9 +28324,9 @@ interface JQuery {
      *
      * @param method The method to call on the Roundabout instance.
      * @param degrees The amount by which the bearing will change (either positive or negative)
-     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundaboutâ€™s
+     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundabout’s
      * configured duration if no value is set here
-     * @param easing The name of the easing function to use for movement; uses Roundaboutâ€™s configured easing if no
+     * @param easing The name of the easing function to use for movement; uses Roundabout’s configured easing if no
      * value is set here.
      * @param onChangeComplete Callback function that is invoked once the change completes.
      * @return this jQuery instance for chaining.
@@ -31517,9 +28347,9 @@ interface JQuery {
      *
      * @param method The method to call on the Roundabout instance.
      * @param degrees A value between `0.0` and `359.9`.
-     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundaboutâ€™s
+     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundabout’s
      * configured duration if no value is set here
-     * @param easing The name of the easing function to use for movement; uses Roundaboutâ€™s configured easing if no
+     * @param easing The name of the easing function to use for movement; uses Roundabout’s configured easing if no
      * value is set here.
      * @param onChangeComplete Callback function that is invoked once the change completes.
      * @return this jQuery instance for chaining.
@@ -31535,7 +28365,7 @@ interface JQuery {
      */
     roundabout(method: "animateBearingToFocus", degrees: number, onChangeComplete?: JQueryRoundabout.RoundaboutCallback): this;
     /**
-     * Starts the Roundaboutâ€™s autoplay feature.
+     * Starts the Roundabout’s autoplay feature.
      *
      * @param method The method to call on the Roundabout instance.
      * @param onAnimationComplete Callback function that is invoked after each autoplay animation completes.
@@ -31543,7 +28373,7 @@ interface JQuery {
      */
     roundabout(method: "startAutoplay", onAnimationComplete?: JQueryRoundabout.RoundaboutCallback): this;
     /**
-     * Stops the Roundaboutâ€™s autoplay feature.
+     * Stops the Roundabout’s autoplay feature.
      *
      * @param method The method to call on the Roundabout instance.
      * @param keepAutoplayBindings When `true` will not destroy any autoplay mouseenter and mouseleave event bindings
@@ -31552,7 +28382,7 @@ interface JQuery {
      */
     roundabout(method: "stopAutoplay", keepAutoplayBindings?: boolean): this;
     /**
-     * Starts or stops the Roundaboutâ€™s autoplay feature (based upon its current state).
+     * Starts or stops the Roundabout’s autoplay feature (based upon its current state).
      *
      * @param method The method to call on the Roundabout instance.
      * @param onAnimationComplete Callback function that is invoked after each autoplay animation completes.
@@ -31560,14 +28390,14 @@ interface JQuery {
      */
     roundabout(method: "toggleAutoplay", onAnimationComplete?: JQueryRoundabout.RoundaboutCallback): this;
     /**
-     * Checks to see if the Roundaboutâ€™s autoplay feature is currently playing or not.
+     * Checks to see if the Roundabout’s autoplay feature is currently playing or not.
      *
      * @param method The method to call on the Roundabout instance.
      * @return `true` if autoplay is active, or `false` otherwise.
      */
     roundabout(method: "isAutoplaying"): boolean;
     /**
-     * Changes the length of time (in milliseconds) that the Roundaboutâ€™s autoplay feature waits between attempts to
+     * Changes the length of time (in milliseconds) that the Roundabout’s autoplay feature waits between attempts to
      * animate to the next child.
      *
      * @param method The method to call on the Roundabout instance.
@@ -31625,14 +28455,14 @@ declare namespace JQuery {
          * Triggered by the {@link JQuery.roundabout|jQuery Roundabout plugin}.
          *
          * This event fires on moving child elements when an animation causes them pass through the point that is
-         * opposite (or 180Â°) from the `focusBearing` in a clockwise motion.
+         * opposite (or 180°) from the `focusBearing` in a clockwise motion.
          */
         moveClockwiseThroughBack: JQuery.EventBase<TDelegateTarget, TData, TCurrentTarget, TTarget>;
         /**
          * Triggered by the {@link JQuery.roundabout|jQuery Roundabout plugin}.
          *
          * This event fires on moving child elements when an animation causes them to pass through the point that is
-         * opposite (or 180Â°) from the focusBearing in a counterclockwise motion.
+         * opposite (or 180°) from the focusBearing in a counterclockwise motion.
          */
         moveCounterclockwiseThroughBack: JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget>;
         /**
@@ -31706,14 +28536,6 @@ declare namespace PrimeFaces.widget {
 }
 declare namespace PrimeFaces.widget.Schedule {
     /**
-     * Type alias for the
-     * {@link "@fullcalendar/core/types/input-types".OptionsInput|OptionsInput} interface from FullCalendar, required for
-     * technical reasons.
-     */
-    export type OptionsInput = import("@fullcalendar/core").OptionsInput;
-}
-declare namespace PrimeFaces.widget.Schedule {
-    /**
      * Name of JavaScript function to extend the options of the
      * underlying FullCalendar plugin. Access the this schedule widget via the this context, and change the FullCalendar
      * configuration stored in `this.cfg`. See also {@link ScheduleCfg.extender}.
@@ -31755,11 +28577,10 @@ declare namespace PrimeFaces.widget {
          */
         protected _render(): void;
         /**
-         * Sets up the event listeners for when the user switches the to a different view (month view, week day, or time
-         * view). Updates the hidden input field with the current view name. Used for restoring the view after an AJAX
-         * update.
+         * Localizes certain aspects of FullCalendar that are exposed. The rest are configured by "locale"
+         * setting and FullCalendar and Moment translations for that locale.
          */
-        private bindViewChangeListener(): void;
+        private configureLocale(): void;
         /**
          * A widget class should not have an explicit constructor. Instead, this initialize method is called after the
          * widget was created. You can use this method to perform any initialization that is required. For widgets that
@@ -31784,6 +28605,14 @@ declare namespace PrimeFaces.widget {
          */
         init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
         /**
+         * The event listener for when the user switches the to a different view (month view, week day, or time view).
+         * Updates the hidden input field with the current view name. Used for restoring the view after an AJAX update.
+         *
+         * @param arg Event data passed by FullCalendar when the view
+         * changes.
+         */
+        private onViewChange(arg: import("@fullcalendar/common").ViewContentArg): void;
+        /**
          * Creates and sets the view options for FullCalendar on this widget configuration.
          */
         private setViewOptions(): void;
@@ -31796,6 +28625,10 @@ declare namespace PrimeFaces.widget {
          */
         private setupEventSource(): void;
         /**
+         * Creates and sets the event listeners for the previous, next, and today buttons in the title bar.
+         */
+        private setupTitlebarHandlers(): void;
+        /**
          * Updates and refreshes the schedule view.
          */
         update(): void;
@@ -31807,7 +28640,7 @@ declare namespace PrimeFaces.widget {
      * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
      * configuration is usually meant to be read-only and should not be modified.
      */
-    export interface ScheduleCfg extends PrimeFaces.widget.DeferredWidgetCfg, PrimeFaces.widget.Schedule.OptionsInput {
+    export interface ScheduleCfg extends PrimeFaces.widget.DeferredWidgetCfg {
         /**
          * Name of JavaScript function to extend the options of
          * the underlying FullCalendar plugin. Access the this schedule widget via the this context, and change the FullCalendar
@@ -31819,14 +28652,23 @@ declare namespace PrimeFaces.widget {
          */
         formId: string;
         /**
+         * Locale code of the locale for the FullCalendar, such as `de` or `en`.
+         */
+        locale: string;
+        /**
          * Whether for URL events access to the opener window from the target site should be
          * prevented (phishing protection), default value is `true`.
          */
         noOpener: boolean;
         /**
-         * Whether theming is enabled.
+         * The configuration object that is passed to the
+         * FullCalendar upon initialization, see {@link CalendarOptions|CalendarOptions}.
          */
-        theme: boolean;
+        options: import("@fullcalendar/core").CalendarOptions;
+        /**
+         * Theme system used for rendering the calendar.
+         */
+        themeSystem: boolean;
         /**
          * Whether a tooltip should be displayed on hover.
          */
@@ -32384,6 +29226,93 @@ declare namespace PrimeFaces.widget {
      * configuration is usually meant to be read-only and should not be modified.
      */
     export interface ScrollPanelCfg extends JQueryJScrollPane.JScrollPaneSettings, PrimeFaces.widget.DeferredWidgetCfg {
+    }
+}
+declare namespace PrimeFaces.widget {
+    /**
+     * __PrimeFaces ScrollTop Widget__
+     *
+     * ScrollTop gets displayed after a certain scroll position and used to navigates to the top of the page quickly.
+     *
+     * @typeparam TCfg Defaults to `ScrollTopCfg`. Type of the configuration object for this widget.
+     */
+    export class ScrollTop<TCfg extends ScrollTopCfg = ScrollTopCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
+        /**
+         * Window or parent element of the ScrollTop.
+         */
+        scrollElement: string;
+        /**
+         * DOM element of the scrollTop.
+         */
+        scrollTop: JQuery;
+        /**
+         * Target element of the ScrollTop.
+         */
+        target: string;
+        /**
+         * The scroll threshold for displaying the ScrollTop element.
+         */
+        threshold: JQuery;
+        /**
+         * Whether the ScrollTop element is visible or not.
+         */
+        visible: JQuery;
+        /**
+         * Sets up all event listeners required for this widget.
+         */
+        private bindEvents(): void;
+        /**
+         * Sets up scroll to top event to the ScrollTop element.
+         */
+        private bindScrollEvent(): void;
+        /**
+         * Checks visibility of the ScrollTop element.
+         */
+        private checkVisibility(): void;
+        /**
+         * A widget class should not have an explicit constructor. Instead, this initialize method is called after the
+         * widget was created. You can use this method to perform any initialization that is required. For widgets that
+         * need to create custom HTML on the client-side this is also the place where you should call your render
+         * method.
+         *
+         * Please make sure to call the super method first before adding your own custom logic to the init method:
+         *
+         * ```javascript
+         * PrimeFaces.widget.MyWidget = PrimeFaces.widget.BaseWidget.extend({
+         *   init: function(cfg) {
+         *     this._super(cfg);
+         *     // custom initialization
+         *   }
+         * });
+         * ```
+         *
+         * @override
+         * @param cfg The widget configuration to be used for this widget instance.
+         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * component.
+         */
+        init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+    }
+}
+declare namespace PrimeFaces.widget {
+    /**
+     * The configuration for the {@link  ScrollTop| ScrollTop widget}.
+     * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+     * configuration is usually meant to be read-only and should not be modified.
+     */
+    export interface ScrollTopCfg extends PrimeFaces.widget.BaseWidgetCfg {
+        /**
+         * Scrolling behavior of the ScrollTop.
+         */
+        behavior: string;
+        /**
+         * Target of the ScrollTop.
+         */
+        target: string;
+        /**
+         * Value of the vertical scroll position of the target to toggle the visibility.
+         */
+        threshold: number;
     }
 }
 declare namespace PrimeFaces.widget.Sidebar {
@@ -33248,6 +30177,14 @@ declare namespace PrimeFaces.widget {
          */
         private repeat(interval: number, dir: -1 | 1): void;
         /**
+         * If roundStep is enabled then round to the nearest step value.
+         * For example if step=5 and value=8 it would be rounded 10.
+         *
+         * @param value The value for this spinner.
+         * @return Original value if rounding disabled, else a rounded value.
+         */
+        private roundStep(value: number): number;
+        /**
          * Sets the value of this spinner to the given number.
          *
          * @param value The new value for this spinner.
@@ -33275,7 +30212,7 @@ declare namespace PrimeFaces.widget {
         /**
          * Number of decimal places.
          */
-        decimalPlaces: number;
+        decimalPlaces: string;
         /**
          * The character separating the integral and fractional parts of the number.
          */
@@ -33321,6 +30258,145 @@ declare namespace PrimeFaces.widget {
          * digits.
          */
         thousandSeparator: string;
+    }
+}
+declare namespace PrimeFaces.widget {
+    /**
+     * __PrimeFaces Splitter Widget__
+     *
+     * Splitter represents entities using icons, labels and images.
+     *
+     * @typeparam TCfg Defaults to `SplitterCfg`. Type of the configuration object for this widget.
+     */
+    export class Splitter<TCfg extends SplitterCfg = SplitterCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
+        /**
+         * DOM elements of the gutter elements in splitter.
+         */
+        gutters: JQuery;
+        /**
+         * Whether splitter element is horizontal or vertical.
+         */
+        horizontal: JQuery;
+        /**
+         * Whether splitter element is stateful or not.
+         */
+        isStateful: JQuery;
+        /**
+         * Array of the panels size for save and restore state.
+         */
+        panelSizes: JQuery;
+        /**
+         * DOM elements of the splitter panels in splitter.
+         */
+        panels: JQuery;
+        /**
+         * Length of the panels array.
+         */
+        panelsLength: JQuery;
+        /**
+         * Size of the splitter element.
+         */
+        parentElementSize: JQuery;
+        /**
+         * When pressed on gutter value is true, default value is false.
+         */
+        pressed: JQuery;
+        /**
+         * DOM element of the splitter.
+         */
+        splitter: JQuery;
+        /**
+         * Sets up all event listeners required for this widget.
+         */
+        private bindEvents(): void;
+        /**
+         * Add resize event to the splitter gutters.
+         */
+        private bindResizeEvent(): void;
+        /**
+         * Return localStorage or sessionStorage based on components stateStorage type.
+         *
+         * @return localStorage or sessionStorage.
+         */
+        getStorage(): Storage;
+        /**
+         * A widget class should not have an explicit constructor. Instead, this initialize method is called after the
+         * widget was created. You can use this method to perform any initialization that is required. For widgets that
+         * need to create custom HTML on the client-side this is also the place where you should call your render
+         * method.
+         *
+         * Please make sure to call the super method first before adding your own custom logic to the init method:
+         *
+         * ```javascript
+         * PrimeFaces.widget.MyWidget = PrimeFaces.widget.BaseWidget.extend({
+         *   init: function(cfg) {
+         *     this._super(cfg);
+         *     // custom initialization
+         *   }
+         * });
+         * ```
+         *
+         * @override
+         * @param cfg The widget configuration to be used for this widget instance.
+         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * component.
+         */
+        init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+        /**
+         * Initialize panels size.
+         */
+        private initPanelSize(): void;
+        /**
+         * Resize splitter panels.
+         *
+         * @param startPos start position of the cursor in resize event.
+         * @param prevPanelSize size of the splitter panel previous of the selected gutter.
+         * @param nextPanelSize size of the splitter panel next of the selected gutter.
+         * @param prevPanelElement DOM element of the splitter panel previous of the selected gutter element.
+         * @param nextPanelElement DOM element of the splitter panel next of the selected gutter element.
+         */
+        private onResize(startPos: number, prevPanelSize: number, nextPanelSize: number, prevPanelElement: JQuery, nextPanelElement: JQuery): void;
+        /**
+         * Toggles the expansion state of this panel.
+         *
+         * @param gutterElement DOM element of the selected gutter element in the resize event.
+         */
+        private onResizeEnd(gutterElement: JQuery): void;
+        /**
+         * Restore panel sizes from storage.
+         *
+         * @return if state restore operation is successful returns true, if not returns false
+         */
+        restoreState(): boolean;
+        /**
+         * Save current panel sizes to the storage.
+         */
+        private saveState(): void;
+    }
+}
+declare namespace PrimeFaces.widget {
+    /**
+     * The configuration for the {@link  Splitter| Splitter widget}.
+     * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+     * configuration is usually meant to be read-only and should not be modified.
+     */
+    export interface SplitterCfg extends PrimeFaces.widget.BaseWidgetCfg {
+        /**
+         * Defines Size of the divider in pixels.
+         */
+        gutterSize: number;
+        /**
+         * Defines orientation of the panels, "horizontal" or "vertical".
+         */
+        layout: string;
+        /**
+         * Defines storage identifier of a stateful Splitter.
+         */
+        stateKey: string;
+        /**
+         * Defines where a stateful splitter keeps its state, "session" or "local".
+         */
+        stateStorage: string;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -34120,7 +31196,7 @@ declare namespace PrimeFaces.widget {
          */
         clear(): void;
         /**
-         * Enables this text editor so that no text can be entered or removed.
+         * Disables this text editor so that no text can be entered or removed.
          */
         disable(): void;
         /**
@@ -34911,6 +31987,10 @@ declare namespace PrimeFaces.widget {
      */
     export interface TooltipCfg extends PrimeFaces.widget.BaseWidgetCfg {
         /**
+         * Position of tooltip with respect to target. If set overrides the 'position' attribute.
+         */
+        atPos: string;
+        /**
          * Client side callback to execute before tooltip is
          * shown. Returning false will prevent display.
          */
@@ -34943,6 +32023,10 @@ declare namespace PrimeFaces.widget {
          * Event hiding the tooltip.
          */
         hideEvent: string;
+        /**
+         * Position of tooltip with respect to target. If set overrides the 'position' attribute.
+         */
+        myPos: string;
         /**
          * Client side callback to execute after tooltip is shown.
          */
@@ -36521,12 +33605,10 @@ declare namespace PrimeFaces.widget.TreeTable {
 }
 declare namespace PrimeFaces.widget.TreeTable {
     /**
-     * The order how the rows of a tree table
-     * are sorted.
-     * - `ASCENDING`: The rows are ordered in an ascending order, from the first to the last item.
-     * - `DESCENDING`: The rows are ordered in an ascending order, from the last to the first item.
+     * The available sort order
+     * types for the data table.
      */
-    export type SortOrder = "ASCENDING" | "DESCENDING";
+    export type SortOrder = "ASCENDING" | "DESCENDING" | "UNSORTED";
 }
 declare namespace PrimeFaces.widget {
     /**
@@ -36667,6 +33749,10 @@ declare namespace PrimeFaces.widget {
          */
         theadClone: JQuery;
         /**
+         * Map between the sort order names and the multiplier for the comparator.
+         */
+        protected SORT_ORDER: Record<PrimeFaces.widget.DataTable.SortOrder, -1 | 0 | 1>;
+        /**
          * This render method is called by this deferred widget once the widget container has become visible. You may
          * now proceed with widget initialization.
          *
@@ -36675,6 +33761,13 @@ declare namespace PrimeFaces.widget {
          * @override
          */
         protected _render(): void;
+        /**
+         * Adds the given sorting to the list of sortings. Each sorting describes a column by which to sort. This data table
+         * may be sorted by multiple columns.
+         *
+         * @param meta Sorting to add.
+         */
+        private addSortMeta(meta: PrimeFaces.widget.DataTable.SortMeta): void;
         /**
          * Adds the given row to the list of currently selected rows.
          *
@@ -36819,6 +33912,22 @@ declare namespace PrimeFaces.widget {
          */
         filter(): void;
         /**
+         * Finds the saved width of the given column. The width of resizable columns may be saved to restore it after an
+         * AJAX update.
+         *
+         * @param id ID of a column
+         * @return The saved width of the given column in pixels. `undefined` when the given column
+         * does not exist.
+         */
+        private findColWidthInResizableState(id: string): string | undefined;
+        /**
+         * Sends a select event on server side to invoke a select listener if defined.
+         *
+         * @param nodeKey The key of the node that was selected.
+         * @param behaviorEvent Name of the event to fire.
+         */
+        private fireSelectEvent(nodeKey: string, behaviorEvent: string): void;
+        /**
          * Callback for when a node was selected. Invokes the appropriate behaviors.
          *
          * @param nodeKey Key of the row that was selected.
@@ -36962,6 +34071,13 @@ declare namespace PrimeFaces.widget {
          */
         isSingleSelection(): boolean;
         /**
+         * Serializes the option from the sort meta items.
+         *
+         * @param option Property of the sort meta to use.
+         * @return All values from the current sort meta list for the given option.
+         */
+        private joinSortMetaOption(option: keyof PrimeFaces.widget.DataTable.SortMeta): string;
+        /**
          * Callback for when a row was clicked. Selects or unselects the row, if that feature is enabled.
          *
          * @param event The click event that occurred.
@@ -37061,6 +34177,12 @@ declare namespace PrimeFaces.widget {
          */
         private selectNodesInRange(node: JQuery): void;
         /**
+         * Applies the appropriated width to all given column elements.
+         *
+         * @param columns A list of column elements.
+         */
+        private setColumnsWidth(columns: JQuery): void;
+        /**
          * Applies the given outer width to an element.
          *
          * @param element An element to modify.
@@ -37120,8 +34242,9 @@ declare namespace PrimeFaces.widget {
          *
          * @param columnHeader A column to sort by, must be a TH element of the THEAD.
          * @param order Whether to sort the rows in ascending or descending order.
+         * @param multi `true` if sorting by multiple columns is enabled, or `false` otherwise.
          */
-        sort(columnHeader: JQuery, order: PrimeFaces.widget.TreeTable.SortOrder): void;
+        sort(columnHeader: JQuery, order: PrimeFaces.widget.TreeTable.SortOrder, multi: boolean): void;
         /**
          * Switches a row to edit mode and displays the editors for that row.
          *
@@ -37154,9 +34277,16 @@ declare namespace PrimeFaces.widget {
          */
         unselectNode(node: JQuery, silent?: boolean): void;
         /**
-         * Recomputes and applies the target width of all columns.
+         * Computes and saves the resizable state of this data table, ie. which columns have got which width. May be used
+         * later to restore the current column width after an AJAX update.
+         *
+         * @param columnHeader Element of a column header of this data table.
+         * @param nextColumnHeader Element of the column header next to the given column header.
+         * @param table The element for this data table.
+         * @param newWidth New width to be applied.
+         * @param nextColumnWidth Width of the column next to the given column header.
          */
-        private updateColumnWidths(): void;
+        private updateResizableState(columnHeader: JQuery, nextColumnHeader: JQuery, table: JQuery, newWidth: number, nextColumnWidth: number | null): void;
         /**
          * Updates a row with the given HTML content.
          *
@@ -37164,6 +34294,12 @@ declare namespace PrimeFaces.widget {
          * @param content The new HTML content of the row.
          */
         private updateRows(row: JQuery, content: string | HTMLElement | HTMLElement[] | JQuery): void;
+        /**
+         * In multi-sort mode this will add number indicators to let the user know the current
+         * sort order. If only one column is sorted then no indicator is displayed and will
+         * only be displayed once more than one column is sorted.
+         */
+        private updateSortPriorityIndicators(): void;
         /**
          * Updates the vertical scroll position and adjusts the margin.
          */
@@ -37367,7 +34503,7 @@ declare namespace PrimeFaces.widget {
     export interface TriStateCheckboxCfg extends PrimeFaces.widget.BaseWidgetCfg {
     }
 }
-declare namespace PrimeFaces.util.ValidationContext {
+declare namespace PrimeFaces.validation.Utils {
     /**
      * Used when bean validation is enabled. Creates a faces message with the given key and for the given element. The
      * element is used to find the label that is added to the message.
@@ -37379,7 +34515,7 @@ declare namespace PrimeFaces.util.ValidationContext {
      */
     export function getMessageBV(element: JQuery, defaultKey?: string, msg?: string): PrimeFaces.FacesMessageBase;
 }
-declare namespace PrimeFaces.util.ValidationContext {
+declare namespace PrimeFaces.validation.Utils {
     /**
      * Given a message with placeholders, replaces the placeholders with the given parameters. The format of the
      * message is similar to, but not quite the same as, the format used by `java.text.MessageFormat`.
@@ -37400,9 +34536,7 @@ declare namespace PrimeFaces {
      * An object with the client-side implementation of some faces validators. Used for implementing client-side
      * validation for quick feedback.
      */
-    export let validator: {
-        Highlighter: PrimeFaces.Highlighter;
-    } & Record<string, PrimeFaces.Validator>;
+    export let validator: Record<string, PrimeFaces.Validator>;
 }
 declare namespace PrimeFaces {
     /**
@@ -37412,70 +34546,30 @@ declare namespace PrimeFaces {
 }
 declare namespace PrimeFaces {
     /**
-     * A shortcut for `PrimeFaces.validate`.
+     * A shortcut for `PrimeFaces.validation.validate` used by server-side renderers.
+     * If the `ajax` attribute is set to `true` (the default is `false`), all inputs configured by the `process` attribute are validated
+     * and all messages for the inputs configured by the `update` attribute are rendered.
+     * Otherwise, if the `ajax` attribute is set to the `false`, all inputs of the the parent form, of the `source` attribute, are processed and updated.
      *
-     * @param cfg An AJAX configuration. It should have at least the
-     * source (`s`) attribute set.
+     * @param cfg An configuration.
      * @return `true` if the request would not result in validation errors, or `false` otherwise.
      */
-    export function vb(cfg: Partial<PrimeFaces.ajax.ShorthandConfiguration>): boolean;
+    export function vb(cfg: Partial<PrimeFaces.validation.ShorthandConfiguration>): boolean;
 }
 declare namespace PrimeFaces {
     /**
-     * A shortcut for `PrimeFaces.validateInstant`.
+     * A shortcut for `PrimeFaces.validation.validateInstant`. This is used by `p:clientValidator`.
      *
      * @param element The ID of an element to validate, or the element itself.
      * @return `true` if the element is valid, or `false` otherwise.
      */
     export function vi(element: string | HTMLElement | JQuery): boolean;
 }
-declare namespace PrimeFaces {
-    /**
-     * When an AJAX request (with a specified `process` and/or `update`) is sent, the submitted form values are
-     * validated by the server. Given the configuration of such an AJAX request, this function checks whether it would
-     * result in any validation errors. It does this on the client via JavaScript, without sending any requests. This
-     * can be used for client-side validation that provides quick feedback to the user.
-     *
-     * @param cfg An AJAX configuration. It should have at least the
-     * source (`s`) attribute set.
-     * @return `true` if the request would not result in validation errors, or `false` otherwise.
-     */
-    export function validate(cfg: Partial<PrimeFaces.ajax.ShorthandConfiguration>): boolean;
-}
-declare namespace PrimeFaces {
-    /**
-     * Validates all given input fields, checking whether their current value is valid.
-     *
-     * @param inputs A JQuery instance with one or more input elements.
-     */
-    export function validateInputs(inputs: JQuery): void;
-}
-declare namespace PrimeFaces {
-    /**
-     * Performs a client-side validation of (the value of) the given element. If the element is valid, removes old
-     * messages from the element. If the value of the element is invalid, adds the appropriate validation failure
-     * messages.
-     *
-     * @param element A JQuery instance with a single input element to validate.
-     */
-    export function validateInput(element: JQuery): void;
-}
-declare namespace PrimeFaces {
-    /**
-     * Performs a client-side validation of (the value of) the given element. If the element is valid, removes old
-     * messages from the element. If the value of the element is invalid, adds the appropriate validation failure
-     * messages.
-     *
-     * @param el The ID of an element to validate, or the element itself.
-     * @return `true` if the element is valid, or `false` otherwise.
-     */
-    export function validateInstant(el: string | HTMLElement | JQuery): boolean;
-}
 /**
  * The object that contains functionality related to handling faces messages, especially validation errror messages.
  * Contains methods for clearing message of an element or adding messages to an element.
  */
-declare namespace PrimeFaces.util.ValidationContext {
+declare namespace PrimeFaces.validation.ValidationContext {
     /**
      * A list of element groups to be validated. Usually corresponds to the name of single form element. For some
      * cases such as a select list of checkboxes, a group may correspond to multiple DOM elements.
@@ -37505,48 +34599,14 @@ declare namespace PrimeFaces.util.ValidationContext {
      */
     export function clear(): void;
     /**
-     * For a given ID of a component, finds the DOM element with the message for that component.
-     *
-     * @param clientId ID of a component for which to find the ui message.
-     * @param uiMessageCollection A JQuery instance with a list of `ui-message`s, or `null` if no
-     * such element exists.
-     * @return The DOM element with the messages for the given component, or `null` when no such
-     * element could be found.
-     */
-    export function findUIMessage(clientId: string, uiMessageCollection: JQuery): JQuery | null;
-    /**
-     * Given a message with placeholders, replaces the placeholders with the given parameters. The format of the
-     * message is similar to, but not quite the same as, the format used by `java.text.MessageFormat`.
-     * ```javascript
-     * format("Value required for element {0}", ["", "email"]) // => "Value required for element email"
-     * format("Use {0} braces like this: '{0}'", ["", "simple"]) // => "Use simple braces like this: 'simple'"
-     * ```
-     *
-     * @param str A message with placeholders.
-     * @param params A list of parameters for the placeholders. The first item is ignored. The item at
-     * index `i` corresponds to the placeholder `{i-1}`.
-     * @return The string with the placeholders replaced with the given params.
-     */
-    export function format(str: string, params: string[]): string;
-    /**
-     * Finds the label of a DOM element. This is either a custom label set on a component, or just the ID of the
-     * element. This label is used, for example, as part of a validation error message for the element.
+     * Shortcut for PrimeFaces.validation.Utils.getLabel.
      *
      * @param element A DOM element for which to find the label.
      * @return The label of the given element.
      */
     export function getLabel(element: JQuery): string;
     /**
-     * Finds the current locale with the i18n keys and the associated translations. Uses the current language key
-     * as specified by `PrimeFaces.settings.locale`. When no locale was found for the given locale, falls back to
-     * the default English locale.
-     *
-     * @return The current locale with the key-value pairs.
-     */
-    export function getLocaleSettings(): PrimeFaces.Locale;
-    /**
-     * Finds the localized text of the given message key. When the current locale does not contain a translation,
-     * falls back to the default English locale.
+     * Shortcut for PrimeFaces.validation.Utils.getMessage.
      *
      * @param key The i18n key of a message, such as `javax.faces.component.UIInput.REQUIRED` or
      * `javax.faces.validator.LengthValidator.MINIMUM`.
@@ -37562,14 +34622,6 @@ declare namespace PrimeFaces.util.ValidationContext {
      */
     export function getMessagesLength(): number;
     /**
-     * Given a form element (such as input, textarea, select), finds the value that would be sent when the form is
-     * submitted.
-     *
-     * @param element A form element for which to find its value.
-     * @return The value of the form element, or the empty string when it does not have a value.
-     */
-    export function getSubmittedValue(element: JQuery): string;
-    /**
      * Checks whether this validation context contains any messages at all.
      *
      * @return `true` if this validation context contains zero messages, or `false` otherwise.
@@ -37584,20 +34636,6 @@ declare namespace PrimeFaces.util.ValidationContext {
      * @return `true` if the given group is to be validated, or `false` otherwise.
      */
     export function isGroupValidated(name: string): boolean;
-    /**
-     * Renders all messages that were added to this validation context.
-     *
-     * @param container The container for the messages. Either the element with the class `ui-messages`, or
-     * a parent of such an element.
-     */
-    export function renderMessages(container: JQuery): void;
-    /**
-     * Given the container element of a ui message, renders the given message to that element.
-     *
-     * @param uiMessage The container element of the message, usually with the class `ui-message`.
-     * @param msg Message to render to the given element.
-     */
-    export function renderUIMessage(uiMessage: JQuery, msg: PrimeFaces.FacesMessageBase): void;
 }
 declare namespace PrimeFaces {
     /**
@@ -37608,7 +34646,7 @@ declare namespace PrimeFaces {
         /**
          * A map between a widget type and the corresponding highlight handler for that type.
          */
-        types: Record<string, PrimeFaces.HighlightHandler>;
+        types: Record<string, PrimeFaces.validation.Highlighter>;
         /**
          * When an element is invalid due to a validation error, the user needs to be informed. This method highlights
          * the label for the given element by adding an appropriate CSS class.
@@ -37799,6 +34837,14 @@ declare namespace PrimeFaces.widget {
      * configuration is usually meant to be read-only and should not be modified.
      */
     export interface WizardCfg extends PrimeFaces.widget.BaseWidgetCfg {
+        /**
+         * Animation effect to use when showing and hiding wizard.
+         */
+        effect: string;
+        /**
+         * Duration of the animation effect in milliseconds.
+         */
+        effectDuration: number;
         /**
          * ID of the form to use for AJAX requests.
          */

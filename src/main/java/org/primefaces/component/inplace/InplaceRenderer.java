@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,11 +30,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.HTML;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.*;
 
 public class InplaceRenderer extends CoreRenderer {
 
@@ -63,11 +59,7 @@ public class InplaceRenderer extends CoreRenderer {
         String displayClass = disabled ? Inplace.DISABLED_DISPLAY_CLASS : Inplace.DISPLAY_CLASS;
 
         boolean validationFailed = context.isValidationFailed() && !inplace.isValid();
-        String displayStyle = validationFailed ? Inplace.DISPLAY_NONE : Inplace.DISPLAY_INLINE;
-        String contentStyle = validationFailed ? Inplace.DISPLAY_INLINE : Inplace.DISPLAY_NONE;
-
-        UIComponent outputFacet = inplace.getFacet("output");
-        UIComponent inputFacet = inplace.getFacet("input");
+        String mode = inplace.getMode();
 
         //container
         writer.startElement("span", inplace);
@@ -79,11 +71,17 @@ public class InplaceRenderer extends CoreRenderer {
 
         writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
 
-        //display
+
+        //output
+        String outputStyle = validationFailed
+                ? Inplace.DISPLAY_NONE
+                : (Inplace.MODE_OUTPUT.equals(mode) ? Inplace.DISPLAY_INLINE : Inplace.DISPLAY_NONE);
+        UIComponent outputFacet = inplace.getFacet("output");
+
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId + "_display", "id");
         writer.writeAttribute("class", displayClass, null);
-        writer.writeAttribute("style", "display:" + displayStyle, null);
+        writer.writeAttribute("style", "display:" + outputStyle, null);
 
         if (ComponentUtils.shouldRenderFacet(outputFacet)) {
             outputFacet.encodeAll(context);
@@ -94,12 +92,18 @@ public class InplaceRenderer extends CoreRenderer {
 
         writer.endElement("span");
 
-        //content
+
+        //input
+        String inputStyle = validationFailed
+                ? Inplace.DISPLAY_INLINE
+                : (Inplace.MODE_OUTPUT.equals(mode) ? Inplace.DISPLAY_NONE : Inplace.DISPLAY_INLINE);
+        UIComponent inputFacet = inplace.getFacet("input");
+
         if (!inplace.isDisabled()) {
             writer.startElement("span", null);
             writer.writeAttribute("id", clientId + "_content", "id");
             writer.writeAttribute("class", Inplace.CONTENT_CLASS, null);
-            writer.writeAttribute("style", "display:" + contentStyle, null);
+            writer.writeAttribute("style", "display:" + inputStyle, null);
 
             if (ComponentUtils.shouldRenderFacet(inputFacet)) {
                 inputFacet.encodeAll(context);
@@ -120,32 +124,26 @@ public class InplaceRenderer extends CoreRenderer {
 
     protected String getLabelToRender(FacesContext context, Inplace inplace) {
         String label = inplace.getLabel();
-        String emptyLabel = inplace.getEmptyLabel();
-
         if (!isValueBlank(label)) {
             return label;
         }
-        else {
-            String value = ComponentUtils.getValueToRender(context, inplace.getChildren().get(0));
 
-            if (LangUtils.isValueBlank(value)) {
-                if (emptyLabel != null) {
-                    return emptyLabel;
-                }
-                else {
-                    return Constants.EMPTY_STRING;
-                }
+        String value = ComponentUtils.getValueToRender(context, inplace.getChildren().get(0));
+        if (LangUtils.isValueBlank(value)) {
+            String emptyLabel = inplace.getEmptyLabel();
+            if (emptyLabel != null) {
+                return emptyLabel;
             }
-            else {
-                return value;
-            }
+
+            return Constants.EMPTY_STRING;
         }
+
+        return value;
     }
 
     protected void encodeScript(FacesContext context, Inplace inplace) throws IOException {
-        String clientId = inplace.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Inplace", inplace.resolveWidgetVar(context), clientId)
+        wb.init("Inplace", inplace)
                 .attr("effect", inplace.getEffect())
                 .attr("effectSpeed", inplace.getEffectSpeed())
                 .attr("event", inplace.getEvent())

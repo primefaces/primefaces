@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@ package org.primefaces.component.accordionpanel;
 
 import java.util.Collection;
 import java.util.Map;
+import javax.el.ELContext;
 
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
@@ -38,6 +39,7 @@ import javax.faces.event.FacesEvent;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.tabview.Tab;
+import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.event.TabCloseEvent;
 import org.primefaces.event.TabEvent;
@@ -113,7 +115,7 @@ public class AccordionPanel extends AccordionPanelBase {
             boolean repeating = isRepeating();
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName.equals("tabChange")) {
+            if ("tabChange".equals(eventName)) {
                 String tabClientId = params.get(clientId + "_newTab");
                 TabChangeEvent changeEvent = new TabChangeEvent(this, behaviorEvent.getBehavior(), findTab(tabClientId));
 
@@ -132,7 +134,7 @@ public class AccordionPanel extends AccordionPanelBase {
                     setIndex(-1);
                 }
             }
-            else if (eventName.equals("tabClose")) {
+            else if ("tabClose".equals(eventName)) {
                 String tabClientId = params.get(clientId + "_tabId");
                 TabCloseEvent closeEvent = new TabCloseEvent(this, behaviorEvent.getBehavior(), findTab(tabClientId));
 
@@ -165,9 +167,11 @@ public class AccordionPanel extends AccordionPanelBase {
 
         super.processUpdates(context);
 
-        ValueExpression expr = getValueExpression(PropertyKeys.activeIndex.toString());
-        if (expr != null) {
-            expr.setValue(getFacesContext().getELContext(), getActiveIndex());
+        ELContext elContext = getFacesContext().getELContext();
+        ValueExpression expr = ValueExpressionAnalyzer.getExpression(elContext,
+                getValueExpression(PropertyKeys.activeIndex.toString()));
+        if (expr != null && !expr.isReadOnly(elContext)) {
+            expr.setValue(elContext, getActiveIndex());
             resetActiveIndex();
         }
     }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,7 +47,8 @@ public abstract class SpinnerBase extends AbstractPrimeHtmlInputText implements 
         decimalPlaces,
         decimalSeparator,
         thousandSeparator,
-        rotate
+        rotate,
+        round
     }
 
     public SpinnerBase() {
@@ -147,5 +148,13 @@ public abstract class SpinnerBase extends AbstractPrimeHtmlInputText implements 
 
     public void setRotate(boolean rotate) {
         getStateHelper().put(PropertyKeys.rotate, rotate);
+    }
+
+    public boolean isRound() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.round, false);
+    }
+
+    public void setRound(boolean round) {
+        getStateHelper().put(PropertyKeys.round, round);
     }
 }

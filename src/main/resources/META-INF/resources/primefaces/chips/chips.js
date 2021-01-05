@@ -15,7 +15,9 @@
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  * 
  * @prop {boolean} cfg.addOnBlur Whether to add an item when the input loses focus.
+ * @prop {boolean} cfg.unique Prevent duplicate entries from being added.
  * @prop {number} cfg.max Maximum number of entries allowed.
+ * @prop {string} cfg.separator Separator character to allow multiple values such if a list is pasted into the input. Default is ','.
  */
 PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
 
@@ -26,6 +28,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
      */
     init: function(cfg) {
         this._super(cfg);
+        this.cfg.separator = this.cfg.separator||',';
 
         this.input = $(this.jqId + '_input');
         this.hinput = $(this.jqId + '_hinput');
@@ -60,27 +63,34 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
             $this.itemContainer.addClass('ui-state-focus');
         }).on('blur.chips', function() {
             $this.itemContainer.removeClass('ui-state-focus');
-            
+
             if ($this.cfg.addOnBlur) {
                 $this.addItem($(this).val(), false);
             }
+        }).on('paste.chips', function(e) {
+            if ($this.cfg.addOnPaste) {
+                var pasteData = e.originalEvent.clipboardData.getData('text');
+                $this.addItem(pasteData, false);
+                e.preventDefault();
+                e.stopPropagation();
+            }
         }).on('keydown.chips', function(e) {
+            var keyCode = $.ui.keyCode;
             var value = $(this).val();
 
             switch(e.which) {
-                //backspace
-                case 8:
+                case keyCode.BACKSPACE:
                     if(value.length === 0 && $this.hinput.children('option') && $this.hinput.children('option').length > 0) {
                         var lastOption = $this.hinput.children('option:last'),
-                        index = lastOption.index();
+                            index = lastOption.index();
                         $this.removeItem($($this.itemContainer.children('li.ui-chips-token').get(index)));
                     }
                 break;
 
-                //enter
-                case 13:
+                case keyCode.ENTER:
                     $this.addItem(value, true);
                     e.preventDefault();
+                    e.stopPropagation();
                 break;
 
                 default:
@@ -103,31 +113,67 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
      * @param {boolean} [refocus] `true` to put focus back on the INPUT again after the chip was added, or `false`
      * otherwise. 
      */
-    addItem : function(value, refocus) {
-        if(value && value.trim().length && (!this.cfg.max||this.cfg.max > this.hinput.children('option').length)) {
-            var escapedValue = PrimeFaces.escapeHTML(value);
-            var itemDisplayMarkup = '<li class="ui-chips-token ui-state-active ui-corner-all">';
-            itemDisplayMarkup += '<span class="ui-chips-token-icon ui-icon ui-icon-close"></span>';
-            itemDisplayMarkup += '<span class="ui-chips-token-label">' + escapedValue + '</span></li>';
+    addItem: function(value, refocus) {
+        var $this = this;
 
-            this.inputContainer.before(itemDisplayMarkup);
-            this.input.val('');
-            this.input.removeAttr('placeholder');
-            
-            if (refocus) {
-                this.input.trigger('focus');
+        if (!value || !value.trim().length) {
+            return;
+        }
+
+        var tokens = value.split(this.cfg.separator);
+        for (var i = 0; i < tokens.length; i++) {
+           var token = tokens[i];
+           if(token && token.trim().length && (!this.cfg.max||this.cfg.max > this.hinput.children('option').length)) {
+               var escapedValue = PrimeFaces.escapeHTML(token);
+
+               if (this.cfg.unique) {
+                   var duplicateFound = false;
+                   this.hinput.children('option').each(function() {
+                       if (this.value === escapedValue) {
+                           $this.refocus(refocus);
+                           duplicateFound = true;
+                           return false; // breaks
+                       }
+                   });
+                   if (duplicateFound) {
+                       return;
+                   }
+               }
+
+               var itemDisplayMarkup = '<li class="ui-chips-token ui-state-active ui-corner-all">';
+               itemDisplayMarkup += '<span class="ui-chips-token-icon ui-icon ui-icon-close"></span>';
+               itemDisplayMarkup += '<span class="ui-chips-token-label">' + escapedValue + '</span></li>';
+
+               this.inputContainer.before(itemDisplayMarkup);
+               this.refocus(refocus);
+
+               this.hinput.append('<option value="' + escapedValue + '" selected="selected"></option>');
+               this.invokeItemSelectBehavior(escapedValue);
             }
+        }
+    },
 
-            this.hinput.append('<option value="' + escapedValue + '" selected="selected"></option>');
-            this.invokeItemSelectBehavior(escapedValue);
+    /**
+     * Deletes the currently editing input value and refocus the input box if necessary.
+     * @param {boolean} [refocus] `true` to put focus back on the INPUT again after the chip was added, or `false`
+     * otherwise. 
+     * @private
+     */
+    refocus: function(refocus) {
+        this.input.val('');
+        this.input.removeAttr('placeholder');
+
+        if (refocus) {
+            this.input.trigger('focus');
         }
     },
 
     /**
      * Removes an item (chip) from the list of currently displayed items.
      * @param {JQuery} item An item  (LI element) that should be removed.
+     * @param {boolean} silent flag indicating whether to animate and fire AJAX event
      */
-    removeItem: function(item) {
+    removeItem: function(item, silent) {
         var itemIndex = this.itemContainer.children('li.ui-chips-token').index(item);
         var itemValue = item.find('span.ui-chips-token-label').html()
         $this = this;
@@ -135,17 +181,47 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
         //remove from options
         this.hinput.children('option').eq(itemIndex).remove();
 
-        item.fadeOut('fast', function() {
-            var token = $(this);
+        if(silent) {
+            item.remove();
+        }
+        else {
+            item.fadeOut('fast', function() {
+                var token = $(this);
+                token.remove();
+                $this.invokeItemUnselectBehavior(itemValue);
+            });
+        }
 
-            token.remove();
-
-            $this.invokeItemUnselectBehavior(itemValue);
-        });
-        
         // if empty return placeholder
         if (this.placeholder && this.hinput.children('option').length === 0) {
             this.input.attr('placeholder', this.placeholder);
+        }
+    },
+
+    /**
+     * Converts the current list into a separator delimited list for mass editing while keeping original
+     * order of the items or closes the editor turning the values back into chips.
+     */
+    toggleEditor: function() {
+        var $this = this,
+            tokens = this.itemContainer.children('li.ui-chips-token');
+  
+        if(tokens.length) {
+            var editor = '';
+            tokens.each(function() {
+                var token = $(this),
+                    tokenValue = token.find('span.ui-chips-token-label').html();
+                editor = editor + tokenValue +  $this.cfg.separator;
+                $this.removeItem(token, true);
+            });
+
+            if(editor) {
+                editor = editor.slice(0, -1); 
+                this.input.val(editor);
+            }
+        }
+        else {
+            $this.addItem(this.input.val(), true);
         }
     },
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -121,10 +121,9 @@ public class FieldsetRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, Fieldset fieldset) throws IOException {
-        String clientId = fieldset.getClientId(context);
         boolean toggleable = fieldset.isToggleable();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Fieldset", fieldset.resolveWidgetVar(context), clientId);
+        wb.init("Fieldset", fieldset);
 
         if (toggleable) {
             wb.attr("toggleable", true)

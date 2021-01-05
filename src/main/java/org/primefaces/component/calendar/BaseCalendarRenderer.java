@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -52,10 +52,7 @@ import javax.faces.convert.ConverterException;
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.util.CalendarUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.MessageFactory;
+import org.primefaces.util.*;
 
 public abstract class BaseCalendarRenderer extends InputRenderer {
 
@@ -265,7 +262,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         Object[] params = new Object[3];
         params[0] = submittedValue;
         params[1] = param1;
-        params[2] = MessageFactory.getLabel(context, calendar);
+        params[2] = ComponentUtils.getLabel(context, calendar);
 
         if (calendar.isTimeOnly()) {
             message = MessageFactory.getFacesMessage("javax.faces.converter.DateTimeConverter.TIME", FacesMessage.SEVERITY_ERROR, params);

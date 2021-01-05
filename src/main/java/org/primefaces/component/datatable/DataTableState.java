@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,16 +23,11 @@
  */
 package org.primefaces.component.datatable;
 
-import java.io.Serializable;
+import org.primefaces.component.api.UITableState;
+
 import java.util.List;
-import java.util.Map;
 
-import javax.el.MethodExpression;
-import javax.el.ValueExpression;
-import org.primefaces.model.FilterMeta;
-import org.primefaces.model.SortMeta;
-
-public class DataTableState implements Serializable {
+public class DataTableState extends UITableState {
 
     private static final long serialVersionUID = 1L;
 
@@ -40,31 +35,7 @@ public class DataTableState implements Serializable {
 
     private int rows;
 
-    private Map<String, SortMeta> multiSortState;
-
-    private ValueExpression sortBy;
-
-    private String sortOrder;
-
-    private String sortField;
-
-    private MethodExpression sortFunction;
-
-    private ValueExpression defaultSortBy;
-
-    private String defaultSortOrder;
-
-    private MethodExpression defaultSortFunction;
-
-    private List<Object> rowKeys;
-
-    private Map<String, FilterMeta> filterBy;
-
-    private String orderedColumnsAsString;
-
-    private String togglableColumnsAsString;
-
-    private String resizableColumnsAsString;
+    private List<Object> selectedRowKeys;
 
     public int getFirst() {
         return first;
@@ -82,107 +53,11 @@ public class DataTableState implements Serializable {
         this.rows = rows;
     }
 
-    public Map<String, SortMeta> getSortMeta() {
-        return multiSortState;
+    public List<Object> getSelectedRowKeys() {
+        return selectedRowKeys;
     }
 
-    public void setSortMeta(Map<String, SortMeta> multiSortState) {
-        this.multiSortState = multiSortState;
-    }
-
-    public ValueExpression getSortBy() {
-        return sortBy;
-    }
-
-    public void setSortBy(ValueExpression sortBy) {
-        this.sortBy = sortBy;
-    }
-
-    public String getSortOrder() {
-        return sortOrder;
-    }
-
-    public void setSortOrder(String sortOrder) {
-        this.sortOrder = sortOrder;
-    }
-
-    public String getSortField() {
-        return sortField;
-    }
-
-    public void setSortField(String sortField) {
-        this.sortField = sortField;
-    }
-
-    public MethodExpression getSortFunction() {
-        return sortFunction;
-    }
-
-    public void setSortFunction(MethodExpression sortFunction) {
-        this.sortFunction = sortFunction;
-    }
-
-    public ValueExpression getDefaultSortBy() {
-        return defaultSortBy;
-    }
-
-    public void setDefaultSortBy(ValueExpression defaultSortBy) {
-        this.defaultSortBy = defaultSortBy;
-    }
-
-    public String getDefaultSortOrder() {
-        return defaultSortOrder;
-    }
-
-    public void setDefaultSortOrder(String defaultSortOrder) {
-        this.defaultSortOrder = defaultSortOrder;
-    }
-
-    public MethodExpression getDefaultSortFunction() {
-        return defaultSortFunction;
-    }
-
-    public void setDefaultSortFunction(MethodExpression defaultSortFunction) {
-        this.defaultSortFunction = defaultSortFunction;
-    }
-
-    public List<Object> getRowKeys() {
-        return rowKeys;
-    }
-
-    public void setRowKeys(List<Object> rowKeys) {
-        this.rowKeys = rowKeys;
-    }
-
-    public Map<String, FilterMeta> getFilterBy() {
-        return filterBy;
-    }
-
-    public void setFilterBy(Map<String, FilterMeta> filterBy) {
-        this.filterBy = filterBy;
-    }
-
-    public String getOrderedColumnsAsString() {
-        return orderedColumnsAsString;
-    }
-
-    public void setOrderedColumnsAsString(String orderedColumnsAsString) {
-        this.orderedColumnsAsString = orderedColumnsAsString;
-    }
-
-    public String getTogglableColumnsAsString() {
-        return togglableColumnsAsString;
-    }
-
-    public void setTogglableColumnsAsString(String togglableColumnsAsString) {
-        this.togglableColumnsAsString = togglableColumnsAsString;
-    }
-
-    public String getResizableColumnsAsString() {
-        return resizableColumnsAsString;
-    }
-
-    public void setResizableColumnsAsString(String resizableColumnsAsString) {
-        this.resizableColumnsAsString = resizableColumnsAsString;
+    public void setSelectedRowKeys(List<Object> selectedRowKeys) {
+        this.selectedRowKeys = selectedRowKeys;
     }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,6 +37,8 @@ import javax.faces.convert.ConverterException;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.*;
+import org.primefaces.validate.bean.NegativeClientValidationConstraint;
+import org.primefaces.validate.bean.PositiveClientValidationConstraint;
 
 public class InputNumberRenderer extends InputRenderer {
 
@@ -182,11 +184,17 @@ public class InputNumberRenderer extends InputRenderer {
         String inputStyle = inputNumber.getInputStyle();
         String style = inputStyle;
         String styleClass = createStyleClass(inputNumber, InputNumber.PropertyKeys.inputStyleClass.name(), InputText.STYLE_CLASS) ;
-
+        String inputMode = inputNumber.getInputmode();
+        if (inputMode == null) {
+            String decimalPlaces = getDecimalPlaces(inputNumber, inputNumber.getValue());
+            inputMode = "0".equals(decimalPlaces) ? "numeric" : "decimal";
+            inputNumber.setInputmode(inputMode);
+        }
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", inputNumber.getType(), null);
+        writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute("value", valueToRender, null);
 
         if (!isValueBlank(style)) {
@@ -212,20 +220,13 @@ public class InputNumberRenderer extends InputRenderer {
                 ? Constants.EMPTY_STRING
                 : inputNumber.getThousandSeparator();
 
-        String defaultDecimalPlaces = "2";
-        if (value instanceof Long || value instanceof Integer || value instanceof Short || value instanceof BigInteger) {
-            defaultDecimalPlaces = "0";
-        }
-        String decimalPlaces = isValueBlank(inputNumber.getDecimalPlaces())
-                ? defaultDecimalPlaces
-                : inputNumber.getDecimalPlaces();
-
         String decimalSeparator = isValueBlank(inputNumber.getDecimalSeparator())
                     ? "."
                     : inputNumber.getDecimalSeparator();
 
+
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init(InputNumber.class.getSimpleName(), inputNumber.resolveWidgetVar(context), inputNumber.getClientId());
+        wb.init(InputNumber.class.getSimpleName(), inputNumber);
         wb.attr("disabled", inputNumber.isDisabled())
             .attr("valueToRender", valueToRender)
             .attr("decimalCharacter", decimalSeparator, ".")
@@ -233,9 +234,10 @@ public class InputNumberRenderer extends InputRenderer {
             .attr("digitGroupSeparator", digitGroupSeparator, ",")
             .attr("currencySymbol", inputNumber.getSymbol())
             .attr("currencySymbolPlacement", inputNumber.getSymbolPosition(), "p")
-            .attr("minimumValue", formatForPlugin(inputNumber.getMinValue()))
-            .attr("maximumValue", formatForPlugin(inputNumber.getMaxValue()))
-            .attr("decimalPlaces", decimalPlaces)
+            .attr("negativePositiveSignPlacement", inputNumber.getSignPosition(), null)
+            .attr("minimumValue", getMinimum(inputNumber, value))
+            .attr("maximumValue", getMaximum(inputNumber, value))
+            .attr("decimalPlaces", getDecimalPlaces(inputNumber, value))
             .attr("emptyInputBehavior", emptyValue, "focus")
             .attr("leadingZero", inputNumber.getLeadingZero(), "deny")
             .attr("allowDecimalPadding", inputNumber.isPadControl(), true)
@@ -245,6 +247,11 @@ public class InputNumberRenderer extends InputRenderer {
             .attr("showWarnings", false, true);
 
         wb.finish();
+    }
+
+    @Override
+    protected String getHighlighter() {
+        return "inputnumber";
     }
 
     /**
@@ -337,9 +344,54 @@ public class InputNumberRenderer extends InputRenderer {
         return valueToRender.toPlainString();
     }
 
-    @Override
-    protected String getHighlighter() {
-        return "inputnumber";
+    /**
+     * Determines the number of decimal places to use.  If this is an Integer type number then default to 0
+     * decimal places if none was declared else default to 2.
+     * @param inputNumber the component
+     * @param value the value of the input number
+     * @return the number of decimal places to use
+     */
+    private String getDecimalPlaces(InputNumber inputNumber, Object value) {
+        String defaultDecimalPlaces = "2";
+        if (isIntegral(value)) {
+            defaultDecimalPlaces = "0";
+        }
+        String decimalPlaces = isValueBlank(inputNumber.getDecimalPlaces())
+                ? defaultDecimalPlaces
+                : inputNumber.getDecimalPlaces();
+        return decimalPlaces;
+    }
+
+    /**
+     * If using @Positive annotation and this is an Integer default to 0 instead of 0.0001.
+     * @param inputNumber the component
+     * @param value the value of the input number
+     * @return the minimum value of the component
+     */
+    private String getMinimum(InputNumber inputNumber, Object value) {
+        String minimum = inputNumber.getMinValue();
+        if (isIntegral(value) && PositiveClientValidationConstraint.MIN_VALUE.equals(minimum)) {
+            minimum = "0";
+        }
+        return formatForPlugin(minimum);
+    }
+
+    /**
+     * If using @Negative annotation and this is an Integer default to 0 instead of -0.0001.
+     * @param inputNumber the component
+     * @param value the value of the input number
+     * @return the maximum value of the component
+     */
+    private String getMaximum(InputNumber inputNumber, Object value) {
+        String maximum = inputNumber.getMaxValue();
+        if (isIntegral(value) && NegativeClientValidationConstraint.MAX_VALUE.equals(maximum)) {
+            maximum = "0";
+        }
+        return formatForPlugin(maximum);
+    }
+
+    private boolean isIntegral(Object value) {
+        return value instanceof Long || value instanceof Integer || value instanceof Short || value instanceof BigInteger || value instanceof Byte;
     }
 
 }

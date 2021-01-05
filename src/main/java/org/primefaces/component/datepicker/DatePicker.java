@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,16 +25,17 @@ package org.primefaces.component.datepicker;
 
 import java.time.*;
 import java.util.*;
-
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
-
 import org.primefaces.event.DateViewChangeEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.datepicker.DateMetadata;
+import org.primefaces.model.datepicker.DateMetadataModel;
+import org.primefaces.model.datepicker.LazyDateMetadataModel;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -74,10 +75,10 @@ public class DatePicker extends DatePickerBase {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
             if (eventName != null) {
-                if (eventName.equals("dateSelect") || eventName.equals("close")) {
+                if ("dateSelect".equals(eventName) || "close".equals(eventName)) {
                     customEvents.put(eventName, (AjaxBehaviorEvent) event);
                 }
-                else if (eventName.equals("viewChange")) {
+                else if ("viewChange".equals(eventName)) {
                     int month = Integer.parseInt(params.get(clientId + "_month"));
                     int year = Integer.parseInt(params.get(clientId + "_year"));
                     DateViewChangeEvent dateViewChangeEvent = new DateViewChangeEvent(this, behaviorEvent.getBehavior(), month, year);
@@ -315,5 +316,42 @@ public class DatePicker extends DatePickerBase {
         }
 
         return super.saveState(context);
+    }
+
+    protected List<Object> getInitialDisabledDates(FacesContext context) {
+        List<Object> disabledDates = getDisabledDates();
+        if (disabledDates != null) {
+            return disabledDates;
+        }
+        DateMetadataModel model = getModel();
+        if (model != null) {
+            disabledDates = new ArrayList<>();
+            for (Map.Entry<LocalDate, DateMetadata> entry : model.getDateMetadata().entrySet()) {
+                if (entry.getValue().isDisabled()) {
+                    disabledDates.add(entry.getKey());
+                }
+            }
+        }
+        return disabledDates;
+    }
+
+    protected void loadInitialLazyMetadata(FacesContext context) {
+        DateMetadataModel model = getModel();
+        if (model instanceof LazyDateMetadataModel) {
+            LocalDate startDate = getInitalStartDate(context);
+            LocalDate endDate = startDate.plusMonths(getNumberOfMonths()).minusDays(1);
+
+            LazyDateMetadataModel lazyModel = ((LazyDateMetadataModel) model);
+            lazyModel.clear();
+            lazyModel.loadDateMetadata(startDate, endDate);
+        }
+    }
+
+    protected LocalDate getInitalStartDate(FacesContext context) {
+        LocalDate date = CalendarUtils.getObjectAsLocalDate(context, this, getValue());
+        if (date == null) {
+            date = LocalDate.from(CalendarUtils.now(this));
+        }
+        return date.withDayOfMonth(1);
     }
 }

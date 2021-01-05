@@ -185,7 +185,6 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="primefaces.widget.selectonemenu.html#focus" class="tsd-kind-icon">focus</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="primefaces.widget.selectonemenu.html#focusfilter" class="tsd-kind-icon">focus<wbr>Filter</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="primefaces.widget.selectonemenu.html#getactiveitem" class="tsd-kind-icon">get<wbr>Active<wbr>Item</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.selectonemenu.html#getappendto" class="tsd-kind-icon">get<wbr>Append<wbr>To</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="primefaces.widget.selectonemenu.html#getbehavior" class="tsd-kind-icon">get<wbr>Behavior</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="primefaces.widget.selectonemenu.html#getjq" class="tsd-kind-icon">getJQ</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.selectonemenu.html#getlabeltodisplay" class="tsd-kind-icon">get<wbr>Label<wbr>ToDisplay</a></li>
@@ -210,6 +209,9 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="primefaces.widget.selectonemenu.html#removescriptelement" class="tsd-kind-icon">remove<wbr>Script<wbr>Element</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="primefaces.widget.selectonemenu.html#render" class="tsd-kind-icon">render</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="primefaces.widget.selectonemenu.html#renderdeferred" class="tsd-kind-icon">render<wbr>Deferred</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.selectonemenu.html#renderpanelcontentfromhiddenselect" class="tsd-kind-icon">render<wbr>Panel<wbr>Content<wbr>From<wbr>Hidden<wbr>Select</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.selectonemenu.html#renderselectitem" class="tsd-kind-icon">render<wbr>Select<wbr>Item</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.selectonemenu.html#renderselectitems" class="tsd-kind-icon">render<wbr>Select<wbr>Items</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="primefaces.widget.selectonemenu.html#resolveitemindex" class="tsd-kind-icon">resolve<wbr>Item<wbr>Index</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="primefaces.widget.selectonemenu.html#revert" class="tsd-kind-icon">revert</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.selectonemenu.html#selectitem" class="tsd-kind-icon">select<wbr>Item</a></li>
@@ -1382,27 +1384,6 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
-					<a name="getappendto" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> get<wbr>Append<wbr>To</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Append<wbr>To<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Finds the element to which the overlay panel should be appended. If none is specified explicitly, append the
-									panel to the body.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-							<p>The search expression for the element to which the overlay panel should be appended.</p>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="getbehavior" class="tsd-anchor"></a>
 					<h3>get<wbr>Behavior</h3>
@@ -1828,7 +1809,7 @@
 								<p>Please make sure to call the super method first before adding your own custom logic to the init method:</p>
 								<pre><code class="language-javascript">PrimeFaces.widget.MyWidget = PrimeFaces.widget.BaseWidget.extend({
   <span class="hljs-attr">init</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">cfg</span>) </span>{
-    <span class="hljs-keyword">this</span>._super(cfg);
+    <span class="hljs-built_in">this</span>._super(cfg);
     <span class="hljs-comment">// custom initialization</span>
   }
 });</code></pre>
@@ -2058,6 +2039,104 @@
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="renderpanelcontentfromhiddenselect" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> render<wbr>Panel<wbr>Content<wbr>From<wbr>Hidden<wbr>Select</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">render<wbr>Panel<wbr>Content<wbr>From<wbr>Hidden<wbr>Select<span class="tsd-signature-symbol">(</span>initContentsAndBindItemEvents<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Renders panel content based on hidden select.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>initContentsAndBindItemEvents: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Call initContents and bindItemEvents after rendering?</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="renderselectitem" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> render<wbr>Select<wbr>Item</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">render<wbr>Select<wbr>Item<span class="tsd-signature-symbol">(</span>item<span class="tsd-signature-symbol">: </span><a href="../modules/jquery.html" class="tsd-signature-type">JQuery</a>, isGrouped<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Renders Panel-HTML-code for one SelectItem(Group).</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>item: <a href="../modules/jquery.html" class="tsd-signature-type">JQuery</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>An option(group) for which to render HTML-code.</p>
+									</div>
+								</li>
+								<li>
+									<h5>isGrouped: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Tells whether the item is part of a group.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<p>Rendered HTML-code.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="renderselectitems" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> render<wbr>Select<wbr>Items</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">render<wbr>Select<wbr>Items<span class="tsd-signature-symbol">(</span>parentItem<span class="tsd-signature-symbol">: </span><a href="../modules/jquery.html" class="tsd-signature-type">JQuery</a>, isGrouped<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Renders Panel-HTML-code for SelectItems.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>parentItem: <a href="../modules/jquery.html" class="tsd-signature-type">JQuery</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>An parentItem (select, optgroup) for which to render HTML-code.</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> isGrouped: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Tells whether the elements of the parentItem should be marked as grouped.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<p>Rendered HTML-code.</p>
 						</li>
 					</ul>
 				</section>
@@ -2391,6 +2470,9 @@
 								<a href="../modules/primefaces.ajax.html">ajax</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+								<a href="../modules/primefaces.clientwindow.html">clientwindow</a>
+							</li>
+							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="../modules/primefaces.csp.html">csp</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
@@ -2409,10 +2491,10 @@
 								<a href="../modules/primefaces.settings.html">settings</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="../modules/primefaces.util.html">util</a>
+								<a href="../modules/primefaces.utils.html">utils</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="../modules/primefaces.utils.html">utils</a>
+								<a href="../modules/primefaces.validation.html">validation</a>
 							</li>
 							<li class="current tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="../modules/primefaces.widget.html">widget</a>
@@ -2604,9 +2686,6 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="primefaces.widget.selectonemenu.html#getactiveitem" class="tsd-kind-icon">get<wbr>Active<wbr>Item</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="primefaces.widget.selectonemenu.html#getappendto" class="tsd-kind-icon">get<wbr>Append<wbr>To</a>
-							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="primefaces.widget.selectonemenu.html#getbehavior" class="tsd-kind-icon">get<wbr>Behavior</a>
 							</li>
@@ -2679,6 +2758,15 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="primefaces.widget.selectonemenu.html#renderdeferred" class="tsd-kind-icon">render<wbr>Deferred</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="primefaces.widget.selectonemenu.html#renderpanelcontentfromhiddenselect" class="tsd-kind-icon">render<wbr>Panel<wbr>Content<wbr>From<wbr>Hidden<wbr>Select</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="primefaces.widget.selectonemenu.html#renderselectitem" class="tsd-kind-icon">render<wbr>Select<wbr>Item</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="primefaces.widget.selectonemenu.html#renderselectitems" class="tsd-kind-icon">render<wbr>Select<wbr>Items</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="primefaces.widget.selectonemenu.html#resolveitemindex" class="tsd-kind-icon">resolve<wbr>Item<wbr>Index</a>
 							</li>
@@ -2729,6 +2817,7 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
@@ -2749,6 +2838,9 @@
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>

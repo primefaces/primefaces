@@ -126,6 +126,7 @@
 								<li class="tsd-kind-type-alias tsd-parent-kind-class"><a href="primefaces.widget.fileupload.html#oncompletecallback" class="tsd-kind-icon">On<wbr>Complete<wbr>Callback</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-class"><a href="primefaces.widget.fileupload.html#onerrorcallback" class="tsd-kind-icon">On<wbr>Error<wbr>Callback</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-class"><a href="primefaces.widget.fileupload.html#onstartcallback" class="tsd-kind-icon">On<wbr>Start<wbr>Callback</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-class"><a href="primefaces.widget.fileupload.html#onuploadcallback" class="tsd-kind-icon">On<wbr>Upload<wbr>Callback</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -169,6 +170,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="primefaces.widget.fileupload.html#clear" class="tsd-kind-icon">clear</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="primefaces.widget.fileupload.html#clearmessages" class="tsd-kind-icon">clear<wbr>Messages</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.fileupload.html#createpostdata" class="tsd-kind-icon">create<wbr>Post<wbr>Data</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.fileupload.html#createxfileid" class="tsd-kind-icon">createXFile<wbr>Id</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="primefaces.widget.fileupload.html#destroy" class="tsd-kind-icon">destroy</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.fileupload.html#disablebutton" class="tsd-kind-icon">disable<wbr>Button</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.fileupload.html#enablebutton" class="tsd-kind-icon">enable<wbr>Button</a></li>
@@ -428,6 +430,40 @@
 						<div class="lead">
 							<p>Callback that is invoked at the beginning of a file upload,
 							when a file is sent to the server. See also <a href="../interfaces/primefaces.widget.fileuploadcfg.html#onstart">FileUploadCfg.onstart</a>.</p>
+						</div>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-signature">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-alias">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>this<span class="tsd-signature-symbol">: </span><a href="primefaces.widget.fileupload.html" class="tsd-signature-type">FileUpload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5>this: <a href="primefaces.widget.fileupload.html" class="tsd-signature-type">FileUpload</a></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-class">
+					<a name="onuploadcallback" class="tsd-anchor"></a>
+					<h3>On<wbr>Upload<wbr>Callback</h3>
+					<div class="tsd-signature tsd-kind-icon">On<wbr>Upload<wbr>Callback<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>this<span class="tsd-signature-symbol">: </span><a href="primefaces.widget.fileupload.html" class="tsd-signature-type">FileUpload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Callback to execute before the files are sent.
+							If this callback returns false, the file upload request is not started. See also <a href="../interfaces/primefaces.widget.fileuploadcfg.html#onupload">FileUploadCfg.onupload</a>.</p>
 						</div>
 					</div>
 					<div class="tsd-type-declaration">
@@ -1000,7 +1036,7 @@
 					<a name="createpostdata" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> create<wbr>Post<wbr>Data</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>Post<wbr>Data<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/primefaces.ajax.servercallbackparameter.html" class="tsd-signature-type">ServerCallbackParameter</a></li>
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Post<wbr>Data<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/primefaces.ajax.requestparameter.html" class="tsd-signature-type">RequestParameter</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -1011,8 +1047,38 @@
 									<p>Creates the HTML post data for uploading the selected files.</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/primefaces.ajax.servercallbackparameter.html" class="tsd-signature-type">ServerCallbackParameter</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/primefaces.ajax.requestparameter.html" class="tsd-signature-type">RequestParameter</a></h4>
 							<p>Parameters to post when upload the files.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="createxfileid" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> createXFile<wbr>Id</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">createXFile<wbr>Id<span class="tsd-signature-symbol">(</span>file<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">File</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates a unique identifier (file key) for a given file. That identifier consists e.g. of the name of the
+									uploaded file, its last modified-attribute etc. This is used by the server to identify uploaded files.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>file: <span class="tsd-signature-type">File</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A file for which to create an identifier.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<p>An identifier for the given file.</p>
 						</li>
 					</ul>
 				</section>
@@ -1250,7 +1316,7 @@
 								<p>Please make sure to call the super method first before adding your own custom logic to the init method:</p>
 								<pre><code class="language-javascript">PrimeFaces.widget.MyWidget = PrimeFaces.widget.BaseWidget.extend({
   <span class="hljs-attr">init</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">cfg</span>) </span>{
-    <span class="hljs-keyword">this</span>._super(cfg);
+    <span class="hljs-built_in">this</span>._super(cfg);
     <span class="hljs-comment">// custom initialization</span>
   }
 });</code></pre>
@@ -1432,7 +1498,7 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Removes the given uploadeds file from this upload widget.</p>
+									<p>Removes the given uploaded file from this upload widget.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1607,6 +1673,9 @@
 								<a href="../modules/primefaces.ajax.html">ajax</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+								<a href="../modules/primefaces.clientwindow.html">clientwindow</a>
+							</li>
+							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="../modules/primefaces.csp.html">csp</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
@@ -1625,10 +1694,10 @@
 								<a href="../modules/primefaces.settings.html">settings</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="../modules/primefaces.util.html">util</a>
+								<a href="../modules/primefaces.utils.html">utils</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="../modules/primefaces.utils.html">utils</a>
+								<a href="../modules/primefaces.validation.html">validation</a>
 							</li>
 							<li class="current tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="../modules/primefaces.widget.html">widget</a>
@@ -1669,6 +1738,9 @@
 							</li>
 							<li class=" tsd-kind-type-alias tsd-parent-kind-class">
 								<a href="primefaces.widget.fileupload.html#onstartcallback" class="tsd-kind-icon">On<wbr>Start<wbr>Callback</a>
+							</li>
+							<li class=" tsd-kind-type-alias tsd-parent-kind-class">
+								<a href="primefaces.widget.fileupload.html#onuploadcallback" class="tsd-kind-icon">On<wbr>Upload<wbr>Callback</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="primefaces.widget.fileupload.html#image_types" class="tsd-kind-icon">IMAGE_<wbr>TYPES</a>
@@ -1769,6 +1841,9 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="primefaces.widget.fileupload.html#createpostdata" class="tsd-kind-icon">create<wbr>Post<wbr>Data</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="primefaces.widget.fileupload.html#createxfileid" class="tsd-kind-icon">createXFile<wbr>Id</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="primefaces.widget.fileupload.html#destroy" class="tsd-kind-icon">destroy</a>
 							</li>
@@ -1843,6 +1918,7 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
@@ -1863,6 +1939,9 @@
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>

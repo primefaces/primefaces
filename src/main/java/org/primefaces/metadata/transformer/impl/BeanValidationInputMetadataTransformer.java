@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,20 @@
  */
 package org.primefaces.metadata.transformer.impl;
 
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.Temporal;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.el.PropertyNotFoundException;
+import javax.faces.component.UIInput;
+import javax.faces.context.FacesContext;
+import javax.validation.constraints.*;
+import javax.validation.metadata.ConstraintDescriptor;
+
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.inputnumber.InputNumber;
 import org.primefaces.component.spinner.Spinner;
@@ -31,25 +45,7 @@ import org.primefaces.metadata.BeanValidationMetadataExtractor;
 import org.primefaces.metadata.transformer.AbstractInputMetadataTransformer;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.LangUtils;
-import org.primefaces.validate.bean.FutureOrPresentClientValidationConstraint;
-import org.primefaces.validate.bean.NegativeClientValidationConstraint;
-import org.primefaces.validate.bean.NegativeOrZeroClientValidationConstraint;
-import org.primefaces.validate.bean.PastOrPresentClientValidationConstraint;
-import org.primefaces.validate.bean.PositiveClientValidationConstraint;
-import org.primefaces.validate.bean.PositiveOrZeroClientValidationConstraint;
-
-import javax.el.PropertyNotFoundException;
-import javax.faces.component.UIInput;
-import javax.faces.context.FacesContext;
-import javax.validation.constraints.*;
-import javax.validation.metadata.ConstraintDescriptor;
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.Temporal;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.primefaces.validate.bean.*;
 
 public class BeanValidationInputMetadataTransformer extends AbstractInputMetadataTransformer {
 
@@ -138,10 +134,10 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
                     inputNumber.setMaxValue(max.value());
                 }
                 if (annotationClassName.equals(NegativeClientValidationConstraint.CONSTRAINT_ID)) {
-                    inputNumber.setMaxValue("-0.0000001");
+                    inputNumber.setMaxValue(NegativeClientValidationConstraint.MAX_VALUE);
                 }
                 if (annotationClassName.equals(NegativeOrZeroClientValidationConstraint.CONSTRAINT_ID)) {
-                    inputNumber.setMaxValue("0");
+                    inputNumber.setMaxValue(NegativeOrZeroClientValidationConstraint.MAX_VALUE);
                 }
             }
 
@@ -155,10 +151,10 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
                     inputNumber.setMinValue(min.value());
                 }
                 if (annotationClassName.equals(PositiveClientValidationConstraint.CONSTRAINT_ID)) {
-                    inputNumber.setMinValue("0.0000001");
+                    inputNumber.setMinValue(PositiveClientValidationConstraint.MIN_VALUE);
                 }
                 if (annotationClassName.equals(PositiveOrZeroClientValidationConstraint.CONSTRAINT_ID)) {
-                    inputNumber.setMinValue("0");
+                    inputNumber.setMinValue(PositiveOrZeroClientValidationConstraint.MIN_VALUE);
                 }
             }
 

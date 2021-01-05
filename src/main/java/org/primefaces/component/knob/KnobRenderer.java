@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.knob;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.IOException;
 
 import javax.faces.component.UIComponent;
@@ -128,13 +128,11 @@ public class KnobRenderer extends CoreRenderer {
     }
 
     private void encodeScript(FacesContext context, Knob knob) throws IOException {
-        String clientId = knob.getClientId();
-        String widgetVar = knob.resolveWidgetVar(context);
         String styleClass = knob.getStyleClass() != null ? "ui-knob " + knob.getStyleClass() : "ui-knob";
 
         WidgetBuilder wb = getWidgetBuilder(context);
 
-        wb.init("Knob", widgetVar, clientId);
+        wb.init("Knob", knob);
         wb.attr("labelTemplate", knob.getLabelTemplate())
                 .attr("colorTheme", knob.getColorTheme())
                 .attr("styleClass", styleClass)

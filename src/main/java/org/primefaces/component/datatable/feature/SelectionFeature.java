@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -69,7 +69,7 @@ public class SelectionFeature implements DataTableFeature {
         if (table.isMultiViewState()) {
             DataTableState ts = table.getMultiViewState(true);
             table.findSelectedRowKeys();
-            ts.setRowKeys(table.getSelectedRowKeys());
+            ts.setSelectedRowKeys(table.getSelectedRowKeys());
         }
     }
 

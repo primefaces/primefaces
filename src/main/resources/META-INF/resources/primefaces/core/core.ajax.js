@@ -559,6 +559,14 @@ if (!PrimeFaces.ajax) {
 
                 PrimeFaces.debug('Form to post ' + form.attr('id') + '.');
 
+                var formData;
+                var scanForFiles;
+                var multipart = form.attr('enctype') === 'multipart/form-data';
+                if (multipart) {
+                    formData = new FormData();
+                    scanForFiles = $();
+                }
+
                 var postURL = PrimeFaces.ajax.Utils.getPostUrl(form);
                 var postParams = [];
 
@@ -666,12 +674,22 @@ if (!PrimeFaces.ajax) {
                             if(jqProcess.is('form')) {
                                 componentPostParams = jqProcess.serializeArray();
                                 formProcessed = true;
+                                if (multipart) {
+                                    scanForFiles = scanForFiles.add(jqProcess);
+                                }
                             }
                             else if(jqProcess.is(':input')) {
                                 componentPostParams = jqProcess.serializeArray();
+                                if (multipart) {
+                                    scanForFiles = scanForFiles.add(jqProcess);
+                                }
                             }
                             else {
-                                componentPostParams = jqProcess.find(partialSubmitFilter).serializeArray();
+                                var filtered = jqProcess.find(partialSubmitFilter);
+                                componentPostParams = filtered.serializeArray();
+                                if (multipart) {
+                                    scanForFiles = scanForFiles.add(filtered);
+                                }
                             }
 
                             postParams = PrimeFaces.ajax.Request.arrayCompare(componentPostParams, postParams);
@@ -698,26 +716,44 @@ if (!PrimeFaces.ajax) {
                 }
                 else {
                     $.merge(postParams, form.serializeArray());
+                    if (multipart) {
+                        scanForFiles = scanForFiles.add(form);
+                    }
                 }
 
                 // remove postParam if already available in earlyPostParams
+                // we can skip files here, they likely wont change during that time
                 if (PrimeFaces.settings.earlyPostParamEvaluation && cfg.earlyPostParams) {
                     postParams = PrimeFaces.ajax.Request.arrayCompare(cfg.earlyPostParams, postParams);
 
                     $.merge(postParams, cfg.earlyPostParams);
                 }
 
-                //serialize
-                var postData = $.param(postParams);
+                // scan for files and append to formData
+                if (multipart) {
+                    var fileInputs = $();
+                    scanForFiles.each(function(index, value) {
+                        var $value = $(value);
+                        if ($value.is(':input[type="file"]')) {
+                            fileInputs = fileInputs.add($value);
+                        }
+                        else {
+                            fileInputs = fileInputs.add($value.find('input[type="file"]'));
+                        }
+                    });
 
-                PrimeFaces.debug('Post Data:' + postData);
+                    fileInputs.each(function(index, value) {
+                        for (var i = 0; i < value.files.length; i++) {
+                            formData.append(value.id, value.files[i]);
+                        }
+                    });
+                }
 
                 var xhrOptions = {
                     url : postURL,
                     type : "POST",
                     cache : false,
                     dataType : "xml",
-                    data : postData,
                     portletForms: PrimeFaces.ajax.Utils.getPorletForms(form, parameterPrefix),
                     source: cfg.source,
                     global: false,
@@ -725,13 +761,31 @@ if (!PrimeFaces.ajax) {
                         xhr.setRequestHeader('Faces-Request', 'partial/ajax');
                         xhr.pfSettings = settings;
                         xhr.pfArgs = {}; // default should be an empty object
-                        PrimeFaces.nonAjaxPosted = false;
 
                         if(global) {
                             $(document).trigger('pfAjaxSend', [xhr, this]);
                         }
                     }
                 };
+
+                // #6360 respect form enctype multipart/form-data
+                if (multipart) {
+                    $.each(postParams, function(index, value) {
+                        formData.append(value.name, value.value);
+                    });
+
+                    xhrOptions.data = formData;
+                    xhrOptions.enctype = 'multipart/form-data';
+                    xhrOptions.processData = false;
+                    xhrOptions.contentType = false;
+                }
+                else {
+                    var postData = $.param(postParams);
+
+                    PrimeFaces.debug('Post Data:' + postData);
+
+                    xhrOptions.data = postData;
+                }
 
                 var nonce = form.children("input[name='" + $.escapeSelector(PrimeFaces.csp.NONCE_INPUT) + "']");
                 if (nonce.length > 0) {
@@ -823,7 +877,7 @@ if (!PrimeFaces.ajax) {
 
                         PrimeFaces.ajax.Queue.removeXHR(xhr);
 
-                        if(!cfg.async && !PrimeFaces.nonAjaxPosted) {
+                        if(!cfg.async) {
                             PrimeFaces.ajax.Queue.poll();
                         }
                     });
@@ -1393,7 +1447,7 @@ if (!PrimeFaces.ajax) {
         }
     };
 
-    $(window).on('beforeunload', function() {
+    $(window).on('unload', function() {
         PrimeFaces.ajax.Queue.abortAll();
     });
 

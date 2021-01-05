@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,8 +27,8 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import org.primefaces.component.api.*;
 
-public abstract class DataViewBase extends UIData
-        implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable, MultiViewStateAware<DataViewState> {
+public abstract class DataViewBase extends UIPageableData
+        implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, MultiViewStateAware<DataViewState>, FlexAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -42,7 +42,10 @@ public abstract class DataViewBase extends UIData
         layout,
         gridIcon,
         listIcon,
-        multiViewState
+        multiViewState,
+        gridRowStyle,
+        gridRowStyleClass,
+        flex
     }
 
     public DataViewBase() {
@@ -109,5 +112,30 @@ public abstract class DataViewBase extends UIData
 
     public void setMultiViewState(boolean multiViewState) {
         getStateHelper().put(PropertyKeys.multiViewState, multiViewState);
+    }
+
+    public String getGridRowStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.gridRowStyle, null);
+    }
+
+    public void setGridRowStyle(String gridRowStyle) {
+        getStateHelper().put(PropertyKeys.gridRowStyle, gridRowStyle);
+    }
+
+    public String getGridRowStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.gridRowStyleClass, null);
+    }
+
+    public void setGridRowStyleClass(String gridRowStyleClass) {
+        getStateHelper().put(PropertyKeys.gridRowStyleClass, gridRowStyleClass);
+    }
+
+    @Override
+    public boolean isFlex() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.flex, false);
+    }
+
+    public void setFlex(boolean flex) {
+        getStateHelper().put(PropertyKeys.flex, flex);
     }
 }

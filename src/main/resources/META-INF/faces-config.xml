@@ -32,11 +32,6 @@
             <source-class>javax.faces.application.Application</source-class>
         </system-event-listener>
         <system-event-listener>
-            <system-event-listener-class>org.primefaces.event.system.DynamicColumnsListener</system-event-listener-class>
-            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
-            <source-class>org.primefaces.component.columns.Columns</source-class>
-        </system-event-listener>
-        <system-event-listener>
             <system-event-listener-class>org.primefaces.component.timeline.TimelineListener</system-event-listener-class>
             <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
             <source-class>org.primefaces.component.timeline.Timeline</source-class>
@@ -207,8 +202,28 @@
     </component>
 
     <component>
+        <component-type>org.primefaces.component.Audio</component-type>
+        <component-class>org.primefaces.component.audio.Audio</component-class>
+    </component>
+
+    <component>
         <component-type>org.primefaces.component.AutoComplete</component-type>
         <component-class>org.primefaces.component.autocomplete.AutoComplete</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Avatar</component-type>
+        <component-class>org.primefaces.component.avatar.Avatar</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.AvatarGroup</component-type>
+        <component-class>org.primefaces.component.avatargroup.AvatarGroup</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Badge</component-type>
+        <component-class>org.primefaces.component.badge.Badge</component-class>
     </component>
 
     <component>
@@ -264,6 +279,11 @@
     <component>
         <component-type>org.primefaces.component.Checkbox</component-type>
         <component-class>org.primefaces.component.checkbox.Checkbox</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Chip</component-type>
+        <component-class>org.primefaces.component.chip.Chip</component-class>
     </component>
 
     <component>
@@ -379,6 +399,11 @@
     <component>
         <component-type>org.primefaces.component.Dialog</component-type>
         <component-class>org.primefaces.component.dialog.Dialog</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Divider</component-type>
+        <component-class>org.primefaces.component.divider.Divider</component-class>
     </component>
 
     <component>
@@ -742,6 +767,11 @@
     </component>
 
     <component>
+        <component-type>org.primefaces.component.ScrollTop</component-type>
+        <component-class>org.primefaces.component.scrolltop.ScrollTop</component-class>
+    </component>
+
+    <component>
         <component-type>org.primefaces.component.SelectBooleanButton</component-type>
         <component-class>org.primefaces.component.selectbooleanbutton.SelectBooleanButton</component-class>
     </component>
@@ -807,6 +837,11 @@
     </component>
 
     <component>
+        <component-type>org.primefaces.component.Skeleton</component-type>
+        <component-class>org.primefaces.component.skeleton.Skeleton</component-class>
+    </component>
+
+    <component>
         <component-type>org.primefaces.component.SlideMenu</component-type>
         <component-class>org.primefaces.component.slidemenu.SlideMenu</component-class>
     </component>
@@ -829,6 +864,16 @@
     <component>
         <component-type>org.primefaces.component.SplitButton</component-type>
         <component-class>org.primefaces.component.splitbutton.SplitButton</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Splitter</component-type>
+        <component-class>org.primefaces.component.splitter.Splitter</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.SplitterPanel</component-type>
+        <component-class>org.primefaces.component.splitter.SplitterPanel</component-class>
     </component>
 
     <component>
@@ -884,6 +929,11 @@
     <component>
         <component-type>org.primefaces.component.TabView</component-type>
         <component-class>org.primefaces.component.tabview.TabView</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Tag</component-type>
+        <component-class>org.primefaces.component.tag.Tag</component-class>
     </component>
 
     <component>
@@ -957,6 +1007,11 @@
     </component>
 
     <component>
+        <component-type>org.primefaces.component.Video</component-type>
+        <component-class>org.primefaces.component.video.Video</component-class>
+    </component>
+
+    <component>
         <component-type>org.primefaces.component.Watermark</component-type>
         <component-class>org.primefaces.component.watermark.Watermark</component-class>
     </component>
@@ -985,7 +1040,7 @@
         <component-type>org.primefaces.component.LineChart</component-type>
         <component-class>org.primefaces.component.linechart.LineChart</component-class>
     </component>
-    
+
     <component>
         <component-type>org.primefaces.component.ScatterChart</component-type>
         <component-class>org.primefaces.component.scatterchart.ScatterChart</component-class>
@@ -1005,12 +1060,12 @@
         <component-type>org.primefaces.component.RadarChart</component-type>
         <component-class>org.primefaces.component.radarchart.RadarChart</component-class>
     </component>
-    
+
     <component>
         <component-type>org.primefaces.component.DatePicker</component-type>
         <component-class>org.primefaces.component.datepicker.DatePicker</component-class>
     </component>
-    
+
     <render-kit>
         <renderer>
             <component-family>org.primefaces.component</component-family>
@@ -1024,8 +1079,28 @@
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.AudioRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.audio.AudioRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.AutoCompleteRenderer</renderer-type>
             <renderer-class>org.primefaces.component.autocomplete.AutoCompleteRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.AvatarRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.avatar.AvatarRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.AvatarGroupRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.avatargroup.AvatarGroupRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.BadgeRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.badge.BadgeRenderer</renderer-class>
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>
@@ -1081,6 +1156,11 @@
             <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.CheckboxRenderer</renderer-type>
             <renderer-class>org.primefaces.component.checkbox.CheckboxRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ChipRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.chip.ChipRenderer</renderer-class>
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>
@@ -1176,6 +1256,11 @@
             <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.DialogRenderer</renderer-type>
             <renderer-class>org.primefaces.component.dialog.DialogRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.DividerRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.divider.DividerRenderer</renderer-class>
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>
@@ -1519,6 +1604,11 @@
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ScrollTopRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.scrolltop.ScrollTopRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.SelectBooleanButtonRenderer</renderer-type>
             <renderer-class>org.primefaces.component.selectbooleanbutton.SelectBooleanButtonRenderer</renderer-class>
         </renderer>
@@ -1584,6 +1674,11 @@
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SkeletonRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.skeleton.SkeletonRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.SlideMenuRenderer</renderer-type>
             <renderer-class>org.primefaces.component.slidemenu.SlideMenuRenderer</renderer-class>
         </renderer>
@@ -1606,6 +1701,11 @@
             <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.SplitButtonRenderer</renderer-type>
             <renderer-class>org.primefaces.component.splitbutton.SplitButtonRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SplitterRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.splitter.SplitterRenderer</renderer-class>
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>
@@ -1651,6 +1751,11 @@
             <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.TabViewRenderer</renderer-type>
             <renderer-class>org.primefaces.component.tabview.TabViewRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.TagRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.tag.TagRenderer</renderer-class>
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>
@@ -1716,6 +1821,11 @@
             <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.WatermarkRenderer</renderer-type>
             <renderer-class>org.primefaces.component.watermark.WatermarkRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.VideoRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.video.VideoRenderer</renderer-class>
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -108,17 +108,17 @@ public class OrderList extends OrderListBase {
                 List<?> list = (List) getValue();
                 FacesEvent wrapperEvent = null;
 
-                if (eventName.equals("select")) {
+                if ("select".equals(eventName)) {
                     int itemIndex = Integer.parseInt(params.get(clientId + "_itemIndex"));
                     boolean metaKey = Boolean.parseBoolean(params.get(clientId + "_metaKey"));
                     boolean ctrlKey = Boolean.parseBoolean(params.get(clientId + "_ctrlKey"));
                     wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), list.get(itemIndex), metaKey, ctrlKey);
                 }
-                else if (eventName.equals("unselect")) {
+                else if ("unselect".equals(eventName)) {
                     int itemIndex = Integer.parseInt(params.get(clientId + "_itemIndex"));
                     wrapperEvent = new UnselectEvent(this, behaviorEvent.getBehavior(), list.get(itemIndex));
                 }
-                else if (eventName.equals("reorder")) {
+                else if ("reorder".equals(eventName)) {
                     wrapperEvent = behaviorEvent;
                 }
 

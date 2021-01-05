@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,8 +25,10 @@ package org.primefaces.component.wizard;
 
 import java.util.Collection;
 import java.util.Map;
+import javax.el.ELContext;
 
 import javax.el.MethodExpression;
+import javax.el.ValueExpression;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -35,6 +37,7 @@ import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 
 import org.primefaces.component.tabview.Tab;
+import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
@@ -85,6 +88,10 @@ public class Wizard extends WizardBase {
 
     @Override
     public void processValidators(FacesContext context) {
+        if (!isRendered()) {
+            return;
+        }
+
         if (!isBackRequest(context) || (isUpdateModelOnPrev() && isBackRequest(context))) {
             Tab step = getStepToProcess();
             if (step != null) {
@@ -95,11 +102,23 @@ public class Wizard extends WizardBase {
 
     @Override
     public void processUpdates(FacesContext context) {
+        if (!isRendered()) {
+            return;
+        }
+
         if (!isBackRequest(context) || (isUpdateModelOnPrev() && isBackRequest(context))) {
             Tab step = getStepToProcess();
             if (step != null) {
                 step.processUpdates(context);
             }
+        }
+
+        ELContext elContext = getFacesContext().getELContext();
+        ValueExpression expr = ValueExpressionAnalyzer.getExpression(elContext,
+                getValueExpression(PropertyKeys.step.toString()));
+        if (expr != null && !expr.isReadOnly(elContext)) {
+            expr.setValue(elContext, getStep());
+            resetStep();
         }
     }
 
@@ -147,4 +166,7 @@ public class Wizard extends WizardBase {
         }
     }
 
+    protected void resetStep() {
+        getStateHelper().remove(PropertyKeys.step);
+    }
 }

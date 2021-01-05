@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -61,7 +61,7 @@ public class LinkButtonRenderer extends OutcomeTargetRenderer {
         if (title != null) {
             writer.writeAttribute("title", title, "title");
         }
-        renderPassThruAttributes(context, linkButton, HTML.OUTPUT_EVENTS);
+        renderPassThruAttributes(context, linkButton, HTML.OUTPUT_EVENTS_WITHOUT_CLICK);
 
         if (disabled) {
             renderContent(context, linkButton);
@@ -84,10 +84,8 @@ public class LinkButtonRenderer extends OutcomeTargetRenderer {
     }
 
     protected void encodeScript(FacesContext context, LinkButton button) throws IOException {
-        String clientId = button.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("LinkButton", button.resolveWidgetVar(context), clientId);
-
+        wb.init("LinkButton", button);
         wb.finish();
     }
 

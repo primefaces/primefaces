@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,10 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -41,9 +39,6 @@ import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FilenameUtils;
@@ -154,7 +149,7 @@ public class FileUploadUtils {
             }
             return validType;
         }
-        catch (IOException | ScriptException ex) {
+        catch (IOException ex) {
             if (LOGGER.isLoggable(Level.WARNING)) {
                 LOGGER.log(Level.WARNING, String.format("The type of the uploaded file %s could not be validated", fileName), ex);
             }
@@ -162,38 +157,51 @@ public class FileUploadUtils {
         }
     }
 
-    private static boolean isValidFileName(FileUpload fileUpload, UploadedFile uploadedFile) throws ScriptException {
-        String allowTypesRegex = fileUpload.getAllowTypes();
-        if (!LangUtils.isValueBlank(allowTypesRegex)) {
-            //We use rhino or nashorn javascript engine bundled with java to re-evaluate javascript regex that cannot be easily translated to java regex
-            //TODO If at some day nashorn will not be bundled with java (http://openjdk.java.net/jeps/335), we have to put some notes in the user guide
-            ScriptEngine engine = new ScriptEngineManager().getEngineByName("javascript");
-
-            if (engine == null) {
-
-                // Attempt to use the default extension loader to obtain the engine for environments where the
-                // JavaScript ScriptEngine isn't available via the Thread.currentThread().getContextClassLoader()
-                // (such as Liferay).
-                engine = new ScriptEngineManager(null).getEngineByName("javascript");
-            }
-
-            if (engine == null) {
-                throw new ScriptException(new NullPointerException(
-                    "JavaScript ScriptEngine not available via the context ClassLoader or the extension ClassLoader."));
-            }
-
-            String fileName = EscapeUtils.forJavaScriptAttribute(uploadedFile.getFileName());
-            String contentType = EscapeUtils.forJavaScriptAttribute(uploadedFile.getContentType());
-
-            String evalJs = String.format("%s.test(\"%s\") || %s.test(\"%s\")", allowTypesRegex, contentType, allowTypesRegex, fileName);
-            if (!Boolean.TRUE.equals(engine.eval(evalJs))) {
-                if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.warning(String.format("The uploaded filename %s does not match the specified regex %s", fileName, allowTypesRegex));
-                }
-                return false;
-            }
+    private static boolean isValidFileName(FileUpload fileUpload, UploadedFile uploadedFile) {
+        String javascriptRegex = fileUpload.getAllowTypes();
+        if (LangUtils.isValueBlank(javascriptRegex)) {
+            return true;
         }
+
+        String javaRegex = convertJavaScriptRegex(javascriptRegex);
+        if (LangUtils.isValueBlank(javaRegex)) {
+            return true;
+        }
+
+        String fileName = EscapeUtils.forJavaScriptAttribute(uploadedFile.getFileName());
+        String contentType = EscapeUtils.forJavaScriptAttribute(uploadedFile.getContentType());
+
+        final Pattern allowTypesPattern = Pattern.compile(javaRegex, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+        final Matcher fileNameMatcher = allowTypesPattern.matcher(fileName);
+        final Matcher contentTypeMatcher = allowTypesPattern.matcher(contentType);
+        boolean isValid = fileNameMatcher.find() || contentTypeMatcher.find();
+        if (!isValid) {
+            if (LOGGER.isLoggable(Level.WARNING)) {
+                LOGGER.warning(String.format("The uploaded filename %s does not match the specified regex %s", fileName, javaRegex));
+            }
+            return false;
+        }
+
         return true;
+    }
+
+    /**
+     * Converts a JavaScript regular expression like '/(\.|\/)(gif|jpe?g|png)$/i'
+     * to the Java usable format '(\\.|\\/)(gif|jpe?g|png)$'
+     * @param jsRegex the client side JavaScript regex
+     * @return the Java converted version of the regex
+     */
+    protected static String convertJavaScriptRegex(String jsRegex) {
+        int start = 0;
+        int end = jsRegex.length() - 1;
+        if (jsRegex.charAt(0) == '/') {
+            start = 1;
+        }
+        char endChar = jsRegex.charAt(end);
+        if (endChar != '/' && endChar == 'i' || endChar == 'g') {
+            end = end - 1;
+        }
+        return LangUtils.substring(jsRegex, start, end);
     }
 
     private static boolean isValidFileContent(PrimeApplicationContext context, FileUpload fileUpload, String fileName, InputStream stream) throws IOException {
@@ -208,15 +216,8 @@ public class FileUploadUtils {
             return true;
         }
 
-        boolean tika = context.getEnvironment().isTikaAvailable();
-        if (!tika && LOGGER.isLoggable(Level.WARNING)) {
-            LOGGER.warning("Could not find Apache Tika in classpath which is recommended for reliable content type checking");
-        }
-
-        //If Tika is in place, we drop the original file extension to avoid short circuit detection by just looking at the file extension
-        String tempFileSuffix = tika ? null : "." + FilenameUtils.getExtension(fileName);
         String tempFilePrefix = UUID.randomUUID().toString();
-        Path tempFile = Files.createTempFile(tempFilePrefix, tempFileSuffix);
+        Path tempFile = Files.createTempFile(tempFilePrefix, null);
 
         try {
             try (InputStream in = new PushbackInputStream(new BufferedInputStream(stream))) {
@@ -224,14 +225,8 @@ public class FileUploadUtils {
                     IOUtils.copyLarge(in, out);
                 }
             }
-            String contentType = null;
-            if (context.getFileTypeDetector() != null) {
-                contentType = context.getFileTypeDetector().probeContentType(tempFile);
-            }
-            else {
-                // use default Java fallback
-                contentType = Files.probeContentType(tempFile);
-            }
+
+            String contentType = context.getFileTypeDetector().probeContentType(tempFile);
 
             if (contentType == null) {
                 if (LOGGER.isLoggable(Level.WARNING)) {

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -60,9 +60,8 @@ public class NotificationBarRenderer extends CoreRenderer {
     }
 
     private void encodeScript(FacesContext context, NotificationBar bar) throws IOException {
-        String clientId = bar.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("NotificationBar", bar.resolveWidgetVar(context), clientId)
+        wb.init("NotificationBar", bar)
                 .attr("position", bar.getPosition())
                 .attr("effect", bar.getEffect())
                 .attr("effectSpeed", bar.getEffectSpeed())

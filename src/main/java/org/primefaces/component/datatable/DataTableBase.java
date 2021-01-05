@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,16 +24,12 @@
 package org.primefaces.component.datatable;
 
 import org.primefaces.component.api.*;
-import org.primefaces.model.FilterMeta;
-import org.primefaces.model.SortMeta;
 
 import javax.el.MethodExpression;
 import javax.faces.component.behavior.ClientBehaviorHolder;
-import java.util.Collections;
-import java.util.Map;
 
-public abstract class DataTableBase extends UIData
-        implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable, MultiViewStateAware<DataTableState> {
+public abstract class DataTableBase extends UIPageableData implements Widget, RTLAware, ClientBehaviorHolder,
+        PrimeClientBehaviorHolder, UITable<DataTableState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -54,10 +50,8 @@ public abstract class DataTableBase extends UIData
         rowStyleClass,
         onExpandStart,
         resizableColumns,
-        sortBy,
-        sortOrder,
-        sortFunction,
         sortMode,
+        sortBy,
         allowUnsorting,
         scrollRows,
         rowKey,
@@ -87,9 +81,6 @@ public abstract class DataTableBase extends UIData
         caseSensitiveSort,
         skipChildren,
         disabledTextSelection,
-        sortField,
-        initMode,
-        nullSortOrder,
         tabindex,
         reflow,
         liveScrollBuffer,
@@ -100,10 +91,8 @@ public abstract class DataTableBase extends UIData
         clientCache,
         multiViewState,
         filterBy,
-        sortMeta,
         globalFilter,
         cellEditMode,
-        expandableRowGroups,
         virtualScroll,
         rowDragSelector,
         draggableRowsFunction,
@@ -114,7 +103,17 @@ public abstract class DataTableBase extends UIData
         escapeText,
         rowEditMode,
         stickyTopAt,
-        globalFilterFunction
+        globalFilterFunction,
+        renderEmptyFacets
+    }
+
+    protected enum InternalPropertyKeys {
+        defaultFilter,
+        filterByAsMap,
+        defaultSort,
+        sortByAsMap,
+        columnMeta,
+        width;
     }
 
     public DataTableBase() {
@@ -230,30 +229,6 @@ public abstract class DataTableBase extends UIData
         getStateHelper().put(PropertyKeys.resizableColumns, resizableColumns);
     }
 
-    public Object getSortBy() {
-        return getStateHelper().eval(PropertyKeys.sortBy, null);
-    }
-
-    public void setSortBy(Object sortBy) {
-        getStateHelper().put(PropertyKeys.sortBy, sortBy);
-    }
-
-    public String getSortOrder() {
-        return (String) getStateHelper().eval(PropertyKeys.sortOrder, "ascending");
-    }
-
-    public void setSortOrder(String sortOrder) {
-        getStateHelper().put(PropertyKeys.sortOrder, sortOrder);
-    }
-
-    public javax.el.MethodExpression getSortFunction() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.sortFunction, null);
-    }
-
-    public void setSortFunction(javax.el.MethodExpression sortFunction) {
-        getStateHelper().put(PropertyKeys.sortFunction, sortFunction);
-    }
-
     public int getScrollRows() {
         return (Integer) getStateHelper().eval(PropertyKeys.scrollRows, 0);
     }
@@ -327,15 +302,25 @@ public abstract class DataTableBase extends UIData
     }
 
     public String getSortMode() {
-        return (String) getStateHelper().eval(PropertyKeys.sortMode, "single");
+        return (String) getStateHelper().eval(PropertyKeys.sortMode, "multiple");
     }
 
     public void setSortMode(String sortMode) {
         getStateHelper().put(PropertyKeys.sortMode, sortMode);
     }
 
-    public boolean getAllowUnsorting() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.allowUnsorting, true);
+    @Override
+    public Object getSortBy() {
+        return getStateHelper().eval(PropertyKeys.sortBy, null);
+    }
+
+    @Override
+    public void setSortBy(Object sortBy) {
+        getStateHelper().put(PropertyKeys.sortBy, sortBy);
+    }
+
+    public boolean isAllowUnsorting() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.allowUnsorting, false);
     }
 
     public void setAllowUnsorting(boolean allowUnsorting) {
@@ -471,14 +456,6 @@ public abstract class DataTableBase extends UIData
         getStateHelper().put(PropertyKeys.draggableRows, draggableRows);
     }
 
-    public boolean isCaseSensitiveSort() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.caseSensitiveSort, false);
-    }
-
-    public void setCaseSensitiveSort(boolean caseSensitiveSort) {
-        getStateHelper().put(PropertyKeys.caseSensitiveSort, caseSensitiveSort);
-    }
-
     public boolean isSkipChildren() {
         return (Boolean) getStateHelper().eval(PropertyKeys.skipChildren, false);
     }
@@ -493,30 +470,6 @@ public abstract class DataTableBase extends UIData
 
     public void setDisabledTextSelection(boolean disabledTextSelection) {
         getStateHelper().put(PropertyKeys.disabledTextSelection, disabledTextSelection);
-    }
-
-    public String getSortField() {
-        return (String) getStateHelper().eval(PropertyKeys.sortField, null);
-    }
-
-    public void setSortField(String sortField) {
-        getStateHelper().put(PropertyKeys.sortField, sortField);
-    }
-
-    public String getInitMode() {
-        return (String) getStateHelper().eval(PropertyKeys.initMode, "load");
-    }
-
-    public void setInitMode(String initMode) {
-        getStateHelper().put(PropertyKeys.initMode, initMode);
-    }
-
-    public int getNullSortOrder() {
-        return (Integer) getStateHelper().eval(PropertyKeys.nullSortOrder, 1);
-    }
-
-    public void setNullSortOrder(int nullSortOrder) {
-        getStateHelper().put(PropertyKeys.nullSortOrder, nullSortOrder);
     }
 
     public String getTabindex() {
@@ -592,26 +545,22 @@ public abstract class DataTableBase extends UIData
         getStateHelper().put(PropertyKeys.multiViewState, multiViewState);
     }
 
-    public Map<String, FilterMeta> getFilterBy() {
-        return (Map<String, FilterMeta>) getStateHelper().eval(PropertyKeys.filterBy, Collections.emptyMap());
+    @Override
+    public Object getFilterBy() {
+        return getStateHelper().eval(PropertyKeys.filterBy);
     }
 
-    public void setFilterBy(Map<String, FilterMeta> filterBy) {
+    @Override
+    public void setFilterBy(Object filterBy) {
         getStateHelper().put(PropertyKeys.filterBy, filterBy);
     }
 
-    public Map<String, SortMeta> getSortMeta() {
-        return (Map<String, SortMeta>) getStateHelper().eval(PropertyKeys.sortMeta, Collections.emptyMap());
-    }
-
-    public void setSortMeta(Map<String, SortMeta> sortMeta) {
-        getStateHelper().put(PropertyKeys.sortMeta, sortMeta);
-    }
-
+    @Override
     public String getGlobalFilter() {
         return (String) getStateHelper().eval(PropertyKeys.globalFilter, null);
     }
 
+    @Override
     public void setGlobalFilter(String globalFilter) {
         getStateHelper().put(PropertyKeys.globalFilter, globalFilter);
     }
@@ -622,14 +571,6 @@ public abstract class DataTableBase extends UIData
 
     public void setCellEditMode(String cellEditMode) {
         getStateHelper().put(PropertyKeys.cellEditMode, cellEditMode);
-    }
-
-    public boolean isExpandableRowGroups() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.expandableRowGroups, false);
-    }
-
-    public void setExpandableRowGroups(boolean expandableRowGroups) {
-        getStateHelper().put(PropertyKeys.expandableRowGroups, expandableRowGroups);
     }
 
     public boolean isVirtualScroll() {
@@ -712,11 +653,21 @@ public abstract class DataTableBase extends UIData
         getStateHelper().put(PropertyKeys.stickyTopAt, stickyTopAt);
     }
 
+    @Override
     public MethodExpression getGlobalFilterFunction() {
         return (MethodExpression) getStateHelper().eval(PropertyKeys.globalFilterFunction, null);
     }
 
+    @Override
     public void setGlobalFilterFunction(MethodExpression globalFilterFunction) {
         getStateHelper().put(PropertyKeys.globalFilterFunction, globalFilterFunction);
+    }
+
+    public boolean isRenderEmptyFacets() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.renderEmptyFacets, false);
+    }
+
+    public void setRenderEmptyFacets(boolean renderEmptyFacets) {
+        getStateHelper().put(PropertyKeys.renderEmptyFacets, renderEmptyFacets);
     }
 }

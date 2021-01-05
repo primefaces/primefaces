@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -362,6 +362,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         errorPage = context.getApplication().evaluateExpressionGet(context, errorPage, String.class);
 
         String url = externalContext.getRequestContextPath() + errorPage;
+        url = externalContext.encodeActionURL(url);
 
         // workaround for mojarra -> mojarra doesn't reset PartialResponseWriter#inChanges if we call externalContext#resetResponse
         if (responseResetted && context.getPartialViewContext().isAjaxRequest()) {

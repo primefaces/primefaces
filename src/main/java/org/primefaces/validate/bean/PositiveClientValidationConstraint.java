@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,9 @@
  */
 package org.primefaces.validate.bean;
 
-import org.primefaces.util.HTML;
-
 import java.util.Map;
+
+import org.primefaces.util.HTML;
 
 public class PositiveClientValidationConstraint extends AbstractClientValidationConstraint {
 
@@ -33,6 +33,7 @@ public class PositiveClientValidationConstraint extends AbstractClientValidation
     public static final String MESSAGE_METADATA = "data-p-positive-msg";
     public static final String CONSTRAINT_CLASS_NAME = CONSTRAINT_PACKAGE  + "." + CONSTRAINT_ID;
     public static final String MESSAGE_ID = "{" + CONSTRAINT_CLASS_NAME + ".message}";
+    public static final String MIN_VALUE = "0.0000001";
 
     public PositiveClientValidationConstraint() {
         super(MESSAGE_ID, MESSAGE_METADATA);

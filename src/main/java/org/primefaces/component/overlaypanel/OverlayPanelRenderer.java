@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -79,10 +79,9 @@ public class OverlayPanelRenderer extends CoreRenderer {
 
     protected void encodeScript(FacesContext context, OverlayPanel panel) throws IOException {
         String target = SearchExpressionFacade.resolveClientId(context, panel, panel.getFor());
-        String clientId = panel.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("OverlayPanel", panel.resolveWidgetVar(context), clientId)
+        wb.init("OverlayPanel", panel)
                 .attr("target", target)
                 .attr("showEvent", panel.getShowEvent(), null)
                 .attr("hideEvent", panel.getHideEvent(), null)

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -44,9 +44,8 @@ public class AjaxStatusRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, AjaxStatus status) throws IOException {
-        String clientId = status.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("AjaxStatus", status.resolveWidgetVar(context), clientId);
+        wb.init("AjaxStatus", status);
         wb.attr("delay", status.getDelay());
 
         wb.callback(AjaxStatus.START, AjaxStatus.CALLBACK_SIGNATURE, status.getOnstart())

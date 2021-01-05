@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,8 @@ package org.primefaces.model.menu;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.primefaces.util.LangUtils;
 
 /**
  * Base implementation for model of a programmatic menu
@@ -60,8 +62,12 @@ public class BaseMenuModel implements MenuModel, Serializable {
         int counter = 0;
 
         for (MenuElement element : elements) {
-            String id = (seed == null) ? String.valueOf(counter++) : seed + ID_SEPARATOR + counter++;
-            element.setId(id);
+            // #1039 check if ID was already manually set
+            String id = element.getId();
+            if (LangUtils.isValueBlank(id)) {
+                id = (seed == null) ? String.valueOf(counter++) : seed + ID_SEPARATOR + counter++;
+                element.setId(id);
+            }
 
             if (element instanceof MenuGroup) {
                 generateUniqueIds(((MenuGroup) element).getElements(), id);

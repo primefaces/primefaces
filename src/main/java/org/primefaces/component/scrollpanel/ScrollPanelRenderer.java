@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -67,9 +67,8 @@ public class ScrollPanelRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, ScrollPanel panel) throws IOException {
         boolean nativeMode = panel.getMode().equals("native");
         if (!nativeMode) {
-            String clientId = panel.getClientId(context);
             WidgetBuilder wb = getWidgetBuilder(context);
-            wb.init("ScrollPanel", panel.resolveWidgetVar(context), clientId).finish();
+            wb.init("ScrollPanel", panel).finish();
         }
     }
 

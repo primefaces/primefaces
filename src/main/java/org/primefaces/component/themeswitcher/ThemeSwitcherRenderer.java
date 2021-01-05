@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,9 +38,8 @@ public class ThemeSwitcherRenderer extends SelectOneMenuRenderer {
     @Override
     protected void encodeScript(FacesContext context, SelectOneMenu menu) throws IOException {
         ThemeSwitcher ts = (ThemeSwitcher) menu;
-        String clientId = ts.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("ThemeSwitcher", ts.resolveWidgetVar(context), clientId)
+        wb.init("ThemeSwitcher", ts)
                 .attr("effect", ts.getEffect(), null)
                 .attr("effectSpeed", ts.getEffectSpeed(), null)
                 .attr("appendTo", SearchExpressionFacade.resolveClientId(context, menu, menu.getAppendTo(),

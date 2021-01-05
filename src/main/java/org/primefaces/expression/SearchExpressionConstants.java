@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,13 +35,14 @@ public class SearchExpressionConstants {
     public static final String NAMINGCONTAINER_KEYWORD =    KEYWORD_PREFIX + "namingcontainer";
     public static final String ALL_KEYWORD =                KEYWORD_PREFIX + "all";
     public static final String NEXT_KEYWORD =               KEYWORD_PREFIX + "next";
-    public static final String PREVIOUS_KEYWORD =          KEYWORD_PREFIX + "previous";
+    public static final String PREVIOUS_KEYWORD =           KEYWORD_PREFIX + "previous";
     public static final String CHILD_KEYWORD =              KEYWORD_PREFIX + "child";
     public static final String WIDGETVAR_KEYWORD =          KEYWORD_PREFIX + "widgetVar";
     public static final String ROW_KEYWORD =                KEYWORD_PREFIX + "row";
     public static final String COLUMN_KEYWORD =             KEYWORD_PREFIX + "column";
     public static final String ID_KEYWORD =                 KEYWORD_PREFIX + "id";
     public static final String ROOT_KEYWORD =               KEYWORD_PREFIX + "root";
+    public static final String OBSERVER_KEYWORD =           KEYWORD_PREFIX + "obs";
 
     public static final String PFS_PREFIX =                 KEYWORD_PREFIX + "(";
 

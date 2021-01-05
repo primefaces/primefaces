@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,23 +23,9 @@
  */
 package org.primefaces.model.filter;
 
-import java.util.Locale;
-import org.primefaces.util.LangUtils;
+public class StartsWithFilterConstraint extends StringFilterConstraint {
 
-public class StartsWithFilterConstraint implements FilterConstraint {
-
-    @Override
-    public boolean applies(Object value, Object filter, Locale locale) {
-        String filterText = (filter == null) ? null : filter.toString().trim().toLowerCase(locale);
-
-        if (LangUtils.isValueEmpty(filterText)) {
-            return true;
-        }
-
-        if (value == null) {
-            return false;
-        }
-
-        return value.toString().toLowerCase(locale).startsWith(filterText);
+    public StartsWithFilterConstraint() {
+        super(String::startsWith);
     }
 }

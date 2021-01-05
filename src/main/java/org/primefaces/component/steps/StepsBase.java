@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,7 +39,8 @@ public abstract class StepsBase extends AbstractMenu implements Widget {
         style,
         styleClass,
         activeIndex,
-        readonly
+        readonly,
+        activeStepExecutable
     }
 
     public StepsBase() {
@@ -98,5 +99,13 @@ public abstract class StepsBase extends AbstractMenu implements Widget {
 
     public void setReadonly(boolean readonly) {
         getStateHelper().put(PropertyKeys.readonly, readonly);
+    }
+
+    public boolean isActiveStepExecutable() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.activeStepExecutable, false);
+    }
+
+    public void setActiveStepExecutable(boolean activeStepExecutable) {
+        getStateHelper().put(PropertyKeys.activeStepExecutable, activeStepExecutable);
     }
 }

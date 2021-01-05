@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,10 +41,14 @@ public class PDFOptions implements ExporterOptions {
 
     private String fontName;
 
+    private PDFOrientationType orientation;
+
     public PDFOptions() {
+        orientation = PDFOrientationType.PORTRAIT;
     }
 
     public PDFOptions(String facetFontStyle, String facetFontColor, String facetBgColor, String facetFontSize) {
+        this();
         this.facetFontStyle = facetFontStyle;
         this.facetFontColor = facetFontColor;
         this.facetBgColor = facetBgColor;
@@ -52,6 +56,7 @@ public class PDFOptions implements ExporterOptions {
     }
 
     public PDFOptions(String cellFontStyle, String cellFontColor, String cellFontSize) {
+        this();
         this.cellFontStyle = cellFontStyle;
         this.cellFontColor = cellFontColor;
         this.cellFontSize = cellFontSize;
@@ -135,6 +140,22 @@ public class PDFOptions implements ExporterOptions {
 
     public void setFontName(String fontName) {
         this.fontName = fontName;
+    }
+
+    /**
+     * Gets the orientation of this PDF either LANDSCAPE or PORTRAIT.
+     * @return the PDFOrientation or NULL
+     */
+    public PDFOrientationType getOrientation() {
+        return orientation;
+    }
+
+    /**
+     * Sets the orientation of this PDF either LANDSCAPE or PORTRAIT.
+     * @param orientation the PDFOrientation to set
+     */
+    public void setOrientation(PDFOrientationType orientation) {
+        this.orientation = orientation;
     }
 
 }

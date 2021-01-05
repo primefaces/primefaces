@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,6 +28,7 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.api.UIColumn;
 
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
@@ -35,6 +36,7 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.row.Row;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LangUtils;
 
 public class SubTableRenderer extends CoreRenderer {
 
@@ -75,9 +77,16 @@ public class SubTableRenderer extends CoreRenderer {
             for (UIComponent child : group.getChildren()) {
                 if (child.isRendered() && child instanceof Row) {
                     Row headerRow = (Row) child;
+                    String styleClass = "ui-widget-header";
+                    if (LangUtils.isNotBlank(headerRow.getStyleClass())) {
+                        styleClass = styleClass + " " + headerRow.getStyleClass();
+                    }
 
                     writer.startElement("tr", null);
-                    writer.writeAttribute("class", "ui-widget-header", null);
+                    writer.writeAttribute("class", styleClass, null);
+                    if (LangUtils.isNotBlank(headerRow.getStyle())) {
+                        writer.writeAttribute("style", headerRow.getStyle(), null);
+                    }
 
                     for (UIComponent headerRowChild : headerRow.getChildren()) {
                         if (headerRowChild.isRendered() && headerRowChild instanceof Column) {
@@ -105,21 +114,23 @@ public class SubTableRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId + "_row_" + rowIndex, null);
         writer.writeAttribute("class", DataTable.ROW_CLASS, null);
 
-        for (Column column : table.getColumns()) {
-            String style = column.getStyle();
-            String styleClass = column.getStyleClass();
+        for (UIColumn column : table.getColumns()) {
+            if (column instanceof Column) { //Columns are not supported yet
+                String style = column.getStyle();
+                String styleClass = column.getStyleClass();
 
-            writer.startElement("td", null);
-            if (style != null) {
-                writer.writeAttribute("style", style, null);
+                writer.startElement("td", null);
+                if (style != null) {
+                    writer.writeAttribute("style", style, null);
+                }
+                if (styleClass != null) {
+                    writer.writeAttribute("class", styleClass, null);
+                }
+
+                column.encodeAll(context);
+
+                writer.endElement("td");
             }
-            if (styleClass != null) {
-                writer.writeAttribute("class", styleClass, null);
-            }
-
-            column.encodeAll(context);
-
-            writer.endElement("td");
         }
 
         writer.endElement("tr");
@@ -152,9 +163,16 @@ public class SubTableRenderer extends CoreRenderer {
         for (UIComponent child : group.getChildren()) {
             if (child.isRendered() && child instanceof Row) {
                 Row footerRow = (Row) child;
+                String styleClass = "ui-widget-header";
+                if (LangUtils.isNotBlank(footerRow.getStyleClass())) {
+                    styleClass = styleClass + " " + footerRow.getStyleClass();
+                }
 
                 writer.startElement("tr", null);
-                writer.writeAttribute("class", "ui-widget-header", null);
+                writer.writeAttribute("class", styleClass, null);
+                if (LangUtils.isNotBlank(footerRow.getStyle())) {
+                    writer.writeAttribute("style", footerRow.getStyle(), null);
+                }
 
                 for (UIComponent footerRowChild : footerRow.getChildren()) {
                     if (footerRowChild.isRendered() && footerRowChild instanceof Column) {

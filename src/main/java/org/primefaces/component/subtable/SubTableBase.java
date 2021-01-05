@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,6 @@ package org.primefaces.component.subtable;
 
 import javax.faces.component.UIData;
 
-
 public abstract class SubTableBase extends UIData {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
@@ -33,6 +32,10 @@ public abstract class SubTableBase extends UIData {
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SubTableRenderer";
 
     public enum PropertyKeys {
+    }
+
+    protected enum InternalPropertyKeys {
+        columnMeta
     }
 
     public SubTableBase() {
@@ -43,5 +46,4 @@ public abstract class SubTableBase extends UIData {
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
-
 }

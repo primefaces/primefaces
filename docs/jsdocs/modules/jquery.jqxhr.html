@@ -104,6 +104,9 @@
 									<li>
 										<a href="../interfaces/jqueryxhr.html" class="tsd-signature-type">JQueryXHR</a>
 									</li>
+									<li>
+										<a href="../interfaces/primefaces.ajax.pfxhr.html" class="tsd-signature-type">pfXHR</a>
+									</li>
 								</ul>
 							</li>
 						</ul>
@@ -152,7 +155,7 @@
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-namespace tsd-is-inherited">
 					<a name="_symbol_tostringtag_" class="tsd-anchor"></a>
-					<h3>[<wbr>Symbol.to<wbr>String<wbr>Tag]</h3>
+					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> [<wbr>Symbol.to<wbr>String<wbr>Tag]</h3>
 					<div class="tsd-signature tsd-kind-icon">[<wbr>Symbol.to<wbr>String<wbr>Tag]<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"Promise"</span></div>
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="jquery.jqxhr.html">jqXHR</a>.<a href="jquery.jqxhr.html#_symbol_tostringtag_">[Symbol.toStringTag]</a></p>
@@ -212,8 +215,8 @@
 									</dd>
 									<dt>example</dt>
 									<dd><p>​ ````Since the jQuery.get() method returns a jqXHR object, which is derived from a Deferred object, we can attach a callback for both success and error using the deferred.always() method.</p>
-										<pre><code class="language-javascript">$.<span class="hljs-keyword">get</span>( "test.php" ).always(function() {
-alert( <span class="hljs-string">"$.get completed with success or error callback arguments"</span> );
+										<pre><code class="language-javascript">$.get( <span class="hljs-string">&quot;test.php&quot;</span> ).always(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+alert( <span class="hljs-string">&quot;$.get completed with success or error callback arguments&quot;</span> );
 });</code></pre>
 									</dd>
 								</dl>
@@ -262,12 +265,12 @@ alert( <span class="hljs-string">"$.get completed with success or error callback
 									</dd>
 									<dt>example</dt>
 									<dd><p>​ ````Since the jQuery.get method returns a jqXHR object, which is derived from a Deferred object, we can rejection handlers using the .catch method.</p>
-										<pre><code class="language-javascript">$.<span class="hljs-keyword">get</span>( "test.php" )
-.then( function() {
-alert( <span class="hljs-string">"$.get succeeded"</span> );
+										<pre><code class="language-javascript">$.get( <span class="hljs-string">&quot;test.php&quot;</span> )
+.then( <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+alert( <span class="hljs-string">&quot;$.get succeeded&quot;</span> );
 } )
 .catch( <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
-alert( <span class="hljs-string">"$.get failed!"</span> );
+alert( <span class="hljs-string">&quot;$.get failed!&quot;</span> );
 } );</code></pre>
 									</dd>
 								</dl>
@@ -348,18 +351,18 @@ alert( <span class="hljs-string">"$.get failed!"</span> );
 									</dd>
 									<dt>example</dt>
 									<dd><p>​ ````Since the jQuery.get method returns a jqXHR object, which is derived from a Deferred object, we can attach a success callback using the .done() method.</p>
-										<pre><code class="language-javascript">$.<span class="hljs-keyword">get</span>( "test.php" ).done(function() {
-alert( <span class="hljs-string">"$.get succeeded"</span> );
+										<pre><code class="language-javascript">$.get( <span class="hljs-string">&quot;test.php&quot;</span> ).done(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+alert( <span class="hljs-string">&quot;$.get succeeded&quot;</span> );
 });</code></pre>
 									</dd>
 									<dt>example</dt>
 									<dd><p>​ ````Resolve a Deferred object when the user clicks a button, triggering a number of callback functions:</p>
 										<pre><code class="language-html"><span class="hljs-meta">&lt;!doctype <span class="hljs-meta-keyword">html</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"utf-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;utf-8&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>deferred.done demo<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://code.jquery.com/jquery-3.3.1.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://code.jquery.com/jquery-3.3.1.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
 ​
@@ -369,13 +372,13 @@ alert( <span class="hljs-string">"$.get succeeded"</span> );
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
 <span class="hljs-comment">// 3 functions to call when the Deferred object is resolved</span>
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fn1</span>(<span class="hljs-params"></span>) </span>{
-$( <span class="hljs-string">"p"</span> ).append( <span class="hljs-string">" 1 "</span> );
+$( <span class="hljs-string">&quot;p&quot;</span> ).append( <span class="hljs-string">&quot; 1 &quot;</span> );
 }
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fn2</span>(<span class="hljs-params"></span>) </span>{
-$( <span class="hljs-string">"p"</span> ).append( <span class="hljs-string">" 2 "</span> );
+$( <span class="hljs-string">&quot;p&quot;</span> ).append( <span class="hljs-string">&quot; 2 &quot;</span> );
 }
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fn3</span>(<span class="hljs-params"> n </span>) </span>{
-$( <span class="hljs-string">"p"</span> ).append( n + <span class="hljs-string">" 3 "</span> + n );
+$( <span class="hljs-string">&quot;p&quot;</span> ).append( n + <span class="hljs-string">&quot; 3 &quot;</span> + n );
 }
 ​
 <span class="hljs-comment">// Create a deferred object</span>
@@ -387,12 +390,12 @@ dfd
 .done( [ fn1, fn2 ], fn3, [ fn2, fn1 ] )
 <span class="hljs-comment">// We can chain done methods, too</span>
 .done(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> n </span>) </span>{
-$( <span class="hljs-string">"p"</span> ).append( n + <span class="hljs-string">" we're done."</span> );
+$( <span class="hljs-string">&quot;p&quot;</span> ).append( n + <span class="hljs-string">&quot; we&#x27;re done.&quot;</span> );
 });
 ​
 <span class="hljs-comment">// Resolve the Deferred object when the button is clicked</span>
-$( <span class="hljs-string">"button"</span> ).on( <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
-dfd.resolve( <span class="hljs-string">"and"</span> );
+$( <span class="hljs-string">&quot;button&quot;</span> ).on( <span class="hljs-string">&quot;click&quot;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+dfd.resolve( <span class="hljs-string">&quot;and&quot;</span> );
 });
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 ​
@@ -444,12 +447,12 @@ dfd.resolve( <span class="hljs-string">"and"</span> );
 									</dd>
 									<dt>example</dt>
 									<dd><p>​ ````Since the jQuery.get method returns a jqXHR object, which is derived from a Deferred, you can attach a success and failure callback using the deferred.done() and deferred.fail() methods.</p>
-										<pre><code class="language-javascript">$.<span class="hljs-keyword">get</span>( "test.php" )
-.done(function() {
-alert( <span class="hljs-string">"$.get succeeded"</span> );
+										<pre><code class="language-javascript">$.get( <span class="hljs-string">&quot;test.php&quot;</span> )
+.done(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+alert( <span class="hljs-string">&quot;$.get succeeded&quot;</span> );
 })
 .fail(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
-alert( <span class="hljs-string">"$.get failed!"</span> );
+alert( <span class="hljs-string">&quot;$.get failed!&quot;</span> );
 });</code></pre>
 									</dd>
 								</dl>
@@ -518,7 +521,7 @@ filtered = defer.pipe(<span class="hljs-function"><span class="hljs-keyword">fun
 ​
 defer.resolve( <span class="hljs-number">5</span> );
 filtered.done(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>) </span>{
-alert( <span class="hljs-string">"Value is ( 2*5 = ) 10: "</span> + value );
+alert( <span class="hljs-string">&quot;Value is ( 2*5 = ) 10: &quot;</span> + value );
 });</code></pre>
 									</dd>
 									<dt>example</dt>
@@ -530,12 +533,12 @@ filtered = defer.pipe( <span class="hljs-literal">null</span>, <span class="hljs
 ​
 defer.reject( <span class="hljs-number">6</span> );
 filtered.fail(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>) </span>{
-alert( <span class="hljs-string">"Value is ( 3*6 = ) 18: "</span> + value );
+alert( <span class="hljs-string">&quot;Value is ( 3*6 = ) 18: &quot;</span> + value );
 });</code></pre>
 									</dd>
 									<dt>example</dt>
 									<dd><p>​ ````Chain tasks:</p>
-										<pre><code class="language-javascript"><span class="hljs-keyword">var</span> request = $.ajax( url, { <span class="hljs-attr">dataType</span>: <span class="hljs-string">"json"</span> } ),
+										<pre><code class="language-javascript"><span class="hljs-keyword">var</span> request = $.ajax( url, { <span class="hljs-attr">dataType</span>: <span class="hljs-string">&quot;json&quot;</span> } ),
 chained = request.pipe(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> data </span>) </span>{
 <span class="hljs-keyword">return</span> $.ajax( url2, { <span class="hljs-attr">data</span>: { <span class="hljs-attr">user</span>: data.userId } } );
 });
@@ -793,12 +796,12 @@ filtered = defer.pipe( <span class="hljs-literal">null</span>, <span class="hljs
 ​
 defer.reject( <span class="hljs-number">6</span> );
 filtered.fail(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>) </span>{
-alert( <span class="hljs-string">"Value is ( 3*6 = ) 18: "</span> + value );
+alert( <span class="hljs-string">&quot;Value is ( 3*6 = ) 18: &quot;</span> + value );
 });</code></pre>
 									</dd>
 									<dt>example</dt>
 									<dd><p>​ ````Chain tasks:</p>
-										<pre><code class="language-javascript"><span class="hljs-keyword">var</span> request = $.ajax( url, { <span class="hljs-attr">dataType</span>: <span class="hljs-string">"json"</span> } ),
+										<pre><code class="language-javascript"><span class="hljs-keyword">var</span> request = $.ajax( url, { <span class="hljs-attr">dataType</span>: <span class="hljs-string">&quot;json&quot;</span> } ),
 chained = request.pipe(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> data </span>) </span>{
 <span class="hljs-keyword">return</span> $.ajax( url2, { <span class="hljs-attr">data</span>: { <span class="hljs-attr">user</span>: data.userId } } );
 });
@@ -993,12 +996,12 @@ filtered = defer.pipe(<span class="hljs-function"><span class="hljs-keyword">fun
 ​
 defer.resolve( <span class="hljs-number">5</span> );
 filtered.done(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>) </span>{
-alert( <span class="hljs-string">"Value is ( 2*5 = ) 10: "</span> + value );
+alert( <span class="hljs-string">&quot;Value is ( 2*5 = ) 10: &quot;</span> + value );
 });</code></pre>
 									</dd>
 									<dt>example</dt>
 									<dd><p>​ ````Chain tasks:</p>
-										<pre><code class="language-javascript"><span class="hljs-keyword">var</span> request = $.ajax( url, { <span class="hljs-attr">dataType</span>: <span class="hljs-string">"json"</span> } ),
+										<pre><code class="language-javascript"><span class="hljs-keyword">var</span> request = $.ajax( url, { <span class="hljs-attr">dataType</span>: <span class="hljs-string">&quot;json&quot;</span> } ),
 chained = request.pipe(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> data </span>) </span>{
 <span class="hljs-keyword">return</span> $.ajax( url2, { <span class="hljs-attr">data</span>: { <span class="hljs-attr">user</span>: data.userId } } );
 });
@@ -1186,7 +1189,7 @@ chained.done(<span class="hljs-function"><span class="hljs-keyword">function</sp
 									</dd>
 									<dt>example</dt>
 									<dd><p>​ ````Chain tasks:</p>
-										<pre><code class="language-javascript"><span class="hljs-keyword">var</span> request = $.ajax( url, { <span class="hljs-attr">dataType</span>: <span class="hljs-string">"json"</span> } ),
+										<pre><code class="language-javascript"><span class="hljs-keyword">var</span> request = $.ajax( url, { <span class="hljs-attr">dataType</span>: <span class="hljs-string">&quot;json&quot;</span> } ),
 chained = request.pipe(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> data </span>) </span>{
 <span class="hljs-keyword">return</span> $.ajax( url2, { <span class="hljs-attr">data</span>: { <span class="hljs-attr">user</span>: data.userId } } );
 });
@@ -1318,7 +1321,7 @@ filtered = defer.pipe(<span class="hljs-function"><span class="hljs-keyword">fun
 ​
 defer.resolve( <span class="hljs-number">5</span> );
 filtered.done(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>) </span>{
-alert( <span class="hljs-string">"Value is ( 2*5 = ) 10: "</span> + value );
+alert( <span class="hljs-string">&quot;Value is ( 2*5 = ) 10: &quot;</span> + value );
 });</code></pre>
 									</dd>
 									<dt>example</dt>
@@ -1330,12 +1333,12 @@ filtered = defer.pipe( <span class="hljs-literal">null</span>, <span class="hljs
 ​
 defer.reject( <span class="hljs-number">6</span> );
 filtered.fail(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>) </span>{
-alert( <span class="hljs-string">"Value is ( 3*6 = ) 18: "</span> + value );
+alert( <span class="hljs-string">&quot;Value is ( 3*6 = ) 18: &quot;</span> + value );
 });</code></pre>
 									</dd>
 									<dt>example</dt>
 									<dd><p>​ ````Chain tasks:</p>
-										<pre><code class="language-javascript"><span class="hljs-keyword">var</span> request = $.ajax( url, { <span class="hljs-attr">dataType</span>: <span class="hljs-string">"json"</span> } ),
+										<pre><code class="language-javascript"><span class="hljs-keyword">var</span> request = $.ajax( url, { <span class="hljs-attr">dataType</span>: <span class="hljs-string">&quot;json&quot;</span> } ),
 chained = request.pipe(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> data </span>) </span>{
 <span class="hljs-keyword">return</span> $.ajax( url2, { <span class="hljs-attr">data</span>: { <span class="hljs-attr">user</span>: data.userId } } );
 });
@@ -1530,12 +1533,12 @@ filtered = defer.pipe( <span class="hljs-literal">null</span>, <span class="hljs
 ​
 defer.reject( <span class="hljs-number">6</span> );
 filtered.fail(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>) </span>{
-alert( <span class="hljs-string">"Value is ( 3*6 = ) 18: "</span> + value );
+alert( <span class="hljs-string">&quot;Value is ( 3*6 = ) 18: &quot;</span> + value );
 });</code></pre>
 									</dd>
 									<dt>example</dt>
 									<dd><p>​ ````Chain tasks:</p>
-										<pre><code class="language-javascript"><span class="hljs-keyword">var</span> request = $.ajax( url, { <span class="hljs-attr">dataType</span>: <span class="hljs-string">"json"</span> } ),
+										<pre><code class="language-javascript"><span class="hljs-keyword">var</span> request = $.ajax( url, { <span class="hljs-attr">dataType</span>: <span class="hljs-string">&quot;json&quot;</span> } ),
 chained = request.pipe(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> data </span>) </span>{
 <span class="hljs-keyword">return</span> $.ajax( url2, { <span class="hljs-attr">data</span>: { <span class="hljs-attr">user</span>: data.userId } } );
 });
@@ -1667,12 +1670,12 @@ filtered = defer.pipe(<span class="hljs-function"><span class="hljs-keyword">fun
 ​
 defer.resolve( <span class="hljs-number">5</span> );
 filtered.done(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>) </span>{
-alert( <span class="hljs-string">"Value is ( 2*5 = ) 10: "</span> + value );
+alert( <span class="hljs-string">&quot;Value is ( 2*5 = ) 10: &quot;</span> + value );
 });</code></pre>
 									</dd>
 									<dt>example</dt>
 									<dd><p>​ ````Chain tasks:</p>
-										<pre><code class="language-javascript"><span class="hljs-keyword">var</span> request = $.ajax( url, { <span class="hljs-attr">dataType</span>: <span class="hljs-string">"json"</span> } ),
+										<pre><code class="language-javascript"><span class="hljs-keyword">var</span> request = $.ajax( url, { <span class="hljs-attr">dataType</span>: <span class="hljs-string">&quot;json&quot;</span> } ),
 chained = request.pipe(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> data </span>) </span>{
 <span class="hljs-keyword">return</span> $.ajax( url2, { <span class="hljs-attr">data</span>: { <span class="hljs-attr">user</span>: data.userId } } );
 });
@@ -1847,37 +1850,37 @@ chained.done(<span class="hljs-function"><span class="hljs-keyword">function</sp
 <span class="hljs-keyword">var</span> dfd = jQuery.Deferred();
 ​
 <span class="hljs-comment">// Resolve after a random interval</span>
-setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
-dfd.resolve( <span class="hljs-string">"hurray"</span> );
+<span class="hljs-built_in">setTimeout</span>(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+dfd.resolve( <span class="hljs-string">&quot;hurray&quot;</span> );
 }, <span class="hljs-built_in">Math</span>.floor( <span class="hljs-number">400</span> + <span class="hljs-built_in">Math</span>.random() * <span class="hljs-number">2000</span> ) );
 ​
 <span class="hljs-comment">// Reject after a random interval</span>
-setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
-dfd.reject( <span class="hljs-string">"sorry"</span> );
+<span class="hljs-built_in">setTimeout</span>(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+dfd.reject( <span class="hljs-string">&quot;sorry&quot;</span> );
 }, <span class="hljs-built_in">Math</span>.floor( <span class="hljs-number">400</span> + <span class="hljs-built_in">Math</span>.random() * <span class="hljs-number">2000</span> ) );
 ​
-<span class="hljs-comment">// Show a "working..." message every half-second</span>
-setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">working</span>(<span class="hljs-params"></span>) </span>{
-<span class="hljs-keyword">if</span> ( dfd.state() === <span class="hljs-string">"pending"</span> ) {
-dfd.notify( <span class="hljs-string">"working... "</span> );
-setTimeout( working, <span class="hljs-number">500</span> );
+<span class="hljs-comment">// Show a &quot;working...&quot; message every half-second</span>
+<span class="hljs-built_in">setTimeout</span>(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">working</span>(<span class="hljs-params"></span>) </span>{
+<span class="hljs-keyword">if</span> ( dfd.state() === <span class="hljs-string">&quot;pending&quot;</span> ) {
+dfd.notify( <span class="hljs-string">&quot;working... &quot;</span> );
+<span class="hljs-built_in">setTimeout</span>( working, <span class="hljs-number">500</span> );
 }
 }, <span class="hljs-number">1</span> );
 ​
-<span class="hljs-comment">// Return the Promise so caller can't change the Deferred</span>
+<span class="hljs-comment">// Return the Promise so caller can&#x27;t change the Deferred</span>
 <span class="hljs-keyword">return</span> dfd.promise();
 }
 ​
 <span class="hljs-comment">// Attach a done, fail, and progress handler for the asyncEvent</span>
 $.when( asyncEvent() ).then(
 <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> status </span>) </span>{
-alert( status + <span class="hljs-string">", things are going well"</span> );
+alert( status + <span class="hljs-string">&quot;, things are going well&quot;</span> );
 },
 <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> status </span>) </span>{
-alert( status + <span class="hljs-string">", you fail this time"</span> );
+alert( status + <span class="hljs-string">&quot;, you fail this time&quot;</span> );
 },
 <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> status </span>) </span>{
-$( <span class="hljs-string">"body"</span> ).append( status );
+$( <span class="hljs-string">&quot;body&quot;</span> ).append( status );
 }
 );</code></pre>
 									</dd>
@@ -1920,7 +1923,7 @@ $( <span class="hljs-string">"body"</span> ).append( status );
 										<pre><code class="language-javascript"><span class="hljs-comment">// Existing object</span>
 <span class="hljs-keyword">var</span> obj = {
 <span class="hljs-attr">hello</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> name </span>) </span>{
-alert( <span class="hljs-string">"Hello "</span> + name );
+alert( <span class="hljs-string">&quot;Hello &quot;</span> + name );
 }
 },
 <span class="hljs-comment">// Create a Deferred</span>
@@ -1930,12 +1933,12 @@ defer = $.Deferred();
 defer.promise( obj );
 ​
 <span class="hljs-comment">// Resolve the deferred</span>
-defer.resolve( <span class="hljs-string">"John"</span> );
+defer.resolve( <span class="hljs-string">&quot;John&quot;</span> );
 ​
 <span class="hljs-comment">// Use the object as a Promise</span>
 obj.done(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> name </span>) </span>{
-obj.hello( name ); <span class="hljs-comment">// Will alert "Hello John"</span>
-}).hello( <span class="hljs-string">"Karl"</span> ); <span class="hljs-comment">// Will alert "Hello Karl"</span></code></pre>
+obj.hello( name ); <span class="hljs-comment">// Will alert &quot;Hello John&quot;</span>
+}).hello( <span class="hljs-string">&quot;Karl&quot;</span> ); <span class="hljs-comment">// Will alert &quot;Hello Karl&quot;</span></code></pre>
 									</dd>
 								</dl>
 							</div>
@@ -2022,22 +2025,22 @@ obj.hello( name ); <span class="hljs-comment">// Will alert "Hello John"</span>
 									</dd>
 									<dt>example</dt>
 									<dd><p>​ ````Since the jQuery.get method returns a jqXHR object, which is derived from a Deferred object, we can attach handlers using the .then method.</p>
-										<pre><code class="language-javascript">$.<span class="hljs-keyword">get</span>( "test.php" ).then(
-function() {
-alert( <span class="hljs-string">"$.get succeeded"</span> );
+										<pre><code class="language-javascript">$.get( <span class="hljs-string">&quot;test.php&quot;</span> ).then(
+<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+alert( <span class="hljs-string">&quot;$.get succeeded&quot;</span> );
 }, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
-alert( <span class="hljs-string">"$.get failed!"</span> );
+alert( <span class="hljs-string">&quot;$.get failed!&quot;</span> );
 }
 );</code></pre>
 									</dd>
 									<dt>example</dt>
 									<dd><p>​ ````Filter the resolve value:</p>
 										<pre><code class="language-html"><span class="hljs-meta">&lt;!doctype <span class="hljs-meta-keyword">html</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"utf-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;utf-8&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>deferred.then demo<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://code.jquery.com/jquery-3.3.1.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://code.jquery.com/jquery-3.3.1.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
 ​
@@ -2053,11 +2056,11 @@ filtered = defer.then(<span class="hljs-function"><span class="hljs-keyword">fun
 ​
 defer.resolve( <span class="hljs-number">5</span> );
 filtered.done(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>) </span>{
-$( <span class="hljs-string">"p"</span> ).html( <span class="hljs-string">"Value is ( 2*5 = ) 10: "</span> + value );
+$( <span class="hljs-string">&quot;p&quot;</span> ).html( <span class="hljs-string">&quot;Value is ( 2*5 = ) 10: &quot;</span> + value );
 });
 };
 ​
-$( <span class="hljs-string">"button"</span> ).on( <span class="hljs-string">"click"</span>, filterResolve );
+$( <span class="hljs-string">&quot;button&quot;</span> ).on( <span class="hljs-string">&quot;click&quot;</span>, filterResolve );
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 ​
 <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
@@ -2072,12 +2075,12 @@ filtered = defer.then( <span class="hljs-literal">null</span>, <span class="hljs
 ​
 defer.reject( <span class="hljs-number">6</span> );
 filtered.fail(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>) </span>{
-alert( <span class="hljs-string">"Value is ( 3*6 = ) 18: "</span> + value );
+alert( <span class="hljs-string">&quot;Value is ( 3*6 = ) 18: &quot;</span> + value );
 });</code></pre>
 									</dd>
 									<dt>example</dt>
 									<dd><p>​ ````Chain tasks:</p>
-										<pre><code class="language-javascript"><span class="hljs-keyword">var</span> request = $.ajax( url, { <span class="hljs-attr">dataType</span>: <span class="hljs-string">"json"</span> } ),
+										<pre><code class="language-javascript"><span class="hljs-keyword">var</span> request = $.ajax( url, { <span class="hljs-attr">dataType</span>: <span class="hljs-string">&quot;json&quot;</span> } ),
 chained = request.then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> data </span>) </span>{
 <span class="hljs-keyword">return</span> $.ajax( url2, { <span class="hljs-attr">data</span>: { <span class="hljs-attr">user</span>: data.userId } } );
 });
@@ -2328,12 +2331,12 @@ filtered = defer.then( <span class="hljs-literal">null</span>, <span class="hljs
 ​
 defer.reject( <span class="hljs-number">6</span> );
 filtered.fail(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>) </span>{
-alert( <span class="hljs-string">"Value is ( 3*6 = ) 18: "</span> + value );
+alert( <span class="hljs-string">&quot;Value is ( 3*6 = ) 18: &quot;</span> + value );
 });</code></pre>
 									</dd>
 									<dt>example</dt>
 									<dd><p>​ ````Chain tasks:</p>
-										<pre><code class="language-javascript"><span class="hljs-keyword">var</span> request = $.ajax( url, { <span class="hljs-attr">dataType</span>: <span class="hljs-string">"json"</span> } ),
+										<pre><code class="language-javascript"><span class="hljs-keyword">var</span> request = $.ajax( url, { <span class="hljs-attr">dataType</span>: <span class="hljs-string">&quot;json&quot;</span> } ),
 chained = request.then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> data </span>) </span>{
 <span class="hljs-keyword">return</span> $.ajax( url2, { <span class="hljs-attr">data</span>: { <span class="hljs-attr">user</span>: data.userId } } );
 });
@@ -2515,11 +2518,11 @@ chained.done(<span class="hljs-function"><span class="hljs-keyword">function</sp
 									<dt>example</dt>
 									<dd><p>​ ````Filter the resolve value:</p>
 										<pre><code class="language-html"><span class="hljs-meta">&lt;!doctype <span class="hljs-meta-keyword">html</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"utf-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;utf-8&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>deferred.then demo<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://code.jquery.com/jquery-3.3.1.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://code.jquery.com/jquery-3.3.1.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
 ​
@@ -2535,11 +2538,11 @@ filtered = defer.then(<span class="hljs-function"><span class="hljs-keyword">fun
 ​
 defer.resolve( <span class="hljs-number">5</span> );
 filtered.done(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>) </span>{
-$( <span class="hljs-string">"p"</span> ).html( <span class="hljs-string">"Value is ( 2*5 = ) 10: "</span> + value );
+$( <span class="hljs-string">&quot;p&quot;</span> ).html( <span class="hljs-string">&quot;Value is ( 2*5 = ) 10: &quot;</span> + value );
 });
 };
 ​
-$( <span class="hljs-string">"button"</span> ).on( <span class="hljs-string">"click"</span>, filterResolve );
+$( <span class="hljs-string">&quot;button&quot;</span> ).on( <span class="hljs-string">&quot;click&quot;</span>, filterResolve );
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 ​
 <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
@@ -2547,7 +2550,7 @@ $( <span class="hljs-string">"button"</span> ).on( <span class="hljs-string">"cl
 									</dd>
 									<dt>example</dt>
 									<dd><p>​ ````Chain tasks:</p>
-										<pre><code class="language-javascript"><span class="hljs-keyword">var</span> request = $.ajax( url, { <span class="hljs-attr">dataType</span>: <span class="hljs-string">"json"</span> } ),
+										<pre><code class="language-javascript"><span class="hljs-keyword">var</span> request = $.ajax( url, { <span class="hljs-attr">dataType</span>: <span class="hljs-string">&quot;json&quot;</span> } ),
 chained = request.then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> data </span>) </span>{
 <span class="hljs-keyword">return</span> $.ajax( url2, { <span class="hljs-attr">data</span>: { <span class="hljs-attr">user</span>: data.userId } } );
 });
@@ -2728,7 +2731,7 @@ chained.done(<span class="hljs-function"><span class="hljs-keyword">function</sp
 									</dd>
 									<dt>example</dt>
 									<dd><p>​ ````Chain tasks:</p>
-										<pre><code class="language-javascript"><span class="hljs-keyword">var</span> request = $.ajax( url, { <span class="hljs-attr">dataType</span>: <span class="hljs-string">"json"</span> } ),
+										<pre><code class="language-javascript"><span class="hljs-keyword">var</span> request = $.ajax( url, { <span class="hljs-attr">dataType</span>: <span class="hljs-string">&quot;json&quot;</span> } ),
 chained = request.then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> data </span>) </span>{
 <span class="hljs-keyword">return</span> $.ajax( url2, { <span class="hljs-attr">data</span>: { <span class="hljs-attr">user</span>: data.userId } } );
 });
@@ -2846,22 +2849,22 @@ chained.done(<span class="hljs-function"><span class="hljs-keyword">function</sp
 									</dd>
 									<dt>example</dt>
 									<dd><p>​ ````Since the jQuery.get method returns a jqXHR object, which is derived from a Deferred object, we can attach handlers using the .then method.</p>
-										<pre><code class="language-javascript">$.<span class="hljs-keyword">get</span>( "test.php" ).then(
-function() {
-alert( <span class="hljs-string">"$.get succeeded"</span> );
+										<pre><code class="language-javascript">$.get( <span class="hljs-string">&quot;test.php&quot;</span> ).then(
+<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+alert( <span class="hljs-string">&quot;$.get succeeded&quot;</span> );
 }, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
-alert( <span class="hljs-string">"$.get failed!"</span> );
+alert( <span class="hljs-string">&quot;$.get failed!&quot;</span> );
 }
 );</code></pre>
 									</dd>
 									<dt>example</dt>
 									<dd><p>​ ````Filter the resolve value:</p>
 										<pre><code class="language-html"><span class="hljs-meta">&lt;!doctype <span class="hljs-meta-keyword">html</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"utf-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;utf-8&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>deferred.then demo<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://code.jquery.com/jquery-3.3.1.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://code.jquery.com/jquery-3.3.1.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
 ​
@@ -2877,11 +2880,11 @@ filtered = defer.then(<span class="hljs-function"><span class="hljs-keyword">fun
 ​
 defer.resolve( <span class="hljs-number">5</span> );
 filtered.done(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>) </span>{
-$( <span class="hljs-string">"p"</span> ).html( <span class="hljs-string">"Value is ( 2*5 = ) 10: "</span> + value );
+$( <span class="hljs-string">&quot;p&quot;</span> ).html( <span class="hljs-string">&quot;Value is ( 2*5 = ) 10: &quot;</span> + value );
 });
 };
 ​
-$( <span class="hljs-string">"button"</span> ).on( <span class="hljs-string">"click"</span>, filterResolve );
+$( <span class="hljs-string">&quot;button&quot;</span> ).on( <span class="hljs-string">&quot;click&quot;</span>, filterResolve );
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 ​
 <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
@@ -2896,12 +2899,12 @@ filtered = defer.then( <span class="hljs-literal">null</span>, <span class="hljs
 ​
 defer.reject( <span class="hljs-number">6</span> );
 filtered.fail(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>) </span>{
-alert( <span class="hljs-string">"Value is ( 3*6 = ) 18: "</span> + value );
+alert( <span class="hljs-string">&quot;Value is ( 3*6 = ) 18: &quot;</span> + value );
 });</code></pre>
 									</dd>
 									<dt>example</dt>
 									<dd><p>​ ````Chain tasks:</p>
-										<pre><code class="language-javascript"><span class="hljs-keyword">var</span> request = $.ajax( url, { <span class="hljs-attr">dataType</span>: <span class="hljs-string">"json"</span> } ),
+										<pre><code class="language-javascript"><span class="hljs-keyword">var</span> request = $.ajax( url, { <span class="hljs-attr">dataType</span>: <span class="hljs-string">&quot;json&quot;</span> } ),
 chained = request.then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> data </span>) </span>{
 <span class="hljs-keyword">return</span> $.ajax( url2, { <span class="hljs-attr">data</span>: { <span class="hljs-attr">user</span>: data.userId } } );
 });
@@ -3089,12 +3092,12 @@ filtered = defer.then( <span class="hljs-literal">null</span>, <span class="hljs
 ​
 defer.reject( <span class="hljs-number">6</span> );
 filtered.fail(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>) </span>{
-alert( <span class="hljs-string">"Value is ( 3*6 = ) 18: "</span> + value );
+alert( <span class="hljs-string">&quot;Value is ( 3*6 = ) 18: &quot;</span> + value );
 });</code></pre>
 									</dd>
 									<dt>example</dt>
 									<dd><p>​ ````Chain tasks:</p>
-										<pre><code class="language-javascript"><span class="hljs-keyword">var</span> request = $.ajax( url, { <span class="hljs-attr">dataType</span>: <span class="hljs-string">"json"</span> } ),
+										<pre><code class="language-javascript"><span class="hljs-keyword">var</span> request = $.ajax( url, { <span class="hljs-attr">dataType</span>: <span class="hljs-string">&quot;json&quot;</span> } ),
 chained = request.then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> data </span>) </span>{
 <span class="hljs-keyword">return</span> $.ajax( url2, { <span class="hljs-attr">data</span>: { <span class="hljs-attr">user</span>: data.userId } } );
 });
@@ -3213,11 +3216,11 @@ chained.done(<span class="hljs-function"><span class="hljs-keyword">function</sp
 									<dt>example</dt>
 									<dd><p>​ ````Filter the resolve value:</p>
 										<pre><code class="language-html"><span class="hljs-meta">&lt;!doctype <span class="hljs-meta-keyword">html</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"utf-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;utf-8&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>deferred.then demo<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://code.jquery.com/jquery-3.3.1.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://code.jquery.com/jquery-3.3.1.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
 ​
@@ -3233,11 +3236,11 @@ filtered = defer.then(<span class="hljs-function"><span class="hljs-keyword">fun
 ​
 defer.resolve( <span class="hljs-number">5</span> );
 filtered.done(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>) </span>{
-$( <span class="hljs-string">"p"</span> ).html( <span class="hljs-string">"Value is ( 2*5 = ) 10: "</span> + value );
+$( <span class="hljs-string">&quot;p&quot;</span> ).html( <span class="hljs-string">&quot;Value is ( 2*5 = ) 10: &quot;</span> + value );
 });
 };
 ​
-$( <span class="hljs-string">"button"</span> ).on( <span class="hljs-string">"click"</span>, filterResolve );
+$( <span class="hljs-string">&quot;button&quot;</span> ).on( <span class="hljs-string">&quot;click&quot;</span>, filterResolve );
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 ​
 <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
@@ -3245,7 +3248,7 @@ $( <span class="hljs-string">"button"</span> ).on( <span class="hljs-string">"cl
 									</dd>
 									<dt>example</dt>
 									<dd><p>​ ````Chain tasks:</p>
-										<pre><code class="language-javascript"><span class="hljs-keyword">var</span> request = $.ajax( url, { <span class="hljs-attr">dataType</span>: <span class="hljs-string">"json"</span> } ),
+										<pre><code class="language-javascript"><span class="hljs-keyword">var</span> request = $.ajax( url, { <span class="hljs-attr">dataType</span>: <span class="hljs-string">&quot;json&quot;</span> } ),
 chained = request.then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> data </span>) </span>{
 <span class="hljs-keyword">return</span> $.ajax( url2, { <span class="hljs-attr">data</span>: { <span class="hljs-attr">user</span>: data.userId } } );
 });
@@ -3434,6 +3437,7 @@ chained.done(<span class="hljs-function"><span class="hljs-keyword">function</sp
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
@@ -3450,6 +3454,9 @@ chained.done(<span class="hljs-function"><span class="hljs-keyword">function</sp
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>

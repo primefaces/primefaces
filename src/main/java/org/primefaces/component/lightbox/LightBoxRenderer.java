@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -72,7 +72,6 @@ public class LightBoxRenderer extends CoreRenderer {
 
     public void encodeScript(FacesContext context, UIComponent component) throws IOException {
         LightBox lb = (LightBox) component;
-        String clientId = lb.getClientId(context);
         String mode = "image";
         if (lb.getFacet("inline") != null) {
             mode = "inline";
@@ -82,7 +81,7 @@ public class LightBoxRenderer extends CoreRenderer {
         }
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("LightBox", lb.resolveWidgetVar(context), clientId)
+        wb.init("LightBox", lb)
                 .attr("mode", mode)
                 .attr("width", lb.getWidth(), null)
                 .attr("height", lb.getHeight(), null)

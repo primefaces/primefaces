@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -57,6 +57,7 @@ public abstract class FileUploadBase extends UIInput implements Widget {
         onstart,
         oncomplete,
         onerror,
+        onupload,
         onvalidationfailure,
         oncancel,
         disabled,
@@ -247,6 +248,14 @@ public abstract class FileUploadBase extends UIInput implements Widget {
 
     public void setOnstart(String onstart) {
         getStateHelper().put(PropertyKeys.onstart, onstart);
+    }
+
+    public String getOnupload() {
+        return (String) getStateHelper().eval(PropertyKeys.onupload, null);
+    }
+
+    public void setOnupload(String onupload) {
+        getStateHelper().put(PropertyKeys.onupload, onupload);
     }
 
     public String getOncomplete() {

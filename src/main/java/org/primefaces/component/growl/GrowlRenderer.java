@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -64,7 +64,7 @@ public class GrowlRenderer extends UINotificationRenderer {
         writer.endElement("span");
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Growl", growl.resolveWidgetVar(context), clientId)
+        wb.init("Growl", growl)
                 .attr("sticky", growl.isSticky())
                 .attr("life", growl.getLife())
                 .attr("escape", growl.isEscape())

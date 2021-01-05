@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -92,9 +92,8 @@ public class TooltipRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, Tooltip tooltip, String target) throws IOException {
-        String clientId = tooltip.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Tooltip", tooltip.resolveWidgetVar(context), clientId)
+        wb.init("Tooltip", tooltip)
                 .attr("showEvent", tooltip.getShowEvent(), null)
                 .attr("hideEvent", tooltip.getHideEvent(), null)
                 .attr("showEffect", tooltip.getShowEffect(), null)

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -50,7 +50,7 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
     public NativeUploadedFile(Part part, Long sizeLimit) {
         this.part = part;
         this.sizeLimit = sizeLimit;
-        filename = resolveFilename(part);
+        this.filename = resolveFilename(part);
     }
 
     @Override
@@ -115,7 +115,16 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
     }
 
     private String resolveFilename(Part part) {
-        return FileUploadUtils.getValidFilename(getContentDispositionFileName(part.getHeader("content-disposition")));
+        if (part == null) {
+            return null;
+        }
+
+        String contentDisposition = part.getHeader("content-disposition");
+        if (contentDisposition == null) {
+            return null;
+        }
+
+        return FileUploadUtils.getValidFilename(getContentDispositionFileName(contentDisposition));
     }
 
     protected String getContentDispositionFileName(final String line) {

@@ -332,7 +332,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         if(this.cfg.focus)
         	PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.focus).trigger('focus');
         else
-            this.jq.find(':not(:submit):not(:button):not(:radio):not(:checkbox):input:visible:enabled:first').trigger('focus');
+            PrimeFaces.focus(null, this.id);
     },
 
     /**
@@ -376,11 +376,13 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
         if(this.cfg.closeOnEscape) {
             $(document).on('keydown.dialog_' + this.id, function(e) {
-                var keyCode = $.ui.keyCode,
-                active = parseInt($this.jq.css('z-index')) === PrimeFaces.zindex;
-
-                if(e.which === keyCode.ESCAPE && $this.isVisible() && active) {
-                    $this.hide();
+                var keyCode = $.ui.keyCode;
+                if(e.which === keyCode.ESCAPE && $this.isVisible()) {
+                    // GitHub #6677 if multiple dialogs check if this is the topmost active dialog to close
+                    var active = parseInt($this.jq.css('z-index')) === parseInt($('.ui-dialog:visible').last().css('z-index'));
+                    if(active) {
+                         $this.hide();
+                    }
                 };
             });
         }
@@ -769,6 +771,16 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 $this.fitViewport();
             }
 
+            if ($this.isVisible()) {
+                // instant reinit position
+                $this.initPosition();
+            }
+            else {
+                // reset, so the dialog will be positioned again when showing the dialog next time
+                $this.positionInitialized = false;
+            }
+        });
+        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_align', function() {
             if ($this.isVisible()) {
                 // instant reinit position
                 $this.initPosition();

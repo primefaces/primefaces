@@ -215,18 +215,18 @@
 									<code>uploadProgress</code> event. This event is called very frequently while an upload is in progress, and passes
 								the function a floating point number between 0.0 and 1.0 representing the upload progress:</p>
 								<pre><code class="language-javascript">Webcam.snap(<span class="hljs-function"><span class="hljs-params">data_uri</span> =&gt;</span> {
-  Webcam.on(<span class="hljs-string">"uploadProgress"</span>, progress =&gt; {
+  Webcam.on(<span class="hljs-string">&quot;uploadProgress&quot;</span>, <span class="hljs-function"><span class="hljs-params">progress</span> =&gt;</span> {
     <span class="hljs-comment">// Upload in progress</span>
-    <span class="hljs-comment">// "progress" will be between 0.0 and 1.0</span>
+    <span class="hljs-comment">// &quot;progress&quot; will be between 0.0 and 1.0</span>
   });
 
-  Webcam.on(<span class="hljs-string">"uploadComplete"</span>, (code, text) =&gt; {
+  Webcam.on(<span class="hljs-string">&quot;uploadComplete&quot;</span>, <span class="hljs-function">(<span class="hljs-params">code, text</span>) =&gt;</span> {
     <span class="hljs-comment">// Upload complete!</span>
-    <span class="hljs-comment">// "code" will be the HTTP response code from the server, e.g. 200</span>
-    <span class="hljs-comment">// "text" will be the raw response content</span>
+    <span class="hljs-comment">// &quot;code&quot; will be the HTTP response code from the server, e.g. 200</span>
+    <span class="hljs-comment">// &quot;text&quot; will be the raw response content</span>
   });
 
-  Webcam.upload(data_uri, <span class="hljs-string">"myScript.php"</span>);
+  Webcam.upload(data_uri, <span class="hljs-string">&quot;myScript.php&quot;</span>);
 });</code></pre>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -331,6 +331,7 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
@@ -347,6 +348,9 @@
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>

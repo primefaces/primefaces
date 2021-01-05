@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,7 @@
 package org.primefaces.model.timeline;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class TimelineGroup<T> implements Serializable {
 
@@ -45,9 +46,40 @@ public class TimelineGroup<T> implements Serializable {
     private String title;
 
     /**
+     * level of the nested groups.
+     */
+    private Integer treeLevel;
+
+    /**
+     *
+     * Ids of nested groups.
+     */
+    private List<String> nestedGroups;
+
+    /**
      * any custom style class for this event in UI (optional)
      */
     private String styleClass;
+
+    /**
+     * Order the subgroups by a field name or custom sort function. By default, groups are ordered by first-come, first-show.
+     */
+    private String subgroupOrder;
+
+    /**
+     * Enables stacking within individual subgroups. Example: {'subgroup0': true, 'subgroup1': false, 'subgroup2': true}
+     * For each subgroup where stacking is enabled, items will be stacked on top of each other within that subgroup such
+     * that they do no overlap. If set to true all subgroups will be stacked. If a value was specified for the order
+     * parameter in the options, that ordering will be used when stacking the items.
+     */
+    private String subgroupStack;
+
+    /**
+     * Ability to hide/show specific subgroups.
+     * Example: {'hiddenSubgroup0': false, 'subgroup1': true, 'subgroup2': true} If a subgroup is missing from the
+     * object, it will default as true (visible).
+     */
+    private String subgroupVisibility;
 
     public TimelineGroup() {
     }
@@ -58,8 +90,22 @@ public class TimelineGroup<T> implements Serializable {
     }
 
     public TimelineGroup(String id, T data, String title) {
-        this.id = id;
-        this.data = data;
+        this(id, data);
+        this.title = title;
+    }
+
+    public TimelineGroup(String id, T data, int treeLevel) {
+        this(id, data);
+        this.treeLevel = treeLevel;
+    }
+
+    public TimelineGroup(String id, T data, int treeLevel, List<String> nestedGroups) {
+        this(id, data, treeLevel);
+        this.nestedGroups = nestedGroups;
+    }
+
+    public TimelineGroup(String id, T data, String title, int treeLevel, List<String> nestedGroups) {
+        this(id, data, treeLevel, nestedGroups);
         this.title = title;
     }
 
@@ -79,6 +125,22 @@ public class TimelineGroup<T> implements Serializable {
         this.data = data;
     }
 
+    public Integer getTreeLevel() {
+        return treeLevel;
+    }
+
+    public void setTreeLevel(Integer treeLevel) {
+        this.treeLevel = treeLevel;
+    }
+
+    public List<String> getNestedGroups() {
+        return nestedGroups;
+    }
+
+    public void setNestedGroups(List<String> nestedGroups) {
+        this.nestedGroups = nestedGroups;
+    }
+
     public String getStyleClass() {
         return styleClass;
     }
@@ -93,6 +155,30 @@ public class TimelineGroup<T> implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getSubgroupOrder() {
+        return subgroupOrder;
+    }
+
+    public void setSubgroupOrder(String subgroupOrder) {
+        this.subgroupOrder = subgroupOrder;
+    }
+
+    public String getSubgroupStack() {
+        return subgroupStack;
+    }
+
+    public void setSubgroupStack(String subgroupStack) {
+        this.subgroupStack = subgroupStack;
+    }
+
+    public String getSubgroupVisibility() {
+        return subgroupVisibility;
+    }
+
+    public void setSubgroupVisibility(String subgroupVisibility) {
+        this.subgroupVisibility = subgroupVisibility;
     }
 
     @Override
@@ -113,4 +199,5 @@ public class TimelineGroup<T> implements Serializable {
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
     }
+
 }

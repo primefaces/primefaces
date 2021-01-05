@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,63 +24,12 @@
 package org.primefaces.convert;
 
 public class TimePatternConverter implements PatternConverter {
-
+    /**
+     * @deprecated Use {@link DateTimePatternConverter}.
+     */
+    @Deprecated
     @Override
     public String convert(String pattern) {
-
-        // Hour
-        if (pattern.contains("hh")) {
-            pattern = pattern.replaceAll("hh*", "hh");
-        }
-        else {
-            pattern = pattern.replace("h", "h");
-        }
-
-        if (pattern.contains("HH")) {
-            pattern = pattern.replaceAll("HH*", "HH");
-        }
-        else {
-            pattern = pattern.replace("H", "H");
-        }
-
-        // Minute
-        if (pattern.contains("mm")) {
-            pattern = pattern.replaceAll("mm*", "mm");
-        }
-        else {
-            pattern = pattern.replace("m", "m");
-        }
-
-        // Second
-        if (pattern.contains("ss")) {
-            pattern = pattern.replaceAll("ss*", "ss");
-        }
-        else {
-            pattern = pattern.replace("s", "s");
-        }
-
-        // Millisecond
-        if (pattern.contains("SSS")) {
-            pattern = pattern.replaceAll("SSS*", "l");
-        }
-
-        //  AM/PM
-        if (pattern.contains("a")) {
-            pattern = pattern.replaceAll("a+", "TT");
-        }
-
-        //  TimeZone
-        if (pattern.contains("Z")) {
-            pattern = pattern.replaceAll("Z+", "z");
-        }
-        else if (pattern.contains("XXX")) {
-            pattern = pattern.replaceAll("XXX*", "Z");
-        }
-        else if (pattern.contains("XX")) {
-            pattern = pattern.replace("XX", "z");
-        }
-
-        return pattern;
+        return new DateTimePatternConverter().convert(pattern);
     }
-
 }

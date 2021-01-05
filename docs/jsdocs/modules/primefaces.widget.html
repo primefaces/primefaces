@@ -98,8 +98,8 @@
     PrimeFaces.widget.BaseWidget
     | Constructor&lt;PrimeFaces.widget.BaseWidget&gt;
 </span>): <span class="hljs-title">string</span> </span>{
-  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> widgetType === <span class="hljs-string">"function"</span>) {
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> [name, <span class="hljs-keyword">type</span>] of <span class="hljs-built_in">Object</span>.entries(PrimeFaces.widget)) {
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> widgetType === <span class="hljs-string">&quot;function&quot;</span>) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> [name, <span class="hljs-keyword">type</span>] <span class="hljs-keyword">of</span> <span class="hljs-built_in">Object</span>.entries(PrimeFaces.widget)) {
       <span class="hljs-keyword">if</span> (<span class="hljs-keyword">type</span> === widgetType) {
         <span class="hljs-keyword">return</span> name;
       }
@@ -107,16 +107,16 @@
   }
   <span class="hljs-keyword">else</span> {
     <span class="hljs-keyword">const</span> widgetClass = <span class="hljs-built_in">Object</span>.getPrototypeOf(widgetType);
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> [name, <span class="hljs-keyword">type</span>] of <span class="hljs-built_in">Object</span>.entries(PrimeFaces.widget)) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> [name, <span class="hljs-keyword">type</span>] <span class="hljs-keyword">of</span> <span class="hljs-built_in">Object</span>.entries(PrimeFaces.widget)) {
       <span class="hljs-keyword">if</span> (
-        <span class="hljs-string">"prototype"</span> <span class="hljs-keyword">in</span> <span class="hljs-keyword">type</span> &amp;&amp; widgetClass === <span class="hljs-keyword">type</span>.prototype
+        <span class="hljs-string">&quot;prototype&quot;</span> <span class="hljs-keyword">in</span> <span class="hljs-keyword">type</span> &amp;&amp; widgetClass === <span class="hljs-keyword">type</span>.prototype
         || widgetClass === <span class="hljs-keyword">type</span>
       ) {
         <span class="hljs-keyword">return</span> name;
       }
     }
   }
-  <span class="hljs-keyword">return</span> <span class="hljs-string">"BaseWidget"</span>;
+  <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;BaseWidget&quot;</span>;
 }
 
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getWidgetOfType</span>&lt;
@@ -130,9 +130,9 @@
     }
     <span class="hljs-keyword">else</span> {
       PrimeFaces.error([
-        <span class="hljs-string">`Widget for var '<span class="hljs-subst">${widgetVar}</span>' of type '<span class="hljs-subst">${getWidgetName(widget)}</span>'`</span>,
-        <span class="hljs-string">`was found, but expected type '<span class="hljs-subst">${getWidgetName(widgetType)}</span>'!`</span>
-      ].join(<span class="hljs-string">" "</span>));
+        <span class="hljs-string">`Widget for var &#x27;<span class="hljs-subst">${widgetVar}</span>&#x27; of type &#x27;<span class="hljs-subst">${getWidgetName(widget)}</span>&#x27;`</span>,
+        <span class="hljs-string">`was found, but expected type &#x27;<span class="hljs-subst">${getWidgetName(widgetType)}</span>&#x27;!`</span>
+      ].join(<span class="hljs-string">&quot; &quot;</span>));
       <span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
     }
   }
@@ -142,8 +142,8 @@
 }</code></pre>
 					</details>
 					<p>This function could then be called like this:</p>
-					<pre><code class="language-typescript"><span class="hljs-comment">// Automatically inferred to be of type "PrimeFaces.widget.Chart | undefined"</span>
-<span class="hljs-keyword">const</span> chart = getWidgetByVar(<span class="hljs-string">"charWidgetVar"</span>, PrimeFaces.widget.Chart);</code></pre>
+					<pre><code class="language-typescript"><span class="hljs-comment">// Automatically inferred to be of type &quot;PrimeFaces.widget.Chart | undefined&quot;</span>
+<span class="hljs-keyword">const</span> chart = getWidgetByVar(<span class="hljs-string">&quot;charWidgetVar&quot;</span>, PrimeFaces.widget.Chart);</code></pre>
 				</div>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -173,6 +173,7 @@
 								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.captcha.html" class="tsd-kind-icon">Captcha</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.carousel.html" class="tsd-kind-icon">Carousel</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.chart.html" class="tsd-kind-icon">Chart</a></li>
+								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.chip.html" class="tsd-kind-icon">Chip</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.chips.html" class="tsd-kind-icon">Chips</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.clock.html" class="tsd-kind-icon">Clock</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.colorpicker.html" class="tsd-kind-icon">Color<wbr>Picker</a></li>
@@ -198,7 +199,6 @@
 								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.droppable.html" class="tsd-kind-icon">Droppable</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.dynamicdialog.html" class="tsd-kind-icon">Dynamic<wbr>Dialog</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.dynamicoverlaywidget.html" class="tsd-kind-icon">Dynamic<wbr>Overlay<wbr>Widget</a></li>
-								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.editor.html" class="tsd-kind-icon">Editor</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.effect.html" class="tsd-kind-icon">Effect</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.fieldset.html" class="tsd-kind-icon">Fieldset</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.fileupload.html" class="tsd-kind-icon">File<wbr>Upload</a></li>
@@ -220,7 +220,6 @@
 								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.keyfilter.html" class="tsd-kind-icon">Key<wbr>Filter</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.keyboard.html" class="tsd-kind-icon">Keyboard</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.knob.html" class="tsd-kind-icon">Knob</a></li>
-								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.layout.html" class="tsd-kind-icon">Layout</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.lifecycle.html" class="tsd-kind-icon">Lifecycle</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.lightbox.html" class="tsd-kind-icon">Light<wbr>Box</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.linechart.html" class="tsd-kind-icon">Line<wbr>Chart</a></li>
@@ -257,6 +256,7 @@
 								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.scatterchart.html" class="tsd-kind-icon">Scatter<wbr>Chart</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.schedule.html" class="tsd-kind-icon">Schedule</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.scrollpanel.html" class="tsd-kind-icon">Scroll<wbr>Panel</a></li>
+								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.scrolltop.html" class="tsd-kind-icon">Scroll<wbr>Top</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.selectbooleanbutton.html" class="tsd-kind-icon">Select<wbr>Boolean<wbr>Button</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.selectbooleancheckbox.html" class="tsd-kind-icon">Select<wbr>Boolean<wbr>Checkbox</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.selectcheckboxmenu.html" class="tsd-kind-icon">Select<wbr>Checkbox<wbr>Menu</a></li>
@@ -276,6 +276,7 @@
 								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.slider.html" class="tsd-kind-icon">Slider</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.spinner.html" class="tsd-kind-icon">Spinner</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.splitbutton.html" class="tsd-kind-icon">Split<wbr>Button</a></li>
+								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.splitter.html" class="tsd-kind-icon">Splitter</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.spotlight.html" class="tsd-kind-icon">Spotlight</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.stack.html" class="tsd-kind-icon">Stack</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../classes/primefaces.widget.sticky.html" class="tsd-kind-icon">Sticky</a></li>
@@ -313,6 +314,7 @@
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.captchacfg.html" class="tsd-kind-icon">Captcha<wbr>Cfg</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.carouselcfg.html" class="tsd-kind-icon">Carousel<wbr>Cfg</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.chartcfg.html" class="tsd-kind-icon">Chart<wbr>Cfg</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.chipcfg.html" class="tsd-kind-icon">Chip<wbr>Cfg</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.chipscfg.html" class="tsd-kind-icon">Chips<wbr>Cfg</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.clockcfg.html" class="tsd-kind-icon">Clock<wbr>Cfg</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.colorpickercfg.html" class="tsd-kind-icon">Color<wbr>Picker<wbr>Cfg</a></li>
@@ -338,7 +340,6 @@
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.droppablecfg.html" class="tsd-kind-icon">Droppable<wbr>Cfg</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.dynamicdialogcfg.html" class="tsd-kind-icon">Dynamic<wbr>Dialog<wbr>Cfg</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.dynamicoverlaywidgetcfg.html" class="tsd-kind-icon">Dynamic<wbr>Overlay<wbr>Widget<wbr>Cfg</a></li>
-								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.editorcfg.html" class="tsd-kind-icon">Editor<wbr>Cfg</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.effectcfg.html" class="tsd-kind-icon">Effect<wbr>Cfg</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.fieldsetcfg.html" class="tsd-kind-icon">Fieldset<wbr>Cfg</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.fileuploadcfg.html" class="tsd-kind-icon">File<wbr>Upload<wbr>Cfg</a></li>
@@ -360,7 +361,6 @@
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.keyfiltercfg.html" class="tsd-kind-icon">Key<wbr>Filter<wbr>Cfg</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.keyboardcfg.html" class="tsd-kind-icon">Keyboard<wbr>Cfg</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.knobcfg.html" class="tsd-kind-icon">Knob<wbr>Cfg</a></li>
-								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.layoutcfg.html" class="tsd-kind-icon">Layout<wbr>Cfg</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.lifecyclecfg.html" class="tsd-kind-icon">Lifecycle<wbr>Cfg</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.lightboxcfg.html" class="tsd-kind-icon">Light<wbr>Box<wbr>Cfg</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.linechartcfg.html" class="tsd-kind-icon">Line<wbr>Chart<wbr>Cfg</a></li>
@@ -397,6 +397,7 @@
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.scatterchartcfg.html" class="tsd-kind-icon">Scatter<wbr>Chart<wbr>Cfg</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.schedulecfg.html" class="tsd-kind-icon">Schedule<wbr>Cfg</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.scrollpanelcfg.html" class="tsd-kind-icon">Scroll<wbr>Panel<wbr>Cfg</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.scrolltopcfg.html" class="tsd-kind-icon">Scroll<wbr>Top<wbr>Cfg</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.selectbooleanbuttoncfg.html" class="tsd-kind-icon">Select<wbr>Boolean<wbr>Button<wbr>Cfg</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.selectbooleancheckboxcfg.html" class="tsd-kind-icon">Select<wbr>Boolean<wbr>Checkbox<wbr>Cfg</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.selectcheckboxmenucfg.html" class="tsd-kind-icon">Select<wbr>Checkbox<wbr>Menu<wbr>Cfg</a></li>
@@ -416,6 +417,7 @@
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.slidercfg.html" class="tsd-kind-icon">Slider<wbr>Cfg</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.spinnercfg.html" class="tsd-kind-icon">Spinner<wbr>Cfg</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.splitbuttoncfg.html" class="tsd-kind-icon">Split<wbr>Button<wbr>Cfg</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.splittercfg.html" class="tsd-kind-icon">Splitter<wbr>Cfg</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.spotlightcfg.html" class="tsd-kind-icon">Spotlight<wbr>Cfg</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.stackcfg.html" class="tsd-kind-icon">Stack<wbr>Cfg</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/primefaces.widget.stickycfg.html" class="tsd-kind-icon">Sticky<wbr>Cfg</a></li>
@@ -575,6 +577,9 @@
 								<a href="primefaces.ajax.html">ajax</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+								<a href="primefaces.clientwindow.html">clientwindow</a>
+							</li>
+							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="primefaces.csp.html">csp</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
@@ -593,10 +598,10 @@
 								<a href="primefaces.settings.html">settings</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="primefaces.util.html">util</a>
+								<a href="primefaces.utils.html">utils</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="primefaces.utils.html">utils</a>
+								<a href="primefaces.validation.html">validation</a>
 							</li>
 							<li class="current tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="primefaces.widget.html">widget</a>
@@ -653,6 +658,9 @@
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter">
 						<a href="../classes/primefaces.widget.chart.html" class="tsd-kind-icon">Chart</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter">
+						<a href="../classes/primefaces.widget.chip.html" class="tsd-kind-icon">Chip</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter">
 						<a href="../classes/primefaces.widget.chips.html" class="tsd-kind-icon">Chips</a>
@@ -730,9 +738,6 @@
 						<a href="../classes/primefaces.widget.dynamicoverlaywidget.html" class="tsd-kind-icon">Dynamic<wbr>Overlay<wbr>Widget</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter">
-						<a href="../classes/primefaces.widget.editor.html" class="tsd-kind-icon">Editor</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter">
 						<a href="../classes/primefaces.widget.effect.html" class="tsd-kind-icon">Effect</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter">
@@ -794,9 +799,6 @@
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter">
 						<a href="../classes/primefaces.widget.knob.html" class="tsd-kind-icon">Knob</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter">
-						<a href="../classes/primefaces.widget.layout.html" class="tsd-kind-icon">Layout</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter">
 						<a href="../classes/primefaces.widget.lifecycle.html" class="tsd-kind-icon">Lifecycle</a>
@@ -907,6 +909,9 @@
 						<a href="../classes/primefaces.widget.scrollpanel.html" class="tsd-kind-icon">Scroll<wbr>Panel</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter">
+						<a href="../classes/primefaces.widget.scrolltop.html" class="tsd-kind-icon">Scroll<wbr>Top</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter">
 						<a href="../classes/primefaces.widget.selectbooleanbutton.html" class="tsd-kind-icon">Select<wbr>Boolean<wbr>Button</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter">
@@ -962,6 +967,9 @@
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter">
 						<a href="../classes/primefaces.widget.splitbutton.html" class="tsd-kind-icon">Split<wbr>Button</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter">
+						<a href="../classes/primefaces.widget.splitter.html" class="tsd-kind-icon">Splitter</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter">
 						<a href="../classes/primefaces.widget.spotlight.html" class="tsd-kind-icon">Spotlight</a>
@@ -1060,6 +1068,9 @@
 						<a href="../interfaces/primefaces.widget.chartcfg.html" class="tsd-kind-icon">Chart<wbr>Cfg</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="../interfaces/primefaces.widget.chipcfg.html" class="tsd-kind-icon">Chip<wbr>Cfg</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="../interfaces/primefaces.widget.chipscfg.html" class="tsd-kind-icon">Chips<wbr>Cfg</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
@@ -1135,9 +1146,6 @@
 						<a href="../interfaces/primefaces.widget.dynamicoverlaywidgetcfg.html" class="tsd-kind-icon">Dynamic<wbr>Overlay<wbr>Widget<wbr>Cfg</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-						<a href="../interfaces/primefaces.widget.editorcfg.html" class="tsd-kind-icon">Editor<wbr>Cfg</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="../interfaces/primefaces.widget.effectcfg.html" class="tsd-kind-icon">Effect<wbr>Cfg</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
@@ -1199,9 +1207,6 @@
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="../interfaces/primefaces.widget.knobcfg.html" class="tsd-kind-icon">Knob<wbr>Cfg</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-						<a href="../interfaces/primefaces.widget.layoutcfg.html" class="tsd-kind-icon">Layout<wbr>Cfg</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="../interfaces/primefaces.widget.lifecyclecfg.html" class="tsd-kind-icon">Lifecycle<wbr>Cfg</a>
@@ -1312,6 +1317,9 @@
 						<a href="../interfaces/primefaces.widget.scrollpanelcfg.html" class="tsd-kind-icon">Scroll<wbr>Panel<wbr>Cfg</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="../interfaces/primefaces.widget.scrolltopcfg.html" class="tsd-kind-icon">Scroll<wbr>Top<wbr>Cfg</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="../interfaces/primefaces.widget.selectbooleanbuttoncfg.html" class="tsd-kind-icon">Select<wbr>Boolean<wbr>Button<wbr>Cfg</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
@@ -1367,6 +1375,9 @@
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="../interfaces/primefaces.widget.splitbuttoncfg.html" class="tsd-kind-icon">Split<wbr>Button<wbr>Cfg</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="../interfaces/primefaces.widget.splittercfg.html" class="tsd-kind-icon">Splitter<wbr>Cfg</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="../interfaces/primefaces.widget.spotlightcfg.html" class="tsd-kind-icon">Spotlight<wbr>Cfg</a>
@@ -1438,6 +1449,7 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
@@ -1454,6 +1466,9 @@
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>

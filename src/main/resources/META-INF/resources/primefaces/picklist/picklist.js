@@ -1,31 +1,31 @@
 /**
  * __PrimeFaces PickList Widget__
- * 
+ *
  * PickList is used for transferring data between two different collections.
- * 
+ *
  * @typedef {"source" | "target"} PrimeFaces.widget.PickList.ListName The type for the two lists comprising the pick
  * list, i.e. whether a list contain the source or target items.
- * 
+ *
  * @typedef {"command" | "dblclick" | "dragdrop"} PrimeFaces.widget.PickList.TransferType Indicates how an item was
  * transferred from one list to the other.
  * - `command`: The item was transferred as a result of the user clicking one of the command buttons next to the lists.
  * - `dblclick`: The item was transferred as a result of a double click by the user.
  * - `dragdrop`:  The item was transferred as a result of a drag&drop interaction by the user.
- * 
+ *
  * @typedef {"startsWith" |  "contains" |  "endsWith" | "custom"} PrimeFaces.widget.PickList.FilterMatchMode
  * Available modes for filtering the options of a pick list. When `custom` is set, a `filterFunction` must be specified.
- * 
+ *
  * @typedef PrimeFaces.widget.PickList.FilterFunction A function for filtering the options of a pick list box.
  * @param {string} PrimeFaces.widget.PickList.FilterFunction.itemLabel The label of the currently selected text.
  * @param {string} PrimeFaces.widget.PickList.FilterFunction.filterValue The value to search for.
  * @return {boolean} PrimeFaces.widget.PickList.FilterFunction `true` if the item label matches the filter value, or
  * `false` otherwise.
- * 
+ *
  * @typedef PrimeFaces.widget.PickList.OnTransferCallback Callback that is invoked when items are transferred from one
  * list to the other. See also {@link PickListCfg.onTransfer}.
  * @param {PrimeFaces.widget.PickList.TransferData} PrimeFaces.widget.PickList.OnTransferCallback.transferData Details
  * about the pick list item that was transferred.
- * 
+ *
  * @interface {PrimeFaces.widget.PickList.TransferData} TransferData Callback that is invoked when an item was
  * transferred from one list to the other.
  * @prop {JQuery} TransferData.items Items that were transferred from one list to the other.
@@ -33,7 +33,7 @@
  * @prop {JQuery} TransferData.to List to which the items were transferred.
  * @prop {PrimeFaces.widget.PickList.TransferType} TransferData.type Type of the action that caused the items to be
  * transferred.
- * 
+ *
  * @prop {JQuery} ariaRegion The DOM element for the aria region with the `aria-*` attributes
  * @prop {JQuery} checkboxes The DOM elements for the checkboxes next to each pick list item.
  * @prop {boolean} checkboxClick UI state indicating whether a checkbox was just clicked.
@@ -45,7 +45,7 @@
  * @prop {Record<PrimeFaces.widget.PickList.FilterMatchMode, PrimeFaces.widget.PickList.FilterFunction>} filterMatchers
  * Map between the available filter types and the filter implementation.
  * @prop {JQuery} focusedItem The DOM element for the currently focused pick list item, if any.
- * @prop {JQuery} items The DOM elements for the pick list items in the source and target list.  
+ * @prop {JQuery} items The DOM elements for the pick list items in the source and target list.
  * @prop {PrimeFaces.widget.PickList.ListName} itemListName When sorting items: to which list the items belong.
  * @prop {JQuery} sourceFilter The DOM element for the filter input for the source list.
  * @prop {JQuery} sourceInput The DOM element for the hidden input storing the value of the source list.
@@ -53,12 +53,12 @@
  * @prop {} targetFilter The DOM element for the filter input for the target list.
  * @prop {} targetInput The DOM element for the hidden input storing the value of the target list.
  * @prop {JQuery} targetList The DOM element for the target list.
- * 
+ *
  * @interface {PrimeFaces.widget.PickListCfg} cfg The configuration for the {@link  PickList| PickList widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
- * 
+ *
  * @prop {boolean} cfg.disabled Whether this pick list is initially disabled.
  * @prop {string} cfg.effect Name of the animation to display.
  * @prop {string} cfg.effectSpeed Speed of the animation.
@@ -486,7 +486,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * pick list.
      * @private
      * @param {JQuery} list The source or target list with items to store.
-     * @param {JQuery} input The hidden form field where the items are stored. 
+     * @param {JQuery} input The hidden form field where the items are stored.
      */
     generateItems: function(list, input) {
         var $this = this;
@@ -557,7 +557,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Sets up the event listeners for when text is entered into the filter input of the source or target list.
      * @private
-     * @param {JQuery} filter The filter input of the source or target list. 
+     * @param {JQuery} filter The filter input of the source or target list.
      */
     bindTextFilter: function(filter) {
         if(this.cfg.filterEvent === 'enter')
@@ -570,7 +570,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * Sets up the event listeners for when the enter key is pressed while inside a filter input of the source or target
      * list.
      * @private
-     * @param {JQuery} filter The filter input of the source or target list. 
+     * @param {JQuery} filter The filter input of the source or target list.
      */
     bindEnterKeyFilter: function(filter) {
         var $this = this;
@@ -591,7 +591,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Sets up the event listeners for filtering the source and target lists.
      * @private
-     * @param {JQuery} filter The filter input of the source or target list. 
+     * @param {JQuery} filter The filter input of the source or target list.
      */
     bindFilterEvent: function(filter) {
         var $this = this;
@@ -636,20 +636,21 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Filters the available options in the source or target list.
      * @param {string} value A value against which the available options are matched.
-     * @param {JQuery} list The source or target list that is to be filtered. 
+     * @param {JQuery} list The source or target list that is to be filtered.
+     * @param {boolean} animate If it should be animated.
      */
-    filter: function(value, list) {
+    filter: function(value, list, animate) {
         var filterValue = PrimeFaces.trim(value).toLowerCase(),
         items = list.children('li.ui-picklist-item'),
-        animated = this.isAnimated();
+        animated = animate || this.isAnimated();
 
         list.removeAttr('role');
-        
+
         if(filterValue === '') {
             items.filter(':hidden').show();
             list.attr('role', 'menu');
         }
-        else {            
+        else {
             for(var i = 0; i < items.length; i++) {
                 var item = items.eq(i),
                 itemLabel = item.attr('data-item-label'),
@@ -765,7 +766,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Moves the items that are currently selected up by one.
-     * @param {JQuery} list The source or target list with items to move up. 
+     * @param {JQuery} list The source or target list with items to move up.
      */
     moveUp: function(list) {
         var _self = this,
@@ -809,7 +810,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Moves the items that are currently selected to the top of the source of target list.
-     * @param {JQuery} list The source or target list with items to move to the top. 
+     * @param {JQuery} list The source or target list with items to move to the top.
      */
     moveTop: function(list) {
         var _self = this,
@@ -851,7 +852,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Moves the items that are currently selected down by one.
-     * @param {JQuery} list The source or target list with items to move down. 
+     * @param {JQuery} list The source or target list with items to move down.
      */
     moveDown: function(list) {
         var _self = this,
@@ -893,7 +894,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Moves the items that are currently selected to the bottom of the source of target list.
-     * @param {JQuery} list The source or target list with items to move to the bottom. 
+     * @param {JQuery} list The source or target list with items to move to the bottom.
      */
     moveBottom: function(list) {
         var _self = this,
@@ -975,7 +976,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                         $this.fireTransferEvent(items, from, to, type);
                     }
                 });
-                
+
                 $this.updateListRole();
             });
         }
@@ -1005,6 +1006,8 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * @param {PrimeFaces.widget.PickList.TransferType} type Type of the action that caused the items to be transferred.
      */
     fireTransferEvent: function(items, from, to, type) {
+        var $this = this;
+
         if(this.cfg.onTransfer) {
             var obj = {};
             obj.items = items;
@@ -1016,23 +1019,30 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         }
 
         if(this.hasBehavior('transfer')) {
-            var ext = {
-                params: []
-            },
-            paramName = this.id + '_transferred',
-            isAdd = from.hasClass('ui-picklist-source');
+            var isAdd = from.hasClass('ui-picklist-source');
+
+            var options = {
+                params: [
+                    {name: $this.id + '_add', value: isAdd}
+                ],
+                oncomplete: function() {
+                    $this.refilterSource();
+                    $this.refilterTarget();
+                    $($this.jqId + ' ul').sortable('enable');
+                    $this.updateButtonsState();
+                }
+            };
 
             items.each(function(index, item) {
-                ext.params.push({name:paramName, value:$(item).attr('data-item-value')});
+                options.params.push({name: $this.id + '_transferred', value: $(item).attr('data-item-value')});
             });
 
-            ext.params.push({name:this.id + '_add', value:isAdd});
-
-            this.callBehavior('transfer', ext);
+            this.callBehavior('transfer', options);
         }
-        $(this.jqId + ' ul').sortable('enable');
-
-        this.updateButtonsState();
+        else {
+            $($this.jqId + ' ul').sortable('enable');
+            $this.updateButtonsState();
+        }
     },
 
     /**
@@ -1115,7 +1125,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         $(this.jqId + ' button').attr('tabindex', tabindex);
         $(this.jqId + ' .ui-picklist-filter-container > input').attr('tabindex', tabindex);
     },
-    
+
     /**
      * Finds the tab index of this pick list widget.
      * @private
@@ -1174,6 +1184,22 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
+     * Re-Filter the current source list.
+     * @private
+     */
+    refilterSource: function() {
+        this.filter(this.sourceFilter.val(), this.sourceList, false);
+    },
+
+    /**
+     * Re-Filter the current target list.
+     * @private
+     */
+    refilterTarget: function() {
+        this.filter(this.targetFilter.val(), this.targetList, false);
+    },
+
+    /**
      * Disables the given button belonging to this pick list.
      * @private
      * @param {JQuery} button A button to disable.
@@ -1182,7 +1208,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         if (button.hasClass('ui-state-focus')) {
             button.trigger("blur");
         }
-        
+
         button.attr('disabled', 'disabled').addClass('ui-state-disabled');
         button.attr('tabindex', '-1');
     },

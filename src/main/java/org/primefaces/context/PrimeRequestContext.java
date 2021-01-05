@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,10 +34,7 @@ import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
-import org.primefaces.util.AjaxRequestBuilder;
-import org.primefaces.util.CSVBuilder;
-import org.primefaces.util.Constants;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.*;
 
 /**
  * A {@link PrimeRequestContext} is a contextual store for the current request.
@@ -57,6 +54,7 @@ public class PrimeRequestContext {
     private static final Class<?>[] EMPTY_PARAMS = new Class<?>[0];
 
     private WidgetBuilder widgetBuilder;
+    private StyleClassBuilder styleClassBuilder;
     private AjaxRequestBuilder ajaxRequestBuilder;
     private CSVBuilder csvBuilder;
     private FacesContext context;
@@ -65,6 +63,7 @@ public class PrimeRequestContext {
     private Boolean rtl;
     private Boolean touchable;
     private Boolean secure;
+    private Boolean flex;
 
     public PrimeRequestContext(FacesContext context) {
         this.context = context;
@@ -160,6 +159,17 @@ public class PrimeRequestContext {
     }
 
     /**
+     *  @return Shared StyleClassBuilder instance of the current request
+     */
+    public StyleClassBuilder getStyleClassBuilder() {
+        if (styleClassBuilder == null) {
+            styleClassBuilder = new StyleClassBuilder(context);
+        }
+
+        return styleClassBuilder;
+    }
+
+    /**
      * @return Shared AjaxRequestBuilder instance of the current request
      */
     public AjaxRequestBuilder getAjaxRequestBuilder() {
@@ -229,7 +239,7 @@ public class PrimeRequestContext {
     }
 
     /**
-     * @return <code>true</code> if {@link AutoUpdatable} components should not be updated automatically in this request.
+     * @return <code>true</code> if auto-updatable components should not be updated automatically in this request.
      */
     public boolean isIgnoreAutoUpdate() {
         if (ignoreAutoUpdate == null) {
@@ -252,7 +262,7 @@ public class PrimeRequestContext {
                 ValueExpression expression = expressionFactory.createValueExpression(elContext, param, String.class);
                 String expressionValue = (String) expression.getValue(elContext);
 
-                rtl = (expressionValue != null) && expressionValue.equalsIgnoreCase("rtl");
+                rtl = "rtl".equalsIgnoreCase(expressionValue);
             }
         }
 
@@ -261,19 +271,31 @@ public class PrimeRequestContext {
 
     public boolean isTouchable() {
         if (touchable == null) {
-            String param = context.getExternalContext().getInitParameter(Constants.ContextParams.TOUCHABLE);
-            if (param == null) {
-                touchable = true;
-            }
-            else {
-                ELContext elContext = context.getELContext();
-                ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
-                ValueExpression expression = expressionFactory.createValueExpression(elContext, param, String.class);
-                String expressionValue = (String) expression.getValue(elContext);
-                touchable = expressionValue == null || Boolean.parseBoolean(expressionValue);
-            }
+            touchable = evalBooleanExpression(Constants.ContextParams.TOUCHABLE, true);
         }
 
         return touchable;
+    }
+
+    public boolean isFlex() {
+        if (flex == null) {
+            flex = evalBooleanExpression(Constants.ContextParams.FLEX, false);
+        }
+
+        return flex;
+    }
+
+    private boolean evalBooleanExpression(String param, boolean defaultValueIfNull) {
+        String paramValue = context.getExternalContext().getInitParameter(param);
+        if (paramValue == null) {
+            return defaultValueIfNull;
+        }
+        else {
+            ELContext elContext = context.getELContext();
+            ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
+            ValueExpression expression = expressionFactory.createValueExpression(elContext, paramValue, String.class);
+            String expressionValue = (String) expression.getValue(elContext);
+            return expressionValue == null || Boolean.parseBoolean(expressionValue);
+        }
     }
 }

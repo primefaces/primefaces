@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,10 +39,9 @@ public class SlideMenuRenderer extends TieredMenuRenderer {
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         SlideMenu menu = (SlideMenu) abstractMenu;
-        String clientId = menu.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SlideMenu", menu.resolveWidgetVar(context), clientId);
+        wb.init("SlideMenu", menu);
 
         if (menu.isOverlay()) {
             encodeOverlayConfig(context, menu, wb);

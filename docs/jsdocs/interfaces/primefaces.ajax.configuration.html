@@ -112,6 +112,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.ajax.configuration.html#partialsubmit" class="tsd-kind-icon">partial<wbr>Submit</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.ajax.configuration.html#partialsubmitfilter" class="tsd-kind-icon">partial<wbr>Submit<wbr>Filter</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.ajax.configuration.html#process" class="tsd-kind-icon">process</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.ajax.configuration.html#promise" class="tsd-kind-icon">promise</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.ajax.configuration.html#resetvalues" class="tsd-kind-icon">reset<wbr>Values</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.ajax.configuration.html#skipchildren" class="tsd-kind-icon">skip<wbr>Children</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="primefaces.ajax.configuration.html#source" class="tsd-kind-icon">source</a></li>
@@ -279,14 +280,14 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="params" class="tsd-anchor"></a>
 					<h3>params</h3>
-					<div class="tsd-signature tsd-kind-icon">params<span class="tsd-signature-symbol">:</span> <a href="primefaces.ajax.servercallbackparameter.html" class="tsd-signature-type">ServerCallbackParameter</a><span class="tsd-signature-symbol">[]</span></div>
+					<div class="tsd-signature tsd-kind-icon">params<span class="tsd-signature-symbol">:</span> <a href="primefaces.ajax.requestparameter.html" class="tsd-signature-type">RequestParameter</a><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Additional parameters that are passed to the server. These can be accessed as follows:</p>
 						</div>
-						<pre><code class="language-java"><span class="hljs-keyword">final</span> String myParam = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get(<span class="hljs-string">"myParam"</span>);</code></pre>
+						<pre><code class="language-java"><span class="hljs-keyword">final</span> String myParam = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get(<span class="hljs-string">&quot;myParam&quot;</span>);</code></pre>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -323,6 +324,21 @@
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>A (client-side) PrimeFaces search expression for the components to process in the AJAX request.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="promise" class="tsd-anchor"></a>
+					<h3>promise</h3>
+					<div class="tsd-signature tsd-kind-icon">promise<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="primefaces.ajax.responsedata.html" class="tsd-signature-type">ResponseData</a><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A promise object that is resolved when the AJAX request is complete. You can use this option to register
+								a custom callback. Please note that usually you do not have to set this option explicitly, you can use the
+								return value of <a href="../modules/primefaces.html#ab">PrimeFaces.ab</a> or <a href="primefaces.ajax.request.html#handle">PrimeFaces.ajax.Request.handle</a>. It will create a new promise
+							object when none was provided, and return that.</p>
 						</div>
 					</div>
 				</section>
@@ -403,6 +419,9 @@
 								<a href="../modules/primefaces.ajax.html">ajax</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+								<a href="../modules/primefaces.clientwindow.html">clientwindow</a>
+							</li>
+							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="../modules/primefaces.csp.html">csp</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
@@ -421,10 +440,10 @@
 								<a href="../modules/primefaces.settings.html">settings</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="../modules/primefaces.util.html">util</a>
+								<a href="../modules/primefaces.utils.html">utils</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="../modules/primefaces.utils.html">utils</a>
+								<a href="../modules/primefaces.validation.html">validation</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="../modules/primefaces.widget.html">widget</a>
@@ -492,6 +511,9 @@
 								<a href="primefaces.ajax.configuration.html#process" class="tsd-kind-icon">process</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="primefaces.ajax.configuration.html#promise" class="tsd-kind-icon">promise</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="primefaces.ajax.configuration.html#resetvalues" class="tsd-kind-icon">reset<wbr>Values</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
@@ -511,25 +533,34 @@
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="primefaces.ajax.failedrequestdata.html" class="tsd-kind-icon">Failed<wbr>Request<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="primefaces.ajax.queue.html" class="tsd-kind-icon">Queue</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="primefaces.ajax.request.html" class="tsd-kind-icon">Request</a>
 					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace tsd-has-type-parameter">
+						<a href="primefaces.ajax.requestparameter.html" class="tsd-kind-icon">Request<wbr>Parameter</a>
+					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="primefaces.ajax.response.html" class="tsd-kind-icon">Response</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-						<a href="primefaces.ajax.responseprocessor.html" class="tsd-kind-icon">Response<wbr>Processor</a>
+						<a href="primefaces.ajax.responsedata.html" class="tsd-kind-icon">Response<wbr>Data</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-namespace tsd-has-type-parameter">
-						<a href="primefaces.ajax.servercallbackparameter.html" class="tsd-kind-icon">Server<wbr>Callback<wbr>Parameter</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="primefaces.ajax.responseprocessor.html" class="tsd-kind-icon">Response<wbr>Processor</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace tsd-has-type-parameter">
 						<a href="primefaces.ajax.updatehandler.html" class="tsd-kind-icon">Update<wbr>Handler</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="primefaces.ajax.utils.html" class="tsd-kind-icon">Utils</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace tsd-has-type-parameter">
+						<a href="primefaces.ajax.pfxhr.html" class="tsd-kind-icon">pfXHR</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
 						<a href="../modules/primefaces.ajax.html#callbackoncomplete" class="tsd-kind-icon">Callback<wbr>Oncomplete</a>
@@ -555,8 +586,8 @@
 					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
 						<a href="../modules/primefaces.ajax.html#shorthandconfiguration" class="tsd-kind-icon">Shorthand<wbr>Configuration</a>
 					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
-						<a href="../modules/primefaces.ajax.html#pfxhr" class="tsd-kind-icon">pfXHR</a>
+					<li class=" tsd-kind-variable tsd-parent-kind-namespace">
+						<a href="../modules/primefaces.ajax.html#cfg_shortcuts" class="tsd-kind-icon">CFG_<wbr>SHORTCUTS</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-namespace">
 						<a href="../modules/primefaces.ajax.html#queue-1" class="tsd-kind-icon">Queue</a>
@@ -595,6 +626,7 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
@@ -611,6 +643,9 @@
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>

@@ -26,7 +26,7 @@ if (!PrimeFaces.expressions) {
             if (expressions instanceof $) {
                 return expressions;
             }
-            
+
             if (expressions instanceof HTMLElement) {
                 return $(expressions);
             }
@@ -40,7 +40,7 @@ if (!PrimeFaces.expressions) {
                     if (expression.length > 0) {
 
                         // skip unresolvable keywords
-                        if (expression == '@none' || expression == '@all') {
+                        if (expression == '@none' || expression == '@all' || expression.indexOf("@obs(") == 0) {
                             continue;
                         }
 
@@ -90,7 +90,8 @@ if (!PrimeFaces.expressions) {
                     if (expression.length > 0) {
 
                         // just a id or passtrough keywords
-                        if (expression.indexOf("@") == -1 || expression == '@none' || expression == '@all') {
+                        if (expression.indexOf("@") == -1 || expression == '@none'
+                                || expression == '@all' || expression.indexOf("@obs(") == 0) {
                             if (!PrimeFaces.inArray(ids, expression)) {
                                 ids.push(expression);
                             }

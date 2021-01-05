@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -211,7 +211,7 @@ public class OrganigramRenderer extends CoreRenderer {
         requestMap.remove(organigram.getVar());
 
         // render child nodes
-        if (node.getChildren() != null && !node.getChildren().isEmpty()) {
+        if (node.getChildren() != null && node.getChildCount() > 0) {
             writer.startElement("ul", null);
             for (OrganigramNode childNode : node.getChildren()) {
                 renderNode(context, writer, nodeMapping, organigram, childNode, selection, selectionEnabled);
@@ -223,10 +223,8 @@ public class OrganigramRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, Organigram organigram) throws IOException {
-        String clientId = organigram.getClientId(context);
-
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Organigram", organigram.resolveWidgetVar(context), clientId)
+        wb.init("Organigram", organigram)
                 .attr("zoom", organigram.isZoom())
                 .attr("leafNodeConnectorHeight", organigram.getLeafNodeConnectorHeight())
                 .attr("autoScrollToSelection", organigram.isAutoScrollToSelection());

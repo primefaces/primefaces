@@ -49,7 +49,7 @@ npm install --save-dev  \
 
 </details>
 
-PrimeFaces is a global library that adds methods and constants t the global window scope. To use the type declarations
+PrimeFaces is a global library that adds methods and constants in the global window scope. To use the type declarations
 in a JavaScript or TypeScript file, use a
 [triple-slash directive](https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html#-reference-path-)
 like this (must be at the top of the file):
@@ -87,6 +87,8 @@ requests are made, for example, when a form or a component is updated.
 methods to resolve search expressions such as `@form` on the client.
 * [PrimeFaces.resources](./modules/primefaces.resources.html) The resources submodule. It contains some methods to
 generate JSF resource URLs.
+* [PrimeFaces.validation](./modules/primefaces.validation.html) The validation submodule. It contains methods for 
+handling client side validation.
 * [PrimeFaces.utils](./modules/primefaces.utils.html) The utility module with more advanced utility methods.
 
 ### Widgets

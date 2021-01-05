@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -52,6 +52,7 @@ public class Constants {
         public static final String MULTI_VIEW_STATE_STORE = "primefaces.MULTI_VIEW_STATE_STORE";
         public static final String MARK_INPUT_AS_INVALID_ON_ERROR_MSG = "primefaces.MARK_INPUT_AS_INVALID_ON_ERROR_MSG";
         public static final String COOKIES_SAME_SITE = "primefaces.COOKIES_SAME_SITE";
+        public static final String FLEX = "primefaces.FLEX";
 
         private ContextParams() {
 
@@ -105,6 +106,8 @@ public class Constants {
 
         }
     }
+
+    public static final String SPACE = " ";
 
     public static final String EMPTY_STRING = "";
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,11 +29,9 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -106,7 +104,6 @@ public class TimelineRenderer extends CoreRenderer {
         }
 
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = timeline.getClientId(context);
 
         ZoneId zoneId = CalendarUtils.calculateZoneId(timeline.getTimeZone());
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME.withZone(zoneId);
@@ -115,7 +112,7 @@ public class TimelineRenderer extends CoreRenderer {
         FastStringWriter fswHtml = new FastStringWriter();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Timeline", timeline.resolveWidgetVar(context), clientId);
+        wb.init("Timeline", timeline);
 
         List<TimelineEvent<Object>> events = model.getEvents();
         List<TimelineGroup<Object>> groups = calculateGroupsFromModel(model);
@@ -211,6 +208,8 @@ public class TimelineRenderer extends CoreRenderer {
         if (timeline.getMaxHeight() != null) {
             wb.attr("maxHeight", timeline.getMaxHeight());
         }
+        wb.attr("horizontalScroll", timeline.isHorizontalScroll(), false);
+        wb.attr("verticalScroll", timeline.isVerticalScroll(), false);
         wb.attr("width", timeline.getWidth());
         wb.nativeAttr("orientation", "{axis:'" + timeline.getOrientationAxis() + "',"
                 + "item:'" + timeline.getOrientationItem() + "'}" );
@@ -220,8 +219,6 @@ public class TimelineRenderer extends CoreRenderer {
                 + "updateGroup:" + timeline.isEditableGroup() + ","
                 + "overrideItems:" + timeline.isEditableOverrideItems() + "}" );
         wb.attr("selectable", timeline.isSelectable());
-        wb.attr("zoomable", timeline.isZoomable());
-        wb.attr("moveable", timeline.isMoveable());
 
         if (timeline.getStart() != null) {
             wb.nativeAttr("start", encodeDate(dateTimeFormatter, timeline.getStart()));
@@ -239,8 +236,17 @@ public class TimelineRenderer extends CoreRenderer {
             wb.nativeAttr("max", encodeDate(dateTimeFormatter, timeline.getMax()));
         }
 
-        wb.attr("zoomMin", timeline.getZoomMin());
-        wb.attr("zoomMax", timeline.getZoomMax());
+        boolean zoomable = timeline.isZoomable();
+        boolean moveable = timeline.isMoveable();
+        wb.attr("zoomable", zoomable);
+        wb.attr("moveable", moveable);
+        if (zoomable) {
+            wb.attr("zoomMin", timeline.getZoomMin());
+            wb.attr("zoomMax", timeline.getZoomMax());
+            if (moveable && LangUtils.isNotBlank(timeline.getZoomKey())) {
+                wb.attr("zoomKey", timeline.getZoomKey());
+            }
+        }
 
         wb.nativeAttr("margin", "{axis:" + timeline.getEventMarginAxis() + ","
                 + "item:{horizontal:" + timeline.getEventHorizontalMargin() + ","
@@ -317,6 +323,25 @@ public class TimelineRenderer extends CoreRenderer {
             fsw.write(", content:\"" + groupsContent.get(group.getId()) + "\"");
         }
 
+        if (group.getTreeLevel() != null) {
+            fsw.write(", treeLevel:\"" + group.getTreeLevel() + "\"");
+
+            List<String> nestedGroups = group.getNestedGroups();
+            if (nestedGroups != null && !nestedGroups.isEmpty()) {
+                fsw.write(", nestedGroups: [");
+
+                for (Iterator<String> iter = nestedGroups.iterator(); iter.hasNext(); ) {
+                    fsw.write("\"" + EscapeUtils.forJavaScriptBlock(iter.next()) + "\"");
+
+                    if (iter.hasNext()) {
+                        fsw.write(",");
+                    }
+                }
+
+                fsw.write("]");
+            }
+        }
+
         if (timeline.getGroupStyle() != null) {
             fsw.write(", style: \"" + timeline.getGroupStyle() + "\"");
         }
@@ -332,6 +357,19 @@ public class TimelineRenderer extends CoreRenderer {
         if (order != null) {
             fsw.write(", order: " + order);
         }
+
+        if (!LangUtils.isValueBlank(group.getSubgroupOrder())) {
+            fsw.write(", subgroupOrder: \"" + EscapeUtils.forJavaScript(group.getSubgroupOrder()) + "\"");
+        }
+
+        if (!LangUtils.isValueBlank(group.getSubgroupStack())) {
+            fsw.write(", subgroupStack: " + EscapeUtils.forJavaScript(group.getSubgroupStack()));
+        }
+
+        if (!LangUtils.isValueBlank(group.getSubgroupVisibility())) {
+            fsw.write(", subgroupVisibility: " + EscapeUtils.forJavaScript(group.getSubgroupVisibility()));
+        }
+
         fsw.write("}");
 
         String groupJson = fsw.toString();
@@ -399,6 +437,10 @@ public class TimelineRenderer extends CoreRenderer {
 
         if (foundGroup != null) {
             fsw.write(", group: \"" + EscapeUtils.forJavaScript(foundGroup.getId()) + "\"");
+
+            if (!LangUtils.isValueBlank(event.getSubgroup())) {
+                fsw.write(", subgroup: \"" + EscapeUtils.forJavaScript(event.getSubgroup()) + "\"");
+            }
         }
         else {
             // no group for the event
@@ -457,7 +499,22 @@ public class TimelineRenderer extends CoreRenderer {
 
     // convert from UTC to locale date
     private String encodeDate(DateTimeFormatter dateTimeFormatter, LocalDateTime date) {
-        return "new Date('" + dateTimeFormatter.format(date.atZone(dateTimeFormatter.getZone())) + "')";
+        String encoded;
+        ZonedDateTime zdt = date.atZone(dateTimeFormatter.getZone());
+        String formatted = dateTimeFormatter.format(zdt);
+        if (formatted.startsWith("-")) {
+            // GitHub #6721: B.C. Dates can't use JS constructor with String
+            encoded = "new Date(" + zdt.getYear() +
+                        ", " + (zdt.getMonthValue() - 1) +
+                        ", " + zdt.getDayOfMonth() +
+                        ", " + zdt.getHour() +
+                        ", " + zdt.getMinute() +
+                        ", " + zdt.getSecond() + ", 0)";
+        }
+        else {
+            encoded = "new Date('" + formatted + "')";
+        }
+        return encoded;
     }
 
     @Override

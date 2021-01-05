@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,9 +33,6 @@ import org.primefaces.facelets.MethodRule;
 
 public class DataTableHandler extends ComponentHandler {
 
-    private static final MetaRule SORT_FUNCTION
-            = new MethodRule("sortFunction", Integer.class, new Class[]{Object.class, Object.class});
-
     private static final MetaRule DRAGGABLE_ROWS_FUNCTION
             = new MethodRule("draggableRowsFunction", null, new Class[]{UIData.class});
 
@@ -51,7 +48,6 @@ public class DataTableHandler extends ComponentHandler {
     protected MetaRuleset createMetaRuleset(Class type) {
         MetaRuleset metaRuleset = super.createMetaRuleset(type);
 
-        metaRuleset.addRule(SORT_FUNCTION);
         metaRuleset.addRule(DRAGGABLE_ROWS_FUNCTION);
         metaRuleset.addRule(GLOBAL_FILTER_FUNCTION);
 

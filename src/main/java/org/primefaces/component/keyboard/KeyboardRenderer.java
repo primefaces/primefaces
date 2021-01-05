@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -63,10 +63,8 @@ public class KeyboardRenderer extends InputRenderer {
     }
 
     protected void encodeScript(FacesContext context, Keyboard keyboard) throws IOException {
-        String clientId = keyboard.getClientId(context);
-
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Keyboard", keyboard.resolveWidgetVar(context), clientId)
+        wb.init("Keyboard", keyboard)
                 .attr("useThemeRoller", true)
                 .attr("showOn", keyboard.getShowMode())
                 .attr("showAnim", keyboard.getEffect())
@@ -81,6 +79,10 @@ public class KeyboardRenderer extends InputRenderer {
             wb.attr("keypadOnly", false)
                     .attr("layoutName", keyboard.getLayout())
                     .attr("layoutTemplate", keyboard.getLayoutTemplate(), null);
+        }
+
+        if (ComponentUtils.isRTL(context, keyboard)) {
+            wb.attr("isRTL", true);
         }
 
         wb.attr("keypadClass", keyboard.getStyleClass(), null)

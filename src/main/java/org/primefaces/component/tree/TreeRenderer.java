@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,8 @@
  */
 package org.primefaces.component.tree;
 
+import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
+
 import java.io.IOException;
 import java.util.*;
 
@@ -35,15 +37,13 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.UITree;
+import org.primefaces.model.MatchMode;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.filter.FilterConstraint;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.*;
-
-import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
-import org.primefaces.model.MatchMode;
 
 public class TreeRenderer extends CoreRenderer {
 
@@ -272,7 +272,7 @@ public class TreeRenderer extends CoreRenderer {
                 TreeNode childNode = node.getChildren().get(i);
                 requestMap.put(var, childNode.getData());
 
-                if (filterConstraint.applies(filterByVE.getValue(context.getELContext()), filteredValue, filterLocale)) {
+                if (filterConstraint.isMatching(context, filterByVE.getValue(context.getELContext()), filteredValue, filterLocale)) {
                     tree.getFilteredRowKeys().add(childNode.getRowKey());
                 }
                 encodeFilteredNodes(context, tree, childNode, filteredValue, filterLocale);
@@ -283,14 +283,13 @@ public class TreeRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, Tree tree) throws IOException {
-        String clientId = tree.getClientId(context);
         boolean dynamic = tree.isDynamic();
         String selectionMode = tree.getSelectionMode();
         boolean filter = (tree.getValueExpression("filterBy") != null);
         String widget = tree.getOrientation().equals("vertical") ? "VerticalTree" : "HorizontalTree";
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init(widget, tree.resolveWidgetVar(context), clientId);
+        wb.init(widget, tree);
 
         wb.attr("dynamic", dynamic)
                 .attr("highlight", tree.isHighlight(), true)
@@ -355,8 +354,8 @@ public class TreeRenderer extends CoreRenderer {
         boolean dynamic = tree.isDynamic();
         String selectionMode = tree.getSelectionMode();
         boolean selectable = selectionMode != null;
-        boolean multiselectable = selectable && selectionMode.equals("single");
-        boolean checkbox = selectable && selectionMode.equals("checkbox");
+        boolean multiselectable = selectable && "single".equals(selectionMode);
+        boolean checkbox = selectable && "checkbox".equals(selectionMode);
         boolean droppable = tree.isDroppable();
         boolean filter = (tree.getValueExpression("filterBy") != null);
         boolean isDisabled = tree.isDisabled();
@@ -429,7 +428,7 @@ public class TreeRenderer extends CoreRenderer {
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute("class", Tree.FILTER_CLASS, null);
-        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER, null), null);
+        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER), null);
         writer.endElement("input");
 
         writer.startElement("span", null);
@@ -444,7 +443,7 @@ public class TreeRenderer extends CoreRenderer {
         String clientId = tree.getClientId(context);
         boolean dynamic = tree.isDynamic();
         String selectionMode = tree.getSelectionMode();
-        boolean checkbox = (selectionMode != null) && selectionMode.equals("checkbox");
+        boolean checkbox = "checkbox".equals(selectionMode);
 
         String containerClass = tree.getStyleClass() == null
                                 ? Tree.HORIZONTAL_CONTAINER_CLASS
@@ -882,7 +881,7 @@ public class TreeRenderer extends CoreRenderer {
     public FilterConstraint getFilterConstraint(Tree tree) {
         String filterMatchMode = tree.getFilterMatchMode();
 
-        MatchMode matchMode = MatchMode.byName(filterMatchMode);
+        MatchMode matchMode = MatchMode.of(filterMatchMode);
         if (matchMode == null) {
             throw new FacesException("Illegal filter match mode:" + filterMatchMode);
         }

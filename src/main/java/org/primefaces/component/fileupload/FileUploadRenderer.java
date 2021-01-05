@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,15 @@
  */
 package org.primefaces.component.fileupload;
 
+import java.io.IOException;
+import java.util.logging.Logger;
+import javax.faces.application.ProjectStage;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.convert.ConverterException;
+
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
@@ -30,17 +39,18 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.convert.ConverterException;
-import java.io.IOException;
-
 public class FileUploadRenderer extends CoreRenderer {
+
+    private static final Logger LOGGER = Logger.getLogger(FileUploadRenderer.class.getName());
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
         if (!context.getExternalContext().getRequestContentType().toLowerCase().startsWith("multipart/")) {
+            if (!context.isProjectStage(ProjectStage.Production)) {
+                LOGGER.fine("Decoding FileUpload requires contentType \"multipart/form-data\". Skipping... ClientId: "
+                        + component.getClientId(context));
+            }
+
             return;
         }
 
@@ -62,7 +72,6 @@ public class FileUploadRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, FileUpload fileUpload) throws IOException {
-        String clientId = fileUpload.getClientId(context);
         String update = fileUpload.getUpdate();
         String process = fileUpload.getProcess();
         WidgetBuilder wb = getWidgetBuilder(context);
@@ -70,7 +79,7 @@ public class FileUploadRenderer extends CoreRenderer {
         if (fileUpload.getMode().equals("advanced")) {
             PrimeApplicationContext pfContext = PrimeApplicationContext.getCurrentInstance(context);
 
-            wb.init("FileUpload", fileUpload.resolveWidgetVar(context), clientId);
+            wb.init("FileUpload", fileUpload);
 
             wb.attr("dnd", fileUpload.isDragDropSupport(), true)
                     .attr("previewWidth", fileUpload.getPreviewWidth(), 80)
@@ -84,7 +93,7 @@ public class FileUploadRenderer extends CoreRenderer {
 
         }
         else {
-            wb.init("SimpleFileUpload", fileUpload.resolveWidgetVar(context), clientId)
+            wb.init("SimpleFileUpload", fileUpload)
                     .attr("skinSimple", fileUpload.isSkinSimple(), false);
         }
 
@@ -100,6 +109,7 @@ public class FileUploadRenderer extends CoreRenderer {
                 .attr("messageTemplate", fileUpload.getMessageTemplate(), null)
                 .attr("maxFileSize", fileUpload.getSizeLimit(), Long.MAX_VALUE)
                 .attr("fileLimit", fileUpload.getFileLimit(), Integer.MAX_VALUE)
+                .callback("onupload", "function()", fileUpload.getOnupload())
                 .callback("onstart", "function()", fileUpload.getOnstart())
                 .callback("onerror", "function()", fileUpload.getOnerror())
                 .callback("oncomplete", "function(args)", fileUpload.getOncomplete())

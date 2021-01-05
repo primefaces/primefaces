@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,11 +33,13 @@ import javax.faces.view.facelets.*;
 public class AutoUpdateTagHandler extends TagHandler {
 
     private final TagAttribute disabledAttribute;
+    private final TagAttribute onAttribute;
 
     public AutoUpdateTagHandler(TagConfig tagConfig) {
         super(tagConfig);
 
         disabledAttribute = getAttribute("disabled");
+        onAttribute = getAttribute("on");
     }
 
     @Override
@@ -46,21 +48,28 @@ public class AutoUpdateTagHandler extends TagHandler {
             return;
         }
 
+        String on = null;
+        if (onAttribute != null) {
+            on = onAttribute.getValue(faceletContext);
+        }
+
         if (disabledAttribute == null) {
             // enabled
-            AutoUpdateListener.subscribe(parent);
+            AutoUpdateListener.subscribe(parent, on);
         }
         else {
             if (disabledAttribute.isLiteral()) {
                 // static
                 if (!disabledAttribute.getBoolean(faceletContext)) {
                     // enabled
-                    AutoUpdateListener.subscribe(parent);
+                    AutoUpdateListener.subscribe(parent, on);
                 }
             }
             else {
                 // dynamic
-                AutoUpdateListener.subscribe(parent, disabledAttribute.getValueExpression(faceletContext, Boolean.class));
+                AutoUpdateListener.subscribe(parent,
+                        disabledAttribute.getValueExpression(faceletContext, Boolean.class),
+                        on);
             }
         }
     }

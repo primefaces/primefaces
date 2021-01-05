@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.api.Pageable;
-import org.primefaces.component.api.UIData;
+import org.primefaces.component.api.UIPageableData;
 
 public class JumpToPageInputRenderer implements PaginatorElementRenderer {
 
@@ -38,7 +38,7 @@ public class JumpToPageInputRenderer implements PaginatorElementRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("input", null);
-        writer.writeAttribute("class", UIData.PAGINATOR_JTP_INPUT_CLASS, null);
+        writer.writeAttribute("class", UIPageableData.PAGINATOR_JTP_INPUT_CLASS, null);
         writer.writeAttribute("value", pageable.getPage() + 1, null);
         writer.endElement("input");
     }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,9 +24,10 @@
 package org.primefaces.component.keyboard;
 
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
+import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 
-public abstract class KeyboardBase extends AbstractPrimeHtmlInputText implements Widget {
+public abstract class KeyboardBase extends AbstractPrimeHtmlInputText implements Widget, RTLAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

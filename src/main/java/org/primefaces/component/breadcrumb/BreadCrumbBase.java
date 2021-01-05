@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,9 @@
  */
 package org.primefaces.component.breadcrumb;
 
-import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
 
-public abstract class BreadCrumbBase extends AbstractMenu implements Widget {
+public abstract class BreadCrumbBase extends AbstractMenu {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

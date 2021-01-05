@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,10 +28,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.application.resource.barcode.BarcodeHandler;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
@@ -67,25 +69,13 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
     @Override
     public Resource createResource(String resourceName, String libraryName) {
         Resource resource = super.createResource(resourceName, libraryName);
-
-        if (resource != null && libraryName != null && libraryName.equalsIgnoreCase(Constants.LIBRARY)) {
-            return new PrimeResource(resource);
-        }
-        else {
-            return resource;
-        }
+        return wrapResource(resource, libraryName);
     }
 
     @Override
     public Resource createResource(String resourceName, String libraryName, String contentType) {
         Resource resource = super.createResource(resourceName, libraryName, contentType);
-
-        if (resource != null && libraryName != null && libraryName.equalsIgnoreCase(Constants.LIBRARY)) {
-            return new PrimeResource(resource);
-        }
-        else {
-            return resource;
-        }
+        return wrapResource(resource, libraryName);
     }
 
     @Override
@@ -107,6 +97,16 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
             else {
                 handler.handle(context);
             }
+        }
+    }
+
+    private Resource wrapResource(Resource resource, String libraryName) {
+        if (resource != null && libraryName != null
+                    && (libraryName.toLowerCase().startsWith(Constants.LIBRARY))) {
+            return new PrimeResource(resource);
+        }
+        else {
+            return resource;
         }
     }
 }

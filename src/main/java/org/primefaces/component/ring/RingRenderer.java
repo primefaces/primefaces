@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -74,10 +74,8 @@ public class RingRenderer extends CoreRenderer {
     }
 
     public void encodeScript(FacesContext context, Ring ring) throws IOException {
-        String clientId = ring.getClientId(context);
-
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Ring", ring.resolveWidgetVar(context), clientId)
+        wb.init("Ring", ring)
                 .attr("startingChild", ring.getFirst())
                 .attr("easing", ring.getEasing(), null)
                 .attr("autoplay", ring.isAutoplay(), false)

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,10 +41,9 @@ public class IdleMonitorRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         IdleMonitor idleMonitor = (IdleMonitor) component;
-        String clientId = idleMonitor.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("IdleMonitor", idleMonitor.resolveWidgetVar(context), clientId)
+        wb.init("IdleMonitor", idleMonitor)
                 .attr("timeout", idleMonitor.getTimeout())
                 .attr("multiWindowSupport", idleMonitor.isMultiWindowSupport())
                 .callback("onidle", "function()", idleMonitor.getOnidle())

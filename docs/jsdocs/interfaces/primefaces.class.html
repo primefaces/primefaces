@@ -77,17 +77,17 @@
 						with the new <code>class</code> syntax of JavaScript, so consider creating your own widgets as a class:</p>
 					</div>
 					<pre><code class="language-javascript"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyWidget</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">PrimeFaces</span>.<span class="hljs-title">widget</span>.<span class="hljs-title">BaseWidget</span> </span>{
-  init(cfg){
+  <span class="hljs-function"><span class="hljs-title">init</span>(<span class="hljs-params">cfg</span>)</span>{
     <span class="hljs-comment">// ...</span>
   }
 }</code></pre>
 					<p>Note for typescript users: You will need to specify the type parameters explicitly. The best way to do so is by
 					defining the interfaces for the classes separately:</p>
 					<pre><code class="language-typescript"><span class="hljs-keyword">interface</span> BaseWidgetCfg {
- prop1: <span class="hljs-built_in">string</span>;
+ <span class="hljs-attr">prop1</span>: <span class="hljs-built_in">string</span>;
 }
 <span class="hljs-keyword">interface</span> AccordionCfg <span class="hljs-keyword">extends</span> BaseWidgetCfg {
-  prop2: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">prop2</span>: <span class="hljs-built_in">boolean</span>;
 }
 <span class="hljs-keyword">interface</span> BaseWidget {
   init(cfg: BaseWidgetCfg): <span class="hljs-built_in">void</span>;
@@ -100,7 +100,7 @@
 }</code></pre>
 					<p>Now you can use it normally:</p>
 					<pre><code class="language-typescript"><span class="hljs-keyword">const</span> BaseWidget = Class.extend&lt;BaseWidget, [BaseWidgetCfg]&gt;({
-  init(cfg: BaseWidgetCfg) {
+  <span class="hljs-function"><span class="hljs-title">init</span>(<span class="hljs-params">cfg: BaseWidgetCfg</span>)</span> {
     <span class="hljs-comment">// ...</span>
   },
   method1(x: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">boolean</span> {
@@ -108,18 +108,18 @@
   },
 });
 <span class="hljs-keyword">const</span> Accordion = BaseWidget.extend&lt;Accordion, [AccordionCfg]&gt;({
-  init(cfg: AccordionCfg) {
-    <span class="hljs-keyword">this</span>._super(cfg);
+  <span class="hljs-function"><span class="hljs-title">init</span>(<span class="hljs-params">cfg: AccordionCfg</span>)</span> {
+    <span class="hljs-built_in">this</span>._super(cfg);
   },
-  method1() {
-    <span class="hljs-keyword">return</span> !<span class="hljs-keyword">this</span>._super(<span class="hljs-number">42</span>);
+  <span class="hljs-function"><span class="hljs-title">method1</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">return</span> !<span class="hljs-built_in">this</span>._super(<span class="hljs-number">42</span>);
   },
-  method2() {
+  <span class="hljs-function"><span class="hljs-title">method2</span>(<span class="hljs-params"></span>)</span> {
     <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
   }
 });
-<span class="hljs-keyword">const</span> base: BaseWidget = <span class="hljs-keyword">new</span> BaseWidget({prop1: <span class="hljs-string">""</span>});
-<span class="hljs-keyword">const</span> accordion: Accordion = <span class="hljs-keyword">new</span> Accordion({prop1: <span class="hljs-string">""</span>, prop2: <span class="hljs-literal">true</span>});
+<span class="hljs-keyword">const</span> base: BaseWidget = <span class="hljs-keyword">new</span> BaseWidget({<span class="hljs-attr">prop1</span>: <span class="hljs-string">&quot;&quot;</span>});
+<span class="hljs-keyword">const</span> accordion: Accordion = <span class="hljs-keyword">new</span> Accordion({<span class="hljs-attr">prop1</span>: <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-attr">prop2</span>: <span class="hljs-literal">true</span>});
 base.method1(<span class="hljs-number">2</span>);
 accordion.method1();
 accordion.method2();</code></pre>
@@ -223,6 +223,9 @@ accordion.method2();</code></pre>
 								<a href="../modules/primefaces.ajax.html">ajax</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+								<a href="../modules/primefaces.clientwindow.html">clientwindow</a>
+							</li>
+							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="../modules/primefaces.csp.html">csp</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
@@ -241,10 +244,10 @@ accordion.method2();</code></pre>
 								<a href="../modules/primefaces.settings.html">settings</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="../modules/primefaces.util.html">util</a>
+								<a href="../modules/primefaces.utils.html">utils</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
-								<a href="../modules/primefaces.utils.html">utils</a>
+								<a href="../modules/primefaces.validation.html">validation</a>
 							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
 								<a href="../modules/primefaces.widget.html">widget</a>
@@ -280,6 +283,7 @@ accordion.method2();</code></pre>
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
@@ -296,6 +300,9 @@ accordion.method2();</code></pre>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>

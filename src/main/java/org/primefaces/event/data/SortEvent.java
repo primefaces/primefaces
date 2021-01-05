@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,48 +25,23 @@ package org.primefaces.event.data;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import org.primefaces.component.api.UIColumn;
 import org.primefaces.event.AbstractAjaxBehaviorEvent;
-import org.primefaces.model.SortOrder;
+import org.primefaces.model.SortMeta;
+
+import java.util.Map;
 
 public class SortEvent extends AbstractAjaxBehaviorEvent {
 
     private static final long serialVersionUID = 1L;
 
-    private UIColumn sortColumn;
+    private Map<String, SortMeta> sortBy;
 
-    private SortOrder sortOrder;
-
-    private int sortColumnIndex;
-
-    public SortEvent(UIComponent component, Behavior behavior, UIColumn sortColumn, SortOrder order, int sortColumnIndex) {
+    public SortEvent(UIComponent component, Behavior behavior, Map<String, SortMeta> sortBy) {
         super(component, behavior);
-        this.sortColumn = sortColumn;
-        this.sortOrder = order;
-        this.sortColumnIndex = sortColumnIndex;
+        this.sortBy = sortBy;
     }
 
-    public SortOrder getSortOrder() {
-        return sortOrder;
-    }
-
-    public boolean isAscending() {
-        return sortOrder == SortOrder.ASCENDING;
-    }
-
-    public boolean isDescending() {
-        return sortOrder == SortOrder.DESCENDING;
-    }
-
-    public boolean isUnsorted() {
-        return sortOrder == SortOrder.UNSORTED;
-    }
-
-    public UIColumn getSortColumn() {
-        return sortColumn;
-    }
-
-    public int getSortColumnIndex() {
-        return sortColumnIndex;
+    public Map<String, SortMeta> getSortBy() {
+        return sortBy;
     }
 }

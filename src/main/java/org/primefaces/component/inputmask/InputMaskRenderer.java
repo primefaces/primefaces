@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -52,9 +52,11 @@ public class InputMaskRenderer extends InputRenderer {
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId);
 
         if (submittedValue != null) {
+            // strip mask characters in case of optional values
+            submittedValue = submittedValue.replace(inputMask.getSlotChar(), Constants.EMPTY_STRING);
             String mask = inputMask.getMask();
 
-            if (inputMask.isValidateMask() && !submittedValue.isEmpty() && !LangUtils.isValueBlank(mask)) {
+            if (inputMask.isValidateMask() && !LangUtils.isValueEmpty(submittedValue) && !LangUtils.isValueBlank(mask)) {
                 Pattern pattern = translateMaskIntoRegex(context, mask);
                 if (!pattern.matcher(submittedValue).matches()) {
                     submittedValue = Constants.EMPTY_STRING;
@@ -80,6 +82,10 @@ public class InputMaskRenderer extends InputRenderer {
      */
     protected Pattern translateMaskIntoRegex(FacesContext context, String mask) {
         StringBuilder regex = SharedStringBuilder.get(context, SB_PATTERN);
+        return translateMaskIntoRegex(regex, mask);
+    }
+
+    protected Pattern translateMaskIntoRegex(StringBuilder regex, String mask) {
         boolean optionalFound = false;
 
         for (char c : mask.toCharArray()) {
@@ -126,10 +132,9 @@ public class InputMaskRenderer extends InputRenderer {
     }
 
     protected void encodeScript(FacesContext context, InputMask inputMask) throws IOException {
-        String clientId = inputMask.getClientId(context);
         String mask = inputMask.getMask();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("InputMask", inputMask.resolveWidgetVar(context), clientId);
+        wb.init("InputMask", inputMask);
 
         if (mask != null) {
             wb.attr("mask", mask)

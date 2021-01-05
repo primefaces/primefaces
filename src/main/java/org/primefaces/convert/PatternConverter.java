@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,15 @@
  */
 package org.primefaces.convert;
 
+/**
+ * General interface for converting between different kind of patterns, such as Java date time patterns
+ * and JQuery UI date picker patterns.
+ */
 public interface PatternConverter {
 
+    /**
+     * @param pattern A pattern in the source format to convert to the target format.
+     * @return The given pattern, converted to its closest approximation in the target format.
+     */
     String convert(String pattern);
 }

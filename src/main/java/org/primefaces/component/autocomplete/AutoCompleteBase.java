@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -79,7 +79,8 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
         autoSelection,
         escape,
         queryMode,
-        dropdownTabindex
+        dropdownTabindex,
+        completeEndpoint
     }
 
     public AutoCompleteBase() {
@@ -441,5 +442,13 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
 
     public void setDropdownTabindex(String dropdownTabindex) {
         getStateHelper().put(PropertyKeys.dropdownTabindex, dropdownTabindex);
+    }
+
+    public String getCompleteEndpoint() {
+        return (String) getStateHelper().eval(PropertyKeys.completeEndpoint, null);
+    }
+
+    public void setCompleteEndpoint(String completeEndpoint) {
+        getStateHelper().put(PropertyKeys.completeEndpoint, completeEndpoint);
     }
 }

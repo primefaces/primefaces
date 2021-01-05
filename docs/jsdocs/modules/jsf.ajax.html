@@ -328,10 +328,10 @@
 								</div>
 								<p><strong>Usage:</strong></p>
 								<p>Example showing all optional arguments:</p>
-								<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">commandButton</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"button1"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"submit"</span>
-    <span class="hljs-attr">onclick</span>=<span class="hljs-string">"jsf.ajax.request(this,event,
-      {execute:'button1',render:'status',onevent: handleEvent,onerror: handleError});return false;"</span>/&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">commandButton</span>/&gt;</span></code></pre>
+								<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">commandButton</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;button1&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;submit&quot;</span>
+    <span class="hljs-attr">onclick</span>=<span class="hljs-string">&quot;jsf.ajax.request(this,event,
+      {execute:&#x27;button1&#x27;,render:&#x27;status&#x27;,onevent: handleEvent,onerror: handleError});return false;&quot;</span>/&gt;</span>
+&lt;/commandButton/&gt;</code></pre>
 								<p><strong>Implementation Requirements:</strong></p>
 								<p>This function must:</p>
 								<ul>
@@ -528,14 +528,14 @@
 								updating the contents of the DOM element as specified by the <code>&lt;update&gt;</code> element identifier.</p>
 								<ul>
 									<li><p>If an <code>&lt;update&gt;</code> element is found in the response with the identifier <code>javax.faces.ViewRoot</code>:</p>
-										<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">update</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"javax.faces.ViewRoot"</span>&gt;</span>
+										<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">update</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;javax.faces.ViewRoot&quot;</span>&gt;</span>
     &lt;![CDATA[...]]&gt;
 <span class="hljs-tag">&lt;/<span class="hljs-name">update</span>&gt;</span></code></pre>
 										<p>Update the entire DOM replacing the appropriate <code>head</code> and/or <code>body</code> sections with the content from the
 										response.</p>
 									</li>
 									<li><p>If an <code>&lt;update&gt;</code> element is found in the response with an identifier containing <code>javax.faces.ViewState</code>:</p>
-										<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">update</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"&lt;VIEW_ROOT_CONTAINER_CLIENT_ID&gt;&lt;SEP&gt;javax.faces.ViewState&lt;SEP&gt;&lt;UNIQUE_PER_VIEW_NUMBER&gt;"</span>&gt;</span>
+										<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">update</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;&lt;VIEW_ROOT_CONTAINER_CLIENT_ID&gt;&lt;SEP&gt;javax.faces.ViewState&lt;SEP&gt;&lt;UNIQUE_PER_VIEW_NUMBER&gt;&quot;</span>&gt;</span>
     &lt;![CDATA[...]]&gt;
 <span class="hljs-tag">&lt;/<span class="hljs-name">update</span>&gt;</span></code></pre>
 										<p>locate and update the submitting form&#39;s <code>javax.faces.ViewState</code> value with the <code>CDATA</code> contents from the
@@ -547,7 +547,7 @@
 										all forms specified in the render target list.</p>
 									</li>
 									<li><p>If an update element is found in the response with an identifier containing <code>javax.faces.ClientWindow</code>:</p>
-										<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">update</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"&lt;VIEW_ROOT_CONTAINER_CLIENT_ID&gt;&lt;SEP&gt;javax.faces.ClientWindow&lt;SEP&gt;&lt;UNIQUE_PER_VIEW_NUMBER&gt;"</span>&gt;</span>
+										<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">update</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;&lt;VIEW_ROOT_CONTAINER_CLIENT_ID&gt;&lt;SEP&gt;javax.faces.ClientWindow&lt;SEP&gt;&lt;UNIQUE_PER_VIEW_NUMBER&gt;&quot;</span>&gt;</span>
     &lt;![CDATA[...]]&gt;
 <span class="hljs-tag">&lt;/<span class="hljs-name">update</span>&gt;</span></code></pre>
 										<p>locate and update the submitting form&#39;s <code>javax.faces.ClientWindow</code> value with the <code>CDATA</code> contents from the
@@ -559,19 +559,19 @@
 										for all forms specified in the render target list.</p>
 									</li>
 									<li><p>If an update element is found in the response with the identifier <code>javax.faces.ViewHead</code>:</p>
-										<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">update</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"javax.faces.ViewHead"</span>&gt;</span>
+										<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">update</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;javax.faces.ViewHead&quot;</span>&gt;</span>
     &lt;![CDATA[...]]&gt;
 <span class="hljs-tag">&lt;/<span class="hljs-name">update</span>&gt;</span></code></pre>
 										<p>update the document&#39;s <code>head</code> section with the <code>CDATA</code> contents from the response.</p>
 									</li>
 									<li><p>If an update element is found in the response with the identifier <code>javax.faces.ViewBody</code>:</p>
-										<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">update</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"javax.faces.ViewBody"</span>&gt;</span>
+										<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">update</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;javax.faces.ViewBody&quot;</span>&gt;</span>
     &lt;![CDATA[...]]&gt;
 <span class="hljs-tag">&lt;/<span class="hljs-name">update</span>&gt;</span></code></pre>
 										<p>update the document&#39;s <code>body</code> section with the <code>CDATA</code> contents from the response.</p>
 									</li>
 									<li><p>For any other <code>&lt;update&gt;</code> element:</p>
-										<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">update</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"update id"</span>&gt;</span>
+										<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">update</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;update id&quot;</span>&gt;</span>
     &lt;![CDATA[...]]&gt;
 <span class="hljs-tag">&lt;/<span class="hljs-name">update</span>&gt;</span></code></pre>
 										<p>Find the DOM element with the identifier that matches the <code>&lt;update&gt;</code> element identifier, and replace its
@@ -582,7 +582,7 @@
 								<ul>
 									<li><p>If an <code>&lt;insert&gt;</code> element is found in the response with a nested <code>&lt;before&gt;</code> element:</p>
 										<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">insert</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">before</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"before id"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">before</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;before id&quot;</span>&gt;</span>
         &lt;![CDATA[...]]&gt;
     <span class="hljs-tag">&lt;/<span class="hljs-name">before</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">insert</span>&gt;</span></code></pre>
@@ -594,7 +594,7 @@
 									</li>
 									<li><p>If an <insert> element is found in the response with a nested <after> element:</p>
 										<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">insert</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">after</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"after id"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">after</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;after id&quot;</span>&gt;</span>
         &lt;![CDATA[...]]&gt;
     <span class="hljs-tag">&lt;/<span class="hljs-name">after</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">insert</span>&gt;</span></code></pre>
@@ -608,15 +608,15 @@
 								<p><em>Delete Element Processing</em></p>
 								<ul>
 									<li><p>If a <code>&lt;delete&gt;</code> element is found in the response:</p>
-										<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">delete</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"delete id"</span>/&gt;</span></code></pre>
+										<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">delete</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;delete id&quot;</span>/&gt;</span></code></pre>
 										<p>Find the DOM element whose identifier matches <code>delete id</code> and remove it from the DOM.</p>
 									</li>
 								</ul>
 								<p><em>Element Attribute Update Processing</em></p>
 								<ul>
 									<li><p>If an <code>&lt;attributes&gt;</code> element is found in the response:</p>
-										<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">attributes</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"id of element with attribute"</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">attribute</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"attribute name"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"attribute value"</span>&gt;</span>
+										<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">attributes</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;id of element with attribute&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">attribute</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;attribute name&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;attribute value&quot;</span>&gt;</span>
      <span class="hljs-comment">&lt;!-- ... --&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">attributes</span>&gt;</span></code></pre>
 										<ul>
@@ -641,7 +641,7 @@
 								<p><em>Redirect Processing</em></p>
 								<ul>
 									<li><p>If a <code>&lt;redirect&gt;</code> element is found in the response:</p>
-										<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">redirect</span> <span class="hljs-attr">url</span>=<span class="hljs-string">"redirect url"</span>/&gt;</span></code></pre>
+										<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">redirect</span> <span class="hljs-attr">url</span>=<span class="hljs-string">&quot;redirect url&quot;</span>/&gt;</span></code></pre>
 										<p>Cause a redirect to the <code>url redirect url</code>.</p>
 									</li>
 								</ul>
@@ -765,6 +765,7 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
@@ -781,6 +782,9 @@
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>

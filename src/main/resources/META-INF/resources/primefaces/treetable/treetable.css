@@ -266,3 +266,14 @@
 .ui-treetable .ui-treetable-data td.ui-cell-editing:first-child {
     padding-left: 10px;
 } 
+
+/* Multiple sort number badges */
+.ui-treetable .ui-sortable-column-badge {
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    vertical-align: middle;
+}

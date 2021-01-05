@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -85,7 +85,7 @@ public class Slider extends SliderBase {
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName.equals("slideEnd")) {
+            if ("slideEnd".equals(eventName)) {
                 double sliderValue = Double.parseDouble(params.get(clientId + "_slideValue"));
                 SlideEndEvent slideEndEvent = new SlideEndEvent(this, behaviorEvent.getBehavior(), sliderValue);
                 slideEndEvent.setPhaseId(behaviorEvent.getPhaseId());
@@ -167,7 +167,7 @@ public class Slider extends SliderBase {
                 msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, validatorMessage, validatorMessage);
             }
             else {
-                Object[] params = new Object[] {MessageFactory.getLabel(context, this)};
+                Object params = ComponentUtils.getLabel(context, this);
                 msg = MessageFactory.getFacesMessage(VALUE_OUT_OF_RANGE, FacesMessage.SEVERITY_ERROR, params);
             }
             context.addMessage(getClientId(context), msg);

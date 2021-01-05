@@ -121,9 +121,9 @@
 							<p>The background colour of the signature area. Specify this as a six character hexadecimal value prefixed by a
 							hash (#), as a RGB triplet, or as a named colour.</p>
 						</div>
-						<pre><code class="language-javascript">$(selector).signature({<span class="hljs-attr">background</span>: <span class="hljs-string">"#0000ff"</span>});
-$(selector).signature({<span class="hljs-attr">background</span>: <span class="hljs-string">"rgb(0,0,255)"</span>});
-$(selector).signature({<span class="hljs-attr">background</span>: <span class="hljs-string">"blue"</span>});</code></pre>
+						<pre><code class="language-javascript">$(selector).signature({<span class="hljs-attr">background</span>: <span class="hljs-string">&quot;#0000ff&quot;</span>});
+$(selector).signature({<span class="hljs-attr">background</span>: <span class="hljs-string">&quot;rgb(0,0,255)&quot;</span>});
+$(selector).signature({<span class="hljs-attr">background</span>: <span class="hljs-string">&quot;blue&quot;</span>});</code></pre>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -140,12 +140,12 @@ $(selector).signature({<span class="hljs-attr">background</span>: <span class="h
 						</div>
 						<pre><code class="language-javascript">$(selector).signature({
   <span class="hljs-attr">change</span>: <span class="hljs-function">(<span class="hljs-params">event, ui</span>) =&gt;</span> {
-    alert(<span class="hljs-string">"The signature has changed"</span>);
+    alert(<span class="hljs-string">&quot;The signature has changed&quot;</span>);
   }
 });
 
-$(selector).signature().on(<span class="hljs-string">"signaturechange"</span>, (event, ui) =&gt; {
-  alert(<span class="hljs-string">"The signature has changed"</span>);
+$(selector).signature().on(<span class="hljs-string">&quot;signaturechange&quot;</span>, <span class="hljs-function">(<span class="hljs-params">event, ui</span>) =&gt;</span> {
+  alert(<span class="hljs-string">&quot;The signature has changed&quot;</span>);
 });</code></pre>
 					</div>
 				</section>
@@ -160,9 +160,9 @@ $(selector).signature().on(<span class="hljs-string">"signaturechange"</span>, (
 							<p>The colour of the signature lines. Specify this as a six character hexadecimal value prefixed by a hash (#),
 							as a RGB triplet, or as a named colour.</p>
 						</div>
-						<pre><code class="language-javascript">$(selector).signature({<span class="hljs-attr">color</span>: <span class="hljs-string">"#0000ff"</span>});
-$(selector).signature({<span class="hljs-attr">color</span>: <span class="hljs-string">"rgb(0,0,255)"</span>});
-$(selector).signature({<span class="hljs-attr">color</span>: <span class="hljs-string">"blue"</span>});</code></pre>
+						<pre><code class="language-javascript">$(selector).signature({<span class="hljs-attr">color</span>: <span class="hljs-string">&quot;#0000ff&quot;</span>});
+$(selector).signature({<span class="hljs-attr">color</span>: <span class="hljs-string">&quot;rgb(0,0,255)&quot;</span>});
+$(selector).signature({<span class="hljs-attr">color</span>: <span class="hljs-string">&quot;blue&quot;</span>});</code></pre>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -282,7 +282,7 @@ $(selector).signature({<span class="hljs-attr">color</span>: <span class="hljs-s
 							<p>The element to keep synchronised with the JSON text for the signature. The value may be a string selector, a
 							DOM element, or a jQuery object.</p>
 						</div>
-						<pre><code class="language-javascript">$(selector).signature({<span class="hljs-attr">syncField</span>: <span class="hljs-string">"#jsonSignature"</span>});</code></pre>
+						<pre><code class="language-javascript">$(selector).signature({<span class="hljs-attr">syncField</span>: <span class="hljs-string">&quot;#jsonSignature&quot;</span>});</code></pre>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -412,6 +412,7 @@ $(selector).signature({<span class="hljs-attr">color</span>: <span class="hljs-s
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
@@ -428,6 +429,9 @@ $(selector).signature({<span class="hljs-attr">color</span>: <span class="hljs-s
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>

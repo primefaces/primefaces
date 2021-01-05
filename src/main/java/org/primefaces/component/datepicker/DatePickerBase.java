@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,12 +28,12 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
 import java.util.List;
 import java.util.Locale;
-
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.CalendarUtils;
+import org.primefaces.model.datepicker.DateMetadataModel;
 
 public abstract class DatePickerBase extends UICalendar implements Widget, InputHolder, MixedClientBehaviorHolder {
 
@@ -85,7 +85,8 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         onYearChange,
         timeInput,
         showWeek,
-        weekCalculator
+        weekCalculator,
+        model
     }
 
     public DatePickerBase() {
@@ -424,6 +425,14 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     public void setWeekCalculator(String weekCalculator) {
         getStateHelper().put(PropertyKeys.weekCalculator, weekCalculator);
+    }
+
+    public DateMetadataModel getModel() {
+        return (DateMetadataModel) getStateHelper().eval(PropertyKeys.model, null);
+    }
+
+    public void setModel(DateMetadataModel model) {
+        getStateHelper().put(PropertyKeys.model, model);
     }
 
     @Override

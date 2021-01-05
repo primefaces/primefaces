@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,48 +23,56 @@
  */
 package org.primefaces.component.subtable;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import javax.faces.component.UIComponent;
+import javax.faces.event.PhaseId;
+import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.api.ColumnAware;
+import org.primefaces.model.ColumnMeta;
 
-import org.primefaces.component.column.Column;
-import org.primefaces.component.columngroup.ColumnGroup;
-
-
-public class SubTable extends SubTableBase {
+public class SubTable extends SubTableBase implements ColumnAware {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SubTable";
 
-    private List<Column> columns;
+    private List<UIColumn> columns;
 
-    public List<Column> getColumns() {
-        if (columns == null) {
-            columns = new ArrayList<>();
+    @Override
+    public List<UIColumn> getColumns() {
+        if (this.columns != null) {
+            return this.columns;
+        }
 
-            for (UIComponent child : getChildren()) {
-                if (child.isRendered() && child instanceof Column) {
-                    columns.add((Column) child);
-                }
-            }
+        List<UIColumn> columns = collectColumns();
+
+        // lets cache it only when RENDER_RESPONSE is reached, the columns might change before reaching that phase
+        // see https://github.com/primefaces/primefaces/issues/2110
+        if (getFacesContext().getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            this.columns = columns;
         }
 
         return columns;
     }
 
-    public ColumnGroup getColumnGroup(String target) {
-        for (UIComponent child : getChildren()) {
-            if (child instanceof ColumnGroup) {
-                ColumnGroup colGroup = (ColumnGroup) child;
-                String type = colGroup.getType();
+    @Override
+    public void setColumns(List<UIColumn> columns) {
+        this.columns = columns;
+    }
 
-                if (type != null && type.equals(target)) {
-                    return colGroup;
-                }
-
-            }
+    @Override
+    public Map<String, ColumnMeta> getColumnMeta() {
+        Map<String, ColumnMeta> value =
+                (Map<String, ColumnMeta>) getStateHelper().get(InternalPropertyKeys.columnMeta);
+        if (value == null) {
+            value = new HashMap<>();
+            setColumnMeta(value);
         }
+        return value;
+    }
 
-        return null;
+    @Override
+    public void setColumnMeta(Map<String, ColumnMeta> columnMeta) {
+        getStateHelper().put(InternalPropertyKeys.columnMeta, columnMeta);
     }
 }

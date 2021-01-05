@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -80,18 +80,17 @@ public class ClockRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, Clock clock) throws IOException {
-        String clientId = clock.getClientId(context);
         String mode = clock.getMode();
         WidgetBuilder wb = getWidgetBuilder(context);
         Locale locale = LocaleUtils.getCurrentLocale(context);
 
-        wb.init("Clock", clock.resolveWidgetVar(context), clientId);
+        wb.init("Clock", clock);
         wb.attr("mode", mode)
                 .attr("pattern", clock.getPattern(), null)
                 .attr("displayMode", clock.getDisplayMode())
                 .attr("locale", locale.toString());
 
-        if (mode.equals("server")) {
+        if ("server".equals(mode)) {
             wb.attr("value", getValueWithTimeZone(locale, clock));
 
             if (clock.isAutoSync()) {
