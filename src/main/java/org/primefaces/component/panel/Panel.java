@@ -36,6 +36,7 @@ import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 
 import org.primefaces.component.menu.Menu;
+import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.event.CloseEvent;
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.model.Visibility;
@@ -147,13 +148,12 @@ public class Panel extends PanelBase {
             super.processUpdates(context);
         }
 
-        FacesContext facesContext = getFacesContext();
-        ELContext eLContext = facesContext.getELContext();
-
-        ValueExpression collapsedVE = getValueExpression(PropertyKeys.collapsed.toString());
-        if (collapsedVE != null && !collapsedVE.isReadOnly(eLContext)) {
-            collapsedVE.setValue(eLContext, isCollapsed());
-            getStateHelper().put(Panel.PropertyKeys.collapsed, null);
+        ELContext elContext = context.getELContext();
+        ValueExpression expr = ValueExpressionAnalyzer.getExpression(elContext,
+                getValueExpression(PropertyKeys.collapsed.toString()));
+        if (expr != null && !expr.isReadOnly(elContext)) {
+            expr.setValue(elContext, isCollapsed());
+            getStateHelper().remove(PropertyKeys.collapsed);
         }
     }
 }

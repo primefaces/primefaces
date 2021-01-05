@@ -33,6 +33,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
+import org.primefaces.el.ValueExpressionAnalyzer;
 
 import org.primefaces.event.CloseEvent;
 import org.primefaces.event.MoveEvent;
@@ -158,15 +159,12 @@ public class Dialog extends DialogBase {
             super.processUpdates(context);
         }
         else {
-            ValueExpression visibleVE = getValueExpression(PropertyKeys.visible.toString());
-            if (visibleVE != null) {
-                FacesContext facesContext = getFacesContext();
-                ELContext eLContext = facesContext.getELContext();
-
-                if (!visibleVE.isReadOnly(eLContext)) {
-                    visibleVE.setValue(eLContext, isVisible());
-                    getStateHelper().put(PropertyKeys.visible, null);
-                }
+            ELContext elContext = context.getELContext();
+            ValueExpression expr = ValueExpressionAnalyzer.getExpression(elContext,
+                    getValueExpression(PropertyKeys.visible.toString()));
+            if (expr != null && !expr.isReadOnly(elContext)) {
+                expr.setValue(elContext, isVisible());
+                getStateHelper().remove(PropertyKeys.visible);
             }
         }
     }
