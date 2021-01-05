@@ -342,6 +342,8 @@ public class DataTable extends DataTableBase {
                 return;
             }
             else if ("rowEdit".equals(eventName) || "rowEditCancel".equals(eventName) || "rowEditInit".equals(eventName)) {
+                loadLazyDataIfRequired();
+
                 int rowIndex = Integer.parseInt(params.get(clientId + "_rowEditIndex"));
                 setRowIndex(rowIndex);
                 wrapperEvent = new RowEditEvent(this, behaviorEvent.getBehavior(), getRowData());
@@ -362,6 +364,8 @@ public class DataTable extends DataTableBase {
                 wrapperEvent = behaviorEvent;
             }
             else if ("rowToggle".equals(eventName)) {
+                loadLazyDataIfRequired();
+
                 boolean expansion = params.containsKey(clientId + "_rowExpansion");
                 Visibility visibility = expansion ? Visibility.VISIBLE : Visibility.HIDDEN;
                 String rowIndex = expansion ? params.get(clientId + "_expandedRowIndex") : params.get(clientId + "_collapsedRowIndex");
@@ -430,6 +434,12 @@ public class DataTable extends DataTableBase {
         }
 
         return false;
+    }
+
+    public void loadLazyDataIfRequired() {
+        if (isLazy() && ((LazyDataModel) getValue()).getWrappedData() == null) {
+            loadLazyData();
+        }
     }
 
     public void loadLazyData() {

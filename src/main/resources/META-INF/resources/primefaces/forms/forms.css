@@ -60,6 +60,10 @@ input[type=text]::-ms-clear {
     width:100%;
 }
 
+.ui-selectmanymenu .ui-selectlistbox-chkbox {
+   width: 1rem;
+}
+
 .ui-selectlistbox-filter.ui-inputfield {
     padding-right: 12%;
     padding-left: 2%;
