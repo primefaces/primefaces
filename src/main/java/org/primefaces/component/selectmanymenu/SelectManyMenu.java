@@ -40,6 +40,7 @@ public class SelectManyMenu extends SelectManyMenuBase {
     public static final String LIST_CONTAINER_CLASS = "ui-selectlistbox-listcontainer";
     public static final String LIST_CLASS = "ui-selectlistbox-list";
     public static final String ITEM_CLASS = "ui-selectlistbox-item ui-corner-all";
+    public static final String CHECKBOX_CLASS = "ui-selectlistbox-chkbox";
     public static final String FILTER_CONTAINER_CLASS = "ui-selectlistbox-filter-container";
     public static final String FILTER_CLASS = "ui-selectlistbox-filter ui-inputfield ui-widget ui-state-default ui-corner-all";
     public static final String FILTER_ICON_CLASS = "ui-icon ui-icon-search";
