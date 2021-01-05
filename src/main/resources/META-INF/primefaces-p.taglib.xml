@@ -28433,6 +28433,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Specifies whether the Timeline is only zoomed when an additional key is down. Available values are '' (does not apply), 'altKey', 'ctrlKey', 'shiftKey' or 'metaKey'. Only applicable when option moveable is set true.]]>
+            </description>
+            <name>zoomKey</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Set a minimum zoom interval for the visible range in milliseconds. It will not be possible to zoom in further than this minimum. Default is 10.]]>
             </description>
             <name>zoomMin</name>

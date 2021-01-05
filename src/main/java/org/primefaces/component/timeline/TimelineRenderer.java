@@ -219,8 +219,6 @@ public class TimelineRenderer extends CoreRenderer {
                 + "updateGroup:" + timeline.isEditableGroup() + ","
                 + "overrideItems:" + timeline.isEditableOverrideItems() + "}" );
         wb.attr("selectable", timeline.isSelectable());
-        wb.attr("zoomable", timeline.isZoomable());
-        wb.attr("moveable", timeline.isMoveable());
 
         if (timeline.getStart() != null) {
             wb.nativeAttr("start", encodeDate(dateTimeFormatter, timeline.getStart()));
@@ -238,8 +236,17 @@ public class TimelineRenderer extends CoreRenderer {
             wb.nativeAttr("max", encodeDate(dateTimeFormatter, timeline.getMax()));
         }
 
-        wb.attr("zoomMin", timeline.getZoomMin());
-        wb.attr("zoomMax", timeline.getZoomMax());
+        boolean zoomable = timeline.isZoomable();
+        boolean moveable = timeline.isMoveable();
+        wb.attr("zoomable", zoomable);
+        wb.attr("moveable", moveable);
+        if (zoomable) {
+            wb.attr("zoomMin", timeline.getZoomMin());
+            wb.attr("zoomMax", timeline.getZoomMax());
+            if (moveable && LangUtils.isNotBlank(timeline.getZoomKey())) {
+                wb.attr("zoomKey", timeline.getZoomKey());
+            }
+        }
 
         wb.nativeAttr("margin", "{axis:" + timeline.getEventMarginAxis() + ","
                 + "item:{horizontal:" + timeline.getEventHorizontalMargin() + ","
