@@ -75,6 +75,7 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
         end,
         min,
         max,
+        zoomKey,
         zoomMin,
         zoomMax,
         preloadFactor,
@@ -375,6 +376,14 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
 
     public void setMax(LocalDateTime max) {
         getStateHelper().put(PropertyKeys.max, max);
+    }
+
+    public String getZoomKey() {
+        return (String) getStateHelper().eval(PropertyKeys.zoomKey, null);
+    }
+
+    public void setZoomKey(String zoomKey) {
+        getStateHelper().put(PropertyKeys.zoomKey, zoomKey);
     }
 
     public Long getZoomMin() {
