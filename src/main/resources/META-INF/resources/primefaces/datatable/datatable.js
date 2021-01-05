@@ -1592,7 +1592,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     getColumnWidthInfo: function(col, isIncludeResizeableState) {
         var width, isOuterWidth;
 
-        if(isIncludeResizeableState && this.cfg.multiViewState && this.resizableStateHolder && this.resizableStateHolder.attr('value')) {
+        if(isIncludeResizeableState && this.resizableState) {
             width = $this.findColWidthInResizableState(col.attr('id'));
             isOuterWidth = false;
         }
