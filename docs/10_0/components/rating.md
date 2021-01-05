@@ -107,6 +107,8 @@ setValue(value) | value: Value to set | void | Updates rating value with provide
 disable() | - | void | Disables component.
 enable() | - | void | Enables component.
 reset() | - | void | Clears the rating.
+isDisabled() | - | boolean | Is the rating disabled?
+isReadOnly() | - | boolean | Is the rating read only?
 
 ## Skinning
 Rating resides in a main container which _style_ and _styleClass_ attributes apply. Following is the list
