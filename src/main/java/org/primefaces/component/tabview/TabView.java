@@ -171,7 +171,7 @@ public class TabView extends TabViewBase {
         ValueExpression expr = ValueExpressionAnalyzer.getExpression(elContext,
                 getValueExpression(PropertyKeys.activeIndex.toString()));
         if (expr != null && !expr.isReadOnly(elContext)) {
-            expr.setValue(getFacesContext().getELContext(), getActiveIndex());
+            expr.setValue(elContext, getActiveIndex());
             resetActiveIndex();
         }
     }
