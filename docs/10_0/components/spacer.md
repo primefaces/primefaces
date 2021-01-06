@@ -23,8 +23,8 @@ binding | null | Object | An el expression that maps to a server side UIComponen
 title | null | String | Advisory tooltip information.
 style | null | String | Inline style of the spacer.
 styleClass | null | String | Style class of the spacer.
-width | null | String | Width of the space.
-height | null | String | Height of the space.
+width | 1px | String | Width of the space.
+height | 1px | String | Height of the space.
 
 ## Getting started with Spacer
 Spacer is used by either specifying width or height of the space.
