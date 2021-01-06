@@ -1,16 +1,68 @@
 # Localization
 
-Components may require translations and other settings based on different locales. This is handled
-with a client side api called PrimeFaces Locales. A client side locale is basically a javascript object
-with various settings, en_US is the default locale provided out of the box. In case you need to
-support another locale, settings should be extended with the new information.
+Components may require translations and other settings based on different locales. There are two
+different places for localization one for the server and one for the client.  Client side localization
+is for JavaScript values that can be localized and server side is for server side components.
+
+## Server Localization
+Server localization is handled by include a custom `Messages.properties` file for your language(s)
+in the location such as `\org\primefaces\Messages.properties` of your JAR or WAR file.  For example for a German translation
+of this file you would include a default `Messages_de.properties` file.
+
+### Default Messages.properties
+
+```
+primefaces.calendar.DATE_INVALID_RANGE_MESSAGE_ID = {0}: Validation Error: Start date is greater than the end date.
+primefaces.calendar.INVALID = {0}: Validation Error: Value is not valid.
+primefaces.calendar.MAX_DATE = {0}: Validation Error: Value must be {2} or before.
+primefaces.calendar.MIN_DATE = {0}: Validation Error: Value must be {1} or later.
+primefaces.calendar.OUT_OF_RANGE = {0}: Validation Error: Value must be between {1} and {2}.
+primefaces.captcha.INVALID = {0}: Validation Error: Value is not valid.
+primefaces.captcha.INVALID_detail = {0}: ''{1}'' does not match the displayed text.
+primefaces.data.EMPTY_MESSAGE = No records found.
+primefaces.datatable.aria.FILTER_BY = Filter by {0}
+primefaces.datatable.aria.HEADER_CHECKBOX_ALL = Select All
+primefaces.datatable.SORT_ASC = Ascending
+primefaces.datatable.SORT_DESC = Descending
+primefaces.datatable.SORT_LABEL = Sort
+primefaces.dialog.aria.CLOSE = Close
+primefaces.fileupload.CLAM_AV_FILE = ClamAV has identified file '{0}' as potentially dangerous with message '{1}'
+primefaces.fileupload.VIRUS_TOTAL_FILE = Virus Total has identified file '{0}' potentially dangerous
+primefaces.input.aria.filter = Filter
+primefaces.messages.aria.CLOSE = Close
+primefaces.messages.aria.ERROR = Error
+primefaces.messages.aria.FATAL = Fatal
+primefaces.messages.aria.INFO = Information
+primefaces.messages.aria.WARN = Warning
+primefaces.paginator.aria.FIRST_PAGE = First Page
+primefaces.paginator.aria.HEADER = Pagination
+primefaces.paginator.aria.LAST_PAGE = Last Page
+primefaces.paginator.aria.NEXT_PAGE = Next Page
+primefaces.paginator.aria.PREVIOUS_PAGE = Previous Page
+primefaces.paginator.aria.ROWS_PER_PAGE = Rows Per Page
+primefaces.panel.aria.OPTIONS_MENU = Toggle Options Menu
+primefaces.panel.aria.TOGGLE = Toggle Panel
+primefaces.password.INVALID_MATCH = {0}: Validation Error.
+primefaces.password.INVALID_MATCH_detail = {0} should match with {1}.
+primefaces.rowgrouptoggler.aria.ROW_GROUP_TOGGLER = Toggle Row Group
+primefaces.rowtoggler.aria.ROW_TOGGLER = Toggle Row
+primefaces.slider.OUT_OF_RANGE = {0}: Validation Error: Value is out of range.
+primefaces.tree.REQUIRED = {0}: Validation Error.
+primefaces.tree.REQUIRED_detail = Selection is required.
+
+```
+
+## Client Localization
+This is handled with a client side api called PrimeFaces Locales. A client side locale is basically 
+a javascript object with various settings, en_US is the default locale provided out of the box. 
+In case you need to support another locale, settings should be extended with the new information.
 
 A wiki page is available for user contributed settings, the list is community driven and a good
 starting point although it might be incomplete.
 
 https://github.com/primefaces/primefaces/wiki/Locales
 
-## Default Locale
+### Default Locale
 Here is the list of all key-value pairs for en_US locale that is provided by PrimeFaces. DateTime
 related properties are utilized by components such as calendar and schedule. If you are using Client
 Side Validation, messages property is used as the bundle for the locale.
@@ -98,7 +150,7 @@ Side Validation, messages property is used as the bundle for the locale.
 }
 ```
 
-## Usage
+### Usage
 
 To add another locale to the API, first create the locale object first with settings and assign it as a
 property of [PrimeFaces.locales](../jsdocs/modules/primefaces.html#locales) javascript object such as;
