@@ -24,6 +24,7 @@
 package org.primefaces.component.treetable;
 
 import org.primefaces.component.api.*;
+import org.primefaces.util.MessageFactory;
 
 import javax.el.MethodExpression;
 import javax.faces.component.behavior.ClientBehaviorHolder;
@@ -166,7 +167,7 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
     }
 
     public String getEmptyMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, "No records found.");
+        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, MessageFactory.getMessage(UIPageableData.EMPTY_MESSAGE));
     }
 
     public void setEmptyMessage(String emptyMessage) {

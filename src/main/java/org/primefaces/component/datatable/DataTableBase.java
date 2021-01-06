@@ -43,7 +43,6 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         scrollWidth,
         selectionMode,
         selection,
-        emptyMessage,
         style,
         styleClass,
         liveScroll,
@@ -171,14 +170,6 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
 
     public void setSelection(Object selection) {
         getStateHelper().put(PropertyKeys.selection, selection);
-    }
-
-    public String getEmptyMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, "No records found.");
-    }
-
-    public void setEmptyMessage(String emptyMessage) {
-        getStateHelper().put(PropertyKeys.emptyMessage, emptyMessage);
     }
 
     public String getStyle() {
