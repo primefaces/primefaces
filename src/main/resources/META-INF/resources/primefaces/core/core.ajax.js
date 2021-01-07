@@ -251,7 +251,9 @@ if (!PrimeFaces.ajax) {
                     PrimeFaces.ajax.Utils.updateHead(content);
                 }
                 else {
-                    $(PrimeFaces.escapeClientId(id)).replaceWith(content);
+                    var element = document.getElementById(id);
+                    var fragment = document.createRange().createContextualFragment(content);
+                    element.replaceWith(fragment);
                 }
             }
         },
