@@ -251,7 +251,7 @@ if (!PrimeFaces.ajax) {
                     PrimeFaces.ajax.Utils.updateHead(content);
                 }
                 else {
-                    PrimeFaces.escapeClientId(id).replaceWith($(content)[0]);
+                    $(PrimeFaces.escapeClientId(id)).replaceWith(content);
                 }
             }
         },
