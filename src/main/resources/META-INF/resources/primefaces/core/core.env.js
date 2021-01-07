@@ -22,6 +22,11 @@ if (!PrimeFaces.env) {
          */
         ios: false,
         /**
+         * `true` if the current browser is a Safari browser, `false` otherwise.
+         * @type {boolean}
+         */
+        safari: false,
+        /**
          * The current browser type.
          * @type {string}
          */
@@ -35,6 +40,7 @@ if (!PrimeFaces.env) {
             this.mobile = this.browser.mobile;
             this.touch = 'ontouchstart' in window || window.navigator.msMaxTouchPoints || PrimeFaces.env.mobile;
             this.ios = /iPhone|iPad|iPod/i.test(window.navigator.userAgent);
+            this.safari = this.browser.safari;
         },
 
         /**

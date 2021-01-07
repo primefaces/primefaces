@@ -251,7 +251,17 @@ if (!PrimeFaces.ajax) {
                     PrimeFaces.ajax.Utils.updateHead(content);
                 }
                 else {
-                    $(PrimeFaces.escapeClientId(id)).replaceWith(content);
+                    // GitHub #6700 Safari display issues
+                    var element = $(PrimeFaces.escapeClientId(id));
+                    if (PrimeFaces.env.safari) {
+                        var doc = $(document),
+                            scroll = doc.scrollTop();
+                        element.replaceWith(content);
+                        doc.scrollTop(scroll);
+                    }
+                    else {
+                        element.replaceWith(content);
+                    }
                 }
             }
         },
