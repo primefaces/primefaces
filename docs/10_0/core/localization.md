@@ -9,6 +9,8 @@ Server localization is handled by include a custom `Messages.properties` file fo
 in the location such as `\org\primefaces\Messages.properties` of your JAR or WAR file.  For example for a German translation
 of this file you would include a default `Messages_de.properties` file.
 
+https://github.com/primefaces/primefaces/wiki/Locales#server-localization
+
 ### Default Messages.properties
 
 ```
@@ -60,7 +62,7 @@ In case you need to support another locale, settings should be extended with the
 A wiki page is available for user contributed settings, the list is community driven and a good
 starting point although it might be incomplete.
 
-https://github.com/primefaces/primefaces/wiki/Locales
+https://github.com/primefaces/primefaces/wiki/Locales#client-localization
 
 ### Default Locale
 Here is the list of all key-value pairs for en_US locale that is provided by PrimeFaces. DateTime
