@@ -55,32 +55,32 @@ public class CardRenderer extends CoreRenderer {
         }
 
         //header
-        writer.startElement("div", card);
-        writer.writeAttribute("class", Card.HEADER_CLASS, null);
         if (ComponentUtils.shouldRenderFacet(headerFacet)) {
+            writer.startElement("div", card);
+            writer.writeAttribute("class", Card.HEADER_CLASS, null);
             headerFacet.encodeAll(context);
+            writer.endElement("div");
         }
-        writer.endElement("div");
 
         //BODY START
         writer.startElement("div", card);
         writer.writeAttribute("class", Card.BODY_CLASS, null);
 
         //title
-        writer.startElement("div", card);
-        writer.writeAttribute("class", Card.TITLE_CLASS, null);
         if (ComponentUtils.shouldRenderFacet(titleFacet)) {
+            writer.startElement("div", card);
+            writer.writeAttribute("class", Card.TITLE_CLASS, null);
             titleFacet.encodeAll(context);
+            writer.endElement("div");
         }
-        writer.endElement("div");
 
         //subtitle
-        writer.startElement("div", card);
-        writer.writeAttribute("class", Card.SUBTITLE_CLASS, null);
         if (ComponentUtils.shouldRenderFacet(subtitleFacet)) {
+            writer.startElement("div", card);
+            writer.writeAttribute("class", Card.SUBTITLE_CLASS, null);
             subtitleFacet.encodeAll(context);
+            writer.endElement("div");
         }
-        writer.endElement("div");
 
         //content
         writer.startElement("div", card);
@@ -89,12 +89,13 @@ public class CardRenderer extends CoreRenderer {
         writer.endElement("div");
 
         //footer
-        writer.startElement("div", card);
-        writer.writeAttribute("class", Card.FOOTER_CLASS, null);
         if (ComponentUtils.shouldRenderFacet(footerFacet)) {
+            writer.startElement("div", card);
+            writer.writeAttribute("class", Card.FOOTER_CLASS, null);
             footerFacet.encodeAll(context);
+            writer.endElement("div");
         }
-        writer.endElement("div");
+
         writer.endElement("div");
         //BODY END
 
