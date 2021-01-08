@@ -41,7 +41,6 @@ public abstract class DataGridBase extends UIPageableData
         columns,
         style,
         styleClass,
-        emptyMessage,
         layout,
         rowStyle,
         rowStyleClass,
@@ -87,14 +86,6 @@ public abstract class DataGridBase extends UIPageableData
 
     public void setStyleClass(String styleClass) {
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getEmptyMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, "No records found.");
-    }
-
-    public void setEmptyMessage(String emptyMessage) {
-        getStateHelper().put(PropertyKeys.emptyMessage, emptyMessage);
     }
 
     public String getLayout() {
