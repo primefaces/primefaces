@@ -28,7 +28,7 @@ are many other third party libraries and plugins used to support features.
 | [jQuery Rangy](../jsdocs/modules/jqueryrangy.html) | 0.1.205 | https://github.com/timdown/rangy |
 | [jQuery Roundabout](../jsdocs/modules/jquery.html#roundabout) | 2.4.2 | http://fredhq.com/projects/roundabout |
 | [jQuery Timepicker Addon](../jsdocs/modules/jquery.html#datepicker-1) | 1.6.3 | http://trentrichardson.com/examples/timepicker |
-| jQuery UI Touch Punch | 1.0.5 | https://github.com/RWAP/jquery-ui-touch-punch |
+| jQuery UI Touch Punch | 1.0.8 | https://github.com/RWAP/jquery-ui-touch-punch |
 | jQuery UI | 1.12.1 | https://github.com/jquery/jquery-ui |
 | [jQuery](../jsdocs/modules/jquery.html) | 3.5.0 | https://jquery.com/ |
 | [Jquery.print](../jsdocs/modules/jquery.html#print) | 1.6.0 | https://github.com/DoersGuild/jQuery.print |
