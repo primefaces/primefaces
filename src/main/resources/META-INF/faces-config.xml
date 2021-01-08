@@ -262,6 +262,11 @@
     </component>
 
     <component>
+        <component-type>org.primefaces.component.Card</component-type>
+        <component-class>org.primefaces.component.card.Card</component-class>
+    </component>
+
+    <component>
         <component-type>org.primefaces.component.Carousel</component-type>
         <component-class>org.primefaces.component.carousel.Carousel</component-class>
     </component>
@@ -1136,6 +1141,11 @@
             <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.CaptchaRenderer</renderer-type>
             <renderer-class>org.primefaces.component.captcha.CaptchaRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.CardRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.card.CardRenderer</renderer-class>
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>
