@@ -26,6 +26,7 @@ package org.primefaces.component.datatable.feature;
 import java.io.IOException;
 import java.util.Map;
 
+import javax.faces.FacesException;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitContext;
@@ -42,12 +43,16 @@ public class RowEditFeature implements DataTableFeature {
 
     @Override
     public void decode(FacesContext context, DataTable table) {
-        SelectionFeature feature = (SelectionFeature) DataTable.FEATURES.get(DataTableFeatureKey.SELECT);
-        feature.decodeSelectionRowKeys(context, table);
+        throw new FacesException("RowEditFeature should not decode.");
     }
 
     @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
+        if (table.isSelectionEnabled()) {
+            SelectionFeature feature = (SelectionFeature) DataTable.FEATURES.get(DataTableFeatureKey.SELECT);
+            feature.decodeSelectionRowKeys(context, table);
+        }
+
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String clientId = table.getClientId(context);
         int editedRowId = Integer.parseInt(params.get(clientId + "_rowEditIndex"));
@@ -86,7 +91,7 @@ public class RowEditFeature implements DataTableFeature {
 
     @Override
     public boolean shouldDecode(FacesContext context, DataTable table) {
-        return (table.isRowEditRequest(context) || table.isRowEditInitRequest(context)) && table.isSelectionEnabled();
+        return false;
     }
 
     @Override
