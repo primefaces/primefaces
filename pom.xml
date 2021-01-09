@@ -684,6 +684,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/avatar/avatar.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/avatargroup/avatargroup.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/badge/badge.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/card/card.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/chip/chip.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tag/tag.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/skeleton/skeleton.css</include>
