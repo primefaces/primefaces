@@ -26,6 +26,7 @@ package org.primefaces.component.datatable.feature;
 import java.io.IOException;
 import java.util.Map;
 
+import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.datatable.DataTable;
@@ -35,8 +36,7 @@ public class ScrollFeature implements DataTableFeature {
 
     @Override
     public void decode(FacesContext context, DataTable table) {
-        SelectionFeature feature = (SelectionFeature) DataTable.FEATURES.get(DataTableFeatureKey.SELECT);
-        feature.decodeSelectionRowKeys(context, table);
+        throw new FacesException("ScrollFeature should not decode.");
     }
 
     @Override
@@ -63,6 +63,11 @@ public class ScrollFeature implements DataTableFeature {
             table.loadLazyScrollData(scrollOffset, scrollRows);
         }
 
+        if (table.isSelectionEnabled()) {
+            SelectionFeature feature = (SelectionFeature) DataTable.FEATURES.get(DataTableFeatureKey.SELECT);
+            feature.decodeSelectionRowKeys(context, table);
+        }
+
         int firstIndex = (isLazy && isVirtualScroll) ? 0 : scrollOffset;
         int lastIndex = (firstIndex + scrollRows);
 
@@ -78,7 +83,7 @@ public class ScrollFeature implements DataTableFeature {
 
     @Override
     public boolean shouldDecode(FacesContext context, DataTable table) {
-        return table.isScrollingRequest(context) && table.isSelectionEnabled();
+        return false;
     }
 
     @Override
