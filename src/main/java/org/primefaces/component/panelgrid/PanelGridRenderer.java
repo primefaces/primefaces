@@ -56,7 +56,8 @@ public class PanelGridRenderer extends CoreRenderer {
             encodeGridLayout(context, grid);
         }
         else {
-            throw new FacesException("The value of 'layout' attribute must be 'grid', 'tabular' or 'flex'. Default value is 'tabular'.");
+            throw new FacesException("The value of 'layout' attribute of PanelGrid \"" + grid.getClientId(
+                context) + "\" must be 'grid', 'tabular' or 'flex'. Default value is 'tabular'.");
         }
     }
 
@@ -200,7 +201,8 @@ public class PanelGridRenderer extends CoreRenderer {
         }
 
         if (i == 0) {
-            throw new FacesException("PanelGrid without a 'columns' attribute expects at least one <p:row> element.");
+            throw new FacesException("PanelGrid \"" + grid.getClientId(context)
+                + "\" without a 'columns' attribute expects at least one <p:row> element.");
         }
 
         context.getAttributes().remove(Constants.HELPER_RENDERER);
