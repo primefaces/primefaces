@@ -57,7 +57,7 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
      * By default, only current loaded data (current page) is supported.
      * Override this method to support selection from different pages.
      * @param rowKey String representation
-     * @return Bean associated with rowKey
+     * @return Bean associated to the rowKey
      */
     @Override
     public T getRowData(String rowKey) {
