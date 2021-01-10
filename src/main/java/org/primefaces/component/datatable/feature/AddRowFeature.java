@@ -26,6 +26,7 @@ package org.primefaces.component.datatable.feature;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 
+import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 
@@ -33,12 +34,16 @@ public class AddRowFeature implements DataTableFeature {
 
     @Override
     public void decode(FacesContext context, DataTable table) {
-        SelectionFeature feature = (SelectionFeature) DataTable.FEATURES.get(DataTableFeatureKey.SELECT);
-        feature.decodeSelectionRowKeys(context, table);
+        throw new FacesException("AddRowFeature should not encode.");
     }
 
     @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
+        if (table.isSelectionEnabled()) {
+            SelectionFeature feature = (SelectionFeature) DataTable.FEATURES.get(DataTableFeatureKey.SELECT);
+            feature.decodeSelectionRowKeys(context, table);
+        }
+
         String clientId = table.getClientId(context);
         int rowIndex = table.getRowCount() - 1;
         table.setRowIndex(table.getRowCount() - 1);
@@ -50,15 +55,11 @@ public class AddRowFeature implements DataTableFeature {
 
     @Override
     public boolean shouldDecode(FacesContext context, DataTable table) {
-        return isAddRowRequest(context, table) && table.isSelectionEnabled();
+        return false;
     }
 
     @Override
     public boolean shouldEncode(FacesContext context, DataTable table) {
-        return isAddRowRequest(context, table);
-    }
-
-    protected boolean isAddRowRequest(FacesContext context, DataTable table) {
         return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_addrow");
     }
 }
