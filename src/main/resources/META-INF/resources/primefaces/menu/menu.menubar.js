@@ -44,7 +44,7 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
         }
 
         //avoid using timeout if delay is 0
-        if(this.cfg.delay != null && this.cfg.delay > 0) {
+        if(this.cfg.delay && this.cfg.delay > 0) {
             this.timeoutId = setTimeout(function () {
                submenu.css('z-index', PrimeFaces.nextZindex())
                       .show()
