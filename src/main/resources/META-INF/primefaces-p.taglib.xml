@@ -7972,6 +7972,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[When using paginator and checkbox selection mode the select all checkbox in header will select the current page if true or all rows if false. Default true.]]>
+            </description>
+            <name>selectionPageOnly</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Name of iterator to refer each row index.]]>
             </description>
             <name>rowIndexVar</name>
@@ -30054,6 +30062,14 @@
                 <![CDATA[Defines if nodes should be cloned on filter via Cloneable interface or Copy-Constructor (CustomNode(CustomNode original) or CustomNode(String type, Object data, TreeNode parent)). Normally the filtered nodes are new instanceof of DefaultTreeNode. Default is false.]]>
             </description>
             <name>cloneOnFilter</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Saves the changes in cell editing on blur, when set to false changes are discarded.]]>
+            </description>
+            <name>saveOnCellBlur</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>

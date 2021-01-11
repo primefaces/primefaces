@@ -23,10 +23,10 @@
  */
 package org.primefaces.component.datatable;
 
-import org.primefaces.component.api.*;
-
 import javax.el.MethodExpression;
 import javax.faces.component.behavior.ClientBehaviorHolder;
+
+import org.primefaces.component.api.*;
 
 public abstract class DataTableBase extends UIPageableData implements Widget, RTLAware, ClientBehaviorHolder,
         PrimeClientBehaviorHolder, UITable<DataTableState> {
@@ -37,73 +37,74 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
 
     public enum PropertyKeys {
 
-        widgetVar,
-        scrollable,
+        allowUnsorting,
+        ariaRowLabel,
+        caseSensitiveSort,
+        cellEditMode,
+        cellSeparator,
+        clientCache,
+        dataLocale,
+        dir,
+        disableContextMenuIfEmpty,
+        disabledSelection,
+        disabledTextSelection,
+        draggableColumns,
+        draggableRows,
+        draggableRowsFunction,
+        editInitEvent,
+        editMode,
+        editable,
+        editingRow,
+        escapeText,
+        expandedRow,
+        filterBy,
+        filterDelay,
+        filterEvent,
+        filteredValue,
+        frozenColumns,
+        frozenRows,
+        globalFilter,
+        globalFilterFunction,
+        liveResize,
+        liveScroll,
+        liveScrollBuffer,
+        multiViewState,
+        nativeElements,
+        onExpandStart,
+        onRowClick,
+        reflow,
+        renderEmptyFacets,
+        resizableColumns,
+        resizeMode,
+        rowDragSelector,
+        rowEditMode,
+        rowExpandMode,
+        rowHover,
+        rowKey,
+        rowSelectMode,
+        rowSelector,
+        rowStyleClass,
+        saveOnCellBlur,
         scrollHeight,
+        scrollRows,
         scrollWidth,
-        selectionMode,
+        scrollable,
         selection,
+        selectionMode,
+        selectionPageOnly,
+        skipChildren,
+        sortBy,
+        sortMode,
+        stickyHeader,
+        stickyTopAt,
         style,
         styleClass,
-        liveScroll,
-        rowStyleClass,
-        onExpandStart,
-        resizableColumns,
-        sortMode,
-        sortBy,
-        allowUnsorting,
-        scrollRows,
-        rowKey,
-        filterEvent,
-        filterDelay,
+        summary,
+        tabindex,
         tableStyle,
         tableStyleClass,
-        draggableColumns,
-        editable,
-        filteredValue,
-        editMode,
-        editingRow,
-        cellSeparator,
-        summary,
-        frozenRows,
-        dir,
-        liveResize,
-        stickyHeader,
-        expandedRow,
-        disabledSelection,
-        rowSelectMode,
-        rowExpandMode,
-        dataLocale,
-        nativeElements,
-        frozenColumns,
-        draggableRows,
-        caseSensitiveSort,
-        skipChildren,
-        disabledTextSelection,
-        tabindex,
-        reflow,
-        liveScrollBuffer,
-        rowHover,
-        resizeMode,
-        ariaRowLabel,
-        saveOnCellBlur,
-        clientCache,
-        multiViewState,
-        filterBy,
-        globalFilter,
-        cellEditMode,
         virtualScroll,
-        rowDragSelector,
-        draggableRowsFunction,
-        onRowClick,
-        editInitEvent,
-        rowSelector,
-        disableContextMenuIfEmpty,
-        escapeText,
-        rowEditMode,
-        stickyTopAt,
-        globalFilterFunction,
-        renderEmptyFacets
+        widgetVar
     }
 
     protected enum InternalPropertyKeys {
@@ -660,5 +661,13 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
 
     public void setRenderEmptyFacets(boolean renderEmptyFacets) {
         getStateHelper().put(PropertyKeys.renderEmptyFacets, renderEmptyFacets);
+    }
+
+    public boolean isSelectionPageOnly() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.selectionPageOnly, true);
+    }
+
+    public void setSelectionPageOnly(boolean selectionPageOnly) {
+        getStateHelper().put(PropertyKeys.selectionPageOnly, selectionPageOnly);
     }
 }

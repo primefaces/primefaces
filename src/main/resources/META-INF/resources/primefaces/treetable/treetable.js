@@ -93,6 +93,8 @@
  * @prop {PrimeFaces.widget.TreeTable.SelectionMode} cfg.selectionMode How rows may be selected.
  * @prop {boolean} cfg.stickyHeader Sticky header stays in window viewport during scrolling.
  * @prop {string} cfg.editInitEvent Event that triggers row/cell editing.
+ * @prop {boolean} cfg.saveOnCellBlur Saves the changes in cell editing on blur, when set to false changes are
+ * discarded.
  */
 PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
 
@@ -643,7 +645,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     bindEditEvents: function() {
         var $this = this;
-        this.cfg.cellSeparator = this.cfg.cellSeparator||' ';
+        this.cfg.cellSeparator = this.cfg.cellSeparator||' ',
+        this.cfg.saveOnCellBlur = (this.cfg.saveOnCellBlur === false) ? false : true;
 
         if(this.cfg.editMode === 'row') {
             var rowEditorSelector = '> tr > td > div.ui-row-editor';
@@ -690,10 +693,18 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
 
             $(document).off('click.treetable-cell-blur' + this.id)
                         .on('click.treetable-cell-blur' + this.id, function(e) {
-                            if((!$this.incellClick && $this.currentCell && !$this.contextMenuClick)) {
-                                $this.saveCell($this.currentCell);
+                            var target = $(e.target);
+                            if(!$this.incellClick && (target.is('.ui-input-overlay') || target.closest('.ui-input-overlay').length || target.closest('.ui-datepicker-buttonpane').length)) {
+                                $this.incellClick = true;
                             }
-
+                            
+                            if(!$this.incellClick && $this.currentCell && !$this.contextMenuClick && !$.datepicker._datepickerShowing && $('.p-datepicker-panel:visible').length === 0) {
+                                if($this.cfg.saveOnCellBlur)
+                                    $this.saveCell($this.currentCell);
+                                else
+                                    $this.doCellEditCancelRequest($this.currentCell);
+                            }
+                            
                             $this.incellClick = false;
                             $this.contextMenuClick = false;
                         });
@@ -2009,7 +2020,10 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
 
         if(this.currentCell) {
-            $this.saveCell(this.currentCell);
+            if(this.cfg.saveOnCellBlur)
+                this.saveCell(this.currentCell);
+            else if(!this.currentCell.is(cell))
+                this.doCellEditCancelRequest(this.currentCell);
         }
 
         this.currentCell = cell;
@@ -2126,7 +2140,9 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         else
             $this.viewMode(cell);
 
-        this.currentCell = null;
+        if(this.cfg.saveOnCellBlur) {
+            this.currentCell = null;
+        }
     },
 
     /**

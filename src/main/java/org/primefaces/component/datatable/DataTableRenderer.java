@@ -161,6 +161,7 @@ public class DataTableRenderer extends DataRenderer {
 
         //Selection
         wb.attr("selectionMode", selectionMode, null)
+                .attr("selectionPageOnly", table.isSelectionPageOnly(), true)
                 .attr("rowSelectMode", table.getRowSelectMode(), "new")
                 .attr("nativeElements", table.isNativeElements(), false)
                 .attr("rowSelector", table.getRowSelector(), null)
