@@ -89,6 +89,7 @@ DataTable displays data in tabular format.
 | scrollable                | false              | Boolean          | Makes data scrollable with fixed header.
 | selection                 | null               | Object           | Reference to the selection data.
 | selectionMode             | null               | String           | Enables row selection, valid values are “single" and “multiple".
+| selectionPageOnly         | true               | Boolean          | When using paginator and checkbox selection mode the select all checkbox in header will select the current page if true or all rows if false. Default true.
 | sortMode                  | multiple           | String           | Defines sorting mode, valid values are _single_ and _multiple_.
 | sortBy                    | null               | SortMeta / Collection<SortMeta> | Property to be used for default sorting. Expects a single or a collection of SortMeta.
 | skipChildren              | false              | Boolean          | Ignores processing of children during lifecycle, improves performance if table only has output components.

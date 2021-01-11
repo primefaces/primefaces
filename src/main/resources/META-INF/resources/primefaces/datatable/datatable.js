@@ -764,6 +764,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.rowSelectMode = this.cfg.rowSelectMode||'new';
         this.rowSelector = '> tr.ui-widget-content.ui-datatable-selectable';
         this.cfg.disabledTextSelection = this.cfg.disabledTextSelection === false ? false : true;
+        this.cfg.selectionPageOnly = this.cfg.selectionPageOnly === false ? !this.cfg.paginator : true;
         this.rowSelectorForRowClick = this.cfg.rowSelector||'td:not(.ui-column-unselectable),span:not(.ui-c)';
 
         var preselection = $(this.selectionHolder).val();
@@ -2681,6 +2682,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * all rows. When some rows are selected, this will unselect all rows.
      */
     toggleCheckAll: function() {
+        var shouldCheckAll = true;
         if(this.cfg.nativeElements) {
             var checkboxes = this.tbody.find('> tr.ui-datatable-selectable > td.ui-selection-column > :checkbox:visible'),
             checked = this.checkAllToggler.prop('checked'),
@@ -2696,6 +2698,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     var checkbox = $(this);
                     checkbox.prop('checked', false);
                     $this.unselectRowWithCheckbox(checkbox, true);
+                    shouldCheckAll = false;
                 }
             });
         }
@@ -2707,6 +2710,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             if(checked) {
                 this.checkAllToggler.removeClass('ui-state-active').children('span.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
                 this.checkAllToggler.attr('aria-checked', false);
+                shouldCheckAll = false;
 
                 checkboxes.each(function() {
                     $this.unselectRowWithCheckbox($(this), true);
@@ -2720,6 +2724,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     $this.selectRowWithCheckbox($(this), true);
                 });
             }
+        }
+
+        // GitHub #6730 user wants all rows not just displayed rows
+        if(!this.cfg.selectionPageOnly && shouldCheckAll) {
+            this.selectAllRows();
         }
 
         //save state
@@ -4466,6 +4475,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.isEmpty()) {
             this.uncheckHeaderCheckbox();
             this.disableHeaderCheckbox();
+        }
+        else if(!this.cfg.selectionPageOnly) {
+            if(this.selection.includes('@all')) {
+                this.enableHeaderCheckbox();
+                this.checkHeaderCheckbox();
+            }
         }
         else {
             var checkboxes, selectedCheckboxes, enabledCheckboxes, disabledCheckboxes;
