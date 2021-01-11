@@ -509,7 +509,7 @@
         },
 
         isDateEquals: function (value, dateMeta) {
-            if (value && value instanceof Date)
+            if (this.isDate(value))
                 return value.getDate() === dateMeta.day && value.getMonth() === dateMeta.month && value.getFullYear() === dateMeta.year;
             else
                 return false;
@@ -1521,7 +1521,7 @@
         },
 
         renderHourPicker: function () {
-            var hour = (this.value && this.value instanceof Date) ? this.value.getHours() : this.viewDate.getHours();
+            var hour = this.isDate(this.value) ? this.value.getHours() : this.viewDate.getHours();
 
             if (this.options.hourFormat === '12') {
                 if (hour === 0)
@@ -1538,7 +1538,7 @@
         },
 
         renderMinutePicker: function () {
-            var minute = (this.value && this.value instanceof Date) ? this.value.getMinutes() : this.viewDate.getMinutes(),
+            var minute = this.isDate(this.value) ? this.value.getMinutes() : this.viewDate.getMinutes(),
                 minuteDisplay = minute < 10 ? '0' + minute : minute;
 
             //type="number" min="0" max="59" does not work well on Firefox 70, so we don´t use it
@@ -1548,7 +1548,7 @@
 
         renderSecondPicker: function () {
             if (this.options.showSeconds) {
-                var second = (this.value && this.value instanceof Date) ? this.value.getSeconds() : this.viewDate.getSeconds(),
+                var second = this.isDate(this.value) ? this.value.getSeconds() : this.viewDate.getSeconds(),
                     secondDisplay = second < 10 ? '0' + second : second;
 
                 //type="number" min="0" max="59" does not work well on Firefox 70, so we don´t use it
@@ -1561,7 +1561,7 @@
 
         renderAmPmPicker: function () {
             if (this.options.hourFormat === '12') {
-                var hour = (this.value && this.value instanceof Date) ? this.value.getHours() : this.viewDate.getHours(),
+                var hour = this.isDate(this.value) ? this.value.getHours() : this.viewDate.getHours(),
                     display = hour > 11 ? 'PM' : 'AM';
 
                 return this.renderTimeElements("ui-ampm-picker", '<span>' + display + '</span>', 3);
@@ -2117,6 +2117,10 @@
            return this.panel && this.panel.is(":visible");
         },
 
+        isDate: function (value) {
+           return value && Object.prototype.toString.call(value) === "[object Date]" && !isNaN(value);
+        },
+
         alignPanel: function () {
             if (!this.isPanelVisible()) {
                return;
@@ -2224,7 +2228,7 @@
             var date = new Date(dateMeta.year, dateMeta.month, dateMeta.day);
 
             if (this.options.showTime) {
-                var time = (this.value && this.value instanceof Date) ? this.value : new Date();
+                var time = this.isDate(this.value) ? this.value : new Date();
                 date.setHours(time.getHours());
                 date.setMinutes(this.stepMinute(time.getMinutes()));
                 date.setSeconds(time.getSeconds());
@@ -2271,7 +2275,7 @@
         },
 
         incrementHour: function (event) {
-            var currentTime = (this.value && this.value instanceof Date) ? this.value : this.viewDate,
+            var currentTime = this.isDate(this.value) ? this.value : this.viewDate,
                 currentHour = currentTime.getHours(),
                 newHour = currentHour + this.options.stepHour;
             newHour = (newHour >= 24) ? (newHour - 24) : newHour;
@@ -2284,7 +2288,7 @@
         },
 
         decrementHour: function (event) {
-            var currentTime = (this.value && this.value instanceof Date) ? this.value : this.viewDate,
+            var currentTime = this.isDate(this.value) ? this.value : this.viewDate,
                 currentHour = currentTime.getHours(),
                 newHour = currentHour - this.options.stepHour;
             newHour = (newHour < 0) ? (newHour + 24) : newHour;
@@ -2297,7 +2301,7 @@
         },
 
         incrementMinute: function (event) {
-            var currentTime = (this.value && this.value instanceof Date) ? this.value : this.viewDate,
+            var currentTime = this.isDate(this.value) ? this.value : this.viewDate,
                 currentMinute = currentTime.getMinutes(),
                 newMinute = this.stepMinute(currentMinute, this.options.stepMinute);
             newMinute = (newMinute > 59) ? (newMinute - 60) : newMinute;
@@ -2310,7 +2314,7 @@
         },
 
         decrementMinute: function (event) {
-            var currentTime = (this.value && this.value instanceof Date) ? this.value : this.viewDate,
+            var currentTime = this.isDate(this.value) ? this.value : this.viewDate,
                 currentMinute = currentTime.getMinutes(),
                 newMinute = this.stepMinute(currentMinute, -this.options.stepMinute);
             newMinute = (newMinute < 0) ? (newMinute + 60) : newMinute;
@@ -2343,7 +2347,7 @@
         },
 
         incrementSecond: function (event) {
-            var currentTime = (this.value && this.value instanceof Date) ? this.value : this.viewDate,
+            var currentTime = this.isDate(this.value) ? this.value : this.viewDate,
                 currentSecond = currentTime.getSeconds(),
                 newSecond = currentSecond + this.options.stepSecond;
             newSecond = (newSecond > 59) ? (newSecond - 60) : newSecond;
@@ -2356,7 +2360,7 @@
         },
 
         decrementSecond: function (event) {
-            var currentTime = (this.value && this.value instanceof Date) ? this.value : this.viewDate,
+            var currentTime = this.isDate(this.value) ? this.value : this.viewDate,
                 currentSecond = currentTime.getSeconds(),
                 newSecond = currentSecond - this.options.stepSecond;
             newSecond = (newSecond < 0) ? (newSecond + 60) : newSecond;
@@ -2369,7 +2373,7 @@
         },
 
         toggleAmPm: function (event) {
-            var currentTime = (this.value && this.value instanceof Date) ? this.value : this.viewDate,
+            var currentTime = this.isDate(this.value) ? this.value : this.viewDate,
                 currentHour = currentTime.getHours(),
                 newHour = (currentHour >= 12) ? currentHour - 12 : currentHour + 12;
 
@@ -2378,7 +2382,7 @@
         },
 
         handleHoursInput: function(input, event) {
-            var currentTime = (this.value && this.value instanceof Date) ? this.value : this.viewDate,
+            var currentTime = this.isDate(this.value) ? this.value : this.viewDate,
                 value = input.value,
                 valid = false,
                 newHours;
@@ -2403,14 +2407,14 @@
                 return;
             }
 
-            var newDateTime = (this.value && this.value instanceof Date) ? new Date(this.value) : new Date();
+            var newDateTime = this.isDate(this.value) ? new Date(this.value) : new Date();
             newDateTime.setHours(newHours);
 
             this.updateTimeAfterInput(event, newDateTime);
         },
 
         handleMinutesInput: function(input, event) {
-            var currentTime = (this.value && this.value instanceof Date) ? this.value : this.viewDate,
+            var currentTime = this.isDate(this.value) ? this.value : this.viewDate,
                 value = input.value,
                 valid = false,
                 newMinutes;
@@ -2429,14 +2433,14 @@
                 return;
             }
 
-            var newDateTime = (this.value && this.value instanceof Date) ? new Date(this.value) : new Date();
+            var newDateTime = this.isDate(this.value) ? new Date(this.value) : new Date();
             newDateTime.setMinutes(newMinutes);
 
             this.updateTimeAfterInput(event, newDateTime);
         },
 
         handleSecondsInput: function(input, event) {
-            var currentTime = (this.value && this.value instanceof Date) ? this.value : this.viewDate,
+            var currentTime = this.isDate(this.value) ? this.value : this.viewDate,
                 value = input.value,
                 valid = false,
                 newSeconds;
@@ -2455,7 +2459,7 @@
                 return;
             }
 
-            var newDateTime = (this.value && this.value instanceof Date) ? new Date(this.value) : new Date();
+            var newDateTime = this.isDate(this.value) ? new Date(this.value) : new Date();
             newDateTime.setSeconds(newSeconds);
 
             this.updateTimeAfterInput(event, newDateTime);
@@ -2491,7 +2495,7 @@
         },
 
         updateTime: function (event, hour, minute, second) {
-            var newDateTime = (this.value && this.value instanceof Date) ? new Date(this.value) : new Date();
+            var newDateTime = this.isDate(this.value) ? new Date(this.value) : new Date();
 
             newDateTime.setHours(hour);
             newDateTime.setMinutes(minute);
