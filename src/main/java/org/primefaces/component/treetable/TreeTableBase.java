@@ -81,7 +81,8 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         multiViewState,
         allowUnsorting,
         sortMode,
-        cloneOnFilter
+        cloneOnFilter,
+        saveOnCellBlur
     }
 
     protected enum InternalPropertyKeys {
@@ -471,5 +472,13 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
 
     public void setCloneOnFilter(boolean cloneOnFilter) {
         getStateHelper().put(PropertyKeys.cloneOnFilter, cloneOnFilter);
+    }
+
+    public boolean isSaveOnCellBlur() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.saveOnCellBlur, true);
+    }
+
+    public void setSaveOnCellBlur(boolean saveOnCellBlur) {
+        getStateHelper().put(PropertyKeys.saveOnCellBlur, saveOnCellBlur);
     }
 }

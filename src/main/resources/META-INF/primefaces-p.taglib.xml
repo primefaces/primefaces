@@ -30065,6 +30065,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Saves the changes in cell editing on blur, when set to false changes are discarded.]]>
+            </description>
+            <name>saveOnCellBlur</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>

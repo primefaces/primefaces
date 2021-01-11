@@ -3076,7 +3076,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                                 $this.incellClick = true;
                             }
 
-                            if(!$this.incellClick && $this.currentCell && !$this.contextMenuClick && !$.datepicker._datepickerShowing) {
+                            if(!$this.incellClick && $this.currentCell && !$this.contextMenuClick && !$.datepicker._datepickerShowing && $('.p-datepicker-panel:visible').length === 0) {
                                 if($this.cfg.saveOnCellBlur)
                                     $this.saveCell($this.currentCell);
                                 else
