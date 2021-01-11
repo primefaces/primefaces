@@ -234,6 +234,7 @@
             var newDateMeta = { day: newDate.getDate(), month: newDate.getMonth(), year: newDate.getFullYear(), selectable: true /*, today: true*/ };
 
             /* set changes */
+            this.value = newDate;
             this.updateViewDate(null, newDate);
             this.onDateSelect(null, newDateMeta);
         },
