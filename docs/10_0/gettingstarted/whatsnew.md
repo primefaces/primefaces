@@ -18,7 +18,6 @@ This page contains a list of big features. Please check the GitHub issues for al
     * supports new filter constraint "range" allowing to filter within a provided range
     * refactoring of filter and sort (see https://primefaces.github.io/primefaces/10_0/#/../migrationguide/10_0?id=datatable)
     * additional quick way of declaring columns with way less markup (`<p:column field="category" headerText="Category" />`, see https://primefaces.github.io/primefaces/10_0/#/components/datatable?id=getting-started-with-the-datatable)
-    * `LazyDataModel` has default implementation of `LazyDataModel#getRowKey` and `LazyDataModel#getRowData`. Bean's [hash code](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#hashCode--) is used as rowKey by default. If `Object#hashCode` not overrided, then better to provide your own implementation of `LazyDataModel#getRowKey`
   * TreeTable
     * refactoring of filter and sort (see https://primefaces.github.io/primefaces/10_0/#/../migrationguide/10_0?id=treetable)
   * DataExporter: new layout-features and AJAX-support (so `ajax="false"` is not required anymore) (see https://primefaces.github.io/primefaces/10_0/#/../migrationguide/10_0?id=dataexporter)
