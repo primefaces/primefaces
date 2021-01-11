@@ -89,7 +89,7 @@
     height:20px;
     padding:0px;
     cursor:col-resize;
-    background-image: url("#{resource['primefaces:spacer/dot_clear.gif']}");
+    background-image: url(data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==);
     margin: -4px -10px -4px 0px;
     float: right;
 }
@@ -237,23 +237,22 @@
 
 .ui-treetable .ui-row-editor span {
     cursor: pointer;
-    float: left;
 }
 
-.ui-treetable .ui-row-editor .ui-icon-pencil {
+.ui-treetable .ui-row-editor .ui-row-editor-pencil {
     display: inline-block;
 }
-.ui-treetable .ui-row-editing .ui-row-editor .ui-icon-pencil {
+.ui-treetable .ui-row-editing .ui-row-editor .ui-row-editor-pencil {
     display: none;
 }
 
-.ui-treetable .ui-row-editor .ui-icon-check,
-.ui-treetable .ui-row-editor .ui-icon-close {
+.ui-treetable .ui-row-editor .ui-row-editor-check,
+.ui-treetable .ui-row-editor .ui-row-editor-close {
     display: none;
 }
 
-.ui-treetable .ui-row-editing .ui-row-editor .ui-icon-check,
-.ui-treetable .ui-row-editing .ui-row-editor .ui-icon-close {
+.ui-treetable .ui-row-editing .ui-row-editor .ui-row-editor-check,
+.ui-treetable .ui-row-editing .ui-row-editor .ui-row-editor-close {
     display: inline-block;
 }
 
@@ -267,3 +266,14 @@
 .ui-treetable .ui-treetable-data td.ui-cell-editing:first-child {
     padding-left: 10px;
 } 
+
+/* Multiple sort number badges */
+.ui-treetable .ui-sortable-column-badge {
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    vertical-align: middle;
+}

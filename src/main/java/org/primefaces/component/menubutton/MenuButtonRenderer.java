@@ -1,17 +1,25 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2021 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.menubutton;
 
@@ -19,21 +27,22 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.menu.AbstractMenu;
-import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
+import org.primefaces.component.tieredmenu.TieredMenuRenderer;
 import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.menu.MenuElement;
-import org.primefaces.model.menu.MenuItem;
-import org.primefaces.model.menu.Separator;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
-public class MenuButtonRenderer extends BaseMenuRenderer {
+public class MenuButtonRenderer extends TieredMenuRenderer {
 
     @Override
     protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
@@ -47,7 +56,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         writer.startElement("span", button);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "class");
-        
+
         if (button.getStyle() != null) {
             writer.writeAttribute("style", button.getStyle(), "style");
         }
@@ -77,7 +86,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         writer.writeAttribute("name", buttonId, null);
         writer.writeAttribute("type", "button", null);
         writer.writeAttribute("class", buttonClass, null);
-        writer.writeAttribute("aria-label", button.getAriaLabel(), "ariaLabel");
+        writer.writeAttribute(HTML.ARIA_LABEL, button.getAriaLabel(), "ariaLabel");
         if (button.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);
         }
@@ -115,30 +124,23 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         menuStyleClass = (menuStyleClass == null) ? Menu.DYNAMIC_CONTAINER_CLASS : Menu.DYNAMIC_CONTAINER_CLASS + " " + menuStyleClass;
 
         writer.startElement("div", null);
+        if (!LangUtils.isValueEmpty(button.getMaxHeight())) {
+            menuStyleClass = menuStyleClass + " " + Menu.CONTAINER_MAXHEIGHT_CLASS;
+            // If maxHeight is a number, add the unit "px", otherwise use it as is
+            char lastChar = button.getMaxHeight().charAt(button.getMaxHeight().length() - 1);
+            String style = Character.isDigit(lastChar) ? button.getMaxHeight() + "px" : button.getMaxHeight();
+            writer.writeAttribute("style", "max-height:" + style, null);
+        }
         writer.writeAttribute("id", menuId, null);
         writer.writeAttribute("class", menuStyleClass, "styleClass");
-        writer.writeAttribute("role", "menu", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", MenuButton.LIST_CLASS, "styleClass");
 
         if (button.getElementsCount() > 0) {
-            List<MenuElement> elements = (List<MenuElement>) button.getElements();
-
-            for (MenuElement element : elements) {
-                if (element.isRendered()) {
-                    if (element instanceof MenuItem) {
-                        writer.startElement("li", null);
-                        writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
-                        writer.writeAttribute("role", "menuitem", null);
-                        encodeMenuItem(context, button, (MenuItem) element);
-                        writer.endElement("li");
-                    }
-                    else if (element instanceof Separator) {
-                        encodeSeparator(context, (Separator) element);
-                    }
-                }
-            }
+            List<MenuElement> elements = button.getElements();
+            encodeElements(context, button, elements);
         }
 
         writer.endElement("ul");
@@ -151,14 +153,19 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         MenuButton button = (MenuButton) abstractMenu;
         String clientId = button.getClientId(context);
 
-        UIComponent form = ComponentTraversalUtils.closestForm(context, button);
+        UIForm form = ComponentTraversalUtils.closestForm(context, button);
         if (form == null) {
             throw new FacesException("MenuButton : \"" + clientId + "\" must be inside a form element");
         }
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("MenuButton", button.resolveWidgetVar(), clientId);
-        wb.attr("appendTo", SearchExpressionFacade.resolveClientId(context, button, button.getAppendTo()), null);
+        wb.init("MenuButton", button);
+        wb.attr("appendTo", SearchExpressionFacade.resolveClientId(context, button, button.getAppendTo(),
+                SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null);
+        wb.attr("collision", button.getCollision());
+        wb.attr("autoDisplay", button.isAutoDisplay());
+        wb.attr("toggleEvent", button.getToggleEvent(), null);
+        wb.attr("delay", button.getDelay());
         wb.finish();
     }
 }

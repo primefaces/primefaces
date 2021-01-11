@@ -1,117 +1,163 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2021 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.api;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.component.celleditor.CellEditor;
 
 public interface UIColumn {
 
-    public ValueExpression getValueExpression(String property);
+    ValueExpression getValueExpression(String property);
 
-    public String getContainerClientId(FacesContext context);
+    String getContainerClientId(FacesContext context);
 
-    public String getColumnKey();
+    String getColumnKey();
 
-    public String getClientId();
+    /**
+     * Special {@link #getColumnKey()} method which must be used when we are inside e.g.
+     * the DataTable "row state".
+     *
+     * @param parent
+     * @param rowIndex
+     * @return
+     */
+    default String getColumnKey(UIComponent parent, int rowIndex) {
+        return getColumnKey(parent, String.valueOf(rowIndex));
+    }
 
-    public String getClientId(FacesContext context);
+    /**
+     * Special {@link #getColumnKey()} method which must be used when we are inside e.g.
+     * the DataTable "row state".
+     *
+     * @param parent
+     * @param rowKey
+     * @return
+     */
+    String getColumnKey(UIComponent parent, String rowKey);
 
-    public String getSelectionMode();
+    String getClientId();
 
-    public boolean isResizable();
+    String getClientId(FacesContext context);
 
-    public String getStyle();
+    String getSelectionMode();
 
-    public String getStyleClass();
+    boolean isResizable();
 
-    public int getRowspan();
+    String getStyle();
 
-    public int getColspan();
+    String getStyleClass();
 
-    public String getFilterPosition();
+    int getRowspan();
 
-    public UIComponent getFacet(String facet);
+    int getColspan();
 
-    public Object getFilterBy();
+    String getFilterPosition();
 
-    public Object getFilterValue();
+    UIComponent getFacet(String facet);
 
-    public String getHeaderText();
+    Object getFilterBy();
 
-    public String getFooterText();
+    Object getFilterValue();
 
-    public String getFilterStyleClass();
+    String getHeaderText();
 
-    public String getFilterStyle();
+    String getFooterText();
 
-    public String getFilterMatchMode();
+    String getFilterStyleClass();
 
-    public int getFilterMaxLength();
+    String getFilterStyle();
 
-    public Object getFilterOptions();
+    String getFilterMatchMode();
 
-    public CellEditor getCellEditor();
+    int getFilterMaxLength();
 
-    public boolean isDynamic();
+    Object getFilterOptions();
 
-    public MethodExpression getSortFunction();
+    CellEditor getCellEditor();
 
-    public Object getSortBy();
+    boolean isDynamic();
 
-    public List<UIComponent> getChildren();
+    MethodExpression getSortFunction();
 
-    public boolean isExportable();
+    Object getSortBy();
 
-    public boolean isRendered();
+    List<UIComponent> getChildren();
 
-    public void encodeAll(FacesContext context) throws IOException;
+    boolean isExportable();
 
-    public void renderChildren(FacesContext context) throws IOException;
+    boolean isRendered();
 
-    public String getWidth();
+    void encodeAll(FacesContext context) throws IOException;
 
-    public boolean isToggleable();
+    void renderChildren(FacesContext context) throws IOException;
 
-    public MethodExpression getFilterFunction();
+    String getWidth();
 
-    public String getField();
+    boolean isToggleable();
 
-    public int getPriority();
+    boolean isDraggable();
 
-    public boolean isSortable();
+    MethodExpression getFilterFunction();
 
-    public boolean isFilterable();
+    String getField();
 
-    public boolean isVisible();
+    int getResponsivePriority();
 
-    public boolean isSelectRow();
+    boolean isSortable();
 
-    public String getAriaHeaderText();
+    boolean isFilterable();
 
-    public MethodExpression getExportFunction();
+    boolean isVisible();
 
-    public boolean isGroupRow();
-    
-    public String getExportHeaderValue();
-    
-    public String getExportFooterValue();
+    boolean isSelectRow();
+
+    String getAriaHeaderText();
+
+    MethodExpression getExportFunction();
+
+    String getExportValue();
+
+    boolean isGroupRow();
+
+    String getExportHeaderValue();
+
+    String getExportFooterValue();
+
+    String getSortOrder();
+
+    int getSortPriority();
+
+    int getNullSortOrder();
+
+    boolean isCaseSensitiveSort();
+
+    int getDisplayPriority();
 }

@@ -1,17 +1,25 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2021 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.event;
 
@@ -21,6 +29,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
 import javax.faces.component.ValueHolder;
 import javax.faces.component.behavior.Behavior;
+import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.UIData;
 import org.primefaces.component.api.UITree;
@@ -28,11 +37,13 @@ import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.treetable.TreeTable;
 
-public class CellEditEvent extends AbstractAjaxBehaviorEvent {
+public class CellEditEvent<T> extends AbstractAjaxBehaviorEvent {
 
-    private Object oldValue;
+    private static final long serialVersionUID = 1L;
 
-    private Object newValue;
+    private T oldValue;
+
+    private T newValue;
 
     private int rowIndex;
 
@@ -59,11 +70,11 @@ public class CellEditEvent extends AbstractAjaxBehaviorEvent {
         this.oldValue = resolveValue();
     }
 
-    public Object getOldValue() {
+    public T getOldValue() {
         return this.oldValue;
     }
 
-    public Object getNewValue() {
+    public T getNewValue() {
         if (newValue == null) {
             newValue = resolveValue();
         }
@@ -82,17 +93,22 @@ public class CellEditEvent extends AbstractAjaxBehaviorEvent {
         return rowKey;
     }
 
-    private Object resolveValue() {
+    private T resolveValue() {
         if (source instanceof UIData) {
             DataTable data = (DataTable) source;
             data.setRowModel(rowIndex);
         }
         else if (source instanceof UITree) {
             TreeTable data = (TreeTable) source;
-            data.setRowKey(rowKey);
+            data.setRowKey(data.getValue(), rowKey);
         }
 
-        Object value = null;
+        if (column.isDynamic()) {
+            DynamicColumn dynamicColumn = (DynamicColumn) column;
+            dynamicColumn.applyStatelessModel();
+        }
+
+        T value = null;
 
         for (UIComponent child : column.getChildren()) {
             if (child instanceof CellEditor) {
@@ -100,18 +116,18 @@ public class CellEditEvent extends AbstractAjaxBehaviorEvent {
 
                 //multiple
                 if (inputFacet instanceof UIPanel) {
-                    List<Object> values = new ArrayList<Object>();
+                    List<Object> values = new ArrayList<>();
                     for (UIComponent kid : inputFacet.getChildren()) {
                         if (kid instanceof ValueHolder) {
                             values.add(((ValueHolder) kid).getValue());
                         }
                     }
 
-                    value = values;
+                    value = (T) values;
                 }
-//single
+                //single
                 else {
-                    value = ((ValueHolder) inputFacet).getValue();
+                    value = (T) ((ValueHolder) inputFacet).getValue();
                 }
 
             }

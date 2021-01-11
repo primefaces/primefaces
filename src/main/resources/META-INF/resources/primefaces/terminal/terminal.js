@@ -1,8 +1,30 @@
 /**
- * PrimeFaces Terminal Widget
+ * __PrimeFaces Terminal Widget__
+ * 
+ * Terminal is an AJAX-powered web-based terminal that brings desktop terminals to JSF.
+ * 
+ * @prop {JQuery} content The DOM element for the content of this terminal.
+ * @prop {string[]} commands List with all commands the user entered up until now. Used for a command history.
+ * @prop {number} commandIndex 0-based index of the current command, used when scrolling back to previous commands via
+ * the arrow keys.
+ * @prop {JQuery} input The DOM element for the prompt input field.
+ * @prop {JQuery} promptContainerThe DOM element for the container with the prompt input.
+ * @prop {JQuery} promptContainerParent The DOM element for the parent of the container with the prompt input.
+ * 
+ * @interface {PrimeFaces.widget.TerminalCfg} cfg The configuration for the {@link  Terminal| Terminal widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * 
+ * @prop {string} cfg.prompt The current prompt text, i.e. the prefix at the beginning of the line.
  */
 PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
 
@@ -17,6 +39,10 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
         this.bindEvents();
     },
 
+    /**
+     * Sets up all event listeners that are required by this widget.
+     * @private
+     */
     bindEvents: function() {
         var $this = this;
 
@@ -45,7 +71,6 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
                 break;
 
                 case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
                     $this.processCommand();
 
                     e.preventDefault();
@@ -64,6 +89,10 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Callback that is invoked when the enter key is pressed. Takes the entered command and executes it.
+     * @private
+     */
     processCommand: function() {
         if (this.input.val() != '') {
             this.commands.push(this.input.val());
@@ -106,9 +135,18 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
             }
         };
 
-        PrimeFaces.ajax.Request.handle(options);
+        if(this.hasBehavior('command')) {
+            this.callBehavior('command', options);
+        }
+        else {
+            PrimeFaces.ajax.Request.handle(options);
+        }
     },
 
+    /**
+     * Callback that is invoked when the tab key is pressed. Computes the available commands and offers autocompletion.
+     * @private
+     */
     autoCompleteCommand: function() {
 
         var $this = this,
@@ -150,7 +188,7 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
                                 // create the anchors
                                 for (i = 0; i < responseObj.matches.length; i++) { 
                                     var anchor = $('<a href="javascript:void(0);">' + PrimeFaces.escapeHTML(responseObj.matches[i]) + '</a>')
-                                    .click(function(e) {
+                                    .on("click", function(e) {
                                         e.preventDefault();
 
                                         // prepend the baseCommand to the selected command on click
@@ -191,6 +229,9 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
         PrimeFaces.ajax.Request.handle(options);
     },
 
+    /**
+     * Puts focus on this terminal input.
+     */
     focus: function() {
         if (PrimeFaces.env.isIE()) {
             window.setTimeout(function(terminal){
@@ -202,16 +243,19 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Clears the console output.
+     */
     clear: function() {
         this.content.html('');
         this.input.val('');
     },
 
     /**
-     * Internally used to add the content from the ajax response to the terminal.
-     * Can also be used e.g. by a websocket.
-     *
-     * @param {string} HTML escaped content
+     * Internally used to add the content from the AJAX response to the terminal. Can also be used for example by a
+     * websocket.
+     * @private
+     * @param {string} content HTML escaped content to display.
      */
     processResponse: function(content) {
         $('<div>' + content + '</div>').appendTo(this.content.children().last());

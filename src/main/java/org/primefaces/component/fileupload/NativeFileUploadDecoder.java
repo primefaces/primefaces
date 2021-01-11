@@ -1,76 +1,80 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2021 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.fileupload;
 
-import java.io.IOException;
-import javax.faces.FacesException;
+import org.primefaces.model.file.NativeUploadedFile;
+import org.primefaces.model.file.UploadedFile;
+
 import javax.faces.context.FacesContext;
+import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
-import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.NativeUploadedFile;
-import org.primefaces.model.UploadedFileWrapper;
+import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
-public class NativeFileUploadDecoder {
+public class NativeFileUploadDecoder extends AbstractFileUploadDecoder<HttpServletRequest> {
 
-    public static void decode(FacesContext context, FileUpload fileUpload, String inputToDecodeId) {
-        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
-
-        try {
-            if (fileUpload.getMode().equals("simple")) {
-                decodeSimple(context, fileUpload, request, inputToDecodeId);
-            }
-            else {
-                decodeAdvanced(context, fileUpload, request);
-            }
-        }
-        catch (IOException ioe) {
-            throw new FacesException(ioe);
-        }
-        catch (ServletException se) {
-            throw new FacesException(se);
-        }
+    @Override
+    public String getName() {
+        return "native";
     }
 
-    private static void decodeSimple(FacesContext context, FileUpload fileUpload, HttpServletRequest request, String inputToDecodeId)
+    @Override
+    protected List<UploadedFile> createUploadedFiles(HttpServletRequest request, FileUpload fileUpload, String inputToDecodeId)
             throws IOException, ServletException {
+        Long sizeLimit = fileUpload.getSizeLimit();
+        Iterable<Part> parts = request.getParts();
+        return StreamSupport.stream(parts.spliterator(), false)
+                .filter(p -> p.getName().equals(inputToDecodeId))
+                .map(p -> new NativeUploadedFile(p, sizeLimit))
+                .collect(Collectors.toList());
+    }
 
+    @Override
+    protected UploadedFile createUploadedFile(HttpServletRequest request, FileUpload fileUpload, String inputToDecodeId)
+            throws IOException, ServletException {
         Part part = request.getPart(inputToDecodeId);
-
-        if (part != null && isValidFile(fileUpload, part)) {
-            fileUpload.setSubmittedValue(new UploadedFileWrapper(new NativeUploadedFile(part, fileUpload)));
-        }
-        else {
-            fileUpload.setSubmittedValue("");
-        }
+        return new NativeUploadedFile(part, fileUpload.getSizeLimit());
     }
 
-    private static void decodeAdvanced(FacesContext context, FileUpload fileUpload, HttpServletRequest request) throws IOException, ServletException {
-        String clientId = fileUpload.getClientId(context);
-        Part part = request.getPart(clientId);
-
-        if (part != null && isValidFile(fileUpload, part)) {
-            fileUpload.queueEvent(new FileUploadEvent(fileUpload, new NativeUploadedFile(part, fileUpload)));
-        }
+    @Override
+    protected HttpServletRequest getRequest(FacesContext ctxt) {
+        return (HttpServletRequest) ctxt.getExternalContext().getRequest();
     }
 
-    private static boolean isValidFile(FileUpload fileUpload, Part part) {
-        // TODO some more checks could be performed here, e.g. allowed types
-        return fileUpload.getSizeLimit() == null || part.getSize() <= fileUpload.getSizeLimit();
+    @Override
+    public String getUploadDirectory(HttpServletRequest request) {
+        return  Stream.of(request.getAttributeNames())
+                .map(o -> request.getAttribute(o.nextElement()))
+                .filter(MultipartConfigElement.class::isInstance)
+                .map(MultipartConfigElement.class::cast)
+                .findFirst()
+                .map(MultipartConfigElement::getLocation)
+                .orElse(super.getUploadDirectory(request));
     }
-
 }

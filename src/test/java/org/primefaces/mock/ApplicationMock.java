@@ -1,23 +1,34 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/* 
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.mock;
+
+import de.odysseus.el.ExpressionFactoryImpl;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
+import javax.el.ExpressionFactory;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.NavigationHandler;
@@ -35,7 +46,10 @@ import javax.faces.event.ActionListener;
 import javax.faces.event.SystemEvent;
 import javax.faces.validator.Validator;
 
+@SuppressWarnings("deprecation")
 public class ApplicationMock extends Application {
+
+    private ExpressionFactory expressionFactory = new de.odysseus.el.ExpressionFactoryImpl(ExpressionFactoryImpl.Profile.JEE6);
 
     @Override
     public ActionListener getActionListener() {
@@ -44,7 +58,7 @@ public class ApplicationMock extends Application {
 
     @Override
     public void setActionListener(ActionListener listener) {
-        
+
     }
 
     @Override
@@ -54,7 +68,7 @@ public class ApplicationMock extends Application {
 
     @Override
     public void setDefaultLocale(Locale locale) {
-        
+
     }
 
     @Override
@@ -64,7 +78,7 @@ public class ApplicationMock extends Application {
 
     @Override
     public void setDefaultRenderKitId(String renderKitId) {
-        
+
     }
 
     @Override
@@ -74,7 +88,7 @@ public class ApplicationMock extends Application {
 
     @Override
     public void setMessageBundle(String bundle) {
-        
+
     }
 
     @Override
@@ -84,7 +98,7 @@ public class ApplicationMock extends Application {
 
     @Override
     public void setNavigationHandler(NavigationHandler handler) {
-        
+
     }
 
     @Override
@@ -94,7 +108,7 @@ public class ApplicationMock extends Application {
 
     @Override
     public void setPropertyResolver(PropertyResolver resolver) {
-        
+
     }
 
     @Override
@@ -104,7 +118,7 @@ public class ApplicationMock extends Application {
 
     @Override
     public void setVariableResolver(VariableResolver resolver) {
-        
+
     }
 
     @Override
@@ -114,7 +128,7 @@ public class ApplicationMock extends Application {
 
     @Override
     public void setViewHandler(ViewHandler handler) {
-        
+
     }
 
     @Override
@@ -124,12 +138,12 @@ public class ApplicationMock extends Application {
 
     @Override
     public void setStateManager(StateManager manager) {
-        
+
     }
 
     @Override
     public void addComponent(String componentType, String componentClass) {
-        
+
     }
 
     @Override
@@ -149,12 +163,12 @@ public class ApplicationMock extends Application {
 
     @Override
     public void addConverter(String converterId, String converterClass) {
-        
+
     }
 
     @Override
     public void addConverter(Class<?> targetClass, String converterClass) {
-        
+
     }
 
     @Override
@@ -189,12 +203,12 @@ public class ApplicationMock extends Application {
 
     @Override
     public void setSupportedLocales(Collection<Locale> locales) {
-        
+
     }
 
     @Override
     public void addValidator(String validatorId, String validatorClass) {
-        
+
     }
 
     @Override
@@ -211,11 +225,16 @@ public class ApplicationMock extends Application {
     public ValueBinding createValueBinding(String ref) throws ReferenceSyntaxException {
         return null;
     }
-    
+
     @Override
     public void publishEvent(FacesContext context,
                              Class<? extends SystemEvent> systemEventClass,
                              Object source) {
-        
+
+    }
+
+    @Override
+    public ExpressionFactory getExpressionFactory() {
+        return expressionFactory;
     }
 }

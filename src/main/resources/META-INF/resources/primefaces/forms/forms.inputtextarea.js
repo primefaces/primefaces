@@ -1,8 +1,36 @@
 /**
- * PrimeFaces InputTextarea Widget
+ * __PrimeFaces InputTextarea Widget__
+ * 
+ * InputTextarea is an extension to standard inputTextarea with autoComplete, autoResize, remaining characters counter
+ * and theming features.
+ * 
+ * @prop {JQuery} counter The DOM element for the counter that informs the user about the number of characters they can
+ * still enter before they reach the limit.
+ * @prop {JQuery} panel The DOM element for the overlay panel with the autocomplete suggestions.
+ * @prop {JQuery} items The DOM elements in the autocomplete panel that the user can select.
+ * @prop {number} timeout The internal timeout ID of the most recent timeout that was started.
+ * 
+ * @interface {PrimeFaces.widget.InputTextareaCfg} cfg The configuration for the {@link  InputTextarea| InputTextarea widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.DeferredWidgetCfg} cfg
+ * 
+ * @prop {boolean} cfg.autoResize Enables auto growing when being typed.
+ * @prop {boolean} cfg.autoComplete Enables autocompletion that suggests tokens to the user as they type. 
+ * @prop {string} cfg.counter ID of the label component to display remaining and entered characters.
+ * @prop {string} cfg.counterTemplate Template text to display in counter, default value is `{0}`.
+ * @prop {number} cfg.maxlength Maximum number of characters that may be entered in this field.
+ * @prop {number} cfg.minQueryLength Number of characters to be typed to run a query.
+ * @prop {number} cfg.queryDelay Delay in milliseconds before sending each query.
+ * @prop {number} cfg.scrollHeight Height of the viewport for autocomplete suggestions.
  */
 PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
 
@@ -11,7 +39,13 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
         else
             this._render();
     },
-
+    
+    /**
+     * @include
+     * @override
+     * @protected
+     * @inheritdoc
+     */
     _render: function() {
         //Visuals
         PrimeFaces.skinInput(this.jq);
@@ -26,6 +60,13 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
             this.counter = this.cfg.counter ? $(PrimeFaces.escapeClientId(this.cfg.counter)) : null;
             this.cfg.counterTemplate = this.cfg.counterTemplate||'{0}';
             this.updateCounter();
+
+            if(this.counter) {
+                var $this = this;
+                this.jq.on('input.inputtextarea-counter', function(e) {
+                    $this.updateCounter();
+                });
+            }
         }
 
         //maxLength
@@ -39,40 +80,52 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     refresh: function(cfg) {
         //remove autocomplete panel
         if(cfg.autoComplete) {
             $(PrimeFaces.escapeClientId(cfg.id + '_panel')).remove();
         }
 
-        this.init(cfg);
+        this._super(cfg);
     },
 
+    /**
+     * Initializes the auto resize functionality that resize this textarea depending on the entered text.
+     * @private
+     */
     setupAutoResize: function() {
         autosize(this.jq);
     },
 
+    /**
+     * Applies the value of the max length setting, counting line breaks correctly.
+     * @private
+     */
     applyMaxlength: function() {
         var _self = this;
 
         this.jq.on('keyup.inputtextarea-maxlength', function(e) {
-            var value = _self.normalizeNewlines(_self.jq.val()),
+            var value = _self.jq.val(),
             length = value.length;
 
             if(length > _self.cfg.maxlength) {
                 _self.jq.val(value.substr(0, _self.cfg.maxlength));
             }
         });
-
-        if(_self.counter) {
-            this.jq.on('keyup.inputtextarea-counter', function(e) {
-                _self.updateCounter();
-            });
-        }
     },
 
+    /**
+     * Updates the counter value that keeps count of how many more characters the user can enter before they reach the
+     * limit.
+     * @private
+     */
     updateCounter: function() {
-        var value = this.normalizeNewlines(this.jq.val()),
+        var value = this.jq.val(),
         length = value.length;
 
         if(this.counter) {
@@ -81,23 +134,26 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
                 remaining = 0;
             }
 
-            var remainingText = this.cfg.counterTemplate.replace('{0}', remaining);
+            var counterText = this.cfg.counterTemplate
+                    .replace('{0}', remaining)
+                    .replace('{1}', length)
+                    .replace('{2}', this.cfg.maxlength);
 
-            this.counter.text(remainingText);
+            this.counter.text(counterText);
         }
     },
 
-    normalizeNewlines: function(text) {
-        return text.replace(/(\r\n|\r|\n)/g, '\r\n');
-    },
-
+    /**
+     * Sets up the server-side auto complete functionality that suggests tokens while the user types.
+     * @private
+     */
     setupAutoComplete: function() {
         var panelMarkup = '<div id="' + this.id + '_panel" class="ui-autocomplete-panel ui-widget-content ui-corner-all ui-helper-hidden ui-shadow"></div>',
         _self = this;
 
         this.panel = $(panelMarkup).appendTo(document.body);
 
-        this.jq.keyup(function(e) {
+        this.jq.on("keyup", function(e) {
             var keyCode = $.ui.keyCode;
 
             switch(e.which) {
@@ -107,7 +163,6 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
                 case keyCode.DOWN:
                 case keyCode.RIGHT:
                 case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
                 case keyCode.TAB:
                 case keyCode.SPACE:
                 case 17: //keyCode.CONTROL:
@@ -134,7 +189,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
                 break;
             }
 
-        }).keydown(function(e) {
+        }).on("keydown", function(e) {
             var overlayVisible = _self.panel.is(':visible'),
             keyCode = $.ui.keyCode;
 
@@ -184,7 +239,6 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
                 break;
 
                 case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
                     if(overlayVisible) {
                         _self.items.filter('.ui-state-highlight').trigger('click');
 
@@ -220,7 +274,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
         });
 
         //hide panel when outside is clicked
-        $(document.body).bind('mousedown.ui-inputtextarea', function (e) {
+        $(document.body).on('mousedown.ui-inputtextarea', function (e) {
             if(_self.panel.is(":hidden")) {
                 return;
             }
@@ -238,7 +292,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
         });
 
         //Hide overlay on resize
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, _self.panel, function() {
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', _self.panel, function() {
             _self.hide();
         });
 
@@ -246,11 +300,15 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
         this.setupDialogSupport();
     },
 
+    /**
+     * Sets up all event listeners for the various events required by this widget.
+     * @private
+     */
     bindDynamicEvents: function() {
         var _self = this;
 
         //visuals and click handler for items
-        this.items.bind('mouseover', function() {
+        this.items.on('mouseover', function() {
             var item = $(this);
 
             if(!item.hasClass('ui-state-highlight')) {
@@ -258,14 +316,16 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
                 item.addClass('ui-state-highlight');
             }
         })
-        .bind('click', function(event) {
+        .on('click', function(event) {
             var item = $(this),
             itemValue = item.attr('data-item-value'),
-            insertValue = itemValue.substring(_self.query.length);
+            selectionStart = _self.jq.getSelection().start,
+            queryLength = _self.query.length;
 
-            _self.jq.focus();
+            _self.jq.trigger('focus');
 
-            _self.jq.insertText(insertValue, _self.jq.getSelection().start, true);
+            _self.jq.setSelection(selectionStart-queryLength, selectionStart);
+            _self.jq.replaceSelectedText(itemValue);
 
             _self.invokeItemSelectBehavior(event, itemValue);
 
@@ -273,22 +333,28 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
         });
     },
 
+    /**
+     * Callback that is invoked when the user has selected one of the suggested tokens.
+     * @private
+     * @param {JQuery.Event} event Event that triggered the item selection (usually a click or enter press).
+     * @param {string} itemValue Value of the suggestion that was selected.
+     */
     invokeItemSelectBehavior: function(event, itemValue) {
-        if(this.cfg.behaviors) {
-            var itemSelectBehavior = this.cfg.behaviors['itemSelect'];
+        if(this.hasBehavior('itemSelect')) {
+            var ext = {
+                params : [
+                    {name: this.id + '_itemSelect', value: itemValue}
+                ]
+            };
 
-            if(itemSelectBehavior) {
-                var ext = {
-                    params : [
-                        {name: this.id + '_itemSelect', value: itemValue}
-                    ]
-                };
-
-                itemSelectBehavior.call(this, ext);
-            }
+            this.callBehavior('itemSelect', ext);
         }
     },
 
+    /**
+     * Clears the timeout that was set up by the autocomplete feature.
+     * @private
+     */
     clearTimeout: function() {
         if(this.timeout) {
             clearTimeout(this.timeout);
@@ -297,6 +363,11 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
         this.timeout = null;
     },
 
+    /**
+     * Finds the keyword to be used for the autocomplete search.
+     * @private
+     * @return {string} The keyword or search term the autocomplete method receives as input.
+     */
     extractQuery: function() {
         var end = this.jq.getSelection().end,
         result = /\S+$/.exec(this.jq.get(0).value.slice(0, end)),
@@ -305,6 +376,10 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
         return lastWord;
     },
 
+    /**
+     * Performs an autocomplete search for the given search term. Opens the windows with the suggestions.
+     * @param {string} query Search term to search for.
+     */
     search: function(query) {
         this.query = query;
 
@@ -351,35 +426,61 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
             }
         };
 
-        PrimeFaces.ajax.Request.handle(options);
+        if (this.hasBehavior('query')) {
+            this.callBehavior('query', options);
+        }
+        else {
+            PrimeFaces.ajax.Request.handle(options);
+        }
     },
 
+    /**
+     * Aligns the search window panel of the autocomplete feature.
+     */
     alignPanel: function() {
         var pos = this.jq.getCaretPosition(),
-        offset = this.jq.offset();
+        posLeft = (pos.left > 0 ? '+' : '-') + pos.left,
+        posTop = (pos.top > 0 ? '+' : '-') + pos.top;
 
-        this.panel.css({
-                        'left': offset.left + pos.left,
-                        'top': offset.top + pos.top,
-                        'width': this.jq.innerWidth(),
-                        'z-index': ++PrimeFaces.zindex
-                });
+        this.panel.css({left:'', top:''}).position({
+            my: 'left top'
+            ,at: 'left' + posLeft + 'px' +  ' top' + posTop + 'px'
+            ,of: this.jq
+        });
     },
 
+    /**
+     * Brings up the search window panel of the autocomplete feature.
+     * @private
+     */
     show: function() {
+        this.panel.css({
+            'z-index': PrimeFaces.nextZindex(),
+            'width': this.jq.innerWidth() + 'px',
+            'visibility': 'hidden'
+        }).show();
+
         this.alignPanel();
 
-        this.panel.show();
+        this.panel.css('visibility', '');
     },
 
+    /**
+     * Hides the search window panel of the autocomplete feature.
+     * @private
+     */
     hide: function() {
         this.panel.hide();
     },
 
+    /**
+     * Adjust the search window panel of the autocomplete in case this widget is inside a dialog overlay.
+     * @private
+     */
     setupDialogSupport: function() {
         var dialog = this.jq.parents('.ui-dialog:first');
 
-        if(dialog.length == 1) {
+        if(dialog.length == 1 && dialog.css('position') === 'fixed') {
             this.panel.css('position', 'fixed');
         }
     }

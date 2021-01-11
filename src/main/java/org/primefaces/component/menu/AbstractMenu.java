@@ -1,35 +1,37 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2021 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.menu;
 
-import java.util.List;
-import javax.el.ELContext;
-import javax.el.MethodExpression;
-import javax.el.MethodNotFoundException;
-import javax.faces.component.UIPanel;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.FacesEvent;
-import org.primefaces.event.MenuActionEvent;
-
+import org.primefaces.component.api.MenuItemAware;
 import org.primefaces.model.menu.MenuModel;
-import org.primefaces.model.menu.MenuItem;
 
-public abstract class AbstractMenu extends UIPanel {
+import javax.faces.component.UIPanel;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.FacesEvent;
+import java.util.List;
+
+public abstract class AbstractMenu extends UIPanel implements MenuItemAware {
 
     public static final String LIST_CLASS = "ui-menu-list ui-helper-reset";
     public static final String MENUITEM_CLASS = "ui-menuitem ui-widget ui-corner-all";
@@ -56,6 +58,7 @@ public abstract class AbstractMenu extends UIPanel {
         getStateHelper().put(PropertyKeys.tabindex, tabindex);
     }
 
+    @Override
     public List getElements() {
         MenuModel model = getModel();
         if (model != null) {
@@ -75,54 +78,11 @@ public abstract class AbstractMenu extends UIPanel {
     public abstract MenuModel getModel();
 
     public boolean isDynamic() {
-        return this.getValueExpression("model") != null;
+        return getValueExpression("model") != null;
     }
 
     @Override
     public void broadcast(FacesEvent event) throws AbortProcessingException {
-        if (event instanceof MenuActionEvent) {
-            FacesContext facesContext = getFacesContext();
-            ELContext eLContext = facesContext.getELContext();
-            MenuActionEvent menuActionEvent = (MenuActionEvent) event;
-            MenuItem menuItem = menuActionEvent.getMenuItem();
-            String command = menuItem.getCommand();
-
-            if (command != null) {
-                String actionExpressionString = menuItem.getCommand();
-                MethodExpression noArgExpr = facesContext.getApplication().getExpressionFactory().
-                        createMethodExpression(eLContext, actionExpressionString,
-                                String.class, new Class[0]);
-                Object invokeResult = null;
-
-                try {
-                    invokeResult = noArgExpr.invoke(eLContext, null);
-                }
-                catch (MethodNotFoundException methodNotFoundException) {
-                    try {
-                        MethodExpression argExpr = facesContext.getApplication().getExpressionFactory().
-                                createMethodExpression(eLContext, actionExpressionString,
-                                        String.class, new Class[]{ActionEvent.class});
-
-                        invokeResult = argExpr.invoke(eLContext, new Object[]{event});
-                    }
-                    catch (MethodNotFoundException methodNotFoundException2) {
-                        MethodExpression argExpr = facesContext.getApplication().getExpressionFactory().
-                                createMethodExpression(eLContext, actionExpressionString,
-                                        String.class, new Class[]{MenuActionEvent.class});
-
-                        invokeResult = argExpr.invoke(eLContext, new Object[]{event});
-                    }
-                }
-                finally {
-                    String outcome = (invokeResult != null) ? invokeResult.toString() : null;
-
-                    facesContext.getApplication().getNavigationHandler().handleNavigation(facesContext, actionExpressionString, outcome);
-                }
-            }
-
-        }
-        else {
-            super.broadcast(event);
-        }
+        broadcastMenuActionEvent(event, getFacesContext(), super::broadcast);
     }
 }

@@ -1,33 +1,44 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2021 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.diagram;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
+import org.primefaces.model.diagram.Connection;
 import org.primefaces.model.diagram.DiagramModel;
 import org.primefaces.model.diagram.Element;
-import org.primefaces.model.diagram.Connection;
 import org.primefaces.model.diagram.connector.Connector;
 import org.primefaces.model.diagram.endpoint.EndPoint;
 import org.primefaces.model.diagram.overlay.Overlay;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
 
@@ -47,6 +58,9 @@ public class DiagramRenderer extends CoreRenderer {
         }
         else if (diagram.isConnectionChangeRequest(context)) {
             decodeConnectionChange(context, diagram);
+        }
+        else if (diagram.isPositionChangeRequest(context)) {
+            decodePositionChange(context, diagram);
         }
 
         decodeBehaviors(context, component);
@@ -94,6 +108,20 @@ public class DiagramRenderer extends CoreRenderer {
 
             model.disconnect(findConnection(model, originalSourceEndPoint, originalTargetEndPoint));
             model.connect(new Connection(newSourceEndPoint, newTargetEndPoint));
+        }
+    }
+
+    private void decodePositionChange(FacesContext context, Diagram diagram) {
+        DiagramModel model = (DiagramModel) diagram.getValue();
+        if (model != null) {
+            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+            String clientId = diagram.getClientId(context);
+
+            Element element = model.findElement(params.get(clientId + "_elementId"));
+            String[] position = params.get(clientId + "_position").split(",");
+
+            element.setX(position[0] + "px");
+            element.setY(position[1] + "px");
         }
     }
 
@@ -152,9 +180,8 @@ public class DiagramRenderer extends CoreRenderer {
 
     protected void encodeScript(FacesContext context, Diagram diagram) throws IOException {
         String clientId = diagram.getClientId(context);
-        StringBuilder sb = SharedStringBuilder.get(SB_DIAGRAM);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Diagram", diagram.resolveWidgetVar(), clientId);
+        wb.init("Diagram", diagram);
 
         DiagramModel model = (DiagramModel) diagram.getValue();
         if (model != null) {
@@ -180,8 +207,12 @@ public class DiagramRenderer extends CoreRenderer {
             wb.append(",defaultConnector:").append(defaultConnector.toJS(sb));
             wb.append(",containment:").append("" + model.isContainment());
 
-            if (paintStyle != null) wb.append(",paintStyle:").append(paintStyle);
-            if (hoverPaintStyle != null) wb.append(",hoverPaintStyle:").append(hoverPaintStyle);
+            if (paintStyle != null) {
+                wb.append(",paintStyle:").append(paintStyle);
+            }
+            if (hoverPaintStyle != null) {
+                wb.append(",hoverPaintStyle:").append(hoverPaintStyle);
+            }
 
             sb.setLength(0);
         }
@@ -244,14 +275,30 @@ public class DiagramRenderer extends CoreRenderer {
                 .append(",element:'").append(elementClientId).append("'")
                 .append(",anchor:'").append(endPoint.getAnchor().toString()).append("'");
 
-        if (maxConnections != 1) wb.append(",maxConnections:").append(maxConnections);
-        if (style != null) wb.append(",paintStyle:").append(style);
-        if (hoverStyle != null) wb.append(",hoverPaintStyle:").append(hoverStyle);
-        if (endPoint.isSource()) wb.append(",isSource:true");
-        if (endPoint.isTarget()) wb.append(",isTarget:true");
-        if (styleClass != null) wb.append(",cssClass:'").append(styleClass).append("'");
-        if (hoverStyleClass != null) wb.append(",hoverClass:'").append(hoverStyleClass).append("'");
-        if (scope != null) wb.append(",scope:'").append(scope).append("'");
+        if (maxConnections != 1) {
+            wb.append(",maxConnections:").append(maxConnections);
+        }
+        if (style != null) {
+            wb.append(",paintStyle:").append(style);
+        }
+        if (hoverStyle != null) {
+            wb.append(",hoverPaintStyle:").append(hoverStyle);
+        }
+        if (endPoint.isSource()) {
+            wb.append(",isSource:true");
+        }
+        if (endPoint.isTarget()) {
+            wb.append(",isTarget:true");
+        }
+        if (styleClass != null) {
+            wb.append(",cssClass:'").append(styleClass).append("'");
+        }
+        if (hoverStyleClass != null) {
+            wb.append(",hoverClass:'").append(hoverStyleClass).append("'");
+        }
+        if (scope != null) {
+            wb.append(",scope:'").append(scope).append("'");
+        }
 
         if (type != null) {
             wb.append(",endpoint:").append(endPoint.toJS(sb));
@@ -283,8 +330,12 @@ public class DiagramRenderer extends CoreRenderer {
                     String paintStyle = connector.getPaintStyle();
                     String hoverPaintStyle = connector.getHoverPaintStyle();
 
-                    if (paintStyle != null) wb.append(",paintStyle:").append(paintStyle);
-                    if (hoverPaintStyle != null) wb.append(",hoverPaintStyle:").append(hoverPaintStyle);
+                    if (paintStyle != null) {
+                        wb.append(",paintStyle:").append(paintStyle);
+                    }
+                    if (hoverPaintStyle != null) {
+                        wb.append(",hoverPaintStyle:").append(hoverPaintStyle);
+                    }
                 }
 
                 if (!connection.isDetachable()) {
@@ -365,8 +416,11 @@ public class DiagramRenderer extends CoreRenderer {
                     writer.writeAttribute("style", coords, null);
                     writer.writeAttribute("data-tooltip", title, null);
 
-                    if (elementFacet != null && var != null) {
+                    if (var != null) {
                         requestMap.put(var, data);
+                    }
+
+                    if (ComponentUtils.shouldRenderFacet(elementFacet)) {
                         elementFacet.encodeAll(context);
                     }
                     else if (data != null) {

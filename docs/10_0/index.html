@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PrimeFaces Documentation</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="Description">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <link rel="icon" href="./resources/images/favicon-32x32.png" type="image/png" sizes="32x32"/>
+  <link rel="icon" href="./resources/images/favicon-16x16.png" type="image/png" sizes="16x16"/>
+  <link rel="stylesheet" href="//unpkg.com/docsify/themes/vue.css">
+  <link rel="stylesheet" href="./resources/css/coverpage.css">
+</head>
+<body>
+  <div id="app"></div>
+  <script>
+    window.$docsify = {
+      name: 'primefaces',
+      repo: '',
+      homepage: 'home.md',
+      loadSidebar: 'menu.md',
+      loadNavbar: 'navbar.md',
+      mergeNavbar: true,
+      subMaxLevel: 1,
+      themeColor: '#235ba5',
+      logo:'/resources/images/menu-logo.png',
+      search: {
+        namespace: '10_0'
+      },
+      alias: {
+        '/.*/menu.md': '/menu.md',
+        '/.*/navbar.md': '/navbar.md'
+      },
+      coverpage: {
+        '/': 'cover.md'
+      },
+      noCompileLinks: [
+        '(\\.\\./)*jsdocs/.*', // jsdoc directory
+        '.*\.d\.ts*', // TypeScript declarations file
+      ],
+      plugins: [
+        function(hook, vm) {
+          hook.ready(function () {
+            let h1Elt = document.querySelector("main aside h1.app-name");
+            let versionElt = document.createElement("div");
+            versionElt.setAttribute("class", "PF-version")
+            versionElt.appendChild(document.createTextNode("V10.0"));
+
+            h1Elt.appendChild(versionElt);
+          });
+        }
+      ]
+    };
+
+    if (typeof navigator.serviceWorker !== 'undefined') {
+       navigator.serviceWorker.register('sw.js')
+    }
+  </script>
+<script>
+
+</script>
+  <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
+  <script src="//unpkg.com/docsify/lib/plugins/search.min.js"></script>
+  <script src="//unpkg.com/prismjs/components/prism-java.min.js"></script>
+</body>
+</html>

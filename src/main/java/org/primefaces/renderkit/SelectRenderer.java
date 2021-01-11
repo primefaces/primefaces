@@ -1,21 +1,27 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2021 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.renderkit;
-
-import org.primefaces.util.ArrayUtils;
 
 import javax.el.ELException;
 import javax.el.ExpressionFactory;
@@ -33,16 +39,33 @@ import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.RandomAccess;
 
-public class SelectRenderer extends InputRenderer {
+import org.primefaces.util.LangUtils;
+
+public abstract class SelectRenderer extends InputRenderer {
+
+    protected boolean isHideNoSelection(UIComponent component) {
+        Object attribute = component.getAttributes().get("hideNoSelectionOption");
+        return  attribute != null ? (Boolean) attribute : false;
+    }
+
+    protected void addSelectItem(UIInput component, List<SelectItem> selectItems, SelectItem item, boolean hideNoSelectOption) {
+        if (hideNoSelectOption && item.isNoSelectionOption()) {
+            return;
+        }
+        selectItems.add(item);
+    }
 
     protected List<SelectItem> getSelectItems(FacesContext context, UIInput component) {
         List<SelectItem> selectItems = new ArrayList<>();
+        boolean hideNoSelectOption = isHideNoSelection(component);
+        SelectItem selectItem;
 
         for (int i = 0; i < component.getChildCount(); i++) {
             UIComponent child = component.getChildren().get(i);
@@ -51,16 +74,17 @@ public class SelectRenderer extends InputRenderer {
                 Object selectItemValue = uiSelectItem.getValue();
 
                 if (selectItemValue == null) {
-                    selectItems.add(new SelectItem(uiSelectItem.getItemValue(),
+                    selectItem = new SelectItem(uiSelectItem.getItemValue(),
                             uiSelectItem.getItemLabel(),
                             uiSelectItem.getItemDescription(),
                             uiSelectItem.isItemDisabled(),
                             uiSelectItem.isItemEscaped(),
-                            uiSelectItem.isNoSelectionOption()));
+                            uiSelectItem.isNoSelectionOption());
                 }
                 else {
-                    selectItems.add((SelectItem) selectItemValue);
+                    selectItem = (SelectItem) selectItemValue;
                 }
+                addSelectItem(component, selectItems, selectItem, hideNoSelectOption);
             }
             else if (child instanceof UISelectItems) {
                 UISelectItems uiSelectItems = ((UISelectItems) child);
@@ -68,53 +92,54 @@ public class SelectRenderer extends InputRenderer {
 
                 if (value != null) {
                     if (value instanceof SelectItem) {
-                        selectItems.add((SelectItem) value);
+                        addSelectItem(component, selectItems, (SelectItem) value, hideNoSelectOption);
                     }
                     else if (value.getClass().isArray()) {
                         for (int j = 0; j < Array.getLength(value); j++) {
                             Object item = Array.get(value, j);
 
                             if (item instanceof SelectItem) {
-                                selectItems.add((SelectItem) item);
+                                selectItem = (SelectItem) item;
                             }
                             else {
-                                selectItems.add(createSelectItem(context, uiSelectItems, item, null));
+                                selectItem = createSelectItem(context, uiSelectItems, item, null);
                             }
+                            addSelectItem(component, selectItems, selectItem, hideNoSelectOption);
                         }
                     }
                     else if (value instanceof Map) {
-                        Map map = (Map) value;
+                        Map<?, ?> map = (Map) value;
 
-                        for (Iterator it = map.keySet().iterator(); it.hasNext();) {
-                            Object key = it.next();
-
-                            selectItems.add(createSelectItem(context, uiSelectItems, map.get(key), String.valueOf(key)));
+                        for (Map.Entry<?, ?> entry : map.entrySet()) {
+                            selectItem = createSelectItem(context, uiSelectItems, entry.getValue(), String.valueOf(entry.getKey()));
+                            addSelectItem(component, selectItems, selectItem, hideNoSelectOption);
                         }
                     }
                     else if (value instanceof List && value instanceof RandomAccess) {
-                        List list = (List) value;
+                        List<?> list = (List) value;
 
                         for (int j = 0; j < list.size(); j++) {
                             Object item = list.get(j);
                             if (item instanceof SelectItem) {
-                                selectItems.add((SelectItem) item);
+                                selectItem = (SelectItem) item;
                             }
                             else {
-                                selectItems.add(createSelectItem(context, uiSelectItems, item, null));
+                                selectItem = createSelectItem(context, uiSelectItems, item, null);
                             }
+                            addSelectItem(component, selectItems, selectItem, hideNoSelectOption);
                         }
                     }
                     else if (value instanceof Collection) {
-                        Collection collection = (Collection) value;
+                        Collection<?> collection = (Collection) value;
 
-                        for (Iterator it = collection.iterator(); it.hasNext();) {
-                            Object item = it.next();
+                        for (Object item : collection) {
                             if (item instanceof SelectItem) {
-                                selectItems.add((SelectItem) item);
+                                selectItem = (SelectItem) item;
                             }
                             else {
-                                selectItems.add(createSelectItem(context, uiSelectItems, item, null));
+                                selectItem = createSelectItem(context, uiSelectItems, item, null);
                             }
+                            addSelectItem(component, selectItems, selectItem, hideNoSelectOption);
                         }
                     }
                 }
@@ -149,9 +174,9 @@ public class SelectRenderer extends InputRenderer {
         }
 
         String itemLabel = itemLabelValue == null ? String.valueOf(value) : String.valueOf(itemLabelValue);
-        boolean disabled = itemDisabled == null ? false : Boolean.valueOf(itemDisabled.toString());
-        boolean escaped = itemEscaped == null ? true : Boolean.valueOf(itemEscaped.toString());
-        boolean noSelectionOption = noSelection == null ? false : Boolean.valueOf(noSelection.toString());
+        boolean disabled = itemDisabled != null && Boolean.parseBoolean(itemDisabled.toString());
+        boolean escaped = itemEscaped == null || Boolean.parseBoolean(itemEscaped.toString());
+        boolean noSelectionOption = noSelection != null && Boolean.parseBoolean(noSelection.toString());
 
         if (var != null) {
             requestMap.remove(var);
@@ -200,8 +225,8 @@ public class SelectRenderer extends InputRenderer {
 
         return null;
     }
-    
-    protected Object coerceToModelType(FacesContext ctx, Object value, Class itemValueType) {
+
+    protected Object coerceToModelType(FacesContext ctx, Object value, Class<?> itemValueType) {
         Object newValue;
         try {
             ExpressionFactory ef = ctx.getApplication().getExpressionFactory();
@@ -219,6 +244,10 @@ public class SelectRenderer extends InputRenderer {
             return true;
         }
 
+        if (itemValue == valueArray) {
+            return true;
+        }
+
         if (valueArray != null) {
             if (!valueArray.getClass().isArray()) {
                 return valueArray.equals(itemValue);
@@ -228,33 +257,46 @@ public class SelectRenderer extends InputRenderer {
             for (int i = 0; i < length; i++) {
                 Object value = Array.get(valueArray, i);
 
-                if (value == null && itemValue == null) {
-                    return true;
-                }
-                else {
-                    if ((value == null) ^ (itemValue == null)) {
-                        continue;
-                    }
-
-                    Object compareValue;
-                    if (converter == null) {
-                        compareValue = coerceToModelType(context, itemValue, value.getClass());
-                    }
-                    else {
-                        compareValue = itemValue;
-
-                        if (compareValue instanceof String && !(value instanceof String)) {
-                            compareValue = converter.getAsObject(context, component, (String) compareValue);
-                        }
-                    }
-
-                    if (value.equals(compareValue)) {
-                        return (true);
-                    }
+                if (isSelectValueEqual(context, component, itemValue, value, converter)) {
+                    return (true);
                 }
             }
         }
         return false;
+    }
+
+    /**
+     * Compares two select options against each other. Values can be either a serialized string,
+     * or the actual object, this method takes care of the conversion.
+     * @param context The currently active faces context.
+     * @param component The select component for which to compare values.
+     * @param itemValue First value to compare against the second. May be a submitted string value,
+     * in which case it run through the given {@code converter}.
+     * @param value Second value to compare against the first. Should be the model value, i.e. not
+     * a string, unless {@code itemValue} is a string too.
+     * @param converter Optional converter defined for the select component.
+     * @return {@code true} if the two values are equal, or {@code false} otherwise.
+     */
+    protected boolean isSelectValueEqual(FacesContext context, UIComponent component, Object itemValue, Object value, Converter converter) {
+        if (value == null && itemValue == null) {
+            return true;
+        }
+        if ((value == null) ^ (itemValue == null)) {
+            return false;
+        }
+        Object compareValue;
+        if (converter == null) {
+            compareValue = coerceToModelType(context, itemValue, value.getClass());
+        }
+        else {
+            compareValue = itemValue;
+
+            if (compareValue instanceof String && !(value instanceof String)) {
+                compareValue = converter.getAsObject(context, component, (String) compareValue);
+            }
+        }
+
+        return Objects.equals(value, compareValue);
     }
 
     protected int countSelectItems(List<SelectItem> selectItems) {
@@ -287,33 +329,73 @@ public class SelectRenderer extends InputRenderer {
     }
 
     /**
-     * Restores checked, disabled select items (#3296) and checks if at least one disabled select item has been submitted - 
+     * Restores checked, disabled select items (#3296) and checks if at least one disabled select item has been submitted -
      * this may occur with client side manipulation (#3264)
+     *
+     * @param context The FacesContext
+     * @param component The component
+     * @param oldValues The old value(s)
+     * @param submittedValues The submitted value(s)
+     *
      * @return <code>newSubmittedValues</code> merged with checked, disabled <code>oldValues</code>
      * @throws javax.faces.FacesException if client side manipulation has been detected, in order to reject the submission
      */
-    protected String[] restoreAndCheckDisabledSelectItems(FacesContext context, UIInput component, Object[] oldValues, String... newSubmittedValues) 
+    protected List<String> validateSubmittedValues(FacesContext context, UIInput component, Object[] oldValues, String... submittedValues)
             throws FacesException {
-        
-        List<String> restoredSubmittedValues = new ArrayList<>();
-        for (SelectItem selectItem : getSelectItems(context, component)) {
-            String selectItemValStr = getOptionAsString(context, component, component.getConverter(), selectItem.getValue());
-            if (selectItem.isDisabled()) {
-                if (ArrayUtils.contains(newSubmittedValues, selectItemValStr) && !ArrayUtils.contains(oldValues, selectItemValStr)) {
-                    // disabled select item has been selected
-                    throw new FacesException("Disabled select item has been submitted. ClientId: " + component.getClientId(context));
+        List<String> validSubmittedValues = doValidateSubmittedValues(
+                context,
+                component,
+                oldValues,
+                getSelectItems(context, component),
+                submittedValues);
+        return validSubmittedValues;
+    }
+
+    private List<String> doValidateSubmittedValues(
+            FacesContext context,
+            UIInput component,
+            Object[] oldValues,
+            List<SelectItem> selectItems,
+            String... submittedValues) {
+
+        List<String> validSubmittedValues = new ArrayList<>();
+
+        // loop attached SelectItems - other values are not allowed
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem selectItem = selectItems.get(i);
+            if (selectItem instanceof SelectItemGroup) {
+                // if it's a SelectItemGroup also include its children in the checked values
+                SelectItem[] groupItemsArray = ((SelectItemGroup) selectItem).getSelectItems();
+                if (groupItemsArray != null && groupItemsArray.length > 0) {
+                    validSubmittedValues.addAll(
+                            doValidateSubmittedValues(context,
+                                    component,
+                                    oldValues,
+                                    Arrays.asList(groupItemsArray),
+                                    submittedValues));
                 }
-                if (ArrayUtils.contains(oldValues, selectItemValStr)) {
-                    restoredSubmittedValues.add(selectItemValStr);
-                }
-            } 
+            }
             else {
-                if (ArrayUtils.contains(newSubmittedValues, selectItemValStr)) {
-                    restoredSubmittedValues.add(selectItemValStr);
+                String selectItemVal = getOptionAsString(context, component, component.getConverter(), selectItem.getValue());
+
+                if (selectItem.isDisabled()) {
+                    if (LangUtils.contains(submittedValues, selectItemVal) && !LangUtils.contains(oldValues, selectItemVal)) {
+                        // disabled select item has been selected
+                        // throw new FacesException("Disabled select item has been submitted. ClientId: " + component.getClientId(context));
+                        // ignore it silently for now
+                    }
+                    else if (LangUtils.contains(oldValues, selectItemVal)) {
+                        validSubmittedValues.add(selectItemVal);
+                    }
+                }
+                else {
+                    if (LangUtils.contains(submittedValues, selectItemVal)) {
+                        validSubmittedValues.add(selectItemVal);
+                    }
                 }
             }
         }
-        return restoredSubmittedValues.toArray(new String[restoredSubmittedValues.size()]);
+
+        return validSubmittedValues;
     }
-    
 }

@@ -1,30 +1,41 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2021 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.panelmenu;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.Submenu;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class PanelMenuRenderer extends BaseMenuRenderer {
@@ -32,10 +43,10 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         PanelMenu menu = (PanelMenu) abstractMenu;
-        String clientId = menu.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("PanelMenu", menu.resolveWidgetVar(), clientId)
-                .attr("stateful", menu.isStateful());
+        wb.init("PanelMenu", menu)
+                .attr("stateful", menu.isStateful())
+                .attr("multiple", menu.isMultiple());
         wb.finish();
     }
 
@@ -54,7 +65,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
-        writer.writeAttribute("role", "menu", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, "tablist", null);
 
         if (menu.getElementsCount() > 0) {
             List<MenuElement> elements = menu.getElements();
@@ -89,7 +100,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         //header
         writer.startElement("h3", null);
         writer.writeAttribute("class", headerClass, null);
-        writer.writeAttribute("role", "tab", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, "tab", null);
         writer.writeAttribute("tabindex", "0", null);
 
         //icon
@@ -108,7 +119,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         //content
         writer.startElement("div", null);
         writer.writeAttribute("class", contentClass, null);
-        writer.writeAttribute("role", "tabpanel", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, "tabpanel", null);
         writer.writeAttribute("id", menu.getClientId(context) + "_" + submenu.getId(), null);
         writer.writeAttribute("tabindex", "0", null);
 
@@ -116,6 +127,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
             List<MenuElement> elements = submenu.getElements();
 
             writer.startElement("ul", null);
+            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
             writer.writeAttribute("class", PanelMenu.LIST_CLASS, null);
 
             for (MenuElement element : elements) {
@@ -127,11 +139,12 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
                         containerStyleClass = (containerStyleClass == null) ? Menu.MENUITEM_CLASS : Menu.MENUITEM_CLASS + " " + containerStyleClass;
 
                         writer.startElement("li", null);
+                        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
                         writer.writeAttribute("class", containerStyleClass, null);
                         if (containerStyle != null) {
                             writer.writeAttribute("style", containerStyle, null);
                         }
-                        encodeMenuItem(context, menu, menuItem);
+                        encodeMenuItem(context, menu, menuItem, "-1");
                         writer.endElement("li");
                     }
                     else if (element instanceof Submenu) {
@@ -162,12 +175,14 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
 
         writer.startElement("li", null);
         writer.writeAttribute("id", submenu.getClientId(), null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
         writer.writeAttribute("class", styleClass, null);
         if (style != null) {
             writer.writeAttribute("style", style, null);
         }
 
         writer.startElement("a", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM, null);
         writer.writeAttribute("class", linkClass, null);
 
         //toggle icon
@@ -196,13 +211,15 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
 
             writer.startElement("ul", null);
             writer.writeAttribute("class", listClass, null);
+            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
 
             for (MenuElement element : elements) {
                 if (element.isRendered()) {
                     if (element instanceof MenuItem) {
                         writer.startElement("li", null);
+                        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
                         writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
-                        encodeMenuItem(context, menu, (MenuItem) element);
+                        encodeMenuItem(context, menu, (MenuItem) element, "-1");
                         writer.endElement("li");
                     }
                     else if (element instanceof Submenu) {

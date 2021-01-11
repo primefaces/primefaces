@@ -1,21 +1,28 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2021 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.model;
 
-import javax.validation.constraints.Null;
 import java.util.*;
 
 public class LazyDataModelIterator<T> implements Iterator<T> {
@@ -24,34 +31,25 @@ public class LazyDataModelIterator<T> implements Iterator<T> {
     private int index;
     private Map<Integer, List<T>> pages;
 
-    @Null
-    private String sortField;
-    @Null
-    private SortOrder sortOrder;
-
-    @Null
-    private List<SortMeta> multiSortMeta;
-
-    @Null
-    private Map<String, Object> filters;
+    private Map<String, SortMeta> sortBy;
+    private Map<String, FilterMeta> filterBy;
 
     LazyDataModelIterator(LazyDataModel<T> model) {
         this.model = model;
-        this.index = -1;
-        this.pages = new HashMap<Integer, List<T>>();
+        index = -1;
+        pages = new HashMap<>();
+        sortBy = Collections.emptyMap();
+        filterBy = Collections.emptyMap();
     }
 
-    LazyDataModelIterator(LazyDataModel<T> model, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+    LazyDataModelIterator(LazyDataModel<T> model, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
         this(model);
-        this.sortField = sortField;
-        this.sortOrder = sortOrder;
-        this.filters = filters;
-    }
-
-    LazyDataModelIterator(LazyDataModel<T> model, List<SortMeta> multiSortMeta, Map<String, Object> filters) {
-        this(model);
-        this.multiSortMeta = multiSortMeta;
-        this.filters = filters;
+        if (sortBy != null) {
+            this.sortBy = sortBy;
+        }
+        if (filterBy != null) {
+            this.filterBy = filterBy;
+        }
     }
 
     @Override
@@ -60,14 +58,7 @@ public class LazyDataModelIterator<T> implements Iterator<T> {
         int pageNo = nextIndex / model.getPageSize();
 
         if (!pages.containsKey(pageNo)) {
-            List<T> page;
-
-            if (sortField != null || sortOrder != null) {
-                page = model.load(nextIndex, model.getPageSize(), sortField, sortOrder, filters);
-            }
-            else {
-                page = model.load(nextIndex, model.getPageSize(), multiSortMeta, filters);
-            }
+            List<T> page = model.load(nextIndex, model.getPageSize(), sortBy, filterBy);
 
             if (page == null || page.isEmpty()) {
                 return false;
@@ -77,11 +68,7 @@ public class LazyDataModelIterator<T> implements Iterator<T> {
         }
 
         int pageIndex = nextIndex % model.getPageSize();
-        if (pageIndex < pages.get(pageNo).size()) {
-            return true;
-        }
-
-        return false;
+        return pageIndex < pages.get(pageNo).size();
     }
 
     @Override

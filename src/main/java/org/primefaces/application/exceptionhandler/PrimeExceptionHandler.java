@@ -1,17 +1,25 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2021 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.application.exceptionhandler;
 
@@ -43,20 +51,26 @@ import javax.faces.event.PhaseId;
 import javax.faces.view.ViewDeclarationLanguage;
 import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandler;
 import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandlerVisitCallback;
+import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.Lazy;
 
 public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
-    private static final Logger LOG = Logger.getLogger(PrimeExceptionHandler.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PrimeExceptionHandler.class.getName());
     private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
     private final ExceptionHandler wrapped;
+    private final Lazy<PrimeConfiguration> config;
 
     @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimeExceptionHandler(ExceptionHandler wrapped) {
         this.wrapped = wrapped;
+        this.config = new Lazy(() -> PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig());
     }
 
     @Override
@@ -102,7 +116,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
                     }
                 }
                 catch (Exception ex) {
-                    LOG.log(Level.SEVERE, "Could not handle exception!", ex);
+                    LOGGER.log(Level.SEVERE, "Could not handle exception!", ex);
                 }
             }
 
@@ -115,14 +129,22 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
     }
 
     protected void logException(Throwable rootCause) {
-        LOG.log(Level.SEVERE, rootCause.getMessage(), rootCause);
+        LOGGER.log(Level.SEVERE, rootCause.getMessage(), rootCause);
     }
 
     protected boolean isLogException(FacesContext context, Throwable rootCause) {
 
         if (context.isProjectStage(ProjectStage.Production)) {
-            if (rootCause != null && rootCause instanceof ViewExpiredException) {
+            if (rootCause instanceof ViewExpiredException) {
                 return false;
+            }
+
+            if (rootCause != null) {
+                for (String ignore : config.get().getExceptionTypesToIgnoreInLogging()) {
+                    if (ignore.trim().equals(rootCause.getClass().getName())) {
+                        return false;
+                    }
+                }
             }
         }
 
@@ -138,30 +160,34 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         return throwable;
     }
 
-    protected void handleAjaxException(FacesContext context, Throwable rootCause, ExceptionInfo info) throws Exception {
+    protected void handleAjaxException(FacesContext context, Throwable rootCause, ExceptionInfo info) throws IOException {
         ExternalContext externalContext = context.getExternalContext();
         PartialResponseWriter writer = context.getPartialViewContext().getPartialResponseWriter();
 
+        // should not happen actually
+        if (writer == null) {
+            return;
+        }
+
         boolean responseResetted = false;
 
+        //mojarra workaround to avoid invalid partial output due to open tags
         if (context.getCurrentPhaseId().equals(PhaseId.RENDER_RESPONSE)) {
             if (!externalContext.isResponseCommitted()) {
-                //mojarra workaround to avoid invalid partial output due to open tags
-                if (writer != null) {
-                    // this doesn't flush, just clears the internal state in mojarra
-                    writer.flush();
+                // this doesn't flush, just clears the internal state in mojarra
+                writer.flush();
 
-                    writer.endCDATA();
+                writer.endCDATA();
 
-                    writer.endInsert();
-                    writer.endUpdate();
+                writer.endInsert();
+                writer.endUpdate();
 
-                    writer.startError("");
-                    writer.endError();
+                writer.startError("");
+                writer.endError();
 
-                    writer.getWrapped().endElement("changes");
-                    writer.getWrapped().endElement("partial-response");
-                }
+                writer.getWrapped().endElement("changes");
+                writer.getWrapped().endElement("partial-response");
+
 
                 String characterEncoding = externalContext.getResponseCharacterEncoding();
                 externalContext.responseReset();
@@ -178,7 +204,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             handlerComponent = findHandlerComponent(context, rootCause);
         }
         catch (Exception ex) {
-            LOG.log(Level.WARNING, "Could not build view or lookup a AjaxExceptionHandler component!", ex);
+            LOGGER.log(Level.WARNING, "Could not build view or lookup a AjaxExceptionHandler component!", ex);
         }
 
         context.getAttributes().put(ExceptionInfo.ATTRIBUTE_NAME, info);
@@ -196,10 +222,10 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             writer.startDocument();
             writer.startElement("changes", null);
 
-            if (!ComponentUtils.isValueBlank(handlerComponent.getUpdate())) {
+            if (!LangUtils.isValueBlank(handlerComponent.getUpdate())) {
                 List<UIComponent> updates = SearchExpressionFacade.resolveComponents(context, handlerComponent, handlerComponent.getUpdate());
 
-                if (updates != null && updates.size() > 0) {
+                if (updates != null && !updates.isEmpty()) {
                     context.setResponseWriter(writer);
 
                     for (int i = 0; i < updates.size(); i++) {
@@ -217,7 +243,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
                 }
             }
 
-            if (!ComponentUtils.isValueBlank(handlerComponent.getOnexception())) {
+            if (!LangUtils.isValueBlank(handlerComponent.getOnexception())) {
                 writer.startElement("eval", null);
                 writer.startCDATA();
 
@@ -225,7 +251,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
                 writer.write(handlerComponent.getOnexception());
                 writer.write("};hf.call(this,\""
                         + info.getType() + "\",\""
-                        + ComponentUtils.escapeText(info.getMessage())
+                        + EscapeUtils.forJavaScript(info.getMessage())
                         + "\",\""
                         + info.getFormattedTimestamp()
                         + "\");");
@@ -252,7 +278,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         try (StringWriter sw = new StringWriter()) {
             PrintWriter pw = new PrintWriter(sw);
             rootCause.printStackTrace(pw);
-            info.setFormattedStackTrace(ComponentUtils.escapeXml(sw.toString()).replaceAll("(\r\n|\n)", "<br/>"));
+            info.setFormattedStackTrace(EscapeUtils.forXml(sw.toString()).replaceAll("(\r\n|\n)", "<br/>"));
             pw.close();
         }
 
@@ -331,9 +357,12 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         externalContext.getSessionMap().put(ExceptionInfo.ATTRIBUTE_NAME, info);
 
         Map<String, String> errorPages = PrimeApplicationContext.getCurrentInstance(context).getConfig().getErrorPages();
+
         String errorPage = evaluateErrorPage(errorPages, rootCause);
+        errorPage = context.getApplication().evaluateExpressionGet(context, errorPage, String.class);
 
         String url = externalContext.getRequestContextPath() + errorPage;
+        url = externalContext.encodeActionURL(url);
 
         // workaround for mojarra -> mojarra doesn't reset PartialResponseWriter#inChanges if we call externalContext#resetResponse
         if (responseResetted && context.getPartialViewContext().isAjaxRequest()) {

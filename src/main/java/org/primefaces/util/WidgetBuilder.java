@@ -1,28 +1,39 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2021 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.util;
 
-import java.io.IOException;
+import org.primefaces.config.PrimeConfiguration;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.config.PrimeConfiguration;
+import java.io.IOException;
+import java.util.Map;
+import javax.faces.component.UIComponent;
+import org.primefaces.component.api.Widget;
 
 /**
- * Helper to generate javascript code of an ajax call
+ * Helper to generate scripts for widgets.
  */
 public class WidgetBuilder {
 
@@ -59,9 +70,16 @@ public class WidgetBuilder {
         return this;
     }
 
+    public <T extends UIComponent & Widget> WidgetBuilder init(String widgetClass, T widget)
+            throws IOException {
+
+        return init(widgetClass, widget.resolveWidgetVar(context), widget.getClientId(context))
+                .renderLifecycleCallbacks(widget);
+    }
+
     public WidgetBuilder init(String widgetClass, String widgetVar, String id) throws IOException {
         this.renderScriptBlock(id);
-        
+
         // AJAX case: since jQuery 3 document ready ($(function() {})) are executed async
         //            this would mean that our oncomplete handlers are probably called before the scripts in the update nodes
         // or
@@ -77,7 +95,20 @@ public class WidgetBuilder {
         return this;
     }
 
-    public WidgetBuilder initWithWindowLoad(String widgetClass, String widgetVar, String id) throws IOException {
+    @Deprecated
+    public WidgetBuilder initWithDomReady(String widgetClass, String widgetVar, String id) throws IOException {
+        return init(widgetClass, widgetVar, id);
+    }
+
+    public <T extends UIComponent & Widget> WidgetBuilder initWithWindowLoad(String widgetClass, T widget)
+            throws IOException {
+
+        return initWithWindowLoad(widgetClass, widget.resolveWidgetVar(context), widget.getClientId(context))
+                .renderLifecycleCallbacks(widget);
+    }
+
+    public WidgetBuilder initWithWindowLoad(String widgetClass, String widgetVar, String id)
+            throws IOException {
 
         this.renderScriptBlock(id);
         context.getResponseWriter().write("$(window).on(\"load\",function(){");
@@ -86,31 +117,60 @@ public class WidgetBuilder {
         return this;
     }
 
-    public WidgetBuilder initWithComponentLoad(String widgetClass, String widgetVar, String id, String targetId) throws IOException {
+    public <T extends UIComponent & Widget> WidgetBuilder initWithComponentLoad(String widgetClass, T widget, String targetId)
+            throws IOException {
+
+        return initWithComponentLoad(widgetClass, widget.resolveWidgetVar(context), widget.getClientId(context), targetId)
+                .renderLifecycleCallbacks(widget);
+    }
+
+    public WidgetBuilder initWithComponentLoad(String widgetClass, String widgetVar, String id, String targetId)
+            throws IOException {
 
         this.renderScriptBlock(id);
-        context.getResponseWriter().write("$(PrimeFaces.escapeClientId(\"" + targetId + "\")).on(\"load\",function(){");
+        context.getResponseWriter().write("PrimeFaces.onElementLoad($(PrimeFaces.escapeClientId(\"" + targetId + "\")),function(){");
         this.init(widgetClass, widgetVar, id, true);
 
         return this;
     }
 
-    private void renderScriptBlock(String id) throws IOException {
+    protected void renderScriptBlock(String id) throws IOException {
         ResponseWriter rw = context.getResponseWriter();
         rw.startElement("script", null);
         rw.writeAttribute("id", id + "_s", null);
         rw.writeAttribute("type", "text/javascript", null);
     }
 
+    protected WidgetBuilder renderLifecycleCallbacks(UIComponent component) throws IOException {
+        Map<String, Object> attributes = component.getAttributes();
+
+        Object postConstruct = attributes.get(Widget.CALLBACK_POST_CONSTRUCT);
+        if (postConstruct != null) {
+            callback("postConstruct", "function(widget)", postConstruct.toString());
+        }
+
+        Object postRefresh = attributes.get(Widget.CALLBACK_POST_REFRESH);
+        if (postRefresh != null) {
+            callback("postRefresh", "function(widget)", postRefresh.toString());
+        }
+
+        Object preDestroy = attributes.get(Widget.CALLBACK_PRE_DESTROY);
+        if (preDestroy != null) {
+            callback("preDestroy", "function(widget)", preDestroy.toString());
+        }
+
+        return this;
+    }
+
     /**
      * This should only be used internally if the selector is directly used by jQuery on the client.
      * If PFS is used and specified by the user, {@link #attr(java.lang.String, java.lang.String)} should be used
      * as the users have to escape colons like @(myForm\:myId).
-     * 
+     *
      * @param name
      * @param value
      * @return
-     * @throws IOException 
+     * @throws IOException
      */
     public WidgetBuilder selectorAttr(String name, String value) throws IOException {
         if (value != null) {
@@ -124,14 +184,14 @@ public class WidgetBuilder {
 
         return this;
     }
-    
+
     public WidgetBuilder attr(String name, String value) throws IOException {
         if (value != null) {
             ResponseWriter rw = context.getResponseWriter();
             rw.write(",");
             rw.write(name);
             rw.write(":\"");
-            rw.write(ComponentUtils.escapeEcmaScriptText(value));
+            rw.write(EscapeUtils.forJavaScript(value));
             rw.write("\"");
         }
 
@@ -192,7 +252,7 @@ public class WidgetBuilder {
             rw.write(",");
             rw.write(name);
             rw.write(":\"");
-            rw.write(ComponentUtils.escapeEcmaScriptText(value));
+            rw.write(EscapeUtils.forJavaScript(value));
             rw.write("\"");
         }
 

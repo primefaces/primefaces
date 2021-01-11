@@ -1,26 +1,35 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2021 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.tieredmenu;
 
 import java.io.IOException;
 import java.util.List;
-import javax.faces.component.UIComponent;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
@@ -28,16 +37,18 @@ import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.Separator;
 import org.primefaces.model.menu.Submenu;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class TieredMenuRenderer extends BaseMenuRenderer {
 
+    @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         TieredMenu menu = (TieredMenu) abstractMenu;
-        String clientId = menu.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("TieredMenu", menu.resolveWidgetVar(), clientId)
+        wb.init("TieredMenu", menu)
                 .attr("autoDisplay", menu.isAutoDisplay())
                 .attr("toggleEvent", menu.getToggleEvent(), null);
 
@@ -48,6 +59,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         wb.finish();
     }
 
+    @Override
     protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         TieredMenu menu = (TieredMenu) abstractMenu;
         String style = menu.getStyle();
@@ -55,7 +67,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         String defaultStyleClass = menu.isOverlay() ? TieredMenu.DYNAMIC_CONTAINER_CLASS : TieredMenu.STATIC_CONTAINER_CLASS;
         styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
 
-        encodeMenu(context, menu, style, styleClass, "menu");
+        encodeMenu(context, menu, style, styleClass, HTML.ARIA_ROLE_MENU);
     }
 
     protected void encodeMenu(FacesContext context, AbstractMenu menu, String style, String styleClass, String role) throws IOException {
@@ -68,21 +80,21 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
-        writer.writeAttribute("role", "menubar", null);
 
         encodeKeyboardTarget(context, menu);
 
         writer.startElement("ul", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUBAR, null);
         writer.writeAttribute("class", Menu.LIST_CLASS, null);
 
         if (menu.getElementsCount() > 0) {
             encodeElements(context, menu, menu.getElements());
         }
 
-        if (optionsFacet != null) {
+        if (ComponentUtils.shouldRenderFacet(optionsFacet)) {
             writer.startElement("li", null);
             writer.writeAttribute("class", Menu.OPTIONS_CLASS, null);
-            writer.writeAttribute("role", "menuitem", null);
+            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
             optionsFacet.encodeAll(context);
             writer.endElement("li");
         }
@@ -105,11 +117,11 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
 
                     writer.startElement("li", null);
                     writer.writeAttribute("class", containerStyleClass, null);
-                    writer.writeAttribute("role", "menuitem", null);
+                    writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
                     if (containerStyle != null) {
                         writer.writeAttribute("style", containerStyle, null);
                     }
-                    encodeMenuItem(context, menu, menuItem);
+                    encodeMenuItem(context, menu, menuItem, "-1");
                     writer.endElement("li");
                 }
                 else if (element instanceof Submenu) {
@@ -126,8 +138,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
                     if (style != null) {
                         writer.writeAttribute("style", style, null);
                     }
-                    writer.writeAttribute("role", "menuitem", null);
-                    writer.writeAttribute("aria-haspopup", "true", null);
+                    writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
                     encodeSubmenu(context, menu, submenu);
                     writer.endElement("li");
                 }
@@ -142,16 +153,29 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String icon = submenu.getIcon();
         String label = submenu.getLabel();
+        boolean disabled = submenu.isDisabled();
 
         //title
         writer.startElement("a", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM, null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, "true", null);
         writer.writeAttribute("href", "#", null);
-        writer.writeAttribute("class", Menu.SUBMENU_LINK_CLASS, null);
         writer.writeAttribute("tabindex", "-1", null);
+
+        String styleClass = Menu.SUBMENU_LINK_CLASS;
+        if (disabled) {
+            styleClass = styleClass + " ui-state-disabled";
+        }
+        writer.writeAttribute("class", styleClass, null);
+
+        if (disabled) {
+            writer.writeAttribute("onclick", "return false;", null);
+        }
 
         if (icon != null) {
             writer.startElement("span", null);
             writer.writeAttribute("class", Menu.MENUITEM_ICON_CLASS + " " + icon, null);
+            writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
             writer.endElement("span");
         }
 
@@ -166,13 +190,15 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
 
         writer.endElement("a");
 
-        //submenus and menuitems
-        if (submenu.getElementsCount() > 0) {
-            writer.startElement("ul", null);
-            writer.writeAttribute("class", Menu.TIERED_CHILD_SUBMENU_CLASS, null);
-            writer.writeAttribute("role", "menu", null);
-            encodeElements(context, menu, submenu.getElements());
-            writer.endElement("ul");
+        if (!disabled) {
+            //submenus and menuitems
+            if (submenu.getElementsCount() > 0) {
+                writer.startElement("ul", null);
+                writer.writeAttribute("class", Menu.TIERED_CHILD_SUBMENU_CLASS, null);
+                writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
+                encodeElements(context, menu, submenu.getElements());
+                writer.endElement("ul");
+            }
         }
     }
 

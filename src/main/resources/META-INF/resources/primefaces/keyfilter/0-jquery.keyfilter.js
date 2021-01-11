@@ -1,7 +1,7 @@
 /*
  * This plugin filters keyboard input by specified regular expression.
  * Version 1.8
- * $Id$
+ * https://github.com/akzhan/jquery-keyfilter
  *
  * Source code inspired by Ext.JS (Ext.form.TextField, Ext.EventManager)
  *
@@ -93,14 +93,7 @@
 		63275 : 35  // end
 	};
 
-	var isNavKeyPress = function(e)
-	{
-		var k = e.keyCode;
-		k = $.browser.safari ? (SafariKeys[k] || k) : k;
-		return (k >= 33 && k <= 40) || k == Keys.RETURN || k == Keys.TAB || k == Keys.ESC;
-	};
-
-        var isSpecialKey = function(e)
+    var isSpecialKey = function(e)
 	{
 		var k = e.keyCode;
 		var c = e.charCode;
@@ -129,24 +122,24 @@
 
 	$.fn.keyfilter = function(re)
 	{
-		return this.keypress(function(e)
+		return this.on('keypress',function(e)
 		{
 			var keyNo = e.which;
-			if (keyNo == 17 || keyNo == 18) //keyCode.CONTROL and keyCode.ALT
+			if ($.browser.mozilla && (e.ctrlKey || e.altKey)) // PF GitHub #3785
+			{
+				return;
+			} 
+			else if (keyNo == 17 || keyNo == 18) // PF GitHub #1852 keyCode.CONTROL and keyCode.ALT
 			{
 				return;
 			}
-			var k = getKey(e);
-			if($.browser.mozilla && (isNavKeyPress(e) || k == Keys.BACKSPACE || (k == Keys.DELETE && e.charCode == 0)))
-			{
-				return;
-			}
+			
 			var c = getCharCode(e), cc = String.fromCharCode(c), ok = true;
 			if(!$.browser.mozilla && (isSpecialKey(e) || !cc))
 			{
 				return;
 			}
-			if ($.isFunction(re))
+			if (typeof re === "function")
 			{
 				ok = re.call(this, cc);
 			}
@@ -165,7 +158,7 @@
 		defaults: {
 			masks: defaultMasks
 		},
-		version: 1.7
+		version: 1.8
 	});
 
 	/* 
@@ -181,4 +174,3 @@
 	}); */
 
 })(jQuery);
-

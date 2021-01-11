@@ -1,21 +1,30 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2021 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.expression.impl;
 
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.faces.FacesException;
@@ -27,6 +36,7 @@ import javax.faces.context.FacesContext;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.expression.ClientIdSearchExpressionResolver;
+import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.expression.SearchExpressionResolver;
 
 /**
@@ -37,19 +47,21 @@ public class RowExpressionResolver implements SearchExpressionResolver, ClientId
     private static final Pattern PATTERN = Pattern.compile("@row\\((\\d+)\\)");
 
     @Override
-    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
+    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression,
+            Set<SearchExpressionHint> hints) {
         throw new FacesException("@row likely returns multiple components, therefore it's not supported in #resolveComponent... expression \""
                 + expression + "\" referenced from \"" + source.getClientId(context) + "\".");
     }
 
     @Override
-    public String resolveClientIds(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
+    public String resolveClientIds(FacesContext context, UIComponent source, UIComponent last, String expression,
+            Set<SearchExpressionHint> hints) {
 
         int row = validate(context, source, last, expression);
         UIData data = (UIData) last;
-        char seperatorChar = UINamingContainer.getSeparatorChar(context);
+        char separatorChar = UINamingContainer.getSeparatorChar(context);
 
-        String clientIds = "";
+        StringBuilder clientIds = new StringBuilder();
 
         for (UIComponent column : data.getChildren()) {
             // handle dynamic columns
@@ -61,11 +73,18 @@ public class RowExpressionResolver implements SearchExpressionResolver, ClientId
                     for (UIComponent comp : column.getChildren()) {
 
                         if (clientIds.length() > 0) {
-                            clientIds += " ";
+                            clientIds.append(" ");
                         }
 
-                        clientIds += data.getClientId(context) + seperatorChar + row + seperatorChar
-                                + dynamicColumn.getId() + seperatorChar + i + seperatorChar + comp.getId();
+                        clientIds.append(data.getClientId(context));
+                        clientIds.append(separatorChar);
+                        clientIds.append(row);
+                        clientIds.append(separatorChar);
+                        clientIds.append(dynamicColumn.getId());
+                        clientIds.append(separatorChar);
+                        clientIds.append(i);
+                        clientIds.append(separatorChar);
+                        clientIds.append(comp.getId());
                     }
                 }
             }
@@ -73,15 +92,19 @@ public class RowExpressionResolver implements SearchExpressionResolver, ClientId
                 for (UIComponent cell : column.getChildren()) {
 
                     if (clientIds.length() > 0) {
-                        clientIds += " ";
+                        clientIds.append(" ");
                     }
 
-                    clientIds += data.getClientId(context) + seperatorChar + row + seperatorChar + cell.getId();
+                    clientIds.append(data.getClientId(context));
+                    clientIds.append(separatorChar);
+                    clientIds.append(row);
+                    clientIds.append(separatorChar);
+                    clientIds.append(cell.getId());
                 }
             }
         }
 
-        return clientIds;
+        return clientIds.toString();
     }
 
     protected int validate(FacesContext context, UIComponent source, UIComponent last, String expression) {

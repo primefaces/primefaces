@@ -5,6 +5,10 @@
  *  ContentFlow is distributed under the terms of the MIT license.
  *  (see http://www.jacksasylum.eu/ContentFlow/LICENSE)
  *
+ * For documentation, see
+ * https://web.archive.org/web/20111231134932/http://www.jacksasylum.eu/ContentFlow/docu.php
+ * https://github.com/tkounenis/bower-contentflow
+ * 
  *--------------------------------------------------------------------------*/
 /* 
  * ============================================================
@@ -2023,7 +2027,7 @@ ContentFlow.prototype = {
         var itemN = currentItem.next;
 
         this._positionItem(currentItem, 0);
-        for (var i=1; i <= this.conf.visibleItems && 2*i < this.items.length ; i++) {
+        for (var i=1; i <= this.conf.visibleItems; i++) {
             if (itemP) {
                 this._positionItem(itemP, -i);
                 this._lastStart = itemP;
@@ -2545,16 +2549,37 @@ if (!window.removeEvent) {
 //ContentFlowGlobal.init();
 
 /**
- * PrimeFaces ContentFlow Widget
+ * __PrimeFaces ContentFlow Widget__
+ * 
+ * ContentFlow is a horizontal content gallery component with a slide animation.
+ * 
+ * @prop {ContentFlowGlobal.ContentFlow} cf The content flow instance for this gallery. You can use it to interact with
+ * the gallery programmatically.
+ * 
+ * @interface {PrimeFaces.widget.ContentFlowCfg} cfg The configuration for the {@link  ContentFlow| ContentFlow widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.DeferredWidgetCfg} cfg
  */
 PrimeFaces.widget.ContentFlow = PrimeFaces.widget.DeferredWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
         
         this.renderDeferred();
     },
     
+    /**
+     * @include
+     * @override
+     * @protected
+     * @inheritdoc
+     */
      _render: function() {
         this.cf = new ContentFlow(this.id, this.cfg);
      }

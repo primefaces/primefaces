@@ -69,7 +69,6 @@
 
 .ui-tree .ui-chkbox {
     display: inline-block;
-    zoom: 1;
 }
 
 /** Horizontal Tree **/
@@ -91,6 +90,10 @@
 .ui-tree.ui-tree-horizontal .ui-tree-toggler,
 .ui-tree.ui-tree-horizontal .ui-treenode-icon {
     vertical-align: bottom;
+}
+
+.ui-tree.ui-tree-horizontal .ui-treenode-label {
+    outline: 0 none;
 }
 
 .ui-tree-horizontal .ui-treenode-content {

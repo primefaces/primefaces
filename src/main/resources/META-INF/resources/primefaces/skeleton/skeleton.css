@@ -1,0 +1,33 @@
+.ui-skeleton {
+    position: relative;
+    overflow: hidden;
+}
+
+.ui-skeleton::after {
+    content: "";
+    animation: ui-skeleton-animation 1.2s infinite;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translateX(-100%);
+    z-index: 1;
+}
+
+.ui-skeleton-circle {
+    border-radius: 50%;
+}
+
+.ui-skeleton-none::after {
+    animation: none;
+}
+
+@keyframes ui-skeleton-animation {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(100%);
+    }
+}

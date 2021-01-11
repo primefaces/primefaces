@@ -19,6 +19,7 @@
 .ui-picklist .ui-picklist-list li {
     margin: 1px;
     padding: 2px;
+    overflow-wrap: break-word;
 }
 
 .ui-picklist .ui-button {

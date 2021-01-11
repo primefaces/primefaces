@@ -1,17 +1,25 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2021 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.behavior.confirm;
 
@@ -20,14 +28,15 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.context.FacesContext;
 import org.primefaces.behavior.base.AbstractBehavior;
+import org.primefaces.behavior.base.BehaviorAttribute;
 import org.primefaces.component.api.Confirmable;
-import org.primefaces.json.JSONObject;
+import org.json.JSONObject;
 
 public class ConfirmBehavior extends AbstractBehavior {
 
-    public final static String BEHAVIOR_ID = "org.primefaces.behavior.ConfirmBehavior";
+    public static final String BEHAVIOR_ID = "org.primefaces.behavior.ConfirmBehavior";
 
-    public enum PropertyKeys {
+    public enum PropertyKeys implements BehaviorAttribute {
         header(String.class),
         message(String.class),
         icon(String.class),
@@ -35,30 +44,40 @@ public class ConfirmBehavior extends AbstractBehavior {
         beforeShow(String.class),
         escape(Boolean.class);
 
-        public final Class<?> expectedType;
+        private final Class<?> expectedType;
 
         PropertyKeys(Class<?> expectedType) {
             this.expectedType = expectedType;
+        }
+
+        @Override
+        public Class<?> getExpectedType() {
+            return expectedType;
         }
     }
 
     @Override
     public String getScript(ClientBehaviorContext behaviorContext) {
+        FacesContext context = behaviorContext.getFacesContext();
+        UIComponent component = behaviorContext.getComponent();
+
         if (isDisabled()) {
+            if (component instanceof Confirmable) {
+                ((Confirmable) component).setConfirmationScript(null);
+            }
+
             return null;
         }
 
-        FacesContext context = behaviorContext.getFacesContext();
-        UIComponent component = behaviorContext.getComponent();
         String source = component.getClientId(context);
-        String headerText = JSONObject.quote(this.getHeader());
-        String messageText = JSONObject.quote(this.getMessage());
-        String beforeShow = JSONObject.quote(this.getBeforeShow());
-        
+        String headerText = JSONObject.quote(getHeader());
+        String messageText = JSONObject.quote(getMessage());
+        String beforeShow = JSONObject.quote(getBeforeShow());
+
         if (component instanceof Confirmable) {
             String sourceProperty = (source == null) ? "source:this" : "source:\"" + source + "\"";
             String script = "PrimeFaces.confirm({" + sourceProperty
-                                                   + ",escape:" + this.isEscape()
+                                                   + ",escape:" + isEscape()
                                                    + ",header:" + headerText
                                                    + ",message:" + messageText
                                                    + ",icon:\"" + getIcon()
@@ -75,7 +94,7 @@ public class ConfirmBehavior extends AbstractBehavior {
     }
 
     @Override
-    protected Enum<?>[] getAllProperties() {
+    protected BehaviorAttribute[] getAllAttributes() {
         return PropertyKeys.values();
     }
 
@@ -84,7 +103,7 @@ public class ConfirmBehavior extends AbstractBehavior {
     }
 
     public void setHeader(String header) {
-        setLiteral(PropertyKeys.header, header);
+        put(PropertyKeys.header, header);
     }
 
     public String getMessage() {
@@ -92,7 +111,7 @@ public class ConfirmBehavior extends AbstractBehavior {
     }
 
     public void setMessage(String message) {
-        setLiteral(PropertyKeys.message, message);
+        put(PropertyKeys.message, message);
     }
 
     public String getIcon() {
@@ -100,7 +119,7 @@ public class ConfirmBehavior extends AbstractBehavior {
     }
 
     public void setIcon(String icon) {
-        setLiteral(PropertyKeys.icon, icon);
+        put(PropertyKeys.icon, icon);
     }
 
     public boolean isDisabled() {
@@ -108,15 +127,15 @@ public class ConfirmBehavior extends AbstractBehavior {
     }
 
     public void setDisabled(boolean disabled) {
-        setLiteral(PropertyKeys.disabled, disabled);
+        put(PropertyKeys.disabled, disabled);
     }
-    
+
     public String getBeforeShow() {
         return eval(PropertyKeys.beforeShow, null);
     }
 
     public void setBeforeShow(String beforeShow) {
-        setLiteral(PropertyKeys.beforeShow, beforeShow);
+        put(PropertyKeys.beforeShow, beforeShow);
     }
 
     public boolean isEscape() {
@@ -124,6 +143,6 @@ public class ConfirmBehavior extends AbstractBehavior {
     }
 
     public void setEscape(boolean escape) {
-        setLiteral(PropertyKeys.escape, escape);
+        put(PropertyKeys.escape, escape);
     }
 }

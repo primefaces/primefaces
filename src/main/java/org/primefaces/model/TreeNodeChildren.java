@@ -1,17 +1,25 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2021 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.model;
 
@@ -20,6 +28,8 @@ import java.util.Collection;
 import java.util.Iterator;
 
 public class TreeNodeChildren extends TreeNodeList {
+
+    private static final long serialVersionUID = 1L;
 
     private TreeNode parent;
 
@@ -44,7 +54,7 @@ public class TreeNodeChildren extends TreeNodeList {
             eraseParent(node);
             boolean result = super.add(node);
             node.setParent(parent);
-            updateRowKeys(parent);
+            updateRowKeys(parent.getChildCount() - 1, parent);
             return result;
         }
     }
@@ -61,13 +71,14 @@ public class TreeNodeChildren extends TreeNodeList {
             eraseParent(node);
             super.add(index, node);
             node.setParent(parent);
-            updateRowKeys(parent);
+            updateRowKeys(index, parent);
         }
     }
 
     @Override
     public boolean addAll(Collection<? extends TreeNode> collection) {
         Iterator<TreeNode> elements = (new ArrayList<TreeNode>(collection)).iterator();
+        int index = collection.size();
         boolean changed = false;
         while (elements.hasNext()) {
             TreeNode node = elements.next();
@@ -83,7 +94,7 @@ public class TreeNodeChildren extends TreeNodeList {
         }
 
         if (changed) {
-            updateRowKeys(parent);
+            updateRowKeys(index, parent);
         }
 
         return (changed);
@@ -107,7 +118,7 @@ public class TreeNodeChildren extends TreeNodeList {
         }
 
         if (changed) {
-            updateRowKeys(parent);
+            updateRowKeys(index, parent);
         }
 
         return (changed);
@@ -130,7 +141,7 @@ public class TreeNodeChildren extends TreeNodeList {
             super.set(index, node);
             previous.setParent(null);
             node.setParent(parent);
-            updateRowKeys(parent);
+            updateRowKeys(parent, node, index);
             return previous;
         }
     }
@@ -142,6 +153,7 @@ public class TreeNodeChildren extends TreeNodeList {
      * @param node node to be stored at the specified position
      * @return the node previously at the specified position
      */
+    @Override
     public TreeNode setSibling(int index, TreeNode node) {
         if (node == null) {
             throw new NullPointerException();
@@ -157,7 +169,7 @@ public class TreeNodeChildren extends TreeNodeList {
             TreeNode previous = get(index);
             super.set(index, node);
             node.setParent(parent);
-            updateRowKeys(parent);
+            updateRowKeys(parent, node, index);
             return previous;
         }
     }
@@ -167,7 +179,7 @@ public class TreeNodeChildren extends TreeNodeList {
         TreeNode node = get(index);
         node.setParent(null);
         super.remove(index);
-        updateRowKeys(parent);
+        updateRowKeys(index, parent);
         return node;
     }
 
@@ -182,8 +194,9 @@ public class TreeNodeChildren extends TreeNodeList {
             node.clearParent();
         }
 
+        int index = super.indexOf(node);
         if (super.remove(node)) {
-            updateRowKeys(parent);
+            updateRowKeys(index, parent);
             return true;
         }
         else {
@@ -197,10 +210,25 @@ public class TreeNodeChildren extends TreeNodeList {
             for (int i = 0; i < childCount; i++) {
                 TreeNode childNode = node.getChildren().get(i);
 
-                String childRowKey = (node.getParent() == null) ? String.valueOf(i) : node.getRowKey() + "_" + i;
-                childNode.setRowKey(childRowKey);
-                updateRowKeys(childNode);
+                updateRowKeys(node, childNode, i);
             }
         }
     }
+
+    private void updateRowKeys(int index, TreeNode node) {
+        int childCount = node.getChildCount();
+        if (childCount > 0) {
+            for (int i = index; i < childCount; i++) {
+                TreeNode childNode = node.getChildren().get(i);
+                updateRowKeys(node, childNode, i);
+            }
+        }
+    }
+
+    private void updateRowKeys(TreeNode node, TreeNode childNode, int i) {
+        String childRowKey = node.getParent() == null ? String.valueOf(i) : node.getRowKey() + "_" + i;
+        childNode.setRowKey(childRowKey);
+        this.updateRowKeys(childNode);
+    }
+
 }

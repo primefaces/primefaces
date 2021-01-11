@@ -1,0 +1,2 @@
+Error: [tagMissingTypedef] Tag @typedef must specify a type, eg. '@typedef {string} MethodTypedefType'
+at <unknown> (${PROJECT_BASEDIR}/src/main/type-definitions/specs/components/MethodTypedefMissingType/input.js:12:7)

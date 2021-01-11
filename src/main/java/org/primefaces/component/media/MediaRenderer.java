@@ -1,17 +1,25 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2021 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.media;
 
@@ -22,15 +30,14 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.application.resource.DynamicContentType;
 
+import org.primefaces.application.resource.DynamicContentType;
 import org.primefaces.component.media.player.MediaPlayer;
 import org.primefaces.component.media.player.MediaPlayerFactory;
-import org.primefaces.model.StreamedContent;
+import org.primefaces.component.media.player.PDFPlayer;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AgentUtils;
 import org.primefaces.util.DynamicContentSrcBuilder;
-import org.primefaces.util.HTML;
 
 public class MediaRenderer extends CoreRenderer {
 
@@ -48,25 +55,15 @@ public class MediaRenderer extends CoreRenderer {
         }
         boolean isIE = AgentUtils.isIE(context);
         String sourceParam = player.getSourceParam();
-
-        Object value = media.getValue();
-        if (value != null && value instanceof StreamedContent && player.getType().equals("application/pdf")) {
-            StreamedContent streamedContent = (StreamedContent) value;
-            if (streamedContent.getName() != null) {
-                int index = src.indexOf("?");
-                src = src.substring(0, index) + ";/" + streamedContent.getName() + "" + src.substring(index, src.length());
-            }
-        }
-        
         String type = player.getType();
-        if (type != null && type.equals("application/pdf")) {
+        if (type != null && PDFPlayer.MIME_TYPE.equals(type)) {
             String view = media.getView();
             String zoom = media.getZoom();
-            
+
             if (view != null) {
                 src = src + "#view=" + view;
             }
-            
+
             if (zoom != null) {
                 src += (view != null) ? "&zoom=" + zoom : "#zoom=" + zoom;
             }
@@ -84,7 +81,7 @@ public class MediaRenderer extends CoreRenderer {
             writer.writeAttribute("class", media.getStyleClass(), null);
         }
 
-        renderPassThruAttributes(context, media, HTML.MEDIA_ATTRS);
+        renderPassThruAttributes(context, media, Media.MEDIA_ATTRS);
 
         if (sourceParam != null) {
             encodeParam(writer, player.getSourceParam(), src, false);
@@ -149,7 +146,7 @@ public class MediaRenderer extends CoreRenderer {
                 + media.getClientId(context) + "', cannot play source:" + media.getValue());
     }
 
-    protected String getMediaSrc(FacesContext context, Media media) throws Exception {
+    protected String getMediaSrc(FacesContext context, Media media) {
         return DynamicContentSrcBuilder.build(context, media.getValue(), media, media.isCache(), DynamicContentType.STREAMED_CONTENT, true);
     }
 

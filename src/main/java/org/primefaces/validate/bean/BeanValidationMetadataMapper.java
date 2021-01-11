@@ -1,17 +1,25 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2021 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.validate.bean;
 
@@ -30,44 +38,42 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.validation.MessageInterpolator;
-import javax.validation.constraints.AssertFalse;
-import javax.validation.constraints.AssertTrue;
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.Future;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
-import javax.validation.constraints.Past;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import javax.validation.metadata.ConstraintDescriptor;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.metadata.BeanValidationMetadataExtractor;
+import org.primefaces.util.MapBuilder;
 
 public class BeanValidationMetadataMapper {
 
-    private static final Logger LOG = Logger.getLogger(BeanValidationMetadataMapper.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(BeanValidationMetadataMapper.class.getName());
 
-    private static final Map<Class<? extends Annotation>, ClientValidationConstraint> CONSTRAINT_MAPPING
-            = new HashMap<Class<? extends Annotation>, ClientValidationConstraint>();
+    private static final Map<String, ClientValidationConstraint> CONSTRAINT_MAPPING
+            = MapBuilder.<String, ClientValidationConstraint>builder()
+                    .put(AssertFalseClientValidationConstraint.CONSTRAINT_CLASS_NAME, new AssertFalseClientValidationConstraint())
+                    .put(AssertTrueClientValidationConstraint.CONSTRAINT_CLASS_NAME, new AssertTrueClientValidationConstraint())
+                    .put(DecimalMaxClientValidationConstraint.CONSTRAINT_CLASS_NAME, new DecimalMaxClientValidationConstraint())
+                    .put(DecimalMinClientValidationConstraint.CONSTRAINT_CLASS_NAME, new DecimalMinClientValidationConstraint())
+                    .put(DigitsClientValidationConstraint.CONSTRAINT_CLASS_NAME, new DigitsClientValidationConstraint())
+                    .put(EmailClientValidationConstraint.CONSTRAINT_CLASS_NAME, new EmailClientValidationConstraint())
+                    .put(FutureClientValidationConstraint.CONSTRAINT_CLASS_NAME, new FutureClientValidationConstraint())
+                    .put(FutureOrPresentClientValidationConstraint.CONSTRAINT_CLASS_NAME, new FutureOrPresentClientValidationConstraint())
+                    .put(MaxClientValidationConstraint.CONSTRAINT_CLASS_NAME, new MaxClientValidationConstraint())
+                    .put(MinClientValidationConstraint.CONSTRAINT_CLASS_NAME, new MinClientValidationConstraint())
+                    .put(NegativeClientValidationConstraint.CONSTRAINT_CLASS_NAME, new NegativeClientValidationConstraint())
+                    .put(NegativeOrZeroClientValidationConstraint.CONSTRAINT_CLASS_NAME, new NegativeOrZeroClientValidationConstraint())
+                    .put(NotBlankClientValidationConstraint.CONSTRAINT_CLASS_NAME, new NotBlankClientValidationConstraint())
+                    .put(NotEmptyClientValidationConstraint.CONSTRAINT_CLASS_NAME, new NotEmptyClientValidationConstraint())
+                    .put(NotNullClientValidationConstraint.CONSTRAINT_CLASS_NAME, new NotNullClientValidationConstraint())
+                    .put(NullClientValidationConstraint.CONSTRAINT_CLASS_NAME, new NullClientValidationConstraint())
+                    .put(PastClientValidationConstraint.CONSTRAINT_CLASS_NAME, new PastClientValidationConstraint())
+                    .put(PastOrPresentClientValidationConstraint.CONSTRAINT_CLASS_NAME, new PastOrPresentClientValidationConstraint())
+                    .put(PatternClientValidationConstraint.CONSTRAINT_CLASS_NAME, new PatternClientValidationConstraint())
+                    .put(PositiveClientValidationConstraint.CONSTRAINT_CLASS_NAME, new PositiveClientValidationConstraint())
+                    .put(PositiveOrZeroClientValidationConstraint.CONSTRAINT_CLASS_NAME, new PositiveOrZeroClientValidationConstraint())
+                    .put(SizeClientValidationConstraint.CONSTRAINT_CLASS_NAME, new SizeClientValidationConstraint())
+                    .build();
 
-    static {
-        CONSTRAINT_MAPPING.put(NotNull.class, new NotNullClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(Null.class, new NullClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(Size.class, new SizeClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(Min.class, new MinClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(Max.class, new MaxClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(DecimalMin.class, new DecimalMinClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(DecimalMax.class, new DecimalMaxClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(AssertTrue.class, new AssertTrueClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(AssertFalse.class, new AssertFalseClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(Digits.class, new DigitsClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(Past.class, new PastClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(Future.class, new FutureClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(Pattern.class, new PatternClientValidationConstraint());
+    private BeanValidationMetadataMapper() {
     }
 
     public static BeanValidationMetadata resolveValidationMetadata(FacesContext context, UIComponent component, PrimeApplicationContext applicationContext)
@@ -96,7 +102,7 @@ public class BeanValidationMetadataMapper {
                     Class<?> annotationType = constraintDescriptor.getAnnotation().annotationType();
 
                     // lookup ClientValidationConstraint by constraint annotation (e.g. @NotNull)
-                    ClientValidationConstraint clientValidationConstraint = CONSTRAINT_MAPPING.get(annotationType);
+                    ClientValidationConstraint clientValidationConstraint = CONSTRAINT_MAPPING.get(annotationType.getName());
 
                     // mapping available? Otherwise try to lookup custom constraint
                     if (clientValidationConstraint == null) {
@@ -110,7 +116,7 @@ public class BeanValidationMetadataMapper {
                                 try {
                                     // TODO AppScoped instances? CDI?
                                     // instantiate ClientValidationConstraint
-                                    clientValidationConstraint = (ClientValidationConstraint) resolvedBy.newInstance();
+                                    clientValidationConstraint = (ClientValidationConstraint) resolvedBy.getConstructor().newInstance();
                                 }
                                 catch (Exception e) {
                                     throw new FacesException("Could not instantiate ClientValidationConstraint!", e);
@@ -155,7 +161,7 @@ public class BeanValidationMetadataMapper {
             String message = "Skip resolving of CSV BV metadata for component \"" + component.getClientId(context) + "\" because"
                     + " the ValueExpression of the \"value\" attribute"
                     + " isn't resolvable completely (e.g. a sub-expression returns null)";
-            LOG.log(Level.FINE, message);
+            LOGGER.log(Level.FINE, message);
         }
 
         if (metadata == null && validatorIds == null) {
@@ -166,10 +172,10 @@ public class BeanValidationMetadataMapper {
     }
 
     public static void registerConstraintMapping(Class<? extends Annotation> constraint, ClientValidationConstraint clientValidationConstraint) {
-        CONSTRAINT_MAPPING.put(constraint, clientValidationConstraint);
+        CONSTRAINT_MAPPING.put(constraint.getName(), clientValidationConstraint);
     }
 
     public static ClientValidationConstraint removeConstraintMapping(Class<? extends Annotation> constraint) {
-        return CONSTRAINT_MAPPING.remove(constraint);
+        return CONSTRAINT_MAPPING.remove(constraint.getName());
     }
 }

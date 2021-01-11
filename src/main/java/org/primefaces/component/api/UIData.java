@@ -1,46 +1,32 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2021 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
- /*
- * Copyright 2009-2015 PrimeTek.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.api;
 
 import java.io.IOException;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import javax.el.ELContext;
-import javax.el.ValueExpression;
+import java.util.*;
+
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
@@ -48,240 +34,75 @@ import javax.faces.application.StateManager;
 import javax.faces.component.*;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
-import javax.faces.component.visit.VisitHint;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PostValidateEvent;
 import javax.faces.event.PreRenderComponentEvent;
 import javax.faces.event.PreValidateEvent;
-import javax.faces.model.ArrayDataModel;
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
-import javax.faces.model.ResultSetDataModel;
-import javax.faces.model.ScalarDataModel;
+import javax.faces.model.*;
 import javax.faces.render.Renderer;
+
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.model.CollectionDataModel;
 import org.primefaces.model.IterableDataModel;
+import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.ComponentTraversalUtils;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.SharedStringBuilder;
 
+/**
+ * Enhanced version of the JSF UIData.
+ * It also contains some methods of the Mojarra impl (e.g. setRowIndexRowStatePreserved), maybe can remove it in the future.
+ */
+@SuppressWarnings("unchecked")
 public class UIData extends javax.faces.component.UIData {
 
-    public static final String PAGINATOR_TOP_CONTAINER_CLASS = "ui-paginator ui-paginator-top ui-widget-header";
-    public static final String PAGINATOR_BOTTOM_CONTAINER_CLASS = "ui-paginator ui-paginator-bottom ui-widget-header";
-    public static final String PAGINATOR_PAGES_CLASS = "ui-paginator-pages";
-    public static final String PAGINATOR_TOP_LEFT_CONTENT_CLASS = "ui-paginator-top-left-content";
-    public static final String PAGINATOR_TOP_RIGHT_CONTENT_CLASS = "ui-paginator-top-right-content";
-    public static final String PAGINATOR_BOTTOM_LEFT_CONTENT_CLASS = "ui-paginator-bottom-left-content";
-    public static final String PAGINATOR_BOTTOM_RIGHT_CONTENT_CLASS = "ui-paginator-bottom-right-content";
-    public static final String PAGINATOR_PAGE_CLASS = "ui-paginator-page ui-state-default ui-corner-all";
-    public static final String PAGINATOR_ACTIVE_PAGE_CLASS = "ui-paginator-page ui-state-default ui-state-active ui-corner-all";
-    public static final String PAGINATOR_CURRENT_CLASS = "ui-paginator-current";
-    public static final String PAGINATOR_RPP_OPTIONS_CLASS = "ui-paginator-rpp-options ui-widget ui-state-default ui-corner-left";
-    public static final String PAGINATOR_RPP_LABEL_CLASS = "ui-paginator-rpp-label ui-helper-hidden";
-    public static final String PAGINATOR_JTP_CLASS = "ui-paginator-jtp-select ui-widget ui-state-default ui-corner-left";
-    public static final String PAGINATOR_FIRST_PAGE_LINK_CLASS = "ui-paginator-first ui-state-default ui-corner-all";
-    public static final String PAGINATOR_FIRST_PAGE_ICON_CLASS = "ui-icon ui-icon-seek-first";
-    public static final String PAGINATOR_PREV_PAGE_LINK_CLASS = "ui-paginator-prev ui-state-default ui-corner-all";
-    public static final String PAGINATOR_PREV_PAGE_ICON_CLASS = "ui-icon ui-icon-seek-prev";
-    public static final String PAGINATOR_NEXT_PAGE_LINK_CLASS = "ui-paginator-next ui-state-default ui-corner-all";
-    public static final String PAGINATOR_NEXT_PAGE_ICON_CLASS = "ui-icon ui-icon-seek-next";
-    public static final String PAGINATOR_LAST_PAGE_LINK_CLASS = "ui-paginator-last ui-state-default ui-corner-all";
-    public static final String PAGINATOR_LAST_PAGE_ICON_CLASS = "ui-icon ui-icon-seek-end";
-    public static final String ARIA_HEADER_LABEL = "primefaces.paginator.aria.HEADER";
-    public static final String ARIA_FIRST_PAGE_LABEL = "primefaces.paginator.aria.FIRST_PAGE";
-    public static final String ARIA_PREVIOUS_PAGE_LABEL = "primefaces.paginator.aria.PREVIOUS_PAGE";
-    public static final String ARIA_NEXT_PAGE_LABEL = "primefaces.paginator.aria.NEXT_PAGE";
-    public static final String ARIA_LAST_PAGE_LABEL = "primefaces.paginator.aria.LAST_PAGE";
-    public static final String ROWS_PER_PAGE_LABEL = "primefaces.paginator.aria.ROWS_PER_PAGE";
-    
     private static final String SB_ID = UIData.class.getName() + "#id";
+
+    private final Map<String, Object> _rowTransientStates = new HashMap<>();
+    private Map<String, Object> _rowDeltaStates = new HashMap<>();
+    private Object _initialDescendantFullComponentState = null;
 
     private String clientId = null;
     private DataModel model = null;
-    private Object oldVar = null;
-    private Map<String, Object> _rowDeltaStates = new HashMap<String, Object>();
-    private Map<String, Object> _rowTransientStates = new HashMap<String, Object>();
-    private Object _initialDescendantFullComponentState = null;
     private Boolean isNested = null;
+    private Object oldVar = null;
 
     public enum PropertyKeys {
-        paginator, paginatorTemplate, rowsPerPageTemplate, rowsPerPageLabel, currentPageReportTemplate, pageLinks, paginatorPosition, paginatorAlwaysVisible, rowIndex, rowIndexVar, saved, lazy, rowStatePreserved;
-
-        String toString;
-
-        PropertyKeys(String toString) {
-            this.toString = toString;
-        }
-
-        PropertyKeys() {
-        }
-
-        public String toString() {
-            return ((this.toString != null) ? this.toString : super.toString());
-        }
-    }
-
-    public boolean isPaginator() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.paginator, false);
-    }
-
-    public void setPaginator(boolean _paginator) {
-        getStateHelper().put(PropertyKeys.paginator, _paginator);
-    }
-
-    public java.lang.String getPaginatorTemplate() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.paginatorTemplate, "{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}");
-    }
-
-    public void setPaginatorTemplate(java.lang.String _paginatorTemplate) {
-        getStateHelper().put(PropertyKeys.paginatorTemplate, _paginatorTemplate);
-    }
-
-    public java.lang.String getRowsPerPageTemplate() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.rowsPerPageTemplate, null);
-    }
-
-    public void setRowsPerPageTemplate(java.lang.String _rowsPerPageTemplate) {
-        getStateHelper().put(PropertyKeys.rowsPerPageTemplate, _rowsPerPageTemplate);
-    }
-
-    public java.lang.String getRowsPerPageLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.rowsPerPageLabel, null);
-    }
-
-    public void setRowsPerPageLabel(java.lang.String _rowsPerPageLabel) {
-        getStateHelper().put(PropertyKeys.rowsPerPageLabel, _rowsPerPageLabel);
-    }
-
-    public java.lang.String getCurrentPageReportTemplate() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.currentPageReportTemplate, "({currentPage} of {totalPages})");
-    }
-
-    public void setCurrentPageReportTemplate(java.lang.String _currentPageReportTemplate) {
-        getStateHelper().put(PropertyKeys.currentPageReportTemplate, _currentPageReportTemplate);
-    }
-
-    public int getPageLinks() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.pageLinks, 10);
-    }
-
-    public void setPageLinks(int _pageLinks) {
-        getStateHelper().put(PropertyKeys.pageLinks, _pageLinks);
-    }
-
-    public java.lang.String getPaginatorPosition() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.paginatorPosition, "both");
-    }
-
-    public void setPaginatorPosition(java.lang.String _paginatorPosition) {
-        getStateHelper().put(PropertyKeys.paginatorPosition, _paginatorPosition);
-    }
-
-    public boolean isPaginatorAlwaysVisible() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.paginatorAlwaysVisible, true);
-    }
-
-    public void setPaginatorAlwaysVisible(boolean _paginatorAlwaysVisible) {
-        getStateHelper().put(PropertyKeys.paginatorAlwaysVisible, _paginatorAlwaysVisible);
+        rowIndex,
+        rowIndexVar,
+        saved,
+        lazy,
+        rowStatePreserved
     }
 
     public boolean isLazy() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.lazy, false);
+        return ComponentUtils.eval(getStateHelper(), PropertyKeys.lazy, () -> getValue() instanceof LazyDataModel);
     }
 
-    public void setLazy(boolean _lazy) {
-        getStateHelper().put(PropertyKeys.lazy, _lazy);
+    public void setLazy(boolean lazy) {
+        getStateHelper().put(PropertyKeys.lazy, lazy);
     }
 
-    public java.lang.String getRowIndexVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.rowIndexVar, null);
+    public String getRowIndexVar() {
+        return (String) getStateHelper().eval(PropertyKeys.rowIndexVar, null);
     }
 
-    public void setRowIndexVar(java.lang.String _rowIndexVar) {
-        getStateHelper().put(PropertyKeys.rowIndexVar, _rowIndexVar);
+    public void setRowIndexVar(String rowIndexVar) {
+        getStateHelper().put(PropertyKeys.rowIndexVar, rowIndexVar);
     }
 
+    @Override
     public boolean isRowStatePreserved() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.rowStatePreserved, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.rowStatePreserved, false);
     }
 
-    public void setRowStatePreserved(boolean _paginator) {
-        getStateHelper().put(PropertyKeys.rowStatePreserved, _paginator);
-    }
-
-    public void calculateFirst() {
-        int rows = this.getRows();
-
-        if (rows > 0) {
-            int first = this.getFirst();
-            int rowCount = this.getRowCount();
-
-            if (rowCount > 0 && first >= rowCount) {
-                int numberOfPages = (int) Math.ceil(rowCount * 1d / rows);
-
-                this.setFirst(Math.max((numberOfPages - 1) * rows, 0));
-            }
-        }
-    }
-
-    public int getPage() {
-        if (this.getRowCount() > 0) {
-            int rows = this.getRowsToRender();
-
-            if (rows > 0) {
-                int first = this.getFirst();
-
-                return (int) (first / rows);
-            }
-            else {
-                return 0;
-            }
-        }
-        else {
-            return 0;
-        }
-    }
-
-    public int getPageCount() {
-        return (int) Math.ceil(this.getRowCount() * 1d / this.getRowsToRender());
-    }
-
-    public int getRowsToRender() {
-        int rows = this.getRows();
-
-        return rows == 0 ? this.getRowCount() : rows;
-    }
-
-    public boolean isPaginationRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_pagination");
-    }
-
-    public void updatePaginationData(FacesContext context, UIData data) {
-        data.setRowIndex(-1);
-        String componentClientId = data.getClientId(context);
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        ELContext elContext = context.getELContext();
-
-        String firstParam = params.get(componentClientId + "_first");
-        String rowsParam = params.get(componentClientId + "_rows");
-
-        data.setFirst(Integer.valueOf(firstParam));
-        data.setRows(Integer.valueOf(rowsParam));
-
-        ValueExpression firstVe = data.getValueExpression("first");
-        ValueExpression rowsVe = data.getValueExpression("rows");
-
-        if (firstVe != null && !firstVe.isReadOnly(elContext)) {
-            firstVe.setValue(context.getELContext(), data.getFirst());
-        }
-        if (rowsVe != null && !rowsVe.isReadOnly(elContext)) {
-            rowsVe.setValue(context.getELContext(), data.getRows());
-        }
+    @Override
+    public void setRowStatePreserved(boolean rowStatePreserved) {
+        getStateHelper().put(PropertyKeys.rowStatePreserved, rowStatePreserved);
     }
 
     @Override
@@ -325,21 +146,22 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     protected void processPhase(FacesContext context, PhaseId phaseId) {
+        processFacets(context, phaseId);
+        if (requiresColumns()) {
+            processColumnFacets(context, phaseId);
+        }
+
         if (shouldSkipChildren(context)) {
             return;
         }
 
         setRowIndex(-1);
-        processFacets(context, phaseId);
-        if (requiresColumns()) {
-            processColumnFacets(context, phaseId);
-        }
         processChildren(context, phaseId);
         setRowIndex(-1);
     }
 
     protected void processFacets(FacesContext context, PhaseId phaseId) {
-        if (this.getFacetCount() > 0) {
+        if (getFacetCount() > 0) {
             for (UIComponent facet : getFacets().values()) {
                 process(context, facet, phaseId);
             }
@@ -347,7 +169,7 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     protected void processColumnFacets(FacesContext context, PhaseId phaseId) {
-        for (UIComponent child : this.getChildren()) {
+        for (UIComponent child : getChildren()) {
             if (child.isRendered() && (child.getFacetCount() > 0)) {
                 for (UIComponent facet : child.getFacets().values()) {
                     process(context, facet, phaseId);
@@ -361,6 +183,8 @@ public class UIData extends javax.faces.component.UIData {
         int rows = getRows();
         int last = rows == 0 ? getRowCount() : (first + rows);
 
+        List<UIComponent> iterableChildren = null;
+
         for (int rowIndex = first; rowIndex < last; rowIndex++) {
             setRowIndex(rowIndex);
 
@@ -368,7 +192,12 @@ public class UIData extends javax.faces.component.UIData {
                 break;
             }
 
-            for (UIComponent child : this.getIterableChildren()) {
+            if (iterableChildren == null) {
+                iterableChildren = getIterableChildren();
+            }
+
+            for (int i = 0; i < iterableChildren.size(); i++) {
+                UIComponent child = iterableChildren.get(i);
                 if (child.isRendered()) {
                     if (child instanceof Column) {
                         for (UIComponent grandkid : child.getChildren()) {
@@ -398,8 +227,8 @@ public class UIData extends javax.faces.component.UIData {
 
     @Override
     public String getClientId(FacesContext context) {
-        if (this.clientId != null) {
-            return this.clientId;
+        if (clientId != null) {
+            return clientId;
         }
 
         String id = getId();
@@ -413,14 +242,14 @@ public class UIData extends javax.faces.component.UIData {
                     id = viewRoot.createUniqueId();
                 }
                 else {
-                    throw new FacesException("Cannot create clientId for " + this.getClass().getCanonicalName());
+                    throw new FacesException("Cannot create clientId for " + getClass().getCanonicalName());
                 }
             }
             else {
                 id = parentUniqueIdVendor.createUniqueId(context, null);
             }
 
-            this.setId(id);
+            setId(id);
         }
 
         UIComponent namingContainer = ComponentTraversalUtils.closestNamingContainer(this);
@@ -429,28 +258,28 @@ public class UIData extends javax.faces.component.UIData {
 
             if (containerClientId != null) {
                 StringBuilder sb = SharedStringBuilder.get(getFacesContext(), SB_ID, containerClientId.length() + 10);
-                this.clientId = sb.append(containerClientId).append(UINamingContainer.getSeparatorChar(context)).append(id).toString();
+                clientId = sb.append(containerClientId).append(UINamingContainer.getSeparatorChar(context)).append(id).toString();
             }
             else {
-                this.clientId = id;
+                clientId = id;
             }
         }
         else {
-            this.clientId = id;
+            clientId = id;
         }
 
         Renderer renderer = getRenderer(context);
         if (renderer != null) {
-            this.clientId = renderer.convertClientId(context, this.clientId);
+            clientId = renderer.convertClientId(context, clientId);
         }
 
-        return this.clientId;
+        return clientId;
     }
 
     @Override
     public String getContainerClientId(FacesContext context) {
         //clientId is without rowIndex
-        String componentClientId = this.getClientId(context);
+        String componentClientId = getClientId(context);
 
         int rowIndex = getRowIndex();
         if (rowIndex == -1) {
@@ -468,17 +297,7 @@ public class UIData extends javax.faces.component.UIData {
         super.setId(id);
 
         //clear
-        this.clientId = null;
-    }
-
-    @Override
-    public void setRowIndex(int rowIndex) {
-        if (isRowStatePreserved()) {
-            setRowIndexRowStatePreserved(rowIndex);
-        }
-        else {
-            setRowIndexWithoutRowStatePreserved(rowIndex);
-        }
+        clientId = null;
     }
 
     //Row State preserved implementation is taken from Mojarra
@@ -501,11 +320,12 @@ public class UIData extends javax.faces.component.UIData {
             }
 
             if (getRowIndex() != -1) {
-                _rowTransientStates.put(getContainerClientId(facesContext), saveTransientDescendantComponentStates(facesContext, null, getChildren().iterator(), false));
+                _rowTransientStates.put(getContainerClientId(facesContext),
+                               saveTransientDescendantComponentStates(facesContext, null, getChildren().iterator(), false));
             }
         }
 
-        // Update to the new row index        
+        // Update to the new row index
         //this.rowIndex = rowIndex;
         getStateHelper().put(PropertyKeys.rowIndex, rowIndex);
         DataModel localModel = getDataModel();
@@ -517,7 +337,7 @@ public class UIData extends javax.faces.component.UIData {
         }
 
         // Clear or expose the current row data as a request scope attribute
-        String var = this.getVar();
+        String var = getVar();
         if (var != null) {
             Map<String, Object> requestMap
                     = getFacesContext().getExternalContext().getRequestMap();
@@ -578,9 +398,9 @@ public class UIData extends javax.faces.component.UIData {
         }
 
         //update var
-        String var = (String) this.getVar();
+        String var = getVar();
         if (var != null) {
-            String rowIndexVar = this.getRowIndexVar();
+            String rowIndexVar = getRowIndexVar();
             Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
 
             if (rowIndex == -1) {
@@ -617,17 +437,28 @@ public class UIData extends javax.faces.component.UIData {
         return (Integer) getStateHelper().eval(PropertyKeys.rowIndex, -1);
     }
 
+    @Override
+    public void setRowIndex(int rowIndex) {
+        if (isRowStatePreserved()) {
+            setRowIndexRowStatePreserved(rowIndex);
+        }
+        else {
+            setRowIndexWithoutRowStatePreserved(rowIndex);
+        }
+    }
+
     protected void saveDescendantState() {
         FacesContext context = getFacesContext();
 
-        if (this.getChildCount() > 0) {
-            for (UIComponent kid : getChildren()) {
+        if (getChildCount() > 0) {
+            for (int i = 0; i < getChildCount(); i++) {
+                UIComponent kid = getChildren().get(i);
                 saveDescendantState(kid, context);
             }
         }
 
-        if (this.getFacetCount() > 0) {
-            for (UIComponent facet : this.getFacets().values()) {
+        if (getFacetCount() > 0) {
+            for (UIComponent facet : getFacets().values()) {
                 saveDescendantState(facet, context);
             }
         }
@@ -682,7 +513,8 @@ public class UIData extends javax.faces.component.UIData {
 
         //save state for children
         if (component.getChildCount() > 0) {
-            for (UIComponent kid : component.getChildren()) {
+            for (int i = 0; i < component.getChildCount(); i++) {
+                UIComponent kid = component.getChildren().get(i);
                 saveDescendantState(kid, context);
             }
         }
@@ -700,13 +532,14 @@ public class UIData extends javax.faces.component.UIData {
         FacesContext context = getFacesContext();
 
         if (getChildCount() > 0) {
-            for (UIComponent kid : getChildren()) {
+            for (int i = 0; i < getChildCount(); i++) {
+                UIComponent kid = getChildren().get(i);
                 restoreDescendantState(kid, context);
             }
         }
 
-        if (this.getFacetCount() > 0) {
-            for (UIComponent facet : this.getFacets().values()) {
+        if (getFacetCount() > 0) {
+            for (UIComponent facet : getFacets().values()) {
                 restoreDescendantState(facet, context);
             }
         }
@@ -745,7 +578,8 @@ public class UIData extends javax.faces.component.UIData {
 
         //restore state of children
         if (component.getChildCount() > 0) {
-            for (UIComponent kid : component.getChildren()) {
+            for (int i = 0; i < component.getChildCount(); i++) {
+                UIComponent kid = component.getChildren().get(i);
                 restoreDescendantState(kid, context);
             }
         }
@@ -761,13 +595,13 @@ public class UIData extends javax.faces.component.UIData {
 
     @Override
     protected DataModel getDataModel() {
-        if (this.model != null) {
+        if (model != null) {
             return (model);
         }
 
         Object current = getValue();
         if (current == null) {
-            setDataModel(new ListDataModel(Collections.EMPTY_LIST));
+            setDataModel(new ListDataModel(Collections.emptyList()));
         }
         else if (current instanceof DataModel) {
             setDataModel((DataModel) current);
@@ -799,7 +633,7 @@ public class UIData extends javax.faces.component.UIData {
 
     @Override
     protected void setDataModel(DataModel dataModel) {
-        this.model = dataModel;
+        model = dataModel;
     }
 
     protected boolean shouldSkipChildren(FacesContext context) {
@@ -819,10 +653,9 @@ public class UIData extends javax.faces.component.UIData {
     @Override
     public boolean invokeOnComponent(FacesContext context, String clientId, ContextCallback callback)
             throws FacesException {
-        String baseClientId = getClientId(context);
 
         // skip if the component is not a children of the UIData
-        if (!clientId.startsWith(baseClientId)) {
+        if (!clientId.startsWith(getClientId(context))) {
             return false;
         }
 
@@ -836,7 +669,7 @@ public class UIData extends javax.faces.component.UIData {
         }
 
         FacesContext facesContext = context.getFacesContext();
-        boolean visitRows = shouldVisitRows(facesContext, context);
+        boolean visitRows = !ComponentUtils.isSkipIteration(context, facesContext);
 
         int rowIndex = -1;
         if (visitRows) {
@@ -901,7 +734,8 @@ public class UIData extends javax.faces.component.UIData {
         }
 
         if (getChildCount() > 0) {
-            for (UIComponent child : getChildren()) {
+            for (int i = 0; i < getChildCount(); i++) {
+                UIComponent child = getChildren().get(i);
                 VisitResult result = context.invokeVisitCallback(child, callback); // visit the column directly
                 if (result == VisitResult.COMPLETE) {
                     return true;
@@ -911,8 +745,8 @@ public class UIData extends javax.faces.component.UIData {
                     if (child.getFacetCount() > 0) {
                         if (child instanceof Columns) {
                             Columns columns = (Columns) child;
-                            for (int i = 0; i < columns.getRowCount(); i++) {
-                                columns.setRowIndex(i);
+                            for (int j = 0; j < columns.getRowCount(); j++) {
+                                columns.setRowIndex(j);
                                 boolean value = visitColumnFacets(context, callback, child);
                                 if (value) {
                                     return true;
@@ -928,7 +762,8 @@ public class UIData extends javax.faces.component.UIData {
                         }
 
                     }
-                } else if (child instanceof ColumnGroup) {
+                }
+                else if (child instanceof ColumnGroup) {
                     visitColumnGroup(context, callback, (ColumnGroup) child);
                 }
             }
@@ -939,11 +774,13 @@ public class UIData extends javax.faces.component.UIData {
 
     protected boolean visitColumnGroup(VisitContext context, VisitCallback callback, ColumnGroup group) {
         if (group.getChildCount() > 0) {
-            for (UIComponent row : group.getChildren()) {
+            for (int i = 0; i < group.getChildCount(); i++) {
+                UIComponent row = group.getChildren().get(i);
                 if (row.getChildCount() > 0) {
-                    for (UIComponent col : row.getChildren()) {
+                    for (int j = 0; j < row.getChildCount(); j++) {
+                        UIComponent col = row.getChildren().get(j);
                         if (col instanceof Column && col.getFacetCount() > 0) {
-                            boolean value = visitColumnFacets(context, callback, (Column) col);
+                            boolean value = visitColumnFacets(context, callback, col);
                             if (value) {
                                 return true;
                             }
@@ -967,7 +804,7 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     protected boolean visitRows(VisitContext context, VisitCallback callback, boolean visitRows) {
-        boolean requiresColumns = this.requiresColumns();
+        boolean requiresColumns = requiresColumns();
         int processed = 0;
         int rowIndex = 0;
         int rows = 0;
@@ -989,22 +826,22 @@ public class UIData extends javax.faces.component.UIData {
             }
 
             if (getChildCount() > 0) {
-                for (UIComponent kid : getChildren()) {
-
+                for (int i = 0; i < getChildCount(); i++) {
+                    UIComponent kid = getChildren().get(i);
                     if (requiresColumns) {
                         if (kid instanceof Columns) {
-                            Columns uicolumns = (Columns) kid;
-                            for (int i = 0; i < uicolumns.getRowCount(); i++) {
-                                uicolumns.setRowIndex(i);
+                            Columns columns = (Columns) kid;
+                            for (int j = 0; j < columns.getRowCount(); j++) {
+                                columns.setRowIndex(j);
 
-                                boolean value = visitColumnContent(context, callback, uicolumns);
+                                boolean value = visitColumnContent(context, callback, columns);
                                 if (value) {
-                                    uicolumns.setRowIndex(-1);
+                                    columns.setRowIndex(-1);
                                     return true;
                                 }
                             }
 
-                            uicolumns.setRowIndex(-1);
+                            columns.setRowIndex(-1);
                         }
                         else {
                             boolean value = visitColumnContent(context, callback, kid);
@@ -1032,7 +869,8 @@ public class UIData extends javax.faces.component.UIData {
 
     protected boolean visitColumnContent(VisitContext context, VisitCallback callback, UIComponent component) {
         if (component.getChildCount() > 0) {
-            for (UIComponent grandkid : component.getChildren()) {
+            for (int i = 0; i < component.getChildCount(); i++) {
+                UIComponent grandkid = component.getChildren().get(i);
                 if (grandkid.visitTree(context, callback)) {
                     return true;
                 }
@@ -1042,25 +880,12 @@ public class UIData extends javax.faces.component.UIData {
         return false;
     }
 
-    protected boolean shouldVisitRows(FacesContext context, VisitContext visitContext) {
-        try {
-            //JSF 2.1
-            VisitHint skipHint = VisitHint.valueOf("SKIP_ITERATION");
-            return !visitContext.getHints().contains(skipHint);
-        }
-        catch (IllegalArgumentException e) {
-            //JSF 2.0
-            Object skipHint = context.getAttributes().get("javax.faces.visit.SKIP_ITERATION");
-            return !Boolean.TRUE.equals(skipHint);
-        }
-    }
-
     protected boolean requiresColumns() {
         return false;
     }
 
     protected List<UIComponent> getIterableChildren() {
-        return this.getChildren();
+        return getChildren();
     }
 
     @Override
@@ -1074,8 +899,8 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     private void restoreFullDescendantComponentStates(FacesContext facesContext,
-            Iterator<UIComponent> childIterator, Object state,
-            boolean restoreChildFacets) {
+                                                      Iterator<UIComponent> childIterator, Object state,
+                                                      boolean restoreChildFacets) {
         Iterator<? extends Object[]> descendantStateIterator = null;
         while (childIterator.hasNext()) {
             if (descendantStateIterator == null && state != null) {
@@ -1114,11 +939,11 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     private Collection<Object[]> saveDescendantInitialComponentStates(FacesContext facesContext,
-            Iterator<UIComponent> childIterator, boolean saveChildFacets) {
+                                                                      Iterator<UIComponent> childIterator, boolean saveChildFacets) {
         Collection<Object[]> childStates = null;
         while (childIterator.hasNext()) {
             if (childStates == null) {
-                childStates = new ArrayList<Object[]>();
+                childStates = new ArrayList<>();
             }
 
             UIComponent child = childIterator.next();
@@ -1153,7 +978,7 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     private Map<String, Object> saveFullDescendantComponentStates(FacesContext facesContext, Map<String, Object> stateMap,
-            Iterator<UIComponent> childIterator, boolean saveChildFacets) {
+                                                                  Iterator<UIComponent> childIterator, boolean saveChildFacets) {
         while (childIterator.hasNext()) {
             UIComponent child = childIterator.next();
             if (!child.isTransient()) {
@@ -1169,7 +994,7 @@ public class UIData extends javax.faces.component.UIData {
                 Object state = child.saveState(facesContext);
                 if (state != null) {
                     if (stateMap == null) {
-                        stateMap = new HashMap<String, Object>();
+                        stateMap = new HashMap<>();
                     }
                     stateMap.put(child.getClientId(facesContext), state);
                 }
@@ -1179,8 +1004,8 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     private void restoreFullDescendantComponentDeltaStates(FacesContext facesContext,
-            Iterator<UIComponent> childIterator, Object state, Object initialState,
-            boolean restoreChildFacets) {
+                                                           Iterator<UIComponent> childIterator, Object state, Object initialState,
+                                                           boolean restoreChildFacets) {
         Map<String, Object> descendantStateIterator = null;
         Iterator<? extends Object[]> descendantFullStateIterator = null;
         while (childIterator.hasNext()) {
@@ -1206,7 +1031,7 @@ public class UIData extends javax.faces.component.UIData {
                 }
                 if (descendantFullStateIterator != null
                         && descendantFullStateIterator.hasNext()) {
-                    Object[] object = (Object[]) descendantFullStateIterator.next();
+                    Object[] object = descendantFullStateIterator.next();
                     childInitialState = object[0];
                     descendantInitialState = object[1];
                 }
@@ -1236,7 +1061,7 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     private void restoreTransientDescendantComponentStates(FacesContext facesContext, Iterator<UIComponent> childIterator, Map<String, Object> state,
-            boolean restoreChildFacets) {
+                                                           boolean restoreChildFacets) {
         while (childIterator.hasNext()) {
             UIComponent component = childIterator.next();
 
@@ -1258,8 +1083,8 @@ public class UIData extends javax.faces.component.UIData {
 
     }
 
-    private Map<String, Object> saveTransientDescendantComponentStates(FacesContext facesContext, Map<String, Object> childStates, Iterator<UIComponent> childIterator,
-            boolean saveChildFacets) {
+    private Map<String, Object> saveTransientDescendantComponentStates(FacesContext facesContext, Map<String,
+                                    Object> childStates, Iterator<UIComponent> childIterator, boolean saveChildFacets) {
         while (childIterator.hasNext()) {
             UIComponent child = childIterator.next();
             if (!child.isTransient()) {
@@ -1274,7 +1099,7 @@ public class UIData extends javax.faces.component.UIData {
                 Object state = child.saveTransientState(facesContext);
                 if (state != null) {
                     if (childStates == null) {
-                        childStates = new HashMap<String, Object>();
+                        childStates = new HashMap<>();
                     }
                     childStates.put(child.getClientId(facesContext), state);
                 }
@@ -1289,7 +1114,7 @@ public class UIData extends javax.faces.component.UIData {
             return;
         }
 
-        Object values[] = (Object[]) state;
+        Object[] values = (Object[]) state;
         super.restoreState(context, values[0]);
         Object restoredRowStates = UIComponentBase.restoreAttachedState(context, values[1]);
         if (restoredRowStates == null) {
@@ -1304,6 +1129,28 @@ public class UIData extends javax.faces.component.UIData {
 
     @Override
     public Object saveState(FacesContext context) {
+        // See MyFaces UIData
+        ComponentUtils.ViewPoolingResetMode viewPoolingResetMode = ComponentUtils.isViewPooling(context);
+        if (viewPoolingResetMode == ComponentUtils.ViewPoolingResetMode.SOFT) {
+            _rowTransientStates.clear();
+            _initialDescendantFullComponentState = null;
+
+            clientId = null;
+            model = null;
+            isNested = null;
+            oldVar = null;
+        }
+        else if (viewPoolingResetMode == ComponentUtils.ViewPoolingResetMode.HARD) {
+            _rowTransientStates.clear();
+            _rowDeltaStates.clear();
+            _initialDescendantFullComponentState = null;
+
+            clientId = null;
+            model = null;
+            isNested = null;
+            oldVar = null;
+        }
+
         if (initialStateMarked()) {
             Object superState = super.saveState(context);
 
@@ -1311,38 +1158,28 @@ public class UIData extends javax.faces.component.UIData {
                 return null;
             }
             else {
-                Object values[] = null;
+                Object[] values = null;
                 Object attachedState = UIComponentBase.saveAttachedState(context, _rowDeltaStates);
                 if (superState != null || attachedState != null) {
                     values = new Object[]{superState, attachedState};
                 }
                 return values;
             }
-        } else {
-            Object values[] = new Object[2];
+        }
+        else {
+            Object[] values = new Object[2];
             values[0] = super.saveState(context);
             values[1] = UIComponentBase.saveAttachedState(context, _rowDeltaStates);
             return values;
         }
     }
 
-    protected Boolean isNestedWithinIterator() {
+    protected boolean isNestedWithinIterator() {
         if (isNested == null) {
-            UIComponent parent = this;
-            while (null != (parent = parent.getParent())) {
-                if (parent instanceof javax.faces.component.UIData || parent.getClass().getName().endsWith("UIRepeat")
-                        || (parent instanceof UITabPanel && ((UITabPanel) parent).isRepeating())) {
-                    isNested = Boolean.TRUE;
-                    break;
-                }
-            }
-            if (isNested == null) {
-                isNested = Boolean.FALSE;
-            }
-            return isNested;
-        } else {
-            return isNested;
+            isNested = ComponentUtils.isNestedWithinIterator(this);
         }
+
+        return isNested;
     }
 
     protected void preDecode(FacesContext context) {
@@ -1401,7 +1238,7 @@ public class UIData extends javax.faces.component.UIData {
 
         String rendererType = getRendererType();
         if (rendererType != null) {
-            Renderer renderer = this.getRenderer(context);
+            Renderer renderer = getRenderer(context);
             if (renderer != null) {
                 renderer.encodeBegin(context, this);
             }

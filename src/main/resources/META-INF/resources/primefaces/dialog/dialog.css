@@ -1,9 +1,9 @@
-.ui-dialog { position: fixed; padding: 0; overflow: hidden; display:none; max-height: 100vh; max-width: 100vw; }
+.ui-dialog { position: fixed; padding: 0; overflow: hidden; display:none; }
 .ui-dialog.ui-dialog-absolute { position: absolute; }
 .ui-dialog.ui-overlay-hidden {display:block;}
 .ui-dialog .ui-dialog-titlebar { padding: .4em .4em .4em 1em; position: relative; border:0px; }
 .ui-dialog .ui-dialog-title { float: left; margin: .3em 16px .1em 0; } 
-.ui-dialog .ui-dialog-content {position: relative; border: 0; padding: .5em 1em; background: none; overflow: auto; zoom: 1; }
+.ui-dialog .ui-dialog-content {position: relative; border: 0; padding: .5em 1em; background: none; overflow: auto; }
 .ui-dialog .ui-dialog-content.ui-df-content {overflow: hidden; padding: 0;}
 .ui-dialog .ui-dialog-footer {padding: .4em 1em; border-width: 1px 0 0 0; text-align:left;}
 .ui-dialog .ui-dialog-buttonpane { text-align: left; background-image: none; margin: .5em 0 0 0; padding: .3em 1em .5em .4em; }
@@ -19,8 +19,11 @@
 
 .ui-dialog-mask {
     position: fixed;
-    width: 100%;
-    height: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    user-select: none;
 }
 
 /** Confirm Dialog **/

@@ -1,50 +1,60 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2021 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.megamenu;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.separator.UISeparator;
-import org.primefaces.model.menu.MenuColumn;
-import org.primefaces.model.menu.MenuElement;
-import org.primefaces.model.menu.MenuItem;
-import org.primefaces.model.menu.Separator;
-import org.primefaces.model.menu.Submenu;
+import org.primefaces.model.menu.*;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class MegaMenuRenderer extends BaseMenuRenderer {
 
+    @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         MegaMenu menu = (MegaMenu) abstractMenu;
-        String clientId = menu.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("MegaMenu", menu.resolveWidgetVar(), clientId)
+        wb.init("MegaMenu", menu)
                 .attr("autoDisplay", menu.isAutoDisplay())
+                .attr("delay", menu.getDelay())
                 .attr("activeIndex", menu.getActiveIndex(), Integer.MIN_VALUE);
 
         wb.finish();
     }
 
+    @Override
     protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         MegaMenu menu = (MegaMenu) abstractMenu;
@@ -64,11 +74,11 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
-        writer.writeAttribute("role", "menubar", null);
 
         encodeKeyboardTarget(context, menu);
 
         writer.startElement("ul", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUBAR, null);
         writer.writeAttribute("class", Menu.LIST_CLASS, null);
 
         if (menu.getElementsCount() > 0) {
@@ -76,10 +86,10 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         }
 
         UIComponent optionsFacet = menu.getFacet("options");
-        if (optionsFacet != null) {
+        if (ComponentUtils.shouldRenderFacet(optionsFacet)) {
             writer.startElement("li", null);
             writer.writeAttribute("class", Menu.OPTIONS_CLASS, null);
-            writer.writeAttribute("role", "menuitem", null);
+            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
             optionsFacet.encodeAll(context);
             writer.endElement("li");
         }
@@ -91,15 +101,15 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
 
     protected void encodeRootItems(FacesContext context, MegaMenu menu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        List<MenuElement> elements = (List<MenuElement>) menu.getElements();
+        List<MenuElement> elements = menu.getElements();
 
         for (MenuElement element : elements) {
             if (element.isRendered()) {
                 if (element instanceof MenuItem) {
                     writer.startElement("li", null);
                     writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
-                    writer.writeAttribute("role", "menuitem", null);
-                    encodeMenuItem(context, menu, (MenuItem) element);
+                    writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
+                    encodeMenuItem(context, menu, (MenuItem) element, "-1");
                     writer.endElement("li");
                 }
                 else if (element instanceof Submenu) {
@@ -126,11 +136,12 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         if (style != null) {
             writer.writeAttribute("style", style, null);
         }
-        writer.writeAttribute("role", "menuitem", null);
-        writer.writeAttribute("aria-haspopup", "true", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
 
         //title
         writer.startElement("a", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM, null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, "true", null);
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("class", Menu.SUBMENU_LINK_CLASS, null);
         writer.writeAttribute("tabindex", "-1", null);
@@ -138,6 +149,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         if (icon != null) {
             writer.startElement("span", null);
             writer.writeAttribute("class", Menu.MENUITEM_ICON_CLASS + " " + icon, null);
+            writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
             writer.endElement("span");
         }
 
@@ -158,13 +170,13 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
 
         //submenus
         if (submenu.getElementsCount() > 0) {
-            List<MenuElement> submenuElements = (List<MenuElement>) submenu.getElements();
+            List<MenuElement> submenuElements = submenu.getElements();
             writer.startElement("ul", null);
             writer.writeAttribute("class", Menu.TIERED_CHILD_SUBMENU_CLASS, null);
-            writer.writeAttribute("role", "menu", null);
+            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
 
             writer.startElement("table", null);
-            writer.writeAttribute("role", "presentation", null);
+            writer.writeAttribute(HTML.ARIA_ROLE, "presentation", null);
 
             writer.startElement("tbody", null);
             writer.startElement("tr", null);
@@ -189,8 +201,12 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("td", null);
-        if (column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
-        if (column.getStyleClass() != null) writer.writeAttribute("class", column.getStyleClass(), null);
+        if (column.getStyle() != null) {
+            writer.writeAttribute("style", column.getStyle(), null);
+        }
+        if (column.getStyleClass() != null) {
+            writer.writeAttribute("class", column.getStyleClass(), null);
+        }
 
         if (column.getElementsCount() > 0) {
             List columnElements = column.getElements();
@@ -224,7 +240,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", Menu.LIST_CLASS, null);
-        writer.writeAttribute("role", "menu", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
 
         //title
         writer.startElement("li", null);
@@ -243,14 +259,14 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
 
         //menuitems
         if (submenu.getElementsCount() > 0) {
-            List<MenuElement> submenuElements = (List<MenuElement>) submenu.getElements();
+            List<MenuElement> submenuElements = submenu.getElements();
             for (MenuElement submenuElement : submenuElements) {
                 if (submenuElement.isRendered()) {
                     if (submenuElement instanceof MenuItem) {
                         writer.startElement("li", null);
                         writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
-                        writer.writeAttribute("role", "menuitem", null);
-                        encodeMenuItem(context, menu, (MenuItem) submenuElement);
+                        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
+                        encodeMenuItem(context, menu, (MenuItem) submenuElement, "-1");
                         writer.endElement("li");
                     }
                     else if (submenuElement instanceof Separator) {

@@ -1,44 +1,54 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2021 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.api;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.columns.Columns;
 
 public class DynamicColumn implements UIColumn {
 
-    private int index;
-    private Columns columns;
-    private String columnKey;
+    private final int index;
+    private final Columns columns;
+    private final String baseColumnKey;
+    private final char separatorChar;
+    private final String columnKey;
 
-    public DynamicColumn(int index, Columns columns) {
+    public DynamicColumn(int index, Columns columns, FacesContext context) {
         this.index = index;
         this.columns = columns;
-    }
-
-    public DynamicColumn(int index, Columns columns, String columnKey) {
-        this.index = index;
-        this.columns = columns;
-        this.columnKey = columnKey;
+        this.baseColumnKey = columns.getColumnKey();
+        this.separatorChar = UINamingContainer.getSeparatorChar(context);
+        this.columnKey = baseColumnKey + separatorChar + index;
     }
 
     public int getIndex() {
@@ -46,206 +56,292 @@ public class DynamicColumn implements UIColumn {
     }
 
     public void applyModel() {
-        this.columns.setRowIndex(index);
+        columns.setRowIndex(index);
     }
 
     public void applyStatelessModel() {
-        this.columns.setRowModel(index);
+        columns.setRowModel(index);
     }
 
     public void cleanStatelessModel() {
-        this.columns.setRowModel(-1);
+        columns.setRowModel(-1);
     }
 
     public void cleanModel() {
-        this.columns.setRowIndex(-1);
+        columns.setRowIndex(-1);
     }
 
+    @Override
     public ValueExpression getValueExpression(String property) {
-        return this.columns.getValueExpression(property);
+        return columns.getValueExpression(property);
     }
 
+    @Override
     public String getContainerClientId(FacesContext context) {
-        return this.columns.getContainerClientId(context);
+        return columns.getContainerClientId(context);
     }
 
     public String getId() {
-        return this.columns.getId();
+        return columns.getId();
     }
 
+    @Override
     public String getClientId() {
-        return this.columns.getClientId();
+        return columns.getClientId();
     }
 
+    @Override
     public String getClientId(FacesContext context) {
-        return this.columns.getClientId(context);
+        return columns.getClientId(context);
     }
 
+    @Override
     public String getSelectionMode() {
-        return this.columns.getSelectionMode();
+        return columns.getSelectionMode();
     }
 
+    @Override
     public boolean isResizable() {
-        return this.columns.isResizable();
+        return columns.isResizable();
     }
 
+    @Override
     public String getStyle() {
-        return this.columns.getStyle();
+        return columns.getStyle();
     }
 
+    @Override
     public String getStyleClass() {
-        return this.columns.getStyleClass();
+        return columns.getStyleClass();
     }
 
+    @Override
     public int getRowspan() {
-        return this.columns.getRowspan();
+        return columns.getRowspan();
     }
 
+    @Override
     public int getColspan() {
-        return this.columns.getColspan();
+        return columns.getColspan();
     }
 
+    @Override
     public String getFilterPosition() {
-        return this.columns.getFilterPosition();
+        return columns.getFilterPosition();
     }
 
+    @Override
     public UIComponent getFacet(String facet) {
-        return this.columns.getFacet(facet);
+        return columns.getFacet(facet);
     }
 
+    @Override
     public String getHeaderText() {
-        return this.columns.getHeaderText();
+        return columns.getHeaderText();
     }
 
+    @Override
     public String getFooterText() {
-        return this.columns.getFooterText();
+        return columns.getFooterText();
     }
 
+    @Override
     public String getFilterStyleClass() {
-        return this.columns.getFilterStyleClass();
+        return columns.getFilterStyleClass();
     }
 
+    @Override
     public String getFilterStyle() {
-        return this.columns.getFilterStyle();
+        return columns.getFilterStyle();
     }
 
+    @Override
     public String getFilterMatchMode() {
-        return this.columns.getFilterMatchMode();
+        return columns.getFilterMatchMode();
     }
 
+    @Override
     public int getFilterMaxLength() {
-        return this.columns.getFilterMaxLength();
+        return columns.getFilterMaxLength();
     }
 
+    @Override
     public Object getFilterOptions() {
-        return this.columns.getFilterOptions();
+        return columns.getFilterOptions();
     }
 
+    @Override
     public CellEditor getCellEditor() {
-        return this.columns.getCellEditor();
+        return columns.getCellEditor();
     }
 
+    @Override
     public boolean isDynamic() {
-        return this.columns.isDynamic();
+        return columns.isDynamic();
     }
 
+    @Override
     public MethodExpression getSortFunction() {
-        return this.columns.getSortFunction();
+        return columns.getSortFunction();
     }
 
+    @Override
     public List<UIComponent> getChildren() {
-        return this.columns.getChildren();
+        return columns.getChildren();
     }
 
+    @Override
     public boolean isExportable() {
-        return this.columns.isExportable();
+        return columns.isExportable();
     }
 
+    @Override
     public boolean isRendered() {
-        return this.columns.isRendered();
+        return columns.isRendered();
     }
 
+    @Override
     public void encodeAll(FacesContext context) throws IOException {
-        this.columns.encodeAll(context);
+        columns.encodeAll(context);
     }
 
+    @Override
     public void renderChildren(FacesContext context) throws IOException {
-        this.columns.encodeChildren(context);
+        columns.encodeChildren(context);
     }
 
+    @Override
     public String getColumnKey() {
-        return this.columnKey;
+        return columnKey;
     }
 
-    public void setColumnKey(String columnKey) {
-        this.columnKey = columnKey;
+    @Override
+    public String getColumnKey(UIComponent parent, String rowIndex) {
+        return getColumnKey().replace(parent.getId() + ":" + rowIndex + ":", parent.getId() + ":");
     }
 
+    @Override
     public String getWidth() {
-        return this.columns.getWidth();
+        return columns.getWidth();
     }
 
+    @Override
     public Object getSortBy() {
-        return this.columns.getSortBy();
+        return columns.getSortBy();
     }
 
+    @Override
     public Object getFilterBy() {
-        return this.columns.getFilterBy();
+        return columns.getFilterBy();
     }
 
+    @Override
     public boolean isToggleable() {
-        return this.columns.isToggleable();
+        return columns.isToggleable();
     }
 
+    @Override
     public MethodExpression getFilterFunction() {
-        return this.columns.getFilterFunction();
+        return columns.getFilterFunction();
     }
 
+    @Override
     public String getField() {
-        return this.columns.getField();
+        return columns.getField();
     }
 
+    @Override
     public Object getFilterValue() {
-        return this.columns.getFilterValue();
+        return columns.getFilterValue();
     }
 
-    public int getPriority() {
-        return this.columns.getPriority();
+    @Override
+    public int getResponsivePriority() {
+        return columns.getResponsivePriority();
     }
 
+    @Override
     public boolean isSortable() {
-        return this.columns.isSortable();
+        return columns.isSortable();
     }
 
+    @Override
     public boolean isFilterable() {
-        return this.columns.isFilterable();
+        return columns.isFilterable();
     }
 
+    @Override
     public boolean isVisible() {
-        return this.columns.isVisible();
+        return columns.isVisible();
     }
 
+    public void setVisible(boolean visible) {
+        columns.setVisible(visible);
+    }
+
+    @Override
     public boolean isSelectRow() {
-        return this.columns.isSelectRow();
+        return columns.isSelectRow();
     }
 
+    @Override
     public String getAriaHeaderText() {
-        return this.columns.getAriaHeaderText();
+        return columns.getAriaHeaderText();
     }
 
+    @Override
     public MethodExpression getExportFunction() {
-        return this.columns.getExportFunction();
+        return columns.getExportFunction();
     }
 
+    @Override
     public boolean isGroupRow() {
-        return this.columns.isGroupRow();
+        return columns.isGroupRow();
     }
-    
+
+    @Override
     public String getExportHeaderValue() {
-        return this.columns.getExportHeaderValue();
+        return columns.getExportHeaderValue();
     }
-    
+
+    @Override
     public String getExportFooterValue() {
-        return this.columns.getExportFooterValue();
+        return columns.getExportFooterValue();
     }
+
+    @Override
+    public String getSortOrder() {
+        return columns.getSortOrder();
+    }
+
+    @Override
+    public int getSortPriority() {
+        return columns.getSortPriority();
+    }
+
+    @Override
+    public int getNullSortOrder() {
+        return columns.getNullSortOrder();
+    }
+
+    @Override
+    public boolean isCaseSensitiveSort() {
+        return columns.isCaseSensitiveSort();
+    }
+
+    @Override
+    public boolean isDraggable() {
+        return columns.isDraggable();
+    }
+
+    @Override
+    public String getExportValue() {
+        return columns.getExportValue();
+    }
+
+    @Override
+    public int getDisplayPriority() {
+        return columns.getDisplayPriority();
+    }
+
 }

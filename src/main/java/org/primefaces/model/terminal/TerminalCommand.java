@@ -1,17 +1,25 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2021 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.model.terminal;
 
@@ -21,9 +29,11 @@ import java.util.List;
 
 public class TerminalCommand implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private String text;
     private List<TerminalCommand> arguments;
-    
+
     public TerminalCommand(String commandText) {
         this.text = commandText;
     }
@@ -35,11 +45,11 @@ public class TerminalCommand implements Serializable {
     public void setText(String text) {
         this.text = text;
     }
-    
+
     public List<TerminalCommand> getArguments() {
         return arguments;
     }
-    
+
     public void setArguments(List<TerminalCommand> arguments) {
         this.arguments = arguments;
     }
@@ -47,17 +57,17 @@ public class TerminalCommand implements Serializable {
     public boolean hasArguments() {
         return ((this.arguments == null) || !this.arguments.isEmpty());
     }
-    
+
     public TerminalCommand addArgument(String argumentText) {
         TerminalCommand argument = new TerminalCommand(argumentText);
-        
+
         if (this.arguments == null) {
-            this.arguments = new ArrayList<TerminalCommand>();
+            this.arguments = new ArrayList<>();
         }
-        
+
         this.arguments.add(argument);
-        
+
         return argument;
     }
-    
+
 }

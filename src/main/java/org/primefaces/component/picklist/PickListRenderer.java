@@ -1,17 +1,25 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2021 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.picklist;
 
@@ -25,19 +33,24 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-import org.primefaces.component.column.Column;
 
+import org.primefaces.component.column.Column;
 import org.primefaces.model.DualListModel;
-import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.RendererUtils;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
-public class PickListRenderer extends CoreRenderer {
+public class PickListRenderer extends InputRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
         PickList pickList = (PickList) component;
+        if (!shouldDecode(pickList)) {
+            return;
+        }
         String clientId = pickList.getClientId(context);
         Map<String, String[]> params = context.getExternalContext().getRequestParameterValuesMap();
 
@@ -90,7 +103,7 @@ public class PickListRenderer extends CoreRenderer {
 
         //Source List
         encodeList(context, pickList, clientId + "_source", PickList.SOURCE_CLASS, model.getSource(),
-                pickList.getFacet("sourceCaption"), pickList.isShowSourceFilter());
+                pickList.getFacet("sourceCaption"), pickList.isShowSourceFilter(), true);
 
         //Buttons
         writer.startElement("div", null);
@@ -114,7 +127,7 @@ public class PickListRenderer extends CoreRenderer {
 
         //Target List
         encodeList(context, pickList, clientId + "_target", PickList.TARGET_CLASS, model.getTarget(),
-                pickList.getFacet("targetCaption"), pickList.isShowTargetFilter());
+                pickList.getFacet("targetCaption"), pickList.isShowTargetFilter(), false);
 
         //Target List Reorder Buttons
         if (pickList.isShowTargetControls()) {
@@ -128,19 +141,22 @@ public class PickListRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, PickList pickList) throws IOException {
-        String clientId = pickList.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("PickList", pickList.resolveWidgetVar(), clientId)
+        wb.init("PickList", pickList)
                 .attr("effect", pickList.getEffect())
                 .attr("effectSpeed", pickList.getEffectSpeed())
+                .attr("escape", pickList.isEscape())
                 .attr("showSourceControls", pickList.isShowSourceControls(), false)
                 .attr("showTargetControls", pickList.isShowTargetControls(), false)
                 .attr("disabled", pickList.isDisabled(), false)
+                .attr("filterEvent", pickList.getFilterEvent(), null)
+                .attr("filterDelay", pickList.getFilterDelay(), Integer.MAX_VALUE)
                 .attr("filterMatchMode", pickList.getFilterMatchMode(), null)
                 .nativeAttr("filterFunction", pickList.getFilterFunction(), null)
                 .attr("showCheckbox", pickList.isShowCheckbox(), false)
                 .callback("onTransfer", "function(e)", pickList.getOnTransfer())
-                .attr("tabindex", pickList.getTabindex(), "0");
+                .attr("tabindex", pickList.getTabindex(), "0")
+                .attr("escapeValue", pickList.isEscapeValue());
 
         encodeClientBehaviors(context, pickList);
 
@@ -173,7 +189,7 @@ public class PickListRenderer extends CoreRenderer {
 
     protected void encodeButton(FacesContext context, String title, String styleClass, String icon, String labelDisplay) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        boolean tooltip = labelDisplay.equals("tooltip");
+        boolean tooltip = "tooltip".equals(labelDisplay);
         String buttonClass = tooltip ? HTML.BUTTON_ICON_ONLY_BUTTON_CLASS : HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS;
 
         writer.startElement("button", null);
@@ -199,18 +215,23 @@ public class PickListRenderer extends CoreRenderer {
     }
 
     protected void encodeList(FacesContext context, PickList pickList, String listId, String styleClass, List model, UIComponent caption,
-            boolean filter) throws IOException {
-        
+                              boolean filter, boolean isSource) throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", PickList.LIST_WRAPPER_CLASS, null);
 
-        if (filter) {
-            encodeFilter(context, pickList, listId + "_filter");
+        // only render required on target list
+        if (!isSource) {
+            renderARIARequired(context, pickList);
         }
 
-        if (caption != null) {
+        if (filter) {
+            encodeFilter(context, pickList, listId + "_filter", isSource);
+        }
+
+        if (ComponentUtils.shouldRenderFacet(caption)) {
             encodeCaption(context, caption);
             styleClass += " ui-corner-bottom";
         }
@@ -220,7 +241,7 @@ public class PickListRenderer extends CoreRenderer {
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", styleClass, null);
-        writer.writeAttribute("role", "menu", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
 
         encodeOptions(context, pickList, model);
 
@@ -251,11 +272,11 @@ public class PickListRenderer extends CoreRenderer {
         Converter converter = pickList.getConverter();
         boolean showCheckbox = pickList.isShowCheckbox();
 
-        for (Iterator it = model.iterator(); it.hasNext();) {
+        for (Iterator it = model.iterator(); it.hasNext(); ) {
             Object item = it.next();
             context.getExternalContext().getRequestMap().put(var, item);
             String itemValue = converter != null ?
-                    converter.getAsString(context, pickList, pickList.getItemValue()) : pickList.getItemValue().toString();
+                               converter.getAsString(context, pickList, pickList.getItemValue()) : pickList.getItemValue().toString();
             String itemLabel = pickList.getItemLabel();
             String itemClass = pickList.isItemDisabled() ? PickList.ITEM_CLASS + " " + PickList.ITEM_DISABLED_CLASS : PickList.ITEM_CLASS;
 
@@ -263,11 +284,11 @@ public class PickListRenderer extends CoreRenderer {
             writer.writeAttribute("class", itemClass, null);
             writer.writeAttribute("data-item-value", itemValue, null);
             writer.writeAttribute("data-item-label", itemLabel, null);
-            writer.writeAttribute("role", "menuitem", null);
+            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM, null);
 
             if (pickList.getChildCount() > 0) {
                 writer.startElement("table", null);
-                writer.writeAttribute("role", "presentation", null);
+                writer.writeAttribute(HTML.ARIA_ROLE, "presentation", null);
 
                 writer.startElement("tbody", null);
                 writer.startElement("tr", null);
@@ -283,8 +304,12 @@ public class PickListRenderer extends CoreRenderer {
                         Column column = (Column) kid;
 
                         writer.startElement("td", null);
-                        if (column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
-                        if (column.getStyleClass() != null) writer.writeAttribute("class", column.getStyleClass(), null);
+                        if (column.getStyle() != null) {
+                            writer.writeAttribute("style", column.getStyle(), null);
+                        }
+                        if (column.getStyleClass() != null) {
+                            writer.writeAttribute("class", column.getStyleClass(), null);
+                        }
 
                         renderChildren(context, column);
                         writer.endElement("td");
@@ -300,7 +325,12 @@ public class PickListRenderer extends CoreRenderer {
                     RendererUtils.encodeCheckbox(context, false);
                 }
 
-                writer.writeText(itemLabel, null);
+                if (pickList.isEscape()) {
+                    writer.writeText(itemLabel, null);
+                }
+                else {
+                    writer.write(itemLabel);
+                }
             }
 
             writer.endElement("li");
@@ -329,8 +359,10 @@ public class PickListRenderer extends CoreRenderer {
         }
     }
 
-    protected void encodeFilter(FacesContext context, PickList pickList, String name) throws IOException {
+    protected void encodeFilter(FacesContext context, PickList pickList, String name, boolean isSource) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+
+        String styleClass = PickList.FILTER_CLASS + (isSource ? " ui-source-filter-input" : " ui-target-filter-input");
 
         writer.startElement("div", null);
         writer.writeAttribute("class", PickList.FILTER_CONTAINER, null);
@@ -339,7 +371,9 @@ public class PickListRenderer extends CoreRenderer {
         writer.writeAttribute("id", name, null);
         writer.writeAttribute("name", name, null);
         writer.writeAttribute("type", "text", null);
-        writer.writeAttribute("class", PickList.FILTER_CLASS, null);
+        writer.writeAttribute("autocomplete", "off", null);
+        writer.writeAttribute("class", styleClass, null);
+        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER), null);
         writer.endElement("input");
 
         writer.startElement("span", null);
@@ -355,9 +389,9 @@ public class PickListRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId + "_ariaRegion", null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
-        writer.writeAttribute("role", "region", null);
-        writer.writeAttribute("aria-live", "polite", null);
-        writer.writeAttribute("aria-atomic", "true", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, "region", null);
+        writer.writeAttribute(HTML.ARIA_LIVE, "polite", null);
+        writer.writeAttribute(HTML.ARIA_ATOMIC, "true", null);
         writer.endElement("div");
     }
 

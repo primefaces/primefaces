@@ -1,28 +1,39 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2021 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.inputtext;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.context.PrimeApplicationContext;
+
+import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class InputTextRenderer extends InputRenderer {
@@ -31,16 +42,20 @@ public class InputTextRenderer extends InputRenderer {
     public void decode(FacesContext context, UIComponent component) {
         InputText inputText = (InputText) component;
 
-        if (inputText.isDisabled() || inputText.isReadonly()) {
+        if (!shouldDecode(inputText)) {
             return;
         }
 
         decodeBehaviors(context, inputText);
 
         String clientId = inputText.getClientId(context);
-        String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId);
+        String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId);
 
         if (submittedValue != null) {
+            int maxlength = inputText.getMaxlength();
+            if (maxlength > 0 && submittedValue.length() > maxlength) {
+                submittedValue = LangUtils.substring(submittedValue, 0, maxlength);
+            }
             inputText.setSubmittedValue(submittedValue);
         }
     }
@@ -54,9 +69,19 @@ public class InputTextRenderer extends InputRenderer {
     }
 
     protected void encodeScript(FacesContext context, InputText inputText) throws IOException {
-        String clientId = inputText.getClientId(context);
+        String counter = inputText.getCounter();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("InputText", inputText.resolveWidgetVar(), clientId).finish();
+        wb.init("InputText", inputText)
+                .attr("maxlength", inputText.getMaxlength(), Integer.MIN_VALUE);
+
+        if (counter != null) {
+            UIComponent counterComponent = SearchExpressionFacade.resolveComponent(context, inputText, counter);
+
+            wb.attr("counter", counterComponent.getClientId(context))
+                    .attr("counterTemplate", inputText.getCounterTemplate(), null);
+        }
+
+        wb.finish();
     }
 
     protected void encodeMarkup(FacesContext context, InputText inputText) throws IOException {
@@ -73,32 +98,19 @@ public class InputTextRenderer extends InputRenderer {
             writer.writeAttribute("value", valueToRender, null);
         }
 
+        if (inputText.getStyle() != null) {
+            writer.writeAttribute("style", inputText.getStyle(), null);
+        }
+
+        writer.writeAttribute("class", createStyleClass(inputText, InputText.STYLE_CLASS), "styleClass");
+
+        renderAccessibilityAttributes(context, inputText);
         renderRTLDirection(context, inputText);
         renderPassThruAttributes(context, inputText, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, inputText, HTML.INPUT_TEXT_EVENTS);
-
-        if (inputText.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
-        if (inputText.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
-        if (inputText.getStyle() != null) writer.writeAttribute("style", inputText.getStyle(), null);
-        if (inputText.isRequired()) writer.writeAttribute("aria-required", "true", null);
-
-        writer.writeAttribute("class", createStyleClass(inputText), "styleClass");
-
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, inputText);
-        }
+        renderValidationMetadata(context, inputText);
 
         writer.endElement("input");
     }
 
-    protected String createStyleClass(InputText inputText) {
-        String defaultClass = InputText.STYLE_CLASS;
-        defaultClass = inputText.isValid() ? defaultClass : defaultClass + " ui-state-error";
-        defaultClass = !inputText.isDisabled() ? defaultClass : defaultClass + " ui-state-disabled";
-
-        String styleClass = inputText.getStyleClass();
-        styleClass = styleClass == null ? defaultClass : defaultClass + " " + styleClass;
-
-        return styleClass;
-    }
 }

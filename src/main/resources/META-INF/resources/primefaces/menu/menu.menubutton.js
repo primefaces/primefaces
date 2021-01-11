@@ -1,5 +1,30 @@
-PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
+/**
+ * __PrimeFaces MenuButton Widget__
+ *
+ * MenuButton displays different commands in a popup menu.
+ *
+ * @prop {JQuery} button The DOM element for the menu button.
+ * @prop {JQuery} menu The DOM element for the menu overlay panel.
+ * @prop {JQuery} menuitems The DOM elements for the individual menu entries.
+ * @prop {string} menuId Client ID of the menu overlay panel.
+ *
+ * @interface {PrimeFaces.widget.MenuButtonCfg} cfg The configuration for the {@link  MenuButton| MenuButton widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.TieredMenuCfg} cfg
+ *
+ * @prop {string} cfg.collision When the positioned element overflows the window in some direction, move it to an
+ * alternative position. Similar to my and at, this accepts a single value or a pair for horizontal/vertical,
+ * e.g., `flip`, `fit`, `fit flip`, `fit none`.
+ * @prop {boolean} cfg.disabled Whether this menu button is initially disabled.
+ */
+PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
 
@@ -10,35 +35,67 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.disabled = this.button.is(':disabled');
 
         if(!this.cfg.disabled) {
-            this.bindEvents();
+            this.bindButtonEvents();
             PrimeFaces.utils.registerDynamicOverlay(this, this.menu, this.id + '_menu');
         }
     },
 
-    //@override
-    refresh: function(cfg) {
-        PrimeFaces.utils.removeAllDynamicOverlays(this.id + '_menu');
+    /**
+     * @override
+     * @inheritdoc
+     * @param {JQuery} menuitem
+     * @param {JQuery} submenu
+     */
+    showSubmenu: function(menuitem, submenu) {
+        var pos = {
+            my: 'left top',
+            at: 'right top',
+            of: menuitem,
+            collision: 'flipfit'
+        };
 
+        //avoid queuing multiple runs
+        if(this.timeoutId) {
+            clearTimeout(this.timeoutId);
+        }
+
+        this.timeoutId = setTimeout(function () {
+           submenu.css('z-index', PrimeFaces.nextZindex())
+                  .show()
+                  .position(pos);
+        }, this.cfg.delay);
+    },
+
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
+    refresh: function(cfg) {
         this._super(cfg);
     },
 
-    bindEvents: function() {
+    /**
+     * Sets up all event listeners that are required by this widget.
+     * @private
+     */
+    bindButtonEvents: function() {
         var $this = this;
 
         //button visuals
-        this.button.mouseover(function(){
+        this.button.on("mouseover", function(){
             if(!$this.button.hasClass('ui-state-focus')) {
                 $this.button.addClass('ui-state-hover');
             }
-        }).mouseout(function() {
+        }).on("mouseout", function() {
             if(!$this.button.hasClass('ui-state-focus')) {
                 $this.button.removeClass('ui-state-hover ui-state-active');
             }
-        }).mousedown(function() {
+        }).on("mousedown", function() {
             $(this).removeClass('ui-state-focus ui-state-hover').addClass('ui-state-active');
-        }).mouseup(function() {
+        }).on("mouseup", function() {
             var el = $(this);
-            el.removeClass('ui-state-active')
+            el.removeClass('ui-state-active');
 
             if($this.menu.is(':visible')) {
                 el.addClass('ui-state-hover');
@@ -48,9 +105,9 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
                 el.addClass('ui-state-focus');
                 $this.show();
             }
-        }).focus(function() {
+        }).on("focus", function() {
             $(this).addClass('ui-state-focus');
-        }).blur(function() {
+        }).on("blur", function() {
             $(this).removeClass('ui-state-focus');
         });
 
@@ -58,20 +115,20 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
         this.button.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
 
         //menuitem visuals
-        this.menuitems.mouseover(function(e) {
+        this.menuitems.on("mouseover", function(e) {
             var element = $(this);
             if(!element.hasClass('ui-state-disabled')) {
                 element.addClass('ui-state-hover');
             }
-        }).mouseout(function(e) {
+        }).on("mouseout", function(e) {
             $(this).removeClass('ui-state-hover');
-        }).click(function() {
+        }).on("click", function() {
             $this.button.removeClass('ui-state-focus');
             $this.hide();
         });
 
         //keyboard support
-        this.button.keydown(function(e) {
+        this.button.on("keydown", function(e) {
             var keyCode = $.ui.keyCode;
 
             switch(e.which) {
@@ -102,7 +159,6 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
                 break;
 
                 case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
                 case keyCode.SPACE:
                     if($this.menu.is(':visible'))
                         $this.menuitems.filter('.ui-state-hover').children('a').trigger('click');
@@ -121,15 +177,17 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
         });
 
         if (!$this.cfg.disabled) {
-            PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id, $this.menu,
+            PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $this.menu,
                 function() { return $this.button; },
-                function(e) {
-                    $this.button.removeClass('ui-state-focus ui-state-hover');
-                    $this.hide();
+                function(e, eventTarget) {
+                    if(!($this.menu.is(eventTarget) || $this.menu.has(eventTarget).length > 0)) {
+                        $this.button.removeClass('ui-state-focus ui-state-hover');
+                        $this.hide();
+                    }
                 });
         }
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.menu, function() {
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.menu, function() {
             $this.alignPanel();
         });
 
@@ -137,32 +195,46 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
         this.button.attr('role', 'button').attr('aria-disabled', this.button.is(':disabled'));
     },
 
+    /**
+     * Brings up the overlay menu with the menu items, as if the menu button were pressed.
+     *
+     * @override
+     */
     show: function() {
         this.alignPanel();
 
         this.menu.show();
     },
 
+    /**
+     * Hides the overlay menu with the menu items, as if the user clicked outside the menu.
+     *
+     * @override
+     */
     hide: function() {
         this.menuitems.filter('.ui-state-hover').removeClass('ui-state-hover');
 
         this.menu.fadeOut('fast');
     },
 
+    /**
+     * Align the overlay panel with the menu items so that it is positioned next to the menu button.
+     */
     alignPanel: function() {
-        this.menu.css({left:'', top:'','z-index': ++PrimeFaces.zindex});
+        this.menu.css({left:'', top:'','z-index': PrimeFaces.nextZindex()});
 
         if(this.menu.parent().is(this.jq)) {
             this.menu.css({
-                left: 0,
-                top: this.jq.innerHeight()
+                left: '0px',
+                top: this.jq.innerHeight() + 'px'
             });
         }
         else {
             this.menu.position({
-                my: 'left top'
-                ,at: 'left bottom'
-                ,of: this.button
+                my: 'left top',
+                at: 'left bottom',
+                of: this.button,
+                collision: this.cfg.collision || "flip"
             });
         }
     }
