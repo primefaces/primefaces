@@ -39,13 +39,16 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
         this.gutterSize = $this.cfg.gutterSize;
         this.stateKey = $this.cfg.stateKey;
         this.stateStorage = $this.cfg.stateStorage;
+        this.isStateful = this.stateKey !== null;
+        if(this.isStateful && this.stateStorage === "local") {
+            this.stateKey = PrimeFaces.createStorageKey(this.id, this.stateKey);
+        }
 
         this.splitter = $(this.jqId);
         this.panels = this.splitter.children('.ui-splitter-panel');
         this.gutters = this.splitter.children('.ui-splitter-gutter');
         this.panelsLength = this.panels.length;
         this.parentElementSize = this.horizontal ? this.splitter.width() : this.splitter.height();
-        this.isStateful = this.stateKey !== null;
         this.horizontal = this.layout === 'horizontal';
         this.pressed = false;
         this.panelSizes = [];
