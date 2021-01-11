@@ -23,12 +23,13 @@
  */
 package org.primefaces.model;
 
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.faces.model.ListDataModel;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Lazy loading DataModel to deal with huge datasets
@@ -52,37 +53,24 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
      */
     public abstract List<T> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy);
 
-    /**
-     * Retrieve bean associated to the rowKey passed in parameter.
-     * By default, only current loaded data (current page) is supported.
-     * Override this method to support selection from different pages.
-     * @param rowKey String representation
-     * @return Bean associated to the rowKey
-     */
     @Override
     public T getRowData(String rowKey) {
-        List<T> data = getWrappedData();
-        if (data != null) {
-            for (T o : data) {
-                if (Objects.equals(rowKey, getRowKey(o))) {
-                    return o;
-                }
-            }
-        }
-
-        return null;
+        throw new UnsupportedOperationException(
+                getMessage("getRowData(String rowKey) must be implemented by %s when basic rowKey algorithm is not used [component=%s,view=%s]."));
     }
 
-    /**
-     * Convert bean into String representation used later on to retrieve that bean.
-     * By default, Object#hashCode is used as String representation.
-     * Override if bean doesn't override Object#hashCode
-     * @param object bean
-     * @return String representation
-     */
     @Override
     public String getRowKey(T object) {
-        return String.valueOf(Objects.hashCode(object));
+        throw new UnsupportedOperationException(
+                getMessage("getRowKey(T object) must be implemented by %s when basic rowKey algorithm is not used [component=%s,view=%s]."));
+    }
+
+    private String getMessage(String format) {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        String viewId = facesContext.getViewRoot().getViewId();
+        UIComponent component = UIComponent.getCurrentComponent(facesContext);
+        String clientId = component == null ? "<unknown>" : component.getClientId(facesContext);
+        return String.format(format, getClass().getName(), clientId, viewId);
     }
 
     @Override

@@ -554,7 +554,7 @@ public class DataTable extends DataTableBase {
         else {
             boolean hasRowKeyVe = getValueExpression(PropertyKeys.rowKey.name()) != null;
             if (!hasRowKeyVe) {
-                return String.valueOf(Objects.hashCode(object));
+                throw new UnsupportedOperationException("DataTable#rowKey must be defined for component " + getClientId(getFacesContext()));
             }
             else {
                 Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
