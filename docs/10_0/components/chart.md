@@ -784,7 +784,7 @@ function exportChart() {
 
 ### Static Images / JFreeChart alternative
 
-JFreeChart with GraphicImage component is an alternative to the chart component. See [GraphicImage example](graphicimage?id=displaying-charts-with-jfreechart)
+JFreeChart with GraphicImage component is an alternative to the chart component. See [GraphicImage example](/components/graphicimage?id=displaying-charts-with-jfreechart)
 
 
 ## Skinning

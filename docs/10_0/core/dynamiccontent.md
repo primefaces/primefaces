@@ -62,7 +62,7 @@ as the _var_ can't be accessed in the second resource streaming browser request:
 <ui:repeat value="#{myView.images}" var="img">
     <p:graphicImage value="#{img}" alt="..." />
 </ui:repeat>
-```xhtml
+```
 
 A valid workaround is either the example in 'Pass parameters to the resource request' or set the _stream_ attribute to _false_.
 
