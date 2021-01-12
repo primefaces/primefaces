@@ -86,7 +86,7 @@ _DefaultStreamedContent_ gets an _InputStream_ as the first parameter and mime t
 In a real life application, you can create the _InputStream_ after reading the image from the database.
 For example _java.sql.ResultsSet_ API has the _getBinaryStream()_ method to read blob files stored in database.
 
-## Displaying Charts with JFreeChart
+## Displaying charts with JFreeChart
 
 Server side generated charts of JFreeChart can be easily rendered as image:
 
