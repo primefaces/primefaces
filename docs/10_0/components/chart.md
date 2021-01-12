@@ -782,49 +782,10 @@ function exportChart() {
 }
 ```
 
-### Static Images
+### Static Images / JFreeChart alternative
 
-JFreeChart with GraphicImage component is an alternative to the chart component.
+JFreeChart with GraphicImage component is an alternative to the chart component. See [GraphicImage example](graphicimage?id=displaying-charts-with-jfreechart)
 
-#### Basic
-
-```xhtml
-<p:graphicImage value="#{bean.chart}" />
-```
-```java
-public class Bean {
-    private StreamedContent chart;
-
-    public Bean() {
-        chart = DefaultStreamedContent.builder()
-                    .contentType("image/png")
-                    .stream(() -> {
-                        try {
-                            JFreeChart jfreechart = ChartFactory.createPieChart("Cities", createDataset(), true, true, false);
-                            File chartFile = new File("dynamichart");
-                            ChartUtilities.saveChartAsPNG(chartFile, jfreechart, 375, 300);
-                            return new FileInputStream(chartFile);
-                        }
-                        catch (Exception e) {
-                            e.printStackTrace();
-                            return null;
-                        }
-                    })
-                    .build();
-    }
-    public StreamedContent getChart() {
-        return model;
-    }
-    private PieDataset createDataset() {
-        DefaultPieDataset dataset = new DefaultPieDataset();
-        dataset.setValue("New York", new Double(45.0));
-        dataset.setValue("London", new Double(15.0));
-        dataset.setValue("Paris", new Double(25.2));
-        dataset.setValue("Berlin", new Double(14.8));
-        return dataset;
-    }
-}
-```
 
 ## Skinning
 

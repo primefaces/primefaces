@@ -1,9 +1,11 @@
 # GraphicImage
 
-GraphicImage extends standard JSF graphic image component with the ability of displaying binary
-data like an inputstream. Main use cases of GraphicImage is to make displaying images stored in
-database or on-the-fly images easier. Legacy way to do this is to come up with a Servlet that does
-the streaming, GraphicImage does all the hard work without the need of a Servlet.
+GraphicImage extends standard JSF _h:graphicImage_ component with the ability of displaying binary / dynamic data like an _InputStream_.
+Main use cases of GraphicImage is to make displaying images stored in database or on-the-fly images easier.
+Legacy way to do this is to come up with a Servlet that does the streaming, GraphicImage does all the hard work without the need of a Servlet.
+
+
+!> Dynamic content streaming has a limitation inside iterating components like _p:dataTable_ or _ui:repeat_. See: [Dynamic content rendering / streaming](../core/dynamicontent?id=iterating-component-support)
 
 ## Info
 
@@ -78,25 +80,69 @@ public class ImageView {
     }
 }
 ```
-DefaultStreamedContent gets an inputstream as the first parameter and mime type as the second.
+_DefaultStreamedContent_ gets an _InputStream_ as the first parameter and mime type as the second.
 
 
-In a real life application, you can create the inputstream after reading the image from the database.
-For example _java.sql.ResultsSet_ API has the _getBinaryStream()_ method to read blob files stored in
-database.
+In a real life application, you can create the _InputStream_ after reading the image from the database.
+For example _java.sql.ResultsSet_ API has the _getBinaryStream()_ method to read blob files stored in database.
 
 ## Displaying Charts with JFreeChart
-See static images section at chart component for a sample usage of graphicImage with jFreeChart.
+
+Server side generated charts of JFreeChart can be easiy rendered as image.
+
+```xhtml
+<p:graphicImage value="#{jFreeChartView.chart}" />
+```
+
+```java
+public class JFreeChartView {
+    private StreamedContent chart;
+
+    public JFreeChartView() {
+        chart = DefaultStreamedContent.builder()
+                    .contentType("image/png")
+                    .stream(() -> {
+                        try {
+                            JFreeChart jfreechart = ChartFactory.createPieChart("Cities", createDataset(), true, true, false);
+                            File chartFile = new File("dynamichart");
+                            ChartUtilities.saveChartAsPNG(chartFile, jfreechart, 375, 300);
+                            return new FileInputStream(chartFile);
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                            return null;
+                        }
+                    })
+                    .build();
+    }
+
+    public StreamedContent getChart() {
+        return model;
+    }
+
+    private PieDataset createDataset() {
+        DefaultPieDataset dataset = new DefaultPieDataset();
+        dataset.setValue("New York", new Double(45.0));
+        dataset.setValue("London", new Double(15.0));
+        dataset.setValue("Paris", new Double(25.2));
+        dataset.setValue("Berlin", new Double(14.8));
+        return dataset;
+    }
+}
+```
 
 ## Displaying a Barcode
-Similar to the chart example, a barcode can be generated as well. This sample uses barbecue project
-for the barcode API.
+Similar to the chart example, a barcode can be generated as well.
+This sample uses barbecue project for the barcode API:
 
 ```xhtml
 <p:graphicImage value="#{barcodeView.barcode}" />
 ```
+
 ```java
-public class BarcodeBean {
+@Named
+@RequestScoped
+public class BarcodeView {
     private StreamedContent barcode;
 
     public BarcodeView() {
