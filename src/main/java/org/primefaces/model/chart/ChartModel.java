@@ -37,7 +37,7 @@ public class ChartModel implements Serializable {
     private int legendCols;
     private int legendRows;
     private LegendPlacement legendPlacement;
-    private boolean legendEscapeHtml = false;
+    private boolean legendEscapeHtml;
     private boolean mouseoverHighlight = true;
     private String extender;
     private boolean resetAxesOnResize = true;

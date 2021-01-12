@@ -41,7 +41,7 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.DatePickerRenderer";
 
-    protected String timeSeparator = null;
+    protected String timeSeparator;
 
     public enum PropertyKeys {
 

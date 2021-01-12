@@ -57,7 +57,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriterWrapper {
         CALLBACK_EXTENSION_PARAMS = Collections.unmodifiableMap(callbackExtensionParams);
     }
 
-    private boolean metadataRendered = false;
+    private boolean metadataRendered;
 
     public PrimePartialResponseWriter(PartialResponseWriter wrapped) {
         super(wrapped);

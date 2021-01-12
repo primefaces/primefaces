@@ -42,7 +42,7 @@ public class LegendLabel implements Serializable {
     private Number fontSize;
     private String fontStyle;
     private Number padding;
-    private boolean usePointStyle = false;
+    private boolean usePointStyle;
 
     /**
      * width of colored box

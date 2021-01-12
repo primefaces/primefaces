@@ -64,7 +64,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 
     private List<TreeNode> preselection;
 
-    private Boolean isNested = null;
+    private Boolean isNested;
 
     public enum PropertyKeys {
         var,

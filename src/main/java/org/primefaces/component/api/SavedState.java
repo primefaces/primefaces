@@ -41,7 +41,7 @@ public class SavedState implements Serializable {
     private boolean submitted;
     private boolean valid = true;
     private Object value;
-    private boolean localValueSet = false;
+    private boolean localValueSet;
 
     public SavedState() {
         super();

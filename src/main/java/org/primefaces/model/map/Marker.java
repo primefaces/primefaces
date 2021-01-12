@@ -31,9 +31,9 @@ public class Marker extends Overlay {
 
     private String cursor;
 
-    private boolean draggable = false;
+    private boolean draggable;
 
-    private boolean flat = false;
+    private boolean flat;
 
     private String icon;
 

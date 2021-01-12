@@ -53,7 +53,7 @@ public class InputTextarea extends InputTextareaBase {
             "query");
     private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("itemSelect", "query");
 
-    private List suggestions = null;
+    private List suggestions;
 
     @Override
     public Collection<String> getEventNames() {

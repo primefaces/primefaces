@@ -43,7 +43,7 @@ public class Legend implements Serializable {
     private String align;
     private boolean fullWidth = true;
     private boolean reverse;
-    private boolean rtl = false;
+    private boolean rtl;
     private String textDirection;
     private LegendLabel labels;
 

@@ -39,10 +39,10 @@ node at the backend needs to match the p:organigramNode helper component.
 public class OrganigramView implements Serializable {
     private OrganigramNode rootNode; 
     private OrganigramNode selection;
-    private boolean zoom = false; 
+    private boolean zoom; 
     private String style = "width: 800px";
-    private int leafNodeConnectorHeight = 0; 
-    private boolean autoScrollToSelection = false;
+    private int leafNodeConnectorHeight; 
+    private boolean autoScrollToSelection;
     private String employeeName;
 
     @PostConstruct
