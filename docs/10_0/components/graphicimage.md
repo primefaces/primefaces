@@ -1,8 +1,8 @@
 # GraphicImage
 
-GraphicImage extends standard JSF _h:graphicImage_ component with the ability of displaying binary / dynamic data like an _InputStream_.
-Main use cases of GraphicImage is to make displaying images stored in database or on-the-fly images easier.
-Legacy way to do this is to come up with a Servlet that does the streaming, GraphicImage does all the hard work without the need of a Servlet.
+GraphicImage extends standard JSF _h:graphicImage_ component with the ability of displaying binary / dynamic data like an _InputStream_.  
+Main use cases of GraphicImage is to make displaying images stored in database or on-the-fly images easier.  
+Legacy way to do this is to come up with a Servlet that does the streaming, GraphicImage does all the hard work without the need of a Servlet.  
 
 
 !> Dynamic content streaming has a limitation inside iterating components like _p:dataTable_ or _ui:repeat_. See: [Dynamic content rendering / streaming](/core/dynamiccontent?id=iterating-component-support)
