@@ -71,7 +71,7 @@ public class AjaxRequestBuilder {
     protected StringBuilder buffer;
     protected FacesContext context;
 
-    private boolean preventDefault = false;
+    private boolean preventDefault;
 
     public AjaxRequestBuilder(FacesContext context) {
         this.context = context;

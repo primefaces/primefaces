@@ -78,7 +78,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     private String form;
     private boolean escape = true;
     private String rel;
-    private boolean ignoreComponentNotFound = false;
+    private boolean ignoreComponentNotFound;
 
     /**
      * Creates a new menu item without value.

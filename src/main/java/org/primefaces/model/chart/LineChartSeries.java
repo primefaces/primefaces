@@ -35,9 +35,9 @@ public class LineChartSeries extends ChartSeries {
     private String markerStyle = "filledCircle";
     private boolean showLine = true;
     private boolean showMarker = true;
-    private boolean fill = false;
+    private boolean fill;
     private double fillAlpha = 1;
-    private boolean smoothLine = false;
+    private boolean smoothLine;
     private boolean disableStack;
 
     public LineChartSeries() {

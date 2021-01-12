@@ -184,9 +184,9 @@ public class DataTable extends DataTableBase {
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
-    private boolean reset = false;
+    private boolean reset;
     private List<Object> selectedRowKeys = new ArrayList<>();
-    private boolean isRowKeyRestored = false;
+    private boolean isRowKeyRestored;
     private List<UIColumn> columns;
     private Set<Integer> expandedRowsSet;
     private Map<String, AjaxBehaviorEvent> deferredEvents = new HashMap<>(1);

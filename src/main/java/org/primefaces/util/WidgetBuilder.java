@@ -37,7 +37,7 @@ import org.primefaces.component.api.Widget;
  */
 public class WidgetBuilder {
 
-    protected boolean endFunction = false;
+    protected boolean endFunction;
     protected FacesContext context;
     protected PrimeConfiguration configuration;
 

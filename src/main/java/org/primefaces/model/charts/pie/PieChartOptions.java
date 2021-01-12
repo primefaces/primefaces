@@ -36,7 +36,7 @@ public class PieChartOptions extends ChartOptions {
     private Number rotation;
     private Number circumference;
     private boolean animateRotate = true;
-    private boolean animateScale = false;
+    private boolean animateScale;
 
     /**
      * Gets the cutoutPercentage

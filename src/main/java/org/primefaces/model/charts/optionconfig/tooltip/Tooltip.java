@@ -67,7 +67,7 @@ public class Tooltip implements Serializable {
     private boolean displayColors;
     private String borderColor;
     private Number borderWidth;
-    private boolean rtl = false;
+    private boolean rtl;
     private String textDirection;
 
     /**

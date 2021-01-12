@@ -56,7 +56,7 @@ public class Mindmap extends MindmapBase {
             .build();
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-    private MindmapNode selectedNode = null;
+    private MindmapNode selectedNode;
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {

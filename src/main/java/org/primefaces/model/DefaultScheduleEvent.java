@@ -38,12 +38,12 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
     private String title;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private boolean allDay = false;
+    private boolean allDay;
     private String styleClass;
     private T data;
     private Boolean resizable;
     private Boolean draggable;
-    private boolean overlapAllowed = false;
+    private boolean overlapAllowed;
     private String description;
     private String url;
     private ScheduleRenderingMode renderingMode;

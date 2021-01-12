@@ -27,9 +27,9 @@ public class StraightConnector extends Connector {
 
     private static final long serialVersionUID = 1L;
 
-    private int stub = 0;
+    private int stub;
 
-    private int gap = 0;
+    private int gap;
 
     public StraightConnector() {
     }

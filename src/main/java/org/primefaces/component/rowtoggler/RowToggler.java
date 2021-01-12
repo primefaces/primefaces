@@ -38,7 +38,7 @@ public class RowToggler extends RowTogglerBase {
 
     public static final String ROW_TOGGLER = "primefaces.rowtoggler.aria.ROW_TOGGLER";
 
-    private DataTable parentTable = null;
+    private DataTable parentTable;
 
     public DataTable getParentTable(FacesContext context) {
         if (parentTable == null) {

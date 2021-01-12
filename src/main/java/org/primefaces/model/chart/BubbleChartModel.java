@@ -31,7 +31,7 @@ public class BubbleChartModel extends CartesianChartModel {
     private static final long serialVersionUID = 1L;
 
     private List<BubbleChartSeries> data;
-    private boolean bubbleGradients = false;
+    private boolean bubbleGradients;
     private double bubbleAlpha = 1.0;
     private boolean showLabels = true;
 

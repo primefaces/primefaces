@@ -34,7 +34,7 @@ public class DonutChartModel extends ChartModel {
     private List<Map<String, Number>> data;
     private int sliceMargin;
     private boolean fill = true;
-    private boolean showDataLabels = false;
+    private boolean showDataLabels;
     private String dataFormat;
     private String dataLabelFormatString;
     private int dataLabelThreshold;

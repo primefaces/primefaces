@@ -64,12 +64,12 @@ public class UIData extends javax.faces.component.UIData {
 
     private final Map<String, Object> _rowTransientStates = new HashMap<>();
     private Map<String, Object> _rowDeltaStates = new HashMap<>();
-    private Object _initialDescendantFullComponentState = null;
+    private Object _initialDescendantFullComponentState;
 
-    private String clientId = null;
-    private DataModel model = null;
-    private Boolean isNested = null;
-    private Object oldVar = null;
+    private String clientId;
+    private DataModel model;
+    private Boolean isNested;
+    private Object oldVar;
 
     public enum PropertyKeys {
         rowIndex,
