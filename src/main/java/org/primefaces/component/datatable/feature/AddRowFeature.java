@@ -23,13 +23,12 @@
  */
 package org.primefaces.component.datatable.feature;
 
-import java.io.IOException;
-import javax.faces.FacesException;
-
-import javax.faces.context.FacesContext;
-
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
+
+import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
+import java.io.IOException;
 
 public class AddRowFeature implements DataTableFeature {
 
@@ -41,7 +40,8 @@ public class AddRowFeature implements DataTableFeature {
     @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         if (table.isSelectionEnabled()) {
-            table.findSelectedRowKeys();
+            SelectionFeature feature = (SelectionFeature) DataTable.FEATURES.get(DataTableFeatureKey.SELECT);
+            feature.decodeSelectionRowKeys(context, table);
         }
 
         String clientId = table.getClientId(context);

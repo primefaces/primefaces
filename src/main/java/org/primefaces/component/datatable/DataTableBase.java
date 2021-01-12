@@ -107,15 +107,6 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         widgetVar
     }
 
-    protected enum InternalPropertyKeys {
-        defaultFilter,
-        filterByAsMap,
-        defaultSort,
-        sortByAsMap,
-        columnMeta,
-        width;
-    }
-
     public DataTableBase() {
         setRendererType(DEFAULT_RENDERER);
     }
@@ -229,11 +220,11 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         getStateHelper().put(PropertyKeys.scrollRows, scrollRows);
     }
 
-    public Object getRowKey() {
-        return getStateHelper().eval(PropertyKeys.rowKey, null);
+    public String getRowKey() {
+        return (String) getStateHelper().eval(PropertyKeys.rowKey, null);
     }
 
-    public void setRowKey(Object rowKey) {
+    public void setRowKey(String rowKey) {
         getStateHelper().put(PropertyKeys.rowKey, rowKey);
     }
 
