@@ -5,7 +5,7 @@ Main use cases of GraphicImage is to make displaying images stored in database o
 Legacy way to do this is to come up with a Servlet that does the streaming, GraphicImage does all the hard work without the need of a Servlet.
 
 
-!> Dynamic content streaming has a limitation inside iterating components like _p:dataTable_ or _ui:repeat_. See: [Dynamic content rendering / streaming](/core/dynamicontent?id=iterating-component-support)
+!> Dynamic content streaming has a limitation inside iterating components like _p:dataTable_ or _ui:repeat_. See: [Dynamic content rendering / streaming](/core/dynamiccontent?id=iterating-component-support)
 
 ## Info
 
@@ -88,7 +88,7 @@ For example _java.sql.ResultsSet_ API has the _getBinaryStream()_ method to read
 
 ## Displaying Charts with JFreeChart
 
-Server side generated charts of JFreeChart can be easiy rendered as image.
+Server side generated charts of JFreeChart can be easily rendered as image:
 
 ```xhtml
 <p:graphicImage value="#{jFreeChartView.chart}" />
