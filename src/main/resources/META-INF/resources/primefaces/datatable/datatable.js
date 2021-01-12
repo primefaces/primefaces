@@ -867,7 +867,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     case keyCode.UP:
                     case keyCode.DOWN:
                         var rowSelector = 'tr.ui-widget-content.ui-datatable-selectable',
-                        row = key === keyCode.UP ? $this.focusedRow.prev(rowSelector) : $this.focusedRow.next(rowSelector);
+                        row = key === keyCode.UP ? $this.focusedRow.prevUntil(rowSelector) : $this.focusedRow.nextUntil(rowSelector);
 
                         if(row.length) {
                             $this.unhighlightFocusedRow();
