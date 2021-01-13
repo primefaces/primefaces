@@ -21,10 +21,10 @@
   - [Accessibility](/core/accessibility.md)
   - [BeanValidation Transformation](/core/beanvalidationtransformation.md)
 
-    - [Client Side Validation](/core/csv.md)
+  - [Client Side Validation](/core/csv.md)
 
-        - [Messages](/core/csvMessages.md)
-        - [JavaScript API](/core/csvJavascriptAPI.md)
+    - [Messages](/core/csvMessages.md)
+    - [JavaScript API](/core/csvJavascriptAPI.md)
 
   - [Client Window](/core/clientwindow.md)
   - [Content Security Policy](/core/contentsecuritypolicy.md)
