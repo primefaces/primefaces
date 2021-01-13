@@ -83,3 +83,99 @@ Using _p:clientValidator_ and custom events, CSV for a particular component can 
     </p:panel>
 </h:form>
 ```
+
+## Extending CSV
+
+Using CSV APIs, it is easy to write your own custom converters and validators.
+
+Your custom validator must implement ClientValidator interface to provide the id of the client validator and the optional metadata.
+
+
+```java
+package org.primefaces.examples.validate;
+import java.util.Map;
+import java.util.regex.Pattern;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.FacesValidator;
+import javax.faces.validator.Validator;
+import javax.faces.validator.ValidatorException;
+import org.primefaces.validate.ClientValidator;
+
+@FacesValidator("custom.emailValidator")
+public class EmailValidator implements Validator, ClientValidator {
+    private Pattern pattern;
+    private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    
+    public EmailValidator() {
+        pattern = Pattern.compile(EMAIL_PATTERN);
+    }
+    public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+        if(value == null) {
+            return;
+        }
+        if(!pattern.matcher(value.toString()).matches()) {
+            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Validation Error", value + " is not a valid email;"));
+        }
+    }
+    public Map<String, Object> getMetadata() {
+        return null;
+    }
+    public String getValidatorId() {
+        return "custom.emailValidator";
+    }
+}
+```
+
+Validator is plugged-in using the standard way.
+
+```xhtml
+<h:form>
+    <p:messages />
+    <p:inputText id="email" value="#{bean.value}">
+        <f:validator validatorId="custom.emailValidator" />
+    </p:inputText>
+    <p:message for="email" />
+    <p:commandButton value="Save" validateClient="true" ajax="false"/>
+</h:form>
+```
+
+Last step is implementing the validator at client side and configuring it.
+
+```js
+PrimeFaces.validator['custom.emailValidator'] = {
+    pattern: /\S+@\S+/,
+    validate: function(element, value) {
+        //use element.data() to access validation metadata, in this case there is none.
+        if(!this.pattern.test(value)) {
+            throw {
+                summary: 'Validation Error',
+                detail: value + ' is not a valid email.'
+            }
+        }
+    }
+};
+```
+
+In some cases your validator might need metadata, for example _LengthValidator_ requires _min_ and  _max_ constraints to validate against.  
+Server side validator can pass these by overriding the _getMetadata()_ method by providing a _Map_ of name/value pairs.  
+At client side, these are accessed via _element.data(key)_.
+
+```java
+public Map<String, Object> getMetadata() {
+    Map<String,Object> data = new HashMap<String,Object>();
+    data.put("data-prime", 10);
+    return data;
+}
+```
+
+```js
+validate: function(element, value) {
+    var prime = element.data("prime"); //10
+    //validate
+}
+```
+
+Similarly a client side converter can be written by implementing ClientConverter API and
+overriding _convert: function(element, submittedValue) {}_ method to return a javascript object.
