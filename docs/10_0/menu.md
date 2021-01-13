@@ -18,11 +18,14 @@
         - [Partial Submit](/core/ajaxPartialsubmit.md)
         - [JavaScript API](/core/ajaxJavascriptApi.md)
 
+    - [Client Side Validation](/core/csv.md)
+
+        - [Bean Validation](/core/csvBeanValidation.md)
+        - [Messages](/core/csvMessages.md)
+        - [JavaScript API](/core/csvJavascriptAPI.md)
+
   - [Accessibility](/core/accessibility.md)
   - [BeanValidation Transformation](/core/beanvalidationtransformation.md)
-  - [Client Side Validation](/core/csv.md)
-    - [Messages](/core/csvMessages.md)
-    - [JavaScript API](/core/csvJavascriptAPI.md)
   - [Client Window](/core/clientwindow.md)
   - [Content Security Policy](/core/contentsecuritypolicy.md)
   - [Dialog Framework](/core/dialogframework.md)

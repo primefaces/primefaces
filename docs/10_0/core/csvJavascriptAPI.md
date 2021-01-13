@@ -1,4 +1,4 @@
-# Client Side Validation JavaScript API
+# Client Side Validation - JavaScript API
 
 ## PrimeFaces.validation.validate
 

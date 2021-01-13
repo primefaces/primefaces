@@ -1,4 +1,4 @@
-# Client Side Validation Messages
+# Client Side Validation - Messages
 
 Validation errors are displayed as the same way in server side validation, texts are retrieved from a
 client side bundle and message components are required for the displays.
