@@ -53,12 +53,17 @@ public interface ScheduleEvent<T> {
     String getStyleClass();
 
     /**
-     * @deprecated Use {@link #isResizable()} or {@link #isDraggable()} instead.
+     * The rendering type of this event. Can be 'auto', 'block', 'list-item', 'background', 'inverse-background', or 'none'.
+     * Events that appear as background highlights can be achieved by setting an Event Object’s display property
+     * to "background" or "inverse-background".
      */
-    @Deprecated
-    default boolean isEditable() {
-        return isDraggable() != null && isResizable() != null && (isDraggable() || isResizable());
-    }
+    String getDisplay();
+
+    String getBackgroundColor();
+
+    String getBorderColor();
+
+    String getTextColor();
 
     /**
      * @return Whether the event should be draggable. Returning {@code null}
@@ -83,4 +88,13 @@ public interface ScheduleEvent<T> {
     ScheduleRenderingMode getRenderingMode();
 
     Map<String, Object> getDynamicProperties();
+
+    /**
+     * @deprecated Use {@link #isResizable()} or {@link #isDraggable()} instead.
+     */
+    @Deprecated
+    default boolean isEditable() {
+        return isDraggable() != null && isResizable() != null && (isDraggable() || isResizable());
+    }
+
 }
