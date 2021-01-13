@@ -28,6 +28,7 @@
   - [BeanValidation Transformation](/core/beanvalidationtransformation.md)
   - [Client Window](/core/clientwindow.md)
   - [Content Security Policy](/core/contentsecuritypolicy.md)
+  - [Cookies](/core/cookies.md)
   - [Dialog Framework](/core/dialogframework.md)
   - [Dynamic Content Streaming / Rendering](/core/dynamiccontent.md)
   - [EL Functions](/core/elFunctions.md)
