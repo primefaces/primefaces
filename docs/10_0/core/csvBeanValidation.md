@@ -19,8 +19,10 @@ CSV has built-in integration with Bean Validation, by validating the constraints
 
 ```java
 public class Bean {
+
     @Size(min=2,max=5)
     private String name;
+
     @Min(10) @Max(20)
     private Integer age;
 }
@@ -28,10 +30,9 @@ public class Bean {
 
 All of the standard constraints are supported.
 
-
 ## Implement a client side BeanValidation constraint
 
-Bean Validation is also supported for extensions, here is an example of a @Email validator.
+Bean Validation is also supported for extensions, here is an example of a _@Email_ validator.
 
 ```java
 //imports
@@ -43,61 +44,77 @@ import org.primefaces.validate.bean.ClientConstraint;
 @ClientConstraint(resolvedBy=EmailClientValidationConstraint.class)
 @Documented
 public @interface Email {
+
     String message() default "{org.primefaces.examples.primefaces}";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }
 ```
 
-@Constraint is the regular validator from Bean Validation API and @ClientConsraint is from CSV
-API to resolve metadata.
+_@Constraint_ is the regular API from Bean Validation API.  
+_@ClientConsraint_ the API is from PrimeFaces CSV to resolve metadata.
 
 ```java
-public class EmailConstraintValidator implements ConstraintValidator<Email, String>{
-    private Pattern pattern;
+public class EmailConstraintValidator implements ConstraintValidator<Email, String> {
+
     private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-    
+
+    private Pattern pattern;
+
+    @Override
     public void initialize(Email a) {
         pattern = Pattern.compile(EMAIL_PATTERN);
     }
+
+    @Override
     public boolean isValid(String value, ConstraintValidatorContext cvc) {
-        if(value == null)
+        if (value == null)
             return true;
         else
             return pattern.matcher(value.toString()).matches();
     }
 }
 ```
+
 ```java
 public class EmailClientValidationConstraint implements ClientValidationConstraint {
     public static final String MESSAGE_METADATA = "data-p-email-msg";
+
+    @Override
     public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {
         Map<String,Object> metadata = new HashMap<String, Object>();
         Map attrs = constraintDescriptor.getAttributes();
         Object message = attrs.get("message");
-        if(message != null) {
+        if (message != null) {
             metadata.put(MESSAGE_METADATA, message);
         }
         return metadata;
     }
+
+    @Override
     public String getValidatorId() {
         return Email.class.getSimpleName();
     }
 }
 ```
 
-Final part is implementing the client side validator;
+Final part is implementing the client side validator:
 
 ```js
 PrimeFaces.validator['Email'] = {
+    MESSAGE_ID: 'org.primefaces.examples.validate.email.message',    
+
     pattern: /\S+@\S+/,
-    MESSAGE_ID: 'org.primefaces.examples.validate.email.message',
+
     validate: function(element, value) {
         var vc = PrimeFaces.util.ValidationContext;
-        if(!this.pattern.test(value)) {
-            var msgStr = element.data('p-email-msg'),
-            msg = msgStr? {summary:msgStr, detail: msgStr} :
-            vc.getMessage(this.MESSAGE_ID);
+        if (!this.pattern.test(value)) {
+            var msgStr = element.data('p-email-msg');
+            var msg = msgStr
+                ? { summary: msgStr, detail: msgStr }
+                : vc.getMessage(this.MESSAGE_ID);
             throw msg;
         }
     }
@@ -113,6 +130,7 @@ Usage is same as using standard constraints;
     <p:commandButton value="Save" validateClient="true" ajax="false"/>
 </h:form>
 ```
+
 ```java
 public class Bean {
     @Email
@@ -120,13 +138,16 @@ public class Bean {
     //getter-setter
 }
 ```
-**3 rd Party Annotations**
+
+## 3rd Party Annotations
+
 When using 3rd party constraints like Hibernate Validator specific annotations, use
 BeanValidationMetadataMapper to define a ClientValidationConstraint for them.
 
 ```java
 BeanValidationMetadataMapper.registerConstraintMapping(Class<? extends Annotation> constraint, ClientValidationConstraint clientValidationConstraint);
 ```
+
 ```java
 BeanValidationMetadataMapper.removeConstraintMapping(Class<? extends Annotation> constraint);
 ```

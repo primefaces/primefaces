@@ -111,6 +111,8 @@ public class EmailValidator implements Validator, ClientValidator {
     public EmailValidator() {
         pattern = Pattern.compile(EMAIL_PATTERN);
     }
+
+    @Override
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
         if(value == null) {
             return;
@@ -119,9 +121,13 @@ public class EmailValidator implements Validator, ClientValidator {
             throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Validation Error", value + " is not a valid email;"));
         }
     }
+
+    @Override
     public Map<String, Object> getMetadata() {
         return null;
     }
+
+    @Override
     public String getValidatorId() {
         return "custom.emailValidator";
     }
@@ -163,6 +169,7 @@ Server side validator can pass these by overriding the _getMetadata()_ method by
 At client side, these are accessed via _element.data(key)_.
 
 ```java
+@Override
 public Map<String, Object> getMetadata() {
     Map<String,Object> data = new HashMap<String,Object>();
     data.put("data-prime", 10);
@@ -177,5 +184,5 @@ validate: function(element, value) {
 }
 ```
 
-Similarly a client side converter can be written by implementing ClientConverter API and
+Similarly a client side converter can be written by implementing _ClientConverter_ API and
 overriding _convert: function(element, submittedValue) {}_ method to return a javascript object.
