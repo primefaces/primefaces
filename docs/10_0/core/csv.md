@@ -187,7 +187,7 @@ validate: function(element, value) {
 ## Converter
 
 Like on server side, PrimeFaces CSV requires to convert e.g. the string of input field to a number or Object.  
-Your _Converter_ can simply implement _ClientConverter_ and provide a implementation of the client side.  
+Your _Converter_ can simply implement _ClientConverter_ and provide a implementation on the client side.  
 Here is the example of the built on _BooleanConverter_:
 
 ```java
@@ -254,7 +254,7 @@ PrimeFaces.validator['MyComplexValidator'] = {
 };
 ```
 
-```java
+```html
 <h:form id="form">
     <p:panel header="Validate" pt:data-p-val="MyComplexValidator">
         <p:messages showDetail="true">
