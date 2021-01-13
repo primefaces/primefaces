@@ -44,26 +44,22 @@ CSV works for PrimeFaces components only, standard h: * components are not suppo
 
 ## AJAX vs Non-AJAX
 
-CSV works differently depending on the request type of the trigger component to be compatible
-with cases where CSV is not enabled.
+CSV works differently depending on the request type of the trigger component, to be compatible with cases where CSV is not enabled.
 
+#### Non-AJAX
+All visible and editable input components in the form are validated and message components must be placed inside the form.
 
-### Non-AJAX
-In non-AJAX case, all visible and editable input components in the form are validated and message
-components must be placed inside the form.
-
-### AJAX
-CSV supports partial processing and updates on client side as well, if process attribute is enabled,
-the components that would be processed at server side gets validated at client side. Similary if
-update attribute is defined, only message components inside the updated parts gets rendered. Whole
-process happens at client side.
+#### AJAX
+CSV supports partial processing and updates on client side.  
+If process attribute is set, the components that would be processed at server side gets validated at client side.  
+Similary if update attribute is defined, only message components inside the updated parts gets rendered.  
+The whole process happens at client side.
 
 ## Events
 
-CSV provides a behavior called p:clientValidator to do instant validation in case you do not want to
-wait for the users to fill in the form and hit commandButton/commandLink. Using clientBehavior
-and custom events, CSV for a particular component can run with events such as change (default),
-blur, keyup.
+CSV provides a behavior, _p:clientValidator_, to do instant validation, in case you do not want to
+wait for the users to fill in the form and hit commandButton/commandLink.  
+Using _p:clientValidator_ and custom events, CSV for a particular component can run with events such as change (default), blur or keyup.
 
 ```xhtml
 <h:form>
@@ -90,8 +86,7 @@ blur, keyup.
 
 ## Bean Validation
 
-CSV has built-in integration with Bean Validation by validating the constraints defined with
-annotations at client side.
+CSV has built-in integration with Bean Validation, by validating the constraints defined with annotations at client side.
 
 ```xhtml
 <h:form>
