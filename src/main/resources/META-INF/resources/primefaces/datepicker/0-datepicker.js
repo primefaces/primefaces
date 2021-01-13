@@ -2533,6 +2533,7 @@
         },
 
         onClearButtonClick: function (event) {
+            this.updateViewDate(event, new Date());
             this.updateModel(event, null);
 
             if (this.options.onClearButtonClick) {
