@@ -21,9 +21,8 @@
   - [Accessibility](/core/accessibility.md)
   - [BeanValidation Transformation](/core/beanvalidationtransformation.md)
 
-  - Client Side Validation
+    - [Client Side Validation](/core/csv.md)
 
-        - [Intro](/core/csv.md)
         - [Messages](/core/csvMessages.md)
         - [JavaScript API](/core/csvJavascriptAPI.md)
 

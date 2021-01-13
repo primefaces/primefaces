@@ -48,11 +48,11 @@ CSV works differently depending on the request type of the trigger component to 
 with cases where CSV is not enabled.
 
 
-**Non-AJAX**
+### Non-AJAX
 In non-AJAX case, all visible and editable input components in the form are validated and message
 components must be placed inside the form.
 
-**AJAX**
+### AJAX
 CSV supports partial processing and updates on client side as well, if process attribute is enabled,
 the components that would be processed at server side gets validated at client side. Similary if
 update attribute is defined, only message components inside the updated parts gets rendered. Whole
