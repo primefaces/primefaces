@@ -53,8 +53,7 @@ public @interface Email {
 }
 ```
 
-_@Constraint_ is the regular API from Bean Validation API.  
-_@ClientConsraint_ the API is from PrimeFaces CSV to resolve metadata.
+_@Constraint_ is the regular API from Bean Validation API, whereas _@ClientConsraint_ is from PrimeFaces CSV to resolve metadata.
 
 ```java
 public class EmailConstraintValidator implements ConstraintValidator<Email, String> {
@@ -142,7 +141,7 @@ public class Bean {
 ## 3rd Party Annotations
 
 When using 3rd party constraints like Hibernate Validator specific annotations, use
-BeanValidationMetadataMapper to define a ClientValidationConstraint for them.
+_BeanValidationMetadataMapper_ to define a _ClientValidationConstraint_ for them.
 
 ```java
 BeanValidationMetadataMapper.registerConstraintMapping(Class<? extends Annotation> constraint, ClientValidationConstraint clientValidationConstraint);

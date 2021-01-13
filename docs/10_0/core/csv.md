@@ -184,5 +184,99 @@ validate: function(element, value) {
 }
 ```
 
-Similarly a client side converter can be written by implementing _ClientConverter_ API and
-overriding _convert: function(element, submittedValue) {}_ method to return a javascript object.
+## Converter
+
+Like on server side, PrimeFaces CSV requires to convert e.g. the string of input field to a number or Object.  
+Your _Converter_ can simply implement _ClientConverter_ and provide a implementation of the client side.  
+Here is the example of the built on _BooleanConverter_:
+
+```java
+public class BooleanConverter extends javax.faces.convert.BooleanConverter implements ClientConverter {
+
+    @Override
+    public String getConverterId() {
+        return BooleanConverter.CONVERTER_ID;
+    }
+}
+```
+
+```js
+PrimeFaces.converter['javax.faces.Boolean'] = {
+
+    regex: /^[-+]?\d+$/,
+
+    MESSAGE_ID: 'javax.faces.converter.BooleanConverter.BOOLEAN',
+
+    convert: function(element, submittedValue) {
+        if(submittedValue === null) {
+            return null;
+        }
+
+        if(PrimeFaces.trim(submittedValue).length === 0) {
+            return null;
+        }
+
+        var vc = PrimeFaces.validation.ValidationContext;
+
+        try {
+            return ((submittedValue === 'true' || submittedValue === 'on' || submittedValue === 'yes') ? true : false);
+        }
+        catch(exception) {
+            throw vc.getMessage(this.MESSAGE_ID, submittedValue, vc.getLabel(element));
+        }
+    }
+};
+```
+
+## Multi-Field / Complex validation
+
+CSV has a built in mechanism to validate container elements by using the _data-p-val_ data attribute.  
+Just make sure that the container element is processed.
+
+```js
+PrimeFaces.validator['MyComplexValidator'] = {
+
+    validate: function (element) {
+        var nameRequired = element.find('#form\\:nameRequired');
+        var name = element.find('#form\\:name');
+
+        if (nameRequired.find('.ui-chkbox-icon').hasClass('ui-icon-check') && name.val().length === 0) {
+            PrimeFaces.validator.Highlighter.types['default'].highlight(name);
+
+            throw {
+                summary: 'Validation Error',
+                detail: 'A name is required!'
+            };
+        } else {
+            PrimeFaces.validator.Highlighter.types['default'].unhighlight(name);
+        }
+    }
+};
+```
+
+```java
+<h:form id="form">
+    <p:panel header="Validate" pt:data-p-val="MyComplexValidator">
+        <p:messages showDetail="true">
+            <p:autoUpdate/>
+        </p:messages>
+
+        <h:panelGrid id="grid" columns="3" cellpadding="5">
+            <p:outputLabel for="@next" value="Name required"/>
+            <p:selectBooleanCheckbox id="nameRequired" value="#{complexValidationView.nameRequired}"/>
+            <p:message for="@previous"/>
+
+            <p:outputLabel for="@next" value="Name"/>
+            <p:inputText id="name" value="#{complexValidationView.name}" label="Name"/>
+            <p:message for="@previous"/>
+
+            <p:outputLabel for="@next" value="Accept Terms And Conditions"/>
+            <p:selectBooleanCheckbox id="terms" value="#{complexValidationView.acceptTermnsAndCondition}"/>
+            <p:message for="@previous"/>
+        </h:panelGrid>
+
+        <p:commandButton value="Non-Ajax" ajax="false" icon="pi pi-check" validateClient="true" />
+        <p:commandButton value="Ajax" id="btnAjax" update="grid" icon="pi pi-check" validateClient="true" />
+    </p:panel>
+</h:form>
+```
