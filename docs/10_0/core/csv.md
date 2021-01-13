@@ -1,4 +1,3 @@
-
 # Client Side Validation
 
 PrimeFaces Client Side Validation (CSV) Framework is the most complete and advanced CSV
