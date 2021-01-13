@@ -138,11 +138,11 @@ public class DataTableRenderer extends DataRenderer {
                 FilterFeature filterFeature = (FilterFeature) table.getFeature(DataTableFeatureKey.FILTER);
                 filterFeature.filter(context, table);
             }
+        }
 
-            if (table.isSelectionEnabled()) {
-                SelectionFeature selectionFeature = (SelectionFeature) table.getFeature(DataTableFeatureKey.SELECT);
-                selectionFeature.decodeSelectionRowKeys(context, table);
-            }
+        if (table.isSelectionEnabled()) {
+            SelectionFeature selectionFeature = (SelectionFeature) table.getFeature(DataTableFeatureKey.SELECT);
+            selectionFeature.decodeSelectionRowKeys(context, table);
         }
 
         if (table.isPaginator()) {

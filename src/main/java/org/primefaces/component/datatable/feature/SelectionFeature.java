@@ -50,7 +50,11 @@ public class SelectionFeature implements DataTableFeature {
         boolean isFiltered = (filteredValue != null);
 
         String selection = params.get(clientId + "_selection");
-        Set<String> rowKeys = LangUtils.newLinkedHashSet(selection.split(","));
+        Set<String> rowKeys = Collections.emptySet();
+
+        if (LangUtils.isNotBlank(selection)) {
+            rowKeys = LangUtils.newLinkedHashSet(selection.split(","));
+        }
 
         if (isFiltered) {
             table.setValue(null);
@@ -128,22 +132,24 @@ public class SelectionFeature implements DataTableFeature {
     }
 
     protected void decodeSingleSelection(FacesContext context, DataTable table, String rowKey) {
-        if (LangUtils.isNotBlank(rowKey)) {
-            Object o = table.getRowData(rowKey);
-            if (o != null) {
-                Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-                String var = table.getVar();
-                if (isSelectable(table, var, requestMap, o)) {
-                    setSelection(context, table, false, Collections.singletonList(o));
-                }
-                table.setSelectedRowKeys(Collections.singleton(rowKey));
+        Object o = table.getRowData(rowKey);
+        if (o != null) {
+            Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+            String var = table.getVar();
+            Set<String> rowKeysTmp = Collections.emptySet();
+            if (isSelectable(table, var, requestMap, o)) {
+                rowKeysTmp = Collections.singleton(rowKey);
             }
+            setSelection(context, table, false, Collections.singletonList(o), rowKeysTmp);
+        }
+        else {
+            setSelection(context, table, false, Collections.emptyList(), Collections.emptySet());
         }
     }
 
     protected void decodeMultipleSelection(FacesContext context, DataTable table, Set<String> rowKeys) {
         if (rowKeys.isEmpty()) {
-            setSelection(context, table, true, Collections.emptyList());
+            setSelection(context, table, true, Collections.emptyList(), Collections.emptySet());
         }
         else {
             Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
@@ -151,13 +157,14 @@ public class SelectionFeature implements DataTableFeature {
 
             List<Object> selection = new ArrayList<>();
 
+            Set<String> rowKeysTmp = new HashSet<>();
             if (!rowKeys.isEmpty() && ALL_SELECTOR.equals(rowKeys.iterator().next())) {
                 for (int i = 0; i < table.getRowCount(); i++) {
                     table.setRowIndex(i);
                     Object rowData = table.getRowData();
                     String rowKey = table.getRowKey(rowData);
                     if (rowKey != null) {
-                        rowKeys.add(rowKey);
+                        rowKeysTmp.add(rowKey);
                         if (rowData != null && isSelectable(table, var, requestMap, rowData)) {
                             selection.add(rowData);
                         }
@@ -167,13 +174,16 @@ public class SelectionFeature implements DataTableFeature {
             else {
                 for (String rowKey : rowKeys) {
                     Object rowData = table.getRowData(rowKey);
-                    if (rowData != null && isSelectable(table, var, requestMap, rowData)) {
-                        selection.add(rowData);
+                    if (rowData != null) {
+                        rowKeysTmp.add(rowKey);
+                        if (isSelectable(table, var, requestMap, rowData)) {
+                            selection.add(rowData);
+                        }
                     }
                 }
             }
 
-            setSelection(context, table, true, selection);
+            setSelection(context, table, true, selection, rowKeysTmp);
 
             requestMap.remove(var);
         }
@@ -209,7 +219,7 @@ public class SelectionFeature implements DataTableFeature {
         return selectable;
     }
 
-    protected void setSelection(FacesContext context, DataTable table, boolean multiple, List<Object> o) {
+    protected void setSelection(FacesContext context, DataTable table, boolean multiple, List<Object> selected, Set<String> rowKeys) {
         ValueExpression selectionVE = table.getValueExpression(DataTableBase.PropertyKeys.selection.toString());
         Class<?> clazz = selectionVE == null ? null : selectionVE.getType(context.getELContext());
         boolean isArray = clazz != null && clazz.isArray();
@@ -219,19 +229,21 @@ public class SelectionFeature implements DataTableFeature {
         }
 
         Object selection = null;
-        if (o.isEmpty()) {
+        if (selected.isEmpty()) {
             if (multiple) {
                 selection = isArray ? LangUtils.EMPTY_OBJECT_ARRAY : Collections.emptyList();
             }
         }
         else {
             if (multiple) {
-                selection = isArray ? Array.newInstance(clazz.getComponentType(), o.size()) : o;
+                selection = isArray ? Array.newInstance(clazz.getComponentType(), selected.size()) : selected;
             }
             else {
-                selection = o.get(0);
+                selection = selected.get(0);
             }
         }
+
+        table.setSelectedRowKeys(rowKeys);
 
         if (selectionVE != null) {
             selectionVE.setValue(context.getELContext(), selection);
