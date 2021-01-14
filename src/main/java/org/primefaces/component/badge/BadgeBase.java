@@ -51,42 +51,42 @@ public abstract class BadgeBase extends UIComponentBase implements Widget {
     }
 
     public String getValue() {
-        return (String) getStateHelper().eval(BadgeBase.PropertyKeys.value, null);
+        return (String) getStateHelper().eval(PropertyKeys.value, null);
     }
 
     public void setValue(String value) {
-        getStateHelper().put(BadgeBase.PropertyKeys.value, value);
+        getStateHelper().put(PropertyKeys.value, value);
     }
 
     public String getSeverity() {
-        return (String) getStateHelper().eval(BadgeBase.PropertyKeys.severity, null);
+        return (String) getStateHelper().eval(PropertyKeys.severity, null);
     }
 
     public void setSeverity(String severity) {
-        getStateHelper().put(BadgeBase.PropertyKeys.severity, severity);
+        getStateHelper().put(PropertyKeys.severity, severity);
     }
 
     public String getSize() {
-        return (String) getStateHelper().eval(BadgeBase.PropertyKeys.size, null);
+        return (String) getStateHelper().eval(PropertyKeys.size, null);
     }
 
     public void setSize(String size) {
-        getStateHelper().put(BadgeBase.PropertyKeys.size, size);
+        getStateHelper().put(PropertyKeys.size, size);
     }
 
     public String getStyle() {
-        return (String) getStateHelper().eval(BadgeBase.PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
-        getStateHelper().put(BadgeBase.PropertyKeys.style, style);
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
     public String getStyleClass() {
-        return (String) getStateHelper().eval(BadgeBase.PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
-        getStateHelper().put(BadgeBase.PropertyKeys.styleClass, styleClass);
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 }
