@@ -61,6 +61,6 @@ See: [AJAX / JavaScript API](/ajax/javascriptApi.md)
 
 ## PrimeFaces Client Side Validation (CSV) (PrimeFaces.validation.*)
 
-See: [Client Side Validation](/core/clientsidevalidation.md)
+See: [Client Side Validation](/core/csvJavascriptAPI.md)
 
 

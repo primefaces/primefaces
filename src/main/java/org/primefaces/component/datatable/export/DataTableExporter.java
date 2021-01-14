@@ -348,9 +348,9 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
 
         private DataTable target;
 
-        private int index = 0;
+        private int index;
 
-        private int counter = 0;
+        private int counter;
 
         public DataTableVisitCallBack(DataTable target, ExportConfiguration config, int index) {
             this.target = target;

@@ -18,11 +18,17 @@
         - [Partial Submit](/core/ajaxPartialsubmit.md)
         - [JavaScript API](/core/ajaxJavascriptApi.md)
 
+    - [Client Side Validation](/core/csv.md)
+
+        - [Bean Validation](/core/csvBeanValidation.md)
+        - [Messages](/core/csvMessages.md)
+        - [JavaScript API](/core/csvJavascriptAPI.md)
+
   - [Accessibility](/core/accessibility.md)
   - [BeanValidation Transformation](/core/beanvalidationtransformation.md)
-  - [Client Side Validation](/core/clientsidevalidation.md)
   - [Client Window](/core/clientwindow.md)
   - [Content Security Policy](/core/contentsecuritypolicy.md)
+  - [Cookies](/core/cookies.md)
   - [Dialog Framework](/core/dialogframework.md)
   - [Dynamic Content Streaming / Rendering](/core/dynamiccontent.md)
   - [EL Functions](/core/elFunctions.md)

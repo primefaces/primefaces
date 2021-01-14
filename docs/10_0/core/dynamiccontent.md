@@ -53,10 +53,22 @@ A common pattern is to pass the information, which is probably stored in your _@
 
 As the _ValueExpression_ is evaluated in the second request, not when rendering the view, a _MethodExpression_ and method parameters are **NOT** supported.
 
+### Iterating component support
+
+When e.g. _p:graphicImage_ is used in a data iteration component like _p:dataTable_ or _ui:repeat_, it's not possible to use the _var_ in the _value_ expression,
+as the _var_ can't be accessed in the second resource streaming browser request:
+
+```xhtml
+<ui:repeat value="#{myView.images}" var="img">
+    <p:graphicImage value="#{img}" alt="..." />
+</ui:repeat>
+```
+
+A valid workaround is either the example in 'Pass parameters to the resource request' or set the _stream_ attribute to _false_.
+
 ### Pass parameters to the resource request
 
 You can pass request parameters via _f:param_, which will be appended to the resource URL.
-This is extremely handy to display dynamic content, if your image is in a data iteration component like _p:dataTable_ or _ui:repeat_.
 
 ```xhtml
 <p:graphicImage value="#{imageView.image}">

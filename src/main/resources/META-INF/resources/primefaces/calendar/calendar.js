@@ -168,7 +168,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
                     }
                     
                     $this.alignPanel();
-                }, 1);
+                }, 50);
 
                 // touch support - prevents keyboard popup
                 if(touchEnabled) {

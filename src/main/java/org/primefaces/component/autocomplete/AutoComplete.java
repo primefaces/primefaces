@@ -71,7 +71,7 @@ public class AutoComplete extends AutoCompleteBase {
             "moreTextSelect", "emptyMessageSelect", "clear");
     protected static final Collection<String> EVENT_NAMES = LangUtils.concat(AbstractPrimeHtmlInputText.EVENT_NAMES, UNOBSTRUSIVE_EVENT_NAMES);
 
-    private Object suggestions = null;
+    private Object suggestions;
 
     @Override
     public Collection<String> getEventNames() {

@@ -462,7 +462,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         if(!silent) {
-            this.focusInput.trigger('focus');
+            if (!this.cfg.behaviors) {
+                this.focusInput.trigger('focus');
+            }
+            
             this.callBehavior('itemSelect');
         }
 

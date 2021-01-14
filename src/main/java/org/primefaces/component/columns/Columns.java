@@ -37,7 +37,7 @@ public class Columns extends ColumnsBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Columns";
 
-    private CellEditor cellEditor = null;
+    private CellEditor cellEditor;
     private List<DynamicColumn> dynamicColumns;
 
     @Override

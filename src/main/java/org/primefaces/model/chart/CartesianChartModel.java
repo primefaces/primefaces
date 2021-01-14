@@ -32,11 +32,11 @@ public class CartesianChartModel extends ChartModel {
     protected Map<AxisType, Axis> axes;
 
     private List<ChartSeries> series;
-    private boolean zoom = false;
-    private boolean animate = false;
+    private boolean zoom;
+    private boolean animate;
     private boolean showDatatip = true;
     private String datatipFormat;
-    private boolean showPointLabels = false;
+    private boolean showPointLabels;
     private String datatipEditor;
 
     public CartesianChartModel() {

@@ -39,7 +39,7 @@ public class RadialLinearTicks extends AxesTicks {
     private String backdropColor;
     private Number backdropPaddingX;
     private Number backdropPaddingY;
-    private boolean beginAtZero = false;
+    private boolean beginAtZero;
     private Number min;
     private Number max;
     private Number maxTicksLimit;

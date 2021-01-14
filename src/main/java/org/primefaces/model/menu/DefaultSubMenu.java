@@ -39,7 +39,7 @@ public class DefaultSubMenu implements Submenu, Serializable {
     private boolean disabled;
     private List<MenuElement> elements;
     private boolean rendered = true;
-    private boolean expanded = false;
+    private boolean expanded;
 
     public DefaultSubMenu() {
         elements = new ArrayList<>();

@@ -34,18 +34,22 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
     private static final long serialVersionUID = 1L;
 
     private String id;
+    private T data;
     private String groupId;
     private String title;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private boolean allDay = false;
-    private String styleClass;
-    private T data;
+    private boolean allDay;
+    private boolean overlapAllowed;
     private Boolean resizable;
     private Boolean draggable;
-    private boolean overlapAllowed = false;
+    private String styleClass;
     private String description;
     private String url;
+    private String display;
+    private String backgroundColor;
+    private String borderColor;
+    private String textColor;
     private ScheduleRenderingMode renderingMode;
     private Map<String, Object> dynamicProperties;
 
@@ -236,6 +240,42 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
     }
 
     @Override
+    public String getDisplay() {
+        return display;
+    }
+
+    public void setDisplay(String display) {
+        this.display = display;
+    }
+
+    @Override
+    public String getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    public void setBackgroundColor(String backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
+
+    @Override
+    public String getBorderColor() {
+        return borderColor;
+    }
+
+    public void setBorderColor(String borderColor) {
+        this.borderColor = borderColor;
+    }
+
+    @Override
+    public String getTextColor() {
+        return textColor;
+    }
+
+    public void setTextColor(String textColor) {
+        this.textColor = textColor;
+    }
+
+    @Override
     public ScheduleRenderingMode getRenderingMode() {
         return renderingMode;
     }
@@ -384,8 +424,30 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
             return this;
         }
 
+        public DefaultScheduleEvent.Builder<T> display(String display) {
+            scheduleEvent.setDisplay(display);
+            return this;
+        }
+
+        public DefaultScheduleEvent.Builder<T> backgroundColor(String backgroundColor) {
+            scheduleEvent.setBackgroundColor(backgroundColor);
+            return this;
+        }
+
+        public DefaultScheduleEvent.Builder<T> borderColor(String borderColor) {
+            scheduleEvent.setBorderColor(borderColor);
+            return this;
+        }
+
+        public DefaultScheduleEvent.Builder<T> textColor(String textColor) {
+            scheduleEvent.setTextColor(textColor);
+            return this;
+        }
+
         public DefaultScheduleEvent<T> build() {
             return scheduleEvent;
         }
     }
+
+
 }

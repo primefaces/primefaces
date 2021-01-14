@@ -140,6 +140,11 @@ public class DataTableRenderer extends DataRenderer {
             }
         }
 
+        if (table.isSelectionEnabled()) {
+            SelectionFeature selectionFeature = (SelectionFeature) table.getFeature(DataTableFeatureKey.SELECT);
+            selectionFeature.decodeSelectionRowKeys(context, table);
+        }
+
         if (table.isPaginator()) {
             table.calculateFirst();
         }
@@ -1058,10 +1063,6 @@ public class DataTableRenderer extends DataRenderer {
         String tbodyClientId = (tbodyId == null) ? clientId + "_data" : tbodyId;
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-        if (table.isSelectionEnabled()) {
-            table.findSelectedRowKeys();
-        }
-
         int rows = table.getRows();
         int first = table.isClientCacheRequest(context) ? Integer.valueOf(params.get(clientId + "_first")) + rows : table.getFirst();
         int rowCount = table.getRowCount();
@@ -1205,28 +1206,23 @@ public class DataTableRenderer extends DataRenderer {
 
         ResponseWriter writer = context.getResponseWriter();
         boolean selectionEnabled = table.isSelectionEnabled();
-        Object rowKey = null;
+        String rowKey = null;
         List<UIColumn> columns = table.getColumns();
         HeaderRow headerRow = table.getHeaderRow();
 
         if (selectionEnabled) {
-            //try rowKey attribute
-            rowKey = table.getRowKey();
-
-            //ask selectable datamodel
-            if (rowKey == null) {
-                rowKey = table.getRowKeyFromModel(table.getRowData());
-            }
+            rowKey = table.getRowKey(table.getRowData());
         }
 
         //Preselection
         boolean selected = table.getSelectedRowKeys().contains(rowKey);
+        boolean disabled = table.isDisabledSelection();
 
         String rowStyleClass = getStyleClassBuilder(context)
                 .add(DataTable.ROW_CLASS)
                 .add(rowIndex % 2 == 0, DataTable.EVEN_ROW_CLASS, DataTable.ODD_ROW_CLASS)
-                .add(selectionEnabled && !table.isDisabledSelection(), DataTable.SELECTABLE_ROW_CLASS)
-                .add(selected, "ui-state-highlight")
+                .add(selectionEnabled && !disabled, DataTable.SELECTABLE_ROW_CLASS)
+                .add(selected && !disabled, "ui-state-highlight")
                 .add(table.isEditingRow(),  DataTable.EDITING_ROW_CLASS)
                 .add(table.getRowStyleClass())
                 .add(table.isExpandedRow(), DataTable.EXPANDED_ROW_CLASS)
@@ -1250,13 +1246,13 @@ public class DataTableRenderer extends DataRenderer {
             UIColumn column = columns.get(i);
 
             if (column instanceof Column) {
-                encodeCell(context, table, column, clientId, selected, rowIndex);
+                encodeCell(context, table, column, selected, disabled, rowIndex);
             }
             else if (column instanceof DynamicColumn) {
                 DynamicColumn dynamicColumn = (DynamicColumn) column;
                 dynamicColumn.applyModel();
 
-                encodeCell(context, table, dynamicColumn, null, false, rowIndex);
+                encodeCell(context, table, dynamicColumn, false, disabled, rowIndex);
             }
         }
 
@@ -1269,8 +1265,8 @@ public class DataTableRenderer extends DataRenderer {
         return true;
     }
 
-    protected void encodeCell(FacesContext context, DataTable table, UIColumn column, String clientId, boolean selected,
-            int rowIndex) throws IOException {
+    protected void encodeCell(FacesContext context, DataTable table, UIColumn column, boolean selected,
+            boolean disabled, int rowIndex) throws IOException {
         if (!column.isRendered()) {
             return;
         }
@@ -1322,7 +1318,7 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         if (selectionEnabled) {
-            encodeColumnSelection(context, table, clientId, column, selected);
+            encodeColumnSelection(context, table, column, selected, disabled);
         }
 
         if (hasColumnDefaultRendering(table, column)) {
@@ -1506,11 +1502,10 @@ public class DataTableRenderer extends DataRenderer {
         }
     }
 
-    protected void encodeColumnSelection(FacesContext context, DataTable table, String clientId, UIColumn column, boolean selected)
+    protected void encodeColumnSelection(FacesContext context, DataTable table, UIColumn column, boolean selected, boolean disabled)
             throws IOException {
 
         String selectionMode = column.getSelectionMode();
-        boolean disabled = table.isDisabledSelection();
 
         if ("single".equalsIgnoreCase(selectionMode)) {
             encodeRadio(context, table, selected, disabled);
@@ -1533,7 +1528,7 @@ public class DataTableRenderer extends DataRenderer {
         }
         else {
             String ariaRowLabel = table.getAriaRowLabel();
-            Object rowKey = table.getRowKey();
+            Object rowKey = null;
             String boxClass = HTML.CHECKBOX_BOX_CLASS;
             boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
             boxClass = checked ? boxClass + " ui-state-active" : boxClass;
@@ -1542,6 +1537,9 @@ public class DataTableRenderer extends DataRenderer {
             if (isHeaderCheckbox) {
                 rowKey = "head";
                 ariaRowLabel = MessageFactory.getMessage(DataTable.ARIA_HEADER_CHECKBOX_ALL);
+            }
+            else {
+                rowKey = table.getRowKey();
             }
 
             writer.startElement("div", null);

@@ -74,7 +74,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
      * Key: parentClientId (aka rowId when nested within a parent table) Value: DataModel
      */
     private Map<String, DataModel> _dataModelMap = new HashMap<>();
-    private Object _initialDescendantComponentState = null;
+    private Object _initialDescendantComponentState;
     // will be set to false if the data should not be refreshed at the beginning of the encode phase
     private boolean _isValidChilds = true;
     private int _end = -1;
