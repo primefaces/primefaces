@@ -1,5 +1,4 @@
 @charset "UTF-8";
-/* Add your variable customizations of the theme here */
 :root {
   --surface-a:#1e1e1e;
   --surface-b:#121212;
@@ -811,7 +810,7 @@ body .ui-datatable .ui-paginator {
 body .ui-datatable thead th {
   background: #1e1e1e;
   color: rgba(255, 255, 255, 0.87);
-  padding: 1rem;
+  padding: 1rem 1rem;
   border: 1px solid #383838;
   border-width: 0 0 1px 0;
   text-align: left;
@@ -894,7 +893,7 @@ body .ui-datatable .ui-datatable-data > tr {
   transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 body .ui-datatable .ui-datatable-data > tr > td {
-  padding: 1rem;
+  padding: 1rem 1rem;
   border: 1px solid #383838;
   border-width: 0 0 1px 0;
 }
@@ -1107,7 +1106,7 @@ body .ui-datatable tfoot td {
   border: 1px solid #383838;
   border-width: 0 0 1px 0;
   color: rgba(255, 255, 255, 0.87);
-  padding: 1rem;
+  padding: 1rem 1rem;
   font-weight: 700;
   box-sizing: content-box;
 }
@@ -1167,17 +1166,17 @@ body .ui-datatable.ui-datatable-striped .ui-datatable-data > tr.ui-datatable-odd
   color: #212529;
 }
 body .ui-datatable.ui-datatable-sm thead > tr > th {
-  padding: 0.5rem;
+  padding: 0.5rem 0.5rem;
 }
 body .ui-datatable.ui-datatable-sm .ui-datatable-scrollable-theadclone > tr > th {
   padding-top: 0;
   padding-bottom: 0;
 }
 body .ui-datatable.ui-datatable-sm .ui-datatable-data > tr > td {
-  padding: 0.5rem;
+  padding: 0.5rem 0.5rem;
 }
 body .ui-datatable.ui-datatable-sm tfoot > tr > td {
-  padding: 0.5rem;
+  padding: 0.5rem 0.5rem;
 }
 body .ui-datatable.ui-datatable-gridlines .ui-datatable-header {
   border-width: 1px;
@@ -1744,7 +1743,7 @@ body .ui-treetable .ui-paginator {
 body .ui-treetable thead th {
   background: #1e1e1e;
   color: rgba(255, 255, 255, 0.87);
-  padding: 1rem;
+  padding: 1rem 1rem;
   border-bottom: 1px solid #383838;
   border-width: 0 0 1px 0;
   text-align: left;
@@ -1827,7 +1826,7 @@ body .ui-treetable .ui-treetable-data > tr {
   transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 body .ui-treetable .ui-treetable-data > tr > td {
-  padding: 1rem;
+  padding: 1rem 1rem;
   border: 1px solid #383838;
   border-width: 0 0 1px 0;
 }
@@ -2010,7 +2009,7 @@ body .ui-treetable tfoot td {
   border: 1px solid #383838;
   border-width: 0 0 1px 0;
   color: rgba(255, 255, 255, 0.87);
-  padding: 1rem;
+  padding: 1rem 1rem;
   font-weight: 700;
   box-sizing: content-box;
 }
@@ -2021,17 +2020,17 @@ body .ui-treetable .ui-column-resizer-helper {
   background: #90CAF9;
 }
 body .ui-treetable.ui-treetable-sm thead > tr > th {
-  padding: 0.5rem;
+  padding: 0.5rem 0.5rem;
 }
 body .ui-treetable.ui-treetable-sm .ui-treetable-scrollable-theadclone > tr > th {
   padding-top: 0;
   padding-bottom: 0;
 }
 body .ui-treetable.ui-treetable-sm .ui-treetable-data > tr > td {
-  padding: 0.5rem;
+  padding: 0.5rem 0.5rem;
 }
 body .ui-treetable.ui-treetable-sm tfoot > tr > td {
-  padding: 0.5rem;
+  padding: 0.5rem 0.5rem;
 }
 body .ui-treetable.ui-treetable-gridlines .ui-treetable-header {
   border-width: 1px 1px 0;
@@ -2876,7 +2875,7 @@ body .ui-autocomplete-panel .ui-autocomplete-items .ui-autocomplete-item.ui-auto
   border: 1px solid #383838;
 }
 body .ui-autocomplete-panel .ui-autocomplete-items .ui-autocomplete-item.ui-autocomplete-row > td {
-  padding: 1rem;
+  padding: 1rem 1rem;
 }
 body .ui-autocomplete-itemtip {
   padding: 0;
@@ -3141,7 +3140,7 @@ body .ui-selectmanymenu .ui-selectlistbox-listcontainer .ui-selectlistbox-list .
 }
 body .ui-selectonelistbox .ui-selectlistbox-listcontainer .ui-selectlistbox-list .ui-selectlistbox-item > td,
 body .ui-selectmanymenu .ui-selectlistbox-listcontainer .ui-selectlistbox-list .ui-selectlistbox-item > td {
-  padding: 1rem;
+  padding: 1rem 1rem;
 }
 body .ui-input-filled .ui-selectonelistbox.ui-inputfield,
 body .ui-input-filled .ui-selectmanymenu.ui-inputfield, body.ui-input-filled .ui-selectonelistbox.ui-inputfield,
@@ -3296,7 +3295,7 @@ body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-s
   border: 1px solid #383838;
 }
 body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-selectonemenu-row > td {
-  padding: 1rem;
+  padding: 1rem 1rem;
 }
 body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-selectonemenu-row:first-child {
   border-top-color: transparent;
@@ -7029,4 +7028,4 @@ body .ui-sidebar.ui-sidebar-active {
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.16);
 }
 
-/* Add your customizations of the theme here */
+/* Add your customizations of theme here */
