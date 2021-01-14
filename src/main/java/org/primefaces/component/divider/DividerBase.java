@@ -48,42 +48,42 @@ public abstract class DividerBase extends UIComponentBase {
     }
 
     public String getAlign() {
-        return (String) getStateHelper().eval(DividerBase.PropertyKeys.align, null);
+        return (String) getStateHelper().eval(PropertyKeys.align, null);
     }
 
     public void setAlign(String align) {
-        getStateHelper().put(DividerBase.PropertyKeys.align, align);
+        getStateHelper().put(PropertyKeys.align, align);
     }
 
     public String getLayout() {
-        return (String) getStateHelper().eval(DividerBase.PropertyKeys.layout, "horizontal");
+        return (String) getStateHelper().eval(PropertyKeys.layout, "horizontal");
     }
 
     public void setLayout(String layout) {
-        getStateHelper().put(DividerBase.PropertyKeys.layout, layout);
+        getStateHelper().put(PropertyKeys.layout, layout);
     }
 
     public String getType() {
-        return (String) getStateHelper().eval(DividerBase.PropertyKeys.type, "solid");
+        return (String) getStateHelper().eval(PropertyKeys.type, "solid");
     }
 
     public void setType(String type) {
-        getStateHelper().put(DividerBase.PropertyKeys.type, type);
+        getStateHelper().put(PropertyKeys.type, type);
     }
 
     public String getStyle() {
-        return (String) getStateHelper().eval(DividerBase.PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
-        getStateHelper().put(DividerBase.PropertyKeys.style, style);
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
     public String getStyleClass() {
-        return (String) getStateHelper().eval(DividerBase.PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
-        getStateHelper().put(DividerBase.PropertyKeys.styleClass, styleClass);
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 }

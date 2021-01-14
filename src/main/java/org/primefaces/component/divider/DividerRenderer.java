@@ -50,14 +50,14 @@ public class DividerRenderer extends CoreRenderer {
                     .add("solid".equals(type), Divider.SOLID_CLASS)
                     .add("dashed".equals(type), Divider.DASHED_CLASS)
                     .add("dotted".equals(type), Divider.DOTTED_CLASS)
-                    .add((isHorizontal && align == null) || "left".equals(align), Divider.ALING_LEFT_CLASS)
-                    .add((isVertical && align == null) || "center".equals(align), Divider.ALING_CENTER_CLASS)
+                    .add(isHorizontal && (align == null || "left".equals(align)), Divider.ALING_LEFT_CLASS)
                     .add(isHorizontal && "right".equals(align), Divider.ALING_RIGHT_CLASS)
+                    .add((isHorizontal && "center".equals(align)) || (isVertical && (align == null || "center".equals(align))), Divider.ALING_CENTER_CLASS)
                     .add(isVertical && "top".equals(align), Divider.ALING_TOP_CLASS)
                     .add(isVertical && "bottom".equals(align), Divider.ALING_BOTTOM_CLASS)
                     .build();
 
-        writer.startElement("div", divider);
+        writer.startElement("div", null);
         writer.writeAttribute("id", divider.getClientId(context), "id");
         writer.writeAttribute("role", "separator", "role");
         writer.writeAttribute("class", styleClass, "styleClass");
@@ -65,7 +65,7 @@ public class DividerRenderer extends CoreRenderer {
             writer.writeAttribute("style", divider.getStyle(), "style");
         }
         if (divider.getChildCount() > 0) {
-            writer.startElement("div", divider);
+            writer.startElement("div", null);
             writer.writeAttribute("class", Divider.CONTENT_CLASS, "styleClass");
             renderChildren(context, divider);
             writer.endElement("div");

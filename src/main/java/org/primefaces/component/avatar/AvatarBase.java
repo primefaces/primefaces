@@ -51,59 +51,59 @@ public abstract class AvatarBase extends UIComponentBase {
     }
 
     public String getLabel() {
-        return (String) getStateHelper().eval(AvatarBase.PropertyKeys.label, null);
+        return (String) getStateHelper().eval(PropertyKeys.label, null);
     }
 
     public void setLabel(String label) {
-        getStateHelper().put(AvatarBase.PropertyKeys.label, label);
+        getStateHelper().put(PropertyKeys.label, label);
     }
 
     public String getIcon() {
-        return (String) getStateHelper().eval(AvatarBase.PropertyKeys.icon, null);
+        return (String) getStateHelper().eval(PropertyKeys.icon, null);
     }
 
     public void setIcon(String icon) {
-        getStateHelper().put(AvatarBase.PropertyKeys.icon, icon);
+        getStateHelper().put(PropertyKeys.icon, icon);
     }
 
     public String getImage() {
-        return (String) getStateHelper().eval(AvatarBase.PropertyKeys.image, null);
+        return (String) getStateHelper().eval(PropertyKeys.image, null);
     }
 
     public void setImage(String image) {
-        getStateHelper().put(AvatarBase.PropertyKeys.image, image);
+        getStateHelper().put(PropertyKeys.image, image);
     }
 
     public String getSize() {
-        return (String) getStateHelper().eval(AvatarBase.PropertyKeys.size, null);
+        return (String) getStateHelper().eval(PropertyKeys.size, null);
     }
 
     public void setSize(String size) {
-        getStateHelper().put(AvatarBase.PropertyKeys.size, size);
+        getStateHelper().put(PropertyKeys.size, size);
     }
 
     public String getShape() {
-        return (String) getStateHelper().eval(AvatarBase.PropertyKeys.shape, "square");
+        return (String) getStateHelper().eval(PropertyKeys.shape, "square");
     }
 
     public void setShape(String shape) {
-        getStateHelper().put(AvatarBase.PropertyKeys.shape, shape);
+        getStateHelper().put(PropertyKeys.shape, shape);
     }
 
     public String getStyle() {
-        return (String) getStateHelper().eval(AvatarBase.PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
-        getStateHelper().put(AvatarBase.PropertyKeys.style, style);
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
     public String getStyleClass() {
-        return (String) getStateHelper().eval(AvatarBase.PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
-        getStateHelper().put(AvatarBase.PropertyKeys.styleClass, styleClass);
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
 }
