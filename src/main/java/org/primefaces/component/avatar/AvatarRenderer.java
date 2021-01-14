@@ -54,7 +54,7 @@ public class AvatarRenderer extends CoreRenderer {
         }
 
         if (avatar.getChildCount() > 0) {
-            renderChild(context, avatar);
+            renderChildren(context, avatar);
         }
         else {
             encodeDefaultContent(context, avatar);
@@ -87,5 +87,15 @@ public class AvatarRenderer extends CoreRenderer {
             writer.writeAttribute("src", avatar.getImage(), null);
             writer.endElement("img");
         }
+    }
+
+    @Override
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+        //Do nothing
+    }
+
+    @Override
+    public boolean getRendersChildren() {
+        return true;
     }
 }
