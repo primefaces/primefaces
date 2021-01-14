@@ -46,33 +46,46 @@ public class AvatarRenderer extends CoreRenderer {
                 .add("xlarge".equals(avatar.getSize()), Avatar.SIZE_XLARGE_CLASS)
                 .build();
 
-        writer.startElement("div", avatar);
+        writer.startElement("div", null);
         writer.writeAttribute("id", avatar.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if (avatar.getStyle() != null) {
             writer.writeAttribute("style", avatar.getStyle(), "style");
         }
 
-        if (avatar.getLabel() != null) {
-            writer.startElement("span", avatar);
-            writer.writeAttribute("class", Avatar.SIZE_TEXT_CLASS, "styleClass");
-            writer.write(avatar.getLabel());
-            writer.endElement("span");
+        if (avatar.getChildCount() > 0) {
+            renderChild(context, avatar);
         }
-
-        if (avatar.getIcon() != null) {
-            writer.startElement("span", avatar);
-            writer.writeAttribute("class", Avatar.ICON_CLASS + " " + avatar.getIcon(), "styleClass");
-            writer.endElement("span");
-        }
-
-        if (avatar.getImage() != null) {
-            writer.startElement("img", avatar);
-            writer.writeAttribute("src", avatar.getImage(), "src");
-            writer.endElement("img");
+        else {
+            encodeDefaultContent(context, avatar);
         }
 
         writer.endElement("div");
     }
 
+    protected void encodeDefaultContent(FacesContext context, Avatar avatar) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        if (avatar.getLabel() != null) {
+            writer.startElement("span", null);
+            writer.writeAttribute("class", Avatar.SIZE_TEXT_CLASS, "styleClass");
+            writer.write(avatar.getLabel());
+            writer.endElement("span");
+        }
+        else if (avatar.getIcon() != null) {
+            String iconStyleClass = getStyleClassBuilder(context)
+                .add(Avatar.ICON_CLASS)
+                .add(avatar.getIcon())
+                .build();
+
+            writer.startElement("span", null);
+            writer.writeAttribute("class", iconStyleClass, "styleClass");
+            writer.endElement("span");
+        }
+        else if (avatar.getImage() != null) {
+            writer.startElement("img", null);
+            writer.writeAttribute("src", avatar.getImage(), null);
+            writer.endElement("img");
+        }
+    }
 }

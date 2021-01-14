@@ -23,8 +23,6 @@
  */
 package org.primefaces.component.avatargroup;
 
-import org.primefaces.component.avatar.AvatarBase;
-
 import javax.faces.component.UIComponentBase;
 
 public abstract class AvatarGroupBase extends UIComponentBase {
@@ -48,19 +46,19 @@ public abstract class AvatarGroupBase extends UIComponentBase {
     }
 
     public String getStyle() {
-        return (String) getStateHelper().eval(AvatarBase.PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
-        getStateHelper().put(AvatarBase.PropertyKeys.style, style);
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
     public String getStyleClass() {
-        return (String) getStateHelper().eval(AvatarBase.PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
-        getStateHelper().put(AvatarBase.PropertyKeys.styleClass, styleClass);
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
 }
