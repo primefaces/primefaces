@@ -27,8 +27,9 @@ import javax.faces.application.ResourceDependency;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class Divider extends DividerBase {
-    public static final String COMPONENT_TYPE = "org.primefaces.component.ScrollTop";
-    public static final String DEFAULT_STYLE_CLASS = "ui-divider";
+    public static final String COMPONENT_TYPE = "org.primefaces.component.Divider";
+
+    public static final String DEFAULT_STYLE_CLASS = "ui-divider ui-widget";
     public static final String CONTENT_CLASS = "ui-divider-content";
     public static final String HORIZONTAL_CLASS = "ui-divider-horizontal";
     public static final String VERTICAL_CLASS = "ui-divider-vertical";
