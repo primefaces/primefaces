@@ -1,5 +1,4 @@
 @charset "UTF-8";
-/* Add your variable customizations of the theme here */
 :root {
   --surface-a:#ffffff;
   --surface-b:#f8f9fa;
@@ -811,7 +810,7 @@ body .ui-datatable .ui-paginator {
 body .ui-datatable thead th {
   background: #f8f9fa;
   color: #495057;
-  padding: 1rem;
+  padding: 1rem 1rem;
   border: 1px solid #e9ecef;
   border-width: 0 0 1px 0;
   text-align: left;
@@ -894,7 +893,7 @@ body .ui-datatable .ui-datatable-data > tr {
   transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 body .ui-datatable .ui-datatable-data > tr > td {
-  padding: 1rem;
+  padding: 1rem 1rem;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-width: 0 0 1px 0;
 }
@@ -1107,7 +1106,7 @@ body .ui-datatable tfoot td {
   border: 1px solid #e9ecef;
   border-width: 0 0 1px 0;
   color: #495057;
-  padding: 1rem;
+  padding: 1rem 1rem;
   font-weight: 700;
   box-sizing: content-box;
 }
@@ -1167,17 +1166,17 @@ body .ui-datatable.ui-datatable-striped .ui-datatable-data > tr.ui-datatable-odd
   color: #ffffff;
 }
 body .ui-datatable.ui-datatable-sm thead > tr > th {
-  padding: 0.5rem;
+  padding: 0.5rem 0.5rem;
 }
 body .ui-datatable.ui-datatable-sm .ui-datatable-scrollable-theadclone > tr > th {
   padding-top: 0;
   padding-bottom: 0;
 }
 body .ui-datatable.ui-datatable-sm .ui-datatable-data > tr > td {
-  padding: 0.5rem;
+  padding: 0.5rem 0.5rem;
 }
 body .ui-datatable.ui-datatable-sm tfoot > tr > td {
-  padding: 0.5rem;
+  padding: 0.5rem 0.5rem;
 }
 body .ui-datatable.ui-datatable-gridlines .ui-datatable-header {
   border-width: 1px;
@@ -1744,7 +1743,7 @@ body .ui-treetable .ui-paginator {
 body .ui-treetable thead th {
   background: #f8f9fa;
   color: #495057;
-  padding: 1rem;
+  padding: 1rem 1rem;
   border-bottom: 1px solid #e9ecef;
   border-width: 0 0 1px 0;
   text-align: left;
@@ -1827,7 +1826,7 @@ body .ui-treetable .ui-treetable-data > tr {
   transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 body .ui-treetable .ui-treetable-data > tr > td {
-  padding: 1rem;
+  padding: 1rem 1rem;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-width: 0 0 1px 0;
 }
@@ -2010,7 +2009,7 @@ body .ui-treetable tfoot td {
   border: 1px solid #e9ecef;
   border-width: 0 0 1px 0;
   color: #495057;
-  padding: 1rem;
+  padding: 1rem 1rem;
   font-weight: 700;
   box-sizing: content-box;
 }
@@ -2021,17 +2020,17 @@ body .ui-treetable .ui-column-resizer-helper {
   background: #2196F3;
 }
 body .ui-treetable.ui-treetable-sm thead > tr > th {
-  padding: 0.5rem;
+  padding: 0.5rem 0.5rem;
 }
 body .ui-treetable.ui-treetable-sm .ui-treetable-scrollable-theadclone > tr > th {
   padding-top: 0;
   padding-bottom: 0;
 }
 body .ui-treetable.ui-treetable-sm .ui-treetable-data > tr > td {
-  padding: 0.5rem;
+  padding: 0.5rem 0.5rem;
 }
 body .ui-treetable.ui-treetable-sm tfoot > tr > td {
-  padding: 0.5rem;
+  padding: 0.5rem 0.5rem;
 }
 body .ui-treetable.ui-treetable-gridlines .ui-treetable-header {
   border-width: 1px 1px 0;
@@ -2798,8 +2797,8 @@ body .ui-autocomplete .ui-autocomplete-multiple-container {
 body .ui-autocomplete .ui-autocomplete-multiple-container .ui-autocomplete-token {
   padding: 1px 0;
   margin: 0 0.5rem 0 0;
-  background: #dee2e6;
-  color: #495057;
+  background: #2196F3;
+  color: #ffffff;
   border: 1px solid #2196F3;
   display: inline-block;
   vertical-align: middle;
@@ -2876,7 +2875,7 @@ body .ui-autocomplete-panel .ui-autocomplete-items .ui-autocomplete-item.ui-auto
   border: 1px solid rgba(0, 0, 0, 0.08);
 }
 body .ui-autocomplete-panel .ui-autocomplete-items .ui-autocomplete-item.ui-autocomplete-row > td {
-  padding: 1rem;
+  padding: 1rem 1rem;
 }
 body .ui-autocomplete-itemtip {
   padding: 0;
@@ -3141,7 +3140,7 @@ body .ui-selectmanymenu .ui-selectlistbox-listcontainer .ui-selectlistbox-list .
 }
 body .ui-selectonelistbox .ui-selectlistbox-listcontainer .ui-selectlistbox-list .ui-selectlistbox-item > td,
 body .ui-selectmanymenu .ui-selectlistbox-listcontainer .ui-selectlistbox-list .ui-selectlistbox-item > td {
-  padding: 1rem;
+  padding: 1rem 1rem;
 }
 body .ui-input-filled .ui-selectonelistbox.ui-inputfield,
 body .ui-input-filled .ui-selectmanymenu.ui-inputfield, body.ui-input-filled .ui-selectonelistbox.ui-inputfield,
@@ -3296,7 +3295,7 @@ body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-s
   border: 1px solid rgba(0, 0, 0, 0.08);
 }
 body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-selectonemenu-row > td {
-  padding: 1rem;
+  padding: 1rem 1rem;
 }
 body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-selectonemenu-row:first-child {
   border-top-color: transparent;
@@ -3380,8 +3379,8 @@ body .ui-selectcheckboxmenu .ui-selectcheckboxmenu-multiple-container.ui-inputfi
 body .ui-selectcheckboxmenu .ui-selectcheckboxmenu-multiple-container .ui-selectcheckboxmenu-token {
   padding: 1px 0;
   margin: 0 0.5rem 0 0;
-  background: #dee2e6;
-  color: #495057;
+  background: #2196F3;
+  color: #ffffff;
   border: 1px solid #2196F3;
   border-radius: 4px;
 }
@@ -3574,8 +3573,8 @@ body .ui-chips .ui-chips-container {
 body .ui-chips .ui-chips-container .ui-chips-token {
   padding: 1px 0;
   margin: 0 0.5rem 0 0;
-  background: #dee2e6;
-  color: #495057;
+  background: #2196F3;
+  color: #ffffff;
   border: 1px solid #2196F3;
   border-radius: 4px;
 }
@@ -4527,88 +4526,6 @@ body .ui-colorpicker .ui-button {
 body .ui-fluid .ui-colorpicker .ui-button {
   width: auto;
 }
-body .ui-cascadeselect {
-  background: #ffffff;
-  border: 1px solid #ced4da;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
-  border-radius: 4px;
-}
-body .ui-cascadeselect:not(.ui-disabled):hover {
-  border-color: #2196F3;
-}
-body .ui-cascadeselect:not(.ui-disabled).ui-focus {
-  border-color: #2196F3;
-  outline: 0 none;
-  box-shadow: 0 0 0 0.2em #a6d5fa;
-}
-body .ui-cascadeselect .ui-cascadeselect-label {
-  background: transparent;
-  border: 0 none;
-  padding: 0.5rem 0.5rem;
-}
-body .ui-cascadeselect .ui-cascadeselect-label.ui-placeholder {
-  color: #6c757d;
-}
-body .ui-cascadeselect .ui-cascadeselect-label:enabled:focus {
-  outline: 0 none;
-  box-shadow: none;
-}
-body .ui-cascadeselect .ui-cascadeselect-trigger {
-  background: transparent;
-  color: #6c757d;
-  width: 2.357rem;
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
-}
-body .ui-cascadeselect.ui-error, body .ui-cascadeselect.ui-invalid {
-  border-color: #f44336;
-}
-body .ui-cascadeselect-panel {
-  background: #ffffff;
-  color: #495057;
-  border: 0 none;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
-}
-body .ui-cascadeselect-panel .ui-cascadeselect-items {
-  padding: 0.5rem 0;
-}
-body .ui-cascadeselect-panel .ui-cascadeselect-items .ui-cascadeselect-item {
-  margin: 0;
-  border: 0 none;
-  color: #495057;
-  background: transparent;
-  transition: box-shadow 0.2s;
-  border-radius: 0;
-}
-body .ui-cascadeselect-panel .ui-cascadeselect-items .ui-cascadeselect-item .ui-cascadeselect-item-content {
-  padding: 0.5rem 1rem;
-}
-body .ui-cascadeselect-panel .ui-cascadeselect-items .ui-cascadeselect-item .ui-cascadeselect-item-content:focus {
-  outline: 0 none;
-  outline-offset: 0;
-  box-shadow: inset 0 0 0 0.15rem #a6d5fa;
-}
-body .ui-cascadeselect-panel .ui-cascadeselect-items .ui-cascadeselect-item.ui-highlight {
-  color: #ffffff;
-  background: #2196F3;
-}
-body .ui-cascadeselect-panel .ui-cascadeselect-items .ui-cascadeselect-item:not(.ui-highlight):not(.ui-disabled):hover {
-  color: #495057;
-  background: #e9ecef;
-}
-body .ui-cascadeselect-panel .ui-cascadeselect-items .ui-cascadeselect-item .ui-cascadeselect-group-icon {
-  font-size: 0.875rem;
-}
-body .ui-input-filled .ui-cascadeselect {
-  background: #f8f9fa;
-}
-body .ui-input-filled .ui-cascadeselect:not(.ui-disabled):hover {
-  background-color: #f8f9fa;
-}
-body .ui-input-filled .ui-cascadeselect:not(.ui-disabled).ui-focus {
-  background-color: #f8f9fa;
-}
 
 body .ui-panel {
   padding: 0;
@@ -5239,70 +5156,6 @@ body .ui-wizard .ui-wizard-step-titles .ui-wizard-step-title:last-child {
 body .ui-wizard .ui-wizard-step-titles .ui-wizard-step-title.ui-state-highlight {
   background: #2196F3;
   color: #ffffff;
-}
-body .ui-divider .ui-divider-content {
-  background-color: #ffffff;
-}
-body .ui-divider.ui-divider-horizontal {
-  margin: 1rem 0;
-  padding: 0 1rem;
-}
-body .ui-divider.ui-divider-horizontal:before {
-  border-top: 1px #dee2e6;
-}
-body .ui-divider.ui-divider-horizontal .ui-divider-content {
-  padding: 0 0.5rem;
-}
-body .ui-divider.ui-divider-vertical {
-  margin: 0 1rem;
-  padding: 1rem 0;
-}
-body .ui-divider.ui-divider-vertical:before {
-  border-left: 1px #dee2e6;
-}
-body .ui-divider.ui-divider-vertical .ui-divider-content {
-  padding: 0.5rem 0;
-}
-body .ui-splitter {
-  border: 1px solid #dee2e6;
-  background: #ffffff;
-  border-radius: 4px;
-  color: #495057;
-}
-body .ui-splitter .ui-splitter-gutter {
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
-  background: #f8f9fa;
-}
-body .ui-splitter .ui-splitter-gutter .ui-splitter-gutter-handle {
-  background: #dee2e6;
-}
-body .ui-splitter .ui-splitter-gutter-resizing {
-  background: #dee2e6;
-}
-body .ui-card {
-  background: #ffffff;
-  color: #495057;
-  box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
-  border-radius: 4px;
-}
-body .ui-card .ui-card-body {
-  padding: 1rem;
-}
-body .ui-card .ui-card-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-}
-body .ui-card .ui-card-subtitle {
-  font-weight: 400;
-  margin-bottom: 0.5rem;
-  color: #6c757d;
-}
-body .ui-card .ui-card-content {
-  padding: 1rem 0;
-}
-body .ui-card .ui-card-footer {
-  padding: 1rem 0 0 0;
 }
 
 body .ui-messages {
@@ -6556,153 +6409,92 @@ body .ui-terminal {
   border: 1px solid #dee2e6;
   padding: 1rem;
 }
-body .ui-avatar {
-  background-color: #dee2e6;
-  border-radius: 4px;
-}
-body .ui-avatar.ui-avatar-lg {
-  width: 3rem;
-  height: 3rem;
-  font-size: 1.5rem;
-}
-body .ui-avatar.ui-avatar-lg .ui-avatar-icon {
-  font-size: 1.5rem;
-}
-body .ui-avatar.ui-avatar-xl {
-  width: 4rem;
-  height: 4rem;
-  font-size: 2rem;
-}
-body .ui-avatar.ui-avatar-xl .ui-avatar-icon {
-  font-size: 2rem;
-}
-body .ui-avatar-group .ui-avatar {
-  border: 2px solid #ffffff;
-}
-body .ui-badge {
+.ui-badge {
   background: #2196F3;
   color: #ffffff;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 700;
   min-width: 1.5rem;
   height: 1.5rem;
   line-height: 1.5rem;
+  display: inline-block;
+  border-radius: 50%;
+  text-align: center;
 }
-body .ui-badge.ui-badge-secondary {
-  background-color: #607D8B;
+.ui-badge.ui-badge-secondary {
+  background: #607D8B;
   color: #ffffff;
 }
-body .ui-badge.ui-badge-success {
-  background-color: #689F38;
+.ui-badge.ui-badge-success {
+  background: #689F38;
   color: #ffffff;
 }
-body .ui-badge.ui-badge-info {
-  background-color: #0288D1;
+.ui-badge.ui-badge-info {
+  background: #0288D1;
   color: #ffffff;
 }
-body .ui-badge.ui-badge-warning {
-  background-color: #FBC02D;
+.ui-badge.ui-badge-warning {
+  background: #FBC02D;
   color: #212529;
 }
-body .ui-badge.ui-badge-danger {
-  background-color: #D32F2F;
+.ui-badge.ui-badge-danger {
+  background: #D32F2F;
   color: #ffffff;
 }
-body .ui-badge.ui-badge-lg {
-  font-size: 1.125rem;
+.ui-badge.ui-badge-lg {
+  font-size: 1.3125rem;
   min-width: 2.25rem;
   height: 2.25rem;
   line-height: 2.25rem;
 }
-body .ui-badge.ui-badge-xl {
-  font-size: 1.5rem;
+.ui-badge.ui-badge-xl {
+  font-size: 1.75rem;
   min-width: 3rem;
   height: 3rem;
   line-height: 3rem;
 }
-body .ui-chip {
-  background-color: #dee2e6;
-  color: #495057;
-  border-radius: 16px;
-  padding: 0 0.5rem;
+
+.ui-overlay-badge {
+  position: relative;
+  display: inline-block;
 }
-body .ui-chip .ui-chip-text {
-  line-height: 1.5;
-  margin-top: 0.25rem;
-  margin-bottom: 0.25rem;
+.ui-overlay-badge .ui-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+  margin: 0;
 }
-body .ui-chip .ui-chip-icon {
-  margin-right: 0.5rem;
-}
-body .ui-chip .pi-chip-remove-icon {
-  margin-left: 0.5rem;
-}
-body .ui-chip img {
-  width: 2rem;
-  height: 2rem;
-  margin-left: -0.5rem;
-  margin-right: 0.5rem;
-}
-body .ui-chip .pi-chip-remove-icon {
-  border-radius: 4px;
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
-}
-body .ui-chip .pi-chip-remove-icon:focus {
-  outline: 0 none;
-  outline-offset: 0;
-  box-shadow: 0 0 0 0.2rem #a6d5fa;
-}
-body .ui-scrolltop {
-  width: 3rem;
-  height: 3rem;
-  border-radius: 50%;
-  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
-}
-body .ui-scrolltop.ui-link {
-  background: rgba(0, 0, 0, 0.7);
-}
-body .ui-scrolltop.ui-link:hover {
-  background: rgba(0, 0, 0, 0.8);
-}
-body .ui-scrolltop .ui-scrolltop-icon {
-  font-size: 1.5rem;
-  color: #f8f9fa;
-}
-body .ui-skeleton {
-  background-color: #e9ecef;
-  border-radius: 4px;
-}
-body .ui-skeleton:after {
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-}
-body .ui-tag {
+
+.ui-tag {
   background: #2196F3;
   color: #ffffff;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 700;
   padding: 0.25rem 0.4rem;
   border-radius: 4px;
+  display: inline-block;
+  text-align: center;
+  line-height: 1;
 }
-body .ui-tag.ui-tag-success {
-  background-color: #689F38;
+.ui-tag.ui-tag-success {
+  background: #689F38;
   color: #ffffff;
 }
-body .ui-tag.ui-tag-info {
-  background-color: #0288D1;
+.ui-tag.ui-tag-info {
+  background: #0288D1;
   color: #ffffff;
 }
-body .ui-tag.ui-tag-warning {
-  background-color: #FBC02D;
+.ui-tag.ui-tag-warning {
+  background: #FBC02D;
   color: #212529;
 }
-body .ui-tag.ui-tag-danger {
-  background-color: #D32F2F;
+.ui-tag.ui-tag-danger {
+  background: #D32F2F;
   color: #ffffff;
 }
-body .ui-tag .ui-tag-icon {
-  margin-right: 0.25rem;
-  font-size: 0.75rem;
+.ui-tag.ui-tag-rounded {
+  border-radius: 10rem;
 }
 
 .ui-shadow-1 {
@@ -7236,4 +7028,4 @@ body .ui-sidebar.ui-sidebar-active {
   box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12);
 }
 
-/* Add your customizations of the theme here */
+/* Add your customizations of theme here */
