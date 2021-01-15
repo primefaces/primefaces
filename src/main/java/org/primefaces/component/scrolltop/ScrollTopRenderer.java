@@ -44,21 +44,20 @@ public class ScrollTopRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, ScrollTop scrollTop) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = getStyleClassBuilder(context)
-                    .add(ScrollTop.DEFAULT_STYLE_CLASS)
+                    .add(ScrollTop.STYLE_CLASS)
                     .add(scrollTop.getStyleClass())
                     .add("parent".equals(scrollTop.getTarget()), ScrollTop.STICKY_CLASS)
                     .build();
+        String style = scrollTop.getStyle() != null ? "display: none;" + scrollTop.getStyle() : "display: none;";
 
-        writer.startElement("a", scrollTop);
+        writer.startElement("a", null);
         writer.writeAttribute("id", scrollTop.getClientId(context), "id");
         writer.writeAttribute("tabindex", "0", "tabindex");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if (scrollTop.getStyle() != null) {
-            writer.writeAttribute("style", scrollTop.getStyle(), "style");
-        }
+        writer.writeAttribute("style", style, "style");
 
         writer.startElement("span", scrollTop);
-        writer.writeAttribute("class", ScrollTop.ICON_CLASS + " " + scrollTop.getIcon(), "styleClass");
+        writer.writeAttribute("class", ScrollTop.ICON_CLASS + " " + scrollTop.getIcon(), null);
         writer.endElement("span");
         writer.endElement("a");
     }

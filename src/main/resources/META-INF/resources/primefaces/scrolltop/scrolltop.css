@@ -5,25 +5,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 }
 
 .ui-scrolltop-sticky {
     position: sticky;
     margin-left: auto;
-}
-
-.ui-scrolltop-enter-from {
-    opacity: 0;
-}
-
-.ui-scrolltop-enter-active {
-    transition: opacity .15s;
-}
-
-.ui-scrolltop.ui-scrolltop-leave-to {
-    opacity: 0;
-}
-
-.ui-scrolltop-leave-active {
-    transition: opacity .15s;
 }

@@ -28,7 +28,8 @@ import javax.faces.application.ResourceDependency;
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class Tag extends TagBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Tag";
-    public static final String DEFAULT_STYLE_CLASS = "ui-tag";
+
+    public static final String STYLE_CLASS = "ui-tag ui-widget";
     public static final String SEVERITY_INFO_CLASS = "ui-tag-info";
     public static final String SEVERITY_SUCCESS_CLASS = "ui-tag-success";
     public static final String SEVERITY_WARNING_CLASS = "ui-tag-warning";

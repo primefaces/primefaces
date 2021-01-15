@@ -3,7 +3,7 @@
     overflow: hidden;
 }
 
-.ui-skeleton::after {
+.ui-skeleton:after {
     content: "";
     animation: ui-skeleton-animation 1.2s infinite;
     height: 100%;
@@ -15,11 +15,11 @@
     z-index: 1;
 }
 
-.ui-skeleton-circle {
+.ui-skeleton.ui-skeleton-circle {
     border-radius: 50%;
 }
 
-.ui-skeleton-none::after {
+.ui-skeleton-none:after {
     animation: none;
 }
 

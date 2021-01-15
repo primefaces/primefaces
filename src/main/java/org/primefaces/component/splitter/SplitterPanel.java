@@ -25,6 +25,6 @@ package org.primefaces.component.splitter;
 
 public class SplitterPanel extends SplitterPanelBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.SplitterPanel";
-    public static final String DEFAULT_STYLE_CLASS = "ui-splitter-panel";
+    public static final String STYLE_CLASS = "ui-splitter-panel";
     public static final String NESTED_CLASS = "ui-splitter-panel-nested";
 }
