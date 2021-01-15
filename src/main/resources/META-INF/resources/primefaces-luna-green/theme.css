@@ -909,6 +909,16 @@ body .ui-datatable thead th .ui-sortable-column-icon.ui-icon-triangle-1-s {
 body .ui-datatable thead th .ui-sortable-column-icon.ui-icon-triangle-1-s:before {
   content: "";
 }
+body .ui-datatable thead th .ui-sortable-column-badge {
+  border-radius: 50%;
+  height: 1.143rem;
+  min-width: 1.143rem;
+  line-height: 1.143rem;
+  color: #212529;
+  background: #C5E1A5;
+  margin-left: 0.5rem;
+  font-size: 0.75rem;
+}
 body .ui-datatable thead th.ui-sortable-column.ui-state-focus {
   outline: 0 none;
   outline-offset: 0;
@@ -919,7 +929,12 @@ body .ui-datatable thead th.ui-state-hover {
   color: #dedede;
 }
 body .ui-datatable thead th.ui-state-active {
-  color: #C5E1A5;
+  background: #C5E1A5;
+  color: #212529;
+}
+body .ui-datatable thead th.ui-state-active.ui-state-hover {
+  background: #C5E1A5;
+  color: #212529;
 }
 body .ui-datatable .ui-datatable-data > tr {
   background: #323232;
@@ -1848,6 +1863,16 @@ body .ui-treetable thead th .ui-sortable-column-icon.ui-icon-triangle-1-s {
 body .ui-treetable thead th .ui-sortable-column-icon.ui-icon-triangle-1-s:before {
   content: "";
 }
+body .ui-treetable thead th .ui-sortable-column-badge {
+  border-radius: 50%;
+  height: 1.143rem;
+  min-width: 1.143rem;
+  line-height: 1.143rem;
+  color: #212529;
+  background: #C5E1A5;
+  margin-left: 0.5rem;
+  font-size: 0.75rem;
+}
 body .ui-treetable thead th.ui-sortable-column.ui-state-focus {
   outline: 0 none;
   outline-offset: 0;
@@ -1858,7 +1883,12 @@ body .ui-treetable thead th.ui-state-hover {
   color: #dedede;
 }
 body .ui-treetable thead th.ui-state-active {
-  color: #C5E1A5;
+  background: #C5E1A5;
+  color: #212529;
+}
+body .ui-treetable thead th.ui-state-active.ui-state-hover {
+  background: #C5E1A5;
+  color: #212529;
 }
 body .ui-treetable .ui-treetable-data > tr {
   background: #323232;
