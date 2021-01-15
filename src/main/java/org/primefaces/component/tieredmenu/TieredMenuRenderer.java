@@ -159,6 +159,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         writer.startElement("a", null);
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM, null);
         writer.writeAttribute(HTML.ARIA_HASPOPUP, "true", null);
+        writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("tabindex", "-1", null);
 
@@ -196,6 +197,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
                 writer.startElement("ul", null);
                 writer.writeAttribute("class", Menu.TIERED_CHILD_SUBMENU_CLASS, null);
                 writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
+                writer.writeAttribute(HTML.ARIA_LABEL, label, null);
                 encodeElements(context, menu, submenu.getElements());
                 writer.endElement("ul");
             }

@@ -116,12 +116,9 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
 
         //menuitem visuals
         this.menuitems.on("mouseover", function(e) {
-            var element = $(this);
-            if(!element.hasClass('ui-state-disabled')) {
-                element.addClass('ui-state-hover');
-            }
+            $this.focus($(this));
         }).on("mouseout", function(e) {
-            $(this).removeClass('ui-state-hover');
+            $this.unfocus($(this));
         }).on("click", function() {
             $this.button.removeClass('ui-state-focus');
             $this.hide();
@@ -138,8 +135,8 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
                         prevItems = highlightedItem.length ? highlightedItem.prevAll(':not(.ui-separator)') : null;
 
                         if(prevItems && prevItems.length) {
-                            highlightedItem.removeClass('ui-state-hover');
-                            prevItems.eq(0).addClass('ui-state-hover');
+                            $this.unfocus(highlightedItem);
+                            $this.focus(prevItems.eq(0));
                         }
                     }
                     e.preventDefault();
@@ -151,8 +148,8 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
                         nextItems = highlightedItem.length ? highlightedItem.nextAll(':not(.ui-separator)') : $this.menuitems.eq(0);
 
                         if(nextItems.length) {
-                            highlightedItem.removeClass('ui-state-hover');
-                            nextItems.eq(0).addClass('ui-state-hover');
+                            $this.unfocus(highlightedItem);
+                            $this.focus(nextItems.eq(0));
                         }
                     }
                     e.preventDefault();

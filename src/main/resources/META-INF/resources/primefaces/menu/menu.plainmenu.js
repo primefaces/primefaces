@@ -50,10 +50,10 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
                 $this.jq.trigger("blur");
             }
 
-            $(this).addClass('ui-state-hover');
+            $this.focus($(this));
         })
         .on("mouseleave", function(e) {
-            $(this).removeClass('ui-state-hover');
+            $this.unfocus($(this));
         });
 
         if(this.cfg.overlay) {
@@ -100,10 +100,10 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
         }
 
         this.keyboardTarget.on('focus.menu', function() {
-            $this.menuitemLinks.eq(0).addClass('ui-state-hover');
+            $this.focus($this.menuitemLinks.eq(0));
         })
         .on('blur.menu', function() {
-            $this.menuitemLinks.filter('.ui-state-hover').removeClass('ui-state-hover');
+            $this.unfocus($this.menuitemLinks.filter('.ui-state-hover'));
         })
         .on('keydown.menu', function(e) {
             var currentLink = $this.menuitemLinks.filter('.ui-state-hover'),
@@ -113,8 +113,8 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
                     case keyCode.UP:
                         var prevItem = currentLink.parent().prevAll('.ui-menuitem:first');
                         if(prevItem.length) {
-                            currentLink.removeClass('ui-state-hover');
-                            prevItem.children('.ui-menuitem-link').addClass('ui-state-hover');
+                            $this.unfocus(currentLink);
+                            $this.focus(prevItem.children('.ui-menuitem-link'));
                         }
 
                         e.preventDefault();
@@ -123,8 +123,8 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
                     case keyCode.DOWN:
                         var nextItem = currentLink.parent().nextAll('.ui-menuitem:first');
                         if(nextItem.length) {
-                            currentLink.removeClass('ui-state-hover');
-                            nextItem.children('.ui-menuitem-link').addClass('ui-state-hover');
+                            $this.unfocus(currentLink);
+                            $this.focus(nextItem.children('.ui-menuitem-link'));
                         }
 
                         e.preventDefault();

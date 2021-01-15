@@ -1,7 +1,7 @@
 /**
  * __PrimeFaces Menu Widget__
  * 
- * Base class for the different menu widets, such as the `PlainMenu` or the `TieredMenu`.
+ * Base class for the different menu widgets, such as the `PlainMenu` or the `TieredMenu`.
  * 
  * @prop {JQuery} keyboardTarget The DOM element for the form element that can be targeted via arrow or tab keys. 
  * @prop {boolean} itemMouseDown `true` if a menu item was clicked and the mouse button is still pressed.
@@ -156,6 +156,30 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
      */
     align: function() {
         this.jq.css({left:'', top:''}).position(this.cfg.pos);
+    },
+
+    /**
+     * Select the menu item link by making it focused and tabindex=0 for ARIA.
+     * @param {JQuery} menulink Menu item (`A`) to select.
+     */
+    focus: function(menulink) {
+        if(!menulink.hasClass('ui-state-disabled')) {
+            menulink.addClass('ui-state-hover ui-state-active').attr('tabindex', 0);
+            if(menulink.attr('aria-expanded') === "false") {
+                menulink.attr('aria-expanded', "true");
+            }
+        }
+    },
+
+    /**
+     * Unselect the menu item link by removing focus and tabindex=-1 for ARIA.
+     * @param {JQuery} menulink Menu item (`A`) to unselect.
+     */
+    unfocus: function(menulink) {
+        menulink.removeClass('ui-state-hover ui-state-active').attr('tabindex', -1);
+        if(menulink.attr('aria-expanded') === "true") {
+            menulink.attr('aria-expanded', "false");    
+        }
     }
 });
 

@@ -206,7 +206,7 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
      */
     deactivate: function(menuitem, animate) {
         this.activeitem = null;
-        menuitem.children('a.ui-menuitem-link').removeClass('ui-state-hover ui-state-active');
+        this.unfocus(menuitem.children('a.ui-menuitem-link'));
         menuitem.removeClass('ui-menuitem-active ui-menuitem-highlight');
 
         if(animate)
@@ -250,7 +250,7 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
      */
     highlight: function(menuitem) {
         this.activeitem = menuitem;
-        menuitem.children('a.ui-menuitem-link').addClass('ui-state-hover');
+        this.focus(menuitem.children('a.ui-menuitem-link'));
         menuitem.addClass('ui-menuitem-active');
     },
 
