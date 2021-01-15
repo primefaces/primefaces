@@ -56,59 +56,59 @@ public abstract class ChipBase extends UIComponentBase implements Widget, Client
     }
 
     public String getLabel() {
-        return (String) getStateHelper().eval(ChipBase.PropertyKeys.label, null);
+        return (String) getStateHelper().eval(PropertyKeys.label, null);
     }
 
     public void setLabel(String label) {
-        getStateHelper().put(ChipBase.PropertyKeys.label, label);
+        getStateHelper().put(PropertyKeys.label, label);
     }
 
     public String getIcon() {
-        return (String) getStateHelper().eval(ChipBase.PropertyKeys.icon, null);
+        return (String) getStateHelper().eval(PropertyKeys.icon, null);
     }
 
     public void setIcon(String icon) {
-        getStateHelper().put(ChipBase.PropertyKeys.icon, icon);
+        getStateHelper().put(PropertyKeys.icon, icon);
     }
 
     public String getImage() {
-        return (String) getStateHelper().eval(ChipBase.PropertyKeys.image, null);
+        return (String) getStateHelper().eval(PropertyKeys.image, null);
     }
 
     public void setImage(String image) {
-        getStateHelper().put(ChipBase.PropertyKeys.image, image);
+        getStateHelper().put(PropertyKeys.image, image);
     }
 
     public boolean getRemovable() {
-        return (Boolean) getStateHelper().eval(ChipBase.PropertyKeys.removable, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.removable, false);
     }
 
     public void setRemovable(boolean removable) {
-        getStateHelper().put(ChipBase.PropertyKeys.removable, removable);
+        getStateHelper().put(PropertyKeys.removable, removable);
     }
 
     public String getRemoveIcon() {
-        return (String) getStateHelper().eval(ChipBase.PropertyKeys.removeIcon, "pi pi-times-circle");
+        return (String) getStateHelper().eval(PropertyKeys.removeIcon, "pi pi-times-circle");
     }
 
     public void setRemoveIcon(String removeIcon) {
-        getStateHelper().put(ChipBase.PropertyKeys.removeIcon, removeIcon);
+        getStateHelper().put(PropertyKeys.removeIcon, removeIcon);
     }
 
     public String getStyle() {
-        return (String) getStateHelper().eval(ChipBase.PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
-        getStateHelper().put(ChipBase.PropertyKeys.style, style);
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
     public String getStyleClass() {
-        return (String) getStateHelper().eval(ChipBase.PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
-        getStateHelper().put(ChipBase.PropertyKeys.styleClass, styleClass);
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
 }
