@@ -135,6 +135,8 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 connectWith: this.jqId + ' .ui-picklist-list',
                 revert: 1,
                 helper: 'clone',
+                placeholder: "ui-picklist-item ui-state-highlight",
+                forcePlaceholderSize: true,
                 update: function(event, ui) {
                     $this.unselectItem(ui.item);
 
