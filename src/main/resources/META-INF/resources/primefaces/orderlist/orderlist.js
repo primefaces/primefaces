@@ -40,6 +40,8 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
             //Enable dnd
             this.list.sortable({
                 revert: 1,
+                placeholder: "ui-orderlist-item ui-state-highlight",
+                forcePlaceholderSize: true,
                 start: function(event, ui) {
                     PrimeFaces.clearSelection();
                 }

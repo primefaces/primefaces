@@ -1543,6 +1543,9 @@ body .ui-picklist .ui-picklist-list .ui-picklist-item.ui-state-highlight {
   background: #C5E1A5;
   color: #212529;
 }
+body .ui-picklist .ui-picklist-list .ui-picklist-item.ui-state-highlight.ui-sortable-placeholder {
+  background-color: #9fce6b;
+}
 @media (max-width: 640px) {
   body .ui-picklist .ui-picklist-buttons .ui-button {
     margin-top: 0.5rem;
@@ -1736,6 +1739,9 @@ body .ui-orderlist .ui-orderlist-list .ui-orderlist-item.ui-state-hover {
 body .ui-orderlist .ui-orderlist-list .ui-orderlist-item.ui-state-highlight {
   background: #C5E1A5;
   color: #212529;
+}
+body .ui-orderlist .ui-orderlist-list .ui-orderlist-item.ui-state-highlight.ui-sortable-placeholder {
+  background-color: #9fce6b;
 }
 @media (max-width: 640px) {
   body .ui-orderlist.ui-grid-responsive .ui-orderlist-controls {
@@ -5187,6 +5193,9 @@ body .ui-wizard .ui-wizard-step-titles .ui-wizard-step-title:last-child {
 body .ui-wizard .ui-wizard-step-titles .ui-wizard-step-title.ui-state-highlight {
   background: #C5E1A5;
   color: #212529;
+}
+body .ui-dashboard .ui-sortable-placeholder {
+  background-color: #C5E1A5;
 }
 
 body .ui-messages {
