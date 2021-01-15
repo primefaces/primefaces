@@ -71,32 +71,32 @@ body .ui-button.ui-state-active, body .ui-button.ui-state-down {
   border-color: #45a6f5;
   color: #212529;
 }
-body .ui-button.outlined-button {
+body .ui-button.ui-button-outlined {
   background-color: transparent;
   color: #90CAF9;
   border: 1px solid;
 }
-body .ui-button.outlined-button.ui-state-hover {
+body .ui-button.ui-button-outlined.ui-state-hover {
   background: rgba(144, 202, 249, 0.04);
   color: #90CAF9;
   border: 1px solid;
 }
-body .ui-button.outlined-button.ui-state-active, body .ui-button.outlined-button.ui-state-down {
+body .ui-button.ui-button-outlined.ui-state-active, body .ui-button.ui-button-outlined.ui-state-down {
   background: rgba(144, 202, 249, 0.16);
   color: #90CAF9;
   border: 1px solid;
 }
-body .ui-button.text-button {
+body .ui-button.ui-button-flat {
   background-color: transparent;
   color: #90CAF9;
   border-color: transparent;
 }
-body .ui-button.text-button.ui-state-hover {
+body .ui-button.ui-button-flat.ui-state-hover {
   background: rgba(144, 202, 249, 0.04);
   color: #90CAF9;
   border-color: transparent;
 }
-body .ui-button.text-button.ui-state-active, body .ui-button.text-button.ui-state-down {
+body .ui-button.ui-button-flat.ui-state-active, body .ui-button.ui-button-flat.ui-state-down {
   background: rgba(144, 202, 249, 0.16);
   color: #90CAF9;
   border-color: transparent;
@@ -137,7 +137,7 @@ body .ui-button.ui-button-icon-only .ui-icon {
   margin-top: -0.5rem;
   margin-left: -0.5rem;
 }
-body .ui-button.raised-button {
+body .ui-button.ui-button-raised {
   box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
 }
 body .ui-button.rounded-button {
@@ -334,289 +334,289 @@ body .ui-button-group .ui-button:last-child {
 body .ui-button-group .ui-button.ui-state-focus {
   z-index: 1;
 }
-body .ui-button.secondary-button, body .ui-splitbutton.secondary-button > .ui-button {
+body .ui-button.ui-button-secondary, body .ui-splitbutton.ui-button-secondary > .ui-button {
   background: #78909C;
   color: #ffffff;
   border: 1px solid #78909C;
 }
-body .ui-button.secondary-button.ui-state-hover, body .ui-button.secondary-button:not(:disabled):hover, body .ui-splitbutton.secondary-button > .ui-button.ui-state-hover, body .ui-splitbutton.secondary-button > .ui-button:not(:disabled):hover {
+body .ui-button.ui-button-secondary.ui-state-hover, body .ui-button.ui-button-secondary:not(:disabled):hover, body .ui-splitbutton.ui-button-secondary > .ui-button.ui-state-hover, body .ui-splitbutton.ui-button-secondary > .ui-button:not(:disabled):hover {
   background: #69838f;
   border-color: #69838f;
   color: #ffffff;
 }
-body .ui-button.secondary-button.ui-state-focus, body .ui-splitbutton.secondary-button > .ui-button.ui-state-focus {
+body .ui-button.ui-button-secondary.ui-state-focus, body .ui-splitbutton.ui-button-secondary > .ui-button.ui-state-focus {
   box-shadow: 0 0 0 1px #a1b1ba;
 }
-body .ui-button.secondary-button.ui-state-active, body .ui-button.secondary-button:active, body .ui-splitbutton.secondary-button > .ui-button.ui-state-active, body .ui-splitbutton.secondary-button > .ui-button:active {
+body .ui-button.ui-button-secondary.ui-state-active, body .ui-button.ui-button-secondary:active, body .ui-splitbutton.ui-button-secondary > .ui-button.ui-state-active, body .ui-splitbutton.ui-button-secondary > .ui-button:active {
   background: #5d747f;
   border-color: #5d747f;
   color: #ffffff;
 }
-body .ui-button.secondary-button.outlined-button, body .ui-splitbutton.secondary-button > .ui-button.outlined-button {
+body .ui-button.ui-button-secondary.ui-button-outlined, body .ui-splitbutton.ui-button-secondary > .ui-button.ui-button-outlined {
   background-color: transparent;
   color: #78909C;
   border: 1px solid;
 }
-body .ui-button.secondary-button.outlined-button:enabled:hover, body .ui-splitbutton.secondary-button > .ui-button.outlined-button:enabled:hover {
+body .ui-button.ui-button-secondary.ui-button-outlined:enabled:hover, body .ui-splitbutton.ui-button-secondary > .ui-button.ui-button-outlined:enabled:hover {
   background: rgba(120, 144, 156, 0.04);
   color: #78909C;
   border: 1px solid;
 }
-body .ui-button.secondary-button.outlined-button:enabled:active, body .ui-splitbutton.secondary-button > .ui-button.outlined-button:enabled:active {
+body .ui-button.ui-button-secondary.ui-button-outlined:enabled:active, body .ui-splitbutton.ui-button-secondary > .ui-button.ui-button-outlined:enabled:active {
   background: rgba(120, 144, 156, 0.16);
   color: #78909C;
   border: 1px solid;
 }
-body .ui-button.secondary-button.text-button, body .ui-splitbutton.secondary-button > .ui-button.text-button {
+body .ui-button.ui-button-secondary.ui-button-flat, body .ui-splitbutton.ui-button-secondary > .ui-button.ui-button-flat {
   background-color: transparent;
   color: #78909C;
   border-color: transparent;
 }
-body .ui-button.secondary-button.text-button:enabled:hover, body .ui-splitbutton.secondary-button > .ui-button.text-button:enabled:hover {
+body .ui-button.ui-button-secondary.ui-button-flat:enabled:hover, body .ui-splitbutton.ui-button-secondary > .ui-button.ui-button-flat:enabled:hover {
   background: rgba(120, 144, 156, 0.04);
   border-color: transparent;
   color: #78909C;
 }
-body .ui-button.secondary-button.text-button:enabled:active, body .ui-splitbutton.secondary-button > .ui-button.text-button:enabled:active {
+body .ui-button.ui-button-secondary.ui-button-flat:enabled:active, body .ui-splitbutton.ui-button-secondary > .ui-button.ui-button-flat:enabled:active {
   background: rgba(120, 144, 156, 0.16);
   border-color: transparent;
   color: #78909C;
 }
-body .ui-button.success-button, body .ui-splitbutton.success-button > .ui-button {
+body .ui-button.ui-button-success, body .ui-splitbutton.ui-button-success > .ui-button {
   background: #C5E1A5;
   color: #121212;
   border: 1px solid #C5E1A5;
 }
-body .ui-button.success-button.ui-state-hover, body .ui-splitbutton.success-button > .ui-button.ui-state-hover {
+body .ui-button.ui-button-success.ui-state-hover, body .ui-splitbutton.ui-button-success > .ui-button.ui-state-hover {
   background: #b2d788;
   color: #121212;
   border-color: #b2d788;
 }
-body .ui-button.success-button.ui-state-focus, body .ui-splitbutton.success-button > .ui-button.ui-state-focus {
+body .ui-button.ui-button-success.ui-state-focus, body .ui-splitbutton.ui-button-success > .ui-button.ui-state-focus {
   box-shadow: 0 0 0 1px #d6eac0;
 }
-body .ui-button.success-button.ui-state-active, body .ui-splitbutton.success-button > .ui-button.ui-state-active {
+body .ui-button.ui-button-success.ui-state-active, body .ui-splitbutton.ui-button-success > .ui-button.ui-state-active {
   background: #9fce6b;
   color: #121212;
 }
-body .ui-button.success-button.outlined-button, body .ui-splitbutton.success-button > .ui-button.outlined-button {
+body .ui-button.ui-button-success.ui-button-outlined, body .ui-splitbutton.ui-button-success > .ui-button.ui-button-outlined {
   background-color: transparent;
   color: #C5E1A5;
   border: 1px solid;
 }
-body .ui-button.success-button.outlined-button:enabled:hover, body .ui-splitbutton.success-button > .ui-button.outlined-button:enabled:hover {
+body .ui-button.ui-button-success.ui-button-outlined:enabled:hover, body .ui-splitbutton.ui-button-success > .ui-button.ui-button-outlined:enabled:hover {
   background: rgba(197, 225, 165, 0.04);
   color: #C5E1A5;
   border: 1px solid;
 }
-body .ui-button.success-button.outlined-button:enabled:active, body .ui-splitbutton.success-button > .ui-button.outlined-button:enabled:active {
+body .ui-button.ui-button-success.ui-button-outlined:enabled:active, body .ui-splitbutton.ui-button-success > .ui-button.ui-button-outlined:enabled:active {
   background: rgba(197, 225, 165, 0.16);
   color: #C5E1A5;
   border: 1px solid;
 }
-body .ui-button.success-button.text-button, body .ui-splitbutton.success-button > .ui-button.text-button {
+body .ui-button.ui-button-success.ui-button-flat, body .ui-splitbutton.ui-button-success > .ui-button.ui-button-flat {
   background-color: transparent;
   color: #C5E1A5;
   border-color: transparent;
 }
-body .ui-button.success-button.text-button:enabled:hover, body .ui-splitbutton.success-button > .ui-button.text-button:enabled:hover {
+body .ui-button.ui-button-success.ui-button-flat:enabled:hover, body .ui-splitbutton.ui-button-success > .ui-button.ui-button-flat:enabled:hover {
   background: rgba(197, 225, 165, 0.04);
   border-color: transparent;
   color: #C5E1A5;
 }
-body .ui-button.success-button.text-button:enabled:active, body .ui-splitbutton.success-button > .ui-button.text-button:enabled:active {
+body .ui-button.ui-button-success.ui-button-flat:enabled:active, body .ui-splitbutton.ui-button-success > .ui-button.ui-button-flat:enabled:active {
   background: rgba(197, 225, 165, 0.16);
   border-color: transparent;
   color: #C5E1A5;
 }
-body .ui-button.warning-button, body .ui-splitbutton.warning-button > .ui-button {
+body .ui-button.ui-button-warning, body .ui-splitbutton.ui-button-warning > .ui-button {
   background: #FFE082;
   color: #121212;
   border: 1px solid #FFE082;
 }
-body .ui-button.warning-button.ui-state-hover, body .ui-splitbutton.warning-button > .ui-button.ui-state-hover {
+body .ui-button.ui-button-warning.ui-state-hover, body .ui-splitbutton.ui-button-warning > .ui-button.ui-state-hover {
   background: #ffd65c;
   color: #121212;
   border-color: #ffd65c;
 }
-body .ui-button.warning-button.ui-state-focus, body .ui-splitbutton.warning-button > .ui-button.ui-state-focus {
+body .ui-button.ui-button-warning.ui-state-focus, body .ui-splitbutton.ui-button-warning > .ui-button.ui-state-focus {
   box-shadow: 0 0 0 1px #ffe9a8;
 }
-body .ui-button.warning-button.ui-state-active, body .ui-splitbutton.warning-button > .ui-button.ui-state-active {
+body .ui-button.ui-button-warning.ui-state-active, body .ui-splitbutton.ui-button-warning > .ui-button.ui-state-active {
   background: #ffcd35;
   color: #121212;
   border-color: #ffcd35;
 }
-body .ui-button.warning-button.outlined-button, body .ui-splitbutton.warning-button > .ui-button.outlined-button {
+body .ui-button.ui-button-warning.ui-button-outlined, body .ui-splitbutton.ui-button-warning > .ui-button.ui-button-outlined {
   background-color: transparent;
   color: #FFE082;
   border: 1px solid;
 }
-body .ui-button.warning-button.outlined-button:enabled:hover, body .ui-splitbutton.warning-button > .ui-button.outlined-button:enabled:hover {
+body .ui-button.ui-button-warning.ui-button-outlined:enabled:hover, body .ui-splitbutton.ui-button-warning > .ui-button.ui-button-outlined:enabled:hover {
   background: rgba(255, 224, 130, 0.04);
   color: #FFE082;
   border: 1px solid;
 }
-body .ui-button.warning-button.outlined-button:enabled:active, body .ui-splitbutton.warning-button > .ui-button.outlined-button:enabled:active {
+body .ui-button.ui-button-warning.ui-button-outlined:enabled:active, body .ui-splitbutton.ui-button-warning > .ui-button.ui-button-outlined:enabled:active {
   background: rgba(255, 224, 130, 0.16);
   color: #FFE082;
   border: 1px solid;
 }
-body .ui-button.warning-button.text-button, body .ui-splitbutton.warning-button > .ui-button.text-button {
+body .ui-button.ui-button-warning.ui-button-flat, body .ui-splitbutton.ui-button-warning > .ui-button.ui-button-flat {
   background-color: transparent;
   color: #FFE082;
   border-color: transparent;
 }
-body .ui-button.warning-button.text-button:enabled:hover, body .ui-splitbutton.warning-button > .ui-button.text-button:enabled:hover {
+body .ui-button.ui-button-warning.ui-button-flat:enabled:hover, body .ui-splitbutton.ui-button-warning > .ui-button.ui-button-flat:enabled:hover {
   background: rgba(255, 224, 130, 0.04);
   border-color: transparent;
   color: #FFE082;
 }
-body .ui-button.warning-button.text-button:enabled:active, body .ui-splitbutton.warning-button > .ui-button.text-button:enabled:active {
+body .ui-button.ui-button-warning.ui-button-flat:enabled:active, body .ui-splitbutton.ui-button-warning > .ui-button.ui-button-flat:enabled:active {
   background: rgba(255, 224, 130, 0.16);
   border-color: transparent;
   color: #FFE082;
 }
-body .ui-button.help-button, body .ui-splitbutton.help-button > .ui-button {
+body .ui-button.ui-button-help, body .ui-splitbutton.ui-button-help > .ui-button {
   background: #CE93D8;
   color: #121212;
   border: 1px solid #CE93D8;
 }
-body .ui-button.help-button.ui-state-hover, body .ui-splitbutton.help-button > .ui-button.ui-state-hover {
+body .ui-button.ui-button-help.ui-state-hover, body .ui-splitbutton.ui-button-help > .ui-button.ui-state-hover {
   background: #c278ce;
   color: #121212;
   border-color: #c278ce;
 }
-body .ui-button.help-button.ui-state-focus, body .ui-splitbutton.help-button > .ui-button.ui-state-focus {
+body .ui-button.ui-button-help.ui-state-focus, body .ui-splitbutton.ui-button-help > .ui-button.ui-state-focus {
   box-shadow: 0 0 0 1px #ddb3e4;
 }
-body .ui-button.help-button.ui-state-active, body .ui-splitbutton.help-button > .ui-button.ui-state-active {
+body .ui-button.ui-button-help.ui-state-active, body .ui-splitbutton.ui-button-help > .ui-button.ui-state-active {
   background: #b65ec5;
   color: #121212;
   border-color: #b65ec5;
 }
-body .ui-button.help-button.outlined-button, body .ui-splitbutton.help-button > .ui-button.outlined-button {
+body .ui-button.ui-button-help.ui-button-outlined, body .ui-splitbutton.ui-button-help > .ui-button.ui-button-outlined {
   background-color: transparent;
   color: #CE93D8;
   border: 1px solid;
 }
-body .ui-button.help-button.outlined-button:enabled:hover, body .ui-splitbutton.help-button > .ui-button.outlined-button:enabled:hover {
+body .ui-button.ui-button-help.ui-button-outlined:enabled:hover, body .ui-splitbutton.ui-button-help > .ui-button.ui-button-outlined:enabled:hover {
   background: rgba(206, 147, 216, 0.04);
   color: #CE93D8;
   border: 1px solid;
 }
-body .ui-button.help-button.outlined-button:enabled:active, body .ui-splitbutton.help-button > .ui-button.outlined-button:enabled:active {
+body .ui-button.ui-button-help.ui-button-outlined:enabled:active, body .ui-splitbutton.ui-button-help > .ui-button.ui-button-outlined:enabled:active {
   background: rgba(206, 147, 216, 0.16);
   color: #CE93D8;
   border: 1px solid;
 }
-body .ui-button.help-button.text-button, body .ui-splitbutton.help-button > .ui-button.text-button {
+body .ui-button.ui-button-help.ui-button-flat, body .ui-splitbutton.ui-button-help > .ui-button.ui-button-flat {
   background-color: transparent;
   color: #CE93D8;
   border-color: transparent;
 }
-body .ui-button.help-button.text-button:enabled:hover, body .ui-splitbutton.help-button > .ui-button.text-button:enabled:hover {
+body .ui-button.ui-button-help.ui-button-flat:enabled:hover, body .ui-splitbutton.ui-button-help > .ui-button.ui-button-flat:enabled:hover {
   background: rgba(206, 147, 216, 0.04);
   border-color: transparent;
   color: #CE93D8;
 }
-body .ui-button.help-button.text-button:enabled:active, body .ui-splitbutton.help-button > .ui-button.text-button:enabled:active {
+body .ui-button.ui-button-help.ui-button-flat:enabled:active, body .ui-splitbutton.ui-button-help > .ui-button.ui-button-flat:enabled:active {
   background: rgba(206, 147, 216, 0.16);
   border-color: transparent;
   color: #CE93D8;
 }
-body .ui-button.info-button, body .ui-splitbutton.info-button > .ui-button {
+body .ui-button.ui-button-info, body .ui-splitbutton.ui-button-info > .ui-button {
   background: #81D4FA;
   color: #121212;
   border: 1px solid #81D4FA;
 }
-body .ui-button.info-button.ui-state-hover, body .ui-splitbutton.info-button > .ui-button.ui-state-hover {
+body .ui-button.ui-button-info.ui-state-hover, body .ui-splitbutton.ui-button-info > .ui-button.ui-state-hover {
   background: #5dc8f9;
   color: #121212;
   border-color: #5dc8f9;
 }
-body .ui-button.info-button.ui-state-focus, body .ui-splitbutton.info-button > .ui-button.ui-state-focus {
+body .ui-button.ui-button-info.ui-state-focus, body .ui-splitbutton.ui-button-info > .ui-button.ui-state-focus {
   box-shadow: 0 0 0 1px #a7e1fc;
 }
-body .ui-button.info-button.ui-state-active, body .ui-splitbutton.info-button > .ui-button.ui-state-active {
+body .ui-button.ui-button-info.ui-state-active, body .ui-splitbutton.ui-button-info > .ui-button.ui-state-active {
   background: #38bbf7;
   color: #121212;
   border-color: #38bbf7;
 }
-body .ui-button.info-button.outlined-button, body .ui-splitbutton.info-button > .ui-button.outlined-button {
+body .ui-button.ui-button-info.ui-button-outlined, body .ui-splitbutton.ui-button-info > .ui-button.ui-button-outlined {
   background-color: transparent;
   color: #81D4FA;
   border: 1px solid;
 }
-body .ui-button.info-button.outlined-button:enabled:hover, body .ui-splitbutton.info-button > .ui-button.outlined-button:enabled:hover {
+body .ui-button.ui-button-info.ui-button-outlined:enabled:hover, body .ui-splitbutton.ui-button-info > .ui-button.ui-button-outlined:enabled:hover {
   background: rgba(129, 212, 250, 0.04);
   color: #81D4FA;
   border: 1px solid;
 }
-body .ui-button.info-button.outlined-button:enabled:active, body .ui-splitbutton.info-button > .ui-button.outlined-button:enabled:active {
+body .ui-button.ui-button-info.ui-button-outlined:enabled:active, body .ui-splitbutton.ui-button-info > .ui-button.ui-button-outlined:enabled:active {
   background: rgba(129, 212, 250, 0.16);
   color: #81D4FA;
   border: 1px solid;
 }
-body .ui-button.info-button.text-button, body .ui-splitbutton.info-button > .ui-button.text-button {
+body .ui-button.ui-button-info.ui-button-flat, body .ui-splitbutton.ui-button-info > .ui-button.ui-button-flat {
   background-color: transparent;
   color: #81D4FA;
   border-color: transparent;
 }
-body .ui-button.info-button.text-button:enabled:hover, body .ui-splitbutton.info-button > .ui-button.text-button:enabled:hover {
+body .ui-button.ui-button-info.ui-button-flat:enabled:hover, body .ui-splitbutton.ui-button-info > .ui-button.ui-button-flat:enabled:hover {
   background: rgba(129, 212, 250, 0.04);
   border-color: transparent;
   color: #81D4FA;
 }
-body .ui-button.info-button.text-button:enabled:active, body .ui-splitbutton.info-button > .ui-button.text-button:enabled:active {
+body .ui-button.ui-button-info.ui-button-flat:enabled:active, body .ui-splitbutton.ui-button-info > .ui-button.ui-button-flat:enabled:active {
   background: rgba(129, 212, 250, 0.16);
   border-color: transparent;
   color: #81D4FA;
 }
-body .ui-button.danger-button, body .ui-splitbutton.danger-button > .ui-button {
+body .ui-button.ui-button-danger, body .ui-splitbutton.ui-button-danger > .ui-button {
   background: #F48FB1;
   color: #121212;
   border: 1px solid #F48FB1;
 }
-body .ui-button.danger-button.ui-state-hover, body .ui-splitbutton.danger-button > .ui-button.ui-state-hover {
+body .ui-button.ui-button-danger.ui-state-hover, body .ui-splitbutton.ui-button-danger > .ui-button.ui-state-hover {
   background: #f16c98;
   color: #121212;
   border-color: #f16c98;
 }
-body .ui-button.danger-button.ui-state-focus, body .ui-splitbutton.danger-button > .ui-button.ui-state-focus {
+body .ui-button.ui-button-danger.ui-state-focus, body .ui-splitbutton.ui-button-danger > .ui-button.ui-state-focus {
   box-shadow: 0 0 0 1px #f7b1c8;
 }
-body .ui-button.danger-button.ui-state-active, body .ui-splitbutton.danger-button > .ui-button.ui-state-active {
+body .ui-button.ui-button-danger.ui-state-active, body .ui-splitbutton.ui-button-danger > .ui-button.ui-state-active {
   background: #ed4980;
   color: #121212;
   border-color: #ed4980;
 }
-body .ui-button.danger-button.outlined-button, body .ui-splitbutton.danger-button > .ui-button.outlined-button {
+body .ui-button.ui-button-danger.ui-button-outlined, body .ui-splitbutton.ui-button-danger > .ui-button.ui-button-outlined {
   background-color: transparent;
   color: #F48FB1;
   border: 1px solid;
 }
-body .ui-button.danger-button.outlined-button:enabled:hover, body .ui-splitbutton.danger-button > .ui-button.outlined-button:enabled:hover {
+body .ui-button.ui-button-danger.ui-button-outlined:enabled:hover, body .ui-splitbutton.ui-button-danger > .ui-button.ui-button-outlined:enabled:hover {
   background: rgba(244, 143, 177, 0.04);
   color: #F48FB1;
   border: 1px solid;
 }
-body .ui-button.danger-button.outlined-button:enabled:active, body .ui-splitbutton.danger-button > .ui-button.outlined-button:enabled:active {
+body .ui-button.ui-button-danger.ui-button-outlined:enabled:active, body .ui-splitbutton.ui-button-danger > .ui-button.ui-button-outlined:enabled:active {
   background: rgba(244, 143, 177, 0.16);
   color: #F48FB1;
   border: 1px solid;
 }
-body .ui-button.danger-button.text-button, body .ui-splitbutton.danger-button > .ui-button.text-button {
+body .ui-button.ui-button-danger.ui-button-flat, body .ui-splitbutton.ui-button-danger > .ui-button.ui-button-flat {
   background-color: transparent;
   color: #F48FB1;
   border-color: transparent;
 }
-body .ui-button.danger-button.text-button:enabled:hover, body .ui-splitbutton.danger-button > .ui-button.text-button:enabled:hover {
+body .ui-button.ui-button-danger.ui-button-flat:enabled:hover, body .ui-splitbutton.ui-button-danger > .ui-button.ui-button-flat:enabled:hover {
   background: rgba(244, 143, 177, 0.04);
   border-color: transparent;
   color: #F48FB1;
 }
-body .ui-button.danger-button.text-button:enabled:active, body .ui-splitbutton.danger-button > .ui-button.text-button:enabled:active {
+body .ui-button.ui-button-danger.ui-button-flat:enabled:active, body .ui-splitbutton.ui-button-danger > .ui-button.ui-button-flat:enabled:active {
   background: rgba(244, 143, 177, 0.16);
   border-color: transparent;
   color: #F48FB1;
@@ -3970,38 +3970,38 @@ body .ui-datepicker .ui-datepicker-buttonbar button:active {
   border-color: #5d747f;
   color: #ffffff;
 }
-body .ui-datepicker .ui-datepicker-buttonpane button.outlined-button,
-body .ui-datepicker .ui-datepicker-buttonbar button.outlined-button {
+body .ui-datepicker .ui-datepicker-buttonpane button.ui-button-outlined,
+body .ui-datepicker .ui-datepicker-buttonbar button.ui-button-outlined {
   background-color: transparent;
   color: #78909C;
   border: 1px solid;
 }
-body .ui-datepicker .ui-datepicker-buttonpane button.outlined-button:enabled:hover,
-body .ui-datepicker .ui-datepicker-buttonbar button.outlined-button:enabled:hover {
+body .ui-datepicker .ui-datepicker-buttonpane button.ui-button-outlined:enabled:hover,
+body .ui-datepicker .ui-datepicker-buttonbar button.ui-button-outlined:enabled:hover {
   background: rgba(120, 144, 156, 0.04);
   color: #78909C;
   border: 1px solid;
 }
-body .ui-datepicker .ui-datepicker-buttonpane button.outlined-button:enabled:active,
-body .ui-datepicker .ui-datepicker-buttonbar button.outlined-button:enabled:active {
+body .ui-datepicker .ui-datepicker-buttonpane button.ui-button-outlined:enabled:active,
+body .ui-datepicker .ui-datepicker-buttonbar button.ui-button-outlined:enabled:active {
   background: rgba(120, 144, 156, 0.16);
   color: #78909C;
   border: 1px solid;
 }
-body .ui-datepicker .ui-datepicker-buttonpane button.text-button,
-body .ui-datepicker .ui-datepicker-buttonbar button.text-button {
+body .ui-datepicker .ui-datepicker-buttonpane button.ui-button-flat,
+body .ui-datepicker .ui-datepicker-buttonbar button.ui-button-flat {
   background-color: transparent;
   color: #78909C;
   border-color: transparent;
 }
-body .ui-datepicker .ui-datepicker-buttonpane button.text-button:enabled:hover,
-body .ui-datepicker .ui-datepicker-buttonbar button.text-button:enabled:hover {
+body .ui-datepicker .ui-datepicker-buttonpane button.ui-button-flat:enabled:hover,
+body .ui-datepicker .ui-datepicker-buttonbar button.ui-button-flat:enabled:hover {
   background: rgba(120, 144, 156, 0.04);
   border-color: transparent;
   color: #78909C;
 }
-body .ui-datepicker .ui-datepicker-buttonpane button.text-button:enabled:active,
-body .ui-datepicker .ui-datepicker-buttonbar button.text-button:enabled:active {
+body .ui-datepicker .ui-datepicker-buttonpane button.ui-button-flat:enabled:active,
+body .ui-datepicker .ui-datepicker-buttonbar button.ui-button-flat:enabled:active {
   background: rgba(120, 144, 156, 0.16);
   border-color: transparent;
   color: #78909C;
