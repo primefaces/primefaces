@@ -46,6 +46,9 @@ body .ui-helper-reset {
 body .ui-state-disabled {
   opacity: 0.6;
 }
+body .ui-widget-overlay {
+  background: rgba(0, 0, 0, 0.4);
+}
 
 body .ui-button {
   background: #90CAF9;
@@ -4965,7 +4968,7 @@ body .ui-tabs.ui-tabs-right .ui-tabs-nav {
 body .ui-tabs.ui-tabs-right .ui-tabs-nav li.ui-tabs-header {
   top: 0;
   border-left: 2px solid #383838;
-  margin-left: -2px;
+  left: -2px;
 }
 body .ui-tabs.ui-tabs-right .ui-tabs-nav li.ui-tabs-header.ui-state-hover {
   border-color: #90CAF9;
@@ -4979,7 +4982,7 @@ body .ui-tabs.ui-tabs-right .ui-tabs-panels {
 body .ui-tabs.ui-tabs-left .ui-tabs-nav {
   margin: 0;
   padding: 0;
-  border-right: 2px solid #383838;
+  right: -2px;
 }
 body .ui-tabs.ui-tabs-left .ui-tabs-nav li.ui-tabs-header {
   top: 0;

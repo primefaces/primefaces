@@ -46,6 +46,9 @@ body .ui-helper-reset {
 body .ui-state-disabled {
   opacity: 0.5;
 }
+body .ui-widget-overlay {
+  background: rgba(0, 0, 0, 0.4);
+}
 
 body .ui-button {
   background: #007ad9;
@@ -4971,7 +4974,7 @@ body .ui-tabs.ui-tabs-right .ui-tabs-nav {
 body .ui-tabs.ui-tabs-right .ui-tabs-nav li.ui-tabs-header {
   top: 0;
   border-left: 0 none;
-  margin-left: -1px;
+  left: -1px;
 }
 body .ui-tabs.ui-tabs-right .ui-tabs-nav li.ui-tabs-header.ui-state-hover {
   border-color: #dbdbdb;
@@ -4985,7 +4988,7 @@ body .ui-tabs.ui-tabs-right .ui-tabs-panels {
 body .ui-tabs.ui-tabs-left .ui-tabs-nav {
   margin: 0;
   padding: 0;
-  border-right: 0 none;
+  right: -1px;
 }
 body .ui-tabs.ui-tabs-left .ui-tabs-nav li.ui-tabs-header {
   top: 0;

@@ -46,6 +46,9 @@ body .ui-helper-reset {
 body .ui-state-disabled {
   opacity: 0.6;
 }
+body .ui-widget-overlay {
+  background: rgba(0, 0, 0, 0.4);
+}
 
 body .ui-button {
   background: #2196F3;
@@ -4965,7 +4968,7 @@ body .ui-tabs.ui-tabs-right .ui-tabs-nav {
 body .ui-tabs.ui-tabs-right .ui-tabs-nav li.ui-tabs-header {
   top: 0;
   border-left: 2px solid #dee2e6;
-  margin-left: -2px;
+  left: -2px;
 }
 body .ui-tabs.ui-tabs-right .ui-tabs-nav li.ui-tabs-header.ui-state-hover {
   border-color: #adb5bd;
@@ -4979,7 +4982,7 @@ body .ui-tabs.ui-tabs-right .ui-tabs-panels {
 body .ui-tabs.ui-tabs-left .ui-tabs-nav {
   margin: 0;
   padding: 0;
-  border-right: 2px solid #dee2e6;
+  right: -2px;
 }
 body .ui-tabs.ui-tabs-left .ui-tabs-nav li.ui-tabs-header {
   top: 0;
@@ -6308,7 +6311,7 @@ body .ui-log .ui-log-header {
   color: #495057;
   font-weight: 700;
   border-bottom: 0 none;
-  padding: 1rem;
+  padding: 1.5rem;
   height: auto;
 }
 body .ui-log .ui-log-header .ui-log-button {
@@ -6433,7 +6436,7 @@ body .ui-log .ui-log-content {
   background: #ffffff;
   color: #495057;
   border: 0 none;
-  padding: 2rem;
+  padding: 0 1.5rem 2rem 1.5rem;
   border: 0 none;
   overflow: auto;
 }
@@ -6685,7 +6688,7 @@ body .ui-dialog .ui-dialog-titlebar {
   color: #495057;
   font-weight: 700;
   border-bottom: 0 none;
-  padding: 1rem;
+  padding: 1.5rem;
 }
 body .ui-dialog .ui-dialog-titlebar .ui-dialog-title {
   margin: 0;
@@ -6797,14 +6800,14 @@ body .ui-dialog .ui-dialog-content {
   background: #ffffff;
   color: #495057;
   border: 0 none;
-  padding: 2rem;
+  padding: 0 1.5rem 2rem 1.5rem;
   border: 0 none;
 }
 body .ui-dialog .ui-dialog-footer {
   border-top: 0 none;
   background: #ffffff;
   color: #495057;
-  padding: 1rem;
+  padding: 0 1.5rem 1.5rem 1.5rem;
   margin: 0;
   text-align: right;
 }
@@ -6813,7 +6816,7 @@ body .ui-dialog .ui-dialog-footer button {
   width: auto;
 }
 body .ui-dialog.ui-confirm-dialog .ui-dialog-content {
-  padding: 1rem 2rem;
+  padding: 0 1.5rem 2rem 1.5rem;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-align: center;
