@@ -86,6 +86,18 @@ body .ui-button.ui-button-outlined.ui-state-active, body .ui-button.ui-button-ou
   color: #F48FB1;
   border: 1px solid;
 }
+body .ui-button.ui-button-outlined.ui-button-plain {
+  color: #888888;
+  border-color: #888888;
+}
+body .ui-button.ui-button-outlined.ui-button-plain.ui-state-hover {
+  background: #4c4c4c;
+  color: #888888;
+}
+body .ui-button.ui-button-outlined.ui-button-plain.ui-state-active, body .ui-button.ui-button-outlined.ui-button-plain.ui-state-down {
+  background: #3c3c3c;
+  color: #888888;
+}
 body .ui-button.ui-button-flat {
   background-color: transparent;
   color: #F48FB1;
@@ -100,6 +112,17 @@ body .ui-button.ui-button-flat.ui-state-active, body .ui-button.ui-button-flat.u
   background: rgba(244, 143, 177, 0.16);
   color: #F48FB1;
   border-color: transparent;
+}
+body .ui-button.ui-button-flat.ui-button-plain {
+  color: #888888;
+}
+body .ui-button.ui-button-flat.ui-button-plain.ui-state-hover {
+  background: #4c4c4c;
+  color: #888888;
+}
+body .ui-button.ui-button-flat.ui-button-plain.ui-state-active, body .ui-button.ui-button-flat.ui-button-plain.ui-state-down {
+  background: #3c3c3c;
+  color: #888888;
 }
 body .ui-button.ui-button-text-only .ui-button-text {
   padding: 0.429rem 1rem;
