@@ -46,7 +46,7 @@ public class SplitterRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String layout = splitter.getLayout();
         String styleClass = getStyleClassBuilder(context)
-                    .add(Splitter.DEFAULT_STYLE_CLASS)
+                    .add(Splitter.STYLE_CLASS)
                     .add(splitter.getStyleClass())
                     .add("vertical".equals(layout), Splitter.LAYOUT_VERTICAL_CLASS)
                     .add("horizontal".equals(layout), Splitter.LAYOUT_HORIZONTAL_CLASS)
@@ -101,7 +101,7 @@ public class SplitterRenderer extends CoreRenderer {
             }
         }
         String styleClass = getStyleClassBuilder(context)
-                    .add(SplitterPanel.DEFAULT_STYLE_CLASS)
+                    .add(SplitterPanel.STYLE_CLASS)
                     .add(splitterPanel.getStyleClass())
                     .add(isNested, SplitterPanel.NESTED_CLASS)
                     .build();

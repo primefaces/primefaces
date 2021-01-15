@@ -42,7 +42,7 @@ public class BadgeRenderer extends CoreRenderer {
         String severity = badge.getSeverity();
         String size = badge.getSize();
         String styleClass = getStyleClassBuilder(context)
-                    .add(Badge.DEFAULT_STYLE_CLASS)
+                    .add(Badge.STYLE_CLASS)
                     .add(badge.getStyleClass())
                     .add(value != null && value.length() == 1, Badge.NO_GUTTER_CLASS)
                     .add(value == null, Badge.DOT_CLASS)

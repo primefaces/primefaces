@@ -43,7 +43,7 @@ public class SkeletonRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, Skeleton skeleton) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = getStyleClassBuilder(context)
-                    .add(Skeleton.DEFAULT_STYLE_CLASS)
+                    .add(Skeleton.STYLE_CLASS)
                     .add(skeleton.getStyleClass())
                     .add("circle".equals(skeleton.getShape()), Skeleton.CIRCLE_CLASS)
                     .add("none".equals(skeleton.getAnimation()), Skeleton.NONE_ANIMATION_CLASS)

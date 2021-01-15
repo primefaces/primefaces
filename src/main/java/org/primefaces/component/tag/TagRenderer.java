@@ -39,7 +39,7 @@ public class TagRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String severity = tag.getSeverity();
         String styleClass = getStyleClassBuilder(context)
-                    .add(Tag.DEFAULT_STYLE_CLASS)
+                    .add(Tag.STYLE_CLASS)
                     .add(tag.getStyleClass())
                     .add("info".equals(severity), Tag.SEVERITY_INFO_CLASS)
                     .add("success".equals(severity), Tag.SEVERITY_SUCCESS_CLASS)

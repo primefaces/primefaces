@@ -43,7 +43,7 @@ public class DividerRenderer extends CoreRenderer {
         boolean isHorizontal = "horizontal".equals(layout);
         boolean isVertical = "vertical".equals(layout);
         String styleClass = getStyleClassBuilder(context)
-                    .add(Divider.DEFAULT_STYLE_CLASS)
+                    .add(Divider.STYLE_CLASS)
                     .add(divider.getStyleClass())
                     .add(isHorizontal, Divider.HORIZONTAL_CLASS)
                     .add(isVertical, Divider.VERTICAL_CLASS)

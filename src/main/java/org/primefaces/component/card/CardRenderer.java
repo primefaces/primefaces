@@ -38,7 +38,7 @@ public class CardRenderer extends CoreRenderer {
         Card card = (Card) component;
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = getStyleClassBuilder(context)
-                .add(Card.DEFAULT_STYLE_CLASS)
+                .add(Card.STYLE_CLASS)
                 .add(card.getStyleClass())
                 .build();
 

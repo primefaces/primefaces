@@ -37,7 +37,7 @@ public class AvatarGroupRenderer extends CoreRenderer {
         AvatarGroup avatarGroup = (AvatarGroup) component;
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = getStyleClassBuilder(context)
-                .add(AvatarGroup.DEFAULT_STYLE_CLASS)
+                .add(AvatarGroup.STYLE_CLASS)
                 .add(avatarGroup.getStyleClass())
                 .build();
 

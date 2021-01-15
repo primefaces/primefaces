@@ -44,7 +44,7 @@ public class ScrollTopRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, ScrollTop scrollTop) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = getStyleClassBuilder(context)
-                    .add(ScrollTop.DEFAULT_STYLE_CLASS)
+                    .add(ScrollTop.STYLE_CLASS)
                     .add(scrollTop.getStyleClass())
                     .add("parent".equals(scrollTop.getTarget()), ScrollTop.STICKY_CLASS)
                     .build();
