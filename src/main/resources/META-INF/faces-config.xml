@@ -297,6 +297,11 @@
     </component>
 
     <component>
+        <component-type>org.primefaces.component.Chronoline</component-type>
+        <component-class>org.primefaces.component.chronoline.Chronoline</component-class>
+    </component>
+
+    <component>
         <component-type>org.primefaces.component.Clock</component-type>
         <component-class>org.primefaces.component.clock.Clock</component-class>
     </component>
@@ -1176,6 +1181,11 @@
             <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.ChipsRenderer</renderer-type>
             <renderer-class>org.primefaces.component.chips.ChipsRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ChronolineRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.chronoline.ChronolineRenderer</renderer-class>
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>
