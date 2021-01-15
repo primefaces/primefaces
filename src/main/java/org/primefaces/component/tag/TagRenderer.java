@@ -39,7 +39,7 @@ public class TagRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String severity = tag.getSeverity();
         String styleClass = getStyleClassBuilder(context)
-                    .add(Tag.DEFAULT_STYLE_CLASS)
+                    .add(Tag.STYLE_CLASS)
                     .add(tag.getStyleClass())
                     .add("info".equals(severity), Tag.SEVERITY_INFO_CLASS)
                     .add("success".equals(severity), Tag.SEVERITY_SUCCESS_CLASS)
@@ -48,31 +48,43 @@ public class TagRenderer extends CoreRenderer {
                     .add(tag.isRounded(), Tag.ROUNDED_CLASS)
                     .build();
 
-        writer.startElement("div", tag);
+        writer.startElement("span", null);
         writer.writeAttribute("id", tag.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if (tag.getStyle() != null) {
             writer.writeAttribute("style", tag.getStyle(), "style");
         }
 
-        if (tag.getIcon() != null) {
-            writer.startElement("span", tag);
-            writer.writeAttribute("class", Tag.ICON_CLASS + " " + tag.getIcon(), "styleClass");
-            writer.endElement("span");
-        }
-
         if (tag.getChildCount() > 0) {
             renderChildren(context, tag);
+        }
+        else {
+            encodeDefaultContent(context, tag);
+        }
+
+        writer.endElement("span");
+    }
+
+    public void encodeDefaultContent(FacesContext context, Tag tag) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        if (tag.getIcon() != null) {
+            String iconStyleClass = getStyleClassBuilder(context)
+                    .add(Tag.ICON_CLASS)
+                    .add(tag.getIcon())
+                    .build();
+
+            writer.startElement("span", tag);
+            writer.writeAttribute("class", iconStyleClass, null);
+            writer.endElement("span");
         }
 
         if (tag.getValue() != null) {
             writer.startElement("span", tag);
-            writer.writeAttribute("class", Tag.VALUE_CLASS, "styleClass");
+            writer.writeAttribute("class", Tag.VALUE_CLASS, null);
             writer.write(tag.getValue());
             writer.endElement("span");
         }
-
-        writer.endElement("div");
     }
 
     @Override

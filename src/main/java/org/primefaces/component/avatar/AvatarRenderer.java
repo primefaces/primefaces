@@ -38,7 +38,7 @@ public class AvatarRenderer extends CoreRenderer {
         Avatar avatar = (Avatar) component;
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = getStyleClassBuilder(context)
-                .add(Avatar.DEFAULT_STYLE_CLASS)
+                .add(Avatar.STYLE_CLASS)
                 .add(avatar.getStyleClass())
                 .add(avatar.getImage() != null, Avatar.IMAGE_CLASS)
                 .add("circle".equals(avatar.getShape()), Avatar.CIRCLE_CLASS)

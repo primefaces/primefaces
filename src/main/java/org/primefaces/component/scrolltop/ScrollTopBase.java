@@ -53,50 +53,50 @@ public abstract class ScrollTopBase extends UIComponentBase implements Widget {
     }
 
     public String getTarget() {
-        return (String) getStateHelper().eval(ScrollTopBase.PropertyKeys.target, "window");
+        return (String) getStateHelper().eval(PropertyKeys.target, "window");
     }
 
     public void setTarget(String target) {
-        getStateHelper().put(ScrollTopBase.PropertyKeys.target, target);
+        getStateHelper().put(PropertyKeys.target, target);
     }
 
     public String getThreshold() {
-        return (String) getStateHelper().eval(ScrollTopBase.PropertyKeys.threshold, "400");
+        return (String) getStateHelper().eval(PropertyKeys.threshold, "400");
     }
 
     public void setThreshold(String threshold) {
-        getStateHelper().put(ScrollTopBase.PropertyKeys.threshold, threshold);
+        getStateHelper().put(PropertyKeys.threshold, threshold);
     }
 
     public String getIcon() {
-        return (String) getStateHelper().eval(ScrollTopBase.PropertyKeys.icon, "pi pi-chevron-up");
+        return (String) getStateHelper().eval(PropertyKeys.icon, "pi pi-chevron-up");
     }
 
     public void setIcon(String icon) {
-        getStateHelper().put(ScrollTopBase.PropertyKeys.icon, icon);
+        getStateHelper().put(PropertyKeys.icon, icon);
     }
 
     public String getBehavior() {
-        return (String) getStateHelper().eval(ScrollTopBase.PropertyKeys.behavior, "smooth");
+        return (String) getStateHelper().eval(PropertyKeys.behavior, "smooth");
     }
 
     public void setBehavior(String behavior) {
-        getStateHelper().put(ScrollTopBase.PropertyKeys.behavior, behavior);
+        getStateHelper().put(PropertyKeys.behavior, behavior);
     }
 
     public String getStyle() {
-        return (String) getStateHelper().eval(ScrollTopBase.PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
-        getStateHelper().put(ScrollTopBase.PropertyKeys.style, style);
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
     public String getStyleClass() {
-        return (String) getStateHelper().eval(ScrollTopBase.PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
-        getStateHelper().put(ScrollTopBase.PropertyKeys.styleClass, styleClass);
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 }

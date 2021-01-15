@@ -32592,6 +32592,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Border radius of the element, defaults to value from theme.]]>
+            </description>
+            <name>borderRadius</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Inline style of the component.]]>
             </description>
             <name>style</name>

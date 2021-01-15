@@ -28,7 +28,8 @@ import javax.faces.application.ResourceDependency;
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class Skeleton extends SkeletonBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Skeleton";
-    public static final String DEFAULT_STYLE_CLASS = "ui-skeleton";
-    public static final String CIRCLE_CLASS = "ui-skeleton";
-    public static final String NONE_ANIMATION_CLASS = "ui-skeleton";
+
+    public static final String STYLE_CLASS = "ui-skeleton ui-widget";
+    public static final String CIRCLE_CLASS = "ui-skeleton-circle";
+    public static final String NONE_ANIMATION_CLASS = "ui-skeleton-animation-none";
 }

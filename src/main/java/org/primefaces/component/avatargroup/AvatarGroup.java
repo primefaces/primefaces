@@ -29,5 +29,5 @@ import javax.faces.application.ResourceDependency;
 public class AvatarGroup extends AvatarGroupBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.AvatarGroup";
 
-    public static final String DEFAULT_STYLE_CLASS = "ui-avatar-group ui-widget";
+    public static final String STYLE_CLASS = "ui-avatar-group ui-widget";
 }

@@ -28,15 +28,8 @@ PrimeFaces.widget.ScrollTop = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
 
-        this.scrollTop = $(this.jqId);
-
-        var $this = this;
-        this.visible = false;
-        this.threshold = $this.cfg.threshold;
-        this.target = $this.cfg.target;
-        this.behavior = $this.cfg.behavior;
-        this.scrollElement = this.target === 'window' ? $(window) : this.scrollTop.parent();
-
+        this.scrollElement = this.cfg.target === 'window' ? $(window) : this.jq.parent();
+        
         this.bindEvents();
     },
 
@@ -45,52 +38,40 @@ PrimeFaces.widget.ScrollTop = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     bindEvents: function() {
-        var $this = this;
-
-        //Hide scrollTop on first initialization.
-        this.scrollTop.hide();
-
-        $this.checkVisibility();
-        $this.bindScrollEvent();
-    },
-
-    /**
-     * Checks visibility of the ScrollTop element.
-     * @private
-     */
-    checkVisibility: function () {
-        var $this = this;
-
-        $this.scrollElement.scroll(function (e) {
-            var checkVisibility = $this.threshold < $this.scrollElement.scrollTop();
-
-            if (checkVisibility !== $this.visible) {
-                if (!$this.visible) {
-                    $this.scrollTop.fadeIn("slow");
-                    $this.scrollTop.css("zIndex", PrimeFaces.nextZindex());
-                    $this.visible = true;
-                }
-                else {
-                    $this.scrollTop.fadeOut("slow");
-                    $this.visible = false;
-                }
-            }
-        });
-    },
-
-    /**
-     * Sets up scroll to top event to the ScrollTop element.
-     * @private
-     */
-    bindScrollEvent: function () {
-        var $this = this;
-
-        this.scrollTop.on("click", function(e) {
-            e.preventDefault();
+        var $this = this,
+        scrollNS = 'scroll.scrollTop' + this.id,
+        zIndex = $this.jq.css('zIndex');
+        
+        this.jq.on('click.scrollTop', function(e) {
             $this.scrollElement.get(0).scroll({
                 top: 0,
-                behavior: $this.behavior
+                behavior: $this.cfg.behavior
             });
-        })
-    },
+            
+            e.preventDefault();
+        });
+
+        this.scrollElement.off(scrollNS).on(scrollNS, function() {
+            if ($this.cfg.threshold < $this.scrollElement.scrollTop()) {
+                $this.jq.fadeIn({
+                    duration: 150,
+                    start: function() {
+                        if (zIndex === 'auto' && $this.jq.css('zIndex') === 'auto') {
+                            $this.jq.css('zIndex', PrimeFaces.nextZindex());
+                        }
+                    }
+                });
+            }
+            else {
+                $this.jq.fadeOut({
+                    duration: 150,
+                    start: function() {
+                        if (zIndex === 'auto') {
+                            $this.jq.css('zIndex', '');
+                        }
+                    }
+                });
+            }
+        });
+    }
 });
