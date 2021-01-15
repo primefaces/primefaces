@@ -39,6 +39,7 @@ PrimeFaces.widget.ScrollTop = PrimeFaces.widget.BaseWidget.extend({
      */
     bindEvents: function() {
         var $this = this,
+        scrollNS = 'scroll.scrollTop' + this.id,
         zIndex = $this.jq.css('zIndex');
         
         this.jq.on('click.scrollTop', function(e) {
@@ -50,7 +51,7 @@ PrimeFaces.widget.ScrollTop = PrimeFaces.widget.BaseWidget.extend({
             e.preventDefault();
         });
 
-        this.scrollElement.off('scroll.scrollTop' + this.id).on('scroll.scrollTop' + this.id, function(e) {
+        this.scrollElement.off(scrollNS).on(scrollNS, function() {
             if ($this.cfg.threshold < $this.scrollElement.scrollTop()) {
                 $this.jq.fadeIn({
                     duration: 150,
