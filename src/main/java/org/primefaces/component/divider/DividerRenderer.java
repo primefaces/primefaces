@@ -50,11 +50,11 @@ public class DividerRenderer extends CoreRenderer {
                     .add("solid".equals(type), Divider.SOLID_CLASS)
                     .add("dashed".equals(type), Divider.DASHED_CLASS)
                     .add("dotted".equals(type), Divider.DOTTED_CLASS)
-                    .add(isHorizontal && (align == null || "left".equals(align)), Divider.ALING_LEFT_CLASS)
-                    .add(isHorizontal && "right".equals(align), Divider.ALING_RIGHT_CLASS)
-                    .add((isHorizontal && "center".equals(align)) || (isVertical && (align == null || "center".equals(align))), Divider.ALING_CENTER_CLASS)
-                    .add(isVertical && "top".equals(align), Divider.ALING_TOP_CLASS)
-                    .add(isVertical && "bottom".equals(align), Divider.ALING_BOTTOM_CLASS)
+                    .add(isHorizontal && (align == null || "left".equals(align)), Divider.ALIGN_LEFT_CLASS)
+                    .add(isHorizontal && "right".equals(align), Divider.ALIGN_RIGHT_CLASS)
+                    .add((isHorizontal && "center".equals(align)) || (isVertical && (align == null || "center".equals(align))), Divider.ALIGN_CENTER_CLASS)
+                    .add(isVertical && "top".equals(align), Divider.ALIGN_TOP_CLASS)
+                    .add(isVertical && "bottom".equals(align), Divider.ALIGN_BOTTOM_CLASS)
                     .build();
 
         writer.startElement("div", null);

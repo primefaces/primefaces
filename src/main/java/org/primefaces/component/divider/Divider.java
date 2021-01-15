@@ -36,9 +36,9 @@ public class Divider extends DividerBase {
     public static final String SOLID_CLASS = "ui-divider-solid";
     public static final String DASHED_CLASS = "ui-divider-dashed";
     public static final String DOTTED_CLASS = "ui-divider-dotted";
-    public static final String ALING_LEFT_CLASS = "ui-divider-left";
-    public static final String ALING_CENTER_CLASS = "ui-divider-center";
-    public static final String ALING_RIGHT_CLASS = "ui-divider-right";
-    public static final String ALING_TOP_CLASS = "ui-divider-top";
-    public static final String ALING_BOTTOM_CLASS = "ui-divider-bottom";
+    public static final String ALIGN_LEFT_CLASS = "ui-divider-left";
+    public static final String ALIGN_CENTER_CLASS = "ui-divider-center";
+    public static final String ALIGN_RIGHT_CLASS = "ui-divider-right";
+    public static final String ALIGN_TOP_CLASS = "ui-divider-top";
+    public static final String ALIGN_BOTTOM_CLASS = "ui-divider-bottom";
 }
