@@ -18,7 +18,7 @@ Group id is _org.primefaces_ and artifact id is _primefaces._
 <dependency>
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces</artifactId>
-    <version>10.0-SNAPSHOT</version>
+    <version>10.0.0-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -28,7 +28,7 @@ Group id is _org.primefaces_ and artifact id is _primefaces._
 <dependency>
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces</artifactId>
-    <version>10.0-SNAPSHOT</version>
+    <version>10.0.0-SNAPSHOT</version>
     <classifier>jakarta</classifier>
 </dependency>
 ```
