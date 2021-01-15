@@ -91,9 +91,11 @@ public class TreeTable extends TreeTableBase {
     public static final String COLUMN_CUSTOM_FILTER_CLASS = "ui-column-customfilter";
     public static final String HIDDEN_COLUMN_CLASS = "ui-helper-hidden";
     public static final String STATIC_COLUMN_CLASS = "ui-static-column";
-
     public static final String EDITABLE_COLUMN_CLASS = "ui-editable-column";
     public static final String EDITING_ROW_CLASS = "ui-row-editing";
+    public static final String GRIDLINES_CLASS = "ui-treetable-gridlines";
+    public static final String SMALL_SIZE_CLASS = "ui-treetable-sm";
+    public static final String LARGE_SIZE_CLASS = "ui-treetable-lg";
 
     static final Map<MatchMode, FilterConstraint> FILTER_CONSTRAINTS = MapBuilder.<MatchMode, FilterConstraint>builder()
             .put(MatchMode.STARTS_WITH, new StartsWithFilterConstraint())

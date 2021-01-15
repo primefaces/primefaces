@@ -136,6 +136,10 @@ public class DataTable extends DataTableBase {
     public static final String SORT_ASC = "primefaces.datatable.SORT_ASC";
     public static final String SORT_DESC = "primefaces.datatable.SORT_DESC";
     public static final String ROW_GROUP_TOGGLER = "primefaces.rowgrouptoggler.aria.ROW_GROUP_TOGGLER";
+    public static final String STRIPED_ROWS_CLASS = "ui-datatable-striped";
+    public static final String GRIDLINES_CLASS = "ui-datatable-gridlines";
+    public static final String SMALL_SIZE_CLASS = "ui-datatable-sm";
+    public static final String LARGE_SIZE_CLASS = "ui-datatable-lg";
 
     public static final Map<DataTableFeatureKey, DataTableFeature> FEATURES = MapBuilder.<DataTableFeatureKey, DataTableFeature>builder()
             .put(DataTableFeatureKey.DRAGGABLE_COLUMNS, new DraggableColumnsFeature())

@@ -1227,6 +1227,19 @@ body .ui-datatable.ui-datatable-sm .ui-datatable-data > tr > td {
 body .ui-datatable.ui-datatable-sm tfoot > tr > td {
   padding: 0.2855rem 0.4285rem;
 }
+body .ui-datatable.ui-datatable-lg thead > tr > th {
+  padding: 0.71375rem 1.07125rem;
+}
+body .ui-datatable.ui-datatable-lg .ui-datatable-scrollable-theadclone > tr > th {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+body .ui-datatable.ui-datatable-lg .ui-datatable-data > tr > td {
+  padding: 0.71375rem 1.07125rem;
+}
+body .ui-datatable.ui-datatable-lg tfoot > tr > td {
+  padding: 0.71375rem 1.07125rem;
+}
 body .ui-datatable.ui-datatable-gridlines .ui-datatable-header {
   border-width: 1px;
 }
@@ -2101,6 +2114,19 @@ body .ui-treetable.ui-treetable-sm .ui-treetable-data > tr > td {
 }
 body .ui-treetable.ui-treetable-sm tfoot > tr > td {
   padding: 0.2855rem 0.4285rem;
+}
+body .ui-treetable.ui-treetable-lg thead > tr > th {
+  padding: 0.71375rem 1.07125rem;
+}
+body .ui-treetable.ui-treetable-lg .ui-treetable-scrollable-theadclone > tr > th {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+body .ui-treetable.ui-treetable-lg .ui-treetable-data > tr > td {
+  padding: 0.71375rem 1.07125rem;
+}
+body .ui-treetable.ui-treetable-lg tfoot > tr > td {
+  padding: 0.71375rem 1.07125rem;
 }
 body .ui-treetable.ui-treetable-gridlines .ui-treetable-header {
   border-width: 1px 1px 0;
