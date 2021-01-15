@@ -6821,6 +6821,74 @@ body .ui-dialog.ui-confirm-dialog .ui-dialog-content > span.ui-icon.ui-icon-erro
 body .ui-dialog .ui-resizable-handle {
   display: none !important;
 }
+body .ui-dialog.ui-message-dialog .ui-dialog-content {
+  padding: 1rem 2rem;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+}
+body .ui-dialog.ui-message-dialog .ui-dialog-content > span {
+  float: none;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1;
+  margin: 0 0 0 0.5rem;
+}
+body .ui-dialog.ui-message-dialog .ui-dialog-content > span.ui-dialog-message {
+  margin-right: 0.5rem;
+  font-size: 2.5rem;
+  width: auto;
+  height: auto;
+}
+body .ui-dialog.ui-message-dialog .ui-dialog-content > span.ui-dialog-message.ui-messages-warn-icon {
+  font-family: "primeicons" !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  display: inline-block;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-indent: 0 !important;
+  background-image: none !important;
+}
+body .ui-dialog.ui-message-dialog .ui-dialog-content > span.ui-dialog-message.ui-messages-warn-icon:before {
+  content: "";
+}
+body .ui-dialog.ui-message-dialog .ui-dialog-content > span.ui-dialog-message.ui-messages-info-icon {
+  font-family: "primeicons" !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  display: inline-block;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-indent: 0 !important;
+  background-image: none !important;
+}
+body .ui-dialog.ui-message-dialog .ui-dialog-content > span.ui-dialog-message.ui-messages-info-icon:before {
+  content: "";
+}
+body .ui-dialog.ui-message-dialog .ui-dialog-content > span.ui-dialog-message.ui-messages-error-icon {
+  font-family: "primeicons" !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  display: inline-block;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-indent: 0 !important;
+  background-image: none !important;
+}
+body .ui-dialog.ui-message-dialog .ui-dialog-content > span.ui-dialog-message.ui-messages-error-icon:before {
+  content: "";
+}
 body .ui-tooltip .ui-tooltip-text {
   background: #333333;
   color: #ffffff;

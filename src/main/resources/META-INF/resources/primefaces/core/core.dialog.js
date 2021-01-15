@@ -349,7 +349,7 @@ if (!PrimeFaces.dialog) {
          */
         showMessageInDialog: function(msg) {
             if(!this.messageDialog) {
-                var messageDialogDOM = $('<div id="primefacesmessagedlg" class="ui-message-dialog ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container"></div>')
+                $('<div id="primefacesmessagedlg" class="ui-message-dialog ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container"></div>')
                             .append('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top"><span class="ui-dialog-title"></span>' +
                             '<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-closethick"></span></a></div>' +
                             '<div class="ui-dialog-content ui-widget-content" style="height: auto;"></div>')
@@ -372,7 +372,9 @@ if (!PrimeFaces.dialog) {
             this.messageDialog.titleContainer.html(summaryHtml);
 
             var detailHtml = msg.detail ? msg.detail.split(/\r\n|\n|\r/g).map(function(line) { return escape ? PrimeFaces.escapeHTML(line) : line; }).join("<br>") : "";
-            this.messageDialog.content.html('').append('<span class="ui-dialog-message ui-messages-' + msg.severity.split(' ')[0].toLowerCase() + '-icon"></span>').append(detailHtml);
+            this.messageDialog.content.html('').append('<span class="ui-dialog-message ui-messages-' + msg.severity.split(' ')[0].toLowerCase() + '-icon"></span>')
+                .append('<span class="ui-dialog-message-content"></span');
+            this.messageDialog.content.children('.ui-dialog-message-content').append(detailHtml);
             this.messageDialog.show();
         },
 
