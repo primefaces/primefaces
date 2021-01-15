@@ -2323,7 +2323,7 @@ body .ui-tree .ui-tree-container .ui-treenode .ui-treenode-content .ui-tree-togg
   background-image: none !important;
 }
 body .ui-tree .ui-tree-container .ui-treenode .ui-treenode-content .ui-tree-toggler.ui-icon-triangle-1-w:before {
-  content: "";
+  content: "";
 }
 body .ui-tree .ui-tree-container .ui-treenode .ui-treenode-content .ui-treenode-leaf-icon {
   width: 2rem;
@@ -6017,7 +6017,6 @@ body .ui-tabmenu .ui-tabmenu-nav .ui-tabmenuitem {
   display: inline-block;
   vertical-align: top;
   float: none;
-  padding: 0.857rem 1rem;
   background: #007ad9;
   color: #ffffff;
   top: 0;
@@ -6032,7 +6031,7 @@ body .ui-tabmenu .ui-tabmenu-nav .ui-tabmenuitem {
 }
 body .ui-tabmenu .ui-tabmenu-nav .ui-tabmenuitem a {
   color: #ffffff;
-  padding: 0;
+  padding: 0.857rem 1rem;
   font-weight: 700;
   display: block;
   line-height: 1;
