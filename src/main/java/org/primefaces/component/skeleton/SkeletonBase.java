@@ -52,66 +52,66 @@ public abstract class SkeletonBase extends UIComponentBase {
     }
 
     public String getShape() {
-        return (String) getStateHelper().eval(SkeletonBase.PropertyKeys.shape, "rectangle");
+        return (String) getStateHelper().eval(PropertyKeys.shape, "rectangle");
     }
 
     public void setShape(String shape) {
-        getStateHelper().put(SkeletonBase.PropertyKeys.shape, shape);
+        getStateHelper().put(PropertyKeys.shape, shape);
     }
 
     public String getSize() {
-        return (String) getStateHelper().eval(SkeletonBase.PropertyKeys.size, null);
+        return (String) getStateHelper().eval(PropertyKeys.size, null);
     }
 
     public void setSize(String size) {
-        getStateHelper().put(SkeletonBase.PropertyKeys.size, size);
+        getStateHelper().put(PropertyKeys.size, size);
     }
 
     public String getWidth() {
-        return (String) getStateHelper().eval(SkeletonBase.PropertyKeys.width, "100%");
+        return (String) getStateHelper().eval(PropertyKeys.width, "100%");
     }
 
     public void setWidth(String width) {
-        getStateHelper().put(SkeletonBase.PropertyKeys.width, width);
+        getStateHelper().put(PropertyKeys.width, width);
     }
 
     public String getHeight() {
-        return (String) getStateHelper().eval(SkeletonBase.PropertyKeys.height, "1rem");
+        return (String) getStateHelper().eval(PropertyKeys.height, "1rem");
     }
 
     public void setHeight(String height) {
-        getStateHelper().put(SkeletonBase.PropertyKeys.height, height);
+        getStateHelper().put(PropertyKeys.height, height);
     }
 
     public String getBorderRadius() {
-        return (String) getStateHelper().eval(SkeletonBase.PropertyKeys.borderRadius, null);
+        return (String) getStateHelper().eval(PropertyKeys.borderRadius, null);
     }
 
     public void setBorderRadius(String borderRadius) {
-        getStateHelper().put(SkeletonBase.PropertyKeys.borderRadius, borderRadius);
+        getStateHelper().put(PropertyKeys.borderRadius, borderRadius);
     }
 
     public String getAnimation() {
-        return (String) getStateHelper().eval(SkeletonBase.PropertyKeys.animation, "wave");
+        return (String) getStateHelper().eval(PropertyKeys.animation, "wave");
     }
 
     public void setAnimation(String animation) {
-        getStateHelper().put(SkeletonBase.PropertyKeys.animation, animation);
+        getStateHelper().put(PropertyKeys.animation, animation);
     }
 
     public String getStyle() {
-        return (String) getStateHelper().eval(SkeletonBase.PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
-        getStateHelper().put(SkeletonBase.PropertyKeys.style, style);
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
     public String getStyleClass() {
-        return (String) getStateHelper().eval(SkeletonBase.PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
-        getStateHelper().put(SkeletonBase.PropertyKeys.styleClass, styleClass);
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 }
