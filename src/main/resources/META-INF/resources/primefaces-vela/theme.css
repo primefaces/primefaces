@@ -646,6 +646,14 @@ body .ui-button.ui-button-danger.ui-button-flat:enabled:active, body .ui-splitbu
 }
 body .ui-commandlink, body .ui-link {
   color: #90CAF9;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+body .ui-commandlink:hover, body .ui-link:hover {
+  color: #6bb8f7;
+  text-decoration: underline;
+}
+body .ui-commandlink:active, body .ui-link:active {
+  color: #45a6f5;
 }
 
 body .ui-paginator {
