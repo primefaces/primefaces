@@ -6311,7 +6311,7 @@ body .ui-log .ui-log-header {
   color: rgba(255, 255, 255, 0.87);
   font-weight: 700;
   border-bottom: 0 none;
-  padding: 1rem;
+  padding: 1.5rem;
   height: auto;
 }
 body .ui-log .ui-log-header .ui-log-button {
@@ -6436,7 +6436,7 @@ body .ui-log .ui-log-content {
   background: #1e1e1e;
   color: rgba(255, 255, 255, 0.87);
   border: 0 none;
-  padding: 2rem;
+  padding: 0 1.5rem 2rem 1.5rem;
   border: 0 none;
   overflow: auto;
 }
@@ -6688,7 +6688,7 @@ body .ui-dialog .ui-dialog-titlebar {
   color: rgba(255, 255, 255, 0.87);
   font-weight: 700;
   border-bottom: 0 none;
-  padding: 1rem;
+  padding: 1.5rem;
 }
 body .ui-dialog .ui-dialog-titlebar .ui-dialog-title {
   margin: 0;
@@ -6800,14 +6800,14 @@ body .ui-dialog .ui-dialog-content {
   background: #1e1e1e;
   color: rgba(255, 255, 255, 0.87);
   border: 0 none;
-  padding: 2rem;
+  padding: 0 1.5rem 2rem 1.5rem;
   border: 0 none;
 }
 body .ui-dialog .ui-dialog-footer {
   border-top: 0 none;
   background: #1e1e1e;
   color: rgba(255, 255, 255, 0.87);
-  padding: 1rem;
+  padding: 0 1.5rem 1.5rem 1.5rem;
   margin: 0;
   text-align: right;
 }
@@ -6816,7 +6816,7 @@ body .ui-dialog .ui-dialog-footer button {
   width: auto;
 }
 body .ui-dialog.ui-confirm-dialog .ui-dialog-content {
-  padding: 1rem 2rem;
+  padding: 0 1.5rem 2rem 1.5rem;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-align: center;
