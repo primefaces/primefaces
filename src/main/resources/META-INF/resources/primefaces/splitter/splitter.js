@@ -207,7 +207,7 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Whether it is stateful.
-     * @return {boolean}
+     * @return {boolean} if the splitter is retaining state
      */
     isStateful() {
         return this.cfg.stateKey != null;
