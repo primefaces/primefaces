@@ -1027,7 +1027,7 @@ body .ui-datatable.ui-datatable-gridlines .ui-datatable-scrollable-theadclone > 
   border-top: 0 none; }
 body .ui-datatable.ui-datatable-gridlines tfoot > tr > td {
   border-width: 1px; }
-body .ui-datatable.ui-datatable-sticky {
+body .ui-datatable.ui-datatable-sticky.ui-sticky {
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.16); }
 @media (max-width: 640px) {
   body .ui-datatable-reflow .ui-datatable-data tr {
