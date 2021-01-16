@@ -259,10 +259,14 @@ if (!PrimeFaces.dialog) {
 
                 //adjust height
                 var frameHeight = null;
-                if(cfg.options.contentHeight)
+                if(cfg.options.contentHeight) {
                     frameHeight = cfg.options.contentHeight;
-                else
-                    frameHeight = $frame.get(0).contentWindow.document.body.scrollHeight + (PrimeFaces.env.browser.webkit ? 5 : 25);
+                }
+                else {
+                    var frameBody = $frame.get(0).contentWindow.document.body;
+                    var frameBodyStyle = window.getComputedStyle(frameBody);
+                    frameHeight = frameBody.scrollHeight + parseFloat(frameBodyStyle.marginTop) + parseFloat(frameBodyStyle.marginBottom);
+                }
 
                 $frame.css('height', String(frameHeight));
 
