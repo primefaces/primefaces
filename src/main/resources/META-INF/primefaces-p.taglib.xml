@@ -8507,6 +8507,30 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to display striped rows to visually separate content. Default is false.]]>
+            </description>
+            <name>stripedRows</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[When enabled, cell borders are displayed. Default is false.]]>
+            </description>
+            <name>showGridlines</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Size of the table content, valid values are "small" and "large". Leave empty for regular size.]]>
+            </description>
+            <name>size</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -30072,6 +30096,22 @@
             <name>saveOnCellBlur</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[When enables, cell borders are displayed. Default is false.]]>
+            </description>
+            <name>showGridlines</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Size of the table content, valid values are "small" and "large". Leave empty for regular size.]]>
+            </description>
+            <name>size</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>

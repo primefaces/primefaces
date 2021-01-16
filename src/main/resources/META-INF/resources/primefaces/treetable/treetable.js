@@ -970,7 +970,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     fireSelectEvent: function(nodeKey, behaviorEvent) {
         if(this.hasBehavior(behaviorEvent)) {
             var ext = {
-                    params: [{name: this.id + '_instantSelectedRowKey', value: nodeKey}
+                    params: [{name: this.id + '_instantSelection', value: nodeKey}
                 ]
             };
 

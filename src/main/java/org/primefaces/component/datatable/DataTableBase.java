@@ -104,6 +104,9 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         tableStyle,
         tableStyleClass,
         virtualScroll,
+        stripedRows,
+        showGridlines,
+        size,
         widgetVar
     }
 
@@ -562,6 +565,30 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
 
     public void setVirtualScroll(boolean virtualScroll) {
         getStateHelper().put(PropertyKeys.virtualScroll, virtualScroll);
+    }
+
+    public boolean isStripedRows() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.stripedRows, false);
+    }
+
+    public void setStripedRows(boolean stripedRows) {
+        getStateHelper().put(PropertyKeys.stripedRows, stripedRows);
+    }
+
+    public boolean isShowGridlines() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showGridlines, false);
+    }
+
+    public void setShowGridlines(boolean showGridlines) {
+        getStateHelper().put(PropertyKeys.showGridlines, showGridlines);
+    }
+
+    public String getSize() {
+        return (String) getStateHelper().eval(PropertyKeys.size, "regular");
+    }
+
+    public void setSize(String size) {
+        getStateHelper().put(PropertyKeys.size, size);
     }
 
     public String getRowDragSelector() {

@@ -90,11 +90,14 @@ DataTable displays data in tabular format.
 | selection                 | null               | Object           | Reference to the selection data.
 | selectionMode             | null               | String           | Enables row selection, valid values are “single" and “multiple".
 | selectionPageOnly         | true               | Boolean          | When using paginator and checkbox selection mode the select all checkbox in header will select the current page if true or all rows if false. Default true.
+| showGridlines             | false              | Boolean          | When enabled, cell borders are displayed.
+| size                      | regular            | String           | Size of the table content, valid values are "small" and "large". Leave empty for regular size.
 | sortMode                  | multiple           | String           | Defines sorting mode, valid values are _single_ and _multiple_.
 | sortBy                    | null               | SortMeta / Collection<SortMeta> | Property to be used for default sorting. Expects a single or a collection of SortMeta.
 | skipChildren              | false              | Boolean          | Ignores processing of children during lifecycle, improves performance if table only has output components.
 | stickyHeader              | false              | Boolean          | Sticky header stays in window viewport during scrolling.
 | stickyTopAt               | null               | String           | Selector to position on the page according to other fixing elements on the top of the table. Default is null.
+| stripedRows               | false              | Boolean          | Whether to display striped rows to visually separate content.
 | style                     | null               | String           | Inline style of the component.
 | styleClass                | null               | String           | Style class of the component.
 | summary                   | null               | String           | Summary attribute for WCAG.

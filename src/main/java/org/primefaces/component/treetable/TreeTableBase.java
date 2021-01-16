@@ -82,7 +82,9 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         allowUnsorting,
         sortMode,
         cloneOnFilter,
-        saveOnCellBlur
+        saveOnCellBlur,
+        showGridlines,
+        size
     }
 
     protected enum InternalPropertyKeys {
@@ -480,5 +482,21 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
 
     public void setSaveOnCellBlur(boolean saveOnCellBlur) {
         getStateHelper().put(PropertyKeys.saveOnCellBlur, saveOnCellBlur);
+    }
+
+    public boolean isShowGridlines() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showGridlines, false);
+    }
+
+    public void setShowGridlines(boolean showGridlines) {
+        getStateHelper().put(PropertyKeys.showGridlines, showGridlines);
+    }
+
+    public String getSize() {
+        return (String) getStateHelper().eval(PropertyKeys.size, "regular");
+    }
+
+    public void setSize(String size) {
+        getStateHelper().put(PropertyKeys.size, size);
     }
 }

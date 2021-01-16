@@ -69,6 +69,8 @@ sortMode | multiple | String | Defines sorting mode, valid values are _single_ a
 filteredValue  | null | TreeNode | TreeNode to keep filtered data.
 cloneOnFilter | false | Boolean | Defines if nodes should be cloned on filter via Cloneable interface or Copy-Constructor (CustomNode(CustomNode original) or CustomNode(String type, Object data, TreeNode parent)). Normally the filtered nodes are new instanceof of DefaultTreeNode.
 saveOnCellBlur | true | Boolean | Saves the changes in cell editing on blur, when set to false changes are discarded.
+size | regular | String | Size of the table content, valid values are "small" and "large". Leave empty for regular size.
+showGridlines | false | Boolean | When enabled, cell borders are displayed.
 
 ## Getting started with the TreeTable
 Similar to the Tree, TreeTable is populated with an _org.primefaces.model.TreeNode_ instance that

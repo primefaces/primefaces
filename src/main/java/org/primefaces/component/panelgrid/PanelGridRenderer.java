@@ -198,6 +198,10 @@ public class PanelGridRenderer extends CoreRenderer {
                     child.encodeAll(context);
                 }
             }
+            else if (child instanceof Row) {
+                // #6829 count row even though its not rendered
+                i++;
+            }
         }
 
         if (i == 0) {

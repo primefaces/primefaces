@@ -52,50 +52,50 @@ public abstract class SplitterBase extends UIComponentBase implements Widget {
     }
 
     public String getLayout() {
-        return (String) getStateHelper().eval(SplitterBase.PropertyKeys.layout, "horizontal");
+        return (String) getStateHelper().eval(PropertyKeys.layout, "horizontal");
     }
 
     public void setLayout(String layout) {
-        getStateHelper().put(SplitterBase.PropertyKeys.layout, layout);
+        getStateHelper().put(PropertyKeys.layout, layout);
     }
 
     public Integer getGutterSize() {
-        return (Integer) getStateHelper().eval(SplitterBase.PropertyKeys.gutterSize, 4);
+        return (Integer) getStateHelper().eval(PropertyKeys.gutterSize, 4);
     }
 
     public void setGutterSize(Integer gutterSize) {
-        getStateHelper().put(SplitterBase.PropertyKeys.gutterSize, gutterSize);
+        getStateHelper().put(PropertyKeys.gutterSize, gutterSize);
     }
 
     public String getStateKey() {
-        return (String) getStateHelper().eval(SplitterBase.PropertyKeys.stateKey, null);
+        return (String) getStateHelper().eval(PropertyKeys.stateKey, null);
     }
 
     public void setStateKey(String stateKey) {
-        getStateHelper().put(SplitterBase.PropertyKeys.stateKey, stateKey);
+        getStateHelper().put(PropertyKeys.stateKey, stateKey);
     }
 
     public String getStateStorage() {
-        return (String) getStateHelper().eval(SplitterBase.PropertyKeys.stateStorage, "session");
+        return (String) getStateHelper().eval(PropertyKeys.stateStorage, "session");
     }
 
     public void setStateStorage(String stateStorage) {
-        getStateHelper().put(SplitterBase.PropertyKeys.stateStorage, stateStorage);
+        getStateHelper().put(PropertyKeys.stateStorage, stateStorage);
     }
 
     public String getStyle() {
-        return (String) getStateHelper().eval(SplitterBase.PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
-        getStateHelper().put(SplitterBase.PropertyKeys.style, style);
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
     public String getStyleClass() {
-        return (String) getStateHelper().eval(SplitterBase.PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
-        getStateHelper().put(SplitterBase.PropertyKeys.styleClass, styleClass);
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 }

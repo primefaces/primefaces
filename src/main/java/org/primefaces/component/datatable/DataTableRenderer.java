@@ -280,6 +280,10 @@ public class DataTableRenderer extends DataRenderer {
                 .add(ComponentUtils.isRTL(context, table), DataTable.RTL_CLASS)
                 .add(table.isReflow(), DataTable.REFLOW_CLASS)
                 .add(hasFrozenColumns, "ui-datatable-frozencolumn")
+                .add(table.isStripedRows(), DataTable.STRIPED_ROWS_CLASS)
+                .add(table.isShowGridlines(), DataTable.GRIDLINES_CLASS)
+                .add("small".equals(table.getSize()), DataTable.SMALL_SIZE_CLASS)
+                .add("large".equals(table.getSize()), DataTable.LARGE_SIZE_CLASS)
                 .build();
 
         //aria
