@@ -11,7 +11,7 @@
     background-color: transparent;
 }
 
-.ui-avatar-circle {
+.ui-avatar.ui-avatar-circle {
     border-radius: 50%;
 }
 
