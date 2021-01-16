@@ -7,7 +7,6 @@
  * @prop {JQuery} splitter DOM element of the splitter.
  * @prop {JQuery} panels DOM elements of the splitter panels in splitter.
  * @prop {JQuery} gutters DOM elements of the gutter elements in splitter.
- * @prop {JQuery} isStateful Whether splitter element is stateful or not.
  * @prop {JQuery} horizontal Whether splitter element is horizontal or vertical.
  * @prop {JQuery} panelSizes Array of the panels size for save and restore state.
  *
@@ -135,7 +134,7 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
     /**
      * The method called while the 'resize' event is running.
      * @private
-     * @param {JQuery.Event} event
+     * @param {JQuery.Event} event Event triggered for the resize.
      */
     onResize: function(event) {
         var newPos;
@@ -159,7 +158,7 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
     /**
      * The method that is called when the 'resize' event ends.
      * @private
-     * @param {JQuery.Event} event
+     * @param {JQuery.Event} event Event triggered for the resize end.
      */
     onResizeEnd: function(event) {
         if (this.isStateful()) {
@@ -190,9 +189,9 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Checks the new values according to the size and minimum size values
      * @private
-     * @param {number} newPrevPanelSize
-     * @param {number} newNextPanelSize
-     * @return {boolean}
+     * @param {number} newPrevPanelSize the new previous panel size
+     * @param {number} newNextPanelSize the new next panel size
+     * @return {boolean} true if resized false if not
      */
     validateResize: function(newPrevPanelSize, newNextPanelSize) {
         if (this.panels[0].dataset && parseFloat(this.panels[0].dataset.minsize) > newPrevPanelSize) {
@@ -208,7 +207,7 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Whether it is stateful.
-     * @return {boolean}
+     * @return {boolean} if the splitter is retaining state
      */
     isStateful() {
         return this.cfg.stateKey != null;
