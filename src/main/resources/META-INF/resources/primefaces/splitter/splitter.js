@@ -7,7 +7,6 @@
  * @prop {JQuery} splitter DOM element of the splitter.
  * @prop {JQuery} panels DOM elements of the splitter panels in splitter.
  * @prop {JQuery} gutters DOM elements of the gutter elements in splitter.
- * @prop {JQuery} isStateful Whether splitter element is stateful or not.
  * @prop {JQuery} horizontal Whether splitter element is horizontal or vertical.
  * @prop {JQuery} panelSizes Array of the panels size for save and restore state.
  *
