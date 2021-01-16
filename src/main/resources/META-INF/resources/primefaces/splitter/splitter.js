@@ -134,7 +134,7 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
     /**
      * The method called while the 'resize' event is running.
      * @private
-     * @param {JQuery.Event} event
+     * @param {JQuery.Event} event Event triggered for the resize.
      */
     onResize: function(event) {
         var newPos;
@@ -158,7 +158,7 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
     /**
      * The method that is called when the 'resize' event ends.
      * @private
-     * @param {JQuery.Event} event
+     * @param {JQuery.Event} event Event triggered for the resize end.
      */
     onResizeEnd: function(event) {
         if (this.isStateful()) {
@@ -189,9 +189,9 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Checks the new values according to the size and minimum size values
      * @private
-     * @param {number} newPrevPanelSize
-     * @param {number} newNextPanelSize
-     * @return {boolean}
+     * @param {number} newPrevPanelSize the new previous panel size
+     * @param {number} newNextPanelSize the new next panel size
+     * @return {boolean} true if resized false if not
      */
     validateResize: function(newPrevPanelSize, newNextPanelSize) {
         if (this.panels[0].dataset && parseFloat(this.panels[0].dataset.minsize) > newPrevPanelSize) {
