@@ -130,15 +130,6 @@ public class AjaxRequestBuilder {
         return form(source, component, null);
     }
 
-    @Deprecated
-    public AjaxRequestBuilder form(String form) {
-        if (form != null) {
-            buffer.append(",f:\"").append(form).append("\"");
-        }
-
-        return this;
-    }
-
     public AjaxRequestBuilder process(UIComponent component, String expressions) {
         return process(component, expressions, false);
     }

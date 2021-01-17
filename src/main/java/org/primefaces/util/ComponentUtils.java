@@ -318,68 +318,6 @@ public class ComponentUtils {
         }
     }
 
-    @Deprecated // Widget itselfs implements it now
-    public static String resolveWidgetVar(FacesContext context, Widget widget) {
-        UIComponent component = (UIComponent) widget;
-        String userWidgetVar = (String) component.getAttributes().get("widgetVar");
-
-        if (!LangUtils.isValueBlank(userWidgetVar)) {
-            return userWidgetVar;
-        }
-        else {
-            return "widget_" + component.getClientId(context).replaceAll("-|" + UINamingContainer.getSeparatorChar(context), "_");
-        }
-    }
-
-    /**
-     * Duplicate code from json-simple project under apache license
-     * http://code.google.com/p/json-simple/source/browse/trunk/src/org/json/simple/JSONValue.java
-     * @deprecated Use {@link EscapeUtils#forJavaScript}
-     */
-    @Deprecated
-    public static String escapeText(String text) {
-        return EscapeUtils.forJavaScript(text);
-    }
-
-    /**
-     * @deprecated Use {@link EscapeUtils#forJavaScript}
-     */
-    @Deprecated
-    public static String escapeEcmaScriptText(String text) {
-        return EscapeUtils.forJavaScript(text);
-    }
-
-    /**
-     * Replace special characters with XML escapes:
-     * <pre>
-     * &amp; <small>(ampersand)</small> is replaced by &amp;amp;
-     * &lt; <small>(less than)</small> is replaced by &amp;lt;
-     * &gt; <small>(greater than)</small> is replaced by &amp;gt;
-     * &quot; <small>(double quote)</small> is replaced by &amp;quot;
-     * </pre>
-     *
-     * @param string The string to be escaped.
-     * @return The escaped string.
-     * @deprecated Use {@link EscapeUtils#forXml}
-     */
-    @Deprecated
-    public static String escapeXml(String string) {
-        return EscapeUtils.forXml(string);
-    }
-
-    /**
-     * Use {@link ComponentTraversalUtils#closestForm(javax.faces.context.FacesContext, javax.faces.component.UIComponent)} instead.
-     *
-     * @param context
-     * @param component
-     * @return
-     * @deprecated
-     */
-    @Deprecated
-    public static UIComponent findParentForm(FacesContext context, UIComponent component) {
-        return ComponentTraversalUtils.closestForm(context, component);
-    }
-
     public static <T extends Renderer> T getUnwrappedRenderer(FacesContext context, String family, String rendererType) {
         Renderer renderer = context.getRenderKit().getRenderer(family, rendererType);
 

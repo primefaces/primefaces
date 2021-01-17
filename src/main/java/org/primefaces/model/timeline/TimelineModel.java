@@ -369,8 +369,14 @@ public class TimelineModel<E, G> implements Serializable {
                 .max(LocalDateTime::compareTo)
                 .orElse(null);
 
-        TimelineEvent<E> mergedEvent = new TimelineEvent<>(event.getData(), orderedEvents.first().getStartDate(), endDate, event.isEditable(),
-                        event.getGroup(), event.getStyleClass());
+        TimelineEvent<E> mergedEvent = TimelineEvent.<E>builder()
+                .data(event.getData())
+                .startDate(orderedEvents.first().getStartDate())
+                .endDate(endDate)
+                .editable(event.isEditable())
+                .group(event.getGroup())
+                .styleClass(event.getStyleClass())
+                .build();
 
         // merge...
         deleteAll(events, timelineUpdater);
@@ -438,22 +444,6 @@ public class TimelineModel<E, G> implements Serializable {
      */
     public boolean hasEvent(TimelineEvent<E> event) {
         return events.contains(event);
-    }
-
-    /**
-     * Gets event by its positional index according to this instance.
-     *
-     * @param index index
-     * @return TimelineEvent found event or null
-     * @deprecated get event by id using {@link #getEvent(java.lang.String)} instead.
-     */
-    @Deprecated
-    public TimelineEvent<E> getEvent(int index) {
-        if (index < 0) {
-            return null;
-        }
-
-        return events.get(index);
     }
 
     /**

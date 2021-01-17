@@ -52,8 +52,6 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class PrimeFaces {
@@ -207,57 +205,6 @@ public class PrimeFaces {
         }
 
         resetInputs(Arrays.asList(expressions));
-    }
-
-    /**
-     * Removes the multiViewState for all DataTables within the current session.
-     *
-     * @deprecated Use {@link MultiViewState#clearAll()} instead
-     */
-    @Deprecated
-    public void clearTableStates() {
-        multiViewState().clearAll();
-    }
-
-    /**
-     * Removes the multiViewState for one specific DataTable within the current session.
-     * @param key Key of the DataTable. See {@link org.primefaces.component.datatable.DataTable#getMultiViewState(boolean)} for the namebuild of this key.
-     *
-     * @deprecated Use {@link MultiViewState#clear(String, String)} instead
-     */
-    @Deprecated
-    public void clearTableState(String key) {
-        clearDataListState(key);
-    }
-
-    /**
-     * Removes the multiViewState for all DataLists within the current session.
-     *
-     * @deprecated Use {@link MultiViewState#clearAll()} instead
-     */
-    @Deprecated
-    public void clearDataListStates() {
-        multiViewState().clearAll();
-    }
-
-    /**
-     * Removes the multiViewState for one specific DataList within the current session.
-     * @param key Key of the DataList. See {@link org.primefaces.component.datalist.DataList#getMultiViewState(boolean)}} for the namebuild of this key.
-     *
-     * @deprecated Use {@link MultiViewState#clear(String, String)} instead
-     */
-    @Deprecated
-    public void clearDataListState(String key) {
-        Pattern p = Pattern.compile("(.*\\.(?:xhtml|jsf|jsp))_(.*)");
-        Matcher m = p.matcher(key);
-        if (m.find()) {
-            multiViewState().clear(m.group(1), m.group(2));
-        }
-        else {
-            LOGGER.log(Level.WARNING,
-                    "\"{0}\" does not follow format: \"{1}\". Use PrimeFaces.multiViewState().clear(String viewId, String clientId) instead.",
-                    new Object[]{key, p.pattern()});
-        }
     }
 
     /**
