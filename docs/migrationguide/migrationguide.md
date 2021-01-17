@@ -1,6 +1,6 @@
 # Migration Guide
 
-* [8.0 -> 10.0](../migrationguide/10_0.md)
+* [8.0 -> 10.0.0](../migrationguide/10_0_0.md)
 * [7.0 -> 8.0](../migrationguide/8_0.md)
 * [6.2 -> 7.0](../migrationguide/7_0.md)
 * [6.1 -> 6.2](../migrationguide/6_2.md)
