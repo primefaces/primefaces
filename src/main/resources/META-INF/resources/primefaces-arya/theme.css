@@ -4393,14 +4393,14 @@ body .ui-splitter {
 
 body .ui-messages {
   padding: 0;
-  margin: 1rem 0;
+  margin: 0;
   font-weight: 600;
   position: relative;
   border-radius: 4px; }
   body .ui-messages > div {
     padding: 1.5rem;
-    border-radius: 4px;
-    margin: 0; }
+    margin: 1rem 0;
+    border-radius: 4px; }
   body .ui-messages ul {
     margin: 0; }
     body .ui-messages ul .ui-messages-info-summary,
