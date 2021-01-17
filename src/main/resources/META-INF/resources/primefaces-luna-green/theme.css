@@ -2270,6 +2270,24 @@ body .vis-timeline {
     color: #dedede; }
   body .vis-timeline .vis-panel .vis-shadow {
     box-shadow: none; }
+body .ui-chronoline .ui-chronoline-event-marker {
+  border: 0 none;
+  border-radius: 50%;
+  width: 1rem;
+  height: 1rem;
+  background-color: #C5E1A5; }
+body .ui-chronoline .ui-chronoline-event-connector {
+  background-color: #191919; }
+body .ui-chronoline.ui-chronoline-vertical .ui-chronoline-event-opposite,
+body .ui-chronoline.ui-chronoline-vertical .ui-chronoline-event-content {
+  padding: 0 1rem; }
+body .ui-chronoline.ui-chronoline-vertical .ui-chronoline-event-connector {
+  width: 2px; }
+body .ui-chronoline.ui-chronoline-horizontal .ui-chronoline-event-opposite,
+body .ui-chronoline.ui-chronoline-horizontal .ui-chronoline-event-content {
+  padding: 1rem 0; }
+body .ui-chronoline.ui-chronoline-horizontal .ui-chronoline-event-connector {
+  height: 2px; }
 
 body ::-webkit-input-placeholder {
   color: #9b9b9b; }
