@@ -20,7 +20,7 @@
     z-index: 1;
 }
 
-.ui-badge-dot {
+.ui-badge.ui-badge-dot {
     width: .5rem;
     min-width: .5rem;
     height: .5rem;
@@ -28,7 +28,7 @@
     padding: 0;
 }
 
-.ui-badge-no-gutter {
+.ui-badge.ui-badge-no-gutter {
     padding: 0;
     border-radius: 50%;
 }

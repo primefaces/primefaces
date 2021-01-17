@@ -1339,8 +1339,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
 
             if(this.hasVerticalOverflow()) {
-                this.scrollHeaderBox.css('margin-right', scrollBarWidth + 'px');
-                this.scrollFooterBox.css('margin-right', scrollBarWidth + 'px');
+                this.scrollHeaderBox.css('margin-right', scrollBarWidth);
+                this.scrollFooterBox.css('margin-right', scrollBarWidth);
             }
         }
 
