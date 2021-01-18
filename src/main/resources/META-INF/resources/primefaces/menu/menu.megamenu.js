@@ -149,6 +149,7 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
 
         this.keyboardTarget.on('focus.megamenu', function(e) {
+            $this.keyboardTarget.attr('tabindex', '-1');
             $this.highlight($this.rootLinks.eq(0).parent());
         })
         .on('blur.megamenu', function() {
@@ -349,6 +350,7 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
     reset: function() {
         var $this = this;
         this.active = false;
+        $this.keyboardTarget.attr('tabindex', '0');
 
         this.jq.find('li.ui-menuitem-active').each(function() {
             $this.deactivate($(this), true);

@@ -176,6 +176,7 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("tabindex", menu.getTabindex(), null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
         writer.endElement("div");
     }
 }

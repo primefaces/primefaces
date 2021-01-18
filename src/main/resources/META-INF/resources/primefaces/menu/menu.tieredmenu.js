@@ -273,12 +273,13 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
     },
 
     /**
-     * Deactivates all items and resets the state of this widget to its orignal state such that only the top-level menu
+     * Deactivates all items and resets the state of this widget to its original state such that only the top-level menu
      * items are shown. 
      */
     reset: function() {
         var $this = this;
         this.active = false;
+        $this.keyboardTarget.attr('tabindex', '0');
 
         this.jq.find('li.ui-menuitem-active').each(function() {
             $this.deactivate($(this), true);

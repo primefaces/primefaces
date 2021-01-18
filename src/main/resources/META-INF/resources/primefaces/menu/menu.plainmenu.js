@@ -100,10 +100,12 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
         }
 
         this.keyboardTarget.on('focus.menu', function() {
+            $this.keyboardTarget.attr('tabindex', '-1');
             $this.focus($this.menuitemLinks.eq(0));
         })
         .on('blur.menu', function() {
             $this.unfocus($this.menuitemLinks.filter('.ui-state-hover'));
+            $this.keyboardTarget.attr('tabindex', '0');
         })
         .on('keydown.menu', function(e) {
             var currentLink = $this.menuitemLinks.filter('.ui-state-hover'),

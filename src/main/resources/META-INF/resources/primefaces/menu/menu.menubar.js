@@ -66,6 +66,7 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
         var $this = this;
 
         this.keyboardTarget.on('focus.menubar', function(e) {
+            $this.keyboardTarget.attr('tabindex', '-1');
             $this.highlight($this.links.eq(0).parent());
         })
         .on('blur.menubar', function() {
