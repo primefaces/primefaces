@@ -69,6 +69,7 @@
   - [Chart.js](/components/charts.md)
   - [Checkbox](/components/checkbox.md)
   - [Chips](/components/chips.md)
+  - [Chips](/components/chronoline.md)
   - [Clock](/components/clock.md)
   - [Collector](/components/collector.md)
   - [ColorPicker](/components/colorpicker.md)
