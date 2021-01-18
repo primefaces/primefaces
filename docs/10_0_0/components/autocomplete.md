@@ -20,48 +20,59 @@ AutoComplete provides live suggestions while an input is being typed.
 | Name | Default | Type | Description |
 | --- | --- | --- | --- |
 | id | null | String | Unique identifier of the component.
-| rendered | true | Boolean | Boolean value to specify the rendering of the component.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
-| value | null | Object | Value of the component than can be either an EL expression of a literal text.
-| converter | null | Object | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id.
-| immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
-| required | false | Boolean | Marks component as required.
-| validator | null | Method Expr | A method expression that refers to a method validationg the input.
-| valueChangeListener | null | Method Expr | A method expression that refers to a method for handling a valuchangeevent.
-| requiredMessage | null | String | Message to be displayed when required field validation fails.
-| converterMessage | null | String | Message to be displayed when conversion fails.
-| validatorMessage | null | String | Message to be displayed when validation fails.
-| widgetVar | null | String | Name of the client side widget.
-| completeMethod | null | Method Expr | Method providing suggestions.
-| var | null | String | Name of the iterator used in pojo based suggestion.
-| itemLabel | null | String | Label of the item.
-| itemValue | null | String | Value of the item.
-| maxResults | unlimited | Integer | Maximum number of results to be displayed.
-| minQueryLength | 1 | Integer | Number of characters to be typed before starting to query.
-| queryDelay | 300 | Integer | Delay to wait in milliseconds before sending each query to the server.
-| forceSelection | false | Boolean | When enabled, autoComplete only accepts input from the selection list.
-| scrollHeight | null | Integer | Defines the height of the items viewport.
-| effect | null | String | Effect to use when showing/hiding suggestions.
-| effectDuration | 400 | Integer | Duration of effect in milliseconds.
-| dropdown | false | Boolean | Enables dropdown mode when set true.
-| panelStyle | null | String | Inline style of the items container element.
-| panelStyleClass | null | String | Style class of the items container element.
-| multiple | false | Boolean | When true, enables multiple selection.
 | accesskey | null | String | Access key that when pressed transfers focus to the input element.
+| active | true | Boolean | Defines if autocomplete functionality is enabled.
 | alt | null | String | Alternate textual description of the input field.
+| at | left bottom | String | Position of input with respect to panel.
 | autocomplete | null | String | Controls browser autocomplete behavior.
+| autoHighlight | true | Boolean | Highlights the first suggested item automatically.
+| autoSelection | true | Boolean | Defines if auto selection of items that are equal to the typed input is enabled. If true, an item that is equal to the typed input is selected.
+| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
+| completeEndpoint | null | String | REST-endpoint for fetching autocomplete-suggestions. (instead of completeMethod) Can´t be combined with dynamic=true, queryMode!=server, cache=true. 
+| completeMethod | null | Method Expr | Method providing suggestions.
+| converter | null | Object | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id.
+| converterMessage | null | String | Message to be displayed when conversion fails.
 | dir | null | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
 | disabled | false | Boolean | Disables input field
+| dropdown | false | Boolean | Enables dropdown mode when set true.
+| dropdownTabindex | null | String | Position of the dropdown button in the tabbing order.
+| dynamic | false | Boolean | Defines if dynamic loading is enabled for the element's panel. If the value is "true", the overlay is not rendered on page load to improve performance.
+| effect | null | String | Effect to use when showing/hiding suggestions.
+| effectDuration | 400 | Integer | Duration of effect in milliseconds.
+| escape | true | Boolean | Defines if autocomplete results are escaped or not.
+| forceSelection | false | Boolean | When enabled, autoComplete only accepts input from the selection list.
+| groupByTooltip | null | String | Tooltip to display on group headers.
+| immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
 | inputmode | null | String | Hint at the type of data this control has for touch devices to display appropriate virtual keyboard.
+| inputStyle | null | String | Inline style of the input element.
+| inputStyleClass | null | String | Style class of the input element.
+| itemLabel | null | String | Label of the item.
+| itemValue | null | String | Value of the item.
 | label | null | String | A localized user presentable name.
 | lang | null | String | Code describing the language used in the generated markup for this component.
 | maxlength | null | Integer | Maximum number of characters that may be entered in this field.
+| maxResults | unlimited | Integer | Maximum number of results to be displayed.
+| minQueryLength | 1 | Integer | Number of characters to be typed before starting to query.
+| moreText | ... | String | The text shown in panel when the suggested list is greater than maxResults.
+| multiple | false | Boolean | When true, enables multiple selection.
+| my | left top | String | Position of panel with respect to input.
 | onblur | null | String | Client side callback to execute when input element loses focus.
 | onchange | null | String | Client side callback to execute when input element loses focus and its value has been modified since gaining focus.
-| oninput | null | String | Client side callback to execute when an element gets user input.
 | onclick | null | String | Client side callback to execute when input element is clicked.
+| oncontextmenu | null | String | Client side callback to execute when a context menu is triggered.
+| oncopy | null | String | Client side callback to execute when the user cuts the content of an element.
+| oncut | null | String | Client side callback to execute when the user copies the content of an element.
 | ondblclick | null | String | Client side callback to execute when input element is double clicked.
+| ondrag | null | String | Client side callback to execute when an element is dragged.
+| ondragend | null | String | Client side callback to execute at the end of a drag operation.
+| ondragenter | null | String | Client side callback to execute when an element has been dragged to a valid drop target.
+| ondragleave | null | String | Client side callback to execute when an element leaves a valid drop target.
+| ondragover | null | String | Client side callback to execute when an element is being dragged over a valid drop target.
+| ondragstart | null | String | Client side callback to execute at the start of a drag operation.
+| ondrop | null | String | Client side callback to execute when dragged element is being dropped.
 | onfocus | null | String | Client side callback to execute on input element focus.
+| oninput | null | String | Client side callback to execute when an element gets user input.
+| oninvalid | null | String | Client side callback to execute when an element is invalid.
 | onkeydown | null | String | Client side callback to execute when a key is pressed down over input element.
 | onkeypress | null | String | Client side callback to execute when a key is pressed and released over input element.
 | onkeyup | null | String | Client side callback to execute when a key is released over input element.
@@ -70,41 +81,30 @@ AutoComplete provides live suggestions while an input is being typed.
 | onmouseout | null | String | Client side callback to execute when a pointer button is moved away from input element.
 | onmouseover | null | String | Client side callback to execute when a pointer button is moved onto input element.
 | onmouseup | null | String | Client side callback to execute when a pointer button is released over input element.
-| onwheel | null | String | Client side callback to execute when the mouse wheel rolls up or down over an element.
-| onselect | null | String | Client side callback to execute when text within input element is selected by user.
-| oncut | null | String | Client side callback to execute when the user copies the content of an element.
-| oncopy | null | String | Client side callback to execute when the user cuts the content of an element.
 | onpaste | null | String | Client side callback to execute when the user pastes some content in an element.
-| oncontextmenu | null | String | Client side callback to execute when a context menu is triggered.
-| oninvalid | null | String | Client side callback to execute when an element is invalid.
 | onreset | null | String | Client side callback to execute when the Reset button in a form is clicked.
-| onsearch | null | String | Client side callback to execute when the user writes something in a search field.
-| ondrag | null | String | Client side callback to execute when an element is dragged.
-| ondragend | null | String | Client side callback to execute at the end of a drag operation.
-| ondragenter | null | String | Client side callback to execute when an element has been dragged to a valid drop target.
-| ondragleave | null | String | Client side callback to execute when an element leaves a valid drop target.
-| ondragover | null | String | Client side callback to execute when an element is being dragged over a valid drop target.
-| ondragstart | null | String | Client side callback to execute at the start of a drag operation.
-| ondrop | null | String | Client side callback to execute when dragged element is being dropped.
 | onscroll | null | String | Client side callback to execute when an element's scrollbar is being scrolled.e input value.
-| autoHighlight | true | Boolean | Highlights the first suggested item automatically.
-| selectLimit | null | Integer | Limits the multiple selection. Default is unlimited.
-| inputStyle | null | String | Inline style of the input element.
-| inputStyleClass | null | String | Style class of the input element.
-| groupByTooltip | null | String | Tooltip to display on group headers.
-| my | left top | String | Position of panel with respect to input.
-| at | left bottom | String | Position of input with respect to panel.
-| active | true | Boolean | Defines if autocomplete functionality is enabled.
-| type | text | String | Input field type.
-| moreText | ... | String | The text shown in panel when the suggested list is greater than maxResults.
-| unique | false | Boolean | Ensures uniqueness of selected items.
-| dynamic | false | Boolean | Defines if dynamic loading is enabled for the element's panel. If the value is "true", the overlay is not rendered on page load to improve performance.
-| autoSelection | true | Boolean | Defines if auto selection of items that are equal to the typed input is enabled. If true, an item that is equal to the typed input is selected.
-| escape | true | Boolean | Defines if autocomplete results are escaped or not.
+| onsearch | null | String | Client side callback to execute when the user writes something in a search field.
+| onselect | null | String | Client side callback to execute when text within input element is selected by user.
+| onwheel | null | String | Client side callback to execute when the mouse wheel rolls up or down over an element.
+| panelStyle | null | String | Inline style of the items container element.
+| panelStyleClass | null | String | Style class of the items container element.
+| queryDelay | 300 | Integer | Delay to wait in milliseconds before sending each query to the server.
 | queryMode | server | String | Specifies query mode, valid values are "server" (default), "client" and "hybrid". [more](https://github.com/primefaces/primefaces/issues/5298)
+| rendered | true | Boolean | Boolean value to specify the rendering of the component.
+| required | false | Boolean | Marks component as required.
+| requiredMessage | null | String | Message to be displayed when required field validation fails.
+| scrollHeight | null | Integer | Defines the height of the items viewport.
+| selectLimit | null | Integer | Limits the multiple selection. Default is unlimited.
 | tabindex | null | String | Position of the input field in the tabbing order.
-| dropdownTabindex | null | String | Position of the dropdown button in the tabbing order.
-| completeEndpoint | null | String | REST-endpoint for fetching autocomplete-suggestions. (instead of completeMethod) Can´t be combined with dynamic=true, queryMode!=server, cache=true. 
+| type | text | String | Input field type.
+| unique | false | Boolean | Ensures uniqueness of selected items.
+| validator | null | Method Expr | A method expression that refers to a method validationg the input.
+| validatorMessage | null | String | Message to be displayed when validation fails.
+| value | null | Object | Value of the component than can be either an EL expression of a literal text.
+| valueChangeListener | null | Method Expr | A method expression that refers to a method for handling a valuchangeevent.
+| var | null | String | Name of the iterator used in pojo based suggestion.
+| widgetVar | null | String | Name of the client side widget.
 
 ## Getting Started with AutoComplete
 AutoComplete is an input component so it requires a value as usual. Suggestions are loaded by
