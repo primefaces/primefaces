@@ -323,6 +323,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      */
     bindItemEvents: function() {
         var $this = this;
+        if(!this.items) {
+            return;
+        }
 
         //Items
         this.items.filter(':not(.ui-state-disabled)').on('mouseover.selectonemenu', function() {
@@ -375,7 +378,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     unbindEvents: function() {
-        this.items.off();
+        if (this.items) {
+            this.items.off();
+        }
         this.triggers.off();
         this.input.off();
         this.focusInput.off();
