@@ -47,7 +47,6 @@ public class TimelineModel<E, G> implements Serializable {
         events = new ArrayList<>();
     }
 
-    @SuppressWarnings("OverridableMethodCallInConstructor")
     public TimelineModel(List<TimelineEvent<E>> events) {
         this.events = new ArrayList<>();
 
@@ -152,14 +151,9 @@ public class TimelineModel<E, G> implements Serializable {
      * @param timelineUpdater TimelineUpdater instance to update the event in UI
      */
     public void update(TimelineEvent<E> event, TimelineUpdater timelineUpdater) {
-        int index = getIndex(event);
-        if (index >= 0) {
-            events.set(index, event);
-
-            if (timelineUpdater != null) {
-                // update UI
-                timelineUpdater.update(event);
-            }
+        if (timelineUpdater != null) {
+            // update UI
+            timelineUpdater.update(event);
         }
     }
 
@@ -444,32 +438,6 @@ public class TimelineModel<E, G> implements Serializable {
      */
     public boolean hasEvent(TimelineEvent<E> event) {
         return events.contains(event);
-    }
-
-    /**
-     * Gets index of the given timeline event
-     *
-     * @param event given event
-     * @return int positive index or -1 if the given event is not available in the timeline
-     * @deprecated The index property is no longer necessary with the addition of {@link TimelineEvent#getId()} property.
-     * This method could be changed to private in next releases.
-     * See <a href='https://github.com/primefaces/primefaces/issues/5143'>issue 5143</a> for more information.
-     */
-    @Deprecated
-    public int getIndex(TimelineEvent<E> event) {
-        int index = -1;
-
-        if (event != null) {
-            for (int i = 0; i < events.size(); i++) {
-                if (events.get(i).equals(event)) {
-                    index = i;
-
-                    break;
-                }
-            }
-        }
-
-        return index;
     }
 
     private boolean isOverlapping(TimelineEvent<E> event1, TimelineEvent<E> event2) {
