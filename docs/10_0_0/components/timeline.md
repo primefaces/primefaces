@@ -38,7 +38,6 @@ horizontalScroll | false | Boolean | Specifies the horizontal scrollable.
 verticalScroll | false | Boolean | Specifies the vertical scrollable.
 width | 100% | String | The width of the timeline in pixels or as a percentage.
 responsive | true | Boolean | Check if the timeline container is resized, and if so, resize the timeline. Useful when the webpage (browser window) or a layout pane / unit containing the timeline component is resized.
-~axisOnTop~ | false | Boolean | (Deprecated, use orientationAxis instead.) If false, the horizontal axis is drawn at the bottom. If true, the axis is drawn on top.
 orientationAxis | bottom | String | Orientation of the timeline axis: 'top', 'bottom' (default), 'both', or 'none'. If orientation is 'bottom', the time axis is drawn at the bottom. When 'top', the axis is drawn on top. When 'both', two axes are drawn, both on top and at the bottom. In case of 'none', no axis is drawn at all.
 orientationItem | bottom | String | Orientation of the timeline items: 'top' or 'bottom' (default). Determines whether items are aligned to the top or bottom of the Timeline.
 editable | false | Boolean | If true, the items in the timeline can be manipulated. Only applicable when option selectable is true.
@@ -62,11 +61,9 @@ eventMarginAxis | 10 | Integer | The minimal margin in pixels between events and
 eventHorizontalMargin | 10 | Integer | The minimal horizontal margin in pixels between items. Takes precedence over eventMargin property.
 eventVerticalMargin | 10 | Integer | The minimal vertical margin in pixels between items. Takes precedence over eventMargin property.
 eventStyle | null | String | Specifies the default type for the timeline items. Choose from 'box', 'point' and 'range'. If undefined, the Timeline will auto detect the type from the items data: if a start and end date is available, a 'range' will be created, and else, a 'box' is created.
-~groupsChangeable~ | true | Boolean | (Deprecated, use editableGroup property instead.) If true, items can be moved from one group to another. Only applicable when groups are used.
 groupsOrder | true | Boolean | Allows to customize the way groups are ordered. When true (default), groups will be ordered by content alphabetically (when the list of groups is missing) or by native ordering of TimelineGroup object in the list of groups (when the list of groups is available). When false, groups will not be ordered at all.
 groupStyle | null | String | A css text string to apply custom styling for an individual group label, for example "color: red; background-color: pink;".
 snap | function | String | When moving items on the Timeline, they will be snapped to nice dates like full hours or days, depending on the current scale. The snap function can be replaced with a custom javascript function, or can be set to null to disable snapping. The signature of the snap function is:<br><br> ````function snap(date: Date, scale: string, step: number) : Date or number````<br><br>The parameter scale can be can be 'millisecond', 'second', 'minute', 'hour', 'weekday, 'week', 'day, 'month, or 'year'. The parameter step is a number like 1, 2, 4, 5.
-~snapEvents~ | true | Boolean | (Deprecated, use snap property instead) If true, the start and end of an event will be snapped nice integer values when moving or resizing the event. Default is true.
 stackEvents | true | Boolean | If true, the start and end of an event will be snapped nice integer values when moving or resizing the event.
 showCurrentTime | true | Boolean | If true, the timeline shows a red, vertical line displaying the current time.
 showMajorLabels | true | Boolean | By default, the timeline shows both minor and major date labels on the horizontal axis. For example the minor labels show minutes and the major labels show hours. When "showMajorLabels" is false, no major labels are shown.
