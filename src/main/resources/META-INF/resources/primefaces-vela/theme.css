@@ -3832,6 +3832,66 @@ body .ui-colorpicker .ui-button {
   border-radius: 4px; }
 body .ui-fluid .ui-colorpicker .ui-button {
   width: auto; }
+body .ui-cascadeselect {
+  background: #17212f;
+  border: 1px solid #304562;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  border-radius: 4px; }
+  body .ui-cascadeselect:not(.ui-state-disabled):hover {
+    border-color: #90CAF9; }
+  body .ui-cascadeselect:not(.ui-state-disabled).p-focus {
+    border-color: #90CAF9;
+    outline: 0 none;
+    box-shadow: 0 0 0 1px #b1dafb; }
+  body .ui-cascadeselect .ui-cascadeselect-label {
+    background: transparent;
+    border: 0 none;
+    padding: 0.5rem 0.5rem; }
+    body .ui-cascadeselect .ui-cascadeselect-label.ui-placeholder {
+      color: rgba(255, 255, 255, 0.6); }
+    body .ui-cascadeselect .ui-cascadeselect-label:enabled:focus {
+      outline: 0 none;
+      box-shadow: none; }
+  body .ui-cascadeselect .ui-cascadeselect-trigger {
+    background: transparent;
+    color: rgba(255, 255, 255, 0.6);
+    width: 2.357rem;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px; }
+body .ui-cascadeselect-panel {
+  background: #1f2d40;
+  border: 1px solid #304562;
+  border-radius: 4px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.16); }
+  body .ui-cascadeselect-panel .ui-cascadeselect-items {
+    padding: 0.5rem 0; }
+    body .ui-cascadeselect-panel .ui-cascadeselect-items .ui-cascadeselect-item {
+      margin: 0;
+      border: 0 none;
+      color: rgba(255, 255, 255, 0.87);
+      background: transparent;
+      transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+      border-radius: 0; }
+      body .ui-cascadeselect-panel .ui-cascadeselect-items .ui-cascadeselect-item .ui-cascadeselect-item-content {
+        padding: 0.5rem 1rem; }
+        body .ui-cascadeselect-panel .ui-cascadeselect-items .ui-cascadeselect-item .ui-cascadeselect-item-content:focus {
+          outline: 0 none;
+          outline-offset: 0;
+          box-shadow: 0 0 0 1px #b1dafb; }
+      body .ui-cascadeselect-panel .ui-cascadeselect-items .ui-cascadeselect-item.ui-state-highlight {
+        color: rgba(255, 255, 255, 0.87);
+        background: rgba(100, 181, 246, 0.16); }
+      body .ui-cascadeselect-panel .ui-cascadeselect-items .ui-cascadeselect-item:not(.ui-state-highlight):not(.ui-state-disabled):hover {
+        color: rgba(255, 255, 255, 0.87);
+        background: rgba(255, 255, 255, 0.03); }
+      body .ui-cascadeselect-panel .ui-cascadeselect-items .ui-cascadeselect-item .ui-cascadeselect-group-icon {
+        font-size: 1rem; }
+body .ui-input-filled .ui-cascadeselect {
+  background: #304562; }
+  body .ui-input-filled .ui-cascadeselect:not(.ui-state-disabled):hover {
+    background-color: #304562; }
+  body .ui-input-filled .ui-cascadeselect:not(.ui-state-disabled).p-focus {
+    background-color: #304562; }
 
 body .ui-panel {
   padding: 0; }
@@ -6025,5 +6085,37 @@ body .ui-sidebar {
         content: ""; }
   body .ui-sidebar.ui-sidebar-active {
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.16); }
+body .ui-confirm-popup {
+  background: #1f2d40;
+  color: rgba(255, 255, 255, 0.87);
+  border: 1px solid #304562;
+  border-radius: 4px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.16); }
+  body .ui-confirm-popup .ui-confirm-popup-content {
+    padding: 1rem; }
+  body .ui-confirm-popup .ui-confirm-popup-footer {
+    text-align: right;
+    padding: 0 1rem 1rem 1rem; }
+    body .ui-confirm-popup .ui-confirm-popup-footer button {
+      margin: 0 0.5rem 0 0;
+      width: auto; }
+      body .ui-confirm-popup .ui-confirm-popup-footer button:last-child {
+        margin: 0; }
+  body .ui-confirm-popup:after {
+    border-style: solid;
+    border-color: rgba(31, 45, 64, 0);
+    border-bottom-color: #1f2d40; }
+  body .ui-confirm-popup:before {
+    border-style: solid;
+    border-color: rgba(48, 69, 98, 0);
+    border-bottom-color: #304562; }
+  body .ui-confirm-popup.ui-confirm-popup-flipped:after {
+    border-top-color: #1f2d40; }
+  body .ui-confirm-popup.ui-confirm-popup-flipped:before {
+    border-top-color: #304562; }
+  body .ui-confirm-popup .ui-confirm-popup-icon {
+    font-size: 1.5rem; }
+  body .ui-confirm-popup .ui-confirm-popup-message {
+    margin-left: 1rem; }
 
 /* Add your customizations of theme here */
