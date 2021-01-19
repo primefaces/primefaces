@@ -104,7 +104,6 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
         extender
     }
 
-    @SuppressWarnings("OverridableMethodCallInConstructor")
     public TimelineBase() {
         setRendererType(DEFAULT_RENDERER);
     }
@@ -245,17 +244,6 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
 
     public void setResponsive(boolean responsive) {
         getStateHelper().put(PropertyKeys.responsive, responsive);
-    }
-
-    @Deprecated
-    public boolean isAxisOnTop() {
-        String orientationAxis = getOrientationAxis();
-        return "top".equals(orientationAxis);
-    }
-
-    @Deprecated
-    public void setAxisOnTop(boolean axisOnTop) {
-        setOrientationAxis(axisOnTop ? "top" : "bottom");
     }
 
     public String getOrientationAxis() {
@@ -450,16 +438,6 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
         getStateHelper().put(PropertyKeys.eventStyle, eventStyle);
     }
 
-    @Deprecated
-    public boolean isGroupsChangeable() {
-        return isEditableGroup();
-    }
-
-    @Deprecated
-    public void setGroupsChangeable(boolean groupsChangeable) {
-        setEditableGroup(groupsChangeable);
-    }
-
     public boolean isGroupsOrder() {
         return (Boolean) getStateHelper().eval(PropertyKeys.groupsOrder, true);
     }
@@ -482,16 +460,6 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
 
     public String setSnap(String snap) {
         return (String) getStateHelper().put(PropertyKeys.snap, snap);
-    }
-
-    @Deprecated
-    public boolean isSnapEvents() {
-        return getSnap() == null;
-    }
-
-    @Deprecated
-    public void setSnapEvents(boolean snapEvents) {
-        setSnap(snapEvents ? null : "null");
     }
 
     public boolean isStackEvents() {
@@ -524,16 +492,6 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
 
     public void setShowMinorLabels(boolean showMinorLabels) {
         getStateHelper().put(PropertyKeys.showMinorLabels, showMinorLabels);
-    }
-
-    @Deprecated
-    public boolean isTimeChangeable() {
-        return isEditableTime();
-    }
-
-    @Deprecated
-    public void setTimeChangeable(boolean timeChangeable) {
-        setEditableTime(timeChangeable);
     }
 
     public boolean isClickToUse() {

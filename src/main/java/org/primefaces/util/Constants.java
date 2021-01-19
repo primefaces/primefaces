@@ -117,18 +117,6 @@ public class Constants {
 
     public static final String HELPER_RENDERER = "org.primefaces.HELPER_RENDERER";
 
-    /**
-     * @deprecated Use MULTI_VIEW_STATES instead
-     */
-    @Deprecated
-    public static final String TABLE_STATE = "primefaces.TABLE_STATE";
-
-    /**
-     * @deprecated Use MULTI_VIEW_STATES instead
-     */
-    @Deprecated
-    public static final String DATALIST_STATE = "primefaces.DATALIST_STATE";
-
     public static final String MULTI_VIEW_STATES = "primefaces.MULTI_VIEW_STATES";
 
     private Constants() {

@@ -377,23 +377,10 @@ public class CalendarUtils {
         }
     }
 
-    /**
-     * @deprecated  use {@link #calculateZoneId(Object)} instead.
-     * @param usertimeZone
-     * @return
-     */
-    @Deprecated
     public static TimeZone calculateTimeZone(Object usertimeZone) {
         return calculateTimeZone(usertimeZone, TimeZone.getDefault());
     }
 
-    /**
-     * @deprecated  use {@link #calculateZoneId(Object, ZoneId)} instead.
-     * @param usertimeZone
-     * @param defaultTimeZone
-     * @return
-     */
-    @Deprecated
     public static TimeZone calculateTimeZone(Object usertimeZone, TimeZone defaultTimeZone) {
         if (usertimeZone != null) {
             if (usertimeZone instanceof String) {

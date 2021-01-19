@@ -85,23 +85,9 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
     }
 
     @Override
-    @Deprecated
-    public void delete(int index) {
-        checkCrudOperationDataList();
-        crudOperationDatas.add(new CrudOperationData(CrudOperation.DELETE, index));
-    }
-
-    @Override
     public void delete(String id) {
         checkCrudOperationDataList();
         crudOperationDatas.add(new CrudOperationData(CrudOperation.DELETE, id));
-    }
-
-    @Override
-    @Deprecated
-    public void select(int index) {
-        checkCrudOperationDataList();
-        crudOperationDatas.add(new CrudOperationData(CrudOperation.SELECT, index));
     }
 
     @Override
@@ -226,7 +212,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
                         sb.append(";PF('");
                         sb.append(widgetVar);
                         sb.append("').deleteEvent(\"");
-                        sb.append(EscapeUtils.forJavaScript(crudOperationData.calculateId(model)));
+                        sb.append(EscapeUtils.forJavaScript(crudOperationData.calculateId()));
                         sb.append("\")");
                         renderComponent = true;
                         break;
@@ -236,7 +222,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
                         sb.append(";PF('");
                         sb.append(widgetVar);
                         sb.append("').setSelection(\"");
-                        sb.append(EscapeUtils.forJavaScript(crudOperationData.calculateId(model)));
+                        sb.append(EscapeUtils.forJavaScript(crudOperationData.calculateId()));
                         sb.append("\")");
                         break;
 
@@ -302,38 +288,30 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
         return widgetVar != null ? widgetVar.hashCode() : 0;
     }
 
-    class CrudOperationData implements Serializable {
+    static class CrudOperationData implements Serializable {
 
         private static final long serialVersionUID = 1L;
 
         private final CrudOperation crudOperation;
         private final TimelineEvent<?> event;
-        @Deprecated
-        private final int index;
         private final String id;
 
         CrudOperationData(CrudOperation crudOperation) {
-            this(crudOperation, null, null, -1);
-        }
-
-        @Deprecated
-        CrudOperationData(CrudOperation crudOperation, int index) {
-            this(crudOperation, null, null, index);
+            this(crudOperation, null, null);
         }
 
         CrudOperationData(CrudOperation crudOperation, TimelineEvent<?> event) {
-            this(crudOperation, event, null, -1);
+            this(crudOperation, event, event.getId());
         }
 
         CrudOperationData(CrudOperation crudOperation, String id) {
-            this(crudOperation, null, id, -1);
+            this(crudOperation, null, id);
         }
 
-        private CrudOperationData(CrudOperation crudOperation, TimelineEvent<?> event, String id, int index) {
+        private CrudOperationData(CrudOperation crudOperation, TimelineEvent<?> event, String id) {
             this.crudOperation = crudOperation;
             this.event = event;
             this.id = id;
-            this.index = index;
         }
 
         CrudOperation getCrudOperation() {
@@ -344,16 +322,8 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
             return event;
         }
 
-        String calculateId(TimelineModel<?, ?> model) {
-            if (id != null) {
-                return id;
-            }
-            @SuppressWarnings("deprecation")
-            TimelineEvent<?> timelineEvent = model.getEvent(index);
-            if (timelineEvent != null) {
-                return timelineEvent.getId();
-            }
-            return null;
+        String calculateId() {
+            return id;
         }
     }
 }

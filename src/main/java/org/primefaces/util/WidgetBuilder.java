@@ -96,11 +96,6 @@ public class WidgetBuilder {
         return this;
     }
 
-    @Deprecated
-    public WidgetBuilder initWithDomReady(String widgetClass, String widgetVar, String id) throws IOException {
-        return init(widgetClass, widgetVar, id);
-    }
-
     public <T extends UIComponent & Widget> WidgetBuilder initWithWindowLoad(String widgetClass, T widget)
             throws IOException {
 
