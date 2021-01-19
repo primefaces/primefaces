@@ -32,6 +32,10 @@ public class CardBase extends UIComponentBase {
     public static final String DEFAULT_RENDERER = "org.primefaces.component.CardRenderer";
 
     public enum PropertyKeys {
+        header,
+        title,
+        subtitle,
+        footer,
         style,
         styleClass
     }
@@ -59,5 +63,37 @@ public class CardBase extends UIComponentBase {
 
     public void setStyleClass(String styleClass) {
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+    public String getHeader() {
+        return (String) getStateHelper().eval(PropertyKeys.header, null);
+    }
+
+    public void setHeader(String header) {
+        getStateHelper().put(PropertyKeys.header, header);
+    }
+
+    public String getTitle() {
+        return (String) getStateHelper().eval(PropertyKeys.title, null);
+    }
+
+    public void setTitle(String title) {
+        getStateHelper().put(PropertyKeys.title, title);
+    }
+
+    public String getSubtitle() {
+        return (String) getStateHelper().eval(PropertyKeys.subtitle, null);
+    }
+
+    public void setSubtitle(String subtitle) {
+        getStateHelper().put(PropertyKeys.subtitle, subtitle);
+    }
+
+    public String getFooter() {
+        return (String) getStateHelper().eval(PropertyKeys.footer, null);
+    }
+
+    public void setFooter(String footer) {
+        getStateHelper().put(PropertyKeys.footer, footer);
     }
 }

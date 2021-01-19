@@ -25,6 +25,7 @@ package org.primefaces.component.card;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LangUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -55,7 +56,14 @@ public class CardRenderer extends CoreRenderer {
         }
 
         //header
-        if (ComponentUtils.shouldRenderFacet(headerFacet)) {
+        String header = card.getHeader();
+        if (LangUtils.isNotBlank(header)) {
+            writer.startElement("div", card);
+            writer.writeAttribute("class", Card.HEADER_CLASS, null);
+            writer.writeText(header, null);
+            writer.endElement("div");
+        }
+        else if (ComponentUtils.shouldRenderFacet(headerFacet)) {
             writer.startElement("div", card);
             writer.writeAttribute("class", Card.HEADER_CLASS, null);
             headerFacet.encodeAll(context);
@@ -67,7 +75,14 @@ public class CardRenderer extends CoreRenderer {
         writer.writeAttribute("class", Card.BODY_CLASS, null);
 
         //title
-        if (ComponentUtils.shouldRenderFacet(titleFacet)) {
+        String title = card.getTitle();
+        if (LangUtils.isNotBlank(title)) {
+            writer.startElement("div", card);
+            writer.writeAttribute("class", Card.TITLE_CLASS, null);
+            writer.writeText(title, null);
+            writer.endElement("div");
+        }
+        else if (ComponentUtils.shouldRenderFacet(titleFacet)) {
             writer.startElement("div", card);
             writer.writeAttribute("class", Card.TITLE_CLASS, null);
             titleFacet.encodeAll(context);
@@ -75,7 +90,14 @@ public class CardRenderer extends CoreRenderer {
         }
 
         //subtitle
-        if (ComponentUtils.shouldRenderFacet(subtitleFacet)) {
+        String subtitle = card.getSubtitle();
+        if (LangUtils.isNotBlank(title)) {
+            writer.startElement("div", card);
+            writer.writeAttribute("class", Card.SUBTITLE_CLASS, null);
+            writer.writeText(subtitle, null);
+            writer.endElement("div");
+        }
+        else if (ComponentUtils.shouldRenderFacet(subtitleFacet)) {
             writer.startElement("div", card);
             writer.writeAttribute("class", Card.SUBTITLE_CLASS, null);
             subtitleFacet.encodeAll(context);
@@ -89,7 +111,14 @@ public class CardRenderer extends CoreRenderer {
         writer.endElement("div");
 
         //footer
-        if (ComponentUtils.shouldRenderFacet(footerFacet)) {
+        String footer = card.getSubtitle();
+        if (LangUtils.isNotBlank(footer)) {
+            writer.startElement("div", card);
+            writer.writeAttribute("class", Card.FOOTER_CLASS, null);
+            writer.writeText(footer, null);
+            writer.endElement("div");
+        }
+        else if (ComponentUtils.shouldRenderFacet(footerFacet)) {
             writer.startElement("div", card);
             writer.writeAttribute("class", Card.FOOTER_CLASS, null);
             footerFacet.encodeAll(context);
