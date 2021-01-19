@@ -77,6 +77,9 @@ public class WidgetBuilder {
                 .renderLifecycleCallbacks(widget);
     }
 
+    /**
+     * Use {@link WidgetBuilder#init(String, UIComponent)} instead
+     */
     @Deprecated
     public WidgetBuilder init(String widgetClass, String widgetVar, String id) throws IOException {
         this.renderScriptBlock(id);
