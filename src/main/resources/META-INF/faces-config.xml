@@ -347,6 +347,11 @@
     </component>
 
     <component>
+        <component-type>org.primefaces.component.ConfirmPopup</component-type>
+        <component-class>org.primefaces.component.confirmpopup.ConfirmPopup</component-class>
+    </component>
+
+    <component>
         <component-type>org.primefaces.component.ContentFlow</component-type>
         <component-class>org.primefaces.component.contentflow.ContentFlow</component-class>
     </component>
@@ -1221,6 +1226,11 @@
             <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.ConfirmDialogRenderer</renderer-type>
             <renderer-class>org.primefaces.component.confirmdialog.ConfirmDialogRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ConfirmPopupRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.confirmpopup.ConfirmPopupRenderer</renderer-class>
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>

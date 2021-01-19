@@ -931,12 +931,16 @@
         },
 
         /**
-    	 * Deprecated, use `PrimeFaces.dialog.DialogHandler.confirm` instead.
-         * @deprecated
-         * @param {string} msg Message to show with the confirm dialog.
+         * Displays dialog or popup according to the type of confirm component.
+         * @param {string} msg Message to show with the confirm dialog or popup.
          */
         confirm: function(msg) {
-        	PrimeFaces.dialog.DialogHandler.confirm(msg);
+            if (msg.type === 'popup' && PrimeFaces.confirmPopup) {
+                PrimeFaces.confirmPopup.showMessage(msg);
+            }
+            else {
+                PrimeFaces.dialog.DialogHandler.confirm(msg);
+            }
         },
 
         /**
