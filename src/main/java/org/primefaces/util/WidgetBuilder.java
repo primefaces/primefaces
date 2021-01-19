@@ -77,6 +77,7 @@ public class WidgetBuilder {
                 .renderLifecycleCallbacks(widget);
     }
 
+    @Deprecated
     public WidgetBuilder init(String widgetClass, String widgetVar, String id) throws IOException {
         this.renderScriptBlock(id);
 
