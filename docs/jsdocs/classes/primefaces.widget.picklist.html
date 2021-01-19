@@ -192,6 +192,8 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="primefaces.widget.picklist.html#movedown" class="tsd-kind-icon">move<wbr>Down</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="primefaces.widget.picklist.html#movetop" class="tsd-kind-icon">move<wbr>Top</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="primefaces.widget.picklist.html#moveup" class="tsd-kind-icon">move<wbr>Up</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.picklist.html#refiltersource" class="tsd-kind-icon">refilter<wbr>Source</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="primefaces.widget.picklist.html#refiltertarget" class="tsd-kind-icon">refilter<wbr>Target</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="primefaces.widget.picklist.html#refresh" class="tsd-kind-icon">refresh</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="primefaces.widget.picklist.html#remove" class="tsd-kind-icon">remove</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="primefaces.widget.picklist.html#removeall" class="tsd-kind-icon">remove<wbr>All</a></li>
@@ -1127,7 +1129,7 @@
 					<a name="filter" class="tsd-anchor"></a>
 					<h3>filter</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">filter<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, list<span class="tsd-signature-symbol">: </span><a href="../modules/jquery.html" class="tsd-signature-type">JQuery</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">filter<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, list<span class="tsd-signature-symbol">: </span><a href="../modules/jquery.html" class="tsd-signature-type">JQuery</a>, animate<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -1150,6 +1152,12 @@
 									<h5>list: <a href="../modules/jquery.html" class="tsd-signature-type">JQuery</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>The source or target list that is to be filtered.</p>
+									</div>
+								</li>
+								<li>
+									<h5>animate: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>If it should be animated.</p>
 									</div>
 								</li>
 							</ul>
@@ -1688,6 +1696,44 @@
 									</div>
 								</li>
 							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="refiltersource" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> refilter<wbr>Source</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">refilter<wbr>Source<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Re-Filter the current source list.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="refiltertarget" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> refilter<wbr>Target</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">refilter<wbr>Target<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Re-Filter the current target list.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -2390,6 +2436,12 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="primefaces.widget.picklist.html#moveup" class="tsd-kind-icon">move<wbr>Up</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="primefaces.widget.picklist.html#refiltersource" class="tsd-kind-icon">refilter<wbr>Source</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="primefaces.widget.picklist.html#refiltertarget" class="tsd-kind-icon">refilter<wbr>Target</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="primefaces.widget.picklist.html#refresh" class="tsd-kind-icon">refresh</a>

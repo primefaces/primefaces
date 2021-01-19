@@ -4741,6 +4741,147 @@ declare namespace PrimeFaces.widget {
         trigger: string;
     }
 }
+declare namespace PrimeFaces.widget.ConfirmPopup {
+    /**
+     * Callback invoked after the popup is hidden.
+     */
+    export type HideCallback = (this: Window) => void;
+}
+declare namespace PrimeFaces.widget {
+    /**
+     * __PrimeFaces ConfirmPopup Widget__
+     *
+     * ConfirmPopup displays a confirmation overlay displayed relatively to its target.
+     *
+     * @typeparam TCfg Defaults to `ConfirmPopupCfg`. Type of the configuration object for this widget.
+     */
+    export class ConfirmPopup<TCfg extends ConfirmPopupCfg = ConfirmPopupCfg> extends PrimeFaces.widget.DynamicOverlayWidget<TCfg> {
+        /**
+         * The DOM element for the content of the confirm popup.
+         */
+        content: JQuery;
+        /**
+         * The DOM element for the message icon.
+         */
+        icon: JQuery;
+        /**
+         * DOM element of the confirmation message displayed in this confirm popup.
+         */
+        message: JQuery;
+        /**
+         * Aligns the popup so that it is shown at the correct position.
+         *
+         * @param target Jquery selector that is the target of this popup
+         */
+        private align(target?: JQuery): void;
+        /**
+         * Applies focus to the first focusable element of the content in the popup.
+         */
+        applyFocus(): void;
+        /**
+         * Sets up all event listeners required by this widget.
+         */
+        protected bindEvents(): void;
+        /**
+         * Hides the popup.
+         *
+         * @param callback Callback that is invoked after this popup was closed.
+         */
+        hide(callback: PrimeFaces.widget.ConfirmPopup.HideCallback): void;
+        /**
+         * A widget class should not have an explicit constructor. Instead, this initialize method is called after the
+         * widget was created. You can use this method to perform any initialization that is required. For widgets that
+         * need to create custom HTML on the client-side this is also the place where you should call your render
+         * method.
+         *
+         * Please make sure to call the super method first before adding your own custom logic to the init method:
+         *
+         * ```javascript
+         * PrimeFaces.widget.MyWidget = PrimeFaces.widget.BaseWidget.extend({
+         *   init: function(cfg) {
+         *     this._super(cfg);
+         *     // custom initialization
+         *   }
+         * });
+         * ```
+         *
+         * @override
+         * @param cfg The widget configuration to be used for this widget instance.
+         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * component.
+         */
+        init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+        /**
+         * Checks whether this popup is opened and visible.
+         *
+         * @return `true` if this popup is currently being shown, `false` otherwise.
+         */
+        isVisible(): boolean;
+        /**
+         * Makes the popup visible.
+         *
+         * @param target selector or DOM element of the target component that triggers this popup.
+         */
+        show(target?: string | JQuery): void;
+        /**
+         * Shows the given message in this confirmation popup.
+         *
+         * @param msg Message to show.
+         */
+        showMessage(msg: Partial<PrimeFaces.widget.ConfirmPopup.ConfirmPopupMessage>): void;
+    }
+}
+declare namespace PrimeFaces.widget {
+    /**
+     * The configuration for the {@link  ConfirmPopup| ConfirmPopup widget}.
+     * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+     * configuration is usually meant to be read-only and should not be modified.
+     */
+    export interface ConfirmPopupCfg extends PrimeFaces.widget.DynamicOverlayWidgetCfg {
+        /**
+         * Appends the confirm popup to the given search expression.
+         */
+        appendTo: string;
+        /**
+         * When set `true`, clicking outside of the popup hides the overlay.
+         */
+        dismissable: boolean;
+        /**
+         * When enabled, confirmPopup becomes a shared for other components that require confirmation.
+         */
+        global: boolean;
+        /**
+         * Event on target to hide the popup.
+         */
+        hideEvent: string;
+        /**
+         * Event on target to show the popup.
+         */
+        showEvent: string;
+    }
+}
+declare namespace PrimeFaces.widget.ConfirmPopup {
+    /**
+     * Interface for the message that
+     * is shown in the confirm popup.
+     */
+    export interface ConfirmPopupMessage {
+        /**
+         * If `true`, the message is escaped for HTML. If `false`, the message is
+         * interpreted as an HTML string.
+         */
+        escape: boolean;
+        /**
+         * Main content of the popup message.
+         */
+        message: string;
+        /**
+         * A JavaScript code snippet that is be evaluated before the message is
+         * shown.
+         */
+        onShow: string;
+    }
+}
 // Type declaration for the content flow library
 // Global pollution...
 /**
@@ -5831,7 +5972,7 @@ declare namespace PrimeFaces.ajax {
          */
         addXHR(xhr: PrimeFaces.ajax.pfXHR): void;
         /**
-         * Checks whether this queue containts any scheduled AJAX requests.
+         * Checks whether this queue contains any scheduled AJAX requests.
          *
          * @return `true` if this queue contains no scheduled requests, `false` otherwise.
          */
@@ -6767,10 +6908,9 @@ declare namespace PrimeFaces {
      */
     export function closeDialog(cfg: PrimeFaces.dialog.DialogHandlerCfg): void;
     /**
-     * Deprecated, use `PrimeFaces.dialog.DialogHandler.confirm` instead.
+     * Displays dialog or popup according to the type of confirm component.
      *
-     * @param msg Message to show with the confirm dialog.
-     * @deprecated
+     * @param msg Message to show with the confirm dialog or popup.
      */
     export function confirm(msg: string): void;
     /**
@@ -7391,6 +7531,15 @@ declare namespace PrimeFaces.utils {
      * tabbable element is an element to which the user can navigate to via the tab key.
      */
     export function preventTabbing(id: string, zIndex: number, tabbablesCallback: () => JQuery): void;
+    /**
+     * Registers a callback that is invoked when a scroll event is triggered on The DOM element for the widget that has a connected overlay.
+     *
+     * @param widget A widget instance for which to register a scroll handler.
+     * @param scrollNamespace A scroll event with a namespace, such as `scroll.widgetId`.
+     * @param scrollCallback A callnback that is invoked when a scroll event occurs
+     * on the widget.
+     */
+    export function registerConnectedOverlayScrollHandler(widget: PrimeFaces.widget.BaseWidget, scrollNamespace: string, scrollCallback: (event: JQuery.Event) => void): void;
     /**
      * Sets up an overlay widget. Appends the overlay widget to the element as specified by the `appendTo`
      * attribute. Also makes sure the overlay widget is handled propertly during AJAX updates.
@@ -23815,6 +23964,10 @@ declare namespace PrimeFaces.widget {
          */
         protected bindItemEvents(): void;
         /**
+         * Binds mobile touch events.
+         */
+        protected bindTouchEvents(): void;
+        /**
          * Finds the target element of this context menu. A right-click on that target element brings up this context menu.
          *
          * @return The target element of this context men.
@@ -26979,8 +27132,9 @@ declare namespace PrimeFaces.widget {
          *
          * @param value A value against which the available options are matched.
          * @param list The source or target list that is to be filtered.
+         * @param animate If it should be animated.
          */
-        filter(value: string, list: JQuery): void;
+        filter(value: string, list: JQuery, animate: boolean): void;
         /**
          * Triggers the behavior for when pick list items are selected.
          *
@@ -27087,6 +27241,14 @@ declare namespace PrimeFaces.widget {
          * @param list The source or target list with items to move up.
          */
         moveUp(list: JQuery): void;
+        /**
+         * Re-Filter the current source list.
+         */
+        private refilterSource(): void;
+        /**
+         * Re-Filter the current target list.
+         */
+        private refilterTarget(): void;
         /**
          * Removes all selected items in the target list by transferring them to the source list.
          */
@@ -27670,6 +27832,18 @@ declare namespace PrimeFaces.widget {
          * component.
          */
         init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+        /**
+         * Is this widget currently disabled?
+         *
+         * @return true if disabled
+         */
+        isDisabled(): boolean;
+        /**
+         * Is this widget currently read only?
+         *
+         * @return true if read only
+         */
+        isReadOnly(): boolean;
         /**
          * Resets the rating so that no stars are selected.
          */
@@ -29262,14 +29436,6 @@ declare namespace PrimeFaces.widget {
          */
         private bindEvents(): void;
         /**
-         * Sets up scroll to top event to the ScrollTop element.
-         */
-        private bindScrollEvent(): void;
-        /**
-         * Checks visibility of the ScrollTop element.
-         */
-        private checkVisibility(): void;
-        /**
          * A widget class should not have an explicit constructor. Instead, this initialize method is called after the
          * widget was created. You can use this method to perform any initialization that is required. For widgets that
          * need to create custom HTML on the client-side this is also the place where you should call your render
@@ -30278,10 +30444,6 @@ declare namespace PrimeFaces.widget {
          */
         horizontal: JQuery;
         /**
-         * Whether splitter element is stateful or not.
-         */
-        isStateful: JQuery;
-        /**
          * Array of the panels size for save and restore state.
          */
         panelSizes: JQuery;
@@ -30290,29 +30452,21 @@ declare namespace PrimeFaces.widget {
          */
         panels: JQuery;
         /**
-         * Length of the panels array.
-         */
-        panelsLength: JQuery;
-        /**
-         * Size of the splitter element.
-         */
-        parentElementSize: JQuery;
-        /**
-         * When pressed on gutter value is true, default value is false.
-         */
-        pressed: JQuery;
-        /**
          * DOM element of the splitter.
          */
         splitter: JQuery;
         /**
-         * Sets up all event listeners required for this widget.
+         * Bind document events
          */
-        private bindEvents(): void;
+        private bindDocumentEvents(): void;
         /**
-         * Add resize event to the splitter gutters.
+         * Set up event for the gutters.
          */
-        private bindResizeEvent(): void;
+        private bindGutterEvent(): void;
+        /**
+         * Clear all variables
+         */
+        private clear(): void;
         /**
          * Return localStorage or sessionStorage based on components stateStorage type.
          *
@@ -30347,21 +30501,29 @@ declare namespace PrimeFaces.widget {
          */
         private initPanelSize(): void;
         /**
-         * Resize splitter panels.
+         * Whether it is stateful.
          *
-         * @param startPos start position of the cursor in resize event.
-         * @param prevPanelSize size of the splitter panel previous of the selected gutter.
-         * @param nextPanelSize size of the splitter panel next of the selected gutter.
-         * @param prevPanelElement DOM element of the splitter panel previous of the selected gutter element.
-         * @param nextPanelElement DOM element of the splitter panel next of the selected gutter element.
+         * @return if the splitter is retaining state
          */
-        private onResize(startPos: number, prevPanelSize: number, nextPanelSize: number, prevPanelElement: JQuery, nextPanelElement: JQuery): void;
+        isStateful(): boolean;
         /**
-         * Toggles the expansion state of this panel.
+         * The method called while the 'resize' event is running.
          *
-         * @param gutterElement DOM element of the selected gutter element in the resize event.
+         * @param event Event triggered for the resize.
          */
-        private onResizeEnd(gutterElement: JQuery): void;
+        private onResize(event: JQuery.Event): void;
+        /**
+         * The method that is called when the 'resize' event ends.
+         *
+         * @param event Event triggered for the resize end.
+         */
+        private onResizeEnd(event: JQuery.Event): void;
+        /**
+         * The method that is called when the 'resize' event starts.
+         *
+         * @param event Event triggered for the drag.
+         */
+        private onResizeStart(event: JQuery.Event): void;
         /**
          * Restore panel sizes from storage.
          *
@@ -30372,6 +30534,18 @@ declare namespace PrimeFaces.widget {
          * Save current panel sizes to the storage.
          */
         private saveState(): void;
+        /**
+         * Removes document events
+         */
+        private unbindDocumentEvents(): void;
+        /**
+         * Checks the new values according to the size and minimum size values
+         *
+         * @param newPrevPanelSize the new previous panel size
+         * @param newNextPanelSize the new next panel size
+         * @return true if resized false if not
+         */
+        private validateResize(newPrevPanelSize: number, newNextPanelSize: number): boolean;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -34394,6 +34568,11 @@ declare namespace PrimeFaces.widget {
          * Defines if columns can be resized or not.
          */
         resizableColumns: boolean;
+        /**
+         * Saves the changes in cell editing on blur, when set to false changes are
+         * discarded.
+         */
+        saveOnCellBlur: boolean;
         /**
          * Height of scrollable data.
          */

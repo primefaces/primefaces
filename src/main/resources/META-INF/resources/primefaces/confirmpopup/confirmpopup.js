@@ -19,7 +19,10 @@
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.DynamicOverlayWidgetCfg} cfg
- * 
+ *
+ * @typedef PrimeFaces.widget.ConfirmPopup.HideCallback Callback invoked after the popup is hidden.
+ * @this {Window} PrimeFaces.widget.ConfirmPopup.HideCallback
+ *
  * @prop {string} cfg.appendTo Appends the confirm popup to the given search expression.
  * @prop {string} cfg.showEvent Event on target to show the popup.
  * @prop {string} cfg.hideEvent Event on target to hide the popup.
@@ -131,8 +134,8 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
     },
     
     /**
-     * Hides the popup
-     * @param {function} callback Callback that is invoked after this popup was closed.
+     * Hides the popup.
+     * @param {PrimeFaces.widget.ConfirmPopup.HideCallback} callback Callback that is invoked after this popup was closed.
      */
     hide: function(callback) {
         if (this.cfg.hideEffect) {
@@ -148,6 +151,7 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
     
     /**
      * Aligns the popup so that it is shown at the correct position.
+     * @param {JQuery} [target] Jquery selector that is the target of this popup
      * @private
      */
     align: function(target) {
