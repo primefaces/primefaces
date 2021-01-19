@@ -81,6 +81,7 @@
   - [CommandLink](/components/commandlink.md)
   - [Confirm](/components/confirm.md)
   - [ConfirmDialog](/components/confirmdialog.md)
+  - [ConfirmPopup](/components/confirmpopup.md)
   - [ContentFlow](/components/contentflow.md)
   - [ContextMenu](/components/contextmenu.md)
   - [Dashboard](/components/dashboard.md)

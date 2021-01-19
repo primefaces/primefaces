@@ -388,7 +388,7 @@ if (!PrimeFaces.dialog) {
          * @param {string} msg Message to show in the confirmation dialog.
          */
         confirm: function(msg) {
-            if(PrimeFaces.confirmDialog) {
+            if (PrimeFaces.confirmDialog) {
                 PrimeFaces.confirmSource = (typeof(msg.source) === 'string') ? $(PrimeFaces.escapeClientId(msg.source)) : $(msg.source);
                 PrimeFaces.confirmDialog.showMessage(msg);
             }

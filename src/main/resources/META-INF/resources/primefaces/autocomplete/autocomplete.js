@@ -110,9 +110,6 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.touchToDropdownButton = false;
         this.isTabPressed = false;
         this.isDynamicLoaded = false;
-        
-        this.cfg.onChange = this.input.prop('onchange');
-        this.input.prop('onchange', null).off('change');
 
         if(this.cfg.cache) {
             this.initCache();
@@ -338,6 +335,19 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      */
     bindKeyEvents: function() {
         var $this = this;
+
+        // GitHub #6711 use DOM if non-CSP and JQ event if CSP
+        var originalOnchange = this.input.prop('onchange');
+        if (!originalOnchange) {
+            var events = $._data(this.input[0], "events");
+            if(events.change) {
+                originalOnchange = events.change[0].handler;
+            }
+        }
+        this.cfg.onChange = originalOnchange;
+        if (originalOnchange) {
+            this.input.prop('onchange', null).off('change');
+        }
 
         if(this.cfg.queryEvent !== 'enter') {
             this.input.on('input propertychange', function(e) {

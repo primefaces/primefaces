@@ -3836,6 +3836,66 @@ body .ui-colorpicker .ui-button {
   border-radius: 3px; }
 body .ui-fluid .ui-colorpicker .ui-button {
   width: auto; }
+body .ui-cascadeselect {
+  background: #191919;
+  border: 1px solid #4b4b4b;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  border-radius: 3px; }
+  body .ui-cascadeselect:not(.ui-state-disabled):hover {
+    border-color: #FFE082; }
+  body .ui-cascadeselect:not(.ui-state-disabled).p-focus {
+    border-color: #FFE082;
+    outline: 0 none;
+    box-shadow: 0 0 0.1rem white; }
+  body .ui-cascadeselect .ui-cascadeselect-label {
+    background: transparent;
+    border: 0 none;
+    padding: 0.429rem 0.429rem; }
+    body .ui-cascadeselect .ui-cascadeselect-label.ui-placeholder {
+      color: #9b9b9b; }
+    body .ui-cascadeselect .ui-cascadeselect-label:enabled:focus {
+      outline: 0 none;
+      box-shadow: none; }
+  body .ui-cascadeselect .ui-cascadeselect-trigger {
+    background: transparent;
+    color: #888888;
+    width: 2.357rem;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px; }
+body .ui-cascadeselect-panel {
+  background: #323232;
+  border: 1px solid #191919;
+  border-radius: 3px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16); }
+  body .ui-cascadeselect-panel .ui-cascadeselect-items {
+    padding: 0; }
+    body .ui-cascadeselect-panel .ui-cascadeselect-items .ui-cascadeselect-item {
+      margin: 0;
+      border: 0 none;
+      color: #dedede;
+      background: transparent;
+      transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+      border-radius: 0; }
+      body .ui-cascadeselect-panel .ui-cascadeselect-items .ui-cascadeselect-item .ui-cascadeselect-item-content {
+        padding: 0.429rem 0.857rem; }
+        body .ui-cascadeselect-panel .ui-cascadeselect-items .ui-cascadeselect-item .ui-cascadeselect-item-content:focus {
+          outline: 0 none;
+          outline-offset: 0;
+          box-shadow: 0 0 0.1rem white; }
+      body .ui-cascadeselect-panel .ui-cascadeselect-items .ui-cascadeselect-item.ui-state-highlight {
+        color: #212529;
+        background: #FFE082; }
+      body .ui-cascadeselect-panel .ui-cascadeselect-items .ui-cascadeselect-item:not(.ui-state-highlight):not(.ui-state-disabled):hover {
+        color: #dedede;
+        background: #4c4c4c; }
+      body .ui-cascadeselect-panel .ui-cascadeselect-items .ui-cascadeselect-item .ui-cascadeselect-group-icon {
+        font-size: 1rem; }
+body .ui-input-filled .ui-cascadeselect {
+  background: #4b4b4b; }
+  body .ui-input-filled .ui-cascadeselect:not(.ui-state-disabled):hover {
+    background-color: #4b4b4b; }
+  body .ui-input-filled .ui-cascadeselect:not(.ui-state-disabled).p-focus {
+    background-color: #4b4b4b; }
 
 body .ui-panel {
   padding: 0; }
@@ -6029,3 +6089,35 @@ body .ui-sidebar {
         content: ""; }
   body .ui-sidebar.ui-sidebar-active {
     box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.16); }
+body .ui-confirm-popup {
+  background: #323232;
+  color: #dedede;
+  border: 1px solid #191919;
+  border-radius: 3px;
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.16); }
+  body .ui-confirm-popup .ui-confirm-popup-content {
+    padding: 0.571rem 1rem; }
+  body .ui-confirm-popup .ui-confirm-popup-footer {
+    text-align: right;
+    padding: 0 1rem 0.571rem 1rem; }
+    body .ui-confirm-popup .ui-confirm-popup-footer button {
+      margin: 0 0.5rem 0 0;
+      width: auto; }
+      body .ui-confirm-popup .ui-confirm-popup-footer button:last-child {
+        margin: 0; }
+  body .ui-confirm-popup:after {
+    border-style: solid;
+    border-color: rgba(50, 50, 50, 0);
+    border-bottom-color: #323232; }
+  body .ui-confirm-popup:before {
+    border-style: solid;
+    border-color: rgba(25, 25, 25, 0);
+    border-bottom-color: #191919; }
+  body .ui-confirm-popup.ui-confirm-popup-flipped:after {
+    border-top-color: #323232; }
+  body .ui-confirm-popup.ui-confirm-popup-flipped:before {
+    border-top-color: #191919; }
+  body .ui-confirm-popup .ui-confirm-popup-icon {
+    font-size: 1.5rem; }
+  body .ui-confirm-popup .ui-confirm-popup-message {
+    margin-left: 1rem; }
