@@ -25,6 +25,7 @@ package org.primefaces.component.avatar;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.LangUtils;
+import org.primefaces.util.SharedStringBuilder;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -37,6 +38,7 @@ import java.util.regex.Pattern;
 public class AvatarRenderer extends CoreRenderer {
 
     private static final Pattern LETTER_PATTTERN = Pattern.compile("\\b[a-zA-Z]");
+    private static final String SB_AVATAR = AvatarRenderer.class.getName() + "#avatar";
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -53,7 +55,7 @@ public class AvatarRenderer extends CoreRenderer {
         writer.startElement("div", avatar);
         writer.writeAttribute("id", avatar.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        String label = calculateLabel(avatar);
+        String label = calculateLabel(context, avatar);
         String style = avatar.getStyle();
         if (avatar.isDynamicColor() && label != null) {
             String colorCss = generateBackgroundColor(label);
@@ -82,7 +84,7 @@ public class AvatarRenderer extends CoreRenderer {
             writer.startElement("span", null);
             String textClass = getStyleClassBuilder(context)
                         .add(Avatar.SIZE_TEXT_CLASS)
-                        .add(avatar.isDynamicColor(), Avatar.DYNAMIC_TEXT_CLASS)
+                        .add(avatar.isDynamicColor(), Avatar.DYNAMIC_COLOR_CLASS)
                         .build();
             writer.writeAttribute("class", textClass, "styleClass");
             writer.write(label);
@@ -116,13 +118,13 @@ public class AvatarRenderer extends CoreRenderer {
      * @param avatar the Avatar component
      * @return the calculated label text.
      */
-    protected String calculateLabel(Avatar avatar) {
+    protected String calculateLabel(FacesContext context, Avatar avatar) {
         String value = avatar.getLabel();
         if (value == null || value.length() <= 2) {
             return value;
         }
-        final Matcher m = LETTER_PATTTERN.matcher(value);
-        final StringBuilder sb = new StringBuilder();
+        Matcher m = LETTER_PATTTERN.matcher(value);
+        StringBuilder sb = SharedStringBuilder.get(context, SB_AVATAR);
         while (m.find()) {
             sb.append(m.group());
         }
