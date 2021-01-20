@@ -108,7 +108,7 @@ public class ScheduleRenderer extends CoreRenderer {
                 JSONObject jsonObject = new JSONObject();
 
                 jsonObject.put("id", event.getId());
-                if (event.getGroupId() != null && event.getGroupId().length() > 0) {
+                if (event.getGroupId() != null && !event.getGroupId().isEmpty()) {
                     jsonObject.put("groupId", event.getGroupId());
                 }
                 jsonObject.put("title", event.getTitle());

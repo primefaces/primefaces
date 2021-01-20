@@ -404,8 +404,8 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
     protected boolean isSelected(FacesContext context, SelectOneRadio radio, SelectItem selectItem, String currentValue) {
         String itemStrValue = getOptionAsString(context, radio, radio.getConverter(), selectItem.getValue());
-        return (itemStrValue == null || "".equals(itemStrValue))
-               ? currentValue == null || "".equals(currentValue)
+        return (itemStrValue == null || itemStrValue.isEmpty())
+               ? currentValue == null || currentValue.isEmpty()
                : itemStrValue.equals(currentValue);
     }
 

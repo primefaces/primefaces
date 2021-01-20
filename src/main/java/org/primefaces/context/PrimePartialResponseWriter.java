@@ -249,7 +249,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriterWrapper {
                     if (viewRoot instanceof NamingContainer) {
 
                         String parameterNamespace = viewRoot.getContainerClientId(context);
-                        if ((parameterNamespace != null) && (parameterNamespace.length() > 0)) {
+                        if ((parameterNamespace != null) && (!parameterNamespace.isEmpty())) {
 
                             String parameterPrefix = parameterNamespace;
 

@@ -182,7 +182,7 @@ public class DataView extends DataViewBase {
     public void restoreMultiViewState() {
         DataViewState viewState = getMultiViewState(false);
         if (viewState != null) {
-            if (viewState.getLayout() != null && viewState.getLayout().length() > 0) {
+            if (viewState.getLayout() != null && !viewState.getLayout().isEmpty()) {
                 setLayout(viewState.getLayout());
             }
 
