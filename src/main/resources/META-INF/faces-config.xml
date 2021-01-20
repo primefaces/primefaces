@@ -272,6 +272,11 @@
     </component>
 
     <component>
+        <component-type>org.primefaces.component.CascadeSelect</component-type>
+        <component-class>org.primefaces.component.cascadeselect.CascadeSelect</component-class>
+    </component>
+
+    <component>
         <component-type>org.primefaces.component.CellEditor</component-type>
         <component-class>org.primefaces.component.celleditor.CellEditor</component-class>
     </component>
@@ -1161,6 +1166,11 @@
             <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.CarouselRenderer</renderer-type>
             <renderer-class>org.primefaces.component.carousel.CarouselRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.CascadeSelectRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.cascadeselect.CascadeSelectRenderer</renderer-class>
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>
