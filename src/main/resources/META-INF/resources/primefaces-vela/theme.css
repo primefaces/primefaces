@@ -950,6 +950,7 @@ body .ui-datatable tfoot td {
   color: rgba(255, 255, 255, 0.87);
   padding: 1rem 1rem;
   font-weight: 700;
+  text-align: left;
   box-sizing: content-box; }
 body .ui-datatable > .ui-icon-arrowthick-1-s {
   font-family: 'primeicons' !important;
