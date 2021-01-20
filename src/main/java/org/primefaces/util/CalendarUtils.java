@@ -355,7 +355,7 @@ public class CalendarUtils {
         if (usertimeZone != null) {
             if (usertimeZone instanceof String) {
                 String usertimeZoneStr = (String) usertimeZone;
-                if (!usertimeZoneStr.isEmpty()) {
+                if (LangUtils.isNotEmpty(usertimeZoneStr)) {
                     return ZoneId.of(usertimeZoneStr);
                 }
                 else {

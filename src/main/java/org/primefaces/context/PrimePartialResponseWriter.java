@@ -29,6 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.primefaces.util.BeanUtils;
 import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.ResourceUtils;
 
 import javax.faces.component.NamingContainer;
@@ -249,7 +250,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriterWrapper {
                     if (viewRoot instanceof NamingContainer) {
 
                         String parameterNamespace = viewRoot.getContainerClientId(context);
-                        if ((parameterNamespace != null) && (!parameterNamespace.isEmpty())) {
+                        if (LangUtils.isNotEmpty(parameterNamespace)) {
 
                             String parameterPrefix = parameterNamespace;
 

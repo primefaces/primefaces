@@ -105,7 +105,7 @@ public class ImageCropperRenderer extends CoreRenderer {
 
             select = "[" + x + "," + y + "," + x2 + "," + y2 + "]";
         }
-        else if (!LangUtils.isValueBlank(cropper.getInitialCoords())) {
+        else if (LangUtils.isNotBlank(cropper.getInitialCoords())) {
             select = "[" + cropper.getInitialCoords() + "]";
         }
 
@@ -132,7 +132,7 @@ public class ImageCropperRenderer extends CoreRenderer {
         if (cropper.getBoxWidth() > 0) {
             style = style + " max-width:" + cropper.getBoxWidth() + "px; ";
         }
-        if (!LangUtils.isValueBlank(style)) {
+        if (LangUtils.isNotBlank(style)) {
             writer.writeAttribute("style", style, null);
         }
 

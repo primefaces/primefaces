@@ -314,7 +314,7 @@ public class TimelineRenderer extends CoreRenderer {
         fsw.write("{id: \"" + EscapeUtils.forJavaScriptBlock(group.getId()) + "\"");
 
         Object data = group.getData();
-        if (!LangUtils.isValueBlank(timeline.getVarGroup()) && data != null) {
+        if (LangUtils.isNotBlank(timeline.getVarGroup()) && data != null) {
             context.getExternalContext().getRequestMap().put(timeline.getVarGroup(), data);
         }
         if (ComponentUtils.shouldRenderFacet(groupFacet)) {
@@ -363,15 +363,15 @@ public class TimelineRenderer extends CoreRenderer {
             fsw.write(", order: " + order);
         }
 
-        if (!LangUtils.isValueBlank(group.getSubgroupOrder())) {
+        if (LangUtils.isNotBlank(group.getSubgroupOrder())) {
             fsw.write(", subgroupOrder: \"" + EscapeUtils.forJavaScript(group.getSubgroupOrder()) + "\"");
         }
 
-        if (!LangUtils.isValueBlank(group.getSubgroupStack())) {
+        if (LangUtils.isNotBlank(group.getSubgroupStack())) {
             fsw.write(", subgroupStack: " + EscapeUtils.forJavaScript(group.getSubgroupStack()));
         }
 
-        if (!LangUtils.isValueBlank(group.getSubgroupVisibility())) {
+        if (LangUtils.isNotBlank(group.getSubgroupVisibility())) {
             fsw.write(", subgroupVisibility: " + EscapeUtils.forJavaScript(group.getSubgroupVisibility()));
         }
 
@@ -443,7 +443,7 @@ public class TimelineRenderer extends CoreRenderer {
         if (foundGroup != null) {
             fsw.write(", group: \"" + EscapeUtils.forJavaScript(foundGroup.getId()) + "\"");
 
-            if (!LangUtils.isValueBlank(event.getSubgroup())) {
+            if (LangUtils.isNotBlank(event.getSubgroup())) {
                 fsw.write(", subgroup: \"" + EscapeUtils.forJavaScript(event.getSubgroup()) + "\"");
             }
         }
@@ -452,7 +452,7 @@ public class TimelineRenderer extends CoreRenderer {
             fsw.write(", group: null");
         }
 
-        if (!LangUtils.isValueBlank(event.getStyleClass())) {
+        if (LangUtils.isNotBlank(event.getStyleClass())) {
             fsw.write(", className: \"" + event.getStyleClass() + "\"");
         }
         else {
@@ -460,7 +460,7 @@ public class TimelineRenderer extends CoreRenderer {
         }
 
         Object data = event.getData();
-        if (!LangUtils.isValueBlank(timeline.getVar()) && data != null) {
+        if (LangUtils.isNotBlank(timeline.getVar()) && data != null) {
             context.getExternalContext().getRequestMap().put(timeline.getVar(), data);
         }
 

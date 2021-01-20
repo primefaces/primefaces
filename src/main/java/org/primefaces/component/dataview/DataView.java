@@ -41,6 +41,7 @@ import org.primefaces.event.data.PageEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.MapBuilder;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
@@ -182,7 +183,7 @@ public class DataView extends DataViewBase {
     public void restoreMultiViewState() {
         DataViewState viewState = getMultiViewState(false);
         if (viewState != null) {
-            if (viewState.getLayout() != null && !viewState.getLayout().isEmpty()) {
+            if (LangUtils.isNotEmpty(viewState.getLayout())) {
                 setLayout(viewState.getLayout());
             }
 

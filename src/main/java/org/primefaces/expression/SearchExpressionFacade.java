@@ -83,7 +83,7 @@ public class SearchExpressionFacade {
 
         ArrayList<UIComponent> components = new ArrayList<>(5);
 
-        if (!LangUtils.isValueBlank(expressions)) {
+        if (LangUtils.isNotBlank(expressions)) {
             String[] splittedExpressions = splitExpressions(context, source, expressions);
 
             if (splittedExpressions != null && splittedExpressions.length > 0) {
@@ -204,7 +204,7 @@ public class SearchExpressionFacade {
                     // if it contains a keyword and it's not a nested expression (e.g. @parent:@parent), we don't need to loop
                     if (expression.contains(SearchExpressionConstants.KEYWORD_PREFIX) && expression.indexOf(separatorChar) != -1) {
                         String clientIds = resolveClientIdsByExpressionChain(context, source, expression, separatorChar, hints);
-                        if (!LangUtils.isValueBlank(clientIds)) {
+                        if (LangUtils.isNotBlank(clientIds)) {
                             if (expressionsBuffer.length() > 0) {
                                 expressionsBuffer.append(" ");
                             }
@@ -218,7 +218,7 @@ public class SearchExpressionFacade {
 
                             if (resolver instanceof ClientIdSearchExpressionResolver) {
                                 String clientIds = ((ClientIdSearchExpressionResolver) resolver).resolveClientIds(context, source, source, expression, hints);
-                                if (!LangUtils.isValueBlank(clientIds)) {
+                                if (LangUtils.isNotBlank(clientIds)) {
                                     if (expressionsBuffer.length() > 0) {
                                         expressionsBuffer.append(" ");
                                     }
@@ -275,7 +275,7 @@ public class SearchExpressionFacade {
             }
 
             String clientIds = expressionsBuffer.toString();
-            if (!LangUtils.isValueBlank(clientIds)) {
+            if (LangUtils.isNotBlank(clientIds)) {
                 return clientIds;
             }
         }
@@ -668,7 +668,7 @@ public class SearchExpressionFacade {
                     if (i == subExpressions.length - 1 && resolver instanceof ClientIdSearchExpressionResolver) {
                         String result = ((ClientIdSearchExpressionResolver) resolver).resolveClientIds(context, source, last, subExpression, hints);
 
-                        if (!LangUtils.isValueBlank(result)) {
+                        if (LangUtils.isNotBlank(result)) {
 
                             if (clientIdsBuilder == null) {
                                 clientIdsBuilder = SharedStringBuilder.get(SHARED_CLIENT_ID_EXPRESSION_BUFFER_KEY);

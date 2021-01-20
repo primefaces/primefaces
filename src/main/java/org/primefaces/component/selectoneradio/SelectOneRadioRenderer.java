@@ -44,6 +44,7 @@ import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.GridLayoutUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class SelectOneRadioRenderer extends SelectOneRenderer {
@@ -404,9 +405,9 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
     protected boolean isSelected(FacesContext context, SelectOneRadio radio, SelectItem selectItem, String currentValue) {
         String itemStrValue = getOptionAsString(context, radio, radio.getConverter(), selectItem.getValue());
-        return (itemStrValue == null || itemStrValue.isEmpty())
-               ? currentValue == null || currentValue.isEmpty()
-               : itemStrValue.equals(currentValue);
+        return LangUtils.isValueBlank(itemStrValue)
+                ? LangUtils.isValueBlank(currentValue)
+                : itemStrValue.equals(currentValue);
     }
 
     protected void encodeRadioButton(FacesContext context, SelectOneRadio radio, RadioButton button) throws IOException {
