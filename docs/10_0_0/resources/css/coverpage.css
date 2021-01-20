@@ -44,8 +44,9 @@ body section.cover.show .cover-main > p:last-child a:last-child:hover {
 
 /* Show PrimeFaces-version and provide toggle-switch */
 div.PF-version {
-    top: -4rem;
+    top: -3.6rem;
     position: relative;
     font-weight: bold;
-    left: 7rem;
+    left: 7.2rem;
+    font-size: 1.2rem;
 }
