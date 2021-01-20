@@ -15488,6 +15488,131 @@ declare namespace PrimeFaces.widget {
 }
 declare namespace PrimeFaces.widget {
     /**
+     * __PrimeFaces CascadeSelect Widget__
+     *
+     * CascadeSelect CascadeSelect displays a nested structure of options.
+     *
+     * @typeparam TCfg Defaults to `CascadeSelectCfg`. Type of the configuration object for this widget.
+     */
+    export class CascadeSelect<TCfg extends CascadeSelectCfg = CascadeSelectCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
+        /**
+         * The DOM element for the content in the available selectable options.
+         */
+        contents: JQuery;
+        /**
+         * The DOM element for the hidden input with the current value.
+         */
+        input: JQuery;
+        /**
+         * The DOM elements for the the available selectable options.
+         */
+        items: JQuery;
+        /**
+         * The DOM element for the wrapper with the container with the available selectable
+         * options.
+         */
+        itemsWrapper: JQuery;
+        /**
+         * The DOM element for the label indicating the currently selected option.
+         */
+        label: JQuery;
+        /**
+         * The DOM element for the overlay panel with the available selectable options.
+         */
+        panel: JQuery;
+        /**
+         * The DOM elements for the buttons that can trigger (hide or show) the overlay panel with the
+         * available selectable options.
+         */
+        triggers: JQuery;
+        /**
+         * Align the overlay panel with the available options.
+         */
+        alignPanel(): void;
+        /**
+         * Adjust the width of the overlay panel.
+         */
+        private alignPanelWidth(): void;
+        /**
+         * Align the sub overlay panel with the available options.
+         *
+         * @param subpanel subpanel element in cascadeselect panel.
+         * @param parentPanel parent panel element of the subpanel element.
+         */
+        private alignSubPanel(subpanel: JQuery, parentPanel: JQuery): void;
+        /**
+         * Sets up the event listeners that only need to be set up once.
+         */
+        private bindConstantEvents(): void;
+        /**
+         * Sets up all event listeners that are required by this widget.
+         */
+        private bindEvents(): void;
+        /**
+         * Deactivate siblings and active children of an item
+         *
+         * @param item cascadeselect panel element.
+         */
+        private deactivateItems(item: JQuery): void;
+        /**
+         * Hides the overlay panel with the available options.
+         */
+        hide(): void;
+        /**
+         * Hides the panel of a group item.
+         *
+         * @param item Dom element of the cascadeselect.
+         */
+        hideGroup(item: JQuery): void;
+        /**
+         * A widget class should not have an explicit constructor. Instead, this initialize method is called after the
+         * widget was created. You can use this method to perform any initialization that is required. For widgets that
+         * need to create custom HTML on the client-side this is also the place where you should call your render
+         * method.
+         *
+         * Please make sure to call the super method first before adding your own custom logic to the init method:
+         *
+         * ```javascript
+         * PrimeFaces.widget.MyWidget = PrimeFaces.widget.BaseWidget.extend({
+         *   init: function(cfg) {
+         *     this._super(cfg);
+         *     // custom initialization
+         *   }
+         * });
+         * ```
+         *
+         * @override
+         * @param cfg The widget configuration to be used for this widget instance.
+         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * component.
+         */
+        init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+        /**
+         * Brings up the overlay panel with the available options.
+         */
+        private show(): void;
+    }
+}
+declare namespace PrimeFaces.widget {
+    /**
+     * The configuration for the {@link  CascadeSelect| CascadeSelect widget}.
+     * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+     * configuration is usually meant to be read-only and should not be modified.
+     */
+    export interface CascadeSelectCfg extends PrimeFaces.widget.BaseWidgetCfg {
+        /**
+         * Appends the overlay to the element defined by search expression. Defaults to the document
+         * body.
+         */
+        appendTo: string;
+        /**
+         * If true, disables the component.
+         */
+        disabled: boolean;
+    }
+}
+declare namespace PrimeFaces.widget {
+    /**
      * __PrimeFaces CommandButton Widget__
      *
      * CommandButton is an extended version of standard commandButton with AJAX and theming.
