@@ -186,6 +186,7 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Deactivate siblings and active children of an item
      * @private
+     * @param {JQuery} item cascadeselect panel element.
      */
     deactivateItems: function(item) {
         var parentItem = item.parent().parent();
@@ -225,6 +226,7 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Brings up the overlay panel with the available options.
+     * @private
      */
     show: function() {
         this.panel.css({'display':'block', 'opacity':'0', 'pointer-events': 'none'});
@@ -293,6 +295,9 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Align the sub overlay panel with the available options.
+     * @private
+     * @param {JQuery} subpanel subpanel element in cascadeselect panel.
+     * @param {JQuery} parentPanel parent panel element of the subpanel element.
      */
     alignSubPanel: function(subpanel, parentPanel) {
         var subitemWrapper = subpanel.children('.ui-cascadeselect-items-wrapper');
