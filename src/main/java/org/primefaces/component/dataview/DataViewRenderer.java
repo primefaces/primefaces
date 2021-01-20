@@ -305,7 +305,7 @@ public class DataViewRenderer extends DataRenderer {
                 dataview.setRowIndex(i);
 
                 if (!dataview.isRowAvailable()) {
-                    return;
+                    break;
                 }
 
                 writer.startElement("li", null);
