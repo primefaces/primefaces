@@ -54,7 +54,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
 
         //home icon for first item
         if (isIconHome && elementCount > 0) {
-            ((MenuItem) menuElements.get(0)).setStyleClass("ui-icon ui-icon-home");
+            ((MenuItem) menuElements.get(0)).setStyleClass("ui-breadcrumb-home-icon ui-icon ui-icon-home");
         }
 
         writer.startElement(wrapper, null);
@@ -67,12 +67,20 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
 
         if (elementCount > 0) {
             writer.startElement(listType, null);
+            writer.writeAttribute("class", BreadCrumb.ITEMS_CLASS, null);
 
             for (int i = 0; i < elementCount; i++) {
                 MenuElement element = menuElements.get(i);
 
                 if (element.isRendered() && element instanceof MenuItem) {
                     MenuItem item = (MenuItem) element;
+
+                    //dont render chevron before home icon
+                    if (i != 0) {
+                        writer.startElement("li", null);
+                        writer.writeAttribute("class", BreadCrumb.CHEVRON_CLASS, null);
+                        writer.endElement("li");
+                    }
 
                     writer.startElement("li", null);
 
