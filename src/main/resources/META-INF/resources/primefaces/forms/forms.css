@@ -639,9 +639,7 @@ button.ui-button::-moz-focus-inner {
 
 .ui-selectcheckboxmenu-multiple-container:empty:after {
     content: attr(label);
-    padding: 1px 3px;
     white-space: nowrap;
-    margin:2px;
     display: inline-block;
 }
 
