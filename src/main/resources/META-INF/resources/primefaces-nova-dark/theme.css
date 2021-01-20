@@ -3096,20 +3096,22 @@ body .ui-inplace .ui-inplace-save .ui-icon {
   background-image: none !important; }
   body .ui-inplace .ui-inplace-save .ui-icon:before {
     content: ""; }
-body .ui-inplace .ui-inplace-cancel .ui-icon {
-  font-family: 'primeicons' !important;
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  display: inline-block;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-indent: 0 !important;
-  background-image: none !important; }
-  body .ui-inplace .ui-inplace-cancel .ui-icon:before {
-    content: ""; }
+body .ui-inplace .ui-inplace-cancel {
+  margin-left: 0.25rem; }
+  body .ui-inplace .ui-inplace-cancel .ui-icon {
+    font-family: 'primeicons' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    display: inline-block;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-indent: 0 !important;
+    background-image: none !important; }
+    body .ui-inplace .ui-inplace-cancel .ui-icon:before {
+      content: ""; }
 body .ui-inplace .ui-inplace-editor {
   margin-left: 0.5rem; }
   body .ui-inplace .ui-inplace-editor .ui-button-icon-only .ui-button-text {
