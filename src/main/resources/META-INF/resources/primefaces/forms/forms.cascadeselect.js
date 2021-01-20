@@ -244,7 +244,7 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Hides the panel of a group item.
-     * @param {JQuery} item 
+     * @param {JQuery} item Dom element of the cascadeselect.
      */
     hideGroup: function(item) {
         item.removeClass('ui-cascadeselect-item-active ui-state-highlight').children('.ui-cascadeselect-panel').hide();
