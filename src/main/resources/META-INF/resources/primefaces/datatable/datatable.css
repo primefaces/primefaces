@@ -46,6 +46,7 @@
 
 .ui-datatable .ui-sortable-column {
     cursor: pointer;
+    user-select: none;
 }
 
 .ui-datatable div.ui-dt-c {
@@ -319,6 +320,10 @@
     -ms-flex-pack: center;
     justify-content: center;
     vertical-align: middle;
+}
+
+.ui-datatable .ui-sortable-column-badge.ui-helper-hidden {
+    display: none;
 }
 
 @media ( max-width: 640px ) {

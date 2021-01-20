@@ -186,6 +186,7 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Deactivate siblings and active children of an item
      * @private
+     * @param {JQuery} item cascadeselect panel element.
      */
     deactivateItems: function(item) {
         var parentItem = item.parent().parent();
@@ -242,7 +243,7 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Hides the panel of a group item.
-     * @param {JQuery} item 
+     * @param {JQuery} item Dom element of the cascadeselect.
      */
     hideGroup: function(item) {
         item.removeClass('ui-cascadeselect-item-active ui-state-highlight').children('.ui-cascadeselect-panel').hide();
@@ -271,6 +272,7 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Align the overlay panel with the available options.
+     * @private
      */
     alignPanel: function() {
         this.alignPanelWidth();
@@ -293,6 +295,9 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Align the sub overlay panel with the available options.
+     * @private
+     * @param {JQuery} subpanel subpanel element in cascadeselect panel.
+     * @param {JQuery} parentPanel parent panel element of the subpanel element.
      */
     alignSubPanel: function(subpanel, parentPanel) {
         var subitemWrapper = subpanel.children('.ui-cascadeselect-items-wrapper');
