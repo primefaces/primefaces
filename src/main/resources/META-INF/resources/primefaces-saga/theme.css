@@ -5693,13 +5693,13 @@ body .ui-avatar {
     width: 3rem;
     height: 3rem;
     font-size: 1.5rem; }
-    body .ui-avatar.ui-avatar-lg .p-avatar-icon {
+    body .ui-avatar.ui-avatar-lg .ui-avatar-icon {
       font-size: 1.5rem; }
   body .ui-avatar.ui-avatar-xl {
     width: 4rem;
     height: 4rem;
     font-size: 2rem; }
-    body .ui-avatar.ui-avatar-xl .p-avatar-icon {
+    body .ui-avatar.ui-avatar-xl .ui-avatar-icon {
       font-size: 2rem; }
 body .ui-avatar-group .ui-avatar {
   border: 2px solid #ffffff; }
