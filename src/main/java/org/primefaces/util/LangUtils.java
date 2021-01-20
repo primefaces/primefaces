@@ -338,7 +338,7 @@ public class LangUtils {
      *
      * @param base Object which contains the collection-property as getter.
      * @param property Name of the collection-property.
-     * @return Type of the objects within the collection-property. (eg List&lt;String&gt; -> String)
+     * @return Type of the objects within the collection-property. (eg List&lt;String&gt; -&gt; String)
      */
     public static Class<?> getTypeFromCollectionProperty(Object base, String property) {
         try {
@@ -425,7 +425,6 @@ public class LangUtils {
      * when calling one of those methods.</p>
      *
      * <p>Hexadecimal and scientific notations are <strong>not</strong> considered parsable.
-     * See {@link #isCreatable(String)} on those cases.</p>
      *
      * <p>{@code Null} and empty String will return {@code false}.</p>
      *
