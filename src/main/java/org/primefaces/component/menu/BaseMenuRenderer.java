@@ -23,6 +23,12 @@
  */
 package org.primefaces.component.menu;
 
+import java.io.IOException;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Map.Entry;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
@@ -30,11 +36,6 @@ import org.primefaces.model.menu.MenuModel;
 import org.primefaces.renderkit.MenuItemAwareRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import java.io.IOException;
 
 public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
 
@@ -65,6 +66,10 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
     }
 
     protected void encodeMenuItem(FacesContext context, AbstractMenu menu, MenuItem menuitem, String tabindex) throws IOException {
+        encodeMenuItem(context, menu, menuitem, tabindex, new SimpleEntry<>(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM));
+    }
+
+    protected void encodeMenuItem(FacesContext context, AbstractMenu menu, MenuItem menuitem, String tabindex, Entry<String, String> aria) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String title = menuitem.getTitle();
         String style = menuitem.getStyle();
@@ -73,7 +78,9 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
 
         writer.startElement("a", null);
         writer.writeAttribute("tabindex", tabindex, null);
-        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM, null);
+        if (aria != null) {
+            writer.writeAttribute(aria.getKey(), aria.getValue(), null);
+        }
         if (shouldRenderId(menuitem)) {
             writer.writeAttribute("id", menuitem.getClientId(), null);
         }
