@@ -594,14 +594,6 @@ public abstract class CoreRenderer extends Renderer {
         ComponentUtils.decodeBehaviors(context, component);
     }
 
-    /**
-     * @deprecated Use {@link EscapeUtils}
-     */
-    @Deprecated
-    protected String escapeText(String text) {
-        return EscapeUtils.forJavaScript(text);
-    }
-
     protected String getEventBehaviors(FacesContext context, ClientBehaviorHolder cbh, String event,
             List<ClientBehaviorContext.Parameter> parameters) {
 

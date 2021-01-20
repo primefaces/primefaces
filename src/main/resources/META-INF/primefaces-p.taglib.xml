@@ -28336,15 +28336,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Deprecated, use orientationAxis instead of this.
-                If false, the horizontal axis is drawn at the bottom. If true, the axis is drawn on top. Default is false.]]>
-            </description>
-            <name>axisOnTop</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Orientation of the timeline axis: 'top', 'bottom' (default), 'both', or 'none'. If orientation is 'bottom', the time axis is drawn
                 at the bottom. When 'top', the axis is drawn on top. When 'both', two axes are drawn, both on top and at the bottom. In case of 'none', no axis
                 is drawn at all.]]>
@@ -28544,14 +28535,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Deprecated, use editableGroup property instead.]]>
-            </description>
-            <name>groupsChangeable</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Allows to customize the way groups are ordered. When true (default), groups will be ordered by content alphabetically
                 (when the list of groups is missing) or by native ordering of TimelineGroup object in the list of groups (when the list of groups is available).
                 When false, groups will not be ordered at all.]]>
@@ -28567,15 +28550,6 @@
             <name>groupStyle</name>
             <required>false</required>
             <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Deprecated, use snap property instead.
-                If true, the start and end of an event will be snapped nice integer values when moving or resizing the event. Default is true.]]>
-            </description>
-            <name>snapEvents</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
