@@ -64,6 +64,7 @@
   - [Calendar](/components/calendar.md)
   - [Captcha](/components/captcha.md)
   - [Carousel](/components/carousel.md)
+  - [CascadeSelect](/components/cascadeselect.md)
   - [CellEditor](/components/celleditor.md)
   - [Chart](/components/chart.md)
   - [Chart.js](/components/charts.md)

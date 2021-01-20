@@ -3843,7 +3843,7 @@ body .ui-cascadeselect {
   border-radius: 3px; }
   body .ui-cascadeselect:not(.ui-state-disabled):hover {
     border-color: #81D4FA; }
-  body .ui-cascadeselect:not(.ui-state-disabled).p-focus {
+  body .ui-cascadeselect:not(.ui-state-disabled).ui-state-focus {
     border-color: #81D4FA;
     outline: 0 none;
     box-shadow: 0 0 0.1rem white; }
