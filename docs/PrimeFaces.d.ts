@@ -15528,7 +15528,7 @@ declare namespace PrimeFaces.widget {
         /**
          * Align the overlay panel with the available options.
          */
-        alignPanel(): void;
+        private alignPanel(): void;
         /**
          * Adjust the width of the overlay panel.
          */
@@ -15590,7 +15590,7 @@ declare namespace PrimeFaces.widget {
         /**
          * Brings up the overlay panel with the available options.
          */
-        private show(): void;
+        show(): void;
     }
 }
 declare namespace PrimeFaces.widget {
