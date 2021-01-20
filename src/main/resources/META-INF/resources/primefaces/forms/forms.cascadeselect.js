@@ -226,7 +226,6 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Brings up the overlay panel with the available options.
-     * @private
      */
     show: function() {
         this.panel.css({'display':'block', 'opacity':'0', 'pointer-events': 'none'});
@@ -273,6 +272,7 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Align the overlay panel with the available options.
+     * @private
      */
     alignPanel: function() {
         this.alignPanelWidth();
