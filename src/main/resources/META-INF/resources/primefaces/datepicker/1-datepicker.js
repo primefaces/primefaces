@@ -452,4 +452,37 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         pdp.panel.get(0).innerHTML = pdp.renderPanelElements();
     },
 
+    /**
+     * Shows the popup panel.
+     */
+    show: function() {
+        this.jq.data().primeDatePicker.showOverlay();
+    },
+
+    /**
+     * Hide the popup panel.
+     */
+    hide: function() {
+        this.jq.data().primeDatePicker.hideOverlay();
+    },
+
+    /**
+     * Enables the datepicker, so that the user can select a date.
+     */
+    enable: function() {
+        this.jq.data().primeDatePicker.options.disabled = false;
+        this.updatePanel();
+        this.input.prop('disabled', false).removeClass('ui-state-disabled');
+    },
+
+    /**
+     * Disables the datepicker, so that the user can no longer select any date.
+     */
+    disable: function() {
+        this.hide();
+        this.jq.data().primeDatePicker.options.disabled = true;
+        this.updatePanel();
+        this.input.prop('disabled', true).addClass('ui-state-disabled');
+    }
+
 });
