@@ -23,9 +23,11 @@
  */
 package org.primefaces.component.divider;
 
+import org.primefaces.model.menu.Separator;
+
 import javax.faces.component.UIComponentBase;
 
-public abstract class DividerBase extends UIComponentBase {
+public abstract class DividerBase extends UIComponentBase implements Separator {
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.DividerRenderer";
@@ -34,6 +36,7 @@ public abstract class DividerBase extends UIComponentBase {
         align,
         layout,
         type,
+        title,
         style,
         styleClass
     }
@@ -71,6 +74,7 @@ public abstract class DividerBase extends UIComponentBase {
         getStateHelper().put(PropertyKeys.type, type);
     }
 
+    @Override
     public String getStyle() {
         return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
@@ -79,11 +83,21 @@ public abstract class DividerBase extends UIComponentBase {
         getStateHelper().put(PropertyKeys.style, style);
     }
 
+    @Override
     public String getStyleClass() {
         return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+    @Override
+    public String getTitle() {
+        return (String) getStateHelper().eval(PropertyKeys.title, null);
+    }
+
+    public void setTitle(String title) {
+        getStateHelper().put(PropertyKeys.title, title);
     }
 }

@@ -23,6 +23,7 @@ Divider is used to separate contents.
 | align | null | String | Alignment of the content, options are "left", "center", "right" for horizontal layout and "top", "center", "bottom" for vertical.
 | layout | horizontal | String | Specifies the orientation, valid values are "horizontal" and "vertical".
 | type | solid | String | Border style type, default is "solid" and other options are "dashed" and "dotted".
+| title | null | String | Advisory tooltip information.
 | style | null | String | Style of the Divider.
 | styleClass | null | String | StyleClass of the Divider.
 
