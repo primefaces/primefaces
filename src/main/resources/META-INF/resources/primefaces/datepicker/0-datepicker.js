@@ -1145,6 +1145,13 @@
         renderPanelElements: function () {
             var elementsHtml = '';
 
+            if(this.options.disabled) {
+                this.panel.addClass('ui-state-disabled');
+            }
+            else {
+                this.panel.removeClass('ui-state-disabled');
+            }
+
             if (!this.options.timeOnly) {
                 if (this.options.view == 'date') {
                     elementsHtml += this.renderDateView();
@@ -1714,13 +1721,13 @@
                 this.datepickerClick = true;
             }
 
-            if (this.options.showOnFocus && !this.panel.is(':visible')) {
+            if (this.options.showOnFocus && !this.isPanelVisible()) {
                 this.showOverlay();
             }
         },
 
         onInputFocus: function (event) {
-            if (this.options.showOnFocus && !this.panel.is(':visible')) {
+            if (this.options.showOnFocus && !this.isPanelVisible()) {
                 this.showOverlay();
             }
 
@@ -1785,7 +1792,7 @@
         },
 
         onButtonClick: function (event) {
-            if (!this.panel.is(':visible')) {
+            if (!this.isPanelVisible()) {
                 this.inputfield.trigger('focus');
                 this.showOverlay();
             }
@@ -2034,28 +2041,30 @@
         },
 
         showOverlay: function () {
-            if (this.options.onBeforeShow) {
-                this.options.onBeforeShow.call(this);
-            }
+            if (!this.options.inline && !this.isPanelVisible()) {
+                if (this.options.onBeforeShow) {
+                    this.options.onBeforeShow.call(this);
+                }
 
-            this.panel.show();
-            this.alignPanel();
+                this.panel.show();
+                this.alignPanel();
 
-            if (!this.options.touchUI) {
-                var $this = this;
-                setTimeout(function () {
-                    $this.bindDocumentClickListener();
-                    $this.bindWindowResizeListener();
-                }, 10);
-            }
+                if (!this.options.touchUI) {
+                    var $this = this;
+                    setTimeout(function () {
+                        $this.bindDocumentClickListener();
+                        $this.bindWindowResizeListener();
+                    }, 10);
+                }
 
-            if ((this.options.showTime || this.options.timeOnly) && this.options.timeInput) {
-                this.panel.find('.ui-hour-picker input').trigger('focus');
+                if ((this.options.showTime || this.options.timeOnly) && this.options.timeInput) {
+                    this.panel.find('.ui-hour-picker input').trigger('focus');
+                }
             }
         },
 
         hideOverlay: function () {
-            if (this.isPanelVisible()) {
+            if (!this.options.inline && this.isPanelVisible()) {
                 if (this.options.onBeforeHide) {
                     this.options.onBeforeHide.call(this);
                 }
@@ -2114,7 +2123,7 @@
         },
 
         isPanelVisible: function () {
-           return this.panel && this.panel.is(":visible");
+           return !this.options.disabled && this.panel && this.panel.is(":visible");
         },
 
         isDate: function (value) {
