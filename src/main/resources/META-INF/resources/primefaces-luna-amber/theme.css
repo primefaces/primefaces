@@ -1293,12 +1293,12 @@ body .ui-picklist .ui-picklist-list {
       body .ui-picklist .ui-picklist-list .ui-picklist-item.ui-state-highlight.ui-sortable-placeholder {
         background-color: #ffcd35; }
 @media (max-width: 640px) {
-  body .ui-picklist .ui-picklist-buttons .ui-button {
+  body .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .ui-button {
     margin-top: 0.5rem;
     margin-right: 0.5rem; }
-    body .ui-picklist .ui-picklist-buttons .ui-button:last-child {
+    body .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .ui-button:last-child {
       margin-right: 0; }
-    body .ui-picklist .ui-picklist-buttons .ui-button .ui-icon-arrow-1-e {
+    body .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .ui-button .ui-icon-arrow-1-e {
       font-family: 'primeicons' !important;
       speak: none;
       font-style: normal;
@@ -1310,9 +1310,9 @@ body .ui-picklist .ui-picklist-list {
       -moz-osx-font-smoothing: grayscale;
       text-indent: 0 !important;
       background-image: none !important; }
-      body .ui-picklist .ui-picklist-buttons .ui-button .ui-icon-arrow-1-e:before {
+      body .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .ui-button .ui-icon-arrow-1-e:before {
         content: ""; }
-    body .ui-picklist .ui-picklist-buttons .ui-button .ui-icon-arrowstop-1-e {
+    body .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .ui-button .ui-icon-arrowstop-1-e {
       font-family: 'primeicons' !important;
       speak: none;
       font-style: normal;
@@ -1324,9 +1324,9 @@ body .ui-picklist .ui-picklist-list {
       -moz-osx-font-smoothing: grayscale;
       text-indent: 0 !important;
       background-image: none !important; }
-      body .ui-picklist .ui-picklist-buttons .ui-button .ui-icon-arrowstop-1-e:before {
+      body .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .ui-button .ui-icon-arrowstop-1-e:before {
         content: ""; }
-    body .ui-picklist .ui-picklist-buttons .ui-button .ui-icon-arrow-1-w {
+    body .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .ui-button .ui-icon-arrow-1-w {
       font-family: 'primeicons' !important;
       speak: none;
       font-style: normal;
@@ -1338,9 +1338,9 @@ body .ui-picklist .ui-picklist-list {
       -moz-osx-font-smoothing: grayscale;
       text-indent: 0 !important;
       background-image: none !important; }
-      body .ui-picklist .ui-picklist-buttons .ui-button .ui-icon-arrow-1-w:before {
+      body .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .ui-button .ui-icon-arrow-1-w:before {
         content: ""; }
-    body .ui-picklist .ui-picklist-buttons .ui-button .ui-icon-arrowstop-1-w {
+    body .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .ui-button .ui-icon-arrowstop-1-w {
       font-family: 'primeicons' !important;
       speak: none;
       font-style: normal;
@@ -1352,7 +1352,7 @@ body .ui-picklist .ui-picklist-list {
       -moz-osx-font-smoothing: grayscale;
       text-indent: 0 !important;
       background-image: none !important; }
-      body .ui-picklist .ui-picklist-buttons .ui-button .ui-icon-arrowstop-1-w:before {
+      body .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .ui-button .ui-icon-arrowstop-1-w:before {
         content: ""; }
   body .ui-picklist.ui-picklist-responsive > div.ui-helper-hidden-accessible {
     display: none; } }
