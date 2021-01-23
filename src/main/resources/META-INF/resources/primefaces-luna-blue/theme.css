@@ -1265,6 +1265,7 @@ body .ui-picklist .ui-picklist-filter-container .ui-icon {
   position: absolute;
   left: 0.429rem;
   top: 50%;
+  right: auto;
   margin-top: -0.75rem;
   color: #888888; }
   body .ui-picklist .ui-picklist-filter-container .ui-icon:before {
