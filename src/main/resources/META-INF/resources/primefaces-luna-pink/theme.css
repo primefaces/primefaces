@@ -4854,6 +4854,28 @@ body .ui-breadcrumb {
       color: #dedede; }
       body .ui-breadcrumb ul li.ui-breadcrumb-chevron:before {
         content: ""; }
+    body .ui-breadcrumb ul li:not(.ui-breadcrumb-chevron) {
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-align: center;
+      align-items: center; }
+      body .ui-breadcrumb ul li:not(.ui-breadcrumb-chevron):before {
+        content: "";
+        font-family: 'primeicons' !important;
+        speak: none;
+        font-style: normal;
+        font-weight: normal;
+        font-variant: normal;
+        text-transform: none;
+        display: inline-block;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-indent: 0 !important;
+        background-image: none !important;
+        margin: 0 0.5rem 0 0.5rem;
+        color: #dedede; }
+    body .ui-breadcrumb ul li:first-child:not(.ui-breadcrumb-chevron):before {
+      display: none; }
     body .ui-breadcrumb ul li:first-child a.ui-icon-home {
       font-family: 'primeicons' !important;
       speak: none;
@@ -4900,6 +4922,28 @@ body .ui-breadcrumb {
     color: #dedede; }
     body .ui-breadcrumb .ui-breadcrumb-items li.ui-breadcrumb-chevron:before {
       content: ""; }
+  body .ui-breadcrumb .ui-breadcrumb-items li:not(.ui-breadcrumb-chevron) {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center; }
+    body .ui-breadcrumb .ui-breadcrumb-items li:not(.ui-breadcrumb-chevron):before {
+      content: "";
+      font-family: 'primeicons' !important;
+      speak: none;
+      font-style: normal;
+      font-weight: normal;
+      font-variant: normal;
+      text-transform: none;
+      display: inline-block;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-indent: 0 !important;
+      background-image: none !important;
+      margin: 0 0.5rem 0 0.5rem;
+      color: #dedede; }
+  body .ui-breadcrumb .ui-breadcrumb-items li:first-child:not(.ui-breadcrumb-chevron):before {
+    display: none; }
   body .ui-breadcrumb .ui-breadcrumb-items li:first-child a.ui-icon-home {
     font-family: 'primeicons' !important;
     speak: none;
