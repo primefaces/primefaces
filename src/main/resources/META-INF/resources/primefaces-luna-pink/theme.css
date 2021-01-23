@@ -2795,6 +2795,11 @@ body .ui-selectonemenu-panel {
         content: ""; }
   body .ui-selectonemenu-panel .ui-selectonemenu-items {
     padding: 0; }
+    body .ui-selectonemenu-panel .ui-selectonemenu-items.ui-selectonemenu-table > thead tr th {
+      background: #191919;
+      border: 1px solid #191919;
+      color: #dedede;
+      font-weight: 700; }
     body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item {
       margin: 0;
       padding: 0.429rem 0.857rem;
@@ -2803,12 +2808,6 @@ body .ui-selectonemenu-panel {
       outline: 0 none;
       border-radius: 0;
       transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s; }
-      body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-state-hover {
-        background: #4c4c4c;
-        color: #dedede; }
-      body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-state-highlight {
-        background: #F48FB1;
-        color: #212529; }
       body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-selectonemenu-row {
         background: #323232;
         color: #dedede;
@@ -2817,6 +2816,12 @@ body .ui-selectonemenu-panel {
           padding: 0.571rem 0.857rem; }
         body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-selectonemenu-row:first-child {
           border-top-color: transparent; }
+      body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-state-hover {
+        background: #4c4c4c;
+        color: #dedede; }
+      body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-state-highlight {
+        background: #F48FB1;
+        color: #212529; }
     body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item-group {
       background: #191919;
       margin: 0;

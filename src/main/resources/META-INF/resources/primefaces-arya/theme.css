@@ -2791,6 +2791,11 @@ body .ui-selectonemenu-panel {
         content: ""; }
   body .ui-selectonemenu-panel .ui-selectonemenu-items {
     padding: 0.5rem 0; }
+    body .ui-selectonemenu-panel .ui-selectonemenu-items.ui-selectonemenu-table > thead tr th {
+      background: #1e1e1e;
+      border: 1px solid #383838;
+      color: rgba(255, 255, 255, 0.87);
+      font-weight: 700; }
     body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item {
       margin: 0;
       padding: 0.5rem 1rem;
@@ -2799,12 +2804,6 @@ body .ui-selectonemenu-panel {
       outline: 0 none;
       border-radius: 0;
       transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s; }
-      body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-state-hover {
-        background: rgba(255, 255, 255, 0.03);
-        color: rgba(255, 255, 255, 0.87); }
-      body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-state-highlight {
-        background: rgba(100, 181, 246, 0.16);
-        color: rgba(255, 255, 255, 0.87); }
       body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-selectonemenu-row {
         background: #1e1e1e;
         color: rgba(255, 255, 255, 0.87);
@@ -2813,6 +2812,12 @@ body .ui-selectonemenu-panel {
           padding: 1rem 1rem; }
         body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-selectonemenu-row:first-child {
           border-top-color: transparent; }
+      body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-state-hover {
+        background: rgba(255, 255, 255, 0.03);
+        color: rgba(255, 255, 255, 0.87); }
+      body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-state-highlight {
+        background: rgba(100, 181, 246, 0.16);
+        color: rgba(255, 255, 255, 0.87); }
     body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item-group {
       background: #1e1e1e;
       margin: 0;

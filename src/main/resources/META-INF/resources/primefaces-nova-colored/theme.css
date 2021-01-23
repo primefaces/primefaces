@@ -2791,6 +2791,11 @@ body .ui-selectonemenu-panel {
         content: ""; }
   body .ui-selectonemenu-panel .ui-selectonemenu-items {
     padding: 0; }
+    body .ui-selectonemenu-panel .ui-selectonemenu-items.ui-selectonemenu-table > thead tr th {
+      background: #007ad9;
+      border: 1px solid #c8c8c8;
+      color: #ffffff;
+      font-weight: 700; }
     body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item {
       margin: 0;
       padding: 0.429rem 0.857rem;
@@ -2799,12 +2804,6 @@ body .ui-selectonemenu-panel {
       outline: 0 none;
       border-radius: 0;
       transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s; }
-      body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-state-hover {
-        background: #eaeaea;
-        color: #333333; }
-      body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-state-highlight {
-        background: #e02365;
-        color: #ffffff; }
       body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-selectonemenu-row {
         background: #ffffff;
         color: #333333;
@@ -2813,6 +2812,12 @@ body .ui-selectonemenu-panel {
           padding: 0.571rem 0.857rem; }
         body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-selectonemenu-row:first-child {
           border-top-color: transparent; }
+      body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-state-hover {
+        background: #eaeaea;
+        color: #333333; }
+      body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-state-highlight {
+        background: #e02365;
+        color: #ffffff; }
     body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item-group {
       background: #f4f4fe;
       margin: 0;
