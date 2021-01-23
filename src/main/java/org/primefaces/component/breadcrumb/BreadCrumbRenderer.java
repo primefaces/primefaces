@@ -44,8 +44,10 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
         ResponseWriter writer = context.getResponseWriter();
         BreadCrumb breadCrumb = (BreadCrumb) menu;
         String clientId = breadCrumb.getClientId(context);
-        String styleClass = breadCrumb.getStyleClass();
-        styleClass = styleClass == null ? BreadCrumb.CONTAINER_CLASS : BreadCrumb.CONTAINER_CLASS + " " + styleClass;
+        String styleClass = getStyleClassBuilder(context)
+                    .add(BreadCrumb.CONTAINER_CLASS)
+                    .add(breadCrumb.getStyleClass())
+                    .build();
         int elementCount = menu.getElementsCount();
         List<MenuElement> menuElements = menu.getElements();
         boolean isIconHome = breadCrumb.getHomeDisplay().equals("icon");
@@ -74,13 +76,6 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
 
                 if (element.isRendered() && element instanceof MenuItem) {
                     MenuItem item = (MenuItem) element;
-
-                    //dont render chevron before home icon
-                    if (i != 0) {
-                        writer.startElement("li", null);
-                        writer.writeAttribute("class", BreadCrumb.CHEVRON_CLASS, null);
-                        writer.endElement("li");
-                    }
 
                     writer.startElement("li", null);
 
@@ -133,9 +128,11 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         String style = menuItem.getStyle();
-        String styleClass = menuItem.getStyleClass();
-        styleClass = styleClass == null ? BreadCrumb.MENUITEM_LINK_CLASS : BreadCrumb.MENUITEM_LINK_CLASS + " " + styleClass;
-        styleClass += " ui-state-disabled";
+        String styleClass = getStyleClassBuilder(context)
+                    .add(BreadCrumb.MENUITEM_LINK_CLASS)
+                    .add(menuItem.getStyleClass())
+                    .add("ui-state-disabled")
+                    .build();
 
         writer.startElement("span", null); // outer span
         writer.writeAttribute("class", styleClass, null);
