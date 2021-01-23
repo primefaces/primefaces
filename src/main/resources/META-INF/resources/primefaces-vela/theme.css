@@ -2500,6 +2500,8 @@ body .ui-chkbox {
       color: #212529; }
       body .ui-chkbox .ui-chkbox-box.ui-state-active.ui-state-hover {
         background: #6bb8f7; }
+    body .ui-chkbox .ui-chkbox-box.ui-state-error {
+      border-color: #ef9a9a; }
     body .ui-chkbox .ui-chkbox-box .ui-chkbox-icon {
       overflow: visible;
       position: absolute;
@@ -2575,6 +2577,8 @@ body .ui-radiobutton {
         background: #6bb8f7; }
       body .ui-radiobutton .ui-radiobutton-box.ui-state-active .ui-icon-bullet {
         background: #212529; }
+    body .ui-radiobutton .ui-radiobutton-box.ui-state-error {
+      border-color: #ef9a9a; }
     body .ui-radiobutton .ui-radiobutton-box .ui-radiobutton-icon {
       width: 12px;
       height: 12px;
