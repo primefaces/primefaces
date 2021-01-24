@@ -10,7 +10,11 @@ This page contains a list of big features. Please check the GitHub issues for al
   * FileDownload: supports AJAX (so `ajax="false"` is not required anymore) (see https://primefaces.github.io/primefaces/10_0_0/#/components/filedownload?id=ajax-downloading)
   * MultiViewState: supports client window mode (see https://primefaces.github.io/primefaces/10_0_0/#/core/multiviewstate)
   * Prime Client Window: improved implementation of JSF Client Window mode (see https://primefaces.github.io/primefaces/10_0_0/#/core/clientwindow)
-  * DatePicker: added (lazy) metamodel to set disabled and style class (see https://primefaces.github.io/primefaces/10_0_0/#/components/datepicker?id=date-metadata-model)
+  * DatePicker
+    * added (lazy) metamodel to set disabled and style class (see https://primefaces.github.io/primefaces/10_0_0/#/components/datepicker?id=date-metadata-model)
+    * new attribute `inputTime` - allows direct input in time field
+    * support for a mask - attributes `mask`, `maskAutoClear`, `maskSlotChar`
+    * showTime- and timeOnly-attributes are detected automatically based on value-bindings to LocalDateTime respectively LocalTime.
   * Audio: new component (see https://primefaces.github.io/primefaces/10_0_0/#/components/audio)
   * Video: new component (see https://primefaces.github.io/primefaces/10_0_0/#/components/video)
   * Observer/Event based p:autoUpdate, inspired by https://github.com/encoway/edu
