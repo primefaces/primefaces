@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,18 +23,22 @@
  */
 package org.primefaces.component.datatable.export;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.util.List;
+
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.EscapeUtils;
-
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import java.io.*;
-import java.util.List;
+import org.primefaces.util.LangUtils;
 
 public class DataTableXMLExporter extends DataTableExporter {
 
@@ -138,7 +142,10 @@ public class DataTableXMLExporter extends DataTableExporter {
 
         writer.append("\t\t<" + tag + ">");
 
-        if (column.getExportFunction() != null) {
+        if (LangUtils.isNotBlank(column.getExportValue())) {
+            writer.append(EscapeUtils.forXml(column.getExportValue()));
+        }
+        else if (column.getExportFunction() != null) {
             writer.append(EscapeUtils.forXml(exportColumnByFunction(context, column)));
         }
         else {

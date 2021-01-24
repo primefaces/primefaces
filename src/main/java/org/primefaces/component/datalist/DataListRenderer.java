@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -85,7 +85,7 @@ public class DataListRenderer extends DataRenderer {
         boolean hasPaginator = list.isPaginator();
         boolean empty = (list.getRowCount() == 0);
         String paginatorPosition = list.getPaginatorPosition();
-        String styleClass = list.getStyleClass() == null ? DataList.DATALIST_CLASS : DataList.DATALIST_CLASS + " " + list.getStyleClass();
+        String styleClass = getStyleClassBuilder(context).add(DataList.DATALIST_CLASS).add(list.getStyleClass()).build();
         String style = list.getStyle();
 
         if (hasPaginator) {
@@ -101,7 +101,7 @@ public class DataListRenderer extends DataRenderer {
 
         encodeFacet(context, list, "header", DataList.HEADER_CLASS);
 
-        if (hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
+        if (hasPaginator && !"bottom".equalsIgnoreCase(paginatorPosition)) {
             encodePaginatorMarkup(context, list, "top");
         }
 
@@ -126,7 +126,7 @@ public class DataListRenderer extends DataRenderer {
 
         writer.endElement("div");
 
-        if (hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
+        if (hasPaginator && !"top".equalsIgnoreCase(paginatorPosition)) {
             encodePaginatorMarkup(context, list, "bottom");
         }
 
@@ -163,7 +163,7 @@ public class DataListRenderer extends DataRenderer {
         boolean renderDefinition = isDefinition && ComponentUtils.shouldRenderFacet(definitionFacet);
         String itemType = list.getItemType();
         String listClass = DataList.LIST_CLASS;
-        if (itemType != null && itemType.equals("none")) {
+        if ("none".equals(itemType)) {
             listClass = listClass + " " + DataList.NO_BULLETS_CLASS;
         }
 
@@ -179,8 +179,7 @@ public class DataListRenderer extends DataRenderer {
 
         list.forEachRow((status) -> {
             try {
-                String itemStyleClass = list.getItemStyleClass();
-                itemStyleClass = (itemStyleClass == null) ? DataList.LIST_ITEM_CLASS : DataList.LIST_ITEM_CLASS + " " + itemStyleClass;
+                String itemStyleClass = getStyleClassBuilder(context).add(DataList.LIST_ITEM_CLASS, list.getItemStyleClass()).build();
 
                 writer.startElement(listItemTag, null);
                 writer.writeAttribute("class", itemStyleClass, null);

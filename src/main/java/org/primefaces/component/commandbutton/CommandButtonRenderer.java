@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -68,7 +68,7 @@ public class CommandButtonRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = button.getClientId(context);
         String type = button.getType();
-        boolean pushButton = (type.equals("reset") || type.equals("button"));
+        boolean pushButton = ("reset".equals(type) || "button".equals(type));
         Object value = button.getValue();
         String icon = button.getIcon();
         String title = button.getTitle();

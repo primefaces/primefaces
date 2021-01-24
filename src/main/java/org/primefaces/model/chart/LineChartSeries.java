@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,9 +35,9 @@ public class LineChartSeries extends ChartSeries {
     private String markerStyle = "filledCircle";
     private boolean showLine = true;
     private boolean showMarker = true;
-    private boolean fill = false;
+    private boolean fill;
     private double fillAlpha = 1;
-    private boolean smoothLine = false;
+    private boolean smoothLine;
     private boolean disableStack;
 
     public LineChartSeries() {

@@ -111,18 +111,6 @@
     float: left;
 }
 
-.ui-treetable-scrollable-body::-webkit-scrollbar {
-    -webkit-appearance: none;
-    width: 15px;
-    background-color: transparent;
-}
-
-.ui-treetable-scrollable-body::-webkit-scrollbar-thumb {
-    border-radius: 8px;
-    border: 1px solid white;
-    background-color: rgba(194,194,194,.5);
-}
-
 .ui-treetable .ui-sortable-column {
     cursor: pointer;
 }
@@ -266,3 +254,14 @@
 .ui-treetable .ui-treetable-data td.ui-cell-editing:first-child {
     padding-left: 10px;
 } 
+
+/* Multiple sort number badges */
+.ui-treetable .ui-sortable-column-badge {
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    vertical-align: middle;
+}

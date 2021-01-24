@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,6 @@
 package org.primefaces.component.datatable.feature;
 
 import org.primefaces.PrimeFaces;
-import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
@@ -36,9 +35,14 @@ import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.faces.model.ListDataModel;
 import java.io.IOException;
+import java.text.Collator;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import javax.el.ValueExpression;
+import org.primefaces.component.api.DynamicColumn;
+import org.primefaces.component.headerrow.HeaderRow;
 
 public class SortFeature implements DataTableFeature {
 
@@ -140,35 +144,100 @@ public class SortFeature implements DataTableFeature {
 
         List<?> list = resolveList(value);
         Locale locale = table.resolveDataLocale();
+        String var = table.getVar();
+        Collator collator = Collator.getInstance(locale);
+        AtomicInteger comparisonResult = new AtomicInteger();
+        Map<String, SortMeta> sortBy = table.getActiveSortMeta();
 
-        if (table.isMultiSort()) {
-            Map<String, SortMeta> sortedMeta = table.getSortByAsMap().entrySet().stream()
-                    .sorted(Map.Entry.comparingByValue())
-                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (o1, o2) -> o1, LinkedHashMap::new));
-            table.setSortByAsMap(sortedMeta);
-        }
+        Object varBackup = context.getExternalContext().getRequestMap().get(var);
 
-        ChainedBeanPropertyComparator chainedComparator = new ChainedBeanPropertyComparator();
+        list.sort((o1, o2) -> {
+            for (SortMeta sortMeta : sortBy.values()) {
+                comparisonResult.set(0);
 
-        for (SortMeta meta : table.getSortByAsMap().values()) {
-            if (!meta.isActive()) {
-                continue;
+                if (sortMeta.getComponent() instanceof HeaderRow) {
+                    int result = compare(context, var, sortMeta, o1, o2, collator, locale);
+                    comparisonResult.set(result);
+                }
+                else {
+                    // Currently ColumnGrouping supports ui:repeat, therefore we have to use a callback
+                    // and can't use sortMeta.getComponent()
+                    // Later when we refactored ColumnGrouping, we may remove #invokeOnColumn as we dont support ui:repeat in other cases
+                    table.invokeOnColumn(sortMeta.getColumnKey(), column -> {
+                        if (column instanceof DynamicColumn) {
+                            ((DynamicColumn) column).applyStatelessModel();
+                        }
+
+                        int result = compare(context, var, sortMeta, o1, o2, collator, locale);
+                        comparisonResult.set(result);
+                    });
+                }
+
+                if (comparisonResult.get() != 0) {
+                    return comparisonResult.get();
+                }
             }
 
-            BeanPropertyComparator comparator;
-            Object source = meta.getComponent();
+            return 0;
+        });
 
-            if (source instanceof DynamicColumn) {
-                comparator = new DynamicBeanPropertyComparator(table.getVar(), meta, locale);
+        if (varBackup == null) {
+            context.getExternalContext().getRequestMap().remove(var);
+        }
+        else {
+            context.getExternalContext().getRequestMap().put(var, varBackup);
+        }
+    }
+
+    protected int compare(FacesContext context, String var, SortMeta sortMeta, Object o1, Object o2,
+            Collator collator, Locale locale) {
+
+        try {
+            ValueExpression ve = sortMeta.getSortBy();
+
+            context.getExternalContext().getRequestMap().put(var, o1);
+            Object value1 = ve.getValue(context.getELContext());
+
+            context.getExternalContext().getRequestMap().put(var, o2);
+            Object value2 = ve.getValue(context.getELContext());
+
+            int result;
+
+            if (sortMeta.getFunction() == null) {
+                //Empty check
+                if (value1 == null && value2 == null) {
+                    result = 0;
+                }
+                else if (value1 == null) {
+                    result = sortMeta.getNullSortOrder();
+                }
+                else if (value2 == null) {
+                    result = -1 * sortMeta.getNullSortOrder();
+                }
+                else if (value1 instanceof String && value2 instanceof String) {
+                    if (sortMeta.isCaseSensitiveSort()) {
+                        result = collator.compare(value1, value2);
+                    }
+                    else {
+                        String str1 = (((String) value1).toLowerCase(locale));
+                        String str2 = (((String) value2).toLowerCase(locale));
+
+                        result = collator.compare(str1, str2);
+                    }
+                }
+                else {
+                    result = ((Comparable<Object>) value1).compareTo(value2);
+                }
             }
             else {
-                comparator = new BeanPropertyComparator(table.getVar(), meta, locale);
+                result = (Integer) sortMeta.getFunction().invoke(context.getELContext(), new Object[]{value1, value2});
             }
 
-            chainedComparator.addComparator(comparator);
+            return sortMeta.getOrder().isAscending() ? result : -1 * result;
         }
-
-        list.sort(chainedComparator);
+        catch (Exception e) {
+            throw new FacesException(e);
+        }
     }
 
     @Override

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,8 +31,8 @@ public class BarChartModel extends CartesianChartModel {
 
     private int barPadding = 8;
     private int barMargin = 10;
-    private int barWidth = 0;
-    private boolean stacked = false;
+    private int barWidth;
+    private boolean stacked;
 
     @Override
     public void createAxes() {

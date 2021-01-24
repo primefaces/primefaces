@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,14 +32,14 @@ public class RangeFilterConstraint implements FilterConstraint {
     @Override
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
         if (!(filter instanceof List) || ((List<?>) filter).size() != 2) {
-            throw new IllegalArgumentException("Filter expects a " + List.class.getName() + " with a size equals to 2");
+            return false;
         }
 
         if (value instanceof Comparable) {
             return isInRange((Comparable) value, (List) filter);
         }
 
-        throw new UnsupportedOperationException("Unsupported type: " + value.getClass() + ". Supported type: " + Comparable.class.getName());
+        throw new IllegalArgumentException("Invalid type: " + value.getClass() + ". Valid type: " + Comparable.class.getName());
     }
 
     protected boolean isInRange(Comparable value, List filter) {

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,6 +40,28 @@ public interface UIColumn {
     String getContainerClientId(FacesContext context);
 
     String getColumnKey();
+
+    /**
+     * Special {@link #getColumnKey()} method which must be used when we are inside e.g.
+     * the DataTable "row state".
+     *
+     * @param parent
+     * @param rowIndex
+     * @return
+     */
+    default String getColumnKey(UIComponent parent, int rowIndex) {
+        return getColumnKey(parent, String.valueOf(rowIndex));
+    }
+
+    /**
+     * Special {@link #getColumnKey()} method which must be used when we are inside e.g.
+     * the DataTable "row state".
+     *
+     * @param parent
+     * @param rowKey
+     * @return
+     */
+    String getColumnKey(UIComponent parent, String rowKey);
 
     String getClientId();
 
@@ -107,7 +129,7 @@ public interface UIColumn {
 
     String getField();
 
-    int getPriority();
+    int getResponsivePriority();
 
     boolean isSortable();
 
@@ -120,6 +142,8 @@ public interface UIColumn {
     String getAriaHeaderText();
 
     MethodExpression getExportFunction();
+
+    String getExportValue();
 
     boolean isGroupRow();
 
@@ -134,4 +158,6 @@ public interface UIColumn {
     int getNullSortOrder();
 
     boolean isCaseSensitiveSort();
+
+    int getDisplayPriority();
 }

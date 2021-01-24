@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -56,6 +56,8 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
         height,
         minHeight,
         maxHeight,
+        horizontalScroll,
+        verticalScroll,
         width,
         responsive,
         orientationAxis,
@@ -73,6 +75,7 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
         end,
         min,
         max,
+        zoomKey,
         zoomMin,
         zoomMax,
         preloadFactor,
@@ -101,7 +104,6 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
         extender
     }
 
-    @SuppressWarnings("OverridableMethodCallInConstructor")
     public TimelineBase() {
         setRendererType(DEFAULT_RENDERER);
     }
@@ -212,6 +214,22 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
         getStateHelper().put(PropertyKeys.maxHeight, maxHeight);
     }
 
+    public boolean isHorizontalScroll() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.horizontalScroll, false);
+    }
+
+    public void setHorizontalScroll(boolean horizontalScroll) {
+        getStateHelper().put(PropertyKeys.horizontalScroll, horizontalScroll);
+    }
+
+    public boolean isVerticalScroll() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.verticalScroll, false);
+    }
+
+    public void setVerticalScroll(boolean verticalScroll) {
+        getStateHelper().put(PropertyKeys.verticalScroll, verticalScroll);
+    }
+
     public String getWidth() {
         return (String) getStateHelper().eval(PropertyKeys.width, "100%");
     }
@@ -226,17 +244,6 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
 
     public void setResponsive(boolean responsive) {
         getStateHelper().put(PropertyKeys.responsive, responsive);
-    }
-
-    @Deprecated
-    public boolean isAxisOnTop() {
-        String orientationAxis = getOrientationAxis();
-        return "top".equals(orientationAxis);
-    }
-
-    @Deprecated
-    public void setAxisOnTop(boolean axisOnTop) {
-        setOrientationAxis(axisOnTop ? "top" : "bottom");
     }
 
     public String getOrientationAxis() {
@@ -359,6 +366,14 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
         getStateHelper().put(PropertyKeys.max, max);
     }
 
+    public String getZoomKey() {
+        return (String) getStateHelper().eval(PropertyKeys.zoomKey, null);
+    }
+
+    public void setZoomKey(String zoomKey) {
+        getStateHelper().put(PropertyKeys.zoomKey, zoomKey);
+    }
+
     public Long getZoomMin() {
         return (Long) getStateHelper().eval(PropertyKeys.zoomMin, 10L);
     }
@@ -423,16 +438,6 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
         getStateHelper().put(PropertyKeys.eventStyle, eventStyle);
     }
 
-    @Deprecated
-    public boolean isGroupsChangeable() {
-        return isEditableGroup();
-    }
-
-    @Deprecated
-    public void setGroupsChangeable(boolean groupsChangeable) {
-        setEditableGroup(groupsChangeable);
-    }
-
     public boolean isGroupsOrder() {
         return (Boolean) getStateHelper().eval(PropertyKeys.groupsOrder, true);
     }
@@ -455,16 +460,6 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
 
     public String setSnap(String snap) {
         return (String) getStateHelper().put(PropertyKeys.snap, snap);
-    }
-
-    @Deprecated
-    public boolean isSnapEvents() {
-        return getSnap() == null;
-    }
-
-    @Deprecated
-    public void setSnapEvents(boolean snapEvents) {
-        setSnap(snapEvents ? null : "null");
     }
 
     public boolean isStackEvents() {
@@ -497,16 +492,6 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
 
     public void setShowMinorLabels(boolean showMinorLabels) {
         getStateHelper().put(PropertyKeys.showMinorLabels, showMinorLabels);
-    }
-
-    @Deprecated
-    public boolean isTimeChangeable() {
-        return isEditableTime();
-    }
-
-    @Deprecated
-    public void setTimeChangeable(boolean timeChangeable) {
-        setEditableTime(timeChangeable);
     }
 
     public boolean isClickToUse() {

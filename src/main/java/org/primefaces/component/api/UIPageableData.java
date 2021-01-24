@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@ package org.primefaces.component.api;
 
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.el.ValueExpressionAnalyzer;
+import org.primefaces.util.MessageFactory;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
@@ -64,6 +65,7 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
     public static final String ARIA_NEXT_PAGE_LABEL = "primefaces.paginator.aria.NEXT_PAGE";
     public static final String ARIA_LAST_PAGE_LABEL = "primefaces.paginator.aria.LAST_PAGE";
     public static final String ROWS_PER_PAGE_LABEL = "primefaces.paginator.aria.ROWS_PER_PAGE";
+    public static final String EMPTY_MESSAGE = "primefaces.data.EMPTY_MESSAGE";
 
     public enum PropertyKeys {
         rows, // #5068
@@ -76,10 +78,19 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
         pageLinks,
         paginatorPosition,
         paginatorAlwaysVisible,
+        emptyMessage
     }
 
     protected enum InternalPropertyKeys {
         rowsInitialValue;
+    }
+
+    public String getEmptyMessage() {
+        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, MessageFactory.getMessage(EMPTY_MESSAGE));
+    }
+
+    public void setEmptyMessage(String emptyMessage) {
+        getStateHelper().put(PropertyKeys.emptyMessage, emptyMessage);
     }
 
     @Override

@@ -1,0 +1,15 @@
+.ui-tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ui-tag-icon,
+.ui-tag-value,
+.ui-tag-icon.pi {
+    line-height: 1.5;
+}
+
+.ui-tag.ui-tag-rounded {
+    border-radius: 10rem;
+}

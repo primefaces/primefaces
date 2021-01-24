@@ -391,13 +391,68 @@ if (!PrimeFaces.utils) {
         },
 
         /**
+         * Registers a callback that is invoked when a scroll event is triggered on The DOM element for the widget that has a connected overlay.
+         * @param {PrimeFaces.widget.BaseWidget} widget A widget instance for which to register a scroll handler.
+         * @param {string} scrollNamespace A scroll event with a namespace, such as `scroll.widgetId`.
+         * @param {(event: JQuery.Event) => void} scrollCallback A callnback that is invoked when a scroll event occurs
+         * on the widget.
+         */
+        registerConnectedOverlayScrollHandler: function(widget, scrollNamespace, scrollCallback) {
+            var element = widget.getJQ().get(0);
+            var scrollableParents = [];
+            var getParents = function(element, parents) {
+                return element['parentNode'] === null ? parents : getParents(element.parentNode, parents.concat([element.parentNode]));
+            };
+            
+            if (element) {
+                var parents = getParents(element, []);
+                var overflowRegex = /(auto|scroll)/;
+                var overflowCheck = function(node) {
+                    var styleDeclaration = window['getComputedStyle'](node, null);
+                    return overflowRegex.test(styleDeclaration.getPropertyValue('overflow')) || overflowRegex.test(styleDeclaration.getPropertyValue('overflowX')) || overflowRegex.test(styleDeclaration.getPropertyValue('overflowY'));
+                };
+    
+                for (var i = 0; i < parents.length; i++) {
+                    var parent = parents[i];
+                    var scrollSelectors = parent.nodeType === 1 && parent.dataset['scrollselectors'];
+                    if (scrollSelectors) {
+                        var selectors = scrollSelectors.split(',');
+                        for (var j = 0; j < selectors.length; j++) {
+                            var selector = selectors[j];
+                            var el = parent.querySelector(selector);
+                            if (el && overflowCheck(el)) {
+                                scrollableParents.push(el);
+                            }
+                        }
+                    }
+    
+                    if (parent.nodeType !== 9 && overflowCheck(parent)) {
+                        scrollableParents.push(parent);
+                    }
+                }
+            }
+
+            for (var i = 0; i < scrollableParents.length; i++) {
+                var scrollParent = $(scrollableParents[i]);
+
+                widget.addDestroyListener(function() {
+                    scrollParent.off(scrollNamespace);
+                });
+    
+                scrollParent.off(scrollNamespace).on(scrollNamespace, function(e) {
+                    scrollCallback(e);
+                });
+            }
+        },
+
+        /**
          * Removes a scroll handler as registered by `PrimeFaces.utils.registerScrollHandler`.
          * @param {PrimeFaces.widget.BaseWidget} widget A widget instance for which a scroll handler was registered.
          * @param {string} scrollNamespace A scroll event with a namespace, such as `scroll.widgetId`.
          */
         unbindScrollHandler: function(widget, scrollNamespace) {
             var scrollParent = widget.getJQ().scrollParent();
-            if (scrollParent.is('body') || scrollParent.is('html')) {
+            if (scrollParent.is('body') || scrollParent.is('html') || scrollParent[0].nodeType === 9) { // nodeType 9 is for document element
                 scrollParent = $(window);
             }
 

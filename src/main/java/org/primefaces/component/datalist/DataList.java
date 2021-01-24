@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -87,16 +87,16 @@ public class DataList extends DataListBase {
     public String getListTag() {
         String type = getType();
 
-        if (type.equalsIgnoreCase("unordered")) {
+        if ("unordered".equalsIgnoreCase(type)) {
             return "ul";
         }
-        else if (type.equalsIgnoreCase("ordered")) {
+        else if ("ordered".equalsIgnoreCase(type)) {
             return "ol";
         }
-        else if (type.equalsIgnoreCase("definition")) {
+        else if ("definition".equalsIgnoreCase(type)) {
             return "dl";
         }
-        else if (type.equalsIgnoreCase("none")) {
+        else if ("none".equalsIgnoreCase(type)) {
             return null;
         }
         else {
@@ -136,7 +136,7 @@ public class DataList extends DataListBase {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-            if (eventName.equals("page")) {
+            if ("page".equals(eventName)) {
                 String clientId = getClientId(context);
                 int rows = getRowsToRender();
                 int first = Integer.parseInt(params.get(clientId + "_first"));
@@ -147,7 +147,7 @@ public class DataList extends DataListBase {
 
                 super.queueEvent(pageEvent);
             }
-            else if (eventName.equals("tap") || eventName.equals("taphold")) {
+            else if ("tap".equals(eventName) || "taphold".equals(eventName)) {
                 String clientId = getClientId(context);
                 int index = Integer.parseInt(params.get(clientId + "_item"));
                 setRowIndex(index);

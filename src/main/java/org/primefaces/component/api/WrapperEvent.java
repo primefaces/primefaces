@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,8 +31,8 @@ import javax.faces.event.PhaseId;
 public class WrapperEvent extends FacesEvent {
 
     private static final long serialVersionUID = 1L;
-    private FacesEvent event = null;
-    private String rowKey = null;
+    private FacesEvent event;
+    private String rowKey;
 
     public WrapperEvent(UIComponent component, FacesEvent event, String rowKey) {
         super(component);

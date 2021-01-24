@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,7 @@ public class Title implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private boolean display = false;
+    private boolean display;
     private String position;
     private Number fontSize;
     private String fontFamily;

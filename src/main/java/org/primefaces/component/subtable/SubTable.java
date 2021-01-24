@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,14 @@
  */
 package org.primefaces.component.subtable;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.event.PhaseId;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.ColumnAware;
+import org.primefaces.model.ColumnMeta;
 
 public class SubTable extends SubTableBase implements ColumnAware {
 
@@ -41,7 +44,7 @@ public class SubTable extends SubTableBase implements ColumnAware {
             return this.columns;
         }
 
-        List<UIColumn> columns = initColumns();
+        List<UIColumn> columns = collectColumns();
 
         // lets cache it only when RENDER_RESPONSE is reached, the columns might change before reaching that phase
         // see https://github.com/primefaces/primefaces/issues/2110
@@ -55,5 +58,21 @@ public class SubTable extends SubTableBase implements ColumnAware {
     @Override
     public void setColumns(List<UIColumn> columns) {
         this.columns = columns;
+    }
+
+    @Override
+    public Map<String, ColumnMeta> getColumnMeta() {
+        Map<String, ColumnMeta> value =
+                (Map<String, ColumnMeta>) getStateHelper().get(InternalPropertyKeys.columnMeta);
+        if (value == null) {
+            value = new HashMap<>();
+            setColumnMeta(value);
+        }
+        return value;
+    }
+
+    @Override
+    public void setColumnMeta(Map<String, ColumnMeta> columnMeta) {
+        getStateHelper().put(InternalPropertyKeys.columnMeta, columnMeta);
     }
 }

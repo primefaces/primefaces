@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -207,6 +208,8 @@ public class TimelineRenderer extends CoreRenderer {
         if (timeline.getMaxHeight() != null) {
             wb.attr("maxHeight", timeline.getMaxHeight());
         }
+        wb.attr("horizontalScroll", timeline.isHorizontalScroll(), false);
+        wb.attr("verticalScroll", timeline.isVerticalScroll(), false);
         wb.attr("width", timeline.getWidth());
         wb.nativeAttr("orientation", "{axis:'" + timeline.getOrientationAxis() + "',"
                 + "item:'" + timeline.getOrientationItem() + "'}" );
@@ -216,8 +219,6 @@ public class TimelineRenderer extends CoreRenderer {
                 + "updateGroup:" + timeline.isEditableGroup() + ","
                 + "overrideItems:" + timeline.isEditableOverrideItems() + "}" );
         wb.attr("selectable", timeline.isSelectable());
-        wb.attr("zoomable", timeline.isZoomable());
-        wb.attr("moveable", timeline.isMoveable());
 
         if (timeline.getStart() != null) {
             wb.nativeAttr("start", encodeDate(dateTimeFormatter, timeline.getStart()));
@@ -235,8 +236,17 @@ public class TimelineRenderer extends CoreRenderer {
             wb.nativeAttr("max", encodeDate(dateTimeFormatter, timeline.getMax()));
         }
 
-        wb.attr("zoomMin", timeline.getZoomMin());
-        wb.attr("zoomMax", timeline.getZoomMax());
+        boolean zoomable = timeline.isZoomable();
+        boolean moveable = timeline.isMoveable();
+        wb.attr("zoomable", zoomable);
+        wb.attr("moveable", moveable);
+        if (zoomable) {
+            wb.attr("zoomMin", timeline.getZoomMin());
+            wb.attr("zoomMax", timeline.getZoomMax());
+            if (moveable && LangUtils.isNotBlank(timeline.getZoomKey())) {
+                wb.attr("zoomKey", timeline.getZoomKey());
+            }
+        }
 
         wb.nativeAttr("margin", "{axis:" + timeline.getEventMarginAxis() + ","
                 + "item:{horizontal:" + timeline.getEventHorizontalMargin() + ","
@@ -489,7 +499,22 @@ public class TimelineRenderer extends CoreRenderer {
 
     // convert from UTC to locale date
     private String encodeDate(DateTimeFormatter dateTimeFormatter, LocalDateTime date) {
-        return "new Date('" + dateTimeFormatter.format(date.atZone(dateTimeFormatter.getZone())) + "')";
+        String encoded;
+        ZonedDateTime zdt = date.atZone(dateTimeFormatter.getZone());
+        String formatted = dateTimeFormatter.format(zdt);
+        if (formatted.startsWith("-")) {
+            // GitHub #6721: B.C. Dates can't use JS constructor with String
+            encoded = "new Date(" + zdt.getYear() +
+                        ", " + (zdt.getMonthValue() - 1) +
+                        ", " + zdt.getDayOfMonth() +
+                        ", " + zdt.getHour() +
+                        ", " + zdt.getMinute() +
+                        ", " + zdt.getSecond() + ", 0)";
+        }
+        else {
+            encoded = "new Date('" + formatted + "')";
+        }
+        return encoded;
     }
 
     @Override

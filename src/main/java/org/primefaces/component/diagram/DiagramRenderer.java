@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -120,8 +120,10 @@ public class DiagramRenderer extends CoreRenderer {
             Element element = model.findElement(params.get(clientId + "_elementId"));
             String[] position = params.get(clientId + "_position").split(",");
 
-            element.setX(position[0] + "px");
-            element.setY(position[1] + "px");
+            if (element != null) {
+                element.setX(position[0] + "px");
+                element.setY(position[1] + "px");
+            }
         }
     }
 

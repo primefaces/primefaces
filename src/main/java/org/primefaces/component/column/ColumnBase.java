@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -61,7 +61,7 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         draggable,
         filterFunction,
         field,
-        priority,
+        responsivePriority,
         sortable,
         filterable,
         visible,
@@ -69,12 +69,14 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         ariaHeaderText,
         exportFunction,
         groupRow,
+        exportValue,
         exportHeaderValue,
         exportFooterValue,
         sortOrder,
         sortPriority,
         nullSortOrder,
-        caseSensitiveSort
+        caseSensitiveSort,
+        displayPriority
     }
 
     public ColumnBase() {
@@ -303,12 +305,12 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
     }
 
     @Override
-    public int getPriority() {
-        return (Integer) getStateHelper().eval(PropertyKeys.priority, 0);
+    public int getResponsivePriority() {
+        return (Integer) getStateHelper().eval(PropertyKeys.responsivePriority, 0);
     }
 
-    public void setPriority(int priority) {
-        getStateHelper().put(PropertyKeys.priority, priority);
+    public void setResponsivePriority(int responsivePriority) {
+        getStateHelper().put(PropertyKeys.responsivePriority, responsivePriority);
     }
 
     @Override
@@ -375,6 +377,15 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
     }
 
     @Override
+    public String getExportValue() {
+        return (String) getStateHelper().eval(PropertyKeys.exportValue, null);
+    }
+
+    public void setExportValue(String exportValue) {
+        getStateHelper().put(PropertyKeys.exportValue, exportValue);
+    }
+
+    @Override
     public String getExportHeaderValue() {
         return (String) getStateHelper().eval(PropertyKeys.exportHeaderValue, null);
     }
@@ -401,6 +412,7 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         getStateHelper().put(PropertyKeys.sortOrder, sortOrder);
     }
 
+    @Override
     public int getSortPriority() {
         return (Integer) getStateHelper().eval(PropertyKeys.sortPriority, SortMeta.MIN_PRIORITY);
     }
@@ -409,6 +421,7 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         getStateHelper().put(PropertyKeys.sortPriority, sortPriority);
     }
 
+    @Override
     public int getNullSortOrder() {
         return (Integer) getStateHelper().eval(PropertyKeys.nullSortOrder, 1);
     }
@@ -417,11 +430,21 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         getStateHelper().put(PropertyKeys.nullSortOrder, nullSortOrder);
     }
 
+    @Override
     public boolean isCaseSensitiveSort() {
         return (Boolean) getStateHelper().eval(PropertyKeys.caseSensitiveSort, false);
     }
 
     public void setCaseSensitiveSort(boolean caseSensitiveSort) {
         getStateHelper().put(PropertyKeys.caseSensitiveSort, caseSensitiveSort);
+    }
+
+    @Override
+    public int getDisplayPriority() {
+        return (Integer) getStateHelper().eval(PropertyKeys.displayPriority, 0);
+    }
+
+    public void setDisplayPriority(int displayPriority) {
+        getStateHelper().put(PropertyKeys.displayPriority, displayPriority);
     }
 }

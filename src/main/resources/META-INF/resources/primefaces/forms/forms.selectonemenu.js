@@ -323,6 +323,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      */
     bindItemEvents: function() {
         var $this = this;
+        if(!this.items) {
+            return;
+        }
 
         //Items
         this.items.filter(':not(.ui-state-disabled)').on('mouseover.selectonemenu', function() {
@@ -375,7 +378,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     unbindEvents: function() {
-        this.items.off();
+        if (this.items) {
+            this.items.off();
+        }
         this.triggers.off();
         this.input.off();
         this.focusInput.off();
@@ -462,8 +467,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         if(!silent) {
-            this.focusInput.trigger('focus');
             this.callBehavior('itemSelect');
+            this.focusInput.trigger('focus');
         }
 
         if(this.panel.is(':visible')) {
@@ -575,7 +580,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                     }
 
                     var matchedOptions = null,
-                    metaKey = e.metaKey||e.ctrlKey||e.shiftKey||e.altKey;
+                    metaKey = e.metaKey||e.ctrlKey||e.altKey;
 
                     if(!metaKey) {
                         clearTimeout($this.searchTimer);
@@ -584,7 +589,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                         var text = $(this).val();
                         matchedOptions = $this.matchOptions(text);
                         if(matchedOptions.length) {
-                            var highlightItem = $this.items.eq(matchedOptions.index());
+                            var matchIndex = matchedOptions[0].index;
+                            var highlightItem = $this.items.eq(matchIndex);
                             if($this.panel.is(':hidden')) {
                                 $this.selectItem(highlightItem);
                             }
@@ -603,7 +609,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                                 // is current selection one of our matches?
                                 matchedOptions.each(function() {
                                    var option = $(this);
-                                   var currentIndex = option.index();
+                                   var currentIndex = option[0].index;
                                    var currentItem = $this.items.eq(currentIndex);
                                    if (currentItem.hasClass('ui-state-highlight')) {
                                        selectedIndex = currentIndex;
@@ -613,7 +619,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
                                 matchedOptions.each(function() {
                                     var option = $(this);
-                                    var currentIndex = option.index();
+                                    var currentIndex = option[0].index;
                                     var currentItem = $this.items.eq(currentIndex);
 
                                     // select next item after the current selection
@@ -647,9 +653,18 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @return {JQuery} All selectable options that match (contain) the given search string. 
      */
     matchOptions: function(text) {
+        if(!text) {
+            return false;
+        }
         return this.options.filter(function() {
             var option = $(this);
-            return (option.is(':not(:disabled)') && (option.text().toLowerCase().indexOf(text) === 0));
+            if(option.is(':disabled')) {
+                return false;
+            }
+            if(option.text().toLowerCase().indexOf(text.toLowerCase()) !== 0) {
+                return false;
+            }
+            return true;
         });
     },
 

@@ -363,7 +363,7 @@ if (!PrimeFaces.ajax) {
             },
 
             /**
-             * Checks whether this queue containts any scheduled AJAX requests.
+             * Checks whether this queue contains any scheduled AJAX requests.
              * @return {boolean} `true` if this queue contains no scheduled requests, `false` otherwise.
              */
             isEmpty: function() {

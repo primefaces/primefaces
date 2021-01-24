@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,7 +39,7 @@ import org.primefaces.convert.PatternReader.TokenVisitor;
  * {@link DateTimeFormatter}.
  */
 public class CombinedDateTimePatternTokenVisitor implements TokenVisitor {
-    private static final Logger LOGGER = Logger.getLogger(DateTimePatternConverter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CombinedDateTimePatternTokenVisitor.class.getName());
 
     private final JQueryDateTimePatternBuilder builder;
 

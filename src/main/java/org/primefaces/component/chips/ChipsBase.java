@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,7 +41,10 @@ public abstract class ChipsBase extends AbstractPrimeHtmlInputText implements Wi
         max,
         inputStyle,
         inputStyleClass,
-        addOnBlur
+        addOnBlur,
+        addOnPaste,
+        unique,
+        separator
     }
 
     public ChipsBase() {
@@ -99,5 +102,29 @@ public abstract class ChipsBase extends AbstractPrimeHtmlInputText implements Wi
 
     public void setAddOnBlur(boolean addOnBlur) {
         getStateHelper().put(PropertyKeys.addOnBlur, addOnBlur);
+    }
+
+    public boolean isAddOnPaste() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.addOnPaste, false);
+    }
+
+    public void setAddOnPaste(boolean addOnPaste) {
+        getStateHelper().put(PropertyKeys.addOnPaste, addOnPaste);
+    }
+
+    public boolean isUnique() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.unique, false);
+    }
+
+    public void setUnique(boolean unique) {
+        getStateHelper().put(PropertyKeys.unique, unique);
+    }
+
+    public String getSeparator() {
+        return (String) getStateHelper().eval(PropertyKeys.separator, ",");
+    }
+
+    public void setSeparator(String separator) {
+        getStateHelper().put(PropertyKeys.separator, separator);
     }
 }

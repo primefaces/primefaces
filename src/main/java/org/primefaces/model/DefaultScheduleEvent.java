@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,65 +34,26 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
     private static final long serialVersionUID = 1L;
 
     private String id;
+    private T data;
     private String groupId;
     private String title;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private boolean allDay = false;
-    private String styleClass;
-    private T data;
+    private boolean allDay;
+    private boolean overlapAllowed;
     private Boolean resizable;
     private Boolean draggable;
-    private boolean overlapAllowed = false;
+    private String styleClass;
     private String description;
     private String url;
+    private String display;
+    private String backgroundColor;
+    private String borderColor;
+    private String textColor;
     private ScheduleRenderingMode renderingMode;
     private Map<String, Object> dynamicProperties;
 
     public DefaultScheduleEvent() {
-    }
-
-    /**
-     * @deprecated Use {@link #builder()} instead.
-     */
-    @Deprecated
-    public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end) {
-        this.title = title;
-        this.startDate = start;
-        this.endDate = end;
-    }
-
-    /**
-     * @deprecated Use {@link #builder()} instead.
-     */
-    @Deprecated
-    public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end, boolean allDay) {
-        this.title = title;
-        this.startDate = start;
-        this.endDate = end;
-        this.allDay = allDay;
-    }
-
-    /**
-     * @deprecated Use {@link #builder()} instead.
-     */
-    @Deprecated
-    public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end, String styleClass) {
-        this.title = title;
-        this.startDate = start;
-        this.endDate = end;
-        this.styleClass = styleClass;
-    }
-
-    /**
-     * @deprecated Use {@link #builder()} instead.
-     */
-    @Deprecated
-    public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end, T data) {
-        this.title = title;
-        this.startDate = start;
-        this.endDate = end;
-        this.data = data;
     }
 
     @Override
@@ -236,6 +197,42 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
     }
 
     @Override
+    public String getDisplay() {
+        return display;
+    }
+
+    public void setDisplay(String display) {
+        this.display = display;
+    }
+
+    @Override
+    public String getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    public void setBackgroundColor(String backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
+
+    @Override
+    public String getBorderColor() {
+        return borderColor;
+    }
+
+    public void setBorderColor(String borderColor) {
+        this.borderColor = borderColor;
+    }
+
+    @Override
+    public String getTextColor() {
+        return textColor;
+    }
+
+    public void setTextColor(String textColor) {
+        this.textColor = textColor;
+    }
+
+    @Override
     public ScheduleRenderingMode getRenderingMode() {
         return renderingMode;
     }
@@ -282,7 +279,7 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
 
     public static final class Builder<T> {
 
-        private DefaultScheduleEvent<T> scheduleEvent;
+        private final DefaultScheduleEvent<T> scheduleEvent;
 
         private Builder() {
             scheduleEvent = new DefaultScheduleEvent<>();
@@ -384,8 +381,30 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
             return this;
         }
 
+        public DefaultScheduleEvent.Builder<T> display(String display) {
+            scheduleEvent.setDisplay(display);
+            return this;
+        }
+
+        public DefaultScheduleEvent.Builder<T> backgroundColor(String backgroundColor) {
+            scheduleEvent.setBackgroundColor(backgroundColor);
+            return this;
+        }
+
+        public DefaultScheduleEvent.Builder<T> borderColor(String borderColor) {
+            scheduleEvent.setBorderColor(borderColor);
+            return this;
+        }
+
+        public DefaultScheduleEvent.Builder<T> textColor(String textColor) {
+            scheduleEvent.setTextColor(textColor);
+            return this;
+        }
+
         public DefaultScheduleEvent<T> build() {
             return scheduleEvent;
         }
     }
+
+
 }

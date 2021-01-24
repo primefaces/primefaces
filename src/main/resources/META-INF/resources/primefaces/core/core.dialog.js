@@ -266,10 +266,14 @@ if (!PrimeFaces.dialog) {
 
                 //adjust height
                 var frameHeight = null;
-                if(cfg.options.contentHeight)
+                if(cfg.options.contentHeight) {
                     frameHeight = cfg.options.contentHeight;
-                else
-                    frameHeight = $frame.get(0).contentWindow.document.body.scrollHeight + (PrimeFaces.env.browser.webkit ? 5 : 25);
+                }
+                else {
+                    var frameBody = $frame.get(0).contentWindow.document.body;
+                    var frameBodyStyle = window.getComputedStyle(frameBody);
+                    frameHeight = frameBody.scrollHeight + parseFloat(frameBodyStyle.marginTop) + parseFloat(frameBodyStyle.marginBottom);
+                }
 
                 $frame.css('height', String(frameHeight));
 
@@ -290,11 +294,18 @@ if (!PrimeFaces.dialog) {
             dlgsLength = dlgs.length,
             dlg = dlgs.eq(dlgsLength - 1),
             parentDlg = dlgsLength > 1 ? dlgs.eq(dlgsLength - 2) : null,
-            dlgWidget = rootWindow.PF(dlg.data('widget')),
-            sourceWidgetVar = dlgWidget.cfg.sourceWidgetVar,
-            sourceComponentId = dlgWidget.cfg.sourceComponentId,
             dialogReturnBehavior = null,
             windowContext = null;
+
+            var dlgWidget = rootWindow.PF(dlg.data('widget'));
+            if(!dlgWidget) {
+                // GitHub #2039 dialog may already be closed on slow internet
+                PrimeFaces.error('Dialog widget was not found to close.');
+                return;
+            }
+
+            var sourceWidgetVar = dlgWidget.cfg.sourceWidgetVar,
+                sourceComponentId = dlgWidget.cfg.sourceComponentId;
 
             dlg.attr('data-queuedforremoval', true);
 
@@ -349,7 +360,7 @@ if (!PrimeFaces.dialog) {
          */
         showMessageInDialog: function(msg) {
             if(!this.messageDialog) {
-                var messageDialogDOM = $('<div id="primefacesmessagedlg" class="ui-message-dialog ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container"></div>')
+                $('<div id="primefacesmessagedlg" class="ui-message-dialog ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container"></div>')
                             .append('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top"><span class="ui-dialog-title"></span>' +
                             '<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-closethick"></span></a></div>' +
                             '<div class="ui-dialog-content ui-widget-content" style="height: auto;"></div>')
@@ -372,7 +383,9 @@ if (!PrimeFaces.dialog) {
             this.messageDialog.titleContainer.html(summaryHtml);
 
             var detailHtml = msg.detail ? msg.detail.split(/\r\n|\n|\r/g).map(function(line) { return escape ? PrimeFaces.escapeHTML(line) : line; }).join("<br>") : "";
-            this.messageDialog.content.html('').append('<span class="ui-dialog-message ui-messages-' + msg.severity.split(' ')[0].toLowerCase() + '-icon"></span>').append(detailHtml);
+            this.messageDialog.content.html('').append('<span class="ui-dialog-message ui-messages-' + msg.severity.split(' ')[0].toLowerCase() + '-icon"></span>')
+                .append('<span class="ui-dialog-message-content"></span');
+            this.messageDialog.content.children('.ui-dialog-message-content').append(detailHtml);
             this.messageDialog.show();
         },
 
@@ -382,7 +395,7 @@ if (!PrimeFaces.dialog) {
          * @param {PrimeFaces.dialog.ExtendedConfirmDialogMessage} msg Message to show in the confirmation dialog.
          */
         confirm: function(msg) {
-            if(PrimeFaces.confirmDialog) {
+            if (PrimeFaces.confirmDialog) {
                 PrimeFaces.confirmSource = (typeof(msg.source) === 'string') ? $(PrimeFaces.escapeClientId(msg.source)) : $(msg.source);
                 PrimeFaces.confirmDialog.showMessage(msg);
             }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -71,7 +71,7 @@ public class AjaxRequestBuilder {
     protected StringBuilder buffer;
     protected FacesContext context;
 
-    private boolean preventDefault = false;
+    private boolean preventDefault;
 
     public AjaxRequestBuilder(FacesContext context) {
         this.context = context;
@@ -128,15 +128,6 @@ public class AjaxRequestBuilder {
 
     public AjaxRequestBuilder form(AjaxSource source, UIComponent component) {
         return form(source, component, null);
-    }
-
-    @Deprecated
-    public AjaxRequestBuilder form(String form) {
-        if (form != null) {
-            buffer.append(",f:\"").append(form).append("\"");
-        }
-
-        return this;
     }
 
     public AjaxRequestBuilder process(UIComponent component, String expressions) {
@@ -199,7 +190,7 @@ public class AjaxRequestBuilder {
     }
 
     public AjaxRequestBuilder delay(String delay) {
-        if (!LangUtils.isValueBlank(delay) && !delay.equals("none")) {
+        if (!LangUtils.isValueBlank(delay) && !"none".equals(delay)) {
             buffer.append(",d:").append(delay);
 
             if (context.isProjectStage(ProjectStage.Development)) {

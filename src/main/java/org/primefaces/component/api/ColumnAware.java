@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,56 +25,124 @@ package org.primefaces.component.api;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.LongAdder;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
+import org.primefaces.model.ColumnMeta;
+import org.primefaces.util.ComponentUtils;
 
 public interface ColumnAware {
 
-    default void forEachColumn(Consumer<UIColumn> callback) {
-        char separator = UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance());
-        forEachColumn(FacesContext.getCurrentInstance(), separator, (UIComponent) this, callback);
+    default void forEachColumn(Function<UIColumn, Boolean> callback) {
+        forEachColumn(true, callback);
     }
 
-    default void forEachColumn(FacesContext context, char separator, UIComponent root, Consumer<UIColumn> callback) {
+    default void forEachColumn(boolean unwrapDynamicColumns, Function<UIColumn, Boolean> callback) {
+        forEachColumn(FacesContext.getCurrentInstance(), (UIComponent) this, unwrapDynamicColumns, callback);
+    }
+
+    default boolean forEachColumn(FacesContext context, UIComponent root, boolean unwrapDynamicColumns, Function<UIColumn, Boolean> callback) {
         for (int i = 0; i < root.getChildCount(); i++) {
             UIComponent child = root.getChildren().get(i);
             if (child.isRendered()) {
                 if (child instanceof Columns) {
                     Columns columns = (Columns) child;
-                    String columnsClientId = columns.getClientId(context);
-
-                    for (int j = 0; j < columns.getRowCount(); j++) {
-                        DynamicColumn dynaColumn = new DynamicColumn(j, columns);
-                        dynaColumn.setColumnKey(columnsClientId + separator + j);
-                        callback.accept(dynaColumn);
+                    if (unwrapDynamicColumns) {
+                        for (int j = 0; j < columns.getRowCount(); j++) {
+                            DynamicColumn dynaColumn = new DynamicColumn(j, columns, context);
+                            if (!callback.apply(dynaColumn)) {
+                                return false;
+                            }
+                        }
+                    }
+                    else {
+                        if (!callback.apply(columns)) {
+                            return false;
+                        }
                     }
                 }
                 else if (child instanceof Column) {
                     Column column = (Column) child;
-                    callback.accept(column);
+                    if (!callback.apply(column)) {
+                        return false;
+                    }
                 }
                 else if (child instanceof ColumnGroup) {
-                    forEachColumn(context, separator, child, callback);
-                }
-                else if (child instanceof ColumnAware) {
-                    ColumnAware columnHolder = (ColumnAware) child;
-                    for (int j = 0; j < ((UIComponent) columnHolder).getChildCount(); j++) {
-                        UIComponent columnHolderChild = ((UIComponent) columnHolder).getChildren().get(j);
-                        if (columnHolderChild.isRendered()) {
-                            forEachColumn(context, separator, columnHolderChild, callback);
+                    // columnGroup must contain p:row(s) as child
+                    for (int j = 0; j < child.getChildCount(); j++) {
+                        UIComponent row = ((UIComponent) child).getChildren().get(j);
+                        if (row.isRendered()) {
+                            if (!forEachColumn(context, row, unwrapDynamicColumns, callback)) {
+                                return false;
+                            }
                         }
                     }
                 }
+                else if (child instanceof ColumnAware) {
+                    ColumnAware columnAware = (ColumnAware) child;
+                    for (int j = 0; j < ((UIComponent) columnAware).getChildCount(); j++) {
+                        UIComponent columnAwareChild = ((UIComponent) columnAware).getChildren().get(j);
+                        if (columnAwareChild.isRendered()) {
+                            if (!forEachColumn(context, columnAwareChild, unwrapDynamicColumns, callback)) {
+                                return false;
+                            }
+                        }
+                    }
+                }
+                else if (child.getClass().getName().endsWith("UIRepeat")) {
+                    VisitContext visitContext = VisitContext.createVisitContext(context, null,
+                            ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
+                    child.visitTree(visitContext, (ctx, target) -> {
+                        if (target.getClass().getName().endsWith("UIRepeat")) {
+                            return VisitResult.ACCEPT;
+                        }
+
+                        // for now just support basic p:column in ui:repeat
+                        if (target instanceof Column) {
+                            Column column = (Column) target;
+                            if (!callback.apply(column)) {
+                                return VisitResult.COMPLETE;
+                            }
+                        }
+
+                        return VisitResult.REJECT;
+                    });
+                }
             }
         }
+
+        return true;
+    }
+
+    default void invokeOnColumn(String columnKey, Consumer<UIColumn> callback) {
+        forEachColumn((column) -> {
+            if (column.getColumnKey().equals(columnKey)) {
+                callback.accept(column);
+                return false;
+            }
+            return true;
+        });
+    }
+
+    default void invokeOnColumn(String columnKey, int rowIndex, Consumer<UIColumn> callback) {
+        forEachColumn((column) -> {
+            if (column.getColumnKey((UIComponent) this, rowIndex).equals(columnKey)) {
+                callback.accept(column);
+                return false;
+            }
+            return true;
+        });
     }
 
     default UIColumn findColumn(String columnKey) {
@@ -162,10 +230,9 @@ public interface ColumnAware {
 
     void setColumns(List<UIColumn> columns);
 
-    default List<UIColumn> initColumns() {
+    default List<UIColumn> collectColumns() {
         List<UIColumn> columns = new ArrayList<>();
         FacesContext context = FacesContext.getCurrentInstance();
-        char separator = UINamingContainer.getSeparatorChar(context);
 
         for (int i = 0; i < ((UIComponent) this).getChildCount(); i++) {
             UIComponent child = ((UIComponent) this).getChildren().get(i);
@@ -174,15 +241,38 @@ public interface ColumnAware {
             }
             else if (child instanceof Columns) {
                 Columns uiColumns = (Columns) child;
-                String uiColumnsClientId = uiColumns.getClientId(context);
-
                 for (int j = 0; j < uiColumns.getRowCount(); j++) {
-                    DynamicColumn dynaColumn = new DynamicColumn(j, uiColumns);
-                    dynaColumn.setColumnKey(uiColumnsClientId + separator + j);
+                    DynamicColumn dynaColumn = new DynamicColumn(j, uiColumns, context);
                     columns.add(dynaColumn);
                 }
             }
         }
+
+        Map<String, ColumnMeta> columnMeta = getColumnMeta();
+
+        // sort by displayOrder
+        columns.sort((c1, c2) -> {
+            if (c1 instanceof DynamicColumn) {
+                ((DynamicColumn) c1).applyStatelessModel();
+            }
+            if (c2 instanceof DynamicColumn) {
+                ((DynamicColumn) c2).applyStatelessModel();
+            }
+
+            Integer dp1 = c1.getDisplayPriority();
+            ColumnMeta cm1 = columnMeta.get(c1.getColumnKey());
+            if (cm1 != null && cm1.getDisplayPriority() != null) {
+                dp1 = cm1.getDisplayPriority();
+            }
+
+            Integer dp2 = c2.getDisplayPriority();
+            ColumnMeta cm2 = columnMeta.get(c2.getColumnKey());
+            if (cm2 != null && cm2.getDisplayPriority() != null) {
+                dp2 = cm2.getDisplayPriority();
+            }
+
+            return dp1.compareTo(dp2);
+        });
 
         return columns;
     }
@@ -198,6 +288,7 @@ public interface ColumnAware {
             if (!visibleOnly || column.isVisible()) {
                 columnsCount.increment();
             }
+            return true;
         });
 
         return columnsCount.intValue();
@@ -214,8 +305,30 @@ public interface ColumnAware {
             if (!visibleOnly || column.isVisible()) {
                 columnsCountWithSpan.add(column.getColspan());
             }
+            return true;
         });
 
         return columnsCountWithSpan.intValue();
+    }
+
+    default void resetDynamicColumns() {
+        forEachColumn(false, column ->  {
+            if (column instanceof Columns) {
+                ((Columns) column).setRowIndex(-1);
+                setColumns(null);
+            }
+            return true;
+        });
+    }
+
+    Map<String, ColumnMeta> getColumnMeta();
+
+    void setColumnMeta(Map<String, ColumnMeta> columnMeta);
+
+    default String getOrderedColumnKeys() {
+        return getColumns()
+                .stream()
+                .map(e -> e.getColumnKey())
+                .collect(Collectors.joining(","));
     }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,9 +27,9 @@ public class StraightConnector extends Connector {
 
     private static final long serialVersionUID = 1L;
 
-    private int stub = 0;
+    private int stub;
 
-    private int gap = 0;
+    private int gap;
 
     public StraightConnector() {
     }

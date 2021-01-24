@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -42,6 +42,7 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
         type,
         symbol,
         symbolPosition,
+        signPosition,
         minValue,
         maxValue,
         roundMethod,
@@ -54,8 +55,7 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
         padControl,
         leadingZero,
         decimalSeparatorAlternative,
-        modifyValueOnWheel,
-        inputMode
+        modifyValueOnWheel
     }
 
     public InputNumberBase() {
@@ -97,6 +97,14 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
 
     public void setSymbol(String symbol) {
         getStateHelper().put(PropertyKeys.symbol, symbol);
+    }
+
+    public String getSignPosition() {
+        return (String) getStateHelper().eval(PropertyKeys.signPosition, null);
+    }
+
+    public void setSignPosition(String signPosition) {
+        getStateHelper().put(PropertyKeys.signPosition, signPosition);
     }
 
     public String getSymbolPosition() {
@@ -213,11 +221,4 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
         getStateHelper().put(PropertyKeys.modifyValueOnWheel, modifyValueOnWheel);
     }
 
-    public String getInputMode() {
-        return (String) getStateHelper().eval(PropertyKeys.inputMode, null);
-    }
-
-    public void setInputMode(String inputMode) {
-        getStateHelper().put(PropertyKeys.inputMode, inputMode);
-    }
 }

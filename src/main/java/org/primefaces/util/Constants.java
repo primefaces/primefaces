@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -107,6 +107,8 @@ public class Constants {
         }
     }
 
+    public static final String SPACE = " ";
+
     public static final String EMPTY_STRING = "";
 
     public static final String CLIENT_BEHAVIOR_RENDERING_MODE = "CLIENT_BEHAVIOR_RENDERING_MODE";
@@ -114,18 +116,6 @@ public class Constants {
     public static final String DEFAULT_CACHE_REGION = "primefaces.DEFAULT_CACHE_REGION";
 
     public static final String HELPER_RENDERER = "org.primefaces.HELPER_RENDERER";
-
-    /**
-     * @deprecated Use MULTI_VIEW_STATES instead
-     */
-    @Deprecated
-    public static final String TABLE_STATE = "primefaces.TABLE_STATE";
-
-    /**
-     * @deprecated Use MULTI_VIEW_STATES instead
-     */
-    @Deprecated
-    public static final String DATALIST_STATE = "primefaces.DATALIST_STATE";
 
     public static final String MULTI_VIEW_STATES = "primefaces.MULTI_VIEW_STATES";
 

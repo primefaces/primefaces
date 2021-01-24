@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,6 +41,7 @@ import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.ExporterOptions;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 
 public class DataTableCSVExporter extends DataTableExporter {
 
@@ -204,7 +205,14 @@ public class DataTableCSVExporter extends DataTableExporter {
 
         writer.append(csvOptions.getQuoteChar());
 
-        if (column.getExportFunction() != null) {
+        if (LangUtils.isNotBlank(column.getExportValue())) {
+            String value = column.getExportValue();
+            //escape double quotes
+            value = value == null ? "" : value.replace(csvOptions.getQuoteString(), csvOptions.getDoubleQuoteString());
+
+            writer.append(value);
+        }
+        else if (column.getExportFunction() != null) {
             String value = exportColumnByFunction(context, column);
             //escape double quotes
             value = value == null ? "" : value.replace(csvOptions.getQuoteString(), csvOptions.getDoubleQuoteString());

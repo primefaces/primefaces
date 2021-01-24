@@ -25,12 +25,14 @@ package org.primefaces.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.mockito.Mockito.*;
 
 import java.io.IOException;
 
 import javax.faces.context.FacesContext;
 
 import org.junit.jupiter.api.Test;
+import org.primefaces.component.panel.Panel;
 import org.primefaces.config.PrimeEnvironment;
 import org.primefaces.mock.CollectingResponseWriter;
 import org.primefaces.mock.FacesContextMock;
@@ -38,17 +40,21 @@ import org.primefaces.mock.pf.PrimeConfigurationMock;
 
 public class WidgetBuilderTest {
 
-    protected WidgetBuilder getWidgetBuilder(CollectingResponseWriter writer) {
-        FacesContext context = new FacesContextMock(writer);
+    protected WidgetBuilder getWidgetBuilder(FacesContext context) {
         return new WidgetBuilder(context, new PrimeConfigurationMock(context, new PrimeEnvironment(context)));
     }
 
     @Test
     public void init() throws IOException {
         CollectingResponseWriter writer = new CollectingResponseWriter();
+        FacesContext context = new FacesContextMock(writer);
 
-        WidgetBuilder builder= getWidgetBuilder(writer);
-        builder.init("AccordionPanel", "acco", "accoId");
+        Panel panel = mock(Panel.class);
+        when(panel.resolveWidgetVar(context)).thenReturn("acco");
+        when(panel.getClientId(context)).thenReturn("accoId");
+
+        WidgetBuilder builder= getWidgetBuilder(context);
+        builder.init("AccordionPanel", panel);
         builder.finish();
 
         assertEquals(
@@ -65,7 +71,10 @@ public class WidgetBuilderTest {
         config.setMoveScriptsToBottom(true);
         WidgetBuilder builder = new WidgetBuilder(context, config);
 
-        builder.init("AccordionPanel", "acco", "accoId");
+        Panel panel = mock(Panel.class);
+        when(panel.resolveWidgetVar(context)).thenReturn("acco");
+        when(panel.getClientId(context)).thenReturn("accoId");
+        builder.init("AccordionPanel", panel);
         builder.finish();
 
         assertEquals(
@@ -76,8 +85,9 @@ public class WidgetBuilderTest {
     @Test
     public void initWithWindowLoad() throws IOException {
         CollectingResponseWriter writer = new CollectingResponseWriter();
+        FacesContext context = new FacesContextMock(writer);
 
-        WidgetBuilder builder= getWidgetBuilder(writer);
+        WidgetBuilder builder = getWidgetBuilder(context);
         builder.initWithWindowLoad("AccordionPanel", "acco", "accoId");
         builder.finish();
 
@@ -89,8 +99,9 @@ public class WidgetBuilderTest {
     @Test
     public void initWithComponentLoad() throws IOException {
         CollectingResponseWriter writer = new CollectingResponseWriter();
+        FacesContext context = new FacesContextMock(writer);
 
-        WidgetBuilder builder= getWidgetBuilder(writer);
+        WidgetBuilder builder= getWidgetBuilder(context);
         builder.initWithComponentLoad("AccordionPanel", "acco", "accoId", "test");
         builder.finish();
 
@@ -102,9 +113,14 @@ public class WidgetBuilderTest {
     @Test
     public void shouldBuildWithAttributes() throws IOException {
         CollectingResponseWriter writer = new CollectingResponseWriter();
+        FacesContext context = new FacesContextMock(writer);
 
-        WidgetBuilder builder = getWidgetBuilder(writer);
-        builder.init("DataTable", "dt", "dt1");
+        Panel table = mock(Panel.class);
+        when(table.resolveWidgetVar(context)).thenReturn("dt");
+        when(table.getClientId(context)).thenReturn("dt1");
+
+        WidgetBuilder builder = getWidgetBuilder(context);
+        builder.init("DataTable", table);
         builder.attr("selectionMode", "single", null);
         builder.attr("lazy", true, false);
         builder.attr("paginator", false, false);
@@ -119,9 +135,14 @@ public class WidgetBuilderTest {
     @Test
     public void shouldBuildWithCallbacks() throws IOException {
         CollectingResponseWriter writer = new CollectingResponseWriter();
+        FacesContext context = new FacesContextMock(writer);
 
-        WidgetBuilder builder = getWidgetBuilder(writer);
-        builder.init("DataTable", "dt", "dt1");
+        Panel table = mock(Panel.class);
+        when(table.resolveWidgetVar(context)).thenReturn("dt");
+        when(table.getClientId(context)).thenReturn("dt1");
+
+        WidgetBuilder builder = getWidgetBuilder(context);
+        builder.init("DataTable", table);
         builder.attr("selectionMode", "single", null);
         builder.attr("lazy", true, false);
         builder.attr("paginator", false, false);
@@ -141,7 +162,11 @@ public class WidgetBuilderTest {
         config.setMoveScriptsToBottom(true);
         WidgetBuilder builder = new WidgetBuilder(context, config);
 
-        builder.init("MyComponent", "myComponent", "myComponent1");
+        Panel panel = mock(Panel.class);
+        when(panel.resolveWidgetVar(context)).thenReturn("myComponent");
+        when(panel.getClientId(context)).thenReturn("myComponent1");
+
+        builder.init("MyComponent", panel);
         String defaultValue = "'My custom default value'";
         builder.attr("someAttribute", null, defaultValue);
         builder.finish();
@@ -162,7 +187,11 @@ public class WidgetBuilderTest {
         config.setMoveScriptsToBottom(true);
         WidgetBuilder builder = new WidgetBuilder(context, config);
 
-        builder.init("MyComponent", "myComponent", "myComponent1");
+        Panel panel = mock(Panel.class);
+        when(panel.resolveWidgetVar(context)).thenReturn("myComponent");
+        when(panel.getClientId(context)).thenReturn("myComponent1");
+
+        builder.init("MyComponent", panel);
         builder.attr("someAttribute", "<script>alert('Hello World!')</script>", null);
         builder.finish();
         
@@ -171,6 +200,4 @@ public class WidgetBuilderTest {
         String expectedOutput = "<script id=\"myComponent1_s\" type=\"text/javascript\">PrimeFaces.cw(\"MyComponent\",\"myComponent\",{id:\"myComponent1\",someAttribute:\"<script>alert(\\x27Hello World!\\x27)<\\/script>\"});</script>";
         assertEquals(expectedOutput, output);
     }
-    
-    
 }

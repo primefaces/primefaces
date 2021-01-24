@@ -100,6 +100,10 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
                 if (targetWidget) {
                     if (typeof targetWidget.bindContextMenu === 'function') {
                         targetWidget.bindContextMenu(this, targetWidget, this.jqTargetId, this.cfg);
+                        // GitHub #6776 IOS needs long touch on table/tree but Android does not
+                        if(PrimeFaces.env.ios) {
+                            $this.bindTouchEvents();
+                        }
                         binded = true;
                     }
                 }
@@ -115,13 +119,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
                     $this.show(e);
                 });
 
-                if (PrimeFaces.env.isTouchable(this.cfg)) {
-                    $(this.jqTargetId).swipe({
-                        longTap:function(e, target) {
-                           $this.show(e);
-                        }
-                    });
-                }
+                $this.bindTouchEvents();
             }
         }
 
@@ -137,6 +135,27 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', this.jq, function() {
             $this.hide();
         });
+    },
+
+    /**
+     * Binds mobile touch events.
+     * @protected
+     */
+    bindTouchEvents: function() {
+        if (PrimeFaces.env.isTouchable(this.cfg)) {
+             var $this = this;
+
+             // GitHub #6776 turn off Copy/Paste menu for IOS
+             if(PrimeFaces.env.ios) {
+                $(document.body).addClass('ui-touch-selection-disabled');
+             }
+
+             $this.jqTarget.swipe({
+                 longTap:function(e, target) {
+                      $this.show(e);
+                 }
+             });
+        }
     },
 
     /**

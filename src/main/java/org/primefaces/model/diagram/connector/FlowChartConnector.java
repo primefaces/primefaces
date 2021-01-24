@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,9 +29,9 @@ public class FlowChartConnector extends Connector {
 
     private int stub = 30;
 
-    private int gap = 0;
+    private int gap;
 
-    private double cornerRadius = 0;
+    private double cornerRadius;
 
     private boolean alwaysRespectStubs;
 

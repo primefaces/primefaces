@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,7 +39,7 @@ public abstract class CartesianAxes implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String position;
-    private boolean offset = false;
+    private boolean offset;
     private String id;
     private AxesGridLines gridLines;
     private CartesianScaleLabel scaleLabel;

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,7 @@ public class DefaultScheduleModel implements ScheduleModel, Serializable {
     private static final long serialVersionUID = 1L;
 
     private List<ScheduleEvent<?>> events;
-    private boolean eventLimit = false;
+    private boolean eventLimit;
 
     public DefaultScheduleModel() {
         events = new ArrayList<>();

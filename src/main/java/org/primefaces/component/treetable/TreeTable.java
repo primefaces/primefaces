@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,14 +38,16 @@ import javax.faces.event.PhaseId;
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
-import org.primefaces.component.columns.Columns;
 import org.primefaces.event.*;
 import org.primefaces.event.data.FilterEvent;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.event.data.SortEvent;
 import org.primefaces.model.*;
 import org.primefaces.model.filter.*;
-import org.primefaces.util.*;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LocaleUtils;
+import org.primefaces.util.MapBuilder;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -82,15 +84,18 @@ public class TreeTable extends TreeTableBase {
     public static final String SORTABLE_COLUMN_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon-carat-2-n-s";
     public static final String SORTABLE_COLUMN_ASCENDING_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon ui-icon-carat-2-n-s ui-icon-triangle-1-n";
     public static final String SORTABLE_COLUMN_DESCENDING_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon ui-icon-carat-2-n-s ui-icon-triangle-1-s";
+    public static final String SORTABLE_PRIORITY_CLASS = "ui-sortable-column-badge";
     public static final String REFLOW_CLASS = "ui-treetable-reflow";
     public static final String FILTER_COLUMN_CLASS = "ui-filter-column";
     public static final String COLUMN_INPUT_FILTER_CLASS = "ui-column-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
     public static final String COLUMN_CUSTOM_FILTER_CLASS = "ui-column-customfilter";
     public static final String HIDDEN_COLUMN_CLASS = "ui-helper-hidden";
     public static final String STATIC_COLUMN_CLASS = "ui-static-column";
-
     public static final String EDITABLE_COLUMN_CLASS = "ui-editable-column";
     public static final String EDITING_ROW_CLASS = "ui-row-editing";
+    public static final String GRIDLINES_CLASS = "ui-treetable-gridlines";
+    public static final String SMALL_SIZE_CLASS = "ui-treetable-sm";
+    public static final String LARGE_SIZE_CLASS = "ui-treetable-lg";
 
     static final Map<MatchMode, FilterConstraint> FILTER_CONSTRAINTS = MapBuilder.<MatchMode, FilterConstraint>builder()
             .put(MatchMode.STARTS_WITH, new StartsWithFilterConstraint())
@@ -126,7 +131,6 @@ public class TreeTable extends TreeTableBase {
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     private List<UIColumn> columns;
-    private Columns dynamicColumns;
     private List<String> filteredRowKeys = new ArrayList<>();
     private Map<String, AjaxBehaviorEvent> deferredEvents = new HashMap<>(1);
 
@@ -193,7 +197,7 @@ public class TreeTable extends TreeTableBase {
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName.equals("expand")) {
+            if ("expand".equals(eventName)) {
                 String nodeKey = params.get(clientId + "_expand");
                 setRowKey(root, nodeKey);
                 TreeNode node = getRowNode();
@@ -201,7 +205,7 @@ public class TreeTable extends TreeTableBase {
                 wrapperEvent = new NodeExpandEvent(this, behaviorEvent.getBehavior(), node);
                 wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
-            else if (eventName.equals("collapse")) {
+            else if ("collapse".equals(eventName)) {
                 String nodeKey = params.get(clientId + "_collapse");
                 setRowKey(root, nodeKey);
                 TreeNode node = getRowNode();
@@ -210,7 +214,7 @@ public class TreeTable extends TreeTableBase {
                 wrapperEvent = new NodeCollapseEvent(this, behaviorEvent.getBehavior(), node);
                 wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
-            else if (eventName.equals("select") || eventName.equals("contextMenu")) {
+            else if ("select".equals(eventName) || "contextMenu".equals(eventName)) {
                 String nodeKey = params.get(clientId + "_instantSelection");
                 setRowKey(root, nodeKey);
                 TreeNode node = getRowNode();
@@ -218,7 +222,7 @@ public class TreeTable extends TreeTableBase {
                 wrapperEvent = new NodeSelectEvent(this, behaviorEvent.getBehavior(), node);
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
-            else if (eventName.equals("unselect")) {
+            else if ("unselect".equals(eventName)) {
                 String nodeKey = params.get(clientId + "_instantUnselection");
                 setRowKey(root, nodeKey);
                 TreeNode node = getRowNode();
@@ -226,27 +230,27 @@ public class TreeTable extends TreeTableBase {
                 wrapperEvent = new NodeUnselectEvent(this, behaviorEvent.getBehavior(), node);
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
-            else if (eventName.equals("colResize")) {
+            else if ("colResize".equals(eventName)) {
                 String columnId = params.get(clientId + "_columnId");
                 int width = Integer.parseInt(params.get(clientId + "_width"));
                 int height = Integer.parseInt(params.get(clientId + "_height"));
 
                 wrapperEvent = new ColumnResizeEvent(this, behaviorEvent.getBehavior(), width, height, findColumn(columnId));
             }
-            else if (eventName.equals("sort")) {
+            else if ("sort".equals(eventName)) {
                 wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), getSortByAsMap());
             }
-            else if (eventName.equals("filter")) {
+            else if ("filter".equals(eventName)) {
                 deferredEvents.put("filter", (AjaxBehaviorEvent) event);
                 return;
             }
-            else if (eventName.equals("rowEdit") || eventName.equals("rowEditCancel") || eventName.equals("rowEditInit")) {
+            else if ("rowEdit".equals(eventName) || "rowEditCancel".equals(eventName) || "rowEditInit".equals(eventName)) {
                 String nodeKey = params.get(clientId + "_rowEditIndex");
                 setRowKey(root, nodeKey);
                 wrapperEvent = new RowEditEvent(this, behaviorEvent.getBehavior(), getRowNode());
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
-            else if (eventName.equals("cellEdit") || eventName.equals("cellEditCancel") || eventName.equals("cellEditInit")) {
+            else if ("cellEdit".equals(eventName) || "cellEditCancel".equals(eventName) || "cellEditInit".equals(eventName)) {
                 String[] cellInfo = params.get(clientId + "_cellInfo").split(",");
                 String rowKey = cellInfo[0];
                 int cellIndex = Integer.parseInt(cellInfo[1]);
@@ -267,7 +271,7 @@ public class TreeTable extends TreeTableBase {
                 wrapperEvent = new CellEditEvent(this, behaviorEvent.getBehavior(), column, rowKey);
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
-            else if (eventName.equals("page")) {
+            else if ("page".equals(eventName)) {
                 int rows = getRowsToRender();
                 int first = Integer.parseInt(params.get(clientId + "_first"));
                 int page = rows > 0 ? (first / rows) : 0;
@@ -349,9 +353,7 @@ public class TreeTable extends TreeTableBase {
     }
 
     public boolean isCheckboxSelection() {
-        String selectionMode = getSelectionMode();
-
-        return selectionMode != null && selectionMode.equals("checkbox");
+        return "checkbox".equals(getSelectionMode());
     }
 
     public Locale resolveDataLocale() {
@@ -365,7 +367,7 @@ public class TreeTable extends TreeTableBase {
             return this.columns;
         }
 
-        List<UIColumn> columns = initColumns();
+        List<UIColumn> columns = collectColumns();
 
         // lets cache it only when RENDER_RESPONSE is reached, the columns might change before reaching that phase
         // see https://github.com/primefaces/primefaces/issues/2110
@@ -381,23 +383,12 @@ public class TreeTable extends TreeTableBase {
         this.columns = columns;
     }
 
-    public Columns getDynamicColumns() {
-        return dynamicColumns;
-    }
-
-    public void setDynamicColumns(Columns value) {
-        dynamicColumns = value;
-    }
-
     @Override
     public Object saveState(FacesContext context) {
-        if (dynamicColumns != null) {
-            dynamicColumns.setRowIndex(-1);
-        }
+        resetDynamicColumns();
 
         // reset component for MyFaces view pooling
         columns = null;
-        dynamicColumns = null;
         filteredRowKeys = new ArrayList<>();
 
         return super.saveState(context);
@@ -409,7 +400,7 @@ public class TreeTable extends TreeTableBase {
 
         if (selectionMode != null && isRequired()) {
             Object selection = getLocalSelectedNodes();
-            boolean isValueBlank = (selectionMode.equalsIgnoreCase("single")) ? (selection == null) : (((TreeNode[]) selection).length == 0);
+            boolean isValueBlank = ("single".equalsIgnoreCase(selectionMode)) ? (selection == null) : (((TreeNode[]) selection).length == 0);
 
             if (isValueBlank) {
                 super.updateSelection(context);
@@ -514,14 +505,14 @@ public class TreeTable extends TreeTableBase {
         return !getFilterByAsMap().isEmpty();
     }
 
-    public void updateFilteredNode(FacesContext context, TreeNode node) {
-        ValueExpression ve = getValueExpression("filteredNode");
+    public void updateFilteredValue(FacesContext context, TreeNode node) {
+        ValueExpression ve = getValueExpression(PropertyKeys.filteredValue.name());
 
         if (ve != null) {
             ve.setValue(context.getELContext(), node);
         }
         else {
-            setFilteredNode(node);
+            setFilteredValue(node);
         }
     }
 
@@ -557,30 +548,6 @@ public class TreeTable extends TreeTableBase {
         super.preEncode(context);
     }
 
-    private void resetDynamicColumns() {
-        Columns dynamicCols = this.getDynamicColumns();
-        if (dynamicCols != null && isNestedWithinIterator()) {
-            dynamicCols.setRowIndex(-1);
-            this.setColumns(null);
-        }
-    }
-
-    public void updateColumnsVisibility(FacesContext context) {
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String columnTogglerParam = params.get(getClientId(context) + "_columnTogglerState");
-        if (columnTogglerParam != null) {
-            String[] togglableColumns = columnTogglerParam.split(",");
-            for (String togglableColumn : togglableColumns) {
-                int sepIndex = togglableColumn.lastIndexOf('_');
-                UIColumn column = findColumn(togglableColumn.substring(0, sepIndex));
-
-                if (column != null) {
-                    ((Column) column).setVisible(Boolean.valueOf(togglableColumn.substring(sepIndex + 1)));
-                }
-            }
-        }
-    }
-
     @Override
     protected boolean requiresColumns() {
         return true;
@@ -605,6 +572,8 @@ public class TreeTable extends TreeTableBase {
             }
 
             // TODO selection
+
+            setColumnMeta(ts.getColumnMeta());
         }
     }
 
@@ -624,7 +593,7 @@ public class TreeTable extends TreeTableBase {
 
     public void reset() {
         setValue(null);
-        setFilteredNode(null);
+        setFilteredValue(null);
 
         setFirst(0);
         setDefaultSort(false);
@@ -679,7 +648,31 @@ public class TreeTable extends TreeTableBase {
     }
 
     public boolean isMultiSort() {
-        String sortMode = getSortMode();
-        return sortMode != null && sortMode.equals("multiple");
+        return "multiple".equals(getSortMode());
+    }
+
+    @Override
+    public Map<String, ColumnMeta> getColumnMeta() {
+        Map<String, ColumnMeta> value =
+                (Map<String, ColumnMeta>) getStateHelper().get(InternalPropertyKeys.columnMeta);
+        if (value == null) {
+            value = new HashMap<>();
+            setColumnMeta(value);
+        }
+        return value;
+    }
+
+    public void setColumnMeta(Map<String, ColumnMeta> columnMeta) {
+        getStateHelper().put(InternalPropertyKeys.columnMeta, columnMeta);
+    }
+
+    @Override
+    public String getWidth() {
+        return (String) getStateHelper().eval(InternalPropertyKeys.width, null);
+    }
+
+    @Override
+    public void setWidth(String width) {
+        getStateHelper().put(InternalPropertyKeys.width, width);
     }
 }

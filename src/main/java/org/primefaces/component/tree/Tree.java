@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -168,31 +168,31 @@ public class Tree extends TreeBase {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
             TreeNode root = getValue();
 
-            if (eventName.equals("expand")) {
+            if ("expand".equals(eventName)) {
                 setRowKey(root, params.get(clientId + "_expandNode"));
                 TreeNode expandedNode = getRowNode();
                 expandedNode.setExpanded(true);
 
                 wrapperEvent = new NodeExpandEvent(this, behaviorEvent.getBehavior(), expandedNode);
             }
-            else if (eventName.equals("collapse")) {
+            else if ("collapse".equals(eventName)) {
                 setRowKey(root, params.get(clientId + "_collapseNode"));
                 TreeNode collapsedNode = getRowNode();
                 collapsedNode.setExpanded(false);
 
                 wrapperEvent = new NodeCollapseEvent(this, behaviorEvent.getBehavior(), collapsedNode);
             }
-            else if (eventName.equals("select")) {
+            else if ("select".equals(eventName)) {
                 setRowKey(root, params.get(clientId + "_instantSelection"));
 
                 wrapperEvent = new NodeSelectEvent(this, behaviorEvent.getBehavior(), getRowNode());
             }
-            else if (eventName.equals("unselect")) {
+            else if ("unselect".equals(eventName)) {
                 setRowKey(root, params.get(clientId + "_instantUnselection"));
 
                 wrapperEvent = new NodeUnselectEvent(this, behaviorEvent.getBehavior(), getRowNode());
             }
-            else if (eventName.equals("dragdrop")) {
+            else if ("dragdrop".equals(eventName)) {
                 if (!retValOnDrop) {
                     return;
                 }
@@ -207,12 +207,12 @@ public class Tree extends TreeBase {
                     wrapperEvent = new TreeDragDropEvent(this, behaviorEvent.getBehavior(), dragNode, dropNode, dndIndex, isDroppedNodeCopy);
                 }
             }
-            else if (eventName.equals("contextMenu")) {
+            else if ("contextMenu".equals(eventName)) {
                 setRowKey(root, params.get(clientId + "_contextMenuNode"));
 
                 wrapperEvent = new NodeSelectEvent(this, behaviorEvent.getBehavior(), getRowNode(), true);
             }
-            else if (eventName.equals("filter")) {
+            else if ("filter".equals(eventName)) {
                 wrapperEvent = behaviorEvent;
             }
 
@@ -281,9 +281,7 @@ public class Tree extends TreeBase {
     }
 
     public boolean isCheckboxSelection() {
-        String selectionMode = getSelectionMode();
-
-        return selectionMode != null && selectionMode.equals("checkbox");
+        return "checkbox".equals(getSelectionMode());
     }
 
     TreeNode getDragNode() {
@@ -362,7 +360,7 @@ public class Tree extends TreeBase {
 
         if (selectionMode != null && isRequired()) {
             Object selection = getLocalSelectedNodes();
-            boolean isValueBlank = (selectionMode.equalsIgnoreCase("single")) ? (selection == null) : (((TreeNode[]) selection).length == 0);
+            boolean isValueBlank = ("single".equalsIgnoreCase(selectionMode)) ? (selection == null) : (((TreeNode[]) selection).length == 0);
 
             if (isValueBlank) {
                 super.updateSelection(context);

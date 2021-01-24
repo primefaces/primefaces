@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,6 +36,7 @@ import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 
 import org.primefaces.component.menu.Menu;
+import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.event.CloseEvent;
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.model.Visibility;
@@ -104,7 +105,7 @@ public class Panel extends PanelBase {
         if (ComponentUtils.isRequestSource(this, context)) {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName.equals("toggle")) {
+            if ("toggle".equals(eventName)) {
                 boolean collapsed = Boolean.parseBoolean(params.get(clientId + "_collapsed"));
                 Visibility visibility = collapsed ? Visibility.HIDDEN : Visibility.VISIBLE;
 
@@ -113,7 +114,7 @@ public class Panel extends PanelBase {
                 super.queueEvent(new ToggleEvent(this, behaviorEvent.getBehavior(), visibility));
 
             }
-            else if (eventName.equals("close")) {
+            else if ("close".equals(eventName)) {
                 CloseEvent eventToQueue = new CloseEvent(this, behaviorEvent.getBehavior());
                 eventToQueue.setPhaseId(behaviorEvent.getPhaseId());
                 super.queueEvent(eventToQueue);
@@ -147,13 +148,12 @@ public class Panel extends PanelBase {
             super.processUpdates(context);
         }
 
-        FacesContext facesContext = getFacesContext();
-        ELContext eLContext = facesContext.getELContext();
-
-        ValueExpression collapsedVE = getValueExpression(PropertyKeys.collapsed.toString());
-        if (collapsedVE != null && !collapsedVE.isReadOnly(eLContext)) {
-            collapsedVE.setValue(eLContext, isCollapsed());
-            getStateHelper().put(Panel.PropertyKeys.collapsed, null);
+        ELContext elContext = context.getELContext();
+        ValueExpression expr = ValueExpressionAnalyzer.getExpression(elContext,
+                getValueExpression(PropertyKeys.collapsed.toString()));
+        if (expr != null && !expr.isReadOnly(elContext)) {
+            expr.setValue(elContext, isCollapsed());
+            getStateHelper().remove(PropertyKeys.collapsed);
         }
     }
 }

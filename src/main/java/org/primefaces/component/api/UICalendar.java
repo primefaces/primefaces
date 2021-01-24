@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -51,9 +51,9 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
     protected static final List<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("dateSelect", "viewChange", "close");
     protected static final Collection<String> CALENDAR_EVENT_NAMES =  LangUtils.concat(AbstractPrimeHtmlInputText.EVENT_NAMES, UNOBSTRUSIVE_EVENT_NAMES);
 
-    protected String timeOnlyPattern = null;
+    protected String timeOnlyPattern;
 
-    private boolean conversionFailed = false;
+    private boolean conversionFailed;
 
     public enum PropertyKeys {
         locale,

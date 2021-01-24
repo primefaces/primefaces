@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,7 +34,7 @@ public class DonutChartModel extends ChartModel {
     private List<Map<String, Number>> data;
     private int sliceMargin;
     private boolean fill = true;
-    private boolean showDataLabels = false;
+    private boolean showDataLabels;
     private String dataFormat;
     private String dataLabelFormatString;
     private int dataLabelThreshold;

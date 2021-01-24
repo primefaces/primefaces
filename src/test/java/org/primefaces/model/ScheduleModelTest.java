@@ -36,8 +36,8 @@ public class ScheduleModelTest {
 	@Test
 	public void addEvents() {
 		ScheduleModel model = new DefaultScheduleModel();
-		model.addEvent(new DefaultScheduleEvent("Entry 1", LocalDateTime.now(), LocalDateTime.now().plusHours(1)));
-		model.addEvent(new DefaultScheduleEvent("Entry 2", LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(1).plusHours(1)));
+		model.addEvent(DefaultScheduleEvent.builder().title("Entry 1").startDate(LocalDateTime.now()).endDate(LocalDateTime.now().plusHours(1)).build());
+		model.addEvent(DefaultScheduleEvent.builder().title("Entry 2").startDate(LocalDateTime.now().plusDays(1)).endDate(LocalDateTime.now().plusDays(1).plusHours(1)).build());
 
 		assertEquals(2, model.getEventCount());
 	}
@@ -45,8 +45,8 @@ public class ScheduleModelTest {
 	@Test
 	public void deleteEvent() {
 		ScheduleModel model = new DefaultScheduleModel();
-		ScheduleEvent event1 = new DefaultScheduleEvent("Entry 1", LocalDateTime.now(), LocalDateTime.now().plusHours(1));
-		ScheduleEvent event2 = new DefaultScheduleEvent("Entry 2", LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(1).plusHours(1));
+		ScheduleEvent event1 = DefaultScheduleEvent.builder().title("Entry 1").startDate(LocalDateTime.now()).endDate(LocalDateTime.now().plusHours(1)).build();
+		ScheduleEvent event2 = DefaultScheduleEvent.builder().title("Entry 2").startDate(LocalDateTime.now().plusDays(1)).endDate(LocalDateTime.now().plusDays(1).plusHours(1)).build();
 
 		model.addEvent(event1);
 		model.addEvent(event2);
@@ -60,12 +60,11 @@ public class ScheduleModelTest {
 	@Test
 	public void findEventById() {
 		ScheduleModel model = new DefaultScheduleModel();
-		model.addEvent(new DefaultScheduleEvent("Entry 1", LocalDateTime.now(), LocalDateTime.now().plusHours(1)));
-		model.addEvent(new DefaultScheduleEvent("Entry 2", LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(1).plusHours(1)));
-		model.addEvent(new DefaultScheduleEvent("Entry 3", LocalDateTime.now().plusDays(2), LocalDateTime.now().plusDays(2).plusHours(1)));
-		model.addEvent(new DefaultScheduleEvent("Entry 4", LocalDateTime.now().plusDays(3), LocalDateTime.now().plusDays(3).plusHours(1)));
-		model.addEvent(new DefaultScheduleEvent("Entry 5", LocalDateTime.now().plusDays(4), LocalDateTime.now().plusDays(4).plusHours(1)));
-
+		model.addEvent(DefaultScheduleEvent.builder().title("Entry 1").startDate(LocalDateTime.now()).endDate(LocalDateTime.now().plusHours(1)).build());
+		model.addEvent(DefaultScheduleEvent.builder().title("Entry 2").startDate(LocalDateTime.now().plusDays(1)).endDate(LocalDateTime.now().plusDays(1).plusHours(1)).build());
+		model.addEvent(DefaultScheduleEvent.builder().title("Entry 3").startDate(LocalDateTime.now().plusDays(2)).endDate(LocalDateTime.now().plusDays(2).plusHours(1)).build());
+		model.addEvent(DefaultScheduleEvent.builder().title("Entry 4").startDate(LocalDateTime.now().plusDays(3)).endDate(LocalDateTime.now().plusDays(3).plusHours(1)).build());
+		model.addEvent(DefaultScheduleEvent.builder().title("Entry 5").startDate(LocalDateTime.now().plusDays(4)).endDate(LocalDateTime.now().plusDays(4).plusHours(1)).build());
 		String id = model.getEvents().get(2).getId();
 
 		assertEquals("Entry 3", model.getEvent(id).getTitle());

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,25 +24,18 @@
 package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
-import java.util.Map;
 import javax.faces.FacesException;
 
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
-import org.primefaces.component.datatable.DataTableState;
 
 public class ResizableColumnsFeature implements DataTableFeature {
 
     @Override
     public void decode(FacesContext context, DataTable table) {
-        if (table.isMultiViewState()) {
-            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            String resizableColumnParam = params.get(table.getClientId(context) + "_resizableColumnState");
-            DataTableState ts = table.getMultiViewState(true);
-            ts.setResizableColumnsAsString(resizableColumnParam);
-        }
+        table.decodeColumnResizeState(context);
     }
 
     @Override

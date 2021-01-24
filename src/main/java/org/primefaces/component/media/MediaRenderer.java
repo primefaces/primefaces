@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,8 +24,6 @@
 package org.primefaces.component.media;
 
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
@@ -37,7 +35,6 @@ import org.primefaces.application.resource.DynamicContentType;
 import org.primefaces.component.media.player.MediaPlayer;
 import org.primefaces.component.media.player.MediaPlayerFactory;
 import org.primefaces.component.media.player.PDFPlayer;
-import org.primefaces.model.StreamedContent;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AgentUtils;
 import org.primefaces.util.DynamicContentSrcBuilder;
@@ -58,17 +55,6 @@ public class MediaRenderer extends CoreRenderer {
         }
         boolean isIE = AgentUtils.isIE(context);
         String sourceParam = player.getSourceParam();
-
-        Object value = media.getValue();
-        if (value instanceof StreamedContent && PDFPlayer.MIME_TYPE.equals(player.getType())) {
-            StreamedContent streamedContent = (StreamedContent) value;
-            if (streamedContent.getName() != null) {
-                int index = src.indexOf('?');
-                src = src.substring(0, index) + ";/" + URLEncoder.encode(streamedContent.getName(), StandardCharsets.UTF_8.name())
-                      + "" + src.substring(index, src.length());
-            }
-        }
-
         String type = player.getType();
         if (type != null && PDFPlayer.MIME_TYPE.equals(type)) {
             String view = media.getView();

@@ -96,6 +96,7 @@
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.utils.html#openlink" class="tsd-kind-icon">open<wbr>Link</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.utils.html#preventscrolling" class="tsd-kind-icon">prevent<wbr>Scrolling</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.utils.html#preventtabbing" class="tsd-kind-icon">prevent<wbr>Tabbing</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.utils.html#registerconnectedoverlayscrollhandler" class="tsd-kind-icon">register<wbr>Connected<wbr>Overlay<wbr>Scroll<wbr>Handler</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.utils.html#registerdynamicoverlay" class="tsd-kind-icon">register<wbr>Dynamic<wbr>Overlay</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.utils.html#registerhideoverlayhandler" class="tsd-kind-icon">register<wbr>Hide<wbr>Overlay<wbr>Handler</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="primefaces.utils.html#registerresizehandler" class="tsd-kind-icon">register<wbr>Resize<wbr>Handler</a></li>
@@ -552,6 +553,65 @@
 											<ul class="tsd-descriptions">
 												<li class="tsd-description">
 													<h4 class="tsd-returns-title">Returns <a href="jquery.html" class="tsd-signature-type">JQuery</a></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace">
+					<a name="registerconnectedoverlayscrollhandler" class="tsd-anchor"></a>
+					<h3>register<wbr>Connected<wbr>Overlay<wbr>Scroll<wbr>Handler</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace">
+						<li class="tsd-signature tsd-kind-icon">register<wbr>Connected<wbr>Overlay<wbr>Scroll<wbr>Handler<span class="tsd-signature-symbol">(</span>widget<span class="tsd-signature-symbol">: </span><a href="../classes/primefaces.widget.basewidget.html" class="tsd-signature-type">BaseWidget</a>, scrollNamespace<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, scrollCallback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><a href="../interfaces/jquery.event.html" class="tsd-signature-type">Event</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Registers a callback that is invoked when a scroll event is triggered on The DOM element for the widget that has a connected overlay.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>widget: <a href="../classes/primefaces.widget.basewidget.html" class="tsd-signature-type">BaseWidget</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A widget instance for which to register a scroll handler.</p>
+									</div>
+								</li>
+								<li>
+									<h5>scrollNamespace: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A scroll event with a namespace, such as <code>scroll.widgetId</code>.</p>
+									</div>
+								</li>
+								<li>
+									<h5>scrollCallback: <span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><a href="../interfaces/jquery.event.html" class="tsd-signature-type">Event</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A callnback that is invoked when a scroll event occurs
+										on the widget.</p>
+									</div>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-signature">
+											<ul class="tsd-signatures tsd-kind-type-literal">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><a href="../interfaces/jquery.event.html" class="tsd-signature-type">Event</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5>event: <a href="../interfaces/jquery.event.html" class="tsd-signature-type">Event</a></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 												</li>
 											</ul>
 										</li>
@@ -1075,6 +1135,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-namespace">
 						<a href="primefaces.utils.html#preventtabbing" class="tsd-kind-icon">prevent<wbr>Tabbing</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-namespace">
+						<a href="primefaces.utils.html#registerconnectedoverlayscrollhandler" class="tsd-kind-icon">register<wbr>Connected<wbr>Overlay<wbr>Scroll<wbr>Handler</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-namespace">
 						<a href="primefaces.utils.html#registerdynamicoverlay" class="tsd-kind-icon">register<wbr>Dynamic<wbr>Overlay</a>

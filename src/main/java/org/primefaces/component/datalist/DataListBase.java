@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -42,7 +42,6 @@ public abstract class DataListBase extends UIPageableData
         style,
         styleClass,
         varStatus,
-        emptyMessage,
         itemStyleClass,
         multiViewState
     }
@@ -104,13 +103,6 @@ public abstract class DataListBase extends UIPageableData
         getStateHelper().put(PropertyKeys.varStatus, varStatus);
     }
 
-    public String getEmptyMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, "No records found.");
-    }
-
-    public void setEmptyMessage(String emptyMessage) {
-        getStateHelper().put(PropertyKeys.emptyMessage, emptyMessage);
-    }
 
     public String getItemStyleClass() {
         return (String) getStateHelper().eval(PropertyKeys.itemStyleClass, null);

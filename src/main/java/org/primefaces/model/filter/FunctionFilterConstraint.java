@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,14 +29,14 @@ import java.util.Locale;
 
 public class FunctionFilterConstraint implements FilterConstraint {
 
-    private MethodExpression exprVE;
+    private MethodExpression methodExpression;
 
-    public FunctionFilterConstraint(MethodExpression exprVE) {
-        this.exprVE = exprVE;
+    public FunctionFilterConstraint(MethodExpression methodExpression) {
+        this.methodExpression = methodExpression;
     }
 
     @Override
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
-        return (boolean) exprVE.invoke(ctxt.getELContext(), new Object[]{value, filter, locale});
+        return (boolean) methodExpression.invoke(ctxt.getELContext(), new Object[]{value, filter, locale});
     }
 }

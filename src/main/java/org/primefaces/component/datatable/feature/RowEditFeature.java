@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,8 +25,8 @@ package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
 import java.util.Map;
-import javax.faces.FacesException;
 
+import javax.faces.FacesException;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitContext;
@@ -43,13 +43,14 @@ public class RowEditFeature implements DataTableFeature {
 
     @Override
     public void decode(FacesContext context, DataTable table) {
-        throw new FacesException("RowEditFeature should not encode.");
+        throw new FacesException("RowEditFeature should not decode.");
     }
 
     @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         if (table.isSelectionEnabled()) {
-            table.findSelectedRowKeys();
+            SelectionFeature feature = (SelectionFeature) DataTable.FEATURES.get(DataTableFeatureKey.SELECT);
+            feature.decodeSelectionRowKeys(context, table);
         }
 
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
@@ -60,7 +61,7 @@ public class RowEditFeature implements DataTableFeature {
         if (table.isRowEditRequest(context)) {
             String action = params.get(clientId + "_rowEditAction");
 
-            if (action.equals("cancel")) {
+            if ("cancel".equals(action)) {
                 VisitContext visitContext = null;
 
                 for (UIColumn column : table.getColumns()) {

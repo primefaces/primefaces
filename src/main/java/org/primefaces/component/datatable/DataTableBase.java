@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +23,13 @@
  */
 package org.primefaces.component.datatable;
 
-import org.primefaces.component.api.*;
-
 import javax.el.MethodExpression;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 
-public abstract class DataTableBase extends UIPageableData
-        implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder, MultiViewStateAware<DataTableState>,
-        UITable {
+import org.primefaces.component.api.*;
+
+public abstract class DataTableBase extends UIPageableData implements Widget, RTLAware, ClientBehaviorHolder,
+        PrimeClientBehaviorHolder, UITable<DataTableState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -38,81 +37,77 @@ public abstract class DataTableBase extends UIPageableData
 
     public enum PropertyKeys {
 
-        widgetVar,
-        scrollable,
+        allowUnsorting,
+        ariaRowLabel,
+        caseSensitiveSort,
+        cellEditMode,
+        cellSeparator,
+        clientCache,
+        dataLocale,
+        dir,
+        disableContextMenuIfEmpty,
+        disabledSelection,
+        disabledTextSelection,
+        draggableColumns,
+        draggableRows,
+        draggableRowsFunction,
+        editInitEvent,
+        editMode,
+        editable,
+        editingRow,
+        escapeText,
+        expandedRow,
+        filterBy,
+        filterDelay,
+        filterEvent,
+        filteredValue,
+        frozenColumns,
+        frozenRows,
+        globalFilter,
+        globalFilterFunction,
+        liveResize,
+        liveScroll,
+        liveScrollBuffer,
+        multiViewState,
+        nativeElements,
+        onExpandStart,
+        onRowClick,
+        reflow,
+        renderEmptyFacets,
+        resizableColumns,
+        resizeMode,
+        rowDragSelector,
+        rowEditMode,
+        rowExpandMode,
+        rowHover,
+        rowKey,
+        rowSelectMode,
+        rowSelector,
+        rowStyleClass,
+        saveOnCellBlur,
         scrollHeight,
+        scrollRows,
         scrollWidth,
-        selectionMode,
+        scrollable,
         selection,
-        emptyMessage,
+        selectionMode,
+        selectionPageOnly,
+        skipChildren,
+        sortBy,
+        sortMode,
+        stickyHeader,
+        stickyTopAt,
         style,
         styleClass,
-        liveScroll,
-        rowStyleClass,
-        onExpandStart,
-        resizableColumns,
-        sortMode,
-        sortBy,
-        allowUnsorting,
-        scrollRows,
-        rowKey,
-        filterEvent,
-        filterDelay,
+        summary,
+        tabindex,
         tableStyle,
         tableStyleClass,
-        draggableColumns,
-        editable,
-        filteredValue,
-        editMode,
-        editingRow,
-        cellSeparator,
-        summary,
-        frozenRows,
-        dir,
-        liveResize,
-        stickyHeader,
-        expandedRow,
-        disabledSelection,
-        rowSelectMode,
-        rowExpandMode,
-        dataLocale,
-        nativeElements,
-        frozenColumns,
-        draggableRows,
-        caseSensitiveSort,
-        skipChildren,
-        disabledTextSelection,
-        tabindex,
-        reflow,
-        liveScrollBuffer,
-        rowHover,
-        resizeMode,
-        ariaRowLabel,
-        saveOnCellBlur,
-        clientCache,
-        multiViewState,
-        filterBy,
-        globalFilter,
-        cellEditMode,
         virtualScroll,
-        rowDragSelector,
-        draggableRowsFunction,
-        onRowClick,
-        editInitEvent,
-        rowSelector,
-        disableContextMenuIfEmpty,
-        escapeText,
-        rowEditMode,
-        stickyTopAt,
-        globalFilterFunction,
-        renderEmptyFacets
-    }
-
-    protected enum InternalPropertyKeys {
-        defaultFilter,
-        filterByAsMap,
-        defaultSort,
-        sortByAsMap;
+        stripedRows,
+        showGridlines,
+        size,
+        widgetVar
     }
 
     public DataTableBase() {
@@ -172,14 +167,6 @@ public abstract class DataTableBase extends UIPageableData
         getStateHelper().put(PropertyKeys.selection, selection);
     }
 
-    public String getEmptyMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, "No records found.");
-    }
-
-    public void setEmptyMessage(String emptyMessage) {
-        getStateHelper().put(PropertyKeys.emptyMessage, emptyMessage);
-    }
-
     public String getStyle() {
         return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
@@ -236,11 +223,11 @@ public abstract class DataTableBase extends UIPageableData
         getStateHelper().put(PropertyKeys.scrollRows, scrollRows);
     }
 
-    public Object getRowKey() {
-        return getStateHelper().eval(PropertyKeys.rowKey, null);
+    public String getRowKey() {
+        return (String) getStateHelper().eval(PropertyKeys.rowKey, null);
     }
 
-    public void setRowKey(Object rowKey) {
+    public void setRowKey(String rowKey) {
         getStateHelper().put(PropertyKeys.rowKey, rowKey);
     }
 
@@ -580,6 +567,30 @@ public abstract class DataTableBase extends UIPageableData
         getStateHelper().put(PropertyKeys.virtualScroll, virtualScroll);
     }
 
+    public boolean isStripedRows() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.stripedRows, false);
+    }
+
+    public void setStripedRows(boolean stripedRows) {
+        getStateHelper().put(PropertyKeys.stripedRows, stripedRows);
+    }
+
+    public boolean isShowGridlines() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showGridlines, false);
+    }
+
+    public void setShowGridlines(boolean showGridlines) {
+        getStateHelper().put(PropertyKeys.showGridlines, showGridlines);
+    }
+
+    public String getSize() {
+        return (String) getStateHelper().eval(PropertyKeys.size, "regular");
+    }
+
+    public void setSize(String size) {
+        getStateHelper().put(PropertyKeys.size, size);
+    }
+
     public String getRowDragSelector() {
         return (String) getStateHelper().eval(PropertyKeys.rowDragSelector, null);
     }
@@ -668,5 +679,13 @@ public abstract class DataTableBase extends UIPageableData
 
     public void setRenderEmptyFacets(boolean renderEmptyFacets) {
         getStateHelper().put(PropertyKeys.renderEmptyFacets, renderEmptyFacets);
+    }
+
+    public boolean isSelectionPageOnly() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.selectionPageOnly, true);
+    }
+
+    public void setSelectionPageOnly(boolean selectionPageOnly) {
+        getStateHelper().put(PropertyKeys.selectionPageOnly, selectionPageOnly);
     }
 }

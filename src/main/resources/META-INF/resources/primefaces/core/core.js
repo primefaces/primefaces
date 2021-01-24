@@ -305,9 +305,11 @@
             });
 
             //aria
-            input.attr('role', 'textbox')
-                    .attr('aria-disabled', input.is(':disabled'))
-                    .attr('aria-readonly', input.prop('readonly'));
+            if(input.is(':not([type="password"])')) {
+                input.attr('role', 'textbox')
+                     .attr('aria-readonly', input.prop('readonly'));
+            }
+            input.attr('aria-disabled', input.is(':disabled'));
 
             if(input.is('textarea')) {
                 input.attr('aria-multiline', true);
@@ -929,12 +931,17 @@
         },
 
         /**
-    	 * Deprecated, use {@link PrimeFaces.dialog.DialogHandler.confirm} instead.
-         * @deprecated
-         * @param {PrimeFaces.dialog.ExtendedConfirmDialogMessage} msg Message to show with the confirm dialog.
+         * Displays dialog or popup according to the type of confirm component.
+         * @deprecated Deprecated, use {@link PrimeFaces.dialog.DialogHandler.confirm} instead.
+         * @param {PrimeFaces.dialog.ExtendedConfirmDialogMessage} msg Message to show with the confirm dialog or popup.
          */
         confirm: function(msg) {
-        	PrimeFaces.dialog.DialogHandler.confirm(msg);
+            if (msg.type === 'popup' && PrimeFaces.confirmPopup) {
+                PrimeFaces.confirmPopup.showMessage(msg);
+            }
+            else {
+                PrimeFaces.dialog.DialogHandler.confirm(msg);
+            }
         },
 
         /**

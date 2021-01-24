@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -65,13 +65,14 @@ public class DynamicContentSrcBuilder {
         }
         else if (value instanceof StreamedContent) {
             StreamedContent streamedContent = (StreamedContent) value;
+
             ValueExpression ve = null;
-            if (!LangUtils.isValueBlank(attributeName)) {
+            if (stream && !LangUtils.isValueBlank(attributeName)) {
                 ve = component.getValueExpression(attributeName);
+                ve = ValueExpressionAnalyzer.getExpression(context.getELContext(), ve);
             }
-            ValueExpression expression = ValueExpressionAnalyzer.getExpression(
-                        context.getELContext(), ve);
-            return build(context, streamedContent, component, cache, type, stream, expression);
+
+            return build(context, streamedContent, component, cache, type, stream, ve);
         }
 
         return null;

@@ -205,7 +205,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             this.bindPaginator();
         }
 
-        this.bindSortEvents();
+        if(this.cfg.sorting) {
+            this.bindSortEvents();
+        }
 
         if(this.cfg.rowHover) {
             this.setupRowHover();
@@ -236,7 +238,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             this.initReflow();
         }
 
-        if(this.cfg.multiViewState && this.cfg.resizableColumns) {
+        if(this.cfg.resizableColumns) {
             this.resizableStateHolder = $(this.jqId + '_resizableColumnState');
             this.resizableState = [];
 
@@ -383,10 +385,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         // #5582: destroy any current draggable items
-        var dragdrop = $.ui.ddmanager.current;
-        if (dragdrop) {
-            document.body.style.cursor = 'default';
-            dragdrop.cancel();
+        if (this.cfg.draggableColumns || this.cfg.draggableRows) {
+            var dragdrop = $.ui.ddmanager.current;
+            if (dragdrop && dragdrop.helper) {
+                var item = dragdrop.currentItem || dragdrop.element;
+                if(item.closest('.ui-datatable')[0] === this.jq[0]) {
+                    document.body.style.cursor = 'default';
+                    dragdrop.cancel();
+                }
+            }
         }
     },
 
@@ -428,6 +435,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this,
             hasAriaSort = false;
         this.cfg.tabindex = this.cfg.tabindex||'0';
+        this.cfg.multiSort = this.cfg.multiSort||false;
+        this.cfg.allowUnsorting = this.cfg.allowUnsorting||false;
         this.headers = this.thead.find('> tr > th');
         this.sortableColumns = this.headers.filter('.ui-sortable-column');
         this.sortableColumns.attr('tabindex', this.cfg.tabindex);
@@ -440,9 +449,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         //reflow dropdown
         this.reflowDD = $(this.jqId + '_reflowDD');
 
-        if(this.cfg.multiSort) {
-            this.sortMeta = [];
-        }
+        this.sortMeta = [];
 
         for(var i = 0; i < this.sortableColumns.length; i++) {
             var columnHeader = this.sortableColumns.eq(i),
@@ -530,35 +537,23 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
             PrimeFaces.clearSelection();
 
-            var unsorting = $this.cfg.allowUnsorting || $this.cfg.allowUnsorting == undefined;
-
             var columnHeader = $(this),
                 sortOrderData = columnHeader.data('sortorder'),
                 sortOrder = (sortOrderData === $this.SORT_ORDER.UNSORTED) ? $this.SORT_ORDER.ASCENDING :
                     (sortOrderData === $this.SORT_ORDER.ASCENDING) ? $this.SORT_ORDER.DESCENDING :
-                        unsorting ? $this.SORT_ORDER.UNSORTED : $this.SORT_ORDER.ASCENDING,
+                        $this.cfg.allowUnsorting ? $this.SORT_ORDER.UNSORTED : $this.SORT_ORDER.ASCENDING,
                 metaKey = e.metaKey || e.ctrlKey || metaKeyOn;
 
-            if($this.cfg.multiSort) {
-                if(metaKey) {
-                    $this.addSortMeta({
-                        col: columnHeader.attr('id'),
-                        order: sortOrder
-                    });
-                    $this.sort(columnHeader, sortOrder, true);
-                }
-                else {
-                    $this.sortMeta = [];
-                    $this.addSortMeta({
-                        col: columnHeader.attr('id'),
-                        order: sortOrder
-                    });
-                    $this.sort(columnHeader, sortOrder);
-                }
+            if(!$this.cfg.multiSort || !metaKey) {
+                $this.sortMeta = [];
             }
-            else {
-                $this.sort(columnHeader, sortOrder);
-            }
+
+            $this.addSortMeta({
+                col: columnHeader.attr('id'),
+                order: sortOrder
+            });
+
+            $this.sort(columnHeader, sortOrder, $this.cfg.multiSort && metaKey);
 
             if($this.cfg.scrollable) {
                 $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).trigger('focus');
@@ -566,6 +561,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
             $this.updateReflowDD(columnHeader, sortOrder);
         });
+
+        $this.updateSortPriorityIndicators();
 
         if(this.reflowDD && this.cfg.reflow) {
             PrimeFaces.skinSelect(this.reflowDD);
@@ -767,6 +764,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.rowSelectMode = this.cfg.rowSelectMode||'new';
         this.rowSelector = '> tr.ui-widget-content.ui-datatable-selectable';
         this.cfg.disabledTextSelection = this.cfg.disabledTextSelection === false ? false : true;
+        this.cfg.selectionPageOnly = this.cfg.selectionPageOnly === false ? !this.cfg.paginator : true;
         this.rowSelectorForRowClick = this.cfg.rowSelector||'td:not(.ui-column-unselectable),span:not(.ui-c)';
 
         var preselection = $(this.selectionHolder).val();
@@ -869,7 +867,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     case keyCode.UP:
                     case keyCode.DOWN:
                         var rowSelector = 'tr.ui-widget-content.ui-datatable-selectable',
-                        row = key === keyCode.UP ? $this.focusedRow.prev(rowSelector) : $this.focusedRow.next(rowSelector);
+                        row = key === keyCode.UP ? $this.focusedRow.prevAll(rowSelector).eq(0) : $this.focusedRow.nextAll(rowSelector).eq(0);
 
                         if(row.length) {
                             $this.unhighlightFocusedRow();
@@ -1341,8 +1339,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
 
             if(this.hasVerticalOverflow()) {
-                this.scrollHeaderBox.css('margin-right', scrollBarWidth + 'px');
-                this.scrollFooterBox.css('margin-right', scrollBarWidth + 'px');
+                this.scrollHeaderBox.css('margin-right', scrollBarWidth);
+                this.scrollFooterBox.css('margin-right', scrollBarWidth);
             }
         }
 
@@ -1499,7 +1497,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.theadClone = this.cloneTableHeader(this.thead, this.bodyTable);
 
         //reflect events from clone to original
-        if(this.sortableColumns.length) {
+        if(this.cfg.sorting) {
             this.sortableColumns.removeAttr('tabindex').off('blur.dataTable focus.dataTable keydown.dataTable');
 
             var clonedColumns = this.theadClone.find('> tr > th'),
@@ -1677,8 +1675,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     headerStyle = headerCol[0].style,
                     width = headerStyle.width||headerCol.width();
 
-                    if($this.cfg.multiViewState && $this.resizableStateHolder && $this.resizableStateHolder.attr('value')) {
-                        width = ($this.findColWidthInResizableState(headerCol.attr('id')) || width);
+                    if ($this.resizableState) {
+                        width = $this.findColWidthInResizableState(headerCol.attr('id')) || width;
                     }
 
                     $this.setOuterWidth(headerCol, width);
@@ -1717,8 +1715,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 colStyle = col[0].style,
                 width = colStyle.width||col.width();
 
-                if($this.cfg.multiViewState && $this.resizableStateHolder && $this.resizableStateHolder.attr('value')) {
-                    width = ($this.findColWidthInResizableState(col.attr('id')) || width);
+                if ($this.resizableState) {
+                    width = $this.findColWidthInResizableState(col.attr('id')) || width;
                 }
 
                 col.width(width);
@@ -2064,6 +2062,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                             $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'other')
                                 .attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));
                         }
+
+                        $this.updateSortPriorityIndicators();
                     }
                 }
 
@@ -2089,21 +2089,40 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
         };
 
-        if(multi) {
-            options.params.push({name: this.id + '_multiSorting', value: true});
-            options.params.push({name: this.id + '_sortKey', value: $this.joinSortMetaOption('col')});
-            options.params.push({name: this.id + '_sortDir', value: $this.joinSortMetaOption('order')});
-        }
-        else {
-            options.params.push({name: this.id + '_sortKey', value: columnHeader.attr('id')});
-            options.params.push({name: this.id + '_sortDir', value: order});
-        }
+        options.params.push({name: this.id + '_sortKey', value: $this.joinSortMetaOption('col')});
+        options.params.push({name: this.id + '_sortDir', value: $this.joinSortMetaOption('order')});
 
         if(this.hasBehavior('sort')) {
             this.callBehavior('sort', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
+        }
+    },
+    
+    /**
+     * In multi-sort mode this will add number indicators to let the user know the current 
+     * sort order. If only one column is sorted then no indicator is displayed and will
+     * only be displayed once more than one column is sorted.
+     * @private
+     */
+    updateSortPriorityIndicators: function() {
+        var $this = this;
+
+        // remove all indicator numbers first
+        $this.sortableColumns.find('.ui-sortable-column-badge').text('').addClass('ui-helper-hidden');
+
+        // add 1,2,3 etc to columns if more than 1 column is sorted
+        var sortMeta =  $this.sortMeta;
+        if (sortMeta && sortMeta.length > 1) {
+            $this.sortableColumns.each(function() {
+                var id = $(this).attr("id");
+                for (var i = 0; i < sortMeta.length; i++) {
+                    if (sortMeta[i].col == id) {
+                        $(this).find('.ui-sortable-column-badge').text(i + 1).removeClass('ui-helper-hidden');
+                    }
+                }
+            });
         }
     },
 
@@ -2663,6 +2682,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * all rows. When some rows are selected, this will unselect all rows.
      */
     toggleCheckAll: function() {
+        var shouldCheckAll = true;
         if(this.cfg.nativeElements) {
             var checkboxes = this.tbody.find('> tr.ui-datatable-selectable > td.ui-selection-column > :checkbox:visible'),
             checked = this.checkAllToggler.prop('checked'),
@@ -2678,6 +2698,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     var checkbox = $(this);
                     checkbox.prop('checked', false);
                     $this.unselectRowWithCheckbox(checkbox, true);
+                    shouldCheckAll = false;
                 }
             });
         }
@@ -2689,6 +2710,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             if(checked) {
                 this.checkAllToggler.removeClass('ui-state-active').children('span.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
                 this.checkAllToggler.attr('aria-checked', false);
+                shouldCheckAll = false;
 
                 checkboxes.each(function() {
                     $this.unselectRowWithCheckbox($(this), true);
@@ -2702,6 +2724,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     $this.selectRowWithCheckbox($(this), true);
                 });
             }
+        }
+
+        // GitHub #6730 user wants all rows not just displayed rows
+        if(!this.cfg.selectionPageOnly && shouldCheckAll) {
+            this.selectAllRows();
         }
 
         //save state
@@ -3049,7 +3076,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                                 $this.incellClick = true;
                             }
 
-                            if(!$this.incellClick && $this.currentCell && !$this.contextMenuClick && !$.datepicker._datepickerShowing) {
+                            if(!$this.incellClick && $this.currentCell && !$this.contextMenuClick && !$.datepicker._datepickerShowing && $('.p-datepicker-panel:visible').length === 0) {
                                 if($this.cfg.saveOnCellBlur)
                                     $this.saveCell($this.currentCell);
                                 else
@@ -3772,6 +3799,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     clearFilters: function() {
         this.thead.find('> tr > th.ui-filter-column > .ui-column-filter').val('');
+        this.thead.find('> tr > th.ui-filter-column > .ui-column-customfilter :input').val('');
         $(this.jqId + '\\:globalFilter').val('');
 
         this.filter();
@@ -3910,8 +3938,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var colWidth = columnsOfFirstRow.eq(i).width() + 1,
             id = this.id + '_ghost_' + i;
 
-            if(this.cfg.multiViewState && this.resizableStateHolder.attr('value')) {
-                colWidth = (this.findColWidthInResizableState(id) || colWidth);
+            if (this.resizableState) {
+                colWidth = this.findColWidthInResizableState(id) || colWidth;
             }
 
             columnMarkup += '<th id="' + id + '" style="height:0px;border-bottom-width: 0px;border-top-width: 0px;padding-top: 0px;padding-bottom: 0px;outline: 0 none; width:' + colWidth + 'px" class="ui-resizable-column"></th>';
@@ -4076,12 +4104,25 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Remove given row from the list of selected rows.
      * @private
-     * @param {string} rowIndex Key of the row to remove.
+     * @param {string} rowKey Key of the row to remove.
      */
-    removeSelection: function(rowIndex) {
-        this.selection = $.grep(this.selection, function(value) {
-            return value != rowIndex;
-        });
+    removeSelection: function(rowKey) {
+        if(this.selection.includes('@all')) {
+            // GitHub #3535 if @all was previously selected just select values on page
+            this.clearSelection();
+            var rows = this.tbody.children('tr');
+            for(var i = 0; i < rows.length; i++) {
+                var rowMeta = this.getRowMeta(rows.eq(i));
+                if(rowMeta.key !== rowKey) {
+                    this.addSelection(rowMeta.key);
+                }
+            }
+        }
+        else {
+            this.selection = $.grep(this.selection, function(value) {
+                return value !== rowKey;
+            });
+        }
     },
 
     /**
@@ -4434,6 +4475,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.isEmpty()) {
             this.uncheckHeaderCheckbox();
             this.disableHeaderCheckbox();
+        }
+        else if(!this.cfg.selectionPageOnly) {
+            if(this.selection.includes('@all')) {
+                this.enableHeaderCheckbox();
+                this.checkHeaderCheckbox();
+            }
         }
         else {
             var checkboxes, selectedCheckboxes, enabledCheckboxes, disabledCheckboxes;
@@ -4909,48 +4956,46 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @param {number | null} nextColumnWidth Width of the column next to the given column header.
      */
     updateResizableState: function(columnHeader, nextColumnHeader, table, newWidth, nextColumnWidth) {
-        if(this.cfg.multiViewState) {
-            var expandMode = (this.cfg.resizeMode === 'expand'),
-            currentColumnId = columnHeader.attr('id'),
-            nextColumnId = nextColumnHeader.attr('id'),
-            tableId = this.id + "_tableWidthState",
-            currentColumnState = currentColumnId + '_' + newWidth,
-            nextColumnState = nextColumnId + '_' + nextColumnWidth,
-            tableState = tableId + '_' + parseInt(table.css('width')),
-            currentColumnMatch = false,
-            nextColumnMatch = false,
-            tableMatch = false;
+        var expandMode = (this.cfg.resizeMode === 'expand'),
+        currentColumnId = columnHeader.attr('id'),
+        nextColumnId = nextColumnHeader.attr('id'),
+        tableId = this.id + "_tableWidthState",
+        currentColumnState = currentColumnId + '_' + newWidth,
+        nextColumnState = nextColumnId + '_' + nextColumnWidth,
+        tableState = tableId + '_' + parseInt(table.css('width')),
+        currentColumnMatch = false,
+        nextColumnMatch = false,
+        tableMatch = false;
 
-            for(var i = 0; i < this.resizableState.length; i++) {
-                var state = this.resizableState[i];
-                if(state.indexOf(currentColumnId) === 0) {
-                    this.resizableState[i] = currentColumnState;
-                    currentColumnMatch = true;
-                }
-                else if(!expandMode && state.indexOf(nextColumnId) === 0) {
-                    this.resizableState[i] = nextColumnState;
-                    nextColumnMatch = true;
-                }
-                else if(expandMode && state.indexOf(tableId) === 0) {
-                    this.resizableState[i] = tableState;
-                    tableMatch = true;
-                }
+        for(var i = 0; i < this.resizableState.length; i++) {
+            var state = this.resizableState[i];
+            if(state.indexOf(currentColumnId) === 0) {
+                this.resizableState[i] = currentColumnState;
+                currentColumnMatch = true;
             }
-
-            if(!currentColumnMatch) {
-                this.resizableState.push(currentColumnState);
+            else if(!expandMode && state.indexOf(nextColumnId) === 0) {
+                this.resizableState[i] = nextColumnState;
+                nextColumnMatch = true;
             }
-
-            if(!expandMode && !nextColumnMatch) {
-                this.resizableState.push(nextColumnState);
+            else if(expandMode && state.indexOf(tableId) === 0) {
+                this.resizableState[i] = tableState;
+                tableMatch = true;
             }
-
-            if(expandMode && !tableMatch) {
-                this.resizableState.push(tableState);
-            }
-
-            this.resizableStateHolder.val(this.resizableState.join(','));
         }
+
+        if(!currentColumnMatch) {
+            this.resizableState.push(currentColumnState);
+        }
+
+        if(!expandMode && !nextColumnMatch) {
+            this.resizableState.push(nextColumnState);
+        }
+
+        if(expandMode && !tableMatch) {
+            this.resizableState.push(tableState);
+        }
+
+        this.resizableStateHolder.val(this.resizableState.join(','));
     },
 
     /**
@@ -4962,12 +5007,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * does not exist.
      */
     findColWidthInResizableState: function(id) {
-        for(var i = 0; i < this.resizableState.length; i++) {
+        for (var i = 0; i < this.resizableState.length; i++) {
             var state = this.resizableState[i];
-            if(state.indexOf(id) === 0) {
+            if (state.indexOf(id) === 0) {
                 return state.substring(state.lastIndexOf('_') + 1, state.length);
             }
         }
+
+        return null;
     },
 
     /**
@@ -4980,15 +5027,17 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         // update the visibility of columns but ignore expanded rows
-        for(var i = 0; i < this.headers.length; i++) {
-            var header = this.headers.eq(i),
-                col = this.tbody.find('> tr:not(.ui-expanded-row-content) > td:nth-child(' + (header.index() + 1) + ')');
+        if(this.headers) {
+            for(var i = 0; i < this.headers.length; i++) {
+                var header = this.headers.eq(i),
+                    col = this.tbody.find('> tr:not(.ui-expanded-row-content) > td:nth-child(' + (header.index() + 1) + ')');
 
-            if(header.hasClass('ui-helper-hidden')) {
-                col.addClass('ui-helper-hidden');
-            }
-            else {
-                col.removeClass('ui-helper-hidden');
+                if(header.hasClass('ui-helper-hidden')) {
+                    col.addClass('ui-helper-hidden');
+                }
+                else {
+                    col.removeClass('ui-helper-hidden');
+                }
             }
         }
 

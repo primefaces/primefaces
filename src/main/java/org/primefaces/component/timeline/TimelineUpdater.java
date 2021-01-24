@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -69,20 +69,9 @@ public abstract class TimelineUpdater {
 
     public abstract void add(TimelineEvent<?> event);
 
-    @Deprecated
-    public void update(TimelineEvent<?> event, int index) {
-        update(event);
-    }
-
     public abstract void update(TimelineEvent<?> event);
 
-    @Deprecated
-    public abstract void delete(int index);
-
     public abstract void delete(String id);
-
-    @Deprecated
-    public abstract void select(int index);
 
     public abstract void select(String id);
 

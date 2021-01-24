@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -75,7 +75,7 @@ public class DataRenderer extends CoreRenderer {
         }
 
         ResponseWriter writer = context.getResponseWriter();
-        boolean isTop = position.equals("top");
+        boolean isTop = "top".equals(position);
         UIComponent leftTopContent = pageable.getFacet("paginatorTopLeft");
         UIComponent rightTopContent = pageable.getFacet("paginatorTopRight");
         UIComponent leftBottomContent = pageable.getFacet("paginatorBottomLeft");
@@ -154,7 +154,7 @@ public class DataRenderer extends CoreRenderer {
         String paginatorContainers = null;
         String currentPageTemplate = pageable.getCurrentPageReportTemplate();
 
-        if (paginatorPosition.equalsIgnoreCase("both")) {
+        if ("both".equalsIgnoreCase(paginatorPosition)) {
             paginatorContainers = "'" + clientId + "_paginator_top','" + clientId + "_paginator_bottom'";
         }
         else {

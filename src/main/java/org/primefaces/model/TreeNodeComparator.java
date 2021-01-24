@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,7 @@ public class TreeNodeComparator implements Comparator<Object> {
     private boolean asc;
     private String var;
     private MethodExpression sortFunction;
-    private boolean caseSensitive = false;
+    private boolean caseSensitive;
     private Locale locale;
 
     public TreeNodeComparator(ValueExpression sortBy, String var, SortOrder sortOrder, MethodExpression sortFunction, boolean caseSensitive,

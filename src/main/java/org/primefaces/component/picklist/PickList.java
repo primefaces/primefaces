@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -183,29 +183,29 @@ public class PickList extends PickListBase {
                 DualListModel<?> list = (DualListModel<?>) getValue();
                 FacesEvent wrapperEvent = null;
 
-                if (eventName.equals("select")) {
+                if ("select".equals(eventName)) {
                     String listName = params.get(clientId + "_listName");
                     int itemIndex = Integer.parseInt(params.get(clientId + "_itemIndex"));
 
-                    if (listName.equals("target")) {
+                    if ("target".equals(listName)) {
                         wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), list.getTarget().get(itemIndex));
                     }
                     else {
                         wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), list.getSource().get(itemIndex));
                     }
                 }
-                else if (eventName.equals("unselect")) {
+                else if ("unselect".equals(eventName)) {
                     String listName = params.get(clientId + "_listName");
                     int itemIndex = Integer.parseInt(params.get(clientId + "_itemIndex"));
 
-                    if (listName.equals("target")) {
+                    if ("target".equals(listName)) {
                         wrapperEvent = new UnselectEvent(this, behaviorEvent.getBehavior(), list.getTarget().get(itemIndex));
                     }
                     else {
                         wrapperEvent = new UnselectEvent(this, behaviorEvent.getBehavior(), list.getSource().get(itemIndex));
                     }
                 }
-                else if (eventName.equals("reorder")) {
+                else if ("reorder".equals(eventName)) {
                     wrapperEvent = behaviorEvent;
                 }
 
@@ -233,7 +233,7 @@ public class PickList extends PickListBase {
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName.equals("transfer")) {
+            if ("transfer".equals(eventName)) {
                 String[] items = paramValues.get(clientId + "_transferred");
                 boolean isAdd = Boolean.parseBoolean(params.get(clientId + "_add"));
                 List transferredItems = new ArrayList();
@@ -243,7 +243,7 @@ public class PickList extends PickListBase {
 
                 super.queueEvent(transferEvent);
             }
-            else if (eventName.equals("select") || eventName.equals("unselect") || eventName.equals("reorder")) {
+            else if ("select".equals(eventName) || "unselect".equals(eventName) || "reorder".equals(eventName)) {
                 customEvents.put(eventName, (AjaxBehaviorEvent) event);
             }
         }

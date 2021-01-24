@@ -83,6 +83,7 @@ AutoComplete provides live suggestions while an input is being typed.
 | resultsMessage | null | String | Hint text for screen readers to provide information about the search results.
 | groupBy | null | Object | Value to group items in categories.
 | queryEvent | keyup | String | Event to initiate the query, valid options are "keyup" and "enter".
+| queryDelay | 300 | Integer | Delay to wait in milliseconds before sending each query to the server.
 | dropdownMode | blank | String | Specifies the behavior dropdown button. Default "blank" mode sends an empty string and "current" mode sends the input value.
 | autoHighlight | true | Boolean | Highlights the first suggested item automatically.
 | selectLimit | null | Integer | Limits the multiple selection. Default is unlimited.

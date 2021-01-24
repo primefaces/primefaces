@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,18 +23,14 @@
  */
 package org.primefaces.component.treetable;
 
+import org.primefaces.component.api.*;
+import org.primefaces.util.MessageFactory;
+
 import javax.el.MethodExpression;
 import javax.faces.component.behavior.ClientBehaviorHolder;
-import org.primefaces.component.api.MultiViewStateAware;
-
-import org.primefaces.component.api.Pageable;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
-import org.primefaces.component.api.UITree;
-import org.primefaces.component.api.Widget;
-import org.primefaces.component.api.UITable;
 
 public abstract class TreeTableBase extends UITree implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable,
-        MultiViewStateAware<TreeTableState>, UITable {
+        UITable<TreeTableState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -77,21 +73,27 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         filterBy,
         globalFilter,
         globalFilterFunction,
-        filteredNode,
+        filteredValue,
         filterEvent,
         filterDelay,
         cellEditMode,
         editInitEvent,
         multiViewState,
         allowUnsorting,
-        sortMode
+        sortMode,
+        cloneOnFilter,
+        saveOnCellBlur,
+        showGridlines,
+        size
     }
 
     protected enum InternalPropertyKeys {
         defaultFilter,
         filterByAsMap,
         defaultSort,
-        sortByAsMap;
+        sortByAsMap,
+        columnMeta,
+        width;
     }
 
     public TreeTableBase() {
@@ -168,7 +170,7 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
     }
 
     public String getEmptyMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, "No records found.");
+        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, MessageFactory.getMessage(UIPageableData.EMPTY_MESSAGE));
     }
 
     public void setEmptyMessage(String emptyMessage) {
@@ -371,12 +373,12 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         getStateHelper().put(PropertyKeys.first, first);
     }
 
-    public Object getFilteredNode() {
-        return getStateHelper().eval(PropertyKeys.filteredNode, null);
+    public Object getFilteredValue() {
+        return getStateHelper().eval(PropertyKeys.filteredValue, null);
     }
 
-    public void setFilteredNode(Object filteredNode) {
-        getStateHelper().put(PropertyKeys.filteredNode, filteredNode);
+    public void setFilteredValue(Object filteredValue) {
+        getStateHelper().put(PropertyKeys.filteredValue, filteredValue);
     }
 
     public String getFilterEvent() {
@@ -464,5 +466,37 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
 
     public void setSortMode(String sortMode) {
         getStateHelper().put(PropertyKeys.sortMode, sortMode);
+    }
+
+    public boolean isCloneOnFilter() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.cloneOnFilter, false);
+    }
+
+    public void setCloneOnFilter(boolean cloneOnFilter) {
+        getStateHelper().put(PropertyKeys.cloneOnFilter, cloneOnFilter);
+    }
+
+    public boolean isSaveOnCellBlur() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.saveOnCellBlur, true);
+    }
+
+    public void setSaveOnCellBlur(boolean saveOnCellBlur) {
+        getStateHelper().put(PropertyKeys.saveOnCellBlur, saveOnCellBlur);
+    }
+
+    public boolean isShowGridlines() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showGridlines, false);
+    }
+
+    public void setShowGridlines(boolean showGridlines) {
+        getStateHelper().put(PropertyKeys.showGridlines, showGridlines);
+    }
+
+    public String getSize() {
+        return (String) getStateHelper().eval(PropertyKeys.size, "regular");
+    }
+
+    public void setSize(String size) {
+        getStateHelper().put(PropertyKeys.size, size);
     }
 }

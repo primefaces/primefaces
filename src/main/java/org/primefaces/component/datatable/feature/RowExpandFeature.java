@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,6 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.rowexpansion.RowExpansion;
-import org.primefaces.model.LazyDataModel;
 
 public class RowExpandFeature implements DataTableFeature {
 
@@ -47,9 +46,7 @@ public class RowExpandFeature implements DataTableFeature {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         int expandedRowIndex = Integer.parseInt(params.get(table.getClientId(context) + "_expandedRowIndex"));
 
-        if (table.isLazy() && ((LazyDataModel) table.getValue()).getWrappedData() == null) {
-            table.loadLazyData();
-        }
+        table.loadLazyDataIfRequired();
 
         encodeExpansion(context, renderer, table, expandedRowIndex);
         table.setRowIndex(-1);

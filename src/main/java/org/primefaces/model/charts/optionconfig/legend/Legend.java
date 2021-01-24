@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -43,7 +43,7 @@ public class Legend implements Serializable {
     private String align;
     private boolean fullWidth = true;
     private boolean reverse;
-    private boolean rtl = false;
+    private boolean rtl;
     private String textDirection;
     private LegendLabel labels;
 

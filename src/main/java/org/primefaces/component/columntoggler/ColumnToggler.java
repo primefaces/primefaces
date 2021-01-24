@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -56,7 +56,7 @@ public class ColumnToggler extends ColumnTogglerBase {
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
-    private UIComponent dataSourceComponent = null;
+    private UIComponent dataSourceComponent;
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
@@ -79,7 +79,7 @@ public class ColumnToggler extends ColumnTogglerBase {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-        if (event instanceof AjaxBehaviorEvent && eventName.equals("toggle")) {
+        if (event instanceof AjaxBehaviorEvent && "toggle".equals(eventName)) {
             String clientId = getClientId(context);
             Visibility visibility = Visibility.valueOf(params.get(clientId + "_visibility"));
             int index = Integer.parseInt(params.get(clientId + "_index"));
@@ -93,12 +93,17 @@ public class ColumnToggler extends ColumnTogglerBase {
 
     public UIComponent getDataSourceComponent() {
         if (dataSourceComponent == null) {
-            FacesContext context = getFacesContext();
-            String tableId = SearchExpressionFacade.resolveClientIds(context, this, getDatasource());
-            dataSourceComponent = context.getViewRoot().findComponent(tableId);
+            dataSourceComponent = SearchExpressionFacade.resolveComponent(getFacesContext(), this, getDatasource());
         }
 
         return dataSourceComponent;
     }
 
+    @Override
+    public Object saveState(FacesContext context) {
+        // reset component for MyFaces view pooling
+        dataSourceComponent = null;
+
+        return super.saveState(context);
+    }
 }

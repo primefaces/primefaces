@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,11 +32,11 @@ public class CartesianChartModel extends ChartModel {
     protected Map<AxisType, Axis> axes;
 
     private List<ChartSeries> series;
-    private boolean zoom = false;
-    private boolean animate = false;
+    private boolean zoom;
+    private boolean animate;
     private boolean showDatatip = true;
     private String datatipFormat;
-    private boolean showPointLabels = false;
+    private boolean showPointLabels;
     private String datatipEditor;
 
     public CartesianChartModel() {

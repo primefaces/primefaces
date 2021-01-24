@@ -2,8 +2,6 @@
 
 DataTable displays data in tabular format.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.datatable.html)
-
 ## Info
 
 | Name | Value |
@@ -599,6 +597,9 @@ For frozen columns, use _frozenHeader_ , _frozenFooter_ , _scrollableHeader_ and
 ## Row Grouping
 Rows can be grouped in two ways, using headerRow, summaryRow components or with groupRow
 attribute on a column.
+
+!> Row Grouping does not work with Lazy Loading and LiveScroll as the grouping needs to know about all rows to properly 
+group the rows.
 
 ```xhtml
 <p:dataTable var="car" value="#{dtRowGroupView.cars}" sortBy="#{car.brand}">

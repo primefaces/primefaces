@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2020 PrimeTek
+ * Copyright (c) 2009-2021 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -122,9 +122,27 @@ public class ScheduleRenderer extends CoreRenderer {
                     jsonObject.put("durationEditable", event.isResizable());
                 }
                 jsonObject.put("overlap", event.isOverlapAllowed());
-                jsonObject.put("classNames", event.getStyleClass());
-                jsonObject.put("description", event.getDescription());
-                jsonObject.put("url", event.getUrl());
+                if (event.getStyleClass() != null) {
+                    jsonObject.put("classNames", event.getStyleClass());
+                }
+                if (event.getDescription() != null) {
+                    jsonObject.put("description", event.getDescription());
+                }
+                if (event.getUrl() != null) {
+                    jsonObject.put("url", event.getUrl());
+                }
+                if (event.getDisplay() != null) {
+                    jsonObject.put("display", event.getDisplay());
+                }
+                if (event.getBackgroundColor() != null) {
+                    jsonObject.put("backgroundColor", event.getBackgroundColor());
+                }
+                if (event.getBorderColor() != null) {
+                    jsonObject.put("borderColor", event.getBorderColor());
+                }
+                if (event.getTextColor() != null) {
+                    jsonObject.put("textColor", event.getTextColor());
+                }
                 jsonObject.put("rendering", Objects.toString(event.getRenderingMode(), null));
 
                 if (event.getDynamicProperties() != null) {
@@ -223,7 +241,7 @@ public class ScheduleRenderer extends CoreRenderer {
 
         String displayEventEnd = schedule.getDisplayEventEnd();
         if (displayEventEnd != null) {
-            if (displayEventEnd.equals("true") || displayEventEnd.equals("false")) {
+            if ("true".equals(displayEventEnd) || "false".equals(displayEventEnd)) {
                 wb.nativeAttr("displayEventEnd", displayEventEnd);
             }
             else {
@@ -235,7 +253,7 @@ public class ScheduleRenderer extends CoreRenderer {
             String weekNumCalculation = schedule.getWeekNumberCalculation();
             String weekNumCalculator = schedule.getWeekNumberCalculator();
 
-            if (weekNumCalculation.equals("custom")) {
+            if ("custom".equals(weekNumCalculation)) {
                 if (weekNumCalculator != null) {
                     wb.append(",weekNumberCalculation: function(date){ return ")
                             .append(schedule.getWeekNumberCalculator())
