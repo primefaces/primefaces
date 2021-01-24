@@ -97,8 +97,9 @@ function parseObjectCode(objectDef, commentedProgram, inclusionHandler, severity
                     else {
                         /** @type {ObjectCodeMethod} */
                         const method = {
-                            name: propertyName,
                             jsdoc: jsdoc,
+                            method: undefined,
+                            name: propertyName,
                             node: property.value
                         };
                         methodMap.set(propertyName, method);

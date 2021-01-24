@@ -54,6 +54,8 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.DeferredWidgetCfg} cfg
  * 
+ * @prop {boolean} cfg.alwaysDisplayLabel `true` if the label of the selected item should always be set on the visible
+ * input, `false` otherwise.
  * @prop {string} cfg.appendTo Appends the overlay to the element defined by search expression. Defaults to the document
  * body.
  * @prop {boolean} cfg.autoWidth Calculates a fixed width based on the width of the maximum option label. Set to false
@@ -1336,8 +1338,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Renders panel content based on hidden select.
-     * @param {boolean} initContentsAndBindItemEvents Call initContents and bindItemEvents after rendering?
      * @private
+     * @param {boolean} initContentsAndBindItemEvents `true` to call {@link initContents} and {@link bindItemEvents}
+     * after rendering, `false` otherwise.
      */
     renderPanelContentFromHiddenSelect: function(initContentsAndBindItemEvents) {
          if (this.cfg.renderPanelContentOnClient && this.itemsWrapper.children().length === 0) {
@@ -1355,11 +1358,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Renders Panel-HTML-code for SelectItems.
+     * Renders panel HTML-code for all select items.
      * @private
-     * @param {JQuery} parentItem An parentItem (select, optgroup) for which to render HTML-code.
-     * @param {boolean} [isGrouped] Tells whether the elements of the parentItem should be marked as grouped.
-     * @return {string} Rendered HTML-code.
+     * @param {JQuery} parentItem A parent item (select, optgroup) for which to render HTML code.
+     * @param {boolean} [isGrouped] Indicated whether the elements of the parent item should be marked as grouped.
+     * @return {string} The rendered HTML string.
      */
     renderSelectItems: function(parentItem, isGrouped) {
         var $this = this;
@@ -1374,11 +1377,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Renders Panel-HTML-code for one SelectItem(Group).
+     * Renders panel HTML code for one select item (group).
      * @private
-     * @param {JQuery} item An option(group) for which to render HTML-code.
-     * @param {boolean} isGrouped Tells whether the item is part of a group.
-     * @return {string} Rendered HTML-code.
+     * @param {JQuery} item An option (group) for which to render HTML code.
+     * @param {boolean} [isGrouped] Indicates whether the item is part of a group.
+     * @return {string} The rendered HTML string.
      */
     renderSelectItem: function(item, isGrouped) {
         var content = "";

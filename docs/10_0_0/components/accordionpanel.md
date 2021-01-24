@@ -1,8 +1,8 @@
 # AccordionPanel
 
 AccordionPanel is a container component that displays content in stacked format.
-
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.accordionpanel.html)
+                                  jsdocs/classes/src_primefaces.primefaces.widget.accordionpanel.html
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.accordionpanel.html)
 
 ## Info
 

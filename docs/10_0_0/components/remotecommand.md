@@ -113,7 +113,8 @@ promise returned by the remote command. Compared with adding a callback via
 `oncomplete`, this lets you register as many callbacks as you want, and also
 register different callbacks dynamically from the calling JavaScript code:
 
-Using `async` JavaScript functions (check browser support!), this would look as follows:
+Using `async` JavaScript functions (check browser support!, not supported in
+IE), this would look as follows:
 
 ```javascript
 async function main(param1, param2) {
@@ -129,3 +130,8 @@ main("foo", "bar");
 ```
 
 Without support for async function, use `rc().then(...).catch(...)` instead.
+
+Note to TypeScript users: You can use the
+[PrimeFaces.ajax.RemoteCommand](../jsdocs/modules/src_primefaces.primefaces.ajax.html#remotecommand)
+type to declare the available remote commands once in a declaration file in the
+window scope so they can be called by your code.

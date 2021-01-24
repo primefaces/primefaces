@@ -19,6 +19,7 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.DynamicOverlayWidgetCfg} cfg
  * 
+ * @prop {string} cfg.appendTo The search expression for the element to which the overlay panel should be appended.
  * @prop {number} cfg.baseZIndex Base z-index for the sidebar.
  * @prop {PrimeFaces.widget.Sidebar.OnHideCallback} cfg.onHide Callback that is invoked when the sidebar is opened.
  * @prop {PrimeFaces.widget.Sidebar.OnShowCallback} cfg.onShow Callback that is invoked when the sidebar is closed.

@@ -3,7 +3,10 @@
  *
  * @prop {JQuery} button The DOM element for the button for selecting a file.
  * @prop {JQuery} display The DOM element for the UI display.
+ * @prop {JQuery} form The DOM element of the (closest) form that contains this file upload.
  * @prop {JQuery} input The DOM element for the file input element.
+ * @prop {number} maxFileSize Maximum allowed size in bytes for files.
+ * @prop {string[]} sizes Array with suffixes for file sizes (`Bytes`, `KB` etc.).
  *
  * @interface {PrimeFaces.widget.SimpleFileUploadCfg} cfg The configuration for the
  * {@link  SimpleFileUpload| SimpleFileUpload widget}.

@@ -135,6 +135,7 @@ function createMethodCodeInfoFromTags(severitySettings, method, additionalTempla
             arguments: argumentInfo,
             generics: templateInfo,
             isAsync: method.async,
+            isConstructor: method.constructor,
             isGenerator: method.generator,
             name: method.name,
             next: nextInfo,
@@ -162,6 +163,7 @@ function createMethodDocInfoFromTags(method, additionalTemplates, additionalTags
         return {
             abstract: method.abstract,
             additionalTags: additionalTags,
+            constructor: method.constructor,
             typedefs: [],
             description: method.method ? method.method.description || "" : "",
             next: {

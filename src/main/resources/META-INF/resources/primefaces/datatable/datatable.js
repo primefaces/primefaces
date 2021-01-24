@@ -37,7 +37,11 @@
  * @typedef {"cancel" | "save"} PrimeFaces.widget.DataTable.RowEditAction When a row is editable: whether to `save` the
  * current contents of the row or `cancel` the row edit and discard all changes.
  *
- *
+ * @typedef PrimeFaces.widget.DataTable.OnRowClickCallback Callback that is invoked when the user clicks on a row of the
+ * data table. 
+ * @param {JQuery.TriggeredEvent} PrimeFaces.widget.DataTable.OnRowClickCallback.event The click event that occurred.
+ * @param {JQuery} PrimeFaces.widget.DataTable.OnRowClickCallback.row The TR row that was clicked.
+ * 
  * @interface {PrimeFaces.widget.DataTable.RowMeta} RowMeta Describes the meta information of row, such as its index and
  * its row key.
  * @prop {string | undefined} RowMeta.key The unique key of the row. `undefined` when no key was defined for the rows.
@@ -127,6 +131,7 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.DeferredWidgetCfg} cfg
  *
+ * @prop {boolean} cfg.allowUnsorting When true columns can be unsorted upon clicking sort.
  * @prop {string} cfg.cellEditMode Defines the cell edit behavior.
  * @prop {string} cfg.cellSeparator Separator text to use in output mode of editable cells with multiple components.
  * @prop {boolean} cfg.clientCache Caches the next page asynchronously.
@@ -151,6 +156,8 @@
  * @prop {boolean} cfg.multiSort `true` if sorting by multiple columns is enabled, or `false` otherwise.
  * @prop {boolean} cfg.multiViewState Whether multiple resize mode is enabled.
  * @prop {boolean} cfg.nativeElements `true` to use native radio button and checkbox elements, or `false` otherwise.
+ * @prop {PrimeFaces.widget.DataTable.OnRowClickCallback} cfg.onRowClick Callback that is invoked when the user clicked on
+ * a row of the data table.
  * @prop {boolean} cfg.reflow Reflow mode is a responsive mode to display columns as stacked depending on screen size.
  * @prop {boolean} cfg.resizableColumns Enables column resizing.
  * @prop {PrimeFaces.widget.DataTable.ResizeMode} cfg.resizeMode Defines the resize behavior.
@@ -169,11 +176,16 @@
  * @prop {string} cfg.scrollWidth Scroll viewport width.
  * @prop {boolean} cfg.scrollable Makes data scrollable with fixed header.
  * @prop {PrimeFaces.widget.DataTable.SelectionMode} cfg.selectionMode Enables row selection.
+ * @prop {boolean} cfg.selectionPageOnly When using a paginator and selection mode is `checkbox`, the select all
+ * checkbox in the header will select all rows on the current page if `true`, or all rows on all pages if `false`.
+ * Default is `true`.
+ * @prop {boolean} cfg.sorting `true` if sorting is enabled on the data table, `false` otherwise.
+ * @prop {string[]} cfg.sortMetaOrder IDs of the columns by which to order. Order by the first column, then by the
+ * second, etc.
  * @prop {boolean} cfg.stickyHeader Sticky header stays in window viewport during scrolling.
  * @prop {string} cfg.stickyTopAt Selector to position on the page according to other fixing elements on the top of the
  * table.
  * @prop {string} cfg.tabindex The value of the `tabindex` attribute for this data table.
- * @prop {boolean} cfg.allowUnsorting When true columns can be unsorted upon clicking sort.
  * @prop {boolean} cfg.virtualScroll Loads data on demand as the scrollbar gets close to the bottom.
  */
 PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
@@ -1264,9 +1276,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Updates the currently selected cell based on where the context menu right click occurred.
-     * @param {JQuery.TriggeredEvent} event Event that occurred.
-     * @param {PrimeFaces.widget.DataTable} targetWidget the current widget
      * @private
+     * @param {JQuery.TriggeredEvent} event Event that occurred.
+     * @param {PrimeFaces.widget.DataTable} targetWidget The current widget
      */
     updateContextMenuCell: function(event, targetWidget) {
         var target = $(event.target),

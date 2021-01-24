@@ -48,6 +48,7 @@
  * @prop {boolean} percentageScrollHeight Whether the scroll height was specified in percent.
  * @prop {boolean} percentageScrollWidth Whether the scroll width was specified in percent.
  * @prop {number} relativeHeight The height of the visible scroll area relative to the total height of this tree table.
+ * @prop {JQuery} resizableStateHolder INPUT element storing the current widths for each resizable column.
  * @prop {JQuery} resizerHelper The DOM element for the draggable handle for resizing columns.
  * @prop {JQuery} scrollBody The DOM element for the scrollable DIV with the body table.
  * @prop {JQuery} scrollFooter The DOM element for the scrollable DIV with the footer table.
@@ -58,6 +59,7 @@
  * @prop {string} scrollStateVal The value of the {@link scrollStateHolder}.
  * @prop {string[]} selections A list of row keys of the currently selected rows.
  * @prop {JQuery} sortableColumns The DOM elements for the list of sortable columns.
+ * @prop {PrimeFaces.widget.DataTable.SortMeta[]} sortMeta List of criteria by which to filter this table.
  * @prop {JQuery} stickyContainer The DOM element for the container with the sticky header.
  * @prop {JQuery} tbody The DOM element for the table body of this tree table.
  * @prop {JQuery} thead The DOM element for the table header of this tree table.
@@ -68,6 +70,7 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.DeferredWidgetCfg} cfg
  *
+ * @prop {boolean} cfg.allowUnsorting When true columns can be unsorted upon clicking sort.
  * @prop {PrimeFaces.widget.TreeTable.CellEditMode} cfg.cellEditMode Whether cell editors are loaded lazily.
  * @prop {string} cfg.cellSeparator Separator text to use in output mode of editable cells with multiple components.
  * @prop {boolean} cfg.disabledTextSelection Disables text selection on row click.
@@ -82,6 +85,7 @@
  * @prop {string} cfg.filterEvent Event that trigger the tree table to be filtered.
  * @prop {string} cfg.formId ID of the form to use for AJAX requests.
  * @prop {boolean} cfg.liveResize Columns are resized live in this mode without using a resize helper.
+ * @prop {boolean} cfg.multiSort Whether multi sort (filtering by multiple columns) is enabled.
  * @prop {boolean} cfg.nativeElements Whether native checkbox elements should be used for selection.
  * @prop {string} cfg.nodeType Type of the row nodes of this tree table.
  * @prop {Partial<PrimeFaces.widget.PaginatorCfg>} cfg.paginator When pagination is enabled: The paginator configuration
@@ -91,6 +95,9 @@
  * @prop {number} cfg.scrollWidth Width of scrollable data.
  * @prop {boolean} cfg.scrollable Whether or not the data should be scrollable.
  * @prop {PrimeFaces.widget.TreeTable.SelectionMode} cfg.selectionMode How rows may be selected.
+ * @prop {boolean} cfg.sorting `true` if sorting is enabled on the data table, `false` otherwise.
+ * @prop {string[]} cfg.sortMetaOrder IDs of the columns by which to order. Order by the first column, then by the
+ * second, etc.
  * @prop {boolean} cfg.stickyHeader Sticky header stays in window viewport during scrolling.
  * @prop {string} cfg.editInitEvent Event that triggers row/cell editing.
  * @prop {boolean} cfg.saveOnCellBlur Saves the changes in cell editing on blur, when set to false changes are
@@ -1569,8 +1576,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
      * AJAX update.
      * @private
      * @param {string} id ID of a column
-     * @return {string | undefined} The saved width of the given column in pixels. `undefined` when the given column
-     * does not exist.
+     * @return {string | null} The saved width of the given column in pixels. `null` when the given column does not
+     * exist.
      */
     findColWidthInResizableState: function(id) {
         for (var i = 0; i < this.resizableState.length; i++) {

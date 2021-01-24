@@ -514,11 +514,19 @@ async function main(cliArgs) {
 
     // Scan the base directory and list the directories with the JavaScript source files to process
     for await (const component of listComponents(cliArgs.inputDir)) {
-        console.log("Processing component directory", component.path);
+        console.log(`Processing component directory ${component.path}`);
+
+        const count = {
+            constants: 0,
+            functions: 0,
+            objects: 0,
+            typedefs: 0,
+        };
 
         // Include all *.d.ts file found in the directory
         for await (const typedefFile of readTypedefFiles(component)) {
             bundle[typedefFile.type].push(typedefFile.source);
+            count.typedefs += 1;
         }
 
         // Parse the JavaScript source files for symbols to document
@@ -530,6 +538,10 @@ async function main(cliArgs) {
                 aggregateHandlerWidgets,
                 aggregateHandlerDefaults,
             ]);
+
+            count.constants += documentable.constants.length;
+            count.functions += documentable.functions.length;
+            count.objects += documentable.objects.length;
 
             // Document constants (const x = ...)
             for (const constantDefinition of documentable.constants) {
@@ -555,6 +567,17 @@ async function main(cliArgs) {
                 bundle.ambient.push("");
             }
         }
+        // Warn if directory contains any JavaScript source files but no documentation was found
+        // Usually happens when you add a new 
+        if (component.files.length > 0 || component.typedefFiles.length > 0) {
+            if (count.objects === 0 && count.functions === 0 && count.constants === 0 && count.typedefs === 0) {
+                console.error("  -> Did not find any documentation in this directory, did you just add a new components?");
+                console.error("  -> Make sure to document it, see src/main/type-definitions/README.md for details");
+                console.error("  -> Add an empty *.d.ts file in this directory to disable this error");
+                throw new Error(`No documentation found in ${component.path}`);
+            }
+        }
+        logVerbose(cliArgs, `  -> Found ${count.objects} object(s), ${count.functions} function(s), ${count.constants} constant(s), and ${count.typedefs} custom type declaration file(s)`);
     }
 
     // Create the type declaration file

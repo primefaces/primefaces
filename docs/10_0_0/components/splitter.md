@@ -2,7 +2,7 @@
 
 Splitter component is used to categorize content.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.splitter.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.splitter.html)
 
 ## Info
 

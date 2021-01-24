@@ -12,6 +12,18 @@ const { getArgumentType } = require("./ts-types");
  * @param {MethodDocInfo} methodDocInfo 
  * @param {SeveritySettingsConfig} severitySettings
  */
+function mergeAndValidateMethodConstructor(method, methodCodeInfo, methodDocInfo, severitySettings) {
+    const ctor = methodCodeInfo.isConstructor || methodDocInfo.constructor;
+    methodCodeInfo.isConstructor = ctor;
+    methodDocInfo.constructor = ctor;
+}
+
+/**
+ * @param {ObjectCodeMethod} method
+ * @param {MethodCodeInfo} methodCodeInfo 
+ * @param {MethodDocInfo} methodDocInfo 
+ * @param {SeveritySettingsConfig} severitySettings
+ */
 function mergeAndValidateMethodReturnAndYield(method, methodCodeInfo, methodDocInfo, severitySettings) {
     // return
     if (methodCodeInfo.return.node !== undefined && !methodDocInfo.return.hasReturn) {
@@ -322,6 +334,7 @@ function mergeAndValidateMethodData(method, methodCodeInfo, methodDocInfo, sever
     mergeAndValidateMethodGenerics(methodCodeInfo, methodDocInfo, severitySettings);
     mergeAndValidateMethodModifiers(methodCodeInfo, methodDocInfo, severitySettings);
     mergeAndValidateMethodReturnAndYield(method, methodCodeInfo, methodDocInfo, severitySettings);
+    mergeAndValidateMethodConstructor(method, methodCodeInfo, methodDocInfo, severitySettings);
     mergeAndValidateMethodArgsFromCode(method, methodCodeInfo, methodDocInfo, severitySettings);
     mergeAndValidateMethodArgsToCode(method, methodCodeInfo, methodDocInfo, severitySettings);
 }

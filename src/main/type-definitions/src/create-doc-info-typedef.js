@@ -54,6 +54,7 @@ function getOrCreateTypedef(typedefs, path, offset) {
 function createEmptyTypedocFunction(node) {
   return {
     async: false,
+    constructor: false,
     destructuring: new Map(),
     generator: false,
     next: undefined,
@@ -121,6 +122,21 @@ function createTypedefTagHandler(node, severitySettings, typedefs) {
       checkTagIsPlain(tag, severitySettings, factory, { checkName: false });
       if (typedef && typedef.function) {
         typedef.function.async = true;
+        return true;
+      }
+      else {
+        if (logMissing === true) {
+          handleError("unsupportedTag", severitySettings, () => factory(`@${tag.type} is not supported in this context. Are you missing a @typedef? Did you make sure to put @typedef first?`));
+        }
+        return false;
+      }
+    },
+    _constructor(tag, allTags, logMissing) {
+      const parts = tag.name.split(".");
+      const typedef = getOrCreateTypedefFunction(node, typedefs, parts, 0);
+      checkTagIsPlain(tag, severitySettings, factory, { checkName: false });
+      if (typedef && typedef.function) {
+        typedef.function.constructor = true;
         return true;
       }
       else {

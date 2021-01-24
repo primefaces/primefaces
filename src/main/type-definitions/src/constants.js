@@ -90,6 +90,7 @@ const Tags = {
     Class: "class",
     Const: "const",
     Constant: "constant",
+    Constructor: "constructor",
     Copyright: "copyright",
     Default: "default",
     Deprecated: "deprecated",

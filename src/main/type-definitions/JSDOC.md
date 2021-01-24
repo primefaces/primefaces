@@ -34,6 +34,7 @@ npm install --save-dev  \
   @fullcalendar/moment \
   @fullcalendar/timegrid \
   @types/chart.js \
+  @types/download.js \
   @types/googlemaps \
   @types/hammerjs \
   @types/inputmask \
@@ -164,7 +165,7 @@ notable ones are:
       the height of a textarea to fit the text. 
 * [chart.js](./classes/node_modules__types_chart_js.export_-1.html)
     * The [chart.js](https://www.chartjs.org/) library for drawing diagrams.
-* [ContentFlow](./modules/src_primefaces.juxtapose.html)
+* [ContentFlow](./classes/src_primefaces.contentflow.html)
     * [The ContentFlow library](https://web.archive.org/web/20120108070056/http://www.jacksasylum.eu/ContentFlow/index.php)
       a flexible ImageFlow like flow written in javascript, which can handle any kind of content.
 * [Cropper.js](./classes/node_modules_cropperjs_types.cropper-1.html)
@@ -186,8 +187,8 @@ notable ones are:
     * The [Quill Editor](https://quilljs.com/), a modern rich text editor for the web.
 * [Raphaël](./interfaces/node_modules__types_raphael.raphaelstatic.html)
     * The [Raphaël vector graphics library](https://dmitrybaranovskiy.github.io/raphael/) for drawing onto a canvas.
-* [Graph2D / Timeline](./modules/node_modules_vis_timeline_declarations.html)
-    * The [Graph2D / Timeline](https://github.com/visjs/vis-timeline) is an interactive visualization chart to visualize
+* [Timeline / Graph2D](./modules/node_modules_vis_timeline_declarations.html)
+    * The [Timeline / Timeline](https://github.com/visjs/vis-timeline) is an interactive visualization chart to visualize
     data in time.
 * [WebcamJS](./modules/src_primefaces.webcam.html)
     * The [WebcamJS library](https://github.com/jhuckaby/webcamjs) for accessing a camera.

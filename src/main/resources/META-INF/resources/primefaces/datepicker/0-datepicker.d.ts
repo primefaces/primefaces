@@ -226,6 +226,10 @@ declare namespace JQueryPrimeDatePicker {
          * An array with the weeks of the month, each week being an array containing the days of that week.
          */
         dates: DayInstantSelectableRelative[][];
+        /**
+         * 0-based index of the month in the year.
+         */
+        index: MonthOfTheYear;
     }
 
     /**
@@ -378,6 +382,16 @@ declare namespace JQueryPrimeDatePicker {
         showOnFocus: boolean;
 
         /**
+         * Separator for joining the hour and minute part of a time, defaults to `:`.
+         */
+        timeSeparator: string;
+
+        /**
+         * Whether the current input is a  valid date / time.
+         */
+        valid: boolean;
+
+        /**
          * Whether to keep the invalid inputs in the field or not.
          */
         keepInvalid: boolean;
@@ -474,6 +488,11 @@ declare namespace JQueryPrimeDatePicker {
          * Style class of the container element.
          */
         panelStyleClass: string | null;
+
+        /**
+         * Style class of the individual date elements.
+         */
+        dateStyleClasses: string | null;
 
         /**
          * Whether to show the month navigator
@@ -606,6 +625,11 @@ declare namespace JQueryPrimeDatePicker {
         onMonthChange: MutationCallback<[MonthOfTheYearOneBased, YearInstant]> | null;
 
         /**
+         * Client side callback to execute when the panel with the date picker was created.
+         */
+        onPanelCreate: BaseCallback | null;
+
+        /**
          * Client side callback to execute when the selected year has changed.
          */
         onYearChange: MutationCallback<[MonthOfTheYear, YearInstant]> | null
@@ -678,6 +702,18 @@ declare namespace JQueryPrimeDatePicker {
         selectDate(event: JQuery.TriggeredEvent, dateMeta: DayInstantSelectable): void;
 
         /**
+         * Changes the current date of the navigation, i.e. the dates or times that are displayed from which the user
+         * can select an option.
+         * @param newViewDate New view date to set.
+         */
+        setNavigationState(newViewDate: Date): void;
+        
+        /**
+         * @return Whether the date picker panel is currently displayed.
+         */
+        isPanelVisible(): boolean;
+
+        /**
          * When the time picker up or down arrows are clicked and the mouse button is held down for a prolonged period
          * of time: repeatedly increment the minute or hour.
          * @param event Event that occurred, such as a click event.
@@ -702,6 +738,11 @@ declare namespace JQueryPrimeDatePicker {
          * @param newDateTime The time to display.
          */
         updateTimeAfterInput(event: JQuery.TriggeredEvent, newDateTime: Date): void;
+
+        /**
+         * Updates the year navigator element that lets the user choose a year so that it reflects the current settings. 
+         */
+        updateYearNavigator(): void;
 
         /**
          * Updates the currently displayed date range.
@@ -801,6 +842,14 @@ declare namespace JQueryPrimeDatePicker {
         formatTime(date: Date | undefined): string;
 
         /**
+         * Converts a date object to an ISO date (date only, no time) string. Useful to check if a dates matches with a
+         * date sent from the backend without needing to parse the backend date first.
+         * @param date Date to convert.
+         * @return The data as an ISO date string.
+         */
+        toISODateString(date: Date): string;
+
+        /**
          * Finds the day of the week index that represents the first day of the week for the given month.
          * @param month Month to check.
          * @param year Year to check.
@@ -882,9 +931,16 @@ declare namespace JQueryPrimeDatePicker {
          * Creates a list of all days in the given month.
          * @param month A month to check.
          * @param year A year to check.
+         * @param index Index that will be included in the return value. 
          * @return All days in the given month.
          */
-        createMonth(month: MonthOfTheYear, year: YearInstant): DayListInMonth;
+        createMonth(month: MonthOfTheYear, year: YearInstant, index: number): DayListInMonth;
+
+        /**
+         * @param value A value to check whether it is a Date instance.
+         * @return `true` if the value is an instance of `Date`, and `false` otherwise.
+         */
+        isDate(value: unknown): value is Date;
 
         /**
          * Checks whether thee given day can be selected.
@@ -1080,16 +1136,18 @@ declare namespace JQueryPrimeDatePicker {
         /**
          * Creates the HTML snippet for a title bar that shows the given month.
          * @param month Month to use.
+         * @param index 0-based index of the month in the year.
          * @return The rendered HTML snippet.
          */
-        renderTitleMonthElement(month: MonthOfTheYear): string;
+        renderTitleMonthElement(month: MonthOfTheYear, index: MonthOfTheYear): string;
 
         /**
          * Creates the HTML snippet for a title bar that shows the given year.
          * @param year Year to use.
+         * @param index 0-based index of the month in the year.
          * @return The rendered HTML snippet.
          */
-        renderTitleYearElement(year: YearInstant): string;
+        renderTitleYearElement(year: YearInstant, index: MonthOfTheYear): string;
 
         /**
          * Creates the HTML snippet for the options elements of the select element in the title bar that lets the user
@@ -1481,6 +1539,11 @@ declare namespace JQueryPrimeDatePicker {
          * Trigger button that opens or closes the date picker.
          */
         triggerButton?: JQuery;
+
+        /**
+         * Whether a custom year range was specified.
+         */
+        hasCustomYearRange: boolean;
     }
 }
 

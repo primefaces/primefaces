@@ -73,6 +73,7 @@ function processInput(input, sourceName, sourceLocation, inclusionHandler) {
             return documentFunction({
                 comments: jsdoc,
                 functionNode: firstNode.expression,
+                method: undefined,
                 name: sourceName,
                 kind: "function",
                 namespace: ["PrimeFaces", "method"],

@@ -57,6 +57,7 @@ interface SeveritySettingsConfig {
     tagDuplicateAbstract: SeverityLevel;
     tagDuplicateAsync: SeverityLevel;
     tagDuplicateClassOrInterface: SeverityLevel;
+    tagDuplicateConstructor: SeverityLevel;
     tagDuplicateDefault: SeverityLevel;
     tagDuplicateExtends: SeverityLevel;
     tagDuplicateGenerator: SeverityLevel;
@@ -492,6 +493,7 @@ interface ExportInfo {
 interface FunctionDef {
     comments: CommentData[];
     functionNode: import("estree").FunctionExpression | import("estree").FunctionDeclaration;
+    method: import("estree").MethodDefinition | undefined;
     kind: "function",
     name: string;
     namespace: string[];
@@ -535,6 +537,7 @@ interface MethodCodeInfo {
     arguments: ArgumentInfo[];
     canCompleteNormally: boolean;
     isAsync: boolean;
+    isConstructor: boolean;
     isGenerator: boolean;
     generics: DocInfoTemplate[];
     name: string;
@@ -553,6 +556,7 @@ interface MethodDoc {
 
 interface MethodDocInfo {
     abstract: boolean,
+    constructor: boolean,
     additionalTags: import("comment-parser").Tag[];
     description: string;
     next: DocInfoNext;
@@ -573,6 +577,7 @@ interface MethodDocResult {
 
 interface MethodDocShape extends TypedefFunctionInfo {
     abstract: boolean;
+    constructor: boolean;
     method: import("comment-parser").Tag | undefined;
     name: string;
     visibility: VisibilityModifier | undefined;
@@ -582,6 +587,7 @@ interface MethodSignature {
     abstract: string;
     args: ArgSignature[];
     async: string;
+    constructor: boolean;
     generator: string;
     generics: string;
     name: string;
@@ -618,6 +624,7 @@ interface ObjectCodeMethod {
     name: string;
     jsdoc: import("comment-parser").Comment;
     node: import("estree").FunctionExpression | import("estree").FunctionDeclaration;
+    method: import("estree").MethodDefinition | undefined;
 }
 
 interface ObjectCodeProperty {
@@ -739,12 +746,13 @@ interface ReturnInfo {
 }
 
 interface ReturnSpec {
-    async: boolean,
-    baseTypeNext: string,
-    baseTypeReturn: string,
-    baseTypeYield: string,
+    async: boolean;
+    baseTypeNext: string;
+    baseTypeReturn: string;
+    baseTypeYield: string;
+    constructor: boolean;
     generator: undefined | {
-        hasNext: boolean;
+        hasNext: boolean,
         hasReturn: boolean,
         hasYield: boolean,
     },
@@ -878,6 +886,7 @@ interface TypeDeclarationBundleSourceFiles {
 
 interface TypedefFunctionInfo {
     async: boolean;
+    constructor: boolean;
     destructuring: Map<number, DestructuringInfo>;
     generator: boolean;
     next: import("comment-parser").Tag | undefined;
@@ -897,6 +906,7 @@ interface TypedefResult {
 interface TypedefTagHandlers {
     createEmpty: () => TypedefFunctionInfo;
     async: TypedefTagHandler;
+    _constructor: TypedefTagHandler;
     generator: TypedefTagHandler;
     methodtemplate: TypedefTagHandler;
     next: TypedefTagHandler;

@@ -23,11 +23,12 @@
  * @typedef PrimeFaces.widget.ConfirmPopup.HideCallback Callback invoked after the popup is hidden.
  * @this {Window} PrimeFaces.widget.ConfirmPopup.HideCallback
  *
- * @prop {string} cfg.appendTo Appends the confirm popup to the given search expression.
+ * @prop {string | null} cfg.appendTo The search expression for the element to which the overlay panel should be
+ * appended.
+ * @prop {boolean} cfg.dismissable When set `true`, clicking outside of the popup hides the overlay.
  * @prop {string} cfg.showEvent Event on target to show the popup.
  * @prop {string} cfg.hideEvent Event on target to hide the popup.
  * @prop {boolean} cfg.global When enabled, confirmPopup becomes a shared for other components that require confirmation.
- * @prop {boolean} cfg.dismissable When set `true`, clicking outside of the popup hides the overlay.
  */
 PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
@@ -104,7 +105,7 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
     
     /**
      * Makes the popup visible.
-     * @param {string | JQuery} [target] selector or DOM element of the target component that triggers this popup.
+     * @param {string | JQuery} [target] Selector or DOM element of the target component that triggers this popup.
      */
     show: function(target) {
         var $this = this;

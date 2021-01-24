@@ -133,7 +133,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Binds input listener which fixes a browser AutoFill issue.
+     * Binds input listener which fixes a browser autofill issue.
      * See: https://github.com/autoNumeric/autoNumeric/issues/536
      * @private
      */

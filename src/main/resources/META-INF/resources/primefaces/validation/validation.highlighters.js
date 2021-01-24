@@ -5,7 +5,7 @@ if (window.PrimeFaces) {
 
     /**
      * When an element is invalid due to a validation error, the user needs to be informed. This highlighter is
-     * reponsible for changing the visual state of an element so that the user notices the invalid element.
+     * responsible for changing the visual state of an element so that the user notices the invalid element.
      * @interface {PrimeFaces.Highlighter}
      */
     PrimeFaces.validator.Highlighter = {

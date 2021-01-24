@@ -4,6 +4,7 @@
 
 /// <reference types="chart.js" />
 /// <reference types="cropperjs" />
+/// <reference types="downloadjs" />
 /// <reference types="googlemaps" />
 /// <reference types="jquery" />
 /// <reference types="jqueryui" />
@@ -253,14 +254,8 @@ declare namespace PrimeFaces {
      * @typeparam TCfg Type of a widget configuration. It must have at least the two properties `id` and `widgetVar`.
      * @return A new type with all properties in the given type made optional, exception for `id` and `widgetVar`.
      */
-    export type PartialWidgetCfg<
-        TCfg extends { id: string | string[], widgetVar: string }
-        > =
-        Partial<Omit<TCfg, "id" | "widgetVar">> & Pick<TCfg, "id" | "widgetVar">
-        &
-        {
-            behaviors?: Record<string, PrimeFaces.Behavior>;
-        };
+    export type PartialWidgetCfg<TCfg extends { id: string | string[], widgetVar: string }> =
+        Partial<Omit<TCfg, "id" | "widgetVar">> & Pick<TCfg, "id" | "widgetVar">;
 
     /**
      * An object that can be used to emulate classes and a class hierarchy in JavaScript. This works even for old
@@ -378,6 +373,7 @@ declare namespace PrimeFaces {
         minuteText?: string;
         secondText?: string;
         currentText?: string;
+        year?: string;
         ampm?: boolean;
         month?: string;
         week?: string;

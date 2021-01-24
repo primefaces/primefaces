@@ -15,6 +15,9 @@
  * @typedef {"server" | "client" | "hybrid"} PrimeFaces.widget.AutoComplete.QueryMode Specifies whether filter requests
  * are evaluated by the client's browser or whether they are sent to the server.
  * 
+ * @typedef PrimeFaces.widget.AutoComplete.OnChangeCallback Client side callback to invoke when value changes.
+ * @param {JQuery} PrimeFaces.widget.AutoComplete.OnChangeCallback.input (Input) element on which the change occurred.
+ * 
  * @prop {boolean} active Whether the autocomplete is active.
  * @prop {Record<string, string>} [cache] The cache for the results of an autocomplete search.
  * @prop {number} [cacheTimeout] The set-interval timer ID for the cache timeout. 
@@ -66,6 +69,8 @@
  * @prop {number} cfg.minLength Minimum length before an autocomplete search is triggered.
  * @prop {boolean} cfg.multiple When `true`, enables multiple selection.
  * @prop {string} cfg.myPos Defines which position on the element being positioned to align with the target element.
+ * @prop {PrimeFaces.widget.AutoComplete.OnChangeCallback} cfg.onChange Client side callback to invoke when value
+ * changes.
  * @prop {PrimeFaces.widget.AutoComplete.QueryEvent} cfg.queryEvent Event to initiate the the autocomplete search.
  * @prop {PrimeFaces.widget.AutoComplete.QueryMode} cfg.queryMode Specifies query mode, whether autocomplete contacts
  * the server.
@@ -73,8 +78,9 @@
  * @prop {number} cfg.selectLimit Limits the number of simultaneously selected items. Default is unlimited.
  * @prop {number} cfg.scrollHeight Height of the container with the suggestion items.
  * @prop {boolean} cfg.unique Ensures uniqueness of the selected items.
- * @prop {string} cfg.completeEndpoint REST-Endpoint for fetching autocomplete-suggestions. (instead of completeMethod)
- * @prop {string} cfg.moreText The text shown in panel when the suggested list is greater than maxResults.
+ * @prop {string} cfg.completeEndpoint REST endpoint for fetching autocomplete suggestions. Takes precedence over the
+ * bean command specified via `completeMethod` on the component. 
+ * @prop {string} cfg.moreText The text shown in the panel when the number of suggestions is greater than `maxResults`.
  */
 PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 

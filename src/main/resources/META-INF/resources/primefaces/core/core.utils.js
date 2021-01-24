@@ -203,7 +203,7 @@ if (!PrimeFaces.utils) {
          * Given a modal overlay widget, removes the modal overlay element from the DOM. This reverts the changes as
          * made by `PrimeFaces.utils.addModal`.
          * @param {PrimeFaces.widget.BaseWidget} widget A modal overlay widget instance.
-         * @param {JQuery} overlay The modal overlay element should be a DIV.
+         * @param {JQuery | null} [overlay] The modal overlay element should be a DIV.
          */
         removeModal: function(widget, overlay) {
             var id = widget.id;
@@ -368,11 +368,11 @@ if (!PrimeFaces.utils) {
         },
 
         /**
-         * Registers a callback that is invoked when a scroll event is triggered on The DOM element for the widget.
+         * Registers a callback that is invoked when a scroll event is triggered on the DOM element for the widget.
          * @param {PrimeFaces.widget.BaseWidget} widget A widget instance for which to register a scroll handler.
          * @param {string} scrollNamespace A scroll event with a namespace, such as `scroll.widgetId`.
-         * @param {(event: JQuery.TriggeredEvent) => void} scrollCallback A callnback that is invoked when a scroll event occurs
-         * on the widget.
+         * @param {(event: JQuery.TriggeredEvent) => void} scrollCallback A callback that is invoked when a scroll event
+         * occurs on the widget.
          */
         registerScrollHandler: function(widget, scrollNamespace, scrollCallback) {
 
@@ -391,11 +391,12 @@ if (!PrimeFaces.utils) {
         },
 
         /**
-         * Registers a callback that is invoked when a scroll event is triggered on The DOM element for the widget that has a connected overlay.
+         * Registers a callback that is invoked when a scroll event is triggered on The DOM element for the widget that
+         * has a connected overlay.
          * @param {PrimeFaces.widget.BaseWidget} widget A widget instance for which to register a scroll handler.
          * @param {string} scrollNamespace A scroll event with a namespace, such as `scroll.widgetId`.
-         * @param {(event: JQuery.Event) => void} scrollCallback A callnback that is invoked when a scroll event occurs
-         * on the widget.
+         * @param {(event: JQuery.TriggeredEvent) => void} scrollCallback A callback that is invoked when a scroll event
+         * occurs on the widget.
          */
         registerConnectedOverlayScrollHandler: function(widget, scrollNamespace, scrollCallback) {
             var element = widget.getJQ().get(0);

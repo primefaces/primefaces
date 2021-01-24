@@ -31,6 +31,7 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  * 
+ * @prop {string} cfg.appendTo The search expression for the element to which the overlay panel should be appended.
  * @prop {PrimeFaces.widget.SplitButton.FilterMatchMode} cfg.filterMatchMode Match mode for filtering, how the search
  * term is matched against the items.
  * @prop {boolean} cfg.disabled Whether this input is currently disabled.
