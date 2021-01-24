@@ -35,6 +35,7 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.api.UITable;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.CSVOptions;
 import org.primefaces.component.export.ExportConfiguration;
@@ -166,7 +167,7 @@ public class DataTableCSVExporter extends DataTableExporter {
                 }
 
                 try {
-                    addColumnValue(writer, col.getChildren(), col);
+                    addColumnValue(writer, table, col.getChildren(), col);
                 }
                 catch (IOException ex) {
                     throw new FacesException(ex);
@@ -177,10 +178,10 @@ public class DataTableCSVExporter extends DataTableExporter {
         }
     }
 
-    protected void addColumnValues(PrintWriter writer, List<UIColumn> columns) throws IOException {
+    protected void addColumnValues(PrintWriter writer, DataTable table, List<UIColumn> columns) throws IOException {
         for (Iterator<UIColumn> iterator = columns.iterator(); iterator.hasNext(); ) {
             UIColumn col = iterator.next();
-            addColumnValue(writer, col.getChildren(), col);
+            addColumnValue(writer, table, col.getChildren(), col);
 
             if (iterator.hasNext()) {
                 writer.append(csvOptions.getDelimiterChar());
@@ -189,18 +190,18 @@ public class DataTableCSVExporter extends DataTableExporter {
     }
 
     protected void addColumnValue(PrintWriter writer, UIComponent component) throws IOException {
-        String value = component == null ? "" : exportValue(FacesContext.getCurrentInstance(), component);
+        String value = component == null ? Constants.EMPTY_STRING : exportValue(FacesContext.getCurrentInstance(), component);
 
         addColumnValue(writer, value);
     }
 
     protected void addColumnValue(PrintWriter writer, String value) throws IOException {
-        value = (value == null) ? "" : value.replace(csvOptions.getQuoteString(), csvOptions.getDoubleQuoteString());
+        value = (value == null) ? Constants.EMPTY_STRING : value.replace(csvOptions.getQuoteString(), csvOptions.getDoubleQuoteString());
 
         writer.append(csvOptions.getQuoteChar()).append(value).append(csvOptions.getQuoteChar());
     }
 
-    protected void addColumnValue(PrintWriter writer, List<UIComponent> components, UIColumn column) throws IOException {
+    protected void addColumnValue(PrintWriter writer, DataTable table, List<UIComponent> components, UIColumn column) throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
 
         writer.append(csvOptions.getQuoteChar());
@@ -208,31 +209,33 @@ public class DataTableCSVExporter extends DataTableExporter {
         if (LangUtils.isNotBlank(column.getExportValue())) {
             String value = column.getExportValue();
             //escape double quotes
-            value = value == null ? "" : value.replace(csvOptions.getQuoteString(), csvOptions.getDoubleQuoteString());
-
-            writer.append(value);
+            writer.append(escapeQuotes(value));
         }
         else if (column.getExportFunction() != null) {
             String value = exportColumnByFunction(context, column);
             //escape double quotes
-            value = value == null ? "" : value.replace(csvOptions.getQuoteString(), csvOptions.getDoubleQuoteString());
-
-            writer.append(value);
+            writer.append(escapeQuotes(value));
+        }
+        else if (LangUtils.isNotBlank(column.getField())) {
+            String value =  (String) UITable.createValueExprFromVarField(context, table.getVar(), column.getField()).getValue(context.getELContext());
+            //escape double quotes
+            writer.append(escapeQuotes(value));
         }
         else {
             for (UIComponent component : components) {
                 if (component.isRendered()) {
                     String value = exportValue(context, component);
-
                     //escape double quotes
-                    value = value == null ? "" : value.replace(csvOptions.getQuoteString(), csvOptions.getDoubleQuoteString());
-
-                    writer.append(value);
+                    writer.append(escapeQuotes(value));
                 }
             }
         }
 
         writer.append(csvOptions.getQuoteChar());
+    }
+
+    protected String escapeQuotes(String value) {
+        return value == null ? Constants.EMPTY_STRING : value.replace(csvOptions.getQuoteString(), csvOptions.getDoubleQuoteString());
     }
 
     @Override

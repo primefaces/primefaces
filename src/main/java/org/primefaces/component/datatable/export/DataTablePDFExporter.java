@@ -33,6 +33,7 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.api.UITable;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExportConfiguration;
@@ -224,7 +225,7 @@ public class DataTablePDFExporter extends DataTableExporter {
             }
 
             if (col.isRendered() && col.isExportable()) {
-                addColumnValue(pdfTable, col.getChildren(), cellFont, col);
+                addColumnValue(table, pdfTable, col.getChildren(), cellFont, col);
             }
         }
     }
@@ -331,7 +332,7 @@ public class DataTablePDFExporter extends DataTableExporter {
         return cell;
     }
 
-    protected void addColumnValue(PdfPTable pdfTable, List<UIComponent> components, Font font, UIColumn column) {
+    protected void addColumnValue(DataTable table, PdfPTable pdfTable, List<UIComponent> components, Font font, UIColumn column) {
         FacesContext context = FacesContext.getCurrentInstance();
 
         if (LangUtils.isNotBlank(column.getExportValue())) {
@@ -340,6 +341,11 @@ public class DataTablePDFExporter extends DataTableExporter {
         }
         else if (column.getExportFunction() != null) {
             PdfPCell cell = createCell(column, new Paragraph(exportColumnByFunction(context, column), font));
+            pdfTable.addCell(cell);
+        }
+        else if (LangUtils.isNotBlank(column.getField())) {
+            String value =  (String) UITable.createValueExprFromVarField(context, table.getVar(), column.getField()).getValue(context.getELContext());
+            PdfPCell cell = createCell(column, new Paragraph(value, font));
             pdfTable.addCell(cell);
         }
         else {

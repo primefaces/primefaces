@@ -41,6 +41,7 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.WorkbookUtil;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.api.UITable;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExcelOptions;
@@ -132,7 +133,7 @@ public class DataTableExcelExporter extends DataTableExporter {
             }
 
             if (col.isRendered() && col.isExportable()) {
-                addColumnValue(row, col.getChildren(), col);
+                addColumnValue(table, row, col.getChildren(), col);
             }
         }
     }
@@ -235,7 +236,7 @@ public class DataTableExcelExporter extends DataTableExporter {
         cell.setCellStyle(facetStyle);
     }
 
-    protected void addColumnValue(Row row, List<UIComponent> components, UIColumn column) {
+    protected void addColumnValue(DataTable table, Row row, List<UIComponent> components, UIColumn column) {
         int cellIndex = row.getLastCellNum() == -1 ? 0 : row.getLastCellNum();
         Cell cell = row.createCell(cellIndex);
         FacesContext context = FacesContext.getCurrentInstance();
@@ -247,6 +248,10 @@ public class DataTableExcelExporter extends DataTableExporter {
         }
         else if (column.getExportFunction() != null) {
             updateCell(cell, exportColumnByFunction(context, column));
+        }
+        else if (LangUtils.isNotBlank(column.getField())) {
+            String value =  (String) UITable.createValueExprFromVarField(context, table.getVar(), column.getField()).getValue(context.getELContext());
+            updateCell(cell, value);
         }
         else {
             StringBuilder builder = new StringBuilder();
