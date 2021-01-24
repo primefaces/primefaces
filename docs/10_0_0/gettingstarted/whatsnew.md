@@ -12,8 +12,8 @@ This page contains a list of big features. Please check the GitHub issues for al
   * Prime Client Window: improved implementation of JSF Client Window mode (see https://primefaces.github.io/primefaces/10_0_0/#/core/clientwindow)
   * DatePicker
     * added (lazy) metamodel to set disabled and style class (see https://primefaces.github.io/primefaces/10_0_0/#/components/datepicker?id=date-metadata-model)
-    * new attribute `inputTime` - allows direct input in time field
-    * support for a mask - attributes `mask`, `maskAutoClear`, `maskSlotChar`
+    * new attribute `inputTime` allows direct input in time field
+    * support for a mask provided by attributes `mask`, `maskAutoClear`, `maskSlotChar`
     * showTime- and timeOnly-attributes are detected automatically based on value-bindings to LocalDateTime respectively LocalTime.
   * Audio: new component (see https://primefaces.github.io/primefaces/10_0_0/#/components/audio)
   * Video: new component (see https://primefaces.github.io/primefaces/10_0_0/#/components/video)
