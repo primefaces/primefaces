@@ -28,6 +28,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -217,9 +218,8 @@ public class DataTableCSVExporter extends DataTableExporter {
             writer.append(escapeQuotes(value));
         }
         else if (LangUtils.isNotBlank(column.getField())) {
-            String value =  (String) UITable.createValueExprFromVarField(context, table.getVar(), column.getField()).getValue(context.getELContext());
-            //escape double quotes
-            writer.append(escapeQuotes(value));
+            Object value =  UITable.createValueExprFromVarField(context, table.getVar(), column.getField()).getValue(context.getELContext());
+            writer.append(escapeQuotes(Objects.toString(value, Constants.EMPTY_STRING)));
         }
         else {
             for (UIComponent component : components) {
