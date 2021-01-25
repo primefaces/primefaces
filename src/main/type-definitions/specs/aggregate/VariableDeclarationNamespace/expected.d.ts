@@ -16,7 +16,6 @@ declare namespace Test.VariableDeclarationNamespace {
     export let foo3: (number)|undefined;
     /**
      * method bar
-     * 
      * @param x bar param x
      * @return bar retval
      */

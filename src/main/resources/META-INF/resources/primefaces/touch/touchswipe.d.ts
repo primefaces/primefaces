@@ -23,7 +23,7 @@ declare namespace JQueryTouchSwipe {
          * @param event The original event object
          * @param target The element clicked on.
          */
-        (this: HTMLElement, event: JQuery.Event, target: HTMLElement) => void;
+        (this: HTMLElement, event: JQuery.TriggeredEvent, target: HTMLElement) => void;
 
     /**
      * Event handler for swipe related events.
@@ -40,7 +40,7 @@ declare namespace JQueryTouchSwipe {
          */
         (
             this: HTMLElement,
-            event: JQuery.Event,
+            event: JQuery.TriggeredEvent,
             direction: DirectionsEnum[keyof DirectionsEnum],
             distance: number,
             duration: number,
@@ -65,7 +65,7 @@ declare namespace JQueryTouchSwipe {
          */
         (
             this: HTMLElement,
-            event: JQuery.Event,
+            event: JQuery.TriggeredEvent,
             phase: PhasesEnum[keyof PhasesEnum],
             direction: DirectionsEnum[keyof DirectionsEnum],
             distance: number,
@@ -90,7 +90,7 @@ declare namespace JQueryTouchSwipe {
          */
         (
             this: HTMLElement,
-            event: JQuery.Event,
+            event: JQuery.TriggeredEvent,
             direction: DirectionsEnum[keyof DirectionsEnum],
             distance: number,
             duration: number,
@@ -115,7 +115,7 @@ declare namespace JQueryTouchSwipe {
          */
         (
             this: HTMLElement,
-            event: JQuery.Event,
+            event: JQuery.TriggeredEvent,
             phase: PhasesEnum[keyof PhasesEnum],
             direction: DirectionsEnum[keyof DirectionsEnum],
             distance: number,

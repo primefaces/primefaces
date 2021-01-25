@@ -89,10 +89,12 @@
         },
 
         /**
-         * Finds all widgets in the current page of the given type.
-         * @param {PrimeFaces.widget.BaseWidget} type The type of the widgets of interest.
-         * @return  {PrimeFaces.widget.BaseWidget[]} An array of widgets that are of the requested type. If no suitable
-         * widgets are found on the current page, an empty array will be returned.
+         * Finds all widgets in the current page that are of the given type.
+         * @template {new(...args: any[]) => any} TWidget Type of the widgets of interest, e.g.
+         * `PrimeFaces.widget.DataTable`.
+         * @param {TWidget} type The (proto)type of the widgets of interest, e.g. `PrimeFaces.widget.DataTable`.
+         * @return  {InstanceType<TWidget>[]} An array of widgets that are of the requested type. If no suitable widgets
+         * are found on the current page, an empty array will be returned.
          */
         getWidgetsByType: function(type) {
             return $.map(this.widgets, function(widget, key) {
@@ -158,7 +160,7 @@
          * Attaches the given behaviors to the element. For each behavior, an event listener is registered on the
          * element. Then, when the event is triggered, the behavior callback is invoked.
          * @param {JQuery} element The element for which to attach the behaviors.
-         * @param {Record<string, (this: JQuery, event: JQuery.Event) => void>} behaviors An object with an event name
+         * @param {Record<string, (this: JQuery, event: JQuery.TriggeredEvent) => void>} behaviors An object with an event name
          * as the key and event handlers for that event as the value. Each event handler is called with the given
          * element as the this context and the event that occurred as the first argument.
          */
@@ -477,8 +479,8 @@
         },
 
         /**
-         * Gets the currently loaded PF Theme CSS Link.
-         * @return {string} the full URL to the theme CSS
+         * Gets the currently loaded PrimeFaces theme CSS link.
+         * @return {string} The full URL to the theme CSS
          */
         getThemeLink : function() {
             var themeLink = $('link[href*="' + PrimeFaces.RESOURCE_IDENTIFIER + '/theme.css"]');
@@ -490,8 +492,8 @@
         },
 
         /**
-         * Gets the currently loaded PF Theme.
-         * @return {string} the current theme like "omega" or "luna-amber".
+         * Gets the currently loaded PrimeFaces theme.
+         * @return {string} The current theme, such as `omega` or `luna-amber`. Empty string when no theme is loaded.
          */
         getTheme : function() {
             var themeLink = PrimeFaces.getThemeLink();
@@ -922,9 +924,9 @@
         },
 
         /**
-    	 * Deprecated, use `PrimeFaces.dialog.DialogHandler.showMessageInDialog` instead.
+    	 * Deprecated, use {@link PrimeFaces.dialog.DialogHandler.showMessageInDialog} instead.
          * @deprecated
-         * @param {string} msg Message to show in a dialog.
+         * @param {PrimeFaces.widget.ConfirmDialog.ConfirmDialogMessage} msg Message to show in a dialog.
          */
         showMessageInDialog: function(msg) {
         	PrimeFaces.dialog.DialogHandler.showMessageInDialog(msg);
@@ -932,7 +934,8 @@
 
         /**
          * Displays dialog or popup according to the type of confirm component.
-         * @param {string} msg Message to show with the confirm dialog or popup.
+         * @deprecated Deprecated, use {@link PrimeFaces.dialog.DialogHandler.confirm} instead.
+         * @param {PrimeFaces.dialog.ExtendedConfirmDialogMessage} msg Message to show with the confirm dialog or popup.
          */
         confirm: function(msg) {
             if (msg.type === 'popup' && PrimeFaces.confirmPopup) {
@@ -1104,10 +1107,10 @@
         },
 
         /**
-         * Increment and return the next zindex for CSS as a String.
-         * jQuery will no longer accept numeric values in $.css as of 4.0.
+         * Increment and return the next `z-index` for CSS as a string.
+         * Note that jQuery will no longer accept numeric values in {@link JQuery.css | $.fn.css} as of version 4.0.
          *
-         *  @return {string} the next zindex as a String
+         *  @return {string} the next `z-index` as a string.
          */
         nextZindex: function() {
             return String(++PrimeFaces.zindex);

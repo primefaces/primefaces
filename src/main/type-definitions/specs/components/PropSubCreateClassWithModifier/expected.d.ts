@@ -12,7 +12,6 @@ declare namespace PrimeFaces.widget {
 declare namespace Prop.Sub.CreateClassMod {
     /**
      * class bar
-     * 
      * @typeparam T bar type T
      */
     export abstract class Bar<T> extends Prop.Sub.CreateClassMod.BarExtend implements Prop.Sub.CreateClassMod.BarIface1, Prop.Sub.CreateClassMod.BarIface2 {

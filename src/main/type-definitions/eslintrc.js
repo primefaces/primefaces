@@ -65,7 +65,7 @@ module.exports = {
         // Typescript rules
         "@typescript-eslint/adjacent-overload-signatures": "off",
         "@typescript-eslint/array-type": "error",
-        "@typescript-eslint/ban-ts-ignore": "error",
+        "@typescript-eslint/ban-ts-comment": "error",
         "@typescript-eslint/ban-types": ["error", {
             types: {
                 "Object": {

@@ -52,7 +52,7 @@ class NativeInsertionOrderMap {
     /**
      * @param {K} key
      * @param {V} value
-     * @return {InsertionOrderMap<K,V>}
+     * @return {this}
      */
     set(key, value) {
         this.map.set(key, value);

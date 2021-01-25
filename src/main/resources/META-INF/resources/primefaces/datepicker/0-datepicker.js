@@ -1,3 +1,7 @@
+// ================================================================================
+// NOTE: All the documentation and TypeScript declarations are in 0-datepicker.d.ts
+// ================================================================================
+
 /**
  * Prime DatePicker Widget
  */
@@ -1620,12 +1624,6 @@
             return _classes;
         },
 
-        /**
-         * Converts a date object to an ISO date (only, no time) string. Useful to check if a dates matches with a date
-         * sent from the backend whithout needing to parse the backend date first.
-         * @private
-         * @param {Date} date The date to convert.
-         */
         toISODateString: function (date) {
             return date.toISOString().substring(0, 10);
         },

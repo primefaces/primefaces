@@ -3,20 +3,16 @@
  *
  * ScrollTop gets displayed after a certain scroll position and used to navigates to the top of the page quickly.
  *
- * @prop {JQuery} scrollTop DOM element of the scrollTop.
- * @prop {JQuery} visible Whether the ScrollTop element is visible or not.
- * @prop {JQuery} threshold The scroll threshold for displaying the ScrollTop element.
- * @prop {string} target Target element of the ScrollTop.
- * @prop {string} scrollElement Window or parent element of the ScrollTop.
+ * @prop {JQuery} scrollElement Window or parent element of the ScrollTop.
  *
  * @interface {PrimeFaces.widget.ScrollTopCfg} cfg The configuration for the {@link  ScrollTop| ScrollTop widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  *
- * @prop {number} cfg.threshold Value of the vertical scroll position of the target to toggle the visibility.
- * @prop {string} cfg.target Target of the ScrollTop.
  * @prop {string} cfg.behavior Scrolling behavior of the ScrollTop.
+ * @prop {string} cfg.target Target element of the scroll top widget.
+ * @prop {number} cfg.threshold Value of the vertical scroll position of the target to toggle the visibility.
  */
 PrimeFaces.widget.ScrollTop = PrimeFaces.widget.BaseWidget.extend({
 

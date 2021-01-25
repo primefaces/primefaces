@@ -5,7 +5,6 @@ declare namespace PrimeFaces {
     export interface FunctionAssignmentExpressionExportIface {
         /**
          * function foo
-         * 
          * @param x foo param x
          * @return foo retval
          */
@@ -20,7 +19,6 @@ declare namespace PrimeFaces {
     export interface FunctionAssignmentExpressionExportIface {
         /**
          * function bar
-         * 
          * @param x foo param x
          * @return foo retval
          */
@@ -35,7 +33,6 @@ declare namespace PrimeFaces {
     export interface FunctionAssignmentExpressionExportIface2 {
         /**
          * function foo3
-         * 
          * @param x foo param x
          * @return foo retval
          */
@@ -50,7 +47,6 @@ declare namespace PrimeFaces {
     export interface FunctionAssignmentExpressionExportIface3 {
         /**
          * function bar2
-         * 
          * @param x foo param x
          * @return foo retval
          */
@@ -64,7 +60,6 @@ declare namespace PrimeFaces {
 interface FunctionAssignmentExpressionExportIface {
     /**
      * function foo
-     * 
      * @param x foo param x
      * @return foo retval
      */
@@ -77,7 +72,6 @@ interface FunctionAssignmentExpressionExportIface {
 interface FunctionAssignmentExpressionExportIface {
     /**
      * function FunctionAssignmentExpressionExportIface
-     * 
      * @param x foo param x
      * @return foo retval
      */

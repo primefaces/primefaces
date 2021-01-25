@@ -20,7 +20,7 @@ function handleAssignmentExpression(inclusionHandler, node, program, severitySet
         const namespacedName = typeToNamespacedName(path.join("."));
         const commentData = program.map.get(node);
         if (node.right.type === "FunctionExpression") {
-            return createFunctionHandlerResult(inclusionHandler, node.right, namespacedName, commentData, severitySettings);
+            return createFunctionHandlerResult(inclusionHandler, node.right, undefined, namespacedName, commentData, severitySettings);
         }
         else if (node.right.type === "ObjectExpression") {
             return createTypeHandlerResult(inclusionHandler, node.right, namespacedName, commentData, severitySettings);
@@ -41,7 +41,7 @@ function handleAssignmentExpression(inclusionHandler, node, program, severitySet
 function appendResult(handlerResult, newDeclaration) {
     if (newDeclaration !== undefined) {
         switch (newDeclaration.kind) {
-            case "constant": 
+            case "constant":
                 handlerResult.constants.push(newDeclaration);
                 break;
             case "function":
@@ -81,7 +81,7 @@ function handleVariableDeclaration(inclusionHandler, node, program, severitySett
                 namespace: [],
             };
             if (declarator.init && declarator.init.type === "FunctionExpression") {
-                const fn = createFunction(inclusionHandler, declarator.init, namespacedName, commentData, severitySettings);
+                const fn = createFunction(inclusionHandler, declarator.init, undefined, namespacedName, commentData, severitySettings);
                 appendResult(handlerResult, fn);
             }
             else if (declarator.init && declarator.init.type === "ObjectExpression") {
@@ -100,13 +100,14 @@ function handleVariableDeclaration(inclusionHandler, node, program, severitySett
 
 /**
  * @param {InclusionHandler} inclusionHandler
- * @param {import("estree").FunctionDeclaration} node
+ * @param {import("estree").FunctionDeclaration | import("estree").FunctionExpression} node
+ * @param {import("estree").MethodDefinition | undefined} method
  * @param {CommentedAst<import("estree").Program>} program
  * @param {SeveritySettingsConfig} severitySettings
  * @return {DocumentableHandlerResult | undefined}
  */
-function handleFunctionDeclaration(inclusionHandler, node, program, severitySettings) {
-    return createFunctionHandlerResult(inclusionHandler, node, {
+function handleFunctionDeclaration(inclusionHandler, node, method, program, severitySettings) {
+    return createFunctionHandlerResult(inclusionHandler, node, method, {
         name: node.id ? node.id.name || "" : "",
         namespace: [],
     }, program.map.get(node), severitySettings);
@@ -115,12 +116,13 @@ function handleFunctionDeclaration(inclusionHandler, node, program, severitySett
 /**
  * @param {InclusionHandler} inclusionHandler
  * @param {import("estree").FunctionDeclaration | import("estree").FunctionExpression} node
+ * @param {import("estree").MethodDefinition | undefined} method
  * @param {NamespacedName} namespacedName
  * @param {CommentData[] | undefined} commentData
  * @param {SeveritySettingsConfig} severitySettings
  * @return {FunctionDef | undefined}
  */
-function createFunction(inclusionHandler, node, namespacedName, commentData, severitySettings) {
+function createFunction(inclusionHandler, node, method, namespacedName, commentData, severitySettings) {
     if (commentData === undefined || commentData.length === 0) {
         return undefined;
     }
@@ -144,6 +146,7 @@ function createFunction(inclusionHandler, node, namespacedName, commentData, sev
     } : undefined;
     return {
         comments: commentData || [],
+        method: method,
         functionNode: node,
         kind: "function",
         spec: spec,
@@ -155,13 +158,14 @@ function createFunction(inclusionHandler, node, namespacedName, commentData, sev
 /**
  * @param {InclusionHandler} inclusionHandler
  * @param {import("estree").FunctionDeclaration | import("estree").FunctionExpression} node
+ * @param {import("estree").MethodDefinition | undefined} method
  * @param {NamespacedName} namespacedName
  * @param {CommentData[] | undefined} commentData
  * @param {SeveritySettingsConfig} severitySettings
  * @return {DocumentableHandlerResult | undefined}
  */
-function createFunctionHandlerResult(inclusionHandler, node, namespacedName, commentData, severitySettings) {
-    const functionDef = createFunction(inclusionHandler, node, namespacedName, commentData, severitySettings);
+function createFunctionHandlerResult(inclusionHandler, node, method, namespacedName, commentData, severitySettings) {
+    const functionDef = createFunction(inclusionHandler, node, method, namespacedName, commentData, severitySettings);
     if (functionDef === undefined) {
         return undefined;
     }
@@ -305,8 +309,10 @@ const aggregateHandlerDefaults = (node, program, inclusionHandler, severitySetti
     switch (node.type) {
         case "AssignmentExpression":
             return handleAssignmentExpression(inclusionHandler, node, program, severitySettings);
+        case "MethodDefinition":
+            return handleFunctionDeclaration(inclusionHandler, node.value, node, program, severitySettings);
         case "FunctionDeclaration":
-            return handleFunctionDeclaration(inclusionHandler, node, program, severitySettings);
+            return handleFunctionDeclaration(inclusionHandler, node, undefined, program, severitySettings);
         case "VariableDeclaration":
             return handleVariableDeclaration(inclusionHandler, node, program, severitySettings);
         default:

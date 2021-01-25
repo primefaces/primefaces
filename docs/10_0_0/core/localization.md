@@ -155,7 +155,7 @@ Side Validation, messages property is used as the bundle for the locale.
 ### Usage
 
 To add another locale to the API, first create the locale object first with settings and assign it as a
-property of [PrimeFaces.locales](../jsdocs/modules/primefaces.html#locales) javascript object such as;
+property of [PrimeFaces.locales](../jsdocs/modules/src_primefaces.primefaces.html#locales) JavaScript object such as;
 
 _PrimeFaces.locales['de'] = {//settings}_
 

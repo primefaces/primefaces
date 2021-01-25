@@ -2,7 +2,7 @@
 
 ConfirmPopup displays a confirmation overlay displayed relatively to its target.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.confirmpopup.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.confirmpopup-1.html)
 
 ## Info
 

@@ -62,6 +62,7 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  * 
+ * @prop {string} cfg.appendTo The search expression for the element to which the overlay panel should be appended.
  * @prop {boolean} cfg.caseSensitive Defines if filtering would be case sensitive.
  * @prop {boolean} cfg.dynamic Defines if dynamic loading is enabled for the element's panel. If the value is `true`,
  * the overlay is not rendered on page load to improve performance.

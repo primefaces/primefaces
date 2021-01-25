@@ -36,7 +36,7 @@ declare namespace JQueryFileUpload {
         /**
          * @param event The event that triggered this callback.
          */
-        (event: JQuery.Event) => void;
+        (event: JQuery.TriggeredEvent) => void;
 
     /**
      * A callback for an event that also receives some additional data, in addition to the event.
@@ -46,7 +46,7 @@ declare namespace JQueryFileUpload {
          * @param event The event that triggered this callback.
          * @param data Additional data passed to this callback. Specific to the event.
          */
-        (event: JQuery.Event, data: TData) => void;
+        (event: JQuery.TriggeredEvent, data: TData) => void;
 
     /**
      * A callback for an event that receives some additional data and may also return a boolean that usually defines
@@ -58,7 +58,7 @@ declare namespace JQueryFileUpload {
          * @param data Additional data passed to this callback. Specific to the event.
          * @return A boolean flag that indicates how event handling proceeds.
          */
-        (event: JQuery.Event, data: TData) => boolean;
+        (event: JQuery.TriggeredEvent, data: TData) => boolean;
 
     /**
      * A processing action that is available.
@@ -1127,7 +1127,7 @@ declare namespace JQueryFileUpload {
          * Retrieves the current response object.
          * @return The current response object with the response info.
          */
-        response(): ResponseObject | {};
+        response(): ResponseObject | Record<string, unknown>;
 
         /**
          * Submits the form.

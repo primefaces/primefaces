@@ -1,7 +1,6 @@
 declare namespace Test.TypedefParamsOnObjectFull.Extern {
     /**
      * type foobar
-     * 
      * @typeparam R template R
      */
     export type Foobar<R extends string> =

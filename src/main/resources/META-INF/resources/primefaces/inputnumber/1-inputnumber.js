@@ -133,7 +133,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Binds input listener which fixes a browser AutoFill issue.
+     * Binds input listener which fixes a browser autofill issue.
      * See: https://github.com/autoNumeric/autoNumeric/issues/536
      * @private
      */
@@ -199,7 +199,8 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Sets the value of this input number widget to the given value. Makes sure that the number is formatted correctly.
-     * @param {number} value The new numeric value to set. It will be formatted appropriately.
+     * @param {number | string} value The new value to set. If a number, it will be formatted appropriately. If the
+     * empty string, resets the value. Any other string is parsed into a number and then the number is set.
      */
     setValue: function (value) {
         this.autonumeric.set(value);
@@ -209,7 +210,8 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Finds the current value, which is the raw numerical value without any formatting applied.
-     * @return {number} The current numerical value of this input number widget.
+     * @return {string} The current value of this input number widget, in its string representation according to the
+     * configured format.
      */
     getValue: function () {
         var val = this.autonumeric.getNumericString();

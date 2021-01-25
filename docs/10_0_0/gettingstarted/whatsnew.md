@@ -25,8 +25,8 @@ This page contains a list of big features. Please check the GitHub issues for al
   * TreeTable
     * refactoring of filter and sort (see https://primefaces.github.io/primefaces/10_0_0/#/../migrationguide/10_0_0?id=treetable)
   * DataExporter: new layout-features and AJAX-support (so `ajax="false"` is not required anymore) (see https://primefaces.github.io/primefaces/10_0_0/#/../migrationguide/10_0_0?id=dataexporter)
-  * new JavaScript API Docs based on JSDoc: https://primefaces.github.io/primefaces/jsdocs/
-    * this includes type declarations file which may help your and your IDE when writing JavaScript- or TypeScript-client-side code
+  * new JavaScript API Docs based on TypeDoc: https://primefaces.github.io/primefaces/jsdocs/
+    * This includes a type declarations file which may help your and your IDE when writing JavaScript- or TypeScript client-side code. It also enables you to statically check your code against the client side API and be warned when you update PrimeFaces and the API changes.
   * supports JSF 3.0 (Jakarta Server Faces, package jakarta.faces)
 
 Look into [migration guide](https://primefaces.github.io/primefaces/10_0_0/#/../migrationguide/10_0_0?id=datatable) for more enhancements and changes.

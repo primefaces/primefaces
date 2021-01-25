@@ -13,10 +13,10 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.TieredMenuCfg} cfg
  *
+ * @prop {boolean} cfg.disabled Whether this menu button is initially disabled.
  * @prop {string} cfg.collision When the positioned element overflows the window in some direction, move it to an
  * alternative position. Similar to my and at, this accepts a single value or a pair for horizontal/vertical,
  * e.g., `flip`, `fit`, `fit flip`, `fit none`.
- * @prop {boolean} cfg.disabled Whether this menu button is initially disabled.
  */
 PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
 

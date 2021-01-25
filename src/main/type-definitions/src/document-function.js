@@ -19,6 +19,7 @@ function createCodeMethodFromFunction(fnDefinition, severitySettings) {
     const jsdoc = findAndParseLastBlockComment(fnDefinition.comments, severitySettings);
     return {
         jsdoc: jsdoc,
+        method: fnDefinition.method,
         name: fnDefinition.name,
         node: fnDefinition.functionNode,
     };

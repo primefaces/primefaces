@@ -17,7 +17,8 @@
  * @prop {boolean} cfg.addOnBlur Whether to add an item when the input loses focus.
  * @prop {boolean} cfg.unique Prevent duplicate entries from being added.
  * @prop {number} cfg.max Maximum number of entries allowed.
- * @prop {string} cfg.separator Separator character to allow multiple values such if a list is pasted into the input. Default is ','.
+ * @prop {string} cfg.separator Separator character to allow multiple values such if a list is pasted into the input.
+ * Default is `,`.
  */
 PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
 
@@ -170,8 +171,8 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Removes an item (chip) from the list of currently displayed items.
-     * @param {JQuery} item An item  (LI element) that should be removed.
-     * @param {boolean} silent flag indicating whether to animate and fire AJAX event
+     * @param {JQuery} item An item (LI element) that should be removed.
+     * @param {boolean} [silent] Flag indicating whether to animate the removal and fire the AJAX behavior.
      */
     removeItem: function(item, silent) {
         var itemIndex = this.itemContainer.children('li.ui-chips-token').index(item);

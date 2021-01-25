@@ -15,7 +15,6 @@ declare namespace Test.ObjectAssignmentConst2 {
 declare namespace Test.ObjectAssignmentConst {
     /**
      * const foobar
-     * 
      * @author John Doe
      */
     export let Foobar: boolean;

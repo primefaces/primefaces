@@ -7,6 +7,8 @@
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.SelectOneMenuCfg} cfg
+ * 
+ * @prop {string} cfg.appendTo The search expression for the element to which the overlay panel should be appended.
  */
 PrimeFaces.widget.ThemeSwitcher = PrimeFaces.widget.SelectOneMenu.extend({
 

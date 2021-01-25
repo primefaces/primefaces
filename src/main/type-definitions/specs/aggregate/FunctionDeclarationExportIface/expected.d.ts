@@ -4,7 +4,6 @@
 interface foo {
     /**
      * function foo
-     * 
      * @param x foo param x
      * @return foo retval
      */
@@ -17,7 +16,6 @@ interface foo {
 interface bar {
     /**
      * function bar
-     * 
      * @param x foo param x
      * @return foo retval
      */
@@ -31,7 +29,6 @@ declare namespace Test.FunctionDeclarationExportIface {
     export interface Foo {
         /**
          * function foo3
-         * 
          * @param x foo param x
          * @return foo retval
          */
@@ -46,7 +43,6 @@ declare namespace Test.FunctionDeclarationExportIface {
     export interface Foo {
         /**
          * function bar
-         * 
          * @param x foo param x
          * @return foo retval
          */

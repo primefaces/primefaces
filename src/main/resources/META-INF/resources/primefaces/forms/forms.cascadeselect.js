@@ -3,23 +3,24 @@
  * 
  * CascadeSelect CascadeSelect displays a nested structure of options.
  * 
+ * @prop {JQuery} contents The DOM element for the content in the available selectable options.
+ * @prop {JQuery} input The DOM element for the hidden input with the current value.
+ * @prop {JQuery} items The DOM elements for the the available selectable options.
+ * @prop {JQuery} itemsWrapper The DOM element for the wrapper with the container with the available selectable
+ * options.
+ * @prop {JQuery} label The DOM element for the label indicating the currently selected option.
+ * @prop {JQuery} panel The DOM element for the overlay panel with the available selectable options.
+ * @prop {JQuery} triggers The DOM elements for the buttons that can trigger (hide or show) the overlay panel with the
+ * available selectable options.
+ * 
  * @interface {PrimeFaces.widget.CascadeSelectCfg} cfg The configuration for the {@link  CascadeSelect| CascadeSelect widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  * 
- * @prop {JQuery} input The DOM element for the hidden input with the current value.
- * @prop {JQuery} label The DOM element for the label indicating the currently selected option.
- * @prop {JQuery} triggers The DOM elements for the buttons that can trigger (hide or show) the overlay panel with the
- * available selectable options.
- * @prop {JQuery} panel The DOM element for the overlay panel with the available selectable options.
- * @prop {JQuery} itemsWrapper The DOM element for the wrapper with the container with the available selectable
- * options.
- * @prop {JQuery} items The DOM elements for the the available selectable options.
- * @prop {JQuery} contents The DOM element for the content in the available selectable options.
- * @prop {boolean} cfg.disabled If true, disables the component.
  * @prop {string} cfg.appendTo Appends the overlay to the element defined by search expression. Defaults to the document
  * body.
+ * @prop {boolean} cfg.disabled If true, disables the component.
  */
 PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
 
@@ -184,9 +185,9 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
-     * Deactivate siblings and active children of an item
+     * Deactivate siblings and active children of an item.
      * @private
-     * @param {JQuery} item cascadeselect panel element.
+     * @param {JQuery} item Cascade select panel element.
      */
     deactivateItems: function(item) {
         var parentItem = item.parent().parent();
@@ -296,8 +297,8 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Align the sub overlay panel with the available options.
      * @private
-     * @param {JQuery} subpanel subpanel element in cascadeselect panel.
-     * @param {JQuery} parentPanel parent panel element of the subpanel element.
+     * @param {JQuery} subpanel Sub panel element of the cascade select panel.
+     * @param {JQuery} parentPanel Parent panel element of the sub panel element.
      */
     alignSubPanel: function(subpanel, parentPanel) {
         var subitemWrapper = subpanel.children('.ui-cascadeselect-items-wrapper');

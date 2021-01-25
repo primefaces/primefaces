@@ -2,7 +2,7 @@
 
 CascadeSelect displays a nested structure of options.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.cascadeselect.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.cascadeselect.html)
 
 ## Info
 

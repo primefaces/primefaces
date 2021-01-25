@@ -5,7 +5,6 @@ declare namespace PrimeFaces.widget {
     export interface ExportIfaceCallable {
         /**
          * callable
-         * 
          * @param x param x
          * @return retval
          */
