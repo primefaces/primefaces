@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Objects;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -38,6 +39,7 @@ import org.primefaces.component.api.UITable;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.LangUtils;
 
@@ -150,8 +152,8 @@ public class DataTableXMLExporter extends DataTableExporter {
             writer.append(EscapeUtils.forXml(exportColumnByFunction(context, column)));
         }
         else if (LangUtils.isNotBlank(column.getField())) {
-            String value =  (String) UITable.createValueExprFromVarField(context, table.getVar(), column.getField()).getValue(context.getELContext());
-            writer.append(EscapeUtils.forXml(value));
+            Object value = UITable.createValueExprFromVarField(context, table.getVar(), column.getField()).getValue(context.getELContext());
+            writer.append(EscapeUtils.forXml(Objects.toString(value, Constants.EMPTY_STRING)));
         }
         else {
             for (UIComponent component : components) {

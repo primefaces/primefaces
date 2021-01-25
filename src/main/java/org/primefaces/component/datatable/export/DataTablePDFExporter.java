@@ -26,6 +26,7 @@ package org.primefaces.component.datatable.export;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
@@ -344,8 +345,8 @@ public class DataTablePDFExporter extends DataTableExporter {
             pdfTable.addCell(cell);
         }
         else if (LangUtils.isNotBlank(column.getField())) {
-            String value =  (String) UITable.createValueExprFromVarField(context, table.getVar(), column.getField()).getValue(context.getELContext());
-            PdfPCell cell = createCell(column, new Paragraph(value, font));
+            Object value = UITable.createValueExprFromVarField(context, table.getVar(), column.getField()).getValue(context.getELContext());
+            PdfPCell cell = createCell(column, new Paragraph(Objects.toString(value, Constants.EMPTY_STRING), font));
             pdfTable.addCell(cell);
         }
         else {
