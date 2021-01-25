@@ -34,6 +34,7 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.api.UITable;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.util.ComponentUtils;
@@ -110,7 +111,7 @@ public class DataTableXMLExporter extends DataTableExporter {
             if (col.isRendered() && col.isExportable()) {
                 String columnTag = getColumnTag(col);
                 try {
-                    addColumnValue(writer, col.getChildren(), columnTag, col);
+                    addColumnValue(writer, table, col.getChildren(), columnTag, col);
                 }
                 catch (IOException ex) {
                     throw new FacesException(ex);
@@ -137,7 +138,7 @@ public class DataTableXMLExporter extends DataTableExporter {
         return EscapeUtils.forXmlTag(columnTag);
     }
 
-    protected void addColumnValue(PrintWriter writer, List<UIComponent> components, String tag, UIColumn column) throws IOException {
+    protected void addColumnValue(PrintWriter writer, DataTable table, List<UIComponent> components, String tag, UIColumn column) throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
 
         writer.append("\t\t<" + tag + ">");
@@ -147,6 +148,10 @@ public class DataTableXMLExporter extends DataTableExporter {
         }
         else if (column.getExportFunction() != null) {
             writer.append(EscapeUtils.forXml(exportColumnByFunction(context, column)));
+        }
+        else if (LangUtils.isNotBlank(column.getField())) {
+            String value =  (String) UITable.createValueExprFromVarField(context, table.getVar(), column.getField()).getValue(context.getELContext());
+            writer.append(EscapeUtils.forXml(value));
         }
         else {
             for (UIComponent component : components) {
