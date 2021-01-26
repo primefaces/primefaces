@@ -30,6 +30,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.celleditor.CellEditor;
+import org.primefaces.util.LangUtils;
 
 public class Column extends ColumnBase {
 
@@ -87,5 +88,17 @@ public class Column extends ColumnBase {
                 child.encodeAll(context);
             }
         }
+    }
+
+    @Override
+    public String getHeaderText() {
+        String headerText = super.getHeaderText();
+        if (headerText == null) {
+            String field = getField();
+            if (LangUtils.isNotBlank(field)) {
+                headerText = LangUtils.toCapitalCase(field);
+            }
+        }
+        return headerText;
     }
 }

@@ -34,6 +34,7 @@ import java.lang.reflect.TypeVariable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
+import java.util.regex.Pattern;
 
 import javax.faces.FacesException;
 import javax.xml.bind.DatatypeConverter;
@@ -41,6 +42,7 @@ import javax.xml.bind.DatatypeConverter;
 public class LangUtils {
 
     public static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
+    private static final Pattern CAPITAL_CASE = Pattern.compile("(?<=.)(?=\\p{Lu})");
 
     private LangUtils() {
     }
@@ -413,6 +415,30 @@ public class LangUtils {
         catch (NoSuchAlgorithmException e) {
             throw new FacesException(e);
         }
+    }
+
+    /**
+     * Converts a sting to capital case even counting Unicode characters.
+     * <pre>
+     * thisIsMyString = This Is My String
+     * ThisIsATest = This Is A Test
+     * helloWorld = Hello World
+     * </pre>
+     *
+     * @param value the value to capital case
+     * @return the returned value in capital case or empty string if blank
+     */
+    public static String toCapitalCase(String value) {
+        if (LangUtils.isValueBlank(value)) {
+            return Constants.EMPTY_STRING;
+        }
+
+        // split on unicode uppercase characters
+        String[] values = CAPITAL_CASE.split(value);
+        if (values.length > 0) {
+            values[0] = values[0].substring(0 , 1).toUpperCase() + values[0].substring(1).toLowerCase();
+        }
+        return String.join(" ", values);
     }
 
 
