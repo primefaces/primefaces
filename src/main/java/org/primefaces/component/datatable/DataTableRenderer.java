@@ -1326,11 +1326,7 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         if (hasColumnDefaultRendering(table, column)) {
-            Object value = UITable.createValueExprFromVarField(context, table.getVar(), column.getField())
-                    .getValue(context.getELContext());
-            if (value != null) {
-                writer.writeText(value, null);
-            }
+            encodeDefaultFieldCell(context, table, column, writer);
         }
         else if (column instanceof DynamicColumn) {
             column.encodeAll(context);
@@ -1340,6 +1336,15 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         writer.endElement("td");
+    }
+
+    protected void encodeDefaultFieldCell(FacesContext context, DataTable table, UIColumn column, ResponseWriter writer) throws IOException {
+        Object value = UITable.createValueExprFromVarField(context, table.getVar(), column.getField()).getValue(context.getELContext());
+        if (value != null) {
+            UIComponent component = column instanceof UIComponent ? (UIComponent) column : null;
+            value = ComponentUtils.getConvertedAsString(context, component, value);
+            writer.writeText(value, null);
+        }
     }
 
     protected void encodeTFoot(FacesContext context, DataTable table) throws IOException {
