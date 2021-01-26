@@ -783,8 +783,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.selection = (preselection === "") ? [] : preselection.split(',');
 
         //shift key based range selection
-        this.originRowIndex = null;
-        this.cursorIndex = null;
+        if(!this.originRowIndex) {
+            this.originRowIndex = null;
+        }
+        if(!this.cursorIndex) {
+            this.cursorIndex = null;
+        }
 
         this.bindSelectionEvents();
     },
