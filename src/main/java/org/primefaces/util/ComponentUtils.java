@@ -180,7 +180,6 @@ public class ComponentUtils {
             if (converter != null) {
                 return converter.getAsString(context, component, value);
             }
-
         }
 
         return Objects.toString(value, Constants.EMPTY_STRING);
