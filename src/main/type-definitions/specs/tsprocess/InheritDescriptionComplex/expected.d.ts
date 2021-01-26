@@ -3,13 +3,13 @@ declare namespace InheritDescriptionComplex {
      * c1
      * 
      * (from super type C2) c2
-     *
+     * 
      * (from super type C4) c4
-     *
+     * 
      * (from super type C3) c3
-     *
+     * 
      * (from super type C5) c5
-     *
+     * 
      * (from super type C6) c6
      */
     interface C1 extends C3, C2 {
@@ -17,13 +17,13 @@ declare namespace InheritDescriptionComplex {
          * c1 foo
          * 
          * (from super type C2) c2 foo
-         *
+         * 
          * (from super type C4) c4 foo
-         *
+         * 
          * (from super type C3) c3 foo
-         *
+         * 
          * (from super type C5) c5 foo
-         *
+         * 
          * (from super type C6) c6 foo
          */
         foo(): void;

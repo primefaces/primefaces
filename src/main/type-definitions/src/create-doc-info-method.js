@@ -27,6 +27,7 @@ function createMethodDocInfo(name, jsdoc, method, severitySettings) {
     const docInfo = {
         abstract: false,
         additionalTags: [],
+        constructor: false,
         description: jsdoc.description || "",
         next: {
             description: "",
@@ -59,6 +60,16 @@ function createMethodDocInfo(name, jsdoc, method, severitySettings) {
             // @async
             case Tags.Async: {
                 typedefTagHandler.async(tag, jsdoc.tags, true);
+                break;
+            }
+
+            // @constructor
+            case Tags.Constructor: {
+                checkTagIsPlain(tag, severitySettings, factory);
+                if (docInfo.constructor) {
+                    handleError("tagDuplicateConstructor", severitySettings, () => factory(`Found duplicate tag '@constructor' in doc comments`));
+                }
+                docInfo.constructor = true;
                 break;
             }
 

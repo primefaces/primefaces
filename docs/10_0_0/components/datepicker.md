@@ -5,7 +5,7 @@ ajax selection and more.
 
 > DatePicker is designed to replace the old p:calendar component.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.datepicker.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.datepicker-1.html)
 
 ## Info
 
@@ -334,7 +334,7 @@ The TimePicker pattern can be modified with the properties _hourFormat_ and _sho
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.Calendar_
+Widget: _PrimeFaces.widget.DatePicker_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |
@@ -343,6 +343,10 @@ Widget: _PrimeFaces.widget.Calendar_
 | setDisabledDates(dates) | dates: Array of dates to disable | void | Sets disabled dates and update panel. Accepts array of date objects and strings formatted as M/d/yyyy.
 | setDisabledDays(days) | days: Array of days to disable | void | Sets disabled days and update panel. Accepts array of numbers, Sunday = 0.
 | updatePanel() | - | void | Update panel.
+| show() | - | void | Show the overlay panel.
+| hide() | - | void | Hide the overlay panel.
+| disable() | - | void | Disables DatePicker.
+| enable() | - | void | Enables DatePicker.
 
 ## Skinning
 DatePicker resides in a container element which _style_ and _styleClass_ options apply.

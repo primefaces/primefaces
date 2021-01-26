@@ -219,6 +219,7 @@ function createMethodSignature(methodCodeInfo) {
         baseTypeNext: baseTypeNext,
         baseTypeReturn: baseTypeReturn,
         baseTypeYield: baseTypeYield,
+        constructor: methodCodeInfo.isConstructor,
         generator: !methodCodeInfo.isGenerator ? undefined : {
             hasNext: methodCodeInfo.next.node !== undefined,
             hasReturn: methodCodeInfo.return.node !== undefined,
@@ -230,6 +231,7 @@ function createMethodSignature(methodCodeInfo) {
         abstract: abstract,
         args: args,
         async: async,
+        constructor: methodCodeInfo.isConstructor,
         generics: generics,
         generator: generator,
         name: methodCodeInfo.name,
@@ -380,6 +382,7 @@ function argsToSignature(args, ambientContext) {
  * Creates a signature like
  * ```typescript
  * abstract async foo<T>(x: T): string;
+ * constructor<T>(x: T);
  * ```
  * @param {MethodSignature} signature Signature to convert.
  * @param {boolean} ambientContext `false` if the generated signature will appear in actual JavaScript code.
@@ -387,9 +390,11 @@ function argsToSignature(args, ambientContext) {
  */
 function toObjectShorthandMethodSignature(signature, ambientContext) {
     const visibility = signature.visibility !== "public" ? signature.visibility + " " : "";
-    const escapedName = escapeObjectPropertyName(signature.name);
+    const signatureName = signature.constructor ? "constructor" : signature.name;
+    const returnType = signature.constructor ? "" : `: ${signature.returnType}`;
+    const escapedName = escapeObjectPropertyName(signatureName);
     return [
-        `${visibility}${signature.abstract}${ambientContext ? "" : signature.async}${escapedName}${signature.generics}(${argsToSignature(signature.args, ambientContext)}): ${signature.returnType};`
+        `${visibility}${signature.abstract}${ambientContext ? "" : signature.async}${escapedName}${signature.generics}(${argsToSignature(signature.args, ambientContext)})${returnType};`
     ];
 }
 
@@ -397,12 +402,16 @@ function toObjectShorthandMethodSignature(signature, ambientContext) {
  * Creates a signature like
  * ```typescript
  * export function foo<T>(x: T): string;
+ * export new<T>(x: T);
  * ```
  * @param {MethodSignature} signature Signature to convert.
  * @param {boolean} ambientContext `false` if the generated signature will appear in actual JavaScript code.
  * @return {string[]} Code lines with the method signature as an exported function
  */
 function toExportFunctionSignature(signature, ambientContext) {
+    if (signature.constructor) {
+        throw new Error("Cannot export a newable as a function");   
+    }
     return [
         `export ${ambientContext ? "" : signature.async}function ${signature.name}${signature.generics}(${argsToSignature(signature.args, ambientContext)}): ${signature.returnType};`
     ];
@@ -418,6 +427,9 @@ function toExportFunctionSignature(signature, ambientContext) {
  * @return {string[]} Code lines with the method signature as an exported function
  */
 function toDeclareFunctionSignature(signature, ambientContext) {
+    if (signature.constructor) {
+        throw new Error("Cannot declare a newable as a function");   
+    }
     return [
         `declare ${ambientContext ? "" : signature.async}function ${signature.name}${signature.generics}(${argsToSignature(signature.args, ambientContext)}): ${signature.returnType};`
     ];
@@ -427,6 +439,7 @@ function toDeclareFunctionSignature(signature, ambientContext) {
  * Creates a signature like
  * ```typescript
  * async <T>(x: number): string;
+ * new<T>(x: number): string;
  * ```
  * @param {MethodSignature} signature Signature to convert.
  * @param {boolean} ambientContext `false` if the generated signature will appear in actual JavaScript code.
@@ -434,8 +447,9 @@ function toDeclareFunctionSignature(signature, ambientContext) {
  */
 function toAnonymousMethodSignature(signature, ambientContext) {
     const visibility = signature.visibility !== "public" ? signature.visibility + " " : "";
+    const newable = signature.constructor ? "new" : "";
     return [
-        `${visibility}${ambientContext ? "" : signature.async}${signature.generics}(${argsToSignature(signature.args, ambientContext)}): ${signature.returnType};`
+        `${visibility}${ambientContext ? "" : signature.async}${newable}${signature.generics}(${argsToSignature(signature.args, ambientContext)}): ${signature.returnType};`
     ];
 }
 

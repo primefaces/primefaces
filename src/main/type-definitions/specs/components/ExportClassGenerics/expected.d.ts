@@ -1,7 +1,6 @@
 declare namespace PrimeFaces.widget {
     /**
      * Tests generics on a class
-     * 
      * @typeparam T1 type T1
      * @typeparam T2 type T2
      * @typeparam T3 Defaults to `T1`. type T3

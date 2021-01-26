@@ -47,6 +47,11 @@ function createPropDocInfo(name, jsdoc, property, severitySettings) {
                 break;
             }
 
+            case Tags.Constructor: {
+                typedefTagHandler._constructor(tag, jsdoc.tags, true);
+                break;
+            }
+
             case Tags.Generator: {
                 typedefTagHandler.generator(tag, jsdoc.tags, true);
                 break;

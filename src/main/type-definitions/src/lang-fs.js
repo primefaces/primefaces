@@ -2,7 +2,7 @@ const { promises: fs } = require("fs");
 const path = require("path");
 
 const { LineBreak, ReadDirOpts, ReadFileOpts, WriteFileOpts } = require("./constants");
-const { strJoin, normalizeLineBreaksUnix } = require("./lang");
+const { strJoin, normalizeLineBreaksUnix, asyncFlatMap } = require("./lang");
 
 /**
  * Copies the source file to the target file path, invokes the callback, then
@@ -29,6 +29,16 @@ async function withTemporaryFileOnDisk(bundle, target, callback) {
             fs.unlink(target.module)
         ]);
     }
+}
+
+/**
+ * @param {string} file
+ * @param {string} sep
+ * @return {string}
+ */
+function normalize(file, sep = path.sep) {
+    const normalized = path.normalize(file);
+    return normalized.replaceAll(path.sep, sep);
 }
 
 /**
@@ -72,6 +82,33 @@ async function mkDirRecursive(path) {
 async function readDir(path) {
     const entries = await fs.readdir(path, ReadDirOpts);
     return entries;
+}
+
+/**
+ * Reads all files and directories in the given path, recursively
+ * @param {string} path A directory to read.
+ * @return {Promise<{dir:string,entry:import("fs").Dirent}[]>} All files and directories in the given directory.
+ */
+async function readDirRecursive(path) {
+    const entries = await fs.readdir(path, ReadDirOpts);
+    const mapped = await asyncFlatMap(entries, async e => {
+        if (e.isDirectory()) {
+            return await readDirRecursive(resolvePath(path, e.name));
+        }
+        else {
+            return {dir: path, entry: e};
+        }
+    });
+    return mapped;
+}
+
+/**
+ * @param {string} from 
+ * @param {string} to
+ * @returns {string} 
+ */
+function makeRelative(from, to) {
+    return path.relative(from, to);
 }
 
 /**
@@ -161,8 +198,11 @@ module.exports = {
     deleteFile,
     isExistingFileOrDir,
     mkDirRecursive,
+    normalize,
     readDir,
+    readDirRecursive,
     readFileUtf8,
+    makeRelative,
     resolvePath,
     toAbsolutePath,
     withTemporaryFileOnDisk,

@@ -112,8 +112,8 @@ if (!PrimeFaces.ajax) {
             },
 
             /**
-             * Resolves the URL which should be used for the POST.
-             * In Portlet a different URL is used.
+             * Resolves the URL which should be used for the POST request.
+             * For portlets, a different URL is used.
              *
              * @param {JQuery} form The closest form of the request source.
              * @return {string} The POST url.
@@ -131,11 +131,11 @@ if (!PrimeFaces.ajax) {
 
             /**
              * Gets a selector to resolve all forms which needs to be updated with a new ViewState.
-             * This is required in Portlets as the DOM contains forms of multiple JSF views / applications.
+             * This is required in portlets as the DOM contains forms of multiple JSF views / applications.
              *
              * @param {JQuery} form The closest form of the request source.
-             * @param {string} parameterPrefix The Portlet parameter prefix.
-             * @return {string} null or a selector.
+             * @param {string} parameterPrefix The portlet parameter prefix.
+             * @return {string | null} The selector for the forms, or `null` when no forms need to be updated.
              */
             getPorletForms: function(form, parameterPrefix) {
                 var encodedURLInput = form.children("input[name*='javax.faces.encodedURL']");
@@ -284,7 +284,7 @@ if (!PrimeFaces.ajax) {
              * A list of sent AJAX requests, i.e. HTTP requests that were already started. This is used, for example, to
              * abort requests that were sent already when that becomes necessary.
              *
-             * @type {PrimeFaces.ajax.pfXHR}
+             * @type {PrimeFaces.ajax.pfXHR[]}
              */
             xhrs: new Array(),
 
@@ -923,7 +923,7 @@ if (!PrimeFaces.ajax) {
              * Appends a request parameter to the given list of parameters.
              * Optionally add a prefix to the name, this is used for Portlet namespacing.
              * @template [TValue=any] Type of the parameter value.
-             * @param {PrimeFaces.ajax.RequestParameter<TValue>[]} params List of parameters to which a new
+             * @param {PrimeFaces.ajax.RequestParameter<string, TValue>[]} params List of parameters to which a new
              * parameter is added.
              * @param {string} name Name of the new parameter to add.
              * @param {TValue} value Value of the parameter to add.
@@ -942,11 +942,10 @@ if (!PrimeFaces.ajax) {
 
             /**
              * Appends a request parameter to the given list of parameters.
-             * Optionally add a prefix to the name, this is used for Portlet namespacing.
-             * @template [TValue=any] Type of the parameter values.
-             * @param {FormData} formData the FormData.
+             * Optionally add a prefix to the name, this is used for portlet namespacing.
+             * @param {FormData} formData the form data to add to the form.
              * @param {string} name Name of the new parameter to add.
-             * @param {TValue} value Value of the parameter to add.
+             * @param {string | Blob} value Value of the parameter to add.
              * @param {string} [parameterPrefix] Optional prefix that is added in front of the name.
              */
             addFormData: function(formData, name, value, parameterPrefix) {
@@ -963,9 +962,9 @@ if (!PrimeFaces.ajax) {
              * Adds a list of callback parameters to the given list. Optionally prepends a prefix to the name of each
              * added parameter.
              * @template [TValue=any] Type of the parameter values.
-             * @param {PrimeFaces.ajax.RequestParameter<TValue>[]} params List of callback parameters to which
+             * @param {PrimeFaces.ajax.RequestParameter<string, TValue>[]} params List of callback parameters to which
              * parameters are added.
-             * @param {PrimeFaces.ajax.RequestParameter<TValue>[]} paramsToAdd List of callback parameters to
+             * @param {PrimeFaces.ajax.RequestParameter<string, TValue>[]} paramsToAdd List of callback parameters to
              * add.
              * @param {string} [parameterPrefix] Optional prefix that is added in front of the name of the added
              * callback parameters.
@@ -1013,7 +1012,7 @@ if (!PrimeFaces.ajax) {
             /**
              * Adds a new request parameter to the given FormData. The value of the parameter is taken from the input
              * element of the given form. The input element must have the same name as the name of the parameter to add.
-             * Optionally add a prefix to the name, which used for Portlet namespacing.
+             * Optionally add a prefix to the name, which used for portlet namespacing.
              * @param {FormData} formData The FormData.
              * @param {string} name Name of the new parameter to add
              * @param {JQuery} form An HTML FORM element that contains an INPUT element with the given name.
@@ -1060,9 +1059,9 @@ if (!PrimeFaces.ajax) {
              * removes all parameters from the second array whose name is equal to one of the parameters in the first
              * array. The given input array are not modified.
              * @template [TValue=any] Type of the parameter values.
-             * @param {PrimeFaces.ajax.RequestParameter<TValue>[]} arr1 A list of parameters for comparison.
-             * @param {PrimeFaces.ajax.RequestParameter<TValue>[]} arr2 A list of additional parameters.
-             * @return {PrimeFaces.ajax.RequestParameter<TValue>[]} An list of parameters that are in the second
+             * @param {PrimeFaces.ajax.RequestParameter<string, TValue>[]} arr1 A list of parameters for comparison.
+             * @param {PrimeFaces.ajax.RequestParameter<string, TValue>[]} arr2 A list of additional parameters.
+             * @return {PrimeFaces.ajax.RequestParameter<string, TValue>[]} An list of parameters that are in the second
              * array, but not in the first.
              */
             arrayCompare: function(arr1, arr2) {
@@ -1084,12 +1083,12 @@ if (!PrimeFaces.ajax) {
              * Creates a FormData which can be used for a Faces AJAX request on the current view.
              * It already contains all required parameters like ViewState or ClientWindow.
              *
-             * @param {HTMLElement} form The cloest form of the request source.
+             * @param {JQuery} form The closest form of the request source.
              * @param {string} parameterPrefix The Portlet parameter namespace.
              * @param {string} source The id of the request source.
-             * @param {string} process A comma seperated list of components which should be processed.
-             * @param {string} update A comma seperated list of components which should be updated.
-             * @return {FormData} The created FormData.
+             * @param {string} [process] A comma separated list of components which should be processed.
+             * @param {string} [update] A comma separated list of components which should be updated.
+             * @return {FormData} The newly created form data.
              */
             createFacesAjaxFormData: function(form, parameterPrefix, source, process, update) {
                 var formData = new FormData();

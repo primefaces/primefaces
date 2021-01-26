@@ -4,6 +4,7 @@
 
 /// <reference types="chart.js" />
 /// <reference types="cropperjs" />
+/// <reference types="downloadjs" />
 /// <reference types="googlemaps" />
 /// <reference types="jquery" />
 /// <reference types="jqueryui" />
@@ -253,14 +254,8 @@ declare namespace PrimeFaces {
      * @typeparam TCfg Type of a widget configuration. It must have at least the two properties `id` and `widgetVar`.
      * @return A new type with all properties in the given type made optional, exception for `id` and `widgetVar`.
      */
-    export type PartialWidgetCfg<
-        TCfg extends { id: string | string[], widgetVar: string }
-        > =
-        Partial<Omit<TCfg, "id" | "widgetVar">> & Pick<TCfg, "id" | "widgetVar">
-        &
-        {
-            behaviors?: Record<string, PrimeFaces.Behavior>;
-        };
+    export type PartialWidgetCfg<TCfg extends { id: string | string[], widgetVar: string }> =
+        Partial<Omit<TCfg, "id" | "widgetVar">> & Pick<TCfg, "id" | "widgetVar">;
 
     /**
      * An object that can be used to emulate classes and a class hierarchy in JavaScript. This works even for old
@@ -275,8 +270,9 @@ declare namespace PrimeFaces {
      * }
      * ```
      *
-     * Note for typescript users: You will need to specify the type parameters explicitly. The best way to do so is by
-     * defining the interfaces for the classes separately:
+     * Note for TypeScript users: Normally you should just write a widget as a class that extends from the appropriate
+     * base class. If you must use this method you will need to specify the type parameters explicitly. The best way to
+     * do so is by defining the interfaces for the classes separately:
      * ```typescript
      * interface BaseWidgetCfg {
      *  prop1: string;
@@ -323,7 +319,7 @@ declare namespace PrimeFaces {
      * accordion.method2();
      * ```
      */
-    export interface Class<TBase = {}> {
+    export interface Class<TBase = Record<string, unknown>> {
         new(): Class<TBase>;
         extend<
             TSub extends { init(...args: TArgs): void } & Omit<TBase, "init">,
@@ -355,32 +351,36 @@ declare namespace PrimeFaces {
      * An object with all localized strings required on the client side.
      */
     export interface Locale {
-        allDayText: string;
-        aria: Record<string, string>;
-        closeText: string;
-        prevText: string;
-        nextText: string;
-        monthNames: [string, string, string, string, string, string, string, string, string, string, string, string];
-        monthNamesShort: [string, string, string, string, string, string, string, string, string, string, string, string];
-        dayNames: [string, string, string, string, string, string, string];
-        dayNamesShort: [string, string, string, string, string, string, string];
-        dayNamesMin: [string, string, string, string, string, string, string];
-        weekHeader: string;
-        weekNumberTitle: string;
-        firstDay: number;
-        isRTL: boolean;
-        showMonthAfterYear: boolean;
-        yearSuffix: string;
-        timeOnlyTitle: string;
-        timeText: string;
-        hourText: string;
-        minuteText: string;
-        secondText: string;
-        currentText: string;
-        ampm: boolean;
-        month: string;
-        week: string;
-        day: string;
+        allDayText?: string;
+        aria?: Record<string, string>;
+        closeText?: string;
+        prevText?: string;
+        nextText?: string;
+        monthNames?: [string, string, string, string, string, string, string, string, string, string, string, string];
+        monthNamesShort?: [string, string, string, string, string, string, string, string, string, string, string, string];
+        dayNames?: [string, string, string, string, string, string, string];
+        dayNamesShort?: [string, string, string, string, string, string, string];
+        dayNamesMin?: [string, string, string, string, string, string, string];
+        weekHeader?: string;
+        weekNumberTitle?: string;
+        firstDay?: number;
+        isRTL?: boolean;
+        showMonthAfterYear?: boolean;
+        yearSuffix?: string;
+        timeOnlyTitle?: string;
+        timeText?: string;
+        hourText?: string;
+        minuteText?: string;
+        secondText?: string;
+        currentText?: string;
+        year?: string;
+        ampm?: boolean;
+        month?: string;
+        week?: string;
+        day?: string;
+        noEventsText?: string;
+        moreLinkText?: string;
+        list?: string;
         messages?: Record<string, string>;
         [i18nKey: string]: any;
     }
@@ -483,6 +483,17 @@ declare namespace PrimeFaces {
          * @param ext Additional data to be sent with the AJAX request that is made to the server.
          */
         (this: PrimeFaces.widget.BaseWidget, ext?: Partial<PrimeFaces.ajax.ConfigurationExtender>) => void;
+
+    /**
+     * The most recent instance of a {@link PrimeFaces.widget.ConfirmDialog} instance that was opened in response to a
+     * global confirmation request.
+     */
+    export let confirmDialog: PrimeFaces.widget.ConfirmDialog | undefined;
+
+    /**
+     * The main container element of the source component that issued the confirmation request.
+     */
+    export let confirmSource: JQuery | undefined | null;
 }
 
 declare namespace PrimeFaces.ajax {
@@ -503,62 +514,81 @@ declare namespace PrimeFaces.ajax {
     /**
      * Callback for an AJAX request that is always called after the request completes, irrespective of whether it
      * succeeded or failed.
+     *
+     * This is the type of function that you can set as a client side callback for the `oncomplete` attribute of a
+     * component or an AJX behavior.
      */
     export type CallbackOncomplete =
         /**
-         * @param xhr The XHR request that failed.
+         * @this The current AJAX settings as they were passed to JQuery when the request was made.
+         * @param xhrOrErrorThrown Either the XHR request that was made (in case of success), or the error that was
+         * thrown (in case of an error).
          * @param status The type of error or success.
-         * @param pfArgs Internal arguments used by PrimeFaces.
-         * @param data The data that was returned by the request.
+         * @param pfArgs Additional arguments returned by PrimeFaces, such as AJAX callback params from beans.
+         * @param dataOrXhr Either the XMLDocument (in case of success), or the XHR request (in case of an error).
          */
-        (this: Request, xhr: pfXHR, status: JQuery.Ajax.TextStatus, pfArgs: Record<string, any>, data: any) => void;
+        (this: JQuery.AjaxSettings, xhrOrErrorThrown: unknown, status: JQuery.Ajax.TextStatus, pfArgs: PrimeFacesArgs, dataOrXhr: XMLDocument | pfXHR) => void;
 
     /**
      * Callback for an AJAX request that is called in case any error occurred during the request, such as a a network
      * error. Note that this is not called for errors in the application logic, such as when bean validation fails.
+     *
+     * This is the type of function that you can set as a client side callback for the `onerror` attribute of a
+     * component or an AJX behavior.
      */
     export type CallbackOnerror =
         /**
+         * @this The current AJAX settings as they were passed to JQuery when the request was made.
          * @param xhr The XHR request that failed.
          * @param status The type of error that occurred.
          * @param errorThrown The error with details on why the request failed.
          */
-        (this: Request, xhr: pfXHR, status: JQuery.Ajax.ErrorTextStatus, errorThrown: string) => void;
+        (this: JQuery.AjaxSettings, xhr: pfXHR, status: JQuery.Ajax.ErrorTextStatus, errorThrown: string) => void;
 
     /**
      * Callback for an AJAX request that is called before the request is sent. Return `false` to cancel the request.
+     *
+     * This is the type of function that you can set as a client side callback for the `onstart` attribute of a
+     * component or an AJX behavior.
      */
     export type CallbackOnstart =
         /**
+         * @this The {@link PrimeFaces.ajax.Request} singleton instance responsible for handling the request.
          * @param cfg The current AJAX configuration.
          * @return {boolean | undefined} `false` to abort and not send the request, `true` or `undefined` otherwise.
          */
-        (this: Request, cfg: Configuration) => boolean;
+        (this: PrimeFaces.ajax.Request, cfg: Configuration) => boolean;
 
     /**
      * Callback for an AJAX request that is called when the request succeeds.
+     *
+     * This is the type of function that you can set as a client side callback for the `onsuccess` attribute of a
+     * component or an AJX behavior.
      */
     export type CallbackOnsuccess =
         /**
-         * @param data The data that was returned by the request.
+         * @this The current AJAX settings as they were passed to JQuery when the request was made.
+         * @param data The XML document representing the partial response returned the JSF application in response
+         * to the faces request. It usually looks like this: `<changes>...</changes>`
          * @param status The type of success, usually `success`.
          * @param xhr The XHR request that succeeded.
          * @return `true` if this handler already handle and/or parsed the response, `false` or `undefined` otherwise.
          */
-        (this: Request, data: any, status: JQuery.Ajax.SuccessTextStatus, xhr: pfXHR) => boolean | undefined;
+        (this: JQuery.AjaxSettings, data: XMLDocument, status: JQuery.Ajax.SuccessTextStatus, xhr: pfXHR) => boolean | undefined;
 
     /**
      * The XHR request object used by PrimeFaces. It extends the `jqXHR` object as used by JQuery, but adds additional
      * properties specific to PrimeFaces.
+     * @typeparam P Data made available by the server via {@link pfXHR.pfArgs}.
      */
-    export interface pfXHR extends JQuery.jqXHR {
+    export interface pfXHR<P extends PrimeFacesArgs = PrimeFacesArgs> extends JQuery.jqXHR {
         /**
          * An object with additional values added by PrimeFaces. For example, when you call
          * `PrimeFaces.current().ajax().addCallbackParam(...)` on the server in a bean method, the added parameters are
          * available in this object. This is also how you can access pass values from the server to the client after
          * calling a remote command.  See {@link PrimeFaces.ajax.pfXHR} and {@link PrimeFaces.ab}.
          */
-        pfArgs?: PrimeFacesArgs;
+        pfArgs?: P;
 
         /**
          * Additional settings, such as portlet forms and nonces.
@@ -567,10 +597,12 @@ declare namespace PrimeFaces.ajax {
     }
 
     /**
-     * Represents the data of a PrimeFaces AJAX request. This is the value that is returned by
-     * {@link PrimeFaces.ab} and {@link PrimeFaces.ajax.Request.handle}.
+     * Represents the data of a PrimeFaces AJAX request. This is the value that is returned by {@link PrimeFaces.ab} and
+     * {@link PrimeFaces.ajax.Request.handle}.
+     * @typeparam P Record type of the data made available in the property {@link PrimeFaces.ajax.pfXHR.pfArgs} by the
+     * server.
      */
-    export interface ResponseData {
+    export interface ResponseData<P extends PrimeFacesArgs = PrimeFacesArgs> {
         /**
          * The XML document that was returned by the server. This may include several elements such as `update` for DOM
          * updates that need to be performed, `executeScript` for running JavaScript code. A typical response might look
@@ -595,9 +627,9 @@ declare namespace PrimeFaces.ajax {
          * The jQuery XHR request object that was used for the request.
          *
          * __Note__: This object has a `pfArgs` entry that contains the values added to the response by the server. See
-         * {@link PrimeFaces.ajax.pfXHR.pfArgs}.
+         * {@link PrimeFaces.ajax.pfXHR.pfArgs} and {@link PrimeFaces.ajax.RemoteCommand}.
          */
-        jqXHR: PrimeFaces.ajax.pfXHR;
+        jqXHR: PrimeFaces.ajax.pfXHR<P>;
 
         /**
          * A string describing the type of success. Usually the HTTP status text.
@@ -647,19 +679,20 @@ declare namespace PrimeFaces.ajax {
      * final String myParam = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("myParam");
      * ```
      *
-     * @typeparam T Type of the value of the callback parameter. Please note that it will be converted to string
+     * @typeparam K Name of this parameter.
+     * @typeparam V Type of the value of the callback parameter. Please note that it will be converted to string
      * before it is passed to the server.
      */
-    export interface RequestParameter<T = any> {
+    export interface RequestParameter<K extends string = string, V = any> {
         /**
          * The name of the parameter to pass to the server.
          */
-        name: string;
+        name: K;
 
         /**
          * The value of the parameter to pass to the server.
          */
-        value: T;
+        value: V;
     }
 
     /**
@@ -882,6 +915,107 @@ declare namespace PrimeFaces.ajax {
         onsuccess: "onsu",
         oncomplete: "onco",
     }>;
+
+    /**
+     * Helper type for the parameters of the remote command. You can specify an object type with the allowed parameter
+     * names and their expected value types. This helps to increase type safety for remote commands. For example, when
+     * this remote command with an appropriate bean implementation is defined:
+     *
+     * ```xml
+     * <p:remoteCommand name="RemoteCommands.checkMaturity" ... />
+     * ```
+     *
+     * Then you can declare (or generate automatically from the bean method!) this remote command in TypeScript like
+     * this:
+     *
+     * ```typescript
+     * declare const RemoteCommands {
+     *   const checkMaturity: RemoteCommand<
+     *     {name: string, age: number},
+     *     {success: boolean, message: string}
+     *   >;
+     * }
+     *
+     * RemoteCommand.checkMaturity( [ { name: "name", value: "John Doe" } ] ) // works
+     * RemoteCommand.checkMaturity( [ { name: "age", value: 12 } ] ) // works
+     *
+     * RemoteCommand.checkMaturity( [ { name: "username", value: "John Doe" } ] ) // error
+     * RemoteCommand.checkMaturity( [ { name: "age", value: "12" } ] ) // error
+     *
+     * const response = await RemoteCommand.checkMaturity( [ { name: "name", value: "John Doe" } ];
+     *
+     * const success: boolean = response.jqXHR.pfArgs.success; // works
+     * const message: string = response.jqXHR.pfArgs.message; // works
+     * const message: string = response.jqXHR.pfArgs.errormessage; // error
+     * ```
+     * @typeparam T Record type with the param names and the corresponding param values.
+     * @return An array type of {@link PrimeFaces.ajax.RequestParameter | request parameters} where the `name` can be
+     * one of the keys of `T` and the `value` is the corresponding value from `T`. Array values are mapped to the item
+     * type, so that `RemoteCommandParams<{names: string[]}>` is the same as `RemoteCommandParams<{names: string}>`.
+     * This is done because multiple values for the same name should be send by including multiple items in the request
+     * callback parameter array.
+     */
+    export type RemoteCommandParams<T extends Record<string, any> = Record<string, any>> = {
+        [P in keyof T]: P extends string
+            ? PrimeFaces.ajax.RequestParameter<P, T[P] extends (infer R)[] ? R : T[P]>
+            : never;
+    }[keyof T][];
+
+    /**
+     * Type for the JavaScript remote command function that is created via
+     *
+     * ```xml
+     * <p:remoteCommand name="myCommand" listener="#{myBean.action}" />
+     * ```
+     *
+     * This creates a variable `window.myCommand` that is of this type. On the client-side, you can pass parameters to
+     * the remote command via
+     *
+     * ```javascript
+     * window.myCommand([ { name: "myParamName", value: 9 } ]);
+     * ```
+     *
+     * On the server-side, you can access them as follows:
+     *
+     * ```java
+     * String myParamValue = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("myParamName")
+     * ```
+     *
+     * To send data back to the client, use
+     *
+     * ```java
+     * PrimeFaces.current().ajax().addCallbackParam("returnParamName", true);
+     * ```
+     *
+     * Finally, to access the returned value on the client, do
+     *
+     * ```javascript
+     * try {
+     *   const response = await window.myCommand([ { name: "myParamName", value: 9 } ]);
+     *   // Success, do something with the data
+     *   const value = response.jqXHR.pfArgs.returnParamName;
+     * }
+     * catch (e) {
+     *   // Handle error
+     *   console.error("Could not invoke remote command", e);
+     * }
+     * ```
+     *
+     * Please note that you should not use async-await if you need to target old browsers, use `then`/`catch` on the
+     * returned promise instead. See {@link RemoteCommandParams} for more details on how to use this TypeScript type.
+     * @typeparam T Object type with the param names and the corresponding param values.
+     * @typeparam R Object type of the data returned by the remote command.
+     */
+    export type RemoteCommand<
+        T extends Record<string, any> = Record<string, any>,
+        R extends PrimeFacesArgs = PrimeFacesArgs
+    > =
+        /**
+         * @param params Optional parameters that are passed to the remote command.
+         * @return A promise that is settled when the remote command it complete. It is resolved with the data received
+         * from the server, and rejected when a network or server error occurred.
+         */
+        (params?: RemoteCommandParams<T>) => Promise<ResponseData<R>>;
 }
 
 declare namespace PrimeFaces.validation {

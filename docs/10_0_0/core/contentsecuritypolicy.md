@@ -49,12 +49,13 @@ script-src 'self' 'nonce-XYZ123456'
 We cannot know every Javascript usage on every PrimeFaces website. You may have custom code in your
 application that you need to allow other CSP directives such as `unsafe-inline` or whitelist a website
 such as `https://www.google-analytics.com`.  By using the `primefaces.CSP_POLICY` context parameter you
-can override the default policy.
+can override the default policy. NOTE: If you use anything custom the `script-src` must be the last 
+thing in CSP_POLICY because we add the NONCE on the end of this policy.
 
 ```xml
 <context-param>
     <param-name>primefaces.CSP_POLICY</param-name>
-    <param-value>script-src 'self' https://www.google-analytics.com</param-value>
+    <param-value>frame-ancestors 'none'; script-src 'self' https://www.google-analytics.com</param-value>
 </context-param>
 ```
 
@@ -64,7 +65,7 @@ If you use the PrimeFaces Captcha component you must use a custom policy as foll
 ```xml
 <context-param>
     <param-name>primefaces.CSP_POLICY</param-name>
-    <param-value>script-src 'self' https: *.googleapis.com</param-value>
+    <param-value>frame-ancestors 'none'; script-src 'self' https: *.googleapis.com</param-value>
 </context-param>
 ```
 

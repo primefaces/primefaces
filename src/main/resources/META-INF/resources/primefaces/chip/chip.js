@@ -3,7 +3,6 @@
  *
  * Chip represents entities using icons, labels and images.
  *
- * @prop {JQuery} chip DOM element of the chip.
  * @prop {JQuery} removeIcon DOM element of the icon for closing this chip, when this chip is closable (an `x` by
  * default).
  *

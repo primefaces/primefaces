@@ -64,6 +64,9 @@ public class DividerRenderer extends CoreRenderer {
         if (divider.getStyle() != null) {
             writer.writeAttribute("style", divider.getStyle(), "style");
         }
+        if (divider.getTitle() != null) {
+            writer.writeAttribute("title", divider.getTitle(), "title");
+        }
         if (divider.getChildCount() > 0) {
             writer.startElement("div", null);
             writer.writeAttribute("class", Divider.CONTENT_CLASS, "styleClass");

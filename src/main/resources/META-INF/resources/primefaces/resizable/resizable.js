@@ -6,20 +6,20 @@
  * @typedef PrimeFaces.widget.Resizable.OnResizeCallback Client-side callback to execute during resizing. See also
  * {@link ResizableCfg.onResize}.
  * @this {PrimeFaces.widget.Resizable} PrimeFaces.widget.Resizable.OnResizeCallback 
- * @param {JQuery.Event} PrimeFaces.widget.Resizable.OnResizeCallback.event The event that triggered the resize.
+ * @param {JQuery.TriggeredEvent} PrimeFaces.widget.Resizable.OnResizeCallback.event The event that triggered the resize.
  * @param {JQueryUI.ResizableUIParams} PrimeFaces.widget.Resizable.OnResizeCallback.ui The details about the resize.
  * 
  * @typedef PrimeFaces.widget.Resizable.OnStartCallback Client-side callback to execute when resizing begins. See also
  * {@link ResizableCfg.onStart}.
  * @this {PrimeFaces.widget.Resizable} PrimeFaces.widget.Resizable.OnStartCallback 
- * @param {JQuery.Event} PrimeFaces.widget.Resizable.OnStartCallback.event The event that triggered the resizing to
+ * @param {JQuery.TriggeredEvent} PrimeFaces.widget.Resizable.OnStartCallback.event The event that triggered the resizing to
  * start.
  * @param {JQueryUI.ResizableUIParams} PrimeFaces.widget.Resizable.OnStartCallback.ui Details about the resize.
  * 
  * @typedef PrimeFaces.widget.Resizable.OnStopCallback Client-side callback to execute after resizing end. See also
  * {@link ResizableCfg.onStop}.
  * @this {PrimeFaces.widget.Resizable} PrimeFaces.widget.Resizable.OnStopCallback 
- * @param {JQuery.Event} PrimeFaces.widget.Resizable.OnStopCallback.event The event that triggered the resize to end.
+ * @param {JQuery.TriggeredEvent} PrimeFaces.widget.Resizable.OnStopCallback.event The event that triggered the resize to end.
  * @param {JQueryUI.ResizableUIParams} PrimeFaces.widget.Resizable.OnStopCallback.ui Details about the resize.
  * 
  * @prop {JQuery} jqTarget The DOM element for the target widget t o be resized.
@@ -136,7 +136,7 @@ PrimeFaces.widget.Resizable = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Triggers the behavior for when the component was resized.
      * @private
-     * @param {JQuery.Event} event Event that triggered the resize.
+     * @param {JQuery.TriggeredEvent} event Event that triggered the resize.
      * @param {JQueryUI.ResizableUIParams} ui Data of the resize event.
      */
     fireAjaxResizeEvent: function(event, ui) {

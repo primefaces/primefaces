@@ -1265,6 +1265,7 @@ body .ui-picklist .ui-picklist-filter-container .ui-icon {
   position: absolute;
   left: 0.5rem;
   top: 50%;
+  right: auto;
   margin-top: -0.75rem;
   color: #6c757d; }
   body .ui-picklist .ui-picklist-filter-container .ui-icon:before {
@@ -1292,12 +1293,12 @@ body .ui-picklist .ui-picklist-list {
       body .ui-picklist .ui-picklist-list .ui-picklist-item.ui-state-highlight.ui-sortable-placeholder {
         background-color: #89c8f7; }
 @media (max-width: 640px) {
-  body .ui-picklist .ui-picklist-buttons .ui-button {
+  body .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .ui-button {
     margin-top: 0.5rem;
     margin-right: 0.5rem; }
-    body .ui-picklist .ui-picklist-buttons .ui-button:last-child {
+    body .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .ui-button:last-child {
       margin-right: 0; }
-    body .ui-picklist .ui-picklist-buttons .ui-button .ui-icon-arrow-1-e {
+    body .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .ui-button .ui-icon-arrow-1-e {
       font-family: 'primeicons' !important;
       speak: none;
       font-style: normal;
@@ -1309,9 +1310,9 @@ body .ui-picklist .ui-picklist-list {
       -moz-osx-font-smoothing: grayscale;
       text-indent: 0 !important;
       background-image: none !important; }
-      body .ui-picklist .ui-picklist-buttons .ui-button .ui-icon-arrow-1-e:before {
+      body .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .ui-button .ui-icon-arrow-1-e:before {
         content: ""; }
-    body .ui-picklist .ui-picklist-buttons .ui-button .ui-icon-arrowstop-1-e {
+    body .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .ui-button .ui-icon-arrowstop-1-e {
       font-family: 'primeicons' !important;
       speak: none;
       font-style: normal;
@@ -1323,9 +1324,9 @@ body .ui-picklist .ui-picklist-list {
       -moz-osx-font-smoothing: grayscale;
       text-indent: 0 !important;
       background-image: none !important; }
-      body .ui-picklist .ui-picklist-buttons .ui-button .ui-icon-arrowstop-1-e:before {
+      body .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .ui-button .ui-icon-arrowstop-1-e:before {
         content: ""; }
-    body .ui-picklist .ui-picklist-buttons .ui-button .ui-icon-arrow-1-w {
+    body .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .ui-button .ui-icon-arrow-1-w {
       font-family: 'primeicons' !important;
       speak: none;
       font-style: normal;
@@ -1337,9 +1338,9 @@ body .ui-picklist .ui-picklist-list {
       -moz-osx-font-smoothing: grayscale;
       text-indent: 0 !important;
       background-image: none !important; }
-      body .ui-picklist .ui-picklist-buttons .ui-button .ui-icon-arrow-1-w:before {
+      body .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .ui-button .ui-icon-arrow-1-w:before {
         content: ""; }
-    body .ui-picklist .ui-picklist-buttons .ui-button .ui-icon-arrowstop-1-w {
+    body .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .ui-button .ui-icon-arrowstop-1-w {
       font-family: 'primeicons' !important;
       speak: none;
       font-style: normal;
@@ -1351,7 +1352,7 @@ body .ui-picklist .ui-picklist-list {
       -moz-osx-font-smoothing: grayscale;
       text-indent: 0 !important;
       background-image: none !important; }
-      body .ui-picklist .ui-picklist-buttons .ui-button .ui-icon-arrowstop-1-w:before {
+      body .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .ui-button .ui-icon-arrowstop-1-w:before {
         content: ""; }
   body .ui-picklist.ui-picklist-responsive > div.ui-helper-hidden-accessible {
     display: none; } }
@@ -2499,6 +2500,8 @@ body .ui-chkbox {
       color: #ffffff; }
       body .ui-chkbox .ui-chkbox-box.ui-state-active.ui-state-hover {
         background: #0d89ec; }
+    body .ui-chkbox .ui-chkbox-box.ui-state-error {
+      border-color: #f44336; }
     body .ui-chkbox .ui-chkbox-box .ui-chkbox-icon {
       overflow: visible;
       position: absolute;
@@ -2574,6 +2577,8 @@ body .ui-radiobutton {
         background: #0d89ec; }
       body .ui-radiobutton .ui-radiobutton-box.ui-state-active .ui-icon-bullet {
         background: #ffffff; }
+    body .ui-radiobutton .ui-radiobutton-box.ui-state-error {
+      border-color: #f44336; }
     body .ui-radiobutton .ui-radiobutton-box .ui-radiobutton-icon {
       width: 12px;
       height: 12px;
@@ -2786,6 +2791,11 @@ body .ui-selectonemenu-panel {
         content: ""; }
   body .ui-selectonemenu-panel .ui-selectonemenu-items {
     padding: 0.5rem 0; }
+    body .ui-selectonemenu-panel .ui-selectonemenu-items.ui-selectonemenu-table > thead tr th {
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      color: #495057;
+      font-weight: 700; }
     body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item {
       margin: 0;
       padding: 0.5rem 1rem;
@@ -2794,12 +2804,6 @@ body .ui-selectonemenu-panel {
       outline: 0 none;
       border-radius: 0;
       transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s; }
-      body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-state-hover {
-        background: #e9ecef;
-        color: #495057; }
-      body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-state-highlight {
-        background: #E3F2FD;
-        color: #495057; }
       body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-selectonemenu-row {
         background: #ffffff;
         color: #495057;
@@ -2808,6 +2812,12 @@ body .ui-selectonemenu-panel {
           padding: 1rem 1rem; }
         body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-selectonemenu-row:first-child {
           border-top-color: transparent; }
+      body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-state-hover {
+        background: #e9ecef;
+        color: #495057; }
+      body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-state-highlight {
+        background: #E3F2FD;
+        color: #495057; }
     body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item-group {
       background: #ffffff;
       margin: 0;
@@ -4840,6 +4850,28 @@ body .ui-breadcrumb {
       color: #6c757d; }
       body .ui-breadcrumb ul li.ui-breadcrumb-chevron:before {
         content: ""; }
+    body .ui-breadcrumb ul li:not(.ui-breadcrumb-chevron) {
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-align: center;
+      align-items: center; }
+      body .ui-breadcrumb ul li:not(.ui-breadcrumb-chevron):before {
+        content: "";
+        font-family: 'primeicons' !important;
+        speak: none;
+        font-style: normal;
+        font-weight: normal;
+        font-variant: normal;
+        text-transform: none;
+        display: inline-block;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-indent: 0 !important;
+        background-image: none !important;
+        margin: 0 0.5rem 0 0.5rem;
+        color: #6c757d; }
+    body .ui-breadcrumb ul li:first-child:not(.ui-breadcrumb-chevron):before {
+      display: none; }
     body .ui-breadcrumb ul li:first-child a.ui-icon-home {
       font-family: 'primeicons' !important;
       speak: none;
@@ -4886,6 +4918,28 @@ body .ui-breadcrumb {
     color: #6c757d; }
     body .ui-breadcrumb .ui-breadcrumb-items li.ui-breadcrumb-chevron:before {
       content: ""; }
+  body .ui-breadcrumb .ui-breadcrumb-items li:not(.ui-breadcrumb-chevron) {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center; }
+    body .ui-breadcrumb .ui-breadcrumb-items li:not(.ui-breadcrumb-chevron):before {
+      content: "";
+      font-family: 'primeicons' !important;
+      speak: none;
+      font-style: normal;
+      font-weight: normal;
+      font-variant: normal;
+      text-transform: none;
+      display: inline-block;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-indent: 0 !important;
+      background-image: none !important;
+      margin: 0 0.5rem 0 0.5rem;
+      color: #6c757d; }
+  body .ui-breadcrumb .ui-breadcrumb-items li:first-child:not(.ui-breadcrumb-chevron):before {
+    display: none; }
   body .ui-breadcrumb .ui-breadcrumb-items li:first-child a.ui-icon-home {
     font-family: 'primeicons' !important;
     speak: none;

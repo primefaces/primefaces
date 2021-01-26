@@ -1,7 +1,6 @@
 declare namespace Test.TypedefParamsOnObjectTemplate.Extern {
     /**
      * type foobar
-     * 
      * @typeparam T template T
      */
     export type Foobar<T> =

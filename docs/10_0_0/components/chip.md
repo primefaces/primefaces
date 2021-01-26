@@ -2,7 +2,7 @@
 
 Chip represents entities using icons, labels and images.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.chip.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.chip.html)
 
 ## Info
 

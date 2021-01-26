@@ -36,13 +36,19 @@
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  * @extends {JQueryPrimeDatePicker.PickerOptions} cfg
  *
+ * @prop {string} cfg.appendTo The search expression for the element to which the overlay panel should be appended.
+ * @prop {string} cfg.buttonTabindex Tabindex of the datepicker button
+ * @prop {boolean} cfg.focusOnSelect When enabled, input receives focus after a value is picked.
+ * @prop {boolean} cfg.inline Whether the datepicker is rendered inline or as an overlay.
  * @prop {string} cfg.mask Applies a mask using the pattern.
  * @prop {boolean} cfg.maskAutoClear Clears the field on blur when incomplete input is entered
  * @prop {string} cfg.maskSlotChar Placeholder in mask template.
- * @prop {string} cfg.buttonTabindex Tabindex of the datepicker button
- * @prop {boolean} cfg.focusOnSelect When enabled, input receives focus after a value is picked.
+ * @prop {JQueryPrimeDatePicker.BaseCallback} cfg.onPanelCreate Callback invoked after the datepicker panel was created.
  * @prop {PrimeFaces.widget.DatePicker.PreShowCallback} cfg.preShow User-defined callback that may be overridden by the
  * user. Invoked before the date picker overlay is shown.
+ * @prop {string} cfg.rangeSeparator Separator for joining start and end dates when selection mode is `range`, defaults
+ * to `-`.
+ * @prop {string} cfg.timeSeparator Separator for joining hour and minute, defaults to `:`.
  * @prop {string} cfg.triggerButtonIcon Icon of the datepicker element that toggles the visibility in popup mode.
  */
 PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
@@ -451,5 +457,38 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         var pdp = this.jq.data().primeDatePicker;
         pdp.panel.get(0).innerHTML = pdp.renderPanelElements();
     },
+
+    /**
+     * Shows the popup panel.
+     */
+    show: function() {
+        this.jq.data().primeDatePicker.showOverlay();
+    },
+
+    /**
+     * Hide the popup panel.
+     */
+    hide: function() {
+        this.jq.data().primeDatePicker.hideOverlay();
+    },
+
+    /**
+     * Enables the datepicker, so that the user can select a date.
+     */
+    enable: function() {
+        this.jq.data().primeDatePicker.options.disabled = false;
+        this.updatePanel();
+        this.input.prop('disabled', false).removeClass('ui-state-disabled');
+    },
+
+    /**
+     * Disables the datepicker, so that the user can no longer select any date.
+     */
+    disable: function() {
+        this.hide();
+        this.jq.data().primeDatePicker.options.disabled = true;
+        this.updatePanel();
+        this.input.prop('disabled', true).addClass('ui-state-disabled');
+    }
 
 });

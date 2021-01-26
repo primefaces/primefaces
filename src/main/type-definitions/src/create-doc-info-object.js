@@ -131,7 +131,21 @@ function createObjectDocInfo(jsdoc, node, severitySettings) {
 
                 // Handle methods
 
+                case Tags.Constructor: {
+                    if (!typedefTagHandler._constructor(tag, jsdoc.tags, false)) {
+                        const method = getOrCreateMethodAtNestingLevel(node, root, parts, 0);
+                        if (method.constructor) {
+                            handleError("tagDuplicateConstructor", severitySettings, () => `Found duplicate tag '@constructor ${tag.name}' in doc comments`);
+                        }
+                        tag.name = "";
+                        checkTagIsPlain(tag, severitySettings, factory, { checkName: false });
+                        method.constructor = true;
+                    }
+                    break;
+                }
+
                 // @method settings.show Shows the element
+                // @constructor settings Creates a new settings instance
                 case Tags.Method: {
                     const method = getOrCreateMethodAtNestingLevel(node, root, parts, 0);
                     if (method.method !== undefined) {
@@ -448,6 +462,7 @@ function getOrCreateMethodAtNestingLevel(node, current, path, offset) {
         nested.method = {
             abstract: false,
             async: false,
+            constructor: false,
             destructuring: new Map(),
             generator: false,
             method: undefined,

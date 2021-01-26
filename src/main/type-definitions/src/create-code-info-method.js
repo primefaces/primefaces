@@ -1,23 +1,27 @@
 //@ts-check
 
-const { findFunctionYieldStatement, findFunctionNonEmptyReturnStatement, findFunctionYieldExpression } = require("./acorn-util");
+const { findFunctionYieldStatement, findFunctionNonEmptyReturnStatement, findFunctionYieldExpression, isCanCompleteNormally } = require("./acorn-util");
 const { getArgVariableInfo, getArgumentInfo } = require("./create-code-info-params");
 
 /**
  * @param {string} name
- * @param {import("estree").FunctionExpression | import("estree").FunctionDeclaration} method
+ * @param {ObjectCodeMethod} method
  * @return {MethodCodeInfo}
  */
 function createMethodCodeInfo(name, method) {
-    const returnStatement = findFunctionNonEmptyReturnStatement(method.body);
-    const yieldStatement = findFunctionYieldExpression(method.body);
-    const nextStatement = findFunctionYieldStatement(method.body);
+    const fn = method.node;
+    const returnStatement = findFunctionNonEmptyReturnStatement(fn.body);
+    const canCompleteNormally = isCanCompleteNormally(fn.body);
+    const yieldStatement = findFunctionYieldExpression(fn.body);
+    const nextStatement = findFunctionYieldStatement(fn.body);
     return {
         abstract: false,
-        arguments: method.params.map(getArgumentInfo),
+        arguments: fn.params.map(getArgumentInfo),
+        canCompleteNormally: canCompleteNormally,
         generics: [],
-        isAsync: method.async !== undefined ? method.async : false,
-        isGenerator: method.generator !== undefined ? method.generator : false,
+        isAsync: fn.async !== undefined ? fn.async : false,
+        isConstructor: method.method !== undefined && method.method.kind === "constructor",
+        isGenerator: fn.generator !== undefined ? fn.generator : false,
         name: name,
         next: {
             node: nextStatement !== undefined ? nextStatement : undefined,
@@ -28,7 +32,7 @@ function createMethodCodeInfo(name, method) {
             typedef: "",
         },
         thisTypedef: "",
-        variables: method.params.flatMap(getArgVariableInfo),
+        variables: fn.params.flatMap(getArgVariableInfo),
         visibility: undefined,
         yield: {
             node: yieldStatement !== undefined ? yieldStatement : undefined,

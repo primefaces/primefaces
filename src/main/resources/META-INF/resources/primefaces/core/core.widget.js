@@ -200,6 +200,26 @@ if (!PrimeFaces.widget) {
      * @this {TWidget} PrimeFaces.widget.DestroyListener
      * @param {TWidget} PrimeFaces.widget.DestroyListener.widget The widget that is being destroyed.
 
+     * @typedef PrimeFaces.widget.PostConstructCallback A callback for a PrimeFaces widget. An optional callback that is
+     * invoked after a widget was created successfully, at the end of the {@link BaseWidget.init | init} method. This is
+     * usually specified via the `widgetPostConstruct` attribute on the JSF component. Note that this is also called
+     * during a `refresh` (AJAX update).
+     * @this {BaseWidget} PrimeFaces.widget.PostConstructCallback
+     * @param {BaseWidget} PrimeFaces.widget.PostConstructCallback.widget The widget that was constructed.
+     * 
+     * @typedef PrimeFaces.widget.PostRefreshCallback An optional callback that is invoked after a widget was refreshed
+     * after an AJAX update, at the end of the {@link BaseWidget.refresh | refresh} method. This is usually specified
+     * via the `widgetPostRefresh` attribute on the JSF component.
+     * @this {BaseWidget} PrimeFaces.widget.PostRefreshCallback
+     * @param {BaseWidget} PrimeFaces.widget.PostRefreshCallback.widget The widget that was refreshed.
+     * 
+     * @typedef PrimeFaces.widget.PreDestroyCallback An optional callback that is invoked before a widget is about to be
+     * destroyed, e.g. when the component was removed at the end of an AJAX update. This is called at the beginning
+     * of the {@link BaseWidget.destroy | destroy} method. This is usually specified via the `widgetPreDestroy`
+     * attribute on the JSF component.
+     * @this {BaseWidget} PrimeFaces.widget.PreDestroyCallback
+     * @param {BaseWidget} PrimeFaces.widget.PreDestroyCallback.widget The widget that is about to be destroyed.
+     * 
      * @template {PrimeFaces.widget.BaseWidgetCfg} [TCfg=PrimeFaces.widget.BaseWidgetCfg] Type of the configuration
      * object for this widget.
      *
@@ -207,6 +227,9 @@ if (!PrimeFaces.widget) {
      * no property is guaranteed to be present, you should always check for `undefined` before accessing a property.
      * This is partly because the value of a property is not transmitted from the server to the client when it equals
      * the default.
+     * @prop {PrimeFaces.widget.DestroyListener<BaseWidget>[]} destroyListeners Array of registered listeners invoked
+     * when this widget is destroyed. You should normally not use modify this directly, use {@link addDestroyListener}
+     * instead.
      * @prop {string | string[]} id The client-side ID of this widget, with all parent naming containers, such as
      * `myForm:myWidget`. This is also the ID of the container HTML element for this widget. In case the widget needs
      * multiple container elements (such as {@link Paginator}), this may also be an array if IDs.
@@ -216,8 +239,19 @@ if (!PrimeFaces.widget) {
      * @prop {string} jqId A CSS selector for the container element (or elements, in case {@link id} is an array) of
      * this widget, This is usually an ID selector (that is properly escaped). You can select the container element or
      * elements like this: `$(widget.jqId)`.
+     * @prop {PrimeFaces.widget.RefreshListener<BaseWidget>[]} refreshListeners Array of registered listeners invoked
+     * when this widget is refreshed. You should normally not use modify this directly, use {@link addRefreshListener}
+     * instead.
      * @prop {string} widgetVar The name of the widget variables of this widget. The widget variable can be used to
      * access a widget instance by calling `PF('myWidgetVar')`.
+     * 
+     * @method constructor Creates a new instance of this widget. Please note that you should __NOT__ override this
+     * constructor. Instead, override the {@link init} method, which is called at the end of the constructor once the
+     * instance is created.
+     * @constructor constructor
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} constructor.cfg The widget configuration to be used for this widget
+     * instance. This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for
+     * this component.
      *
      * @interface {PrimeFaces.widget.BaseWidgetCfg} cfg The configuration for the {@link  BaseWidget| BaseWidget widget}.
      * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -233,14 +267,26 @@ if (!PrimeFaces.widget) {
      * @prop {string | string[]} cfg.id The client-side ID of the widget, with all parent naming containers, such as
      * `myForm:myWidget`. This is also the ID of the container HTML element for this widget. In case the widget needs
      * multiple container elements (such as {@link Paginator}), this may also be an array if IDs.
+     * @prop {PrimeFaces.widget.PostConstructCallback} cfg.postConstruct An optional callback that is invoked
+     * after this widget was created successfully, at the end of the {@link BaseWidget.init | init} method. This is
+     * usually specified via the `widgetPostConstruct` attribute on the JSF component. Note that this is also called
+     * during a `refresh` (AJAX update).
+     * @prop {PrimeFaces.widget.PostRefreshCallback} cfg.postRefresh An optional callback that is invoked after
+     * this widget was refreshed after an AJAX update, at the end of the {@link BaseWidget.refresh | refresh} method.
+     * This is usually specified via the `widgetPostRefresh` attribute on the JSF component.
+     * @prop {PrimeFaces.widget.PreDestroyCallback} cfg.preDestroy An optional callback that is invoked before
+     * this widget is about to be destroyed, e.g. when the component was removed at the end of an AJAX update. This is
+     * called at the beginning of the {@link BaseWidget.destroy | destroy} method. This is usually specified via the
+     * `widgetPreDestroy` attribute on the JSF component.
      * @prop {string} cfg.widgetVar The name of the widget variables of this widget. The widget variable can be used to
      * access a widget instance by calling `PF("myWidgetVar")`.
      */
     PrimeFaces.widget.BaseWidget = Class.extend({
 
         /**
-         * A widget class should not have an explicit constructor. Instead, this initialize method is called after the
-         * widget was created. You can use this method to perform any initialization that is required. For widgets that
+         * A widget class should not declare an explicit constructor, the default constructor provided by this base
+         * widget should be used. Instead, override this initialize method which is called after the widget instance
+         * was constructed. You can use this method to perform any initialization that is required. For widgets that
          * need to create custom HTML on the client-side this is also the place where you should call your render
          * method.
          *
@@ -525,6 +571,7 @@ if (!PrimeFaces.widget) {
      * Base class for widgets that are displayed as an overlay. At any given time, several overlays may be active. This
      * requires that the z-index of the overlays is managed globally. This base class takes care of that.
      *
+     * @prop {string | null} appendTo The search expression for the element to which the overlay panel should be appended.
      * @prop {boolean} blockScroll `true` to prevent the body from being scrolled, `false` otherwise.
      * @prop {JQuery} modalOverlay The DOM element that is displayed as an overlay with the appropriate `z-index` and
      * `position`. It is usually a child of the `body` element.
@@ -533,6 +580,7 @@ if (!PrimeFaces.widget) {
      * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
      * configuration is usually meant to be read-only and should not be modified.
      * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+     * 
      */
     PrimeFaces.widget.DynamicOverlayWidget = PrimeFaces.widget.BaseWidget.extend({
 
@@ -578,7 +626,8 @@ if (!PrimeFaces.widget) {
         /**
          * Enables modality for this widget and creates the modal overlay element, but does not change whether the
          * overlay is currently displayed.
-         * @param {JQuery} overlay The target overlay, if null default to this.jq.
+         * @param {JQuery | null} [overlay] The target overlay, if not given default to
+         * {@link PrimeFaces.widget.BaseWidget.jq | this.jq}.
          */
         enableModality: function(overlay) {
             var target = overlay||this.jq;
@@ -592,7 +641,8 @@ if (!PrimeFaces.widget) {
         /**
          * Disabled modality for this widget and removes the modal overlay element, but does not change whether the
          * overlay is currently displayed.
-         * @param {JQuery} overlay The target overlay, if null default to this.jq.
+         * @param {JQuery | null} [overlay] The target overlay, if not given default to
+         * {@link PrimeFaces.widget.BaseWidget.jq | this.jq}.
          */
         disableModality: function(overlay){
             var target = overlay||this.jq;
@@ -643,8 +693,6 @@ if (!PrimeFaces.widget) {
      *   }
      * }
      * ```
-     *
-     * @abstract
      *
      * @interface {PrimeFaces.widget.DeferredWidgetCfg} cfg The configuration for the {@link  DeferredWidget| DeferredWidget widget}.
      * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that
@@ -701,7 +749,6 @@ if (!PrimeFaces.widget) {
          * __Must be overridden__, or an error will be thrown.
          *
          * @include
-         * @abstract
          * @protected
          */
         _render: function() {

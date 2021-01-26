@@ -32,7 +32,7 @@ declare namespace JQuerySignature {
          * @param event The event that triggered the signature change.
          * @param ui An empty UI object.
          */
-        (event: JQuery.Event, ui: {}) => void;
+        (event: JQuery.TriggeredEvent, ui: Record<string, never>) => void;
 
     /**
      * Describes a signature comprised of several polylines.
@@ -296,7 +296,7 @@ interface JQuery {
      * Convert the first signature to a SVG document for transferral/storage. A sample follows for a signature with
      * two lines:
      * 
-     * ```svg
+     * ```xml
      * <?xml version="1.0"?>
      * <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
      * <svg xmlns="http://www.w3.org/2000/svg" width="15cm" height="15cm">

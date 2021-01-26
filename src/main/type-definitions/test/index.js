@@ -26,7 +26,7 @@ function loadTest(testName) {
         }
         return {
             name: testName,
-            startTest: module.startTest, 
+            startTest: module.startTest,
         };
     }
     catch (e) {
@@ -84,9 +84,9 @@ function parseCliArgs() {
                             result.items.push(test[1])
                         }
                     }
+                }
             }
         }
-    }
     console.log("Parsed test CLI arguments:", JSON.stringify(result));
     return result;
 }
@@ -97,7 +97,7 @@ function parseCliArgs() {
 async function main() {
     const cliArgs = parseCliArgs();
 
-    const tests = cliArgs.tests.map(loadTest); 
+    const tests = cliArgs.tests.map(loadTest);
 
     if (tests.length === 0) {
         throw new Error("No tests were specified");

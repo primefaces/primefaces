@@ -105,7 +105,7 @@ if (!PrimeFaces.csp) {
          * @param {any} id The element executing the function (aka `this`).
          * @param {string} js The JavaScript code to evaluate. Two variables will be in scope for the code: (a) the
          * `this` context, which is set to the given `id`, and (b) the `event` variable, which is set to the given `e`.
-         * @param {JQuery.Event} e The event from the caller to pass through.
+         * @param {JQuery.TriggeredEvent} e The event from the caller to pass through.
          */
         executeEvent: function(id, js, e) {
             // create the wrapper function
@@ -122,7 +122,7 @@ if (!PrimeFaces.csp) {
          * GitHub #5790: When using jQuery to trigger a click event on a button while using CSP
          * we must set preventDefault or else it will trigger a non-ajax button click.
          * 
-         * @return {JQuery.Event} the JQuery click event
+         * @return {JQuery.TriggeredEvent} the JQuery click event
          */
         clickEvent: function() {
             var clickEvent = $.Event( "click" );

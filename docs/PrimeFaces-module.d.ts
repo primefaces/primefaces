@@ -9,7 +9,6 @@ declare module "raphael" {
     export interface RaphaelPaper {
         /**
          * Draws a connection between two mindmap nodes.
-         *
          * @param obj1 Source node where the connection starts.
          * @param obj2 Target node where the connection ends.
          * @param line Color of the connection.

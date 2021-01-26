@@ -67,17 +67,22 @@ async function asyncMap(arr, mapper) {
  * @return {Promise<S[]>}
  */
 async function asyncFlatMap(arr, mapper) {
-    /** @type {(S | S[])[]} */
+    /** @type {S[]} */
     const result = [];
     if (arr) {
         for (let index = 0; index < arr.length; ++index) {
             const value = await mapper(arr[index], index);
             if (value !== undefined) {
-                result.push(value);
+                if (Array.isArray(value)) {
+                    result.push(...value);
+                }
+                else {
+                    result.push(value);
+                }
             }
         }
     }
-    return result.flat();
+    return result;
 }
 
 
@@ -192,7 +197,7 @@ function compareBy(getter) {
         }
         const l = getter(lhs);
         const r = getter(rhs);
-        return l < r ? -1 : l > r ? 1 : 0; 
+        return l < r ? -1 : l > r ? 1 : 0;
     };
 }
 
@@ -235,16 +240,16 @@ function removeLineBreaksFromStartAndEnd(str) {
  * @return {string[]} The string, split into individual lines. 
  */
 function splitLines(str, {
-        removeTrailingLines = "",
-        trimLines = false,
-        excludeEmptyLines = false,
-    } = {}) {
+    removeTrailingLines = "",
+    trimLines = false,
+    excludeEmptyLines = false,
+} = {}) {
     let lines = str.split(LineBreakPattern);
     if (removeTrailingLines) {
         while (lines.length > 0 && lines[0].trim() === removeTrailingLines) {
             lines.shift();
         }
-        while (lines.length > 0 &&  lines[lines.length - 1].trim() === removeTrailingLines) {
+        while (lines.length > 0 && lines[lines.length - 1].trim() === removeTrailingLines) {
             lines.pop();
         }
     }
@@ -303,7 +308,7 @@ function isBlank(string) {
     for (let i = 0; i < string.length; ++i) {
         if (!WhiteSpaceChars[string.charCodeAt(i)]) {
             return false;
-        }  
+        }
     }
     return true;
 }
@@ -423,7 +428,7 @@ function isJsonObject(json) {
  * @return {Map<K,V>}
  */
 function collectToMap(items, keyMapper, valueMapper, {
-    filter = (k,v) => true,
+    filter = (k, v) => true,
     reducer = (prev, cur) => cur,
 } = {}) {
     /** @type {Map<K,V>} */

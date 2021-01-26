@@ -9,7 +9,7 @@
  * @typedef PrimeFaces.widget.ContextMenu.BeforeShowCallback Client side callback invoked before the context menu is
  * shown.
  * @this {PrimeFaces.widget.ContextMenu} PrimeFaces.widget.ContextMenu.BeforeShowCallback
- * @param {JQuery.Event} PrimeFaces.widget.ContextMenu.BeforeShowCallback.event Event that triggered the context menu to
+ * @param {JQuery.TriggeredEvent} PrimeFaces.widget.ContextMenu.BeforeShowCallback.event Event that triggered the context menu to
  * be shown (e.g. a mouse click).
  * @return {boolean} PrimeFaces.widget.ContextMenu.BeforeShowCallback ` true` to show the context menu, `false` to
  * prevent is from getting displayed.
@@ -184,7 +184,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
     /**
      * @override
      * @inheritdoc
-     * @param {JQuery.Event} [e] The event that triggered this context menu to be shown.
+     * @param {JQuery.TriggeredEvent} [e] The event that triggered this context menu to be shown.
      * 
      * Note:  __This parameter is not optional__, but is marked as such since this method overrides a parent method
      * that does not have any parameters. Do not (implicitly) cast an instance of this class to a parent type.

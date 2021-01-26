@@ -1,26 +1,25 @@
 /**
  * __PrimeFaces Diagram Widget__
  * 
+ * Diagram is generic component to create visual elements and connect them on a web page. SVG is used on modern browsers
+ * and VML on IE 8 and below. Component is highly flexible in terms of api, events and theming.
+ * 
  * @interface {PrimeFaces.widget.Diagram.ConnectionInfo} ConnectionInfo Details about a connection between two nodes that
  * was either established or dissolved.
  * @prop {string} ConnectionInfo.sourceId ID of the source node where the connection starts.
  * @prop {string} ConnectionInfo.targetId ID of the target node where the connection end.
- * @prop {string} ConnectionInfo.sourceEndpoint UUID of the point (port) where the connections
- * starts.
- * @prop {string} ConnectionInfo.targetEndpoint UUID of the point (port) where the connections
- * ends.
+ * @prop {string} ConnectionInfo.sourceEndpoint UUID of the point (port) where the connections starts.
+ * @prop {string} ConnectionInfo.targetEndpoint UUID of the point (port) where the connections ends.
  * 
  * @interface {PrimeFaces.widget.Diagram.UpdateConnectionInfo} UpdateConnectionInfo Details about a connection between
  * two nodes that was changed.
  * @extends {PrimeFaces.widget.Diagram.ConnectionInfo} UpdateConnectionInfo
- * @prop {string} UpdateConnectionInfo.originalSourceId Previous ID of the source node where
- * the connection started.
- * @prop {string} UpdateConnectionInfo.originalTargetId Previous ID of the target node where
- * the connection ended.
- * @prop {string} UpdateConnectionInfo.originalSourceEndpoint Previous UUID of the point
- * (port) where the connections started.
- * @prop {string} UpdateConnectionInfo.originalTargetEndpoint Previous UUID of the point
- * (port) where the connections ended.
+ * @prop {string} UpdateConnectionInfo.originalSourceId Previous ID of the source node where the connection started.
+ * @prop {string} UpdateConnectionInfo.originalTargetId Previous ID of the target node where the connection ended.
+ * @prop {string} UpdateConnectionInfo.originalSourceEndpoint Previous UUID of the point (port) where the connections
+ * started.
+ * @prop {string} UpdateConnectionInfo.originalTargetEndpoint Previous UUID of the point (port) where the connections
+ * ended.
  * 
  * @interface {PrimeFaces.widget.Diagram.UpdateElementInfo} UpdateElementInfo Details about an element when its location
  * was changed.
@@ -40,9 +39,10 @@
  * @prop {boolean} cfg.connectionsDetachable Whether connections can be severed by the user.
  * @prop {import("jsplumb").OverlaySpec[]} cfg.connectionOverlays Overlays for the connections (arrows, labels, etc.)
  * @prop {string} cfg.containment Constrains dragging to within the bounds of the specified element or region.
- * @prop {import("jsplumb").ConnectorSpec} cfg.defaultConnector Connector (straight lines, bezier curves, etc.) to use by default.
- * @prop {(import("jsplumb").EndpointOptions & {element: import("jsplumb").ElementGroupRef})[]} cfg.endPoints A list of endpoints (ports) of
- * all diagram nodes.
+ * @prop {import("jsplumb").ConnectorSpec} cfg.defaultConnector Connector (straight lines, bezier curves, etc.) to use
+ * by default.
+ * @prop {(import("jsplumb").EndpointOptions & {element: import("jsplumb").ElementGroupRef})[]} cfg.endPoints A list of
+ * endpoints (ports) of all diagram nodes.
  * @prop {import("jsplumb").PaintStyle} cfg.hoverPaintStyle Paint style to use when hovering.
  * @prop {number} cfg.maxConnections Maximum number of allowed connections (per node).
  * @prop {import("jsplumb").PaintStyle} cfg.paintStyle Paint style to use when not hovering.

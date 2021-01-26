@@ -87,7 +87,7 @@ PrimeFaces.widget.Fieldset = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Toggles the content of this fieldset (collapsed or expanded).
-     * @param {JQuery.Event} [e] Optional event that triggered the toggling.
+     * @param {JQuery.TriggeredEvent} [e] Optional event that triggered the toggling.
      */
     toggle: function(e) {
         var $this = this,

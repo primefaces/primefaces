@@ -203,7 +203,7 @@ if (!PrimeFaces.utils) {
          * Given a modal overlay widget, removes the modal overlay element from the DOM. This reverts the changes as
          * made by `PrimeFaces.utils.addModal`.
          * @param {PrimeFaces.widget.BaseWidget} widget A modal overlay widget instance.
-         * @param {JQuery} overlay The modal overlay element should be a DIV.
+         * @param {JQuery | null} [overlay] The modal overlay element should be a DIV.
          */
         removeModal: function(widget, overlay) {
             var id = widget.id;
@@ -259,10 +259,10 @@ if (!PrimeFaces.utils) {
          * @param {PrimeFaces.widget.BaseWidget} widget An overlay widget instance.
          * @param {string} hideNamespace A click event with a namspace to listen to, such as `mousedown.widgetId`. 
          * @param {JQuery} overlay The DOM element for the overlay.
-         * @param {((event: JQuery.Event) => JQuery) | undefined} resolveIgnoredElementsCallback The callback which
+         * @param {((event: JQuery.TriggeredEvent) => JQuery) | undefined} resolveIgnoredElementsCallback The callback which
          * resolves the elements to ignore when the user clicks outside the overlay. The `hideCallback` is not invoked
          * when the user clicks on one those elements.
-         * @param {(event: JQuery.Event, eventTarget: JQuery) => void} hideCallback A callback that is invoked when the
+         * @param {(event: JQuery.TriggeredEvent, eventTarget: JQuery) => void} hideCallback A callback that is invoked when the
          * user clicks on an element outside the overlay widget.
          */
         registerHideOverlayHandler: function(widget, hideNamespace, overlay, resolveIgnoredElementsCallback, hideCallback) {
@@ -319,7 +319,7 @@ if (!PrimeFaces.utils) {
          * @param {string} resizeNamespace A resize event with a namespace to listen to, such as `resize.widgetId`.
          * @param {JQuery | undefined} element An element that prevents the callback from being invoked when it is not
          * visible, usually a child element of the widget.
-         * @param {(event: JQuery.Event) => void} resizeCallback A callback that is invoked when the window is resized.
+         * @param {(event: JQuery.TriggeredEvent) => void} resizeCallback A callback that is invoked when the window is resized.
          * @param {string} [params] Optional CSS selector. If given, the callback is invoked only when the resize event
          * is triggered on an element the given selector.
          */
@@ -368,11 +368,11 @@ if (!PrimeFaces.utils) {
         },
 
         /**
-         * Registers a callback that is invoked when a scroll event is triggered on The DOM element for the widget.
+         * Registers a callback that is invoked when a scroll event is triggered on the DOM element for the widget.
          * @param {PrimeFaces.widget.BaseWidget} widget A widget instance for which to register a scroll handler.
          * @param {string} scrollNamespace A scroll event with a namespace, such as `scroll.widgetId`.
-         * @param {(event: JQuery.Event) => void} scrollCallback A callnback that is invoked when a scroll event occurs
-         * on the widget.
+         * @param {(event: JQuery.TriggeredEvent) => void} scrollCallback A callback that is invoked when a scroll event
+         * occurs on the widget.
          */
         registerScrollHandler: function(widget, scrollNamespace, scrollCallback) {
 
@@ -391,11 +391,12 @@ if (!PrimeFaces.utils) {
         },
 
         /**
-         * Registers a callback that is invoked when a scroll event is triggered on The DOM element for the widget that has a connected overlay.
+         * Registers a callback that is invoked when a scroll event is triggered on The DOM element for the widget that
+         * has a connected overlay.
          * @param {PrimeFaces.widget.BaseWidget} widget A widget instance for which to register a scroll handler.
          * @param {string} scrollNamespace A scroll event with a namespace, such as `scroll.widgetId`.
-         * @param {(event: JQuery.Event) => void} scrollCallback A callnback that is invoked when a scroll event occurs
-         * on the widget.
+         * @param {(event: JQuery.TriggeredEvent) => void} scrollCallback A callback that is invoked when a scroll event
+         * occurs on the widget.
          */
         registerConnectedOverlayScrollHandler: function(widget, scrollNamespace, scrollCallback) {
             var element = widget.getJQ().get(0);
@@ -496,7 +497,7 @@ if (!PrimeFaces.utils) {
         /**
          * Blocks the enter key for an event like `keyup` or `keydown`. Useful in filter input events in many
          * components.
-         * @param {JQuery.Event} e The key event that occurred.
+         * @param {JQuery.TriggeredEvent} e The key event that occurred.
          */
         blockEnterKey: function(e) {
             var key = e.which,
@@ -509,7 +510,7 @@ if (!PrimeFaces.utils) {
 
         /**
          * Ignores certain keys on filter input text box. Useful in filter input events in many components.
-         * @param {JQuery.Event} e The key event that occurred.
+         * @param {JQuery.TriggeredEvent} e The key event that occurred.
          * @return {boolean} `true` if the one of the keys to ignore was pressed, or `false` otherwise.
          */
         ignoreFilterKey: function(e) {
@@ -554,7 +555,7 @@ if (!PrimeFaces.utils) {
         /**
          * Helper to open a new URL and if CTRL is held down open in new browser tab.
          * 
-         * @param {JQuery.Event} event The click event that occurred.
+         * @param {JQuery.TriggeredEvent} event The click event that occurred.
          * @param {JQuery} link The URL anchor link that was clicked.
          */
         openLink: function(event, link) {

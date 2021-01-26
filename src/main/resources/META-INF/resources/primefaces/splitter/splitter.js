@@ -3,23 +3,30 @@
  *
  * Splitter represents entities using icons, labels and images.
  *
- *
- * @prop {JQuery} splitter DOM element of the splitter.
+ * @typedef {"horizontal" | "vertical"} PrimeFaces.widget.Splitter.Layout Defines how the panel are split.
+ * - `horizontal`: The two panels are split in two horizontally by the splitter.
+ * - `vertically`: The two panels are split in two vertically by the splitter.
+ * 
+ * @typedef {"local" | "session"} PrimeFaces.widget.Splitter.StateStorage Defines where to store the current position of the
+ * splitter so that it can be restored later.
+ * - `local`: Use the browser's local storage which keeps data between sessions.
+ * - `session`: Use the browser's session storage which is cleared when the session ends.
+ * 
  * @prop {JQuery} panels DOM elements of the splitter panels in splitter.
  * @prop {JQuery} gutters DOM elements of the gutter elements in splitter.
- * @prop {JQuery} horizontal Whether splitter element is horizontal or vertical.
- * @prop {JQuery} panelSizes Array of the panels size for save and restore state.
+ * @prop {boolean} horizontal Whether splitter element is horizontal or vertical.
+ * @prop {number[]} panelSizes Array of the panels size for save and restore state.
  *
  * @interface {PrimeFaces.widget.SplitterCfg} cfg The configuration for the {@link  Splitter| Splitter widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  *
- * @prop {string} cfg.layout Defines orientation of the panels, "horizontal" or "vertical".
  * @prop {number} cfg.gutterSize Defines Size of the divider in pixels.
+ * @prop {PrimeFaces.widget.Splitter.Layout} cfg.layout Defines orientation of the panels, whether the panels are split
+ * horizontally or vertically.
  * @prop {string} cfg.stateKey Defines storage identifier of a stateful Splitter.
- * @prop {string} cfg.stateStorage Defines where a stateful splitter keeps its state, "session" or "local".
- *
+ * @prop {PrimeFaces.widget.Splitter.StateStorage} cfg.stateStorage Defines where a stateful splitter keeps its state.
  */
 PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
 
@@ -115,7 +122,7 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
     /**
      * The method that is called when the 'resize' event starts.
      * @private
-     * @param {JQuery.Event} event Event triggered for the drag.
+     * @param {JQuery.TriggeredEvent} event Event triggered for the drag.
      */
     onResizeStart: function(event) {
         this.gutterElement = $(event.currentTarget);
@@ -134,7 +141,7 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
     /**
      * The method called while the 'resize' event is running.
      * @private
-     * @param {JQuery.Event} event Event triggered for the resize.
+     * @param {JQuery.TriggeredEvent} event Event triggered for the resize.
      */
     onResize: function(event) {
         var newPos;
@@ -158,7 +165,7 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
     /**
      * The method that is called when the 'resize' event ends.
      * @private
-     * @param {JQuery.Event} event Event triggered for the resize end.
+     * @param {JQuery.TriggeredEvent} event Event triggered for the resize end.
      */
     onResizeEnd: function(event) {
         if (this.isStateful()) {
@@ -189,9 +196,9 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Checks the new values according to the size and minimum size values
      * @private
-     * @param {number} newPrevPanelSize the new previous panel size
-     * @param {number} newNextPanelSize the new next panel size
-     * @return {boolean} true if resized false if not
+     * @param {number} newPrevPanelSize The new previous panel size.
+     * @param {number} newNextPanelSize The new next panel size.
+     * @return {boolean} `true` if resized, `false` if not.
      */
     validateResize: function(newPrevPanelSize, newNextPanelSize) {
         if (this.panels[0].dataset && parseFloat(this.panels[0].dataset.minsize) > newPrevPanelSize) {
@@ -206,15 +213,15 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Whether it is stateful.
-     * @return {boolean} if the splitter is retaining state
+     * Whether the splitter keeps its dimensions between different page loads.
+     * @return {boolean} Whether the splitter is retaining its state.
      */
     isStateful: function() {
         return this.cfg.stateKey != null;
     },
     
     /**
-     * Save current panel sizes to the storage.
+     * Save current panel sizes to the (local or session) storage.
      * @private
      */
     saveState: function() {
@@ -222,8 +229,8 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Restore panel sizes from storage.
-     * @return {boolean} if state restore operation is successful returns true, if not returns false
+     * Restore panel sizes from (local or session) storage.
+     * @return {boolean} `true` when the state restore operation was successful, `false` otherwise.
      */
     restoreState: function() {
         var storage = this.getStorage();
@@ -243,8 +250,8 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Return localStorage or sessionStorage based on components stateStorage type.
-     * @return {Storage} localStorage or sessionStorage.
+     * Returns either the local storage or session storage, depending on the current widget configuration.
+     * @return {Storage} The storage to be used.
      */
     getStorage: function() {
         switch(this.cfg.stateStorage) {

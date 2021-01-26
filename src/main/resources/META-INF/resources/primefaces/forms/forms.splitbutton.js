@@ -31,6 +31,7 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  * 
+ * @prop {string} cfg.appendTo The search expression for the element to which the overlay panel should be appended.
  * @prop {PrimeFaces.widget.SplitButton.FilterMatchMode} cfg.filterMatchMode Match mode for filtering, how the search
  * term is matched against the items.
  * @prop {boolean} cfg.disabled Whether this input is currently disabled.
@@ -248,7 +249,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Highlights the next button action, usually when the user navigates via the keyboard arrows.
      * @private
-     * @param {JQuery.Event} event Keyboard arrow event that caused the next item to be highlighted.
+     * @param {JQuery.TriggeredEvent} event Keyboard arrow event that caused the next item to be highlighted.
      */
     highlightNext: function(event) {
         var highlightedItem = this.menuitems.filter('.ui-state-hover'),
@@ -265,7 +266,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Highlights the previous button action, usually when the user navigates via the keyboard arrows.
      * @private
-     * @param {JQuery.Event} event Keyboard arrow event that caused the previous item to be highlighted.
+     * @param {JQuery.TriggeredEvent} event Keyboard arrow event that caused the previous item to be highlighted.
      */
     highlightPrev: function(event) {
         var highlightedItem = this.menuitems.filter('.ui-state-hover'),
@@ -283,7 +284,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
      * Callback that is invoked when the enter key is pressed. When overlay panel with the additional buttons actions is
      * shown, activates the selected buttons action. Otherwise, opens the overlay panel. 
      * @private
-     * @param {JQuery.Event} event Keyboard event of the enter press.
+     * @param {JQuery.TriggeredEvent} event Keyboard event of the enter press.
      */
     handleEnterKey: function(event) {
         if(this.menu.is(':visible')) {

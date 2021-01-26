@@ -942,7 +942,9 @@ function fixupNodes(typeChecker, rootNode, sourceFile = rootNode.getSourceFile()
             for (let i = node.getChildCount(sourceFile) - 1; i >= 0; --i) {
                 const child = node.getChildAt(i, sourceFile);
                 if (child.parent === undefined) {
-                    child.parent = node;
+                    /** @type {any} */
+                    const c = child;
+                    c.parent = node;
                 }
                 stack.push(child);
             }

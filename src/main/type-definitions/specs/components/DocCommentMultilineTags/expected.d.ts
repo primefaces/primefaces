@@ -5,7 +5,6 @@ declare namespace PrimeFaces.widget {
     export class DocCommentMultilineTags {
         /**
          * method foo
-         * 
          * @param x This is the first rather long line of comments. However,
          * it is possible to break the description of a tag into multiple lines. It
          * will still be recognized as belongig to that tag. It should also be

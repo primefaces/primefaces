@@ -1,6 +1,7 @@
 //@ts-check
 
 const { dirname, extname } = require("path");
+const { match } = require("minimatch");
 
 const { parseJs } = require("./acorn-util");
 const { aggregateDocumentable } = require("./aggregate-documentable");
@@ -12,8 +13,8 @@ const { documentFunction } = require("./document-function");
 const { documentObject } = require("./document-object");
 const { createDefaultSeveritySettings, getSortedSeveritySettingKeys, isSeverityLevel, isSeveritySetting, Level } = require("./error-types");
 const { createInclusionHandler } = require("./inclusion-handler");
-const { isJsonObject, isNotUndefined, isNotEmpty, parseJsonObject, splitLines } = require("./lang");
-const { isExistingFileOrDir, mkDirRecursive, readDir, readFileUtf8, resolvePath, writeFileUtf8 } = require("./lang-fs");
+const { isJsonObject, isNotEmpty, parseJsonObject, splitLines, asyncMap, isNotUndefined, asyncFlatMap } = require("./lang");
+const { isExistingFileOrDir, mkDirRecursive, readDir, readFileUtf8, resolvePath, writeFileUtf8, normalize, makeRelative, readDirRecursive } = require("./lang-fs");
 const { classifyDeclarationFile } = require("./ts-classify-declaration-file");
 const { postprocessDeclarationFile } = require("./ts-postprocess");
 const { createDefaultHooks } = require("./ts-postprocess-defaulthooks");
@@ -24,7 +25,7 @@ const { generateTypedocs } = require("./typedoc");
 const DefaultCliArgs = {
     declarationOutputDir: Paths.TargetMainDir,
     exclusionTags: ["ignore", "exclude", "hidden"],
-    includeModules: [],
+    additionalEntries: [],
     inputDir: Paths.ComponentsMainDir,
     outputFilename: Names.PrimeFacesDeclaration,
     packageJson: Paths.PackageJsonFile,
@@ -114,6 +115,120 @@ function resolveArgsPaths(root, args) {
 }
 
 /**
+ * @param {string} string 
+ * @return {string}
+ */
+function trimSlashes(string) {
+    return string.replace(/^[\/\\]+|[\/\\]+$/g, "");
+}
+
+/**
+ * @param {JsonObject} packageJson 
+ * @return {string[]}
+ */
+function resolveTypesVersions(packageJson) {
+    const typesVersions = packageJson.typesVersions || {};
+    const pattern = /(?<operator>\>=|\>|\<=|\<|=)(?<major>\d+)(?:\.(?<minor>\d+))?/;
+    const [major, minor] = require("typescript").versionMajorMinor.split(".").map(parseInt);
+    for (const version of Object.keys(typesVersions)) {
+        const match = pattern.exec(version);
+        if (match) {
+            let versionMatch = false;
+            const requestedMajor = parseInt(match.groups?.major ?? "0");
+            const requestedMinor = parseInt(match.groups?.minor ?? "0");
+            switch (match.groups?.operator) {
+                case "<":
+                    versionMatch = major < requestedMajor || (major === requestedMajor && minor < requestedMinor);
+                    break;
+                case "<=":
+                    versionMatch = major <= requestedMajor || (major === requestedMajor && minor <= requestedMinor);
+                    break;
+                case ">":
+                    versionMatch = major > requestedMajor || (major === requestedMajor && minor > requestedMinor);
+                    break;
+                case ">=":
+                    versionMatch = major >= requestedMajor || (major === requestedMajor && minor >= requestedMinor);
+                    break;
+                case "=":
+                    versionMatch = major === requestedMajor && minor === requestedMinor;
+                    break;
+            }
+            if (versionMatch && typeof typesVersions === "object" && !Array.isArray(typesVersions)) {
+                const specifiers = typesVersions[version];
+                if (specifiers && typeof specifiers === "object" && !Array.isArray(specifiers)) {
+                    const allFiles = specifiers["*"];
+                    if (Array.isArray(allFiles)) {
+                        return allFiles.map(String);
+                    }
+                }
+                throw new Error("Unknown typeVersions entry: " + typesVersions);
+            }
+        }
+    }
+    return [];
+}
+
+/**
+ * Given a node_modules package, finds the main typings file for that package.
+ * This is either given by the `types` / `typings` field of the package json,
+ * the `main` field when it refers to a `.ts` file, or `index.ts` / `index.d.ts`
+ * by default.
+ * @param {string} dependency 
+ * @return {Promise<string[]>}
+ */
+async function readMainTypesFile(dependency) {
+    const depPath = resolvePath(Paths.NpmNodeModulesDir, dependency);
+    const packageJson = resolvePath(Paths.NpmNodeModulesDir, dependency, "package.json");
+    const json = await readFileUtf8(packageJson);
+    const parsed = parseJsonObject(json);
+    const types = trimSlashes(String(parsed.types || parsed.typings || ""));
+    const main = trimSlashes(String(parsed.main || ""));
+    const typesVersion = resolveTypesVersions(parsed);
+    /** @type {string[]} */
+    let file;
+    if (typesVersion.length > 0) {
+        const allFiles = await readDirRecursive(depPath);
+        const relFiles = allFiles.map(f => makeRelative(depPath, resolvePath(f.dir, f.entry.name)));
+        const matching = typesVersion.flatMap(t => match(relFiles, t));
+        file = [...new Set([...matching])].map(f => `node_modules/${dependency}/${f}`);
+    }
+    else if (types) {
+        file = [normalize(`node_modules/${dependency}/${types}`, "/")];
+    }
+    else if (main && main.endsWith(".ts")) {
+        file = [normalize(`node_modules/${dependency}/${main}`, "/")];
+    }
+    else {
+        const decl = normalize(`node_modules/${dependency}/index.d.ts`, "/");
+        const impl = normalize(`node_modules/${dependency}/index.ts`, "/")
+        const stats = await isExistingFileOrDir(resolvePath(Paths.NpmRootDir, impl));
+        file = [stats.exists ? impl : decl];
+    }
+    file = await asyncMap(file, async f => {
+        if (!f.endsWith(".ts")) {
+            const decl = f + ".d.ts";
+            const impl = f + ".ts";
+            const stats = await isExistingFileOrDir(resolvePath(Paths.NpmRootDir, impl));
+            return stats.exists ? impl : decl;
+        }
+        return f;
+    });
+    file = await asyncMap(file, async f => {
+        const stats = await isExistingFileOrDir(resolvePath(Paths.NpmRootDir, f));
+        if (stats.exists && f.endsWith(".ts")) {
+            return f;
+        }
+        return undefined;
+    });
+
+    file = file.filter(isNotUndefined);
+    if (file.length === 0) {
+        throw new Error("No typings found for package " + dependency);
+    }
+    return file;
+}
+
+/**
  * Reads the the arguments from the package JSON file, if it exists.
  * @param {string} packageJson 
  * @return {Promise<Partial<CliArgs>>}
@@ -130,20 +245,10 @@ async function parsePackageArgs(packageJson) {
             delete parsed.jsdocs.rootDir;
             Object.assign(result, parsed.jsdocs);
         }
-        if (result.includeModules === undefined && isJsonObject(parsed.dependencies)) {
-            const modules = Object.keys(parsed.dependencies)
-                .map(dependency => {
-                    const [main, ...sub] = dependency.split("/");
-                    if (main === "@types") {
-                        return sub.join("/");
-                    }
-                    else {
-                        return main;
-                    }
-                })
-                .filter(isNotUndefined);
+        if (result.additionalEntries === undefined && isJsonObject(parsed.dependencies)) {
+            const modules = await asyncFlatMap(Object.keys(parsed.dependencies), readMainTypesFile);
             if (modules.length > 0) {
-                result.includeModules = [...new Set(modules)].sort();
+                result.additionalEntries = [...new Set(modules)].sort();
             }
         }
     }
@@ -202,9 +307,9 @@ function parseCliArgs() {
                     console.log(`     Comma separated list of tags in a doc comment that cause a constant, function, or class to be skipped and not documented`);
                     console.log(`     Default to 'internal,ignore,exclude'`);
                     console.log(` -m`);
-                    console.log(` --includeModules`);
-                    console.log(`     Comma separated list of node modules to include in the generated typedoc files`);
-                    console.log(`     Default to no additional modules; or, if a 'package.json' is defined, the "dependencies" of that 'package.json'`);
+                    console.log(` --additionalEntries`);
+                    console.log(`     Comma separated list of entry points to include in the generated typedoc files`);
+                    console.log(`     Default to no additional entry points; or, if a 'package.json' is defined, the "dependencies" of that 'package.json'`);
                     console.log(` -l`);
                     console.log(` --level`);
                     console.log(`     Specifies how severe a type of error is considered, in the format '<error-type>=<level>'. May be specified multiple times.`);
@@ -265,8 +370,8 @@ function parseCliArgs() {
                         .map(x => x.toLowerCase());
                     break;
                 case "-m":
-                case "--includemodules":
-                    result.includeModules = (stack.pop() || "")
+                case "--additionalEntries":
+                    result.additionalEntries = (stack.pop() || "")
                         .split(",")
                         .filter(isNotEmpty)
                         .map(x => x.trim())
@@ -409,15 +514,23 @@ async function main(cliArgs) {
 
     // Scan the base directory and list the directories with the JavaScript source files to process
     for await (const component of listComponents(cliArgs.inputDir)) {
-        console.log("Processing component directory", component.path);
+        console.log(`Processing component directory ${component.path}`);
+
+        const count = {
+            constants: 0,
+            functions: 0,
+            objects: 0,
+            typedefs: 0,
+        };
 
         // Include all *.d.ts file found in the directory
         for await (const typedefFile of readTypedefFiles(component)) {
             bundle[typedefFile.type].push(typedefFile.source);
+            count.typedefs += 1;
         }
 
         // Parse the JavaScript source files for symbols to document
-        for await (const program of parseJs(component.files, component.path)) {
+        for await (const program of parseJs(component.files, 2016, component.path)) {
             logVerbose(cliArgs, "  -> Processing program ", program.node.loc ? program.node.loc.source : "<unknown>");
 
             // Scan source code and find all objects, functions, and constants that are to be documented
@@ -425,6 +538,10 @@ async function main(cliArgs) {
                 aggregateHandlerWidgets,
                 aggregateHandlerDefaults,
             ]);
+
+            count.constants += documentable.constants.length;
+            count.functions += documentable.functions.length;
+            count.objects += documentable.objects.length;
 
             // Document constants (const x = ...)
             for (const constantDefinition of documentable.constants) {
@@ -450,6 +567,17 @@ async function main(cliArgs) {
                 bundle.ambient.push("");
             }
         }
+        // Warn if directory contains any JavaScript source files but no documentation was found
+        // Usually happens when you add a new 
+        if (component.files.length > 0 || component.typedefFiles.length > 0) {
+            if (count.objects === 0 && count.functions === 0 && count.constants === 0 && count.typedefs === 0) {
+                console.error("  -> Did not find any documentation in this directory, did you just add a new components?");
+                console.error("  -> Make sure to document it, see src/main/type-definitions/README.md for details");
+                console.error("  -> Add an empty *.d.ts file in this directory to disable this error");
+                throw new Error(`No documentation found in ${component.path}`);
+            }
+        }
+        logVerbose(cliArgs, `  -> Found ${count.objects} object(s), ${count.functions} function(s), ${count.constants} constant(s), and ${count.typedefs} custom type declaration file(s)`);
     }
 
     // Create the type declaration file

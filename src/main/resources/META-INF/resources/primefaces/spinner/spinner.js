@@ -344,9 +344,9 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
     /**
      * If roundStep is enabled then round to the nearest step value. 
      * For example if step=5 and value=8 it would be rounded 10.
+     * @private
      * @param {number} value The value for this spinner.
      * @return {number} Original value if rounding disabled, else a rounded value.
-     * @private
      */
     roundStep: function(value) {
         if (!this.cfg.round) {

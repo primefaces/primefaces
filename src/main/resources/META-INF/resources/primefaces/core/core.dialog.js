@@ -19,6 +19,13 @@ if (!PrimeFaces.dialog) {
      * @prop {number} DialogHandlerCfgOptions.contentHeight Height of the IFRAME in pixels.
      * @prop {number} DialogHandlerCfgOptions.contentWidth Width of the IFRAME in pixels.
      * @prop {string} DialogHandlerCfgOptions.headerElement ID of the header element of the dialog.
+     * 
+     * @interface {PrimeFaces.dialog.ExtendedConfirmDialogMessage} ExtendedConfirmDialogMessage An extended confirmation
+     * message with an additional `source` attribute for specifying the source component or form.
+     * @extends {PrimeFaces.widget.ConfirmDialog.ConfirmDialogMessage} ExtendedConfirmDialogMessage
+     * @prop {string | HTMLElement | JQuery} source The source component (command button, AJAX callback etc) that
+     * triggered the confirmation. When a string, it is interpreted as the client ID of the component. Otherwise, it
+     * must be the main DOM element of the source component.
      */
     PrimeFaces.dialog = {};
 
@@ -349,7 +356,7 @@ if (!PrimeFaces.dialog) {
 
         /**
          * Displays a message in the messages dialog.
-         * @param {string} msg Message to show.
+         * @param {PrimeFaces.widget.ConfirmDialog.ConfirmDialogMessage} msg Details of the essage to show.
          */
         showMessageInDialog: function(msg) {
             if(!this.messageDialog) {
@@ -383,9 +390,9 @@ if (!PrimeFaces.dialog) {
         },
 
         /**
-         * Asks the user to confirm an action. Shows a confirmation dialog with the given message. Requires a
+         * Asks the user to confirm an action. Shows a confirmation dialog with the given message. Requires a global
          * `<p:confirmDialog>` to be available on the current page.
-         * @param {string} msg Message to show in the confirmation dialog.
+         * @param {PrimeFaces.dialog.ExtendedConfirmDialogMessage} msg Message to show in the confirmation dialog.
          */
         confirm: function(msg) {
             if (PrimeFaces.confirmDialog) {

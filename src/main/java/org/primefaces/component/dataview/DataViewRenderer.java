@@ -223,11 +223,23 @@ public class DataViewRenderer extends DataRenderer {
     protected void encodeLayout(FacesContext context, DataView dataview) throws IOException {
         String layout = dataview.getLayout();
 
-        if (layout.contains("grid")) {
-            encodeGridLayout(context, dataview);
+        if (dataview.getRowCount() == 0) {
+            ResponseWriter writer = context.getResponseWriter();
+            UIComponent emptyFacet = dataview.getFacet("emptyMessage");
+            if (ComponentUtils.shouldRenderFacet(emptyFacet)) {
+                emptyFacet.encodeAll(context);
+            }
+            else {
+                writer.writeText(dataview.getEmptyMessage(), "emptyMessage");
+            }
         }
         else {
-            encodeListLayout(context, dataview);
+            if (layout.contains("grid")) {
+                encodeGridLayout(context, dataview);
+            }
+            else {
+                encodeListLayout(context, dataview);
+            }
         }
     }
 
@@ -305,7 +317,7 @@ public class DataViewRenderer extends DataRenderer {
                 dataview.setRowIndex(i);
 
                 if (!dataview.isRowAvailable()) {
-                    return;
+                    break;
                 }
 
                 writer.startElement("li", null);

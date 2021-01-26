@@ -2,7 +2,7 @@
 
 DataTable displays data in tabular format.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.datatable.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.datatable-1.html)
 
 ## Info
 
@@ -89,7 +89,7 @@ DataTable displays data in tabular format.
 | scrollable                | false              | Boolean          | Makes data scrollable with fixed header.
 | selection                 | null               | Object           | Reference to the selection data.
 | selectionMode             | null               | String           | Enables row selection, valid values are “single" and “multiple".
-| selectionPageOnly         | true               | Boolean          | When using paginator and checkbox selection mode the select all checkbox in header will select the current page if true or all rows if false. Default true.
+| selectionPageOnly         | true               | Boolean          | When using a paginator and selection mode is `checkbox`, the select all checkbox in the header will select all rows on the current page if `true`, or all rows on all pages if `false`. Default is `true`.
 | showGridlines             | false              | Boolean          | When enabled, cell borders are displayed.
 | size                      | regular            | String           | Size of the table content, valid values are "small" and "large". Leave empty for regular size.
 | sortMode                  | multiple           | String           | Defines sorting mode, valid values are _single_ and _multiple_.
