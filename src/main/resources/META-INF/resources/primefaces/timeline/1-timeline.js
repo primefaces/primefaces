@@ -379,8 +379,9 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
                     properties: properties
                 };
 
-                // #5455 only fire if initiated by user
-                if (properties.byUser) {
+                // #5455/#6902 only fire if initiated by user
+                if (properties.byUser || this.initiatedByUser) {
+                    this.initiatedByUser = false;
                     this.getBehavior("rangechanged").call(this, options); 
                 }
             }, this));
@@ -855,6 +856,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      * called at the end of move operation.
      */
     move: function (moveFactor, options, callback) {
+        this.initiatedByUser = true;
         var range = this.instance.getWindow();
         var interval = range.end - range.start;
         var start = range.start.valueOf() + interval * moveFactor;
@@ -897,6 +899,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      * @return {undefined} Always returns `undefined`.
      */
     zoom: function (zoomFactor, options, callback) {
+        this.initiatedByUser = true;
         if (zoomFactor >= 0) {
             return this.instance.zoomIn(zoomFactor, options, callback);
         } else {
