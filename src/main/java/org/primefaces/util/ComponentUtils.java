@@ -182,7 +182,7 @@ public class ComponentUtils {
             }
         }
 
-        return Objects.toString(value, Constants.EMPTY_STRING);
+        return Objects.toString(value, null);
     }
 
     public static Converter getConverter(FacesContext context, Class<?> forClass) {

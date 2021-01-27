@@ -1339,10 +1339,9 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void encodeDefaultFieldCell(FacesContext context, DataTable table, UIColumn column, ResponseWriter writer) throws IOException {
-        Object value = UITable.createValueExprFromVarField(context, table.getVar(), column.getField()).getValue(context.getELContext());
+        UIComponent component = column instanceof UIComponent ? (UIComponent) column : null;
+        Object value = UITable.getConvertedFieldValue(context, table.getVar(), (UIComponent & UIColumn) component);
         if (value != null) {
-            UIComponent component = column instanceof UIComponent ? (UIComponent) column : null;
-            value = ComponentUtils.getConvertedAsString(context, component, value);
             writer.writeText(value, null);
         }
     }
