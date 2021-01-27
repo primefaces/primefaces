@@ -2454,15 +2454,15 @@ body .ui-autocomplete-panel {
       color: #333333;
       border-radius: 0;
       transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s; }
-      body .ui-autocomplete-panel .ui-autocomplete-items .ui-autocomplete-item.ui-state-highlight {
-        background: #e02365;
-        color: #ffffff; }
       body .ui-autocomplete-panel .ui-autocomplete-items .ui-autocomplete-item.ui-autocomplete-row {
         background: #ffffff;
         color: #333333;
         border: 1px solid #c8c8c8; }
         body .ui-autocomplete-panel .ui-autocomplete-items .ui-autocomplete-item.ui-autocomplete-row > td {
           padding: 0.571rem 0.857rem; }
+      body .ui-autocomplete-panel .ui-autocomplete-items .ui-autocomplete-item.ui-state-highlight {
+        background: #e02365;
+        color: #ffffff; }
 body .ui-autocomplete-itemtip {
   padding: 0; }
   body .ui-autocomplete-itemtip.ui-state-highlight {
