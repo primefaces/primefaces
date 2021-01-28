@@ -152,7 +152,7 @@ public class DataTableXMLExporter extends DataTableExporter {
             writer.append(EscapeUtils.forXml(exportColumnByFunction(context, column)));
         }
         else if (LangUtils.isNotBlank(column.getField())) {
-            Object value = UITable.createValueExprFromVarField(context, table.getVar(), column.getField()).getValue(context.getELContext());
+            String value = UITable.getConvertedFieldValue(context, table.getVar(), (UIComponent & UIColumn) column);
             writer.append(EscapeUtils.forXml(Objects.toString(value, Constants.EMPTY_STRING)));
         }
         else {

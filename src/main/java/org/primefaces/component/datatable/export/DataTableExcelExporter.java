@@ -251,7 +251,7 @@ public class DataTableExcelExporter extends DataTableExporter {
             updateCell(cell, exportColumnByFunction(context, column));
         }
         else if (LangUtils.isNotBlank(column.getField())) {
-            Object value = UITable.createValueExprFromVarField(context, table.getVar(), column.getField()).getValue(context.getELContext());
+            String value = UITable.getConvertedFieldValue(context, table.getVar(), (UIComponent & UIColumn) column);
             updateCell(cell, Objects.toString(value, Constants.EMPTY_STRING));
         }
         else {
