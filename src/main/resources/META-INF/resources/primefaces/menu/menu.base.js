@@ -106,9 +106,12 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
             }
         });
 
-        //Hide overlay on resize
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.jq, function() {
-            $this.align();
+        //Hide overlay on resize/scroll
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_hide', $this.jq, function() {
+            $this.hide();
+        });
+        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_hide', function() {
+            $this.hide();
         });
 
         //dialog support
@@ -121,9 +124,11 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
      */
     setupDialogSupport: function() {
         var dialog = this.trigger.parents('.ui-dialog:first');
+        this.isDialogContainer = false;
 
         if(dialog.length == 1 && dialog.css('position') === 'fixed') {
             this.jq.css('position', 'fixed');
+            this.isDialogContainer = true;
         }
     },
 
@@ -135,8 +140,18 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
             'z-index': PrimeFaces.nextZindex(),
             'visibility': 'hidden'
         });
-        this.align();
-        this.jq.show();
+
+        if(this.isDialogContainer) {
+            // #6096 In dialog must be shown then aligned
+            this.jq.show();
+            this.align();
+        }
+        else {
+            // #5035 Non dialog must be aligned then shown
+            this.align();
+            this.jq.show(); 
+        }
+
         this.jq.css('visibility', '');
     },
 
