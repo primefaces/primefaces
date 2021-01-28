@@ -345,7 +345,7 @@ public class DataTablePDFExporter extends DataTableExporter {
             pdfTable.addCell(cell);
         }
         else if (LangUtils.isNotBlank(column.getField())) {
-            Object value = UITable.createValueExprFromVarField(context, table.getVar(), column.getField()).getValue(context.getELContext());
+            String value = UITable.getConvertedFieldValue(context, table.getVar(), (UIComponent & UIColumn) column);
             PdfPCell cell = createCell(column, new Paragraph(Objects.toString(value, Constants.EMPTY_STRING), font));
             pdfTable.addCell(cell);
         }

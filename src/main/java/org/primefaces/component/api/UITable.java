@@ -565,4 +565,9 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 .map(e -> e.getKey() + '_' + e.getValue().getWidth())
                 .collect(Collectors.joining(","));
     }
+
+    static <C extends UIComponent & UIColumn> String getConvertedFieldValue(FacesContext context, String var, C column) {
+        Object value = createValueExprFromVarField(context, var, column.getField()).getValue(context.getELContext());
+        return ComponentUtils.getConvertedAsString(context, column, value);
+    }
 }
