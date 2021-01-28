@@ -35,7 +35,6 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.api.UITable;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.util.ComponentUtils;
@@ -152,7 +151,7 @@ public class DataTableXMLExporter extends DataTableExporter {
             writer.append(EscapeUtils.forXml(exportColumnByFunction(context, column)));
         }
         else if (LangUtils.isNotBlank(column.getField())) {
-            String value = UITable.getConvertedFieldValue(context, table.getVar(), (UIComponent & UIColumn) column);
+            String value = table.getConvertedFieldValue(context, (UIComponent & UIColumn) column);
             writer.append(EscapeUtils.forXml(Objects.toString(value, Constants.EMPTY_STRING)));
         }
         else {

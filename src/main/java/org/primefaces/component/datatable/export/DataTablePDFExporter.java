@@ -34,7 +34,6 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.api.UITable;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExportConfiguration;
@@ -345,7 +344,7 @@ public class DataTablePDFExporter extends DataTableExporter {
             pdfTable.addCell(cell);
         }
         else if (LangUtils.isNotBlank(column.getField())) {
-            String value = UITable.getConvertedFieldValue(context, table.getVar(), (UIComponent & UIColumn) column);
+            String value = table.getConvertedFieldValue(context, (UIComponent & UIColumn) column);
             PdfPCell cell = createCell(column, new Paragraph(Objects.toString(value, Constants.EMPTY_STRING), font));
             pdfTable.addCell(cell);
         }
