@@ -41,7 +41,6 @@ import javax.faces.model.SelectItem;
 
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.api.UITable;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
@@ -1340,7 +1339,7 @@ public class DataTableRenderer extends DataRenderer {
 
     protected void encodeDefaultFieldCell(FacesContext context, DataTable table, UIColumn column, ResponseWriter writer) throws IOException {
         UIComponent component = column instanceof UIComponent ? (UIComponent) column : null;
-        Object value = UITable.getConvertedFieldValue(context, table.getVar(), (UIComponent & UIColumn) component);
+        Object value = table.getConvertedFieldValue(context, (UIComponent & UIColumn) component);
         if (value != null) {
             writer.writeText(value, null);
         }
