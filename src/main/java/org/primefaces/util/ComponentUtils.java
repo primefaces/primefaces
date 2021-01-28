@@ -157,17 +157,7 @@ public class ComponentUtils {
         }
 
         Class<?> converterType = valueExpression.getType(context.getELContext());
-        if (converterType == null || converterType == Object.class) {
-            // no conversion is needed
-            return null;
-        }
-
-        if (converterType == String.class
-                && !PrimeApplicationContext.getCurrentInstance(context).getConfig().isStringConverterAvailable()) {
-            return null;
-        }
-
-        return context.getApplication().createConverter(converterType);
+        return getConverter(context, converterType);
     }
 
     public static Object getConvertedValue(FacesContext context, UIComponent component, Object value) {
@@ -182,6 +172,28 @@ public class ComponentUtils {
         }
 
         return value;
+    }
+
+    public static String getConvertedAsString(FacesContext context, UIComponent component, Object value) {
+        if (value != null) {
+            Converter converter = getConverter(context, value.getClass());
+            if (converter != null) {
+                return converter.getAsString(context, component, value);
+            }
+        }
+
+        return Objects.toString(value, null);
+    }
+
+    public static Converter getConverter(FacesContext context, Class<?> forClass) {
+        if (forClass == null
+                || forClass == Object.class
+                || (forClass == String.class
+                && !PrimeApplicationContext.getCurrentInstance(context).getConfig().isStringConverterAvailable())) {
+            return null;
+        }
+
+        return context.getApplication().createConverter(forClass);
     }
 
     public static void decodeBehaviors(FacesContext context, UIComponent component) {
