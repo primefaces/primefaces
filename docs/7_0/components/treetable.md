@@ -62,6 +62,9 @@ paginatorAlwaysVisible | true | Boolean | Defines if paginator should be hidden 
 rows | 0 | Integer | Number of rows to display per page. Default value is 0 meaning to display all data available.
 first | 0 | Integer | Index of the first data to display.
 disabledTextSelection | true | Boolean | Disables text selection on row click.
+filteredNode | null | List<TreeNode> | Node to keep the filtered nodes if filtering is enabled.
+filterEvent | keyup | String | Client side event to invoke treetable filtering for input fields.
+filterDelay | 300 | Integer | Delay to wait in milliseconds before sending each filter query.
 
 ## Getting started with the TreeTable
 Similar to the Tree, TreeTable is populated with an _org.primefaces.model.TreeNode_ instance that
@@ -160,6 +163,18 @@ In case you'd like to display treeTable as sorted on page load use sortBy attrib
 optional _sortOrder_ and _sortFunction_ attributes are provided to define the default sort order
 (ascending or descinding) and a java method to do the actual sorting respectively. Refer to datatable
 sorting section for an example usage of _sortFunction_.
+
+## Filtering
+Filtering is enabled by setting _filterBy_ expressions at column level.
+
+```xhtml
+<p:treeTable value="#{bean.root}" var="document">
+    <p:column filterBy="#{document.name}">
+        <h:outputText value="#{document.name}" />
+    </p:column>
+    //more columns
+</p:treeTable>
+```
 
 ## Editing
 Similar to DataTable, TreeTable supports row and cell based editing. Refer to datatable for more
