@@ -50,7 +50,6 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
     private String backgroundColor;
     private String borderColor;
     private String textColor;
-    private ScheduleRenderingMode renderingMode;
     private Map<String, Object> dynamicProperties;
 
     public DefaultScheduleEvent() {
@@ -233,15 +232,6 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
     }
 
     @Override
-    public ScheduleRenderingMode getRenderingMode() {
-        return renderingMode;
-    }
-
-    public void setRenderingMode(ScheduleRenderingMode renderingMode) {
-        this.renderingMode = renderingMode;
-    }
-
-    @Override
     public Map<String, Object> getDynamicProperties() {
         return dynamicProperties;
     }
@@ -368,11 +358,6 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
 
         public DefaultScheduleEvent.Builder<T> url(String url) {
             scheduleEvent.setUrl(url);
-            return this;
-        }
-
-        public DefaultScheduleEvent.Builder<T> renderingMode(ScheduleRenderingMode renderingMode) {
-            scheduleEvent.setRenderingMode(renderingMode);
             return this;
         }
 

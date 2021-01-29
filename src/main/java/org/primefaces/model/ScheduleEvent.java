@@ -85,8 +85,6 @@ public interface ScheduleEvent<T> {
 
     String getUrl();
 
-    ScheduleRenderingMode getRenderingMode();
-
     Map<String, Object> getDynamicProperties();
 
     /**
