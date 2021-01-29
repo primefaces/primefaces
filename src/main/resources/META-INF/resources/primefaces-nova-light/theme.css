@@ -4185,7 +4185,7 @@ body .ui-tabs {
     border-bottom-right-radius: 3px; }
     body .ui-tabs .ui-tabs-panels .ui-tabs-panel {
       padding: 0.571rem 1rem; }
-  body .ui-tabs.ui-tabs-top .ui-tabs-nav {
+  body .ui-tabs.ui-tabs-top > .ui-tabs-nav {
     margin: 0;
     padding: 0;
     position: relative;
@@ -4193,7 +4193,7 @@ body .ui-tabs {
     display: flex;
     -ms-flex-wrap: wrap;
     flex-wrap: wrap; }
-    body .ui-tabs.ui-tabs-top .ui-tabs-nav:before {
+    body .ui-tabs.ui-tabs-top > .ui-tabs-nav:before {
       content: "";
       position: absolute;
       display: block;
@@ -4201,16 +4201,16 @@ body .ui-tabs {
       left: 0;
       bottom: 0;
       width: 100%; }
-    body .ui-tabs.ui-tabs-top .ui-tabs-nav li.ui-tabs-header {
+    body .ui-tabs.ui-tabs-top > .ui-tabs-nav li.ui-tabs-header {
       top: 0;
       border-bottom: 0 none; }
-      body .ui-tabs.ui-tabs-top .ui-tabs-nav li.ui-tabs-header.ui-state-hover {
+      body .ui-tabs.ui-tabs-top > .ui-tabs-nav li.ui-tabs-header.ui-state-hover {
         border-color: #dbdbdb; }
-      body .ui-tabs.ui-tabs-top .ui-tabs-nav li.ui-tabs-header.ui-state-active {
+      body .ui-tabs.ui-tabs-top > .ui-tabs-nav li.ui-tabs-header.ui-state-active {
         border-color: #007ad9; }
-  body .ui-tabs.ui-tabs-top .ui-tabs-panels {
+  body .ui-tabs.ui-tabs-top > .ui-tabs-panels {
     border-width: 1px 0 0 0; }
-  body .ui-tabs.ui-tabs-bottom .ui-tabs-nav {
+  body .ui-tabs.ui-tabs-bottom > .ui-tabs-nav {
     margin: 0;
     padding: 0;
     position: relative;
@@ -4218,7 +4218,7 @@ body .ui-tabs {
     display: flex;
     -ms-flex-wrap: wrap;
     flex-wrap: wrap; }
-    body .ui-tabs.ui-tabs-bottom .ui-tabs-nav:before {
+    body .ui-tabs.ui-tabs-bottom > .ui-tabs-nav:before {
       content: "";
       position: absolute;
       display: block;
@@ -4226,53 +4226,53 @@ body .ui-tabs {
       left: 0;
       top: 0;
       width: 100%; }
-    body .ui-tabs.ui-tabs-bottom .ui-tabs-nav li.ui-tabs-header {
+    body .ui-tabs.ui-tabs-bottom > .ui-tabs-nav li.ui-tabs-header {
       top: 0;
       border-top: 0 none; }
-      body .ui-tabs.ui-tabs-bottom .ui-tabs-nav li.ui-tabs-header.ui-state-hover {
+      body .ui-tabs.ui-tabs-bottom > .ui-tabs-nav li.ui-tabs-header.ui-state-hover {
         border-color: #dbdbdb; }
-      body .ui-tabs.ui-tabs-bottom .ui-tabs-nav li.ui-tabs-header.ui-state-active {
+      body .ui-tabs.ui-tabs-bottom > .ui-tabs-nav li.ui-tabs-header.ui-state-active {
         border-color: #007ad9; }
-  body .ui-tabs.ui-tabs-bottom .ui-tabs-panels {
+  body .ui-tabs.ui-tabs-bottom > .ui-tabs-panels {
     border-width: 1px 0 0 0; }
-  body .ui-tabs.ui-tabs-left .ui-tabs-nav, body .ui-tabs.ui-tabs-right .ui-tabs-nav {
+  body .ui-tabs.ui-tabs-left > .ui-tabs-nav, body .ui-tabs.ui-tabs-right > .ui-tabs-nav {
     width: 25%;
     margin: 0;
     padding: 0;
     height: auto;
     -ms-flex-direction: column;
     flex-direction: column; }
-    body .ui-tabs.ui-tabs-left .ui-tabs-nav li.ui-tabs-header, body .ui-tabs.ui-tabs-right .ui-tabs-nav li.ui-tabs-header {
+    body .ui-tabs.ui-tabs-left > .ui-tabs-nav li.ui-tabs-header, body .ui-tabs.ui-tabs-right > .ui-tabs-nav li.ui-tabs-header {
       width: 100%; }
-  body .ui-tabs.ui-tabs-left .ui-tabs-panels, body .ui-tabs.ui-tabs-right .ui-tabs-panels {
+  body .ui-tabs.ui-tabs-left > .ui-tabs-panels, body .ui-tabs.ui-tabs-right > .ui-tabs-panels {
     width: 75%; }
-  body .ui-tabs.ui-tabs-right .ui-tabs-nav {
+  body .ui-tabs.ui-tabs-right > .ui-tabs-nav {
     margin: 0;
     padding: 0;
     border-left: 0 none; }
-    body .ui-tabs.ui-tabs-right .ui-tabs-nav li.ui-tabs-header {
+    body .ui-tabs.ui-tabs-right > .ui-tabs-nav li.ui-tabs-header {
       top: 0;
       border-left: 0 none;
       left: -1px; }
-      body .ui-tabs.ui-tabs-right .ui-tabs-nav li.ui-tabs-header.ui-state-hover {
+      body .ui-tabs.ui-tabs-right > .ui-tabs-nav li.ui-tabs-header.ui-state-hover {
         border-color: #dbdbdb; }
-      body .ui-tabs.ui-tabs-right .ui-tabs-nav li.ui-tabs-header.ui-state-active {
+      body .ui-tabs.ui-tabs-right > .ui-tabs-nav li.ui-tabs-header.ui-state-active {
         border-color: #007ad9; }
-  body .ui-tabs.ui-tabs-right .ui-tabs-panels {
+  body .ui-tabs.ui-tabs-right > .ui-tabs-panels {
     border-width: 1px 0 0 0; }
-  body .ui-tabs.ui-tabs-left .ui-tabs-nav {
+  body .ui-tabs.ui-tabs-left > .ui-tabs-nav {
     margin: 0;
     padding: 0;
     right: -1px; }
-    body .ui-tabs.ui-tabs-left .ui-tabs-nav li.ui-tabs-header {
+    body .ui-tabs.ui-tabs-left > .ui-tabs-nav li.ui-tabs-header {
       top: 0;
       border-right: 0 none;
       margin-right: -1px; }
-      body .ui-tabs.ui-tabs-left .ui-tabs-nav li.ui-tabs-header.ui-state-hover {
+      body .ui-tabs.ui-tabs-left > .ui-tabs-nav li.ui-tabs-header.ui-state-hover {
         border-color: #dbdbdb; }
-      body .ui-tabs.ui-tabs-left .ui-tabs-nav li.ui-tabs-header.ui-state-active {
+      body .ui-tabs.ui-tabs-left > .ui-tabs-nav li.ui-tabs-header.ui-state-active {
         border-color: #007ad9; }
-  body .ui-tabs.ui-tabs-left .ui-tabs-panels {
+  body .ui-tabs.ui-tabs-left > .ui-tabs-panels {
     border-width: 1px 0 0 0; }
   body .ui-tabs .ui-tabs-navscroller {
     position: relative; }
