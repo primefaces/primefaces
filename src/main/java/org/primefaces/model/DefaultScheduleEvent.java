@@ -46,7 +46,7 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
     private String styleClass;
     private String description;
     private String url;
-    private String display;
+    private ScheduleDisplayMode display;
     private String backgroundColor;
     private String borderColor;
     private String textColor;
@@ -196,11 +196,11 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
     }
 
     @Override
-    public String getDisplay() {
+    public ScheduleDisplayMode getDisplay() {
         return display;
     }
 
-    public void setDisplay(String display) {
+    public void setDisplay(ScheduleDisplayMode display) {
         this.display = display;
     }
 
@@ -366,7 +366,7 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
             return this;
         }
 
-        public DefaultScheduleEvent.Builder<T> display(String display) {
+        public DefaultScheduleEvent.Builder<T> display(ScheduleDisplayMode display) {
             scheduleEvent.setDisplay(display);
             return this;
         }

@@ -30,6 +30,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -131,7 +132,7 @@ public class ScheduleRenderer extends CoreRenderer {
                     jsonObject.put("url", event.getUrl());
                 }
                 if (event.getDisplay() != null) {
-                    jsonObject.put("display", event.getDisplay());
+                    jsonObject.put("display", Objects.toString(event.getDisplay(), null));
                 }
                 if (event.getBackgroundColor() != null) {
                     jsonObject.put("backgroundColor", event.getBackgroundColor());

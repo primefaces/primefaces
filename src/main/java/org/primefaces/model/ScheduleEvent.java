@@ -57,7 +57,7 @@ public interface ScheduleEvent<T> {
      * Events that appear as background highlights can be achieved by setting an Event Object’s display property
      * to "background" or "inverse-background".
      */
-    String getDisplay();
+    ScheduleDisplayMode getDisplay();
 
     String getBackgroundColor();
 
