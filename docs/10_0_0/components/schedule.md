@@ -108,8 +108,11 @@ editable | Whether the event is editable or not.
 overlap | If false (default), prevents this event from being dragged/resized over other events. Also prevents other events from being dragged/resized over this event.
 description | Tooltip text to display on mouseover of an event.
 url | Events with url set, do not trigger the selectEvent but open the url instead.
-renderingMode | Which event rendering mode of the full calendar should be used? 
+display | Which event display mode of the full calendar should be used? 
 dynamicProperties | Add additional properties to the event json. Can be used with the javascript extender method.
+backgroundColor | Background-Color of the event.
+borderColor | Color of the border surrounding the event.
+textColor | Color of the text inside the event.
 
 ## Ajax Behavior Events
 Schedule provides various ajax behavior events to respond user actions.

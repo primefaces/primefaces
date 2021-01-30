@@ -23,22 +23,26 @@
  */
 package org.primefaces.model;
 
-public enum ScheduleRenderingMode {
+public enum ScheduleDisplayMode {
+    BLOCK("block"),
+    LIST_ITEM("list-item"),
+    AUTO("auto"),
     BACKGROUND("background"),
-    INVERSE_BACKGROUND("inverse-background");
+    INVERSE_BACKGROUND("inverse-background"),
+    NONE("none");
 
-    private final String rendering;
+    private final String display;
 
-    ScheduleRenderingMode(String rendering) {
-        this.rendering = rendering;
+    ScheduleDisplayMode(String display) {
+        this.display = display;
     }
 
-    public String getRendering() {
-        return rendering;
+    public String getDisplay() {
+        return display;
     }
 
     @Override
     public String toString() {
-        return rendering;
+        return display;
     }
 }
