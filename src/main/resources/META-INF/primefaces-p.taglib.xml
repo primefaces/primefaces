@@ -10177,6 +10177,12 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
+            <description>Global AJAX requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus.</description>
+            <name>global</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
             <description>
                 <![CDATA[Method expression to invoke when a file is uploaded.]]>
             </description>

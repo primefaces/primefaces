@@ -22,6 +22,7 @@
  * @prop {string} cfg.invalidSizeMessage Message to display when size limit exceeds.
  * @prop {number} cfg.maxFileSize Maximum allowed size in bytes for files.
  * @prop {string} cfg.messageTemplate Message template to use when displaying file validation errors.
+ * @prop {string} cfg.global Global AJAX requests are listened by ajaxStatus, false will not trigger ajaxStatus.
  */
 PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
 
@@ -40,6 +41,7 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.invalidSizeMessage = this.cfg.invalidSizeMessage || 'Invalid file size';
         this.cfg.fileLimitMessage = this.cfg.fileLimitMessage || 'Maximum number of files exceeded';
         this.cfg.messageTemplate = this.cfg.messageTemplate || '{name} {size}';
+        this.cfg.global = (this.cfg.global === true || this.cfg.global === undefined) ? true : false;
         this.sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
 
         this.maxFileSize = this.cfg.maxFileSize;
@@ -213,12 +215,14 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
 
         var $this = this,
             files = this.input[0].files;
-
         var parameterPrefix = PrimeFaces.ajax.Request.extractParameterNamespace(this.form);
         var process = this.cfg.process ? this.id + ' ' + PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.cfg.process).join(' ') : this.id;
         var update = this.cfg.update ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.cfg.update).join(' ') : null;
-
         var formData = PrimeFaces.ajax.Request.createFacesAjaxFormData(this.form, parameterPrefix, this.id, process, update);
+
+        if($this.cfg.global) {
+            $(document).trigger('pfAjaxStart');
+        }
 
         // append files
         for (var i = 0; i < files.length; i++) {
@@ -239,6 +243,9 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
                 xhr.setRequestHeader('Faces-Request', 'partial/ajax');
                 xhr.pfSettings = settings;
                 xhr.pfArgs = {}; // default should be an empty object
+                if($this.cfg.global) {
+                     $(document).trigger('pfAjaxSend', [xhr, this]);
+                }
             }
         };
 
@@ -291,6 +298,10 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
                     $this.display.text('');
                 }
                 $this.input.val('');
+
+                if($this.cfg.global) {
+                    $(document).trigger('pfAjaxComplete', [xhr, this]);
+                }
             });
 
         PrimeFaces.ajax.Queue.addXHR(jqXhr);

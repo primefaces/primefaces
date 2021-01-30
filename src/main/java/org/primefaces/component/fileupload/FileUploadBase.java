@@ -39,6 +39,7 @@ public abstract class FileUploadBase extends UIInput implements Widget {
         style,
         styleClass,
         update,
+        global,
         process,
         listener,
         multiple,
@@ -441,6 +442,14 @@ public abstract class FileUploadBase extends UIInput implements Widget {
 
     public void setCancelButtonTitle(String cancelButtonTitle) {
         getStateHelper().put(PropertyKeys.cancelButtonTitle, cancelButtonTitle);
+    }
+
+    public boolean isGlobal() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.global, true);
+    }
+
+    public void setGlobal(boolean global) {
+        getStateHelper().put(PropertyKeys.global, global);
     }
 
 }
