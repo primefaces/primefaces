@@ -38,7 +38,6 @@ import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Objects;
 import org.primefaces.component.api.UITable;
 
@@ -117,9 +116,9 @@ public class FilterMeta implements Serializable {
                               column);
     }
 
-    public static FilterMeta of(Collection<FilterMeta> filterBy, Object globalFilterValue, MethodExpression globalFilterFunction) {
+    public static FilterMeta of(Object globalFilterValue, MethodExpression globalFilterFunction) {
         FilterConstraint constraint = globalFilterFunction == null
-                ? new GlobalFilterConstraint(filterBy)
+                ? new GlobalFilterConstraint()
                 : new FunctionFilterConstraint(globalFilterFunction);
 
         return new FilterMeta(GLOBAL_FILTER_KEY,

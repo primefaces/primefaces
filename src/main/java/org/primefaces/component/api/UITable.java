@@ -206,7 +206,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             if (globalFilterComponent instanceof ValueHolder) {
                 ((ValueHolder) globalFilterComponent).setValue(globalFilter);
             }
-            FilterMeta globalFilterBy = FilterMeta.of(filterBy.values(), globalFilter, getGlobalFilterFunction());
+            FilterMeta globalFilterBy = FilterMeta.of(globalFilter, getGlobalFilterFunction());
             filterBy.put(globalFilterBy.getColumnKey(), globalFilterBy);
             filtered.set(filtered.get() || globalFilterBy.isActive());
         }
