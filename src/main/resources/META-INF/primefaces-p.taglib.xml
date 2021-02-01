@@ -19783,6 +19783,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Adds a show/hide icon to the password to allow the password to be unmasked/remasked. Default is false.]]>
+            </description>
+            <name>unmaskable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
