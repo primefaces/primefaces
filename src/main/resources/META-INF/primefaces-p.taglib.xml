@@ -32208,14 +32208,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines the image to display.]]>
-            </description>
-            <name>image</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Size of the element, valid options are "large" and "xlarge".]]>
             </description>
             <name>size</name>

@@ -40,7 +40,6 @@ public class AvatarRenderer extends CoreRenderer {
         String styleClass = getStyleClassBuilder(context)
                 .add(Avatar.STYLE_CLASS)
                 .add(avatar.getStyleClass())
-                .add(avatar.getImage() != null, Avatar.IMAGE_CLASS)
                 .add("circle".equals(avatar.getShape()), Avatar.CIRCLE_CLASS)
                 .add("large".equals(avatar.getSize()), Avatar.SIZE_LARGE_CLASS)
                 .add("xlarge".equals(avatar.getSize()), Avatar.SIZE_XLARGE_CLASS)
@@ -81,11 +80,6 @@ public class AvatarRenderer extends CoreRenderer {
             writer.startElement("span", null);
             writer.writeAttribute("class", iconStyleClass, "styleClass");
             writer.endElement("span");
-        }
-        else if (avatar.getImage() != null) {
-            writer.startElement("img", null);
-            writer.writeAttribute("src", avatar.getImage(), null);
-            writer.endElement("img");
         }
     }
 

@@ -30,7 +30,6 @@ public class Avatar extends AvatarBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Avatar";
 
     public static final String STYLE_CLASS = "ui-avatar ui-widget";
-    public static final String IMAGE_CLASS = "ui-avatar-image";
     public static final String CIRCLE_CLASS = "ui-avatar-circle";
     public static final String SIZE_LARGE_CLASS = "ui-avatar-lg";
     public static final String SIZE_XLARGE_CLASS = "ui-avatar-xl";

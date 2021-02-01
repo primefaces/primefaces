@@ -34,7 +34,6 @@ public abstract class AvatarBase extends UIComponentBase {
     public enum PropertyKeys {
         label,
         icon,
-        image,
         size,
         shape,
         style,
@@ -64,14 +63,6 @@ public abstract class AvatarBase extends UIComponentBase {
 
     public void setIcon(String icon) {
         getStateHelper().put(PropertyKeys.icon, icon);
-    }
-
-    public String getImage() {
-        return (String) getStateHelper().eval(PropertyKeys.image, null);
-    }
-
-    public void setImage(String image) {
-        getStateHelper().put(PropertyKeys.image, image);
     }
 
     public String getSize() {
