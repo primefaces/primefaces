@@ -7,10 +7,6 @@
     font-size: 1rem;
 }
 
-.ui-avatar.ui-avatar-image {
-    background-color: transparent;
-}
-
 .ui-avatar.ui-avatar-circle {
     border-radius: 50%;
 }
