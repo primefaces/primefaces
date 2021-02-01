@@ -37,6 +37,7 @@ import org.primefaces.util.ComponentUtils;
 
 public class SearchExpressionUtils {
 
+    public static final Set<SearchExpressionHint> SET_NONE = Collections.unmodifiableSet(EnumSet.noneOf(SearchExpressionHint.class));
     public static final Set<SearchExpressionHint> SET_SKIP_UNRENDERED = Collections.unmodifiableSet(EnumSet.of(SearchExpressionHint.SKIP_UNRENDERED));
     public static final Set<SearchExpressionHint> SET_RESOLVE_CLIENT_SIDE = Collections.unmodifiableSet(EnumSet.of(SearchExpressionHint.RESOLVE_CLIENT_SIDE));
     public static final Set<SearchExpressionHint> SET_PARENT_FALLBACK = Collections.unmodifiableSet(EnumSet.of(SearchExpressionHint.PARENT_FALLBACK));

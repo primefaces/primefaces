@@ -145,6 +145,8 @@ public class FilterFeature implements DataTableFeature {
             table.setRowIndex(i);
             matching.set(true);
 
+            Object rowData = table.getRowData();
+
             final int rowIndex = i;
             table.forEachColumn(column -> {
                 FilterMeta filter = filterBy.get(column.getColumnKey(table, rowIndex));
@@ -154,7 +156,7 @@ public class FilterFeature implements DataTableFeature {
 
                 FilterConstraint constraint = filter.getConstraint();
                 Object filterValue = filter.getFilterValue();
-                Object columnValue = filter.isGlobalFilter() ? table.getRowData() : filter.getLocalValue(elContext);
+                Object columnValue = filter.isGlobalFilter() ? rowData : filter.getLocalValue(elContext);
 
                 matching.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
                 return matching.get();

@@ -43,6 +43,7 @@ import javax.faces.context.FacesContext;
 import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionHint;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.ColumnMeta;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortMeta;
@@ -196,9 +197,9 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
     default void updateFilterByWithGlobalFilter(FacesContext context, Map<String, FilterMeta> filterBy, AtomicBoolean filtered) {
         String globalFilter = getGlobalFilter();
-        EnumSet<SearchExpressionHint> hint = LangUtils.isValueBlank(globalFilter)
-                ? EnumSet.of(SearchExpressionHint.IGNORE_NO_RESULT)
-                : EnumSet.noneOf(SearchExpressionHint.class);
+        Set<SearchExpressionHint> hint = LangUtils.isValueBlank(globalFilter)
+                ? SearchExpressionUtils.SET_IGNORE_NO_RESULT
+                : SearchExpressionUtils.SET_NONE;
         UIComponent globalFilterComponent = SearchExpressionFacade
                 .resolveComponent(context, (UIComponent) this, "globalFilter", hint);
         if (globalFilterComponent != null) {
@@ -220,40 +221,40 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         char separator = UINamingContainer.getSeparatorChar(context);
 
+        FilterMeta globalFilter = filterBy.get(FilterMeta.GLOBAL_FILTER_KEY);
+        if (globalFilter != null) {
+            globalFilter.setFilterValue(
+                    params.get(((UIComponent) this).getClientId(context) + separator + FilterMeta.GLOBAL_FILTER_KEY));
+        }
+
         forEachColumn(column -> {
             FilterMeta filterMeta = filterBy.get(column.getColumnKey());
-            if (filterMeta == null) {
+            if (filterMeta == null || filterMeta.isGlobalFilter()) {
                 return true;
             }
 
-            Object filterValue;
-
-            if (filterMeta.isGlobalFilter()) {
-                filterValue = params.get(((UIComponent) this).getClientId(context) + separator + FilterMeta.GLOBAL_FILTER_KEY);
-            }
-            else {
-                UIComponent filterFacet = column.getFacet("filter");
-                boolean hasCustomFilter = filterFacet != null;
-                if (column instanceof DynamicColumn) {
-                    if (hasCustomFilter) {
-                        ((DynamicColumn) column).applyModel();
-                        // UIColumn#rendered might change after restoring p:columns state at the right index
-                        hasCustomFilter = ComponentUtils.shouldRenderFacet(filterFacet);
-                    }
-                    else {
-                        ((DynamicColumn) column).applyStatelessModel();
-                    }
-                }
-
+            UIComponent filterFacet = column.getFacet("filter");
+            boolean hasCustomFilter = filterFacet != null;
+            if (column instanceof DynamicColumn) {
                 if (hasCustomFilter) {
-                    filterValue = ((ValueHolder) filterFacet).getLocalValue();
+                    ((DynamicColumn) column).applyModel();
+                    // UIColumn#rendered might change after restoring p:columns state at the right index
+                    hasCustomFilter = ComponentUtils.shouldRenderFacet(filterFacet);
                 }
                 else {
-                    String valueHolderClientId = column instanceof DynamicColumn
-                            ? column.getContainerClientId(context) + separator + "filter"
-                            : column.getClientId(context) + separator + "filter";
-                    filterValue = params.get(valueHolderClientId);
+                    ((DynamicColumn) column).applyStatelessModel();
                 }
+            }
+
+            Object filterValue;
+            if (hasCustomFilter) {
+                filterValue = ((ValueHolder) filterFacet).getLocalValue();
+            }
+            else {
+                String valueHolderClientId = column instanceof DynamicColumn
+                        ? column.getContainerClientId(context) + separator + "filter"
+                        : column.getClientId(context) + separator + "filter";
+                filterValue = params.get(valueHolderClientId);
             }
 
             // returns null if empty string/array/object
