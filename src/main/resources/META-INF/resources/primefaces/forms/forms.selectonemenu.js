@@ -399,7 +399,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             this.items.eq(0).addClass('ui-state-active');
         }
         else {
-            this.highlightItem(this.items.eq(this.preShowValue.index()));
+            this.highlightItem(this.items.eq(this.options.index(this.preShowValue)));
         }
     },
 
