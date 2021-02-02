@@ -36,6 +36,7 @@ public abstract class AvatarBase extends UIComponentBase {
         icon,
         size,
         shape,
+        dynamicColor,
         style,
         styleClass
     }
@@ -79,6 +80,14 @@ public abstract class AvatarBase extends UIComponentBase {
 
     public void setShape(String shape) {
         getStateHelper().put(PropertyKeys.shape, shape);
+    }
+
+    public boolean isDynamicColor() {
+        return (Boolean) getStateHelper().eval(AvatarBase.PropertyKeys.dynamicColor, false);
+    }
+
+    public void setDynamicColor(boolean dynamicColor) {
+        getStateHelper().put(AvatarBase.PropertyKeys.dynamicColor, dynamicColor);
     }
 
     public String getStyle() {

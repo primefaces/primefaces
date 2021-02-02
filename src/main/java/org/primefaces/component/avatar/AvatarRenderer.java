@@ -24,14 +24,21 @@
 package org.primefaces.component.avatar;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.SharedStringBuilder;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AvatarRenderer extends CoreRenderer {
+
+    private static final Pattern LETTER_PATTTERN = Pattern.compile("\\b[a-zA-Z]");
+    private static final String SB_AVATAR = AvatarRenderer.class.getName() + "#avatar";
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -45,11 +52,18 @@ public class AvatarRenderer extends CoreRenderer {
                 .add("xlarge".equals(avatar.getSize()), Avatar.SIZE_XLARGE_CLASS)
                 .build();
 
-        writer.startElement("div", null);
+        writer.startElement("div", avatar);
         writer.writeAttribute("id", avatar.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if (avatar.getStyle() != null) {
-            writer.writeAttribute("style", avatar.getStyle(), "style");
+        String label = calculateLabel(context, avatar);
+        String style = avatar.getStyle();
+        if (avatar.isDynamicColor() && label != null) {
+            String colorCss = generateBackgroundColor(label);
+            style = style == null ? colorCss : colorCss + style;
+        }
+
+        if (style != null) {
+            writer.writeAttribute("style", style, "style");
         }
 
         if (avatar.getChildCount() > 0) {
@@ -64,11 +78,16 @@ public class AvatarRenderer extends CoreRenderer {
 
     protected void encodeDefaultContent(FacesContext context, Avatar avatar) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String label = avatar.getLabel();
 
-        if (avatar.getLabel() != null) {
+        if (LangUtils.isNotBlank(label)) {
             writer.startElement("span", null);
-            writer.writeAttribute("class", Avatar.SIZE_TEXT_CLASS, "styleClass");
-            writer.write(avatar.getLabel());
+            String textClass = getStyleClassBuilder(context)
+                        .add(Avatar.SIZE_TEXT_CLASS)
+                        .add(avatar.isDynamicColor(), Avatar.DYNAMIC_COLOR_CLASS)
+                        .build();
+            writer.writeAttribute("class", textClass, "styleClass");
+            writer.write(label);
             writer.endElement("span");
         }
         else if (avatar.getIcon() != null) {
@@ -91,5 +110,36 @@ public class AvatarRenderer extends CoreRenderer {
     @Override
     public boolean getRendersChildren() {
         return true;
+    }
+
+    /**
+     * Generates a label based on the text if its more than 2 characters. Example: PrimeFaces Rocks = PR
+     *
+     * @param avatar the Avatar component
+     * @return the calculated label text.
+     */
+    protected String calculateLabel(FacesContext context, Avatar avatar) {
+        String value = avatar.getLabel();
+        if (value == null || value.length() <= 2) {
+            return value;
+        }
+        Matcher m = LETTER_PATTTERN.matcher(value);
+        StringBuilder sb = SharedStringBuilder.get(context, SB_AVATAR);
+        while (m.find()) {
+            sb.append(m.group());
+        }
+        String initials = sb.toString();
+        initials = initials.length() == 1 ? initials : initials.charAt(0) + initials.substring(initials.length() - 1);
+        return initials;
+    }
+
+    /**
+     * Generates a dynamic color based on the hash of the label.
+     *
+     * @param label the label to generate the color for
+     * @return the new color and background color styles
+     */
+    protected String generateBackgroundColor(String label) {
+        return "color:#fff;background-color: hsl(" + Math.abs((label.hashCode() % 40) * 9) + ", 100%, 50%);";
     }
 }

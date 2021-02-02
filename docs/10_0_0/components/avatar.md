@@ -26,6 +26,7 @@ Avatar represents people using icons, labels and images.
 | shape | square | String | Shape of the element, valid options are "square" and "circle".
 | style | null | String | Style of the avatar.
 | styleClass | null | String | StyleClass of the avatar.
+| dynamicColor | false | Boolean | Dynamically assign contrasting foreground and background colors based on the label. Default is false.
 
 ## Getting Started
 Avatar has three built-in display modes; "label", "icon" and custom content.
