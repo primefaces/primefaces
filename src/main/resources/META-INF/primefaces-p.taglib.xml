@@ -10177,6 +10177,12 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
+            <description>Global AJAX requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus.</description>
+            <name>global</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
             <description>
                 <![CDATA[Method expression to invoke when a file is uploaded.]]>
             </description>
@@ -32202,14 +32208,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines the image to display.]]>
-            </description>
-            <name>image</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Size of the element, valid options are "large" and "xlarge".]]>
             </description>
             <name>size</name>
@@ -32223,6 +32221,14 @@
             <name>shape</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Dynamically assign contrasting foreground and background colors based on the label. Default is false.]]>
+            </description>
+            <name>dynamicColor</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>

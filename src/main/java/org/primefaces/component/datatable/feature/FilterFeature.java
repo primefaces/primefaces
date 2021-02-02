@@ -137,30 +137,51 @@ public class FilterFeature implements DataTableFeature {
         Locale filterLocale = table.resolveDataLocale();
         ELContext elContext = context.getELContext();
         Map<String, FilterMeta> filterBy = table.getFilterByAsMap();
+        FilterMeta globalFilter = filterBy.get(FilterMeta.GLOBAL_FILTER_KEY);
 
         table.setValue(null); // reset value (instead of filtering on already filtered value)
-        AtomicBoolean matching = new AtomicBoolean();
+        AtomicBoolean localMatch = new AtomicBoolean();
+        AtomicBoolean globalMatch = new AtomicBoolean();
 
         for (int i = 0; i < table.getRowCount(); i++) {
             table.setRowIndex(i);
-            matching.set(true);
+            localMatch.set(true);
+            if (globalFilter != null) {
+                globalMatch.set(false);
+            }
 
             final int rowIndex = i;
             table.forEachColumn(column -> {
                 FilterMeta filter = filterBy.get(column.getColumnKey(table, rowIndex));
-                if (filter == null || !filter.isActive()) {
+                if (filter == null || filter.isGlobalFilter()) {
+                    return true;
+                }
+
+                Object columnValue = filter.getLocalValue(elContext);
+
+                if (globalFilter != null && !globalMatch.get()) {
+                    FilterConstraint constraint = globalFilter.getConstraint();
+                    Object filterValue = globalFilter.getFilterValue();
+                    globalMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
+                }
+
+                if (!filter.isActive()) {
                     return true;
                 }
 
                 FilterConstraint constraint = filter.getConstraint();
                 Object filterValue = filter.getFilterValue();
-                Object columnValue = filter.isGlobalFilter() ? table.getRowData() : filter.getLocalValue(elContext);
 
-                matching.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
-                return matching.get();
+                localMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
+                return localMatch.get();
             });
 
-            if (matching.get()) {
+            boolean matches = localMatch.get();
+            if (globalFilter != null) {
+                matches = matches && globalMatch.get();
+            }
+
+            if (matches) {
                 filtered.add(table.getRowData());
             }
         }

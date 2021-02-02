@@ -34,9 +34,9 @@ public abstract class AvatarBase extends UIComponentBase {
     public enum PropertyKeys {
         label,
         icon,
-        image,
         size,
         shape,
+        dynamicColor,
         style,
         styleClass
     }
@@ -66,14 +66,6 @@ public abstract class AvatarBase extends UIComponentBase {
         getStateHelper().put(PropertyKeys.icon, icon);
     }
 
-    public String getImage() {
-        return (String) getStateHelper().eval(PropertyKeys.image, null);
-    }
-
-    public void setImage(String image) {
-        getStateHelper().put(PropertyKeys.image, image);
-    }
-
     public String getSize() {
         return (String) getStateHelper().eval(PropertyKeys.size, null);
     }
@@ -88,6 +80,14 @@ public abstract class AvatarBase extends UIComponentBase {
 
     public void setShape(String shape) {
         getStateHelper().put(PropertyKeys.shape, shape);
+    }
+
+    public boolean isDynamicColor() {
+        return (Boolean) getStateHelper().eval(AvatarBase.PropertyKeys.dynamicColor, false);
+    }
+
+    public void setDynamicColor(boolean dynamicColor) {
+        getStateHelper().put(AvatarBase.PropertyKeys.dynamicColor, dynamicColor);
     }
 
     public String getStyle() {

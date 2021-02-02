@@ -132,7 +132,7 @@ public class ScheduleRenderer extends CoreRenderer {
                     jsonObject.put("url", event.getUrl());
                 }
                 if (event.getDisplay() != null) {
-                    jsonObject.put("display", event.getDisplay());
+                    jsonObject.put("display", Objects.toString(event.getDisplay(), null));
                 }
                 if (event.getBackgroundColor() != null) {
                     jsonObject.put("backgroundColor", event.getBackgroundColor());
@@ -143,7 +143,6 @@ public class ScheduleRenderer extends CoreRenderer {
                 if (event.getTextColor() != null) {
                     jsonObject.put("textColor", event.getTextColor());
                 }
-                jsonObject.put("rendering", Objects.toString(event.getRenderingMode(), null));
 
                 if (event.getDynamicProperties() != null) {
                     for (Map.Entry<String, Object> dynaProperty : event.getDynamicProperties().entrySet()) {
