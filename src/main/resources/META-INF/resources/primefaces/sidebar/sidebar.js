@@ -19,6 +19,8 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.DynamicOverlayWidgetCfg} cfg
  * 
+ * @prop {boolean} cfg.modal Whether the sidebar is modal and blocks the main content and other dialogs.
+ * @prop {boolean} cfg.showCloseIcon Whether the close icon is displayed.
  * @prop {string} cfg.appendTo The search expression for the element to which the overlay panel should be appended.
  * @prop {number} cfg.baseZIndex Base z-index for the sidebar.
  * @prop {PrimeFaces.widget.Sidebar.OnHideCallback} cfg.onHide Callback that is invoked when the sidebar is opened.
@@ -37,8 +39,13 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
     init: function(cfg) {
         this._super(cfg);
 
-        this.closeIcon = this.jq.children('.ui-sidebar-close');
+        this.cfg.modal = (this.cfg.modal === true || this.cfg.modal === undefined);
+        this.cfg.showCloseIcon = (this.cfg.showCloseIcon === true || this.cfg.showCloseIcon === undefined);
         this.cfg.baseZIndex = this.cfg.baseZIndex||0;
+
+        if(this.cfg.showCloseIcon) {
+            this.closeIcon = this.jq.children('.ui-sidebar-close');
+        }
 
         //aria
         this.applyARIA();
@@ -68,18 +75,20 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
     bindEvents: function() {
         var $this = this;
 
-        this.closeIcon.on('mouseover', function() {
-            $(this).addClass('ui-state-hover');
-        }).on('mouseout', function() {
-            $(this).removeClass('ui-state-hover');
-        }).on('focus', function() {
-            $(this).addClass('ui-state-focus');
-        }).on('blur', function() {
-            $(this).removeClass('ui-state-focus');
-        }).on('click', function(e) {
-            $this.hide();
-            e.preventDefault();
-        });
+        if(this.cfg.showCloseIcon) {
+            this.closeIcon.off('mouseover mouseout focus blur click').on('mouseover', function() {
+                $(this).addClass('ui-state-hover');
+            }).on('mouseout', function() {
+                $(this).removeClass('ui-state-hover');
+            }).on('focus', function() {
+                $(this).addClass('ui-state-focus');
+            }).on('blur', function() {
+                $(this).removeClass('ui-state-focus');
+            }).on('click', function(e) {
+                $this.hide();
+                e.preventDefault();
+            });
+        }
     },
 
     /**
@@ -107,7 +116,10 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.jq.css('z-index', String(this.cfg.baseZIndex + (++PrimeFaces.zindex)));
 
         this.postShow();
-        this.enableModality();
+
+        if(this.cfg.modal) {
+            this.enableModality();
+        }
     },
 
     /**
@@ -133,7 +145,10 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
         this.jq.removeClass('ui-sidebar-active');
         this.onHide();
-        this.disableModality();
+
+        if(this.cfg.modal) {
+            this.disableModality();
+        }
     },
 
     /**
@@ -196,10 +211,12 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.jq.attr({
             'role': 'dialog'
             ,'aria-hidden': !this.cfg.visible
-            ,'aria-modal': this.cfg.visible
+            ,'aria-modal': this.cfg.modal && this.cfg.visible
         });
 
-        this.closeIcon.attr('role', 'button');
+        if(this.cfg.showCloseIcon) {
+            this.closeIcon.attr('role', 'button');
+        }
     },
 
     /**

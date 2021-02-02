@@ -34,6 +34,8 @@ appendTo | null | String | Appends the sidebar to the given search expression.
 dynamic | false | Boolean | Defines if dynamic loading is enabled for the element's panel. If the value is "true", the sidebar is not rendered on page load to improve performance. Default is false.
 onShow | null | String | Client side callback to execute when sidebar is displayed.
 onHide | null | String | Client side callback to execute when sidebar is hidden.
+modal | true | Boolean | Enables modality.
+showCloseIcon | true | Boolean | Displays a close icon to hide the overlay, default is true.
 
 ## Getting started with the Sidebar
 Sidebar is used a container to other components and display is toggle using the show() and hide()
