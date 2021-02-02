@@ -27,17 +27,22 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.SharedStringBuilder;
 
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AvatarRenderer extends CoreRenderer {
 
     private static final Pattern LETTER_PATTTERN = Pattern.compile("\\b[a-zA-Z]");
+    private static final String GRAVATAR_URL = "http://www.gravatar.com/avatar/";
     private static final String SB_AVATAR = AvatarRenderer.class.getName() + "#avatar";
 
     @Override
@@ -52,7 +57,7 @@ public class AvatarRenderer extends CoreRenderer {
                 .add("xlarge".equals(avatar.getSize()), Avatar.SIZE_XLARGE_CLASS)
                 .build();
 
-        writer.startElement("div", avatar);
+        writer.startElement("div", null);
         writer.writeAttribute("id", avatar.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         String label = calculateLabel(context, avatar);
@@ -100,6 +105,11 @@ public class AvatarRenderer extends CoreRenderer {
             writer.writeAttribute("class", iconStyleClass, "styleClass");
             writer.endElement("span");
         }
+        else  if (avatar.getGravatar() != null) {
+            writer.startElement("img", null);
+            writer.writeAttribute("src", generateGravatar(context, avatar), "src");
+            writer.endElement("img");
+        }
     }
 
     @Override
@@ -141,5 +151,48 @@ public class AvatarRenderer extends CoreRenderer {
      */
     protected String generateBackgroundColor(String label) {
         return "color:#fff;background-color: hsl(" + Math.abs((label.hashCode() % 40) * 9) + ", 100%, 50%);";
+    }
+
+    /**
+     * Generate a Gravatar URL for an email addressed based on API docs.
+     *
+     * @see https://en.gravatar.com/site/implement/images/
+     * @param context the Face
+     * @param avatar the Avatar to create a Gravatar for
+     * @return the URL to retrieve the Gravatar image
+     */
+    protected String generateGravatar(FacesContext context, Avatar avatar) {
+        String email = avatar.getGravatar();
+        String config = avatar.getGravatarConfig();
+        String url = null;
+        try {
+            StringBuilder sb = SharedStringBuilder.get(context, SB_AVATAR);
+            sb.append(GRAVATAR_URL);
+            generateMailHash(sb, email);
+            if (LangUtils.isNotBlank(config)) {
+                sb.append('?').append(config);
+            }
+            url = sb.toString();
+        }
+        catch (NoSuchAlgorithmException e) {
+            throw new FacesException("Failed to generate Gravatar URL for value: " + email);
+        }
+        return url.toString();
+    }
+
+    /**
+     * Converts email address into a hash code for Gravatar API.
+     *
+     * @param sb the Stringbuilder to add the email address to
+     * @param email the email to encode
+     * @throws NoSuchAlgorithmException if hash can't be encoded
+     */
+    protected void generateMailHash(StringBuilder sb, String email) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("MD5"); // NOSONAR
+        md.update(email.getBytes(StandardCharsets.UTF_8));
+        byte[] digest = md.digest();
+        for (byte b : digest) {
+            sb.append(String.format("%02x", b & 0xff));
+        }
     }
 }

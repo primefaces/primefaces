@@ -27,6 +27,8 @@ Avatar represents people using icons, labels and images.
 | style | null | String | Style of the avatar.
 | styleClass | null | String | StyleClass of the avatar.
 | dynamicColor | false | Boolean | Dynamically assign contrasting foreground and background colors based on the label. Default is false.
+| gravatar | null | String | Gravatar e-mail address for the profile to be displayed.
+| gravatarConfig | null | String | Optional Gravatar configuration for any other Gravatar API URL parameters.
 
 ## Getting Started
 Avatar has three built-in display modes; "label", "icon" and custom content.
@@ -85,6 +87,15 @@ Content can easily be customized with the default slot instead of using the buil
 <p:avatar>
     Content
 </p:avatar>
+```
+
+## Gravatar
+A Gravatar is a Globally Recognized Avatar. You upload an image and create your public profile just once, 
+and then when you participate in any Gravatar-enabled site, your Gravatar image and public profile will automatically
+follow you there. For configuration options please see API docs: https://en.gravatar.com/site/implement/images/
+
+```xhtml
+<p:avatar gravatar="pfextensions@gmail.com" gravatarConfig="d=mp" />
 ```
 
 ## Skinning of Avatar
