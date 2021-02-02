@@ -32246,6 +32246,22 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Gravatar e-mail address for the profile to be displayed.]]>
+            </description>
+            <name>gravatar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Optional Gravatar configuration for any other Gravatar URL parameters.]]>
+            </description>
+            <name>gravatarConfig</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
