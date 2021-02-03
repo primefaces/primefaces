@@ -46,7 +46,9 @@ public abstract class SidebarBase extends UIComponentBase implements Widget {
         appendTo,
         dynamic,
         onShow,
-        onHide
+        onHide,
+        modal,
+        showCloseIcon
     }
 
     public SidebarBase() {
@@ -152,5 +154,21 @@ public abstract class SidebarBase extends UIComponentBase implements Widget {
 
     public void setOnHide(String onHide) {
         getStateHelper().put(PropertyKeys.onHide, onHide);
+    }
+
+    public boolean isModal() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.modal, true);
+    }
+
+    public void setModal(boolean modal) {
+        getStateHelper().put(PropertyKeys.modal, modal);
+    }
+
+    public boolean isShowCloseIcon() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showCloseIcon, true);
+    }
+
+    public void setShowCloseIcon(boolean showCloseIcon) {
+        getStateHelper().put(PropertyKeys.showCloseIcon, showCloseIcon);
     }
 }

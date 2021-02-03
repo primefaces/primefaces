@@ -24825,6 +24825,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Boolean value that specifies whether the document should be shielded with a partially transparent mask to require the user to close the Panel before being able to activate any elements in the document. Default is true.]]>
+            </description>
+            <name>modal</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Position of the sidebar. Default is left.]]>
             </description>
             <name>position</name>
@@ -24836,6 +24844,14 @@
                 <![CDATA[]]>
             </description>
             <name>fullScreen</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Displays a close icon to hide the overlay, default is true.]]>
+            </description>
+            <name>showCloseIcon</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>

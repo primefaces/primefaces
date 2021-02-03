@@ -64,7 +64,9 @@ public class SidebarRenderer extends CoreRenderer {
             writer.writeAttribute("style", style, null);
         }
 
-        encodeCloseIcon(context);
+        if (bar.isShowCloseIcon()) {
+            encodeCloseIcon(context);
+        }
 
         if (!bar.isDynamic()) {
             renderChildren(context, bar);
@@ -91,9 +93,11 @@ public class SidebarRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Sidebar", bar)
                 .attr("visible", bar.isVisible(), false)
+                .attr("modal", bar.isModal(), true)
                 .attr("blockScroll", bar.isBlockScroll(), false)
                 .attr("baseZIndex", bar.getBaseZIndex(), 0)
                 .attr("dynamic", bar.isDynamic(), false)
+                .attr("showCloseIcon", bar.isShowCloseIcon(), true)
                 .attr("appendTo", SearchExpressionFacade.resolveClientId(context, bar, bar.getAppendTo(),
                         SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
                 .callback("onHide", "function()", bar.getOnHide())
