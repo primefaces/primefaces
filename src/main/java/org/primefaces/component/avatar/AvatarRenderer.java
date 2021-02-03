@@ -75,15 +75,14 @@ public class AvatarRenderer extends CoreRenderer {
             renderChildren(context, avatar);
         }
         else {
-            encodeDefaultContent(context, avatar);
+            encodeDefaultContent(context, avatar, label);
         }
 
         writer.endElement("div");
     }
 
-    protected void encodeDefaultContent(FacesContext context, Avatar avatar) throws IOException {
+    protected void encodeDefaultContent(FacesContext context, Avatar avatar, String label) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String label = avatar.getLabel();
 
         if (LangUtils.isNotBlank(label)) {
             writer.startElement("span", null);
@@ -105,7 +104,7 @@ public class AvatarRenderer extends CoreRenderer {
             writer.writeAttribute("class", iconStyleClass, "styleClass");
             writer.endElement("span");
         }
-        else  if (avatar.getGravatar() != null) {
+        else if (avatar.getGravatar() != null) {
             writer.startElement("img", null);
             writer.writeAttribute("src", generateGravatar(context, avatar), "src");
             writer.endElement("img");
