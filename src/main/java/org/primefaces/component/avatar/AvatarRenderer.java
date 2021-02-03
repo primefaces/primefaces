@@ -163,7 +163,7 @@ public class AvatarRenderer extends CoreRenderer {
     protected String generateGravatar(FacesContext context, Avatar avatar) {
         String email = avatar.getGravatar();
         String config = avatar.getGravatarConfig();
-        String url = null;
+        String url;
         try {
             StringBuilder sb = SharedStringBuilder.get(context, SB_AVATAR);
             sb.append(GRAVATAR_URL);
@@ -176,7 +176,7 @@ public class AvatarRenderer extends CoreRenderer {
         catch (NoSuchAlgorithmException e) {
             throw new FacesException("Failed to generate Gravatar URL for value: " + email);
         }
-        return url.toString();
+        return url;
     }
 
     /**
