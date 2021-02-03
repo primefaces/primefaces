@@ -347,7 +347,8 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
                     jtpOptions += '<option value="' + i + '">' + (i + 1) + '</option>';
                 }
 
-                this.jtpSelect.html(jtpOptions);
+                // GitHub #6929: performance improvement not using JQ html()
+                this.jtpSelect[0].innerHTML = jtpOptions;
             }
             this.jtpSelect.children('option[value=' + (this.cfg.page) + ']').prop('selected','selected');
         }
