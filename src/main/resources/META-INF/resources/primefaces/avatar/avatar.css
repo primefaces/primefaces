@@ -11,6 +11,10 @@
     border-radius: 50%;
 }
 
+.ui-avatar-circle img {
+    border-radius: 50%;
+}
+
 .ui-avatar .ui-avatar-icon {
     font-size: 1rem;
 }
