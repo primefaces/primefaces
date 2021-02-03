@@ -219,6 +219,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      */
     refresh: function(cfg) {
         this.panelWidthAdjusted = false;
+        this.items = null;
 
         this._super(cfg);
     },
@@ -1071,7 +1072,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                     option = this.options.filter(':selected');
                 }
 
-                if (option && option.data('escape') == false) {
+                if (option && option.data('escape') === false) {
                     this.label.html(displayedLabel);
                 } else {
                     this.label.text(displayedLabel);
