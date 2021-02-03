@@ -59,7 +59,9 @@ A set of Avatars can be displayed together using the ```p:avatarGroup``` compone
 <p:avatarGroup>
     <p:avatar label="P"/>
     <p:avatar icon="pi pi-search"/>
-    <p:avatar image="user.png"/>
+    <p:avatar>
+        <p:graphicImage name="user.png" />
+    </p:avatar>
     <p:avatar label="+2"/>
 </p:avatarGroup>
 ```
@@ -95,7 +97,7 @@ and then when you participate in any Gravatar-enabled site, your Gravatar image 
 follow you there. For configuration options please see API docs: https://en.gravatar.com/site/implement/images/
 
 ```xhtml
-<p:avatar gravatar="pfextensions@gmail.com" gravatarConfig="d=mp" />
+<p:avatar gravatar="contact@primetek.com.tr" gravatarConfig="d=mp" />
 ```
 
 ## Skinning of Avatar
