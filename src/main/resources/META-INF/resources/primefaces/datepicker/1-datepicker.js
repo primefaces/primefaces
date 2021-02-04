@@ -25,6 +25,7 @@
  * @param {JQueryPrimeDatePicker.PickerInstance} PrimeFaces.widget.DatePicker.PreShowCallback.datePicker The current
  * date picker instance.
  *
+ * @prop {string} cfg.formId Client ID of the form that is used for AJAX requests.
  * @prop {JQuery} input The DOM element for the hidden input element with the selected date.
  * @prop {JQuery} jqEl The DOM element for the inline picker or the input.
  * @prop {boolean} refocusInput Whether focus should be put on the input again.
@@ -60,7 +61,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
      */
     init: function(cfg) {
         this._super(cfg);
-
+        this.cfg.formId = this.jq.closest('form').attr('id');
         this.input = $(this.jqId + '_input');
         this.jqEl = this.cfg.inline ? $(this.jqId + '_inline') : this.input;
         var $this = this;
@@ -360,7 +361,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             options.source = this.id;
             options.process = this.id;
             options.update = this.id;
-            options.formId = this.jq.closest('form').attr('id');
+            options.formId = this.cfg.formId;
             PrimeFaces.ajax.Request.handle(options);
         }
     },
