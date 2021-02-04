@@ -63,7 +63,7 @@ public class AvatarRenderer extends CoreRenderer {
         String label = calculateLabel(context, avatar);
         String style = avatar.getStyle();
         if (avatar.isDynamicColor() && label != null) {
-            String colorCss = generateBackgroundColor(label);
+            String colorCss = generateBackgroundColor(avatar.getLabel());
             style = style == null ? colorCss : colorCss + style;
         }
 
