@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
@@ -221,6 +222,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("tabindex", "-1", null);
         writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
+        encodeAriaLabel(writer, menu);
+
         if (menu.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);
         }
@@ -240,6 +243,17 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.endElement("select");
     }
 
+    protected void encodeAriaLabel(ResponseWriter writer, SelectOneMenu menu) throws IOException {
+        String ariaLabel =  Objects.toString(menu.getAttributes().get(HTML.ARIA_LABEL), null);
+        if (LangUtils.isValueBlank(ariaLabel)) {
+            String label = menu.getLabel();
+            ariaLabel = LangUtils.isValueBlank(label) ? menu.getPlaceholder() : label;
+        }
+        if (LangUtils.isNotBlank(ariaLabel)) {
+            writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
+        }
+    }
+
     protected void encodeLabel(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
@@ -248,9 +262,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             writer.writeAttribute("type", "text", null);
             writer.writeAttribute("name", menu.getClientId(context) + "_editableInput", null);
             writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS, null);
-
-            String ariaLabel = LangUtils.isValueBlank(menu.getLabel()) ? menu.getPlaceholder() : menu.getLabel();
-            writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
+            encodeAriaLabel(writer, menu);
 
             if (menu.getTabindex() != null) {
                 writer.writeAttribute("tabindex", menu.getTabindex(), null);
