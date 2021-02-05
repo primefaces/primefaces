@@ -567,8 +567,9 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 .collect(Collectors.joining(","));
     }
 
-    default <C extends UIComponent & UIColumn> String getConvertedFieldValue(FacesContext context, C column) {
+    default String getConvertedFieldValue(FacesContext context, UIColumn column) {
         Object value = createValueExprFromVarField(context, getVar(), column.getField()).getValue(context.getELContext());
-        return ComponentUtils.getConvertedAsString(context, column, value);
+        UIComponent component = column instanceof DynamicColumn ? ((DynamicColumn) column).getColumns() : (UIComponent) column;
+        return ComponentUtils.getConvertedAsString(context, component, value);
     }
 }
