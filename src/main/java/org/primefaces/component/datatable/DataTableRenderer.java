@@ -1338,8 +1338,7 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void encodeDefaultFieldCell(FacesContext context, DataTable table, UIColumn column, ResponseWriter writer) throws IOException {
-        UIComponent component = column instanceof UIComponent ? (UIComponent) column : null;
-        Object value = table.getConvertedFieldValue(context, (UIComponent & UIColumn) component);
+        Object value = table.getConvertedFieldValue(context, column);
         if (value != null) {
             writer.writeText(value, null);
         }
