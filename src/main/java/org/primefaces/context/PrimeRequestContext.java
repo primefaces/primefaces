@@ -250,6 +250,15 @@ public class PrimeRequestContext {
         return ignoreAutoUpdate;
     }
 
+    /**
+     * Overrides eventually set ignoreAutoUpdate from client.
+     * May be used e.g. combined with server-side update via <code>PrimeFaces.current().ajax().update("xxx")</code>
+     * @param ignoreAutoUpdate
+     */
+    public void setIgnoreAutoUpdate(Boolean ignoreAutoUpdate) {
+        this.ignoreAutoUpdate = ignoreAutoUpdate;
+    }
+
     public boolean isRTL() {
         if (rtl == null) {
             String param = context.getExternalContext().getInitParameter(Constants.ContextParams.DIRECTION);
