@@ -87,7 +87,7 @@ public class DataTable extends DataTableBase {
     public static final String SORTABLE_COLUMN_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon-carat-2-n-s";
     public static final String SORTABLE_COLUMN_ASCENDING_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon ui-icon-carat-2-n-s ui-icon-triangle-1-n";
     public static final String SORTABLE_COLUMN_DESCENDING_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon ui-icon-carat-2-n-s ui-icon-triangle-1-s";
-    public static final String SORTABLE_PRIORITY_CLASS = "ui-sortable-column-badge";
+    public static final String SORTABLE_PRIORITY_CLASS = "ui-sortable-column-badge ui-helper-hidden";
     public static final String STATIC_COLUMN_CLASS = "ui-static-column";
     public static final String UNSELECTABLE_COLUMN_CLASS = "ui-column-unselectable";
     public static final String HIDDEN_COLUMN_CLASS = "ui-helper-hidden";
