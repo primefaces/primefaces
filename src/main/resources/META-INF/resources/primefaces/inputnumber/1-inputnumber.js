@@ -57,6 +57,8 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         if (this.valueToRender !== "") {
             //set the value to the input the plugin will format it.
             this.autonumeric.set(this.valueToRender);
+            // GitHub #6940 blur firing too many change events
+            this.autonumeric.rawValueOnFocus = this.valueToRender;
         }
 
         this.copyValueToHiddenInput();
@@ -160,7 +162,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
 
         var newVal = this.getValue();
 
-        if (oldVal !== newVal) {
+        if (Number(oldVal) !== Number(newVal)) {
             this.setValueToHiddenInput(newVal);
         }
 

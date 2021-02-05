@@ -265,3 +265,7 @@
     justify-content: center;
     vertical-align: middle;
 }
+
+.ui-treetable .ui-sortable-column-badge.ui-helper-hidden {
+    display: none;
+}

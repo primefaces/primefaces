@@ -217,7 +217,7 @@ public class DataTableCSVExporter extends DataTableExporter {
             writer.append(escapeQuotes(value));
         }
         else if (LangUtils.isNotBlank(column.getField())) {
-            String value = table.getConvertedFieldValue(context, (UIComponent & UIColumn) column);
+            String value = table.getConvertedFieldValue(context, column);
             writer.append(escapeQuotes(Objects.toString(value, Constants.EMPTY_STRING)));
         }
         else {

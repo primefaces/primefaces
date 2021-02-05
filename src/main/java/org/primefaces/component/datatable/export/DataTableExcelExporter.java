@@ -250,7 +250,7 @@ public class DataTableExcelExporter extends DataTableExporter {
             updateCell(cell, exportColumnByFunction(context, column));
         }
         else if (LangUtils.isNotBlank(column.getField())) {
-            String value = table.getConvertedFieldValue(context, (UIComponent & UIColumn) column);
+            String value = table.getConvertedFieldValue(context, column);
             updateCell(cell, Objects.toString(value, Constants.EMPTY_STRING));
         }
         else {
