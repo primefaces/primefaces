@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.columntoggler;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
@@ -33,6 +34,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 
+import org.primefaces.event.ToggleCloseEvent;
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.Visibility;
@@ -52,6 +54,7 @@ public class ColumnToggler extends ColumnTogglerBase {
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("toggle", ToggleEvent.class)
+            .put("close", ToggleCloseEvent.class)
             .build();
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
@@ -86,7 +89,16 @@ public class ColumnToggler extends ColumnTogglerBase {
 
             super.queueEvent(new ToggleEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), visibility, index));
         }
-        else {
+        else if (event instanceof AjaxBehaviorEvent && eventName.equals("close")) {
+			String clientId = this.getClientId(context);
+
+			String visibleColumnIds = params.get(clientId + "_visibleColumnIds");
+			if (visibleColumnIds != null) {
+				String[] visibleColumns = visibleColumnIds.split(",");
+
+				super.queueEvent(new ToggleCloseEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), Arrays.asList(visibleColumns)));
+			}
+		} else {
             super.queueEvent(event);
         }
     }
