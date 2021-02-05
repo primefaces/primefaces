@@ -39,10 +39,6 @@ PrimeFaces.widget.ProgressBar = PrimeFaces.widget.BaseWidget.extend({
         this.value = this.cfg.initialValue;
         this.cfg.global = (this.cfg.global === false) ? false : true;
 
-        if(this.cfg.ajax) {
-            this.cfg.formId = this.jq.closest('form').attr('id');
-        }
-
         this.enableARIA();
     },
 
@@ -93,7 +89,7 @@ PrimeFaces.widget.ProgressBar = PrimeFaces.widget.BaseWidget.extend({
                 var options = {
                     source: $this.id,
                     process: $this.id,
-                    formId: $this.cfg.formId,
+                    formId: $this.getParentFormId(),
                     global: $this.cfg.global,
                     async: true,
                     oncomplete: function(xhr, status, args, data) {

@@ -562,6 +562,36 @@ if (!PrimeFaces.widget) {
                 this.refreshListeners = [];
             }
             this.refreshListeners.push(listener);
+        },
+
+        /**
+         * Gets the closest parent form for this widget.
+         *
+         * @return {JQuery|null} either the form or NULL if none found
+         * @since 10.0.0
+         */
+        getParentForm: function() {
+            return this.jq.closest('form');
+        },
+
+        /**
+         * Gets the closest parent form ID for this widget lazily so it can be used in AJAX requests.
+         *
+         * @return {string|null} either the form id or NULL if none found
+         * @since 10.0.0
+         */
+        getParentFormId: function() {
+            if(this.cfg.formId) {
+                return this.cfg.formId;
+            }
+            
+            //look for a parent of source
+            var form = this.getParentForm();
+            if (form.length > 0) {
+                this.cfg.formId = form.attr('id');
+            }
+            
+            return this.cfg.formId;
         }
     });
 

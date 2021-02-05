@@ -174,7 +174,7 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
             source: this.id,
             process: this.id,
             update: this.id,
-            formId: this.cfg.formId,
+            formId: this.getParentFormId(),
             params: [{name: this.id + '_virtualScrolling', value: true},
                      {name: this.id + '_first', value: first}],
             onsuccess: function(responseXML, status, xhr) {
