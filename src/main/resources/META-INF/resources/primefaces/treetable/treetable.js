@@ -2392,7 +2392,19 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
 
         return value;
     },
-    
+
+    /**
+     * Creates the sort order message shown to indicate what the current sort order is.
+     * @private
+     * @param {string | undefined} ariaLabel Optional label text from an aria attribute.
+     * @param {string} sortOrderMessage Sort order message.
+     * @return {string} The sort order message to use.
+     */
+    getSortMessage: function(ariaLabel, sortOrderMessage) {
+        var headerName = ariaLabel ? ariaLabel.split(':')[0] : '';
+        return headerName + ': ' + sortOrderMessage;
+    },
+
     /**
      * In multi-sort mode this will add number indicators to let the user know the current 
      * sort order. If only one column is sorted then no indicator is displayed and will
