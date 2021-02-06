@@ -318,7 +318,7 @@ public class PrimeFaces {
 
         /**
          * Updates all components with the given expressions or clientIds.
-         * {@link #setIgnoreAutoUpdate(Boolean)} my be used additionally to ignoreAutoUpdate.
+         * {@link #ignoreAutoUpdate()} my be used additionally to ignoreAutoUpdate.
          *
          * @param expressions a list of expressions or clientIds.
          */
@@ -355,7 +355,7 @@ public class PrimeFaces {
 
         /**
          * Updates all components with the given expressions or clientIds.
-         * {@link #setIgnoreAutoUpdate(Boolean)} my be used additionally to ignoreAutoUpdate.
+         * {@link #ignoreAutoUpdate()} my be used additionally to ignoreAutoUpdate.
          *
          * @param expressions a list of expressions or clientIds.
          */
@@ -369,7 +369,7 @@ public class PrimeFaces {
 
         /**
          * Updates all the given components.
-         * {@link #setIgnoreAutoUpdate(Boolean)} my be used additionally to ignoreAutoUpdate.
+         * {@link #ignoreAutoUpdate()} my be used additionally to ignoreAutoUpdate.
          *
          * @param components the {@link UIComponent}s.
          */
@@ -388,10 +388,9 @@ public class PrimeFaces {
         /**
          * Overrides eventually set ignoreAutoUpdate from client.
          * May be used e.g. combined with server-side update via <code>PrimeFaces.current().ajax().update("xxx")</code>
-         * @param ignoreAutoUpdate
          */
-        public void setIgnoreAutoUpdate(Boolean ignoreAutoUpdate) {
-            PrimeRequestContext.getCurrentInstance().setIgnoreAutoUpdate(ignoreAutoUpdate);
+        public void ignoreAutoUpdate() {
+            PrimeRequestContext.getCurrentInstance().setIgnoreAutoUpdate(true);
         }
     }
 
