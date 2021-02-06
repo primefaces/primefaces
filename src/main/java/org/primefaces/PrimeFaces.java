@@ -386,7 +386,7 @@ public class PrimeFaces {
         }
 
         /**
-         * Overrides eventually set ignoreAutoUpdate from client.
+         * Forces ignoreAutoUpdate.
          * May be used e.g. combined with server-side update via <code>PrimeFaces.current().ajax().update("xxx")</code>
          */
         public void ignoreAutoUpdate() {
