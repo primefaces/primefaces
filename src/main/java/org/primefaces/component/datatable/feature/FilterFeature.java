@@ -133,6 +133,13 @@ public class FilterFeature implements DataTableFeature {
     }
 
     public void filter(FacesContext context, DataTable table) {
+        if (!table.isFilteringCurrentlyActive()) {
+            table.updateFilteredValue(context, null);
+            table.setValue(null);
+            table.setRowIndex(-1); //reset datamodel
+            return;
+        }
+
         List<Object> filtered = new ArrayList<>();
         Locale filterLocale = table.resolveDataLocale();
         ELContext elContext = context.getELContext();

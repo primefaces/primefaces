@@ -141,7 +141,8 @@ public class DataTable extends DataTableBase {
     public static final String SMALL_SIZE_CLASS = "ui-datatable-sm";
     public static final String LARGE_SIZE_CLASS = "ui-datatable-lg";
 
-    public static final Map<DataTableFeatureKey, DataTableFeature> FEATURES = MapBuilder.<DataTableFeatureKey, DataTableFeature>builder()
+    public static final Map<DataTableFeatureKey, DataTableFeature> FEATURES =
+                MapBuilder.<DataTableFeatureKey, DataTableFeature>builder(new LinkedHashMap<DataTableFeatureKey, DataTableFeature>())
             .put(DataTableFeatureKey.DRAGGABLE_COLUMNS, new DraggableColumnsFeature())
             .put(DataTableFeatureKey.FILTER, new FilterFeature())
             .put(DataTableFeatureKey.PAGE, new PageFeature())
@@ -1074,4 +1075,5 @@ public class DataTable extends DataTableBase {
     public void setWidth(String width) {
         getStateHelper().put(InternalPropertyKeys.width, width);
     }
+
 }

@@ -408,6 +408,11 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         return getSortByAsMap().values().stream().anyMatch(SortMeta::isActive);
     }
 
+    default boolean isFilteringCurrentlyActive() {
+        return getFilterByAsMap().values().stream()
+                    .anyMatch( f -> f.isActive() && LangUtils.isNotBlank(Objects.toString(f.getFilterValue(), null)));
+    }
+
     default boolean isColumnSortable(FacesContext context, UIColumn column) {
         Map<String, SortMeta> sortBy = getSortByAsMap();
         if (sortBy.containsKey(column.getColumnKey())) {
