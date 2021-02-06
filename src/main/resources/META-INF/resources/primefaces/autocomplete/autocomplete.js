@@ -831,7 +831,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 source: this.id,
                 process: this.id,
                 update: this.id,
-                formId: this.cfg.formId,
+                formId: this.getParentFormId(),
                 onsuccess: function (responseXML, status, xhr) {
                     PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
@@ -1411,7 +1411,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             source: this.id,
             process: this.id,
             update: this.id,
-            formId: this.cfg.formId,
+            formId: this.getParentFormId(),
             global: false,
             params: [{name: this.id + '_clientCache', value: true}],
             onsuccess: function(responseXML, status, xhr) {

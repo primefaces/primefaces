@@ -168,7 +168,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                 source: this.id,
                 process: this.id,
                 update: this.id,
-                formId: this.cfg.formId,
+                formId: this.getParentFormId(),
                 params: [
                     {name: this.id + '_expandNode', value: $this.getRowKey(node)}
                 ],
