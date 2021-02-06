@@ -137,7 +137,7 @@ or the panel to be updated with AJAX response.
 
 Optionally you can skip auto update with
 ```java
-PrimeFaces.current().ajax().setIgnoreAutoUpdate(true);
+PrimeFaces.current().ajax().ignoreAutoUpdate();
 ```
 
 ## Auto update
