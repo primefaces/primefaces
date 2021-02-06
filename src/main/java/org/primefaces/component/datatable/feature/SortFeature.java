@@ -111,7 +111,7 @@ public class SortFeature implements DataTableFeature {
             }
 
             //update filtered value accordingly to take account sorting
-            if (table.hasActiveFilter()) {
+            if (table.isFilteringEnabled()) {
                 table.updateFilteredValue(context, resolveList(table.getValue()));
             }
         }

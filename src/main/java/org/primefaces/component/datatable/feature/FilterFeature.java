@@ -133,67 +133,62 @@ public class FilterFeature implements DataTableFeature {
     }
 
     public void filter(FacesContext context, DataTable table) {
+        List<Object> filtered = new ArrayList<>();
+        Locale filterLocale = table.resolveDataLocale();
+        ELContext elContext = context.getELContext();
+        Map<String, FilterMeta> filterBy = table.getFilterByAsMap();
+        FilterMeta globalFilter = filterBy.get(FilterMeta.GLOBAL_FILTER_KEY);
 
-        List<Object> filtered = null;
+        table.setValue(null); // reset value (instead of filtering on already filtered value)
+        AtomicBoolean localMatch = new AtomicBoolean();
+        AtomicBoolean globalMatch = new AtomicBoolean();
 
-        if ( table.hasActiveFilter() ) {
-            filtered = new ArrayList<>();
-            Locale filterLocale = table.resolveDataLocale();
-            ELContext elContext = context.getELContext();
-            Map<String, FilterMeta> filterBy = table.getFilterByAsMap();
-            FilterMeta globalFilter = filterBy.get(FilterMeta.GLOBAL_FILTER_KEY);
-
-            table.setValue(null); // reset value (instead of filtering on already filtered value)
-            AtomicBoolean localMatch = new AtomicBoolean();
-            AtomicBoolean globalMatch = new AtomicBoolean();
-
-            for (int i = 0; i < table.getRowCount(); i++) {
-                table.setRowIndex(i);
-                localMatch.set(true);
-                if (globalFilter != null) {
-                    globalMatch.set(false);
-                }
-
-                final int rowIndex = i;
-                table.forEachColumn(column -> {
-                    FilterMeta filter = filterBy.get(column.getColumnKey(table, rowIndex));
-                    if (filter == null || filter.isGlobalFilter()) {
-                        return true;
-                    }
-
-                    Object columnValue = filter.getLocalValue(elContext);
-
-                    if (globalFilter != null && !globalMatch.get()) {
-                        FilterConstraint constraint = globalFilter.getConstraint();
-                        Object filterValue = globalFilter.getFilterValue();
-                        globalMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
-                    }
-
-                    if (!filter.isActive()) {
-                        return true;
-                    }
-
-                    FilterConstraint constraint = filter.getConstraint();
-                    Object filterValue = filter.getFilterValue();
-
-                    localMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
-                    return localMatch.get();
-                });
-
-                boolean matches = localMatch.get();
-                if (globalFilter != null) {
-                    matches = matches && globalMatch.get();
-                }
-
-                if (matches) {
-                    filtered.add(table.getRowData());
-                }
+        for (int i = 0; i < table.getRowCount(); i++) {
+            table.setRowIndex(i);
+            localMatch.set(true);
+            if (globalFilter != null) {
+                globalMatch.set(false);
             }
 
-            //Metadata for callback
-            if (table.isPaginator() || table.isVirtualScroll()) {
-                PrimeFaces.current().ajax().addCallbackParam("totalRecords", filtered.size());
+            final int rowIndex = i;
+            table.forEachColumn(column -> {
+                FilterMeta filter = filterBy.get(column.getColumnKey(table, rowIndex));
+                if (filter == null || filter.isGlobalFilter()) {
+                    return true;
+                }
+
+                Object columnValue = filter.getLocalValue(elContext);
+
+                if (globalFilter != null && !globalMatch.get()) {
+                    FilterConstraint constraint = globalFilter.getConstraint();
+                    Object filterValue = globalFilter.getFilterValue();
+                    globalMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
+                }
+
+                if (!filter.isActive()) {
+                    return true;
+                }
+
+                FilterConstraint constraint = filter.getConstraint();
+                Object filterValue = filter.getFilterValue();
+
+                localMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
+                return localMatch.get();
+            });
+
+            boolean matches = localMatch.get();
+            if (globalFilter != null) {
+                matches = matches && globalMatch.get();
             }
+
+            if (matches) {
+                filtered.add(table.getRowData());
+            }
+        }
+
+        //Metadata for callback
+        if (table.isPaginator() || table.isVirtualScroll()) {
+            PrimeFaces.current().ajax().addCallbackParam("totalRecords", filtered.size());
         }
 
         //save filtered data

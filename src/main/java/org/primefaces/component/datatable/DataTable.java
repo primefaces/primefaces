@@ -141,26 +141,25 @@ public class DataTable extends DataTableBase {
     public static final String SMALL_SIZE_CLASS = "ui-datatable-sm";
     public static final String LARGE_SIZE_CLASS = "ui-datatable-lg";
 
-    public static final Map<DataTableFeatureKey, DataTableFeature> FEATURES = MapBuilder.<DataTableFeatureKey, DataTableFeature>builder( new LinkedHashMap<>() )
-            .put(DataTableFeatureKey.PAGE, new PageFeature())
-            .put(DataTableFeatureKey.SCROLL, new ScrollFeature())
-            .put(DataTableFeatureKey.FILTER, new FilterFeature())
-            .put(DataTableFeatureKey.SORT, new SortFeature())
-            .put(DataTableFeatureKey.SELECT, new SelectionFeature())
+    public static final Map<DataTableFeatureKey, DataTableFeature> FEATURES = MapBuilder.<DataTableFeatureKey, DataTableFeature>builder()
             .put(DataTableFeatureKey.DRAGGABLE_COLUMNS, new DraggableColumnsFeature())
+            .put(DataTableFeatureKey.FILTER, new FilterFeature())
+            .put(DataTableFeatureKey.PAGE, new PageFeature())
+            .put(DataTableFeatureKey.SORT, new SortFeature())
             .put(DataTableFeatureKey.RESIZABLE_COLUMNS, new ResizableColumnsFeature())
+            .put(DataTableFeatureKey.SELECT, new SelectionFeature())
             .put(DataTableFeatureKey.ROW_EDIT, new RowEditFeature())
             .put(DataTableFeatureKey.CELL_EDIT, new CellEditFeature())
             .put(DataTableFeatureKey.ROW_EXPAND, new RowExpandFeature())
+            .put(DataTableFeatureKey.SCROLL, new ScrollFeature())
             .put(DataTableFeatureKey.DRAGGABLE_ROWS, new DraggableRowsFeature())
             .put(DataTableFeatureKey.ADD_ROW, new AddRowFeature())
             .build();
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING =
-        MapBuilder.<String, Class<? extends BehaviorEvent>>builder( new LinkedHashMap<>() )
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("page", PageEvent.class)
-            .put("filter", FilterEvent.class)
             .put("sort", SortEvent.class)
+            .put("filter", FilterEvent.class)
             .put("rowSelect", SelectEvent.class)
             .put("rowUnselect", UnselectEvent.class)
             .put("rowEdit", RowEditEvent.class)
@@ -1074,11 +1073,5 @@ public class DataTable extends DataTableBase {
     @Override
     public void setWidth(String width) {
         getStateHelper().put(InternalPropertyKeys.width, width);
-    }
-
-    public boolean hasActiveFilter() {
-        // Empty Global Filter contains empty string
-        return getFilterByAsMap().values().stream().filter( f -> f.getFilterValue() != null && !LangUtils.isValueEmpty( f.getFilterValue().toString() ) )
-                                 .findFirst().isPresent();
     }
 }
