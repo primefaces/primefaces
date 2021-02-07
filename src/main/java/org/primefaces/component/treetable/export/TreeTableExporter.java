@@ -30,6 +30,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import javax.el.MethodExpression;
@@ -48,11 +50,13 @@ import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 
+import org.primefaces.component.api.UITabPanel;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.Exporter;
 import org.primefaces.component.overlaypanel.OverlayPanel;
 import org.primefaces.component.treetable.TreeTable;
+import org.primefaces.component.treetable.TreeTableBase;
 import org.primefaces.model.TreeNode;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -377,12 +381,31 @@ public abstract class TreeTableExporter implements Exporter<TreeTable> {
          * @return number of tables exported
          */
         public int invoke(FacesContext context) {
-            ComponentUtils.invokeOnClosestIteratorParent(target, p -> {
+            invokeOnClosestTreeTableParent(target, p -> {
                 VisitContext visitContext = VisitContext.createVisitContext(context);
                 p.visitTree(visitContext, this);
             }, true);
 
             return counter;
+        }
+
+        public boolean invokeOnClosestTreeTableParent(UIComponent component, Consumer<UIComponent> function, boolean includeSelf) {
+            Predicate<UIComponent> isIteratorComponent = p -> p instanceof TreeTableBase;
+
+            UIComponent parent = component;
+            while (null != (parent = parent.getParent())) {
+                if (isIteratorComponent.test(parent)) {
+                    function.accept(parent);
+                    return true;
+                }
+            }
+
+            if (includeSelf && isIteratorComponent.test(component)) {
+                function.accept(component);
+                return true;
+            }
+
+            return false;
         }
     }
 
