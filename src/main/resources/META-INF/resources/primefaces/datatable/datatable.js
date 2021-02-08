@@ -148,6 +148,7 @@
  * @prop {boolean} cfg.filter `true` if filtering is enabled, or `false` otherwise.
  * @prop {number} cfg.filterDelay Delay for filtering in milliseconds.
  * @prop {string} cfg.filterEvent Event to invoke filtering for input filters.
+ * @prop {string} cfg.formId Client ID of the form that is used for AJAX requests.
  * @prop {number} cfg.frozenColumns The number of frozen columns.
  * @prop {boolean} cfg.liveResize Columns are resized live in this mode without using a resize helper.
  * @prop {boolean} cfg.liveScroll Enables live scrolling.
@@ -1757,7 +1758,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             source: this.id,
             process: this.id,
             update: this.id,
-            formId: this.cfg.formId,
+            formId: this.getParentFormId(),
             params: [{name: this.id + '_scrolling', value: true},
                             {name: this.id + '_first', value: 1},
                             {name: this.id + '_skipChildren', value: true},
@@ -1815,7 +1816,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             source: this.id,
             process: this.id,
             update: this.id,
-            formId: this.cfg.formId,
+            formId: this.getParentFormId(),
             params: [{name: this.id + '_scrolling', value: true},
                             {name: this.id + '_skipChildren', value: true},
                             {name: this.id + '_first', value: first},
@@ -1862,7 +1863,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             source: this.id,
             update: this.id,
             process: this.id,
-            formId: this.cfg.formId,
+            formId: this.getParentFormId(),
             params: [{name: this.id + '_pagination', value: true},
                     {name: this.id + '_first', value: newState.first},
                     {name: this.id + '_rows', value: newState.rows},
@@ -1997,6 +1998,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             source: this.id,
             update: this.id,
             process: this.id,
+            formId: this.getParentFormId(),
             params: [{name: this.id + '_sorting', value: true},
                      {name: this.id + '_skipChildren', value: true},
                      {name: this.id + '_encodeFeature', value: true}],
@@ -2168,7 +2170,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             source: this.id,
             update: this.id,
             process: this.id,
-            formId: this.cfg.formId,
+            formId: this.getParentFormId(),
             params: [{name: this.id + '_filtering', value: true},
                      {name: this.id + '_encodeFeature', value: true}],
             onsuccess: function(responseXML, status, xhr) {
@@ -2884,7 +2886,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             source: this.id,
             process: this.id,
             update: this.id,
-            formId: this.cfg.formId,
+            formId: this.getParentFormId(),
             params: [{name: this.id + '_rowExpansion', value: true},
                      {name: this.id + '_expandedRowIndex', value: rowIndex},
                      {name: this.id + '_encodeFeature', value: true},
@@ -3605,7 +3607,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             source: this.id,
             process: this.id,
             update: this.id,
-            formId: this.cfg.formId,
+            formId: this.getParentFormId(),
             params: [{name: this.id + '_rowEditIndex', value: this.getRowMeta(row).index},
                      {name: this.id + '_rowEditAction', value: action},
                      {name: this.id + '_encodeFeature', value: true}],

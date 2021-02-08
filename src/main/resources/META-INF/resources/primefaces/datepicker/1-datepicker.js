@@ -61,7 +61,6 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
      */
     init: function(cfg) {
         this._super(cfg);
-        this.cfg.formId = this.jq.closest('form').attr('id');
         this.input = $(this.jqId + '_input');
         this.jqEl = this.cfg.inline ? $(this.jqId + '_inline') : this.input;
         var $this = this;
@@ -361,7 +360,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             options.source = this.id;
             options.process = this.id;
             options.update = this.id;
-            options.formId = this.cfg.formId;
+            options.formId = this.getParentFormId();
             PrimeFaces.ajax.Request.handle(options);
         }
     },

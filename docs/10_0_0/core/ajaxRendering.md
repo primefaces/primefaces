@@ -135,6 +135,11 @@ public void save() {
 When the save button is clicked, depending on the outcome, you can either configure the datatable
 or the panel to be updated with AJAX response.
 
+Optionally you can skip auto update with
+```java
+PrimeFaces.current().ajax().ignoreAutoUpdate();
+```
+
 ## Auto update
 
 Sometimes it's required to update a component on each AJAX request.

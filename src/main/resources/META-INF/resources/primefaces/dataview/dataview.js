@@ -36,7 +36,6 @@ PrimeFaces.widget.DataView = PrimeFaces.widget.BaseWidget.extend({
         this.content = this.jq.children('.ui-dataview-content');
         this.layoutOptions = this.header.children('.ui-dataview-layout-options');
         this.buttons = this.layoutOptions.children('div');
-        this.cfg.formId = this.jq.closest('form').attr('id');
 
         if(this.cfg.paginator) {
             this.setupPaginator();
@@ -168,7 +167,7 @@ PrimeFaces.widget.DataView = PrimeFaces.widget.BaseWidget.extend({
             source: this.id,
             update: this.id,
             process: this.id,
-            formId: this.cfg.formId,
+            formId: this.getParentFormId(),
             params: [
                 {name: this.id + '_pagination', value: true},
                 {name: this.id + '_first', value: newState.first},

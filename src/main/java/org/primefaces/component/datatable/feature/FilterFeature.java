@@ -89,6 +89,7 @@ public class FilterFeature implements DataTableFeature {
             table.setRows(Integer.parseInt(rppValue));
         }
 
+
         if (table.isLazy()) {
             if (table.isLiveScroll()) {
                 table.loadLazyScrollData(0, table.getScrollRows());
@@ -138,6 +139,8 @@ public class FilterFeature implements DataTableFeature {
         ELContext elContext = context.getELContext();
         Map<String, FilterMeta> filterBy = table.getFilterByAsMap();
         FilterMeta globalFilter = filterBy.get(FilterMeta.GLOBAL_FILTER_KEY);
+        boolean hasGlobalFilterFunction = globalFilter != null && globalFilter.getConstraint() instanceof FunctionFilterConstraint;
+
 
         table.setValue(null); // reset value (instead of filtering on already filtered value)
         AtomicBoolean localMatch = new AtomicBoolean();
@@ -145,9 +148,12 @@ public class FilterFeature implements DataTableFeature {
 
         for (int i = 0; i < table.getRowCount(); i++) {
             table.setRowIndex(i);
+            Object rowData = table.getRowData();
             localMatch.set(true);
-            if (globalFilter != null) {
-                globalMatch.set(false);
+            globalMatch.set(false);
+
+            if (hasGlobalFilterFunction) {
+                globalMatch.set(globalFilter.getConstraint().isMatching(context, rowData, globalFilter.getFilterValue(), filterLocale));
             }
 
             final int rowIndex = i;
@@ -159,7 +165,7 @@ public class FilterFeature implements DataTableFeature {
 
                 Object columnValue = filter.getLocalValue(elContext);
 
-                if (globalFilter != null && !globalMatch.get()) {
+                if (globalFilter != null && !globalMatch.get() && !hasGlobalFilterFunction) {
                     FilterConstraint constraint = globalFilter.getConstraint();
                     Object filterValue = globalFilter.getFilterValue();
                     globalMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
@@ -182,7 +188,7 @@ public class FilterFeature implements DataTableFeature {
             }
 
             if (matches) {
-                filtered.add(table.getRowData());
+                filtered.add(rowData);
             }
         }
 

@@ -341,7 +341,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             source: this.id,
             update: this.id,
             process: this.id,
-            formId: this.cfg.formId,
+            formId: this.getParentFormId(),
             params: [{name: this.id + '_filtering', value: true},
                      {name: this.id + '_encodeFeature', value: true}],
             onsuccess: function(responseXML, status, xhr) {
@@ -730,6 +730,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             source: this.id,
             update: this.id,
             process: this.id,
+            formId: this.getParentFormId(),
             params: [
                 {name: this.id + '_sorting', value: true}
             ],
@@ -1899,7 +1900,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             source: this.id,
             process: this.id,
             update: this.id,
-            formId: this.cfg.formId,
+            formId: this.getParentFormId(),
             params: [{name: this.id + '_rowEditIndex', value: rowIndex},
                      {name: this.id + '_rowEditAction', value: action}],
             onsuccess: function(responseXML, status, xhr) {
