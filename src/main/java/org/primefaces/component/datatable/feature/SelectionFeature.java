@@ -46,8 +46,7 @@ public class SelectionFeature implements DataTableFeature {
         String clientId = table.getClientId(context);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         Object originalValue = table.getValue();
-        Object filteredValue = table.getFilteredValue();
-        boolean isFiltered = (filteredValue != null);
+        boolean isFiltered = table.isFilteringCurrentlyActive();
 
         String selection = params.get(clientId + "_selection");
         Set<String> rowKeys = Collections.emptySet();
