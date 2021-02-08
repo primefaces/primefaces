@@ -34,7 +34,6 @@ import org.primefaces.model.filter.*;
 import org.primefaces.util.MapBuilder;
 
 import javax.el.ELContext;
-import javax.el.MethodExpression;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import java.io.IOException;
@@ -140,8 +139,7 @@ public class FilterFeature implements DataTableFeature {
         ELContext elContext = context.getELContext();
         Map<String, FilterMeta> filterBy = table.getFilterByAsMap();
         FilterMeta globalFilter = filterBy.get(FilterMeta.GLOBAL_FILTER_KEY);
-        MethodExpression globalFilterFunction = table.getGlobalFilterFunction();
-        boolean hasGlobalFilterFunction = globalFilterFunction != null && globalFilter != null;
+        boolean hasGlobalFilterFunction = globalFilter != null && globalFilter.getConstraint() instanceof FunctionFilterConstraint;
 
 
         table.setValue(null); // reset value (instead of filtering on already filtered value)
@@ -155,7 +153,7 @@ public class FilterFeature implements DataTableFeature {
             globalMatch.set(false);
 
             if (hasGlobalFilterFunction) {
-                globalMatch.set((Boolean) globalFilterFunction.invoke(elContext, new Object[]{rowData, globalFilter.getFilterValue(), filterLocale}));
+                globalMatch.set(globalFilter.getConstraint().isMatching(context, rowData, globalFilter.getFilterValue(), filterLocale));
             }
 
             final int rowIndex = i;
