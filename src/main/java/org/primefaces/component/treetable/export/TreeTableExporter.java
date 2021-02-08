@@ -50,7 +50,6 @@ import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 
-import org.primefaces.component.api.UITabPanel;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.Exporter;
@@ -58,7 +57,6 @@ import org.primefaces.component.overlaypanel.OverlayPanel;
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.component.treetable.TreeTableBase;
 import org.primefaces.model.TreeNode;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 
 public abstract class TreeTableExporter implements Exporter<TreeTable> {
