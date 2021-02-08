@@ -104,7 +104,7 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
      * Visit the current renderIds and, if the component is
      * an instance of {@link EditableValueHolder},
      * call its {@link EditableValueHolder#resetValue} method.
-     * Use {@link #visitTree} to do the visiting.</p>
+     * Use {@link javax.faces.component.UIComponent#visitTree} to do the visiting.</p>
      *
      * @param context The current {@link FacesContext}.
      */

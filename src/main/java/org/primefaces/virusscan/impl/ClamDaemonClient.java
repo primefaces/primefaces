@@ -44,7 +44,7 @@ import org.apache.commons.io.IOUtils;
  * <p>
  * <a href="http://linux.die.net/man/8/clamd">http://linux.die.net/man/8/clamd</a>
  *
- * @see https://github.com/solita/clamav-java
+ * @see <a href="https://github.com/solita/clamav-java">clamav-java</a>
  */
 public class ClamDaemonClient {
 

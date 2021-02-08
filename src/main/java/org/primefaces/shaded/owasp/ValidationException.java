@@ -24,7 +24,7 @@
 package org.primefaces.shaded.owasp;
 
 /**
- * @see https://github.com/ESAPI/esapi-java-legacy
+ * @see <a href="https://github.com/ESAPI/esapi-java-legacy">Esapi java Legacy</a>
  */
 public class ValidationException extends Exception {
 

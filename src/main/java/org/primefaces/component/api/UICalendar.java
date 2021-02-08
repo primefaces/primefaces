@@ -205,7 +205,7 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
     public abstract String calculateWidgetPattern();
 
     /**
-     * @see https://github.com/RobinHerbots/Inputmask/blob/5.x/README_date.md
+     * @see <a href="https://github.com/RobinHerbots/Inputmask/blob/5.x/README_date.md">Inputmask README_date</a>
      * @param patternTemplate the date pattern
      * @return the value converted for InputMask plugin
      */
