@@ -29,6 +29,7 @@ import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.util.DynamicContentSrcBuilder;
+import org.primefaces.util.Lazy;
 
 /**
  * Base class for HTML5 audio and video components.
@@ -46,7 +47,7 @@ public abstract class UIMedia extends UIComponentBase {
     public String resolveSource(FacesContext context, UIMedia media) throws IOException {
         try {
             return DynamicContentSrcBuilder.build(context, media, media.getValueExpression(PropertyKeys.value.name()),
-                    media.isCache(), true);
+                    new Lazy<>(() -> getValue()), media.isCache(), true);
         }
         catch (Exception ex) {
             throw new IOException(ex);
@@ -92,6 +93,5 @@ public abstract class UIMedia extends UIComponentBase {
     public void setCache(boolean cache) {
         getStateHelper().put(PropertyKeys.cache, cache);
     }
-
 
 }

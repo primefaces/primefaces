@@ -156,7 +156,8 @@ public class ImageCropperRenderer extends CoreRenderer {
         writer.writeAttribute("alt", alt, null);
 
         String src = DynamicContentSrcBuilder.build(context, cropper,
-                cropper.getValueExpression(ImageCropper.PropertyKeys.image.name()), cropper.isCache(), true);
+                cropper.getValueExpression(ImageCropper.PropertyKeys.image.name()),
+                new Lazy<>(() -> cropper.getImage()), cropper.isCache(), true);
         writer.writeAttribute("src", src, null);
 
         writer.writeAttribute("height", "auto", null);

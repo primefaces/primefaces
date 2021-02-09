@@ -49,19 +49,29 @@ public class DynamicContentSrcBuilder {
     private DynamicContentSrcBuilder() {
     }
 
-    public static String build(FacesContext context, UIComponent component, ValueExpression ve, boolean cache, boolean stream) {
+    public static String build(FacesContext context, UIComponent component, ValueExpression ve, Lazy<Object> value, boolean cache, boolean stream) {
 
-        if (ve == null) {
+        // no ValueExpression and no literal defined... skip
+        if (ve == null && value.get() == null) {
             return "";
         }
 
-        // lazy to avoid getter call, it isnt required in all cases
-        Lazy<Object> value = new Lazy(() -> ve.getValue(context.getELContext()));
+        Class<?> type = null;
+        // try to get the type from the EL API
+        if (ve != null) {
+            type = ve.getType(context.getELContext());
+        }
 
-        Class<?> type = ve.getType(context.getELContext());
+        // fallback to the type of the value instance
         if (type == null || type == Object.class) {
-            // fallback to the type of the value instance
-            type = value.get().getClass();
+            if (value.get() != null) {
+                type = value.get().getClass();
+            }
+        }
+
+        // skip null type
+        if (type == null) {
+            return "";
         }
 
         if (String.class.isAssignableFrom(type)) {
@@ -79,7 +89,7 @@ public class DynamicContentSrcBuilder {
             }
         }
 
-        return null;
+        return "";
     }
 
     public static String buildStreaming(FacesContext context, ValueExpression valueExpression, boolean cache) {

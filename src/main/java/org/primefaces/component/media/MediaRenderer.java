@@ -37,6 +37,7 @@ import org.primefaces.component.media.player.PDFPlayer;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AgentUtils;
 import org.primefaces.util.DynamicContentSrcBuilder;
+import org.primefaces.util.Lazy;
 
 public class MediaRenderer extends CoreRenderer {
 
@@ -48,7 +49,8 @@ public class MediaRenderer extends CoreRenderer {
         String src;
         try {
             src = DynamicContentSrcBuilder.build(context, media,
-                    media.getValueExpression(Media.PropertyKeys.value.name()), media.isCache(), true);
+                    media.getValueExpression(Media.PropertyKeys.value.name()),
+                    new Lazy<>(() -> media.getValue()), media.isCache(), true);
         }
         catch (Exception ex) {
             throw new IOException(ex);

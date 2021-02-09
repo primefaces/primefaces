@@ -34,6 +34,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.DynamicContentSrcBuilder;
 import org.primefaces.util.HTML;
+import org.primefaces.util.Lazy;
 
 public class GraphicImageRenderer extends CoreRenderer {
 
@@ -78,7 +79,7 @@ public class GraphicImageRenderer extends CoreRenderer {
         }
         else {
             return DynamicContentSrcBuilder.build(context, image, image.getValueExpression(GraphicImage.PropertyKeys.value.name()),
-                    image.isCache(), image.isStream());
+                    new Lazy<>(() -> image.getValue()), image.isCache(), image.isStream());
         }
     }
 }
