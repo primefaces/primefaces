@@ -97,19 +97,14 @@ public class SelectionFeature implements DataTableFeature {
             Object selection = selectionByVE.getValue(context.getELContext());
 
             if (selection != null) {
-                Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-                String var = table.getVar();
-                Set<String> rowKeys = new HashSet<>(table.getSelectedRowKeys());
-
-                Consumer<Object> computeRowKey = o -> {
-                    String rowKey = table.getRowKey(o);
-                    rowKeys.add(rowKey);
-                };
+                Set<String> rowKeys = new HashSet<>();
 
                 if (table.isSingleSelectionMode()) {
-                    computeRowKey.accept(selection);
+                    rowKeys.add(table.getRowKey(selection));
                 }
                 else {
+                    rowKeys.addAll(table.getSelectedRowKeys());
+
                     Class<?> clazz = selection.getClass();
                     boolean isArray = clazz != null && clazz.isArray();
 
@@ -120,11 +115,9 @@ public class SelectionFeature implements DataTableFeature {
                     List<Object> selectionTmp = isArray ? Arrays.asList((Object[]) selection) : (List<Object>) selection;
                     for (int i = 0; i < selectionTmp.size(); i++) {
                         Object o = selectionTmp.get(i);
-                        computeRowKey.accept(o);
+                        rowKeys.add(table.getRowKey(o));
                     }
                 }
-
-                requestMap.remove(var);
 
                 table.setSelectedRowKeys(rowKeys);
             }
@@ -184,8 +177,6 @@ public class SelectionFeature implements DataTableFeature {
             }
 
             setSelection(context, table, true, selection, rowKeysTmp);
-
-            requestMap.remove(var);
         }
     }
 
