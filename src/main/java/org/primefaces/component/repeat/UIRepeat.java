@@ -349,6 +349,18 @@ public class UIRepeat extends UINamingContainer {
         }
     }
 
+    private void clearValue(FacesContext ctx) {
+        if (this.var != null || this.varStatus != null) {
+            Map<String,Object> attrs = ctx.getExternalContext().getRequestMap();
+            if (this.var != null) {
+                attrs.remove(this.var);
+            }
+            if (this.varStatus != null) {
+                attrs.remove(this.varStatus);
+            }
+        }
+    }
+
     private Map<String,SavedState> childState;
 
     private Map<String,SavedState> getChildState() {
@@ -357,7 +369,7 @@ public class UIRepeat extends UINamingContainer {
         }
         return this.childState;
     }
-    
+
     private void clearChildState() {
         this.childState = null;
     }
@@ -377,7 +389,7 @@ public class UIRepeat extends UINamingContainer {
             for (UIComponent uiComponent : this.getChildren()) {
                 this.removeChildState(ctx, uiComponent);
             }
-            
+
             if (this.childState != null) {
                 this.childState.remove(this.getClientId(ctx));
             }
@@ -386,8 +398,8 @@ public class UIRepeat extends UINamingContainer {
 
     private void removeChildState(FacesContext faces, UIComponent c) {
         String id = c.getId();
-        c.setId(id);        
-        
+        c.setId(id);
+
         Iterator itr = c.getFacetsAndChildren();
         while (itr.hasNext()) {
             removeChildState(faces, (UIComponent) itr.next());
@@ -396,7 +408,7 @@ public class UIRepeat extends UINamingContainer {
             this.childState.remove(c.getClientId(faces));
         }
     }
-    
+
     private void saveChildState(FacesContext faces, UIComponent c) {
 
         if (c instanceof EditableValueHolder && !c.isTransient()) {
@@ -459,10 +471,10 @@ public class UIRepeat extends UINamingContainer {
 
         FacesMessage.Severity sev = context.getMaximumSeverity();
         return (sev != null && (FacesMessage.SEVERITY_ERROR.compareTo(sev) <= 0));
-        
+
     }
 
-    
+
     private boolean isNestedInIterator() {
         UIComponent parent = this;
         while (null != (parent = parent.getParent())) {
@@ -477,7 +489,7 @@ public class UIRepeat extends UINamingContainer {
     private void setIndex(FacesContext ctx, int index) {
 
         DataModel localModel = getDataModel();
-        
+
         // save child state
         if (this.index != -1 && localModel.isRowAvailable()) {
             this.saveChildState(ctx);
@@ -525,7 +537,7 @@ public class UIRepeat extends UINamingContainer {
         }
 
         // reset index
-        this.captureOrigValue(faces);        
+        this.captureOrigValue(faces);
         this.setIndex(faces, -1);
 
         try {
@@ -608,7 +620,7 @@ public class UIRepeat extends UINamingContainer {
             resetClientIds(this);
         }
     }
-    
+
     private void resetClientIds(UIComponent component) {
         Iterator<UIComponent> iterator = component.getFacetsAndChildren();
         while(iterator.hasNext()) {
@@ -671,7 +683,7 @@ public class UIRepeat extends UINamingContainer {
         if (!isVisitable(context)) {
             return false;
         }
-        
+
         FacesContext facesContext = context.getFacesContext();
         boolean visitRows = requiresRowIteration(context);
 
@@ -721,6 +733,8 @@ public class UIRepeat extends UINamingContainer {
             if (visitRows) {
                 setIndex(facesContext, oldRowIndex);
             }
+            // GitHub #6964: Must remove var before returning
+            clearValue(facesContext);
         }
 
         // Return false to allow the visit to continue
@@ -732,10 +746,10 @@ public class UIRepeat extends UINamingContainer {
         boolean shouldIterate = !ComponentUtils.isSkipIteration(ctx, facesContext);
         if (!shouldIterate) {
             String sourceId = facesContext.getExternalContext().getRequestParameterMap().get(
-                    Constants.RequestParams.PARTIAL_SOURCE_PARAM);  
+                    Constants.RequestParams.PARTIAL_SOURCE_PARAM);
             boolean containsSource = sourceId != null
                     ? sourceId.startsWith(super.getClientId(facesContext) + getSeparatorChar(facesContext))
-                    : false;  
+                    : false;
             return containsSource;
         } else {
             return shouldIterate;
@@ -857,7 +871,7 @@ public class UIRepeat extends UINamingContainer {
     private static final class IndexedEvent extends FacesEvent {
 
         private static final long serialVersionUID = 1L;
-        
+
         private final FacesEvent target;
 
         private final int index;
@@ -988,7 +1002,7 @@ public class UIRepeat extends UINamingContainer {
     @Override
     public Object saveState(FacesContext faces) {
         resetClientIds(this);
-        
+
         if (faces == null) {
             throw new NullPointerException();
         }
