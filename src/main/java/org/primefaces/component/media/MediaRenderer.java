@@ -87,11 +87,13 @@ public class MediaRenderer extends CoreRenderer {
             encodeParam(writer, player.getSourceParam(), src, false);
         }
 
-        for (UIComponent child : media.getChildren()) {
-            if (child instanceof UIParameter) {
-                UIParameter param = (UIParameter) child;
+        if (media.getChildCount() > 0) {
+            for (UIComponent child : media.getChildren()) {
+                if (child instanceof UIParameter) {
+                    UIParameter param = (UIParameter) child;
 
-                encodeParam(writer, param.getName(), param.getValue(), false);
+                    encodeParam(writer, param.getName(), param.getValue(), false);
+                }
             }
         }
 
