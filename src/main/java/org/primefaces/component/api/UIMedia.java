@@ -28,7 +28,6 @@ import java.io.IOException;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.application.resource.DynamicContentType;
 import org.primefaces.util.DynamicContentSrcBuilder;
 
 /**
@@ -46,7 +45,8 @@ public abstract class UIMedia extends UIComponentBase {
 
     public String resolveSource(FacesContext context, UIMedia media) throws IOException {
         try {
-            return DynamicContentSrcBuilder.build(context, media.getValue(), media, media.isCache(), DynamicContentType.STREAMED_CONTENT, true);
+            return DynamicContentSrcBuilder.build(context, media, media.getValueExpression(PropertyKeys.value.name()),
+                    media.isCache(), true);
         }
         catch (Exception ex) {
             throw new IOException(ex);

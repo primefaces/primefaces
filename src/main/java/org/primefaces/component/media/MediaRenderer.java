@@ -31,7 +31,6 @@ import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.application.resource.DynamicContentType;
 import org.primefaces.component.media.player.MediaPlayer;
 import org.primefaces.component.media.player.MediaPlayerFactory;
 import org.primefaces.component.media.player.PDFPlayer;
@@ -48,7 +47,8 @@ public class MediaRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String src;
         try {
-            src = getMediaSrc(context, media);
+            src = DynamicContentSrcBuilder.build(context, media,
+                    media.getValueExpression(Media.PropertyKeys.value.name()), media.isCache(), true);
         }
         catch (Exception ex) {
             throw new IOException(ex);
@@ -144,10 +144,6 @@ public class MediaRenderer extends CoreRenderer {
 
         throw new IllegalArgumentException("Cannot resolve mediaplayer for media component '"
                 + media.getClientId(context) + "', cannot play source:" + media.getValue());
-    }
-
-    protected String getMediaSrc(FacesContext context, Media media) {
-        return DynamicContentSrcBuilder.build(context, media.getValue(), media, media.isCache(), DynamicContentType.STREAMED_CONTENT, true);
     }
 
     @Override
