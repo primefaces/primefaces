@@ -35,7 +35,6 @@ import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.*;
-import java.util.function.Consumer;
 
 public class SelectionFeature implements DataTableFeature {
 
