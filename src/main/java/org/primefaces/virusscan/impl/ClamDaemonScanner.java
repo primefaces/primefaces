@@ -100,7 +100,7 @@ public class ClamDaemonScanner implements VirusScanner {
     /**
      * Returns a new ClamAvClient which can be overridden in unit tests.
      *
-     * @return the {@link ClamAVClient}
+     * @return the {@link ClamDaemonClient}
      */
     ClamDaemonClient getClamAvClient() {
         if (client != null) {

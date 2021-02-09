@@ -155,7 +155,7 @@ public class AvatarRenderer extends CoreRenderer {
     /**
      * Generate a Gravatar URL for an email addressed based on API docs.
      *
-     * @see https://en.gravatar.com/site/implement/images/
+     * @see <a href="https://en.gravatar.com/site/implement/images/">Image Requests</a>
      * @param context the Face
      * @param avatar the Avatar to create a Gravatar for
      * @return the URL to retrieve the Gravatar image
