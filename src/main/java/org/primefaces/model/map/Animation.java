@@ -27,7 +27,8 @@ package org.primefaces.model.map;
  * Animations that can be played on a marker. Use the setAnimation method on Marker or
  * the animation option to play an animation.
  *
- * @see https://developers.google.com/maps/documentation/javascript/reference/marker#Animation
+ * @see <a href="https://developers.google.com/maps/documentation/javascript/reference/marker#Animation">
+ *     Animation constants</a>
  */
 public enum Animation {
 

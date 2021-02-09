@@ -169,7 +169,7 @@ public class LocaleUtils {
      * Gets ISO 639-1 Language Code from current Locale so 'pt_BR' becomes 'pt'.
      *
      * @return the ISO 639-1 Language Code
-     * @see https://www.w3schools.com/tags/ref_language_codes.asp
+     * @see <a href="https://www.w3schools.com/tags/ref_language_codes.asp">HTML Language Code Reference</a>
      */
     public static String getCurrentLanguage() {
         return calculateLanguage(getCurrentLocale());

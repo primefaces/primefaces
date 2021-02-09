@@ -7,6 +7,7 @@
 
     <factory>
         <partial-view-context-factory>org.primefaces.context.PrimePartialViewContextFactory</partial-view-context-factory>
+        <faces-context-factory>org.primefaces.context.PrimeFacesContextFactory</faces-context-factory>
     </factory>
 
     <lifecycle>
@@ -57,10 +58,6 @@
         <behavior-id>org.primefaces.behavior.ClientValidator</behavior-id>
         <behavior-class>org.primefaces.behavior.validate.ClientValidator</behavior-class>
     </behavior>
-
-    <factory>
-        <faces-context-factory>org.primefaces.context.PrimeFacesContextFactory</faces-context-factory>
-    </factory>
 
     <validator>
         <validator-id>javax.faces.Length</validator-id>
