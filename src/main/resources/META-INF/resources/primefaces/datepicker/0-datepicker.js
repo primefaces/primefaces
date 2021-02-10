@@ -1074,6 +1074,8 @@
             this._setInitOptionValues();
 
             this._bindEvents();
+
+            this.transition = PrimeFaces.utils.registerCSSTransition(this.panel, 'ui-connected-overlay');
         },
 
         _setInitOptionValues: function () {
@@ -2039,48 +2041,59 @@
         },
 
         showOverlay: function () {
-            if (!this.options.inline && !this.isPanelVisible()) {
-                if (this.options.onBeforeShow) {
-                    this.options.onBeforeShow.call(this);
-                }
+            if (!this.options.inline && !this.isPanelVisible() && this.transition) {
+                var $this = this;
 
-                this.panel.show();
-                this.alignPanel();
-
-                if (!this.options.touchUI) {
-                    var $this = this;
-                    setTimeout(function () {
-                        $this.bindDocumentClickListener();
-                        $this.bindWindowResizeListener();
-                    }, 10);
-                }
-
-                if ((this.options.showTime || this.options.timeOnly) && this.options.timeInput) {
-                    this.panel.find('.ui-hour-picker input').trigger('focus');
-                }
+                this.transition.show({
+                    onEnter: function() {
+                        if ($this.options.onBeforeShow) {
+                            $this.options.onBeforeShow.call($this);
+                        }
+                    },
+                    onEntering: function() {
+                        $this.alignPanel();
+                    },
+                    onEntered: function() {
+                        if (!$this.options.touchUI) {
+                            setTimeout(function() {
+                                $this.bindDocumentClickListener();
+                                $this.bindWindowResizeListener();
+                            }, 10);
+                        }
+        
+                        if (($this.options.showTime || $this.options.timeOnly) && $this.options.timeInput) {
+                            $this.panel.find('.ui-hour-picker input').trigger('focus');
+                        }
+                    }
+                });
             }
         },
 
         hideOverlay: function () {
-            if (!this.options.inline && this.isPanelVisible()) {
-                if (this.options.onBeforeHide) {
-                    this.options.onBeforeHide.call(this);
-                }
+            if (!this.options.inline && this.isPanelVisible() && this.transition) {
+                var $this = this;
 
-                this.unbindDocumentClickListener();
-                this.unbindWindowResizeListener();
-                this.datepickerClick = false;
+                this.transition.hide({
+                    onExit: function() {
+                        if ($this.options.onBeforeHide) {
+                            $this.options.onBeforeHide.call($this);
+                        }
 
-                this.panel.hide();
+                        $this.unbindDocumentClickListener();
+                        $this.unbindWindowResizeListener();
+                        $this.datepickerClick = false;
+                    },
+                    onExited: function() {
+                        var viewDate = $this.options.viewDate && !$this.value ?
+                            $this.parseValue($this.options.viewDate)
+                            :
+                            (((($this.isMultipleSelection() || $this.isRangeSelection()) && $this.value instanceof Array) ? $this.value[0] : $this.value) || $this.parseValue(new Date()));
 
-                var viewDate = this.options.viewDate && !this.value ?
-                    this.parseValue(this.options.viewDate)
-                    :
-                    ((((this.isMultipleSelection() || this.isRangeSelection()) && this.value instanceof Array) ? this.value[0] : this.value) || this.parseValue(new Date()));
-
-                if(viewDate instanceof Date) {
-                    this.updateViewDate(null, viewDate);
-                }
+                        if (viewDate instanceof Date) {
+                            $this.updateViewDate(null, viewDate);
+                        }
+                    }
+                });
             }
         },
 
@@ -2144,15 +2157,19 @@
                 if (this.panel.parent().is(this.container)) {
                     this.panel.css({
                         left: '0px',
-                        top: String(this.container.innerHeight())
+                        top: String(this.container.innerHeight()),
+                        'transform-origin': 'center top'
                     });
                 }
                 else {
-                    this.panel.css({ left: '', top: '' }).position({
+                    this.panel.css({ left: '', top: '', 'transform-origin': 'center top' }).position({
                         my: 'left top'
-                        , at: 'left bottom'
-                        , of: this.container
-                        , collision: 'flipfit'
+                        ,at: 'left bottom'
+                        ,of: this.container
+                        ,collision: 'flipfit'
+                        ,using: function(pos, directions) {
+                            $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);
+                        }
                     });
                 }
             }
