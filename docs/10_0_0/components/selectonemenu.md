@@ -32,8 +32,6 @@ requiredMessage | null | String | Message to be displayed when required field va
 converterMessage | null | String | Message to be displayed when conversion fails.
 validatorMessage | null | String | Message to be displayed when validation fields.
 widgetVar | null | String | Name of the client side widget.
-effect | blind | String | Name of the toggle animation.
-effectSpeed | normal | String | Duration of toggle animation, valid values are "slow", "normal" and "fast".
 disabled | false | Boolean | Disables the component.
 alwaysDisplayLabel | false | Boolean | Always display the `label` value instead of the selected item label.
 label | null | String | User presentable name used in conjuction with `alwaysDisplayLabel` to display instead of selected item.
@@ -103,11 +101,6 @@ public class MenuBean {
     </f:facet>
 </p:selectOneMenu>
 ```
-
-## Effects
-An animation is executed to show and hide the overlay menu, default effect is fade and following
-options are available for _effect_ attribute; blind, bounce, clip, drop, explode, fold, highlight, puff,
-pulsate, scale, shake, size, slide and none.
 
 ## Editable
 Editable SelectOneMenu provides a UI to either choose from the predefined options or enter a

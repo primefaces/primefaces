@@ -24211,22 +24211,6 @@
             <description>
                 <![CDATA[]]>
             </description>
-            <name>effect</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[]]>
-            </description>
-            <name>effectSpeed</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[]]>
-            </description>
             <name>disabled</name>
             <required>false</required>
             <type>boolean</type>
