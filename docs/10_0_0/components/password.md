@@ -90,6 +90,7 @@ style | null | String | Inline style of the input element.
 styleClass | null | String | Style class of the input element.
 tabindex | null | Integer | Position of the input element in the tabbing order.
 title | null | String | Advisory tooltip information.
+toggleMask | false | Boolean | Adds a show/hide icon to the password to allow the password to be unmasked/remasked. Default is false.
 
 ## Getting Started with Password
 Password is an input component and used just like a standard input text. When _feedback_ option is
@@ -144,6 +145,15 @@ The following AJAX behavior events are available for this component. If no event
 ```xhtml
 <p:ajax event="valueChange" listener="#{bean.handlevalueChange}" update="msgs" />
 ```
+
+## Client Side API
+Widget: _PrimeFaces.widget.Password_
+
+| Method | Params | Return Type | Description | 
+| --- | --- | --- | --- | 
+show() | - | void | Shows password feedback panel.
+hide() | - | void | Hides password feedback panel.
+toggleMask() | - | void | Toggle masking and unmasking the password.
 
 ## Skinning
 Structural selectors for password are;
