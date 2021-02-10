@@ -579,7 +579,7 @@ if (!PrimeFaces.utils) {
          * CSS Transition method for overlay panels such as SelectOneMenu/SelectCheckboxMenu/Datepicker's panel etc.
          * @param {JQuery} element An element for which to execute the transition.
          * @param {string} className Class name used for transition phases.
-         * @return {object} two callbacks named show and hide. If element or className propetry is empty/null, it returns null.
+         * @return {() => JQuery|null} two callbacks named show and hide. If element or className propetry is empty/null, it returns null.
          */
         registerCSSTransition: function(element, className) {
             if (element && className != null) {
