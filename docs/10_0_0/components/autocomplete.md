@@ -37,8 +37,6 @@ AutoComplete provides live suggestions while an input is being typed.
 | dropdown | false | Boolean | Enables dropdown mode when set true.
 | dropdownTabindex | null | String | Position of the dropdown button in the tabbing order.
 | dynamic | false | Boolean | Defines if dynamic loading is enabled for the element's panel. If the value is "true", the overlay is not rendered on page load to improve performance.
-| effect | null | String | Effect to use when showing/hiding suggestions.
-| effectDuration | 400 | Integer | Duration of effect in milliseconds.
 | escape | true | Boolean | Defines if autocomplete results are escaped or not.
 | forceSelection | false | Boolean | When enabled, autoComplete only accepts input from the selection list.
 | groupByTooltip | null | String | Tooltip to display on group headers.

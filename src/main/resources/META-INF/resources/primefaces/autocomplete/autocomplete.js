@@ -57,8 +57,6 @@
  * @prop {PrimeFaces.widget.AutoComplete.DropdownMode} cfg.dropdownMode Specifies the behavior of the dropdown button.
  * @prop {boolean} cfg.dynamic Defines if dynamic loading is enabled for the element's panel. If the value is `true`,
  * the overlay is not rendered on page load to improve performance.
- * @prop {string} cfg.effect Effect to use when showing and hiding suggestions.
- * @prop {number} cfg.effectDuration Duration of the effect in milliseconds.
  * @prop {string} cfg.emptyMessage Text to display when there is no data to display.
  * @prop {boolean} cfg.escape Whether the text of the suggestion items is escaped for HTML.
  * @prop {boolean} cfg.forceSelection Whether one of the available suggestion items is forced to be preselected.
@@ -165,6 +163,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         //Panel management
         if(this.panel.length) {
             this.appendPanel();
+            this.transition = PrimeFaces.utils.registerCSSTransition(this.panel, 'ui-connected-overlay');
         }
 
         //itemtip
@@ -839,6 +838,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                             if (this.cfg.dynamic && !this.isDynamicLoaded) {
                                 this.panel = $(content);
                                 this.appendPanel();
+                                this.transition = PrimeFaces.utils.registerCSSTransition(this.panel, 'ui-connected-overlay');
                                 content = this.panel.get(0).innerHTML;
                             } else {
                                 this.panel.html(content);
@@ -922,14 +922,18 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     show: function() {
-        this.panel.css({'display':'block', 'opacity':'0', 'pointer-events': 'none'});
-        this.alignPanel();
-        this.panel.css({'display':'none', 'opacity':'', 'pointer-events': '', 'z-index': PrimeFaces.nextZindex()});
+        var $this = this;
 
-        if(this.cfg.effect)
-            this.panel.show(this.cfg.effect, {}, this.cfg.effectDuration);
-        else
-            this.panel.show();
+        if (this.transition) {
+            this.transition.show({
+                onEnter: function() {
+                    $this.panel.css('z-index', PrimeFaces.nextZindex());
+                },
+                onEntering: function() {
+                    $this.alignPanel();
+                }
+            });
+        }
     },
 
     /**
@@ -937,12 +941,17 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     hide: function() {
-        if (this.panel.is(':visible')) {
-            this.panel.hide();
-            this.panel.css('height', 'auto');
+        if (this.panel.is(':visible') && this.transition) {
+            var $this = this;
+
+            this.transition.hide({
+                onExited: function() {
+                    $this.panel.css('height', 'auto');
+                }
+            });
         }
 
-        if(this.cfg.itemtip) {
+        if (this.cfg.itemtip) {
             this.itemtip.hide();
         }
     },
@@ -1256,13 +1265,15 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.panel.css({'left':'',
                         'top':'',
                         'width': panelWidth + 'px',
-                        'z-index': PrimeFaces.nextZindex()
+                        'z-index': PrimeFaces.nextZindex(),
+                        'transform-origin': 'center top'
                 });
 
         if(this.panel.parent().is(this.jq)) {
             this.panel.css({
                 left: '0px',
-                top: this.jq.innerHeight() + 'px'
+                top: this.jq.innerHeight() + 'px',
+                'transform-origin': 'center top'
             });
         }
         else {
@@ -1271,6 +1282,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     ,at: this.cfg.atPos
                     ,of: this.cfg.multiple ? this.jq : this.input
                     ,collision: 'flipfit'
+                    ,using: function(pos, directions) {
+                        $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);
+                    }
                 });
         }
     },
