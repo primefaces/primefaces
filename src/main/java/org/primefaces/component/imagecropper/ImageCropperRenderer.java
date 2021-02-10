@@ -42,7 +42,6 @@ import javax.faces.convert.ConverterException;
 import javax.imageio.ImageIO;
 
 import org.apache.commons.io.input.BoundedInputStream;
-import org.primefaces.application.resource.DynamicContentType;
 import org.primefaces.model.CroppedImage;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.renderkit.CoreRenderer;
@@ -156,7 +155,9 @@ public class ImageCropperRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId + "_image", null);
         writer.writeAttribute("alt", alt, null);
 
-        String src = getImageSrc(context, cropper);
+        String src = DynamicContentSrcBuilder.build(context, cropper,
+                cropper.getValueExpression(ImageCropper.PropertyKeys.image.name()),
+                new Lazy<>(() -> cropper.getImage()), cropper.isCache(), true);
         writer.writeAttribute("src", src, null);
 
         writer.writeAttribute("height", "auto", null);
@@ -356,24 +357,6 @@ public class ImageCropperRenderer extends CoreRenderer {
         }
 
         return format;
-    }
-
-    private String getImageSrc(FacesContext context, ImageCropper imageCropper) {
-        String result = null;
-        Object image = imageCropper.getImage();
-
-        if (image instanceof String) {
-            String url = getResourceURL(context, image.toString());
-            result = ResourceUtils.appendCacheBuster(url, imageCropper.isCache());
-        }
-        else if (image instanceof StreamedContent) {
-            result = DynamicContentSrcBuilder.build(context, image, imageCropper,
-                    imageCropper.isCache(), DynamicContentType.STREAMED_CONTENT, true, ImageCropper.PropertyKeys.image.name());
-        }
-        else {
-            result = "RES_NOT_FOUND";
-        }
-        return result;
     }
 
 }

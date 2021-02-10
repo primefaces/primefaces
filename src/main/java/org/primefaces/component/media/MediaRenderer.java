@@ -31,13 +31,13 @@ import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.application.resource.DynamicContentType;
 import org.primefaces.component.media.player.MediaPlayer;
 import org.primefaces.component.media.player.MediaPlayerFactory;
 import org.primefaces.component.media.player.PDFPlayer;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AgentUtils;
 import org.primefaces.util.DynamicContentSrcBuilder;
+import org.primefaces.util.Lazy;
 
 public class MediaRenderer extends CoreRenderer {
 
@@ -48,7 +48,9 @@ public class MediaRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String src;
         try {
-            src = getMediaSrc(context, media);
+            src = DynamicContentSrcBuilder.build(context, media,
+                    media.getValueExpression(Media.PropertyKeys.value.name()),
+                    new Lazy<>(() -> media.getValue()), media.isCache(), true);
         }
         catch (Exception ex) {
             throw new IOException(ex);
@@ -87,11 +89,13 @@ public class MediaRenderer extends CoreRenderer {
             encodeParam(writer, player.getSourceParam(), src, false);
         }
 
-        for (UIComponent child : media.getChildren()) {
-            if (child instanceof UIParameter) {
-                UIParameter param = (UIParameter) child;
+        if (media.getChildCount() > 0) {
+            for (UIComponent child : media.getChildren()) {
+                if (child instanceof UIParameter) {
+                    UIParameter param = (UIParameter) child;
 
-                encodeParam(writer, param.getName(), param.getValue(), false);
+                    encodeParam(writer, param.getName(), param.getValue(), false);
+                }
             }
         }
 
@@ -144,10 +148,6 @@ public class MediaRenderer extends CoreRenderer {
 
         throw new IllegalArgumentException("Cannot resolve mediaplayer for media component '"
                 + media.getClientId(context) + "', cannot play source:" + media.getValue());
-    }
-
-    protected String getMediaSrc(FacesContext context, Media media) {
-        return DynamicContentSrcBuilder.build(context, media.getValue(), media, media.isCache(), DynamicContentType.STREAMED_CONTENT, true);
     }
 
     @Override

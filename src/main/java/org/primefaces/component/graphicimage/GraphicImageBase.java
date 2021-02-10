@@ -33,7 +33,7 @@ public abstract class GraphicImageBase extends HtmlGraphicImage {
     public static final String DEFAULT_RENDERER = "org.primefaces.component.GraphicImageRenderer";
 
     public enum PropertyKeys {
-
+        value,
         cache,
         name,
         library,

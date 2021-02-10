@@ -40,7 +40,6 @@ import javax.faces.event.ActionListener;
 
 import org.apache.commons.io.IOUtils;
 import org.primefaces.PrimeFaces;
-import org.primefaces.application.resource.DynamicContentType;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.util.*;
 
@@ -82,7 +81,7 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
     }
 
     protected void ajaxDownload(FacesContext context, StreamedContent content) {
-        String uri = DynamicContentSrcBuilder.build(context, content, null, false, DynamicContentType.STREAMED_CONTENT, true, value);
+        String uri = DynamicContentSrcBuilder.buildStreaming(context, value, false);
         String monitorKeyCookieName = ResourceUtils.getMonitorKeyCookieName(context, monitorKey);
         PrimeFaces.current().executeScript(String.format("PrimeFaces.download('%s', '%s', '%s', '%s')",
                 uri, content.getContentType(), content.getName(), monitorKeyCookieName));
