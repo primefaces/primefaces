@@ -746,12 +746,6 @@ public class AutoCompleteRenderer extends InputRenderer {
             wb.attr("cache", true).attr("cacheTimeout", ac.getCacheTimeout());
         }
 
-        String effect = ac.getEffect();
-        if (effect != null) {
-            wb.attr("effect", effect, null)
-                    .attr("effectDuration", ac.getEffectDuration(), Integer.MAX_VALUE);
-        }
-
         wb.attr("emptyMessage", ac.getEmptyMessage(), null)
                 .attr("resultsMessage", ac.getResultsMessage(), null);
 
