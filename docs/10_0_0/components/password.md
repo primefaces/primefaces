@@ -90,7 +90,7 @@ style | null | String | Inline style of the input element.
 styleClass | null | String | Style class of the input element.
 tabindex | null | Integer | Position of the input element in the tabbing order.
 title | null | String | Advisory tooltip information.
-unmaskable | false | Boolean | Adds a show/hide icon to the password to allow the password to be unmasked/remasked. Default is false.
+toggleMask | false | Boolean | Adds a show/hide icon to the password to allow the password to be unmasked/remasked. Default is false.
 
 ## Getting Started with Password
 Password is an input component and used just like a standard input text. When _feedback_ option is

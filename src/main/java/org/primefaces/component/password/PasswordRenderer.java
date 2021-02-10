@@ -66,7 +66,7 @@ public class PasswordRenderer extends InputRenderer {
         boolean feedback = password.isFeedback();
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Password", password);
-        wb.attr("unmaskable", password.isUnmaskable(), false);
+        wb.attr("unmaskable", password.isToggleMask(), false);
 
         if (feedback) {
             wb.attr("feedback", true)
@@ -85,9 +85,9 @@ public class PasswordRenderer extends InputRenderer {
     protected void encodeMarkup(FacesContext context, Password password) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = password.getClientId(context);
-        boolean unmaskable = password.isUnmaskable();
+        boolean toggleMask = password.isToggleMask();
 
-        if (unmaskable) {
+        if (toggleMask) {
             writer.startElement("span", null);
             boolean isRTL = ComponentUtils.isRTL(context, password);
             String positionClass = getStyleClassBuilder(context)
@@ -126,7 +126,7 @@ public class PasswordRenderer extends InputRenderer {
 
         writer.endElement("input");
 
-        if (unmaskable) {
+        if (toggleMask) {
             writer.endElement("span");
         }
     }

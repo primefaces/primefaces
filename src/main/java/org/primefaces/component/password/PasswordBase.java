@@ -48,7 +48,7 @@ public abstract class PasswordBase extends AbstractPrimeHtmlInputText implements
         showEvent,
         hideEvent,
         ignoreLastPass,
-        unmaskable
+        toggleMask
     }
 
     public PasswordBase() {
@@ -164,11 +164,11 @@ public abstract class PasswordBase extends AbstractPrimeHtmlInputText implements
         getStateHelper().put(PropertyKeys.ignoreLastPass, ignoreLastPass);
     }
 
-    public boolean isUnmaskable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.unmaskable, false);
+    public boolean isToggleMask() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.toggleMask, false);
     }
 
-    public void setUnmaskable(boolean unmaskable) {
-        getStateHelper().put(PropertyKeys.unmaskable, unmaskable);
+    public void setToggleMask(boolean toggleMask) {
+        getStateHelper().put(PropertyKeys.toggleMask, toggleMask);
     }
 }
