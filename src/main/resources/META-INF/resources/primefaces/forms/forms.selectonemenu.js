@@ -64,8 +64,6 @@
  * @prop {boolean} cfg.dynamic Defines if dynamic loading is enabled for the element's panel. If the value is `true`,
  * the overlay is not rendered on page load to improve performance.
  * @prop {boolean} cfg.editable When true, the input field becomes editable.
- * @prop {string} cfg.effect Name of the toggle animation for the overlay panel.
- * @prop {PrimeFaces.widget.SelectOneMenu.EffectSpeed} cfg.effectSpeed Duration of toggle animation.
  * @prop {boolean} cfg.filter `true` if the options can be filtered, or `false` otherwise.
  * @prop {PrimeFaces.widget.SelectOneMenu.FilterFunction} cfg.filterFunction A custom filter function that is used
  * when `filterMatchMode` is set to `custom`.
