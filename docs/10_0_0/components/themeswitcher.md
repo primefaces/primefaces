@@ -23,8 +23,6 @@ id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 widgetVar | null | String | Name of the client side widget.
-effect | fade | String | Name of the animation.
-effectSpeed | normal | String | Duration of the toggle animation, valid values are "slow", "normal" and "fast".
 disabled | false | Boolean | Disables the component.
 label | null | String | User presentable name.
 onchange | null | String | Client side callback to execute on theme change.
@@ -50,7 +48,7 @@ to get notified when a user changes the theme (e.g. to update user preferences),
 behavior.
 
 ```xhtml
-<p:themeSwitcher value="#{bean.theme}" effect="fade">
+<p:themeSwitcher value="#{bean.theme}">
     <f:selectItem itemLabel="Choose Theme" itemValue="" />
     <f:selectItems value="#{themeSwitcherBean.themes}" />
     <p:ajax listener="#{bean.saveTheme}" />
