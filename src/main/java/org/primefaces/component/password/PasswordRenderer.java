@@ -66,6 +66,7 @@ public class PasswordRenderer extends InputRenderer {
         boolean feedback = password.isFeedback();
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Password", password);
+        wb.attr("unmaskable", password.isToggleMask(), false);
 
         if (feedback) {
             wb.attr("feedback", true)
@@ -84,13 +85,27 @@ public class PasswordRenderer extends InputRenderer {
     protected void encodeMarkup(FacesContext context, Password password) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = password.getClientId(context);
-        String styleClass = createStyleClass(password, Password.STYLE_CLASS) ;
+        boolean toggleMask = password.isToggleMask();
+
+        if (toggleMask) {
+            writer.startElement("span", null);
+            boolean isRTL = ComponentUtils.isRTL(context, password);
+            String positionClass = getStyleClassBuilder(context)
+                        .add("ui-password")
+                        .add(isRTL, "ui-input-icon-left", "ui-input-icon-right")
+                        .build();
+            writer.writeAttribute("class", positionClass, null);
+            writer.startElement("i", null);
+            writer.writeAttribute("id", clientId + "_mask", "id");
+            writer.writeAttribute("class", Password.MASKED_CLASS, null);
+            writer.endElement("i");
+        }
 
         writer.startElement("input", password);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("name", clientId, null);
         writer.writeAttribute("type", "password", null);
-        writer.writeAttribute("class", styleClass, null);
+        writer.writeAttribute("class", createStyleClass(password, Password.STYLE_CLASS), null);
         if (password.getStyle() != null) {
             writer.writeAttribute("style", password.getStyle(), null);
         }
@@ -104,10 +119,15 @@ public class PasswordRenderer extends InputRenderer {
         }
 
         renderAccessibilityAttributes(context, password);
+        renderRTLDirection(context, password);
         renderPassThruAttributes(context, password, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, password, HTML.INPUT_TEXT_EVENTS);
         renderValidationMetadata(context, password);
 
         writer.endElement("input");
+
+        if (toggleMask) {
+            writer.endElement("span");
+        }
     }
 }

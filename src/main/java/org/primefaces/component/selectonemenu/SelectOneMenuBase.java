@@ -39,8 +39,6 @@ public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Wid
     public enum PropertyKeys {
 
         widgetVar,
-        effect,
-        effectSpeed,
         panelStyle,
         panelStyleClass,
         var,
@@ -80,22 +78,6 @@ public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Wid
 
     public void setWidgetVar(String widgetVar) {
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getEffect() {
-        return (String) getStateHelper().eval(PropertyKeys.effect, null);
-    }
-
-    public void setEffect(String effect) {
-        getStateHelper().put(PropertyKeys.effect, effect);
-    }
-
-    public String getEffectSpeed() {
-        return (String) getStateHelper().eval(PropertyKeys.effectSpeed, null);
-    }
-
-    public void setEffectSpeed(String effectSpeed) {
-        getStateHelper().put(PropertyKeys.effectSpeed, effectSpeed);
     }
 
     public String getPanelStyle() {

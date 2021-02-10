@@ -573,8 +573,76 @@ if (!PrimeFaces.utils) {
                 }
             }
             event.preventDefault();
-        }
+        },
 
+        /**
+         * CSS Transition method for overlay panels such as SelectOneMenu/SelectCheckboxMenu/Datepicker's panel etc.
+         * @param {JQuery} element An element for which to execute the transition.
+         * @param {string} className Class name used for transition phases.
+         * @return {() => JQuery|null} two callbacks named show and hide. If element or className propetry is empty/null, it returns null.
+         */
+        registerCSSTransition: function(element, className) {
+            if (element && className != null) {
+                var classNameStates = {
+                   'enter': className + '-enter',
+                   'enterActive': className + '-enter-active',
+                   'enterDone': className + '-enter-done',
+                   'exit': className + '-exit',
+                   'exitActive': className + '-exit-active',
+                   'exitDone': className + '-exit-done'
+                };
+                var callTransitionEvent = function(callbacks, key, param) {
+                    if (callbacks != null && callbacks[key] != null) {
+                        callbacks[key].call(param);
+                    }
+                };
+        
+                return {
+                    show: function(callbacks) {
+                        //clear exit state classes
+                        element.removeClass([classNameStates.exit, classNameStates.exitActive, classNameStates.exitDone]);
+        
+                        element.css('display', 'block').addClass(classNameStates.enter);
+                        callTransitionEvent(callbacks, 'onEnter');
+        
+                        setTimeout(function() {
+                            element.addClass(classNameStates.enterActive);
+                        }, 0);
+        
+                        element.one('transitionrun', function(event) {
+                            callTransitionEvent(callbacks, 'onEntering', event);
+                        }).one('transitioncancel', function() {
+                            element.removeClass([classNameStates.enter, classNameStates.enterActive, classNameStates.enterDone]);
+                        }).one('transitionend', function(event) {
+                            element.removeClass([classNameStates.enterActive, classNameStates.enter]).addClass(classNameStates.enterDone);
+                            callTransitionEvent(callbacks, 'onEntered', event);
+                        });
+                    },
+                    hide: function(callbacks) {
+                        //clear enter state classes
+                        element.removeClass([classNameStates.enter, classNameStates.enterActive, classNameStates.enterDone]);
+        
+                        element.addClass(classNameStates.exit);
+                        callTransitionEvent(callbacks, 'onExit');
+        
+                        setTimeout(function() {
+                            element.addClass(classNameStates.exitActive);
+                        }, 0);
+        
+                        element.one('transitionrun', function(event) {
+                            callTransitionEvent(callbacks, 'onExiting', event);
+                        }).one('transitioncancel', function() {
+                            element.removeClass([classNameStates.exit, classNameStates.exitActive, classNameStates.exitDone]);
+                        }).one('transitionend', function(event) {
+                            element.css('display', 'none').removeClass([classNameStates.exitActive, classNameStates.exit]).addClass(classNameStates.exitDone);
+                            callTransitionEvent(callbacks, 'onExited', event);
+                        });
+                    }
+                }
+            }
+        
+            return null;
+        }
     };
 
 }

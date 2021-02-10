@@ -24,9 +24,10 @@
 package org.primefaces.component.password;
 
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
+import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 
-public abstract class PasswordBase extends AbstractPrimeHtmlInputText implements Widget {
+public abstract class PasswordBase extends AbstractPrimeHtmlInputText implements Widget, RTLAware  {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -46,7 +47,8 @@ public abstract class PasswordBase extends AbstractPrimeHtmlInputText implements
         match,
         showEvent,
         hideEvent,
-        ignoreLastPass
+        ignoreLastPass,
+        toggleMask
     }
 
     public PasswordBase() {
@@ -160,5 +162,13 @@ public abstract class PasswordBase extends AbstractPrimeHtmlInputText implements
 
     public void setIgnoreLastPass(boolean ignoreLastPass) {
         getStateHelper().put(PropertyKeys.ignoreLastPass, ignoreLastPass);
+    }
+
+    public boolean isToggleMask() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.toggleMask, false);
+    }
+
+    public void setToggleMask(boolean toggleMask) {
+        getStateHelper().put(PropertyKeys.toggleMask, toggleMask);
     }
 }

@@ -137,3 +137,28 @@ ui-overlay-visible * {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
+
+/* Overlay Animations  */
+.ui-connected-overlay-enter {
+    opacity: 0;
+    transform: scaleY(0.8);
+}
+
+.ui-connected-overlay-enter-active {
+    opacity: 1;
+    transform: scaleY(1);
+    transition: transform .12s cubic-bezier(0, 0, 0.2, 1), opacity .12s cubic-bezier(0, 0, 0.2, 1);
+}
+
+.ui-connected-overlay-enter-done {
+    transform: none;
+}
+
+.ui-connected-overlay-exit {
+    opacity: 1;
+}
+
+.ui-connected-overlay-exit-active {
+    opacity: 0;
+    transition: opacity .1s linear;
+}
