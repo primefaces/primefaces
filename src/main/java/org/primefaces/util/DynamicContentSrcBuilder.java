@@ -88,6 +88,24 @@ public class DynamicContentSrcBuilder {
                 return buildBase64(context, streamedContent.getStream(), streamedContent.getContentType());
             }
         }
+        else if (byte[].class.isAssignableFrom(type)) {
+            if (stream) {
+                ValueExpression extractedVE = ValueExpressionAnalyzer.getExpression(context.getELContext(), ve);
+                return buildStreaming(context, component, extractedVE, cache);
+            }
+            else {
+                return buildBase64(context, (byte[]) value.get());
+            }
+        }
+        else if (InputStream.class.isAssignableFrom(type)) {
+            if (stream) {
+                ValueExpression extractedVE = ValueExpressionAnalyzer.getExpression(context.getELContext(), ve);
+                return buildStreaming(context, component, extractedVE, cache);
+            }
+            else {
+                return buildBase64(context, (InputStream) value.get());
+            }
+        }
 
         return "";
     }
@@ -148,9 +166,32 @@ public class DynamicContentSrcBuilder {
         }
     }
 
+    public static String buildBase64(FacesContext context, InputStream is) {
+        return buildBase64(context, toByteArray(is), null);
+    }
+
     public static String buildBase64(FacesContext context, InputStream is, String contentType) {
-        byte[] bytes = toByteArray(is);
+        return buildBase64(context, toByteArray(is), contentType);
+    }
+
+    public static String buildBase64(FacesContext context, byte[] bytes) {
+        return buildBase64(context, bytes, null);
+    }
+
+    public static String buildBase64(FacesContext context, byte[] bytes, String contentType) {
         String base64 = Base64.getEncoder().withoutPadding().encodeToString(bytes);
+        if (contentType == null) {
+            // try to guess content type from magic numbers
+            if (base64.startsWith("R0lGOD")) {
+                contentType = "image/gif";
+            }
+            else if (base64.startsWith("iVBORw")) {
+                contentType = "image/png";
+            }
+            else if (base64.startsWith("/9j/")) {
+                contentType = "image/jpeg";
+            }
+        }
         return "data:" + contentType + ";base64," + base64;
     }
 
