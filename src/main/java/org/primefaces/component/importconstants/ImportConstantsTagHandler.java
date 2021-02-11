@@ -135,6 +135,11 @@ public class ImportConstantsTagHandler extends TagHandler {
         Field[] fields = type.getFields();
 
         for (Field field : fields) {
+            // already collected in a class with higher prio
+            if (constants.containsKey(field.getName())) {
+                continue;
+            }
+
             // Check to see if this is public static final. If not, it's not a constant.
             int modifiers = field.getModifiers();
             if (!Modifier.isFinal(modifiers) || !Modifier.isStatic(modifiers) || !Modifier.isPublic(modifiers)) {

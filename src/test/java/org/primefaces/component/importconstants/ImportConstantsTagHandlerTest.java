@@ -37,7 +37,7 @@ public class ImportConstantsTagHandlerTest {
         Assertions.assertEquals("h1", constants.get("H1"));
         Assertions.assertEquals("h3", constants.get("H3"));
         Assertions.assertEquals("i", constants.get("I"));
-        //Assertions.assertEquals("h2override", constants.get("H2")); this currently fails
+        Assertions.assertEquals("h2override", constants.get("H2"));
     }
     
     class MyConstants extends MyConstants2 {
