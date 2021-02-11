@@ -34,11 +34,12 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
 
-        if(!this.jq.is(':disabled')) {
-            if(this.cfg.feedback) {
+        if (!this.jq.is(':disabled')) {
+            if (this.cfg.feedback) {
                 this.setupFeedback();
             }
-            if(this.cfg.unmaskable) {
+
+            if (this.cfg.unmaskable) {
                 this.setupUnmasking();
             }
 
@@ -79,7 +80,7 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
         this.meter = this.panel.children('div.ui-password-meter');
         this.infoText = this.panel.children('div.ui-password-info');
 
-        if(!this.cfg.inline) {
+        if (!this.cfg.inline) {
             this.panel.addClass('ui-shadow');
         }
 
@@ -123,20 +124,44 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
         });
 
         //overlay setting
-        if(!this.cfg.inline) {
+        if (!this.cfg.inline) {
             this.panel.appendTo('body');
-
-            //Hide overlay on resize/scroll
-            PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_hide', $this.panel, function() {
-                $this.hide();
-            });
-            PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_hide', function() {
-                $this.hide();
-            });
+            this.transition = PrimeFaces.utils.registerCSSTransition(this.panel, 'ui-connected-overlay');
         }
     },
 
-   /**
+    /**
+     * Sets up all panel event listeners
+     * @private
+     */
+    bindPanelEvents: function() {
+        var $this = this;
+
+        //Hide overlay on resize/scroll
+        this.resizeHandler = PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_hide', this.panel, function() {
+            $this.hide();
+        });
+
+        this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', function() {
+            $this.hide();
+        });
+    },
+
+    /**
+     * Unbind all panel event listeners
+     * @private
+     */
+    unbindPanelEvents: function() {
+        if (this.resizeHandler) {
+            this.resizeHandler.unbind();
+        }
+    
+        if (this.scrollHandler) {
+            this.scrollHandler.unbind();
+        }
+    },
+
+    /**
      * Sets up the ability to unmask and remask the password.
      * @private
      */
@@ -187,7 +212,6 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
         if (!password || password.length < 8)
             return score;
 
-
         // require 3 of the following 4 categories
         var variations = {
             digits : /\d/.test(password),
@@ -217,7 +241,7 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
     normalize: function(x, y) {
         var diff = x - y;
 
-        if(diff <= 0) {
+        if (diff <= 0) {
             return x / y;
         }
         else {
@@ -233,12 +257,16 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
         this.panel.css({
             left:'',
             top:'',
-            'z-index': PrimeFaces.nextZindex()
+            'transform-origin': 'center top'
         })
         .position({
-            my: 'left top',
-            at: 'right top',
-            of: this.jq
+            my: 'left top'
+            ,at: 'left bottom'
+            ,of: this.jq
+            ,collision: 'flipfit'
+            ,using: function(pos, directions) {
+                $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);
+            }
         });
     },
 
@@ -246,10 +274,22 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
      * Brings up the panel with the password strength indicator.
      */
     show: function() {
-        if(!this.cfg.inline) {
-            this.align();
-
-            this.panel.fadeIn();
+        if (!this.cfg.inline) {
+            var $this = this;
+    
+            if (this.transition) {
+                this.transition.show({
+                    onEnter: function() {
+                        $this.panel.css('z-index', PrimeFaces.nextZindex());
+                    },
+                    onEntering: function() {
+                        $this.align();
+                    },
+                    onEntered: function() {
+                        $this.bindPanelEvents();
+                    }
+                });
+            }
         }
         else {
             this.panel.slideDown();
@@ -260,10 +300,18 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
      * Hides the panel with the password strength indicator.
      */
     hide: function() {
-        if(this.cfg.inline)
+        if (this.cfg.inline) {
             this.panel.slideUp();
-        else
-            this.panel.fadeOut();
+        }
+        else if (this.transition) {
+            var $this = this;
+    
+            this.transition.hide({
+                onExit: function() {
+                    $this.unbindPanelEvents();
+                }
+            });
+        }
     }
-
+    
 });
