@@ -86,6 +86,19 @@ _DefaultStreamedContent_ gets an _InputStream_ as the first parameter and mime t
 In a real life application, you can create the _InputStream_ after reading the image from the database.
 For example _java.sql.ResultsSet_ API has the _getBinaryStream()_ method to read blob files stored in database.
 
+## Displaying InputStream / byte[] array Images
+
+You may already have your image in memory in an `InputStream` or `byte[]` array. When using `stream="false"`
+we will try to determine your image content using magic bytes to figure out if its a PNG, JPG, or GIF. If you use
+`stream="true"` a content-type header will not be set in the response.  If you need content-type then we recommend
+you used the _org.primefaces.model.StreamedContent_ version of GraphicImage.
+
+```xhtml
+<p:graphicImage value="#{varInUIRepeat.byteArray}" stream="false" />
+
+<p:graphicImage value="#{varInUIRepeat.inputStream}" stream="false" />
+```
+
 ## Displaying charts with JFreeChart
 
 Server side generated charts of JFreeChart can be easily rendered as image:
