@@ -311,6 +311,12 @@ if (!PrimeFaces.utils) {
 
                 hideCallback(e, $eventTarget);
             });
+
+            return {
+                unbind: function() {
+                    $(document).off(hideNamespace);
+                }
+            };
         },
 
         /**
@@ -336,6 +342,12 @@ if (!PrimeFaces.utils) {
 
                 resizeCallback(e);
             });
+
+            return {
+                unbind: function() {
+                    $(window).off(resizeNamespace);
+                }
+            };
         },
 
         /**
@@ -388,6 +400,12 @@ if (!PrimeFaces.utils) {
             scrollParent.off(scrollNamespace).on(scrollNamespace, function(e) {
                 scrollCallback(e);
             });
+
+            return {
+                unbind: function() {
+                    scrollParent.off(scrollNamespace);
+                }
+            };
         },
 
         /**
@@ -443,6 +461,14 @@ if (!PrimeFaces.utils) {
                 scrollParent.off(scrollNamespace).on(scrollNamespace, function(e) {
                     scrollCallback(e);
                 });
+            }
+
+            return {
+                unbind: function() {
+                    for (var i = 0; i < scrollableParents.length; i++) {
+                        $(scrollableParents[i]).off(scrollNamespace);
+                    }
+                }
             }
         },
 
@@ -602,41 +628,45 @@ if (!PrimeFaces.utils) {
                         //clear exit state classes
                         element.removeClass([classNameStates.exit, classNameStates.exitActive, classNameStates.exitDone]);
         
-                        element.css('display', 'block').addClass(classNameStates.enter);
-                        callTransitionEvent(callbacks, 'onEnter');
-        
-                        setTimeout(function() {
-                            element.addClass(classNameStates.enterActive);
-                        }, 0);
-        
-                        element.one('transitionrun', function(event) {
-                            callTransitionEvent(callbacks, 'onEntering', event);
-                        }).one('transitioncancel', function() {
-                            element.removeClass([classNameStates.enter, classNameStates.enterActive, classNameStates.enterDone]);
-                        }).one('transitionend', function(event) {
-                            element.removeClass([classNameStates.enterActive, classNameStates.enter]).addClass(classNameStates.enterDone);
-                            callTransitionEvent(callbacks, 'onEntered', event);
-                        });
+                        if (element.is(':hidden')) {
+                            element.css('display', 'block').addClass(classNameStates.enter);
+                            callTransitionEvent(callbacks, 'onEnter');
+            
+                            setTimeout(function() {
+                                element.addClass(classNameStates.enterActive);
+                            }, 0);
+            
+                            element.one('transitionrun.css-transition-show', function(event) {
+                                callTransitionEvent(callbacks, 'onEntering', event);
+                            }).one('transitioncancel.css-transition-show', function() {
+                                element.removeClass([classNameStates.enter, classNameStates.enterActive, classNameStates.enterDone]);
+                            }).one('transitionend.css-transition-show', function(event) {
+                                element.removeClass([classNameStates.enterActive, classNameStates.enter]).addClass(classNameStates.enterDone);
+                                callTransitionEvent(callbacks, 'onEntered', event);
+                            });
+                        }
                     },
                     hide: function(callbacks) {
                         //clear enter state classes
                         element.removeClass([classNameStates.enter, classNameStates.enterActive, classNameStates.enterDone]);
         
-                        element.addClass(classNameStates.exit);
-                        callTransitionEvent(callbacks, 'onExit');
-        
-                        setTimeout(function() {
-                            element.addClass(classNameStates.exitActive);
-                        }, 0);
-        
-                        element.one('transitionrun', function(event) {
-                            callTransitionEvent(callbacks, 'onExiting', event);
-                        }).one('transitioncancel', function() {
-                            element.removeClass([classNameStates.exit, classNameStates.exitActive, classNameStates.exitDone]);
-                        }).one('transitionend', function(event) {
-                            element.css('display', 'none').removeClass([classNameStates.exitActive, classNameStates.exit]).addClass(classNameStates.exitDone);
-                            callTransitionEvent(callbacks, 'onExited', event);
-                        });
+                        if (element.is(':visible')) {
+                            element.addClass(classNameStates.exit);
+                            callTransitionEvent(callbacks, 'onExit');
+            
+                            setTimeout(function() {
+                                element.addClass(classNameStates.exitActive);
+                            }, 0);
+
+                            element.one('transitionrun.css-transition-hide', function(event) {
+                                callTransitionEvent(callbacks, 'onExiting', event);
+                            }).one('transitioncancel.css-transition-hide', function() {
+                                element.removeClass([classNameStates.exit, classNameStates.exitActive, classNameStates.exitDone]);
+                            }).one('transitionend.css-transition-hide', function(event) {
+                                element.css('display', 'none').removeClass([classNameStates.exitActive, classNameStates.exit]).addClass(classNameStates.exitDone);
+                                callTransitionEvent(callbacks, 'onExited', event);
+                            });
+                        }
                     }
                 }
             }

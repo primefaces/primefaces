@@ -128,13 +128,18 @@ public class ImportConstantsTagHandler extends TagHandler {
      * @param type The class which includes the constants.
      * @return A {@link Map} with the found constants.
      */
-    protected Map<String, Object> collectConstants(Class<?> type) {
+    protected static Map<String, Object> collectConstants(Class<?> type) {
         Map<String, Object> constants = new ConstantsHashMap<>(type);
 
         // Go through all the fields, and put static ones in a map.
-        Field[] fields = type.getDeclaredFields();
+        Field[] fields = type.getFields();
 
         for (Field field : fields) {
+            // already collected in a class with higher prio
+            if (constants.containsKey(field.getName())) {
+                continue;
+            }
+
             // Check to see if this is public static final. If not, it's not a constant.
             int modifiers = field.getModifiers();
             if (!Modifier.isFinal(modifiers) || !Modifier.isStatic(modifiers) || !Modifier.isPublic(modifiers)) {
