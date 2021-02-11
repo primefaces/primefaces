@@ -30,8 +30,9 @@ public class ImageView {
 
 ### What happens when rendering the _p:graphicImage_:
 
-- _ImageView_ and therefore _DefaultStreamedContent_ is instantiated the first time
-- the _ValueExpression_ string (_#{imageView.image}_) is extracted 
+- The _ValueExpression_ will be resolved: _#{imageView.image}_ (StreamedContent.class) is extraced via EL API
+- The _ValueExpression_ as string (_#{imageView.image}_) and the value type (_StreamedContent.class_) will be extracted
+- _ImageView_ and therefore _DefaultStreamedContent_ might get instantiated here, when the EL API can't resolve the value type (_StreamedContent.class_) correctly
 - a UID is generated
 - the UID and the _ValueExpression_ string are stored into the HTTP session
 - the UID is appended to the image URL, which points to JSF _ResourceHandler_
@@ -41,7 +42,7 @@ public class ImageView {
 - our _ResourceHandler_ gets the UID from the URL
 - receive the _ValueExpression_ from the session
 - call the _ValueExpression_ via EL API
-- _ImageView_ and therefore _DefaultStreamedContent_ is instantiated the second time
+- _ImageView_ and therefore _DefaultStreamedContent_ is instantiated
 - the stream from the _StreamedContent_ is now copied to the HTTP response
 
 ### @ViewScoped support
@@ -99,7 +100,14 @@ public class ImageView {
 }
 ```
 
+### Use InputStream / byte[] array
+
+You may already have your image in memory in an `InputStream` or `byte[]` array. The content-type header will not be set in the response.
+If you need to set a content-type, we recommend to use the _org.primefaces.model.StreamedContent_.
+
 ## Dynamic content rendering via Data URI (stream=_false_ - currently only supported by _p:graphicImage_)
+
+!> This should only be used for very small images!
 
 ### What happens when rendering the _p:graphicImage_:
 
@@ -116,3 +124,8 @@ public class ImageView {
 
 - slower rendering time; it should be avoided to use it very often in the view or inside repeating components like _ui:repeat_
 - larger content size
+
+### Use InputStream / byte[] array
+
+You may already have your image in memory in an `InputStream` or `byte[]` array. We will try to determine your image content using magic bytes to figure out if its a PNG, JPG, or GIF.
+If you need to set a content-type, we recommend to use the _org.primefaces.model.StreamedContent_.
