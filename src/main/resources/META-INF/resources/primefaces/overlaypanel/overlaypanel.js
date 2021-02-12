@@ -334,7 +334,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
     /**
      * Hides this overlay panel so that it is not displayed anymore.
-     * @param {JQuery} callback
+     * @param {JQuery} callback Custom callback that is invoked after this overlay panel was closed.
      */
     hide: function(callback) {
         if (this.transition) {
