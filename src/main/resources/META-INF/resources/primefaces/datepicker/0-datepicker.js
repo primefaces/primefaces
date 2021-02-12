@@ -2049,8 +2049,7 @@
                         if ($this.options.onBeforeShow) {
                             $this.options.onBeforeShow.call($this);
                         }
-                    },
-                    onEntering: function() {
+
                         $this.alignPanel();
                     },
                     onEntered: function() {

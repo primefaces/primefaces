@@ -432,8 +432,6 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
             this.transition.show({
                 onEnter: function() {
                     $this.menu.css('z-index', PrimeFaces.nextZindex());
-                },
-                onEntering: function() {
                     $this.alignPanel();
                 },
                 onEntered: function() {
