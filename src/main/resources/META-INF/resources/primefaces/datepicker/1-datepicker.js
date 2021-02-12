@@ -231,12 +231,6 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.onPanelCreate = function() {
             $this.panel = this.panel;
             this.options.appendTo = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(PrimeFaces.utils.resolveAppendTo($this));
-
-            if (!$this.cfg.inline) {
-                PrimeFaces.utils.registerConnectedOverlayScrollHandler($this, 'scroll.' + $this.id + '_hide', function() {
-                    $this.jq.data().primeDatePicker.hideOverlay();
-                });
-            }
         };
     },
 

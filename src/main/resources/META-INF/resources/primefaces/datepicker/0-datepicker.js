@@ -2054,10 +2054,12 @@
                     },
                     onEntered: function() {
                         if (!$this.options.touchUI) {
-                            setTimeout(function() {
-                                $this.bindDocumentClickListener();
-                                $this.bindWindowResizeListener();
-                            }, 10);
+                            $this.bindDocumentClickListener();
+                            $this.bindWindowResizeListener();
+
+                            if (!$this.options.inline) {
+                                $this.bindScrollListener();
+                            }
                         }
         
                         if (($this.options.showTime || $this.options.timeOnly) && $this.options.timeInput) {
@@ -2080,6 +2082,11 @@
 
                         $this.unbindDocumentClickListener();
                         $this.unbindWindowResizeListener();
+
+                        if (!$this.options.inline) {
+                            $this.unbindScrollListener();
+                        }
+
                         $this.datepickerClick = false;
                     },
                     onExited: function() {
@@ -2130,6 +2137,29 @@
 
         unbindWindowResizeListener: function () {
             $(window).off('resize.'+ this.options.id);
+        },
+
+        bindScrollListener: function() {
+            var $this = this;
+
+            this.scrollableParents = PrimeFaces.utils.getScrollableParents(this.element.get(0));
+            this.scrollableListener = function() {
+                $this.hideOverlay();
+            };
+
+            for (var i = 0; i < this.scrollableParents.length; i++) {
+                this.scrollableParents[i].addEventListener('scroll', this.scrollableListener);
+            }
+        },
+
+        unbindScrollListener: function() {
+            if (this.scrollableParents && this.scrollableListener) {
+                for (var i = 0; i < this.scrollableParents.length; i++) {
+                    this.scrollableParents[i].removeEventListener('scroll', this.scrollableListener);
+                }
+
+                this.scrollableListener = null;
+            }
         },
 
         isPanelVisible: function () {
