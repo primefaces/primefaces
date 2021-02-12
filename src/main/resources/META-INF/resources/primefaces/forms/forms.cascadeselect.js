@@ -44,7 +44,6 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
         
         if (!this.cfg.disabled) {
             this.bindEvents();
-            this.bindConstantEvents();
         
             PrimeFaces.utils.registerDynamicOverlay(this, this.panel, this.id + '_panel');
             this.transition = PrimeFaces.utils.registerCSSTransition(this.panel, 'ui-connected-overlay');
@@ -201,15 +200,15 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
             this.deactivateItems(parentItem);
         }
     },
-    
+
     /**
-     * Sets up the event listeners that only need to be set up once.
+     * Sets up all panel event listeners
      * @private
      */
-    bindConstantEvents: function() {
+    bindPanelEvents: function() {
         var $this = this;
 
-        PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $this.panel,
+        this.hideOverlayHandler = PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $this.panel,
             function() { return  $this.triggers },
             function(e, eventTarget) {
                 if(!($this.panel.is(eventTarget) || $this.panel.has(eventTarget).length > 0)) {
@@ -217,13 +216,31 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
                 }
             });
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_hide', $this.panel, function() {
+        this.resizeHandler = PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_hide', $this.panel, function() {
             $this.hide();
         });
 
-        PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + $this.id + '_hide', function() {
+        this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + $this.id + '_hide', function() {
             $this.hide();
         });
+    },
+
+    /**
+     * Unbind all panel event listeners
+     * @private
+     */
+    unbindPanelEvents: function() {
+        if (this.hideOverlayHandler) {
+            this.hideOverlayHandler.unbind();
+        }
+
+        if (this.resizeHandler) {
+            this.resizeHandler.unbind();
+        }
+    
+        if (this.scrollHandler) {
+            this.scrollHandler.unbind();
+        }
     },
 
     /**
@@ -240,6 +257,7 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
                 },
                 onEntered: function() {
                     $this.input.attr('aria-expanded', true);
+                    $this.bindPanelEvents();
                 }
             });
         }
@@ -261,6 +279,9 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
             var $this = this;
 
             this.transition.hide({
+                onExit: function() {
+                    $this.unbindPanelEvents();
+                },
                 onExited: function() {
                     $this.panel.css('z-index', '');
                     $this.input.attr('aria-expanded', false);
