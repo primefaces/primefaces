@@ -277,7 +277,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * Get new target element using selector param.
      * @private
      * @param {string | JQuery} [target] ID or DOM element of the target component that triggers this overlay panel.
-     * @return {JQuery|null}
+     * @return {JQuery|null} DOM Element or null
      */
     getTarget: function(target) {
         if (target) {
