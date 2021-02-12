@@ -421,10 +421,38 @@ if (!PrimeFaces.utils) {
          * @return {() => void} unbind callback handler
          */
         registerConnectedOverlayScrollHandler: function(widget, scrollNamespace, scrollCallback) {
-            var element = widget.getJQ().get(0);
+            var scrollableParents = PrimeFaces.utils.getScrollableParents(widget.getJQ().get(0));
+
+            for (var i = 0; i < scrollableParents.length; i++) {
+                var scrollParent = $(scrollableParents[i]);
+
+                widget.addDestroyListener(function() {
+                    scrollParent.off(scrollNamespace);
+                });
+    
+                scrollParent.off(scrollNamespace).on(scrollNamespace, function(e) {
+                    scrollCallback(e);
+                });
+            }
+
+            return {
+                unbind: function() {
+                    for (var i = 0; i < scrollableParents.length; i++) {
+                        $(scrollableParents[i]).off(scrollNamespace);
+                    }
+                }
+            }
+        },
+
+        /**
+         * Find scrollable parents (Not document)
+         * @param {JQuery} element An element used to find its scrollable parents.
+         * @return {any[]} the list of scrollable parents.
+         */
+        getScrollableParents: function(element) {
             var scrollableParents = [];
             var getParents = function(element, parents) {
-                return element['parentNode'] === null ? parents : getParents(element.parentNode, parents.concat([element.parentNode]));
+                return element['parentNode'] == null ? parents : getParents(element.parentNode, parents.concat([element.parentNode]));
             };
             
             if (element) {
@@ -455,25 +483,7 @@ if (!PrimeFaces.utils) {
                 }
             }
 
-            for (var i = 0; i < scrollableParents.length; i++) {
-                var scrollParent = $(scrollableParents[i]);
-
-                widget.addDestroyListener(function() {
-                    scrollParent.off(scrollNamespace);
-                });
-    
-                scrollParent.off(scrollNamespace).on(scrollNamespace, function(e) {
-                    scrollCallback(e);
-                });
-            }
-
-            return {
-                unbind: function() {
-                    for (var i = 0; i < scrollableParents.length; i++) {
-                        $(scrollableParents[i]).off(scrollNamespace);
-                    }
-                }
-            }
+            return scrollableParents;
         },
 
         /**

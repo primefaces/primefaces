@@ -127,6 +127,7 @@ Here is the full list of configuration options:
 | focus | null | String | Defines which component to apply focus by search expression. |
 | onShow | null | String | Client side callback to execute when dialog is displayed. |
 | onHide | null | String | Client side callback to execute when dialog is hidden. |
+| blockScroll | false | Boolean | Whether to block scrolling of the document when dialog is modal. |
 
 
 ## Data Communication
