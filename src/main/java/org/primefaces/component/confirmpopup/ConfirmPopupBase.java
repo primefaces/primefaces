@@ -41,8 +41,6 @@ public abstract class ConfirmPopupBase extends UIPanel implements Widget {
         style,
         styleClass,
         appendTo,
-        showEffect,
-        hideEffect,
         global,
         dismissable
     }
@@ -102,22 +100,6 @@ public abstract class ConfirmPopupBase extends UIPanel implements Widget {
 
     public void setAppendTo(String appendTo) {
         getStateHelper().put(PropertyKeys.appendTo, appendTo);
-    }
-
-    public String getShowEffect() {
-        return (String) getStateHelper().eval(PropertyKeys.showEffect, null);
-    }
-
-    public void setShowEffect(String showEffect) {
-        getStateHelper().put(PropertyKeys.showEffect, showEffect);
-    }
-
-    public String getHideEffect() {
-        return (String) getStateHelper().eval(PropertyKeys.hideEffect, null);
-    }
-
-    public void setHideEffect(String hideEffect) {
-        getStateHelper().put(PropertyKeys.hideEffect, hideEffect);
     }
 
     public boolean isGlobal() {
