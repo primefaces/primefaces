@@ -71,6 +71,10 @@ public class DynamicColumn implements UIColumn {
         columns.setRowIndex(-1);
     }
 
+    public Columns getColumns() {
+        return columns;
+    }
+
     @Override
     public ValueExpression getValueExpression(String property) {
         return columns.getValueExpression(property);

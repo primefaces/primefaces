@@ -1,7 +1,7 @@
 //@ts-check
 
 const { diffTrimmedLines } = require("diff");
-const { join, resolve } = require("path");
+const { basename, join, resolve } = require("path");
 const { tmpNameSync } = require("tmp");
 
 const { Paths, Tags } = require("../src/constants");
@@ -132,7 +132,8 @@ async function runTest(processInput, filenames, dir, dirEntry, inclusionHandler,
     const resolvedSourceDir = resolve(join(dir, dirEntry.name));
     const resolvedSourceLocation = resolve(join(resolvedSourceDir, filenames.inputFilename));
     const moduleLocation = tmpNameSync({
-        dir: resolvedSourceDir,
+        dir: basename(resolvedSourceDir),
+        tmpdir: resolve(resolvedSourceDir, ".."),
         prefix: "module",
         postfix: ".js",
     });

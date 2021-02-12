@@ -43,8 +43,6 @@ public abstract class OverlayPanelBase extends UIPanel implements Widget, Client
         forValue("for"),
         showEvent,
         hideEvent,
-        showEffect,
-        hideEffect,
         appendTo,
         onShow,
         onHide,
@@ -128,22 +126,6 @@ public abstract class OverlayPanelBase extends UIPanel implements Widget, Client
 
     public void setHideEvent(String hideEvent) {
         getStateHelper().put(PropertyKeys.hideEvent, hideEvent);
-    }
-
-    public String getShowEffect() {
-        return (String) getStateHelper().eval(PropertyKeys.showEffect, null);
-    }
-
-    public void setShowEffect(String showEffect) {
-        getStateHelper().put(PropertyKeys.showEffect, showEffect);
-    }
-
-    public String getHideEffect() {
-        return (String) getStateHelper().eval(PropertyKeys.hideEffect, null);
-    }
-
-    public void setHideEffect(String hideEffect) {
-        getStateHelper().put(PropertyKeys.hideEffect, hideEffect);
     }
 
     public String getAppendTo() {

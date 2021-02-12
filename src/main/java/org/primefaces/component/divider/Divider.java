@@ -27,17 +27,18 @@ import javax.faces.application.ResourceDependency;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class Divider extends DividerBase {
-    public static final String COMPONENT_TYPE = "org.primefaces.component.ScrollTop";
-    public static final String DEFAULT_STYLE_CLASS = "ui-divider";
+    public static final String COMPONENT_TYPE = "org.primefaces.component.Divider";
+
+    public static final String STYLE_CLASS = "ui-divider ui-widget";
     public static final String CONTENT_CLASS = "ui-divider-content";
     public static final String HORIZONTAL_CLASS = "ui-divider-horizontal";
     public static final String VERTICAL_CLASS = "ui-divider-vertical";
     public static final String SOLID_CLASS = "ui-divider-solid";
     public static final String DASHED_CLASS = "ui-divider-dashed";
     public static final String DOTTED_CLASS = "ui-divider-dotted";
-    public static final String ALING_LEFT_CLASS = "ui-divider-left";
-    public static final String ALING_CENTER_CLASS = "ui-divider-center";
-    public static final String ALING_RIGHT_CLASS = "ui-divider-right";
-    public static final String ALING_TOP_CLASS = "ui-divider-top";
-    public static final String ALING_BOTTOM_CLASS = "ui-divider-bottom";
+    public static final String ALIGN_LEFT_CLASS = "ui-divider-left";
+    public static final String ALIGN_CENTER_CLASS = "ui-divider-center";
+    public static final String ALIGN_RIGHT_CLASS = "ui-divider-right";
+    public static final String ALIGN_TOP_CLASS = "ui-divider-top";
+    public static final String ALIGN_BOTTOM_CLASS = "ui-divider-bottom";
 }

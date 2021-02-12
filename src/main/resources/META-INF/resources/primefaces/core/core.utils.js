@@ -203,7 +203,7 @@ if (!PrimeFaces.utils) {
          * Given a modal overlay widget, removes the modal overlay element from the DOM. This reverts the changes as
          * made by `PrimeFaces.utils.addModal`.
          * @param {PrimeFaces.widget.BaseWidget} widget A modal overlay widget instance.
-         * @param {JQuery} overlay The modal overlay element should be a DIV.
+         * @param {JQuery | null} [overlay] The modal overlay element should be a DIV.
          */
         removeModal: function(widget, overlay) {
             var id = widget.id;
@@ -259,11 +259,12 @@ if (!PrimeFaces.utils) {
          * @param {PrimeFaces.widget.BaseWidget} widget An overlay widget instance.
          * @param {string} hideNamespace A click event with a namspace to listen to, such as `mousedown.widgetId`. 
          * @param {JQuery} overlay The DOM element for the overlay.
-         * @param {((event: JQuery.Event) => JQuery) | undefined} resolveIgnoredElementsCallback The callback which
+         * @param {((event: JQuery.TriggeredEvent) => JQuery) | undefined} resolveIgnoredElementsCallback The callback which
          * resolves the elements to ignore when the user clicks outside the overlay. The `hideCallback` is not invoked
          * when the user clicks on one those elements.
-         * @param {(event: JQuery.Event, eventTarget: JQuery) => void} hideCallback A callback that is invoked when the
+         * @param {(event: JQuery.TriggeredEvent, eventTarget: JQuery) => void} hideCallback A callback that is invoked when the
          * user clicks on an element outside the overlay widget.
+         * @return {() => void} unbind callback handler
          */
         registerHideOverlayHandler: function(widget, hideNamespace, overlay, resolveIgnoredElementsCallback, hideCallback) {
 
@@ -311,6 +312,12 @@ if (!PrimeFaces.utils) {
 
                 hideCallback(e, $eventTarget);
             });
+
+            return {
+                unbind: function() {
+                    $(document).off(hideNamespace);
+                }
+            };
         },
 
         /**
@@ -319,9 +326,10 @@ if (!PrimeFaces.utils) {
          * @param {string} resizeNamespace A resize event with a namespace to listen to, such as `resize.widgetId`.
          * @param {JQuery | undefined} element An element that prevents the callback from being invoked when it is not
          * visible, usually a child element of the widget.
-         * @param {(event: JQuery.Event) => void} resizeCallback A callback that is invoked when the window is resized.
+         * @param {(event: JQuery.TriggeredEvent) => void} resizeCallback A callback that is invoked when the window is resized.
          * @param {string} [params] Optional CSS selector. If given, the callback is invoked only when the resize event
          * is triggered on an element the given selector.
+         * @return {() => void} unbind callback handler
          */
         registerResizeHandler: function(widget, resizeNamespace, element, resizeCallback, params) {
 
@@ -336,6 +344,12 @@ if (!PrimeFaces.utils) {
 
                 resizeCallback(e);
             });
+
+            return {
+                unbind: function() {
+                    $(window).off(resizeNamespace);
+                }
+            };
         },
 
         /**
@@ -368,11 +382,12 @@ if (!PrimeFaces.utils) {
         },
 
         /**
-         * Registers a callback that is invoked when a scroll event is triggered on The DOM element for the widget.
+         * Registers a callback that is invoked when a scroll event is triggered on the DOM element for the widget.
          * @param {PrimeFaces.widget.BaseWidget} widget A widget instance for which to register a scroll handler.
          * @param {string} scrollNamespace A scroll event with a namespace, such as `scroll.widgetId`.
-         * @param {(event: JQuery.Event) => void} scrollCallback A callnback that is invoked when a scroll event occurs
-         * on the widget.
+         * @param {(event: JQuery.TriggeredEvent) => void} scrollCallback A callback that is invoked when a scroll event
+         * occurs on the widget.
+         * @return {() => void} unbind callback handler
          */
         registerScrollHandler: function(widget, scrollNamespace, scrollCallback) {
 
@@ -388,6 +403,87 @@ if (!PrimeFaces.utils) {
             scrollParent.off(scrollNamespace).on(scrollNamespace, function(e) {
                 scrollCallback(e);
             });
+
+            return {
+                unbind: function() {
+                    scrollParent.off(scrollNamespace);
+                }
+            };
+        },
+
+        /**
+         * Registers a callback that is invoked when a scroll event is triggered on The DOM element for the widget that
+         * has a connected overlay.
+         * @param {PrimeFaces.widget.BaseWidget} widget A widget instance for which to register a scroll handler.
+         * @param {string} scrollNamespace A scroll event with a namespace, such as `scroll.widgetId`.
+         * @param {(event: JQuery.TriggeredEvent) => void} scrollCallback A callback that is invoked when a scroll event
+         * occurs on the widget.
+         * @return {() => void} unbind callback handler
+         */
+        registerConnectedOverlayScrollHandler: function(widget, scrollNamespace, scrollCallback) {
+            var scrollableParents = PrimeFaces.utils.getScrollableParents(widget.getJQ().get(0));
+
+            for (var i = 0; i < scrollableParents.length; i++) {
+                var scrollParent = $(scrollableParents[i]);
+
+                widget.addDestroyListener(function() {
+                    scrollParent.off(scrollNamespace);
+                });
+    
+                scrollParent.off(scrollNamespace).on(scrollNamespace, function(e) {
+                    scrollCallback(e);
+                });
+            }
+
+            return {
+                unbind: function() {
+                    for (var i = 0; i < scrollableParents.length; i++) {
+                        $(scrollableParents[i]).off(scrollNamespace);
+                    }
+                }
+            }
+        },
+
+        /**
+         * Find scrollable parents (Not document)
+         * @param {JQuery} element An element used to find its scrollable parents.
+         * @return {any[]} the list of scrollable parents.
+         */
+        getScrollableParents: function(element) {
+            var scrollableParents = [];
+            var getParents = function(element, parents) {
+                return element['parentNode'] == null ? parents : getParents(element.parentNode, parents.concat([element.parentNode]));
+            };
+            
+            if (element) {
+                var parents = getParents(element, []);
+                var overflowRegex = /(auto|scroll)/;
+                var overflowCheck = function(node) {
+                    var styleDeclaration = window['getComputedStyle'](node, null);
+                    return overflowRegex.test(styleDeclaration.getPropertyValue('overflow')) || overflowRegex.test(styleDeclaration.getPropertyValue('overflowX')) || overflowRegex.test(styleDeclaration.getPropertyValue('overflowY'));
+                };
+    
+                for (var i = 0; i < parents.length; i++) {
+                    var parent = parents[i];
+                    var scrollSelectors = parent.nodeType === 1 && parent.dataset['scrollselectors'];
+                    if (scrollSelectors) {
+                        var selectors = scrollSelectors.split(',');
+                        for (var j = 0; j < selectors.length; j++) {
+                            var selector = selectors[j];
+                            var el = parent.querySelector(selector);
+                            if (el && overflowCheck(el)) {
+                                scrollableParents.push(el);
+                            }
+                        }
+                    }
+    
+                    if (parent.nodeType !== 9 && overflowCheck(parent)) {
+                        scrollableParents.push(parent);
+                    }
+                }
+            }
+
+            return scrollableParents;
         },
 
         /**
@@ -397,7 +493,7 @@ if (!PrimeFaces.utils) {
          */
         unbindScrollHandler: function(widget, scrollNamespace) {
             var scrollParent = widget.getJQ().scrollParent();
-            if (scrollParent.is('body') || scrollParent.is('html')) {
+            if (scrollParent.is('body') || scrollParent.is('html') || scrollParent[0].nodeType === 9) { // nodeType 9 is for document element
                 scrollParent = $(window);
             }
 
@@ -441,7 +537,7 @@ if (!PrimeFaces.utils) {
         /**
          * Blocks the enter key for an event like `keyup` or `keydown`. Useful in filter input events in many
          * components.
-         * @param {JQuery.Event} e The key event that occurred.
+         * @param {JQuery.TriggeredEvent} e The key event that occurred.
          */
         blockEnterKey: function(e) {
             var key = e.which,
@@ -454,7 +550,7 @@ if (!PrimeFaces.utils) {
 
         /**
          * Ignores certain keys on filter input text box. Useful in filter input events in many components.
-         * @param {JQuery.Event} e The key event that occurred.
+         * @param {JQuery.TriggeredEvent} e The key event that occurred.
          * @return {boolean} `true` if the one of the keys to ignore was pressed, or `false` otherwise.
          */
         ignoreFilterKey: function(e) {
@@ -499,7 +595,7 @@ if (!PrimeFaces.utils) {
         /**
          * Helper to open a new URL and if CTRL is held down open in new browser tab.
          * 
-         * @param {JQuery.Event} event The click event that occurred.
+         * @param {JQuery.TriggeredEvent} event The click event that occurred.
          * @param {JQuery} link The URL anchor link that was clicked.
          */
         openLink: function(event, link) {
@@ -517,8 +613,82 @@ if (!PrimeFaces.utils) {
                 }
             }
             event.preventDefault();
-        }
+        },
 
+        /**
+         * CSS Transition method for overlay panels such as SelectOneMenu/SelectCheckboxMenu/Datepicker's panel etc.
+         * @param {JQuery} element An element for which to execute the transition.
+         * @param {string} className Class name used for transition phases.
+         * @return {() => JQuery|null} two callbacks named show and hide. If element or className property is empty/null, it returns null.
+         */
+        registerCSSTransition: function(element, className) {
+            if (element && className != null) {
+                var classNameStates = {
+                   'enter': className + '-enter',
+                   'enterActive': className + '-enter-active',
+                   'enterDone': className + '-enter-done',
+                   'exit': className + '-exit',
+                   'exitActive': className + '-exit-active',
+                   'exitDone': className + '-exit-done'
+                };
+                var callTransitionEvent = function(callbacks, key, param) {
+                    if (callbacks != null && callbacks[key] != null) {
+                        callbacks[key].call(param);
+                    }
+                };
+        
+                return {
+                    show: function(callbacks) {
+                        //clear exit state classes
+                        element.removeClass([classNameStates.exit, classNameStates.exitActive, classNameStates.exitDone]);
+        
+                        if (element.is(':hidden')) {
+                            element.css('display', 'block').addClass(classNameStates.enter);
+                            callTransitionEvent(callbacks, 'onEnter');
+            
+                            requestAnimationFrame(function() {
+                                setTimeout(function() {
+                                    element.addClass(classNameStates.enterActive);
+                                }, 0);
+                
+                                element.one('transitionrun.css-transition-show', function(event) {
+                                    callTransitionEvent(callbacks, 'onEntering', event);
+                                }).one('transitioncancel.css-transition-show', function() {
+                                    element.removeClass([classNameStates.enter, classNameStates.enterActive, classNameStates.enterDone]);
+                                }).one('transitionend.css-transition-show', function(event) {
+                                    element.removeClass([classNameStates.enterActive, classNameStates.enter]).addClass(classNameStates.enterDone);
+                                    callTransitionEvent(callbacks, 'onEntered', event);
+                                });
+                            });
+                        }
+                    },
+                    hide: function(callbacks) {
+                        //clear enter state classes
+                        element.removeClass([classNameStates.enter, classNameStates.enterActive, classNameStates.enterDone]);
+        
+                        if (element.is(':visible')) {
+                            element.addClass(classNameStates.exit);
+                            callTransitionEvent(callbacks, 'onExit');
+            
+                            setTimeout(function() {
+                                element.addClass(classNameStates.exitActive);
+                            }, 0);
+
+                            element.one('transitionrun.css-transition-hide', function(event) {
+                                callTransitionEvent(callbacks, 'onExiting', event);
+                            }).one('transitioncancel.css-transition-hide', function() {
+                                element.removeClass([classNameStates.exit, classNameStates.exitActive, classNameStates.exitDone]);
+                            }).one('transitionend.css-transition-hide', function(event) {
+                                element.css('display', 'none').removeClass([classNameStates.exitActive, classNameStates.exit]).addClass(classNameStates.exitDone);
+                                callTransitionEvent(callbacks, 'onExited', event);
+                            });
+                        }
+                    }
+                }
+            }
+        
+            return null;
+        }
     };
 
 }

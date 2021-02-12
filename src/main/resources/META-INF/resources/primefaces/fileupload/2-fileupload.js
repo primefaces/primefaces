@@ -107,6 +107,7 @@
  * retry. It is multiplied with the retry count. (first retry: `retryTimeout * 1`, second retry: `retryTimeout * 2`,
  * ...)
  * @prop {string} cfg.resumeContextPath Server-side path which provides information to resume chunked file upload.
+ * @prop {string} cfg.global Global AJAX requests are listened by ajaxStatus, false will not trigger ajaxStatus.
  */
 PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
@@ -145,6 +146,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.previewWidth = this.cfg.previewWidth || 80;
         this.cfg.maxRetries = this.cfg.maxRetries || 30;
         this.cfg.retryTimeout = this.cfg.retryTimeout || 1000;
+        this.cfg.global = (this.cfg.global === true || this.cfg.global === undefined) ? true : false;
         this.uploadedFileCount = 0;
         this.fileId = 0;
 
@@ -173,6 +175,9 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 xhr.setRequestHeader('Faces-Request', 'partial/ajax');
                 xhr.pfSettings = settings;
                 xhr.pfArgs = {}; // default should be an empty object
+                if($this.cfg.global) {
+                     $(document).trigger('pfAjaxSend', [xhr, this]);
+                }
             },
             start: function(e) {
                 if($this.cfg.onstart) {
@@ -329,6 +334,9 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             always: function(e, data) {
                 if($this.cfg.oncomplete) {
                     $this.cfg.oncomplete.call($this, data.jqXHR.pfArgs, data);
+                }
+                if($this.cfg.global) {
+                    $(document).trigger('pfAjaxComplete');
                 }
             },
 
@@ -573,6 +581,10 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     upload: function() {
+        if(this.cfg.global) {
+            $(document).trigger('pfAjaxStart');
+        }
+        
         for(var i = 0; i < this.files.length; i++) {
             this.files[i].ajaxRequest = this.files[i].row.data('filedata');
             this.files[i].ajaxRequest.submit();

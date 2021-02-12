@@ -39,7 +39,7 @@ public abstract class CartesianAxes implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String position;
-    private boolean offset = false;
+    private boolean offset;
     private String id;
     private AxesGridLines gridLines;
     private CartesianScaleLabel scaleLabel;

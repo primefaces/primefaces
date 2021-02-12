@@ -8,7 +8,6 @@ declare namespace Test.ExportNamespace {
     export let foo: number;
     /**
      * method bar
-     * 
      * @param x bar param x
      * @return bar retval
      */

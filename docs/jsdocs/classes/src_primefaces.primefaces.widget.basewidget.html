@@ -1,0 +1,1276 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>BaseWidget | PrimeFaces JavaScript API Docs</title>
+	<meta name="description" content="Documentation for PrimeFaces JavaScript API Docs">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../assets/css/main.css">
+	<script async src="../assets/js/search.js" id="search-script"></script>
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.json" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">PrimeFaces JavaScript API Docs</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../modules.html">PrimeFaces JavaScript API Docs</a>
+				</li>
+				<li>
+					<a href="../modules/src_primefaces.html">src/PrimeFaces</a>
+				</li>
+				<li>
+					<a href="../modules/src_primefaces.primefaces.html">PrimeFaces</a>
+				</li>
+				<li>
+					<a href="../modules/src_primefaces.primefaces.widget.html">widget</a>
+				</li>
+				<li>
+					<a href="src_primefaces.primefaces.widget.basewidget.html">BaseWidget</a>
+				</li>
+			</ul>
+			<h1>Class BaseWidget&lt;TCfg&gt;</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p><strong>PrimeFaces Base Widget</strong></p>
+					</div>
+					<p>BaseWidget for the PrimeFaces widgets framework.</p>
+					<p>It provides some common functionality for other widgets. All widgets should inherit from this class, or an
+					appropriate sub class in the following manner:</p>
+					<pre><code class="language-javascript"><span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">MyWidget</span><span style="color: #000000"> </span><span style="color: #0000FF">extends</span><span style="color: #000000"> </span><span style="color: #267F99">PrimeFaces</span><span style="color: #000000">.</span><span style="color: #267F99">widget</span><span style="color: #000000">.</span><span style="color: #267F99">BaseWidget</span><span style="color: #000000"> {</span>
+
+<span style="color: #000000">  </span><span style="color: #795E26">init</span><span style="color: #000000">(</span><span style="color: #001080">cfg</span><span style="color: #000000">) {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">super</span><span style="color: #000000">.</span><span style="color: #795E26">init</span><span style="color: #000000">(</span><span style="color: #001080">cfg</span><span style="color: #000000">);</span>
+<span style="color: #000000">    </span><span style="color: #008000">// custom initialization</span>
+<span style="color: #000000">  }</span>
+
+<span style="color: #000000">  </span><span style="color: #008000">// more methods required by your widget</span>
+
+<span style="color: #000000">}</span>
+</code></pre>
+					<p>Or, alternatively, if you need to support old browsers and do not wish to transpile your code:</p>
+					<pre><code class="language-javascript"><span style="color: #001080">PrimeFaces</span><span style="color: #000000">.</span><span style="color: #001080">widget</span><span style="color: #000000">.</span><span style="color: #001080">MyWidget</span><span style="color: #000000"> = </span><span style="color: #001080">PrimeFaces</span><span style="color: #000000">.</span><span style="color: #001080">widget</span><span style="color: #000000">.</span><span style="color: #001080">BaseWidget</span><span style="color: #000000">.</span><span style="color: #795E26">extend</span><span style="color: #000000">({</span>
+<span style="color: #000000">  </span><span style="color: #795E26">init</span><span style="color: #001080">:</span><span style="color: #000000"> </span><span style="color: #0000FF">function</span><span style="color: #000000">(</span><span style="color: #001080">cfg</span><span style="color: #000000">) {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #795E26">_super</span><span style="color: #000000">(</span><span style="color: #001080">cfg</span><span style="color: #000000">);</span>
+<span style="color: #000000">  }</span>
+<span style="color: #000000">});</span>
+</code></pre>
+					<p>If your widget needs to be visible before it can be rendered, consider using the <a href="src_primefaces.primefaces.widget.deferredwidget.html">DeferredWidget</a> as a
+					base class instead.</p>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-type-parameters">
+				<h3>Type parameters</h3>
+				<ul class="tsd-type-parameters">
+					<li>
+						<h4>TCfg<span class="tsd-signature-symbol">: </span><a href="../interfaces/src_primefaces.primefaces.widget.basewidgetcfg.html" class="tsd-signature-type" data-tsd-kind="Interface">BaseWidgetCfg</a> = <a href="../interfaces/src_primefaces.primefaces.widget.basewidgetcfg.html" class="tsd-signature-type" data-tsd-kind="Interface">BaseWidgetCfg</a></h4>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Defaults to <code>PrimeFaces.widget.BaseWidgetCfg</code>. Type of the configuration
+								object for this widget.</p>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">BaseWidget</span>
+						<ul class="tsd-hierarchy">
+							<li>
+								<a href="src_primefaces.primefaces.widget.accordionpanel.html" class="tsd-signature-type" data-tsd-kind="Class">AccordionPanel</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.ajaxstatus-1.html" class="tsd-signature-type" data-tsd-kind="Class">AjaxStatus</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.autocomplete-1.html" class="tsd-signature-type" data-tsd-kind="Class">AutoComplete</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.blockui.html" class="tsd-signature-type" data-tsd-kind="Class">BlockUI</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.calendar-1.html" class="tsd-signature-type" data-tsd-kind="Class">Calendar</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.captcha-1.html" class="tsd-signature-type" data-tsd-kind="Class">Captcha</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.chip.html" class="tsd-signature-type" data-tsd-kind="Class">Chip</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.chips.html" class="tsd-signature-type" data-tsd-kind="Class">Chips</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.clock-1.html" class="tsd-signature-type" data-tsd-kind="Class">Clock</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.colorpicker-1.html" class="tsd-signature-type" data-tsd-kind="Class">ColorPicker</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.dynamicoverlaywidget.html" class="tsd-signature-type" data-tsd-kind="Class">DynamicOverlayWidget</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.deferredwidget.html" class="tsd-signature-type" data-tsd-kind="Class">DeferredWidget</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.dashboard.html" class="tsd-signature-type" data-tsd-kind="Class">Dashboard</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.datagrid.html" class="tsd-signature-type" data-tsd-kind="Class">DataGrid</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.datalist.html" class="tsd-signature-type" data-tsd-kind="Class">DataList</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.datascroller-1.html" class="tsd-signature-type" data-tsd-kind="Class">DataScroller</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.dataview-1.html" class="tsd-signature-type" data-tsd-kind="Class">DataView</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.datepicker-1.html" class="tsd-signature-type" data-tsd-kind="Class">DatePicker</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.dock.html" class="tsd-signature-type" data-tsd-kind="Class">Dock</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.draggable-1.html" class="tsd-signature-type" data-tsd-kind="Class">Draggable</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.droppable-1.html" class="tsd-signature-type" data-tsd-kind="Class">Droppable</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.effect-1.html" class="tsd-signature-type" data-tsd-kind="Class">Effect</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.fieldset.html" class="tsd-signature-type" data-tsd-kind="Class">Fieldset</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.fileupload-1.html" class="tsd-signature-type" data-tsd-kind="Class">FileUpload</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.simplefileupload.html" class="tsd-signature-type" data-tsd-kind="Class">SimpleFileUpload</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.button.html" class="tsd-signature-type" data-tsd-kind="Class">Button</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.cascadeselect.html" class="tsd-signature-type" data-tsd-kind="Class">CascadeSelect</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.commandbutton.html" class="tsd-signature-type" data-tsd-kind="Class">CommandButton</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.defaultcommand.html" class="tsd-signature-type" data-tsd-kind="Class">DefaultCommand</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.inputtext.html" class="tsd-signature-type" data-tsd-kind="Class">InputText</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.linkbutton.html" class="tsd-signature-type" data-tsd-kind="Class">LinkButton</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.multiselectlistbox.html" class="tsd-signature-type" data-tsd-kind="Class">MultiSelectListbox</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.password.html" class="tsd-signature-type" data-tsd-kind="Class">Password</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.selectbooleanbutton.html" class="tsd-signature-type" data-tsd-kind="Class">SelectBooleanButton</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.selectbooleancheckbox.html" class="tsd-signature-type" data-tsd-kind="Class">SelectBooleanCheckbox</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.selectcheckboxmenu-1.html" class="tsd-signature-type" data-tsd-kind="Class">SelectCheckboxMenu</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.selectlistbox-1.html" class="tsd-signature-type" data-tsd-kind="Class">SelectListbox</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.selectmanybutton.html" class="tsd-signature-type" data-tsd-kind="Class">SelectManyButton</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.selectmanycheckbox.html" class="tsd-signature-type" data-tsd-kind="Class">SelectManyCheckbox</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.selectonebutton-1.html" class="tsd-signature-type" data-tsd-kind="Class">SelectOneButton</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.selectoneradio.html" class="tsd-signature-type" data-tsd-kind="Class">SelectOneRadio</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.splitbutton-1.html" class="tsd-signature-type" data-tsd-kind="Class">SplitButton</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.growl.html" class="tsd-signature-type" data-tsd-kind="Class">Growl</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.idlemonitor-1.html" class="tsd-signature-type" data-tsd-kind="Class">IdleMonitor</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.imagecompare.html" class="tsd-signature-type" data-tsd-kind="Class">ImageCompare</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.imageswitch.html" class="tsd-signature-type" data-tsd-kind="Class">ImageSwitch</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.inplace-1.html" class="tsd-signature-type" data-tsd-kind="Class">Inplace</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.inputmask.html" class="tsd-signature-type" data-tsd-kind="Class">InputMask</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.inputnumber-1.html" class="tsd-signature-type" data-tsd-kind="Class">InputNumber</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.keyboard.html" class="tsd-signature-type" data-tsd-kind="Class">Keyboard</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.keyfilter.html" class="tsd-signature-type" data-tsd-kind="Class">KeyFilter</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.knob-1.html" class="tsd-signature-type" data-tsd-kind="Class">Knob</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.lifecycle.html" class="tsd-signature-type" data-tsd-kind="Class">Lifecycle</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.lightbox-1.html" class="tsd-signature-type" data-tsd-kind="Class">LightBox</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.log-1.html" class="tsd-signature-type" data-tsd-kind="Class">Log</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.menu.html" class="tsd-signature-type" data-tsd-kind="Class">Menu</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.megamenu.html" class="tsd-signature-type" data-tsd-kind="Class">MegaMenu</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.panelmenu.html" class="tsd-signature-type" data-tsd-kind="Class">PanelMenu</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.message.html" class="tsd-signature-type" data-tsd-kind="Class">Message</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.notificationbar-1.html" class="tsd-signature-type" data-tsd-kind="Class">NotificationBar</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.orderlist.html" class="tsd-signature-type" data-tsd-kind="Class">OrderList</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.organigram.html" class="tsd-signature-type" data-tsd-kind="Class">Organigram</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.outputpanel-1.html" class="tsd-signature-type" data-tsd-kind="Class">OutputPanel</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.paginator-1.html" class="tsd-signature-type" data-tsd-kind="Class">Paginator</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.panel-1.html" class="tsd-signature-type" data-tsd-kind="Class">Panel</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.photocam-1.html" class="tsd-signature-type" data-tsd-kind="Class">PhotoCam</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.picklist-1.html" class="tsd-signature-type" data-tsd-kind="Class">PickList</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.poll-1.html" class="tsd-signature-type" data-tsd-kind="Class">Poll</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.progressbar.html" class="tsd-signature-type" data-tsd-kind="Class">ProgressBar</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.rating-1.html" class="tsd-signature-type" data-tsd-kind="Class">Rating</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.resizable-1.html" class="tsd-signature-type" data-tsd-kind="Class">Resizable</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.ring.html" class="tsd-signature-type" data-tsd-kind="Class">Ring</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.scrolltop.html" class="tsd-signature-type" data-tsd-kind="Class">ScrollTop</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.signature-1.html" class="tsd-signature-type" data-tsd-kind="Class">Signature</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.slider-1.html" class="tsd-signature-type" data-tsd-kind="Class">Slider</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.spinner.html" class="tsd-signature-type" data-tsd-kind="Class">Spinner</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.splitter-1.html" class="tsd-signature-type" data-tsd-kind="Class">Splitter</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.spotlight.html" class="tsd-signature-type" data-tsd-kind="Class">Spotlight</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.stack.html" class="tsd-signature-type" data-tsd-kind="Class">Stack</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.sticky-1.html" class="tsd-signature-type" data-tsd-kind="Class">Sticky</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.tagcloud.html" class="tsd-signature-type" data-tsd-kind="Class">TagCloud</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.terminal.html" class="tsd-signature-type" data-tsd-kind="Class">Terminal</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.toggleswitch.html" class="tsd-signature-type" data-tsd-kind="Class">ToggleSwitch</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.tooltip-1.html" class="tsd-signature-type" data-tsd-kind="Class">Tooltip</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.basetree-1.html" class="tsd-signature-type" data-tsd-kind="Class">BaseTree</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.tristatecheckbox-1.html" class="tsd-signature-type" data-tsd-kind="Class">TriStateCheckbox</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.watermark.html" class="tsd-signature-type" data-tsd-kind="Class">Watermark</a>
+							</li>
+							<li>
+								<a href="src_primefaces.primefaces.widget.wizard-1.html" class="tsd-signature-type" data-tsd-kind="Class">Wizard</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Constructors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-has-type-parameter"><a href="src_primefaces.primefaces.widget.basewidget.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="src_primefaces.primefaces.widget.basewidget.html#cfg" class="tsd-kind-icon">cfg</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="src_primefaces.primefaces.widget.basewidget.html#destroylisteners" class="tsd-kind-icon">destroy<wbr>Listeners</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="src_primefaces.primefaces.widget.basewidget.html#id" class="tsd-kind-icon">id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="src_primefaces.primefaces.widget.basewidget.html#jq" class="tsd-kind-icon">jq</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="src_primefaces.primefaces.widget.basewidget.html#jqid" class="tsd-kind-icon">jq<wbr>Id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="src_primefaces.primefaces.widget.basewidget.html#refreshlisteners" class="tsd-kind-icon">refresh<wbr>Listeners</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="src_primefaces.primefaces.widget.basewidget.html#widgetvar" class="tsd-kind-icon">widget<wbr>Var</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="src_primefaces.primefaces.widget.basewidget.html#adddestroylistener" class="tsd-kind-icon">add<wbr>Destroy<wbr>Listener</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="src_primefaces.primefaces.widget.basewidget.html#addrefreshlistener" class="tsd-kind-icon">add<wbr>Refresh<wbr>Listener</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="src_primefaces.primefaces.widget.basewidget.html#callbehavior" class="tsd-kind-icon">call<wbr>Behavior</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="src_primefaces.primefaces.widget.basewidget.html#destroy" class="tsd-kind-icon">destroy</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="src_primefaces.primefaces.widget.basewidget.html#getbehavior" class="tsd-kind-icon">get<wbr>Behavior</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="src_primefaces.primefaces.widget.basewidget.html#getjq" class="tsd-kind-icon">getJQ</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="src_primefaces.primefaces.widget.basewidget.html#hasbehavior" class="tsd-kind-icon">has<wbr>Behavior</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="src_primefaces.primefaces.widget.basewidget.html#init" class="tsd-kind-icon">init</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="src_primefaces.primefaces.widget.basewidget.html#isdetached" class="tsd-kind-icon">is<wbr>Detached</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="src_primefaces.primefaces.widget.basewidget.html#refresh" class="tsd-kind-icon">refresh</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="src_primefaces.primefaces.widget.basewidget.html#removescriptelement" class="tsd-kind-icon">remove<wbr>Script<wbr>Element</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-has-type-parameter">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Base<wbr>Widget&lt;TCfg&gt;<span class="tsd-signature-symbol">(</span>cfg<span class="tsd-signature-symbol">: </span><a href="../modules/src_primefaces.primefaces.html#partialwidgetcfg" class="tsd-signature-type" data-tsd-kind="Type alias">PartialWidgetCfg</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TCfg</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="src_primefaces.primefaces.widget.basewidget.html" class="tsd-signature-type" data-tsd-kind="Class">BaseWidget</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TCfg</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates a new instance of this widget. Please note that you should <strong>NOT</strong> override this
+										constructor. Instead, override the <a href="src_primefaces.primefaces.widget.basewidget.html#init">init</a> method, which is called at the end of the constructor once the
+									instance is created.</p>
+								</div>
+							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>TCfg<span class="tsd-signature-symbol">: </span><a href="../interfaces/src_primefaces.primefaces.widget.basewidgetcfg.html" class="tsd-signature-type" data-tsd-kind="Interface">BaseWidgetCfg</a> = <a href="../interfaces/src_primefaces.primefaces.widget.basewidgetcfg.html" class="tsd-signature-type" data-tsd-kind="Interface">BaseWidgetCfg</a></h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>cfg: <a href="../modules/src_primefaces.primefaces.html#partialwidgetcfg" class="tsd-signature-type" data-tsd-kind="Type alias">PartialWidgetCfg</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TCfg</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The widget configuration to be used for this widget
+											instance. This widget configuration is usually created on the server by the <code>javax.faces.render.Renderer</code> for
+										this component.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="src_primefaces.primefaces.widget.basewidget.html" class="tsd-signature-type" data-tsd-kind="Class">BaseWidget</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TCfg</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="cfg" class="tsd-anchor"></a>
+					<h3>cfg</h3>
+					<div class="tsd-signature tsd-kind-icon">cfg<span class="tsd-signature-symbol">:</span> <a href="../modules/src_primefaces.primefaces.html#partialwidgetcfg" class="tsd-signature-type" data-tsd-kind="Type alias">PartialWidgetCfg</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TCfg</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The configuration of this widget instance. Please note that
+								no property is guaranteed to be present, you should always check for <code>undefined</code> before accessing a property.
+								This is partly because the value of a property is not transmitted from the server to the client when it equals
+							the default.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="destroylisteners" class="tsd-anchor"></a>
+					<h3>destroy<wbr>Listeners</h3>
+					<div class="tsd-signature tsd-kind-icon">destroy<wbr>Listeners<span class="tsd-signature-symbol">:</span> <a href="../modules/src_primefaces.primefaces.widget.html#destroylistener" class="tsd-signature-type" data-tsd-kind="Type alias">DestroyListener</a><span class="tsd-signature-symbol">&lt;</span><a href="src_primefaces.primefaces.widget.basewidget.html" class="tsd-signature-type" data-tsd-kind="Class">BaseWidget</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/src_primefaces.primefaces.widget.basewidgetcfg.html" class="tsd-signature-type" data-tsd-kind="Interface">BaseWidgetCfg</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Array of registered listeners invoked
+								when this widget is destroyed. You should normally not use modify this directly, use <a href="src_primefaces.primefaces.widget.basewidget.html#adddestroylistener">addDestroyListener</a>
+							instead.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="id" class="tsd-anchor"></a>
+					<h3>id</h3>
+					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The client-side ID of this widget, with all parent naming containers, such as
+								<code>myForm:myWidget</code>. This is also the ID of the container HTML element for this widget. In case the widget needs
+							multiple container elements (such as <a href="../modules/src_primefaces.primefaces.widget.paginator.html">Paginator</a>), this may also be an array if IDs.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="jq" class="tsd-anchor"></a>
+					<h3>jq</h3>
+					<div class="tsd-signature tsd-kind-icon">jq<span class="tsd-signature-symbol">:</span> <a href="../interfaces/src_primefaces.jquery-1.html" class="tsd-signature-type" data-tsd-kind="Interface">JQuery</a><span class="tsd-signature-symbol">&lt;</span><a href="../modules/src_primefaces.html#htmlelement-1" class="tsd-signature-type" data-tsd-kind="Variable">HTMLElement</a><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The jQuery instance of the container element of this widget. In case <a href="src_primefaces.primefaces.widget.basewidget.html#id">id</a> is an array, it
+								will contain multiple elements. Please note that some widgets have got not DOM elements at all, in this case this
+							will be an empty jQuery instance.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="jqid" class="tsd-anchor"></a>
+					<h3>jq<wbr>Id</h3>
+					<div class="tsd-signature tsd-kind-icon">jq<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A CSS selector for the container element (or elements, in case <a href="src_primefaces.primefaces.widget.basewidget.html#id">id</a> is an array) of
+								this widget, This is usually an ID selector (that is properly escaped). You can select the container element or
+							elements like this: <code>$(widget.jqId)</code>.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="refreshlisteners" class="tsd-anchor"></a>
+					<h3>refresh<wbr>Listeners</h3>
+					<div class="tsd-signature tsd-kind-icon">refresh<wbr>Listeners<span class="tsd-signature-symbol">:</span> <a href="../modules/src_primefaces.primefaces.widget.html#refreshlistener" class="tsd-signature-type" data-tsd-kind="Type alias">RefreshListener</a><span class="tsd-signature-symbol">&lt;</span><a href="src_primefaces.primefaces.widget.basewidget.html" class="tsd-signature-type" data-tsd-kind="Class">BaseWidget</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/src_primefaces.primefaces.widget.basewidgetcfg.html" class="tsd-signature-type" data-tsd-kind="Interface">BaseWidgetCfg</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Array of registered listeners invoked
+								when this widget is refreshed. You should normally not use modify this directly, use <a href="src_primefaces.primefaces.widget.basewidget.html#addrefreshlistener">addRefreshListener</a>
+							instead.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="widgetvar" class="tsd-anchor"></a>
+					<h3>widget<wbr>Var</h3>
+					<div class="tsd-signature tsd-kind-icon">widget<wbr>Var<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The name of the widget variables of this widget. The widget variable can be used to
+							access a widget instance by calling <code>PF(&#39;myWidgetVar&#39;)</code>.</p>
+						</div>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="adddestroylistener" class="tsd-anchor"></a>
+					<h3>add<wbr>Destroy<wbr>Listener</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Destroy<wbr>Listener<span class="tsd-signature-symbol">(</span>listener<span class="tsd-signature-symbol">: </span><a href="../modules/src_primefaces.primefaces.widget.html#destroylistener" class="tsd-signature-type" data-tsd-kind="Type alias">DestroyListener</a><span class="tsd-signature-symbol">&lt;</span><a href="src_primefaces.primefaces.widget.basewidget.html" class="tsd-signature-type" data-tsd-kind="Class">BaseWidget</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TCfg</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Lets you register a listener that is called before the component is destroyed.</p>
+								</div>
+								<p>When an AJAX call is made and this component is updated, the DOM element is replaced with the newly rendered
+									content. When the element is removed from the DOM by the update, the DOM element is detached from the DOM and
+								all destroy listeners are called. This makes it possible to add listeners from outside the widget code.</p>
+								<p>If you call this method twice with the same listener, it will be registered twice and later also called
+								twice.</p>
+								<p>Note that for this to work, you must not override the <code>destroy</code> method; or if you do, call <code>super</code>.</p>
+								<p>Also, after this widget was detached is done, all destroy listeners will be unregistered.</p>
+								<dl class="tsd-comment-tags">
+									<dt>since</dt>
+									<dd><p>7.0</p>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>listener: <a href="../modules/src_primefaces.primefaces.widget.html#destroylistener" class="tsd-signature-type" data-tsd-kind="Type alias">DestroyListener</a><span class="tsd-signature-symbol">&lt;</span><a href="src_primefaces.primefaces.widget.basewidget.html" class="tsd-signature-type" data-tsd-kind="Class">BaseWidget</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TCfg</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A destroy listener to be registered.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="addrefreshlistener" class="tsd-anchor"></a>
+					<h3>add<wbr>Refresh<wbr>Listener</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Refresh<wbr>Listener<span class="tsd-signature-symbol">(</span>listener<span class="tsd-signature-symbol">: </span><a href="../modules/src_primefaces.primefaces.widget.html#refreshlistener" class="tsd-signature-type" data-tsd-kind="Type alias">RefreshListener</a><span class="tsd-signature-symbol">&lt;</span><a href="src_primefaces.primefaces.widget.basewidget.html" class="tsd-signature-type" data-tsd-kind="Class">BaseWidget</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TCfg</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>When an AJAX call is made and this component is updated, the DOM element is replaced with the newly rendered
+										content. However, no new instance of the widget is created. Instead, after the DOM element was replaced, all
+									refresh listeners are called. This makes it possible to add listeners from outside the widget code.</p>
+								</div>
+								<p>If you call this method twice with the same listener, it will be registered twice and later also called
+								twice.</p>
+								<p>Note that for this to work, you must not override the <code>refresh</code> method; or if you do, call <code>super</code>.</p>
+								<p>Also, after the refresh is done, all refresh listeners will be deregistered. If you added the listeners from
+									within this widget, consider adding the refresh listeners not only in the <code>init</code> method, but also again in
+								the <code>refresh</code> method after calling <code>super</code>.</p>
+								<dl class="tsd-comment-tags">
+									<dt>since</dt>
+									<dd><p>7.0.0</p>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>listener: <a href="../modules/src_primefaces.primefaces.widget.html#refreshlistener" class="tsd-signature-type" data-tsd-kind="Type alias">RefreshListener</a><span class="tsd-signature-symbol">&lt;</span><a href="src_primefaces.primefaces.widget.basewidget.html" class="tsd-signature-type" data-tsd-kind="Class">BaseWidget</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TCfg</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A refresh listener to be registered.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="callbehavior" class="tsd-anchor"></a>
+					<h3>call<wbr>Behavior</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">call<wbr>Behavior<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, ext<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/src_primefaces.primefaces.ajax.html#configurationextender" class="tsd-signature-type" data-tsd-kind="Type alias">ConfigurationExtender</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Each widget may have one or several behaviors attached to it. This method calls all attached behaviors for
+									the given event name. In case no such behavior exists, this method does nothing and returns immediately.</p>
+								</div>
+								<p>A behavior is a way for associating client-side scripts with UI components that opens all sorts of
+									possibilities, including client-side validation, DOM and style manipulation, keyboard handling, and more.
+								When the behavior is triggered, the configured JavaScript gets executed.</p>
+								<p>Behaviors are often, but not necessarily, AJAX behavior. When triggered, it initiates a request the server
+									and processes the response once it is received. This enables several features such as updating or replacing
+									elements dynamically. You can add an AJAX behavior via
+								<code>&lt;p:ajax event=&quot;name&quot; actionListener=&quot;#{...}&quot; onstart=&quot;...&quot; /&gt;</code>.</p>
+								<dl class="tsd-comment-tags">
+									<dt>since</dt>
+									<dd><p>7.0</p>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>event: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The name of an event to call.</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> ext: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/src_primefaces.primefaces.ajax.html#configurationextender" class="tsd-signature-type" data-tsd-kind="Type alias">ConfigurationExtender</a><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Additional configuration that is passed to the
+										AJAX request for the server-side callback.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="destroy" class="tsd-anchor"></a>
+					<h3>destroy</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">destroy<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Will be called after an AJAX request if the widget container will be detached.</p>
+								</div>
+								<p>When an AJAX call is made and this component is updated, the DOM element is replaced with the newly rendered
+									content. When the element is removed from the DOM by the update, the DOM element is detached from the DOM and
+								this method gets called.</p>
+								<p>Please note that instead of overriding this method, you should consider adding a destroy listener instead
+									via <a href="src_primefaces.primefaces.widget.basewidget.html#adddestroylistener">addDestroyListener</a>. This has the advantage of letting you add multiple listeners, and makes it
+								possible to add additional listeners from code outside this widget.</p>
+								<p>By default, this method just calls all destroy listeners.</p>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getbehavior" class="tsd-anchor"></a>
+					<h3>get<wbr>Behavior</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Behavior<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="../modules/src_primefaces.primefaces.html#behavior" class="tsd-signature-type" data-tsd-kind="Type alias">Behavior</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Each widget may have one or several behaviors attached to it. This method returns the callback function for
+									the given event.</p>
+								</div>
+								<p><strong>Note</strong>: Do not call the method directly, the recommended way to invoke a behavior is via
+								<a href="src_primefaces.primefaces.widget.basewidget.html#callbehavior">callBehavior</a>.</p>
+								<p>A behavior is a way for associating client-side scripts with UI components that opens all sorts of
+									possibilities, including client-side validation, DOM and style manipulation, keyboard handling, and more.
+								When the behavior is triggered, the configured JavaScript gets executed.</p>
+								<p>Behaviors are often, but not necessarily, AJAX behavior. When triggered, it initiates a request the server
+									and processes the response once it is received. This enables several features such as updating or replacing
+									elements dynamically. You can add an AJAX behavior via
+								<code>&lt;p:ajax event=&quot;name&quot; actionListener=&quot;#{...}&quot; onstart=&quot;...&quot; /&gt;</code>.</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>name: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The name of an event for which to retrieve the behavior.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="../modules/src_primefaces.primefaces.html#behavior" class="tsd-signature-type" data-tsd-kind="Type alias">Behavior</a></h4>
+							<p>The behavior with the given name, or <code>null</code> if no such behavior
+							exists.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getjq" class="tsd-anchor"></a>
+					<h3>getJQ</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">getJQ<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/src_primefaces.jquery-1.html" class="tsd-signature-type" data-tsd-kind="Interface">JQuery</a><span class="tsd-signature-symbol">&lt;</span><a href="../modules/src_primefaces.html#htmlelement-1" class="tsd-signature-type" data-tsd-kind="Variable">HTMLElement</a><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Each widget has got a container element, this method returns that container. This container element is
+									usually also the element whose ID is the client-side ID of the JSF component.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/src_primefaces.jquery-1.html" class="tsd-signature-type" data-tsd-kind="Interface">JQuery</a><span class="tsd-signature-symbol">&lt;</span><a href="../modules/src_primefaces.html#htmlelement-1" class="tsd-signature-type" data-tsd-kind="Variable">HTMLElement</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>The jQuery instance representing the main HTML container element of this widget.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="hasbehavior" class="tsd-anchor"></a>
+					<h3>has<wbr>Behavior</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">has<wbr>Behavior<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Each widget may have one or several behaviors attached to it. This method checks whether this widget has got
+									at least one behavior associated with given event name.</p>
+								</div>
+								<p>A behavior is a way for associating client-side scripts with UI components that opens all sorts of
+									possibilities, including client-side validation, DOM and style manipulation, keyboard handling, and more.
+								When the behavior is triggered, the configured JavaScript gets executed.</p>
+								<p>Behaviors are often, but not necessarily, AJAX behavior. When triggered, it initiates a request the server
+									and processes the response once it is received. This enables several features such as updating or replacing
+									elements dynamically. You can add an AJAX behavior via
+								<code>&lt;p:ajax event=&quot;name&quot; actionListener=&quot;#{...}&quot; onstart=&quot;...&quot; /&gt;</code>.</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>event: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The name of an event to check.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p><code>true</code> if this widget has the given behavior, <code>false</code> otherwise.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="init" class="tsd-anchor"></a>
+					<h3>init</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">init<span class="tsd-signature-symbol">(</span>cfg<span class="tsd-signature-symbol">: </span><a href="../modules/src_primefaces.primefaces.html#partialwidgetcfg" class="tsd-signature-type" data-tsd-kind="Type alias">PartialWidgetCfg</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TCfg</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>A widget class should not declare an explicit constructor, the default constructor provided by this base
+										widget should be used. Instead, override this initialize method which is called after the widget instance
+										was constructed. You can use this method to perform any initialization that is required. For widgets that
+										need to create custom HTML on the client-side this is also the place where you should call your render
+									method.</p>
+								</div>
+								<p>Please make sure to call the super method first before adding your own custom logic to the init method:</p>
+								<pre><code class="language-javascript"><span style="color: #001080">PrimeFaces</span><span style="color: #000000">.</span><span style="color: #001080">widget</span><span style="color: #000000">.</span><span style="color: #001080">MyWidget</span><span style="color: #000000"> = </span><span style="color: #001080">PrimeFaces</span><span style="color: #000000">.</span><span style="color: #001080">widget</span><span style="color: #000000">.</span><span style="color: #001080">BaseWidget</span><span style="color: #000000">.</span><span style="color: #795E26">extend</span><span style="color: #000000">({</span>
+<span style="color: #000000">  </span><span style="color: #795E26">init</span><span style="color: #001080">:</span><span style="color: #000000"> </span><span style="color: #0000FF">function</span><span style="color: #000000">(</span><span style="color: #001080">cfg</span><span style="color: #000000">) {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #795E26">_super</span><span style="color: #000000">(</span><span style="color: #001080">cfg</span><span style="color: #000000">);</span>
+<span style="color: #000000">    </span><span style="color: #008000">// custom initialization</span>
+<span style="color: #000000">  }</span>
+<span style="color: #000000">});</span>
+</code></pre>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>cfg: <a href="../modules/src_primefaces.primefaces.html#partialwidgetcfg" class="tsd-signature-type" data-tsd-kind="Type alias">PartialWidgetCfg</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TCfg</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The widget configuration to be used for this widget instance.
+											This widget configuration is usually created on the server by the <code>javax.faces.render.Renderer</code> for this
+										component.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="isdetached" class="tsd-anchor"></a>
+					<h3>is<wbr>Detached</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Detached<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Checks if this widget is detached, ie whether the HTML element of this widget is currently contained within
+										the DOM (the HTML body element). A widget may become detached during an AJAX update, and it may remain
+									detached in case the update removed this component from the component tree.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p><code>true</code> if this widget is currently detached, or <code>false</code> otherwise.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="refresh" class="tsd-anchor"></a>
+					<h3>refresh</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">refresh<span class="tsd-signature-symbol">(</span>cfg<span class="tsd-signature-symbol">: </span><a href="../modules/src_primefaces.primefaces.html#partialwidgetcfg" class="tsd-signature-type" data-tsd-kind="Type alias">PartialWidgetCfg</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TCfg</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Used in ajax updates, reloads the widget configuration.</p>
+								</div>
+								<p>When an AJAX call is made and this component is updated, the DOM element is replaced with the newly rendered
+									content. However, no new instance of the widget is created. Instead, after the DOM element was replaced, this
+									method is called with the new widget configuration from the server. This makes it possible to persist
+								client-side state during an update, such as the currently selected tab.</p>
+								<p>Please note that instead of overriding this method, you should consider adding a refresh listener instead
+									via <a href="src_primefaces.primefaces.widget.basewidget.html#addrefreshlistener">addRefreshListener</a>. This has the advantage of letting you add multiple listeners, and makes it
+								possible to add additional listeners from code outside this widget.</p>
+								<p>By default, this method calls all refresh listeners, then reinitializes the widget by calling the <code>init</code>
+								method.</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>cfg: <a href="../modules/src_primefaces.primefaces.html#partialwidgetcfg" class="tsd-signature-type" data-tsd-kind="Type alias">PartialWidgetCfg</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TCfg</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The new widget configuration from the server.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">unknown</span></h4>
+							<p>The value as returned by the <code>init</code> method, which is often <code>undefined</code>.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="removescriptelement" class="tsd-anchor"></a>
+					<h3>remove<wbr>Script<wbr>Element</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">remove<wbr>Script<wbr>Element<span class="tsd-signature-symbol">(</span>clientId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Removes the widget&#39;s script block from the DOM. Currently, the ID of this script block consists of the
+									client-side ID of this widget with the prefix <code>_s</code>, but this is subject to change.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>clientId: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The client-side ID of the widget.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class=" ">
+						<a href="../modules.html">Modules</a>
+					</li>
+					<li class="current tsd-kind-module">
+						<a href="../modules/src_primefaces.html">src/<wbr>Prime<wbr>Faces</a>
+						<ul>
+							<li class="current tsd-kind-namespace tsd-parent-kind-module">
+								<a href="../modules/src_primefaces.primefaces.html">Prime<wbr>Faces</a>
+								<ul>
+									<li class="current tsd-kind-namespace tsd-parent-kind-namespace">
+										<a href="../modules/src_primefaces.primefaces.widget.html">widget</a>
+										<ul>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.ajaxstatus.html">Ajax<wbr>Status</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.autocomplete.html">Auto<wbr>Complete</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.basechart.html">Base<wbr>Chart</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.basetree.html">Base<wbr>Tree</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.calendar.html">Calendar</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.captcha.html">Captcha</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.carousel.html">Carousel</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.chart.html">Chart</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.clock.html">Clock</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.colorpicker.html">Color<wbr>Picker</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.confirmdialog.html">Confirm<wbr>Dialog</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.confirmpopup.html">Confirm<wbr>Popup</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.contextmenu.html">Context<wbr>Menu</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.datascroller.html">Data<wbr>Scroller</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.datatable.html">Data<wbr>Table</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.dataview.html">Data<wbr>View</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.datepicker.html">Date<wbr>Picker</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.diagram.html">Diagram</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.dialog.html">Dialog</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.draggable.html">Draggable</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.droppable.html">Droppable</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.effect.html">Effect</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.fileupload.html">File<wbr>Upload</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.gmap.html">GMap</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.idlemonitor.html">Idle<wbr>Monitor</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.inplace.html">Inplace</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.inputnumber.html">Input<wbr>Number</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.keyboardutils.html">Keyboard<wbr>Utils</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.knob.html">Knob</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.lightbox.html">Light<wbr>Box</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.log.html">Log</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.mindmap.html">Mindmap</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.notificationbar.html">Notification<wbr>Bar</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.outputpanel.html">Output<wbr>Panel</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.paginator.html">Paginator</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.panel.html">Panel</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.photocam.html">Photo<wbr>Cam</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.picklist.html">Pick<wbr>List</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.poll.html">Poll</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.rating.html">Rating</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.resizable.html">Resizable</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.schedule.html">Schedule</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.selectcheckboxmenu.html">Select<wbr>Checkbox<wbr>Menu</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.selectlistbox.html">Select<wbr>Listbox</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.selectonebutton.html">Select<wbr>One<wbr>Button</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.selectonemenu.html">Select<wbr>One<wbr>Menu</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.sidebar.html">Sidebar</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.signature.html">Signature</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.slider.html">Slider</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.splitbutton.html">Split<wbr>Button</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.splitter.html">Splitter</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.sticky.html">Sticky</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.tabview.html">Tab<wbr>View</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.texteditor.html">Text<wbr>Editor</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.tieredmenu.html">Tiered<wbr>Menu</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.timeline.html">Timeline</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.tooltip.html">Tooltip</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.treetable.html">Tree<wbr>Table</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.tristatecheckbox.html">Tri<wbr>State<wbr>Checkbox</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.verticaltree.html">Vertical<wbr>Tree</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.wizard.html">Wizard</a>
+											</li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class tsd-parent-kind-namespace tsd-has-type-parameter">
+						<a href="src_primefaces.primefaces.widget.basewidget.html" class="tsd-kind-icon">Base<wbr>Widget</a>
+						<ul>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-has-type-parameter">
+								<a href="src_primefaces.primefaces.widget.basewidget.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="src_primefaces.primefaces.widget.basewidget.html#cfg" class="tsd-kind-icon">cfg</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="src_primefaces.primefaces.widget.basewidget.html#destroylisteners" class="tsd-kind-icon">destroy<wbr>Listeners</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="src_primefaces.primefaces.widget.basewidget.html#id" class="tsd-kind-icon">id</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="src_primefaces.primefaces.widget.basewidget.html#jq" class="tsd-kind-icon">jq</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="src_primefaces.primefaces.widget.basewidget.html#jqid" class="tsd-kind-icon">jq<wbr>Id</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="src_primefaces.primefaces.widget.basewidget.html#refreshlisteners" class="tsd-kind-icon">refresh<wbr>Listeners</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="src_primefaces.primefaces.widget.basewidget.html#widgetvar" class="tsd-kind-icon">widget<wbr>Var</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="src_primefaces.primefaces.widget.basewidget.html#adddestroylistener" class="tsd-kind-icon">add<wbr>Destroy<wbr>Listener</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="src_primefaces.primefaces.widget.basewidget.html#addrefreshlistener" class="tsd-kind-icon">add<wbr>Refresh<wbr>Listener</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="src_primefaces.primefaces.widget.basewidget.html#callbehavior" class="tsd-kind-icon">call<wbr>Behavior</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="src_primefaces.primefaces.widget.basewidget.html#destroy" class="tsd-kind-icon">destroy</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="src_primefaces.primefaces.widget.basewidget.html#getbehavior" class="tsd-kind-icon">get<wbr>Behavior</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="src_primefaces.primefaces.widget.basewidget.html#getjq" class="tsd-kind-icon">getJQ</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="src_primefaces.primefaces.widget.basewidget.html#hasbehavior" class="tsd-kind-icon">has<wbr>Behavior</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="src_primefaces.primefaces.widget.basewidget.html#init" class="tsd-kind-icon">init</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="src_primefaces.primefaces.widget.basewidget.html#isdetached" class="tsd-kind-icon">is<wbr>Detached</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="src_primefaces.primefaces.widget.basewidget.html#refresh" class="tsd-kind-icon">refresh</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="src_primefaces.primefaces.widget.basewidget.html#removescriptelement" class="tsd-kind-icon">remove<wbr>Script<wbr>Element</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-namespace"><span class="tsd-kind-icon">Namespace</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

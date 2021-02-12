@@ -29,7 +29,7 @@ public class EffectBuilder implements JSObjectBuilder {
 
     private StringBuilder buffer;
 
-    private boolean hasOption = false;
+    private boolean hasOption;
 
     public EffectBuilder(String type, String id, boolean queue) {
         buffer = new StringBuilder();

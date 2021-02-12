@@ -122,10 +122,27 @@ public class ScheduleRenderer extends CoreRenderer {
                     jsonObject.put("durationEditable", event.isResizable());
                 }
                 jsonObject.put("overlap", event.isOverlapAllowed());
-                jsonObject.put("classNames", event.getStyleClass());
-                jsonObject.put("description", event.getDescription());
-                jsonObject.put("url", event.getUrl());
-                jsonObject.put("rendering", Objects.toString(event.getRenderingMode(), null));
+                if (event.getStyleClass() != null) {
+                    jsonObject.put("classNames", event.getStyleClass());
+                }
+                if (event.getDescription() != null) {
+                    jsonObject.put("description", event.getDescription());
+                }
+                if (event.getUrl() != null) {
+                    jsonObject.put("url", event.getUrl());
+                }
+                if (event.getDisplay() != null) {
+                    jsonObject.put("display", Objects.toString(event.getDisplay(), null));
+                }
+                if (event.getBackgroundColor() != null) {
+                    jsonObject.put("backgroundColor", event.getBackgroundColor());
+                }
+                if (event.getBorderColor() != null) {
+                    jsonObject.put("borderColor", event.getBorderColor());
+                }
+                if (event.getTextColor() != null) {
+                    jsonObject.put("textColor", event.getTextColor());
+                }
 
                 if (event.getDynamicProperties() != null) {
                     for (Map.Entry<String, Object> dynaProperty : event.getDynamicProperties().entrySet()) {

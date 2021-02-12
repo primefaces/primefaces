@@ -37,7 +37,7 @@ import org.primefaces.component.api.Widget;
  */
 public class WidgetBuilder {
 
-    protected boolean endFunction = false;
+    protected boolean endFunction;
     protected FacesContext context;
     protected PrimeConfiguration configuration;
 
@@ -77,6 +77,10 @@ public class WidgetBuilder {
                 .renderLifecycleCallbacks(widget);
     }
 
+    /**
+     * Use {@link WidgetBuilder#init(String, UIComponent)} instead
+     */
+    @Deprecated
     public WidgetBuilder init(String widgetClass, String widgetVar, String id) throws IOException {
         this.renderScriptBlock(id);
 
@@ -93,11 +97,6 @@ public class WidgetBuilder {
         }
 
         return this;
-    }
-
-    @Deprecated
-    public WidgetBuilder initWithDomReady(String widgetClass, String widgetVar, String id) throws IOException {
-        return init(widgetClass, widgetVar, id);
     }
 
     public <T extends UIComponent & Widget> WidgetBuilder initWithWindowLoad(String widgetClass, T widget)

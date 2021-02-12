@@ -5,7 +5,6 @@ declare namespace PrimeFaces.widget {
     export class MethodParam {
         /**
          * method bar
-         * 
          * @param x param x
          * @param y param y
          * @param z param z
@@ -13,7 +12,6 @@ declare namespace PrimeFaces.widget {
         bar(x: RegExp, y: [number], z: {}): void;
         /**
          * method foo
-         * 
          * @param x param x
          * @param y param y
          * @param z param z

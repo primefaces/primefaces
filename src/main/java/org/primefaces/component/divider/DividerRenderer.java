@@ -43,29 +43,32 @@ public class DividerRenderer extends CoreRenderer {
         boolean isHorizontal = "horizontal".equals(layout);
         boolean isVertical = "vertical".equals(layout);
         String styleClass = getStyleClassBuilder(context)
-                    .add(Divider.DEFAULT_STYLE_CLASS)
+                    .add(Divider.STYLE_CLASS)
                     .add(divider.getStyleClass())
                     .add(isHorizontal, Divider.HORIZONTAL_CLASS)
                     .add(isVertical, Divider.VERTICAL_CLASS)
                     .add("solid".equals(type), Divider.SOLID_CLASS)
                     .add("dashed".equals(type), Divider.DASHED_CLASS)
                     .add("dotted".equals(type), Divider.DOTTED_CLASS)
-                    .add((isHorizontal && align == null) || "left".equals(align), Divider.ALING_LEFT_CLASS)
-                    .add((isVertical && align == null) || "center".equals(align), Divider.ALING_CENTER_CLASS)
-                    .add(isHorizontal && "right".equals(align), Divider.ALING_RIGHT_CLASS)
-                    .add(isVertical && "top".equals(align), Divider.ALING_TOP_CLASS)
-                    .add(isVertical && "bottom".equals(align), Divider.ALING_BOTTOM_CLASS)
+                    .add(isHorizontal && (align == null || "left".equals(align)), Divider.ALIGN_LEFT_CLASS)
+                    .add(isHorizontal && "right".equals(align), Divider.ALIGN_RIGHT_CLASS)
+                    .add((isHorizontal && "center".equals(align)) || (isVertical && (align == null || "center".equals(align))), Divider.ALIGN_CENTER_CLASS)
+                    .add(isVertical && "top".equals(align), Divider.ALIGN_TOP_CLASS)
+                    .add(isVertical && "bottom".equals(align), Divider.ALIGN_BOTTOM_CLASS)
                     .build();
 
-        writer.startElement("div", divider);
+        writer.startElement("div", null);
         writer.writeAttribute("id", divider.getClientId(context), "id");
         writer.writeAttribute("role", "separator", "role");
         writer.writeAttribute("class", styleClass, "styleClass");
         if (divider.getStyle() != null) {
             writer.writeAttribute("style", divider.getStyle(), "style");
         }
+        if (divider.getTitle() != null) {
+            writer.writeAttribute("title", divider.getTitle(), "title");
+        }
         if (divider.getChildCount() > 0) {
-            writer.startElement("div", divider);
+            writer.startElement("div", null);
             writer.writeAttribute("class", Divider.CONTENT_CLASS, "styleClass");
             renderChildren(context, divider);
             writer.endElement("div");

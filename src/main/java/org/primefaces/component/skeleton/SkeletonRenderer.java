@@ -36,38 +36,32 @@ public class SkeletonRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Skeleton skeleton = (Skeleton) component;
-
-        encodeMarkup(context, skeleton);
-    }
-
-    protected void encodeMarkup(FacesContext context, Skeleton skeleton) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String size = skeleton.getSize();
+        String borderRadius = skeleton.getBorderRadius();
         String styleClass = getStyleClassBuilder(context)
-                    .add(Skeleton.DEFAULT_STYLE_CLASS)
+                    .add(Skeleton.STYLE_CLASS)
                     .add(skeleton.getStyleClass())
                     .add("circle".equals(skeleton.getShape()), Skeleton.CIRCLE_CLASS)
                     .add("none".equals(skeleton.getAnimation()), Skeleton.NONE_ANIMATION_CLASS)
                     .build();
         String style = skeleton.getStyle();
-        style = style == null ? "" : style + " ";
-        String size = skeleton.getSize();
-        String borderRadius = skeleton.getBorderRadius();
+        style = style == null ? "" : style;
 
         if (size != null) {
-            style += "width: " + size + "; height: " + size + ";";
+            style += " width: " + size + "; height: " + size + ";";
         }
         else {
-            style += "width: " + skeleton.getWidth() + "; height: " + skeleton.getHeight() + ";";
+            style += " width: " + skeleton.getWidth() + "; height: " + skeleton.getHeight() + ";";
         }
 
         if (borderRadius != null) style += " borderRadius: " + borderRadius + ";";
 
-        writer.startElement("div", skeleton);
+        writer.startElement("div", null);
         writer.writeAttribute("id", skeleton.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         writer.writeAttribute("style", style, "style");
 
         writer.endElement("div");
-
     }
 }

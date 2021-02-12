@@ -65,7 +65,7 @@ public class ResourceUtils {
      * to prevent caching and for GDPR.
      *
      * @param externalContext the ExternalContext we add the pragma to
-     * @see https://github.com/primefaces/primefaces/issues/6359
+     * @see <a href="https://github.com/primefaces/primefaces/issues/6359">FileDownload: configure Cache-Control</a>
      */
     public static void addNoCacheControl(ExternalContext externalContext) {
         externalContext.setResponseHeader("Cache-Control", "no-cache, no-store, must-revalidate");

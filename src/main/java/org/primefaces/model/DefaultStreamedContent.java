@@ -23,11 +23,11 @@
  */
 package org.primefaces.model;
 
-import java.io.InputStream;
-import java.io.Serializable;
-
 import org.primefaces.util.Lazy;
 import org.primefaces.util.SerializableSupplier;
+
+import java.io.InputStream;
+import java.io.Serializable;
 
 /**
  * Default implementation of a StreamedContent
@@ -44,61 +44,6 @@ public class DefaultStreamedContent implements StreamedContent, Serializable {
         // NOOP
     }
 
-    /**
-     * @deprecated Use {@link DefaultStreamedContent#builder()}
-     * @param stream
-     */
-    @Deprecated
-    public DefaultStreamedContent(InputStream stream) {
-        this.stream = new Lazy(() -> stream);
-    }
-
-    /**
-     * @deprecated Use {@link DefaultStreamedContent#builder()}
-     */
-    @Deprecated
-    public DefaultStreamedContent(InputStream stream, String contentType) {
-        this(stream);
-        this.contentType = contentType;
-    }
-
-    /**
-     * @deprecated Use {@link DefaultStreamedContent#builder()}
-     */
-    @Deprecated
-    public DefaultStreamedContent(InputStream stream, String contentType, String name) {
-        this(stream, contentType);
-        this.name = name;
-    }
-
-    /**
-     * @deprecated Use {@link DefaultStreamedContent#builder()}
-     */
-    @Deprecated
-    public DefaultStreamedContent(InputStream stream, String contentType, String name, String contentEncoding) {
-        this(stream, contentType, name);
-        this.contentEncoding = contentEncoding;
-    }
-
-    /**
-     * @deprecated Use {@link DefaultStreamedContent#builder()}
-     */
-    @Deprecated
-    public DefaultStreamedContent(InputStream stream, String contentType, String name, Integer contentLength) {
-        this(stream, contentType, name);
-        this.contentLength = contentLength;
-    }
-
-    /**
-     * @deprecated Use {@link DefaultStreamedContent#builder()}
-     */
-    @Deprecated
-    public DefaultStreamedContent(InputStream stream, String contentType, String name, String contentEncoding, Integer contentLength) {
-        this(stream, contentType, name);
-        this.contentEncoding = contentEncoding;
-        this.contentLength = contentLength;
-    }
-
     @Override
     public InputStream getStream() {
         InputStream result = null;
@@ -108,33 +53,9 @@ public class DefaultStreamedContent implements StreamedContent, Serializable {
         return result;
     }
 
-    /**
-     * @deprecated Use {@link DefaultStreamedContent#builder()}
-     */
-    @Deprecated
-    public void setStream(SerializableSupplier<InputStream> stream) {
-        this.stream = new Lazy(stream);
-    }
-
-    /**
-     * @deprecated Use {@link DefaultStreamedContent#builder()}
-     */
-    @Deprecated
-    public void setStream(InputStream stream) {
-        this.stream = new Lazy(() -> stream);
-    }
-
     @Override
     public String getContentType() {
         return contentType;
-    }
-
-    /**
-     * @deprecated Use {@link DefaultStreamedContent#builder()}
-     */
-    @Deprecated
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
     }
 
     @Override
@@ -142,25 +63,9 @@ public class DefaultStreamedContent implements StreamedContent, Serializable {
         return name;
     }
 
-    /**
-     * @deprecated Use {@link DefaultStreamedContent#builder()}
-     */
-    @Deprecated
-    public void setName(String name) {
-        this.name = name;
-    }
-
     @Override
     public String getContentEncoding() {
         return contentEncoding;
-    }
-
-    /**
-     * @deprecated Use {@link DefaultStreamedContent#builder()}
-     */
-    @Deprecated
-    public void setContentEncoding(String contentEncoding) {
-        this.contentEncoding = contentEncoding;
     }
 
     @Override
@@ -168,29 +73,20 @@ public class DefaultStreamedContent implements StreamedContent, Serializable {
         return contentLength;
     }
 
-    /**
-     * @deprecated Use {@link DefaultStreamedContent#builder()}
-     */
-    @Deprecated
-    public void setContentLength(Integer contentLength) {
-        this.contentLength = contentLength;
-    }
-
-
     public static Builder builder() {
         return new Builder();
     }
 
     public static final class Builder {
 
-        private DefaultStreamedContent streamedContent;
+        private final DefaultStreamedContent streamedContent;
 
         private Builder() {
             streamedContent = new DefaultStreamedContent();
         }
 
         public Builder stream(SerializableSupplier<InputStream> is) {
-            streamedContent.stream = new Lazy(is);
+            streamedContent.stream = new Lazy<>(is);
             return this;
         }
 

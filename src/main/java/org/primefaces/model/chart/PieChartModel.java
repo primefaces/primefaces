@@ -34,7 +34,7 @@ public class PieChartModel extends ChartModel {
     private int diameter;
     private int sliceMargin;
     private boolean fill = true;
-    private boolean showDataLabels = false;
+    private boolean showDataLabels;
     private String dataFormat;
     private String dataLabelFormatString;
     private int dataLabelThreshold;

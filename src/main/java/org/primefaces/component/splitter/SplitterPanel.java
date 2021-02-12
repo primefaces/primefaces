@@ -23,8 +23,23 @@
  */
 package org.primefaces.component.splitter;
 
+import javax.faces.component.UIComponent;
+
 public class SplitterPanel extends SplitterPanelBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.SplitterPanel";
-    public static final String DEFAULT_STYLE_CLASS = "ui-splitter-panel";
+
+    public static final String STYLE_CLASS = "ui-splitter-panel";
     public static final String NESTED_CLASS = "ui-splitter-panel-nested";
+
+    public boolean isNested() {
+        boolean isNested = false;
+        for (UIComponent child: this.getChildren()) {
+            if (child instanceof Splitter) {
+                isNested = true;
+                break;
+            }
+        }
+
+        return isNested;
+    }
 }

@@ -5,7 +5,6 @@ declare namespace PrimeFaces.widget {
     export class MethodParamOptionalDestructure {
         /**
          * method hoge
-         * 
          * @param param0 hoge pattern 0
          * @param param1 hoge pattern 1
          * @param x hoge param x
@@ -14,7 +13,6 @@ declare namespace PrimeFaces.widget {
         hoge([x]?: number[], {y}?: Record<string, string>): void;
         /**
          * method foo
-         * 
          * @param param0 foo pattern 0
          * @param param1 foo pattern 1
          * @param x foo param x

@@ -22,7 +22,7 @@
  * @this {PrimeFaces.widget.Tooltip} PrimeFaces.widget.Tooltip.OnShowCallback 
  * 
  * @prop {string} globalTitle The text that is shown as the global title.
- * @prop {JQuery.Event} mouseEvent The mouse event that occurred for this tooltip.
+ * @prop {JQuery.TriggeredEvent} mouseEvent The mouse event that occurred for this tooltip.
  * @prop {JQuery} target The DOM element for the target component.
  * @prop {number} timeout The set-timeout timer ID of the time for the tooltip delay.
  * 
@@ -273,8 +273,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
 
         if(this.cfg.trackMouse && this.mouseEvent) {
             this.jq.position({
-                my: 'left top+15',
-                at: 'right bottom',
+                my: 'left+3 top',
                 of: this.mouseEvent,
                 collision: 'flipfit',
                 using: function(p,f) {
@@ -426,8 +425,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
 
         this.getTarget().on('mousemove.tooltip-track', function(e) {
             $this.jq.position({
-                my: 'left top+15',
-                at: 'right bottom',
+                my: 'left+3 top',
                 of: e,
                 collision: 'flipfit'
             });

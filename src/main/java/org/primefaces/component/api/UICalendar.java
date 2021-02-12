@@ -51,9 +51,9 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
     protected static final List<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("dateSelect", "viewChange", "close");
     protected static final Collection<String> CALENDAR_EVENT_NAMES =  LangUtils.concat(AbstractPrimeHtmlInputText.EVENT_NAMES, UNOBSTRUSIVE_EVENT_NAMES);
 
-    protected String timeOnlyPattern = null;
+    protected String timeOnlyPattern;
 
-    private boolean conversionFailed = false;
+    private boolean conversionFailed;
 
     public enum PropertyKeys {
         locale,
@@ -205,7 +205,7 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
     public abstract String calculateWidgetPattern();
 
     /**
-     * @see https://github.com/RobinHerbots/Inputmask/blob/5.x/README_date.md
+     * @see <a href="https://github.com/RobinHerbots/Inputmask/blob/5.x/README_date.md">Inputmask README_date</a>
      * @param patternTemplate the date pattern
      * @return the value converted for InputMask plugin
      */

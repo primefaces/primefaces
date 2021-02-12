@@ -31,6 +31,7 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  * 
+ * @prop {string} cfg.appendTo The search expression for the element to which the overlay panel should be appended.
  * @prop {PrimeFaces.widget.SplitButton.FilterMatchMode} cfg.filterMatchMode Match mode for filtering, how the search
  * term is matched against the items.
  * @prop {boolean} cfg.disabled Whether this input is currently disabled.
@@ -59,6 +60,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
             this.bindEvents();
 
             PrimeFaces.utils.registerDynamicOverlay(this, this.menu, this.id + '_menu');
+            this.transition = PrimeFaces.utils.registerCSSTransition(this.menu, 'ui-connected-overlay');
         }
 
         //pfs metadata
@@ -248,7 +250,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Highlights the next button action, usually when the user navigates via the keyboard arrows.
      * @private
-     * @param {JQuery.Event} event Keyboard arrow event that caused the next item to be highlighted.
+     * @param {JQuery.TriggeredEvent} event Keyboard arrow event that caused the next item to be highlighted.
      */
     highlightNext: function(event) {
         var highlightedItem = this.menuitems.filter('.ui-state-hover'),
@@ -265,7 +267,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Highlights the previous button action, usually when the user navigates via the keyboard arrows.
      * @private
-     * @param {JQuery.Event} event Keyboard arrow event that caused the previous item to be highlighted.
+     * @param {JQuery.TriggeredEvent} event Keyboard arrow event that caused the previous item to be highlighted.
      */
     highlightPrev: function(event) {
         var highlightedItem = this.menuitems.filter('.ui-state-hover'),
@@ -283,7 +285,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
      * Callback that is invoked when the enter key is pressed. When overlay panel with the additional buttons actions is
      * shown, activates the selected buttons action. Otherwise, opens the overlay panel. 
      * @private
-     * @param {JQuery.Event} event Keyboard event of the enter press.
+     * @param {JQuery.TriggeredEvent} event Keyboard event of the enter press.
      */
     handleEnterKey: function(event) {
         if(this.menu.is(':visible')) {
@@ -424,16 +426,25 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     show: function() {
-        this.jq.attr('aria-expanded', true);
-        this.alignPanel();
+        var $this = this;
 
-        this.menu.show();
-        
-        if(this.cfg.filter) {
-            this.filterInput.trigger('focus');
-        }
-        else {
-            this.menuButton.trigger('focus');
+        if (this.transition) {
+            this.transition.show({
+                onEnter: function() {
+                    $this.menu.css('z-index', PrimeFaces.nextZindex());
+                    $this.alignPanel();
+                },
+                onEntered: function() {
+                    $this.jq.attr('aria-expanded', true);
+
+                    if ($this.cfg.filter) {
+                        $this.filterInput.trigger('focus');
+                    }
+                    else {
+                        $this.menuButton.trigger('focus');
+                    }
+                }
+            });
         }
     },
 
@@ -442,18 +453,24 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     hide: function() {
-        this.jq.attr('aria-expanded', false);
-        this.menuitems.filter('.ui-state-hover').removeClass('ui-state-hover');
-        this.menuButton.removeClass('ui-state-focus');
+        if (this.transition) {
+            var $this = this;
 
-        this.menu.fadeOut('fast');
+            this.transition.hide({
+                onExited: function() {
+                    $this.jq.attr('aria-expanded', false);
+                    $this.menuitems.filter('.ui-state-hover').removeClass('ui-state-hover');
+                    $this.menuButton.removeClass('ui-state-focus');
+                }
+            });
+        }
     },
 
     /**
      * Align the overlay panel with the additional buttons actions.
      */
     alignPanel: function() {
-        this.menu.css({left:'', top:'','z-index': PrimeFaces.nextZindex()});
+        this.menu.css({ left:'', top:'', 'transform-origin': 'center top' });
 
         if(this.menu.parent().is(this.jq)) {
             this.menu.css({
@@ -466,6 +483,10 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
                 my: 'left top'
                 ,at: 'left bottom'
                 ,of: this.button
+                ,collision: 'flipfit'
+                ,using: function(pos, directions) {
+                    $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);
+                }
             });
         }
     }

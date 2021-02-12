@@ -32,7 +32,8 @@ import javax.faces.application.ResourceDependency;
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class ScrollTop extends ScrollTopBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.ScrollTop";
-    public static final String DEFAULT_STYLE_CLASS = "ui-scrolltop";
+
+    public static final String STYLE_CLASS = "ui-scrolltop ui-widget";
     public static final String STICKY_CLASS = "ui-scrolltop-sticky";
     public static final String ICON_CLASS = "ui-scrolltop-icon";
 }

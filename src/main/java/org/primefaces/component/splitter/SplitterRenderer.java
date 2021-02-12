@@ -46,15 +46,14 @@ public class SplitterRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String layout = splitter.getLayout();
         String styleClass = getStyleClassBuilder(context)
-                    .add(Splitter.DEFAULT_STYLE_CLASS)
+                    .add(Splitter.STYLE_CLASS)
                     .add(splitter.getStyleClass())
                     .add("vertical".equals(layout), Splitter.LAYOUT_VERTICAL_CLASS)
                     .add("horizontal".equals(layout), Splitter.LAYOUT_HORIZONTAL_CLASS)
                     .build();
 
-        writer.startElement("div", splitter);
+        writer.startElement("div", null);
         writer.writeAttribute("id", splitter.getClientId(context), "id");
-        writer.writeAttribute("tabindex", "0", "tabindex");
         writer.writeAttribute("class", styleClass, "styleClass");
         if (splitter.getStyle() != null) {
             writer.writeAttribute("style", splitter.getStyle(), "style");
@@ -67,24 +66,22 @@ public class SplitterRenderer extends CoreRenderer {
             if (component instanceof SplitterPanel) {
                 encodePanel(context, (SplitterPanel) component);
 
-                if (i + 1 != childCount) {
-                    writer.startElement("div", splitter);
-                    writer.writeAttribute("class", Splitter.GUTTER_CLASS, "styleClass");
+                if (i != childCount - 1) {
+                    writer.startElement("div", null);
+                    writer.writeAttribute("class", Splitter.GUTTER_CLASS, null);
                     if ("horizontal".equals(layout)) {
-                        writer.writeAttribute("style", "width: " + splitter.getGutterSize() + "px", "style");
+                        writer.writeAttribute("style", "width: " + splitter.getGutterSize() + "px", null);
                     }
                     else if ("vertical".equals(layout)) {
-                        writer.writeAttribute("style", "height: " + splitter.getGutterSize() + "px", "style");
+                        writer.writeAttribute("style", "height: " + splitter.getGutterSize() + "px", null);
                     }
+
                     writer.startElement("div", splitter);
-                    writer.writeAttribute("class", Splitter.GUTTER_HANDLE_CLASS, "styleClass");
+                    writer.writeAttribute("class", Splitter.GUTTER_HANDLE_CLASS, null);
                     writer.endElement("div");
+
                     writer.endElement("div");
                 }
-            }
-
-            else {
-                renderChildren(context, splitter);
             }
         }
 
@@ -93,21 +90,16 @@ public class SplitterRenderer extends CoreRenderer {
 
     protected void encodePanel(FacesContext context, SplitterPanel splitterPanel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        boolean isNested = false;
-        for (UIComponent child: splitterPanel.getChildren()) {
-            if (child instanceof Splitter) {
-                isNested = true;
-                break;
-            }
-        }
         String styleClass = getStyleClassBuilder(context)
-                    .add(SplitterPanel.DEFAULT_STYLE_CLASS)
+                    .add(SplitterPanel.STYLE_CLASS)
                     .add(splitterPanel.getStyleClass())
-                    .add(isNested, SplitterPanel.NESTED_CLASS)
+                    .add(splitterPanel.isNested(), SplitterPanel.NESTED_CLASS)
                     .build();
 
-        writer.startElement("div", splitterPanel);
+        writer.startElement("div", null);
         writer.writeAttribute("class", styleClass, "styleClass");
+        writer.writeAttribute("data-size", splitterPanel.getSize(), null);
+        writer.writeAttribute("data-minsize", splitterPanel.getMinSize(), null);
         if (splitterPanel.getStyle() != null) {
             writer.writeAttribute("style", splitterPanel.getStyle(), "style");
         }

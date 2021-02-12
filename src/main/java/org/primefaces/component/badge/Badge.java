@@ -28,7 +28,8 @@ import javax.faces.application.ResourceDependency;
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class Badge extends BadgeBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Badge";
-    public static final String DEFAULT_STYLE_CLASS = "ui-badge";
+
+    public static final String STYLE_CLASS = "ui-badge ui-widget";
     public static final String OVERLAY_CLASS = "ui-overlay-badge";
     public static final String NO_GUTTER_CLASS = "ui-badge-no-gutter";
     public static final String DOT_CLASS = "ui-badge-dot";

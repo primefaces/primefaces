@@ -7,7 +7,7 @@
  * @typedef PrimeFaces.widget.Slider.SliderCallback
  * A callback function that is invoked when a slider handle is moved or starts or ends moving.
  * @this {PrimeFaces.widget.Slider} PrimeFaces.widget.Slider.SliderCallback
- * @param {JQuery.Event} PrimeFaces.widget.Slider.SliderCallback.event The event that triggered the slider event, as
+ * @param {JQuery.TriggeredEvent} PrimeFaces.widget.Slider.SliderCallback.event The event that triggered the slider event, as
  * given by jQuery.
  * @param {JQueryUI.SliderUIParams} PrimeFaces.widget.Slider.SliderCallback.ui Details about the slider, as given by
  * the jQueryUI slider widget.
@@ -179,7 +179,7 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Callback that is invoked when the user moves a slider handle.
      * @private
-     * @param {JQuery.Event} event The event that triggered the slider handle to move.
+     * @param {JQuery.TriggeredEvent} event The event that triggered the slider handle to move.
      * @param {JQueryUI.SliderUIParams} ui Details about the slider.
      */
     onSlide: function(event, ui) {
@@ -243,7 +243,7 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Callback that is invoked when the user is done moving a slider handle.
      * @private
-     * @param {JQuery.Event} event The event that triggered the slide to end.
+     * @param {JQuery.TriggeredEvent} event The event that triggered the slide to end.
      * @param {JQueryUI.SliderUIParams} ui Details about the slider.
      */
     onSlideEnd: function(event, ui) {

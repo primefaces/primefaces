@@ -7,11 +7,11 @@
     font-size: 1rem;
 }
 
-.ui-avatar.ui-avatar-image {
-    background-color: transparent;
+.ui-avatar.ui-avatar-circle {
+    border-radius: 50%;
 }
 
-.ui-avatar-circle {
+.ui-avatar-circle img {
     border-radius: 50%;
 }
 
@@ -22,4 +22,8 @@
 .ui-avatar img {
     width: 100%;
     height: 100%;
+}
+
+.ui-avatar .ui-avatar-dynamic {
+    mix-blend-mode: difference;
 }

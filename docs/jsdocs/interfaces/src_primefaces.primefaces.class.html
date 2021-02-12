@@ -1,0 +1,322 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Class | PrimeFaces JavaScript API Docs</title>
+	<meta name="description" content="Documentation for PrimeFaces JavaScript API Docs">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../assets/css/main.css">
+	<script async src="../assets/js/search.js" id="search-script"></script>
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.json" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">PrimeFaces JavaScript API Docs</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../modules.html">PrimeFaces JavaScript API Docs</a>
+				</li>
+				<li>
+					<a href="../modules/src_primefaces.html">src/PrimeFaces</a>
+				</li>
+				<li>
+					<a href="../modules/src_primefaces.primefaces.html">PrimeFaces</a>
+				</li>
+				<li>
+					<a href="src_primefaces.primefaces.class.html">Class</a>
+				</li>
+			</ul>
+			<h1>Interface Class&lt;TBase&gt;</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>An object that can be used to emulate classes and a class hierarchy in JavaScript. This works even for old
+							browsers that do no support the native <code>class</code> syntax yet. Note however, that this should be mostly compatible
+						with the new <code>class</code> syntax of JavaScript, so consider creating your own widgets as a class:</p>
+					</div>
+					<pre><code class="language-javascript"><span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">MyWidget</span><span style="color: #000000"> </span><span style="color: #0000FF">extends</span><span style="color: #000000"> </span><span style="color: #267F99">PrimeFaces</span><span style="color: #000000">.</span><span style="color: #267F99">widget</span><span style="color: #000000">.</span><span style="color: #267F99">BaseWidget</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #795E26">init</span><span style="color: #000000">(</span><span style="color: #001080">cfg</span><span style="color: #000000">){</span>
+<span style="color: #000000">    </span><span style="color: #008000">// ...</span>
+<span style="color: #000000">  }</span>
+<span style="color: #000000">}</span>
+</code></pre>
+					<p>Note for TypeScript users: Normally you should just write a widget as a class that extends from the appropriate
+						base class. If you must use this method you will need to specify the type parameters explicitly. The best way to
+					do so is by defining the interfaces for the classes separately:</p>
+					<pre><code class="language-typescript"><span style="color: #0000FF">interface</span><span style="color: #000000"> </span><span style="color: #267F99">BaseWidgetCfg</span><span style="color: #000000"> {</span>
+<span style="color: #000000"> </span><span style="color: #001080">prop1</span><span style="color: #000000">: </span><span style="color: #267F99">string</span><span style="color: #000000">;</span>
+<span style="color: #000000">}</span>
+<span style="color: #0000FF">interface</span><span style="color: #000000"> </span><span style="color: #267F99">AccordionCfg</span><span style="color: #000000"> </span><span style="color: #0000FF">extends</span><span style="color: #000000"> </span><span style="color: #267F99">BaseWidgetCfg</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #001080">prop2</span><span style="color: #000000">: </span><span style="color: #267F99">boolean</span><span style="color: #000000">;</span>
+<span style="color: #000000">}</span>
+<span style="color: #0000FF">interface</span><span style="color: #000000"> </span><span style="color: #267F99">BaseWidget</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #795E26">init</span><span style="color: #000000">(</span><span style="color: #001080">cfg</span><span style="color: #000000">: </span><span style="color: #267F99">BaseWidgetCfg</span><span style="color: #000000">): </span><span style="color: #267F99">void</span><span style="color: #000000">;</span>
+<span style="color: #000000">  </span><span style="color: #795E26">method1</span><span style="color: #000000">(</span><span style="color: #001080">x</span><span style="color: #000000">: </span><span style="color: #267F99">number</span><span style="color: #000000">): </span><span style="color: #267F99">boolean</span><span style="color: #000000">;</span>
+<span style="color: #000000">}</span>
+<span style="color: #0000FF">interface</span><span style="color: #000000"> </span><span style="color: #267F99">Accordion</span><span style="color: #000000"> </span><span style="color: #0000FF">extends</span><span style="color: #000000"> </span><span style="color: #267F99">BaseWidget</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #795E26">init</span><span style="color: #000000">(</span><span style="color: #001080">cfg</span><span style="color: #000000">: </span><span style="color: #267F99">AccordionCfg</span><span style="color: #000000">): </span><span style="color: #267F99">void</span><span style="color: #000000">;</span>
+<span style="color: #000000">  </span><span style="color: #795E26">method1</span><span style="color: #000000">(): </span><span style="color: #267F99">boolean</span><span style="color: #000000">;</span>
+<span style="color: #000000">  </span><span style="color: #795E26">method2</span><span style="color: #000000">(): </span><span style="color: #267F99">boolean</span><span style="color: #000000">;</span>
+<span style="color: #000000">}</span>
+</code></pre>
+					<p>Now you can use it normally:</p>
+					<pre><code class="language-typescript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">BaseWidget</span><span style="color: #000000"> = </span><span style="color: #001080">Class</span><span style="color: #000000">.</span><span style="color: #795E26">extend</span><span style="color: #000000">&lt;</span><span style="color: #267F99">BaseWidget</span><span style="color: #000000">, [</span><span style="color: #267F99">BaseWidgetCfg</span><span style="color: #000000">]&gt;({</span>
+<span style="color: #000000">  </span><span style="color: #795E26">init</span><span style="color: #000000">(</span><span style="color: #001080">cfg</span><span style="color: #000000">: </span><span style="color: #267F99">BaseWidgetCfg</span><span style="color: #000000">) {</span>
+<span style="color: #000000">    </span><span style="color: #008000">// ...</span>
+<span style="color: #000000">  },</span>
+<span style="color: #000000">  </span><span style="color: #795E26">method1</span><span style="color: #000000">(</span><span style="color: #001080">x</span><span style="color: #000000">: </span><span style="color: #267F99">number</span><span style="color: #000000">): </span><span style="color: #267F99">boolean</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #AF00DB">return</span><span style="color: #000000"> </span><span style="color: #001080">x</span><span style="color: #000000"> &gt; </span><span style="color: #098658">0</span><span style="color: #000000">;</span>
+<span style="color: #000000">  },</span>
+<span style="color: #000000">});</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">Accordion</span><span style="color: #000000"> = </span><span style="color: #001080">BaseWidget</span><span style="color: #000000">.</span><span style="color: #795E26">extend</span><span style="color: #000000">&lt;</span><span style="color: #267F99">Accordion</span><span style="color: #000000">, [</span><span style="color: #267F99">AccordionCfg</span><span style="color: #000000">]&gt;({</span>
+<span style="color: #000000">  </span><span style="color: #795E26">init</span><span style="color: #000000">(</span><span style="color: #001080">cfg</span><span style="color: #000000">: </span><span style="color: #267F99">AccordionCfg</span><span style="color: #000000">) {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #795E26">_super</span><span style="color: #000000">(</span><span style="color: #001080">cfg</span><span style="color: #000000">);</span>
+<span style="color: #000000">  },</span>
+<span style="color: #000000">  </span><span style="color: #795E26">method1</span><span style="color: #000000">() {</span>
+<span style="color: #000000">    </span><span style="color: #AF00DB">return</span><span style="color: #000000"> !</span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #795E26">_super</span><span style="color: #000000">(</span><span style="color: #098658">42</span><span style="color: #000000">);</span>
+<span style="color: #000000">  },</span>
+<span style="color: #000000">  </span><span style="color: #795E26">method2</span><span style="color: #000000">() {</span>
+<span style="color: #000000">    </span><span style="color: #AF00DB">return</span><span style="color: #000000"> </span><span style="color: #0000FF">true</span><span style="color: #000000">;</span>
+<span style="color: #000000">  }</span>
+<span style="color: #000000">});</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">base</span><span style="color: #000000">: </span><span style="color: #267F99">BaseWidget</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">BaseWidget</span><span style="color: #000000">({</span><span style="color: #001080">prop1:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;&quot;</span><span style="color: #000000">});</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">accordion</span><span style="color: #000000">: </span><span style="color: #267F99">Accordion</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Accordion</span><span style="color: #000000">({</span><span style="color: #001080">prop1:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;&quot;</span><span style="color: #000000">, </span><span style="color: #001080">prop2:</span><span style="color: #000000"> </span><span style="color: #0000FF">true</span><span style="color: #000000">});</span>
+<span style="color: #001080">base</span><span style="color: #000000">.</span><span style="color: #795E26">method1</span><span style="color: #000000">(</span><span style="color: #098658">2</span><span style="color: #000000">);</span>
+<span style="color: #001080">accordion</span><span style="color: #000000">.</span><span style="color: #795E26">method1</span><span style="color: #000000">();</span>
+<span style="color: #001080">accordion</span><span style="color: #000000">.</span><span style="color: #795E26">method2</span><span style="color: #000000">();</span>
+</code></pre>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-type-parameters">
+				<h3>Type parameters</h3>
+				<ul class="tsd-type-parameters">
+					<li>
+						<h4>TBase = <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">Class</span>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Constructors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-constructor tsd-parent-kind-interface"><a href="src_primefaces.primefaces.class.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter"><a href="src_primefaces.primefaces.class.html#extend" class="tsd-kind-icon">extend</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-interface">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Class<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="src_primefaces.primefaces.class.html" class="tsd-signature-type" data-tsd-kind="Interface">Class</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TBase</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="src_primefaces.primefaces.class.html" class="tsd-signature-type" data-tsd-kind="Interface">Class</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TBase</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter">
+					<a name="extend" class="tsd-anchor"></a>
+					<h3>extend</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">extend&lt;TSub, TArgs&gt;<span class="tsd-signature-symbol">(</span>prop<span class="tsd-signature-symbol">: </span><a href="../modules/src_primefaces.primefaces.html#partialby" class="tsd-signature-type" data-tsd-kind="Type alias">PartialBy</a><span class="tsd-signature-symbol">&lt;</span><a href="../modules/src_primefaces.primefaces.html#classextendprops" class="tsd-signature-type" data-tsd-kind="Type alias">ClassExtendProps</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TBase</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">TSub</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Exclude</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">TBase</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">&quot;init&quot;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="src_primefaces.primefaces.class.html" class="tsd-signature-type" data-tsd-kind="Interface">Class</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TSub</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TArgs</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">TSub</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>prototype<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TSub</span><span class="tsd-signature-symbol"> }</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>TSub<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>init<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">Pick</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TBase</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Exclude</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">TBase</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">&quot;init&quot;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
+								</li>
+								<li>
+									<h4>TArgs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>prop: <a href="../modules/src_primefaces.primefaces.html#partialby" class="tsd-signature-type" data-tsd-kind="Type alias">PartialBy</a><span class="tsd-signature-symbol">&lt;</span><a href="../modules/src_primefaces.primefaces.html#classextendprops" class="tsd-signature-type" data-tsd-kind="Type alias">ClassExtendProps</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TBase</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">TSub</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Exclude</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">TBase</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">&quot;init&quot;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="src_primefaces.primefaces.class.html" class="tsd-signature-type" data-tsd-kind="Interface">Class</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TSub</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TArgs</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">TSub</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>prototype<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TSub</span><span class="tsd-signature-symbol"> }</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class=" ">
+						<a href="../modules.html">Modules</a>
+					</li>
+					<li class="current tsd-kind-module">
+						<a href="../modules/src_primefaces.html">src/<wbr>Prime<wbr>Faces</a>
+						<ul>
+							<li class="current tsd-kind-namespace tsd-parent-kind-module">
+								<a href="../modules/src_primefaces.primefaces.html">Prime<wbr>Faces</a>
+								<ul>
+									<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+										<a href="../modules/src_primefaces.primefaces.ajax.html">ajax</a>
+									</li>
+									<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+										<a href="../modules/src_primefaces.primefaces.clientwindow.html">clientwindow</a>
+									</li>
+									<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+										<a href="../modules/src_primefaces.primefaces.csp.html">csp</a>
+									</li>
+									<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+										<a href="../modules/src_primefaces.primefaces.dialog.html">dialog</a>
+									</li>
+									<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+										<a href="../modules/src_primefaces.primefaces.env.html">env</a>
+									</li>
+									<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+										<a href="../modules/src_primefaces.primefaces.expressions.html">expressions</a>
+									</li>
+									<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+										<a href="../modules/src_primefaces.primefaces.resources.html">resources</a>
+									</li>
+									<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+										<a href="../modules/src_primefaces.primefaces.settings.html">settings</a>
+									</li>
+									<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+										<a href="../modules/src_primefaces.primefaces.utils.html">utils</a>
+									</li>
+									<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+										<a href="../modules/src_primefaces.primefaces.validation.html">validation</a>
+									</li>
+									<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+										<a href="../modules/src_primefaces.primefaces.widget.html">widget</a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface tsd-parent-kind-namespace tsd-has-type-parameter">
+						<a href="src_primefaces.primefaces.class.html" class="tsd-kind-icon">Class</a>
+						<ul>
+							<li class=" tsd-kind-constructor tsd-parent-kind-interface">
+								<a href="src_primefaces.primefaces.class.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter">
+								<a href="src_primefaces.primefaces.class.html#extend" class="tsd-kind-icon">extend</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-namespace"><span class="tsd-kind-icon">Namespace</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

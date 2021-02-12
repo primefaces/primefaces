@@ -33,7 +33,7 @@ public class CellEditor extends CellEditorBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.CellEditor";
 
-    private UIComponent parentTable = null;
+    private UIComponent parentTable;
 
     @Override
     public void processDecodes(FacesContext context) {

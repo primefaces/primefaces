@@ -127,12 +127,17 @@ public class GMapRenderer extends CoreRenderer {
         if (infoWindow != null) {
             Map<String, List<ClientBehavior>> behaviorEvents = map.getClientBehaviors();
             List<ClientBehavior> overlaySelectBehaviors = behaviorEvents.get("overlaySelect");
-            for (ClientBehavior clientBehavior : overlaySelectBehaviors) {
-                ((AjaxBehavior) clientBehavior).setOnsuccess("PF('" + widgetVar + "').openWindow(data)");
+            if (overlaySelectBehaviors != null) {
+                for (ClientBehavior clientBehavior : overlaySelectBehaviors) {
+                    ((AjaxBehavior) clientBehavior).setOnsuccess("PF('" + widgetVar + "').openWindow(data)");
+                }
             }
+
             List<ClientBehavior> overlayDblSelectBehaviors = behaviorEvents.get("overlayDblSelect");
-            for (ClientBehavior clientBehavior : overlayDblSelectBehaviors) {
-                ((AjaxBehavior) clientBehavior).setOnsuccess("PF('" + widgetVar + "').openWindow(data)");
+            if (overlayDblSelectBehaviors != null) {
+                for (ClientBehavior clientBehavior : overlayDblSelectBehaviors) {
+                    ((AjaxBehavior) clientBehavior).setOnsuccess("PF('" + widgetVar + "').openWindow(data)");
+                }
             }
         }
 

@@ -102,9 +102,11 @@ function createPropDocComment(propDocInfo) {
  * @return {MethodDoc | undefined}
  */
 function createFunctionDoc(severitySettings, fnInfo) {
+    /** @type {MethodDocShape} */
     const method = {
         ...fnInfo,
         abstract: false,
+        constructor: false,
         name: "",
         method: undefined,
         visibility: undefined,
@@ -362,7 +364,7 @@ function createConstantDocs(signatureConverter, constant, severitySettings) {
  */
 function createInvocationDocs(signatureConverter, method, severitySettings) {
     // Take a look at the JavaScript code
-    const methodCodeInfo = createMethodCodeInfo(method.name, method.node);
+    const methodCodeInfo = createMethodCodeInfo(method.name, method);
     // Take a look at the (hopefully present) JSDocs
     const methodDocInfo = createMethodDocInfo(method.name, method.jsdoc, method, severitySettings);
     // Merge both and validate

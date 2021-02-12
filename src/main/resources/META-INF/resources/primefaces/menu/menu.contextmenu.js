@@ -9,7 +9,7 @@
  * @typedef PrimeFaces.widget.ContextMenu.BeforeShowCallback Client side callback invoked before the context menu is
  * shown.
  * @this {PrimeFaces.widget.ContextMenu} PrimeFaces.widget.ContextMenu.BeforeShowCallback
- * @param {JQuery.Event} PrimeFaces.widget.ContextMenu.BeforeShowCallback.event Event that triggered the context menu to
+ * @param {JQuery.TriggeredEvent} PrimeFaces.widget.ContextMenu.BeforeShowCallback.event Event that triggered the context menu to
  * be shown (e.g. a mouse click).
  * @return {boolean} PrimeFaces.widget.ContextMenu.BeforeShowCallback ` true` to show the context menu, `false` to
  * prevent is from getting displayed.
@@ -100,6 +100,10 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
                 if (targetWidget) {
                     if (typeof targetWidget.bindContextMenu === 'function') {
                         targetWidget.bindContextMenu(this, targetWidget, this.jqTargetId, this.cfg);
+                        // GitHub #6776 IOS needs long touch on table/tree but Android does not
+                        if(PrimeFaces.env.ios) {
+                            $this.bindTouchEvents();
+                        }
                         binded = true;
                     }
                 }
@@ -115,13 +119,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
                     $this.show(e);
                 });
 
-                if (PrimeFaces.env.isTouchable(this.cfg)) {
-                    $(this.jqTargetId).swipe({
-                        longTap:function(e, target) {
-                           $this.show(e);
-                        }
-                    });
-                }
+                $this.bindTouchEvents();
             }
         }
 
@@ -137,6 +135,29 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', this.jq, function() {
             $this.hide();
         });
+
+        this.transition = PrimeFaces.utils.registerCSSTransition(this.jq, 'ui-connected-overlay');
+    },
+
+    /**
+     * Binds mobile touch events.
+     * @protected
+     */
+    bindTouchEvents: function() {
+        if (PrimeFaces.env.isTouchable(this.cfg)) {
+             var $this = this;
+
+             // GitHub #6776 turn off Copy/Paste menu for IOS
+             if(PrimeFaces.env.ios) {
+                $(document.body).addClass('ui-touch-selection-disabled');
+             }
+
+             $this.jqTarget.swipe({
+                 longTap:function(e, target) {
+                      $this.show(e);
+                 }
+             });
+        }
     },
 
     /**
@@ -165,12 +186,14 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
     /**
      * @override
      * @inheritdoc
-     * @param {JQuery.Event} [e] The event that triggered this context menu to be shown.
+     * @param {JQuery.TriggeredEvent} [e] The event that triggered this context menu to be shown.
      * 
      * Note:  __This parameter is not optional__, but is marked as such since this method overrides a parent method
      * that does not have any parameters. Do not (implicitly) cast an instance of this class to a parent type.
      */
     show: function(e) {
+        var $this = this;
+
         if(this.cfg.targetFilter && $(e.target).is(':not(' + this.cfg.targetFilter + ')')) {
             return;
         }
@@ -185,28 +208,35 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
             }
         }
 
-        var win = $(window),
-        left = e.pageX,
-        top = e.pageY,
-        width = this.jq.outerWidth(),
-        height = this.jq.outerHeight();
+        if (this.transition) {
+            this.transition.show({
+                onEnter: function() {
+                    var win = $(window),
+                    left = e.pageX,
+                    top = e.pageY,
+                    width = $this.jq.outerWidth(),
+                    height = $this.jq.outerHeight();
 
-        //collision detection for window boundaries
-        if((left + width) > (win.width())+ win.scrollLeft()) {
-            left = left - width;
-        }
-        if((top + height ) > (win.height() + win.scrollTop())) {
-            top = top - height;
-        }
-        if(top < 0) {
-            top = e.pageY;
-        }
+                    //collision detection for window boundaries
+                    if ((left + width) > (win.width())+ win.scrollLeft()) {
+                        left = left - width;
+                    }
+                    if ((top + height ) > (win.height() + win.scrollTop())) {
+                        top = top - height;
+                    }
+                    if (top < 0) {
+                        top = e.pageY;
+                    }
 
-        this.jq.css({
-            'left': left + 'px',
-            'top': top + 'px',
-            'z-index': PrimeFaces.nextZindex()
-        }).show();
+                    $this.jq.css({
+                        'left': left + 'px',
+                        'top': top + 'px',
+                        'z-index': PrimeFaces.nextZindex(),
+                        'transform-origin': 'center top'
+                    });
+                }
+            });
+        }
 
         e.preventDefault();
         e.stopPropagation();
@@ -217,14 +247,18 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
      * @inheritdoc
      */
     hide: function() {
-        var $this = this;
+        if (this.transition) {
+            var $this = this;
 
-        //hide submenus
-        this.jq.find('li.ui-menuitem-active').each(function() {
-            $this.deactivate($(this), true);
-        });
-
-        this.jq.fadeOut('fast');
+            this.transition.hide({
+                onExited: function() {
+                    //hide submenus
+                    $this.jq.find('li.ui-menuitem-active').each(function() {
+                        $this.deactivate($(this), true);
+                    });
+                }
+            });
+        }
     },
 
     /**

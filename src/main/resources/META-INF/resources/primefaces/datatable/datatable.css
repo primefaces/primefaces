@@ -46,6 +46,7 @@
 
 .ui-datatable .ui-sortable-column {
     cursor: pointer;
+    user-select: none;
 }
 
 .ui-datatable div.ui-dt-c {
@@ -105,18 +106,6 @@
 
 .ui-datatable-scrollable .ui-datatable-scrollable-header td {
     font-weight: normal;
-}
-
-.ui-datatable-scrollable-body::-webkit-scrollbar {
-    -webkit-appearance: none;
-    width: 15px;
-    background-color: transparent;
-}
-
-.ui-datatable-scrollable-body::-webkit-scrollbar-thumb {
-    border-radius: 8px;
-    border: 1px solid white;
-    background-color: rgba(194,194,194,.5);
 }
 
 .ui-datatable .ui-datatable-scrollable-body  {
@@ -331,6 +320,10 @@
     -ms-flex-pack: center;
     justify-content: center;
     vertical-align: middle;
+}
+
+.ui-datatable .ui-sortable-column-badge.ui-helper-hidden {
+    display: none;
 }
 
 @media ( max-width: 640px ) {

@@ -89,7 +89,8 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Sets the rating to the given value.
-     * @param {number} value New rating value to set (number of starts selected).
+     * @param {number | undefined | null} value New rating value to set (number of stars selected). Pass `undefined` or
+     * a value not greater thatn 0 to reset the value.
      */
     setValue: function(value) {
         if(this.isDisabled() || this.isReadOnly()) {
@@ -124,23 +125,25 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
-     * Is this widget currently disabled?
-     * @return {boolean} true if disabled
+     * Checks whether this widget is currently disabled. Whe disabled, the user cannot edit the value and it will not be
+     * sent to the server when the form is submitted.
+     * @return {boolean} `true` if this rating widget is disabled, `false` otherwise.
      */
     isDisabled: function() {
         return this.jq.hasClass('ui-state-disabled');
     },
     
     /**
-     * Is this widget currently read only?
-     * @return {boolean} true if read only
+     * Checks whether this widget is currently read-only. When read-only, the user cannot edit the value, but the value
+     * will be sent to the server when the form is submitted.
+     * @return {boolean} `true` if this rating widget is read-only, `false` otherwise.
      */
     isReadOnly: function() {
         return this.jqInput.is('[readonly]');
     },
 
     /**
-     * Enables the rating so the user can give a rating.
+     * Enables this rating widget so the user can give a rating.
      */
     enable: function() {
         if(!this.isDisabled() || this.isReadOnly()) {
@@ -154,7 +157,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Disables the rating so the user cannot give a rating anymore.
+     * Disables this rating widget so the user cannot give a rating anymore.
      */
     disable: function() {
         if(this.isDisabled()) {

@@ -40,8 +40,6 @@ public class ThemeSwitcherRenderer extends SelectOneMenuRenderer {
         ThemeSwitcher ts = (ThemeSwitcher) menu;
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("ThemeSwitcher", ts)
-                .attr("effect", ts.getEffect(), null)
-                .attr("effectSpeed", ts.getEffectSpeed(), null)
                 .attr("appendTo", SearchExpressionFacade.resolveClientId(context, menu, menu.getAppendTo(),
                             SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
                     .attr("syncTooltip", menu.isSyncTooltip(), false)

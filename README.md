@@ -3,7 +3,7 @@
 [![Sonar](https://sonarcloud.io/api/project_badges/measure?project=org.primefaces%3Aprimefaces&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.primefaces%3Aprimefaces)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Discord Chat](https://img.shields.io/discord/591914197219016707.svg?color=7289da&label=chat&logo=discord&style=flat-square)](https://discord.gg/gzKFYnpmCY)
-[![Stackoverflow](https://img.shields.io/badge/StackOverflow-primefaces-chocolate.svg)](https://stackoverflow.com/questions/tagged/primefaces)
+[![Stackoverflow](https://img.shields.io/badge/StackOverflow-primefaces-chocolate.svg)](https://stackoverflow.com/questions/tagged/primefaces+jsf)
 
 [![PrimeFaces Hero](https://www.primefaces.org/wp-content/uploads/2020/03/primefaces-github-02032020.jpg "PrimeFaces Hero")](https://www.primefaces.org/showcase)
 
@@ -27,7 +27,7 @@ This is an overview page, please visit [PrimeFaces.org](https://www.primefaces.o
 
 Version | Binary | Source | JSF version | Java version | Documentation
 ------------ | -------------  | ------------- | ------------- | ------------- | ------------- |
-10.0|  |  | 2.0 - 3.0 | 1.8 - ? | [10.0 Documentation](https://primefaces.github.io/primefaces/10_0/#/)
+10.0.0|  |  | 2.0 - 3.0 | 1.8 - ? | [10.0.0 Documentation](https://primefaces.github.io/primefaces/10_0_0/#/)
 8.0| [primefaces-8.0.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/8.0/primefaces-8.0.jar)  | [primefaces-8.0-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/8.0/primefaces-8.0-sources.jar) | 2.0 - 2.3 | 1.8 - ? | [8.0 Documentation](https://primefaces.github.io/primefaces/8_0/#/)
 7.0| [primefaces-7.0.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/7.0/primefaces-7.0.jar)  | [primefaces-7.0-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/7.0/primefaces-7.0-sources.jar) | 2.0 - 2.3 | 1.7 - ? | [7.0 Documentation](https://primefaces.github.io/primefaces/7_0/#/)
 6.2| [primefaces-6.2.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.2/primefaces-6.2.jar)  | [primefaces-6.2-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.2/primefaces-6.2-sources.jar) | 2.0 - 2.3 | 1.6 - ? | [6.2 Documentation](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_2.pdf)
@@ -58,7 +58,7 @@ For a full list of the available downloads, please visit the [download page](htt
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>10.0</version>
+      <version>10.0.0</version>
       <classifier>jakarta</classifier>
   </dependency>
   ```

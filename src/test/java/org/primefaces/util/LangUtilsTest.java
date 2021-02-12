@@ -114,6 +114,16 @@ public class LangUtilsTest {
         assertTrue(LangUtils.isNumeric("-.236"));
     }
 
+    @Test
+    public void toCapitalCase() {
+        assertEquals("", LangUtils.toCapitalCase(null));
+        assertEquals("", LangUtils.toCapitalCase(""));
+        assertEquals("", LangUtils.toCapitalCase(" "));
+        assertEquals("This Is A Test", LangUtils.toCapitalCase("thisIsATest"));
+        assertEquals("Uppercase First Char", LangUtils.toCapitalCase("UppercaseFirstChar"));
+        assertEquals("My Über String", LangUtils.toCapitalCase("myÜberString"));
+    }
+
     class SimpleClass {
         private List<String> strings;
 

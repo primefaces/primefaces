@@ -129,7 +129,7 @@ function createTag(tag, data = {}) {
         tag: tag,
         name: "",
         description: "",
-        default: "",
+        default: undefined,
         line: 0,
         optional: false,
         source: "",
@@ -228,6 +228,10 @@ function sanitizeTag(tag) {
     if (tag.default && !tag.optional) {
         newTag.optional = true;
         newTag.name = newTag.name.trim();
+    }
+    // empty strin is interpreted as having a default...
+    if (newTag.default === "") {
+        newTag.default = undefined;
     }
     return newTag;
 }

@@ -36,7 +36,7 @@ public class Title implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private boolean display = false;
+    private boolean display;
     private String position;
     private Number fontSize;
     private String fontFamily;

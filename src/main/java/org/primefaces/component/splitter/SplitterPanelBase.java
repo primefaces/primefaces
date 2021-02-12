@@ -46,34 +46,34 @@ public abstract class SplitterPanelBase extends UIPanel {
     }
 
     public Integer getSize() {
-        return (Integer) getStateHelper().eval(SplitterPanelBase.PropertyKeys.size, null);
+        return (Integer) getStateHelper().eval(PropertyKeys.size, null);
     }
 
     public void setSize(Integer size) {
-        getStateHelper().put(SplitterPanelBase.PropertyKeys.size, size);
+        getStateHelper().put(PropertyKeys.size, size);
     }
 
     public Integer getMinSize() {
-        return (Integer) getStateHelper().eval(SplitterPanelBase.PropertyKeys.minSize, null);
+        return (Integer) getStateHelper().eval(PropertyKeys.minSize, null);
     }
 
     public void setMinSize(Integer minSize) {
-        getStateHelper().put(SplitterPanelBase.PropertyKeys.minSize, minSize);
+        getStateHelper().put(PropertyKeys.minSize, minSize);
     }
 
     public String getStyle() {
-        return (String) getStateHelper().eval(SplitterPanelBase.PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
-        getStateHelper().put(SplitterPanelBase.PropertyKeys.style, style);
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
     public String getStyleClass() {
-        return (String) getStateHelper().eval(SplitterPanelBase.PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
-        getStateHelper().put(SplitterPanelBase.PropertyKeys.styleClass, styleClass);
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 }

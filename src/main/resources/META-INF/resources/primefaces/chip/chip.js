@@ -3,7 +3,6 @@
  *
  * Chip represents entities using icons, labels and images.
  *
- * @prop {JQuery} chip DOM element of the chip.
  * @prop {JQuery} removeIcon DOM element of the icon for closing this chip, when this chip is closable (an `x` by
  * default).
  *
@@ -22,8 +21,7 @@ PrimeFaces.widget.Chip = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
 
-        this.chip = $(this.jqId);
-        this.removeIcon = this.chip.children('.pi-chip-remove-icon')
+        this.removeIcon = this.jq.children('.ui-chip-remove-icon');
 
         this.bindEvents();
     },
@@ -34,15 +32,21 @@ PrimeFaces.widget.Chip = PrimeFaces.widget.BaseWidget.extend({
      */
     bindEvents: function() {
         var $this = this;
-
-        this.removeIcon.on("keydown", function() {
-            $this.close();
-        }).on("click", function() {
-            $this.close();
+        
+        this.jq.on("click.chip", function() {
+           $this.callBehavior("select");
         });
 
-        this.chip.on("click", function() {
-            $this.callBehavior('click');
+        this.removeIcon.on("keydown.chip", function(e) {
+            var keyCode = $.ui.keyCode,
+            key = e.which;
+
+            if(key === keyCode.SPACE || key === keyCode.ENTER) {
+                $this.close();
+                e.preventDefault();
+            }
+        }).on("click.chip", function() {
+            $this.close();
         });
     },
 
@@ -51,7 +55,7 @@ PrimeFaces.widget.Chip = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     close: function() {
-        this.chip.remove();
-        this.callBehavior('close');
+        this.jq.remove();
+        this.callBehavior("close");
     }
 });

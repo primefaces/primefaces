@@ -37,6 +37,7 @@ public class ConfirmBehavior extends AbstractBehavior {
     public static final String BEHAVIOR_ID = "org.primefaces.behavior.ConfirmBehavior";
 
     public enum PropertyKeys implements BehaviorAttribute {
+        type(String.class),
         header(String.class),
         message(String.class),
         icon(String.class),
@@ -70,6 +71,7 @@ public class ConfirmBehavior extends AbstractBehavior {
         }
 
         String source = component.getClientId(context);
+        String type = JSONObject.quote(getType());
         String headerText = JSONObject.quote(getHeader());
         String messageText = JSONObject.quote(getMessage());
         String beforeShow = JSONObject.quote(getBeforeShow());
@@ -77,6 +79,7 @@ public class ConfirmBehavior extends AbstractBehavior {
         if (component instanceof Confirmable) {
             String sourceProperty = (source == null) ? "source:this" : "source:\"" + source + "\"";
             String script = "PrimeFaces.confirm({" + sourceProperty
+                                                   + ",type:" + type
                                                    + ",escape:" + isEscape()
                                                    + ",header:" + headerText
                                                    + ",message:" + messageText
@@ -96,6 +99,14 @@ public class ConfirmBehavior extends AbstractBehavior {
     @Override
     protected BehaviorAttribute[] getAllAttributes() {
         return PropertyKeys.values();
+    }
+
+    public String getType() {
+        return eval(PropertyKeys.type, "dialog");
+    }
+
+    public void setType(String type) {
+        put(PropertyKeys.type, type);
     }
 
     public String getHeader() {

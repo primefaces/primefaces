@@ -134,6 +134,9 @@ if (window.PrimeFaces) {
      */
     PrimeFaces.converter = { };
 
+    /**
+     * The module for enabling client side validation of form fields.
+     */
     PrimeFaces.validation = {
 
         /**
@@ -586,6 +589,9 @@ if (window.PrimeFaces) {
      */
     PrimeFaces.util.ValidationContext = PrimeFaces.validation.ValidationContext;
 
+    /**
+     * Mostly internal utility methods used to validate data on the client.
+     */
     PrimeFaces.validation.Utils = {
 
         /**

@@ -42,7 +42,6 @@ public abstract class DataListBase extends UIPageableData
         style,
         styleClass,
         varStatus,
-        emptyMessage,
         itemStyleClass,
         multiViewState
     }
@@ -104,13 +103,6 @@ public abstract class DataListBase extends UIPageableData
         getStateHelper().put(PropertyKeys.varStatus, varStatus);
     }
 
-    public String getEmptyMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, "No records found.");
-    }
-
-    public void setEmptyMessage(String emptyMessage) {
-        getStateHelper().put(PropertyKeys.emptyMessage, emptyMessage);
-    }
 
     public String getItemStyleClass() {
         return (String) getStateHelper().eval(PropertyKeys.itemStyleClass, null);

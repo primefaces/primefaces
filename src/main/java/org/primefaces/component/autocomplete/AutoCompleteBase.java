@@ -48,8 +48,6 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
         queryDelay,
         forceSelection,
         scrollHeight,
-        effect,
-        effectDuration,
         dropdown,
         panelStyle,
         panelStyleClass,
@@ -186,22 +184,6 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
 
     public void setScrollHeight(int scrollHeight) {
         getStateHelper().put(PropertyKeys.scrollHeight, scrollHeight);
-    }
-
-    public String getEffect() {
-        return (String) getStateHelper().eval(PropertyKeys.effect, null);
-    }
-
-    public void setEffect(String effect) {
-        getStateHelper().put(PropertyKeys.effect, effect);
-    }
-
-    public int getEffectDuration() {
-        return (Integer) getStateHelper().eval(PropertyKeys.effectDuration, 400);
-    }
-
-    public void setEffectDuration(int effectDuration) {
-        getStateHelper().put(PropertyKeys.effectDuration, effectDuration);
     }
 
     public boolean isDropdown() {

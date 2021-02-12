@@ -262,6 +262,7 @@ public class TreeTableRenderer extends DataRenderer {
         if (tt.isEditable()) {
             wb.attr("editable", true)
                     .attr("editMode", tt.getEditMode())
+                    .attr("saveOnCellBlur", tt.isSaveOnCellBlur(), true)
                     .attr("cellEditMode", tt.getCellEditMode(), "eager")
                     .attr("cellSeparator", tt.getCellSeparator(), null)
                     .attr("editInitEvent", tt.getEditInitEvent());
@@ -330,6 +331,9 @@ public class TreeTableRenderer extends DataRenderer {
         containerClass = scrollable ? containerClass + " " + TreeTable.SCROLLABLE_CONTAINER_CLASS : containerClass;
         containerClass = tt.getStyleClass() == null ? containerClass : containerClass + " " + tt.getStyleClass();
         containerClass = tt.isShowUnselectableCheckbox() ? containerClass + " ui-treetable-checkbox-all" : containerClass;
+        containerClass = tt.isShowGridlines() ? containerClass + " " + TreeTable.GRIDLINES_CLASS : containerClass;
+        containerClass = "small".equals(tt.getSize()) ? containerClass + " " + TreeTable.SMALL_SIZE_CLASS : containerClass;
+        containerClass = "large".equals(tt.getSize()) ? containerClass + " " + TreeTable.LARGE_SIZE_CLASS : containerClass;
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, "id");

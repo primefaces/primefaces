@@ -29,9 +29,9 @@ public class FlowChartConnector extends Connector {
 
     private int stub = 30;
 
-    private int gap = 0;
+    private int gap;
 
-    private double cornerRadius = 0;
+    private double cornerRadius;
 
     private boolean alwaysRespectStubs;
 

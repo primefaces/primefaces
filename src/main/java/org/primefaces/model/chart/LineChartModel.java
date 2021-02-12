@@ -27,8 +27,8 @@ public class LineChartModel extends CartesianChartModel {
 
     private static final long serialVersionUID = 1L;
 
-    private boolean stacked = false;
-    private boolean breakOnNull = false;
+    private boolean stacked;
+    private boolean breakOnNull;
 
     public boolean isStacked() {
         return stacked;

@@ -71,7 +71,7 @@ public class AjaxRequestBuilder {
     protected StringBuilder buffer;
     protected FacesContext context;
 
-    private boolean preventDefault = false;
+    private boolean preventDefault;
 
     public AjaxRequestBuilder(FacesContext context) {
         this.context = context;
@@ -130,7 +130,7 @@ public class AjaxRequestBuilder {
         return form(source, component, null);
     }
 
-    @Deprecated
+    //Don't deprecate or remove this method. It's required for themes' backward compatibility.
     public AjaxRequestBuilder form(String form) {
         if (form != null) {
             buffer.append(",f:\"").append(form).append("\"");

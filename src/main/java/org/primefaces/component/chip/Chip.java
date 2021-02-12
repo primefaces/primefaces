@@ -23,7 +23,6 @@
  */
 package org.primefaces.component.chip;
 
-import org.primefaces.event.RateEvent;
 import org.primefaces.util.MapBuilder;
 
 import javax.faces.application.ResourceDependency;
@@ -36,16 +35,18 @@ import java.util.Map;
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class Chip extends ChipBase {
+
     public static final String COMPONENT_TYPE = "org.primefaces.component.Chip";
-    public static final String DEFAULT_STYLE_CLASS = "ui-chip";
+
+    public static final String STYLE_CLASS = "ui-chip ui-widget";
     public static final String IMAGE_CLASS = "ui-chip-image";
     public static final String ICON_CLASS = "ui-chip-icon";
     public static final String TEXT_CLASS = "ui-chip-text";
-    public static final String REMOVE_ICON_CLASS = "pi-chip-remove-icon";
+    public static final String REMOVE_ICON_CLASS = "ui-chip-remove-icon";
 
-    private static final String DEFAULT_EVENT = "click";
+    private static final String DEFAULT_EVENT = "select";
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("click", RateEvent.class)
+            .put("select", null)
             .put("close", null)
             .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
@@ -64,5 +65,4 @@ public class Chip extends ChipBase {
     public String getDefaultEventName() {
         return DEFAULT_EVENT;
     }
-
 }

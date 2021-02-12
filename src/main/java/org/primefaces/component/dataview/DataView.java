@@ -72,8 +72,8 @@ public class DataView extends DataViewBase {
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
-    private DataViewGridItem gridItem = null;
-    private DataViewListItem listItem = null;
+    private DataViewGridItem gridItem;
+    private DataViewListItem listItem;
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {

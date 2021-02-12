@@ -32,7 +32,8 @@ import javax.faces.application.ResourceDependency;
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class Splitter extends SplitterBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Splitter";
-    public static final String DEFAULT_STYLE_CLASS = "ui-splitter";
+
+    public static final String STYLE_CLASS = "ui-splitter ui-widget";
     public static final String LAYOUT_VERTICAL_CLASS = "ui-splitter-vertical";
     public static final String LAYOUT_HORIZONTAL_CLASS = "ui-splitter-horizontal";
     public static final String GUTTER_CLASS = "ui-splitter-gutter";

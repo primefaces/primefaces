@@ -31,10 +31,10 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.application.resource.DynamicContentType;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.DynamicContentSrcBuilder;
 import org.primefaces.util.HTML;
+import org.primefaces.util.Lazy;
 
 public class GraphicImageRenderer extends CoreRenderer {
 
@@ -78,7 +78,8 @@ public class GraphicImageRenderer extends CoreRenderer {
             }
         }
         else {
-            return DynamicContentSrcBuilder.build(context, image.getValue(), image, image.isCache(), DynamicContentType.STREAMED_CONTENT, image.isStream());
+            return DynamicContentSrcBuilder.build(context, image, image.getValueExpression(GraphicImage.PropertyKeys.value.name()),
+                    new Lazy<>(() -> image.getValue()), image.isCache(), image.isStream());
         }
     }
 }

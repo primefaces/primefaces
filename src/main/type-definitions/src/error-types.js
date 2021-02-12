@@ -72,6 +72,7 @@ const DefaultSeveritySettings = {
     tagDuplicateAbstract: Level.fatal,
     tagDuplicateAsync: Level.fatal,
     tagDuplicateClassOrInterface: Level.fatal,
+    tagDuplicateConstructor: Level.fatal,
     tagDuplicateDefault: Level.fatal,
     tagDuplicateExtends: Level.fatal,
     tagDuplicateGenerator: Level.fatal,

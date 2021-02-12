@@ -40,6 +40,8 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
             //Enable dnd
             this.list.sortable({
                 revert: 1,
+                placeholder: "ui-orderlist-item ui-state-highlight",
+                forcePlaceholderSize: true,
                 start: function(event, ui) {
                     PrimeFaces.clearSelection();
                 }
@@ -146,7 +148,7 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
      * Callback that is invoked when an order list item was moved via drag and drop. Saves the new order of the items
      * and invokes the appropriate behaviors.
      * @private
-     * @param {JQuery.Event} event The event that triggered the drag or drop.
+     * @param {JQuery.TriggeredEvent} event The event that triggered the drag or drop.
      * @param {JQueryUI.SortableUIParams} ui The UI params as passed by JQuery UI to the event handler.
      */
     onDragDrop: function(event, ui) {
@@ -315,7 +317,7 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
      * Invokes the appropriate behavior for when an item of the order list was selected.
      * @private
      * @param {JQuery} item The item that was selected.
-     * @param {JQuery.Event} e The event that occurred.
+     * @param {JQuery.TriggeredEvent} e The event that occurred.
      */
     fireItemSelectEvent: function(item, e) {
         if(this.hasBehavior('select')) {

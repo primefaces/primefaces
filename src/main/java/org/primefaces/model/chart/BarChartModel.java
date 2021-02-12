@@ -31,8 +31,8 @@ public class BarChartModel extends CartesianChartModel {
 
     private int barPadding = 8;
     private int barMargin = 10;
-    private int barWidth = 0;
-    private boolean stacked = false;
+    private int barWidth;
+    private boolean stacked;
 
     @Override
     public void createAxes() {

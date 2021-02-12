@@ -29,7 +29,7 @@ public class BezierConnector extends Connector {
 
     private int curviness = 150;
 
-    private int stub = 0;
+    private int stub;
 
     public BezierConnector() {
     }

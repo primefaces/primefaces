@@ -23,43 +23,9 @@
  */
 package org.primefaces.model.filter;
 
-import org.primefaces.model.FilterMeta;
-
-import javax.faces.context.FacesContext;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Locale;
-
 public class GlobalFilterConstraint extends ContainsFilterConstraint {
 
-    private final Collection<FilterMeta> filterBy;
-
-    public GlobalFilterConstraint(Collection<FilterMeta> filterBy) {
-        this.filterBy = filterBy;
-    }
-
     public GlobalFilterConstraint() {
-        this(Collections.emptyList());
     }
 
-    @Override
-    public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
-        // tweak for treetable (to remove once TreeTable filtering is cleaned up)
-        if (filterBy == null || filterBy.isEmpty()) {
-            return super.isMatching(ctxt, value, filter, locale);
-        }
-
-        for (FilterMeta f : filterBy) {
-            if (f.isGlobalFilter()) {
-                continue;
-            }
-
-            Object o = f.getLocalValue(ctxt.getELContext());
-            if (super.isMatching(ctxt, o, filter, locale)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 }

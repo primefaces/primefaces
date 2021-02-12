@@ -9,7 +9,6 @@ declare namespace PrimeFaces.widget {
     export class MethodDestructureObject {
         /**
          * method bar
-         * 
          * @param param1 bar param1 
          * @param param3 bar param3 
          * @param x bar param x
@@ -25,7 +24,6 @@ declare namespace PrimeFaces.widget {
 
         /**
          * method foo
-         * 
          * @param param1 foo param1 
          * @param param3 foo param3 
          * @param x foo param x

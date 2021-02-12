@@ -30,7 +30,7 @@ public class DefaultMenuModel extends BaseMenuModel {
 
     private static final long serialVersionUID = 1L;
 
-    private boolean generated = false;
+    private boolean generated;
 
     @Override
     public void generateUniqueIds() {

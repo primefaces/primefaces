@@ -36,10 +36,12 @@ public class AvatarGroupRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         AvatarGroup avatarGroup = (AvatarGroup) component;
         ResponseWriter writer = context.getResponseWriter();
-        String styleClass = avatarGroup.getStyleClass();
-        styleClass = styleClass == null ? AvatarGroup.DEFAULT_STYLE_CLASS : AvatarGroup.DEFAULT_STYLE_CLASS + " " + styleClass;
+        String styleClass = getStyleClassBuilder(context)
+                .add(AvatarGroup.STYLE_CLASS)
+                .add(avatarGroup.getStyleClass())
+                .build();
 
-        writer.startElement("div", avatarGroup);
+        writer.startElement("div", null);
         writer.writeAttribute("id", avatarGroup.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if (avatarGroup.getStyle() != null) {

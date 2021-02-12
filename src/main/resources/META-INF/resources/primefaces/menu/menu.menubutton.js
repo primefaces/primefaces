@@ -13,10 +13,10 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.TieredMenuCfg} cfg
  *
+ * @prop {boolean} cfg.disabled Whether this menu button is initially disabled.
  * @prop {string} cfg.collision When the positioned element overflows the window in some direction, move it to an
  * alternative position. Similar to my and at, this accepts a single value or a pair for horizontal/vertical,
  * e.g., `flip`, `fit`, `fit flip`, `fit none`.
- * @prop {boolean} cfg.disabled Whether this menu button is initially disabled.
  */
 PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
 
@@ -37,6 +37,7 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
         if(!this.cfg.disabled) {
             this.bindButtonEvents();
             PrimeFaces.utils.registerDynamicOverlay(this, this.menu, this.id + '_menu');
+            this.transition = PrimeFaces.utils.registerCSSTransition(this.menu, 'ui-connected-overlay');
         }
     },
 
@@ -201,9 +202,16 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
      * @override
      */
     show: function() {
-        this.alignPanel();
+        var $this = this;
 
-        this.menu.show();
+        if (this.transition) {
+            this.transition.show({
+                onEnter: function() {
+                    $this.menu.css('z-index', PrimeFaces.nextZindex());
+                    $this.alignPanel();
+                }
+            });
+        }
     },
 
     /**
@@ -212,16 +220,22 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
      * @override
      */
     hide: function() {
-        this.menuitems.filter('.ui-state-hover').removeClass('ui-state-hover');
+        if (this.transition) {
+            var $this = this;
 
-        this.menu.fadeOut('fast');
+            this.transition.hide({
+                onExited: function() {
+                    $this.menuitems.filter('.ui-state-hover').removeClass('ui-state-hover');
+                }
+            });
+        }
     },
 
     /**
      * Align the overlay panel with the menu items so that it is positioned next to the menu button.
      */
     alignPanel: function() {
-        this.menu.css({left:'', top:'','z-index': PrimeFaces.nextZindex()});
+        this.menu.css({left:'', top:'', 'transform-origin': 'center top'});
 
         if(this.menu.parent().is(this.jq)) {
             this.menu.css({
@@ -234,7 +248,10 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
                 my: 'left top',
                 at: 'left bottom',
                 of: this.button,
-                collision: this.cfg.collision || "flip"
+                collision: this.cfg.collision || "flip",
+                using: function(pos, directions) {
+                    $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);
+                }
             });
         }
     }

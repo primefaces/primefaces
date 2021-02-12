@@ -36,22 +36,16 @@ public class BadgeRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Badge badge = (Badge) component;
-
-        encodeMarkup(context, badge);
-    }
-
-    protected void encodeMarkup(FacesContext context, Badge badge) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String value = badge.getValue();
         boolean hasChild = badge.getChildCount() > 0;
-        boolean noGutter = value != null && (value.chars().allMatch(Character::isDigit) || value.length() == 1);
         String severity = badge.getSeverity();
         String size = badge.getSize();
         String styleClass = getStyleClassBuilder(context)
-                    .add(Badge.DEFAULT_STYLE_CLASS)
+                    .add(Badge.STYLE_CLASS)
                     .add(badge.getStyleClass())
-                    .add(value == null || !noGutter, Badge.DOT_CLASS)
-                    .add(!hasChild && noGutter, Badge.NO_GUTTER_CLASS)
+                    .add(value != null && value.length() == 1, Badge.NO_GUTTER_CLASS)
+                    .add(value == null, Badge.DOT_CLASS)
                     .add("large".equals(size), Badge.SIZE_LARGE_CLASS)
                     .add("xlarge".equals(size), Badge.SIZE_XLARGE_CLASS)
                     .add("info".equals(severity), Badge.SEVERITY_INFO_CLASS)
@@ -61,16 +55,17 @@ public class BadgeRenderer extends CoreRenderer {
                     .build();
 
         if (hasChild) {
-            writer.startElement("div", badge);
+            writer.startElement("div", null);
             writer.writeAttribute("class", Badge.OVERLAY_CLASS, "styleClass");
         }
 
-        writer.startElement("span", badge);
+        writer.startElement("span", null);
         writer.writeAttribute("id", badge.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if (badge.getStyle() != null) {
             writer.writeAttribute("style", badge.getStyle(), "style");
         }
+
         if (value != null) {
             writer.write(value);
         }
@@ -91,5 +86,4 @@ public class BadgeRenderer extends CoreRenderer {
     public boolean getRendersChildren() {
         return true;
     }
-
 }

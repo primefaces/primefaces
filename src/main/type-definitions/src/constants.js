@@ -6,13 +6,13 @@ const LineBreakPattern = /\r\n|\r|\n/g;
 
 const LineBreak = "\n";
 
-/** @type {{encoding: string, withFileTypes: true}} */
+/** @type {{ encoding: BufferEncoding | null; withFileTypes: true }} */
 const ReadDirOpts = {
     encoding: "utf8",
     withFileTypes: true,
 };
 
-/** @type {{encoding: string, flag: string}} */
+/** @type {{ encoding: BufferEncoding, flag: import("fs").OpenMode}} */
 const WriteFileOpts = {
     encoding: "utf8",
     flag: "w",
@@ -63,6 +63,7 @@ const Paths = {
     CoreDeclarationFile: resolve(join(__dirname, "..", "core.d.ts")),
     EsLintRcPath: resolve(__dirname, "..", "eslintrc.js"),
     JsdocReadmePath: resolve(__dirname, "..", "JSDOC.md"),
+    NpmNodeModulesDir: resolve(__dirname, "..", "node_modules"), 
     NpmTypesDir: resolve(__dirname, "..", "node_modules", "@types"), 
     NpmRootDir: resolve(__dirname, ".."),
     NpmVirtualDeclarationFile: {
@@ -76,6 +77,7 @@ const Paths = {
     TargetTestDir: resolve(join(__dirname, "..", "dist", "test")),
     TargetMainDir: resolve(join(__dirname, "..", "..", "..", "..", "target", "generated-resources", "type-definitions")),
     TsConfigPath: resolve(__dirname, "..", "tsconfig.json"),
+    TsConfigTypedocPath: resolve(__dirname, "..", "tsconfig.typedoc.json"),
     TsProcessTestDir: resolve(join(__dirname, "..", "specs", "tsprocess")),
     TsValidateTestDir: resolve(join(__dirname, "..", "specs", "tsvalidate")),
 }
@@ -88,6 +90,7 @@ const Tags = {
     Class: "class",
     Const: "const",
     Constant: "constant",
+    Constructor: "constructor",
     Copyright: "copyright",
     Default: "default",
     Deprecated: "deprecated",

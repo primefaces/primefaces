@@ -5,7 +5,6 @@ declare namespace PrimeFaces {
     export class FunctionAssignmentExpressionExportClass {
         /**
          * function foo
-         * 
          * @param x foo param x
          * @return foo retval
          */
@@ -20,7 +19,6 @@ declare namespace PrimeFaces {
     export class FunctionAssignmentExpressionExportClass {
         /**
          * function bar
-         * 
          * @param x foo param x
          * @return foo retval
          */
@@ -35,7 +33,6 @@ declare namespace PrimeFaces {
     export class FunctionAssignmentExpressionExportClass2 {
         /**
          * function foo3
-         * 
          * @param x foo param x
          * @return foo retval
          */
@@ -50,7 +47,6 @@ declare namespace PrimeFaces {
     export class FunctionAssignmentExpressionExportClass3 {
         /**
          * function bar2
-         * 
          * @param x foo param x
          * @return foo retval
          */

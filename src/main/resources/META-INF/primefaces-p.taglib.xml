@@ -416,6 +416,12 @@
             <handler-class>org.primefaces.behavior.confirm.ConfirmBehaviorHandler</handler-class>
         </behavior>
         <attribute>
+            <description>Type of the confirmation component.</description>
+            <name>type</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
             <description>Header text of the confirmation dialog.</description>
             <name>header</name>
             <required>false</required>
@@ -7972,6 +7978,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[When using paginator and checkbox selection mode the select all checkbox in header will select the current page if true or all rows if false. Default true.]]>
+            </description>
+            <name>selectionPageOnly</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Name of iterator to refer each row index.]]>
             </description>
             <name>rowIndexVar</name>
@@ -8498,6 +8512,30 @@
             <name>renderEmptyFacets</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to display striped rows to visually separate content. Default is false.]]>
+            </description>
+            <name>stripedRows</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[When enabled, cell borders are displayed. Default is false.]]>
+            </description>
+            <name>showGridlines</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Size of the table content, valid values are "small" and "large". Leave empty for regular size.]]>
+            </description>
+            <name>size</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
@@ -10137,6 +10175,12 @@
             <name>process</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>Global AJAX requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus.</description>
+            <name>global</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -18723,22 +18767,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Effect to display when showing the panel.]]>
-            </description>
-            <name>showEffect</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Effect to display when hiding the panel.]]>
-            </description>
-            <name>hideEffect</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Appends the overlayPanel to the given search expression.]]>
             </description>
             <name>appendTo</name>
@@ -19736,6 +19764,14 @@
                 <![CDATA[Disable LastPass autofill for this password field. Default is false.]]>
             </description>
             <name>ignoreLastPass</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Adds a show/hide icon to the password to allow the password to be unmasked/remasked. Default is false.]]>
+            </description>
+            <name>toggleMask</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -24167,22 +24203,6 @@
             <description>
                 <![CDATA[]]>
             </description>
-            <name>effect</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[]]>
-            </description>
-            <name>effectSpeed</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[]]>
-            </description>
             <name>disabled</name>
             <required>false</required>
             <type>boolean</type>
@@ -24781,6 +24801,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Boolean value that specifies whether the document should be shielded with a partially transparent mask to require the user to close the Panel before being able to activate any elements in the document. Default is true.]]>
+            </description>
+            <name>modal</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Position of the sidebar. Default is left.]]>
             </description>
             <name>position</name>
@@ -24792,6 +24820,14 @@
                 <![CDATA[]]>
             </description>
             <name>fullScreen</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Displays a close icon to hide the overlay, default is true.]]>
+            </description>
+            <name>showCloseIcon</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -28298,15 +28334,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Deprecated, use orientationAxis instead of this.
-                If false, the horizontal axis is drawn at the bottom. If true, the axis is drawn on top. Default is false.]]>
-            </description>
-            <name>axisOnTop</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Orientation of the timeline axis: 'top', 'bottom' (default), 'both', or 'none'. If orientation is 'bottom', the time axis is drawn
                 at the bottom. When 'top', the axis is drawn on top. When 'both', two axes are drawn, both on top and at the bottom. In case of 'none', no axis
                 is drawn at all.]]>
@@ -28506,14 +28533,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Deprecated, use editableGroup property instead.]]>
-            </description>
-            <name>groupsChangeable</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Allows to customize the way groups are ordered. When true (default), groups will be ordered by content alphabetically
                 (when the list of groups is missing) or by native ordering of TimelineGroup object in the list of groups (when the list of groups is available).
                 When false, groups will not be ordered at all.]]>
@@ -28529,15 +28548,6 @@
             <name>groupStyle</name>
             <required>false</required>
             <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Deprecated, use snap property instead.
-                If true, the start and end of an event will be snapped nice integer values when moving or resizing the event. Default is true.]]>
-            </description>
-            <name>snapEvents</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -30056,6 +30066,30 @@
             <name>cloneOnFilter</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Saves the changes in cell editing on blur, when set to false changes are discarded.]]>
+            </description>
+            <name>saveOnCellBlur</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[When enables, cell borders are displayed. Default is false.]]>
+            </description>
+            <name>showGridlines</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Size of the table content, valid values are "small" and "large". Leave empty for regular size.]]>
+            </description>
+            <name>size</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
@@ -32166,14 +32200,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines the image to display.]]>
-            </description>
-            <name>image</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Size of the element, valid options are "large" and "xlarge".]]>
             </description>
             <name>size</name>
@@ -32190,6 +32216,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Dynamically assign contrasting foreground and background colors based on the label. Default is false.]]>
+            </description>
+            <name>dynamicColor</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Inline style of the component.]]>
             </description>
             <name>style</name>
@@ -32201,6 +32235,22 @@
                 <![CDATA[Style class of the component.]]>
             </description>
             <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Gravatar e-mail address for the profile to be displayed.]]>
+            </description>
+            <name>gravatar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Optional Gravatar configuration for any other Gravatar URL parameters.]]>
+            </description>
+            <name>gravatarConfig</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -32576,6 +32626,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Border radius of the element, defaults to value from theme.]]>
+            </description>
+            <name>borderRadius</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Inline style of the component.]]>
             </description>
             <name>style</name>
@@ -32645,6 +32703,14 @@
                 <![CDATA[Border style type, default is "solid" and other options are "dashed" and "dotted".]]>
             </description>
             <name>type</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Advisory tooltip information.]]>
+            </description>
+            <name>title</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -32904,6 +32970,446 @@
         <attribute>
             <description>
                 <![CDATA[Style class of the component.]]>
+            </description>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>
+    <tag>
+        <description>
+            <![CDATA[]]>
+        </description>
+        <tag-name>card</tag-name>
+        <component>
+            <component-type>org.primefaces.component.Card</component-type>
+        </component>
+        <attribute>
+            <description>
+                <![CDATA[Unique identifier of the component in a namingContainer.]]>
+            </description>
+            <name>id</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
+            </description>
+            <name>rendered</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
+            </description>
+            <name>binding</name>
+            <required>false</required>
+            <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Inline style of the component.]]>
+            </description>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the component.]]>
+            </description>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Header text of the component.]]>
+            </description>
+            <name>header</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Title text of the component.]]>
+            </description>
+            <name>title</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Subtitle text of the component.]]>
+            </description>
+            <name>subtitle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Footer text of the component.]]>
+            </description>
+            <name>footer</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>
+    <tag>
+        <description>
+            <![CDATA[Chronoline visualizes a series of chained events.]]>
+        </description>
+        <tag-name>chronoline</tag-name>
+        <component>
+            <component-type>org.primefaces.component.Chronoline</component-type>
+            <renderer-type>org.primefaces.component.ChronolineRenderer</renderer-type>
+        </component>
+        <attribute>
+            <description>
+                <![CDATA[Unique identifier of the component in a namingContainer.]]>
+            </description>
+            <name>id</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
+            </description>
+            <name>rendered</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
+            </description>
+            <name>binding</name>
+            <required>false</required>
+            <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Collection of items.]]>
+            </description>
+            <name>value</name>
+            <required>true</required>
+            <type>java.lang.Object</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of the iterator to display an item.]]>
+            </description>
+            <name>var</name>
+            <required>true</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Position of the chronoline bar relative to the content. Valid values are "left", "right" for vertical layout and "top", "bottom" for horizontal layout.]]>
+            </description>
+            <name>align</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Orientation of the chronoline, valid values are "vertical" and "horizontal".]]>
+            </description>
+            <name>layout</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Inline style of the container element.]]>
+            </description>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the container element.]]>
+            </description>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>
+    <tag>
+        <description>
+            <![CDATA[ConfirmPopup displays a confirmation overlay displayed relatively to its target.]]>
+        </description>
+        <tag-name>confirmPopup</tag-name>
+        <component>
+            <component-type>org.primefaces.component.ConfirmPopup</component-type>
+            <renderer-type>org.primefaces.component.ConfirmPopupRenderer</renderer-type>
+        </component>
+        <attribute>
+            <description>
+                <![CDATA[Unique identifier of the component in a namingContainer.]]>
+            </description>
+            <name>id</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
+            </description>
+            <name>rendered</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
+            </description>
+            <name>binding</name>
+            <required>false</required>
+            <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of the client side widget.]]>
+            </description>
+            <name>widgetVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Text to be displayed in body.]]>
+            </description>
+            <name>message</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Icon to display next to the message.]]>
+            </description>
+            <name>icon</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Inner style of the popup container.]]>
+            </description>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the popup container.]]>
+            </description>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Appends the popup to the given search expression.]]>
+            </description>
+            <name>appendTo</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Effect to use when showing the popup.]]>
+            </description>
+            <name>showEffect</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Effect to use when hiding the popup.]]>
+            </description>
+            <name>hideEffect</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[When enabled, confirmPopup becomes a shared for other components that require confirmation.]]>
+            </description>
+            <name>global</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Enables to hide the popup when outside is clicked.]]>
+            </description>
+            <name>dismissable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+    </tag>
+    <tag>
+        <description>
+            <![CDATA[CascadeSelect displays a nested structure of options.]]>
+        </description>
+        <tag-name>cascadeSelect</tag-name>
+        <component>
+            <component-type>org.primefaces.component.CascadeSelect</component-type>
+            <renderer-type>org.primefaces.component.CascadeSelectRenderer</renderer-type>
+        </component>
+        <attribute>
+            <description>
+                <![CDATA[Unique identifier of the component in a namingContainer.]]>
+            </description>
+            <name>id</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
+            </description>
+            <name>rendered</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
+            </description>
+            <name>binding</name>
+            <required>false</required>
+            <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Value of the component.]]>
+            </description>
+            <name>value</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An el expression or a literal text that defines a converter for the component. When it's an EL expression, it's resolved to a converter instance.
+    In case it's a static text, it must refer to a converter id.]]>
+            </description>
+            <name>converter</name>
+            <required>false</required>
+            <type>java.faces.convert.Converter</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[When set true, process validations logic is executed at apply request values phase for this component. Default is false.]]>
+            </description>
+            <name>immediate</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Marks component as required.]]>
+            </description>
+            <name>required</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[A method expression referring to a method validating the input.]]>
+            </description>
+            <name>validator</name>
+            <required>false</required>
+            <type>javax.faces.validator.Validator</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Message to display when required field validation fails.]]>
+            </description>
+            <name>requiredMessage</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Message to display when conversion fails.]]>
+            </description>
+            <name>converterMessage</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Message to display when validation fails.]]>
+            </description>
+            <name>validatorMessage</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of the item iterator.]]>
+            </description>
+            <name>var</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of the client side widget.]]>
+            </description>
+            <name>widgetVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Appends the overlay to the element defined by search expression. Defaults to document body.]]>
+            </description>
+            <name>appendTo</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The placeholder attribute specifies a short hint that describes the expected value of an input field.]]>
+            </description>
+            <name>placeholder</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Disables the component.]]>
+            </description>
+            <name>disabled</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Position in the tabbing order.]]>
+            </description>
+            <name>tabindex</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Inline style of the container element.]]>
+            </description>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the container element.]]>
             </description>
             <name>styleClass</name>
             <required>false</required>

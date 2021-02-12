@@ -23,9 +23,11 @@
  */
 package org.primefaces.component.divider;
 
+import org.primefaces.model.menu.Separator;
+
 import javax.faces.component.UIComponentBase;
 
-public abstract class DividerBase extends UIComponentBase {
+public abstract class DividerBase extends UIComponentBase implements Separator {
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.DividerRenderer";
@@ -34,6 +36,7 @@ public abstract class DividerBase extends UIComponentBase {
         align,
         layout,
         type,
+        title,
         style,
         styleClass
     }
@@ -48,42 +51,53 @@ public abstract class DividerBase extends UIComponentBase {
     }
 
     public String getAlign() {
-        return (String) getStateHelper().eval(DividerBase.PropertyKeys.align, null);
+        return (String) getStateHelper().eval(PropertyKeys.align, null);
     }
 
     public void setAlign(String align) {
-        getStateHelper().put(DividerBase.PropertyKeys.align, align);
+        getStateHelper().put(PropertyKeys.align, align);
     }
 
     public String getLayout() {
-        return (String) getStateHelper().eval(DividerBase.PropertyKeys.layout, "horizontal");
+        return (String) getStateHelper().eval(PropertyKeys.layout, "horizontal");
     }
 
     public void setLayout(String layout) {
-        getStateHelper().put(DividerBase.PropertyKeys.layout, layout);
+        getStateHelper().put(PropertyKeys.layout, layout);
     }
 
     public String getType() {
-        return (String) getStateHelper().eval(DividerBase.PropertyKeys.type, "solid");
+        return (String) getStateHelper().eval(PropertyKeys.type, "solid");
     }
 
     public void setType(String type) {
-        getStateHelper().put(DividerBase.PropertyKeys.type, type);
+        getStateHelper().put(PropertyKeys.type, type);
     }
 
+    @Override
     public String getStyle() {
-        return (String) getStateHelper().eval(DividerBase.PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
-        getStateHelper().put(DividerBase.PropertyKeys.style, style);
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
+    @Override
     public String getStyleClass() {
-        return (String) getStateHelper().eval(DividerBase.PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
-        getStateHelper().put(DividerBase.PropertyKeys.styleClass, styleClass);
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+    @Override
+    public String getTitle() {
+        return (String) getStateHelper().eval(PropertyKeys.title, null);
+    }
+
+    public void setTitle(String title) {
+        getStateHelper().put(PropertyKeys.title, title);
     }
 }

@@ -190,11 +190,18 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
      * @inheritdoc
      */
     show: function() {
-        this.align();
-        this.jq.css('z-index', PrimeFaces.nextZindex()).show();
+        var $this = this;
 
-        if(!this.rendered) {
-            this.render();
+        if (this.transition) {
+            this.transition.show({
+                onEnter: function() {
+                    if (!$this.rendered) {
+                        $this.render();
+                    }
+                    $this.jq.css('z-index', PrimeFaces.nextZindex());
+                    $this.align();
+                }
+            });
         }
     }
 });

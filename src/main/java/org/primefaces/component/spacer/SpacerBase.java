@@ -51,7 +51,7 @@ public abstract class SpacerBase extends UIComponentBase {
     }
 
     public String getWidth() {
-        return (String) getStateHelper().eval(PropertyKeys.width, null);
+        return (String) getStateHelper().eval(PropertyKeys.width, "1");
     }
 
     public void setWidth(String width) {
@@ -59,7 +59,7 @@ public abstract class SpacerBase extends UIComponentBase {
     }
 
     public String getHeight() {
-        return (String) getStateHelper().eval(PropertyKeys.height, null);
+        return (String) getStateHelper().eval(PropertyKeys.height, "1");
     }
 
     public void setHeight(String height) {

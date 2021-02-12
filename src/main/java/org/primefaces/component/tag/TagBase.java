@@ -49,50 +49,50 @@ public abstract class TagBase extends UIComponentBase {
     }
 
     public String getValue() {
-        return (String) getStateHelper().eval(TagBase.PropertyKeys.value, null);
+        return (String) getStateHelper().eval(PropertyKeys.value, null);
     }
 
     public void setValue(String value) {
-        getStateHelper().put(TagBase.PropertyKeys.value, value);
+        getStateHelper().put(PropertyKeys.value, value);
     }
 
     public String getIcon() {
-        return (String) getStateHelper().eval(TagBase.PropertyKeys.icon, null);
+        return (String) getStateHelper().eval(PropertyKeys.icon, null);
     }
 
     public void setIcon(String icon) {
-        getStateHelper().put(TagBase.PropertyKeys.icon, icon);
+        getStateHelper().put(PropertyKeys.icon, icon);
     }
 
     public String getSeverity() {
-        return (String) getStateHelper().eval(TagBase.PropertyKeys.severity, null);
+        return (String) getStateHelper().eval(PropertyKeys.severity, null);
     }
 
     public void setSeverity(String severity) {
-        getStateHelper().put(TagBase.PropertyKeys.severity, severity);
+        getStateHelper().put(PropertyKeys.severity, severity);
     }
 
     public boolean isRounded() {
-        return (Boolean) getStateHelper().eval(TagBase.PropertyKeys.rounded, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.rounded, false);
     }
 
     public void setRounded(boolean rounded) {
-        getStateHelper().put(TagBase.PropertyKeys.rounded, rounded);
+        getStateHelper().put(PropertyKeys.rounded, rounded);
     }
 
     public String getStyle() {
-        return (String) getStateHelper().eval(TagBase.PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
-        getStateHelper().put(TagBase.PropertyKeys.style, style);
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
     public String getStyleClass() {
-        return (String) getStateHelper().eval(TagBase.PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
-        getStateHelper().put(TagBase.PropertyKeys.styleClass, styleClass);
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 }

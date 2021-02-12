@@ -5,13 +5,11 @@ declare namespace PrimeFaces.widget {
     export class MethodReturnAliasReturns {
         /**
          * method bar
-         *
          * @return bar retval
          */
         bar(): string;
         /**
          * method foo
-         *
          * @return foo retval
          */
         foo(): RegExp;

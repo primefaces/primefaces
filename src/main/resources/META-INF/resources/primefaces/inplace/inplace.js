@@ -165,7 +165,7 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
     /**
      * When an inplace editor exists and it is currently active: saves the content of the editor and hides the inplace
      * editor.
-     * @param {JQuery.Event} [e] The (click) event which triggered the saving. Currently unused.
+     * @param {JQuery.TriggeredEvent} [e] The (click) event which triggered the saving. Currently unused.
      */
     save: function(e) {
         var options = {
@@ -186,7 +186,7 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
     /**
      * When an inplace editor exists and it is currently active: discard changes that were made and hides the inplace
      * editor.
-     * @param {JQuery.Event} [e] The (click) event which triggered the cancellation. Currently unused.
+     * @param {JQuery.TriggeredEvent} [e] The (click) event which triggered the cancellation. Currently unused.
      */
     cancel: function(e) {
         var options = {

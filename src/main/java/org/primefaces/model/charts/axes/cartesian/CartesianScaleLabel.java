@@ -37,7 +37,7 @@ public class CartesianScaleLabel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private boolean display = false;
+    private boolean display;
     private String labelString;
     private Object lineHeight;
     private String fontColor;

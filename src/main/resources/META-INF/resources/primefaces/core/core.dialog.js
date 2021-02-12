@@ -19,6 +19,13 @@ if (!PrimeFaces.dialog) {
      * @prop {number} DialogHandlerCfgOptions.contentHeight Height of the IFRAME in pixels.
      * @prop {number} DialogHandlerCfgOptions.contentWidth Width of the IFRAME in pixels.
      * @prop {string} DialogHandlerCfgOptions.headerElement ID of the header element of the dialog.
+     * 
+     * @interface {PrimeFaces.dialog.ExtendedConfirmDialogMessage} ExtendedConfirmDialogMessage An extended confirmation
+     * message with an additional `source` attribute for specifying the source component or form.
+     * @extends {PrimeFaces.widget.ConfirmDialog.ConfirmDialogMessage} ExtendedConfirmDialogMessage
+     * @prop {string | HTMLElement | JQuery} source The source component (command button, AJAX callback etc) that
+     * triggered the confirmation. When a string, it is interpreted as the client ID of the component. Otherwise, it
+     * must be the main DOM element of the source component.
      */
     PrimeFaces.dialog = {};
 
@@ -259,10 +266,14 @@ if (!PrimeFaces.dialog) {
 
                 //adjust height
                 var frameHeight = null;
-                if(cfg.options.contentHeight)
+                if(cfg.options.contentHeight) {
                     frameHeight = cfg.options.contentHeight;
-                else
-                    frameHeight = $frame.get(0).contentWindow.document.body.scrollHeight + (PrimeFaces.env.browser.webkit ? 5 : 25);
+                }
+                else {
+                    var frameBody = $frame.get(0).contentWindow.document.body;
+                    var frameBodyStyle = window.getComputedStyle(frameBody);
+                    frameHeight = frameBody.scrollHeight + parseFloat(frameBodyStyle.marginTop) + parseFloat(frameBodyStyle.marginBottom);
+                }
 
                 $frame.css('height', String(frameHeight));
 
@@ -345,11 +356,11 @@ if (!PrimeFaces.dialog) {
 
         /**
          * Displays a message in the messages dialog.
-         * @param {string} msg Message to show.
+         * @param {PrimeFaces.widget.ConfirmDialog.ConfirmDialogMessage} msg Details of the essage to show.
          */
         showMessageInDialog: function(msg) {
             if(!this.messageDialog) {
-                var messageDialogDOM = $('<div id="primefacesmessagedlg" class="ui-message-dialog ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container"></div>')
+                $('<div id="primefacesmessagedlg" class="ui-message-dialog ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container"></div>')
                             .append('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top"><span class="ui-dialog-title"></span>' +
                             '<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-closethick"></span></a></div>' +
                             '<div class="ui-dialog-content ui-widget-content" style="height: auto;"></div>')
@@ -372,17 +383,19 @@ if (!PrimeFaces.dialog) {
             this.messageDialog.titleContainer.html(summaryHtml);
 
             var detailHtml = msg.detail ? msg.detail.split(/\r\n|\n|\r/g).map(function(line) { return escape ? PrimeFaces.escapeHTML(line) : line; }).join("<br>") : "";
-            this.messageDialog.content.html('').append('<span class="ui-dialog-message ui-messages-' + msg.severity.split(' ')[0].toLowerCase() + '-icon"></span>').append(detailHtml);
+            this.messageDialog.content.html('').append('<span class="ui-dialog-message ui-messages-' + msg.severity.split(' ')[0].toLowerCase() + '-icon"></span>')
+                .append('<span class="ui-dialog-message-content"></span');
+            this.messageDialog.content.children('.ui-dialog-message-content').append(detailHtml);
             this.messageDialog.show();
         },
 
         /**
-         * Asks the user to confirm an action. Shows a confirmation dialog with the given message. Requires a
+         * Asks the user to confirm an action. Shows a confirmation dialog with the given message. Requires a global
          * `<p:confirmDialog>` to be available on the current page.
-         * @param {string} msg Message to show in the confirmation dialog.
+         * @param {PrimeFaces.dialog.ExtendedConfirmDialogMessage} msg Message to show in the confirmation dialog.
          */
         confirm: function(msg) {
-            if(PrimeFaces.confirmDialog) {
+            if (PrimeFaces.confirmDialog) {
                 PrimeFaces.confirmSource = (typeof(msg.source) === 'string') ? $(PrimeFaces.escapeClientId(msg.source)) : $(msg.source);
                 PrimeFaces.confirmDialog.showMessage(msg);
             }

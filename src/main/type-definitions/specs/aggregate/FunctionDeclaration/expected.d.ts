@@ -1,7 +1,6 @@
 declare namespace Test.FunctionDeclaration.Foo {
     /**
      * function foo
-     * 
      * @param x foo param x
      * @return foo retval
      */
@@ -11,7 +10,6 @@ declare namespace Test.FunctionDeclaration.Foo {
 declare namespace Test.FunctionDeclaration.Bar {
     /**
      * function bar
-     * 
      * @param x bar param x
      * @return bar retval
      */

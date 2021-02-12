@@ -43,11 +43,18 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
             clearTimeout(this.timeoutId);
         }
 
-        this.timeoutId = setTimeout(function () {
-           submenu.css('z-index', PrimeFaces.nextZindex())
-                  .show()
-                  .position(pos)
-        }, this.cfg.delay);
+        //avoid using timeout if delay is 0
+        if(this.cfg.delay && this.cfg.delay > 0) {
+            this.timeoutId = setTimeout(function () {
+               submenu.css('z-index', PrimeFaces.nextZindex())
+                      .show()
+                      .position(pos)
+            }, this.cfg.delay);
+        } else {
+            submenu.css('z-index', PrimeFaces.nextZindex())
+                   .show()
+                   .position(pos);
+        }
     },
 
     /**

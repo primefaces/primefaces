@@ -41,7 +41,6 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
      */
     init: function(cfg) {
         this._super(cfg);
-        this.cfg.formId = this.jq.closest('form').attr('id');
         this.cfg.options.themeSystem = 'standard';
         this.cfg.options.slotLabelFormat = this.cfg.options.slotLabelFormat || undefined; 
         this.cfg.options.viewClassNames = this.onViewChange.bind(this);
@@ -278,7 +277,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                 source: $this.id,
                 process: $this.id,
                 update: $this.id,
-                formId: $this.cfg.formId,
+                formId: $this.getParentFormId(),
                 params: [
                     {name: $this.id + '_event', value: true},
                     {name: $this.id + '_start', value: PrimeFaces.toISOString(fetchInfo.start)},

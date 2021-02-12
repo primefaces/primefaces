@@ -299,7 +299,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
      * Calls the behavior for when a radio button options was clicked.
      * @private
      * @param {JQuery} input Radio button input that was clicked.
-     * @param {JQuery.Event} event (Click) event that was triggered.
+     * @param {JQuery.TriggeredEvent} event (Click) event that was triggered.
      */
     fireClickEvent: function(input, event) {
         var userOnClick = input.prop('onclick');

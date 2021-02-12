@@ -26,6 +26,7 @@ package org.primefaces.component.datatable.export;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
@@ -224,7 +225,7 @@ public class DataTablePDFExporter extends DataTableExporter {
             }
 
             if (col.isRendered() && col.isExportable()) {
-                addColumnValue(pdfTable, col.getChildren(), cellFont, col);
+                addColumnValue(table, pdfTable, col.getChildren(), cellFont, col);
             }
         }
     }
@@ -331,7 +332,7 @@ public class DataTablePDFExporter extends DataTableExporter {
         return cell;
     }
 
-    protected void addColumnValue(PdfPTable pdfTable, List<UIComponent> components, Font font, UIColumn column) {
+    protected void addColumnValue(DataTable table, PdfPTable pdfTable, List<UIComponent> components, Font font, UIColumn column) {
         FacesContext context = FacesContext.getCurrentInstance();
 
         if (LangUtils.isNotBlank(column.getExportValue())) {
@@ -340,6 +341,11 @@ public class DataTablePDFExporter extends DataTableExporter {
         }
         else if (column.getExportFunction() != null) {
             PdfPCell cell = createCell(column, new Paragraph(exportColumnByFunction(context, column), font));
+            pdfTable.addCell(cell);
+        }
+        else if (LangUtils.isNotBlank(column.getField())) {
+            String value = table.getConvertedFieldValue(context, column);
+            PdfPCell cell = createCell(column, new Paragraph(Objects.toString(value, Constants.EMPTY_STRING), font));
             pdfTable.addCell(cell);
         }
         else {

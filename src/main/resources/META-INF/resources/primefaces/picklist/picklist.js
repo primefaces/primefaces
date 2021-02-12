@@ -135,6 +135,8 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 connectWith: this.jqId + ' .ui-picklist-list',
                 revert: 1,
                 helper: 'clone',
+                placeholder: "ui-picklist-item ui-state-highlight",
+                forcePlaceholderSize: true,
                 update: function(event, ui) {
                     $this.unselectItem(ui.item);
 
@@ -637,7 +639,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * Filters the available options in the source or target list.
      * @param {string} value A value against which the available options are matched.
      * @param {JQuery} list The source or target list that is to be filtered.
-     * @param {boolean} animate If it should be animated.
+     * @param {boolean} [animate] If it should be animated.
      */
     filter: function(value, list, animate) {
         var filterValue = PrimeFaces.trim(value).toLowerCase(),
@@ -1184,7 +1186,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Re-Filter the current source list.
+     * Reapply filtering the current source list.
      * @private
      */
     refilterSource: function() {
@@ -1192,7 +1194,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Re-Filter the current target list.
+     * Reapply filtering to the current target list.
      * @private
      */
     refilterTarget: function() {

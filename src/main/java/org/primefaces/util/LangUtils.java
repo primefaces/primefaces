@@ -34,11 +34,15 @@ import java.lang.reflect.TypeVariable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
+import java.util.regex.Pattern;
 
 import javax.faces.FacesException;
 import javax.xml.bind.DatatypeConverter;
 
 public class LangUtils {
+
+    public static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
+    private static final Pattern CAPITAL_CASE = Pattern.compile("(?<=.)(?=\\p{Lu})");
 
     private LangUtils() {
     }
@@ -253,9 +257,10 @@ public class LangUtils {
         return Collections.unmodifiableList(Arrays.asList(args));
     }
 
-    @SafeVarargs
-    public static <T> Set<T> unmodifiableSet(T... args) {
-        return Collections.unmodifiableSet(new HashSet<>(Arrays.asList(args)));
+    public static <E> Set<E> newLinkedHashSet(E... elements) {
+        Set<E> set = new LinkedHashSet<>(elements.length);
+        Collections.addAll(set, elements);
+        return set;
     }
 
     public static Class tryToLoadClassForName(String name) {
@@ -335,7 +340,7 @@ public class LangUtils {
      *
      * @param base Object which contains the collection-property as getter.
      * @param property Name of the collection-property.
-     * @return Type of the objects within the collection-property. (eg List&lt;String&gt; -> String)
+     * @return Type of the objects within the collection-property. (eg List&lt;String&gt; -&gt; String)
      */
     public static Class<?> getTypeFromCollectionProperty(Object base, String property) {
         try {
@@ -412,6 +417,30 @@ public class LangUtils {
         }
     }
 
+    /**
+     * Converts a sting to capital case even counting Unicode characters.
+     * <pre>
+     * thisIsMyString = This Is My String
+     * ThisIsATest = This Is A Test
+     * helloWorld = Hello World
+     * </pre>
+     *
+     * @param value the value to capital case
+     * @return the returned value in capital case or empty string if blank
+     */
+    public static String toCapitalCase(String value) {
+        if (LangUtils.isValueBlank(value)) {
+            return Constants.EMPTY_STRING;
+        }
+
+        // split on unicode uppercase characters
+        String[] values = CAPITAL_CASE.split(value);
+        if (values.length > 0) {
+            values[0] = values[0].substring(0 , 1).toUpperCase() + values[0].substring(1).toLowerCase();
+        }
+        return String.join(" ", values);
+    }
+
 
     /**
      * <p>Checks whether the given String is a parsable number.</p>
@@ -422,7 +451,6 @@ public class LangUtils {
      * when calling one of those methods.</p>
      *
      * <p>Hexadecimal and scientific notations are <strong>not</strong> considered parsable.
-     * See {@link #isCreatable(String)} on those cases.</p>
      *
      * <p>{@code Null} and empty String will return {@code false}.</p>
      *

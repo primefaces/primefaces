@@ -37,7 +37,11 @@
  * @typedef {"cancel" | "save"} PrimeFaces.widget.DataTable.RowEditAction When a row is editable: whether to `save` the
  * current contents of the row or `cancel` the row edit and discard all changes.
  *
- *
+ * @typedef PrimeFaces.widget.DataTable.OnRowClickCallback Callback that is invoked when the user clicks on a row of the
+ * data table. 
+ * @param {JQuery.TriggeredEvent} PrimeFaces.widget.DataTable.OnRowClickCallback.event The click event that occurred.
+ * @param {JQuery} PrimeFaces.widget.DataTable.OnRowClickCallback.row The TR row that was clicked.
+ * 
  * @interface {PrimeFaces.widget.DataTable.RowMeta} RowMeta Describes the meta information of row, such as its index and
  * its row key.
  * @prop {string | undefined} RowMeta.key The unique key of the row. `undefined` when no key was defined for the rows.
@@ -127,6 +131,7 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.DeferredWidgetCfg} cfg
  *
+ * @prop {boolean} cfg.allowUnsorting When true columns can be unsorted upon clicking sort.
  * @prop {string} cfg.cellEditMode Defines the cell edit behavior.
  * @prop {string} cfg.cellSeparator Separator text to use in output mode of editable cells with multiple components.
  * @prop {boolean} cfg.clientCache Caches the next page asynchronously.
@@ -143,6 +148,7 @@
  * @prop {boolean} cfg.filter `true` if filtering is enabled, or `false` otherwise.
  * @prop {number} cfg.filterDelay Delay for filtering in milliseconds.
  * @prop {string} cfg.filterEvent Event to invoke filtering for input filters.
+ * @prop {string} cfg.formId Client ID of the form that is used for AJAX requests.
  * @prop {number} cfg.frozenColumns The number of frozen columns.
  * @prop {boolean} cfg.liveResize Columns are resized live in this mode without using a resize helper.
  * @prop {boolean} cfg.liveScroll Enables live scrolling.
@@ -151,6 +157,8 @@
  * @prop {boolean} cfg.multiSort `true` if sorting by multiple columns is enabled, or `false` otherwise.
  * @prop {boolean} cfg.multiViewState Whether multiple resize mode is enabled.
  * @prop {boolean} cfg.nativeElements `true` to use native radio button and checkbox elements, or `false` otherwise.
+ * @prop {PrimeFaces.widget.DataTable.OnRowClickCallback} cfg.onRowClick Callback that is invoked when the user clicked on
+ * a row of the data table.
  * @prop {boolean} cfg.reflow Reflow mode is a responsive mode to display columns as stacked depending on screen size.
  * @prop {boolean} cfg.resizableColumns Enables column resizing.
  * @prop {PrimeFaces.widget.DataTable.ResizeMode} cfg.resizeMode Defines the resize behavior.
@@ -169,14 +177,19 @@
  * @prop {string} cfg.scrollWidth Scroll viewport width.
  * @prop {boolean} cfg.scrollable Makes data scrollable with fixed header.
  * @prop {PrimeFaces.widget.DataTable.SelectionMode} cfg.selectionMode Enables row selection.
+ * @prop {boolean} cfg.selectionPageOnly When using a paginator and selection mode is `checkbox`, the select all
+ * checkbox in the header will select all rows on the current page if `true`, or all rows on all pages if `false`.
+ * Default is `true`.
+ * @prop {boolean} cfg.sorting `true` if sorting is enabled on the data table, `false` otherwise.
+ * @prop {string[]} cfg.sortMetaOrder IDs of the columns by which to order. Order by the first column, then by the
+ * second, etc.
  * @prop {boolean} cfg.stickyHeader Sticky header stays in window viewport during scrolling.
  * @prop {string} cfg.stickyTopAt Selector to position on the page according to other fixing elements on the top of the
  * table.
  * @prop {string} cfg.tabindex The value of the `tabindex` attribute for this data table.
  * @prop {boolean} cfg.allowUnsorting When true columns can be unsorted upon clicking sort.
  * @prop {boolean} cfg.virtualScroll Loads data on demand as the scrollbar gets close to the bottom. 
- * 
- * 
+ *
  * @interface {PrimeFaces.widget.DataTable.WidthInfo} WidthInfo Describes the width information of a DOM element.
  * @prop {number | string} WidthInfo.width The width of the element. It's either a unitless numeric pixel value or a
  * string containing the width including an unit.
@@ -599,7 +612,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * Called in response to a click. Checks whether this data table should now be sorted. Returns `false` when there
      * are no items to be sorted, or when no sorting button was clicked.
      * @private
-     * @param {JQuery.Event} event (Click) event that occurred.
+     * @param {JQuery.TriggeredEvent} event (Click) event that occurred.
      * @param {JQuery} column Column Column of this data table on which the event occurred.
      * @return {boolean} `true` to perform a sorting operation, `false` otherwise.
      */
@@ -770,6 +783,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.rowSelectMode = this.cfg.rowSelectMode||'new';
         this.rowSelector = '> tr.ui-widget-content.ui-datatable-selectable';
         this.cfg.disabledTextSelection = this.cfg.disabledTextSelection === false ? false : true;
+        this.cfg.selectionPageOnly = this.cfg.selectionPageOnly === false ? !this.cfg.paginator : true;
         this.rowSelectorForRowClick = this.cfg.rowSelector||'td:not(.ui-column-unselectable),span:not(.ui-c)';
 
         var preselection = $(this.selectionHolder).val();
@@ -872,7 +886,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     case keyCode.UP:
                     case keyCode.DOWN:
                         var rowSelector = 'tr.ui-widget-content.ui-datatable-selectable',
-                        row = key === keyCode.UP ? $this.focusedRow.prev(rowSelector) : $this.focusedRow.next(rowSelector);
+                        row = key === keyCode.UP ? $this.focusedRow.prevAll(rowSelector).eq(0) : $this.focusedRow.nextAll(rowSelector).eq(0);
 
                         if(row.length) {
                             $this.unhighlightFocusedRow();
@@ -1269,9 +1283,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Updates the currently selected cell based on where the context menu right click occurred.
-     * @param {JQuery.Event} event Event that occurred.
-     * @param {PrimeFaces.widget.DataTable} targetWidget the current widget
      * @private
+     * @param {JQuery.TriggeredEvent} event Event that occurred.
+     * @param {PrimeFaces.widget.DataTable} targetWidget The current widget
      */
     updateContextMenuCell: function(event, targetWidget) {
         var target = $(event.target),
@@ -1344,8 +1358,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
 
             if(this.hasVerticalOverflow()) {
-                this.scrollHeaderBox.css('margin-right', scrollBarWidth + 'px');
-                this.scrollFooterBox.css('margin-right', scrollBarWidth + 'px');
+                this.scrollHeaderBox.css('margin-right', scrollBarWidth);
+                this.scrollFooterBox.css('margin-right', scrollBarWidth);
             }
         }
 
@@ -1786,7 +1800,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             source: this.id,
             process: this.id,
             update: this.id,
-            formId: this.cfg.formId,
+            formId: this.getParentFormId(),
             params: [{name: this.id + '_scrolling', value: true},
                             {name: this.id + '_first', value: 1},
                             {name: this.id + '_skipChildren', value: true},
@@ -1844,7 +1858,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             source: this.id,
             process: this.id,
             update: this.id,
-            formId: this.cfg.formId,
+            formId: this.getParentFormId(),
             params: [{name: this.id + '_scrolling', value: true},
                             {name: this.id + '_skipChildren', value: true},
                             {name: this.id + '_first', value: first},
@@ -1891,7 +1905,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             source: this.id,
             update: this.id,
             process: this.id,
-            formId: this.cfg.formId,
+            formId: this.getParentFormId(),
             params: [{name: this.id + '_pagination', value: true},
                     {name: this.id + '_first', value: newState.first},
                     {name: this.id + '_rows', value: newState.rows},
@@ -2026,6 +2040,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             source: this.id,
             update: this.id,
             process: this.id,
+            formId: this.getParentFormId(),
             params: [{name: this.id + '_sorting', value: true},
                      {name: this.id + '_skipChildren', value: true},
                      {name: this.id + '_encodeFeature', value: true}],
@@ -2197,7 +2212,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             source: this.id,
             update: this.id,
             process: this.id,
-            formId: this.cfg.formId,
+            formId: this.getParentFormId(),
             params: [{name: this.id + '_filtering', value: true},
                      {name: this.id + '_encodeFeature', value: true}],
             onsuccess: function(responseXML, status, xhr) {
@@ -2281,7 +2296,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Callback for a click event on a row.
      * @private
-     * @param {JQuery.Event} event Click event that occurred.
+     * @param {JQuery.TriggeredEvent} event Click event that occurred.
      * @param {HTMLElement} rowElement Row that was clicked
      * @param {boolean} silent `true` to prevent behaviors from being invoked, `false` otherwise.
      */
@@ -2334,7 +2349,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Callback for a double click event on a row.
      * @private
-     * @param {JQuery.Event} event Event that occurred.
+     * @param {JQuery.TriggeredEvent} event Event that occurred.
      * @param {JQuery} row Row that was clicked.
      */
     onRowDblclick: function(event, row) {
@@ -2353,7 +2368,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Callback for a right click event on a row. May bring up the context menu
      * @private
-     * @param {JQuery.Event} event Event that occurred.
+     * @param {JQuery.TriggeredEvent} event Event that occurred.
      * @param {JQuery} rowElement Row that was clicked.
      * @param {PrimeFaces.widget.DataTable.CmSelectionMode} cmSelMode The current selection mode.
      */
@@ -2723,6 +2738,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * all rows. When some rows are selected, this will unselect all rows.
      */
     toggleCheckAll: function() {
+        var shouldCheckAll = true;
         if(this.cfg.nativeElements) {
             var checkboxes = this.tbody.find('> tr.ui-datatable-selectable > td.ui-selection-column > :checkbox:visible'),
             checked = this.checkAllToggler.prop('checked'),
@@ -2738,6 +2754,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     var checkbox = $(this);
                     checkbox.prop('checked', false);
                     $this.unselectRowWithCheckbox(checkbox, true);
+                    shouldCheckAll = false;
                 }
             });
         }
@@ -2749,6 +2766,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             if(checked) {
                 this.checkAllToggler.removeClass('ui-state-active').children('span.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
                 this.checkAllToggler.attr('aria-checked', false);
+                shouldCheckAll = false;
 
                 checkboxes.each(function() {
                     $this.unselectRowWithCheckbox($(this), true);
@@ -2762,6 +2780,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     $this.selectRowWithCheckbox($(this), true);
                 });
             }
+        }
+
+        // GitHub #6730 user wants all rows not just displayed rows
+        if(!this.cfg.selectionPageOnly && shouldCheckAll) {
+            this.selectAllRows();
         }
 
         //save state
@@ -2905,7 +2928,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             source: this.id,
             process: this.id,
             update: this.id,
-            formId: this.cfg.formId,
+            formId: this.getParentFormId(),
             params: [{name: this.id + '_rowExpansion', value: true},
                      {name: this.id + '_expandedRowIndex', value: rowIndex},
                      {name: this.id + '_encodeFeature', value: true},
@@ -3109,7 +3132,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                                 $this.incellClick = true;
                             }
 
-                            if(!$this.incellClick && $this.currentCell && !$this.contextMenuClick && !$.datepicker._datepickerShowing) {
+                            if(!$this.incellClick && $this.currentCell && !$this.contextMenuClick && !$.datepicker._datepickerShowing && $('.p-datepicker-panel:visible').length === 0) {
                                 if($this.cfg.saveOnCellBlur)
                                     $this.saveCell($this.currentCell);
                                 else
@@ -3626,7 +3649,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             source: this.id,
             process: this.id,
             update: this.id,
-            formId: this.cfg.formId,
+            formId: this.getParentFormId(),
             params: [{name: this.id + '_rowEditIndex', value: this.getRowMeta(row).index},
                      {name: this.id + '_rowEditAction', value: action},
                      {name: this.id + '_encodeFeature', value: true}],
@@ -4023,7 +4046,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Resizes this data table, row, or columns in response to a drag event of a resizer element.
      * @protected
-     * @param {JQuery.Event} event Event triggered for the drag.
+     * @param {JQuery.TriggeredEvent} event Event triggered for the drag.
      * @param {JQueryUI.DraggableEventUIParams} ui Data for the drag event.
      */
     resize: function(event, ui) {
@@ -4508,6 +4531,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.isEmpty()) {
             this.uncheckHeaderCheckbox();
             this.disableHeaderCheckbox();
+        }
+        else if(!this.cfg.selectionPageOnly) {
+            if(this.selection.includes('@all')) {
+                this.enableHeaderCheckbox();
+                this.checkHeaderCheckbox();
+            }
         }
         else {
             var checkboxes, selectedCheckboxes, enabledCheckboxes, disabledCheckboxes;
@@ -5705,7 +5734,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
      * @override
      * @protected
      * @inheritdoc
-     * @param {JQuery.Event} event
+     * @param {JQuery.TriggeredEvent} event
      * @param {JQueryUI.DraggableEventUIParams} ui
      */
     resize: function(event, ui) {

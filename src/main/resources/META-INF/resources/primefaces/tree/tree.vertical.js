@@ -1307,7 +1307,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
     /**
      * Callback for when a drag&drop occurred. Invokes the appropriate behaviors.
      * @private
-     * @param {JQuery.Event} event Event that triggered the drag&drop.
+     * @param {JQuery.TriggeredEvent} event Event that triggered the drag&drop.
      */
     fireDragDropEvent: function(event) {
         var $this = this,
@@ -1398,7 +1398,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             update: this.id,
             process: this.id,
             global: false,
-            formId: this.cfg.formId,
+            formId: this.getParentFormId(),
             params: [{name: this.id + '_filtering', value: true},
                      {name: this.id + '_encodeFeature', value: true}],
             onsuccess: function(responseXML, status, xhr) {

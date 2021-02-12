@@ -150,7 +150,7 @@ public abstract class InputRenderer extends CoreRenderer {
      * @param context the {@link FacesContext}
      * @param component the {@link UIInput} component to add attributes for
      * @throws IOException if any error occurs writing the response
-     * @see https://www.w3.org/TR/wai-aria-practices/#combobox
+     * @see <a href="https://www.w3.org/TR/wai-aria-practices/#combobox">Combo Box</a>
      */
     protected void renderARIACombobox(FacesContext context, UIInput component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();

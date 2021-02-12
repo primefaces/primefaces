@@ -120,8 +120,10 @@ public class DiagramRenderer extends CoreRenderer {
             Element element = model.findElement(params.get(clientId + "_elementId"));
             String[] position = params.get(clientId + "_position").split(",");
 
-            element.setX(position[0] + "px");
-            element.setY(position[1] + "px");
+            if (element != null) {
+                element.setX(position[0] + "px");
+                element.setY(position[1] + "px");
+            }
         }
     }
 

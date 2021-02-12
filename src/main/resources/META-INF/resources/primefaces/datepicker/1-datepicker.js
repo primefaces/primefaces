@@ -25,6 +25,7 @@
  * @param {JQueryPrimeDatePicker.PickerInstance} PrimeFaces.widget.DatePicker.PreShowCallback.datePicker The current
  * date picker instance.
  *
+ * @prop {string} cfg.formId Client ID of the form that is used for AJAX requests.
  * @prop {JQuery} input The DOM element for the hidden input element with the selected date.
  * @prop {JQuery} jqEl The DOM element for the inline picker or the input.
  * @prop {boolean} refocusInput Whether focus should be put on the input again.
@@ -36,13 +37,19 @@
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  * @extends {JQueryPrimeDatePicker.PickerOptions} cfg
  *
+ * @prop {string} cfg.appendTo The search expression for the element to which the overlay panel should be appended.
+ * @prop {string} cfg.buttonTabindex Tabindex of the datepicker button
+ * @prop {boolean} cfg.focusOnSelect When enabled, input receives focus after a value is picked.
+ * @prop {boolean} cfg.inline Whether the datepicker is rendered inline or as an overlay.
  * @prop {string} cfg.mask Applies a mask using the pattern.
  * @prop {boolean} cfg.maskAutoClear Clears the field on blur when incomplete input is entered
  * @prop {string} cfg.maskSlotChar Placeholder in mask template.
- * @prop {string} cfg.buttonTabindex Tabindex of the datepicker button
- * @prop {boolean} cfg.focusOnSelect When enabled, input receives focus after a value is picked.
+ * @prop {JQueryPrimeDatePicker.BaseCallback} cfg.onPanelCreate Callback invoked after the datepicker panel was created.
  * @prop {PrimeFaces.widget.DatePicker.PreShowCallback} cfg.preShow User-defined callback that may be overridden by the
  * user. Invoked before the date picker overlay is shown.
+ * @prop {string} cfg.rangeSeparator Separator for joining start and end dates when selection mode is `range`, defaults
+ * to `-`.
+ * @prop {string} cfg.timeSeparator Separator for joining hour and minute, defaults to `:`.
  * @prop {string} cfg.triggerButtonIcon Icon of the datepicker element that toggles the visibility in popup mode.
  */
 PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
@@ -54,10 +61,9 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
      */
     init: function(cfg) {
         this._super(cfg);
-
         this.input = $(this.jqId + '_input');
         this.jqEl = this.cfg.inline ? $(this.jqId + '_inline') : this.input;
-        var _self = this;
+        var $this = this;
 
         //i18n and l7n
         this.configureLocale();
@@ -81,8 +87,8 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             }
 
             this.cfg.onBeforeShow = function() {
-                if(_self.refocusInput) {
-                    _self.refocusInput = false;
+                if($this.refocusInput) {
+                    $this.refocusInput = false;
                     return false;
                 }
 
@@ -92,13 +98,13 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
                 // touch support - prevents keyboard popup
                 if(touchEnabled) {
-                    _self.jqEl.prop("readonly", true);
+                    $this.jqEl.prop("readonly", true);
                 }
 
                 //user callback
-                var preShow = _self.cfg.preShow;
+                var preShow = $this.cfg.preShow;
                 if(preShow) {
-                    return _self.cfg.preShow.call(_self, inst);
+                    return $this.cfg.preShow.call($this, inst);
                 }
             };
         }
@@ -106,7 +112,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         // touch support - prevents keyboard popup
         if (touchEnabled) {
             this.cfg.onBeforeHide = function() {
-                _self.jqEl.attr("readonly", false);
+                $this.jqEl.attr("readonly", false);
             };
         }
 
@@ -220,15 +226,11 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     bindPanelCreationListener: function() {
-        var _self = this;
+        var $this = this;
 
         this.cfg.onPanelCreate = function() {
-            _self.panel = this.panel;
-            this.options.appendTo = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(PrimeFaces.utils.resolveAppendTo(_self));
-
-            PrimeFaces.utils.registerScrollHandler(_self, 'scroll.' + _self.id + '_hide', function() {
-                _self.jq.data().primeDatePicker.hideOverlay();
-            });
+            $this.panel = this.panel;
+            this.options.appendTo = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(PrimeFaces.utils.resolveAppendTo($this));
         };
     },
 
@@ -237,26 +239,26 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     bindDateSelectListener: function() {
-        var _self = this;
+        var $this = this;
 
         this.cfg.onSelect = function(event, date) {
-            _self.viewDateOption = this.viewDate;
+            $this.viewDateOption = this.viewDate;
 
-            _self.fireDateSelectEvent();
+            $this.fireDateSelectEvent();
 
-            if(!_self.cfg.inline && _self.cfg.focusOnSelect) {
-                _self.refocusInput = true;
-                _self.jqEl.trigger('focus');
-                if(!_self.cfg.showIcon) {
+            if(!$this.cfg.inline && $this.cfg.focusOnSelect) {
+                $this.refocusInput = true;
+                $this.jqEl.trigger('focus');
+                if(!$this.cfg.showIcon) {
                     var inst = this;
 
-                    _self.jqEl.off('click.datepicker').on('click.datepicker', function() {
+                    $this.jqEl.off('click.datepicker').on('click.datepicker', function() {
                         inst.showOverlay();
                     });
                 }
 
                 setTimeout(function() {
-                    _self.refocusInput = false;
+                    $this.refocusInput = false;
                 }, 10);
             }
         };
@@ -294,10 +296,10 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     bindViewChangeListener: function() {
-        var _self = this;
+        var $this = this;
         this.cfg.onViewDateChange = function(event, date) {
-            _self.viewDateOption = date;
-            _self.fireViewChangeEvent(date);
+            $this.viewDateOption = date;
+            $this.fireViewChangeEvent(date);
         };
     },
 
@@ -307,7 +309,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
      * @param {Date} date The date to which the date picker changed.
      */
     fireViewChangeEvent: function(date) {
-        var _self = this;
+        var $this = this;
         var lazy = this.cfg.lazyModel;
         var options = {
             params: [
@@ -318,10 +320,10 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         if (lazy) {
             options.onsuccess = function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                    widget: _self,
+                    widget: $this,
                     handle: function(content) {
                         var dateMetadata = JSON.parse(content).dateMetadata;
-                        var pdp = _self.jq.data().primeDatePicker;
+                        var pdp = $this.jq.data().primeDatePicker;
                         var disabledDates = [];
                         var dateStyleClasses = {};
                         for (date in dateMetadata) {
@@ -334,7 +336,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                             }
                         }
                         pdp.options.dateStyleClasses = dateStyleClasses;
-                        _self.setDisabledDates(disabledDates);
+                        $this.setDisabledDates(disabledDates);
                     }
                 });
                 return true;
@@ -352,7 +354,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             options.source = this.id;
             options.process = this.id;
             options.update = this.id;
-            options.formId = this.cfg.formId;
+            options.formId = this.getParentFormId();
             PrimeFaces.ajax.Request.handle(options);
         }
     },
@@ -449,5 +451,38 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         var pdp = this.jq.data().primeDatePicker;
         pdp.panel.get(0).innerHTML = pdp.renderPanelElements();
     },
+
+    /**
+     * Shows the popup panel.
+     */
+    show: function() {
+        this.jq.data().primeDatePicker.showOverlay();
+    },
+
+    /**
+     * Hide the popup panel.
+     */
+    hide: function() {
+        this.jq.data().primeDatePicker.hideOverlay();
+    },
+
+    /**
+     * Enables the datepicker, so that the user can select a date.
+     */
+    enable: function() {
+        this.jq.data().primeDatePicker.options.disabled = false;
+        this.updatePanel();
+        this.input.prop('disabled', false).removeClass('ui-state-disabled');
+    },
+
+    /**
+     * Disables the datepicker, so that the user can no longer select any date.
+     */
+    disable: function() {
+        this.hide();
+        this.jq.data().primeDatePicker.options.disabled = true;
+        this.updatePanel();
+        this.input.prop('disabled', true).addClass('ui-state-disabled');
+    }
 
 });

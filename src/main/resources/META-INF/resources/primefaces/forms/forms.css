@@ -366,20 +366,15 @@ input[type=text]::-ms-clear {
 
 .ui-selectonemenu-rtl { 
     direction: rtl;
-    -moz-transform: scaleX(-1); 
-    -webkit-transform: scaleX(-1); 
-    -o-transform: scaleX(-1); 
-    -ms-transform: scaleX(-1); 
-    transform: scaleX(-1); 
 }
 
 .ui-selectonemenu-rtl .ui-selectonemenu-label { 
-    -moz-transform: scaleX(-1); 
-    -webkit-transform: scaleX(-1); 
-    -o-transform: scaleX(-1); 
-    -ms-transform: scaleX(-1); 
-    transform: scaleX(-1); 
     text-align: right; 
+}
+
+.ui-selectonemenu-rtl .ui-selectonemenu-trigger {
+    left: 0;
+    right: auto;
 }
 
 .ui-selectonemenu-panel-rtl .ui-selectonemenu-list-item { 
@@ -639,9 +634,7 @@ button.ui-button::-moz-focus-inner {
 
 .ui-selectcheckboxmenu-multiple-container:empty:after {
     content: attr(label);
-    padding: 1px 3px;
     white-space: nowrap;
-    margin:2px;
     display: inline-block;
 }
 
@@ -794,6 +787,84 @@ div.ui-button, .ui-splitbutton {
 
 .ui-selectmanybutton .ui-button.ui-state-focus{
     outline: none;
+}
+
+/* CascadeSelect */
+.ui-cascadeselect {
+    display: inline-flex;
+    cursor: pointer;
+    position: relative;
+    user-select: none;
+}
+
+.ui-cascadeselect-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.ui-cascadeselect-label {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    flex: 1 1 auto;
+    width: 1%;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+
+.ui-cascadeselect-label-empty {
+    overflow: hidden;
+    visibility: hidden;
+}
+
+.ui-cascadeselect-panel {
+    min-width: 100%;
+}
+
+.ui-cascadeselect-panel {
+    position: absolute;
+}
+
+.ui-cascadeselect-item {
+    cursor: pointer;
+    font-weight: normal;
+    white-space: nowrap;
+}
+
+.ui-cascadeselect-item-content {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.ui-cascadeselect-group-icon {
+    margin-left: auto;
+}
+
+.ui-cascadeselect-items {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.ui-cascadeselect-sublist {
+    position: absolute;
+    min-width: 100%;
+    z-index: 1;
+    display: none;
+}
+
+.ui-cascadeselect-item-active {
+    overflow: visible !important;
+}
+
+.ui-cascadeselect-item-active > .ui-cascadeselect-sublist {
+    display: block;
+    left: 100%;
+    top: 0;
 }
 
 /** Fluid **/
@@ -975,6 +1046,15 @@ div.ui-button, .ui-splitbutton {
 .ui-fluid .ui-selectonelistbox,
 .ui-fluid .ui-selectmanymenu {
     width: 100%;
+}
+
+/** CascadeSelect **/
+.ui-fluid .ui-cascadeselect {
+    display: flex;
+}
+
+.ui-fluid .ui-cascadeselect .ui-cascadeselect-label {
+    width: 1%;
 }
 
 /** Floating Label **/

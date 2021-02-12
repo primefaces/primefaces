@@ -84,16 +84,18 @@ public class TreeTable extends TreeTableBase {
     public static final String SORTABLE_COLUMN_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon-carat-2-n-s";
     public static final String SORTABLE_COLUMN_ASCENDING_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon ui-icon-carat-2-n-s ui-icon-triangle-1-n";
     public static final String SORTABLE_COLUMN_DESCENDING_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon ui-icon-carat-2-n-s ui-icon-triangle-1-s";
-    public static final String SORTABLE_PRIORITY_CLASS = "ui-sortable-column-badge";
+    public static final String SORTABLE_PRIORITY_CLASS = "ui-sortable-column-badge ui-helper-hidden";
     public static final String REFLOW_CLASS = "ui-treetable-reflow";
     public static final String FILTER_COLUMN_CLASS = "ui-filter-column";
     public static final String COLUMN_INPUT_FILTER_CLASS = "ui-column-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
     public static final String COLUMN_CUSTOM_FILTER_CLASS = "ui-column-customfilter";
     public static final String HIDDEN_COLUMN_CLASS = "ui-helper-hidden";
     public static final String STATIC_COLUMN_CLASS = "ui-static-column";
-
     public static final String EDITABLE_COLUMN_CLASS = "ui-editable-column";
     public static final String EDITING_ROW_CLASS = "ui-row-editing";
+    public static final String GRIDLINES_CLASS = "ui-treetable-gridlines";
+    public static final String SMALL_SIZE_CLASS = "ui-treetable-sm";
+    public static final String LARGE_SIZE_CLASS = "ui-treetable-lg";
 
     static final Map<MatchMode, FilterConstraint> FILTER_CONSTRAINTS = MapBuilder.<MatchMode, FilterConstraint>builder()
             .put(MatchMode.STARTS_WITH, new StartsWithFilterConstraint())

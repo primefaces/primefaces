@@ -2,7 +2,6 @@ declare namespace InheritTypeparamOnMethod {
     interface Foo {
         /**
          * Type Foo
-         * 
          * @typeparam T The type T
          * @typeparam K The type K
          */
@@ -11,7 +10,6 @@ declare namespace InheritTypeparamOnMethod {
     interface Bar extends Foo {
         /**
          * Type Foo
-         * 
          * @typeparam T The type T
          * @typeparam K The type K
          */
@@ -20,7 +18,6 @@ declare namespace InheritTypeparamOnMethod {
     interface Foobar extends Foo {
         /**
          * Type Foo
-         * 
          * @typeparam T The type T
          */
         foo<T>(): void;

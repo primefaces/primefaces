@@ -158,7 +158,7 @@ public class LazyDataModelIteratorTest {
         LazyDataModelImpl dataModel = new LazyDataModelImpl();
         dataModel.setPageSize(2);
         dataModel.totalItems = 1;
-        Iterator<Integer> it = dataModel.iterator("foo", SortOrder.ASCENDING,
+        Iterator<Integer> it = dataModel.iterator(Collections.singletonMap("foo", SortMeta.builder().field("foo").order(SortOrder.ASCENDING).build()),
                 Collections.singletonMap("foo", FilterMeta.builder().field("foo").filterValue("bar").build()));
         while (it.hasNext()) {
             Integer item = it.next();

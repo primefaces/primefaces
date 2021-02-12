@@ -26,6 +26,7 @@ package org.primefaces.component.datatable.export;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
@@ -132,7 +133,7 @@ public class DataTableExcelExporter extends DataTableExporter {
             }
 
             if (col.isRendered() && col.isExportable()) {
-                addColumnValue(row, col.getChildren(), col);
+                addColumnValue(table, row, col.getChildren(), col);
             }
         }
     }
@@ -235,7 +236,7 @@ public class DataTableExcelExporter extends DataTableExporter {
         cell.setCellStyle(facetStyle);
     }
 
-    protected void addColumnValue(Row row, List<UIComponent> components, UIColumn column) {
+    protected void addColumnValue(DataTable table, Row row, List<UIComponent> components, UIColumn column) {
         int cellIndex = row.getLastCellNum() == -1 ? 0 : row.getLastCellNum();
         Cell cell = row.createCell(cellIndex);
         FacesContext context = FacesContext.getCurrentInstance();
@@ -247,6 +248,10 @@ public class DataTableExcelExporter extends DataTableExporter {
         }
         else if (column.getExportFunction() != null) {
             updateCell(cell, exportColumnByFunction(context, column));
+        }
+        else if (LangUtils.isNotBlank(column.getField())) {
+            String value = table.getConvertedFieldValue(context, column);
+            updateCell(cell, Objects.toString(value, Constants.EMPTY_STRING));
         }
         else {
             StringBuilder builder = new StringBuilder();

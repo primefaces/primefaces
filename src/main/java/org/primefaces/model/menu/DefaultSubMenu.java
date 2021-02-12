@@ -39,28 +39,9 @@ public class DefaultSubMenu implements Submenu, Serializable {
     private boolean disabled;
     private List<MenuElement> elements;
     private boolean rendered = true;
-    private boolean expanded = false;
+    private boolean expanded;
 
     public DefaultSubMenu() {
-        elements = new ArrayList<>();
-    }
-
-    /**
-     * @deprecated Use {@link #builder()} instead.
-     */
-    @Deprecated
-    public DefaultSubMenu(String label) {
-        this.label = label;
-        elements = new ArrayList<>();
-    }
-
-    /**
-     * @deprecated Use {@link #builder()} instead.
-     */
-    @Deprecated
-    public DefaultSubMenu(String label, String icon) {
-        this.label = label;
-        this.icon = icon;
         elements = new ArrayList<>();
     }
 
@@ -161,7 +142,8 @@ public class DefaultSubMenu implements Submenu, Serializable {
     }
 
     public static final class Builder {
-        private DefaultSubMenu subMenu;
+
+        private final DefaultSubMenu subMenu;
 
         private Builder() {
             subMenu = new DefaultSubMenu();

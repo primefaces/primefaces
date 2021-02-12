@@ -78,51 +78,13 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     private String form;
     private boolean escape = true;
     private String rel;
-    private boolean ignoreComponentNotFound = false;
+    private boolean ignoreComponentNotFound;
 
     /**
      * Creates a new menu item without value.
      */
     public DefaultMenuItem() {
         // NOOP
-    }
-
-    /**
-     * Creates a new menu item with the specified
-     * @param value the value of the item used as label
-     * @deprecated Use {@link #builder()} instead.
-     */
-    @Deprecated
-    public DefaultMenuItem(Object value) {
-        this.value = value;
-    }
-
-    /**
-     * Creates a new menu item with the specified
-     * @param value the value of the item used as label
-     * @param icon the icon to be displayed next to the label
-     * @deprecated Use {@link #builder()} instead.
-     */
-    @Deprecated
-    public DefaultMenuItem(Object value, String icon) {
-        this.value = value;
-        this.icon = icon;
-    }
-
-    /**
-     * Creates a menu item with the specified
-     * @param value the value of the item used as label
-     * @param icon the icon to be displayed next to the label
-     * @param url a URL to redirect to after the menu item has been clicked
-     * (specifying a {@code url} which is not {@code null} causes
-     * {@code command} to be ignored) (another form of redirection is provided
-     * by the {@code outcome} property)
-     * @deprecated Use {@link #builder()} instead.
-     */
-    public DefaultMenuItem(Object value, String icon, String url) {
-        this.value = value;
-        this.icon = icon;
-        this.url = url;
     }
 
     @Override
@@ -577,7 +539,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
 
     public static final class Builder {
 
-        private DefaultMenuItem menuItem;
+        private final DefaultMenuItem menuItem;
 
         private Builder() {
             menuItem = new DefaultMenuItem();

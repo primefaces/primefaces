@@ -7,6 +7,7 @@
 
     <factory>
         <partial-view-context-factory>org.primefaces.context.PrimePartialViewContextFactory</partial-view-context-factory>
+        <faces-context-factory>org.primefaces.context.PrimeFacesContextFactory</faces-context-factory>
     </factory>
 
     <lifecycle>
@@ -57,10 +58,6 @@
         <behavior-id>org.primefaces.behavior.ClientValidator</behavior-id>
         <behavior-class>org.primefaces.behavior.validate.ClientValidator</behavior-class>
     </behavior>
-
-    <factory>
-        <faces-context-factory>org.primefaces.context.PrimeFacesContextFactory</faces-context-factory>
-    </factory>
 
     <validator>
         <validator-id>javax.faces.Length</validator-id>
@@ -262,8 +259,18 @@
     </component>
 
     <component>
+        <component-type>org.primefaces.component.Card</component-type>
+        <component-class>org.primefaces.component.card.Card</component-class>
+    </component>
+
+    <component>
         <component-type>org.primefaces.component.Carousel</component-type>
         <component-class>org.primefaces.component.carousel.Carousel</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.CascadeSelect</component-type>
+        <component-class>org.primefaces.component.cascadeselect.CascadeSelect</component-class>
     </component>
 
     <component>
@@ -289,6 +296,11 @@
     <component>
         <component-type>org.primefaces.component.Chips</component-type>
         <component-class>org.primefaces.component.chips.Chips</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Chronoline</component-type>
+        <component-class>org.primefaces.component.chronoline.Chronoline</component-class>
     </component>
 
     <component>
@@ -334,6 +346,11 @@
     <component>
         <component-type>org.primefaces.component.ConfirmDialog</component-type>
         <component-class>org.primefaces.component.confirmdialog.ConfirmDialog</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.ConfirmPopup</component-type>
+        <component-class>org.primefaces.component.confirmpopup.ConfirmPopup</component-class>
     </component>
 
     <component>
@@ -1139,8 +1156,18 @@
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.CardRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.card.CardRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.CarouselRenderer</renderer-type>
             <renderer-class>org.primefaces.component.carousel.CarouselRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.CascadeSelectRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.cascadeselect.CascadeSelectRenderer</renderer-class>
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>
@@ -1166,6 +1193,11 @@
             <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.ChipsRenderer</renderer-type>
             <renderer-class>org.primefaces.component.chips.ChipsRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ChronolineRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.chronoline.ChronolineRenderer</renderer-class>
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>
@@ -1201,6 +1233,11 @@
             <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.ConfirmDialogRenderer</renderer-type>
             <renderer-class>org.primefaces.component.confirmdialog.ConfirmDialogRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ConfirmPopupRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.confirmpopup.ConfirmPopupRenderer</renderer-class>
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>

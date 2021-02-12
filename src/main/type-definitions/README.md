@@ -52,8 +52,20 @@ This will generate the type declaration file `target/type-declaration/` and the
 API docs in `target/type-declaration/jsdocs`.  It will also lint the
 declarations file for common mistakes and errors.
 
-Add the profile `release` to create the JavaScript API documentation in the
-`docs/<version>/jsdocs` directory:
+Use the profile `jsdoc-update` instead to to create the JavaScript API
+documentation in the `docs/jsdocs` directory:
+
+```sh
+mvn clean install -P jsdoc-update
+```
+
+__Remember to check the files and upload to github afterwards.__
+
+Use `jsdoc-update` when you wish to update the docs without a release. The docs
+are also generated in `docs/jsdocs` when you add the profile `release` profile.
+If you run the release command locally on your machine, you only need the
+`release` profile, just remember to upload the generated files to github
+afterwards.
 
 ```sh
 mvn clean install -P release

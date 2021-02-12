@@ -34,7 +34,7 @@ public abstract class ChartDataSet implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private boolean hidden = false;
+    private boolean hidden;
 
     public String encode() throws IOException {
         return null;

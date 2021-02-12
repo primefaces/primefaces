@@ -32,12 +32,13 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.celleditor.CellEditor;
+import org.primefaces.util.LangUtils;
 
 public class Columns extends ColumnsBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Columns";
 
-    private CellEditor cellEditor = null;
+    private CellEditor cellEditor;
     private List<DynamicColumn> dynamicColumns;
 
     @Override
@@ -84,6 +85,18 @@ public class Columns extends ColumnsBase {
     @Override
     public void renderChildren(FacesContext context) throws IOException {
         encodeChildren(context);
+    }
+
+    @Override
+    public String getHeaderText() {
+        String headerText = super.getHeaderText();
+        if (headerText == null) {
+            String field = getField();
+            if (LangUtils.isNotBlank(field)) {
+                headerText = LangUtils.toCapitalCase(field);
+            }
+        }
+        return headerText;
     }
 
     public List<DynamicColumn> getDynamicColumns() {
