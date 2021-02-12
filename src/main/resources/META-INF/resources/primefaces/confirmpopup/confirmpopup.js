@@ -48,6 +48,8 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.content = this.jq.children('.ui-confirm-popup-content');
         this.message = this.content.children('.ui-confirm-popup-message');
         this.icon = this.content.children('.ui-confirm-popup-icon');
+
+        this.transition = PrimeFaces.utils.registerCSSTransition(this.jq, 'ui-connected-overlay');
     
         this.bindEvents();
     },
@@ -108,29 +110,25 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * @param {string | JQuery} [target] Selector or DOM element of the target component that triggers this popup.
      */
     show: function(target) {
-        var $this = this;
-    
-        if (typeof target === 'string') {
-            target = $(document.querySelector(target));
-        }
-        else if (!(target instanceof $)) {
-            target = $(target);
-        }
-    
-        this.jq.css({'display':'block', 'opacity':'0', 'pointer-events': 'none'});
-    
-        this.align(target);
-    
-        this.jq.css({'display':'none', 'opacity':'', 'pointer-events': '', 'z-index': PrimeFaces.nextZindex()});
-    
-        if (this.cfg.showEffect) {
-            this.jq.show(this.cfg.showEffect, {}, 200, function() {
-                $this.applyFocus();
+        if (this.transition) {
+            var $this = this;
+
+            if (typeof target === 'string') {
+                target = $(document.querySelector(target));
+            }
+            else if (!(target instanceof $)) {
+                target = $(target);
+            }
+
+            this.transition.show({
+                onEnter: function() {
+                    $this.jq.css('z-index', PrimeFaces.nextZindex());
+                    $this.align(target);
+                },
+                onEntered: function() {
+                    $this.applyFocus();
+                }
             });
-        }
-        else {
-            this.jq.show();
-            this.applyFocus();
         }
     },
     
@@ -139,14 +137,14 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * @param {PrimeFaces.widget.ConfirmPopup.HideCallback} callback Callback that is invoked after this popup was closed.
      */
     hide: function(callback) {
-        if (this.cfg.hideEffect) {
-            this.jq.hide(this.cfg.hideEffect, {}, 200, callback);
-        }
-        else {
-            this.jq.hide();
-            if (callback) {
-                callback();
-            }
+        if (this.transition) {
+            this.transition.hide({
+                onExited: function() {
+                    if (callback) {
+                        callback();
+                    }
+                }
+            });
         }
     },
     
@@ -161,12 +159,12 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
     
             this.jq.removeClass('ui-confirm-popup-flipped');
     
-            this.jq.css({left:'0px', top:'0px'}).position({
+            this.jq.css({left:'0px', top:'0px', 'transform-origin': 'center top'}).position({
                     my: 'left top'
                     ,at: 'left bottom'
                     ,of: target
                     ,collision: 'flipfit'
-                    ,using: function(pos) {
+                    ,using: function(pos, directions) {
                         var targetOffset = target.offset();
                         var arrowLeft = 0;
     
@@ -182,7 +180,7 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
                             pos.top += parseFloat($this.jq.css('margin-top'));
                         }
     
-                        $(this).css(pos);
+                        $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);
                     }
                 });
         }
