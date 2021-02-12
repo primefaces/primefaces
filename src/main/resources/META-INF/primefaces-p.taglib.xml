@@ -18767,22 +18767,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Effect to display when showing the panel.]]>
-            </description>
-            <name>showEffect</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Effect to display when hiding the panel.]]>
-            </description>
-            <name>hideEffect</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Appends the overlayPanel to the given search expression.]]>
             </description>
             <name>appendTo</name>

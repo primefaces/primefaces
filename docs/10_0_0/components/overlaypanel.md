@@ -28,8 +28,6 @@ styleClass | null | String | Style class of the panel.
 for | null | String | Target component to display panel next to.
 showEvent | click | String | Event on target to show the panel.
 hideEvent | click | String | Event on target to hide the panel.
-showEffect | null | String | Animation to display when showing the panel.
-hideEffect | null | String | Animation to display when hiding the panel.
 onShow | null | String | Client side callback to execute when panel is shown.
 onHide | null | String | Client side callback to execute when panel is hidden.
 my | left top | String | Position of the panel relative to the target.
@@ -69,10 +67,6 @@ _showEvent_ and _hideEvent_ options.
 | --- | --- | --- |
 | show | javax.faces.event.AjaxBehaviorEvent | On show.
 | hide | javax.faces.event.AjaxBehaviorEvent | On hide.
-
-## Effects
-blind, bounce, clip, drop, explode, fold, highlight, puff, pulsate, scale, shake, size, slide are
-available values for _showEffect_ and _hideEffect_ options if you’d like display animations.
 
 ## Positioning
 By default, left top corner of panel is aligned to left bottom corner of the target if there is enough

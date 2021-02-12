@@ -636,17 +636,19 @@ if (!PrimeFaces.utils) {
                             element.css('display', 'block').addClass(classNameStates.enter);
                             callTransitionEvent(callbacks, 'onEnter');
             
-                            setTimeout(function() {
-                                element.addClass(classNameStates.enterActive);
-                            }, 0);
-            
-                            element.one('transitionrun.css-transition-show', function(event) {
-                                callTransitionEvent(callbacks, 'onEntering', event);
-                            }).one('transitioncancel.css-transition-show', function() {
-                                element.removeClass([classNameStates.enter, classNameStates.enterActive, classNameStates.enterDone]);
-                            }).one('transitionend.css-transition-show', function(event) {
-                                element.removeClass([classNameStates.enterActive, classNameStates.enter]).addClass(classNameStates.enterDone);
-                                callTransitionEvent(callbacks, 'onEntered', event);
+                            requestAnimationFrame(function() {
+                                setTimeout(function() {
+                                    element.addClass(classNameStates.enterActive);
+                                }, 0);
+                
+                                element.one('transitionrun.css-transition-show', function(event) {
+                                    callTransitionEvent(callbacks, 'onEntering', event);
+                                }).one('transitioncancel.css-transition-show', function() {
+                                    element.removeClass([classNameStates.enter, classNameStates.enterActive, classNameStates.enterDone]);
+                                }).one('transitionend.css-transition-show', function(event) {
+                                    element.removeClass([classNameStates.enterActive, classNameStates.enter]).addClass(classNameStates.enterDone);
+                                    callTransitionEvent(callbacks, 'onEntered', event);
+                                });
                             });
                         }
                     },

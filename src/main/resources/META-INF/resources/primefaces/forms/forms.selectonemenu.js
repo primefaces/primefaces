@@ -903,8 +903,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             this.transition.show({
                 onEnter: function() {
                     $this.panel.css('z-index', PrimeFaces.nextZindex());
-                },
-                onEntering: function() {
                     $this.alignPanel();
                 },
                 onEntered: function() {

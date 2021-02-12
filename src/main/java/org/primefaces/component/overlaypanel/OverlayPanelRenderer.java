@@ -85,8 +85,6 @@ public class OverlayPanelRenderer extends CoreRenderer {
                 .attr("target", target)
                 .attr("showEvent", panel.getShowEvent(), null)
                 .attr("hideEvent", panel.getHideEvent(), null)
-                .attr("showEffect", panel.getShowEffect(), null)
-                .attr("hideEffect", panel.getHideEffect(), null)
                 .callback("onShow", "function()", panel.getOnShow())
                 .callback("onHide", "function()", panel.getOnHide())
                 .attr("my", panel.getMy(), null)

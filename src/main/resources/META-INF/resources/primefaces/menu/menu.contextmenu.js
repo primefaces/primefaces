@@ -135,6 +135,8 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', this.jq, function() {
             $this.hide();
         });
+
+        this.transition = PrimeFaces.utils.registerCSSTransition(this.jq, 'ui-connected-overlay');
     },
 
     /**
@@ -190,6 +192,8 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
      * that does not have any parameters. Do not (implicitly) cast an instance of this class to a parent type.
      */
     show: function(e) {
+        var $this = this;
+
         if(this.cfg.targetFilter && $(e.target).is(':not(' + this.cfg.targetFilter + ')')) {
             return;
         }
@@ -204,28 +208,35 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
             }
         }
 
-        var win = $(window),
-        left = e.pageX,
-        top = e.pageY,
-        width = this.jq.outerWidth(),
-        height = this.jq.outerHeight();
+        if (this.transition) {
+            this.transition.show({
+                onEnter: function() {
+                    var win = $(window),
+                    left = e.pageX,
+                    top = e.pageY,
+                    width = $this.jq.outerWidth(),
+                    height = $this.jq.outerHeight();
 
-        //collision detection for window boundaries
-        if((left + width) > (win.width())+ win.scrollLeft()) {
-            left = left - width;
-        }
-        if((top + height ) > (win.height() + win.scrollTop())) {
-            top = top - height;
-        }
-        if(top < 0) {
-            top = e.pageY;
-        }
+                    //collision detection for window boundaries
+                    if ((left + width) > (win.width())+ win.scrollLeft()) {
+                        left = left - width;
+                    }
+                    if ((top + height ) > (win.height() + win.scrollTop())) {
+                        top = top - height;
+                    }
+                    if (top < 0) {
+                        top = e.pageY;
+                    }
 
-        this.jq.css({
-            'left': left + 'px',
-            'top': top + 'px',
-            'z-index': PrimeFaces.nextZindex()
-        }).show();
+                    $this.jq.css({
+                        'left': left + 'px',
+                        'top': top + 'px',
+                        'z-index': PrimeFaces.nextZindex(),
+                        'transform-origin': 'center top'
+                    });
+                }
+            });
+        }
 
         e.preventDefault();
         e.stopPropagation();
@@ -236,14 +247,18 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
      * @inheritdoc
      */
     hide: function() {
-        var $this = this;
+        if (this.transition) {
+            var $this = this;
 
-        //hide submenus
-        this.jq.find('li.ui-menuitem-active').each(function() {
-            $this.deactivate($(this), true);
-        });
-
-        this.jq.fadeOut('fast');
+            this.transition.hide({
+                onExited: function() {
+                    //hide submenus
+                    $this.jq.find('li.ui-menuitem-active').each(function() {
+                        $this.deactivate($(this), true);
+                    });
+                }
+            });
+        }
     },
 
     /**

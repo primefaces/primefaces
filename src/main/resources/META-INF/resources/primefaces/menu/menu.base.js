@@ -57,12 +57,16 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
 
         this.cfg.appendTo = '@(body)';
         PrimeFaces.utils.registerDynamicOverlay(this, this.jq, this.id);
+        this.transition = PrimeFaces.utils.registerCSSTransition(this.jq, 'ui-connected-overlay');
 
         this.cfg.pos = {
             my: this.cfg.my,
             at: this.cfg.at,
             of: this.trigger,
-            collision: this.cfg.collision || "flip"
+            collision: this.cfg.collision || "flip",
+            using: function(pos, directions) {
+                $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);
+            }
         };
 
         this.trigger.off(this.cfg.triggerEvent + '.ui-menu').on(this.cfg.triggerEvent + '.ui-menu', function(e) {
@@ -108,7 +112,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
 
         //Hide overlay on resize
         PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.jq, function() {
-            $this.align();
+            $this.hide();
         });
 
         //dialog support
@@ -131,23 +135,32 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
      * Shows (displays) this menu so that it becomes visible and can be interacted with.
      */
     show: function() {
-        this.jq.css({
-            'z-index': PrimeFaces.nextZindex(),
-            'visibility': 'hidden'
-        });
-        this.align();
-        this.jq.show();
-        this.jq.css('visibility', '');
+        var $this = this;
+
+        if (this.transition) {
+            this.transition.show({
+                onEnter: function() {
+                    $this.jq.css('z-index', PrimeFaces.nextZindex());
+                    $this.align();
+                }
+            });
+        }
     },
 
     /**
      * Hides this menu so that it becomes invisible and cannot be interacted with any longer.
      */
     hide: function() {
-        this.jq.fadeOut('fast');
+        if (this.transition) {
+            var $this = this;
 
-        if(this.trigger && this.trigger.is(':button')) {
-            this.trigger.removeClass('ui-state-focus');
+            this.transition.hide({
+                onExited: function() {
+                    if ($this.trigger && $this.trigger.is(':button')) {
+                        $this.trigger.removeClass('ui-state-focus');
+                    }
+                }
+            });
         }
     },
 
@@ -155,7 +168,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
      * Aligns this menu as specified in its widget configuration (property `pos`).
      */
     align: function() {
-        this.jq.css({left:'', top:''}).position(this.cfg.pos);
+        this.jq.css({left:'', top:'', 'transform-origin': 'center top'}).position(this.cfg.pos);
     }
 });
 

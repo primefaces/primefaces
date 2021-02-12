@@ -118,8 +118,6 @@ public class ConfirmPopupRenderer extends CoreRenderer {
         wb.init("ConfirmPopup", popup)
                 .attr("appendTo", SearchExpressionFacade.resolveClientId(context, popup, popup.getAppendTo(),
                         SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
-                .attr("showEffect", popup.getShowEffect(), null)
-                .attr("hideEffect", popup.getHideEffect(), null)
                 .attr("global", popup.isGlobal(), false)
                 .attr("dismissable", popup.isDismissable(), true);
 

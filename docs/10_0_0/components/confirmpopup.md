@@ -28,8 +28,6 @@ ConfirmPopup displays a confirmation overlay displayed relatively to its target.
 | style | null | String | Inline style of the popup container.
 | styleClass | null | String | Style class of the popup container
 | appendTo | null | String | Appends the popup to the element defined by the given search expression.
-| showEffect | null | String | Effect to use on showing popup.
-| hideEffect | null | String | Effect to use on hiding popup.
 | global | false | Boolean | When enabled, confirmPopup becomes a shared for other components that require confirmation.
 | dismissable | true | Boolean | Enables to hide the popup when outside is clicked.
 
