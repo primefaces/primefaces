@@ -2129,9 +2129,10 @@
             if (this.options.inline) {
                 return;
             }
+
             var $this = this;
             $(window).on('resize.' + this.options.id, function() {
-                $this.alignPanel();
+                $this.hideOverlay();
             });
         },
 
