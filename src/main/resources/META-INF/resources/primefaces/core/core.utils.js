@@ -447,7 +447,7 @@ if (!PrimeFaces.utils) {
         /**
          * Find scrollable parents (Not document)
          * @param {JQuery} element An element used to find its scrollable parents.
-         * @return {object} the list of scrollable parents.
+         * @return {any[]} the list of scrollable parents.
          */
         getScrollableParents: function(element) {
             var scrollableParents = [];
