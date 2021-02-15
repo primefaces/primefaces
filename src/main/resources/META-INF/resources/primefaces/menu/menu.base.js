@@ -86,10 +86,20 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
             }
         });
 
+        //dialog support
+        this.setupDialogSupport();
+    },
+
+    /**
+     * Sets up all panel event listeners
+     */
+    bindPanelEvents: function() {
+        var $this = this;
+
         //hide overlay on document click
         this.itemMouseDown = false;
 
-        PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $this.jq,
+        this.hideOverlayHandler = PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', this.jq,
             function() { return $this.trigger; },
             function(e, eventTarget) {
                 var menuItemLink = '.ui-menuitem-link:not(.ui-submenu-link, .ui-state-disabled)';
@@ -102,21 +112,40 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
                 }
             });
 
-        var hideUpNS = 'mouseup.' + this.id;
-        $(document.body).off(hideUpNS).on(hideUpNS, function (e) {
-            if($this.itemMouseDown) {
+        $(document.body).on('mouseup.' + this.id, function (e) {
+            if ($this.itemMouseDown) {
                 $this.hide(e);
                 $this.itemMouseDown = false;
             }
         });
 
         //Hide overlay on resize
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.jq, function() {
+        this.resizeHandler = PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', this.jq, function() {
             $this.hide();
         });
 
-        //dialog support
-        this.setupDialogSupport();
+        this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', function() {
+            $this.hide();
+        });
+    },
+
+    /**
+     * Unbind all panel event listeners
+     */
+    unbindPanelEvents: function() {
+        if (this.hideOverlayHandler) {
+            this.hideOverlayHandler.unbind();
+        }
+
+        if (this.resizeHandler) {
+            this.resizeHandler.unbind();
+        }
+    
+        if (this.scrollHandler) {
+            this.scrollHandler.unbind();
+        }
+
+        $(document.body).off('mouseup.' + this.id);
     },
 
     /**
@@ -142,6 +171,9 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
                 onEnter: function() {
                     $this.jq.css('z-index', PrimeFaces.nextZindex());
                     $this.align();
+                },
+                onEntered: function() {
+                    $this.bindPanelEvents();
                 }
             });
         }
@@ -155,6 +187,9 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
             var $this = this;
 
             this.transition.hide({
+                onExit: function() {
+                    $this.unbindPanelEvents();
+                },
                 onExited: function() {
                     if ($this.trigger && $this.trigger.is(':button')) {
                         $this.trigger.removeClass('ui-state-focus');
