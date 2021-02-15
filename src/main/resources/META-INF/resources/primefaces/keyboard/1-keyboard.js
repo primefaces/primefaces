@@ -63,7 +63,7 @@
             $this.jq.keypad('hide');
         });
 
-        this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', function() {
+        this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', this.jq, function() {
             $this.jq.keypad('hide');
         });
     },

@@ -416,12 +416,13 @@ if (!PrimeFaces.utils) {
          * has a connected overlay.
          * @param {PrimeFaces.widget.BaseWidget} widget A widget instance for which to register a scroll handler.
          * @param {string} scrollNamespace A scroll event with a namespace, such as `scroll.widgetId`.
+         * @param {JQuery | undefined} element A DOM element used to find scrollable parents.
          * @param {(event: JQuery.TriggeredEvent) => void} scrollCallback A callback that is invoked when a scroll event
          * occurs on the widget.
          * @return {() => void} unbind callback handler
          */
-        registerConnectedOverlayScrollHandler: function(widget, scrollNamespace, scrollCallback) {
-            var scrollableParents = PrimeFaces.utils.getScrollableParents(widget.getJQ().get(0));
+        registerConnectedOverlayScrollHandler: function(widget, scrollNamespace, element, scrollCallback) {
+            var scrollableParents = PrimeFaces.utils.getScrollableParents((element || widget.getJQ()).get(0));
 
             for (var i = 0; i < scrollableParents.length; i++) {
                 var scrollParent = $(scrollableParents[i]);

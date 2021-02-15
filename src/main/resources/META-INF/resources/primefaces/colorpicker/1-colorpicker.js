@@ -144,7 +144,7 @@
 
         //popup ui
         if (this.cfg.popup && this.overlay) {
-            this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', function() {
+            this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', this.jqEl, function() {
                 $this.overlay.hide();
             });
 

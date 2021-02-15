@@ -90,7 +90,7 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * Sets up all panel event listeners
      * @private
      */
-    bindPanelEvents: function() {
+    bindPanelEvents: function(target) {
         var $this = this;
 
         //hide overlay when mousedown is at outside of overlay
@@ -108,7 +108,7 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
             $this.hide();
         });
     
-        this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', function() {
+        this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', target, function() {
             $this.hide();
         });
     },
@@ -152,7 +152,7 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
                     $this.align(target);
                 },
                 onEntered: function() {
-                    $this.bindPanelEvents();
+                    $this.bindPanelEvents(target);
                     $this.applyFocus();
                 }
             });
