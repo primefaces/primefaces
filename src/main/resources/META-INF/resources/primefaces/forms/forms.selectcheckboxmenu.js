@@ -454,8 +454,16 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             PrimeFaces.clearSelection();
             e.preventDefault();
         });
+    },
 
-        PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $this.panel,
+    /**
+     * Sets up all panel event listeners
+     * @private
+     */
+    bindPanelEvents: function() {
+        var $this = this;
+
+        this.hideOverlayHandler = PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', this.panel,
             function() { return $this.triggers; },
             function(e, eventTarget) {
                 if(!($this.panel.is(eventTarget) || $this.panel.has(eventTarget).length > 0)) {
@@ -463,12 +471,31 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 }
             });
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_hide', $this.panel, function() {
+        this.resizeHandler = PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_hide', this.panel, function() {
             $this.hide();
         });
-        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_hide', function() {
+
+        this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', function() {
             $this.hide();
         });
+    },
+
+    /**
+     * Unbind all panel event listeners
+     * @private
+     */
+    unbindPanelEvents: function() {
+        if (this.hideOverlayHandler) {
+            this.hideOverlayHandler.unbind();
+        }
+
+        if (this.resizeHandler) {
+            this.resizeHandler.unbind();
+        }
+    
+        if (this.scrollHandler) {
+            this.scrollHandler.unbind();
+        }
     },
 
     /**
@@ -952,6 +979,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 onEntered: function() {
                     $this.keyboardTarget.attr('aria-expanded', true);
                     $this.postShow();
+                    $this.bindPanelEvents();
                 }
             });
         }
@@ -965,6 +993,9 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             var $this = this;
 
             this.transition.hide({
+                onExit: function() {
+                    $this.bindPanelEvents();
+                },
                 onExited: function() {
                     $this.keyboardTarget.attr('aria-expanded', false);
                     $this.postHide();
