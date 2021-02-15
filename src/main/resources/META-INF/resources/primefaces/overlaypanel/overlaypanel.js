@@ -186,25 +186,51 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 $(this).removeClass('ui-state-focus');
             });
         }
+    },
+
+    /**
+     * Sets up all panel event listeners
+     * @private
+     */
+    bindPanelEvents: function() {
+        var $this = this;
 
         //hide overlay when mousedown is at outside of overlay
-        if(this.cfg.dismissable && !this.cfg.modal) {
-            PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $this.jq,
+        if (this.cfg.dismissable && !this.cfg.modal) {
+            this.hideOverlayHandler = PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', this.jq,
                 function() { return $this.target; },
                 function(e, eventTarget) {
-                    if(!($this.jq.is(eventTarget) || $this.jq.has(eventTarget).length > 0 || eventTarget.closest('.ui-input-overlay').length > 0)) {
+                    if (!($this.jq.is(eventTarget) || $this.jq.has(eventTarget).length > 0 || eventTarget.closest('.ui-input-overlay').length > 0)) {
                         $this.hide();
                     }
                 });
         }
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.jq, function() {
+        this.resizeHandler = PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_hide', this.jq, function() {
             $this.hide();
         });
 
-        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_align', function() {
+        this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', function() {
             $this.hide();
         });
+    },
+
+    /**
+     * Unbind all panel event listeners
+     * @private
+     */
+    unbindPanelEvents: function() {
+        if (this.hideOverlayHandler) {
+            this.hideOverlayHandler.unbind();
+        }
+
+        if (this.resizeHandler) {
+            this.resizeHandler.unbind();
+        }
+    
+        if (this.scrollHandler) {
+            this.scrollHandler.unbind();
+        }
     },
 
     /**
@@ -252,6 +278,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
                         $this.align(target);
                     },
                     onEntered: function() {
+                        $this.bindPanelEvents();
                         $this.postShow();
     
                         if ($this.cfg.modal) {
@@ -341,6 +368,9 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
             var $this = this;
 
             this.transition.hide({
+                onExit: function() {
+                    $this.unbindPanelEvents();
+                },
                 onExited: function() {
                     if ($this.cfg.modal) {
                         $this.disableModality();
