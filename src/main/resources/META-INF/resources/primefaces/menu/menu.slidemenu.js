@@ -200,6 +200,9 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
                     }
                     $this.jq.css('z-index', PrimeFaces.nextZindex());
                     $this.align();
+                },
+                onEntered: function() {
+                    $this.bindPanelEvents();
                 }
             });
         }
