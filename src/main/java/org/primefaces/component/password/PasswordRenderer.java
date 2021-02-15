@@ -91,7 +91,7 @@ public class PasswordRenderer extends InputRenderer {
             writer.startElement("span", null);
             boolean isRTL = ComponentUtils.isRTL(context, password);
             String positionClass = getStyleClassBuilder(context)
-                        .add("ui-password")
+                        .add(Password.WRAPPER_CLASS)
                         .add(isRTL, "ui-input-icon-left", "ui-input-icon-right")
                         .build();
             writer.writeAttribute("class", positionClass, null);

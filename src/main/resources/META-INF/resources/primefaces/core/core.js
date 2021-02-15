@@ -1149,7 +1149,8 @@
         animationEnabled : true,
 
          /**
-         * Flag for detecting whether animation is currently running.
+         * Flag for detecting whether animation is currently running. Similar to jQuery.active flag and is useful
+         * for scripts or automation tests to determine if the animation is currently running.
          * @type {boolean}
          */
         animationActive : false,
