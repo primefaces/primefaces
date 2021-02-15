@@ -3527,6 +3527,36 @@ body .ui-fluid .ui-trigger-calendar .ui-datepicker-trigger.ui-button {
     padding: 0.5rem; }
 body .ui-fluid .p-datepicker .ui-datepicker-trigger.ui-button {
   right: 0; }
+body .ui-password .ui-password-masked {
+  font-family: 'primeicons' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  display: inline-block;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-indent: 0 !important;
+  background-image: none !important;
+  cursor: pointer; }
+  body .ui-password .ui-password-masked:before {
+    content: ""; }
+body .ui-password .ui-password-unmasked {
+  font-family: 'primeicons' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  display: inline-block;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-indent: 0 !important;
+  background-image: none !important;
+  cursor: pointer; }
+  body .ui-password .ui-password-unmasked:before {
+    content: ""; }
 body .ui-password-panel {
   background: #1f2d40;
   color: rgba(255, 255, 255, 0.87);
