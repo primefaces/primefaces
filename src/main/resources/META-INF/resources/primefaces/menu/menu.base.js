@@ -92,6 +92,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Sets up all panel event listeners
+     * @protected
      */
     bindPanelEvents: function() {
         var $this = this;
@@ -131,6 +132,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Unbind all panel event listeners
+     * @protected
      */
     unbindPanelEvents: function() {
         if (this.hideOverlayHandler) {

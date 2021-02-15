@@ -127,8 +127,9 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
     },
 
     /**
-     * Sets up all panel event listeners
      * @override
+     * @protected
+     * @inheritdoc
      */
     bindPanelEvents: function() {
         var $this = this;
@@ -151,8 +152,9 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
     },
 
     /**
-     * Unbind all panel event listeners
      * @override
+     * @protected
+     * @inheritdoc
      */
     unbindPanelEvents: function() {
         if (this.hideOverlayHandler) {
