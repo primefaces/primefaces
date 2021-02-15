@@ -3231,7 +3231,7 @@ body .ui-datepicker {
   background: #ffffff;
   border: 1px solid #ced4da;
   color: #495057;
-  padding: 1rem;
+  padding: 0.5rem;
   width: auto;
   border-radius: 4px; }
   body .ui-datepicker .ui-datepicker-header {
@@ -4113,7 +4113,6 @@ body .ui-tabs {
     display: flex; }
     body .ui-tabs .ui-tabs-nav li.ui-tabs-header {
       list-style: none;
-      padding: 0;
       white-space: nowrap;
       display: inline-block;
       vertical-align: top;
@@ -4170,6 +4169,9 @@ body .ui-tabs {
         outline: 0 none;
         outline-offset: 0;
         box-shadow: 0 0 0 0.2rem #a6d5fa; }
+    body .ui-tabs .ui-tabs-nav li.ui-tabs-actions {
+      order: 1;
+      margin-left: auto; }
   body .ui-tabs .ui-tabs-panels {
     border: 0 none;
     background: #ffffff;
@@ -4847,7 +4849,7 @@ body .ui-breadcrumb {
       text-indent: 0 !important;
       background-image: none !important;
       margin: 0 0.5rem 0 0.5rem;
-      color: #6c757d; }
+      color: #495057; }
       body .ui-breadcrumb ul li.ui-breadcrumb-chevron:before {
         content: ""; }
     body .ui-breadcrumb ul li:not(.ui-breadcrumb-chevron) {
@@ -4869,7 +4871,7 @@ body .ui-breadcrumb {
         text-indent: 0 !important;
         background-image: none !important;
         margin: 0 0.5rem 0 0.5rem;
-        color: #6c757d; }
+        color: #495057; }
     body .ui-breadcrumb ul li:first-child:not(.ui-breadcrumb-chevron):before {
       display: none; }
     body .ui-breadcrumb ul li:first-child a.ui-icon-home {
@@ -4890,6 +4892,10 @@ body .ui-breadcrumb {
         content: ""; }
       body .ui-breadcrumb ul li:first-child a.ui-icon-home span {
         display: none; }
+    body .ui-breadcrumb ul li:last-child .ui-menuitem-link .ui-menuitem-text {
+      color: #495057; }
+    body .ui-breadcrumb ul li:last-child .ui-menuitem-link .ui-menuitem-icon {
+      color: #6c757d; }
   body .ui-breadcrumb .ui-breadcrumb-items li .ui-menuitem-link {
     transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
     border-radius: 4px;
@@ -4915,7 +4921,7 @@ body .ui-breadcrumb {
     text-indent: 0 !important;
     background-image: none !important;
     margin: 0 0.5rem 0 0.5rem;
-    color: #6c757d; }
+    color: #495057; }
     body .ui-breadcrumb .ui-breadcrumb-items li.ui-breadcrumb-chevron:before {
       content: ""; }
   body .ui-breadcrumb .ui-breadcrumb-items li:not(.ui-breadcrumb-chevron) {
@@ -4937,7 +4943,7 @@ body .ui-breadcrumb {
       text-indent: 0 !important;
       background-image: none !important;
       margin: 0 0.5rem 0 0.5rem;
-      color: #6c757d; }
+      color: #495057; }
   body .ui-breadcrumb .ui-breadcrumb-items li:first-child:not(.ui-breadcrumb-chevron):before {
     display: none; }
   body .ui-breadcrumb .ui-breadcrumb-items li:first-child a.ui-icon-home {
@@ -4958,6 +4964,10 @@ body .ui-breadcrumb {
       content: ""; }
     body .ui-breadcrumb .ui-breadcrumb-items li:first-child a.ui-icon-home span {
       display: none; }
+  body .ui-breadcrumb .ui-breadcrumb-items li:last-child .ui-menuitem-link .ui-menuitem-text {
+    color: #495057; }
+  body .ui-breadcrumb .ui-breadcrumb-items li:last-child .ui-menuitem-link .ui-menuitem-icon {
+    color: #6c757d; }
 body .ui-steps {
   position: relative; }
   body .ui-steps ul {
@@ -4996,7 +5006,6 @@ body .ui-steps {
         justify-content: center; }
       body .ui-steps .ui-steps-item .ui-menuitem-link .ui-steps-title {
         display: block;
-        margin-left: 0 auto;
         padding-top: 0.5rem;
         color: #6c757d; }
     body .ui-steps .ui-steps-item.ui-state-highlight .ui-steps-number {
@@ -5004,7 +5013,10 @@ body .ui-steps {
       color: #495057;
       border-color: #E3F2FD; }
     body .ui-steps .ui-steps-item.ui-state-highlight .ui-steps-title {
-      font-weight: 700; }
+      font-weight: 600;
+      color: #495057; }
+  body .ui-steps .ui-steps-item:not(.ui-state-highlight) {
+    opacity: .65; }
   body .ui-steps:before {
     content: ' ';
     border-top: 1px solid #dee2e6;
@@ -5231,7 +5243,7 @@ body .ui-menu {
   body .ui-menu.ui-megamenu .ui-menu-list .ui-menuitem-link {
     border-radius: 4px; }
   body .ui-menu.ui-megamenu.ui-megamenu-vertical {
-    background: #ffffff;
+    background: #f8f9fa;
     padding: 0.25rem 0; }
     body .ui-menu.ui-megamenu.ui-megamenu-vertical > .ui-menu-list .ui-menuitem {
       width: 100%; }

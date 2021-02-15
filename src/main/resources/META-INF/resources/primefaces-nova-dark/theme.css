@@ -769,7 +769,7 @@ body .ui-datatable .ui-datatable-data > tr {
   body .ui-datatable .ui-datatable-data > tr > td {
     padding: 0.571rem 0.857rem;
     border: 1px solid #c8c8c8;
-    border-width: 1px 1px 1px 1px; }
+    border-width: 1px; }
     body .ui-datatable .ui-datatable-data > tr > td.ui-datatable-subtable-header {
       background: #333333;
       border: 1px solid #333333;
@@ -3235,7 +3235,7 @@ body .ui-datepicker {
   background: #ffffff;
   border: 1px solid #a6a6a6;
   color: #333333;
-  padding: 1rem;
+  padding: 0.857rem;
   width: auto;
   border-radius: 3px; }
   body .ui-datepicker .ui-datepicker-header {
@@ -3436,7 +3436,7 @@ body .ui-datepicker {
       color: #ffffff;
       border: 0 none; }
   body .ui-datepicker .ui-datepicker-group {
-    padding: 0.5rem; }
+    padding: 0.857rem; }
   body .ui-datepicker .ui-picker-up {
     width: 2rem;
     height: 2rem;
@@ -4117,7 +4117,6 @@ body .ui-tabs {
     display: flex; }
     body .ui-tabs .ui-tabs-nav li.ui-tabs-header {
       list-style: none;
-      padding: 0;
       white-space: nowrap;
       display: inline-block;
       vertical-align: top;
@@ -4174,6 +4173,9 @@ body .ui-tabs {
         outline: 0 none;
         outline-offset: 0;
         box-shadow: 0 0 0 0.2rem #8dcdff; }
+    body .ui-tabs .ui-tabs-nav li.ui-tabs-actions {
+      order: 1;
+      margin-left: auto; }
   body .ui-tabs .ui-tabs-panels {
     border: 1px solid #c8c8c8;
     background: #ffffff;
@@ -4894,6 +4896,10 @@ body .ui-breadcrumb {
         content: ""; }
       body .ui-breadcrumb ul li:first-child a.ui-icon-home span {
         display: none; }
+    body .ui-breadcrumb ul li:last-child .ui-menuitem-link .ui-menuitem-text {
+      color: #333333; }
+    body .ui-breadcrumb ul li:last-child .ui-menuitem-link .ui-menuitem-icon {
+      color: #333333; }
   body .ui-breadcrumb .ui-breadcrumb-items li .ui-menuitem-link {
     transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
     border-radius: 3px;
@@ -4962,6 +4968,10 @@ body .ui-breadcrumb {
       content: ""; }
     body .ui-breadcrumb .ui-breadcrumb-items li:first-child a.ui-icon-home span {
       display: none; }
+  body .ui-breadcrumb .ui-breadcrumb-items li:last-child .ui-menuitem-link .ui-menuitem-text {
+    color: #333333; }
+  body .ui-breadcrumb .ui-breadcrumb-items li:last-child .ui-menuitem-link .ui-menuitem-icon {
+    color: #333333; }
 body .ui-steps {
   position: relative; }
   body .ui-steps ul {
@@ -5000,7 +5010,6 @@ body .ui-steps {
         justify-content: center; }
       body .ui-steps .ui-steps-item .ui-menuitem-link .ui-steps-title {
         display: block;
-        margin-left: 0 auto;
         padding-top: 0.5rem;
         color: #848484; }
     body .ui-steps .ui-steps-item.ui-state-highlight .ui-steps-number {
@@ -5008,7 +5017,10 @@ body .ui-steps {
       color: #ffffff;
       border-color: #007ad9; }
     body .ui-steps .ui-steps-item.ui-state-highlight .ui-steps-title {
-      font-weight: 700; }
+      font-weight: 600;
+      color: #333333; }
+  body .ui-steps .ui-steps-item:not(.ui-state-highlight) {
+    opacity: .65; }
   body .ui-steps:before {
     content: ' ';
     border-top: 1px solid #c8c8c8;

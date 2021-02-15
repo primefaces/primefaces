@@ -3231,7 +3231,7 @@ body .ui-datepicker {
   background: #1e1e1e;
   border: 1px solid #383838;
   color: rgba(255, 255, 255, 0.87);
-  padding: 1rem;
+  padding: 0.5rem;
   width: auto;
   border-radius: 4px; }
   body .ui-datepicker .ui-datepicker-header {
@@ -4113,7 +4113,6 @@ body .ui-tabs {
     display: flex; }
     body .ui-tabs .ui-tabs-nav li.ui-tabs-header {
       list-style: none;
-      padding: 0;
       white-space: nowrap;
       display: inline-block;
       vertical-align: top;
@@ -4170,6 +4169,9 @@ body .ui-tabs {
         outline: 0 none;
         outline-offset: 0;
         box-shadow: 0 0 0 1px #b1dafb; }
+    body .ui-tabs .ui-tabs-nav li.ui-tabs-actions {
+      order: 1;
+      margin-left: auto; }
   body .ui-tabs .ui-tabs-panels {
     border: 0 none;
     background: #1e1e1e;
@@ -4847,7 +4849,7 @@ body .ui-breadcrumb {
       text-indent: 0 !important;
       background-image: none !important;
       margin: 0 0.5rem 0 0.5rem;
-      color: rgba(255, 255, 255, 0.6); }
+      color: rgba(255, 255, 255, 0.87); }
       body .ui-breadcrumb ul li.ui-breadcrumb-chevron:before {
         content: ""; }
     body .ui-breadcrumb ul li:not(.ui-breadcrumb-chevron) {
@@ -4869,7 +4871,7 @@ body .ui-breadcrumb {
         text-indent: 0 !important;
         background-image: none !important;
         margin: 0 0.5rem 0 0.5rem;
-        color: rgba(255, 255, 255, 0.6); }
+        color: rgba(255, 255, 255, 0.87); }
     body .ui-breadcrumb ul li:first-child:not(.ui-breadcrumb-chevron):before {
       display: none; }
     body .ui-breadcrumb ul li:first-child a.ui-icon-home {
@@ -4890,6 +4892,10 @@ body .ui-breadcrumb {
         content: ""; }
       body .ui-breadcrumb ul li:first-child a.ui-icon-home span {
         display: none; }
+    body .ui-breadcrumb ul li:last-child .ui-menuitem-link .ui-menuitem-text {
+      color: rgba(255, 255, 255, 0.87); }
+    body .ui-breadcrumb ul li:last-child .ui-menuitem-link .ui-menuitem-icon {
+      color: rgba(255, 255, 255, 0.6); }
   body .ui-breadcrumb .ui-breadcrumb-items li .ui-menuitem-link {
     transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
     border-radius: 4px;
@@ -4915,7 +4921,7 @@ body .ui-breadcrumb {
     text-indent: 0 !important;
     background-image: none !important;
     margin: 0 0.5rem 0 0.5rem;
-    color: rgba(255, 255, 255, 0.6); }
+    color: rgba(255, 255, 255, 0.87); }
     body .ui-breadcrumb .ui-breadcrumb-items li.ui-breadcrumb-chevron:before {
       content: ""; }
   body .ui-breadcrumb .ui-breadcrumb-items li:not(.ui-breadcrumb-chevron) {
@@ -4937,7 +4943,7 @@ body .ui-breadcrumb {
       text-indent: 0 !important;
       background-image: none !important;
       margin: 0 0.5rem 0 0.5rem;
-      color: rgba(255, 255, 255, 0.6); }
+      color: rgba(255, 255, 255, 0.87); }
   body .ui-breadcrumb .ui-breadcrumb-items li:first-child:not(.ui-breadcrumb-chevron):before {
     display: none; }
   body .ui-breadcrumb .ui-breadcrumb-items li:first-child a.ui-icon-home {
@@ -4958,6 +4964,10 @@ body .ui-breadcrumb {
       content: ""; }
     body .ui-breadcrumb .ui-breadcrumb-items li:first-child a.ui-icon-home span {
       display: none; }
+  body .ui-breadcrumb .ui-breadcrumb-items li:last-child .ui-menuitem-link .ui-menuitem-text {
+    color: rgba(255, 255, 255, 0.87); }
+  body .ui-breadcrumb .ui-breadcrumb-items li:last-child .ui-menuitem-link .ui-menuitem-icon {
+    color: rgba(255, 255, 255, 0.6); }
 body .ui-steps {
   position: relative; }
   body .ui-steps ul {
@@ -4996,7 +5006,6 @@ body .ui-steps {
         justify-content: center; }
       body .ui-steps .ui-steps-item .ui-menuitem-link .ui-steps-title {
         display: block;
-        margin-left: 0 auto;
         padding-top: 0.5rem;
         color: rgba(255, 255, 255, 0.87); }
     body .ui-steps .ui-steps-item.ui-state-highlight .ui-steps-number {
@@ -5004,7 +5013,10 @@ body .ui-steps {
       color: rgba(255, 255, 255, 0.87);
       border-color: rgba(100, 181, 246, 0.16); }
     body .ui-steps .ui-steps-item.ui-state-highlight .ui-steps-title {
-      font-weight: 700; }
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.87); }
+  body .ui-steps .ui-steps-item:not(.ui-state-highlight) {
+    opacity: .65; }
   body .ui-steps:before {
     content: ' ';
     border-top: 1px solid #383838;
