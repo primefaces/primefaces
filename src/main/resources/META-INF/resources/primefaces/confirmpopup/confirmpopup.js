@@ -88,6 +88,7 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
     /**
      * Sets up all panel event listeners
+     * @param {string | JQuery} [target] Selector or DOM element of the target component that triggers this popup.
      * @private
      */
     bindPanelEvents: function(target) {
