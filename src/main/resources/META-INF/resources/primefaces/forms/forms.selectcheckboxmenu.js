@@ -188,7 +188,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.checkboxes = this.itemContainer.find('.ui-chkbox-box:not(.ui-state-disabled)');
         this.labels = this.itemContainer.find('label');
 
-        this.bindPanelEvents();
+        this.bindPanelContentEvents();
         this.bindPanelKeyEvents();
 
         this.isDynamicLoaded = true;
@@ -397,7 +397,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      * Sets up the event listeners for the overlay panel with the selectable checkbox options.
      * @private
      */
-    bindPanelEvents: function() {
+    bindPanelContentEvents: function() {
         var $this = this;
 
         //Events for checkboxes
@@ -994,7 +994,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
             this.transition.hide({
                 onExit: function() {
-                    $this.bindPanelEvents();
+                    $this.unbindPanelEvents();
                 },
                 onExited: function() {
                     $this.keyboardTarget.attr('aria-expanded', false);
