@@ -44,6 +44,7 @@ public abstract class AbstractMenu extends UIPanel implements MenuItemAware {
     public static final String SUBMENU_DOWN_ICON_CLASS = "ui-icon ui-icon-triangle-1-s";
     public static final String SUBMENU_LINK_CLASS = "ui-menuitem-link ui-submenu-link ui-corner-all";
     public static final String SEPARATOR_CLASS = "ui-separator ui-state-default";
+    public static final String SEPARATOR_VERTICAL_CLASS = "ui-divider ui-widget ui-divider-vertical ui-divider-solid ui-divider-center";
     public static final String OPTIONS_CLASS = "ui-menuitem ui-menubar-options ui-widget ui-corner-all";
 
     public enum PropertyKeys {

@@ -132,8 +132,10 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
 
         ResponseWriter writer = context.getResponseWriter();
         String style = separator.getStyle();
-        String styleClass = separator.getStyleClass();
-        styleClass = styleClass == null ? Menu.SEPARATOR_CLASS : Menu.SEPARATOR_CLASS + " " + styleClass;
+        String styleClass = getStyleClassBuilder(context)
+                    .add(separator.isVertical(), Menu.SEPARATOR_VERTICAL_CLASS, Menu.SEPARATOR_CLASS)
+                    .add(separator.getStyleClass())
+                    .build();
 
         //title
         writer.startElement("li", null);

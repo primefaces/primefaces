@@ -41,4 +41,9 @@ public class Divider extends DividerBase {
     public static final String ALIGN_RIGHT_CLASS = "ui-divider-right";
     public static final String ALIGN_TOP_CLASS = "ui-divider-top";
     public static final String ALIGN_BOTTOM_CLASS = "ui-divider-bottom";
+
+    @Override
+    public boolean isVertical() {
+        return "vertical".equals(this.getLayout());
+    }
 }

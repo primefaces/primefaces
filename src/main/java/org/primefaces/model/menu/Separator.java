@@ -30,4 +30,8 @@ public interface Separator extends MenuElement {
     String getStyle();
 
     String getStyleClass();
+
+    default boolean isVertical() {
+        return false;
+    }
 }

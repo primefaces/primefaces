@@ -40,8 +40,8 @@ public class DividerRenderer extends CoreRenderer {
         String layout = divider.getLayout();
         String align = divider.getAlign();
         String type = divider.getType();
-        boolean isHorizontal = "horizontal".equals(layout);
-        boolean isVertical = "vertical".equals(layout);
+        boolean isVertical = divider.isVertical();
+        boolean isHorizontal = !isVertical;
         String styleClass = getStyleClassBuilder(context)
                     .add(Divider.STYLE_CLASS)
                     .add(divider.getStyleClass())

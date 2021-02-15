@@ -203,6 +203,13 @@
     border-top: 0px none;
 }
 
+body .ui-menu .ui-divider.ui-divider-vertical {
+    display: inline-block;
+    padding: 1rem 0;
+    margin: 0;
+    top: 10px;
+}
+
 /** MegaMenu **/
 .ui-megamenu td {
     vertical-align: top;
