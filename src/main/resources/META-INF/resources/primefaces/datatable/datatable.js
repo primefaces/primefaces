@@ -1125,20 +1125,23 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         //keyboard support
-        this.tbody.off('focus.dataTable blur.dataTable change.dataTable', checkboxSelector)
-                    .on('focus.dataTable', checkboxSelector, null, function() {
+        this.tbody.off('focus.dataTableCheck blur.dataTableCheck change.dataTableCheck click.dataTableCheck', checkboxSelector)
+                    .on('focus.dataTableCheck', checkboxSelector, null, function() {
                         var input = $(this);
-
-                        if(input.attr('aria-checked') === "true" || input.prop('checked')) {
-                            input.removeClass('ui-state-active');
-                        }
 
                         input.addClass('ui-state-focus');
 
                         $this.focusedRow = input.closest('.ui-datatable-selectable');
                         $this.focusedRowWithCheckbox = true;
                     })
-                    .on('blur.dataTable', checkboxSelector, null, function() {
+                    .on('click.dataTableCheck', checkboxSelector, null, function() {
+                        var input = $(this);
+
+                        if(input.attr('aria-checked') === "true" || input.prop('checked')) {
+                            input.addClass('ui-state-active');
+                        }
+                    })
+                    .on('blur.dataTableCheck', checkboxSelector, null, function() {
                         var input = $(this);
 
                         if(input.attr('aria-checked') === "true" || input.prop('checked')) {
@@ -1151,7 +1154,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         $this.focusedRow = null;
                         $this.focusedRowWithCheckbox = false;
                     })
-                    .on('change.dataTable', checkboxSelector, null, function(e) {
+                    .on('change.dataTableCheck', checkboxSelector, null, function(e) {
                         var input = $(this);
 
                         if(input.attr('aria-checked') === "true" || input.prop('checked')) {
@@ -1162,7 +1165,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         }
                     });
 
-        this.checkAllToggler.on('focus.dataTable', function(e) {
+        this.checkAllToggler.off('focus.dataTableCheckAll blur.dataTableCheckAll change.dataTableCheckAll')
+                    .on('focus.dataTableCheckAll', function(e) {
                         var input = $(this);
 
                         if(!input.hasClass('ui-state-disabled')) {
@@ -1173,7 +1177,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                             input.addClass('ui-state-focus');
                         }
                     })
-                    .on('blur.dataTable', function(e) {
+                    .on('blur.dataTableCheckAll', function(e) {
                         var input = $(this);
 
                         if(input.attr('aria-checked') === "true" || input.prop('checked')) {
@@ -1182,7 +1186,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                         input.removeClass('ui-state-focus');
                     })
-                    .on('change.dataTable', function(e) {
+                    .on('change.dataTableCheckAll', function(e) {
                         var input = $(this);
 
                         if(!input.hasClass('ui-state-disabled')) {
