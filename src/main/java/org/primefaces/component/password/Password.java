@@ -42,8 +42,9 @@ public class Password extends PasswordBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Password";
 
     public static final String STYLE_CLASS = "ui-inputfield ui-password ui-widget ui-state-default ui-corner-all";
-    public static final String MASKED_CLASS = "ui-password ui-icon ui-password-masked";
-    public static final String UNMASKED_CLASS = "ui-password ui-icon ui-password-unmasked";
+    public static final String WRAPPER_CLASS = "ui-password-wrapper";
+    public static final String MASKED_CLASS = "ui-password-icon ui-icon ui-password-masked";
+    public static final String UNMASKED_CLASS = "ui-password-icon ui-icon ui-password-unmasked";
 
     public static final String INVALID_MATCH_KEY = "primefaces.password.INVALID_MATCH";
 
