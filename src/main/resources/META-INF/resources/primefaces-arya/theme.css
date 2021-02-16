@@ -2696,7 +2696,8 @@ body .ui-selectonemenu {
   background: #121212; }
   body .ui-selectonemenu .ui-selectonemenu-label {
     background: transparent;
-    padding-right: 2.357rem; }
+    padding-right: 2.357rem;
+    min-height: calc(2rem + 3px); }
   body .ui-selectonemenu .ui-selectonemenu-trigger {
     border: 0 none;
     cursor: pointer;
