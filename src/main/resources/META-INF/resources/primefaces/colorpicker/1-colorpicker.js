@@ -67,14 +67,10 @@
         this.jqEl.ColorPicker(this.cfg);
 
         //popup ui
-        if(this.cfg.popup) {
+        if (this.cfg.popup) {
             PrimeFaces.skinButton(this.jqEl);
             this.overlay = $(PrimeFaces.escapeClientId(this.jqEl.data('colorpickerId')));
             this.livePreview = $(this.jqId + '_livePreview');
-
-            PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_hide', function() {
-                $this.overlay.hide();
-            });
         }
 
         //pfs metadata
@@ -102,13 +98,15 @@
         };
 
         this.cfg.onShow = function() {
-            if($this.cfg.popup) {
+            if ($this.cfg.popup) {
                 $this.overlay.css({
                     'z-index': PrimeFaces.nextZindex(),
                     'display':'block',
                     'opacity':'0',
                     'pointer-events': 'none'
                 });
+
+                $this.bindPanelEvents();
             }
 
             $this.setupDialogSupport();
@@ -116,7 +114,7 @@
             //position the overlay relative to the button
             $this.alignPanel();
 
-            if($this.cfg.popup) {
+            if ($this.cfg.popup) {
                 $this.overlay.css({
                     'display':'none',
                     'opacity':'',
@@ -126,11 +124,48 @@
         };
 
         this.cfg.onHide = function(cp) {
+            if ($this.cfg.popup) {
+                $this.unbindPanelEvents();
+            }
+
             $this.overlay.css('z-index', PrimeFaces.nextZindex());
             $(cp).fadeOut('fast');
             $this.callBehavior('close');
             return false;
         };
+    },
+
+    /**
+     * Sets up all panel event listeners
+     * @private
+     */
+    bindPanelEvents: function() {
+        var $this = this;
+
+        //popup ui
+        if (this.cfg.popup && this.overlay) {
+            this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', this.jqEl, function() {
+                $this.overlay.hide();
+            });
+
+            this.resizeHandler = PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_hide', this.overlay, function() {
+                $this.overlay.hide();
+            });
+        }
+    },
+
+    /**
+     * Unbind all panel event listeners
+     * @private
+     */
+    unbindPanelEvents: function() {
+        if (this.resizeHandler) {
+            this.resizeHandler.unbind();
+        }
+    
+        if (this.scrollHandler) {
+            this.scrollHandler.unbind();
+        }
     },
 
     /**

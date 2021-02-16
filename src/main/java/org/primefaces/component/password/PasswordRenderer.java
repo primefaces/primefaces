@@ -91,21 +91,24 @@ public class PasswordRenderer extends InputRenderer {
             writer.startElement("span", null);
             boolean isRTL = ComponentUtils.isRTL(context, password);
             String positionClass = getStyleClassBuilder(context)
-                        .add("ui-password")
+                        .add(Password.STYLE_CLASS)
+                        .add(Password.MASKED_CLASS)
+                        .add(Password.WRAPPER_CLASS)
                         .add(isRTL, "ui-input-icon-left", "ui-input-icon-right")
                         .build();
             writer.writeAttribute("class", positionClass, null);
-            writer.startElement("i", null);
-            writer.writeAttribute("id", clientId + "_mask", "id");
-            writer.writeAttribute("class", Password.MASKED_CLASS, null);
-            writer.endElement("i");
         }
+
+        String inputClass = getStyleClassBuilder(context)
+                        .add(!toggleMask, Password.STYLE_CLASS)
+                        .add(Password.INPUT_CLASS)
+                        .build();
 
         writer.startElement("input", password);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("name", clientId, null);
         writer.writeAttribute("type", "password", null);
-        writer.writeAttribute("class", createStyleClass(password, Password.STYLE_CLASS), null);
+        writer.writeAttribute("class", inputClass, null);
         if (password.getStyle() != null) {
             writer.writeAttribute("style", password.getStyle(), null);
         }
@@ -127,6 +130,11 @@ public class PasswordRenderer extends InputRenderer {
         writer.endElement("input");
 
         if (toggleMask) {
+            writer.startElement("i", null);
+            writer.writeAttribute("id", clientId + "_mask", "id");
+            writer.writeAttribute("class", Password.ICON_CLASS, null);
+            writer.endElement("i");
+
             writer.endElement("span");
         }
     }

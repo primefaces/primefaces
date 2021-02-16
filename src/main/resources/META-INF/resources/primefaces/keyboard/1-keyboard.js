@@ -31,26 +31,56 @@
         this._super(cfg);
 
         var $this = this;   
-        if(this.cfg.layoutTemplate)
+        if (this.cfg.layoutTemplate)
             this.cfg.layout = PrimeFaces.widget.KeyboardUtils.createLayoutFromTemplate(this.cfg.layoutTemplate);
         else
             this.cfg.layout = PrimeFaces.widget.KeyboardUtils.getPresetLayout(this.cfg.layoutName);
 
         this.cfg.beforeShow = function(div, inst) {
             $(div).addClass('ui-input-overlay').css('z-index', PrimeFaces.nextZindex());
+            $this.bindPanelEvents();
+        };
+
+        this.cfg.onClose = function() {
+            $this.unbindPanelEvents();
         };
 
         this.jq.keypad(this.cfg);
 
         //Visuals
         PrimeFaces.skinInput(this.jq);
+    },
 
-        //Hide overlay on resize
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', null, function() {
+    /**
+     * Sets up all panel event listeners
+     * @private
+     */
+    bindPanelEvents: function() {
+        var $this = this;
+
+        //Hide overlay on resize/scroll
+        this.resizeHandler = PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_hide', null, function() {
             $this.jq.keypad('hide');
         });
-    }
 
+        this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', this.jq, function() {
+            $this.jq.keypad('hide');
+        });
+    },
+
+    /**
+     * Unbind all panel event listeners
+     * @private
+     */
+    unbindPanelEvents: function() {
+        if (this.resizeHandler) {
+            this.resizeHandler.unbind();
+        }
+    
+        if (this.scrollHandler) {
+            this.scrollHandler.unbind();
+        }
+    }
 });
 
 /**

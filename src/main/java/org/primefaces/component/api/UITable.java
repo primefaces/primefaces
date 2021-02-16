@@ -455,8 +455,6 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
     void setDefaultSort(boolean defaultSort);
 
-
-
     default void decodeColumnTogglerState(FacesContext context) {
         String columnTogglerStateParam = context.getExternalContext().getRequestParameterMap()
                 .get(getClientId(context) + "_columnTogglerState");
@@ -571,5 +569,9 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         Object value = createValueExprFromVarField(context, getVar(), column.getField()).getValue(context.getELContext());
         UIComponent component = column instanceof DynamicColumn ? ((DynamicColumn) column).getColumns() : (UIComponent) column;
         return ComponentUtils.getConvertedAsString(context, component, value);
+    }
+
+    default boolean isFilteringCurrentlyActive() {
+        return getFilterByAsMap().values().stream().anyMatch(FilterMeta::isActive);
     }
 }

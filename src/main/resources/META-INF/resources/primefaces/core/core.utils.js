@@ -416,12 +416,13 @@ if (!PrimeFaces.utils) {
          * has a connected overlay.
          * @param {PrimeFaces.widget.BaseWidget} widget A widget instance for which to register a scroll handler.
          * @param {string} scrollNamespace A scroll event with a namespace, such as `scroll.widgetId`.
+         * @param {JQuery | undefined} element A DOM element used to find scrollable parents.
          * @param {(event: JQuery.TriggeredEvent) => void} scrollCallback A callback that is invoked when a scroll event
          * occurs on the widget.
          * @return {() => void} unbind callback handler
          */
-        registerConnectedOverlayScrollHandler: function(widget, scrollNamespace, scrollCallback) {
-            var scrollableParents = PrimeFaces.utils.getScrollableParents(widget.getJQ().get(0));
+        registerConnectedOverlayScrollHandler: function(widget, scrollNamespace, element, scrollCallback) {
+            var scrollableParents = PrimeFaces.utils.getScrollableParents((element || widget.getJQ()).get(0));
 
             for (var i = 0; i < scrollableParents.length; i++) {
                 var scrollParent = $(scrollableParents[i]);
@@ -616,6 +617,22 @@ if (!PrimeFaces.utils) {
         },
 
         /**
+         * Enables CSS and jQuery animation.
+         */
+        enableAnimations: function() {
+            $.fx.off = false;
+            PrimeFaces.animationEnabled = true;
+        },
+
+        /**
+         * Disables CSS and jQuery animation.
+         */
+        disableAnimations: function() {
+            $.fx.off = true;
+            PrimeFaces.animationEnabled = false;
+        },
+
+        /**
          * CSS Transition method for overlay panels such as SelectOneMenu/SelectCheckboxMenu/Datepicker's panel etc.
          * @param {JQuery} element An element for which to execute the transition.
          * @param {string} className Class name used for transition phases.
@@ -636,57 +653,81 @@ if (!PrimeFaces.utils) {
                         callbacks[key].call(param);
                     }
                 };
-        
+
                 return {
                     show: function(callbacks) {
                         //clear exit state classes
                         element.removeClass([classNameStates.exit, classNameStates.exitActive, classNameStates.exitDone]);
-        
+
                         if (element.is(':hidden')) {
-                            element.css('display', 'block').addClass(classNameStates.enter);
-                            callTransitionEvent(callbacks, 'onEnter');
-            
-                            requestAnimationFrame(function() {
-                                setTimeout(function() {
-                                    element.addClass(classNameStates.enterActive);
-                                }, 0);
-                
-                                element.one('transitionrun.css-transition-show', function(event) {
-                                    callTransitionEvent(callbacks, 'onEntering', event);
-                                }).one('transitioncancel.css-transition-show', function() {
-                                    element.removeClass([classNameStates.enter, classNameStates.enterActive, classNameStates.enterDone]);
-                                }).one('transitionend.css-transition-show', function(event) {
-                                    element.removeClass([classNameStates.enterActive, classNameStates.enter]).addClass(classNameStates.enterDone);
-                                    callTransitionEvent(callbacks, 'onEntered', event);
+                            if (PrimeFaces.animationEnabled) {
+                                PrimeFaces.animationActive = true;
+                                element.css('display', 'block').addClass(classNameStates.enter);
+                                callTransitionEvent(callbacks, 'onEnter');
+
+                                requestAnimationFrame(function() {
+                                    setTimeout(function() {
+                                        element.addClass(classNameStates.enterActive);
+                                    }, 0);
+
+                                    element.one('transitionrun.css-transition-show', function(event) {
+                                        callTransitionEvent(callbacks, 'onEntering', event);
+                                    }).one('transitioncancel.css-transition-show', function() {
+                                        element.removeClass([classNameStates.enter, classNameStates.enterActive, classNameStates.enterDone]);
+                                        PrimeFaces.animationActive = false;
+                                    }).one('transitionend.css-transition-show', function(event) {
+                                        element.removeClass([classNameStates.enterActive, classNameStates.enter]).addClass(classNameStates.enterDone);
+                                        callTransitionEvent(callbacks, 'onEntered', event);
+                                        PrimeFaces.animationActive = false;
+                                    });
                                 });
-                            });
+                            }
+                            else {
+                                // animation globally disabled still call downstream callbacks
+                                element.css('display', 'block');
+                                callTransitionEvent(callbacks, 'onEnter');
+                                callTransitionEvent(callbacks, 'onEntering');
+                                callTransitionEvent(callbacks, 'onEntered');
+                            }
                         }
                     },
                     hide: function(callbacks) {
                         //clear enter state classes
                         element.removeClass([classNameStates.enter, classNameStates.enterActive, classNameStates.enterDone]);
-        
-                        if (element.is(':visible')) {
-                            element.addClass(classNameStates.exit);
-                            callTransitionEvent(callbacks, 'onExit');
-            
-                            setTimeout(function() {
-                                element.addClass(classNameStates.exitActive);
-                            }, 0);
 
-                            element.one('transitionrun.css-transition-hide', function(event) {
-                                callTransitionEvent(callbacks, 'onExiting', event);
-                            }).one('transitioncancel.css-transition-hide', function() {
-                                element.removeClass([classNameStates.exit, classNameStates.exitActive, classNameStates.exitDone]);
-                            }).one('transitionend.css-transition-hide', function(event) {
-                                element.css('display', 'none').removeClass([classNameStates.exitActive, classNameStates.exit]).addClass(classNameStates.exitDone);
-                                callTransitionEvent(callbacks, 'onExited', event);
-                            });
+                        if (element.is(':visible')) {
+                            if (PrimeFaces.animationEnabled) {
+                                PrimeFaces.animationActive = true;
+                                element.addClass(classNameStates.exit);
+                                callTransitionEvent(callbacks, 'onExit');
+
+                                setTimeout(function() {
+                                    element.addClass(classNameStates.exitActive);
+                                }, 0);
+
+                                element.one('transitionrun.css-transition-hide', function(event) {
+                                    callTransitionEvent(callbacks, 'onExiting', event);
+                                }).one('transitioncancel.css-transition-hide', function() {
+                                    element.removeClass([classNameStates.exit, classNameStates.exitActive, classNameStates.exitDone]);
+                                    PrimeFaces.animationActive = false;
+                                }).one('transitionend.css-transition-hide', function(event) {
+                                    element.css('display', 'none').removeClass([classNameStates.exitActive, classNameStates.exit]).addClass(classNameStates.exitDone);
+                                    callTransitionEvent(callbacks, 'onExited', event);
+                                    PrimeFaces.animationActive = false;
+                                });
+                            }
+                            else {
+                                // animation globally disabled still call downstream callbacks
+                                callTransitionEvent(callbacks, 'onExit');
+                                callTransitionEvent(callbacks, 'onExiting');
+                                callTransitionEvent(callbacks, 'onExited');
+                                element.css('display', 'none');
+                            }
                         }
                     }
                 }
             }
-        
+
             return null;
         }
     };

@@ -1143,6 +1143,19 @@
         zindex : 1000,
 
         /**
+         * Global flag for enabling or disabling both jQuery and CSS animations.
+         * @type {boolean}
+         */
+        animationEnabled : true,
+
+         /**
+         * Flag for detecting whether animation is currently running. Similar to jQuery.active flag and is useful
+         * for scripts or automation tests to determine if the animation is currently running.
+         * @type {boolean}
+         */
+        animationActive : false,
+
+        /**
          * Used to store whether a custom focus has been rendered. This avoids having to retain the last focused element
          * after AJAX update.
          * @type {boolean}

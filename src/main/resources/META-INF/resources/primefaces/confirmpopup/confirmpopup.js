@@ -84,10 +84,19 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 e.preventDefault();
             });
         }
-    
+    },
+
+    /**
+     * Sets up all panel event listeners
+     * @param {string | JQuery} [target] Selector or DOM element of the target component that triggers this popup.
+     * @private
+     */
+    bindPanelEvents: function(target) {
+        var $this = this;
+
         //hide overlay when mousedown is at outside of overlay
         if (this.cfg.dismissable) {
-            PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', this.jq,
+            this.hideOverlayHandler = PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', this.jq,
                 function() { return PrimeFaces.confirmPopupSource; },
                 function(e, eventTarget) {
                     if (!($this.jq.is(eventTarget) || $this.jq.has(eventTarget).length > 0)) {
@@ -96,13 +105,31 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 });
         }
     
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_hide', this.jq, function() {
+        this.resizeHandler = PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_hide', this.jq, function() {
             $this.hide();
         });
     
-        PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', function() {
+        this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', target, function() {
             $this.hide();
         });
+    },
+
+    /**
+     * Unbind all panel event listeners
+     * @private
+     */
+    unbindPanelEvents: function() {
+        if (this.hideOverlayHandler) {
+            this.hideOverlayHandler.unbind();
+        }
+
+        if (this.resizeHandler) {
+            this.resizeHandler.unbind();
+        }
+    
+        if (this.scrollHandler) {
+            this.scrollHandler.unbind();
+        }
     },
     
     /**
@@ -126,6 +153,7 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
                     $this.align(target);
                 },
                 onEntered: function() {
+                    $this.bindPanelEvents(target);
                     $this.applyFocus();
                 }
             });
@@ -137,8 +165,13 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * @param {PrimeFaces.widget.ConfirmPopup.HideCallback} callback Callback that is invoked after this popup was closed.
      */
     hide: function(callback) {
+        var $this = this;
+
         if (this.transition) {
             this.transition.hide({
+                onExit: function() {
+                    $this.unbindPanelEvents();
+                },
                 onExited: function() {
                     if (callback) {
                         callback();
