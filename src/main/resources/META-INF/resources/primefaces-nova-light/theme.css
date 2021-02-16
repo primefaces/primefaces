@@ -556,6 +556,13 @@ body .ui-paginator {
       background: #e0e0e0;
       color: #333333;
       border-color: transparent; }
+    body .ui-paginator .ui-paginator-first.ui-state-focus,
+    body .ui-paginator .ui-paginator-prev.ui-state-focus,
+    body .ui-paginator .ui-paginator-next.ui-state-focus,
+    body .ui-paginator .ui-paginator-last.ui-state-focus {
+      outline: 0 none;
+      outline-offset: 0;
+      box-shadow: 0 0 0 0.2rem #8dcdff; }
     body .ui-paginator .ui-paginator-first:before,
     body .ui-paginator .ui-paginator-prev:before,
     body .ui-paginator .ui-paginator-next:before,
@@ -654,6 +661,10 @@ body .ui-paginator {
         background: #e0e0e0;
         color: #333333;
         border-color: transparent; }
+      body .ui-paginator .ui-paginator-pages .ui-paginator-page.ui-state-focus {
+        outline: 0 none;
+        outline-offset: 0;
+        box-shadow: 0 0 0 0.2rem #8dcdff; }
   body .ui-paginator .ui-paginator-current, body .ui-paginator .ui-paginator-rpp-options {
     margin: 0.5rem;
     display: inline-block;
