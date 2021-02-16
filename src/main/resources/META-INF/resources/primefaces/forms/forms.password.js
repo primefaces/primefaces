@@ -182,17 +182,10 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
         }
 
         if (this.jq.attr('type') === 'password') {
-            this.jq.attr('type', 'text');
-            if(this.icon) {
-                this.icon.removeClass('ui-password-masked');
-                this.icon.addClass('ui-password-unmasked'); 
-            }
-        } else {
-            this.jq.attr('type', 'password');
-            if(this.icon) {
-                this.icon.removeClass('ui-password-unmasked');
-                this.icon.addClass('ui-password-masked');
-            }
+            this.jq.attr('type', 'text').parent().removeClass('ui-password-masked').addClass('ui-password-unmasked');
+        } 
+        else {
+            this.jq.attr('type', 'password').parent().removeClass('ui-password-unmasked').addClass('ui-password-masked');
         } 
     },
 

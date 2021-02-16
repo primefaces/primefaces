@@ -2342,12 +2342,12 @@ body .ui-input-icon-right > i {
 body .ui-input-icon-left > i:first-of-type {
   left: 0.429rem;
   color: #848484; }
-body .ui-input-icon-left > .ui-inputtext {
+body .ui-input-icon-left > .ui-inputfield {
   padding-left: 1.858rem; }
 body .ui-input-icon-right > i:last-of-type {
   right: 0.429rem;
   color: #848484; }
-body .ui-input-icon-right > .ui-inputtext {
+body .ui-input-icon-right > .ui-inputfield {
   padding-right: 1.858rem; }
 body .ui-inputfield {
   color: #333333;
@@ -3539,7 +3539,9 @@ body .ui-fluid .ui-trigger-calendar .ui-datepicker-trigger.ui-button {
     padding: 0.429rem; }
 body .ui-fluid .p-datepicker .ui-datepicker-trigger.ui-button {
   right: 0; }
-body .ui-password .ui-password-masked {
+body .ui-password .ui-password-icon {
+  cursor: pointer; }
+body .ui-password.ui-password-masked .ui-password-icon {
   font-family: 'primeicons' !important;
   speak: none;
   font-style: normal;
@@ -3550,11 +3552,10 @@ body .ui-password .ui-password-masked {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-indent: 0 !important;
-  background-image: none !important;
-  cursor: pointer; }
-  body .ui-password .ui-password-masked:before {
+  background-image: none !important; }
+  body .ui-password.ui-password-masked .ui-password-icon:before {
     content: ""; }
-body .ui-password .ui-password-unmasked {
+body .ui-password.ui-password-unmasked .ui-password-icon {
   font-family: 'primeicons' !important;
   speak: none;
   font-style: normal;
@@ -3565,9 +3566,8 @@ body .ui-password .ui-password-unmasked {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-indent: 0 !important;
-  background-image: none !important;
-  cursor: pointer; }
-  body .ui-password .ui-password-unmasked:before {
+  background-image: none !important; }
+  body .ui-password.ui-password-unmasked .ui-password-icon:before {
     content: ""; }
 body .ui-password-panel {
   background: #ffffff;
