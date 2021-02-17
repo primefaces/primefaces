@@ -1,0 +1,27 @@
+/** Vietnamese */
+PrimeFaces.locales['vi'] = {
+    closeText: 'Tắt',
+    prevText: 'Tháng trước',
+    nextText: 'Tháng sau',
+    monthNames: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+    monthNamesShort: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+    dayNames: ['Chúa Nhựt', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'],
+    dayNamesShort: ['CN', 'Hai', 'Ba', 'Tư', 'Năm', 'Sáu', 'Bảy'],
+    dayNamesMin: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
+    weekHeader: 'Tuần',
+    firstDay: 1,
+    isRTL: false,
+    showMonthAfterYear: false,
+    yearSuffix: '',
+    timeOnlyTitle: 'Chọn giờ',
+    timeText: 'Giờ',
+    hourText: 'Giờ',
+    minuteText: 'Phút',
+    secondText: 'Giây',
+    currentText: 'Giờ hiện hành',
+    ampm: false,
+    month: 'Tháng',
+    week: 'Tuần',
+    day: 'Ngày',
+    allDayText: 'Cả ngày'
+};

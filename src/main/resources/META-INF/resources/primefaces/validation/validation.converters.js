@@ -280,7 +280,7 @@ if (window.PrimeFaces) {
             datePattern = null,
             timePattern = null;
 
-            var locale = vc.getLocaleSettings();
+            var locale = PrimeFaces.getLocaleSettings();
 
             try {
                 if(pattern) {
@@ -343,7 +343,7 @@ if (window.PrimeFaces) {
             }
 
             var vc = PrimeFaces.validation.ValidationContext,
-            locale = vc.getLocaleSettings(),
+            locale = PrimeFaces.getLocaleSettings(),
             type = element.data('p-notype'),
             maxIntegerDigits = element.data('p-maxint'),
             minFractionDigits = element.data('p-minfrac'),

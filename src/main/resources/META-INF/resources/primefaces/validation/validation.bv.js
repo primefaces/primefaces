@@ -94,7 +94,7 @@ if (window.PrimeFaces) {
                 var digitsInteger = element.data('p-dintvalue'),
                 digitsFraction = element.data('p-dfracvalue'),
                 vc = PrimeFaces.validation.ValidationContext,
-                locale = vc.getLocaleSettings();
+                locale = PrimeFaces.getLocaleSettings();
 
                 var tokens = value.toString().split(locale.decimalSeparator),
                 intValue = tokens[0].replace(new RegExp(locale.groupingSeparator, 'g'), ''),
@@ -357,7 +357,7 @@ if (window.PrimeFaces) {
                 key = msg.substring(1, msg.length - 1);
             }
 
-            var locale = PrimeFaces.validation.Utils.getLocaleSettings();
+            var locale = PrimeFaces.getLocaleSettings();
             var bundle = (locale.messages && locale.messages[key]) ? locale : PrimeFaces.locales['en_US'];
 
             var summary = bundle.messages[key];

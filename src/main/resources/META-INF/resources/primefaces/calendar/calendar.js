@@ -311,7 +311,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     configureLocale: function() {
-        var localeSettings = PrimeFaces.locales[this.cfg.locale];
+        var localeSettings = PrimeFaces.getLocaleSettings(this.cfg.locale);
 
         if(localeSettings) {
             for(var setting in localeSettings) {

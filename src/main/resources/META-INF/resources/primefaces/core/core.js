@@ -1032,27 +1032,45 @@
                 this.removeDeferredRenders(widgetsToRemove[j]);
             }
         },
-
-        /**
-         * Returns the i18n key-value-pairs for the current locale.
-         * @return {PrimeFaces.Locale} The current locale settings.
+        
+         /**
+         * Finds the current locale with the i18n keys and the associated translations. Uses the current language key
+         * as specified by `PrimeFaces.settings.locale`. When no locale was found for the given locale, falls back to
+         * the default English locale.
+         * @param {string} cfgLocale optional configuration locale from the widget
+         * @return {PrimeFaces.Locale} The current locale with the key-value pairs.
          */
-        getLocaleSettings: function() {
-            if(!this.localeSettings) {
-                var localeKey = PrimeFaces.settings.locale;
-                this.localeSettings = PrimeFaces.locales[localeKey];
-
-                if(!this.localeSettings) {
-                    if(localeKey) {
-                       this.localeSettings = PrimeFaces.locales[localeKey.split('_')[0]];
-                    }
-
-                    if(!this.localeSettings)
-                        this.localeSettings = PrimeFaces.locales['en_US'];
+        getLocaleSettings: function(cfgLocale) {
+            var locale;
+            if(cfgLocale) {
+                // widget locale must not be cached since it can change per widget
+                locale = PrimeFaces.locales[cfgLocale];
+            }
+            else {
+                // global settings so return cached value if already loaded
+                if(this.localeSettings) {
+                   return this.localeSettings;
                 }
+                locale = PrimeFaces.locales[PrimeFaces.settings.locale];
             }
 
-            return this.localeSettings;
+            // try and strip specific language from nl_BE to just nl
+            if (!locale) {
+                var localeKey = cfgLocale ? cfgLocale : PrimeFaces.settings.locale;
+                locale = PrimeFaces.locales[localeKey.split('_')[0]];
+            }
+
+            // if all else fails default to US English
+            if(!locale) {
+                locale = PrimeFaces.locales['en_US'];
+            }
+
+            // cache default global settings
+            if(!cfgLocale) {
+                this.localeSettings = locale;
+            }
+
+            return locale;
         },
 
         /**
