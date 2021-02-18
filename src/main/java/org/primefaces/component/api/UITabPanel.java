@@ -228,7 +228,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                 return clientId;
             }
 
-            StringBuilder sb = SharedStringBuilder.get(getFacesContext(), SB_ID, clientId.length() + 4);
+            StringBuilder sb = SharedStringBuilder.get(context, SB_ID, clientId.length() + 4);
             return sb.append(clientId).append(UINamingContainer.getSeparatorChar(context)).append(index).toString();
         }
         else {
@@ -251,12 +251,13 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
     private void captureScopeValues() {
         String var = getVar();
+        Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
         if (var != null) {
-            _origValue = getFacesContext().getExternalContext().getRequestMap().get(var);
+            _origValue = requestMap.get(var);
         }
         String varStatus = getVarStatus();
         if (varStatus != null) {
-            _origVarStatus = getFacesContext().getExternalContext().getRequestMap().get(varStatus);
+            _origVarStatus = requestMap.get(varStatus);
         }
     }
 
@@ -266,8 +267,8 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
     private void restoreScopeValues() {
         String var = getVar();
+        Map<String, Object> attrs = getFacesContext().getExternalContext().getRequestMap();
         if (var != null) {
-            Map<String, Object> attrs = getFacesContext().getExternalContext().getRequestMap();
             if (_origValue != null) {
                 attrs.put(var, _origValue);
                 _origValue = null;
@@ -278,7 +279,6 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         }
         String varStatus = getVarStatus();
         if (getVarStatus() != null) {
-            Map<String, Object> attrs = getFacesContext().getExternalContext().getRequestMap();
             if (_origVarStatus != null) {
                 attrs.put(varStatus, _origVarStatus);
                 _origVarStatus = null;
@@ -633,14 +633,13 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
         if (_index != -1) {
             String var = getVar();
+            Map<String, Object> attrs = facesContext.getExternalContext().getRequestMap();
             if (var != null && localModel.isRowAvailable()) {
-                getFacesContext().getExternalContext().getRequestMap()
-                        .put(var, localModel.getRowData());
+                attrs.put(var, localModel.getRowData());
             }
             String varStatus = getVarStatus();
             if (varStatus != null) {
-                getFacesContext().getExternalContext().getRequestMap()
-                        .put(varStatus, getRepeatStatus());
+                attrs.put(varStatus, getRepeatStatus());
             }
         }
 
