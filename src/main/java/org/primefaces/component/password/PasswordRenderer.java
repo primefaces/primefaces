@@ -102,6 +102,7 @@ public class PasswordRenderer extends InputRenderer {
         String inputClass = getStyleClassBuilder(context)
                         .add(!toggleMask, Password.STYLE_CLASS)
                         .add(Password.INPUT_CLASS)
+                        .add(password.getStyleClass())
                         .build();
 
         writer.startElement("input", password);
