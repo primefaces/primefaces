@@ -1,4 +1,12 @@
-.ui-toolbar {padding:0.2em;}
-.ui-toolbar .ui-separator {display: inline-block;vertical-align: middle;}
-.ui-toolbar-group-left {float:left;}
-.ui-toolbar-group-right {float:right;}
+.ui-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.ui-toolbar-group-left,
+.ui-toolbar-group-right {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
