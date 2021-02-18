@@ -159,7 +159,8 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
      */
     refresh: function(cfg) {
         if (this.cfg.appendTo) {
-            PrimeFaces.utils.cleanupDynamicOverlay(this, this.panel, this.id + '_panel', this.cfg.appendTo);
+            var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
+            PrimeFaces.utils.cleanupDynamicOverlay(this, this.panel, this.id + '_panel', appendTo);
         }
 
         this._super(cfg);
@@ -171,7 +172,8 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
      */
     destroy: function() {
         if (this.cfg.appendTo) {
-            PrimeFaces.utils.removeDynamicOverlay(this, null, this.id + '_panel', this.cfg.appendTo);
+            var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
+            PrimeFaces.utils.removeDynamicOverlay(this, null, this.id + '_panel', appendTo);
         }
 
         this._super();
@@ -230,7 +232,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
         this.cfg.onPanelCreate = function() {
             $this.panel = this.panel;
-            this.options.appendTo = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(PrimeFaces.utils.resolveAppendTo($this));
+            this.options.appendTo = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(PrimeFaces.utils.resolveAppendTo($this, $this.panel));
         };
     },
 

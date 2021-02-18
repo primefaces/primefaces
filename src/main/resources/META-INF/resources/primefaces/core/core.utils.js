@@ -10,22 +10,22 @@ if (!PrimeFaces.utils) {
          * Finds the element to which the overlay panel should be appended. If none is specified explicitly, append the
          * panel to the body.
          * @param {PrimeFaces.widget.DynamicOverlayWidget} widget A widget that has a panel to be appended.
+         * @param {JQuery} overlay The DOM element for the overlay.
          * @return {string} The search expression for the element to which the overlay panel should be appended.
          */
-        resolveAppendTo: function(widget) {
+        resolveAppendTo: function(widget, overlay) {
             var dialog = widget.jq[0].closest('.ui-dialog');
-            var panel = widget.panel;
 
-            if (dialog && panel && panel.length) {
+            if (dialog && overlay && overlay.length) {
                 var $dialog = $(dialog);
 
                 //set position as fixed to scroll with dialog
                 if ($dialog.css('position') === 'fixed') {
-                    panel.css('position', 'fixed');
+                    overlay.css('position', 'fixed');
                 }
 
                 //append to body if not already appended by user choice
-                if(!panel.parent().is(document.body)) {
+                if(!overlay.parent().is(document.body)) {
                     widget.cfg.appendTo = "@(body)"
                     return widget.cfg.appendTo;
                 }

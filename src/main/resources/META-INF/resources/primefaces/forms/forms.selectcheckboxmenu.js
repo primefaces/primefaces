@@ -206,7 +206,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.panelStyleClass) {
             this.panel.addClass(this.cfg.panelStyleClass);
         }
-        this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this);
+        this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this, this.panel);
 
         PrimeFaces.utils.registerDynamicOverlay(this, this.panel, this.id + '_panel');
 
