@@ -29,7 +29,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.component.separator.UISeparator;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 
@@ -81,12 +80,7 @@ public class ToolbarRenderer extends CoreRenderer {
                 }
 
                 for (UIComponent groupChild : group.getChildren()) {
-                    if (groupChild instanceof UISeparator && groupChild.isRendered()) {
-                        encodeSeparator(context, (UISeparator) groupChild);
-                    }
-                    else {
-                        groupChild.encodeAll(context);
-                    }
+                    groupChild.encodeAll(context);
                 }
 
                 writer.endElement("div");
@@ -104,25 +98,6 @@ public class ToolbarRenderer extends CoreRenderer {
             facet.encodeAll(context);
             writer.endElement("div");
         }
-    }
-
-    public void encodeSeparator(FacesContext context, UISeparator separator) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String style = separator.getStyle();
-        String styleClass = separator.getStyleClass();
-        styleClass = styleClass == null ? Toolbar.SEPARATOR_CLASS : Toolbar.SEPARATOR_CLASS + " " + styleClass;
-
-        writer.startElement("span", null);
-        writer.writeAttribute("class", styleClass, null);
-        if (style != null) {
-            writer.writeAttribute("style", style, null);
-        }
-
-        writer.startElement("span", null);
-        writer.writeAttribute("class", Toolbar.SEPARATOR_ICON_CLASS, null);
-        writer.endElement("span");
-
-        writer.endElement("span");
     }
 
     @Override
