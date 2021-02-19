@@ -106,9 +106,9 @@
 /** Simple **/
 .ui-fileupload-simple {
     position: relative;
-    overflow: hidden;
-    display: inline-block;
-    vertical-align: middle;
+    overflow: visible;
+    display: inline-flex;
+    align-items: center;
 }
 
 .ui-fileupload-simple .ui-button {
