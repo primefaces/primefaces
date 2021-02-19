@@ -206,8 +206,8 @@ public class WizardRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-wizard-navbar ui-helper-clearfix", null);
 
-        encodeNavigator(facesContext, wizard, clientId + "_back", wizard.getBackLabel(), Wizard.BACK_BUTTON_CLASS, "ui-icon-arrowthick-1-w");
-        encodeNavigator(facesContext, wizard, clientId + "_next", wizard.getNextLabel(), Wizard.NEXT_BUTTON_CLASS, "ui-icon-arrowthick-1-e");
+        encodeNavigator(facesContext, wizard, clientId + "_back", wizard.getBackLabel(), Wizard.BACK_BUTTON_CLASS, "ui-icon-arrowthick-1-w", true);
+        encodeNavigator(facesContext, wizard, clientId + "_next", wizard.getNextLabel(), Wizard.NEXT_BUTTON_CLASS, "ui-icon-arrowthick-1-e", false);
 
         writer.endElement("div");
     }
@@ -271,17 +271,24 @@ public class WizardRenderer extends CoreRenderer {
         writer.endElement("ul");
     }
 
-    protected void encodeNavigator(FacesContext facesContext, Wizard wizard, String id, String label, String buttonClass, String icon) throws IOException {
+    protected void encodeNavigator(FacesContext facesContext, Wizard wizard, String id, String label, String buttonClass,
+                                   String icon, boolean isBack) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
+        String iconClass = getStyleClassBuilder(facesContext)
+                .add(isBack, HTML.BUTTON_LEFT_ICON_CLASS, HTML.BUTTON_RIGHT_ICON_CLASS)
+                .add(icon)
+                .build();
+        String button_Class = getStyleClassBuilder(facesContext)
+                .add(isBack, HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS, HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS)
+                .add(buttonClass)
+                .build();
 
         writer.startElement("button", null);
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "button", null);
-        writer.writeAttribute("class", HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS + " " + buttonClass, null);
+        writer.writeAttribute("class", button_Class, null);
 
-        //button icon
-        String iconClass = HTML.BUTTON_LEFT_ICON_CLASS + " " + icon;
         writer.startElement("span", null);
         writer.writeAttribute("class", iconClass, null);
         writer.endElement("span");
