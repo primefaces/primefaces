@@ -25354,11 +25354,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[When enabled, two handles are provided for selecting a range.]]>
+                <![CDATA[When set `true`, two handles are provided for selection a range. Another types `false` for disable range style and `max` for shows range handle to the slider max.]]>
             </description>
             <name>range</name>
             <required>false</required>
-            <type>java.lang.Boolean</type>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
