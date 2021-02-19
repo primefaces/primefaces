@@ -112,16 +112,14 @@ public class SliderRenderer extends CoreRenderer {
                 .callback("onSlide", "function(event,ui)", slider.getOnSlide())
                 .callback("onSlideEnd", "function(event,ui)", slider.getOnSlideEnd());
 
-        if ("true".equals(range)) {
-            wb.attr("range", true);
-        }
-
-        else if ("false".equals(range)) {
-            wb.attr("range", false);
-        }
-
-        else {
-            wb.attr("range", range);
+        switch (range) {
+            case "true":
+            case "false":
+                wb.attr("range", Boolean.valueOf(range));
+                break;
+            default:
+                wb.attr("range", range);
+                break;
         }
 
         if (output != null) {
