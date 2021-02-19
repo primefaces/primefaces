@@ -10,23 +10,23 @@ if (!PrimeFaces.utils) {
          * Finds the element to which the overlay panel should be appended. If none is specified explicitly, append the
          * panel to the body.
          * @param {PrimeFaces.widget.DynamicOverlayWidget} widget A widget that has a panel to be appended.
+         * @param {JQuery} overlay The DOM element for the overlay.
          * @return {string} The search expression for the element to which the overlay panel should be appended.
          */
-        resolveAppendTo: function(widget) {
+        resolveAppendTo: function(widget, overlay) {
             var dialog = widget.jq[0].closest('.ui-dialog');
-            var panel = widget.panel;
 
-            if (dialog && panel && panel.length) {
+            if (dialog && overlay && overlay.length) {
                 var $dialog = $(dialog);
 
                 //set position as fixed to scroll with dialog
                 if ($dialog.css('position') === 'fixed') {
-                    panel.css('position', 'fixed');
+                    overlay.css('position', 'fixed');
                 }
 
                 //append to body if not already appended by user choice
-                if(!panel.parent().is(document.body)) {
-                    widget.cfg.appendTo = "@(body)"
+                if(!overlay.parent().is(document.body)) {
+                    widget.cfg.appendTo = "@(body)";
                     return widget.cfg.appendTo;
                 }
             }
@@ -38,7 +38,7 @@ if (!PrimeFaces.utils) {
          * Finds the container element to which an overlay widget should be appended. This is either the element
          * specified by the widget configurations's `appendTo` attribute, or the document BODY element otherwise.
          * @param {PrimeFaces.widget.DynamicOverlayWidget} widget A widget to be displayed as an overlay.
-         * @return {JQuery} The container DOM element to which the overlay is to be appended. 
+         * @return {JQuery} The container DOM element to which the overlay is to be appended.
          */
         resolveDynamicOverlayContainer: function(widget) {
             return widget.cfg.appendTo
@@ -48,12 +48,12 @@ if (!PrimeFaces.utils) {
 
         /**
          * Cleanup the `detached` overlay.
-         * 
+         *
          * If you update a component, the overlay is rendered as specified in the component tree (XHTML view), but moved
          * to a different container via JavaScript.
-         * 
+         *
          * This means that after an AJAX update, we now have 2 overlays with the same id:
-         * 
+         *
          * 1. The newly rendered overlay, as a child of the element specified by the component tree (XHTML view)
          * 1. The old, detached overlay, as a child of the element specified by `appendTo` attribute
          *
@@ -118,14 +118,14 @@ if (!PrimeFaces.utils) {
         addModal: function(widget, overlay, tabbablesCallback) {
             var id = widget.id,
                 zIndex = overlay.css('z-index') - 1;
-            
+
             overlay.attr({
                 'role': 'dialog'
                 ,'aria-hidden': false
                 ,'aria-modal': true
                 ,'aria-live': 'polite'
             });
-            
+
             PrimeFaces.utils.preventTabbing(id, zIndex, tabbablesCallback);
 
             if (widget.cfg.blockScroll) {
@@ -214,7 +214,7 @@ if (!PrimeFaces.utils) {
                     'role': ''
                     ,'aria-hidden': true
                     ,'aria-modal': false
-                    ,'aria-live': 'off' 
+                    ,'aria-live': 'off'
                 });
             }
 
@@ -257,7 +257,7 @@ if (!PrimeFaces.utils) {
          * widget.
          *
          * @param {PrimeFaces.widget.BaseWidget} widget An overlay widget instance.
-         * @param {string} hideNamespace A click event with a namspace to listen to, such as `mousedown.widgetId`. 
+         * @param {string} hideNamespace A click event with a namspace to listen to, such as `mousedown.widgetId`.
          * @param {JQuery} overlay The DOM element for the overlay.
          * @param {((event: JQuery.TriggeredEvent) => JQuery) | undefined} resolveIgnoredElementsCallback The callback which
          * resolves the elements to ignore when the user clicks outside the overlay. The `hideCallback` is not invoked
@@ -358,7 +358,7 @@ if (!PrimeFaces.utils) {
          * @param {PrimeFaces.widget.DynamicOverlayWidget} widget An overlay widget instance.
          * @param {JQuery} overlay The DOM element for the overlay.
          * @param {string} overlayId The ID of the overlay, usually the widget ID.
-         * @return {JQuery} The overlay that was passed to this function. 
+         * @return {JQuery} The overlay that was passed to this function.
          */
         registerDynamicOverlay: function(widget, overlay, overlayId) {
 
@@ -430,7 +430,7 @@ if (!PrimeFaces.utils) {
                 widget.addDestroyListener(function() {
                     scrollParent.off(scrollNamespace);
                 });
-    
+
                 scrollParent.off(scrollNamespace).on(scrollNamespace, function(e) {
                     scrollCallback(e);
                 });
@@ -442,7 +442,7 @@ if (!PrimeFaces.utils) {
                         $(scrollableParents[i]).off(scrollNamespace);
                     }
                 }
-            }
+            };
         },
 
         /**
@@ -455,7 +455,7 @@ if (!PrimeFaces.utils) {
             var getParents = function(element, parents) {
                 return element['parentNode'] == null ? parents : getParents(element.parentNode, parents.concat([element.parentNode]));
             };
-            
+
             if (element) {
                 var parents = getParents(element, []);
                 var overflowRegex = /(auto|scroll)/;
@@ -463,7 +463,7 @@ if (!PrimeFaces.utils) {
                     var styleDeclaration = window['getComputedStyle'](node, null);
                     return overflowRegex.test(styleDeclaration.getPropertyValue('overflow')) || overflowRegex.test(styleDeclaration.getPropertyValue('overflowX')) || overflowRegex.test(styleDeclaration.getPropertyValue('overflowY'));
                 };
-    
+
                 for (var i = 0; i < parents.length; i++) {
                     var parent = parents[i];
                     var scrollSelectors = parent.nodeType === 1 && parent.dataset['scrollselectors'];
@@ -477,7 +477,7 @@ if (!PrimeFaces.utils) {
                             }
                         }
                     }
-    
+
                     if (parent.nodeType !== 9 && overflowCheck(parent)) {
                         scrollableParents.push(parent);
                     }
@@ -515,7 +515,7 @@ if (!PrimeFaces.utils) {
         enableScrolling: function() {
             $(document.body).removeClass('ui-overflow-hidden');
         },
-        
+
         /**
          * Calculates an element offset relative to the current scroll position of the window.
          * @param {JQuery} element An element for which to calculate the scroll position.
@@ -558,24 +558,24 @@ if (!PrimeFaces.utils) {
             var key = e.which,
             keyCode = $.ui.keyCode,
             ignoredKeys = [
-                keyCode.END, 
-                keyCode.HOME, 
-                keyCode.LEFT, 
-                keyCode.RIGHT, 
-                keyCode.UP, 
+                keyCode.END,
+                keyCode.HOME,
+                keyCode.LEFT,
+                keyCode.RIGHT,
+                keyCode.UP,
                 keyCode.DOWN,
-                keyCode.TAB, 
-                16/*Shift*/, 
-                17/*Ctrl*/, 
-                18/*Alt*/, 
+                keyCode.TAB,
+                16/*Shift*/,
+                17/*Ctrl*/,
+                18/*Alt*/,
                 91, 92, 93/*left/right Win/Cmd*/,
-                keyCode.ESCAPE, 
-                keyCode.PAGE_UP, 
+                keyCode.ESCAPE,
+                keyCode.PAGE_UP,
                 keyCode.PAGE_DOWN,
-                19/*pause/break*/, 
-                20/*caps lock*/, 
-                44/*print screen*/, 
-                144/*num lock*/, 
+                19/*pause/break*/,
+                20/*caps lock*/,
+                44/*print screen*/,
+                144/*num lock*/,
                 145/*scroll lock*/];
 
             if (ignoredKeys.indexOf(key) > -1) {
@@ -595,7 +595,7 @@ if (!PrimeFaces.utils) {
 
         /**
          * Helper to open a new URL and if CTRL is held down open in new browser tab.
-         * 
+         *
          * @param {JQuery.TriggeredEvent} event The click event that occurred.
          * @param {JQuery} link The URL anchor link that was clicked.
          */
@@ -725,7 +725,7 @@ if (!PrimeFaces.utils) {
                             }
                         }
                     }
-                }
+                };
             }
 
             return null;

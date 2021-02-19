@@ -257,7 +257,7 @@ public class UIData extends javax.faces.component.UIData {
             String containerClientId = namingContainer.getContainerClientId(context);
 
             if (containerClientId != null) {
-                StringBuilder sb = SharedStringBuilder.get(getFacesContext(), SB_ID, containerClientId.length() + 10);
+                StringBuilder sb = SharedStringBuilder.get(context, SB_ID, containerClientId.length() + 10);
                 clientId = sb.append(containerClientId).append(UINamingContainer.getSeparatorChar(context)).append(id).toString();
             }
             else {
@@ -286,7 +286,7 @@ public class UIData extends javax.faces.component.UIData {
             return componentClientId;
         }
 
-        StringBuilder sb = SharedStringBuilder.get(getFacesContext(), SB_ID, componentClientId.length() + 4);
+        StringBuilder sb = SharedStringBuilder.get(context, SB_ID, componentClientId.length() + 4);
         String containerClientId = sb.append(componentClientId).append(UINamingContainer.getSeparatorChar(context)).append(rowIndex).toString();
 
         return containerClientId;

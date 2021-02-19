@@ -103,7 +103,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.ariaEmptyMessage = this.cfg.emptyMessage||'No search results are available.';
         this.cfg.dropdownMode = this.cfg.dropdownMode||'blank';
         this.cfg.autoHighlight = (this.cfg.autoHighlight === undefined) ? true : this.cfg.autoHighlight;
-        this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this);
+        this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this, this.panel);
         this.cfg.myPos = this.cfg.myPos||'left top';
         this.cfg.atPos = this.cfg.atPos||'left bottom';
         this.cfg.active = (this.cfg.active === false) ? false : true;

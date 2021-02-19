@@ -1,22 +1,22 @@
 /**
  * __PrimeFaces Calendar Widget__
- * 
+ *
  * __Deprecated__: Use the {@link DatePicker|p:datePicker} component instead.
- * 
+ *
  * Calendar is an input component used to select a date featuring display modes, paging, localization, ajax selection
  * and more.
- * 
+ *
  * To interact with the calendar, use the `timepicker` or `datetimepicker` JQuery plugin, for example:
- * 
+ *
  * ```javascript
  * PF("calendarWidget").jqEl.datetimepicker("getDate");
  * PF("calendarWidget").jqEl.datetimepicker("setDate", new Date());
  * ```
- * 
+ *
  * @typedef {"focus" | "button" | "both"} PrimeFaces.widget.Calendar.ShowOnType Client-side event to display the
  * calendar. `focus` is when the input field receives focus. `popup` is when the popup button is clicked. `both` is
  * both `focus` and `popup`.
- * 
+ *
  * @typedef PrimeFaces.widget.Calendar.PreShowCallback Callback invoked before the calendar is opened.
  * @this {PrimeFaces.widget.Calendar} PrimeFaces.widget.Calendar.PreShowCallback
  * @param {JQuery} PrimeFaces.widget.Calendar.PreShowCallback.input Input element for the date.
@@ -24,7 +24,7 @@
  * instance controlling the calendar. `false` to prevent the time picker from being shown.
  * @return {Partial<JQueryUI.DatepickerOptions> | boolean | undefined} PrimeFaces.widget.Calendar.PreShowCallback A new
  * set of options for the time picker.
- * 
+ *
  * @typedef PrimeFaces.widget.Calendar.PreShowDayCallback Callback invoked before a day is shown.
  * @this {Window} PrimeFaces.widget.Calendar.PreShowDayCallback
  * @param {Date} PrimeFaces.widget.Calendar.PreShowDayCallback.date The current date of the calendar.
@@ -33,17 +33,17 @@
  * 1. true/false indicating whether or not this date is selectable
  * 1. a CSS class name to add to the date's cell or "" for the default presentation
  * 1. an optional popup tooltip for this date
- * 
+ *
  * @prop {JQuery} input DOM element of the plain-text input field for the date and/or time.
  * @prop {JQuery} jqEl The DOM element on which the JQuery plugin `datepicker` or `datetimepicker` was initialized. You
  * can use this element to interact with the date picker.
  * @prop {boolean} refocusInput Whether the input needs to be refocused.
- * 
+ *
  * @interface {PrimeFaces.widget.CalendarCfg} cfg The configuration for the {@link  Calendar| Calendar widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
- * 
+ *
  * @prop {string} cfg.buttonTabindex Position of the button in the tabbing order.
  * @prop {JQueryUITimepickerAddon.ControlType | "custom"} cfg.controlType How the user selects a time (hour / minute /
  * second). When set to `custom`, the `timeControlObject` must be set.
@@ -129,14 +129,14 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
             else {
                 return [true,''];
             }
-        }
+        };
 
         //Setup timepicker
         var hasTimePicker = this.hasTimePicker();
         if(hasTimePicker) {
             this.configureTimePicker();
         }
-        
+
         // is touch support enabled
         var touchEnabled = PrimeFaces.env.isTouchable(this.cfg) && !this.input.attr("readonly") && this.cfg.showOn && this.cfg.showOn === 'button';
 
@@ -166,7 +166,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
                     if ($this.cfg.showTodayButton === false) {
                         $(input).datepicker("widget").find(".ui-datepicker-current").hide();
                     }
-                    
+
                     $this.alignPanel();
                 }, 50);
 
@@ -181,7 +181,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
                     return $this.cfg.preShow.call($this, input, inst);
                 }
             };
-            
+
             PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_hide', $('#ui-datepicker-div'), function() {
                 $.datepicker._hideDatepicker();
             });
@@ -195,7 +195,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
             var fireCloseEvent = this.cfg.onClose;
             this.cfg.onClose = function(dateText, inst) {
                 $(this).attr("readonly", false);
-                
+
                 if (fireCloseEvent) {
                     fireCloseEvent();
                 }
@@ -250,7 +250,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
-    
+
     /**
      * Initializes the mask on the input if using a mask and not an inline picker.
      * @private
@@ -292,7 +292,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
             });
         }
     },
-    
+
     /**
      * @override
      * @inheritdoc
@@ -437,7 +437,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.timeFormat.indexOf('TT') != -1) {
             this.cfg.ampm = true;
         }
-        
+
         // GitHub #4366 pass date and time settings for min/max date
         var timeSettings = {
                 settings : this.cfg
@@ -487,7 +487,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Sets the currently selected date of the datepicker. 
+     * Sets the currently selected date of the datepicker.
      * @param {Date | null | undefined} date Date to display, or `null` or `undefined` to clear the date.
      */
     setDate: function(date) {

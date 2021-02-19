@@ -40,7 +40,7 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
         this.items = this.itemsWrapper.find('li.ui-cascadeselect-item');
         this.contents = this.items.children('.ui-cascadeselect-item-content');
         this.cfg.disabled = this.jq.hasClass('ui-state-disabled');
-        this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this);
+        this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this, this.panel);
         
         if (!this.cfg.disabled) {
             this.bindEvents();

@@ -158,8 +158,9 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
     refresh: function(cfg) {
-        if (this.cfg.appendTo) {
-            PrimeFaces.utils.cleanupDynamicOverlay(this, this.panel, this.id + '_panel', this.cfg.appendTo);
+        if (this.panel && this.cfg.appendTo) {
+            var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(this);
+            PrimeFaces.utils.cleanupDynamicOverlay(this, this.panel, this.id + '_panel', appendTo);
         }
 
         this._super(cfg);
@@ -170,8 +171,9 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
      * @inheritdoc
      */
     destroy: function() {
-        if (this.cfg.appendTo) {
-            PrimeFaces.utils.removeDynamicOverlay(this, null, this.id + '_panel', this.cfg.appendTo);
+        if (this.panel && this.cfg.appendTo) {
+            var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(this);
+            PrimeFaces.utils.removeDynamicOverlay(this, null, this.id + '_panel', appendTo);
         }
 
         this._super();
@@ -230,7 +232,8 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
         this.cfg.onPanelCreate = function() {
             $this.panel = this.panel;
-            this.options.appendTo = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(PrimeFaces.utils.resolveAppendTo($this));
+            $this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo($this, $this.panel);
+            this.options.appendTo = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector($this.cfg.appendTo);
         };
     },
 
