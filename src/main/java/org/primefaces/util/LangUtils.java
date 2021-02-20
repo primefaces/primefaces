@@ -327,8 +327,9 @@ public class LangUtils {
             return false;
         }
 
-        return currentClass.getName().startsWith(currentClass.getSuperclass().getName())
-                && currentClass.getName().contains("$$");
+        String name = currentClass.getName();
+        return name.startsWith(currentClass.getSuperclass().getName())
+                    && (name.contains("$$") || name.contains("_ClientProxy"));
     }
 
     /**
