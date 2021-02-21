@@ -89,16 +89,17 @@ public class ColumnToggler extends ColumnTogglerBase {
 
             super.queueEvent(new ToggleEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), visibility, index));
         }
-        else if (event instanceof AjaxBehaviorEvent && eventName.equals("close")) {
-			String clientId = this.getClientId(context);
+        else if (event instanceof AjaxBehaviorEvent && "close".equals(eventName)) {
+            String clientId = this.getClientId(context);
 
-			String visibleColumnIds = params.get(clientId + "_visibleColumnIds");
-			if (visibleColumnIds != null) {
-				String[] visibleColumns = visibleColumnIds.split(",");
+            String visibleColumnIds = params.get(clientId + "_visibleColumnIds");
+            if (visibleColumnIds != null) {
+                String[] visibleColumns = visibleColumnIds.split(",");
 
-				super.queueEvent(new ToggleCloseEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), Arrays.asList(visibleColumns)));
-			}
-		} else {
+                super.queueEvent(new ToggleCloseEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), Arrays.asList(visibleColumns)));
+            }
+        }
+        else {
             super.queueEvent(event);
         }
     }
