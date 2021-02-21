@@ -30,19 +30,19 @@ import javax.faces.component.behavior.Behavior;
 
 public class ToggleCloseEvent extends AbstractAjaxBehaviorEvent {
 
-	private static final long serialVersionUID = 5378485831348769121L;
-	/**
-	 * Visibility columnIds
-	 */
-	private List<String> visibleColumnIds;
+    private static final long serialVersionUID = 5378485831348769121L;
+    /**
+     * Visibility columnIds
+     */
+    private List<String> visibleColumnIds;
 
-	public ToggleCloseEvent(UIComponent component, Behavior behavior, List<String> columnIds) {
-		super(component, behavior);
-		this.visibleColumnIds = columnIds;
-	}
+    public ToggleCloseEvent(UIComponent component, Behavior behavior, List<String> columnIds) {
+        super(component, behavior);
+        this.visibleColumnIds = columnIds;
+    }
 
-	public List<String> getVisibleColumnIds() {
-		return visibleColumnIds;
-	}
+    public List<String> getVisibleColumnIds() {
+        return visibleColumnIds;
+    }
 
 }
