@@ -329,7 +329,9 @@ public class LangUtils {
 
         String name = currentClass.getName();
         return name.startsWith(currentClass.getSuperclass().getName())
-                    && (name.contains("$$") || name.contains("_ClientProxy"));
+                    && (name.contains("$$") // CDI
+                    || name.contains("_ClientProxy") //Quarkus
+                    || name.contains("$HibernateProxy$")); // Hibernate
     }
 
     /**
