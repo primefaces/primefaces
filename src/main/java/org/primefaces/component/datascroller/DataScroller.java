@@ -29,6 +29,7 @@ import java.util.Map;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.event.BehaviorEvent;
+import javax.faces.event.PhaseId;
 
 import org.primefaces.util.MapBuilder;
 
@@ -79,5 +80,19 @@ public class DataScroller extends DataScrollerBase {
 
     public boolean isVirtualScrollingRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_virtualScrolling");
+    }
+
+    @Override
+    protected boolean shouldProcessChild(FacesContext context, int rowIndex, PhaseId phaseId) {
+        if (isLoadRequest()) {
+            // if rowIndex of child is after offset of current load request do not process decode, validator
+            // and updateModel phases since components were just added to parent
+            String clientId = this.getClientId(context);
+            int offset = Integer.parseInt(context.getExternalContext().getRequestParameterMap().get(clientId + "_offset"));
+            return rowIndex < offset;
+        }
+        else {
+            return super.shouldProcessChild(context, rowIndex, phaseId);
+        }
     }
 }

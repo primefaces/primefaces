@@ -178,6 +178,10 @@ public class UIData extends javax.faces.component.UIData {
         }
     }
 
+    protected boolean shouldProcessChild(FacesContext context, int rowIndex, PhaseId phaseId ) {
+        return true;
+    }
+
     protected void processChildren(FacesContext context, PhaseId phaseId) {
         int first = getFirst();
         int rows = getRows();
@@ -190,6 +194,10 @@ public class UIData extends javax.faces.component.UIData {
 
             if (!isRowAvailable()) {
                 break;
+            }
+
+            if (!shouldProcessChild(context, rowIndex, phaseId)) {
+                continue;
             }
 
             if (iterableChildren == null) {
