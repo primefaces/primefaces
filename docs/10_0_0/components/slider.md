@@ -36,7 +36,7 @@ disabled | false | Boolean | Disables or enables the slider.
 onSlideStart | null | String | Client side callback to execute when slide begins.
 onSlide | null | String | Client side callback to execute during sliding.
 onSlideEnd | null | String | Client side callback to execute when slide ends.
-range | false | Boolean | When enabled, two handles are provided for selection a range.
+range | min | String | When set `true`, two handles are provided for selection a range. Another types `false` for disable range style and `max` for shows range handle to the slider max.
 displayTemplate | null | String | String template to use when updating the display. Valid placeholders are {value}, {min} and {max}.
 touchable | true | Boolean | Enable touch support if browser detection supports it.
 
