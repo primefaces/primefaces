@@ -3078,11 +3078,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         });
 
             // GitHub #433 Allow ENTER to submit ESC to cancel row editor
-            $(document).off("keydown", "tr.ui-row-editing")
-                        .on("keydown", "tr.ui-row-editing", function(e) {
+            $(document).off("keydown.datatable", "tr.ui-row-editing")
+                        .on("keydown.datatable", "tr.ui-row-editing", function(e) {
                             var keyCode = $.ui.keyCode;
                             switch (e.which) {
                                 case keyCode.ENTER:
+                                    var target = $(e.target);
+                                    // GitHub #7028
+                                    if(target.is("textarea")) {
+                                         return true;
+                                    }
                                     $(this).closest("tr").find(".ui-row-editor-check").trigger("click");
                                     return false; // prevents executing other event handlers (adding new row to the table)
                                 case keyCode.ESCAPE:
@@ -3364,6 +3369,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         input = $(this);
 
                         if(key === keyCode.ENTER) {
+                            // GitHub #7028
+                            if(input.is("textarea")) {
+                                return true;
+                            }
                             $this.saveCell(cell);
                             $this.currentCell = null;
 
