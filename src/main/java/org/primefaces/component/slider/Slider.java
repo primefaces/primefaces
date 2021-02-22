@@ -105,7 +105,7 @@ public class Slider extends SliderBase {
             return;
         }
 
-        if (isRange()) {
+        if ("true".equals(getRange())) {
             String[] inputIds = getFor().split(",");
             UIInput inputFrom = (UIInput) SearchExpressionFacade.resolveComponent(context, this, inputIds[0]);
             UIInput inputTo = (UIInput) SearchExpressionFacade.resolveComponent(context, this, inputIds[1]);

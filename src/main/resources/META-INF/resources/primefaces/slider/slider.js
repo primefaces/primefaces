@@ -45,9 +45,9 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
 
-        this.cfg.displayTemplate = this.cfg.displayTemplate||(this.cfg.range ? '{min} - {max}' : '{value}');
+        this.cfg.displayTemplate = this.cfg.displayTemplate||(this.cfg.range === true ? '{min} - {max}' : '{value}');
 
-        if(this.cfg.range) {
+        if(this.cfg.range === true) {
             var inputIds = this.cfg.input.split(',');
             this.input = $(PrimeFaces.escapeClientId(inputIds[0]) + ',' + PrimeFaces.escapeClientId(inputIds[1]));
         }
@@ -187,7 +187,7 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
             this.cfg.onSlide.call(this, event, ui);
         }
 
-        if(this.cfg.range) {
+        if(this.cfg.range === true) {
             this.setInputValue(this.input.eq(0), ui.values[0]);
             this.setInputValue(this.input.eq(1), ui.values[1]);
 
@@ -251,7 +251,7 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
             this.cfg.onSlideEnd.call(this, event, ui);
         }
 
-        if(this.cfg.range) {
+        if(this.cfg.range === true) {
             this.triggerOnchange(this.input.eq(0));
             this.triggerOnchange(this.input.eq(1));
         }

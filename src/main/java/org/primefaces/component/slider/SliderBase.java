@@ -192,11 +192,11 @@ public abstract class SliderBase extends UIInput implements Widget, ClientBehavi
         getStateHelper().put(PropertyKeys.onSlideEnd, onSlideEnd);
     }
 
-    public boolean isRange() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.range, false);
+    public String getRange() {
+        return (String) getStateHelper().eval(PropertyKeys.range, "min");
     }
 
-    public void setRange(boolean range) {
+    public void setRange(String range) {
         getStateHelper().put(PropertyKeys.range, range);
     }
 

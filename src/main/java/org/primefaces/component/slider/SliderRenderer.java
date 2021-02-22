@@ -68,13 +68,13 @@ public class SliderRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, Slider slider) throws IOException {
-        boolean range = slider.isRange();
+        String range = slider.getRange();
         UIComponent output = getTarget(context, slider, slider.getDisplay());
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Slider", slider);
 
-        if (range) {
+        if ("true".equals(range)) {
             String[] inputIds = slider.getFor().split(",");
             UIComponent inputMin = getTarget(context, slider, inputIds[0]);
             UIComponent inputMax = getTarget(context, slider, inputIds[1]);
@@ -106,12 +106,21 @@ public class SliderRenderer extends CoreRenderer {
                 .attr("step", slider.getStep())
                 .attr("orientation", slider.getType())
                 .attr("disabled", slider.isDisabled(), false)
-                .attr("range", range)
                 .attr("displayTemplate", slider.getDisplayTemplate(), null)
                 .attr("touchable", ComponentUtils.isTouchable(context, slider),  true)
                 .callback("onSlideStart", "function(event,ui)", slider.getOnSlideStart())
                 .callback("onSlide", "function(event,ui)", slider.getOnSlide())
                 .callback("onSlideEnd", "function(event,ui)", slider.getOnSlideEnd());
+
+        switch (range) {
+            case "true":
+            case "false":
+                wb.attr("range", Boolean.valueOf(range));
+                break;
+            default:
+                wb.attr("range", range);
+                break;
+        }
 
         if (output != null) {
             wb.attr("display", output.getClientId(context));
