@@ -31,6 +31,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.OutcomeTargetRenderer;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class LinkButtonRenderer extends OutcomeTargetRenderer {
@@ -47,10 +48,20 @@ public class LinkButtonRenderer extends OutcomeTargetRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         boolean disabled = linkButton.isDisabled();
+        boolean hasIcon = LangUtils.isNotBlank(linkButton.getIcon());
+        boolean hasValue = LangUtils.isNotBlank((String) linkButton.getValue()) || linkButton.hasDisplayedChildren();
+        boolean isTextAndIcon = hasValue && hasIcon;
 
         String style = linkButton.getStyle();
-        String styleClass = linkButton.resolveStyleClass();
         String title = linkButton.getTitle();
+        String styleClass = getStyleClassBuilder(context)
+                    .add("ui-linkbutton")
+                    .add(linkButton.getStyleClass())
+                    .add(hasValue && !hasIcon, HTML.BUTTON_TEXT_ONLY_BUTTON_CLASS)
+                    .add(!hasValue && hasIcon, HTML.BUTTON_ICON_ONLY_BUTTON_CLASS)
+                    .add(isTextAndIcon && "left".equals(linkButton.getIconPos()), HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS, HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS)
+                    .add(disabled, "ui-state-disabled")
+                    .build();
 
         writer.startElement("span", linkButton);
         writer.writeAttribute("id", linkButton.getClientId(context), "id");
@@ -107,7 +118,12 @@ public class LinkButtonRenderer extends OutcomeTargetRenderer {
 
         String value = (String) linkButton.getValue();
         if (value == null) {
-            writer.write("ui-button");
+            if (linkButton.hasDisplayedChildren()) {
+                renderChildren(context, linkButton);
+            }
+            else {
+                writer.write("ui-button");
+            }
         }
         else {
             if (linkButton.isEscape()) {
