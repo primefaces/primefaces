@@ -39,6 +39,7 @@ public abstract class TriStateCheckboxBase extends AbstractPrimeHtmlInputText im
         stateTwoIcon,
         stateThreeIcon,
         itemLabel,
+        escape,
         stateOneTitle,
         stateTwoTitle,
         stateThreeTitle;
@@ -91,6 +92,14 @@ public abstract class TriStateCheckboxBase extends AbstractPrimeHtmlInputText im
 
     public void setItemLabel(String itemLabel) {
         getStateHelper().put(PropertyKeys.itemLabel, itemLabel);
+    }
+
+    public boolean isEscape() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
+    }
+
+    public void setEscape(boolean escape) {
+        getStateHelper().put(PropertyKeys.escape, escape);
     }
 
     public String getStateOneTitle() {

@@ -187,7 +187,13 @@ public class TriStateCheckboxRenderer extends InputRenderer {
             String styleClass = HTML.CHECKBOX_LABEL_CLASS;
             styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
             writer.writeAttribute("class", styleClass, null);
-            writer.writeText(label, "itemLabel");
+
+            if (checkbox.isEscape()) {
+                writer.writeText(label, "itemLabel");
+            }
+            else {
+                writer.write(label);
+            }
             writer.endElement("span");
         }
     }
