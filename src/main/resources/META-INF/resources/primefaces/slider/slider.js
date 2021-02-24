@@ -114,22 +114,39 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
                     break;
 
                     default:
-                        var metaKey = e.metaKey||e.ctrlKey,
-                        isNumber = (key >= 48 && key <= 57) || (key >= 96 && key <= 105) || (key === 190);
+                        if (key < 32) return true; // Control chars (charcode)
+                        var character = e.key;
+                        var current = $(this).val();
 
-                        //prevent special characters with alt and shift
-                        if(e.altKey || (e.shiftKey && !(key === keyCode.UP || key === keyCode.DOWN || key === keyCode.LEFT || key === keyCode.RIGHT))) {
-                            e.preventDefault();
+                         // don't allow duplicate decimal separators
+                        var separatorRegex ='';
+                        if($this.decimalStep) {
+                            if (character === ',') {
+                                if(current.indexOf(',') !== -1) {
+                                    return false;
+                                }
+                                else {
+                                    separatorRegex = ',';
+                                }
+                            } 
+                            if (character === '.') {
+                                if(current.indexOf('.') !== -1) {
+                                    return false;
+                                }
+                                else {
+                                    separatorRegex = '\\.';
+                                }
+                            } 
                         }
 
-                        //prevent letters and allow letters with meta key such as ctrl+c
-                        //also allow '.' when the step is defined as decimal
-                        // #6319 if number allow negative sign
-                        if(!isNumber && !metaKey &&
-                                !($this.cfg.min < 0 && key === 189) &&
-                                !($this.decimalStep && key === 190)) {
-                            e.preventDefault();
+                        // #6319 only allow negative once and if min < 0
+                        var negativeRegex = '';
+                        if ($this.cfg.min < 0) {
+                            if (character === '-' && current.indexOf('-') !== -1) return false;
+                            negativeRegex = '-';
                         }
+                        var regex = new RegExp('[^0-9' + separatorRegex + negativeRegex + ']', 'g');
+                        return !character.match(regex);
                     break;
                 }
             }).on('keyup.slider', function (e) {
