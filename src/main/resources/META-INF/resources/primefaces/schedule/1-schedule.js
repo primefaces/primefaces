@@ -103,7 +103,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         // #6496 must add all locales
         options.locales = FullCalendar.globalLocales;
 
-        var lang = PrimeFaces.locales[this.cfg.locale];
+        var lang = PrimeFaces.getLocaleSettings(this.cfg.locale);
         if (lang) {
             if (lang.firstDay !== undefined) { options.firstDay = lang.firstDay; }
             if (lang.weekNumberTitle) { options.weekText = lang.weekNumberTitle; }

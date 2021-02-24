@@ -25,6 +25,8 @@ package org.primefaces.renderkit;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
+
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
@@ -63,6 +65,8 @@ import org.primefaces.util.LocaleUtils;
  */
 public class HeadRenderer extends Renderer {
 
+    private static final String LIBRARY = "primefaces";
+
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -95,14 +99,16 @@ public class HeadRenderer extends Renderer {
         }
 
         if (theme != null && !"none".equals(theme)) {
-            encodeCSS(context, "primefaces-" + theme, "theme.css");
+            encodeCSS(context, LIBRARY + "-" + theme, "theme.css");
         }
 
         //Icons
-        encodeCSS(context, "primefaces", "primeicons/primeicons.css");
+        if (applicationContext.getConfig().isPrimeIconsEnabled()) {
+            encodeCSS(context, LIBRARY, "primeicons/primeicons.css");
+        }
 
         if (applicationContext.getConfig().isFontAwesomeEnabled()) {
-            encodeCSS(context, "primefaces", "fa/font-awesome.css");
+            encodeCSS(context, LIBRARY, "fa/font-awesome.css");
         }
 
         //Middle facet
@@ -121,6 +127,11 @@ public class HeadRenderer extends Renderer {
 
         if (csvEnabled) {
             encodeValidationResources(context, applicationContext.getConfig().isBeanValidationEnabled());
+        }
+
+        if (applicationContext.getConfig().isClientSideLocalizationEnabled()) {
+            Locale locale = LocaleUtils.getCurrentLocale(context);
+            encodeJS(context, LIBRARY, "locales/locale-" + locale.getLanguage() + ".js");
         }
 
         encodeSettingScripts(context, applicationContext, requestContext, writer, csvEnabled);
@@ -148,7 +159,7 @@ public class HeadRenderer extends Renderer {
 
         Resource cssResource = context.getApplication().getResourceHandler().createResource(resource, library);
         if (cssResource == null) {
-            throw new FacesException("Error loading css, cannot find \"" + resource + "\" resource of \"" + library + "\" library");
+            throw new FacesException("Error loading CSS, cannot find \"" + resource + "\" resource of \"" + library + "\" library");
         }
         else {
             writer.startElement("link", null);
@@ -159,27 +170,26 @@ public class HeadRenderer extends Renderer {
         }
     }
 
-    protected void encodeValidationResources(FacesContext context, boolean beanValidationEnabled) throws IOException {
+    protected void encodeJS(FacesContext context, String library, String script) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         ExternalContext externalContext = context.getExternalContext();
-        Resource resource = context.getApplication().getResourceHandler().createResource("validation/validation.js", "primefaces");
+        Resource resource = context.getApplication().getResourceHandler().createResource(script, library);
 
-        if (resource != null) {
+        if (resource == null) {
+            throw new FacesException("Error loading JavaScript, cannot find \"" + script + "\" resource of \"" + library + "\" library");
+        }
+        else {
             writer.startElement("script", null);
-            writer.writeAttribute("type", "text/javascript", null);
             writer.writeAttribute("src", externalContext.encodeResourceURL(resource.getRequestPath()), null);
             writer.endElement("script");
         }
+    }
+
+    protected void encodeValidationResources(FacesContext context, boolean beanValidationEnabled) throws IOException {
+        encodeJS(context, LIBRARY, "validation/validation.js");
 
         if (beanValidationEnabled) {
-            resource = context.getApplication().getResourceHandler().createResource("validation/validation.bv.js", "primefaces");
-
-            if (resource != null) {
-                writer.startElement("script", null);
-                writer.writeAttribute("type", "text/javascript", null);
-                writer.writeAttribute("src", externalContext.encodeResourceURL(resource.getRequestPath()), null);
-                writer.endElement("script");
-            }
+            encodeJS(context, LIBRARY, "validation/validation.bv.js");
         }
     }
 
