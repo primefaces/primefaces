@@ -237,7 +237,7 @@ public class MessageFactory {
 
     private static ClassLoader getJSFImplClassLoader(FacesContext facesContext) {
         facesContext = unwrapFacesContext(facesContext);
-        
+
         Class<? extends FacesContext> facesContextImplClass = FacesContext.class;
         if (facesContext != null) {
             facesContextImplClass = facesContext.getClass();
