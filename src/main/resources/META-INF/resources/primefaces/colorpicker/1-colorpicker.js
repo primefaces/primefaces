@@ -192,12 +192,14 @@
      * @private
      */
     setupDialogSupport: function() {
-        var dialog = this.jqEl[0].closest('.ui-dialog');
-        if (dialog) {
-            var $dialog = $(dialog);
+        if (this.jqEl && this.jqEl[0]) {
+            var dialog = this.jqEl[0].closest('.ui-dialog');
+            if (dialog) {
+                var $dialog = $(dialog);
 
-            if($dialog.length == 1 && $dialog.css('position') === 'fixed') {
-                this.overlay.css('position', 'fixed');
+                if($dialog.length == 1 && $dialog.css('position') === 'fixed') {
+                    this.overlay.css('position', 'fixed');
+                }
             }
         }
     },

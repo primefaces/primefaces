@@ -77,11 +77,11 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
 
         // get the current attached events if using CSP
-        var events = $._data(this.input[0], "events");
+        var events = this.input[0] ? $._data(this.input[0], "events") : null;
 
         // use DOM if non-CSP and JQ event if CSP
         var originalOnkeyup = this.input.prop('onkeyup');
-        if (!originalOnkeyup && events.keyup) {
+        if (!originalOnkeyup && events && events.keyup) {
             originalOnkeyup = events.keyup[0].handler;
         }
         this.input.prop('onkeyup', null).off('keyup').on('keyup.inputnumber', function (e) {
@@ -107,7 +107,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
 
         // use DOM if non-CSP and JQ event if CSP
         var originalOnchange = this.input.prop('onchange');
-        if (!originalOnchange && events.change) {
+        if (!originalOnchange && events && events.change) {
             originalOnchange = events.change[0].handler;
         }
         this.input.prop('onchange', null).off('change').on('change.inputnumber', function (e) {
@@ -121,7 +121,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
 
         // use DOM if non-CSP and JQ event if CSP 
         var originalOnkeydown = this.input.prop('onkeydown');
-        if (!originalOnkeydown && events.keydown) {
+        if (!originalOnkeydown && events && events.keydown) {
             originalOnkeydown = events.keydown[0].handler;
         }
         this.input.prop('onkeydown', null).off('keydown').on('keydown.inputnumber', function (e) {

@@ -109,7 +109,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         if(this.jq.is(':visible')) {
             this._render();
         }
-        else {
+        else if (this.jq.parent()[0]) {
             var container = this.jq.parent()[0].closest('.ui-hidden-container');
             if (container) {
                 var $container = $(container);

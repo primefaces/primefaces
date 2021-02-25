@@ -740,7 +740,7 @@ if (!PrimeFaces.widget) {
                 this._render();
                 this.postRender();
             }
-            else {
+            else if (this.jq[0]) {
                 var container = this.jq[0].closest('.ui-hidden-container');
                 if (container) {
                     var $container = $(container);
