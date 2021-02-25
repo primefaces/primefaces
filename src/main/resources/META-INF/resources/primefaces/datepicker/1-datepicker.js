@@ -232,7 +232,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
         this.cfg.onPanelCreate = function() {
             $this.panel = this.panel;
-            $this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo($this, $this.panel);
+            $this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo($this, $this.jq, $this.panel);
             this.options.appendTo = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector($this.cfg.appendTo);
         };
     },

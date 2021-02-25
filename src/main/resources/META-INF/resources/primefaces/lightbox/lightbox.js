@@ -41,7 +41,7 @@
  * @interface {PrimeFaces.widget.LightBoxCfg} cfg The configuration for the {@link  LightBox| LightBox widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
- * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * @extends {PrimeFaces.widget.DynamicOverlayWidgetCfg} cfg
  * 
  * @prop {string} cfg.appendTo Selector for the element to which the overlay lightbox panel is appended.
  * @prop {number} cfg.height Height of the overlay in iframe mode.
@@ -54,7 +54,7 @@
  * @prop {boolean} cfg.visible Whether the lightbox is initially visible.
  * @prop {number} cfg.width Width of the overlay in iframe mode.
  */
-PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.LightBox = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
     /**
      * @override
@@ -64,12 +64,11 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         // the dynamic overlay must be appended to the body
         cfg.appendTo = '@(body)';
-
-        this._super(cfg);
+        this.id = cfg.id;
+        this.createPanel();
+        this._super(cfg, this.panel, this.id + '_panel');
 
         this.links = this.jq.children(':not(.ui-lightbox-inline)');
-
-        this.createPanel();
 
         if(this.cfg.mode === 'image') {
             this.setupImaging();
@@ -87,17 +86,6 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * @override
-     * @inheritdoc
-     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
-     */
-    refresh: function(cfg) {
-        PrimeFaces.utils.removeDynamicOverlay(this, this.panel, this.id + '_panel', $(document.body));
-
-        this._super(cfg);
-    },
-
-    /**
      * Creates the DOM elements for the lightbox panel.
      * @private
      */
@@ -112,7 +100,6 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
             + '<a class="ui-lightbox-close ui-corner-all" href="#"><span class="ui-icon ui-icon-closethick"></span></a><div style="clear:both"></div></div>'
             + '</div>');
 
-        PrimeFaces.utils.registerDynamicOverlay(this, this.panel, this.id + '_panel');
 
         this.contentWrapper = this.panel.children('.ui-lightbox-content-wrapper');
         this.content = this.contentWrapper.children('.ui-lightbox-content');
@@ -395,20 +382,6 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
             'left': left + 'px',
             'top': top + 'px'
         });
-    },
-
-    /**
-     * Makes this  lightbox a modal dialog so that the user cannot interact with other content on the page.
-     */
-    enableModality: function() {
-        PrimeFaces.utils.addModal(this, this.panel);
-    },
-
-    /**
-     * Makes this  lightbox a non-modal dialog so that the user can interact with other content on the page.
-     */
-    disableModality: function() {
-        PrimeFaces.utils.removeModal(this, this.panel);
     },
 
     /**

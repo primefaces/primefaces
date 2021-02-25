@@ -195,14 +195,7 @@
      */
     setupDialogSupport: function() {
         if (this.jqEl && this.jqEl[0]) {
-            var dialog = this.jqEl[0].closest('.ui-dialog');
-            if (dialog) {
-                var $dialog = $(dialog);
-
-                if($dialog.length == 1 && $dialog.css('position') === 'fixed') {
-                    this.overlay.css('position', 'fixed');
-                }
-            }
+            this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this, this.jqEl, this.overlay);
         }
     },
 
