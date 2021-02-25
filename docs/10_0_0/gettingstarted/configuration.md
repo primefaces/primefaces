@@ -14,6 +14,7 @@ pattern of JavaEE. Here is the list of all configuration options defined with a 
 | Name | Default | Description |
 | --- | --- | --- |
 | CLIENT_SIDE_VALIDATION | false | Enables/disables global client side validation . |
+| CLIENT_SIDE_LOCALISATION | false | Adds `"locales/locale-" + locale.getLanguage() + ".js"` automatically for your locale. |
 | COOKIES_SAME_SITE |  | Defines the sameSite value for all cookies, which will be added by PrimeFaces. Currently this is only supported for cookies added on the clientside as Servlet API doesn't support it yet. |
 | CSP | false | Enable Content Security Policy to prevent cross-site scripting (XSS), clickjacking and other code injection attacks |
 | CSP_POLICY | null | Custom CSP Policy that allows you to whitelist sites that you need JavaScript from such as `script-src 'self' https: *.googleapis.com` |
@@ -27,6 +28,7 @@ pattern of JavaEE. Here is the list of all configuration options defined with a 
 | MARK_INPUT_AS_INVALID_ON_ERROR_MSG | false | Marks a input as invalid, when a FacesMessage is added for a UIInput with 'SEVERITY_ERROR'. This will show the red border on the client side, when the input is updated. |
 | MOVE_SCRIPTS_TO_BOTTOM | false | Moves all inline scripts to end of body tag for better performance and smaller HTML output. |
 | MULTI_VIEW_STATE_STORE | session | Store MultiViewState per Session ('session') or per ClientWindow ('client-window') |
+| PRIME_ICONS  | true | Auto includes PrimeIcons font based icons. True by default for most themes use PrimeIcons. Only disable if you know you do not use PrimeIcons. |
 | RESET_VALUES | false | When enabled, AJAX updated inputs are always reset. |
 | SUBMIT | full | Defines ajax submit mode; 'full' or 'partial'. |
 | THEME | nova-light | Theme of the application. |

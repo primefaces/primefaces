@@ -1,0 +1,27 @@
+/** Slovenian */
+PrimeFaces.locales['sl'] = {
+    closeText: 'Zapri',
+    prevText: 'Nazaj',
+    nextText: 'Naprej',
+    monthNames: ['Januar', 'Februar', 'Marec', 'April', 'Maj', 'Junij', 'Julij', 'Avgust', 'September', 'Oktober', 'November', 'December'],
+    monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Avg', 'Sep', 'Okt', 'Nov', 'Dec'],
+    dayNames: ['Nedelja', 'Ponedeljek', 'Torek', 'Sreda', '\u010Cetrtek', 'Petek', 'Sobota'],
+    dayNamesShort: ['Ned', 'Pon', 'Tor', 'Sre', '\u010Cet', 'Pet', 'Sob'],
+    dayNamesMin: ['N', 'P', 'T', 'S', '\u010C', 'P ', 'S'],
+    weekHeader: 'Teden',
+    firstDay: 1,
+    isRTL: false,
+    showMonthAfterYear: false,
+    yearSuffix: '',
+    timeOnlyTitle: 'Samo \u010Das',
+    timeText: '\u010Cas',
+    hourText: '\u010Cas',
+    minuteText: 'Minute',
+    secondText: 'Sekunde',
+    currentText: 'danes',
+    ampm: false,
+    month: 'mesec',
+    week: 'teden',
+    day: 'dan',
+    allDayText: 'Cel dan'
+};

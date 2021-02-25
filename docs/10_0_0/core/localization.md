@@ -9,7 +9,7 @@ Server localization is handled by include a custom `Messages.properties` file fo
 in the location such as `\org\primefaces\Messages.properties` of your JAR or WAR file.  For example for a German translation
 of this file you would include a default `Messages_de.properties` file.
 
-https://github.com/primefaces/primefaces/wiki/Locales#server-localization
+Source code bundles:  [GitHub Server Message Bundle Files](https://github.com/primefaces/primefaces/tree/master/src/main/resources/org/primefaces)
 
 ### Default Messages.properties
 
@@ -55,14 +55,30 @@ primefaces.tree.REQUIRED_detail = Selection is required.
 ```
 
 ## Client Localization
-This is handled with a client side api called PrimeFaces Locales. A client side locale is basically 
-a javascript object with various settings, en_US is the default locale provided out of the box. 
+This is handled with a client side API called PrimeFaces Locales. A client side locale is basically 
+a JavaScript object with various settings, en_US is the default locale provided out of the box. 
 In case you need to support another locale, settings should be extended with the new information.
 
-A wiki page is available for user contributed settings, the list is community driven and a good
-starting point although it might be incomplete.
+Source code scripts: [GitHub Client Locale Javascript Files](https://github.com/primefaces/primefaces/tree/master/src/main/resources/META-INF/resources/primefaces/locales)
 
-https://github.com/primefaces/primefaces/wiki/Locales#client-localization
+### Manual Locale Loading
+If you know the locale you want added to your page and want to include one of the built in locales from PrimeFaces
+just add the appropriate script to your page. For example to load the Dutch language add the following:
+
+```xml
+<h:outputScript name="locales/locale-nl.js" library="primefaces"/>
+```
+
+### Automatic Locale Loading
+Using _primefaces.CLIENT_SIDE_LOCALISATION_ global setting will automatically detect your locale and try to load the 
+appropriate locale file from `"locales/locale-" + locale.getLanguage() + ".js"`.
+
+```xml
+<context-param>
+    <param-name>primefaces.CLIENT_SIDE_LOCALISATION</param-name>
+    <param-value>true</param-value>
+</context-param>
+```
 
 ### Default Locale
 Here is the list of all key-value pairs for en_US locale that is provided by PrimeFaces. DateTime

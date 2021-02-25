@@ -24,6 +24,7 @@
 package org.primefaces.config;
 
 import java.util.Map;
+import java.util.Objects;
 
 import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
@@ -45,6 +46,8 @@ public class PrimeConfiguration {
     private final boolean interpretEmptyStringAsNull;
     private final String theme;
     private final boolean fontAwesomeEnabled;
+    private final boolean primeIconsEnabled;
+    private final boolean clientSideLocalizationEnabled;
     private final boolean clientSideValidationEnabled;
     private final String uploader;
     private final boolean transformMetadataEnabled;
@@ -100,6 +103,9 @@ public class PrimeConfiguration {
         value = externalContext.getInitParameter(Constants.ContextParams.FONT_AWESOME);
         fontAwesomeEnabled = Boolean.parseBoolean(value);
 
+        value = externalContext.getInitParameter(Constants.ContextParams.PRIME_ICONS);
+        primeIconsEnabled = Boolean.parseBoolean(Objects.toString(value, "true"));
+
         value = externalContext.getInitParameter(Constants.ContextParams.TRANSFORM_METADATA);
         transformMetadataEnabled = Boolean.parseBoolean(value);
 
@@ -114,6 +120,9 @@ public class PrimeConfiguration {
 
         value = externalContext.getInitParameter(Constants.ContextParams.EARLY_POST_PARAM_EVALUATION);
         earlyPostParamEvaluation = Boolean.parseBoolean(value);
+
+        value = externalContext.getInitParameter(Constants.ContextParams.CLIENT_SIDE_LOCALISATION);
+        clientSideLocalizationEnabled = Boolean.parseBoolean(value);
 
         value = externalContext.getInitParameter(Constants.ContextParams.MOVE_SCRIPTS_TO_BOTTOM);
         moveScriptsToBottom = Boolean.parseBoolean(value);
@@ -197,6 +206,14 @@ public class PrimeConfiguration {
 
     public boolean isFontAwesomeEnabled() {
         return fontAwesomeEnabled;
+    }
+
+    public boolean isPrimeIconsEnabled() {
+        return primeIconsEnabled;
+    }
+
+    public boolean isClientSideLocalizationEnabled() {
+        return clientSideLocalizationEnabled;
     }
 
     public boolean isClientSideValidationEnabled() {

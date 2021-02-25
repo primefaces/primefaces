@@ -56,17 +56,18 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     initActive: function() {
-        if(this.cfg.multiple) {
+        var stateHolderVal = this.stateHolder.val();
+        if (this.cfg.multiple) {
             this.cfg.active = [];
 
-            if (this.stateHolder.val().length > 0) {
+            if (stateHolderVal != null && stateHolderVal.length > 0) {
                 var indexes = this.stateHolder.val().split(',');
                 for(var i = 0; i < indexes.length; i++) {
                     this.cfg.active.push(parseInt(indexes[i]));
                 }
             }
         }
-        else {
+        else if (stateHolderVal != null) {
             this.cfg.active = parseInt(this.stateHolder.val());
         }
     },

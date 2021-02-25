@@ -370,7 +370,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         // GitHub #6711 use DOM if non-CSP and JQ event if CSP
         var originalOnchange = this.input.prop('onchange');
-        if (!originalOnchange) {
+        if (!originalOnchange && this.input[0]) {
             var events = $._data(this.input[0], "events");
             if(events.change) {
                 originalOnchange = events.change[0].handler;

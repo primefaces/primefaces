@@ -787,7 +787,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.rowSelectorForRowClick = this.cfg.rowSelector||'td:not(.ui-column-unselectable),span:not(.ui-c)';
 
         var preselection = $(this.selectionHolder).val();
-        this.selection = (preselection === "") ? [] : preselection.split(',');
+        this.selection = !preselection ? [] : preselection.split(',');
 
         //shift key based range selection
         this.originRowIndex = null;

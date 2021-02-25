@@ -75,7 +75,6 @@ public class FilterFeature implements DataTableFeature {
         // FilterMeta#column must be updated since local value
         // (from column) must be decoded by FilterFeature#decodeFilterValue
         Map<String, FilterMeta> filterBy = table.initFilterBy(context);
-
         table.updateFilterByValuesWithFilterRequest(context, filterBy);
 
         // reset state
@@ -89,7 +88,18 @@ public class FilterFeature implements DataTableFeature {
             table.setRows(Integer.parseInt(rppValue));
         }
 
+        if (table.isMultiViewState()) {
+            DataTableState ts = table.getMultiViewState(true);
+            ts.setFilterBy(filterBy);
+            if (table.isPaginator()) {
+                ts.setFirst(table.getFirst());
+                ts.setRows(table.getRows());
+            }
+        }
+    }
 
+    @Override
+    public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         if (table.isLazy()) {
             if (table.isLiveScroll()) {
                 table.loadLazyScrollData(0, table.getScrollRows());
@@ -118,18 +128,6 @@ public class FilterFeature implements DataTableFeature {
 
         context.getApplication().publishEvent(context, PostFilterEvent.class, table);
 
-        if (table.isMultiViewState()) {
-            DataTableState ts = table.getMultiViewState(true);
-            ts.setFilterBy(filterBy);
-            if (table.isPaginator()) {
-                ts.setFirst(table.getFirst());
-                ts.setRows(table.getRows());
-            }
-        }
-    }
-
-    @Override
-    public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         renderer.encodeTbody(context, table, true);
     }
 
@@ -140,7 +138,6 @@ public class FilterFeature implements DataTableFeature {
         Map<String, FilterMeta> filterBy = table.getFilterByAsMap();
         FilterMeta globalFilter = filterBy.get(FilterMeta.GLOBAL_FILTER_KEY);
         boolean hasGlobalFilterFunction = globalFilter != null && globalFilter.getConstraint() instanceof FunctionFilterConstraint;
-
 
         table.setValue(null); // reset value (instead of filtering on already filtered value)
         AtomicBoolean localMatch = new AtomicBoolean();

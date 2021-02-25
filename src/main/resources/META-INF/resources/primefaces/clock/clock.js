@@ -63,9 +63,10 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
         this.cfg.ONE_WEEK = 7 * this.cfg.ONE_DAY;
         this.cfg.DEFAULT_MINIMAL_DAYS_IN_FIRST_WEEK = 1;
 
-        if(this.cfg.locale && PrimeFaces.locales[this.cfg.locale]) {
-            this.cfg.monthNames = PrimeFaces.locales[this.cfg.locale].monthNames;
-            this.cfg.dayNames = PrimeFaces.locales[this.cfg.locale].dayNames;
+        var localeSettings = PrimeFaces.getLocaleSettings(this.cfg.locale);
+        if(localeSettings) {
+            this.cfg.monthNames = localeSettings.monthNames;
+            this.cfg.dayNames = localeSettings.dayNames;
         }
         else {
             this.cfg.monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];

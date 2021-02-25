@@ -236,10 +236,9 @@ public class MessageFactory {
     }
 
     private static ClassLoader getJSFImplClassLoader(FacesContext facesContext) {
+        facesContext = unwrapFacesContext(facesContext);
 
         Class<? extends FacesContext> facesContextImplClass = FacesContext.class;
-        facesContext = getWrappedFacesContextImpl(facesContext);
-
         if (facesContext != null) {
             facesContextImplClass = facesContext.getClass();
         }
@@ -247,19 +246,19 @@ public class MessageFactory {
         return facesContextImplClass.getClassLoader();
     }
 
-    private static FacesContext getWrappedFacesContextImpl(FacesContext facesContext) {
+    private static FacesContext unwrapFacesContext(FacesContext facesContext) {
         if (!(facesContext instanceof FacesContextWrapper)) {
             return facesContext;
         }
 
-        FacesContextWrapper facesContextWrapper = (FacesContextWrapper) facesContext;
-        FacesContext wrappedFacesContext = facesContextWrapper.getWrapped();
+        FacesContextWrapper wrapper = (FacesContextWrapper) facesContext;
+        FacesContext unwrapped = wrapper.getWrapped();
 
-        if (wrappedFacesContext == null || FacesContext.class.equals(wrappedFacesContext.getClass())) {
+        if (unwrapped == null || FacesContext.class.equals(unwrapped.getClass())) {
             return facesContext;
         }
 
-        return getWrappedFacesContextImpl(wrappedFacesContext);
+        return unwrapFacesContext(unwrapped);
     }
 
     private static final class OSGiFriendlyControl extends ResourceBundle.Control {
