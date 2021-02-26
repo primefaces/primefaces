@@ -7,7 +7,7 @@
 .ui-stack .openStack li span {
 	font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
 	display:block;
-	height: 14px;
+	height: auto;
 	position:absolute;
 	top: 17px;
 	right:60px;
