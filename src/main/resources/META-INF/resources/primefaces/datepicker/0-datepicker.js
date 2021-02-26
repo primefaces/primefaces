@@ -357,8 +357,9 @@
             prevMonthDaysLength = this.getDaysCountInPrevMonth(month, year);
             dayNo = 1;
             today = new Date();
+            monthRows = Math.ceil((daysLength + firstDay) / 7);
 
-            for (var i = 0; i < 6; i++) {
+            for (var i = 0; i < monthRows; i++) {
                 var week = [];
 
                 if (i === 0) {
