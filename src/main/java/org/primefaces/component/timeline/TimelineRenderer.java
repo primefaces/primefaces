@@ -137,9 +137,6 @@ public class TimelineRenderer extends CoreRenderer {
             }
             writer.write("]");
         }
-        else {
-            writer.write(",groups:[]");
-        }
 
         writer.write(",data:[");
         UIComponent eventTitleFacet = timeline.getFacet("eventTitle");
