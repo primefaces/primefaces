@@ -122,20 +122,25 @@ public class TimelineRenderer extends CoreRenderer {
             groupsContent = new HashMap<>();
         }
 
+        UIComponent groupFacet = timeline.getFacet("group");
         int groupsSize = groups.size();
-        if (groupsSize > 0) {
-            UIComponent groupFacet = timeline.getFacet("group");
-            writer.write(",groups:[");
-            for (int i = 0; i < groupsSize; i++) {
-                //If groups was not set in model then order by content.
-                Integer order = model.getGroups() != null ? i : null;
-                //encode groups
-                writer.write(encodeGroup(context, fsw, fswHtml, timeline, groupFacet, groupsContent, groups.get(i), order));
-                if (i + 1 < groupsSize) {
-                    writer.write(",");
+        if (groupFacet != null || groupsSize > 0) {
+            if (groupsSize > 0) {
+                writer.write(",groups:[");
+                for (int i = 0; i < groupsSize; i++) {
+                    //If groups was not set in model then order by content.
+                    Integer order = model.getGroups() != null ? i : null;
+                    //encode groups
+                    writer.write(encodeGroup(context, fsw, fswHtml, timeline, groupFacet, groupsContent, groups.get(i), order));
+                    if (i + 1 < groupsSize) {
+                        writer.write(",");
+                    }
                 }
+                writer.write("]");
             }
-            writer.write("]");
+            else {
+                writer.write(",groups:[]");
+            }
         }
 
         writer.write(",data:[");
