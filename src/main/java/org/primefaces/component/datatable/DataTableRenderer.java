@@ -269,6 +269,10 @@ public class DataTableRenderer extends DataRenderer {
         boolean hasFrozenColumns = (frozenColumns != 0);
         String summary = table.getSummary();
 
+        if (table.isReflow()) {
+            style = style + ";visibility:hidden;";
+        }
+
         //style class
         String containerClass = getStyleClassBuilder(context)
                 .add(DataTable.CONTAINER_CLASS)
@@ -297,7 +301,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("div", table);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", containerClass, "styleClass");
-        if (style != null) {
+        if (LangUtils.isNotBlank(style)) {
             writer.writeAttribute("style", style, "style");
         }
 
