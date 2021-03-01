@@ -3214,7 +3214,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             cellIndex = (this.scrollTbody.is(cell.closest('tbody'))) ? (cellIndex + $this.cfg.frozenColumns) : cellIndex;
         }
 
-        if (!rowMeta || !rowMeta.index) {
+        if (rowMeta === undefined || rowMeta.index === undefined) {
             return null;
         }
         var cellInfo = rowMeta.index + ',' + cellIndex;
