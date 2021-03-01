@@ -309,6 +309,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             this.initRowExpansion();
             this.updateExpandedRowsColspan();
         }
+        if(this.cfg.reflow) {
+           this.jq.css('visibility', 'visible');
+        }
     },
 
     /**
