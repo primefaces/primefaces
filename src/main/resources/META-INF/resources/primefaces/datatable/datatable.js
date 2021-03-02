@@ -1607,6 +1607,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @return {PrimeFaces.widget.DataTable.WidthInfo} The width information of the given column.
      */
     getColumnWidthInfo: function(col, isIncludeResizeableState) {
+        var $this = this;
         var width, isOuterWidth;
 
         if(isIncludeResizeableState && this.resizableState) {
@@ -5404,6 +5405,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
      * @inheritdoc
      */
     fixColumnWidths: function() {
+        var $this = this;
         if(!this.columnWidthsFixed) {
 
             if(this.cfg.scrollable) {
