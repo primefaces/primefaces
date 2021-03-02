@@ -32,6 +32,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.Map;
+import javax.el.ELException;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Resource;
@@ -57,16 +58,25 @@ public class DynamicContentSrcBuilder {
         }
 
         Class<?> type = null;
-        // try to get the type from the EL API
+
+        // try getExpectedType first, likely returns Object.class
         if (ve != null) {
-            type = ve.getType(context.getELContext());
+            type = ve.getExpectedType();
+        }
+
+        // fallback to getType
+        if ((type == null || type == Object.class) && ve != null) {
+            try {
+                type = ve.getType(context.getELContext());
+            }
+            catch (ELException e) {
+                // fails if the ValueExpression is actually a MethodExpression, see #7058
+            }
         }
 
         // fallback to the type of the value instance
-        if (type == null || type == Object.class) {
-            if (value.get() != null) {
-                type = value.get().getClass();
-            }
+        if ((type == null || type == Object.class) && value.get() != null) {
+            type = value.get().getClass();
         }
 
         // skip null type
