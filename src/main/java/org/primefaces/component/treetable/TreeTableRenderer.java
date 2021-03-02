@@ -1391,10 +1391,12 @@ public class TreeTableRenderer extends DataRenderer {
     protected TreeNode cloneTreeNode(TreeTable tt, TreeNode node, TreeNode parent) {
         TreeNode clone = null;
 
-        if (node instanceof CheckboxTreeNode) {
+        // equals check instead of instanceof to allow subclassing
+        if (CheckboxTreeNode.class.equals(node.getClass())) {
             clone = new CheckboxTreeNode(node.getType(), node.getData(), parent);
         }
-        else if (node instanceof DefaultTreeNode) {
+        // equals check instead of instanceof to allow subclassing
+        else if (DefaultTreeNode.class.equals(node.getClass())) {
             clone = new DefaultTreeNode(node.getType(), node.getData(), parent);
         }
 
