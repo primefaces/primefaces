@@ -1446,7 +1446,12 @@ public class TreeTableRenderer extends DataRenderer {
         }
 
         if (clone == null) {
-            clone = new DefaultTreeNode(node.getType(), node.getData(), parent);
+            if (node instanceof CheckboxTreeNode) {
+                clone = new CheckboxTreeNode(node.getType(), node.getData(), parent);
+            }
+            else {
+                clone = new DefaultTreeNode(node.getType(), node.getData(), parent);
+            }
         }
 
         clone.setSelected(node.isSelected());
