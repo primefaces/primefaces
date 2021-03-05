@@ -176,7 +176,14 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
                 return null;
             }
 
-            int childIndex = Integer.parseInt(paths[0]);
+            int childIndex;
+            try {
+                childIndex = Integer.parseInt(paths[0]);
+            }
+            catch (NumberFormatException e) {
+                throw new FacesException("Menu ID '" +  id +  "' is not valid for this component. Remove any manually set IDs from the MenuModel.");
+            }
+
             if (childIndex >= elements.size()) {
                 return null;
             }
