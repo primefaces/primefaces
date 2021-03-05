@@ -66,8 +66,11 @@ public class BaseMenuModel implements MenuModel, Serializable {
             String id = element.getId();
             if (LangUtils.isValueBlank(id)) {
                 id = (seed == null) ? String.valueOf(counter++) : seed + ID_SEPARATOR + counter++;
-                element.setId(id);
             }
+            else {
+                id = id + ID_SEPARATOR + counter++;
+            }
+            element.setId(id);
 
             if (element instanceof MenuGroup) {
                 generateUniqueIds(((MenuGroup) element).getElements(), id);
