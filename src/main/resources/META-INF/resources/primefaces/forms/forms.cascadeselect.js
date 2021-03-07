@@ -183,7 +183,41 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
                 e.preventDefault();
             });
     },
-    
+
+    /**
+     * Removes some event listeners when this widget was disabled.
+     * @private
+     */
+    unbindEvents: function() {
+        this.contents.off();
+        this.triggers.off();
+        this.input.off();
+    },
+
+    /**
+     * Disables this widget so that the user cannot select any option.
+     */
+    disable: function() {
+        if (!this.cfg.disabled) {
+            this.cfg.disabled = true;
+            this.jq.addClass('ui-state-disabled');
+            this.input.attr('disabled', 'disabled');
+            this.unbindEvents();
+        }
+    },
+
+    /**
+     * Enables this widget so that the user can select an option.
+     */
+    enable: function() {
+        if (this.cfg.disabled) {
+            this.cfg.disabled = false;
+            this.jq.removeClass('ui-state-disabled');
+            this.input.removeAttr('disabled');
+            this.bindEvents();
+        }
+    },
+
     /**
      * Deactivate siblings and active children of an item.
      * @private
