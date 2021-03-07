@@ -41,6 +41,7 @@ import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class CascadeSelectRenderer extends SelectOneRenderer {
@@ -125,7 +126,9 @@ public class CascadeSelectRenderer extends SelectOneRenderer {
 
         writer.startElement("span", null);
         writer.writeAttribute("class", styleClass, null);
-        writer.writeText(placeholder, null);
+        if (LangUtils.isNotBlank(placeholder)) {
+            writer.writeText(placeholder, null);
+        }
         writer.endElement("span");
     }
 
