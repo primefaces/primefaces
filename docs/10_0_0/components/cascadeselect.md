@@ -131,6 +131,8 @@ Widget: _PrimeFaces.widget.CascadeSelect_
 | --- | --- | --- | --- | 
 show() | - | void | Shows overlay menu.
 hide() | - | void | Hides overlay menu.
+enable() | - | void | Enables the component.
+disable() | - | void | Disables the component.
 
 ## Skinning
 CascadeSelect resides in a container element that _style_ and _styleClass_ attributes apply. As skinning
