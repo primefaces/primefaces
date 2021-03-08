@@ -41,6 +41,7 @@ import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class CascadeSelectRenderer extends SelectOneRenderer {
@@ -83,18 +84,18 @@ public class CascadeSelectRenderer extends SelectOneRenderer {
 
         renderARIACombobox(context, cascadeSelect);
 
-        encodeInput(context, cascadeSelect);
-        encodeLabel(context, cascadeSelect);
+        String valueToRender = ComponentUtils.getValueToRender(context, cascadeSelect);
+        encodeInput(context, cascadeSelect, valueToRender);
+        encodeLabel(context, cascadeSelect, valueToRender);
         encodeTrigger(context);
         encodePanel(context, cascadeSelect, selectItems);
 
         writer.endElement("div");
     }
 
-    protected void encodeInput(FacesContext context, CascadeSelect cascadeSelect) throws IOException {
+    protected void encodeInput(FacesContext context, CascadeSelect cascadeSelect, String valueToRender) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = cascadeSelect.getInputClientId();
-        String valueToRender = ComponentUtils.getValueToRender(context, cascadeSelect);
 
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
@@ -115,9 +116,9 @@ public class CascadeSelectRenderer extends SelectOneRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeLabel(FacesContext context, CascadeSelect cascadeSelect) throws IOException {
+    protected void encodeLabel(FacesContext context, CascadeSelect cascadeSelect, String valueToRender) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String placeholder = cascadeSelect.getPlaceholder();
+        String placeholder = LangUtils.isNotBlank(valueToRender) ? valueToRender : cascadeSelect.getPlaceholder();
         String styleClass = getStyleClassBuilder(context)
                 .add(placeholder != null, CascadeSelect.LABEL_CLASS)
                 .add(placeholder == null, CascadeSelect.LABEL_EMPTY_CLASS)
@@ -125,7 +126,9 @@ public class CascadeSelectRenderer extends SelectOneRenderer {
 
         writer.startElement("span", null);
         writer.writeAttribute("class", styleClass, null);
-        writer.writeText(placeholder, null);
+        if (LangUtils.isNotBlank(placeholder)) {
+            writer.writeText(placeholder, null);
+        }
         writer.endElement("span");
     }
 
