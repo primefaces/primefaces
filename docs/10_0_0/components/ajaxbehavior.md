@@ -59,11 +59,21 @@ In case you need to execute a method on a backing bean, define a listener;
 ```
 
 ```java
-public class CounterBean {
-    private int count; //getter setter
+@Named
+@ViewScoped
+public class CounterBean implements Serializable {
+
+    private int count;
 
     public void increment() {
         count++;
+    }
+
+    public int getCount() {
+        return this.count;
+    }
+    public void setCount(int count) {
+        this.count = count;
     }
 }
 ```

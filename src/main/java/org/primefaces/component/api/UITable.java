@@ -196,17 +196,19 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     }
 
     default void updateFilterByWithGlobalFilter(FacesContext context, Map<String, FilterMeta> filterBy, AtomicBoolean filtered) {
-        String globalFilter = getGlobalFilter();
-        Set<SearchExpressionHint> hint = LangUtils.isValueBlank(globalFilter)
+        // #globalFilter sets the default value, which will be assigned to the "globalFilter" input
+        String globalFilterDefaultValue = getGlobalFilter();
+        // if #globalFilter is set, the "globalFilter" is mandatory
+        Set<SearchExpressionHint> hint = LangUtils.isValueBlank(globalFilterDefaultValue)
                 ? SearchExpressionUtils.SET_IGNORE_NO_RESULT
                 : SearchExpressionUtils.SET_NONE;
         UIComponent globalFilterComponent = SearchExpressionFacade
                 .resolveComponent(context, (UIComponent) this, "globalFilter", hint);
         if (globalFilterComponent != null) {
             if (globalFilterComponent instanceof ValueHolder) {
-                ((ValueHolder) globalFilterComponent).setValue(globalFilter);
+                ((ValueHolder) globalFilterComponent).setValue(globalFilterDefaultValue);
             }
-            FilterMeta globalFilterBy = FilterMeta.of(globalFilter, getGlobalFilterFunction());
+            FilterMeta globalFilterBy = FilterMeta.of(globalFilterDefaultValue, getGlobalFilterFunction());
             filterBy.put(globalFilterBy.getColumnKey(), globalFilterBy);
             filtered.set(filtered.get() || globalFilterBy.isActive());
         }

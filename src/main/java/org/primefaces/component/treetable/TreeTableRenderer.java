@@ -39,7 +39,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javax.el.ELContext;
-import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
@@ -61,6 +60,7 @@ import org.primefaces.component.row.Row;
 import org.primefaces.component.tree.Tree;
 import org.primefaces.model.*;
 import org.primefaces.model.filter.FilterConstraint;
+import org.primefaces.model.filter.FunctionFilterConstraint;
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.*;
@@ -231,7 +231,11 @@ public class TreeTableRenderer extends DataRenderer {
     }
 
     protected void preRender(FacesContext context, TreeTable tt) {
-        tt.initFilterBy(context);
+        Map<String, FilterMeta> filterBy = tt.initFilterBy(context);
+        // required a second time here as preRender is only called in DT when the request is not "_encodeFeature"
+        if (tt.isFilterRequest(context)) {
+            tt.updateFilterByValuesWithFilterRequest(context, filterBy);
+        }
 
         tt.resetDynamicColumns();
 
@@ -1329,38 +1333,60 @@ public class TreeTableRenderer extends DataRenderer {
     protected void collectFilteredRowKeys(FacesContext context, TreeTable tt, TreeNode root, TreeNode node,  Map<String, FilterMeta> filterBy,
             Locale filterLocale, List<String> filteredRowKeys) throws IOException {
 
-        int childCount = node.getChildCount();
         ELContext elContext = context.getELContext();
-        AtomicBoolean matching = new AtomicBoolean();
+
+        FilterMeta globalFilter = filterBy.get(FilterMeta.GLOBAL_FILTER_KEY);
+        boolean hasGlobalFilterFunction = globalFilter != null && globalFilter.getConstraint() instanceof FunctionFilterConstraint;
+
+        int childCount = node.getChildCount();
+
+        AtomicBoolean localMatch = new AtomicBoolean();
+        AtomicBoolean globalMatch = new AtomicBoolean();
 
         for (int i = 0; i < childCount; i++) {
             TreeNode childNode = node.getChildren().get(i);
             String rowKey = childNode.getRowKey();
             tt.setRowKey(root, rowKey);
-            matching.set(true);
+            localMatch.set(true);
+            globalMatch.set(false);
+
+            if (hasGlobalFilterFunction) {
+                globalMatch.set(globalFilter.getConstraint().isMatching(context, childNode, globalFilter.getFilterValue(), filterLocale));
+            }
 
             tt.forEachColumn(column -> {
                 FilterMeta filter = filterBy.get(column.getColumnKey(tt, rowKey));
-                if (filter == null || !filter.isActive()) {
+                if (filter == null || filter.isGlobalFilter()) {
                     return true;
                 }
                 filter.setColumn(column);
 
-                if (column instanceof DynamicColumn) {
-                    ((DynamicColumn) column).applyStatelessModel();
+                Object columnValue = filter.getLocalValue(elContext);
+
+                if (globalFilter != null && globalFilter.isActive() && !globalMatch.get() && !hasGlobalFilterFunction) {
+                    FilterConstraint constraint = globalFilter.getConstraint();
+                    Object filterValue = globalFilter.getFilterValue();
+                    globalMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
+                }
+
+                if (!filter.isActive()) {
+                    return true;
                 }
 
                 FilterConstraint constraint = filter.getConstraint();
                 Object filterValue = filter.getFilterValue();
-                ValueExpression filterByVE = filter.getFilterBy();
-                Object columnValue = filterByVE.getValue(elContext);
 
-                matching.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
+                localMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
 
-                return matching.get();
+                return localMatch.get();
             });
 
-            if (matching.get()) {
+            boolean matches = localMatch.get();
+            if (globalFilter != null && globalFilter.isActive()) {
+                matches = matches && globalMatch.get();
+            }
+
+            if (matches) {
                 filteredRowKeys.add(rowKey);
             }
 
@@ -1391,10 +1417,12 @@ public class TreeTableRenderer extends DataRenderer {
     protected TreeNode cloneTreeNode(TreeTable tt, TreeNode node, TreeNode parent) {
         TreeNode clone = null;
 
-        if (node instanceof CheckboxTreeNode) {
+        // equals check instead of instanceof to allow subclassing
+        if (CheckboxTreeNode.class.equals(node.getClass())) {
             clone = new CheckboxTreeNode(node.getType(), node.getData(), parent);
         }
-        else if (node instanceof DefaultTreeNode) {
+        // equals check instead of instanceof to allow subclassing
+        else if (DefaultTreeNode.class.equals(node.getClass())) {
             clone = new DefaultTreeNode(node.getType(), node.getData(), parent);
         }
 
@@ -1444,7 +1472,12 @@ public class TreeTableRenderer extends DataRenderer {
         }
 
         if (clone == null) {
-            clone = new DefaultTreeNode(node.getType(), node.getData(), parent);
+            if (node instanceof CheckboxTreeNode) {
+                clone = new CheckboxTreeNode(node.getType(), node.getData(), parent);
+            }
+            else {
+                clone = new DefaultTreeNode(node.getType(), node.getData(), parent);
+            }
         }
 
         clone.setSelected(node.isSelected());

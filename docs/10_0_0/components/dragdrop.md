@@ -170,7 +170,7 @@ it’s parent.
 | onDrop | null | String | Client side callback to execute when a draggable is dropped.
 | accept | null | String | Selector to define the accepted draggables.
 | scope | null | String | Scope key to match draggables and droppables.
-| tolerance | null | String | Specifies the intersection mode to accept a draggable.
+| tolerance | intersect | String | Specifies the intersection mode to accept a draggable. Values are 'fit', 'pointer', 'touch' or 'intersect'
 | datasource | null | String | Id of a UIData component to connect with.
 | greedy | false | Boolean | Avoids parent droppable elements receiving the drop event. Default value is false.
 
@@ -295,7 +295,7 @@ public class TableBean {
             </p:dataTable>
         </p:outputPanel>
     </p:fieldset>
-    <p:droppable for="selectedCars" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop"/>
+    <p:droppable for="selectedCars" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop"/>
         <p:ajax listener="#{tableBean.onCarDrop}" update="dropArea availableCars" />
     </p:droppable>
 </h:form>

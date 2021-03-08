@@ -9734,7 +9734,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Specifies the intersection mode to accept a draggable.]]>
+                <![CDATA[Specifies the intersection mode to accept a draggable. Values are 'fit', 'pointer', 'touch' or 'intersect'. Default is 'intersect'.]]>
             </description>
             <name>tolerance</name>
             <required>false</required>

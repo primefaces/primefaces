@@ -56,12 +56,16 @@ with the new value of the count variable. Note that poll must be nested inside a
 ```
 
 ```java
-public class CounterBean {
+@Named
+@ViewScoped
+public class CounterBean implements Serializable {
+
     private int count;
 
     public void increment() {
         count++;
     }
+
     public int getCount() {
         return this.count;
     }
@@ -70,6 +74,7 @@ public class CounterBean {
     }
 }
 ```
+
 ## Tuning timing
 By default the periodic interval is 2 seconds, this is changed with the interval attribute. Following
 poll works every 5 seconds.

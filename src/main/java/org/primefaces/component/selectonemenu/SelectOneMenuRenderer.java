@@ -466,8 +466,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
             Object itemValue = selectItem.getValue();
-            String itemLabel = selectItem.getLabel();
-            itemLabel = isValueBlank(itemLabel) ? "&nbsp;" : itemLabel;
+            String itemLabel = getOptionLabel(selectItem);
 
             String itemStyleClass = SelectOneMenu.ROW_CLASS;
             if (selectItem.isNoSelectionOption()) {
@@ -624,9 +623,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                     writer.writeAttribute("data-title", option.getDescription(), null);
                 }
 
-                if (!isValueBlank(option.getLabel())) {
-                    writer.writeText(option.getLabel(), null);
-                }
+                writer.writeText(getOptionLabel(option), null);
 
                 writer.endElement("option");
             }
@@ -634,6 +631,12 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             return selected;
         }
     }
+
+    protected String getOptionLabel(SelectItem option) {
+        String itemLabel = option.getLabel();
+        return isValueBlank(itemLabel) ? "&nbsp;" : itemLabel;
+    }
+
 
     @Override
     public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {

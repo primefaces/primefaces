@@ -309,6 +309,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             this.initRowExpansion();
             this.updateExpandedRowsColspan();
         }
+        if(this.cfg.reflow) {
+           this.jq.css('visibility', 'visible');
+        }
     },
 
     /**
@@ -1604,6 +1607,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @return {PrimeFaces.widget.DataTable.WidthInfo} The width information of the given column.
      */
     getColumnWidthInfo: function(col, isIncludeResizeableState) {
+        var $this = this;
         var width, isOuterWidth;
 
         if(isIncludeResizeableState && this.resizableState) {
@@ -3078,11 +3082,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         });
 
             // GitHub #433 Allow ENTER to submit ESC to cancel row editor
-            $(document).off("keydown", "tr.ui-row-editing")
-                        .on("keydown", "tr.ui-row-editing", function(e) {
+            $(document).off("keydown.datatable", "tr.ui-row-editing")
+                        .on("keydown.datatable", "tr.ui-row-editing", function(e) {
                             var keyCode = $.ui.keyCode;
                             switch (e.which) {
                                 case keyCode.ENTER:
+                                    var target = $(e.target);
+                                    // GitHub #7028
+                                    if(target.is("textarea")) {
+                                         return true;
+                                    }
                                     $(this).closest("tr").find(".ui-row-editor-check").trigger("click");
                                     return false; // prevents executing other event handlers (adding new row to the table)
                                 case keyCode.ESCAPE:
@@ -3206,7 +3215,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             cellIndex = (this.scrollTbody.is(cell.closest('tbody'))) ? (cellIndex + $this.cfg.frozenColumns) : cellIndex;
         }
 
-        if (!rowMeta || !rowMeta.index) {
+        if (rowMeta === undefined || rowMeta.index === undefined) {
             return null;
         }
         var cellInfo = rowMeta.index + ',' + cellIndex;
@@ -3364,6 +3373,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         input = $(this);
 
                         if(key === keyCode.ENTER) {
+                            // GitHub #7028
+                            if(input.is("textarea")) {
+                                return true;
+                            }
                             $this.saveCell(cell);
                             $this.currentCell = null;
 
@@ -5392,6 +5405,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
      * @inheritdoc
      */
     fixColumnWidths: function() {
+        var $this = this;
         if(!this.columnWidthsFixed) {
 
             if(this.cfg.scrollable) {
