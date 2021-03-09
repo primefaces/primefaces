@@ -24,7 +24,9 @@
 package org.primefaces.component.cascadeselect;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectOne;
@@ -86,7 +88,7 @@ public class CascadeSelectRenderer extends SelectOneRenderer {
 
         String valueToRender = ComponentUtils.getValueToRender(context, cascadeSelect);
         encodeInput(context, cascadeSelect, valueToRender);
-        encodeLabel(context, cascadeSelect, valueToRender);
+        encodeLabel(context, cascadeSelect, selectItems, valueToRender);
         encodeTrigger(context);
         encodePanel(context, cascadeSelect, selectItems);
 
@@ -116,9 +118,17 @@ public class CascadeSelectRenderer extends SelectOneRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeLabel(FacesContext context, CascadeSelect cascadeSelect, String valueToRender) throws IOException {
+    protected void encodeLabel(FacesContext context, CascadeSelect cascadeSelect, List<SelectItem> itemList, String valueToRender) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String placeholder = LangUtils.isNotBlank(valueToRender) ? valueToRender : cascadeSelect.getPlaceholder();
+
+        Converter converter = ComponentUtils.getConverter(context, cascadeSelect);
+        String itemLabel = valueToRender;
+        SelectItem foundItem = findItemByValue(context, cascadeSelect, converter, itemList, valueToRender);
+        if (foundItem != null) {
+            itemLabel = foundItem.getLabel();
+        }
+
+        String placeholder = LangUtils.isNotBlank(itemLabel) ? itemLabel : cascadeSelect.getPlaceholder();
         String styleClass = getStyleClassBuilder(context)
                 .add(placeholder != null, CascadeSelect.LABEL_CLASS)
                 .add(placeholder == null, CascadeSelect.LABEL_EMPTY_CLASS)
@@ -190,9 +200,7 @@ public class CascadeSelectRenderer extends SelectOneRenderer {
                 boolean isGroup = selectItem instanceof SelectItemGroup;
                 Object itemValue = selectItem.getValue();
                 String itemLabel = selectItem.getLabel();
-                String itemValueAsString = converter != null ?
-                    converter.getAsString(context, cascadeSelect, selectItem.getValue())
-                    : String.valueOf(selectItem.getValue());
+                String itemValueAsString = getOptionAsString(context, cascadeSelect, converter, selectItem.getValue());
                 String itemStyleClass = getStyleClassBuilder(context)
                         .add(CascadeSelect.ITEM_CLASS)
                         .add(isGroup, CascadeSelect.ITEM_GROUP_CLASS)
@@ -245,6 +253,41 @@ public class CascadeSelectRenderer extends SelectOneRenderer {
                 context.getExternalContext().getRequestMap().put(var, null);
             }
         }
+    }
+
+    /**
+     * Recursive method used to find a SelectItem by its value.
+     * @param context FacesContext
+     * @param the current UI component to find value for
+     * @param converter the converter for the select items
+     * @param selectItems the List of SelectItems
+     * @param value the input value to search for
+     * @return either the SelectItem found or NULL if not found
+     */
+    protected SelectItem findItemByValue(FacesContext context, UIComponent component, Converter converter, List<SelectItem> selectItems, String value) {
+        SelectItem foundValue = null;
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem item = selectItems.get(i);
+            if (item instanceof SelectItemGroup) {
+                SelectItemGroup selectItemGroup = (SelectItemGroup) item;
+                if (selectItemGroup.getSelectItems() == null) {
+                    continue;
+                }
+                foundValue = findItemByValue(context, component,  converter, Arrays.asList(selectItemGroup.getSelectItems()), value);
+                if (foundValue != null) {
+                    break;
+                }
+            }
+            else {
+                String itemValueAsString = getOptionAsString(context, component, converter, item.getValue());
+                if (Objects.equals(value, itemValueAsString)) {
+                    foundValue = item;
+                    break;
+                }
+            }
+        }
+
+        return foundValue;
     }
 
     protected void encodeScript(FacesContext context, CascadeSelect cascadeSelect) throws IOException {
