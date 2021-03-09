@@ -3198,7 +3198,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         var inputs=row.find(':input:enabled');
         if (inputs.length > 0) {
-            inputs.first().triggerHandler('focus');
+            inputs.first().trigger('focus');
         }
     },
 
@@ -3337,8 +3337,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             displayContainer.hide();
             inputContainer.show();
             var input = inputs.eq(0);
-            input.triggerHandler('focus');
-            input.triggerHandler('select');
+            input.trigger('focus');
+            input.trigger('select');
 
             //metadata
             if(multi) {
