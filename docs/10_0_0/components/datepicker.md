@@ -178,7 +178,7 @@ feature is tuned with the _numberOfMonths_ attribute.
 By default locale information is retrieved from the view’s locale and can be overridden by the locale
 attribute. Locale attribute can take a locale key as a `String` or a `java.util.Locale` instance. Default
 language of labels are English, for other (bundled) languages and localization options have a look at the
-[localization documentation](../core/localization?id=client-localization).
+[localization documentation](../core/localization.md?id=client-localization).
 
 To override calculated pattern from locale, use the pattern option;
 
