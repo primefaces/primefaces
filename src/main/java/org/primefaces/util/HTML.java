@@ -250,6 +250,7 @@ public class HTML {
     public static final List<String> LABEL_EVENTS = OUTPUT_EVENTS;
 
     public static final List<String> BUTTON_ATTRS = LangUtils.concat(BUTTON_ATTRS_WITHOUT_EVENTS, BUTTON_EVENTS);
+    public static final List<String> BUTTON_WITHOUT_CLICK_ATTRS = LangUtils.concat(BUTTON_ATTRS_WITHOUT_EVENTS, BUTTON_EVENTS_WITHOUT_CLICK);
     public static final List<String> BUTTON_WITH_CLICK_ATTRS = LangUtils.concat(HTML.BUTTON_ATTRS, HTML.CLICK_EVENT);
 
     public static final List<String> INPUT_TEXT_EVENTS = LangUtils.concat(COMMON_EVENTS, CHANGE_SELECT_EVENTS, BLUR_FOCUS_EVENTS);
