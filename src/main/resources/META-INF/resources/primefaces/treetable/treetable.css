@@ -57,7 +57,7 @@
     border:0 none;
 }
 
-.ui-treetable-scrollable .ui-treetable-scrollable-theadclone tr th > * { 
+body .ui-treetable.ui-treetable-scrollable .ui-treetable-scrollable-theadclone tr th > * {
     display: none;
 }
             
