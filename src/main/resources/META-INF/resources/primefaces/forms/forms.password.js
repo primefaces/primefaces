@@ -250,7 +250,7 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
         this.panel.css({
             left:'',
             top:'',
-            width: this.jq.outerWidth(),
+            'min-width': this.jq.outerWidth(),
             'transform-origin': 'center top'
         })
         .position({
@@ -284,7 +284,7 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
             }
         }
         else {
-            this.panel.css({width: this.jq.outerWidth()});
+            this.panel.css({ 'min-width': this.jq.outerWidth()});
             this.panel.slideDown();
         }
     },
