@@ -45,10 +45,10 @@ PrimeFaces.widget.TriStateCheckbox = PrimeFaces.widget.BaseWidget.extend({
 
         //bind events if not disabled
         if (!this.disabled) {
-            this.box.on('mouseover.triStateCheckbox', function () {
+            this.box.on('mouseenter.triStateCheckbox', function () {
                 $this.box.addClass('ui-state-hover');
             })
-            .on('mouseout.triStateCheckbox', function () {
+            .on('mouseleave.triStateCheckbox', function () {
                 $this.box.removeClass('ui-state-hover');
             })
             .on('click.triStateCheckbox', function () {

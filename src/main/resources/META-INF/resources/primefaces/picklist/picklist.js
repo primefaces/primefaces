@@ -191,11 +191,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
 
         this.items.on('mouseover.pickList', function(e) {
-            var element = $(this);
-
-            if(!element.hasClass('ui-state-highlight')) {
-                $(this).addClass('ui-state-hover');
-            }
+            $(this).addClass('ui-state-hover');
         })
         .on('mouseout.pickList', function(e) {
             $(this).removeClass('ui-state-hover');
@@ -271,13 +267,10 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         });
 
         if(this.cfg.showCheckbox) {
-            this.checkboxes.on('mouseover.pickList', function(e) {
-                var chkbox = $(this);
-
-                if(!chkbox.hasClass('ui-state-active'))
-                    chkbox.addClass('ui-state-hover');
+            this.checkboxes.on('mouseenter.pickList', function(e) {
+                $(this).addClass('ui-state-hover');
             })
-            .on('mouseout.pickList', function(e) {
+            .on('mouseleave.pickList', function(e) {
                 $(this).removeClass('ui-state-hover');
             })
             .on('click.pickList', function(e) {
@@ -423,7 +416,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * @param {boolean} [silent] `true` to imit triggering event listeners and behaviors, or `false` otherwise.
      */
     selectItem: function(item, silent) {
-        item.removeClass('ui-state-hover').addClass('ui-state-highlight');
+        item.addClass('ui-state-highlight');
 
         if(this.cfg.showCheckbox) {
             this.selectCheckbox(item.find('div.ui-chkbox-box'));
@@ -442,7 +435,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * @param {boolean} [silent] `true` to imit triggering event listeners and behaviors, or `false` otherwise.
      */
     unselectItem: function(item, silent) {
-        item.removeClass('ui-state-hover ui-state-highlight');
+        item.removeClass('ui-state-highlight');
 
         if(this.cfg.showCheckbox) {
             this.unselectCheckbox(item.find('div.ui-chkbox-box'));
@@ -471,7 +464,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} chkbox The hidden checkbox of a pick list item that was selected.
      */
     selectCheckbox: function(chkbox) {
-        chkbox.removeClass('ui-state-hover').addClass('ui-state-active').children('span.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
+        chkbox.addClass('ui-state-active').children('span.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
     },
 
     /**

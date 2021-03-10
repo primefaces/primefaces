@@ -124,6 +124,11 @@ input[type=text]::-ms-clear {
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     border-radius: 2px;
+    cursor: pointer;
+}
+
+.ui-chkbox .ui-chkbox-box.ui-state-disabled {
+    cursor: default;
 }
 
 .ui-chkbox-icon.ui-icon {
@@ -190,6 +195,7 @@ input[type=text]::-ms-clear {
     display: inline-block;
     vertical-align: middle;
 }
+
 .ui-radiobutton .ui-radiobutton-box {
     width: 16px;
     height: 16px;
@@ -197,7 +203,13 @@ input[type=text]::-ms-clear {
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     border-radius: 10px;
+    cursor: pointer;
 }
+
+.ui-radiobutton .ui-radiobutton-box.ui-state-disabled {
+    cursor: default;
+}
+
 .ui-radiobutton-icon {
     margin-left: 1px;
 }
@@ -1110,4 +1122,9 @@ div.ui-button, .ui-splitbutton {
     position: absolute;
     width: 1px;
     word-wrap: normal !important;
+}
+
+/* Slider */
+.ui-slider .ui-slider-handle {
+    cursor: grab;
 }

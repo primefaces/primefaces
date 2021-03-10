@@ -106,10 +106,10 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
     bindEvents: function() {
         var $this = this;
 
-        this.outputs.filter(':not(.ui-state-disabled)').on('mouseover.selectOneRadio', function() {
+        this.outputs.filter(':not(.ui-state-disabled)').on('mouseenter.selectOneRadio', function() {
             $(this).addClass('ui-state-hover');
         })
-        .on('mouseout.selectOneRadio', function() {
+        .on('mouseleave.selectOneRadio', function() {
             $(this).removeClass('ui-state-hover');
         })
         .on('click.selectOneRadio', function(e) {
@@ -128,6 +128,8 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
                 }
                 $this.fireClickEvent(input, e);
             }
+
+            input.trigger('focus.selectOneRadio');
 
             // Github issue #4467
             e.stopPropagation();

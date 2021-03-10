@@ -65,17 +65,17 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     bindEvents: function() {
-        this.outputs.filter(':not(.ui-state-disabled)').on('mouseover', function() {
+        this.outputs.filter(':not(.ui-state-disabled)').on('mouseenter', function() {
             $(this).addClass('ui-state-hover');
         })
-        .on('mouseout', function() {
+        .on('mouseleave', function() {
             $(this).removeClass('ui-state-hover');
         })
         .on('click', function() {
             var checkbox = $(this),
             input = checkbox.prev().children(':checkbox');
 
-            input.trigger('click');
+            input.trigger('click').trigger('focus');
 
             if($.browser.msie && parseInt($.browser.version) < 9) {
                 input.trigger('change');

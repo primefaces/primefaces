@@ -96,13 +96,10 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
             if(this.cfg.showCheckbox) {
                 this.checkboxes = this.jq.find('.ui-selectlistbox-item:not(.ui-state-disabled) div.ui-chkbox > div.ui-chkbox-box');
 
-                this.checkboxes.on('mouseover.selectManyMenu', function(e) {
-                    var chkbox = $(this);
-
-                    if(!chkbox.hasClass('ui-state-active'))
-                        chkbox.addClass('ui-state-hover');
+                this.checkboxes.on('mouseenter.selectManyMenu', function(e) {
+                    $(this).addClass('ui-state-hover');
                 })
-                .on('mouseout.selectManyMenu', function(e) {
+                .on('mouseleave.selectManyMenu', function(e) {
                     $(this).removeClass('ui-state-hover');
                 })
                 .on('click.selectManyMenu', function(e) {
@@ -220,7 +217,7 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
      * @param {JQuery} chkbox A CHECKBOX element to select.
      */
     selectCheckbox: function(chkbox) {
-        chkbox.removeClass('ui-state-hover').addClass('ui-state-active').children('span.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
+        chkbox.addClass('ui-state-active').children('span.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
     },
 
     /**

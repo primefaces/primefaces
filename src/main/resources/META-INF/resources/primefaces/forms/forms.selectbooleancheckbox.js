@@ -34,14 +34,14 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
 
         //bind events if not disabled
         if(!this.disabled) {
-            this.box.on('mouseover.selectBooleanCheckbox', function() {
+            this.box.on('mouseenter.selectBooleanCheckbox', function() {
                 $this.box.addClass('ui-state-hover');
             })
-            .on('mouseout.selectBooleanCheckbox', function() {
+            .on('mouseleave.selectBooleanCheckbox', function() {
                 $this.box.removeClass('ui-state-hover');
             })
             .on('click.selectBooleanCheckbox', function() {
-                $this.input.trigger('click');
+                $this.input.trigger('click').trigger('focus.selectBooleanCheckbox');
             });
 
             this.input.on('focus.selectBooleanCheckbox', function() {

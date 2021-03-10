@@ -29,7 +29,7 @@ import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
 import org.primefaces.component.api.DialogReturnAware;
 import org.primefaces.component.api.UIOutcomeTarget;
-import org.primefaces.component.menu.Menu;
+import org.primefaces.component.divider.Divider;
 import org.primefaces.event.MenuActionEvent;
 import org.primefaces.model.menu.*;
 import org.primefaces.util.ComponentTraversalUtils;
@@ -132,12 +132,42 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
 
         ResponseWriter writer = context.getResponseWriter();
         String style = separator.getStyle();
-        String styleClass = separator.getStyleClass();
-        styleClass = styleClass == null ? Menu.SEPARATOR_CLASS : Menu.SEPARATOR_CLASS + " " + styleClass;
+        String styleClass;
+
+        if (separator instanceof Divider) {
+            String layout = ((Divider) separator).getLayout();
+            String align = ((Divider) separator).getAlign();
+            String type = ((Divider) separator).getType();
+            boolean isHorizontal = "horizontal".equals(layout);
+            boolean isVertical = "vertical".equals(layout);
+            styleClass = getStyleClassBuilder(context)
+                    .add(Divider.STYLE_CLASS)
+                    .add(separator.getStyleClass())
+                    .add(isHorizontal, Divider.HORIZONTAL_CLASS)
+                    .add(isVertical, Divider.VERTICAL_CLASS)
+                    .add("solid".equals(type), Divider.SOLID_CLASS)
+                    .add("dashed".equals(type), Divider.DASHED_CLASS)
+                    .add("dotted".equals(type), Divider.DOTTED_CLASS)
+                    .add(isHorizontal && (align == null || "left".equals(align)), Divider.ALIGN_LEFT_CLASS)
+                    .add(isHorizontal && "right".equals(align), Divider.ALIGN_RIGHT_CLASS)
+                    .add((isHorizontal && "center".equals(align)) || (isVertical && (align == null || "center".equals(align))), Divider.ALIGN_CENTER_CLASS)
+                    .add(isVertical && "top".equals(align), Divider.ALIGN_TOP_CLASS)
+                    .add(isVertical && "bottom".equals(align), Divider.ALIGN_BOTTOM_CLASS)
+                    .build();
+        }
+
+        else {
+            styleClass = getStyleClassBuilder(context)
+                    .add(Divider.STYLE_CLASS)
+                    .add(Divider.HORIZONTAL_CLASS)
+                    .add(Divider.SOLID_CLASS)
+                    .add(separator.getStyleClass())
+                    .build();
+        }
 
         //title
         writer.startElement("li", null);
-        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_SEPARATOR, null);
         writer.writeAttribute("class", styleClass, null);
         if (style != null) {
             writer.writeAttribute("style", style, null);

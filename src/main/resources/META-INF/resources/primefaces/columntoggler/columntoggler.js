@@ -153,13 +153,10 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         });
 
         //checkboxes
-        this.itemContainer.find('> .ui-columntoggler-item > .ui-chkbox > .ui-chkbox-box').on('mouseover.columnToggler', function() {
-                var item = $(this);
-                if(!item.hasClass('ui-state-active')) {
-                    item.addClass('ui-state-hover');
-                }
+        this.itemContainer.find('> .ui-columntoggler-item > .ui-chkbox > .ui-chkbox-box').on('mouseenter.columnToggler', function() {
+                $(this).addClass('ui-state-hover');
             })
-            .on('mouseout.columnToggler', function() {
+            .on('mouseleave.columnToggler', function() {
                 $(this).removeClass('ui-state-hover');
             })
             .on('click.columnToggler', function(e) {
@@ -319,7 +316,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
      * @param {JQuery} chkbox Checkbox (`.ui-chkbox-box`) of a column of this column toggler. 
      */
     check: function(chkbox) {
-        chkbox.addClass('ui-state-active').removeClass('ui-state-hover').children('.ui-chkbox-icon').addClass('ui-icon-check').removeClass('ui-icon-blank');
+        chkbox.addClass('ui-state-active').children('.ui-chkbox-icon').addClass('ui-icon-check').removeClass('ui-icon-blank');
 
         var column = $(document.getElementById(chkbox.closest('li.ui-columntoggler-item').data('column'))),
         index = column.index() + 1,
