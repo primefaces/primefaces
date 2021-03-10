@@ -195,6 +195,7 @@ input[type=text]::-ms-clear {
     display: inline-block;
     vertical-align: middle;
 }
+
 .ui-radiobutton .ui-radiobutton-box {
     width: 16px;
     height: 16px;
@@ -202,7 +203,13 @@ input[type=text]::-ms-clear {
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     border-radius: 10px;
+    cursor: pointer;
 }
+
+.ui-radiobutton .ui-radiobutton-box.ui-state-disabled {
+    cursor: default;
+}
+
 .ui-radiobutton-icon {
     margin-left: 1px;
 }
