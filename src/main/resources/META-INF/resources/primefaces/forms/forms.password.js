@@ -284,7 +284,7 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
             }
         }
         else {
-            this.panel.css({ 'min-width': this.jq.outerWidth()});
+            this.panel.css({ width: this.jq.outerWidth()});
             this.panel.slideDown();
         }
     },
