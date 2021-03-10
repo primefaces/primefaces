@@ -291,6 +291,7 @@ public class HTML {
     public static final String ARIA_ROLE_MENU = "menu";
     public static final String ARIA_ROLE_MENUITEM = "menuitem";
     public static final String ARIA_ROLE_MENUBAR = "menubar";
+    public static final String ARIA_ROLE_SEPARATOR = "separator";
 
     public static final String BUTTON_TEXT_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only";
     public static final String BUTTON_ICON_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only";
