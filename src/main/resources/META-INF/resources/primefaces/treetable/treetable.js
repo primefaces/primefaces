@@ -429,26 +429,12 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this,
         rowSelector = '> tr.ui-treetable-selectable-node';
 
-        this.tbody.off('mouseover.treeTable mouseout.treeTable click.treeTable', rowSelector)
-                    .on('mouseover.treeTable', rowSelector, null, function(e) {
-                        var element = $(this);
-                        if(!element.hasClass('ui-state-highlight')) {
-                            element.addClass('ui-state-hover');
-
-                            if($this.isCheckboxSelection() && !$this.cfg.nativeElements) {
-                                element.find('> td:first-child > div.ui-chkbox > div.ui-chkbox-box').addClass('ui-state-hover');
-                            }
-                        }
+        this.tbody.off('mouseenter.treeTable mouseleave.treeTable click.treeTable', rowSelector)
+                    .on('mouseenter.treeTable', rowSelector, null, function(e) {
+                        $(this).addClass('ui-state-hover');
                     })
-                    .on('mouseout.treeTable', rowSelector, null, function(e) {
-                        var element = $(this);
-                        if(!element.hasClass('ui-state-highlight')) {
-                            element.removeClass('ui-state-hover');
-
-                            if($this.isCheckboxSelection() && !$this.cfg.nativeElements) {
-                                element.find('> td:first-child > div.ui-chkbox > div.ui-chkbox-box').removeClass('ui-state-hover');
-                            }
-                        }
+                    .on('mouseleave.treeTable', rowSelector, null, function(e) {
+                        $(this).removeClass('ui-state-hover');
                     })
                     .on('click.treeTable', rowSelector, null, function(e) {
                         $this.onRowClick(e, $(this));
@@ -458,11 +444,17 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
            var checkboxSelector =  this.cfg.nativeElements ? '> tr.ui-treetable-selectable-node > td:first-child :checkbox':
                     '> tr.ui-treetable-selectable-node > td:first-child div.ui-chkbox-box';
 
-                this.tbody.off('click.treeTable-checkbox', checkboxSelector)
-                      .on('click.treeTable-checkbox', checkboxSelector, null, function(e) {
-                          var node = $(this).closest('tr.ui-treetable-selectable-node');
-                          $this.toggleCheckboxNode(node);
-                      });
+                this.tbody.off('click.treeTable-checkbox mouseenter.treeTable-checkbox mouseleave.treeTable-checkbox', checkboxSelector)
+                        .on('mouseenter.treeTable-checkbox', checkboxSelector, null, function(e) {
+                            $(this).addClass('ui-state-hover');
+                        })
+                        .on('mouseleave.treeTable-checkbox', checkboxSelector, null, function(e) {
+                            $(this).removeClass('ui-state-hover');
+                        })
+                        .on('click.treeTable-checkbox', checkboxSelector, null, function(e) {
+                            var node = $(this).closest('tr.ui-treetable-selectable-node');
+                            $this.toggleCheckboxNode(node);
+                        });
 
 
                 //initial partial selected visuals
@@ -517,16 +509,10 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         });
 
         this.sortableColumns.on('mouseenter.treeTable', function() {
-            var column = $(this);
-
-            if(!column.hasClass('ui-state-active'))
-                column.addClass('ui-state-hover');
+            $(this).addClass('ui-state-hover');
         })
         .on('mouseleave.treeTable', function() {
-            var column = $(this);
-
-            if(!column.hasClass('ui-state-active'))
-                column.removeClass('ui-state-hover');
+            $(this).removeClass('ui-state-hover');
         })
         .on('click.treeTable', function(e, metaKeyOn) {
             if(!$this.shouldSort(e, this)) {
@@ -745,7 +731,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                                                 .find('.ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s');
                             }
 
-                            columnHeader.removeClass('ui-state-hover').addClass('ui-state-active').data('sortorder', order);
+                            columnHeader.addClass('ui-state-active').data('sortorder', order);
                             var sortIcon = columnHeader.find('.ui-sortable-column-icon'),
                             ariaLabel = columnHeader.attr('aria-label');
 
@@ -994,15 +980,15 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     selectNode: function(node, silent) {
         var nodeKey = node.attr('data-rk');
 
-        node.removeClass('ui-state-hover ui-treetable-partialselected').addClass('ui-state-highlight').attr('aria-selected', true);
+        node.removeClass('ui-treetable-partialselected').addClass('ui-state-highlight').attr('aria-selected', true);
         this.addToSelection(nodeKey);
         this.writeSelections();
 
         if(this.isCheckboxSelection()) {
             if(this.cfg.nativeElements)
-                node.find('> td:first-child > :checkbox').prop('checked', true).prop('indeterminate', false);
+                node.find('> td:first-child > :checkbox').prop('checked', true).prop('indeterminate', false).addClass('ui-state-active');
             else
-                node.find('> td:first-child > div.ui-chkbox > div.ui-chkbox-box').removeClass('ui-state-hover').children('span.ui-chkbox-icon').removeClass('ui-icon-blank ui-icon-minus').addClass('ui-icon-check');
+                node.find('> td:first-child > div.ui-chkbox > div.ui-chkbox-box').addClass('ui-state-active').children('span.ui-chkbox-icon').removeClass('ui-icon-blank ui-icon-minus').addClass('ui-icon-check');
         }
 
         if(!silent) {
@@ -1024,9 +1010,9 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
 
         if(this.isCheckboxSelection()) {
             if(this.cfg.nativeElements)
-                node.find('> td:first-child > :checkbox').prop('checked', false).prop('indeterminate', false);
+                node.find('> td:first-child > :checkbox').prop('checked', false).prop('indeterminate', false).removeClass('ui-state-active');
             else
-                node.find('> td:first-child > div.ui-chkbox > div.ui-chkbox-box > span.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check ui-icon-minus');
+                node.find('> td:first-child > div.ui-chkbox > div.ui-chkbox-box').removeClass('ui-state-active').children('span.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check ui-icon-minus');
         }
 
         if(!silent) {
@@ -1202,9 +1188,9 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             node.removeClass('ui-state-highlight').addClass('ui-treetable-partialselected');
 
             if(this.cfg.nativeElements)
-                checkbox.prop('indeterminate', true);
+                checkbox.prop('indeterminate', true).removeClass('ui-state-active');
             else
-                checkbox.removeClass('ui-icon-blank ui-icon-check').addClass('ui-icon-minus');
+                checkbox.removeClass('ui-icon-blank ui-icon-check').addClass('ui-icon-minus').closest('.ui-chkbox-box').removeClass('ui-state-active');
 
             this.removeSelection(node.attr('data-rk'));
         }
@@ -1212,9 +1198,9 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             node.removeClass('ui-state-highlight ui-treetable-partialselected');
 
             if(this.cfg.nativeElements)
-                checkbox.prop('indeterminate', false).prop('checked', false);
+                checkbox.prop('indeterminate', false).prop('checked', false).removeClass('ui-state-active');
             else
-                checkbox.addClass('ui-icon-blank').removeClass('ui-icon-check ui-icon-minus');
+                checkbox.addClass('ui-icon-blank').removeClass('ui-icon-check ui-icon-minus').closest('.ui-chkbox-box').removeClass('ui-state-active');
 
             this.removeSelection(node.attr('data-rk'));
         }
