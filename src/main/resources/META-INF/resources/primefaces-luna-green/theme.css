@@ -1964,8 +1964,6 @@ body .ui-tree {
       body .ui-tree.ui-tree-horizontal .ui-treenode-content.ui-state-highlight {
         background: #C5E1A5;
         color: #212529; }
-        body .ui-tree.ui-tree-horizontal .ui-treenode-content.ui-state-highlight .ui-chkbox-icon {
-          color: #dedede; }
       body .ui-tree.ui-tree-horizontal .ui-treenode-content .ui-tree-toggler {
         margin-right: 0.5rem;
         vertical-align: middle; }
@@ -2004,7 +2002,7 @@ body .ui-tree {
         padding: 0;
         vertical-align: middle; }
       body .ui-tree.ui-tree-horizontal .ui-treenode-content .ui-chkbox {
-        margin-right: 1rem; }
+        margin-right: 0.5rem; }
         body .ui-tree.ui-tree-horizontal .ui-treenode-content .ui-chkbox .ui-icon-minus {
           font-family: 'primeicons' !important;
           speak: none;
