@@ -1123,3 +1123,8 @@ div.ui-button, .ui-splitbutton {
     width: 1px;
     word-wrap: normal !important;
 }
+
+/* Slider */
+.ui-slider .ui-slider-handle {
+    cursor: grab;
+}
