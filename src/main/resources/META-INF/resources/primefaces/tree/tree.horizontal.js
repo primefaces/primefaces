@@ -47,26 +47,24 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
                     });
 
         if(selectionMode && this.cfg.highlight) {
-            this.jq.off('mouseout.tree mouseover.tree', nodeContentSelector)
-                        .on('mouseover.tree', nodeContentSelector, null, function() {
-                            var nodeContent = $(this);
-                            if(!nodeContent.hasClass('ui-state-highlight')) {
-                                nodeContent.addClass('ui-state-hover');
-
-                                if($this.isCheckboxSelection()) {
-                                    nodeContent.children('div.ui-chkbox').children('div.ui-chkbox-box').addClass('ui-state-hover');
-                                }
-                            }
+            this.jq.off('mouseenter.tree mouseleave.tree', nodeContentSelector)
+                        .on('mouseenter.tree', nodeContentSelector, null, function() {
+                            $(this).addClass('ui-state-hover');
                         })
-                        .on('mouseout.tree', nodeContentSelector, null, function() {
-                            var nodeContent = $(this);
-                            if(!nodeContent.hasClass('ui-state-highlight')) {
-                                nodeContent.removeClass('ui-state-hover');
+                        .on('mouseleave.tree', nodeContentSelector, null, function() {
+                            $(this).removeClass('ui-state-hover');
+                        });
+        }
 
-                                if($this.isCheckboxSelection()) {
-                                    nodeContent.children('div.ui-chkbox').children('div.ui-chkbox-box').removeClass('ui-state-hover');
-                                }
-                            }
+        if(this.isCheckboxSelection()) {
+            var checkboxSelector = '.ui-chkbox-box:not(.ui-state-disabled)';
+
+            this.jq.off('mouseleave.tree-checkbox mouseenter.tree-checkbox', checkboxSelector)
+                        .on('mouseleave.tree-checkbox', checkboxSelector, null, function() {
+                            $(this).removeClass('ui-state-hover');
+                        })
+                        .on('mouseenter.tree-checkbox', checkboxSelector, null, function() {
+                            $(this).addClass('ui-state-hover');
                         });
         }
 
@@ -154,7 +152,7 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
      * @param {boolean} [silent]
      */
     selectNode: function(node, silent) {
-        node.removeClass('ui-treenode-unselected').addClass('ui-treenode-selected').children('.ui-treenode-content').removeClass('ui-state-hover').addClass('ui-state-highlight');
+        node.removeClass('ui-treenode-unselected').addClass('ui-treenode-selected').children('.ui-treenode-content').addClass('ui-state-highlight');
 
         this.addToSelection(this.getRowKey(node));
         this.writeSelections();
@@ -272,7 +270,7 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
      */
     check: function(checkbox) {
         this._super(checkbox);
-        checkbox.parent('.ui-treenode-content').addClass('ui-state-highlight').removeClass('ui-state-hover');
+        checkbox.parent('.ui-treenode-content').addClass('ui-state-highlight');
     },
 
     /**
@@ -331,6 +329,7 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
         treeNode = checkbox.closest('.ui-treenode'),
         rowKey = this.getRowKey(treeNode);
 
+        box.removeClass('ui-state-active');
         treeNode.find('> .ui-treenode-content').removeClass('ui-state-highlight');
         icon.removeClass('ui-icon-blank ui-icon-check').addClass('ui-icon-minus');
         treeNode.removeClass('ui-treenode-selected ui-treenode-unselected').addClass('ui-treenode-hasselected').attr('aria-checked', false).attr('aria-selected', false);
