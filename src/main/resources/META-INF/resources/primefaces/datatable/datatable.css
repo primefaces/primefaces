@@ -62,7 +62,11 @@
     display: block;
     box-sizing: border-box;
     width: 100%;
-    margin:auto;
+    margin: .5rem auto auto auto;
+}
+
+.ui-datatable .ui-column-customfilter {
+    margin: .5rem auto auto auto;
 }
 
 .ui-datatable .ui-row-toggler {
