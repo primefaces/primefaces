@@ -42,6 +42,7 @@ public class RendererUtils {
         ResponseWriter writer = context.getResponseWriter();
         String icon;
         String boxClass = disabled ? HTML.CHECKBOX_BOX_CLASS + " ui-state-disabled" : HTML.CHECKBOX_BOX_CLASS;
+        boxClass += checked ? " ui-state-active" : "";
         String containerClass = (styleClass == null) ? HTML.CHECKBOX_CLASS : HTML.CHECKBOX_CLASS + " " + styleClass;
 
         if (checked) {
