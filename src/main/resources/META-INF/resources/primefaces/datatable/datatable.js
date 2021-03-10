@@ -1006,8 +1006,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     checked = radio.hasClass('ui-state-active'),
                     disabled = radio.hasClass('ui-state-disabled');
 
-                    if(!disabled && !checked) {
-                        $this.selectRowWithRadio(radio);
+                    if(!disabled) {
+                        radio.prev().children(':radio').trigger('focus.dataTable');
+                        if(!checked) {
+                            $this.selectRowWithRadio(radio);
+                        }
                     }
                 });
         }
