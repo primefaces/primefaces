@@ -139,6 +139,7 @@ body .ui-button {
       height: 2.357rem; }
   body .ui-button .ui-icon-triangle-1-s {
     font-family: 'primeicons' !important;
+    font-style: normal;
     font-weight: normal;
     display: inline-block;
     background: none; }
@@ -507,6 +508,7 @@ body .ui-splitbutton {
     border-bottom-right-radius: 4px; }
     body .ui-splitbutton .ui-button.ui-splitbutton-menubutton .ui-icon.ui-icon-triangle-1-s {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -559,6 +561,7 @@ body .ui-carousel {
       border-color: transparent; }
     body .ui-carousel .ui-carousel-button.ui-carousel-next-button {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -566,6 +569,7 @@ body .ui-carousel {
         content: ""; }
     body .ui-carousel .ui-carousel-button.ui-carousel-prev-button {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -596,6 +600,7 @@ body .ui-carousel {
         border-color: transparent; }
       body .ui-carousel .ui-carousel-page-links .ui-carousel-page-link.ui-icon-radio-off {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none; }
@@ -603,6 +608,7 @@ body .ui-carousel {
           content: ""; }
       body .ui-carousel .ui-carousel-page-links .ui-carousel-page-link.ui-icon-radio-on {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none;
@@ -738,6 +744,7 @@ body .ui-datatable thead th {
     margin: 0 0 0 0.5rem; }
     body .ui-datatable thead th .ui-sortable-column-icon.ui-icon-carat-2-n-s {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none;
@@ -746,6 +753,7 @@ body .ui-datatable thead th {
         content: ""; }
     body .ui-datatable thead th .ui-sortable-column-icon.ui-icon-triangle-1-n {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none;
@@ -754,6 +762,7 @@ body .ui-datatable thead th {
         content: ""; }
     body .ui-datatable thead th .ui-sortable-column-icon.ui-icon-triangle-1-s {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none;
@@ -829,6 +838,7 @@ body .ui-datatable .ui-datatable-data > tr {
       margin-right: 0.5rem; }
   body .ui-datatable .ui-datatable-data > tr .ui-row-editor .ui-icon.ui-icon-pencil {
     font-family: 'primeicons' !important;
+    font-style: normal;
     font-weight: normal;
     display: inline-block;
     background: none; }
@@ -836,6 +846,7 @@ body .ui-datatable .ui-datatable-data > tr {
       content: ""; }
   body .ui-datatable .ui-datatable-data > tr .ui-row-editor .ui-icon.ui-icon-check {
     font-family: 'primeicons' !important;
+    font-style: normal;
     font-weight: normal;
     display: inline-block;
     background: none; }
@@ -843,6 +854,7 @@ body .ui-datatable .ui-datatable-data > tr {
       content: ""; }
   body .ui-datatable .ui-datatable-data > tr .ui-row-editor .ui-icon.ui-icon-close {
     font-family: 'primeicons' !important;
+    font-style: normal;
     font-weight: normal;
     display: inline-block;
     background: none; }
@@ -866,6 +878,7 @@ body .ui-datatable .ui-datatable-data > tr {
       border-color: transparent; }
     body .ui-datatable .ui-datatable-data > tr .ui-row-toggler.ui-icon-circle-triangle-e {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -873,6 +886,7 @@ body .ui-datatable .ui-datatable-data > tr {
         content: ""; }
     body .ui-datatable .ui-datatable-data > tr .ui-row-toggler.ui-icon-circle-triangle-s {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -898,6 +912,7 @@ body .ui-datatable .ui-datatable-data > tr {
         border-color: transparent; }
       body .ui-datatable .ui-datatable-data > tr .ui-rowgroup-toggler .ui-rowgroup-toggler-icon.ui-icon-circle-triangle-e {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none; }
@@ -905,6 +920,7 @@ body .ui-datatable .ui-datatable-data > tr {
           content: ""; }
       body .ui-datatable .ui-datatable-data > tr .ui-rowgroup-toggler .ui-rowgroup-toggler-icon.ui-icon-circle-triangle-s {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none; }
@@ -925,6 +941,7 @@ body .ui-datatable tfoot td {
   box-sizing: content-box; }
 body .ui-datatable > .ui-icon-arrowthick-1-s {
   font-family: 'primeicons' !important;
+  font-style: normal;
   font-weight: normal;
   display: inline-block;
   background: none;
@@ -933,6 +950,7 @@ body .ui-datatable > .ui-icon-arrowthick-1-s {
     content: ""; }
 body .ui-datatable > .ui-icon-arrowthick-1-n {
   font-family: 'primeicons' !important;
+  font-style: normal;
   font-weight: normal;
   display: inline-block;
   background: none;
@@ -1113,6 +1131,7 @@ body .ui-orderlist .ui-orderlist-controls {
     margin-bottom: 0.5rem; }
   body .ui-orderlist .ui-orderlist-controls .ui-icon-arrow-1-n {
     font-family: 'primeicons' !important;
+    font-style: normal;
     font-weight: normal;
     display: inline-block;
     background: none; }
@@ -1120,6 +1139,7 @@ body .ui-orderlist .ui-orderlist-controls {
       content: ""; }
   body .ui-orderlist .ui-orderlist-controls .ui-icon-arrowstop-1-n {
     font-family: 'primeicons' !important;
+    font-style: normal;
     font-weight: normal;
     display: inline-block;
     background: none; }
@@ -1127,6 +1147,7 @@ body .ui-orderlist .ui-orderlist-controls {
       content: ""; }
   body .ui-orderlist .ui-orderlist-controls .ui-icon-arrow-1-s {
     font-family: 'primeicons' !important;
+    font-style: normal;
     font-weight: normal;
     display: inline-block;
     background: none; }
@@ -1134,6 +1155,7 @@ body .ui-orderlist .ui-orderlist-controls {
       content: ""; }
   body .ui-orderlist .ui-orderlist-controls .ui-icon-arrowstop-1-s {
     font-family: 'primeicons' !important;
+    font-style: normal;
     font-weight: normal;
     display: inline-block;
     background: none; }
@@ -1228,6 +1250,7 @@ body .ui-paginator {
       top: -1px; }
   body .ui-paginator .ui-paginator-first {
     font-family: 'primeicons' !important;
+    font-style: normal;
     font-weight: normal;
     display: inline-block;
     background: none;
@@ -1238,6 +1261,7 @@ body .ui-paginator {
       position: relative; }
   body .ui-paginator .ui-paginator-prev {
     font-family: 'primeicons' !important;
+    font-style: normal;
     font-weight: normal;
     display: inline-block;
     background: none;
@@ -1248,6 +1272,7 @@ body .ui-paginator {
       position: relative; }
   body .ui-paginator .ui-paginator-next {
     font-family: 'primeicons' !important;
+    font-style: normal;
     font-weight: normal;
     display: inline-block;
     background: none;
@@ -1258,6 +1283,7 @@ body .ui-paginator {
       position: relative; }
   body .ui-paginator .ui-paginator-last {
     font-family: 'primeicons' !important;
+    font-style: normal;
     font-weight: normal;
     display: inline-block;
     background: none;
@@ -1304,6 +1330,7 @@ body .ui-picklist .ui-picklist-buttons {
     margin-bottom: 0.5rem; }
   body .ui-picklist .ui-picklist-buttons .ui-icon-arrow-1-n {
     font-family: 'primeicons' !important;
+    font-style: normal;
     font-weight: normal;
     display: inline-block;
     background: none; }
@@ -1311,6 +1338,7 @@ body .ui-picklist .ui-picklist-buttons {
       content: ""; }
   body .ui-picklist .ui-picklist-buttons .ui-icon-arrowstop-1-n {
     font-family: 'primeicons' !important;
+    font-style: normal;
     font-weight: normal;
     display: inline-block;
     background: none; }
@@ -1318,6 +1346,7 @@ body .ui-picklist .ui-picklist-buttons {
       content: ""; }
   body .ui-picklist .ui-picklist-buttons .ui-icon-arrow-1-s {
     font-family: 'primeicons' !important;
+    font-style: normal;
     font-weight: normal;
     display: inline-block;
     background: none; }
@@ -1325,6 +1354,7 @@ body .ui-picklist .ui-picklist-buttons {
       content: ""; }
   body .ui-picklist .ui-picklist-buttons .ui-icon-arrowstop-1-s {
     font-family: 'primeicons' !important;
+    font-style: normal;
     font-weight: normal;
     display: inline-block;
     background: none; }
@@ -1332,6 +1362,7 @@ body .ui-picklist .ui-picklist-buttons {
       content: ""; }
   body .ui-picklist .ui-picklist-buttons .ui-icon-arrow-1-e {
     font-family: 'primeicons' !important;
+    font-style: normal;
     font-weight: normal;
     display: inline-block;
     background: none; }
@@ -1339,6 +1370,7 @@ body .ui-picklist .ui-picklist-buttons {
       content: ""; }
   body .ui-picklist .ui-picklist-buttons .ui-icon-arrowstop-1-e {
     font-family: 'primeicons' !important;
+    font-style: normal;
     font-weight: normal;
     display: inline-block;
     background: none; }
@@ -1346,6 +1378,7 @@ body .ui-picklist .ui-picklist-buttons {
       content: ""; }
   body .ui-picklist .ui-picklist-buttons .ui-icon-arrow-1-w {
     font-family: 'primeicons' !important;
+    font-style: normal;
     font-weight: normal;
     display: inline-block;
     background: none; }
@@ -1353,6 +1386,7 @@ body .ui-picklist .ui-picklist-buttons {
       content: ""; }
   body .ui-picklist .ui-picklist-buttons .ui-icon-arrowstop-1-w {
     font-family: 'primeicons' !important;
+    font-style: normal;
     font-weight: normal;
     display: inline-block;
     background: none; }
@@ -1374,6 +1408,7 @@ body .ui-picklist .ui-picklist-filter-container .ui-picklist-filter {
   margin-bottom: 0.5rem; }
 body .ui-picklist .ui-picklist-filter-container .ui-icon {
   font-family: 'primeicons' !important;
+  font-style: normal;
   font-weight: normal;
   display: inline-block;
   background: none;
@@ -1415,6 +1450,7 @@ body .ui-picklist .ui-picklist-list {
       margin-right: 0; }
     body .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .ui-button .ui-icon-arrow-1-e {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -1422,6 +1458,7 @@ body .ui-picklist .ui-picklist-list {
         content: ""; }
     body .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .ui-button .ui-icon-arrowstop-1-e {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -1429,6 +1466,7 @@ body .ui-picklist .ui-picklist-list {
         content: ""; }
     body .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .ui-button .ui-icon-arrow-1-w {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -1436,6 +1474,7 @@ body .ui-picklist .ui-picklist-list {
         content: ""; }
     body .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .ui-button .ui-icon-arrowstop-1-w {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -1479,6 +1518,7 @@ body .timeline-frame {
       border-color: transparent; }
     body .timeline-frame .timeline-navigation .ui-icon.ui-icon-circle-zoomin {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -1486,6 +1526,7 @@ body .timeline-frame {
         content: ""; }
     body .timeline-frame .timeline-navigation .ui-icon.ui-icon-circle-zoomout {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -1493,6 +1534,7 @@ body .timeline-frame {
         content: ""; }
     body .timeline-frame .timeline-navigation .ui-icon.ui-icon-circle-arrow-w {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -1500,6 +1542,7 @@ body .timeline-frame {
         content: ""; }
     body .timeline-frame .timeline-navigation .ui-icon.ui-icon-circle-arrow-e {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -1573,6 +1616,7 @@ body .ui-tree {
             border-color: transparent; }
           body .ui-tree .ui-tree-container .ui-treenode .ui-treenode-content .ui-tree-toggler.ui-icon-triangle-1-e {
             font-family: 'primeicons' !important;
+            font-style: normal;
             font-weight: normal;
             display: inline-block;
             background: none; }
@@ -1580,6 +1624,7 @@ body .ui-tree {
               content: ""; }
           body .ui-tree .ui-tree-container .ui-treenode .ui-treenode-content .ui-tree-toggler.ui-icon-triangle-1-s {
             font-family: 'primeicons' !important;
+            font-style: normal;
             font-weight: normal;
             display: inline-block;
             background: none; }
@@ -1587,6 +1632,7 @@ body .ui-tree {
               content: ""; }
           body .ui-tree .ui-tree-container .ui-treenode .ui-treenode-content .ui-tree-toggler.ui-icon-triangle-1-w {
             font-family: 'primeicons' !important;
+            font-style: normal;
             font-weight: normal;
             display: inline-block;
             background: none; }
@@ -1612,6 +1658,7 @@ body .ui-tree {
           margin-right: 1rem; }
           body .ui-tree .ui-tree-container .ui-treenode .ui-treenode-content .ui-chkbox .ui-icon-minus {
             font-family: 'primeicons' !important;
+            font-style: normal;
             font-weight: normal;
             display: inline-block;
             background: none;
@@ -1640,6 +1687,7 @@ body .ui-tree {
         vertical-align: middle; }
         body .ui-tree.ui-tree-horizontal .ui-treenode-content .ui-tree-toggler.ui-icon-minus {
           font-family: 'primeicons' !important;
+          font-style: normal;
           font-weight: normal;
           display: inline-block;
           background: none; }
@@ -1647,6 +1695,7 @@ body .ui-tree {
             content: ""; }
         body .ui-tree.ui-tree-horizontal .ui-treenode-content .ui-tree-toggler.ui-icon-plus {
           font-family: 'primeicons' !important;
+          font-style: normal;
           font-weight: normal;
           display: inline-block;
           background: none; }
@@ -1662,6 +1711,7 @@ body .ui-tree {
         margin-right: 0.5rem; }
         body .ui-tree.ui-tree-horizontal .ui-treenode-content .ui-chkbox .ui-icon-minus {
           font-family: 'primeicons' !important;
+          font-style: normal;
           font-weight: normal;
           display: inline-block;
           background: none;
@@ -1672,6 +1722,7 @@ body .ui-tree {
     margin: 0 0 0.5rem 0; }
     body .ui-tree .ui-tree-filter-container .ui-icon {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none;
@@ -1745,6 +1796,7 @@ body .ui-treetable thead th {
     margin: 0 0 0 0.5rem; }
     body .ui-treetable thead th .ui-sortable-column-icon.ui-icon-carat-2-n-s {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none;
@@ -1753,6 +1805,7 @@ body .ui-treetable thead th {
         content: ""; }
     body .ui-treetable thead th .ui-sortable-column-icon.ui-icon-triangle-1-n {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none;
@@ -1761,6 +1814,7 @@ body .ui-treetable thead th {
         content: ""; }
     body .ui-treetable thead th .ui-sortable-column-icon.ui-icon-triangle-1-s {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none;
@@ -1818,6 +1872,7 @@ body .ui-treetable .ui-treetable-data > tr {
         border-color: transparent; }
       body .ui-treetable .ui-treetable-data > tr > td .ui-treetable-toggler.ui-icon-triangle-1-e {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none; }
@@ -1825,6 +1880,7 @@ body .ui-treetable .ui-treetable-data > tr {
           content: ""; }
       body .ui-treetable .ui-treetable-data > tr > td .ui-treetable-toggler.ui-icon-triangle-1-s {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none; }
@@ -1835,6 +1891,7 @@ body .ui-treetable .ui-treetable-data > tr {
       margin-right: 1rem; }
       body .ui-treetable .ui-treetable-data > tr > td .ui-chkbox.ui-selection .ui-icon-minus {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none;
@@ -1870,6 +1927,7 @@ body .ui-treetable .ui-treetable-data > tr {
       border-color: transparent; }
     body .ui-treetable .ui-treetable-data > tr .ui-row-editor .ui-icon.ui-icon-pencil {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -1877,6 +1935,7 @@ body .ui-treetable .ui-treetable-data > tr {
         content: ""; }
     body .ui-treetable .ui-treetable-data > tr .ui-row-editor .ui-icon.ui-icon-check {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none;
@@ -1885,6 +1944,7 @@ body .ui-treetable .ui-treetable-data > tr {
         content: ""; }
     body .ui-treetable .ui-treetable-data > tr .ui-row-editor .ui-icon.ui-icon-close {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -1956,6 +2016,7 @@ body .ui-fileupload .ui-fileupload-buttonbar {
     margin-right: 0.5rem; }
     body .ui-fileupload .ui-fileupload-buttonbar .ui-button.ui-fileupload-choose .ui-icon {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -1963,6 +2024,7 @@ body .ui-fileupload .ui-fileupload-buttonbar {
         content: ""; }
     body .ui-fileupload .ui-fileupload-buttonbar .ui-button.ui-fileupload-upload .ui-icon {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -1970,6 +2032,7 @@ body .ui-fileupload .ui-fileupload-buttonbar {
         content: ""; }
     body .ui-fileupload .ui-fileupload-buttonbar .ui-button.ui-fileupload-cancel .ui-icon {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -1987,6 +2050,7 @@ body .ui-fileupload .ui-fileupload-content {
   border-bottom-right-radius: 4px; }
   body .ui-fileupload .ui-fileupload-content .ui-fileupload-cancel .ui-icon {
     font-family: 'primeicons' !important;
+    font-style: normal;
     font-weight: normal;
     display: inline-block;
     background: none; }
@@ -1996,6 +2060,7 @@ body .ui-fileupload .ui-fileupload-content {
     padding: 1rem; }
 body .ui-fileupload-simple .ui-icon-plusthick {
   font-family: 'primeicons' !important;
+  font-style: normal;
   font-weight: normal;
   display: inline-block;
   background: none; }
@@ -2017,6 +2082,7 @@ body .ui-autocomplete .ui-autocomplete-dropdown {
     padding: 0.5rem; }
   body .ui-autocomplete .ui-autocomplete-dropdown .ui-icon {
     font-family: 'primeicons' !important;
+    font-style: normal;
     font-weight: normal;
     display: inline-block;
     background: none; }
@@ -2039,6 +2105,7 @@ body .ui-autocomplete .ui-autocomplete-multiple-container {
       margin-top: -0.5rem;
       position: absolute;
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -2197,6 +2264,7 @@ body .ui-chkbox {
       margin-top: -0.5rem; }
       body .ui-chkbox .ui-chkbox-box .ui-chkbox-icon.ui-icon-check {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none; }
@@ -2204,6 +2272,7 @@ body .ui-chkbox {
           content: ""; }
       body .ui-chkbox .ui-chkbox-box .ui-chkbox-icon.ui-icon-closethick {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none; }
@@ -2236,6 +2305,7 @@ body .ui-chips .ui-chips-container {
       margin-top: -0.5rem;
       position: absolute;
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -2277,6 +2347,7 @@ body .ui-datepicker {
     border-radius: 0; }
   body .ui-datepicker .ui-datepicker-next {
     font-family: 'primeicons' !important;
+    font-style: normal;
     font-weight: normal;
     display: inline-block;
     background: none;
@@ -2285,6 +2356,7 @@ body .ui-datepicker {
       content: ""; }
   body .ui-datepicker .ui-datepicker-prev {
     font-family: 'primeicons' !important;
+    font-style: normal;
     font-weight: normal;
     display: inline-block;
     background: none;
@@ -2470,6 +2542,7 @@ body .ui-datepicker {
       border-color: transparent; }
     body .ui-datepicker .ui-picker-up .ui-icon {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -2493,6 +2566,7 @@ body .ui-datepicker {
       border-color: transparent; }
     body .ui-datepicker .ui-picker-down .ui-icon {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -2506,6 +2580,7 @@ body .ui-calendar .ui-button.ui-button-icon-only {
   border-bottom-left-radius: 0; }
   body .ui-calendar .ui-button.ui-button-icon-only .ui-icon-calendar {
     font-family: 'primeicons' !important;
+    font-style: normal;
     font-weight: normal;
     display: inline-block;
     background: none; }
@@ -2535,6 +2610,7 @@ body .ui-inplace .ui-inplace-display {
     transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s; }
 body .ui-inplace .ui-inplace-save .ui-icon {
   font-family: 'primeicons' !important;
+  font-style: normal;
   font-weight: normal;
   display: inline-block;
   background: none; }
@@ -2544,6 +2620,7 @@ body .ui-inplace .ui-inplace-cancel {
   margin-left: 0.25rem; }
   body .ui-inplace .ui-inplace-cancel .ui-icon {
     font-family: 'primeicons' !important;
+    font-style: normal;
     font-weight: normal;
     display: inline-block;
     background: none; }
@@ -2767,6 +2844,7 @@ body .ui-password .ui-password-icon {
   cursor: pointer; }
 body .ui-password.ui-password-masked .ui-password-icon {
   font-family: 'primeicons' !important;
+  font-style: normal;
   font-weight: normal;
   display: inline-block;
   background: none; }
@@ -2774,6 +2852,7 @@ body .ui-password.ui-password-masked .ui-password-icon {
     content: ""; }
 body .ui-password.ui-password-unmasked .ui-password-icon {
   font-family: 'primeicons' !important;
+  font-style: normal;
   font-weight: normal;
   display: inline-block;
   background: none; }
@@ -2851,6 +2930,7 @@ body .ui-rating .ui-rating-cancel {
   overflow: visible; }
   body .ui-rating .ui-rating-cancel a {
     font-family: 'primeicons' !important;
+    font-style: normal;
     font-weight: normal;
     display: inline-block;
     background: none;
@@ -2873,6 +2953,7 @@ body .ui-rating .ui-rating-star {
   overflow: visible; }
   body .ui-rating .ui-rating-star a {
     font-family: 'primeicons' !important;
+    font-style: normal;
     font-weight: normal;
     display: inline-block;
     background: none;
@@ -2889,6 +2970,7 @@ body .ui-rating .ui-rating-star {
       color: #0d89ec; }
 body .ui-rating .ui-rating-star-on a {
   font-family: 'primeicons' !important;
+  font-style: normal;
   font-weight: normal;
   display: inline-block;
   background: none;
@@ -2947,6 +3029,7 @@ body .ui-selectcheckboxmenu {
       margin: 0;
       color: #6c757d;
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -2975,6 +3058,7 @@ body .ui-selectcheckboxmenu {
       margin-top: -0.5rem;
       position: absolute;
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -3028,6 +3112,7 @@ body .ui-selectcheckboxmenu-panel {
         padding-left: 2rem; }
       body .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-selectcheckboxmenu-filter-container .ui-icon {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none;
@@ -3061,6 +3146,7 @@ body .ui-selectcheckboxmenu-panel {
         border-color: transparent; }
       body .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-selectcheckboxmenu-close .ui-icon {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none;
@@ -3123,6 +3209,7 @@ body .ui-selectmanymenu {
     body .ui-selectonelistbox .ui-selectlistbox-filter-container .ui-icon,
     body .ui-selectmanymenu .ui-selectlistbox-filter-container .ui-icon {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none;
@@ -3208,6 +3295,7 @@ body .ui-selectonemenu {
       margin: 0;
       color: #6c757d;
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -3253,6 +3341,7 @@ body .ui-selectonemenu-panel {
       padding-left: 2rem; }
     body .ui-selectonemenu-panel .ui-selectonemenu-filter-container .ui-icon {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none;
@@ -3344,6 +3433,7 @@ body .ui-spinner .ui-spinner-button.ui-button {
     border-top-right-radius: 4px; }
     body .ui-spinner .ui-spinner-button.ui-button.ui-spinner-up .ui-icon {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -3353,6 +3443,7 @@ body .ui-spinner .ui-spinner-button.ui-button {
     border-bottom-right-radius: 4px; }
     body .ui-spinner .ui-spinner-button.ui-button.ui-spinner-down .ui-icon {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -3421,6 +3512,7 @@ body .ui-breadcrumb {
         color: #6c757d; }
     body .ui-breadcrumb ul li.ui-breadcrumb-chevron {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none;
@@ -3452,6 +3544,7 @@ body .ui-breadcrumb {
       display: none; }
     body .ui-breadcrumb ul li:first-child a.ui-icon-home {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none;
@@ -3479,6 +3572,7 @@ body .ui-breadcrumb {
       color: #6c757d; }
   body .ui-breadcrumb .ui-breadcrumb-items li.ui-breadcrumb-chevron {
     font-family: 'primeicons' !important;
+    font-style: normal;
     font-weight: normal;
     display: inline-block;
     background: none;
@@ -3510,6 +3604,7 @@ body .ui-breadcrumb {
     display: none; }
   body .ui-breadcrumb .ui-breadcrumb-items li:first-child a.ui-icon-home {
     font-family: 'primeicons' !important;
+    font-style: normal;
     font-weight: normal;
     display: inline-block;
     background: none;
@@ -3537,6 +3632,7 @@ body .ui-menu {
     margin-right: 0.5rem; }
   body .ui-menu.ui-menu-toggleable .ui-menu-list .ui-widget-header .ui-icon-triangle-1-e {
     font-family: 'primeicons' !important;
+    font-style: normal;
     font-weight: normal;
     display: inline-block;
     background: none; }
@@ -3544,6 +3640,7 @@ body .ui-menu {
       content: ""; }
   body .ui-menu.ui-menu-toggleable .ui-menu-list .ui-widget-header .ui-icon-triangle-1-s {
     font-family: 'primeicons' !important;
+    font-style: normal;
     font-weight: normal;
     display: inline-block;
     background: none; }
@@ -3604,6 +3701,7 @@ body .ui-menu {
         color: #495057; }
       body .ui-menu .ui-menu-list .ui-menuitem .ui-menuitem-link .ui-icon-triangle-1-e:last-child {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none;
@@ -3614,6 +3712,7 @@ body .ui-menu {
           content: ""; }
       body .ui-menu .ui-menu-list .ui-menuitem .ui-menuitem-link .ui-icon-triangle-1-s:last-child {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none;
@@ -3676,6 +3775,7 @@ body .ui-menu {
       position: relative;
       top: 2px;
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none;
@@ -3749,6 +3849,7 @@ body .ui-panelmenu h3.ui-panelmenu-header {
     margin-right: 0.5rem; }
     body .ui-panelmenu h3.ui-panelmenu-header .ui-icon.ui-icon-triangle-1-e {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -3756,6 +3857,7 @@ body .ui-panelmenu h3.ui-panelmenu-header {
         content: ""; }
     body .ui-panelmenu h3.ui-panelmenu-header .ui-icon.ui-icon-triangle-1-s {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -3805,6 +3907,7 @@ body .ui-panelmenu .ui-panelmenu-content {
       color: #6c757d; }
       body .ui-panelmenu .ui-panelmenu-content .ui-menuitem-link > span.ui-icon.ui-panelmenu-icon.ui-icon-triangle-1-e {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none; }
@@ -3812,6 +3915,7 @@ body .ui-panelmenu .ui-panelmenu-content {
           content: ""; }
       body .ui-panelmenu .ui-panelmenu-content .ui-menuitem-link > span.ui-icon.ui-panelmenu-icon.ui-icon-triangle-1-s {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none; }
@@ -3956,6 +4060,7 @@ body .ui-growl {
     box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12); }
     body .ui-growl .ui-growl-item-container .ui-icon-closethick {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none;
@@ -3974,6 +4079,7 @@ body .ui-growl {
       border-width: 0 0 0 6px; }
       body .ui-growl .ui-growl-item-container.ui-growl-info .ui-growl-image {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none;
@@ -3990,6 +4096,7 @@ body .ui-growl {
       border-width: 0 0 0 6px; }
       body .ui-growl .ui-growl-item-container.ui-growl-warn .ui-growl-image {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none;
@@ -4006,6 +4113,7 @@ body .ui-growl {
       border-width: 0 0 0 6px; }
       body .ui-growl .ui-growl-item-container.ui-growl-error .ui-growl-image, body .ui-growl .ui-growl-item-container.ui-growl-fatal .ui-growl-image {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none;
@@ -4027,6 +4135,7 @@ body .ui-message {
     color: #01579B; }
     body .ui-message.ui-message-info .ui-message-info-icon {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none;
@@ -4048,6 +4157,7 @@ body .ui-message {
     color: #7f6003; }
     body .ui-message.ui-message-warn .ui-message-warn-icon {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none;
@@ -4069,6 +4179,7 @@ body .ui-message {
     color: #B71C1C; }
     body .ui-message.ui-message-error .ui-message-error-icon, body .ui-message.ui-message-fatal .ui-message-error-icon {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none;
@@ -4134,6 +4245,7 @@ body .ui-messages {
       border-color: transparent; }
     body .ui-messages .ui-messages-close .ui-icon-close {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -4146,6 +4258,7 @@ body .ui-messages {
     color: #01579B; }
     body .ui-messages .ui-messages-info .ui-messages-info-icon {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none;
@@ -4166,6 +4279,7 @@ body .ui-messages {
     color: #7f6003; }
     body .ui-messages .ui-messages-warn .ui-messages-warn-icon {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none;
@@ -4188,6 +4302,7 @@ body .ui-messages {
     body .ui-messages .ui-messages-error .ui-messages-fatal, body .ui-messages .ui-messages-fatal .ui-messages-error-icon,
     body .ui-messages .ui-messages-fatal .ui-messages-fatal {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none;
@@ -4311,6 +4426,7 @@ body .ui-galleria .ui-galleria-nav-next {
     scale: 1.2; }
 body .ui-galleria .ui-galleria-nav-prev {
   font-family: 'primeicons' !important;
+  font-style: normal;
   font-weight: normal;
   display: inline-block;
   background: none;
@@ -4319,6 +4435,7 @@ body .ui-galleria .ui-galleria-nav-prev {
     content: ""; }
 body .ui-galleria .ui-galleria-nav-next {
   font-family: 'primeicons' !important;
+  font-style: normal;
   font-weight: normal;
   display: inline-block;
   background: none;
@@ -4361,6 +4478,7 @@ body .ui-log {
         border-color: transparent; }
       body .ui-log .ui-log-header .ui-log-button .ui-icon-trash {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none; }
@@ -4368,6 +4486,7 @@ body .ui-log {
           content: ""; }
       body .ui-log .ui-log-header .ui-log-button .ui-icon-note {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none; }
@@ -4375,6 +4494,7 @@ body .ui-log {
           content: ""; }
       body .ui-log .ui-log-header .ui-log-button .ui-icon-info {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none; }
@@ -4382,6 +4502,7 @@ body .ui-log {
           content: ""; }
       body .ui-log .ui-log-header .ui-log-button .ui-icon-notice {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none; }
@@ -4389,6 +4510,7 @@ body .ui-log {
           content: ""; }
       body .ui-log .ui-log-header .ui-log-button .ui-icon-search {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none; }
@@ -4396,6 +4518,7 @@ body .ui-log {
           content: ""; }
       body .ui-log .ui-log-header .ui-log-button .ui-icon-alert {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none; }
@@ -4547,6 +4670,7 @@ body .ui-dialog {
         border-color: transparent; }
       body .ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-icon .ui-icon-closethick {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none; }
@@ -4554,6 +4678,7 @@ body .ui-dialog {
           content: ""; }
       body .ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-icon .ui-icon-minus {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none; }
@@ -4561,6 +4686,7 @@ body .ui-dialog {
           content: ""; }
       body .ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-icon .ui-icon-plus {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none; }
@@ -4568,6 +4694,7 @@ body .ui-dialog {
           content: ""; }
       body .ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-icon .ui-icon-extlink {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none; }
@@ -4575,6 +4702,7 @@ body .ui-dialog {
           content: ""; }
       body .ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-icon .ui-icon-newwin {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none; }
@@ -4613,6 +4741,7 @@ body .ui-dialog {
         font-size: 2.5rem; }
         body .ui-dialog.ui-confirm-dialog .ui-dialog-content > span.ui-icon.ui-icon-warn {
           font-family: 'primeicons' !important;
+          font-style: normal;
           font-weight: normal;
           display: inline-block;
           background: none; }
@@ -4620,6 +4749,7 @@ body .ui-dialog {
             content: ""; }
         body .ui-dialog.ui-confirm-dialog .ui-dialog-content > span.ui-icon.ui-icon-info {
           font-family: 'primeicons' !important;
+          font-style: normal;
           font-weight: normal;
           display: inline-block;
           background: none; }
@@ -4627,6 +4757,7 @@ body .ui-dialog {
             content: ""; }
         body .ui-dialog.ui-confirm-dialog .ui-dialog-content > span.ui-icon.ui-icon-error {
           font-family: 'primeicons' !important;
+          font-style: normal;
           font-weight: normal;
           display: inline-block;
           background: none; }
@@ -4653,6 +4784,7 @@ body .ui-dialog {
         height: auto; }
         body .ui-dialog.ui-message-dialog .ui-dialog-content > span.ui-dialog-message.ui-messages-warn-icon {
           font-family: 'primeicons' !important;
+          font-style: normal;
           font-weight: normal;
           display: inline-block;
           background: none; }
@@ -4660,6 +4792,7 @@ body .ui-dialog {
             content: ""; }
         body .ui-dialog.ui-message-dialog .ui-dialog-content > span.ui-dialog-message.ui-messages-info-icon {
           font-family: 'primeicons' !important;
+          font-style: normal;
           font-weight: normal;
           display: inline-block;
           background: none; }
@@ -4667,6 +4800,7 @@ body .ui-dialog {
             content: ""; }
         body .ui-dialog.ui-message-dialog .ui-dialog-content > span.ui-dialog-message.ui-messages-error-icon {
           font-family: 'primeicons' !important;
+          font-style: normal;
           font-weight: normal;
           display: inline-block;
           background: none; }
@@ -4703,6 +4837,7 @@ body .ui-lightbox {
         border-color: transparent; }
       body .ui-lightbox .ui-lightbox-caption .ui-lightbox-close .ui-icon {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none; }
@@ -4716,6 +4851,7 @@ body .ui-lightbox {
     padding: 0; }
     body .ui-lightbox .ui-lightbox-content-wrapper .ui-lightbox-nav-left {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none;
@@ -4731,6 +4867,7 @@ body .ui-lightbox {
         display: none; }
     body .ui-lightbox .ui-lightbox-content-wrapper .ui-lightbox-nav-right {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none;
@@ -4776,6 +4913,7 @@ body .ui-overlaypanel {
       color: #ffffff; }
     body .ui-overlaypanel .ui-overlaypanel-close .ui-icon {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none;
@@ -4809,6 +4947,7 @@ body .ui-sidebar {
       border-color: transparent; }
     body .ui-sidebar .ui-sidebar-close .ui-icon {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -4878,6 +5017,7 @@ body .ui-accordion .ui-accordion-header {
     margin: 0 0.5rem 0 0; }
     body .ui-accordion .ui-accordion-header > .ui-icon.ui-icon-triangle-1-e {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -4885,6 +5025,7 @@ body .ui-accordion .ui-accordion-header {
         content: ""; }
     body .ui-accordion .ui-accordion-header > .ui-icon.ui-icon-triangle-1-s {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -4963,6 +5104,7 @@ body .ui-fieldset {
       margin-right: 0.5rem; }
     body .ui-fieldset .ui-fieldset-legend .ui-icon-minusthick {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -4970,6 +5112,7 @@ body .ui-fieldset {
         content: ""; }
     body .ui-fieldset .ui-fieldset-legend .ui-icon-plusthick {
       font-family: 'primeicons' !important;
+      font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
@@ -5029,6 +5172,7 @@ body .ui-panel {
         border-color: transparent; }
       body .ui-panel .ui-panel-titlebar .ui-panel-titlebar-icon .ui-icon-closethick {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none; }
@@ -5036,6 +5180,7 @@ body .ui-panel {
           content: ""; }
       body .ui-panel .ui-panel-titlebar .ui-panel-titlebar-icon .ui-icon-minusthick {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none; }
@@ -5043,6 +5188,7 @@ body .ui-panel {
           content: ""; }
       body .ui-panel .ui-panel-titlebar .ui-panel-titlebar-icon .ui-icon-plusthick {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none; }
@@ -5050,6 +5196,7 @@ body .ui-panel {
           content: ""; }
       body .ui-panel .ui-panel-titlebar .ui-panel-titlebar-icon .ui-icon-gear {
         font-family: 'primeicons' !important;
+        font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none; }
@@ -5156,6 +5303,7 @@ body .ui-tabs {
           margin: 0;
           float: none;
           font-family: 'primeicons' !important;
+          font-style: normal;
           font-weight: normal;
           display: inline-block;
           background: none;
@@ -5300,6 +5448,7 @@ body .ui-tabs {
         body .ui-tabs .ui-tabs-navscroller .ui-tabs-navscroller-btn.ui-tabs-navscroller-btn-left .ui-icon {
           margin: 0;
           font-family: 'primeicons' !important;
+          font-style: normal;
           font-weight: normal;
           display: inline-block;
           background: none; }
@@ -5311,6 +5460,7 @@ body .ui-tabs {
         body .ui-tabs .ui-tabs-navscroller .ui-tabs-navscroller-btn.ui-tabs-navscroller-btn-right .ui-icon {
           margin: 0;
           font-family: 'primeicons' !important;
+          font-style: normal;
           font-weight: normal;
           display: inline-block;
           background: none; }
@@ -5347,6 +5497,7 @@ body .ui-wizard .ui-wizard-step-titles .ui-wizard-step-title {
     color: #495057; }
 body .ui-wizard .ui-icon-arrowthick-1-w {
   font-family: 'primeicons' !important;
+  font-style: normal;
   font-weight: normal;
   display: inline-block;
   background: none; }
@@ -5354,6 +5505,7 @@ body .ui-wizard .ui-icon-arrowthick-1-w {
     content: ""; }
 body .ui-wizard .ui-icon-arrowthick-1-e {
   font-family: 'primeicons' !important;
+  font-style: normal;
   font-weight: normal;
   display: inline-block;
   background: none; }
