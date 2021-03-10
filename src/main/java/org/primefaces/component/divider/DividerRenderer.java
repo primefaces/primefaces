@@ -24,6 +24,7 @@
 package org.primefaces.component.divider;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.HTML;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -59,7 +60,7 @@ public class DividerRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("id", divider.getClientId(context), "id");
-        writer.writeAttribute("role", "separator", "role");
+        writer.writeAttribute("role", HTML.ARIA_ROLE_SEPARATOR, "role");
         writer.writeAttribute("class", styleClass, "styleClass");
         if (divider.getStyle() != null) {
             writer.writeAttribute("style", divider.getStyle(), "style");
