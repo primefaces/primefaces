@@ -193,14 +193,14 @@
     *float: none;
 }
 
-.ui-menu .ui-separator {
-    width:98%;
-    height:0px;
-    float:left;
-    clear:both;
-    margin:1px 0 0 0;
-    padding:0;
-    border-top: 0px none;
+body .ui-menu .ui-divider.ui-divider-vertical {
+    display: inline-flex;
+    vertical-align: middle;
+    margin: .25rem 0;
+}
+
+body .ui-menu .ui-divider.ui-divider-horizontal {
+    margin: 0 .25rem;
 }
 
 /** MegaMenu **/
