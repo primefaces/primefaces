@@ -612,7 +612,7 @@ body .ui-carousel {
         font-weight: normal;
         display: inline-block;
         background: none;
-        color: rgba(100, 181, 246, 0.16); }
+        color: #90CAF9; }
         body .ui-carousel .ui-carousel-page-links .ui-carousel-page-link.ui-icon-radio-on:before {
           content: ""; }
 
@@ -1072,7 +1072,8 @@ body .ui-dataview.ui-dataview-list .ui-dataview-row {
 
 body .fc .fc-scrollgrid {
   border-color: #304562; }
-body .fc .fc-daygrid-day.fc-day-today {
+body .fc .fc-daygrid-day.fc-day-today,
+body .fc .fc-timegrid-col.fc-day-today {
   background-color: rgba(100, 181, 246, 0.16); }
 body .fc th {
   background: #1f2d40;
@@ -2765,7 +2766,7 @@ body .ui-inputswitch {
   body .ui-inputswitch.ui-inputswitch-checked {
     background: #90CAF9; }
     body .ui-inputswitch.ui-inputswitch-checked .ui-inputswitch-handle {
-      background: #45a6f5;
+      background: rgba(255, 255, 255, 0.87);
       border-color: #45a6f5;
       margin-left: 2px; }
 
@@ -3485,7 +3486,7 @@ body .ui-toggleswitch {
     outline-offset: 0;
     box-shadow: 0 0 0 1px #b1dafb; }
   body .ui-toggleswitch.ui-toggleswitch-checked .ui-toggleswitch-slider {
-    background: rgba(100, 181, 246, 0.16); }
+    background: #90CAF9; }
     body .ui-toggleswitch.ui-toggleswitch-checked .ui-toggleswitch-slider:before {
       background: rgba(255, 255, 255, 0.87); }
 

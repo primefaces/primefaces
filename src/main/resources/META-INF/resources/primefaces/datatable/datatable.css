@@ -194,8 +194,10 @@
 
 .ui-datatable .ui-datatable-data tr.ui-row-editing td.ui-editable-column,
 .ui-datatable .ui-datatable-data td.ui-cell-editing {
-    padding:0;
-    margin:0;
+    padding-top:0;
+    padding-bottom:0;
+    margin-top:0;
+    margin-bottom:0;
 }
 
 .ui-row-editor-outline {
