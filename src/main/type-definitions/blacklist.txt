@@ -18,6 +18,7 @@ locales/locale-fa.js
 locales/locale-fr.js
 locales/locale-hr.js
 locales/locale-hu.js
+locales/locale-in.js
 locales/locale-it.js
 locales/locale-iw.js
 locales/locale-ka.js

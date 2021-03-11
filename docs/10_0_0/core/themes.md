@@ -27,7 +27,6 @@ PrimeFaces comes built-in with themes ready to use of out the box. They include:
 - nova-colored
 - nova-dark
 - nova-light
-- omega
 - saga (DEFAULT)
 - vela
 
