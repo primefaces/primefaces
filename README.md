@@ -48,11 +48,11 @@ For a full list of the available downloads, please visit the [download page](htt
 	<dependency>
 	    <groupId>org.primefaces</groupId>
 	    <artifactId>primefaces</artifactId>
-	    <version>8.0</version>
+	    <version>10.0.0</version>
 	</dependency>
 	```
 
-- Official release (jakarta; JSF 3.0; not yet released)
+- Official release (jakarta; JSF 3.0)
 
   ```xml
   <dependency>
