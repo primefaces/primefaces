@@ -45,7 +45,6 @@ public class PrimeConfiguration {
     private final boolean resetValuesEnabled;
     private final boolean interpretEmptyStringAsNull;
     private final String theme;
-    private final boolean fontAwesomeEnabled;
     private final boolean primeIconsEnabled;
     private final boolean clientSideLocalizationEnabled;
     private final boolean clientSideValidationEnabled;
@@ -99,9 +98,6 @@ public class PrimeConfiguration {
         uploader = (value == null) ? "auto" : value;
 
         theme = externalContext.getInitParameter(Constants.ContextParams.THEME);
-
-        value = externalContext.getInitParameter(Constants.ContextParams.FONT_AWESOME);
-        fontAwesomeEnabled = Boolean.parseBoolean(value);
 
         value = externalContext.getInitParameter(Constants.ContextParams.PRIME_ICONS);
         primeIconsEnabled = Boolean.parseBoolean(Objects.toString(value, "true"));
@@ -202,10 +198,6 @@ public class PrimeConfiguration {
 
     public String getTheme() {
         return theme;
-    }
-
-    public boolean isFontAwesomeEnabled() {
-        return fontAwesomeEnabled;
     }
 
     public boolean isPrimeIconsEnabled() {

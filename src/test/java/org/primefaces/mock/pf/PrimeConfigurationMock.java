@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright (c) 2009-2019 PrimeTek
@@ -36,7 +36,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
     private boolean resetValuesEnabled = false;
     private boolean interpretEmptyStringAsNull = false;
     private String  theme = null;
-    private boolean fontAwesomeEnabled = false;
     private boolean clientSideValidationEnabled = false;
     private String  uploader = null;
     private boolean transformMetadataEnabled = false;
@@ -98,15 +97,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
 
     public void setTheme(String theme) {
         this.theme = theme;
-    }
-
-    @Override
-    public boolean isFontAwesomeEnabled() {
-        return fontAwesomeEnabled;
-    }
-
-    public void setFontAwesomeEnabled(boolean fontAwesomeEnabled) {
-        this.fontAwesomeEnabled = fontAwesomeEnabled;
     }
 
     @Override
