@@ -24,7 +24,6 @@
 package org.primefaces.component.selectonemenu;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -66,9 +65,10 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             // #2862 check if it matches a label and if so use the value
             if (!LangUtils.isValueBlank(editorInput)) {
                 List<SelectItem> selectItems = getSelectItems(context, menu);
-                Object foundValue = findEditableValue(context, selectItems, editorInput);
-                if (foundValue != null) {
-                    menu.setSubmittedValue(getOptionAsString(context, menu, menu.getConverter(), foundValue));
+                Converter converter = menu.getConverter();
+                SelectItem foundItem = findSelectItemByLabel(context, menu, converter, selectItems, editorInput);
+                if (foundItem != null) {
+                    menu.setSubmittedValue(getOptionAsString(context, menu, converter, foundItem.getValue()));
                 }
             }
 
@@ -77,36 +77,6 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         else {
             super.decode(context, component);
         }
-    }
-
-    /**
-     * Recursive method used when editable="true" to detect whether the submitted value
-     * matches a value in one of the SelectItems. GitHub #2862 and #6507
-     * @param context FacesContext
-     * @param selectItems the List of SelectItems
-     * @param editorInput the editor input value to search for
-     * @return either the value found or NULL if no item found
-     */
-    protected Object findEditableValue(FacesContext context, List<SelectItem> selectItems, String editorInput) {
-        Object foundValue = null;
-        for (int i = 0; i < selectItems.size(); i++) {
-            SelectItem item = selectItems.get(i);
-            if (item instanceof SelectItemGroup) {
-                SelectItemGroup selectItemGroup = (SelectItemGroup) item;
-                foundValue = findEditableValue(context, Arrays.asList(selectItemGroup.getSelectItems()), editorInput);
-                if (foundValue != null) {
-                    break;
-                }
-            }
-            else {
-                if (item.getLabel().equalsIgnoreCase(editorInput)) {
-                    foundValue = item.getValue();
-                    break;
-                }
-            }
-        }
-
-        return foundValue;
     }
 
     @Override

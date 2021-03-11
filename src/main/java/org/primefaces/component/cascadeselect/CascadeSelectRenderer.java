@@ -24,10 +24,7 @@
 package org.primefaces.component.cascadeselect;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectOne;
 import javax.faces.context.FacesContext;
@@ -123,7 +120,7 @@ public class CascadeSelectRenderer extends SelectOneRenderer {
 
         Converter converter = ComponentUtils.getConverter(context, cascadeSelect);
         String itemLabel = valueToRender;
-        SelectItem foundItem = findItemByValue(context, cascadeSelect, converter, itemList, valueToRender);
+        SelectItem foundItem = findSelectItemByValue(context, cascadeSelect, converter, itemList, valueToRender);
         if (foundItem != null) {
             itemLabel = foundItem.getLabel();
         }
@@ -253,41 +250,6 @@ public class CascadeSelectRenderer extends SelectOneRenderer {
                 context.getExternalContext().getRequestMap().put(var, null);
             }
         }
-    }
-
-    /**
-     * Recursive method used to find a SelectItem by its value.
-     * @param context FacesContext
-     * @param the current UI component to find value for
-     * @param converter the converter for the select items
-     * @param selectItems the List of SelectItems
-     * @param value the input value to search for
-     * @return either the SelectItem found or NULL if not found
-     */
-    protected SelectItem findItemByValue(FacesContext context, UIComponent component, Converter converter, List<SelectItem> selectItems, String value) {
-        SelectItem foundValue = null;
-        for (int i = 0; i < selectItems.size(); i++) {
-            SelectItem item = selectItems.get(i);
-            if (item instanceof SelectItemGroup) {
-                SelectItemGroup selectItemGroup = (SelectItemGroup) item;
-                if (selectItemGroup.getSelectItems() == null) {
-                    continue;
-                }
-                foundValue = findItemByValue(context, component,  converter, Arrays.asList(selectItemGroup.getSelectItems()), value);
-                if (foundValue != null) {
-                    break;
-                }
-            }
-            else {
-                String itemValueAsString = getOptionAsString(context, component, converter, item.getValue());
-                if (Objects.equals(value, itemValueAsString)) {
-                    foundValue = item;
-                    break;
-                }
-            }
-        }
-
-        return foundValue;
     }
 
     protected void encodeScript(FacesContext context, CascadeSelect cascadeSelect) throws IOException {
