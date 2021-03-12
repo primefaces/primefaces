@@ -45,17 +45,14 @@ public class SkeletonRenderer extends CoreRenderer {
                     .add("circle".equals(skeleton.getShape()), Skeleton.CIRCLE_CLASS)
                     .add("none".equals(skeleton.getAnimation()), Skeleton.NONE_ANIMATION_CLASS)
                     .build();
-        String style = skeleton.getStyle();
-        style = style == null ? "" : style;
 
-        if (size != null) {
-            style += " width: " + size + "; height: " + size + ";";
-        }
-        else {
-            style += " width: " + skeleton.getWidth() + "; height: " + skeleton.getHeight() + ";";
-        }
-
-        if (borderRadius != null) style += " borderRadius: " + borderRadius + ";";
+        boolean hasSize = size != null;
+        String style = getStyleBuilder(context)
+                         .add(skeleton.getStyle())
+                         .add(hasSize,  "width", size, skeleton.getWidth())
+                         .add(hasSize,  "height", size, skeleton.getHeight())
+                         .add(borderRadius != null,  "borderRadius", borderRadius)
+                         .build();
 
         writer.startElement("div", null);
         writer.writeAttribute("id", skeleton.getClientId(context), "id");
