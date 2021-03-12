@@ -66,19 +66,16 @@ public class QRCodeHandler extends BaseDynamicContentHandler {
     }
 
     protected Ecc getErrorCorrection(final String value) {
-        if (!LangUtils.isValueBlank(value)) {
-            switch (value) {
-                case "M":
-                    return Ecc.MEDIUM;
-                case "Q":
-                    return Ecc.QUARTILE;
-                case "H":
-                    return Ecc.HIGH;
-                default:
-                    return Ecc.LOW;
-            }
+        switch (LangUtils.isValueBlank(value) ? Constants.EMPTY_STRING : value) {
+            case "M":
+                return Ecc.MEDIUM;
+            case "Q":
+                return Ecc.QUARTILE;
+            case "H":
+                return Ecc.HIGH;
+            default:
+                return Ecc.LOW;
         }
-        return Ecc.LOW;
     }
 
 }
