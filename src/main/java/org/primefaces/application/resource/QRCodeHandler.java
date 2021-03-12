@@ -52,7 +52,7 @@ public class QRCodeHandler extends BaseDynamicContentHandler {
             QrCode qrCode = QrCode.encodeText(value, getErrorCorrection(params.get("qrec")));
             if ("png".equals(params.get("fmt"))) {
                 externalContext.setResponseContentType("image/png");
-                ImageIO.write(qrCode.toImage(24, 0), "png", externalContext.getResponseOutputStream());
+                ImageIO.write(qrCode.toImage(12, 0), "png", externalContext.getResponseOutputStream());
             }
             else {
                 externalContext.setResponseContentType("image/svg+xml");
