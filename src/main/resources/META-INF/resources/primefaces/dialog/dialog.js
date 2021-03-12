@@ -90,6 +90,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.cfg.my = this.cfg.my||'center';
         this.cfg.position = this.cfg.position||'center';
         this.cfg.cache = this.cfg.cache === false ? false : true;
+        this.cfg.responsive = this.cfg.responsive === false ? false : true;
         this.parent = this.jq.parent();
 
         this.initSize();
