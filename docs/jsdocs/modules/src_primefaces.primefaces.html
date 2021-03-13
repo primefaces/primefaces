@@ -93,11 +93,14 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-interface tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../interfaces/src_primefaces.primefaces.class.html" class="tsd-kind-icon">Class</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../interfaces/src_primefaces.primefaces.converter.html" class="tsd-kind-icon">Converter</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/src_primefaces.primefaces.csstransitioncallback.html" class="tsd-kind-icon">Css<wbr>Transition<wbr>Callback</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/src_primefaces.primefaces.csstransitionhandler.html" class="tsd-kind-icon">Css<wbr>Transition<wbr>Handler</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/src_primefaces.primefaces.deferredrender.html" class="tsd-kind-icon">Deferred<wbr>Render</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/src_primefaces.primefaces.facesmessage.html" class="tsd-kind-icon">Faces<wbr>Message</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/src_primefaces.primefaces.facesmessagebase.html" class="tsd-kind-icon">Faces<wbr>Message<wbr>Base</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/src_primefaces.primefaces.highlighter.html" class="tsd-kind-icon">Highlighter</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/src_primefaces.primefaces.locale.html" class="tsd-kind-icon">Locale</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/src_primefaces.primefaces.unbindcallback.html" class="tsd-kind-icon">Unbind<wbr>Callback</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace tsd-has-type-parameter"><a href="../interfaces/src_primefaces.primefaces.validator.html" class="tsd-kind-icon">Validator</a></li>
 							</ul>
 						</section>
@@ -140,6 +143,8 @@
 								<li class="tsd-kind-variable tsd-parent-kind-namespace"><a href="src_primefaces.primefaces.html#version" class="tsd-kind-icon">VERSION</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-namespace"><a href="src_primefaces.primefaces.html#view_root" class="tsd-kind-icon">VIEW_<wbr>ROOT</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-namespace"><a href="src_primefaces.primefaces.html#view_state" class="tsd-kind-icon">VIEW_<wbr>STATE</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-namespace"><a href="src_primefaces.primefaces.html#animationactive" class="tsd-kind-icon">animation<wbr>Active</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-namespace"><a href="src_primefaces.primefaces.html#animationenabled" class="tsd-kind-icon">animation<wbr>Enabled</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-namespace"><a href="src_primefaces.primefaces.html#confirmdialog" class="tsd-kind-icon">confirm<wbr>Dialog</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-namespace"><a href="src_primefaces.primefaces.html#confirmsource" class="tsd-kind-icon">confirm<wbr>Source</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-namespace"><a href="src_primefaces.primefaces.html#converter-1" class="tsd-kind-icon">converter</a></li>
@@ -974,6 +979,31 @@
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Name of the POST parameter that contains the current view state.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-namespace">
+					<a name="animationactive" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagLet">Let</span> animation<wbr>Active</h3>
+					<div class="tsd-signature tsd-kind-icon">animation<wbr>Active<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Flag for detecting whether animation is currently running. Similar to jQuery.active flag and is useful
+							for scripts or automation tests to determine if the animation is currently running.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-namespace">
+					<a name="animationenabled" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagLet">Let</span> animation<wbr>Enabled</h3>
+					<div class="tsd-signature tsd-kind-icon">animation<wbr>Enabled<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Global flag for enabling or disabling both jQuery and CSS animations.</p>
 						</div>
 					</div>
 				</section>
@@ -2080,7 +2110,7 @@
 					<a name="getlocalesettings" class="tsd-anchor"></a>
 					<h3>get<wbr>Locale<wbr>Settings</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Locale<wbr>Settings<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/src_primefaces.primefaces.locale.html" class="tsd-signature-type" data-tsd-kind="Interface">Locale</a></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Locale<wbr>Settings<span class="tsd-signature-symbol">(</span>cfgLocale<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/src_primefaces.primefaces.locale.html" class="tsd-signature-type" data-tsd-kind="Interface">Locale</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -2088,11 +2118,22 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Returns the i18n key-value-pairs for the current locale.</p>
+									<p>Finds the current locale with the i18n keys and the associated translations. Uses the current language key
+										as specified by <code>PrimeFaces.settings.locale</code>. When no locale was found for the given locale, falls back to
+									the default English locale.</p>
 								</div>
 							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> cfgLocale: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>optional configuration locale from the widget</p>
+									</div>
+								</li>
+							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/src_primefaces.primefaces.locale.html" class="tsd-signature-type" data-tsd-kind="Interface">Locale</a></h4>
-							<p>The current locale settings.</p>
+							<p>The current locale with the key-value pairs.</p>
 						</li>
 					</ul>
 				</section>
@@ -2204,7 +2245,7 @@
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
-									<h4>TWidget<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span></h4>
+									<h4>TWidget<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">new </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span></h4>
 									<div class="tsd-comment tsd-typography">
 										<p>Type of the widgets of interest, e.g.
 										<code>PrimeFaces.widget.DataTable</code>.</p>
@@ -3234,6 +3275,12 @@
 						<a href="../interfaces/src_primefaces.primefaces.converter.html" class="tsd-kind-icon">Converter</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="../interfaces/src_primefaces.primefaces.csstransitioncallback.html" class="tsd-kind-icon">Css<wbr>Transition<wbr>Callback</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="../interfaces/src_primefaces.primefaces.csstransitionhandler.html" class="tsd-kind-icon">Css<wbr>Transition<wbr>Handler</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="../interfaces/src_primefaces.primefaces.deferredrender.html" class="tsd-kind-icon">Deferred<wbr>Render</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
@@ -3247,6 +3294,9 @@
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="../interfaces/src_primefaces.primefaces.locale.html" class="tsd-kind-icon">Locale</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="../interfaces/src_primefaces.primefaces.unbindcallback.html" class="tsd-kind-icon">Unbind<wbr>Callback</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace tsd-has-type-parameter">
 						<a href="../interfaces/src_primefaces.primefaces.validator.html" class="tsd-kind-icon">Validator</a>
@@ -3343,6 +3393,12 @@
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-namespace">
 						<a href="src_primefaces.primefaces.html#view_state" class="tsd-kind-icon">VIEW_<wbr>STATE</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-namespace">
+						<a href="src_primefaces.primefaces.html#animationactive" class="tsd-kind-icon">animation<wbr>Active</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-namespace">
+						<a href="src_primefaces.primefaces.html#animationenabled" class="tsd-kind-icon">animation<wbr>Enabled</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-namespace">
 						<a href="src_primefaces.primefaces.html#confirmdialog" class="tsd-kind-icon">confirm<wbr>Dialog</a>
