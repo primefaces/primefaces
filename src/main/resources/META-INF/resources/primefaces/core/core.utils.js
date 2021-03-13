@@ -10,7 +10,7 @@ if (!PrimeFaces.utils) {
          * Finds the element to which the overlay panel should be appended. If none is specified explicitly, append the
          * panel to the body.
          * @param {PrimeFaces.widget.DynamicOverlayWidget} widget A widget that has a panel to be appended.
-         * @param {JQuery} overlay The DOM element for the overlay.
+         * @param {JQuery} [overlay] The DOM element for the overlay.
          * @return {string | null} The search expression for the element to which the overlay panel should be appended.
          */
         resolveAppendTo: function(widget, overlay) {
@@ -261,14 +261,14 @@ if (!PrimeFaces.utils) {
          * widget.
          *
          * @param {PrimeFaces.widget.BaseWidget} widget An overlay widget instance.
-         * @param {string} hideNamespace A click event with a namspace to listen to, such as `mousedown.widgetId`.
+         * @param {string} hideNamespace A click event with a namespace to listen to, such as `mousedown.widgetId`.
          * @param {JQuery} overlay The DOM element for the overlay.
          * @param {((event: JQuery.TriggeredEvent) => JQuery) | undefined} resolveIgnoredElementsCallback The callback which
          * resolves the elements to ignore when the user clicks outside the overlay. The `hideCallback` is not invoked
          * when the user clicks on one those elements.
          * @param {(event: JQuery.TriggeredEvent, eventTarget: JQuery) => void} hideCallback A callback that is invoked when the
          * user clicks on an element outside the overlay widget.
-         * @return {() => void} unbind callback handler
+         * @return {PrimeFaces.UnbindCallback} Unbind callback handler
          */
         registerHideOverlayHandler: function(widget, hideNamespace, overlay, resolveIgnoredElementsCallback, hideCallback) {
 
@@ -333,7 +333,7 @@ if (!PrimeFaces.utils) {
          * @param {(event: JQuery.TriggeredEvent) => void} resizeCallback A callback that is invoked when the window is resized.
          * @param {string} [params] Optional CSS selector. If given, the callback is invoked only when the resize event
          * is triggered on an element the given selector.
-         * @return {() => void} unbind callback handler
+         * @return {PrimeFaces.UnbindCallback} Unbind callback handler
          */
         registerResizeHandler: function(widget, resizeNamespace, element, resizeCallback, params) {
 
@@ -391,7 +391,7 @@ if (!PrimeFaces.utils) {
          * @param {string} scrollNamespace A scroll event with a namespace, such as `scroll.widgetId`.
          * @param {(event: JQuery.TriggeredEvent) => void} scrollCallback A callback that is invoked when a scroll event
          * occurs on the widget.
-         * @return {() => void} unbind callback handler
+         * @return {PrimeFaces.UnbindCallback} unbind callback handler
          */
         registerScrollHandler: function(widget, scrollNamespace, scrollCallback) {
 
@@ -423,7 +423,7 @@ if (!PrimeFaces.utils) {
          * @param {JQuery | undefined} element A DOM element used to find scrollable parents.
          * @param {(event: JQuery.TriggeredEvent) => void} scrollCallback A callback that is invoked when a scroll event
          * occurs on the widget.
-         * @return {() => void} unbind callback handler
+         * @return {PrimeFaces.UnbindCallback} unbind callback handler
          */
         registerConnectedOverlayScrollHandler: function(widget, scrollNamespace, element, scrollCallback) {
             var scrollableParents = PrimeFaces.utils.getScrollableParents((element || widget.getJQ()).get(0));
@@ -450,9 +450,9 @@ if (!PrimeFaces.utils) {
         },
 
         /**
-         * Find scrollable parents (Not document)
-         * @param {JQuery} element An element used to find its scrollable parents.
-         * @return {any[]} the list of scrollable parents.
+         * Finds scrollable parents (not  the document).
+         * @param {Element} element An element used to find its scrollable parents.
+         * @return {Element[]} the list of scrollable parents.
          */
         getScrollableParents: function(element) {
             var scrollableParents = [];
@@ -638,9 +638,11 @@ if (!PrimeFaces.utils) {
 
         /**
          * CSS Transition method for overlay panels such as SelectOneMenu/SelectCheckboxMenu/Datepicker's panel etc.
-         * @param {JQuery} element An element for which to execute the transition.
-         * @param {string} className Class name used for transition phases.
-         * @return {() => JQuery|null} two callbacks named show and hide. If element or className property is empty/null, it returns null.
+         * @param {JQuery | undefined | null} element An element for which to execute the transition.
+         * @param {string | undefined | null} className Class name used for transition phases.
+         * @return {PrimeFaces.CssTransitionHandler | null} Two handlers named `show` and `hide` that should be invoked
+         * when the element gets shown and hidden. If the given element or className property is `undefined` or `null`,
+         * this function returns `null`.
          */
         registerCSSTransition: function(element, className) {
             if (element && className != null) {

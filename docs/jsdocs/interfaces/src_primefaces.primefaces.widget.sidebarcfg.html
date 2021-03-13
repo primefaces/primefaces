@@ -107,12 +107,15 @@
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="src_primefaces.primefaces.widget.sidebarcfg.html#basezindex" class="tsd-kind-icon">baseZIndex</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="src_primefaces.primefaces.widget.sidebarcfg.html#behaviors" class="tsd-kind-icon">behaviors</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="src_primefaces.primefaces.widget.sidebarcfg.html#dynamic" class="tsd-kind-icon">dynamic</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="src_primefaces.primefaces.widget.sidebarcfg.html#formid" class="tsd-kind-icon">form<wbr>Id</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="src_primefaces.primefaces.widget.sidebarcfg.html#id" class="tsd-kind-icon">id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="src_primefaces.primefaces.widget.sidebarcfg.html#modal" class="tsd-kind-icon">modal</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="src_primefaces.primefaces.widget.sidebarcfg.html#onhide" class="tsd-kind-icon">on<wbr>Hide</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="src_primefaces.primefaces.widget.sidebarcfg.html#onshow" class="tsd-kind-icon">on<wbr>Show</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="src_primefaces.primefaces.widget.sidebarcfg.html#postconstruct" class="tsd-kind-icon">post<wbr>Construct</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="src_primefaces.primefaces.widget.sidebarcfg.html#postrefresh" class="tsd-kind-icon">post<wbr>Refresh</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="src_primefaces.primefaces.widget.sidebarcfg.html#predestroy" class="tsd-kind-icon">pre<wbr>Destroy</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="src_primefaces.primefaces.widget.sidebarcfg.html#showcloseicon" class="tsd-kind-icon">show<wbr>Close<wbr>Icon</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="src_primefaces.primefaces.widget.sidebarcfg.html#visible" class="tsd-kind-icon">visible</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="src_primefaces.primefaces.widget.sidebarcfg.html#widgetvar" class="tsd-kind-icon">widget<wbr>Var</a></li>
 							</ul>
@@ -175,6 +178,19 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+					<a name="formid" class="tsd-anchor"></a>
+					<h3>form<wbr>Id</h3>
+					<div class="tsd-signature tsd-kind-icon">form<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="src_primefaces.primefaces.widget.dynamicoverlaywidgetcfg.html">DynamicOverlayWidgetCfg</a>.<a href="src_primefaces.primefaces.widget.dynamicoverlaywidgetcfg.html#formid">formId</a></p>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>ID of the form to use for AJAX requests.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="id" class="tsd-anchor"></a>
 					<h3>id</h3>
 					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
@@ -186,6 +202,18 @@
 							<p>The client-side ID of the widget, with all parent naming containers, such as
 								<code>myForm:myWidget</code>. This is also the ID of the container HTML element for this widget. In case the widget needs
 							multiple container elements (such as <a href="../modules/src_primefaces.primefaces.widget.paginator.html">Paginator</a>), this may also be an array if IDs.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="modal" class="tsd-anchor"></a>
+					<h3>modal</h3>
+					<div class="tsd-signature tsd-kind-icon">modal<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Whether the sidebar is modal and blocks the main content and other dialogs.</p>
 						</div>
 					</div>
 				</section>
@@ -257,6 +285,18 @@
 								this widget is about to be destroyed, e.g. when the component was removed at the end of an AJAX update. This is
 								called at the beginning of the <a href="../classes/src_primefaces.primefaces.widget.basewidget.html#destroy">destroy</a> method. This is usually specified via the
 							<code>widgetPreDestroy</code> attribute on the JSF component.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="showcloseicon" class="tsd-anchor"></a>
+					<h3>show<wbr>Close<wbr>Icon</h3>
+					<div class="tsd-signature tsd-kind-icon">show<wbr>Close<wbr>Icon<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Whether the close icon is displayed.</p>
 						</div>
 					</div>
 				</section>
@@ -406,6 +446,9 @@
 												<a href="../modules/src_primefaces.primefaces.widget.outputpanel.html">Output<wbr>Panel</a>
 											</li>
 											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.overlaypanel.html">Overlay<wbr>Panel</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
 												<a href="../modules/src_primefaces.primefaces.widget.paginator.html">Paginator</a>
 											</li>
 											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
@@ -514,7 +557,13 @@
 								<a href="src_primefaces.primefaces.widget.sidebarcfg.html#dynamic" class="tsd-kind-icon">dynamic</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="src_primefaces.primefaces.widget.sidebarcfg.html#formid" class="tsd-kind-icon">form<wbr>Id</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 								<a href="src_primefaces.primefaces.widget.sidebarcfg.html#id" class="tsd-kind-icon">id</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="src_primefaces.primefaces.widget.sidebarcfg.html#modal" class="tsd-kind-icon">modal</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="src_primefaces.primefaces.widget.sidebarcfg.html#onhide" class="tsd-kind-icon">on<wbr>Hide</a>
@@ -530,6 +579,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 								<a href="src_primefaces.primefaces.widget.sidebarcfg.html#predestroy" class="tsd-kind-icon">pre<wbr>Destroy</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="src_primefaces.primefaces.widget.sidebarcfg.html#showcloseicon" class="tsd-kind-icon">show<wbr>Close<wbr>Icon</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="src_primefaces.primefaces.widget.sidebarcfg.html#visible" class="tsd-kind-icon">visible</a>

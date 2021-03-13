@@ -4,10 +4,13 @@
  * Password component is an extended version of standard inputSecret component with theme integration and strength
  * indicator.
  * 
- * @prop {JQuery} panel The DOM element for the overlay panel with the hint regarding how strong the password is.
- * @prop {JQuery} meter The DOM element for the gauge giving visual feedback regarding how strong the password is.
  * @prop {JQuery} infoText The DOM element for the informational text regarding how strong the password is.
  * @prop {JQuery} icon The DOM element for mask/unmask icon
+ * @prop {JQuery} meter The DOM element for the gauge giving visual feedback regarding how strong the password is.
+ * @prop {JQuery} panel The DOM element for the overlay panel with the hint regarding how strong the password is.
+ * @prop {PrimeFaces.CssTransitionHandler | null} [transition] Handler for CSS transitions used by this widget.
+ * @prop {PrimeFaces.UnbindCallback} [resizeHandler] Unbind callback for the resize handler.
+ * @prop {PrimeFaces.UnbindCallback} [scrollHandler] Unbind callback for the scroll handler.
  * 
  * @interface {PrimeFaces.widget.PasswordCfg} cfg The configuration for the {@link  Password| Password widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this

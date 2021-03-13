@@ -19,9 +19,9 @@ Finally, you may also  be interested in the [PrimeFaces user guide](https://prim
 
 ## Type declarations
 
-PrimeFaces is a global library that adds methods and constants t the global window scope. To use the type declarations
+PrimeFaces is a global library that adds methods and constants to the global window scope. To use the type declarations
 in a JavaScript or TypeScript file, use a
-[triple-slash directive](https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html#-reference-path-)
+[triple-slash directive](https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html#-reference-types-)
 like this (must be at the top of the file):
 
 ```javascript

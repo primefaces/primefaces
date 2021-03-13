@@ -25,7 +25,6 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  * 
- * @prop {string} cfg.formId ID of the form to use for AJAX requests.
  * @prop {string} cfg.initialStep ID of the wizard step tab that is shown initially.
  * @prop {PrimeFaces.widget.Wizard.OnBackCallback} cfg.onback Callback that is invoked before switching to the previous
  * wizard step. If this returns `false`, stays on the current tab.

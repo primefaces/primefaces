@@ -33,7 +33,6 @@
  * the map.
  * @prop {google.maps.InfoWindow} cfg.infoWindow The current info window instance, if any info window was created yet.
  * @prop {string} cfg.infoWindowContent HTML string with the contents of the info window, as fetched from the server.
- * @prop {string} cfg.formId Client ID of the form to use for AJAX requests. Usually the enclosing form.
  * @prop {(google.maps.Marker & PrimeFaces.widget.GMap.IdProviding)[]} cfg.markers A list of markers to display on the
  * map.
  * @prop {PrimeFaces.widget.GMap.OnPointClickCallback} cfg.onPointClick Javascript callback to execute when a point on

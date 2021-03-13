@@ -31,7 +31,6 @@
  * 
  * @prop {boolean} cfg.ajaxResize Whether AJAX requests are sent when the element is resized.
  * @prop {string} cfg.containment ID of the element to which the target widget is constrained.
- * @prop {string} cfg.formId ID of the form to use for AJAX requests.
  * @prop {PrimeFaces.widget.Resizable.OnResizeCallback} cfg.onResize Client-side callback to execute during resizing.
  * @prop {PrimeFaces.widget.Resizable.OnStartCallback} cfg.onStart Client-side callback to execute when resizing
  * begins.

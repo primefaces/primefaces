@@ -1,10 +1,14 @@
 /**
  * __PrimeFaces Menu Widget__
  * 
- * Base class for the different menu widets, such as the `PlainMenu` or the `TieredMenu`.
+ * Base class for the different menu widgets, such as the `PlainMenu` or the `TieredMenu`.
  * 
- * @prop {JQuery} keyboardTarget The DOM element for the form element that can be targeted via arrow or tab keys. 
+ * @prop {PrimeFaces.UnbindCallback} [hideOverlayHandler] Unbind callback for the hide overlay handler.
  * @prop {boolean} itemMouseDown `true` if a menu item was clicked and the mouse button is still pressed.
+ * @prop {JQuery} keyboardTarget The DOM element for the form element that can be targeted via arrow or tab keys. 
+ * @prop {PrimeFaces.UnbindCallback} [resizeHandler] Unbind callback for the resize handler.
+ * @prop {PrimeFaces.UnbindCallback} [scrollHandler] Unbind callback for the scroll handler.
+ * @prop {PrimeFaces.CssTransitionHandler | null} [transition] Handler for CSS transitions used by this widget.
  * @prop {JQuery} trigger DOM element which triggers this menu.
  * 
  * @interface {PrimeFaces.widget.MenuCfg} cfg The configuration for the {@link  Menu| Menu widget}.

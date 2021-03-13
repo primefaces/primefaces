@@ -108,7 +108,7 @@ declare namespace PrimeFaces {
      * @return A new type that is the intersection of the given `Base` with `void`.
      */
     export type ReturnOrVoid<Base> =
-    // tslint:disable-next-line
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
     Base | void;
     /**
      * Constructs a new type that is the union of all types of each property in T.
@@ -326,7 +326,7 @@ declare namespace PrimeFaces {
      * @return The type that is returned by the JQueryUI wrapper method.
      */
     export type ToJQueryUIWidgetReturnType<W, R, JQ> =
-    // tslint:disable-next-line
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
     R extends W | undefined | void ? JQ : R extends undefined | void ? R | JQ : R;
     /**
      * An object with all localized strings required on the client side.
@@ -514,6 +514,70 @@ declare namespace PrimeFaces {
      * The main container element of the source component that issued the confirmation request.
      */
     export let confirmSource: JQuery | undefined | null;
+    /**
+     * CSS transition callbacks that can be passed to the methods in {@link CssTransitionHandler}.
+     * @since 10.0.0
+     */
+    export interface CssTransitionCallback {
+        /**
+         * Called when the entering process is about to start.
+         */
+        onEnter?: (this: Window) => void;
+        /**
+         * Called during the entering process.
+         * @this The event that occurred. When animations are globally disabled, this callback may still be called, but
+         * no event is passed and the this context is the Window.
+         */
+        onEntering?: (this: JQuery.TriggeredEvent | Window) => void;
+        /**
+         * Called when the entering process has finished.
+         * @this The event that occurred. When animations are globally disabled, this callback may still be called, but
+         * no event is passed and the this context is the Window.
+         */
+        onEntered?: (this: JQuery.TriggeredEvent | Window) => void;
+        /**
+         * Called when the exiting process is about to start.
+         */
+        onExit?: () => void;
+        /**
+         * Called during the exiting process.
+         * @this The event that occurred. When animations are globally disabled, this callback may still be called, but
+         * no event is passed and the this context is the Window.
+         */
+        onExiting?: (this: JQuery.TriggeredEvent | Window) => void;
+        /**
+         * Called when the exiting process has finished.
+         * @this The event that occurred. When animations are globally disabled, this callback may still be called, but
+         * no event is passed and the this context is the Window.
+         */
+        onExited?: (this: JQuery.TriggeredEvent | Window) => void;
+    }
+    /**
+     * Methods for a CSS transition that are returned by {@link PrimeFaces.utils.registerCSSTransition}.
+     * @since 10.0.0
+     */
+    export interface CssTransitionHandler {
+        /**
+         * Should be called when an element gets shown.
+         * @param callbacks Optional callbacks that will be invoked at the appropriate time.
+         */
+        show(callbacks?: CssTransitionCallback): void;
+        /**
+         * Should be called when an element gets hidden.
+         * @param callbacks Optional callbacks that will be invoked at the appropriate time.
+         */
+        hide(callbacks?: CssTransitionCallback): void;
+    }
+    /**
+     * Handler returned by methods that add an event handler that can be used to dispose of bound handler. Removes the
+     * event handler that was added.
+     */
+    export interface UnbindCallback {
+        /**
+         * Removes the event handler or handlers that were added when this callback was created.
+         */
+        unbind(): void;
+    }
 }
 declare namespace PrimeFaces.ajax {
     /**
@@ -2147,6 +2211,10 @@ declare namespace PrimeFaces.widget {
          */
         dropdown: JQuery;
         /**
+         * Unbind callback for the hide overlay handler.
+         */
+        hideOverlayHandler?: PrimeFaces.UnbindCallback;
+        /**
          * The DOM element for the hidden input with the selected value.
          */
         hinput: JQuery;
@@ -2195,6 +2263,14 @@ declare namespace PrimeFaces.widget {
          */
         panelId: string;
         /**
+         * Unbind callback for the resize handler.
+         */
+        resizeHandler?: PrimeFaces.UnbindCallback;
+        /**
+         * Unbind callback for the scroll handler.
+         */
+        scrollHandler?: PrimeFaces.UnbindCallback;
+        /**
          * The DOM element for the autocomplete status ARIA element.
          */
         status: JQuery;
@@ -2206,6 +2282,10 @@ declare namespace PrimeFaces.widget {
          * Whether a touch is made on the dropdown button.
          */
         touchToDropdownButton: boolean;
+        /**
+         * Handler for CSS transitions used by this widget.
+         */
+        transition?: PrimeFaces.CssTransitionHandler | null;
         /**
          * The finishing HTML with the wrapper element of the suggestions box.
          */
@@ -2243,6 +2323,10 @@ declare namespace PrimeFaces.widget {
          * Sets up all keyboard related event listeners.
          */
         private bindKeyEvents(): void;
+        /**
+         * Sets up all panel event listeners
+         */
+        private bindPanelEvents(): void;
         /**
          * Sets up all global event listeners for the overlay.
          */
@@ -2441,6 +2525,10 @@ declare namespace PrimeFaces.widget {
          * @param query Keyword for the search.
          */
         private showSuggestions(query: string): void;
+        /**
+         * Unbind all panel event listeners
+         */
+        private unbindPanelEvents(): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -2497,14 +2585,6 @@ declare namespace PrimeFaces.widget {
          * the overlay is not rendered on page load to improve performance.
          */
         dynamic: boolean;
-        /**
-         * Effect to use when showing and hiding suggestions.
-         */
-        effect: string;
-        /**
-         * Duration of the effect in milliseconds.
-         */
-        effectDuration: number;
         /**
          * Text to display when there is no data to display.
          */
@@ -4550,6 +4630,14 @@ declare namespace PrimeFaces.widget {
          */
         overlay: JQuery;
         /**
+         * Unbind callback for the resize handler.
+         */
+        resizeHandler?: PrimeFaces.UnbindCallback;
+        /**
+         * Unbind callback for the scroll handler.
+         */
+        scrollHandler?: PrimeFaces.UnbindCallback;
+        /**
          * Aligns the overlay panel with the color picker according to the current configuration. It is usually positioned
          * next to or below the input field to which it is attached.
          */
@@ -4558,6 +4646,10 @@ declare namespace PrimeFaces.widget {
          * Sets up the event listeners required by this widget.
          */
         private bindCallbacks(): void;
+        /**
+         * Sets up all panel event listeners
+         */
+        private bindPanelEvents(): void;
         /**
          * When a popup colorpicker is updated via AJAX, a new overlay is appended to body and the old overlay would be
          * orphaned. We need to remove the old overlay to prevent memory leaks.
@@ -4590,6 +4682,10 @@ declare namespace PrimeFaces.widget {
          * Sets up support for using the overlay color picker within an overlay dialog.
          */
         private setupDialogSupport(): void;
+        /**
+         * Unbind all panel event listeners
+         */
+        private unbindPanelEvents(): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -4829,6 +4925,10 @@ declare namespace PrimeFaces.widget {
          */
         content: JQuery;
         /**
+         * Unbind callback for the hide overlay handler.
+         */
+        hideOverlayHandler?: PrimeFaces.UnbindCallback;
+        /**
          * The DOM element for the message icon.
          */
         icon: JQuery;
@@ -4836,6 +4936,18 @@ declare namespace PrimeFaces.widget {
          * DOM element of the confirmation message displayed in this confirm popup.
          */
         message: JQuery;
+        /**
+         * Unbind callback for the resize handler.
+         */
+        resizeHandler?: PrimeFaces.UnbindCallback;
+        /**
+         * Unbind callback for the scroll handler.
+         */
+        scrollHandler?: PrimeFaces.UnbindCallback;
+        /**
+         * Handler for CSS transitions used by this widget.
+         */
+        transition?: PrimeFaces.CssTransitionHandler | null;
         /**
          * Aligns the popup so that it is shown at the correct position.
          * @param target Jquery selector that is the target of this popup
@@ -4849,6 +4961,11 @@ declare namespace PrimeFaces.widget {
          * Sets up all event listeners required by this widget.
          */
         protected bindEvents(): void;
+        /**
+         * Sets up all panel event listeners
+         * @param target Selector or DOM element of the target component that triggers this popup.
+         */
+        private bindPanelEvents(target?: string | JQuery): void;
         /**
          * Hides the popup.
          * @param callback Callback that is invoked after this popup was closed.
@@ -4892,6 +5009,10 @@ declare namespace PrimeFaces.widget {
          * @param msg Message to show.
          */
         showMessage(msg: Partial<PrimeFaces.widget.ConfirmPopup.ConfirmPopupMessage>): void;
+        /**
+         * Unbind all panel event listeners
+         */
+        private unbindPanelEvents(): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -6749,6 +6870,15 @@ declare namespace PrimeFaces {
      */
     export const VIEW_STATE: string;
     /**
+     * Flag for detecting whether animation is currently running. Similar to jQuery.active flag and is useful
+     * for scripts or automation tests to determine if the animation is currently running.
+     */
+    export let animationActive: boolean;
+    /**
+     * Global flag for enabling or disabling both jQuery and CSS animations.
+     */
+    export let animationEnabled: boolean;
+    /**
      * Used to store whether a custom focus has been rendered. This avoids having to retain the last focused element
      * after AJAX update.
      */
@@ -6964,10 +7094,13 @@ declare namespace PrimeFaces {
      */
     export function getFacesResource(name: string, library: string, version: string): string;
     /**
-     * Returns the i18n key-value-pairs for the current locale.
-     * @return The current locale settings.
+     * Finds the current locale with the i18n keys and the associated translations. Uses the current language key
+     * as specified by `PrimeFaces.settings.locale`. When no locale was found for the given locale, falls back to
+     * the default English locale.
+     * @param cfgLocale optional configuration locale from the widget
+     * @return The current locale with the key-value pairs.
      */
-    export function getLocaleSettings(): PrimeFaces.Locale;
+    export function getLocaleSettings(cfgLocale?: string): PrimeFaces.Locale;
     /**
      * Finds the text currently selected by the user on the current page.
      * @return The text currently selected by the user on the current page.
@@ -7365,6 +7498,14 @@ declare namespace PrimeFaces.utils {
      */
     export function cleanupDynamicOverlay(widget: PrimeFaces.widget.DynamicOverlayWidget, overlay: JQuery, overlayId: string, appendTo: JQuery): void;
     /**
+     * Disables CSS and jQuery animation.
+     */
+    export function disableAnimations(): void;
+    /**
+     * Enables CSS and jQuery animation.
+     */
+    export function enableAnimations(): void;
+    /**
      * Enables scrolling again if previously disabled via `PrimeFaces.utils.preventScrolling`.
      */
     export function enableScrolling(): void;
@@ -7380,6 +7521,12 @@ declare namespace PrimeFaces.utils {
      * @return A CSS selector for the elements to be excluded from being touch swiped.
      */
     export function excludedSwipeElements(): string;
+    /**
+     * Finds scrollable parents (not  the document).
+     * @param element An element used to find its scrollable parents.
+     * @return the list of scrollable parents.
+     */
+    export function getScrollableParents(element: Element): Element[];
     /**
      * Ignores certain keys on filter input text box. Useful in filter input events in many components.
      * @param e The key event that occurred.
@@ -7413,14 +7560,25 @@ declare namespace PrimeFaces.utils {
      */
     export function preventTabbing(id: string, zIndex: number, tabbablesCallback: () => JQuery): void;
     /**
+     * CSS Transition method for overlay panels such as SelectOneMenu/SelectCheckboxMenu/Datepicker's panel etc.
+     * @param element An element for which to execute the transition.
+     * @param className Class name used for transition phases.
+     * @return Two handlers named `show` and `hide` that should be invoked
+     * when the element gets shown and hidden. If the given element or className property is `undefined` or `null`,
+     * this function returns `null`.
+     */
+    export function registerCSSTransition(element: JQuery | undefined | null, className: string | undefined | null): PrimeFaces.CssTransitionHandler | null;
+    /**
      * Registers a callback that is invoked when a scroll event is triggered on The DOM element for the widget that
      * has a connected overlay.
      * @param widget A widget instance for which to register a scroll handler.
      * @param scrollNamespace A scroll event with a namespace, such as `scroll.widgetId`.
+     * @param element A DOM element used to find scrollable parents.
      * @param scrollCallback A callback that is invoked when a scroll event
      * occurs on the widget.
+     * @return unbind callback handler
      */
-    export function registerConnectedOverlayScrollHandler(widget: PrimeFaces.widget.BaseWidget, scrollNamespace: string, scrollCallback: (event: JQuery.TriggeredEvent) => void): void;
+    export function registerConnectedOverlayScrollHandler(widget: PrimeFaces.widget.BaseWidget, scrollNamespace: string, element: JQuery | undefined, scrollCallback: (event: JQuery.TriggeredEvent) => void): PrimeFaces.UnbindCallback;
     /**
      * Sets up an overlay widget. Appends the overlay widget to the element as specified by the `appendTo`
      * attribute. Also makes sure the overlay widget is handled propertly during AJAX updates.
@@ -7434,15 +7592,16 @@ declare namespace PrimeFaces.utils {
      * Registers a callback on the document that is invoked when the user clicks on an element outside the overlay
      * widget.
      * @param widget An overlay widget instance.
-     * @param hideNamespace A click event with a namspace to listen to, such as `mousedown.widgetId`.
+     * @param hideNamespace A click event with a namespace to listen to, such as `mousedown.widgetId`.
      * @param overlay The DOM element for the overlay.
      * @param resolveIgnoredElementsCallback The callback which
      * resolves the elements to ignore when the user clicks outside the overlay. The `hideCallback` is not invoked
      * when the user clicks on one those elements.
      * @param hideCallback A callback that is invoked when the
      * user clicks on an element outside the overlay widget.
+     * @return Unbind callback handler
      */
-    export function registerHideOverlayHandler(widget: PrimeFaces.widget.BaseWidget, hideNamespace: string, overlay: JQuery, resolveIgnoredElementsCallback: ((event: JQuery.TriggeredEvent) => JQuery) | undefined, hideCallback: (event: JQuery.TriggeredEvent, eventTarget: JQuery) => void): void;
+    export function registerHideOverlayHandler(widget: PrimeFaces.widget.BaseWidget, hideNamespace: string, overlay: JQuery, resolveIgnoredElementsCallback: ((event: JQuery.TriggeredEvent) => JQuery) | undefined, hideCallback: (event: JQuery.TriggeredEvent, eventTarget: JQuery) => void): PrimeFaces.UnbindCallback;
     /**
      * Registers a callback that is invoked when the window is resized.
      * @param widget A widget instance for which to register a resize handler.
@@ -7452,16 +7611,18 @@ declare namespace PrimeFaces.utils {
      * @param resizeCallback A callback that is invoked when the window is resized.
      * @param params Optional CSS selector. If given, the callback is invoked only when the resize event
      * is triggered on an element the given selector.
+     * @return Unbind callback handler
      */
-    export function registerResizeHandler(widget: PrimeFaces.widget.BaseWidget, resizeNamespace: string, element: JQuery | undefined, resizeCallback: (event: JQuery.TriggeredEvent) => void, params?: string): void;
+    export function registerResizeHandler(widget: PrimeFaces.widget.BaseWidget, resizeNamespace: string, element: JQuery | undefined, resizeCallback: (event: JQuery.TriggeredEvent) => void, params?: string): PrimeFaces.UnbindCallback;
     /**
      * Registers a callback that is invoked when a scroll event is triggered on the DOM element for the widget.
      * @param widget A widget instance for which to register a scroll handler.
      * @param scrollNamespace A scroll event with a namespace, such as `scroll.widgetId`.
      * @param scrollCallback A callback that is invoked when a scroll event
      * occurs on the widget.
+     * @return unbind callback handler
      */
-    export function registerScrollHandler(widget: PrimeFaces.widget.BaseWidget, scrollNamespace: string, scrollCallback: (event: JQuery.TriggeredEvent) => void): void;
+    export function registerScrollHandler(widget: PrimeFaces.widget.BaseWidget, scrollNamespace: string, scrollCallback: (event: JQuery.TriggeredEvent) => void): PrimeFaces.UnbindCallback;
     /**
      * Removes the overlay from the overlay container as specified by the `appendTo` attribute.
      * @param widget The overlay widget instance.
@@ -7481,9 +7642,10 @@ declare namespace PrimeFaces.utils {
      * Finds the element to which the overlay panel should be appended. If none is specified explicitly, append the
      * panel to the body.
      * @param widget A widget that has a panel to be appended.
+     * @param overlay The DOM element for the overlay.
      * @return The search expression for the element to which the overlay panel should be appended.
      */
-    export function resolveAppendTo(widget: PrimeFaces.widget.DynamicOverlayWidget): string;
+    export function resolveAppendTo(widget: PrimeFaces.widget.DynamicOverlayWidget, overlay?: JQuery): string | null;
     /**
      * Finds the container element to which an overlay widget should be appended. This is either the element
      * specified by the widget configurations's `appendTo` attribute, or the document BODY element otherwise.
@@ -7830,6 +7992,19 @@ declare namespace PrimeFaces.widget {
          */
         getJQ(): JQuery;
         /**
+         * Gets the closest parent form for this widget.
+         * @return A JQuery instance that either contains the form when found, or an empty JQuery instance when
+         * the form could not be found.
+         * @since 10.0.0
+         */
+        getParentForm(): JQuery;
+        /**
+         * Gets the closest parent form ID for this widget lazily so it can be used in AJAX requests.
+         * @return Either the form ID or `undefined` if no form can be found.
+         * @since 10.0.0
+         */
+        getParentFormId(): string | undefined;
+        /**
          * Each widget may have one or several behaviors attached to it. This method checks whether this widget has got
          * at least one behavior associated with given event name.
          *
@@ -7917,6 +8092,10 @@ declare namespace PrimeFaces.widget {
          * invoked when the behavior is called.
          */
         behaviors: Record<string, PrimeFaces.Behavior>;
+        /**
+         * ID of the form to use for AJAX requests.
+         */
+        formId: string | undefined;
         /**
          * The client-side ID of the widget, with all parent naming containers, such as
          * `myForm:myWidget`. This is also the ID of the container HTML element for this widget. In case the widget needs
@@ -8279,10 +8458,6 @@ declare namespace PrimeFaces.widget {
      */
     export interface DataGridCfg extends PrimeFaces.widget.BaseWidgetCfg {
         /**
-         * ID of the form to use for AJAX requests.
-         */
-        formId: string;
-        /**
          * When pagination is enabled: The paginator configuration
          * for the paginator.
          */
@@ -8357,10 +8532,6 @@ declare namespace PrimeFaces.widget {
      * configuration is usually meant to be read-only and should not be modified.
      */
     export interface DataListCfg extends PrimeFaces.widget.BaseWidgetCfg {
-        /**
-         * ID of the form to use for AJAX requests.
-         */
-        formId: string;
         /**
          * When pagination is enabled: The paginator configuration
          * for the paginator.
@@ -8939,6 +9110,12 @@ declare namespace PrimeFaces.widget {
          */
         private alignScrollBody(): void;
         /**
+         * Applies the width information to the given element.
+         * @param element The element to which the width should be applied.
+         * @param widthInfo The width information (retrieved using the method {@link getColumnWidthInfo}).
+         */
+        private applyWidthInfo(element: JQuery, widthInfo: PrimeFaces.widget.DataTable.WidthInfo): void;
+        /**
          * Stores the row which is currently focused.
          * @param row Row to set as the focused row.
          */
@@ -9180,6 +9357,14 @@ declare namespace PrimeFaces.widget {
          * @return The meta data of the given cell or NULL if not found
          */
         getCellMeta(cell: JQuery): string;
+        /**
+         * Retrieves width information of the given column.
+         * @param col The column of which the width should be retrieved.
+         * @param isIncludeResizeableState Tells whether the width should be retrieved from the resizable state,
+         * if it exists.
+         * @return The width information of the given column.
+         */
+        private getColumnWidthInfo(col: JQuery, isIncludeResizeableState: boolean): PrimeFaces.widget.DataTable.WidthInfo;
         /**
          * Finds the list of row that are currently expanded.
          * @return All rows (`TR`) that are currently expanded.
@@ -9972,6 +10157,22 @@ declare namespace PrimeFaces.widget {
 }
 declare namespace PrimeFaces.widget.DataTable {
     /**
+     * Describes the width information of a DOM element.
+     */
+    export interface WidthInfo {
+        /**
+         * Tells whether the width includes the border-box or not.
+         */
+        isOuterWidth: boolean;
+        /**
+         * The width of the element. It's either a unit-less numeric pixel value or a
+         * string containing the width including an unit.
+         */
+        width: number | string;
+    }
+}
+declare namespace PrimeFaces.widget.DataTable {
+    /**
      * Describes a sorting operation of the data table. The
      * items of the data table may be sorted by multiple column, in which case the sorting operation is describes by a list
      * of these objects.
@@ -10421,10 +10622,6 @@ declare namespace PrimeFaces.widget {
      * configuration is usually meant to be read-only and should not be modified.
      */
     export interface DataViewCfg extends PrimeFaces.widget.BaseWidgetCfg {
-        /**
-         * ID of the form to use for AJAX requests.
-         */
-        formId: string;
         /**
          * When pagination is enabled: The paginator configuration
          * for the paginator.
@@ -11780,6 +11977,10 @@ declare namespace JQueryPrimeDatePicker {
          */
         mask: JQuery | null;
         /**
+         * Handler for CSS transitions used by this date picker.
+         */
+        transition?: PrimeFaces.CssTransitionHandler | null;
+        /**
          * Trigger button that opens or closes the date picker.
          */
         triggerButton?: JQuery;
@@ -11898,6 +12099,10 @@ declare namespace PrimeFaces.widget {
          * The DOM element for the inline picker or the input.
          */
         jqEl: JQuery;
+        /**
+         * The DOM element for the panel with the datepicker.
+         */
+        panel?: JQuery;
         /**
          * Whether focus should be put on the input again.
          */
@@ -14999,6 +15204,11 @@ declare namespace PrimeFaces.widget {
          */
         fileLimitMessage: string;
         /**
+         * Global AJAX requests are listened to by `ajaxStatus`. When `false`, `ajaxStatus` will not
+         * get triggered.
+         */
+        global: boolean;
+        /**
          * Message to display when file is not accepted.
          */
         invalidFileMessage: string;
@@ -15213,6 +15423,11 @@ declare namespace PrimeFaces.widget {
          */
         fileLimitMessage: string;
         /**
+         * Global AJAX requests are listened to by `ajaxStatus`. When `false`, `ajaxStatus` will not
+         * get triggered.
+         */
+        global: boolean;
+        /**
          * Message to display when file is not accepted.
          */
         invalidFileMessage: string;
@@ -15297,6 +15512,10 @@ declare namespace PrimeFaces.widget {
          */
         contents: JQuery;
         /**
+         * Unbind callback for the hide overlay handler.
+         */
+        hideOverlayHandler?: PrimeFaces.UnbindCallback;
+        /**
          * The DOM element for the hidden input with the current value.
          */
         input: JQuery;
@@ -15318,6 +15537,18 @@ declare namespace PrimeFaces.widget {
          */
         panel: JQuery;
         /**
+         * Unbind callback for the resize handler.
+         */
+        resizeHandler?: PrimeFaces.UnbindCallback;
+        /**
+         * Unbind callback for the scroll handler.
+         */
+        scrollHandler?: PrimeFaces.UnbindCallback;
+        /**
+         * Handler for CSS transitions used by this widget.
+         */
+        transition?: PrimeFaces.CssTransitionHandler | null;
+        /**
          * The DOM elements for the buttons that can trigger (hide or show) the overlay panel with the
          * available selectable options.
          */
@@ -15337,18 +15568,26 @@ declare namespace PrimeFaces.widget {
          */
         private alignSubPanel(subpanel: JQuery, parentPanel: JQuery): void;
         /**
-         * Sets up the event listeners that only need to be set up once.
-         */
-        private bindConstantEvents(): void;
-        /**
          * Sets up all event listeners that are required by this widget.
          */
         private bindEvents(): void;
+        /**
+         * Sets up all panel event listeners
+         */
+        private bindPanelEvents(): void;
         /**
          * Deactivate siblings and active children of an item.
          * @param item Cascade select panel element.
          */
         private deactivateItems(item: JQuery): void;
+        /**
+         * Disables this widget so that the user cannot select any option.
+         */
+        disable(): void;
+        /**
+         * Enables this widget so that the user can select an option.
+         */
+        enable(): void;
         /**
          * Hides the overlay panel with the available options.
          */
@@ -15385,6 +15624,14 @@ declare namespace PrimeFaces.widget {
          * Brings up the overlay panel with the available options.
          */
         show(): void;
+        /**
+         * Removes some event listeners when this widget was disabled.
+         */
+        private unbindEvents(): void;
+        /**
+         * Unbind all panel event listeners
+         */
+        private unbindPanelEvents(): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -15931,6 +16178,10 @@ declare namespace PrimeFaces.widget {
      */
     export class Password<TCfg extends PasswordCfg = PasswordCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
         /**
+         * The DOM element for mask/unmask icon
+         */
+        icon: JQuery;
+        /**
          * The DOM element for the informational text regarding how strong the password is.
          */
         infoText: JQuery;
@@ -15943,9 +16194,25 @@ declare namespace PrimeFaces.widget {
          */
         panel: JQuery;
         /**
+         * Unbind callback for the resize handler.
+         */
+        resizeHandler?: PrimeFaces.UnbindCallback;
+        /**
+         * Unbind callback for the scroll handler.
+         */
+        scrollHandler?: PrimeFaces.UnbindCallback;
+        /**
+         * Handler for CSS transitions used by this widget.
+         */
+        transition?: PrimeFaces.CssTransitionHandler | null;
+        /**
          * Align the panel with the password strength indicator so that it is next to the password input field.
          */
         private align(): void;
+        /**
+         * Sets up all panel event listeners
+         */
+        private bindPanelEvents(): void;
         /**
          * Hides the panel with the password strength indicator.
          */
@@ -15987,6 +16254,10 @@ declare namespace PrimeFaces.widget {
          */
         private setupFeedback(): void;
         /**
+         * Sets up the ability to unmask and remask the password.
+         */
+        private setupUnmasking(): void;
+        /**
          * Brings up the panel with the password strength indicator.
          */
         show(): void;
@@ -15999,6 +16270,14 @@ declare namespace PrimeFaces.widget {
          * very weak password and `128` indicating a very strong password.
          */
         testStrength(password: string): number;
+        /**
+         * Toggle masking and unmasking the password.
+         */
+        toggleMask(): void;
+        /**
+         * Unbind all panel event listeners
+         */
+        private unbindPanelEvents(): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -16036,6 +16315,10 @@ declare namespace PrimeFaces.widget {
          * Text of the hint when the password is judged to be strong.
          */
         strongLabel: string;
+        /**
+         * Whether or not this password can be unmasked/remasked.
+         */
+        unmaskable: boolean;
         /**
          * Text of the hint when the password is judged to be weak.
          */
@@ -16281,6 +16564,10 @@ declare namespace PrimeFaces.widget {
          */
         groupHeaders: JQuery;
         /**
+         * Unbind callback for the hide overlay handler.
+         */
+        hideOverlayHandler?: PrimeFaces.UnbindCallback;
+        /**
          * The DOM elements for the hidden inputs for each checkbox option.
          */
         inputs: JQuery;
@@ -16337,9 +16624,21 @@ declare namespace PrimeFaces.widget {
          */
         panelId: JQuery;
         /**
+         * Unbind callback for the resize handler.
+         */
+        resizeHandler?: PrimeFaces.UnbindCallback;
+        /**
+         * Unbind callback for the scroll handler.
+         */
+        scrollHandler?: PrimeFaces.UnbindCallback;
+        /**
          * Tab index of this widget.
          */
         tabindex: string;
+        /**
+         * Handler for CSS transitions used by this widget.
+         */
+        transition?: PrimeFaces.CssTransitionHandler | null;
         /**
          * The DOM elements for the buttons that can trigger (hide or show) the overlay panel with the
          * available checkbox options.
@@ -16378,6 +16677,10 @@ declare namespace PrimeFaces.widget {
         private bindMultipleModeEvents(): void;
         /**
          * Sets up the event listeners for the overlay panel with the selectable checkbox options.
+         */
+        private bindPanelContentEvents(): void;
+        /**
+         * Sets up all panel event listeners
          */
         private bindPanelEvents(): void;
         /**
@@ -16429,9 +16732,8 @@ declare namespace PrimeFaces.widget {
         private fireToggleSelectEvent(checked: boolean): void;
         /**
          * Hides the overlay panel with the available checkbox options.
-         * @param animate `true` to hide the panel with an animation, or `false` to hide it immediately.
          */
-        hide(animate: boolean): void;
+        hide(): void;
         /**
          * A widget class should not declare an explicit constructor, the default constructor provided by this base
          * widget should be used. Instead, override this initialize method which is called after the widget instance
@@ -16526,6 +16828,10 @@ declare namespace PrimeFaces.widget {
          * @param checkbox One of the checkbox options of this widget to toggle.
          */
         toggleItem(checkbox: JQuery): void;
+        /**
+         * Unbind all panel event listeners
+         */
+        private unbindPanelEvents(): void;
         /**
          * Unselects the given checkbox option.
          * @param checkbox Checkbox option to unselect.
@@ -17242,6 +17548,10 @@ declare namespace PrimeFaces.widget {
          */
         focusInput: JQuery;
         /**
+         * Unbind callback for the hide overlay handler.
+         */
+        hideOverlayHandler?: PrimeFaces.UnbindCallback;
+        /**
          * The DOM element for the hidden input with the current value.
          */
         input: JQuery;
@@ -17296,9 +17606,21 @@ declare namespace PrimeFaces.widget {
          */
         preShowValue: JQuery;
         /**
+         * Unbind callback for the resize handler.
+         */
+        resizeHandler?: PrimeFaces.UnbindCallback;
+        /**
+         * Unbind callback for the scroll handler.
+         */
+        scrollHandler?: PrimeFaces.UnbindCallback;
+        /**
          * ID of the timeout for the delay of the filter input in the overlay panel.
          */
         searchTimer: number;
+        /**
+         * Handler for CSS transitions used by this widget.
+         */
+        transition?: PrimeFaces.CssTransitionHandler | null;
         /**
          * The DOM elements for the buttons that can trigger (hide or show) the overlay panel with the
          * available selectable options.
@@ -17325,10 +17647,6 @@ declare namespace PrimeFaces.widget {
          */
         private alignPanelWidth(): void;
         /**
-         * Sets up the event listeners that only need to be set up once.
-         */
-        private bindConstantEvents(): void;
-        /**
          * Sets up all event listenters required by this widget.
          */
         private bindEvents(): void;
@@ -17345,6 +17663,10 @@ declare namespace PrimeFaces.widget {
          * to bring up the overlay panel.
          */
         private bindKeyEvents(): void;
+        /**
+         * Sets up all panel event listeners
+         */
+        private bindPanelEvents(): void;
         /**
          * Removes focus from this widget.
          */
@@ -17597,6 +17919,10 @@ declare namespace PrimeFaces.widget {
          */
         private unbindEvents(): void;
         /**
+         * Unbind all panel event listeners
+         */
+        private unbindPanelEvents(): void;
+        /**
          * Updates the style class of the label that indicates the currently selected item.
          * @param add `true` if a placeholder should be displayed, or `false` otherwise.
          */
@@ -17638,14 +17964,6 @@ declare namespace PrimeFaces.widget {
          * When true, the input field becomes editable.
          */
         editable: boolean;
-        /**
-         * Name of the toggle animation for the overlay panel.
-         */
-        effect: string;
-        /**
-         * Duration of toggle animation.
-         */
-        effectSpeed: PrimeFaces.widget.SelectOneMenu.EffectSpeed;
         /**
          * `true` if the options can be filtered, or `false` otherwise.
          */
@@ -17861,6 +18179,10 @@ declare namespace PrimeFaces.widget {
          */
         filterMatchers: Record<string, PrimeFaces.widget.SplitButton.FilterFunction>;
         /**
+         * Unbind callback for the hide overlay handler.
+         */
+        hideOverlayHandler?: PrimeFaces.UnbindCallback;
+        /**
          * The DOM element for the additional buttons actions.
          */
         menu: JQuery;
@@ -17882,6 +18204,18 @@ declare namespace PrimeFaces.widget {
          */
         menuitems: JQuery;
         /**
+         * Unbind callback for the resize handler.
+         */
+        resizeHandler?: PrimeFaces.UnbindCallback;
+        /**
+         * Unbind callback for the scroll handler.
+         */
+        scrollHandler?: PrimeFaces.UnbindCallback;
+        /**
+         * Handler for CSS transitions used by this widget.
+         */
+        transition?: PrimeFaces.CssTransitionHandler | null;
+        /**
          * Align the overlay panel with the additional buttons actions.
          */
         alignPanel(): void;
@@ -17893,6 +18227,10 @@ declare namespace PrimeFaces.widget {
          * Sets up the event listeners for filtering the available buttons actions via a search field.
          */
         private bindFilterEvents(): void;
+        /**
+         * Sets up all panel event listeners
+         */
+        private bindPanelEvents(): void;
         /**
          * A filter function that takes a value and a search and returns true if the value contains the search term.
          * @param value Value to be filtered
@@ -17995,6 +18333,10 @@ declare namespace PrimeFaces.widget {
          * @return `true` if the given value starts with the search term, or `false` otherwise.
          */
         startsWithFilter(value: string, filter: string): boolean;
+        /**
+         * Unbind all panel event listeners
+         */
+        private unbindPanelEvents(): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -18463,10 +18805,6 @@ declare namespace PrimeFaces.widget {
          * the map.
          */
         fitBounds: boolean;
-        /**
-         * Client ID of the form to use for AJAX requests. Usually the enclosing form.
-         */
-        formId: string;
         /**
          * The current info window instance, if any info window was created yet.
          */
@@ -20117,10 +20455,6 @@ declare namespace PrimeFaces.widget {
          * Name of the client side event to display inline content.
          */
         event: string;
-        /**
-         * The ID of the form that is used for AJAX requests. Usually the containing form.
-         */
-        formId: string;
         /**
          * Defines if inplace content is toggleable or not.
          */
@@ -22152,6 +22486,18 @@ declare namespace PrimeFaces.widget {
      */
     export class Keyboard<TCfg extends KeyboardCfg = KeyboardCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
         /**
+         * Unbind callback for the resize handler.
+         */
+        resizeHandler?: PrimeFaces.UnbindCallback;
+        /**
+         * Unbind callback for the scroll handler.
+         */
+        scrollHandler?: PrimeFaces.UnbindCallback;
+        /**
+         * Sets up all panel event listeners
+         */
+        private bindPanelEvents(): void;
+        /**
          * A widget class should not declare an explicit constructor, the default constructor provided by this base
          * widget should be used. Instead, override this initialize method which is called after the widget instance
          * was constructed. You can use this method to perform any initialization that is required. For widgets that
@@ -22174,6 +22520,10 @@ declare namespace PrimeFaces.widget {
          * component.
          */
         init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+        /**
+         * Unbind all panel event listeners
+         */
+        private unbindPanelEvents(): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -22204,6 +22554,11 @@ declare namespace PrimeFaces.widget {
          * button (space, back, shift etc.), separate the name of the control key with a dash.
          */
         layoutTemplate: string;
+        /**
+         * Callback that is invoked by the keyboard JQuery plugin before
+         * the keyboard is closed.
+         */
+        onClose: JQueryKeypad.CloseListener;
     }
 }
 /**
@@ -23043,10 +23398,6 @@ declare namespace PrimeFaces.widget {
      * configuration is usually meant to be read-only and should not be modified.
      */
     export interface LifecycleCfg extends PrimeFaces.widget.BaseWidgetCfg {
-        /**
-         * ID of the form to use for AJAX requests.
-         */
-        formId: string;
     }
 }
 declare namespace PrimeFaces.widget.LightBox {
@@ -23449,10 +23800,14 @@ declare namespace PrimeFaces.widget {
     /**
      * __PrimeFaces Menu Widget__
      *
-     * Base class for the different menu widets, such as the `PlainMenu` or the `TieredMenu`.
+     * Base class for the different menu widgets, such as the `PlainMenu` or the `TieredMenu`.
      * @typeparam TCfg Defaults to `MenuCfg`. Type of the configuration object for this widget.
      */
     export class Menu<TCfg extends MenuCfg = MenuCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
+        /**
+         * Unbind callback for the hide overlay handler.
+         */
+        hideOverlayHandler?: PrimeFaces.UnbindCallback;
         /**
          * `true` if a menu item was clicked and the mouse button is still pressed.
          */
@@ -23462,6 +23817,18 @@ declare namespace PrimeFaces.widget {
          */
         keyboardTarget: JQuery;
         /**
+         * Unbind callback for the resize handler.
+         */
+        resizeHandler?: PrimeFaces.UnbindCallback;
+        /**
+         * Unbind callback for the scroll handler.
+         */
+        scrollHandler?: PrimeFaces.UnbindCallback;
+        /**
+         * Handler for CSS transitions used by this widget.
+         */
+        transition?: PrimeFaces.CssTransitionHandler | null;
+        /**
          * DOM element which triggers this menu.
          */
         trigger: JQuery;
@@ -23469,6 +23836,10 @@ declare namespace PrimeFaces.widget {
          * Aligns this menu as specified in its widget configuration (property `pos`).
          */
         align(): void;
+        /**
+         * Sets up all panel event listeners
+         */
+        protected bindPanelEvents(): void;
         /**
          * Hides this menu so that it becomes invisible and cannot be interacted with any longer.
          */
@@ -23508,6 +23879,10 @@ declare namespace PrimeFaces.widget {
          * Shows (displays) this menu so that it becomes visible and can be interacted with.
          */
         show(): void;
+        /**
+         * Unbind all panel event listeners
+         */
+        protected unbindPanelEvents(): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -23591,10 +23966,19 @@ declare namespace PrimeFaces.widget {
          */
         jqTargetId: string | JQuery;
         /**
+         * Handler for CSS transitions used by this widget.
+         */
+        transition?: PrimeFaces.CssTransitionHandler | null;
+        /**
          * Sets up all event listeners for the mouse events on the menu entries (`click` / `hover`).
          * @override
          */
         protected bindItemEvents(): void;
+        /**
+         * Sets up all panel event listeners
+         * @override
+         */
+        protected bindPanelEvents(): void;
         /**
          * Binds mobile touch events.
          */
@@ -23646,6 +24030,11 @@ declare namespace PrimeFaces.widget {
          * that does not have any parameters. Do not (implicitly) cast an instance of this class to a parent type.
          */
         show(e?: JQuery.TriggeredEvent): void;
+        /**
+         * Unbind all panel event listeners
+         * @override
+         */
+        protected unbindPanelEvents(): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -23913,6 +24302,10 @@ declare namespace PrimeFaces.widget {
          */
         menuitems: JQuery;
         /**
+         * Handler for CSS transitions used by this widget.
+         */
+        transition?: PrimeFaces.CssTransitionHandler | null;
+        /**
          * Align the overlay panel with the menu items so that it is positioned next to the menu button.
          */
         alignPanel(): void;
@@ -23920,6 +24313,11 @@ declare namespace PrimeFaces.widget {
          * Sets up all event listeners that are required by this widget.
          */
         private bindButtonEvents(): void;
+        /**
+         * Sets up all panel event listeners
+         * @override
+         */
+        bindPanelEvents(): void;
         /**
          * Hides the overlay menu with the menu items, as if the user clicked outside the menu.
          * @override
@@ -23979,6 +24377,11 @@ declare namespace PrimeFaces.widget {
          * @param submenu A child of the menu item.
          */
         showSubmenu(menuitem: JQuery, submenu: JQuery): void;
+        /**
+         * Unbind all panel event listeners
+         * @override
+         */
+        unbindPanelEvents(): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -25305,6 +25708,20 @@ declare namespace PrimeFaces.widget {
         global: boolean;
     }
 }
+declare namespace PrimeFaces.widget.OverlayPanel {
+    /**
+     * Callback that is invoked when the panel is hidden. The data table
+     * widget instance ins passed as the this context.
+     */
+    export type OnHideCallback = (this: PrimeFaces.widget.OverlayPanel) => void;
+}
+declare namespace PrimeFaces.widget.OverlayPanel {
+    /**
+     * Callback that is invoked when the panel is shown. The overlay
+     * panel widget instance ins passed as the this context.
+     */
+    export type OnShowCallback = (this: PrimeFaces.widget.OverlayPanel) => void;
+}
 declare namespace PrimeFaces.widget {
     /**
      * __PrimeFaces OverlayPanel Widget__
@@ -25322,9 +25739,21 @@ declare namespace PrimeFaces.widget {
          */
         content: JQuery;
         /**
+         * Unbind callback for the hide overlay handler.
+         */
+        hideOverlayHandler?: PrimeFaces.UnbindCallback;
+        /**
          * When dynamic loading is enabled, whether the content was already loaded.
          */
         loaded: boolean;
+        /**
+         * Unbind callback for the resize handler.
+         */
+        resizeHandler?: PrimeFaces.UnbindCallback;
+        /**
+         * Unbind callback for the scroll handler.
+         */
+        scrollHandler?: PrimeFaces.UnbindCallback;
         /**
          * The set-timeout timer ID of the timer used for showing the overlay panel.
          */
@@ -25342,6 +25771,10 @@ declare namespace PrimeFaces.widget {
          */
         targetZindex: number;
         /**
+         * Handler for CSS transitions used by this widget.
+         */
+        transition?: PrimeFaces.CssTransitionHandler | null;
+        /**
          * Aligns the overlay panel so that it is shown at the correct position.
          * @param target ID or DOM element of the target component that triggers this overlay panel.
          */
@@ -25354,6 +25787,10 @@ declare namespace PrimeFaces.widget {
          * Sets up some common event listeners always required by this widget.
          */
         private bindCommonEvents(): void;
+        /**
+         * Sets up all panel event listeners
+         */
+        private bindPanelEvents(): void;
         /**
          * Sets up the event listeners for the target component that triggers this overlay panel.
          */
@@ -25395,9 +25832,16 @@ declare namespace PrimeFaces.widget {
          */
         getModalTabbables(): JQuery;
         /**
-         * Hides this overlay panel so that it is not displayed anymore.
+         * Get new target element using selector param.
+         * @param target ID or DOM element of the target component that triggers this overlay panel.
+         * @return DOM Element or null
          */
-        hide(): void;
+        private getTarget(target?: string | JQuery): JQuery | null;
+        /**
+         * Hides this overlay panel so that it is not displayed anymore.
+         * @param callback Custom callback that is invoked after this overlay panel was closed.
+         */
+        hide(callback?: () => void): void;
         /**
          * A widget class should not declare an explicit constructor, the default constructor provided by this base
          * widget should be used. Instead, override this initialize method which is called after the widget instance
@@ -25472,6 +25916,10 @@ declare namespace PrimeFaces.widget {
          * Brings up the overlay panel if it is currently hidden, or hides it if it is currently displayed.
          */
         toggle(): void;
+        /**
+         * Unbind all panel event listeners
+         */
+        private unbindPanelEvents(): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -25518,13 +25966,15 @@ declare namespace PrimeFaces.widget {
          */
         my: string;
         /**
-         * Client side callback to execute when panel is shown.
+         * Client side callback to execute when the panel is
+         * shown.
          */
-        onHide: any;
+        onHide: PrimeFaces.widget.OverlayPanel.OnHideCallback;
         /**
-         * Client side callback to execute when panel is hidden.
+         * Client side callback to execute when the panel is
+         * hidden.
          */
-        onShow: any;
+        onShow: PrimeFaces.widget.OverlayPanel.OnShowCallback;
         /**
          * Displays a close icon to hide the overlay, default is `false`.
          */
@@ -27208,10 +27658,6 @@ declare namespace PrimeFaces.widget {
          */
         animationDuration: number;
         /**
-         * ID of the form used for AJAX requests.
-         */
-        formId: string;
-        /**
          * Global AJAX requests are listened to by the `ajaxStatus` component, setting global to
          * `false` will not trigger `ajaxStatus`.
          */
@@ -27460,10 +27906,6 @@ declare namespace PrimeFaces.widget {
          * ID of the element to which the target widget is constrained.
          */
         containment: string;
-        /**
-         * ID of the form to use for AJAX requests.
-         */
-        formId: string;
         /**
          * Client-side callback to execute during resizing.
          */
@@ -28263,10 +28705,6 @@ declare namespace PrimeFaces.widget {
          */
         extender: PrimeFaces.widget.Schedule.ScheduleExtender;
         /**
-         * Client ID of the form that is used for AJAX requests.
-         */
-        formId: string;
-        /**
          * Locale code of the locale for the FullCalendar, such as `de` or `en`.
          */
         locale: string;
@@ -29026,6 +29464,10 @@ declare namespace PrimeFaces.widget {
          */
         dynamic: boolean;
         /**
+         * Whether the sidebar is modal and blocks the main content and other dialogs.
+         */
+        modal: boolean;
+        /**
          * Callback that is invoked when the sidebar is opened.
          */
         onHide: PrimeFaces.widget.Sidebar.OnHideCallback;
@@ -29033,6 +29475,10 @@ declare namespace PrimeFaces.widget {
          * Callback that is invoked when the sidebar is closed.
          */
         onShow: PrimeFaces.widget.Sidebar.OnShowCallback;
+        /**
+         * Whether the close icon is displayed.
+         */
+        showCloseIcon: boolean;
         /**
          * Whether the sidebar is initially opened.
          */
@@ -30837,6 +31283,11 @@ declare namespace PrimeFaces.widget {
          */
         deleteCallback: PrimeFaces.widget.Timeline.DeleteCallbackCallback;
         /**
+         * When the timeline is move to the right or left, whether that move was
+         * initiated by the user.
+         */
+        initiatedByUser: boolean | undefined;
+        /**
          * The current vis-timeline instance.
          */
         instance: import("vis-timeline").Timeline;
@@ -32371,10 +32822,6 @@ declare namespace PrimeFaces.widget {
          */
         filterMode: PrimeFaces.widget.BaseTree.FilterMode;
         /**
-         * ID of the form to use for AJAX requests.
-         */
-        formId: string;
-        /**
          * `true` if selected nodes are highlighted, or `false` otherwise.
          */
         highlight: boolean;
@@ -33363,6 +33810,13 @@ declare namespace PrimeFaces.widget {
          */
         private getScrollbarWidth(): number;
         /**
+         * Creates the sort order message shown to indicate what the current sort order is.
+         * @param ariaLabel Optional label text from an aria attribute.
+         * @param sortOrderMessage Sort order message.
+         * @return The sort order message to use.
+         */
+        private getSortMessage(ariaLabel: string | undefined, sortOrderMessage: string): string;
+        /**
          * Handles a pagination event by updating this tree table and invoking the appropriate behaviors.
          * @param newState The new pagination state to apply.
          */
@@ -33707,10 +34161,6 @@ declare namespace PrimeFaces.widget {
          * Event that trigger the tree table to be filtered.
          */
         filterEvent: string;
-        /**
-         * ID of the form to use for AJAX requests.
-         */
-        formId: string;
         /**
          * Columns are resized live in this mode without using a resize helper.
          */
@@ -34182,10 +34632,6 @@ declare namespace PrimeFaces.widget {
          * Duration of the animation effect in milliseconds.
          */
         effectDuration: number;
-        /**
-         * ID of the form to use for AJAX requests.
-         */
-        formId: string;
         /**
          * ID of the wizard step tab that is shown initially.
          */

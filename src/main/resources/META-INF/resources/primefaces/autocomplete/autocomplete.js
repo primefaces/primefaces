@@ -22,6 +22,7 @@
  * @prop {Record<string, string>} [cache] The cache for the results of an autocomplete search.
  * @prop {number} [cacheTimeout] The set-interval timer ID for the cache timeout. 
  * @prop {JQuery} dropdown The DOM element for the container with the dropdown suggestions.
+ * @prop {PrimeFaces.UnbindCallback} [hideOverlayHandler] Unbind callback for the hide overlay handler.
  * @prop {JQuery} input The DOM element for the input element.
  * @prop {boolean} isDynamicLoaded If dynamic loading is enabled, whether the content was loaded already.
  * @prop {boolean} isTabPressed Whether the tab key is currently pressed.
@@ -34,9 +35,12 @@
  * @prop {JQuery} [multiItemContainer] The DOM element for the container with multiple selection items.
  * @prop {JQuery} panel The DOM element for the overlay panel with the suggestion items. 
  * @prop {string} panelId The client ID of the overlay panel with the suggestion items.
+ * @prop {PrimeFaces.UnbindCallback} [resizeHandler] Unbind callback for the resize handler.
+ * @prop {PrimeFaces.UnbindCallback} [scrollHandler] Unbind callback for the scroll handler.
  * @prop {JQuery} status The DOM element for the autocomplete status ARIA element.
  * @prop {boolean} suppressInput Whether key input events should be ignored currently.
  * @prop {boolean} touchToDropdownButton Whether a touch is made on the dropdown button.
+ * @prop {PrimeFaces.CssTransitionHandler | null} [transition] Handler for CSS transitions used by this widget.
  * @prop {string} wrapperStartTag The starting HTML with the wrapper element of the suggestions box.  
  * @prop {string} wrapperEndTag The finishing HTML with the wrapper element of the suggestions box.
  * 

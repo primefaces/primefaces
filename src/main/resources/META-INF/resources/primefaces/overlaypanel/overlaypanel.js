@@ -3,13 +3,25 @@
  * 
  * OverlayPanel is a generic panel component that can be displayed on top of other content.
  * 
+ * @typedef PrimeFaces.widget.OverlayPanel.OnShowCallback Callback that is invoked when the panel is shown. The overlay
+ * panel widget instance ins passed as the this context.
+ * @this {PrimeFaces.widget.OverlayPanel} PrimeFaces.widget.OverlayPanel.OnShowCallback
+ * 
+ * @typedef PrimeFaces.widget.OverlayPanel.OnHideCallback Callback that is invoked when the panel is hidden. The data table
+ * widget instance ins passed as the this context.
+ * @this {PrimeFaces.widget.OverlayPanel} PrimeFaces.widget.OverlayPanel.OnHideCallback
+ *
  * @prop {JQuery} closerIcon The DOM element for the icon that closes the overlay panel.
  * @prop {JQuery} content The DOM element for the content of the overlay panel.
+ * @prop {PrimeFaces.UnbindCallback} [hideOverlayHandler] Unbind callback for the hide overlay handler.
  * @prop {boolean} loaded When dynamic loading is enabled, whether the content was already loaded.
+ * @prop {PrimeFaces.UnbindCallback} [resizeHandler] Unbind callback for the resize handler.
+ * @prop {PrimeFaces.UnbindCallback} [scrollHandler] Unbind callback for the scroll handler.
  * @prop {number} showTimeout The set-timeout timer ID of the timer used for showing the overlay panel.
  * @prop {JQuery} target The DOM element for the target component that triggers this overlay panel.
  * @prop {JQuery} targetElement The DOM element for the resolved target component that triggers this overlay panel.
  * @prop {number} targetZindex The z-index of the target component that triggers this overlay panel.
+ * @prop {PrimeFaces.CssTransitionHandler | null} [transition] Handler for CSS transitions used by this widget.
  * 
  * @interface {PrimeFaces.widget.OverlayPanelCfg} cfg The configuration for the {@link  OverlayPanel| OverlayPanel widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -28,8 +40,10 @@
  * @prop {boolean} cfg.modal Specifies whether the document should be shielded with a partially transparent mask to
  * require the user to close the panel before being able to activate any elements in the document.
  * @prop {string} cfg.my Position of the panel relative to the target.
- * @prop {} cfg.onHide Client side callback to execute when panel is shown.
- * @prop {} cfg.onShow Client side callback to execute when panel is hidden.
+ * @prop {PrimeFaces.widget.OverlayPanel.OnHideCallback} cfg.onHide Client side callback to execute when the panel is
+ * shown.
+ * @prop {PrimeFaces.widget.OverlayPanel.OnShowCallback} cfg.onShow Client side callback to execute when the panel is
+ * hidden.
  * @prop {boolean} cfg.showCloseIcon Displays a close icon to hide the overlay, default is `false`.
  * @prop {number} cfg.showDelay Delay in milliseconds applied when the overlay panel is shown.
  * @prop {string} cfg.showEvent Event on target to hide the panel.
@@ -361,7 +375,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
     /**
      * Hides this overlay panel so that it is not displayed anymore.
-     * @param {JQuery} [callback] Custom callback that is invoked after this overlay panel was closed.
+     * @param {() => void} [callback] Custom callback that is invoked after this overlay panel was closed.
      */
     hide: function(callback) {
         if (this.transition) {

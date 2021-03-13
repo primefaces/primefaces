@@ -144,6 +144,8 @@
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="src_primefaces.primefaces.widget.colorpicker-1.html#livepreview" class="tsd-kind-icon">live<wbr>Preview</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="src_primefaces.primefaces.widget.colorpicker-1.html#overlay" class="tsd-kind-icon">overlay</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="src_primefaces.primefaces.widget.colorpicker-1.html#refreshlisteners" class="tsd-kind-icon">refresh<wbr>Listeners</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="src_primefaces.primefaces.widget.colorpicker-1.html#resizehandler" class="tsd-kind-icon">resize<wbr>Handler</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="src_primefaces.primefaces.widget.colorpicker-1.html#scrollhandler" class="tsd-kind-icon">scroll<wbr>Handler</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="src_primefaces.primefaces.widget.colorpicker-1.html#widgetvar" class="tsd-kind-icon">widget<wbr>Var</a></li>
 							</ul>
 						</section>
@@ -154,17 +156,21 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="src_primefaces.primefaces.widget.colorpicker-1.html#addrefreshlistener" class="tsd-kind-icon">add<wbr>Refresh<wbr>Listener</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="src_primefaces.primefaces.widget.colorpicker-1.html#alignpanel" class="tsd-kind-icon">align<wbr>Panel</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="src_primefaces.primefaces.widget.colorpicker-1.html#bindcallbacks" class="tsd-kind-icon">bind<wbr>Callbacks</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="src_primefaces.primefaces.widget.colorpicker-1.html#bindpanelevents" class="tsd-kind-icon">bind<wbr>Panel<wbr>Events</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="src_primefaces.primefaces.widget.colorpicker-1.html#callbehavior" class="tsd-kind-icon">call<wbr>Behavior</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="src_primefaces.primefaces.widget.colorpicker-1.html#clearorphanoverlay" class="tsd-kind-icon">clear<wbr>Orphan<wbr>Overlay</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="src_primefaces.primefaces.widget.colorpicker-1.html#destroy" class="tsd-kind-icon">destroy</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="src_primefaces.primefaces.widget.colorpicker-1.html#getbehavior" class="tsd-kind-icon">get<wbr>Behavior</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="src_primefaces.primefaces.widget.colorpicker-1.html#getjq" class="tsd-kind-icon">getJQ</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="src_primefaces.primefaces.widget.colorpicker-1.html#getparentform" class="tsd-kind-icon">get<wbr>Parent<wbr>Form</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="src_primefaces.primefaces.widget.colorpicker-1.html#getparentformid" class="tsd-kind-icon">get<wbr>Parent<wbr>Form<wbr>Id</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="src_primefaces.primefaces.widget.colorpicker-1.html#hasbehavior" class="tsd-kind-icon">has<wbr>Behavior</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="src_primefaces.primefaces.widget.colorpicker-1.html#init" class="tsd-kind-icon">init</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="src_primefaces.primefaces.widget.colorpicker-1.html#isdetached" class="tsd-kind-icon">is<wbr>Detached</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="src_primefaces.primefaces.widget.colorpicker-1.html#refresh" class="tsd-kind-icon">refresh</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="src_primefaces.primefaces.widget.colorpicker-1.html#removescriptelement" class="tsd-kind-icon">remove<wbr>Script<wbr>Element</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="src_primefaces.primefaces.widget.colorpicker-1.html#setupdialogsupport" class="tsd-kind-icon">setup<wbr>Dialog<wbr>Support</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="src_primefaces.primefaces.widget.colorpicker-1.html#unbindpanelevents" class="tsd-kind-icon">unbind<wbr>Panel<wbr>Events</a></li>
 							</ul>
 						</section>
 					</div>
@@ -354,6 +360,30 @@
 						</div>
 					</div>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="resizehandler" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> resize<wbr>Handler</h3>
+					<div class="tsd-signature tsd-kind-icon">resize<wbr>Handler<span class="tsd-signature-symbol">:</span> <a href="../interfaces/src_primefaces.primefaces.unbindcallback.html" class="tsd-signature-type" data-tsd-kind="Interface">UnbindCallback</a></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Unbind callback for the resize handler.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="scrollhandler" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> scroll<wbr>Handler</h3>
+					<div class="tsd-signature tsd-kind-icon">scroll<wbr>Handler<span class="tsd-signature-symbol">:</span> <a href="../interfaces/src_primefaces.primefaces.unbindcallback.html" class="tsd-signature-type" data-tsd-kind="Interface">UnbindCallback</a></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Unbind callback for the scroll handler.</p>
+						</div>
+					</div>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="widgetvar" class="tsd-anchor"></a>
 					<h3>widget<wbr>Var</h3>
@@ -487,6 +517,25 @@
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Sets up the event listeners required by this widget.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="bindpanelevents" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> bind<wbr>Panel<wbr>Events</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">bind<wbr>Panel<wbr>Events<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Sets up all panel event listeners</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -649,6 +698,59 @@
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/src_primefaces.jquery-1.html" class="tsd-signature-type" data-tsd-kind="Interface">JQuery</a><span class="tsd-signature-symbol">&lt;</span><a href="../modules/src_primefaces.html#htmlelement-1" class="tsd-signature-type" data-tsd-kind="Variable">HTMLElement</a><span class="tsd-signature-symbol">&gt;</span></h4>
 							<p>The jQuery instance representing the main HTML container element of this widget.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="getparentform" class="tsd-anchor"></a>
+					<h3>get<wbr>Parent<wbr>Form</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Parent<wbr>Form<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/src_primefaces.jquery-1.html" class="tsd-signature-type" data-tsd-kind="Interface">JQuery</a><span class="tsd-signature-symbol">&lt;</span><a href="../modules/src_primefaces.html#htmlelement-1" class="tsd-signature-type" data-tsd-kind="Variable">HTMLElement</a><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="src_primefaces.primefaces.widget.basewidget.html">BaseWidget</a>.<a href="src_primefaces.primefaces.widget.basewidget.html#getparentform">getParentForm</a></p>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets the closest parent form for this widget.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>since</dt>
+									<dd><p>10.0.0</p>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/src_primefaces.jquery-1.html" class="tsd-signature-type" data-tsd-kind="Interface">JQuery</a><span class="tsd-signature-symbol">&lt;</span><a href="../modules/src_primefaces.html#htmlelement-1" class="tsd-signature-type" data-tsd-kind="Variable">HTMLElement</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>A JQuery instance that either contains the form when found, or an empty JQuery instance when
+							the form could not be found.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="getparentformid" class="tsd-anchor"></a>
+					<h3>get<wbr>Parent<wbr>Form<wbr>Id</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Parent<wbr>Form<wbr>Id<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="src_primefaces.primefaces.widget.basewidget.html">BaseWidget</a>.<a href="src_primefaces.primefaces.widget.basewidget.html#getparentformid">getParentFormId</a></p>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets the closest parent form ID for this widget lazily so it can be used in AJAX requests.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>since</dt>
+									<dd><p>10.0.0</p>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h4>
+							<p>Either the form ID or <code>undefined</code> if no form can be found.</p>
 						</li>
 					</ul>
 				</section>
@@ -848,6 +950,25 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="unbindpanelevents" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> unbind<wbr>Panel<wbr>Events</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">unbind<wbr>Panel<wbr>Events<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Unbind all panel event listeners</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -966,6 +1087,9 @@
 											</li>
 											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
 												<a href="../modules/src_primefaces.primefaces.widget.outputpanel.html">Output<wbr>Panel</a>
+											</li>
+											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+												<a href="../modules/src_primefaces.primefaces.widget.overlaypanel.html">Overlay<wbr>Panel</a>
 											</li>
 											<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
 												<a href="../modules/src_primefaces.primefaces.widget.paginator.html">Paginator</a>
@@ -1096,6 +1220,12 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="src_primefaces.primefaces.widget.colorpicker-1.html#refreshlisteners" class="tsd-kind-icon">refresh<wbr>Listeners</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="src_primefaces.primefaces.widget.colorpicker-1.html#resizehandler" class="tsd-kind-icon">resize<wbr>Handler</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="src_primefaces.primefaces.widget.colorpicker-1.html#scrollhandler" class="tsd-kind-icon">scroll<wbr>Handler</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="src_primefaces.primefaces.widget.colorpicker-1.html#widgetvar" class="tsd-kind-icon">widget<wbr>Var</a>
 							</li>
@@ -1111,6 +1241,9 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="src_primefaces.primefaces.widget.colorpicker-1.html#bindcallbacks" class="tsd-kind-icon">bind<wbr>Callbacks</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="src_primefaces.primefaces.widget.colorpicker-1.html#bindpanelevents" class="tsd-kind-icon">bind<wbr>Panel<wbr>Events</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="src_primefaces.primefaces.widget.colorpicker-1.html#callbehavior" class="tsd-kind-icon">call<wbr>Behavior</a>
 							</li>
@@ -1125,6 +1258,12 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="src_primefaces.primefaces.widget.colorpicker-1.html#getjq" class="tsd-kind-icon">getJQ</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="src_primefaces.primefaces.widget.colorpicker-1.html#getparentform" class="tsd-kind-icon">get<wbr>Parent<wbr>Form</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="src_primefaces.primefaces.widget.colorpicker-1.html#getparentformid" class="tsd-kind-icon">get<wbr>Parent<wbr>Form<wbr>Id</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="src_primefaces.primefaces.widget.colorpicker-1.html#hasbehavior" class="tsd-kind-icon">has<wbr>Behavior</a>
@@ -1143,6 +1282,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="src_primefaces.primefaces.widget.colorpicker-1.html#setupdialogsupport" class="tsd-kind-icon">setup<wbr>Dialog<wbr>Support</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="src_primefaces.primefaces.widget.colorpicker-1.html#unbindpanelevents" class="tsd-kind-icon">unbind<wbr>Panel<wbr>Events</a>
 							</li>
 						</ul>
 					</li>

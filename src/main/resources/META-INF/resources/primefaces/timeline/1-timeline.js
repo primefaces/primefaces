@@ -40,6 +40,8 @@
  * has changed or was moved.
  * @prop {PrimeFaces.widget.Timeline.DeleteCallbackCallback} deleteCallback Callback for when an item of the timeline
  * was deleted.
+ * @prop {boolean | undefined} initiatedByUser When the timeline is move to the right or left, whether that move was
+ * initiated by the user.
  * @prop {import("vis-timeline").Timeline} instance The current vis-timeline instance.
  * @prop {boolean} lazy Whether the lazy loading feature is enabled, which loads events dynamically via AJAX.
  * @prop {number | null} max If restricting the timeline to a certain range, the upper bound.
