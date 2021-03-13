@@ -264,6 +264,7 @@ if (!PrimeFaces.widget) {
      * @prop {Record<string, PrimeFaces.Behavior>} cfg.behaviors A map with all behaviors that
      * were defined for this widget. The key is the name of the behavior, the value is the callback function that is
      * invoked when the behavior is called.
+     * @prop {string | undefined} cfg.formId ID of the form to use for AJAX requests.
      * @prop {string | string[]} cfg.id The client-side ID of the widget, with all parent naming containers, such as
      * `myForm:myWidget`. This is also the ID of the container HTML element for this widget. In case the widget needs
      * multiple container elements (such as {@link Paginator}), this may also be an array if IDs.
@@ -567,7 +568,8 @@ if (!PrimeFaces.widget) {
         /**
          * Gets the closest parent form for this widget.
          *
-         * @return {JQuery|null} either the form or NULL if none found
+         * @return {JQuery} A JQuery instance that either contains the form when found, or an empty JQuery instance when
+         * the form could not be found.
          * @since 10.0.0
          */
         getParentForm: function() {
@@ -577,7 +579,7 @@ if (!PrimeFaces.widget) {
         /**
          * Gets the closest parent form ID for this widget lazily so it can be used in AJAX requests.
          *
-         * @return {string|null} either the form id or NULL if none found
+         * @return {string | undefined} Either the form ID or `undefined` if no form can be found.
          * @since 10.0.0
          */
         getParentFormId: function() {

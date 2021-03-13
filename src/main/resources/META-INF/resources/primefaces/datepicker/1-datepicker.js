@@ -25,9 +25,9 @@
  * @param {JQueryPrimeDatePicker.PickerInstance} PrimeFaces.widget.DatePicker.PreShowCallback.datePicker The current
  * date picker instance.
  *
- * @prop {string} cfg.formId Client ID of the form that is used for AJAX requests.
  * @prop {JQuery} input The DOM element for the hidden input element with the selected date.
  * @prop {JQuery} jqEl The DOM element for the inline picker or the input.
+ * @prop {JQuery} [panel] The DOM element for the panel with the datepicker.
  * @prop {boolean} refocusInput Whether focus should be put on the input again.
  * @prop {Date | Date[]} viewDateOption The date that is displayed in the date picker.
  *

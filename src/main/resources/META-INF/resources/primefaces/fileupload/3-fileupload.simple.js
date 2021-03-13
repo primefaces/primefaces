@@ -14,15 +14,16 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  *
- * @prop {boolean} cfg.skinSimple Whether to apply theming to the simple upload widget.
  * @prop {boolean} cfg.disabled Whether this file upload is disabled.
  * @prop {number} cfg.fileLimit Maximum number of files allowed to upload.
  * @prop {string} cfg.fileLimitMessage Message to display when file limit exceeds.
+ * @prop {boolean} cfg.global Global AJAX requests are listened to by `ajaxStatus`. When `false`, `ajaxStatus` will not
+ * get triggered.
  * @prop {string} cfg.invalidFileMessage Message to display when file is not accepted.
  * @prop {string} cfg.invalidSizeMessage Message to display when size limit exceeds.
  * @prop {number} cfg.maxFileSize Maximum allowed size in bytes for files.
  * @prop {string} cfg.messageTemplate Message template to use when displaying file validation errors.
- * @prop {string} cfg.global Global AJAX requests are listened by ajaxStatus, false will not trigger ajaxStatus.
+ * @prop {boolean} cfg.skinSimple Whether to apply theming to the simple upload widget.
  */
 PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
 

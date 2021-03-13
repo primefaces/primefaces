@@ -28,6 +28,8 @@
  * @prop {JQuery} livePreview DOM element of the live color preview.
  * @prop {JQuery} jqEl DOM element on which the JQuery ColorPicker plugin was initialized. You can use this element to
  * interact with the ColorPicker.
+ * @prop {PrimeFaces.UnbindCallback} [resizeHandler] Unbind callback for the resize handler.
+ * @prop {PrimeFaces.UnbindCallback} [scrollHandler] Unbind callback for the scroll handler.
  * 
  * @interface {PrimeFaces.widget.ColorPickerCfg} cfg The configuration for the {@link  ColorPicker| ColorPicker widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this

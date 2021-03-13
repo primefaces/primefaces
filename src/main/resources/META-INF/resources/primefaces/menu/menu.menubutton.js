@@ -7,6 +7,7 @@
  * @prop {JQuery} menu The DOM element for the menu overlay panel.
  * @prop {JQuery} menuitems The DOM elements for the individual menu entries.
  * @prop {string} menuId Client ID of the menu overlay panel.
+ * @prop {PrimeFaces.CssTransitionHandler | null} [transition] Handler for CSS transitions used by this widget.
  *
  * @interface {PrimeFaces.widget.MenuButtonCfg} cfg The configuration for the {@link  MenuButton| MenuButton widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this

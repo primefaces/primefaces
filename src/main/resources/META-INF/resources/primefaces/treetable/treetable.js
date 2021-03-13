@@ -83,7 +83,6 @@
  * @prop {boolean} cfg.filter Whether filtering is enabled on this tree table.
  * @prop {number} cfg.filterDelay Delay in milliseconds the filtering.
  * @prop {string} cfg.filterEvent Event that trigger the tree table to be filtered.
- * @prop {string} cfg.formId ID of the form to use for AJAX requests.
  * @prop {boolean} cfg.liveResize Columns are resized live in this mode without using a resize helper.
  * @prop {boolean} cfg.multiSort Whether multi sort (filtering by multiple columns) is enabled.
  * @prop {boolean} cfg.nativeElements Whether native checkbox elements should be used for selection.

@@ -4,12 +4,16 @@
  * CascadeSelect CascadeSelect displays a nested structure of options.
  * 
  * @prop {JQuery} contents The DOM element for the content in the available selectable options.
+ * @prop {PrimeFaces.UnbindCallback} [hideOverlayHandler] Unbind callback for the hide overlay handler.
  * @prop {JQuery} input The DOM element for the hidden input with the current value.
  * @prop {JQuery} items The DOM elements for the the available selectable options.
  * @prop {JQuery} itemsWrapper The DOM element for the wrapper with the container with the available selectable
  * options.
  * @prop {JQuery} label The DOM element for the label indicating the currently selected option.
  * @prop {JQuery} panel The DOM element for the overlay panel with the available selectable options.
+ * @prop {PrimeFaces.CssTransitionHandler | null} [transition] Handler for CSS transitions used by this widget.
+ * @prop {PrimeFaces.UnbindCallback} [resizeHandler] Unbind callback for the resize handler.
+ * @prop {PrimeFaces.UnbindCallback} [scrollHandler] Unbind callback for the scroll handler.
  * @prop {JQuery} triggers The DOM elements for the buttons that can trigger (hide or show) the overlay panel with the
  * available selectable options.
  * 

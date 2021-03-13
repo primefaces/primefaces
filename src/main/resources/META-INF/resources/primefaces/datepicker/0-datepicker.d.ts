@@ -1536,6 +1536,11 @@ declare namespace JQueryPrimeDatePicker {
         mask: JQuery | null;
 
         /**
+         * Handler for CSS transitions used by this date picker.
+         */
+        transition?: PrimeFaces.CssTransitionHandler | null;
+
+        /**
          * Trigger button that opens or closes the date picker.
          */
         triggerButton?: JQuery;

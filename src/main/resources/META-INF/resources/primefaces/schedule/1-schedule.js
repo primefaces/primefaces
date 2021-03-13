@@ -23,7 +23,6 @@
  * configuration stored in `this.cfg`.
  * @prop {import("@fullcalendar/core").CalendarOptions} cfg.options The configuration object that is passed to the
  * FullCalendar upon initialization, see {@link CalendarOptions|CalendarOptions}.
- * @prop {string} cfg.formId Client ID of the form that is used for AJAX requests.
  * @prop {string} cfg.locale Locale code of the locale for the FullCalendar, such as `de` or `en`.
  * @prop {boolean} cfg.noOpener Whether for URL events access to the opener window from the target site should be
  * prevented (phishing protection), default value is `true`.
