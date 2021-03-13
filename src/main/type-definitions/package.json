@@ -11,7 +11,7 @@
     "directory": "src/main/type-definitions"
   },
   "types": "./PrimeFaces.d.ts",
-  "typeScriptVersion": "3.2",
+  "typeScriptVersion": "4.0",
   "scripts": {
     "generate-d-ts": "node src/index.js",
     "generate-typedoc": "node node_modules/typedoc/bin/typedoc",
