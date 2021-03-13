@@ -76,7 +76,6 @@
   - [Chips](/components/chips.md)
   - [Chronoline](/components/chronoline.md)
   - [Clock](/components/clock.md)
-  - [Collector](/components/collector.md)
   - [ColorPicker](/components/colorpicker.md)
   - [Column](/components/column.md)
   - [Columns](/components/columns.md)

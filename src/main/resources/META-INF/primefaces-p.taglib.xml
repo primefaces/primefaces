@@ -216,38 +216,6 @@
     </tag>
 
     <tag>
-        <description>Collector is a simple utility to manage collections declaratively.</description>
-        <tag-name>collector</tag-name>
-        <handler-class>
-            org.primefaces.component.collector.CollectorTagHandler
-        </handler-class>
-        <attribute>
-            <description>Value to be used in collection operation.</description>
-            <name>value</name>
-            <required>true</required>
-            <type>java.lang.Object</type>
-        </attribute>
-        <attribute>
-            <description>Reference to the Collection instance.</description>
-            <name>addTo</name>
-            <required>false</required>
-            <type>java.lang.Object</type>
-        </attribute>
-        <attribute>
-            <description>Reference to the Collection instance.</description>
-            <name>removeFrom</name>
-            <required>false</required>
-            <type>java.lang.Object</type>
-        </attribute>
-        <attribute>
-            <description>Checks for duplicate items on addition, default is true.</description>
-            <name>unique</name>
-            <required>true</required>
-            <type>java.lang.Object</type>
-        </attribute>
-    </tag>
-
-    <tag>
         <description>AjaxBehavior is an extension to standard f:ajax.</description>
         <tag-name>ajax</tag-name>
         <behavior>
