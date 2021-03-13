@@ -847,7 +847,6 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.password.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.defaultcommand.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.splitbutton.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.themeswitcher.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.multiselectlistbox.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/growl/growl.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/inplace/inplace.js</include>
