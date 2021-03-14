@@ -76,6 +76,7 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         numberOfMonths,
         view,
         touchUI,
+        autoDetectDisplay,
         dateTemplate,
         appendTo,
         triggerButtonIcon,
@@ -345,6 +346,14 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     public void setTouchUI(boolean touchUI) {
         getStateHelper().put(PropertyKeys.touchUI, touchUI);
+    }
+
+    public boolean isAutoDetectDisplay() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.autoDetectDisplay, true);
+    }
+
+    public void setAutoDetectDisplay(boolean autoDetectDisplay) {
+        getStateHelper().put(PropertyKeys.autoDetectDisplay, autoDetectDisplay);
     }
 
     public String getDateTemplate() {

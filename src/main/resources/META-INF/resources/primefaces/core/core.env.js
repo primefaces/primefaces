@@ -32,7 +32,7 @@ if (!PrimeFaces.env) {
          */
         init : function() {
             this.browser = $.browser;
-            this.mobile = this.browser.mobile;
+            this.mobile = (this.browser.mobile) ? true : false;
             this.touch = 'ontouchstart' in window || window.navigator.msMaxTouchPoints || PrimeFaces.env.mobile;
             this.ios = /iPhone|iPad|iPod/i.test(window.navigator.userAgent);
         },

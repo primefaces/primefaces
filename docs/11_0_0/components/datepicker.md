@@ -30,6 +30,7 @@ ajax selection and more.
 | alt | null | String | Alternate textual description of the input field.
 | appendTo | @(body) | String | Appends the dialog to the element defined by the given search expression.
 | autocomplete | null | String | Controls browser autocomplete behavior.
+| autoDetectDisplay | true | Boolean | Detects if mobile browser and sets optimized interface for touch devices. Default is true.
 | beforeShow | null | String | Callback to execute before displaying DatePicker, element and DatePicker instance are passed as parameters
 | buttonTabindex | null | String | Tabindex of the datepicker button
 | converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
