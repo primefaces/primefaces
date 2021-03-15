@@ -45,7 +45,7 @@ public class TabViewRenderer extends CoreRenderer {
         TabView tabView = (TabView) component;
         String activeIndexValue = params.get(tabView.getClientId(context) + "_activeIndex");
 
-        if (!LangUtils.isValueBlank(activeIndexValue)) {
+        if (LangUtils.isNotBlank(activeIndexValue)) {
             tabView.setActiveIndex(Integer.parseInt(activeIndexValue));
 
             if (tabView.isMultiViewState()) {

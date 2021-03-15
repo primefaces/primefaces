@@ -4,6 +4,9 @@
  * Keyboard is an input component that uses a virtual keyboard to provide the input. Notable features are the
  * customizable layouts and skinning capabilities.
  * 
+ * @prop {PrimeFaces.UnbindCallback} [resizeHandler] Unbind callback for the resize handler.
+ * @prop {PrimeFaces.UnbindCallback} [scrollHandler] Unbind callback for the scroll handler.
+ *
  * @interface {PrimeFaces.widget.KeyboardCfg} cfg The configuration for the {@link  Keyboard| Keyboard widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
@@ -19,6 +22,8 @@
  * @prop {string} cfg.layoutTemplate An optional custom keyboard layout template specified by the user. The keyboard rows
  * must be separated by a comma. Each row contains the keys that should be displayed on that row. To specify a control
  * button (space, back, shift etc.), separate the name of the control key with a dash.   
+ * @prop {JQueryKeypad.CloseListener} cfg.onClose Callback that is invoked by the keyboard JQuery plugin before
+ * the keyboard is closed.
  */
  PrimeFaces.widget.Keyboard = PrimeFaces.widget.BaseWidget.extend({
 

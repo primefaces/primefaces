@@ -30,7 +30,7 @@ are many other third party libraries and plugins used to support features.
 | [jQuery Timepicker Addon](../jsdocs/interfaces/src_primefaces.jquery-1.html#timepicker) | 1.6.3 | http://trentrichardson.com/examples/timepicker |
 | jQuery UI Touch Punch | 1.0.8 | https://github.com/RWAP/jquery-ui-touch-punch |
 | [jQuery UI](../jsdocs/modules/node_modules__types_jqueryui.html) | 1.12.1 | https://github.com/jquery/jquery-ui |
-| [jQuery](../jsdocs/interfaces/src_primefaces.jquery-1.html) | 3.5.0 | https://jquery.com/ |
+| [jQuery](../jsdocs/interfaces/src_primefaces.jquery-1.html) | 3.6.0 | https://jquery.com/ |
 | [Jquery.print](../jsdocs/interfaces/src_primefaces.jquery-1.html#print) | 1.6.0 | https://github.com/DoersGuild/jQuery.print |
 | [jScrollPane](../jsdocs/interfaces/src_primefaces.jquery-1.html#jscrollpane) | 2.2.3 | https://github.com/vitch/jScrollPane |
 | [JSPlumb Diagram](../jsdocs/modules/node_modules_jsplumb.export_.html) | 2.14.6 | https://github.com/jsplumb/jsplumb |

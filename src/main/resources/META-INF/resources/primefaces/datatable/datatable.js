@@ -148,7 +148,6 @@
  * @prop {boolean} cfg.filter `true` if filtering is enabled, or `false` otherwise.
  * @prop {number} cfg.filterDelay Delay for filtering in milliseconds.
  * @prop {string} cfg.filterEvent Event to invoke filtering for input filters.
- * @prop {string} cfg.formId Client ID of the form that is used for AJAX requests.
  * @prop {number} cfg.frozenColumns The number of frozen columns.
  * @prop {boolean} cfg.liveResize Columns are resized live in this mode without using a resize helper.
  * @prop {boolean} cfg.liveScroll Enables live scrolling.
@@ -187,11 +186,10 @@
  * @prop {string} cfg.stickyTopAt Selector to position on the page according to other fixing elements on the top of the
  * table.
  * @prop {string} cfg.tabindex The value of the `tabindex` attribute for this data table.
- * @prop {boolean} cfg.allowUnsorting When true columns can be unsorted upon clicking sort.
  * @prop {boolean} cfg.virtualScroll Loads data on demand as the scrollbar gets close to the bottom. 
  *
  * @interface {PrimeFaces.widget.DataTable.WidthInfo} WidthInfo Describes the width information of a DOM element.
- * @prop {number | string} WidthInfo.width The width of the element. It's either a unitless numeric pixel value or a
+ * @prop {number | string} WidthInfo.width The width of the element. It's either a unit-less numeric pixel value or a
  * string containing the width including an unit.
  * @prop {boolean} WidthInfo.isOuterWidth Tells whether the width includes the border-box or not. 
  */

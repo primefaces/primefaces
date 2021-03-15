@@ -52,7 +52,6 @@
  * @prop {string} cfg.event Event for the context menu.
  * @prop {boolean} cfg.filter `true` if filtering is enabeld, `false` otherwise.
  * @prop {PrimeFaces.widget.BaseTree.FilterMode} cfg.filterMode Mode for filtering.
- * @prop {string} cfg.formId ID of the form to use for AJAX requests.
  * @prop {boolean} cfg.highlight `true` if selected nodes are highlighted, or `false` otherwise.
  * @prop {Record<string, PrimeFaces.widget.BaseTree.NodeIconSet>} iconStates A map between the type of a node and the
  * icons for that node.

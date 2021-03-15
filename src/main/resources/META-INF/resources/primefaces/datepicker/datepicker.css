@@ -25,6 +25,10 @@
     padding: .5em;
 }
 
+.p-datepicker-panel .ui-timepicker .ui-icon {
+    text-indent: 0;
+}
+
 .p-datepicker-panel .ui-timepicker > div {
     display: inline-block;
     margin-left: .5em;

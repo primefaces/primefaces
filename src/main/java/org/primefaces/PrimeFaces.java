@@ -513,7 +513,7 @@ public class PrimeFaces {
                     "client-window".equals(primeApplicationContext.getConfig().getMultiViewStateStore())) {
                 ExternalContext externalContext = fc.getExternalContext();
                 ClientWindow clientWindow = externalContext.getClientWindow();
-                if (clientWindow != null && !LangUtils.isValueBlank(clientWindow.getId())) {
+                if (clientWindow != null && LangUtils.isNotBlank(clientWindow.getId())) {
                     clientWindowId = clientWindow.getId();
                 }
             }

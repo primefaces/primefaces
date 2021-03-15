@@ -197,7 +197,7 @@ public class ResourceUtils {
         String monitorKeyCookieName = Constants.DOWNLOAD_COOKIE + context.getViewRoot().getViewId().replace('/', '_');
         if (monitorKey != null) {
             String evaluated = (String) monitorKey.getValue(context.getELContext());
-            if (!LangUtils.isValueBlank(evaluated)) {
+            if (LangUtils.isNotBlank(evaluated)) {
                 monitorKeyCookieName += "_" + evaluated;
             }
         }

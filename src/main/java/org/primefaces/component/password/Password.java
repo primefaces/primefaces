@@ -56,7 +56,7 @@ public class Password extends PasswordBase {
         String match = getMatch();
         Object submittedValue = getSubmittedValue();
 
-        if (isValid() && !LangUtils.isValueBlank(match)) {
+        if (isValid() && LangUtils.isNotBlank(match)) {
             Password matchWith = (Password) SearchExpressionFacade.resolveComponent(context, this, match);
 
             if (submittedValue != null && !submittedValue.equals(matchWith.getSubmittedValue())) {

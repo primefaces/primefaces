@@ -25,13 +25,11 @@ package org.primefaces.application.resource;
 
 import io.nayuki.qrcodegen.QrCode;
 import io.nayuki.qrcodegen.QrCode.Ecc;
-
 import java.io.IOException;
 import java.util.Map;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.imageio.ImageIO;
-
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 
@@ -66,7 +64,7 @@ public class QRCodeHandler extends BaseDynamicContentHandler {
     }
 
     protected Ecc getErrorCorrection(final String value) {
-        switch (LangUtils.isValueBlank(value) ? Constants.EMPTY_STRING : value) {
+        switch (LangUtils.isNotBlank(value) ? value : Constants.EMPTY_STRING) {
             case "M":
                 return Ecc.MEDIUM;
             case "Q":

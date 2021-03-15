@@ -64,7 +64,7 @@ public class PrimeClientWindow extends ClientWindow {
             id = context.getExternalContext().getRequestParameterMap().get(ResponseStateManager.CLIENT_WINDOW_PARAM);
         }
 
-        if (!LangUtils.isValueBlank(id)) {
+        if (LangUtils.isNotBlank(id)) {
             id = PrimeClientWindowUtils.secureWindowId(id);
         }
 

@@ -32,7 +32,6 @@ public class Constants {
 
         // PF context params
         public static final String THEME = "primefaces.THEME";
-        public static final String FONT_AWESOME = "primefaces.FONT_AWESOME";
         public static final String SUBMIT = "primefaces.SUBMIT";
         public static final String DIRECTION = "primefaces.DIR";
         public static final String TOUCHABLE = "primefaces.TOUCHABLE";

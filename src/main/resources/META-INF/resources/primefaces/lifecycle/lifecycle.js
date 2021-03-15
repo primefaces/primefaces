@@ -11,8 +11,6 @@
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
- * 
- * @prop {string} cfg.formId ID of the form to use for AJAX requests.
  */
 PrimeFaces.widget.Lifecycle = PrimeFaces.widget.BaseWidget.extend({
 

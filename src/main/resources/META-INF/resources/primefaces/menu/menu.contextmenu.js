@@ -33,6 +33,7 @@
  * @prop {JQuery} jqTarget Target element of this context menu. A right click on the target brings up this context menu.
  * @prop {string | JQuery} jqTargetId ID selector or DOM element of the target, i.e. the element this context menu
  * belongs to.
+ * @prop {PrimeFaces.CssTransitionHandler | null} [transition] Handler for CSS transitions used by this widget.
  * 
  * @interface {PrimeFaces.widget.ContextMenuCfg} cfg The configuration for the {@link  ContextMenu| ContextMenu widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this

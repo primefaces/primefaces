@@ -46,7 +46,7 @@ public interface Widget {
         UIComponent component = (UIComponent) this;
 
         String userWidgetVar = (String) component.getAttributes().get("widgetVar");
-        if (!LangUtils.isValueBlank(userWidgetVar)) {
+        if (LangUtils.isNotBlank(userWidgetVar)) {
             return userWidgetVar;
         }
 

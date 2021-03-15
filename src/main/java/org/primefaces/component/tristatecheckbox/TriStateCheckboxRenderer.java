@@ -167,7 +167,7 @@ public class TriStateCheckboxRenderer extends InputRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("data-iconstates", statesIconsClasses, null);
-        if (!LangUtils.isValueBlank(stateOneTitle) || !LangUtils.isValueBlank(stateTwoTitle) || !LangUtils.isValueBlank(stateThreeTitle)) {
+        if (LangUtils.isNotBlank(stateOneTitle) || LangUtils.isNotBlank(stateTwoTitle) || LangUtils.isNotBlank(stateThreeTitle)) {
             writer.writeAttribute("title", activeTitle, null);
             writer.writeAttribute("data-titlestates", statesTitles, null);
         }

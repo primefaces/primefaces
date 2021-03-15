@@ -35,6 +35,7 @@
  * currently used.
  * @prop {Record<PrimeFaces.widget.SelectCheckboxMenu.FilterMatchMode, PrimeFaces.widget.SelectCheckboxMenu.FilterFunction>} filterMatchers
  * Map between the available filter types and the filter implementation.
+ * @prop {PrimeFaces.UnbindCallback} [hideOverlayHandler] Unbind callback for the hide overlay handler.
  * @prop {JQuery} inputs The DOM elements for the hidden inputs for each checkbox option.
  * @prop {boolean} isDynamicLoaded When loading the panel with the available options lazily: if they have been loaded
  * already.
@@ -52,7 +53,10 @@
  * @prop {JQuery} multiItemContainer The DOM element for the container with the tags representing the selected options.
  * @prop {JQuery} panel The DOM element for the overlay panel with the available checkbox options.
  * @prop {JQuery} panelId ID of the DOM element for the overlay panel with the available checkbox options.
+ * @prop {PrimeFaces.UnbindCallback} [resizeHandler] Unbind callback for the resize handler.
+ * @prop {PrimeFaces.UnbindCallback} [scrollHandler] Unbind callback for the scroll handler.
  * @prop {string} tabindex Tab index of this widget.
+ * @prop {PrimeFaces.CssTransitionHandler | null} [transition] Handler for CSS transitions used by this widget.
  * @prop {JQuery} triggers The DOM elements for the buttons that can trigger (hide or show) the overlay panel with the
  * available checkbox options.
  * @prop {boolean} widthAligned Whether the width of the overlay panel was aligned already.
