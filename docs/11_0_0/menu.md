@@ -216,7 +216,6 @@
   - [TagCloud](/components/tagcloud.md)
   - [Terminal](/components/terminal.md)
   - [TextEditor](/components/texteditor.md)
-  - [ThemeSwitcher](/components/themeswitcher.md)
   - [TieredMenu](/components/tieredmenu.md)
   - [TimeLine](/components/timeline.md)
   - [ToggleSwitch](/components/toggleswitch.md)

@@ -959,11 +959,6 @@
     </component>
 
     <component>
-        <component-type>org.primefaces.component.ThemeSwitcher</component-type>
-        <component-class>org.primefaces.component.themeswitcher.ThemeSwitcher</component-class>
-    </component>
-
-    <component>
         <component-type>org.primefaces.component.TieredMenu</component-type>
         <component-class>org.primefaces.component.tieredmenu.TieredMenu</component-class>
     </component>
@@ -1788,11 +1783,6 @@
             <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.TextEditorRenderer</renderer-type>
             <renderer-class>org.primefaces.component.texteditor.TextEditorRenderer</renderer-class>
-        </renderer>
-        <renderer>
-            <component-family>org.primefaces.component</component-family>
-            <renderer-type>org.primefaces.component.ThemeSwitcherRenderer</renderer-type>
-            <renderer-class>org.primefaces.component.themeswitcher.ThemeSwitcherRenderer</renderer-class>
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>
