@@ -1,3 +1,0 @@
-Extensions
-
-- Override ui-icon class
