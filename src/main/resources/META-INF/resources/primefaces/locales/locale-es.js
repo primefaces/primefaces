@@ -24,7 +24,7 @@ PrimeFaces.locales['es'] = {
     week: 'Semana',
     day: 'Día',
     today: 'Hoy',
-    clear: 'Claro',
+    clear: 'Limpiar',
     allDayText: 'Todo el día',
     messages: { //optional for Client Side Validation
         'javax.faces.component.UIInput.REQUIRED': '{0}: Error de validación: se necesita un valor.',
