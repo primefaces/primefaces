@@ -64,7 +64,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             menu.setSubmittedValue(editorInput);
 
             // #2862 check if it matches a label and if so use the value
-            if (!LangUtils.isValueBlank(editorInput)) {
+            if (LangUtils.isNotBlank(editorInput)) {
                 List<SelectItem> selectItems = getSelectItems(context, menu);
                 Object foundValue = findEditableValue(context, selectItems, editorInput);
                 if (foundValue != null) {

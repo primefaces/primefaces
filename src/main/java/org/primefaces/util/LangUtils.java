@@ -51,6 +51,10 @@ public class LangUtils {
         return value == null || value.isEmpty();
     }
 
+    public static boolean isNotEmpty(String value) {
+        return !isValueEmpty(value);
+    }
+
     public static boolean isValueBlank(String str) {
         if (str == null) {
             return true;

@@ -148,7 +148,7 @@ public class DataExporter implements ActionListener, StateHolder {
             OutputStream outputStream;
 
             String contentType = exporter.getContentType();
-            if (contentType.startsWith("text/") && !LangUtils.isValueBlank(config.getEncodingType())) {
+            if (contentType.startsWith("text/") && LangUtils.isNotBlank(config.getEncodingType())) {
                 contentType += "; charset=" + config.getEncodingType();
             }
 

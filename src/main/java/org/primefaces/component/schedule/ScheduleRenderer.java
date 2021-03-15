@@ -108,7 +108,7 @@ public class ScheduleRenderer extends CoreRenderer {
                 JSONObject jsonObject = new JSONObject();
 
                 jsonObject.put("id", event.getId());
-                if (event.getGroupId() != null && event.getGroupId().length() > 0) {
+                if (LangUtils.isNotBlank(event.getGroupId())) {
                     jsonObject.put("groupId", event.getGroupId());
                 }
                 jsonObject.put("title", event.getTitle());
@@ -234,7 +234,7 @@ public class ScheduleRenderer extends CoreRenderer {
                 .attr("nextDayThreshold", schedule.getNextDayThreshold(), "09:00:00")
                 .attr("slotEventOverlap", schedule.isSlotEventOverlap(), true);
 
-        if (!LangUtils.isValueBlank(schedule.getSlotLabelFormat())) {
+        if (LangUtils.isNotBlank(schedule.getSlotLabelFormat())) {
             wb.nativeAttr("slotLabelFormat", schedule.getSlotLabelFormat());
         }
 

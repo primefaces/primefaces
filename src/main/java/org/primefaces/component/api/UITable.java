@@ -467,7 +467,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         Map<String, ColumnMeta> columMeta = getColumnMeta();
         columMeta.values().stream().forEach(s -> s.setVisible(null));
 
-        if (!LangUtils.isValueBlank(columnTogglerStateParam)) {
+        if (LangUtils.isNotBlank(columnTogglerStateParam)) {
             String[] columnStates = columnTogglerStateParam.split(",");
             for (String columnState : columnStates) {
                 if (LangUtils.isValueBlank(columnState)) {
@@ -500,7 +500,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
         String tableWidth = null;
 
-        if (!LangUtils.isValueBlank(columnResizeStateParam)) {
+        if (LangUtils.isNotBlank(columnResizeStateParam)) {
             String[] columnStates = columnResizeStateParam.split(",");
             for (String columnState : columnStates) {
                 if (LangUtils.isValueBlank(columnState)) {

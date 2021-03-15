@@ -524,7 +524,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.SCROLLABLE_BODY_CLASS, null);
         writer.writeAttribute("tabindex", "-1", null);
-        if (!LangUtils.isValueBlank(scrollHeight) && scrollHeight.indexOf('%') == -1) {
+        if (LangUtils.isNotBlank(scrollHeight) && scrollHeight.indexOf('%') == -1) {
             writer.writeAttribute("style", "max-height:" + scrollHeight + "px", null);
         }
         writer.startElement("table", null);
@@ -1703,7 +1703,7 @@ public class DataTableRenderer extends DataRenderer {
         return column.getChildren().isEmpty()
                 && (table.getSortByAsMap().containsKey(column.getColumnKey())
                 || table.getFilterByAsMap().containsKey(column.getColumnKey())
-                || !LangUtils.isValueBlank(column.getField()));
+                || LangUtils.isNotBlank(column.getField()));
 
     }
 }

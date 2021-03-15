@@ -222,7 +222,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             writer.startDocument();
             writer.startElement("changes", null);
 
-            if (!LangUtils.isValueBlank(handlerComponent.getUpdate())) {
+            if (LangUtils.isNotBlank(handlerComponent.getUpdate())) {
                 List<UIComponent> updates = SearchExpressionFacade.resolveComponents(context, handlerComponent, handlerComponent.getUpdate());
 
                 if (updates != null && !updates.isEmpty()) {
@@ -243,7 +243,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
                 }
             }
 
-            if (!LangUtils.isValueBlank(handlerComponent.getOnexception())) {
+            if (LangUtils.isNotBlank(handlerComponent.getOnexception())) {
                 writer.startElement("eval", null);
                 writer.startCDATA();
 
