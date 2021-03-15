@@ -172,8 +172,6 @@
   - [Repeat](/components/repeat.md)
   - [ResetInput](/components/resetinput.md)
   - [Resizable](/components/resizable.md)
-  - [Ribbon](/components/ribbon.md)
-  - [RibbonGroup](/components/ribbongroup.md)
   - [Ring](/components/ring.md)
   - [Row](/components/row.md)
   - [RowEditor](/components/roweditor.md)
