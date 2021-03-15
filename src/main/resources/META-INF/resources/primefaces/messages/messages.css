@@ -94,3 +94,7 @@
     float:right;
     cursor: pointer;
 }
+
+body .ui-message.ui-helper-hidden {
+  display: none;
+}
