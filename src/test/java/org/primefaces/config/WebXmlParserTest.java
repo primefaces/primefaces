@@ -70,7 +70,7 @@ public class WebXmlParserTest {
     @MethodSource("data")
     public void testInternalJaxp(String pathToWebXml) throws MalformedURLException {
         when(extContext.getResource(anyString())).thenReturn(this.getClass().getResource(pathToWebXml));
-        configureXpathFactory(com.sun.org.apache.xpath.internal.jaxp.XPathFactoryImpl.class);
+        configureXpathFactory(org.apache.xpath.jaxp.XPathFactoryImpl.class);
         Map<String, String> errorPages = WebXmlParser.getErrorPages(context);
         assertErrorPages(errorPages);
     }
