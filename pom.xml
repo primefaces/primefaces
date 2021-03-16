@@ -265,6 +265,7 @@
             <scope>test</scope>
         </dependency>
         <!-- Xerces does not come OOTB with Java16 and up (see https://openjdk.java.net/jeps/396) -->
+        <!--
         <dependency>
             <groupId>xerces</groupId>
             <artifactId>xercesImpl</artifactId>
@@ -277,8 +278,7 @@
             <version>2.7.2</version>
             <scope>test</scope>
         </dependency>
-
-
+        -->
 
         <dependency>
             <groupId>javax</groupId>
