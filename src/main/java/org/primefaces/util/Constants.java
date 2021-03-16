@@ -112,6 +112,10 @@ public class Constants {
 
     public static final String EMPTY_STRING = "";
 
+    public static final String COLON = ":";
+
+    public static final String SEMICOLON = ";";
+
     public static final String CLIENT_BEHAVIOR_RENDERING_MODE = "CLIENT_BEHAVIOR_RENDERING_MODE";
 
     public static final String DEFAULT_CACHE_REGION = "primefaces.DEFAULT_CACHE_REGION";
