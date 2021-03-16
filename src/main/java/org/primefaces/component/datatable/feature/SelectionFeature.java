@@ -135,7 +135,8 @@ public class SelectionFeature implements DataTableFeature {
                     rowKeysTmp = Collections.singleton(rowKey);
                 }
                 setSelection(context, table, false, Collections.singletonList(o), rowKeysTmp);
-            } else {
+            }
+            else {
                 setSelection(context, table, false, Collections.emptyList(), Collections.emptySet());
             }
         }
