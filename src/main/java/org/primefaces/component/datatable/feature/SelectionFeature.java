@@ -94,8 +94,6 @@ public class SelectionFeature implements DataTableFeature {
                     rowKeys.add(table.getRowKey(selection));
                 }
                 else {
-                    rowKeys.addAll(table.getSelectedRowKeys());
-
                     Class<?> clazz = selection.getClass();
                     boolean isArray = clazz != null && clazz.isArray();
 
