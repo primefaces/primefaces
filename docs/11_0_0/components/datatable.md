@@ -451,7 +451,7 @@ single selection and a Car array for multiple selection to the CarBean to hold t
 public class CarBean {
     private List<Car> cars;
     private Car selectedCar;
-    private Car[] selectedCars;
+    private List<Car> selectedCars;
 
     public CarBean() {
         cars = new ArrayList<Car>();
