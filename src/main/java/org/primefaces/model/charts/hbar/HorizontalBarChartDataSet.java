@@ -39,7 +39,7 @@ public class HorizontalBarChartDataSet extends BarChartDataSet {
      */
     @Override
     public String getType() {
-        return "horizontalBar";
+        return "bar";
     }
 }
 
