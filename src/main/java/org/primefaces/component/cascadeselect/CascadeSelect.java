@@ -52,12 +52,12 @@ public class CascadeSelect extends CascadeSelectBase {
     public static final String ITEMS_WRAPPER_CLASS = "ui-cascadeselect-items-wrapper";
     public static final String PANEL_ITEMS_CLASS = "ui-cascadeselect-panel ui-cascadeselect-items";
     public static final String TRIGGER_CLASS = "ui-cascadeselect-trigger";
-    public static final String TRIGGER_ICON_CLASS = "ui-cascadeselect-trigger-icon pi pi-chevron-down";
+    public static final String TRIGGER_ICON_CLASS = "ui-cascadeselect-trigger-icon ui-icon pi pi-chevron-down";
     public static final String ITEM_CLASS = "ui-cascadeselect-item";
     public static final String ITEM_GROUP_CLASS = "ui-cascadeselect-item-group";
     public static final String ITEM_CONTENT_CLASS = "ui-cascadeselect-item-content";
     public static final String ITEM_TEXT_CLASS = "ui-cascadeselect-item-text";
-    public static final String GROUP_ICON_CLASS = "ui-cascadeselect-group-icon pi pi-angle-right";
+    public static final String GROUP_ICON_CLASS = "ui-cascadeselect-group-icon ui-icon pi pi-angle-right";
     public static final String SUBLIST_CLASS = "ui-cascadeselect-sublist";
     public static final String LABEL_EMPTY_CLASS = "ui-cascadeselect-label-empty";
 
