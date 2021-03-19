@@ -19,12 +19,16 @@
  * @prop {Record<string, PrimeFaces.widget.SplitButton.FilterFunction>} filterMatchers A map of all flter functions. The
  * key is the name of the filter function.
  * @prop {JQuery} filterInput The DOM element for the filter input field
+ * @prop {PrimeFaces.UnbindCallback} [hideOverlayHandler] Unbind callback for the hide overlay handler.
  * @prop {JQuery} menu The DOM element for the additional buttons actions. 
  * @prop {JQuery} menuitemContainer The DOM element for the container of the additional buttons actions.
  * @prop {JQuery} menuitems The DOM elements for the individual additional button actions.
  * @prop {JQuery} menuButton The DOM element for the button that triggers the overlay panel with the additional buttons
  * actions.
  * @prop {string} menuId The prefix shared ny the different IDs of the components of this widget.
+ * @prop {PrimeFaces.CssTransitionHandler | null} [transition] Handler for CSS transitions used by this widget.
+ * @prop {PrimeFaces.UnbindCallback} [resizeHandler] Unbind callback for the resize handler.
+ * @prop {PrimeFaces.UnbindCallback} [scrollHandler] Unbind callback for the scroll handler.
  * 
  * @interface {PrimeFaces.widget.SplitButtonCfg} cfg The configuration for the {@link  SplitButton| SplitButton widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this

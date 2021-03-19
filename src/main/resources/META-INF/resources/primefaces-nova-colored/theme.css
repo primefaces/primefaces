@@ -612,7 +612,7 @@ body .ui-carousel {
         font-weight: normal;
         display: inline-block;
         background: none;
-        color: #e02365; }
+        color: #007ad9; }
         body .ui-carousel .ui-carousel-page-links .ui-carousel-page-link.ui-icon-radio-on:before {
           content: ""; }
 
@@ -1072,7 +1072,8 @@ body .ui-dataview.ui-dataview-list .ui-dataview-row {
 
 body .fc .fc-scrollgrid {
   border-color: #c8c8c8; }
-body .fc .fc-daygrid-day.fc-day-today {
+body .fc .fc-daygrid-day.fc-day-today,
+body .fc .fc-timegrid-col.fc-day-today {
   background-color: #e02365; }
 body .fc th {
   background: #007ad9;
@@ -2765,7 +2766,7 @@ body .ui-inputswitch {
   body .ui-inputswitch.ui-inputswitch-checked {
     background: #007ad9; }
     body .ui-inputswitch.ui-inputswitch-checked .ui-inputswitch-handle {
-      background: #116fbf;
+      background: #cccccc;
       border-color: #116fbf;
       margin-left: 2px; }
 
@@ -3485,9 +3486,9 @@ body .ui-toggleswitch {
     outline-offset: 0;
     box-shadow: 0 0 0 0.2rem #8dcdff; }
   body .ui-toggleswitch.ui-toggleswitch-checked .ui-toggleswitch-slider {
-    background: #e02365; }
+    background: #007ad9; }
     body .ui-toggleswitch.ui-toggleswitch-checked .ui-toggleswitch-slider:before {
-      background: #ffffff; }
+      background: #cccccc; }
 
 body .ui-breadcrumb {
   background: #ffffff;

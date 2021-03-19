@@ -128,7 +128,7 @@ public abstract class InputRenderer extends CoreRenderer {
         if (component instanceof InputHolder) {
             InputHolder inputHolder = ((InputHolder) component);
             String labelledBy = inputHolder.getLabelledBy();
-            if (!LangUtils.isValueBlank(labelledBy)) {
+            if (LangUtils.isNotBlank(labelledBy)) {
                 writer.writeAttribute(HTML.ARIA_LABELLEDBY, labelledBy, null);
             }
         }
@@ -189,7 +189,7 @@ public abstract class InputRenderer extends CoreRenderer {
     protected String createStyleClass(UIInput component, String styleClassProperty, String defaultStyleClass) {
         StringBuilder sb = SharedStringBuilder.get(SB_STYLECLASS, 128);
 
-        if (!LangUtils.isValueBlank(defaultStyleClass)) {
+        if (LangUtils.isNotBlank(defaultStyleClass)) {
             sb.append(defaultStyleClass);
         }
 
@@ -202,7 +202,7 @@ public abstract class InputRenderer extends CoreRenderer {
         }
 
 
-        if (!LangUtils.isValueBlank(styleClassProperty)) {
+        if (LangUtils.isNotBlank(styleClassProperty)) {
             String styleClass = Objects.toString(component.getAttributes().get(styleClassProperty), Constants.EMPTY_STRING);
             sb.append(" ").append(styleClass);
         }

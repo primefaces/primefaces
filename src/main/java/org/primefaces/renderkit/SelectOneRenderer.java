@@ -23,11 +23,17 @@
  */
 package org.primefaces.renderkit;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectOne;
 import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
+import javax.faces.model.SelectItem;
+import javax.faces.model.SelectItemGroup;
 
 public abstract class SelectOneRenderer extends SelectRenderer {
 
@@ -69,6 +75,77 @@ public abstract class SelectOneRenderer extends SelectRenderer {
         }
 
         return null;
+    }
+
+    /**
+     * Recursive method used to find a SelectItem by its label.
+     * @param fc FacesContext
+     * @param component the current UI component to find value for
+     * @param converter the converter for the select items
+     * @param selectItems the List of SelectItems
+     * @param valueOrLabel the input value/label to search for
+     * @return either the SelectItem found or NULL if not found
+     */
+    protected SelectItem findSelectItemByLabel(FacesContext fc, UIComponent component, Converter converter, List<SelectItem> selectItems,
+                String valueOrLabel) {
+        return findSelectItem(fc, component, converter, selectItems, valueOrLabel, false);
+    }
+
+    /**
+     * Recursive method used to find a SelectItem by its value.
+     * @param fc FacesContext
+     * @param component the current UI component to find value for
+     * @param converter the converter for the select items
+     * @param selectItems the List of SelectItems
+     * @param valueOrLabel the input value/label to search for
+     * @return either the SelectItem found or NULL if not found
+     */
+    protected SelectItem findSelectItemByValue(FacesContext fc, UIComponent component, Converter converter, List<SelectItem> selectItems,
+                String valueOrLabel) {
+        return findSelectItem(fc, component, converter, selectItems, valueOrLabel, true);
+    }
+
+    /**
+     * Recursive method used to find a SelectItem by its value or label.
+     * @param fc FacesContext
+     * @param component the current UI component to find value for
+     * @param converter the converter for the select items
+     * @param selectItems the List of SelectItems
+     * @param valueOrLabel the input value/label to search for
+     * @param byValue true if searching by value false if by label
+     * @return either the SelectItem found or NULL if not found
+     */
+    private SelectItem findSelectItem(FacesContext fc, UIComponent component, Converter converter, List<SelectItem> selectItems,
+                String valueOrLabel, boolean byValue) {
+        SelectItem foundValue = null;
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem item = selectItems.get(i);
+            if (item instanceof SelectItemGroup) {
+                SelectItemGroup selectItemGroup = (SelectItemGroup) item;
+                if (selectItemGroup.getSelectItems() == null) {
+                    continue;
+                }
+                foundValue = findSelectItem(fc, component,  converter, Arrays.asList(selectItemGroup.getSelectItems()), valueOrLabel, byValue);
+                if (foundValue != null) {
+                    break;
+                }
+            }
+            else {
+                String itemString;
+                if (byValue) {
+                    itemString = getOptionAsString(fc, component, converter, item.getValue());
+                }
+                else {
+                    itemString = item.getLabel();
+                }
+                if (Objects.equals(valueOrLabel, itemString)) {
+                    foundValue = item;
+                    break;
+                }
+            }
+        }
+
+        return foundValue;
     }
 
     protected abstract String getSubmitParam(FacesContext context, UISelectOne selectOne);

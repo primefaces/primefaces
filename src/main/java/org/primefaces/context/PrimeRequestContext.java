@@ -55,6 +55,7 @@ public class PrimeRequestContext {
 
     private WidgetBuilder widgetBuilder;
     private StyleClassBuilder styleClassBuilder;
+    private StyleBuilder styleBuilder;
     private AjaxRequestBuilder ajaxRequestBuilder;
     private CSVBuilder csvBuilder;
     private FacesContext context;
@@ -167,6 +168,17 @@ public class PrimeRequestContext {
         }
 
         return styleClassBuilder;
+    }
+
+    /**
+     *  @return Shared StyleBuilder instance of the current request
+     */
+    public StyleBuilder getStyleBuilder() {
+        if (styleBuilder == null) {
+            styleBuilder = new StyleBuilder(context);
+        }
+
+        return styleBuilder;
     }
 
     /**

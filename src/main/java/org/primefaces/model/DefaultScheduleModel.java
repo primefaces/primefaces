@@ -23,6 +23,8 @@
  */
 package org.primefaces.model;
 
+import org.primefaces.util.LangUtils;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +47,7 @@ public class DefaultScheduleModel implements ScheduleModel, Serializable {
 
     @Override
     public void addEvent(ScheduleEvent<?> event) {
-        if (event.getId() == null || event.getId().length() == 0) {
+        if (LangUtils.isValueEmpty(event.getId())) {
             event.setId(UUID.randomUUID().toString());
         }
 

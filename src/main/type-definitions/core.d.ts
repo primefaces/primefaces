@@ -116,7 +116,7 @@ declare namespace PrimeFaces {
      * @return A new type that is the intersection of the given `Base` with `void`.
      */
     export type ReturnOrVoid<Base> =
-        // tslint:disable-next-line
+        // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
         Base | void;
 
     /**
@@ -340,9 +340,10 @@ declare namespace PrimeFaces {
      * @return The type that is returned by the JQueryUI wrapper method.
      */
     export type ToJQueryUIWidgetReturnType<W, R, JQ> =
-        // tslint:disable-next-line
+        // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
         R extends W | undefined | void
         ? JQ
+        // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
         : R extends undefined | void
         ? R | JQ
         : R;
@@ -494,6 +495,79 @@ declare namespace PrimeFaces {
      * The main container element of the source component that issued the confirmation request.
      */
     export let confirmSource: JQuery | undefined | null;
+
+    /**
+     * CSS transition callbacks that can be passed to the methods in {@link CssTransitionHandler}.
+     * @since 10.0.0
+     */
+    export interface CssTransitionCallback {
+        /**
+         * Called when the entering process is about to start.
+         */
+        onEnter?: (this: Window) => void;
+
+        /**
+         * Called during the entering process.
+         * @this The event that occurred. When animations are globally disabled, this callback may still be called, but
+         * no event is passed and the this context is the Window.
+         */
+        onEntering?: (this: JQuery.TriggeredEvent | Window) => void;
+        
+        /**
+         * Called when the entering process has finished.
+         * @this The event that occurred. When animations are globally disabled, this callback may still be called, but
+         * no event is passed and the this context is the Window.
+         */
+        onEntered?: (this: JQuery.TriggeredEvent | Window) => void;
+        
+        /**
+         * Called when the exiting process is about to start.
+         */
+        onExit?: () => void;
+        
+        /**
+         * Called during the exiting process.
+         * @this The event that occurred. When animations are globally disabled, this callback may still be called, but
+         * no event is passed and the this context is the Window.
+         */
+        onExiting?: (this: JQuery.TriggeredEvent | Window) => void;
+        
+        /**
+         * Called when the exiting process has finished.
+         * @this The event that occurred. When animations are globally disabled, this callback may still be called, but
+         * no event is passed and the this context is the Window.
+         */
+        onExited?: (this: JQuery.TriggeredEvent | Window) => void;
+    }
+
+    /**
+     * Methods for a CSS transition that are returned by {@link PrimeFaces.utils.registerCSSTransition}.
+     * @since 10.0.0
+     */
+    export interface CssTransitionHandler {
+        /**
+         * Should be called when an element gets shown.
+         * @param callbacks Optional callbacks that will be invoked at the appropriate time.
+         */
+        show(callbacks?: CssTransitionCallback): void;
+
+        /**
+         * Should be called when an element gets hidden.
+         * @param callbacks Optional callbacks that will be invoked at the appropriate time.
+         */
+        hide(callbacks?: CssTransitionCallback): void;
+    }
+
+    /**
+     * Handler returned by methods that add an event handler that can be used to dispose of bound handler. Removes the
+     * event handler that was added.
+     */
+    export interface UnbindCallback {
+        /**
+         * Removes the event handler or handlers that were added when this callback was created. 
+         */
+        unbind(): void;
+    }
 }
 
 declare namespace PrimeFaces.ajax {

@@ -852,7 +852,7 @@ public class DataTable extends DataTableBase {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String expandedRows = params.get(getClientId(context) + "_rowExpansionState");
 
-            if (!LangUtils.isValueBlank(expandedRows)) {
+            if (LangUtils.isNotBlank(expandedRows)) {
                 String[] tmp = expandedRows.split(",");
                 for (int i = 0; i < tmp.length; ++i) {
                     expandedRowsSet.add(Integer.parseInt(tmp[i]));

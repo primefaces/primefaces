@@ -90,6 +90,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.cfg.my = this.cfg.my||'center';
         this.cfg.position = this.cfg.position||'center';
         this.cfg.cache = this.cfg.cache === false ? false : true;
+        this.cfg.responsive = this.cfg.responsive === false ? false : true;
         this.parent = this.jq.parent();
 
         this.initSize();
@@ -178,7 +179,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
         var maxHeight = windowHeight - (margin + headerHeight + contentPadding + footerHeight);
 
-        this.content.css('max-height', String(maxHeight));
+        this.content.css('max-height', maxHeight + 'px');
     },
 
 

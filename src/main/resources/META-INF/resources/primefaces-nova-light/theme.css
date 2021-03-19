@@ -1072,7 +1072,8 @@ body .ui-dataview.ui-dataview-list .ui-dataview-row {
 
 body .fc .fc-scrollgrid {
   border-color: #c8c8c8; }
-body .fc .fc-daygrid-day.fc-day-today {
+body .fc .fc-daygrid-day.fc-day-today,
+body .fc .fc-timegrid-col.fc-day-today {
   background-color: #007ad9; }
 body .fc th {
   background: #f4f4f4;
@@ -2767,7 +2768,7 @@ body .ui-inputswitch {
   body .ui-inputswitch.ui-inputswitch-checked {
     background: #007ad9; }
     body .ui-inputswitch.ui-inputswitch-checked .ui-inputswitch-handle {
-      background: #116fbf;
+      background: #cccccc;
       border-color: #116fbf;
       margin-left: 2px; }
 
@@ -3491,7 +3492,7 @@ body .ui-toggleswitch {
   body .ui-toggleswitch.ui-toggleswitch-checked .ui-toggleswitch-slider {
     background: #007ad9; }
     body .ui-toggleswitch.ui-toggleswitch-checked .ui-toggleswitch-slider:before {
-      background: #ffffff; }
+      background: #cccccc; }
 
 body .ui-breadcrumb {
   background: #ffffff;

@@ -12,8 +12,12 @@
  * shown.
  * 
  * @prop {JQuery} content The DOM element for the content of the confirm popup.
- * @prop {JQuery} message DOM element of the confirmation message displayed in this confirm popup.
+ * @prop {PrimeFaces.UnbindCallback} [hideOverlayHandler] Unbind callback for the hide overlay handler.
  * @prop {JQuery} icon The DOM element for the message icon.
+ * @prop {JQuery} message DOM element of the confirmation message displayed in this confirm popup.
+ * @prop {PrimeFaces.UnbindCallback} [resizeHandler] Unbind callback for the resize handler.
+ * @prop {PrimeFaces.UnbindCallback} [scrollHandler] Unbind callback for the scroll handler.
+ * @prop {PrimeFaces.CssTransitionHandler | null} [transition] Handler for CSS transitions used by this widget.
  *
  * @interface {PrimeFaces.widget.ConfirmPopupCfg} cfg The configuration for the {@link  ConfirmPopup| ConfirmPopup widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this

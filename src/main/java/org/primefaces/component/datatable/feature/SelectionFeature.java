@@ -75,14 +75,7 @@ public class SelectionFeature implements DataTableFeature {
         table.setSelectedRowKeys(null);
 
         if (table.isSingleSelectionMode()) {
-            if (rowKeys.size() > 1) {
-                throw new IllegalArgumentException("DataTable '" + table.getClientId(context)
-                        + "' is configured for single selection while multiple rows have been selected");
-            }
-
-            if (!rowKeys.isEmpty()) {
-                decodeSingleSelection(context, table, rowKeys.iterator().next());
-            }
+            decodeSingleSelection(context, table, rowKeys);
         }
         else {
             decodeMultipleSelection(context, table, rowKeys);
@@ -101,8 +94,6 @@ public class SelectionFeature implements DataTableFeature {
                     rowKeys.add(table.getRowKey(selection));
                 }
                 else {
-                    rowKeys.addAll(table.getSelectedRowKeys());
-
                     Class<?> clazz = selection.getClass();
                     boolean isArray = clazz != null && clazz.isArray();
 
@@ -122,19 +113,30 @@ public class SelectionFeature implements DataTableFeature {
         }
     }
 
-    protected void decodeSingleSelection(FacesContext context, DataTable table, String rowKey) {
-        Object o = table.getRowData(rowKey);
-        if (o != null) {
-            Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-            String var = table.getVar();
-            Set<String> rowKeysTmp = Collections.emptySet();
-            if (isSelectable(table, var, requestMap, o)) {
-                rowKeysTmp = Collections.singleton(rowKey);
-            }
-            setSelection(context, table, false, Collections.singletonList(o), rowKeysTmp);
+    protected void decodeSingleSelection(FacesContext context, DataTable table, Set<String> rowKeys) {
+        if (rowKeys.size() > 1) {
+            throw new IllegalArgumentException("DataTable '" + table.getClientId(context)
+                    + "' is configured for single selection while multiple rows have been selected");
+        }
+
+        if (rowKeys.isEmpty()) {
+            setSelection(context, table, false, Collections.emptyList(), Collections.emptySet());
         }
         else {
-            setSelection(context, table, false, Collections.emptyList(), Collections.emptySet());
+            String rowKey = rowKeys.iterator().next();
+            Object o = table.getRowData(rowKey);
+            if (o != null) {
+                Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+                String var = table.getVar();
+                Set<String> rowKeysTmp = Collections.emptySet();
+                if (isSelectable(table, var, requestMap, o)) {
+                    rowKeysTmp = Collections.singleton(rowKey);
+                }
+                setSelection(context, table, false, Collections.singletonList(o), rowKeysTmp);
+            }
+            else {
+                setSelection(context, table, false, Collections.emptyList(), Collections.emptySet());
+            }
         }
     }
 

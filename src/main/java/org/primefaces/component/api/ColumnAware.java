@@ -45,80 +45,91 @@ import org.primefaces.util.ComponentUtils;
 public interface ColumnAware {
 
     default void forEachColumn(Function<UIColumn, Boolean> callback) {
-        forEachColumn(true, callback);
+        forEachColumn(true, true, callback);
     }
 
     default void forEachColumn(boolean unwrapDynamicColumns, Function<UIColumn, Boolean> callback) {
-        forEachColumn(FacesContext.getCurrentInstance(), (UIComponent) this, unwrapDynamicColumns, callback);
+        forEachColumn(unwrapDynamicColumns, true, callback);
     }
 
-    default boolean forEachColumn(FacesContext context, UIComponent root, boolean unwrapDynamicColumns, Function<UIColumn, Boolean> callback) {
+    default void forEachColumn(boolean unwrapDynamicColumns, boolean skipUnrendered, Function<UIColumn, Boolean> callback) {
+        forEachColumn(FacesContext.getCurrentInstance(), (UIComponent) this, unwrapDynamicColumns, skipUnrendered, callback);
+    }
+
+    default boolean forEachColumn(FacesContext context, UIComponent root, boolean unwrapDynamicColumns, boolean skipUnrendered,
+            Function<UIColumn, Boolean> callback) {
         for (int i = 0; i < root.getChildCount(); i++) {
             UIComponent child = root.getChildren().get(i);
-            if (child.isRendered()) {
-                if (child instanceof Columns) {
-                    Columns columns = (Columns) child;
-                    if (unwrapDynamicColumns) {
-                        for (int j = 0; j < columns.getRowCount(); j++) {
-                            DynamicColumn dynaColumn = new DynamicColumn(j, columns, context);
-                            if (!callback.apply(dynaColumn)) {
-                                return false;
-                            }
-                        }
-                    }
-                    else {
-                        if (!callback.apply(columns)) {
+            if (skipUnrendered && !child.isRendered()) {
+                continue;
+            }
+
+            if (child instanceof Columns) {
+                Columns columns = (Columns) child;
+                if (unwrapDynamicColumns) {
+                    for (int j = 0; j < columns.getRowCount(); j++) {
+                        DynamicColumn dynaColumn = new DynamicColumn(j, columns, context);
+                        if (!callback.apply(dynaColumn)) {
                             return false;
                         }
                     }
                 }
-                else if (child instanceof Column) {
-                    Column column = (Column) child;
-                    if (!callback.apply(column)) {
+                else {
+                    if (!callback.apply(columns)) {
                         return false;
                     }
                 }
-                else if (child instanceof ColumnGroup) {
-                    // columnGroup must contain p:row(s) as child
-                    for (int j = 0; j < child.getChildCount(); j++) {
-                        UIComponent row = ((UIComponent) child).getChildren().get(j);
-                        if (row.isRendered()) {
-                            if (!forEachColumn(context, row, unwrapDynamicColumns, callback)) {
-                                return false;
-                            }
-                        }
+            }
+            else if (child instanceof Column) {
+                Column column = (Column) child;
+                if (!callback.apply(column)) {
+                    return false;
+                }
+            }
+            else if (child instanceof ColumnGroup) {
+                // columnGroup must contain p:row(s) as child
+                for (int j = 0; j < child.getChildCount(); j++) {
+                    UIComponent row = ((UIComponent) child).getChildren().get(j);
+                    if (skipUnrendered && !row.isRendered()) {
+                        continue;
+                    }
+
+                    if (!forEachColumn(context, row, unwrapDynamicColumns, skipUnrendered, callback)) {
+                        return false;
                     }
                 }
-                else if (child instanceof ColumnAware) {
-                    ColumnAware columnAware = (ColumnAware) child;
-                    for (int j = 0; j < ((UIComponent) columnAware).getChildCount(); j++) {
-                        UIComponent columnAwareChild = ((UIComponent) columnAware).getChildren().get(j);
-                        if (columnAwareChild.isRendered()) {
-                            if (!forEachColumn(context, columnAwareChild, unwrapDynamicColumns, callback)) {
-                                return false;
-                            }
-                        }
+            }
+            else if (child instanceof ColumnAware) {
+                ColumnAware columnAware = (ColumnAware) child;
+                for (int j = 0; j < ((UIComponent) columnAware).getChildCount(); j++) {
+                    UIComponent columnAwareChild = ((UIComponent) columnAware).getChildren().get(j);
+                    if (skipUnrendered && !columnAwareChild.isRendered()) {
+                        continue;
+                    }
+
+                    if (!forEachColumn(context, columnAwareChild, unwrapDynamicColumns, skipUnrendered, callback)) {
+                        return false;
                     }
                 }
-                else if (child.getClass().getName().endsWith("UIRepeat")) {
-                    VisitContext visitContext = VisitContext.createVisitContext(context, null,
-                            ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
-                    child.visitTree(visitContext, (ctx, target) -> {
-                        if (target.getClass().getName().endsWith("UIRepeat")) {
-                            return VisitResult.ACCEPT;
-                        }
+            }
+            else if (child.getClass().getName().endsWith("UIRepeat")) {
+                VisitContext visitContext = VisitContext.createVisitContext(context, null,
+                        ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
+                child.visitTree(visitContext, (ctx, target) -> {
+                    if (target.getClass().getName().endsWith("UIRepeat")) {
+                        return VisitResult.ACCEPT;
+                    }
 
-                        // for now just support basic p:column in ui:repeat
-                        if (target instanceof Column) {
-                            Column column = (Column) target;
-                            if (!callback.apply(column)) {
-                                return VisitResult.COMPLETE;
-                            }
+                    // for now just support basic p:column in ui:repeat
+                    if (target instanceof Column) {
+                        Column column = (Column) target;
+                        if (!callback.apply(column)) {
+                            return VisitResult.COMPLETE;
                         }
+                    }
 
-                        return VisitResult.REJECT;
-                    });
-                }
+                    return VisitResult.REJECT;
+                });
             }
         }
 
@@ -312,7 +323,7 @@ public interface ColumnAware {
     }
 
     default void resetDynamicColumns() {
-        forEachColumn(false, column ->  {
+        forEachColumn(false, false, column ->  {
             if (column instanceof Columns) {
                 ((Columns) column).setRowIndex(-1);
                 setColumns(null);

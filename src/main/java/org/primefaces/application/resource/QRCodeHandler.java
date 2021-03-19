@@ -56,7 +56,7 @@ public class QRCodeHandler extends BaseDynamicContentHandler {
 
             ErrorCorrectionLevel ecl = ErrorCorrectionLevel.L;
             String errorCorrection = params.get("qrec");
-            if (!LangUtils.isValueBlank(errorCorrection)) {
+            if (LangUtils.isNotBlank(errorCorrection)) {
                 ecl = ErrorCorrectionLevel.valueOf(errorCorrection);
             }
 

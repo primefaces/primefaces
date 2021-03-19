@@ -32,7 +32,6 @@ public class Constants {
 
         // PF context params
         public static final String THEME = "primefaces.THEME";
-        public static final String FONT_AWESOME = "primefaces.FONT_AWESOME";
         public static final String SUBMIT = "primefaces.SUBMIT";
         public static final String DIRECTION = "primefaces.DIR";
         public static final String TOUCHABLE = "primefaces.TOUCHABLE";
@@ -112,6 +111,10 @@ public class Constants {
     public static final String SPACE = " ";
 
     public static final String EMPTY_STRING = "";
+
+    public static final String COLON = ":";
+
+    public static final String SEMICOLON = ";";
 
     public static final String CLIENT_BEHAVIOR_RENDERING_MODE = "CLIENT_BEHAVIOR_RENDERING_MODE";
 

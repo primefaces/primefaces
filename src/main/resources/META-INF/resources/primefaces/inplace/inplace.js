@@ -22,7 +22,6 @@
  *
  * @prop {boolean} cfg.disabled Whether this inplace widget is disabled. If disabled, switching to the content or
  * inplace editor is not possible.
- * @prop {string} cfg.formId The ID of the form that is used for AJAX requests. Usually the containing form.
  * @prop {boolean} cfg.editor `true` to add save and cancel buttons to the inline content, or `false` otherwise. Usually
  * used when the inline content is a form field.
  * @prop {PrimeFaces.widget.Inplace.EffectType} cfg.effect Effect to be used when toggling.

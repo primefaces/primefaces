@@ -107,10 +107,6 @@ public class HeadRenderer extends Renderer {
             encodeCSS(context, LIBRARY, "primeicons/primeicons.css");
         }
 
-        if (applicationContext.getConfig().isFontAwesomeEnabled()) {
-            encodeCSS(context, LIBRARY, "fa/font-awesome.css");
-        }
-
         //Middle facet
         UIComponent middle = component.getFacet("middle");
         if (ComponentUtils.shouldRenderFacet(middle)) {

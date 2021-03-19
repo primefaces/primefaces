@@ -79,6 +79,8 @@
  * @prop {boolean} cfg.disabled Whether this file upload is disabled.
  * @prop {number} cfg.fileLimit Maximum number of files allowed to upload.
  * @prop {string} cfg.fileLimitMessage Message to display when file limit exceeds.
+ * @prop {boolean} cfg.global Global AJAX requests are listened to by `ajaxStatus`. When `false`, `ajaxStatus` will not
+ * get triggered.
  * @prop {string} cfg.invalidFileMessage Message to display when file is not accepted.
  * @prop {string} cfg.invalidSizeMessage Message to display when size limit exceeds.
  * @prop {number} cfg.maxFileSize Maximum allowed size in bytes for files.
@@ -107,7 +109,6 @@
  * retry. It is multiplied with the retry count. (first retry: `retryTimeout * 1`, second retry: `retryTimeout * 2`,
  * ...)
  * @prop {string} cfg.resumeContextPath Server-side path which provides information to resume chunked file upload.
- * @prop {string} cfg.global Global AJAX requests are listened by ajaxStatus, false will not trigger ajaxStatus.
  */
 PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 

@@ -298,6 +298,7 @@ public abstract class DialogBase extends UIPanel implements Widget, RTLAware, Cl
         getStateHelper().put(PropertyKeys.closeOnEscape, closeOnEscape);
     }
 
+    @Override
     public String getDir() {
         return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
     }
@@ -331,7 +332,7 @@ public abstract class DialogBase extends UIPanel implements Widget, RTLAware, Cl
     }
 
     public boolean isResponsive() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.responsive, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.responsive, true);
     }
 
     public void setResponsive(boolean responsive) {

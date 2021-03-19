@@ -201,7 +201,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
                 String id = UUID.randomUUID().toString();
                 String merged = mergeAndMinimizeInlineScripts(id, type, inlines);
 
-                if (!LangUtils.isValueBlank(merged)) {
+                if (LangUtils.isNotBlank(merged)) {
                     getWrapped().startElement("script", null);
                     getWrapped().writeAttribute("id", id, null);
                     getWrapped().writeAttribute("type", type, null);
@@ -231,7 +231,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
 
         String minimized = script.toString();
 
-        if (!LangUtils.isValueBlank(minimized)) {
+        if (LangUtils.isNotBlank(minimized)) {
             if ("text/javascript".equalsIgnoreCase(type)) {
                 minimized = minimized.replace(";;", ";");
 
@@ -258,12 +258,12 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
 
     protected void updateScriptSrcOrType(String name, String value) {
         if ("src".equalsIgnoreCase(name)) {
-            if (!LangUtils.isValueBlank(value)) {
+            if (LangUtils.isNotBlank(value)) {
                 include.append(value);
             }
         }
         else if ("type".equalsIgnoreCase(name)) {
-            if (!LangUtils.isValueBlank(value)) {
+            if (LangUtils.isNotBlank(value)) {
                 scriptType = value;
             }
         }

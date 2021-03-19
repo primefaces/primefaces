@@ -86,10 +86,10 @@ public class CommandButton extends CommandButtonBase implements DialogReturnAwar
         if (value != null && LangUtils.isValueBlank(icon)) {
             styleClass = HTML.BUTTON_TEXT_ONLY_BUTTON_CLASS;
         }
-        else if (value != null && !LangUtils.isValueBlank(icon)) {
+        else if (value != null && LangUtils.isNotBlank(icon)) {
             styleClass = getIconPos().equals("left") ? HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS : HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS;
         }
-        else if (value == null && !LangUtils.isValueBlank(icon)) {
+        else if (value == null && LangUtils.isNotBlank(icon)) {
             styleClass = HTML.BUTTON_ICON_ONLY_BUTTON_CLASS;
         }
 

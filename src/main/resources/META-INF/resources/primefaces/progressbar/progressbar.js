@@ -17,7 +17,6 @@
  * @prop {boolean} cfg.ajax Specifies the mode of the progress bar, in AJAX mode progress value is retrieved from a
  * backing bean.
  * @prop {number} cfg.animationDuration Animation duration in milliseconds determining how long the animation will run.
- * @prop {string} cfg.formId ID of the form used for AJAX requests.
  * @prop {boolean} cfg.global Global AJAX requests are listened to by the `ajaxStatus` component, setting global to
  * `false` will not trigger `ajaxStatus`.
  * @prop {number} cfg.initialValue The initial value for the progress bar.

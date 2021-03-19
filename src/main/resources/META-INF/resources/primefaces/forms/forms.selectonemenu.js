@@ -28,6 +28,7 @@
  * currently used.
  * @prop {Record<PrimeFaces.widget.SelectOneMenu.FilterMatchMode, PrimeFaces.widget.SelectOneMenu.FilterFunction>} filterMatchers
  * Map between the available filter types and the filter implementation.
+ * @prop {PrimeFaces.UnbindCallback} [hideOverlayHandler] Unbind callback for the hide overlay handler.
  * @prop {JQuery} input The DOM element for the hidden input with the current value.
  * @prop {boolean} isDynamicLoaded Whether the contents of the overlay panel were loaded.
  * @prop {JQuery} items The DOM elements for the the available selectable options.
@@ -44,7 +45,10 @@
  * @prop {number} panelWidthAdjusted The adjusted width of the overlay panel.
  * @prop {JQuery} preShowValue The DOM element for the selected option that is shown before the overlay panel is brought
  * up.
+ * @prop {PrimeFaces.UnbindCallback} [resizeHandler] Unbind callback for the resize handler.
+ * @prop {PrimeFaces.UnbindCallback} [scrollHandler] Unbind callback for the scroll handler.
  * @prop {number} searchTimer ID of the timeout for the delay of the filter input in the overlay panel.
+ * @prop {PrimeFaces.CssTransitionHandler | null} [transition] Handler for CSS transitions used by this widget.
  * @prop {JQuery} triggers The DOM elements for the buttons that can trigger (hide or show) the overlay panel with the
  * available selectable options.
  * @prop {string} value The current value of this select one menu.

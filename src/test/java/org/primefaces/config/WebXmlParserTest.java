@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
 
 import org.junit.jupiter.api.AfterEach;
@@ -70,8 +71,12 @@ public class WebXmlParserTest {
     @MethodSource("data")
     public void testInternalJaxp(String pathToWebXml) throws MalformedURLException {
         when(extContext.getResource(anyString())).thenReturn(this.getClass().getResource(pathToWebXml));
-        configureXpathFactory(com.sun.org.apache.xpath.internal.jaxp.XPathFactoryImpl.class);
+        System.clearProperty(XPATH_FACTORY_SYSTEM_PROPERTY); //back to system-default
         Map<String, String> errorPages = WebXmlParser.getErrorPages(context);
         assertErrorPages(errorPages);
+
+        //ensure JDK´s own XPathFactory is used
+        XPathFactory xPathFactory = XPathFactory.newInstance();
+        assertEquals("com.sun.org.apache.xpath.internal.jaxp.XPathFactoryImpl", xPathFactory.getClass().getName());
     }
 }
