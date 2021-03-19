@@ -179,7 +179,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
         var maxHeight = windowHeight - (margin + headerHeight + contentPadding + footerHeight);
 
-        this.content.css('max-height', String(maxHeight));
+        this.content.css('max-height', maxHeight + 'px');
     },
 
 
