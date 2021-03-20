@@ -40,6 +40,7 @@ public class RadialScales extends AxesScale {
     private AxesGridLines gridLines;
     private RadialLinearPointLabels pointLabels;
     private RadialLinearTicks ticks;
+    private Number startAngle;
 
     /**
      * Gets the angelLines
@@ -111,5 +112,23 @@ public class RadialScales extends AxesScale {
      */
     public void setTicks(RadialLinearTicks ticks) {
         this.ticks = ticks;
+    }
+
+    /**
+     * Gets the startAngle
+     *
+     * @return startAngle
+     */
+    public Number getStartAngle() {
+        return startAngle;
+    }
+
+    /**
+     * Sets the startAngle
+     *
+     * @param startAngle Starting angle to draw arcs for the first item in a dataset.
+     */
+    public void setStartAngle(Number startAngle) {
+        this.startAngle = startAngle;
     }
 }

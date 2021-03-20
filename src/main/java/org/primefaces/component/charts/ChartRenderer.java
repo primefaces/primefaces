@@ -163,6 +163,8 @@ public class ChartRenderer extends CoreRenderer {
 
             boolean hasAttrs = false;
 
+            // TODO: requires some refactorings for hasAttrs
+
             if (scales instanceof CartesianScales) {
                 writer.write("\"scales\":{");
                 CartesianScales cScales = (CartesianScales) scales;
@@ -221,6 +223,14 @@ public class ChartRenderer extends CoreRenderer {
                         writer.write(",");
                     }
                     writer.write("\"ticks\":" + rScales.getTicks().encode());
+                    hasAttrs = true;
+                }
+
+                if (rScales.getStartAngle() != null) {
+                    if (hasAttrs) {
+                        writer.write(",");
+                    }
+                    writer.write("\"startAngle\":" + rScales.getStartAngle());
                     hasAttrs = true;
                 }
 
@@ -293,7 +303,7 @@ public class ChartRenderer extends CoreRenderer {
                 tooltip.setTextDirection("rtl");
             }
 
-            writer.write("\"tooltips\":{");
+            writer.write("\"tooltip\":{");
             writer.write(tooltip.encode());
             writer.write("}");
         }
