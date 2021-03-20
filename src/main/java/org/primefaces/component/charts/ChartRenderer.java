@@ -284,8 +284,10 @@ public class ChartRenderer extends CoreRenderer {
                 writer.write(",");
             }
 
+            writer.write("\"plugins\":{");
             writer.write("\"title\":{");
             writer.write(title.encode());
+            writer.write("}");
             writer.write("}");
         }
     }
