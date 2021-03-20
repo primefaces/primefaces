@@ -34,7 +34,6 @@ import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.model.charts.ChartData;
 import org.primefaces.model.charts.ChartDataSet;
 import org.primefaces.model.charts.ChartModel;
-import org.primefaces.model.charts.axes.AxesScale;
 import org.primefaces.model.charts.axes.cartesian.CartesianAxes;
 import org.primefaces.model.charts.axes.cartesian.CartesianScales;
 import org.primefaces.model.charts.axes.radial.RadialScales;
@@ -44,7 +43,6 @@ import org.primefaces.model.charts.optionconfig.legend.Legend;
 import org.primefaces.model.charts.optionconfig.title.Title;
 import org.primefaces.model.charts.optionconfig.tooltip.Tooltip;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ChartUtils;
 import org.primefaces.util.EscapeUtils;
 
 public class ChartRenderer extends CoreRenderer {
@@ -163,20 +161,29 @@ public class ChartRenderer extends CoreRenderer {
             }
             hasComma = false;
 
+            boolean hasAttrs = false;
+
             if (scales instanceof CartesianScales) {
                 writer.write("\"scales\":{");
                 CartesianScales cScales = (CartesianScales) scales;
-                encodeScaleCommon(writer, cScales);
+//                encodeScaleCommon(writer, cScales);
+                // TODO: how to handle multiple axes?
                 List<CartesianAxes> xAxes = cScales.getXAxes();
                 if (xAxes != null && !xAxes.isEmpty()) {
-                    writer.write(",");
-                    encodeAxes(context, chartName, "xAxes", xAxes);
+                    if (hasAttrs) {
+                        writer.write(",");
+                    }
+                    encodeAxes(context, chartName, "x", xAxes);
+                    hasAttrs = true;
                 }
 
                 List<CartesianAxes> yAxes = cScales.getYAxes();
                 if (yAxes != null && !yAxes.isEmpty()) {
-                    writer.write(",");
-                    encodeAxes(context, chartName, "yAxes", yAxes);
+                    if (hasAttrs) {
+                        writer.write(",");
+                    }
+                    encodeAxes(context, chartName, "y", yAxes);
+                    hasAttrs = true;
                 }
 
                 writer.write("}");
@@ -184,21 +191,37 @@ public class ChartRenderer extends CoreRenderer {
             else if (scales instanceof RadialScales) {
                 writer.write("\"scale\":{");
                 RadialScales rScales = (RadialScales) scales;
-                encodeScaleCommon(writer, rScales);
+//                encodeScaleCommon(writer, rScales);
                 if (rScales.getAngelLines() != null) {
-                    writer.write(",\"angleLines\":" + rScales.getAngelLines().encode());
+                    if (hasAttrs) {
+                        writer.write(",");
+                    }
+                    writer.write("\"angleLines\":" + rScales.getAngelLines().encode());
+                    hasAttrs = true;
                 }
 
                 if (rScales.getGridLines() != null) {
-                    writer.write(",\"gridLines\":" + rScales.getGridLines().encode());
+                    if (hasAttrs) {
+                        writer.write(",");
+                    }
+                    writer.write("\"gridLines\":" + rScales.getGridLines().encode());
+                    hasAttrs = true;
                 }
 
                 if (rScales.getPointLabels() != null) {
-                    writer.write(",\"pointLabels\":" + rScales.getPointLabels().encode());
+                    if (hasAttrs) {
+                        writer.write(",");
+                    }
+                    writer.write("\"pointLabels\":" + rScales.getPointLabels().encode());
+                    hasAttrs = true;
                 }
 
                 if (rScales.getTicks() != null) {
-                    writer.write(",\"ticks\":" + rScales.getTicks().encode());
+                    if (hasAttrs) {
+                        writer.write(",");
+                    }
+                    writer.write("\"ticks\":" + rScales.getTicks().encode());
+                    hasAttrs = true;
                 }
 
                 writer.write("}");
@@ -206,27 +229,27 @@ public class ChartRenderer extends CoreRenderer {
         }
     }
 
-    protected void encodeScaleCommon(ResponseWriter writer, AxesScale scale) throws IOException {
-        ChartUtils.writeDataValue(writer, "display", scale.isDisplay(), false);
-        ChartUtils.writeDataValue(writer, "weight", scale.getWeight(), true);
-    }
+//    protected void encodeScaleCommon(ResponseWriter writer, AxesScale scale) throws IOException {
+//        ChartUtils.writeDataValue(writer, "display", scale.isDisplay(), false);
+//        ChartUtils.writeDataValue(writer, "weight", scale.getWeight(), true);
+//    }
 
     protected void encodeAxes(FacesContext context, String chartName, String name, List<CartesianAxes> axes) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        writer.write("\"" + name + "\":[");
+        writer.write("\"" + name + "\": {");
         for (int i = 0; i < axes.size(); i++) {
             CartesianAxes data = axes.get(i);
 
-            if (i != 0) {
-                writer.write(",");
-            }
+//            if (i != 0) {
+//                writer.write(",");
+//            }
 
-            writer.write("{");
+//            writer.write("{");
             writer.write(data.encode());
-            writer.write("}");
+//            writer.write("}");
         }
-        writer.write("]");
+        writer.write("}");
     }
 
     protected void encodeElements(FacesContext context, Elements elements, boolean hasComma) throws IOException {
