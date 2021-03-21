@@ -67,14 +67,14 @@ PrimeFaces.widget.BaseChart = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
         
         this.canvas.on('click', function(evt){   
-            var activePoints = $this.chart.getElementAtEvent(evt);
+            var activePoints = $this.chart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, false)
             if(activePoints.length && $this.cfg.behaviors) {
                 var itemSelectCallback = $this.cfg.behaviors['itemSelect'];
                 if(itemSelectCallback) {
                     var ext = {
                         params: [
-                            {name: 'itemIndex', value: activePoints[0]["_index"]}
-                            ,{name: 'dataSetIndex', value: activePoints[0]["_datasetIndex"]}
+                            {name: 'itemIndex', value: activePoints[0].index}
+                            ,{name: 'dataSetIndex', value: activePoints[0].datasetIndex}
                         ]
                     };
 
