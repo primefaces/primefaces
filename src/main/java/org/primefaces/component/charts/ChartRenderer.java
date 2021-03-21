@@ -169,7 +169,6 @@ public class ChartRenderer extends CoreRenderer {
                 writer.write("\"scales\":{");
                 CartesianScales cScales = (CartesianScales) scales;
 //                encodeScaleCommon(writer, cScales);
-                // TODO: how to handle multiple axes?
                 List<CartesianAxes> xAxes = cScales.getXAxes();
                 if (xAxes != null && !xAxes.isEmpty()) {
                     if (hasAttrs) {
@@ -244,22 +243,20 @@ public class ChartRenderer extends CoreRenderer {
 //        ChartUtils.writeDataValue(writer, "weight", scale.getWeight(), true);
 //    }
 
-    protected void encodeAxes(FacesContext context, String chartName, String name, List<CartesianAxes> axes) throws IOException {
+    protected void encodeAxes(FacesContext context, String chartName, String defaultAxeId, List<CartesianAxes> axes) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        writer.write("\"" + name + "\": {");
         for (int i = 0; i < axes.size(); i++) {
+            if (i > 0) {
+                writer.write(",");
+            }
+
             CartesianAxes data = axes.get(i);
-
-//            if (i != 0) {
-//                writer.write(",");
-//            }
-
-//            writer.write("{");
+            String axeId = data.getId() == null ? defaultAxeId : data.getId();
+            writer.write("\"" + axeId + "\": {");
             writer.write(data.encode());
-//            writer.write("}");
+            writer.write("}");
         }
-        writer.write("}");
     }
 
     protected void encodeElements(FacesContext context, Elements elements, boolean hasComma) throws IOException {
