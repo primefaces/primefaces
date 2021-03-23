@@ -24,9 +24,18 @@
 package org.primefaces.util;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
+import java.security.AccessController;
+import java.security.PrivilegedActionException;
+import java.security.PrivilegedExceptionAction;
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.MissingResourceException;
+import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
 import javax.faces.application.Application;
@@ -60,7 +69,7 @@ public class MessageFactory {
         ResourceBundle bundle = null;
         ClassLoader currentClassLoader = LangUtils.getCurrentClassLoader(application.getClass());
 
-        //try user defined bundle first
+        // try user defined bundle first
         if (userBundleName != null) {
             try {
                 bundle = getBundle(userBundleName, locale, currentClassLoader, facesContext);
@@ -73,7 +82,7 @@ public class MessageFactory {
             }
         }
 
-        //try primefaces bundle
+        // try primefaces bundle
         if (summary == null) {
             try {
                 bundle = getBundle(PRIMEFACES_BUNDLE_BASENAME, locale, currentClassLoader, facesContext);
@@ -89,7 +98,7 @@ public class MessageFactory {
             }
         }
 
-        //fallback to default jsf bundle
+        // fallback to default jsf bundle
         if (summary == null) {
             try {
                 bundle = getBundle(DEFAULT_BUNDLE_BASENAME, locale, currentClassLoader, facesContext);
@@ -134,7 +143,7 @@ public class MessageFactory {
         ResourceBundle bundle = null;
         ClassLoader currentClassLoader = LangUtils.getCurrentClassLoader(application.getClass());
 
-        //try user defined bundle first
+        // try user defined bundle first
         if (userBundleName != null) {
             try {
                 bundle = getBundle(userBundleName, locale, currentClassLoader, facesContext);
@@ -147,7 +156,7 @@ public class MessageFactory {
             }
         }
 
-        //try primefaces bundle
+        // try primefaces bundle
         if (summary == null) {
             try {
                 bundle = getBundle(PRIMEFACES_BUNDLE_BASENAME, locale, currentClassLoader, facesContext);
@@ -163,7 +172,7 @@ public class MessageFactory {
             }
         }
 
-        //fallback to default jsf bundle
+        // fallback to default jsf bundle
         if (summary == null) {
             try {
                 bundle = getBundle(DEFAULT_BUNDLE_BASENAME, locale, currentClassLoader, facesContext);
@@ -211,15 +220,13 @@ public class MessageFactory {
     }
 
     private static ResourceBundle getBundle(String baseName, Locale locale, ClassLoader classLoader,
-            FacesContext facesContext) {
+                FacesContext facesContext) {
+
+        ClassLoader primeFacesClassLoader = MessageFactory.class.getClassLoader();
 
         if (PRIMEFACES_BUNDLE_BASENAME.equals(baseName)) {
-
-            ClassLoader primeFacesClassLoader = MessageFactory.class.getClassLoader();
-
             if (!primeFacesClassLoader.equals(classLoader)) {
-                return ResourceBundle.getBundle(baseName, locale, classLoader,
-                        new OSGiFriendlyControl(primeFacesClassLoader));
+                return ResourceBundle.getBundle(baseName, locale, classLoader, new PrimeFacesControl(primeFacesClassLoader));
             }
         }
         else if (DEFAULT_BUNDLE_BASENAME.equals(baseName)) {
@@ -227,12 +234,11 @@ public class MessageFactory {
             ClassLoader jsfImplClassLoader = getJSFImplClassLoader(facesContext);
 
             if (!jsfImplClassLoader.equals(classLoader)) {
-                return ResourceBundle.getBundle(baseName, locale, classLoader,
-                        new OSGiFriendlyControl(jsfImplClassLoader));
+                return ResourceBundle.getBundle(baseName, locale, classLoader, new PrimeFacesControl(jsfImplClassLoader));
             }
         }
 
-        return ResourceBundle.getBundle(baseName, locale, classLoader);
+        return ResourceBundle.getBundle(baseName, locale, classLoader, new PrimeFacesControl(primeFacesClassLoader));
     }
 
     private static ClassLoader getJSFImplClassLoader(FacesContext facesContext) {
@@ -261,19 +267,23 @@ public class MessageFactory {
         return unwrapFacesContext(unwrapped);
     }
 
-    private static final class OSGiFriendlyControl extends ResourceBundle.Control {
+    /**
+     * Custom ResourceBundle.Control to handle loading resources as UTF-8 in Java8 and OSGI classloader issues.
+     *
+     */
+    private static final class PrimeFacesControl extends ResourceBundle.Control {
 
         private final ClassLoader osgiBundleClassLoader;
 
-        public OSGiFriendlyControl(ClassLoader osgiBundleClassLoader) {
+        public PrimeFacesControl(ClassLoader osgiBundleClassLoader) {
             this.osgiBundleClassLoader = osgiBundleClassLoader;
         }
 
         @Override
         public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader classLoader,
-                boolean reload) throws IllegalAccessException, InstantiationException, IOException {
+                    boolean reload) throws IllegalAccessException, InstantiationException, IOException {
 
-            ResourceBundle resourceBundle = super.newBundle(baseName, locale, format, classLoader, reload);
+            ResourceBundle resourceBundle = createUnicodeBundle(baseName, locale, format, classLoader, reload);
 
             // If the ResourceBundle cannot be found with the default class loader (usually the thread context class
             // loader or TCCL), try to find it with the OSGi bundle's class loader. Since default i18n files are
@@ -281,10 +291,87 @@ public class MessageFactory {
             // an OSGi environment. Instead, i18n files are only visible to the class loader of the OSGi bundle that
             // they are included in.
             if (resourceBundle == null && !osgiBundleClassLoader.equals(classLoader)) {
-                resourceBundle = super.newBundle(baseName, locale, format, osgiBundleClassLoader, reload);
+                resourceBundle = createUnicodeBundle(baseName, locale, format, osgiBundleClassLoader, reload);
             }
 
             return resourceBundle;
+        }
+
+        /**
+         * For Java 8 we need to create bundle using UTF-8. This is standard in JDK9+.
+         */
+        private ResourceBundle createUnicodeBundle(String baseName, Locale locale, String format, ClassLoader loader,
+                    boolean reload) throws IllegalAccessException, InstantiationException, IOException {
+
+            // The below is a copy of the default implementation.
+            String bundleName = toBundleName(baseName, locale);
+            ResourceBundle bundle = null;
+            if ("java.class".equals(format)) {
+                try {
+                    @SuppressWarnings("unchecked")
+                    Class<? extends ResourceBundle> bundleClass = (Class<? extends ResourceBundle>) loader.loadClass(bundleName);
+
+                    // If the class isn't a ResourceBundle subclass, throw a
+                    // ClassCastException.
+                    if (ResourceBundle.class.isAssignableFrom(bundleClass)) {
+                        bundle = bundleClass.newInstance();
+                    }
+                    else {
+                        throw new ClassCastException(bundleClass.getName()
+                                    + " cannot be cast to ResourceBundle");
+                    }
+                }
+                catch (ClassNotFoundException e) {
+                }
+            }
+            else  if ("java.properties".equals(format)) {
+                final String resourceName = toResourceName(bundleName, "properties");
+                if (resourceName == null) {
+                    return bundle;
+                }
+                final ClassLoader classLoader = loader;
+                final boolean reloadFlag = reload;
+                InputStream stream = null;
+                try {
+                    stream = AccessController.doPrivileged(
+                                new PrivilegedExceptionAction<InputStream>() {
+                                @Override
+                                public InputStream run() throws IOException {
+                                    InputStream is = null;
+                                    if (reloadFlag) {
+                                        URL url = classLoader.getResource(resourceName);
+                                        if (url != null) {
+                                            URLConnection connection = url.openConnection();
+                                            if (connection != null) {
+                                                connection.setUseCaches(false);
+                                                is = connection.getInputStream();
+                                            }
+                                        }
+                                    }
+                                    else {
+                                        is = classLoader.getResourceAsStream(resourceName);
+                                    }
+                                    return is;
+                                }
+                            });
+                }
+                catch (PrivilegedActionException e) {
+                    throw (IOException) e.getException();
+                }
+                if (stream != null) {
+                    try {
+                        // Only this line is changed to make it to read properties files as UTF-8.
+                        bundle = new PropertyResourceBundle(new InputStreamReader(stream, StandardCharsets.UTF_8));
+                    }
+                    finally {
+                        stream.close();
+                    }
+                }
+            }
+            else {
+                throw new IllegalArgumentException("unknown format: " + format);
+            }
+            return bundle;
         }
     }
 }
