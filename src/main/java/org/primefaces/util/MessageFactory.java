@@ -26,6 +26,7 @@ package org.primefaces.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
@@ -316,9 +317,11 @@ public class MessageFactory {
                         throw new ClassCastException(bundleClass.getName() + " cannot be cast to ResourceBundle");
                     }
 
-                    bundle = bundleClass.newInstance();
+                    bundle = bundleClass.getConstructor().newInstance();
                 }
-                catch (ClassNotFoundException e) {
+                catch (IllegalArgumentException | InvocationTargetException | SecurityException
+                        | NoSuchMethodException | ClassNotFoundException e) {
+                    // ignore for now
                 }
             }
             else if ("java.properties".equals(format)) {
