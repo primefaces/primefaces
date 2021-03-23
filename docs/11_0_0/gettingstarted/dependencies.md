@@ -12,7 +12,7 @@ any 3rd part work incorporated are compatible with the PrimeFaces Licenses.
 | Rome | com.rometools | rome | 1.13.0 | Optional | FeedReader |
 | Apache Commons FileUpload | commons-fileupload | commons-fileupload | 1.4 | Optional | FileUpload |
 | barcode4j-light | net.sf.barcode4j | barcode4j-light | 2.1 | Optional | Barcode |
-| qrgen | net.glxn | qrgen |  1.4 | Optional | QR Code support for Barcode |
+| qrcodegen | io.nayuki | qrcodegen | 1.6.0 | Optional | QR Code support for Barcode |
 | owasp-java-html-sanitizer | com.googlecode.owasp-java-html-sanitizer | owasp-java-html-sanitizer |  20200713.1 | Optional | TextEditor |
 
 *Listed versions are tested and known to be working with PrimeFaces, other versions of these

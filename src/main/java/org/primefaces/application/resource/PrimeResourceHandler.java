@@ -56,7 +56,7 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
             handlers.put(DynamicContentType.BARCODE.toString(), new BarcodeHandler());
         }
 
-        if (LangUtils.tryToLoadClassForName("net.glxn.qrgen.QRCode") != null) {
+        if (LangUtils.tryToLoadClassForName("io.nayuki.qrcodegen.QrCode") != null) {
             handlers.put(DynamicContentType.QR_CODE.toString(), new QRCodeHandler());
         }
     }

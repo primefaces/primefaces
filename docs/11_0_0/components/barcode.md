@@ -88,13 +88,13 @@ In order to change the orientation, choose the angle from the 4 pre-defined valu
 ```
 ## Dependencies
 Barcode component uses **barcode4j** library underneath except QR code support, which is handled
-by **qrgen** library. Following versions are supported officially.
+by **qrcodegen** library. Following versions are supported officially.
 
 ```xml
 <dependency>
-    <groupId>net.glxn</groupId>
-    <artifactId>qrgen</artifactId>
-    <version>1.4</version>
+    <groupId>io.nayuki</groupId>
+    <artifactId>qrcodegen</artifactId>
+    <version>1.6.0</version>
 </dependency>
 <dependency>
     <groupId>net.sf.barcode4j</groupId>
