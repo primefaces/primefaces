@@ -41,7 +41,10 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.export.DataTableExporterFactory;
+import org.primefaces.component.treetable.TreeTable;
+import org.primefaces.component.treetable.export.TreeTableExporterFactory;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -131,8 +134,9 @@ public class DataExporter implements ActionListener, StateHolder {
         }
 
         try {
-            Exporter exporter = getExporter(exportAs, exporterOptions, customExporterInstance);
             List<UIComponent> components = SearchExpressionFacade.resolveComponents(context, event.getComponent(), tables);
+            Class<? extends UIComponent> targetClass = guessTargetClass(components);
+            Exporter exporter = getExporter(exportAs, exporterOptions, customExporterInstance, targetClass);
             ExportConfiguration config = new ExportConfiguration()
                     .setOutputFileName(outputFileName)
                     .setEncodingType(encodingType)
@@ -177,10 +181,30 @@ public class DataExporter implements ActionListener, StateHolder {
         }
     }
 
-    protected Exporter getExporter(String exportAs, ExporterOptions exporterOptions, Object customExporterInstance) {
+    protected Class<? extends UIComponent> guessTargetClass(List<UIComponent> targets) {
+        Class<? extends UIComponent> targetClass = null;
+        if (targets != null) {
+            for (UIComponent target : targets) {
+                if (target instanceof DataTable) {
+                    targetClass = DataTable.class;
+                }
+                else if (target instanceof TreeTable) {
+                    targetClass = TreeTable.class;
+                }
+            }
+        }
+        return targetClass;
+    }
+
+    protected Exporter getExporter(String exportAs, ExporterOptions exporterOptions, Object customExporterInstance, Class<? extends UIComponent> targetClass) {
 
         if (customExporterInstance == null) {
-            return DataTableExporterFactory.getExporter(exportAs, exporterOptions);
+            if (targetClass == null || DataTable.class.isAssignableFrom(targetClass)) {
+                return DataTableExporterFactory.getExporter(exportAs, exporterOptions);
+            }
+            else if (TreeTable.class.isAssignableFrom(targetClass)) {
+                return TreeTableExporterFactory.getExporter(exportAs, exporterOptions);
+            }
         }
 
         if (customExporterInstance instanceof Exporter) {
