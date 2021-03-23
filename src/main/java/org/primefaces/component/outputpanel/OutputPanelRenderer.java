@@ -92,9 +92,9 @@ public class OutputPanelRenderer extends CoreRenderer {
     protected void renderLoading(FacesContext context, OutputPanel panel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        writer.startElement("div", null);
+        writer.startElement("i", null);
         writer.writeAttribute("class", OutputPanel.LOADING_CLASS, null);
-        writer.endElement("div");
+        writer.endElement("i");
     }
 
     protected boolean isDeferredNecessary(FacesContext context, OutputPanel panel) {
