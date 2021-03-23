@@ -169,6 +169,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             maxChunkSize: this.cfg.maxChunkSize,
             maxRetries: this.cfg.maxRetries,
             retryTimeout: this.cfg.retryTimeout,
+            source: $this.id,
             formData: function() {
                 return $this.createPostData();
             },
