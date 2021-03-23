@@ -300,8 +300,8 @@ public class MessageFactory {
         /**
          * For Java 8 we need to create bundle using UTF-8. This is standard in JDK9+.
          */
-        private ResourceBundle createUnicodeBundle(String baseName, Locale locale, String format, ClassLoader loader,
-                    boolean reload) throws IllegalAccessException, InstantiationException, IOException {
+        private ResourceBundle createUnicodeBundle(String baseName, Locale locale, String format, final ClassLoader loader,
+                    final boolean reload) throws IllegalAccessException, InstantiationException, IOException {
 
             // The below is a copy of the default implementation.
             String bundleName = toBundleName(baseName, locale);
@@ -311,61 +311,53 @@ public class MessageFactory {
                     @SuppressWarnings("unchecked")
                     Class<? extends ResourceBundle> bundleClass = (Class<? extends ResourceBundle>) loader.loadClass(bundleName);
 
-                    // If the class isn't a ResourceBundle subclass, throw a
-                    // ClassCastException.
-                    if (ResourceBundle.class.isAssignableFrom(bundleClass)) {
-                        bundle = bundleClass.newInstance();
+                    // If the class isn't a ResourceBundle subclass, throw a ClassCastException.
+                    if (!ResourceBundle.class.isAssignableFrom(bundleClass)) {
+                        throw new ClassCastException(bundleClass.getName() + " cannot be cast to ResourceBundle");
                     }
-                    else {
-                        throw new ClassCastException(bundleClass.getName()
-                                    + " cannot be cast to ResourceBundle");
-                    }
+
+                    bundle = bundleClass.newInstance();
                 }
                 catch (ClassNotFoundException e) {
                 }
             }
-            else  if ("java.properties".equals(format)) {
-                final String resourceName = toResourceName(bundleName, "properties");
+            else if ("java.properties".equals(format)) {
+                String resourceName = toResourceName(bundleName, "properties");
                 if (resourceName == null) {
-                    return bundle;
+                    return null;
                 }
-                final ClassLoader classLoader = loader;
-                final boolean reloadFlag = reload;
-                InputStream stream = null;
+
                 try {
-                    stream = AccessController.doPrivileged(
-                                new PrivilegedExceptionAction<InputStream>() {
-                                @Override
-                                public InputStream run() throws IOException {
-                                    InputStream is = null;
-                                    if (reloadFlag) {
-                                        URL url = classLoader.getResource(resourceName);
-                                        if (url != null) {
-                                            URLConnection connection = url.openConnection();
-                                            if (connection != null) {
-                                                connection.setUseCaches(false);
-                                                is = connection.getInputStream();
-                                            }
-                                        }
-                                    }
-                                    else {
-                                        is = classLoader.getResourceAsStream(resourceName);
-                                    }
-                                    return is;
+                    InputStream stream = AccessController.doPrivileged((PrivilegedExceptionAction<InputStream>) () -> {
+                        InputStream is = null;
+                        if (reload) {
+                            URL url = loader.getResource(resourceName);
+                            if (url != null) {
+                                URLConnection connection = url.openConnection();
+                                if (connection != null) {
+                                    connection.setUseCaches(false);
+                                    is = connection.getInputStream();
                                 }
-                            });
+                            }
+                        }
+                        else {
+                            is = loader.getResourceAsStream(resourceName);
+                        }
+                        return is;
+                    });
+
+                    if (stream != null) {
+                        try {
+                            // Only this line is changed to make it to read properties files as UTF-8.
+                            bundle = new PropertyResourceBundle(new InputStreamReader(stream, StandardCharsets.UTF_8));
+                        }
+                        finally {
+                            stream.close();
+                        }
+                    }
                 }
                 catch (PrivilegedActionException e) {
                     throw (IOException) e.getException();
-                }
-                if (stream != null) {
-                    try {
-                        // Only this line is changed to make it to read properties files as UTF-8.
-                        bundle = new PropertyResourceBundle(new InputStreamReader(stream, StandardCharsets.UTF_8));
-                    }
-                    finally {
-                        stream.close();
-                    }
                 }
             }
             else {
