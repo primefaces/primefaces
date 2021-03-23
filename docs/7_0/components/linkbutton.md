@@ -52,7 +52,7 @@ onmousemove | null | String | Client side callback to execute when a pointer but
 onmouseout | null | String | Client side callback to execute when a pointer button is moved away from button.
 onmouseover | null | String | Client side callback to execute when a pointer button is moved onto button.
 onmouseup | null | String | Client side callback to execute when a pointer button is released over button.
-href | null | String | Inline style of the button.
+href | null | String | Resource to link to.
 escape | true | Boolean | Defines if label of the component is escaped or not.
 icon | null | String | Icon of the button.
 iconPos | left | String | Position of the button icon.
