@@ -54,25 +54,15 @@ import org.primefaces.util.ResourceUtils;
 public class DataExporter implements ActionListener, StateHolder {
 
     private ValueExpression target;
-
     private ValueExpression type;
-
     private ValueExpression fileName;
-
     private ValueExpression encoding;
-
     private ValueExpression pageOnly;
-
     private ValueExpression selectionOnly;
-
     private MethodExpression preProcessor;
-
     private MethodExpression postProcessor;
-
     private ValueExpression options;
-
     private MethodExpression onTableRender;
-
     private ValueExpression exporter;
 
     public DataExporter() {
@@ -136,7 +126,7 @@ public class DataExporter implements ActionListener, StateHolder {
         try {
             List<UIComponent> components = SearchExpressionFacade.resolveComponents(context, event.getComponent(), tables);
             Class<? extends UIComponent> targetClass = guessTargetClass(components);
-            Exporter exporter = getExporter(exportAs, exporterOptions, customExporterInstance, targetClass);
+            Exporter exporterInstance = getExporter(exportAs, exporterOptions, customExporterInstance, targetClass);
             ExportConfiguration config = new ExportConfiguration()
                     .setOutputFileName(outputFileName)
                     .setEncodingType(encodingType)
@@ -148,10 +138,10 @@ public class DataExporter implements ActionListener, StateHolder {
                     .setOnTableRender(onTableRender);
 
             ExternalContext externalContext = context.getExternalContext();
-            String filenameWithExtension = config.getOutputFileName() + exporter.getFileExtension();
+            String filenameWithExtension = config.getOutputFileName() + exporterInstance.getFileExtension();
             OutputStream outputStream;
 
-            String contentType = exporter.getContentType();
+            String contentType = exporterInstance.getContentType();
             if (contentType.startsWith("text/") && LangUtils.isNotBlank(config.getEncodingType())) {
                 contentType += "; charset=" + config.getEncodingType();
             }
@@ -166,7 +156,7 @@ public class DataExporter implements ActionListener, StateHolder {
                 addResponseCookie(context);
             }
 
-            exporter.export(context, components, outputStream, config);
+            exporterInstance.export(context, components, outputStream, config);
 
             if (PrimeFaces.current().isAjaxRequest()) {
                 ajaxDownload(filenameWithExtension, ((ByteArrayOutputStream) outputStream).toByteArray(), contentType, context);
@@ -184,11 +174,11 @@ public class DataExporter implements ActionListener, StateHolder {
     protected Class<? extends UIComponent> guessTargetClass(List<UIComponent> targets) {
         Class<? extends UIComponent> targetClass = null;
         if (targets != null) {
-            for (UIComponent target : targets) {
-                if (target instanceof DataTable) {
+            for (UIComponent current : targets) {
+                if (current instanceof DataTable) {
                     targetClass = DataTable.class;
                 }
-                else if (target instanceof TreeTable) {
+                else if (current instanceof TreeTable) {
                     targetClass = TreeTable.class;
                 }
             }
@@ -198,23 +188,21 @@ public class DataExporter implements ActionListener, StateHolder {
 
     protected Exporter getExporter(String exportAs, ExporterOptions exporterOptions, Object customExporterInstance, Class<? extends UIComponent> targetClass) {
 
-        if (customExporterInstance == null) {
-            if (targetClass == null || DataTable.class.isAssignableFrom(targetClass)) {
-                return DataTableExporterFactory.getExporter(exportAs, exporterOptions);
+        if (customExporterInstance != null) {
+            if (customExporterInstance instanceof Exporter) {
+                return (Exporter) customExporterInstance;
             }
-            else if (TreeTable.class.isAssignableFrom(targetClass)) {
-                return TreeTableExporterFactory.getExporter(exportAs, exporterOptions);
+            else {
+                throw new FacesException("Component " + getClass().getName() + " customExporterInstance="
+                       + customExporterInstance.getClass().getName() + " does not implement Exporter!");
             }
         }
 
-        if (customExporterInstance instanceof Exporter) {
-            return (Exporter) customExporterInstance;
-        }
-        else {
-            throw new FacesException("Component " + getClass().getName() + " customExporterInstance="
-                   + customExporterInstance.getClass().getName() + " does not implement Exporter!");
+        if (targetClass != null && TreeTable.class.isAssignableFrom(targetClass)) {
+            return TreeTableExporterFactory.getExporter(exportAs, exporterOptions);
         }
 
+        return DataTableExporterFactory.getExporter(exportAs, exporterOptions);
     }
 
     private void ajaxDownload(String filenameWithExtension, byte[] content, String contentType, FacesContext context) {
