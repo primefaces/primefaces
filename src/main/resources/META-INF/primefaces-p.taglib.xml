@@ -8505,6 +8505,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[When enabled, it updates the whole table instead of updating a specific field such as body element in the client requests of the dataTable. Default is false. Note: Supported for Page, Sort and Filter feature.]]>
+            </description>
+            <name>autoUpdate</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>

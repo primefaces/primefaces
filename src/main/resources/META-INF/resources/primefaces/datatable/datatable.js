@@ -1880,8 +1880,25 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     {name: this.id + '_first', value: newState.first},
                     {name: this.id + '_rows', value: newState.rows},
                     {name: this.id + '_skipChildren', value: true},
-                    {name: this.id + '_encodeFeature', value: true}],
-            onsuccess: function(responseXML, status, xhr) {
+                    {name: this.id + '_encodeFeature', value: true}]
+        };
+        
+        if (this.cfg.autoUpdate) {
+            options.params.push({name: this.id + '_autoUpdate', value: true});
+            
+            options.onsuccess = function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            this.jq.replaceWith(content);
+                        }
+                    });
+
+                return true;
+            };
+        }
+        else {
+            options.onsuccess = function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function(content) {
@@ -1902,8 +1919,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     });
 
                 return true;
-            },
-            oncomplete: function(xhr, status, args, data) {
+            };
+            
+            options.oncomplete = function(xhr, status, args, data) {
                 $this.paginator.cfg.page = newState.page;
                 if(args && typeof args.totalRecords !== 'undefined') {
                     $this.paginator.updateTotalRecords(args.totalRecords);
@@ -1914,8 +1932,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 $this.updateColumnsView();
                 // reset index of shift selection on multiple mode
                 $this.originRowIndex = null;
-            }
-        };
+            };
+        }
 
         if(this.hasBehavior('page')) {
             this.callBehavior('page', options);
@@ -2013,8 +2031,27 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             formId: this.getParentFormId(),
             params: [{name: this.id + '_sorting', value: true},
                      {name: this.id + '_skipChildren', value: true},
-                     {name: this.id + '_encodeFeature', value: true}],
-            onsuccess: function(responseXML, status, xhr) {
+                     {name: this.id + '_encodeFeature', value: true},
+                     {name: this.id + '_sortKey', value: $this.joinSortMetaOption('col')},
+                     {name: this.id + '_sortDir', value: $this.joinSortMetaOption('order')}]
+        };
+        
+        if (this.cfg.autoUpdate) {
+            options.params.push({name: this.id + '_autoUpdate', value: true});
+            
+            options.onsuccess = function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            this.jq.replaceWith(content);
+                        }
+                    });
+
+                return true;
+            };
+        }
+        else {
+            options.onsuccess = function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function(content) {
@@ -2027,8 +2064,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     });
 
                 return true;
-            },
-            oncomplete: function(xhr, status, args, data) {
+            };
+            
+            options.oncomplete = function(xhr, status, args, data) {
                 var paginator = $this.getPaginator();
                 if(args) {
                     if(args.totalRecords) {
@@ -2113,12 +2151,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 // reset index of shift selection on multiple mode
                 $this.originRowIndex = null;
             }
-        };
+        }
 
-        options.params.push({name: this.id + '_sortKey', value: $this.joinSortMetaOption('col')});
-        options.params.push({name: this.id + '_sortDir', value: $this.joinSortMetaOption('order')});
-
-        if(this.hasBehavior('sort')) {
+        if (this.hasBehavior('sort')) {
             this.callBehavior('sort', options);
         }
         else {
@@ -2184,8 +2219,26 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             process: this.id,
             formId: this.getParentFormId(),
             params: [{name: this.id + '_filtering', value: true},
-                     {name: this.id + '_encodeFeature', value: true}],
-            onsuccess: function(responseXML, status, xhr) {
+                     {name: this.id + '_encodeFeature', value: true}]
+        };
+                 
+                 
+        if (this.cfg.autoUpdate) {
+            options.params.push({name: this.id + '_autoUpdate', value: true});
+            
+            options.onsuccess = function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            this.jq.replaceWith(content);
+                        }
+                    });
+
+                return true;
+            };
+        }
+        else {
+            options.onsuccess = function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function(content) {
@@ -2202,8 +2255,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     });
 
                 return true;
-            },
-            oncomplete: function(xhr, status, args, data) {
+            };
+            
+            options.oncomplete = function(xhr, status, args, data) {
                 var paginator = $this.getPaginator();
                 if(args && typeof args.totalRecords !== 'undefined') {
                     $this.cfg.scrollLimit = args.totalRecords;
@@ -2253,7 +2307,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 // reset index of shift selection on multiple mode
                 $this.originRowIndex = null;
             }
-        };
+        }
 
         if(this.hasBehavior('filter')) {
             this.callBehavior('filter', options);

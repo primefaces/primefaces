@@ -88,15 +88,23 @@ public class DataTableRenderer extends DataRenderer {
                     feature.encode(context, this, table);
                 }
             }
+
+            if (table.isAutoUpdateRequest(context)) {
+                render(context, table);
+            }
         }
         else {
-            preRender(context, table);
-
-            encodeMarkup(context, table);
-            encodeScript(context, table);
+            render(context, table);
         }
 
         context.getApplication().publishEvent(context, PostRenderEvent.class, table);
+    }
+
+    protected void render(FacesContext context, DataTable table) throws IOException {
+        preRender(context, table);
+
+        encodeMarkup(context, table);
+        encodeScript(context, table);
     }
 
     protected void preRender(FacesContext context, DataTable table) {
@@ -246,6 +254,7 @@ public class DataTableRenderer extends DataRenderer {
                 .attr("rowHover", table.isRowHover(), false)
                 .attr("clientCache", table.isClientCache(), false)
                 .attr("multiViewState", table.isMultiViewState(), false)
+                .attr("autoUpdate", table.isAutoUpdate(), false)
                 .nativeAttr("groupColumnIndexes", table.getGroupedColumnIndexes(), null)
                 .callback("onRowClick", "function(row)", table.getOnRowClick());
 

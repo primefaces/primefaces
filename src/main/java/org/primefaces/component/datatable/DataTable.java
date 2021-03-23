@@ -211,6 +211,10 @@ public class DataTable extends DataTableBase {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_encodeFeature");
     }
 
+    public boolean isAutoUpdateRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_autoUpdate");
+    }
+
     public boolean isRowEditRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_rowEditAction");
     }
