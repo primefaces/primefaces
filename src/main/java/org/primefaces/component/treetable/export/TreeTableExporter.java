@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.datatable.export;
+package org.primefaces.component.treetable.export;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -29,24 +29,28 @@ import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import javax.el.MethodExpression;
 import javax.faces.FacesException;
-import javax.faces.component.*;
+import javax.faces.component.UIColumn;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIData;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.Exporter;
-import org.primefaces.model.LazyDataModel;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.component.treetable.TreeTable;
+import org.primefaces.component.treetable.TreeTableBase;
+import org.primefaces.model.TreeNode;
 import org.primefaces.util.Constants;
 
-public abstract class DataTableExporter implements Exporter<DataTable> {
+public abstract class TreeTableExporter implements Exporter<TreeTable> {
 
     private OutputStream outputStream;
 
@@ -91,78 +95,71 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
         return Constants.EMPTY_STRING;
     }
 
-    protected void exportPageOnly(FacesContext context, DataTable table, Object document) {
+    protected void exportPageOnly(FacesContext context, TreeTable table, Object document) {
         int first = table.getFirst();
         int rows = table.getRows();
+
+        TreeNode root = table.getValue();
+        root.setExpanded(true);
+        int totalRows = getTreeRowCount(root) - 1;
         if (rows == 0) {
-            rows = table.getRowCount();
+            rows = totalRows;
         }
 
         int rowsToExport = first + rows;
+        if (rowsToExport > totalRows) {
+            rowsToExport = totalRows;
+        }
 
         for (int rowIndex = first; rowIndex < rowsToExport; rowIndex++) {
-            exportRow(table, document, rowIndex);
+            exportRow(context, table, document, rowIndex);
         }
     }
 
-    protected void exportAll(FacesContext context, DataTable table, Object document) {
+    protected void exportAll(FacesContext context, TreeTable table, Object document) {
         int first = table.getFirst();
-        int rowCount = table.getRowCount();
-        int rows = table.getRows();
-        boolean lazy = table.isLazy();
+        TreeNode root = table.getValue();
+        root.setExpanded(true);
+        int rowCount = getTreeRowCount(root) - 1;
 
-        if (lazy) {
-            LazyDataModel<?> lazyDataModel = (LazyDataModel<?>) table.getValue();
-            List<?> wrappedData = lazyDataModel.getWrappedData();
+        for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
+            exportRow(context, table, document, rowIndex);
+        }
 
-            if (rowCount > 0) {
-                table.setFirst(0);
-                table.setRows(rowCount);
-                table.clearLazyCache();
-                table.loadLazyData();
-            }
+        // restore
+        table.setFirst(first);
+    }
 
-            for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
-                exportRow(table, document, rowIndex);
-            }
+    protected void exportRow(FacesContext context, TreeTable table, Object document, int rowIndex) {
 
-            //restore
-            table.setFirst(first);
-            table.setRows(rows);
-            table.setRowIndex(-1);
-            table.clearLazyCache();
-            lazyDataModel.setWrappedData(wrappedData);
-            lazyDataModel.setPageSize(rows);
-            lazyDataModel.setRowIndex(-1);
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+
+        Object origVar = requestMap.get(table.getVar());
+
+        // rowIndex +1 because we are not interested in rootNode
+        Object data = traverseTree(table.getValue(), rowIndex + 1);
+
+        requestMap.put(table.getVar(), data);
+
+        preRowExport(table, document);
+        exportCells(table, document);
+        postRowExport(table, document);
+
+        if (origVar != null) {
+            requestMap.put(table.getVar(), origVar);
         }
         else {
-            for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
-                exportRow(table, document, rowIndex);
-            }
-
-            //restore
-            table.setFirst(first);
+            requestMap.remove(table.getVar());
         }
     }
 
-    protected void exportRow(DataTable table, Object document, int rowIndex) {
-        table.setRowIndex(rowIndex);
-        if (!table.isRowAvailable()) {
-            return;
-        }
-
+    protected void exportRow(TreeTable table, Object document) {
         preRowExport(table, document);
         exportCells(table, document);
         postRowExport(table, document);
     }
 
-    protected void exportRow(DataTable table, Object document) {
-        preRowExport(table, document);
-        exportCells(table, document);
-        postRowExport(table, document);
-    }
-
-    protected void exportSelectionOnly(FacesContext context, DataTable table, Object document) {
+    protected void exportSelectionOnly(FacesContext context, TreeTable table, Object document) {
         Object selection = table.getSelection();
         String var = table.getVar();
 
@@ -198,25 +195,25 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
         // NOOP
     }
 
-    protected void preRowExport(DataTable table, Object document) {
+    protected void preRowExport(TreeTable table, Object document) {
         // NOOP
     }
 
-    protected void postRowExport(DataTable table, Object document) {
+    protected void postRowExport(TreeTable table, Object document) {
         // NOOP
     }
 
-    protected abstract void exportCells(DataTable table, Object document);
+    protected abstract void exportCells(TreeTable table, Object document);
 
     @Override
-    public void export(FacesContext context, List<DataTable> tables, OutputStream outputStream, ExportConfiguration exportConfiguration) throws IOException {
+    public void export(FacesContext context, List<TreeTable> tables, OutputStream outputStream, ExportConfiguration exportConfiguration) throws IOException {
         this.outputStream = outputStream;
 
         preExport(context, exportConfiguration);
 
         int index = 0;
-        for (DataTable table : tables) {
-            DataTableVisitCallBack visitCallback = new DataTableVisitCallBack(table, exportConfiguration, index);
+        for (TreeTable table : tables) {
+            TreeTableVisitCallBack visitCallback = new TreeTableVisitCallBack(table, exportConfiguration, index);
             int nbTables = visitCallback.invoke(context);
             index += nbTables;
         }
@@ -227,26 +224,26 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
     }
 
     /**
-     * Export datatable
+     * Export TreeTable
      * @param facesContext faces context
-     * @param table datatable to export
+     * @param table TreeTable to export
      * @param exportConfiguration export configuration
-     * @param index datatable current index during export process
+     * @param index TreeTable current index during export process
      * @throws IOException
      */
-    protected abstract void doExport(FacesContext facesContext, DataTable table, ExportConfiguration exportConfiguration, int index) throws IOException;
+    protected abstract void doExport(FacesContext facesContext, TreeTable table, ExportConfiguration exportConfiguration, int index) throws IOException;
 
-    private class DataTableVisitCallBack implements VisitCallback {
+    private class TreeTableVisitCallBack implements VisitCallback {
 
         private ExportConfiguration config;
 
-        private DataTable target;
+        private TreeTable target;
 
         private int index;
 
         private int counter;
 
-        public DataTableVisitCallBack(DataTable target, ExportConfiguration config, int index) {
+        public TreeTableVisitCallBack(TreeTable target, ExportConfiguration config, int index) {
             this.target = target;
             this.config = config;
             this.index = index;
@@ -273,17 +270,100 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
          * @return number of tables exported
          */
         public int invoke(FacesContext context) {
-            ComponentUtils.invokeOnClosestIteratorParent(target, p -> {
+            invokeOnClosestTreeTableParent(target, p -> {
                 VisitContext visitContext = VisitContext.createVisitContext(context);
                 p.visitTree(visitContext, this);
             }, true);
 
             return counter;
         }
+
+        public boolean invokeOnClosestTreeTableParent(UIComponent component, Consumer<UIComponent> function, boolean includeSelf) {
+            Predicate<UIComponent> isIteratorComponent = p -> p instanceof TreeTableBase;
+
+            UIComponent parent = component;
+            while (null != (parent = parent.getParent())) {
+                if (isIteratorComponent.test(parent)) {
+                    function.accept(parent);
+                    return true;
+                }
+            }
+
+            if (includeSelf && isIteratorComponent.test(component)) {
+                function.accept(component);
+                return true;
+            }
+
+            return false;
+        }
     }
 
     protected OutputStream getOutputStream() {
         return outputStream;
+    }
+
+    protected static int getTreeRowCount(TreeNode node) {
+        int count = 1;
+        if (node.getChildren() != null) {
+            for (TreeNode childNode : node.getChildren()) {
+                count += getTreeRowCount(childNode);
+            }
+            return count;
+        }
+        return count;
+    }
+
+    protected static Object traverseTree(TreeNode node, int rowIndex) {
+        return traverseTree(node, new MutableInt(rowIndex));
+    }
+
+    /**
+     * Traverses a tree and visitis all children until it finds the one with row index i
+     *
+     * @param node
+     * @param rowIndex
+     * @return data of found treenode
+     */
+    protected static Object traverseTree(TreeNode node, MutableInt rowIndex) {
+
+        int index = rowIndex.getValue();
+        rowIndex.decrement();
+        if (index <= 0) {
+            return node.getData();
+        }
+
+        if (node.getChildren() != null) {
+            Object data = null;
+            for (TreeNode childNode : node.getChildren()) {
+                data = traverseTree(childNode, rowIndex);
+                if (data != null) {
+                    break;
+                }
+            }
+            return data;
+        }
+        else {
+            return null;
+        }
+
+    }
+
+    private static class MutableInt {
+
+        private int value;
+
+        public MutableInt(int value) {
+            super();
+            this.value = value;
+        }
+
+        public int getValue() {
+            return this.value;
+        }
+
+        public void decrement() {
+            value--;
+        }
     }
 
 }

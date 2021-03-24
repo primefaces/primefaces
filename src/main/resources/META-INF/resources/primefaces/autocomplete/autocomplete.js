@@ -118,6 +118,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.touchToDropdownButton = false;
         this.isTabPressed = false;
         this.isDynamicLoaded = false;
+        this.currentInputValue = '';
 
         if(this.cfg.cache) {
             this.initCache();
@@ -545,10 +546,18 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             $this.suppressInput = false;
             $this.checkMatchedItem = true;
 	    }).on('change.autoComplete', function(e) {
+            var value = e.currentTarget.value,
+            valid = $this.isValid(value);
+
+            if ($this.cfg.forceSelection && $this.currentInputValue === '' && !valid) {
+                $this.preventInputChangeEvent = true;
+            }
+
             if ($this.cfg.onChange && !$this.preventInputChangeEvent) {
                 $this.cfg.onChange.call(this);
             }
-            
+
+            $this.currentInputValue = $this.cfg.forceSelection && !valid ? '' : value;
             $this.preventInputChangeEvent = false;
         });
     },

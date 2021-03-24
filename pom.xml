@@ -208,9 +208,9 @@
 
         <!-- Barcode -->
         <dependency>
-            <groupId>net.glxn</groupId>
-            <artifactId>qrgen</artifactId>
-            <version>1.4</version>
+            <groupId>io.nayuki</groupId>
+            <artifactId>qrcodegen</artifactId>
+            <version>1.6.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -759,7 +759,6 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/messages/messages.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/notificationbar/notificationbar.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/orderlist/orderlist.css</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/outputpanel/outputpanel.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/overlaypanel/overlaypanel.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/panel/panel.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/panelgrid/panelgrid.css</include>

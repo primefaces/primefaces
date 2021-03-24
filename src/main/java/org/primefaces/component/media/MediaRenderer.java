@@ -55,7 +55,7 @@ public class MediaRenderer extends CoreRenderer {
         catch (Exception ex) {
             throw new IOException(ex);
         }
-        boolean isIE = AgentUtils.isIE(context);
+
         String sourceParam = player.getSourceParam();
         String type = player.getType();
         if (type != null && PDFPlayer.MIME_TYPE.equals(type)) {
@@ -75,7 +75,7 @@ public class MediaRenderer extends CoreRenderer {
         writer.writeAttribute("type", player.getType(), null);
         writer.writeAttribute("data", src, null);
 
-        if (isIE) {
+        if (AgentUtils.isIE(context)) {
             encodeIEConfig(writer, player);
         }
 
