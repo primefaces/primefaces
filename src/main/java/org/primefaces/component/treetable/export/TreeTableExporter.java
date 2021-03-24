@@ -26,7 +26,6 @@ package org.primefaces.component.treetable.export;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -36,24 +35,16 @@ import java.util.stream.Collectors;
 
 import javax.el.MethodExpression;
 import javax.faces.FacesException;
-import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
-import javax.faces.component.UISelectMany;
-import javax.faces.component.ValueHolder;
-import javax.faces.component.html.HtmlCommandLink;
-import javax.faces.component.html.HtmlGraphicImage;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
 
-import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.Exporter;
-import org.primefaces.component.overlaypanel.OverlayPanel;
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.component.treetable.TreeTableBase;
 import org.primefaces.model.TreeNode;
@@ -102,106 +93,6 @@ public abstract class TreeTableExporter implements Exporter<TreeTable> {
         }
 
         return Constants.EMPTY_STRING;
-    }
-
-    public String exportValue(FacesContext context, UIComponent component) {
-
-        if (component instanceof HtmlCommandLink) {  //support for PrimeFaces and standard HtmlCommandLink
-            HtmlCommandLink link = (HtmlCommandLink) component;
-            Object value = link.getValue();
-
-            if (value != null) {
-                return String.valueOf(value);
-            }
-            else {
-                //export first value holder
-                for (UIComponent child : link.getChildren()) {
-                    if (child instanceof ValueHolder) {
-                        return exportValue(context, child);
-                    }
-                }
-
-                return Constants.EMPTY_STRING;
-            }
-        }
-        else if (component instanceof ValueHolder) {
-            if (component instanceof EditableValueHolder) {
-                Object submittedValue = ((EditableValueHolder) component).getSubmittedValue();
-                if (submittedValue != null) {
-                    return submittedValue.toString();
-                }
-            }
-
-            ValueHolder valueHolder = (ValueHolder) component;
-            Object value = valueHolder.getValue();
-            if (value == null) {
-                return Constants.EMPTY_STRING;
-            }
-
-            Converter converter = valueHolder.getConverter();
-            if (converter == null) {
-                Class valueType = value.getClass();
-                converter = context.getApplication().createConverter(valueType);
-            }
-
-            if (converter != null) {
-                if (component instanceof UISelectMany) {
-                    StringBuilder builder = new StringBuilder();
-                    List collection = null;
-
-                    if (value instanceof List) {
-                        collection = (List) value;
-                    }
-                    else if (value.getClass().isArray()) {
-                        collection = Arrays.asList(value);
-                    }
-                    else {
-                        throw new FacesException("Value of " + component.getClientId(context) + " must be a List or an Array.");
-                    }
-
-                    int collectionSize = collection.size();
-                    for (int i = 0; i < collectionSize; i++) {
-                        Object object = collection.get(i);
-                        builder.append(converter.getAsString(context, component, object));
-
-                        if (i < (collectionSize - 1)) {
-                            builder.append(",");
-                        }
-                    }
-
-                    String valuesAsString = builder.toString();
-                    builder.setLength(0);
-
-                    return valuesAsString;
-                }
-                else {
-                    return converter.getAsString(context, component, value);
-                }
-            }
-            else {
-                return value.toString();
-            }
-        }
-        else if (component instanceof CellEditor) {
-            return exportValue(context, component.getFacet("output"));
-        }
-        else if (component instanceof HtmlGraphicImage) {
-            return (String) component.getAttributes().get("alt");
-        }
-        else if (component instanceof OverlayPanel) {
-            return Constants.EMPTY_STRING;
-        }
-        else {
-            //This would get the plain texts on UIInstructions when using Facelets
-            String value = component.toString();
-
-            if (value != null) {
-                return value.trim();
-            }
-            else {
-                return Constants.EMPTY_STRING;
-            }
-        }
     }
 
     protected void exportPageOnly(FacesContext context, TreeTable table, Object document) {
