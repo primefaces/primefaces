@@ -44,13 +44,13 @@ import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.export.ExportConfiguration;
-import org.primefaces.component.export.Exporter;
+import org.primefaces.component.export.TableExporter;
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.component.treetable.TreeTableBase;
 import org.primefaces.model.TreeNode;
 import org.primefaces.util.Constants;
 
-public abstract class TreeTableExporter implements Exporter<TreeTable> {
+public abstract class TreeTableExporter extends TableExporter<TreeTable> {
 
     private OutputStream outputStream;
 

@@ -128,7 +128,7 @@ public class FilterFeature implements DataTableFeature {
 
         context.getApplication().publishEvent(context, PostFilterEvent.class, table);
 
-        if (!table.isAutoUpdateRequest(context)) {
+        if (!table.isFullUpdateRequest(context)) {
             renderer.encodeTbody(context, table, true);
         }
     }

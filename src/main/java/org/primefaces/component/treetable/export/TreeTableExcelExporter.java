@@ -253,30 +253,9 @@ public class TreeTableExcelExporter extends TreeTableExporter {
 
         applyColumnAlignments(column, cell);
 
-        if (LangUtils.isNotBlank(column.getExportValue())) {
-            updateCell(cell, column.getExportValue());
-        }
-        else if (column.getExportFunction() != null) {
-            updateCell(cell, exportColumnByFunction(context, column));
-        }
-        else if (LangUtils.isNotBlank(column.getField())) {
-            String value = table.getConvertedFieldValue(context, column);
-            updateCell(cell, Objects.toString(value, Constants.EMPTY_STRING));
-        }
-        else {
-            StringBuilder builder = new StringBuilder();
-            for (UIComponent component : components) {
-                if (component.isRendered()) {
-                    String value = exportValue(context, component);
-
-                    if (value != null) {
-                        builder.append(value);
-                    }
-                }
-            }
-
-            updateCell(cell, builder.toString());
-        }
+        exportColumn(context, table, column, components, true, (s) -> {
+            updateCell(cell, Objects.toString(s, Constants.EMPTY_STRING));
+        });
     }
 
     protected boolean addColumnGroup(TreeTable table, Sheet sheet, TreeTableExporter.ColumnType columnType) {

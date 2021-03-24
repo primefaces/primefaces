@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.Objects;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -38,9 +37,7 @@ import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
 import org.primefaces.util.EscapeUtils;
-import org.primefaces.util.LangUtils;
 
 public class DataTableXMLExporter extends DataTableExporter {
 
@@ -139,31 +136,14 @@ public class DataTableXMLExporter extends DataTableExporter {
         return EscapeUtils.forXmlTag(columnTag);
     }
 
-    protected void addColumnValue(PrintWriter writer, DataTable table, List<UIComponent> components, String tag, UIColumn column) throws IOException {
+    protected void addColumnValue(PrintWriter writer, DataTable table, List<UIComponent> components, String tag, UIColumn column)
+            throws IOException {
+
         FacesContext context = FacesContext.getCurrentInstance();
 
         writer.append("\t\t<" + tag + ">");
 
-        if (LangUtils.isNotBlank(column.getExportValue())) {
-            writer.append(EscapeUtils.forXml(column.getExportValue()));
-        }
-        else if (column.getExportFunction() != null) {
-            writer.append(EscapeUtils.forXml(exportColumnByFunction(context, column)));
-        }
-        else if (LangUtils.isNotBlank(column.getField())) {
-            String value = table.getConvertedFieldValue(context, column);
-            writer.append(EscapeUtils.forXml(Objects.toString(value, Constants.EMPTY_STRING)));
-        }
-        else {
-            for (UIComponent component : components) {
-                if (component.isRendered()) {
-                    String value = exportValue(context, component);
-                    if (value != null) {
-                        writer.append(EscapeUtils.forXml(value));
-                    }
-                }
-            }
-        }
+        exportColumn(context, table, column, components, false, (s) -> writer.append(EscapeUtils.forXml(s)));
 
         writer.append("</" + tag + ">\n");
     }

@@ -41,12 +41,12 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExportConfiguration;
-import org.primefaces.component.export.Exporter;
+import org.primefaces.component.export.TableExporter;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 
-public abstract class DataTableExporter implements Exporter<DataTable> {
+public abstract class DataTableExporter extends TableExporter<DataTable> {
 
     private OutputStream outputStream;
 

@@ -40,21 +40,22 @@ import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.overlaypanel.OverlayPanel;
 import org.primefaces.util.Constants;
 
-public interface Exporter<T extends UIComponent> {
+public abstract class Exporter<T extends UIComponent> {
 
-    void export(FacesContext facesContext, List<T> component, OutputStream outputStream, ExportConfiguration exportConfiguration) throws IOException;
+    public abstract void export(FacesContext facesContext, List<T> component, OutputStream outputStream,
+            ExportConfiguration exportConfiguration) throws IOException;
 
     /**
      * Content-type (MIME-type) excluding charset. (eg 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
      */
-    String getContentType();
+    public abstract String getContentType();
 
     /**
      * File-extension of the exported file including a leading dot. (eg '.xlsx')
      */
-    String getFileExtension();
+    public abstract String getFileExtension();
 
-    default String exportValue(FacesContext context, UIComponent component) {
+    protected String exportValue(FacesContext context, UIComponent component) {
 
         if (component instanceof HtmlCommandLink) {  //support for PrimeFaces and standard HtmlCommandLink
             HtmlCommandLink link = (HtmlCommandLink) component;

@@ -38,10 +38,10 @@
  * current contents of the row or `cancel` the row edit and discard all changes.
  *
  * @typedef PrimeFaces.widget.DataTable.OnRowClickCallback Callback that is invoked when the user clicks on a row of the
- * data table. 
+ * data table.
  * @param {JQuery.TriggeredEvent} PrimeFaces.widget.DataTable.OnRowClickCallback.event The click event that occurred.
  * @param {JQuery} PrimeFaces.widget.DataTable.OnRowClickCallback.row The TR row that was clicked.
- * 
+ *
  * @interface {PrimeFaces.widget.DataTable.RowMeta} RowMeta Describes the meta information of row, such as its index and
  * its row key.
  * @prop {string | undefined} RowMeta.key The unique key of the row. `undefined` when no key was defined for the rows.
@@ -186,12 +186,12 @@
  * @prop {string} cfg.stickyTopAt Selector to position on the page according to other fixing elements on the top of the
  * table.
  * @prop {string} cfg.tabindex The value of the `tabindex` attribute for this data table.
- * @prop {boolean} cfg.virtualScroll Loads data on demand as the scrollbar gets close to the bottom. 
+ * @prop {boolean} cfg.virtualScroll Loads data on demand as the scrollbar gets close to the bottom.
  *
  * @interface {PrimeFaces.widget.DataTable.WidthInfo} WidthInfo Describes the width information of a DOM element.
  * @prop {number | string} WidthInfo.width The width of the element. It's either a unit-less numeric pixel value or a
  * string containing the width including an unit.
- * @prop {boolean} WidthInfo.isOuterWidth Tells whether the width includes the border-box or not. 
+ * @prop {boolean} WidthInfo.isOuterWidth Tells whether the width includes the border-box or not.
  */
 PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
@@ -277,6 +277,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     _render: function() {
         this.isRTL = this.jq.hasClass('ui-datatable-rtl');
+        this.cfg.partialUpdate = (this.cfg.partialUpdate === false) ? false : true;
 
         if(this.cfg.scrollable) {
             this.setupScrolling();
@@ -1882,10 +1883,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     {name: this.id + '_skipChildren', value: true},
                     {name: this.id + '_encodeFeature', value: true}]
         };
-        
-        if (this.cfg.autoUpdate) {
-            options.params.push({name: this.id + '_autoUpdate', value: true});
-            
+
+        if (!this.cfg.partialUpdate) {
+            options.params.push({name: this.id + '_fullUpdate', value: true});
+
             options.onsuccess = function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
@@ -1920,7 +1921,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 return true;
             };
-            
+
             options.oncomplete = function(xhr, status, args, data) {
                 $this.paginator.cfg.page = newState.page;
                 if(args && typeof args.totalRecords !== 'undefined') {
@@ -2035,10 +2036,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                      {name: this.id + '_sortKey', value: $this.joinSortMetaOption('col')},
                      {name: this.id + '_sortDir', value: $this.joinSortMetaOption('order')}]
         };
-        
-        if (this.cfg.autoUpdate) {
-            options.params.push({name: this.id + '_autoUpdate', value: true});
-            
+
+        if (!this.cfg.partialUpdate) {
+            options.params.push({name: this.id + '_fullUpdate', value: true});
+
             options.onsuccess = function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
@@ -2065,7 +2066,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 return true;
             };
-            
+
             options.oncomplete = function(xhr, status, args, data) {
                 var paginator = $this.getPaginator();
                 if(args) {
@@ -2160,9 +2161,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             PrimeFaces.ajax.Request.handle(options);
         }
     },
-    
+
     /**
-     * In multi-sort mode this will add number indicators to let the user know the current 
+     * In multi-sort mode this will add number indicators to let the user know the current
      * sort order. If only one column is sorted then no indicator is displayed and will
      * only be displayed once more than one column is sorted.
      * @private
@@ -2221,11 +2222,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             params: [{name: this.id + '_filtering', value: true},
                      {name: this.id + '_encodeFeature', value: true}]
         };
-                 
-                 
-        if (this.cfg.autoUpdate) {
-            options.params.push({name: this.id + '_autoUpdate', value: true});
-            
+
+
+        if (!this.cfg.partialUpdate){
+            options.params.push({name: this.id + '_fullUpdate', value: true});
+
             options.onsuccess = function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
@@ -2256,7 +2257,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 return true;
             };
-            
+
             options.oncomplete = function(xhr, status, args, data) {
                 var paginator = $this.getPaginator();
                 if(args && typeof args.totalRecords !== 'undefined') {
