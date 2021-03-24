@@ -26,7 +26,6 @@ package org.primefaces.component.datatable.export;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
@@ -243,30 +242,7 @@ public class DataTableExcelExporter extends DataTableExporter {
 
         applyColumnAlignments(column, cell);
 
-        if (LangUtils.isNotBlank(column.getExportValue())) {
-            updateCell(cell, column.getExportValue());
-        }
-        else if (column.getExportFunction() != null) {
-            updateCell(cell, exportColumnByFunction(context, column));
-        }
-        else if (LangUtils.isNotBlank(column.getField())) {
-            String value = table.getConvertedFieldValue(context, column);
-            updateCell(cell, Objects.toString(value, Constants.EMPTY_STRING));
-        }
-        else {
-            StringBuilder builder = new StringBuilder();
-            for (UIComponent component : components) {
-                if (component.isRendered()) {
-                    String value = exportValue(context, component);
-
-                    if (value != null) {
-                        builder.append(value);
-                    }
-                }
-            }
-
-            updateCell(cell, builder.toString());
-        }
+        exportColumn(context, table, column, components, true, (s) -> updateCell(cell, s));
     }
 
     protected boolean addColumnGroup(DataTable table, Sheet sheet, DataTableExporter.ColumnType columnType) {

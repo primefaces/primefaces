@@ -40,7 +40,6 @@ import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.EscapeUtils;
-import org.primefaces.util.LangUtils;
 
 public class TreeTableXMLExporter extends TreeTableExporter {
 
@@ -142,26 +141,9 @@ public class TreeTableXMLExporter extends TreeTableExporter {
 
         writer.append("\t\t<" + tag + ">");
 
-        if (LangUtils.isNotBlank(column.getExportValue())) {
-            writer.append(EscapeUtils.forXml(column.getExportValue()));
-        }
-        else if (column.getExportFunction() != null) {
-            writer.append(EscapeUtils.forXml(exportColumnByFunction(context, column)));
-        }
-        else if (LangUtils.isNotBlank(column.getField())) {
-            String value = table.getConvertedFieldValue(context, column);
-            writer.append(EscapeUtils.forXml(Objects.toString(value, Constants.EMPTY_STRING)));
-        }
-        else {
-            for (UIComponent component : components) {
-                if (component.isRendered()) {
-                    String value = exportValue(context, component);
-                    if (value != null) {
-                        writer.append(EscapeUtils.forXml(value));
-                    }
-                }
-            }
-        }
+        exportColumn(context, table, column, components, false, (s) -> {
+            writer.append(EscapeUtils.forXml(Objects.toString(s, Constants.EMPTY_STRING)));
+        });
 
         writer.append("</" + tag + ">\n");
     }

@@ -26,7 +26,6 @@ package org.primefaces.component.treetable.export;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
@@ -340,34 +339,10 @@ public class TreeTablePDFExporter extends TreeTableExporter {
     protected void addColumnValue(TreeTable table, PdfPTable pdfTable, List<UIComponent> components, Font font, UIColumn column) {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        if (LangUtils.isNotBlank(column.getExportValue())) {
-            PdfPCell cell = createCell(column, new Paragraph(column.getExportValue(), font));
+        exportColumn(context, table, column, components, true, (s) -> {
+            PdfPCell cell = createCell(column, new Paragraph(s, font));
             pdfTable.addCell(cell);
-        }
-        else if (column.getExportFunction() != null) {
-            PdfPCell cell = createCell(column, new Paragraph(exportColumnByFunction(context, column), font));
-            pdfTable.addCell(cell);
-        }
-        else if (LangUtils.isNotBlank(column.getField())) {
-            String value = table.getConvertedFieldValue(context, column);
-            PdfPCell cell = createCell(column, new Paragraph(Objects.toString(value, Constants.EMPTY_STRING), font));
-            pdfTable.addCell(cell);
-        }
-        else {
-            StringBuilder builder = new StringBuilder();
-            for (UIComponent component : components) {
-                if (component.isRendered()) {
-                    String value = exportValue(context, component);
-
-                    if (value != null) {
-                        builder.append(value);
-                    }
-                }
-            }
-
-            PdfPCell cell = createCell(column, new Paragraph(builder.toString(), font));
-            pdfTable.addCell(cell);
-        }
+        });
     }
 
     protected int getColumnsCount(TreeTable table) {

@@ -42,7 +42,6 @@ import org.primefaces.component.export.ExporterOptions;
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
 
 public class TreeTableCSVExporter extends TreeTableExporter {
 
@@ -206,29 +205,9 @@ public class TreeTableCSVExporter extends TreeTableExporter {
 
         writer.append(csvOptions.getQuoteChar());
 
-        if (LangUtils.isNotBlank(column.getExportValue())) {
-            String value = column.getExportValue();
-            //escape double quotes
-            writer.append(escapeQuotes(value));
-        }
-        else if (column.getExportFunction() != null) {
-            String value = exportColumnByFunction(context, column);
-            //escape double quotes
-            writer.append(escapeQuotes(value));
-        }
-        else if (LangUtils.isNotBlank(column.getField())) {
-            String value = table.getConvertedFieldValue(context, column);
-            writer.append(escapeQuotes(Objects.toString(value, Constants.EMPTY_STRING)));
-        }
-        else {
-            for (UIComponent component : components) {
-                if (component.isRendered()) {
-                    String value = exportValue(context, component);
-                    //escape double quotes
-                    writer.append(escapeQuotes(value));
-                }
-            }
-        }
+        exportColumn(context, table, column, components, false, (s) -> {
+            writer.append(escapeQuotes(Objects.toString(s, Constants.EMPTY_STRING)));
+        });
 
         writer.append(csvOptions.getQuoteChar());
     }
