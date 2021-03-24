@@ -50,7 +50,7 @@ public class PageFeature implements DataTableFeature {
             table.loadLazyData();
         }
 
-        if (!isPageState && !table.isAutoUpdateRequest(context)) {
+        if (!isPageState && !table.isRerenderRequest(context)) {
             renderer.encodeTbody(context, table, true);
         }
 

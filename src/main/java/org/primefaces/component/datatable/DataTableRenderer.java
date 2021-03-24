@@ -89,7 +89,7 @@ public class DataTableRenderer extends DataRenderer {
                 }
             }
 
-            if (table.isAutoUpdateRequest(context)) {
+            if (table.isRerenderRequest(context)) {
                 render(context, table);
             }
         }
@@ -254,7 +254,7 @@ public class DataTableRenderer extends DataRenderer {
                 .attr("rowHover", table.isRowHover(), false)
                 .attr("clientCache", table.isClientCache(), false)
                 .attr("multiViewState", table.isMultiViewState(), false)
-                .attr("autoUpdate", table.isAutoUpdate(), false)
+                .attr("partialUpdate", table.isPartialUpdate(), true)
                 .nativeAttr("groupColumnIndexes", table.getGroupedColumnIndexes(), null)
                 .callback("onRowClick", "function(row)", table.getOnRowClick());
 

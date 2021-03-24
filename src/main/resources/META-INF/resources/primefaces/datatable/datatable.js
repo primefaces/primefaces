@@ -277,6 +277,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     _render: function() {
         this.isRTL = this.jq.hasClass('ui-datatable-rtl');
+        this.cfg.partialUpdate = (this.cfg.partialUpdate === false) ? false : true;
 
         if(this.cfg.scrollable) {
             this.setupScrolling();
@@ -1883,8 +1884,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     {name: this.id + '_encodeFeature', value: true}]
         };
         
-        if (this.cfg.autoUpdate) {
-            options.params.push({name: this.id + '_autoUpdate', value: true});
+        if (!this.cfg.partialUpdate) {
+            options.params.push({name: this.id + '_rerender', value: true});
             
             options.onsuccess = function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
@@ -2036,8 +2037,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                      {name: this.id + '_sortDir', value: $this.joinSortMetaOption('order')}]
         };
         
-        if (this.cfg.autoUpdate) {
-            options.params.push({name: this.id + '_autoUpdate', value: true});
+        if (!this.cfg.partialUpdate) {
+            options.params.push({name: this.id + '_rerender', value: true});
             
             options.onsuccess = function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
@@ -2223,8 +2224,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         };
                  
                  
-        if (this.cfg.autoUpdate) {
-            options.params.push({name: this.id + '_autoUpdate', value: true});
+        if (!this.cfg.partialUpdate){
+            options.params.push({name: this.id + '_rerender', value: true});
             
             options.onsuccess = function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {

@@ -108,7 +108,7 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         showGridlines,
         size,
         widgetVar,
-        autoUpdate
+        partialUpdate
     }
 
     public DataTableBase() {
@@ -690,11 +690,11 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         getStateHelper().put(PropertyKeys.selectionPageOnly, selectionPageOnly);
     }
 
-    public boolean isAutoUpdate() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.autoUpdate, false);
+    public boolean isPartialUpdate() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.partialUpdate, true);
     }
 
-    public void setAutoUpdate(boolean autoUpdate) {
-        getStateHelper().put(PropertyKeys.autoUpdate, autoUpdate);
+    public void setPartialUpdate(boolean partialUpdate) {
+        getStateHelper().put(PropertyKeys.partialUpdate, partialUpdate);
     }
 }
