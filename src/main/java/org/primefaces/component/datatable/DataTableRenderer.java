@@ -89,7 +89,7 @@ public class DataTableRenderer extends DataRenderer {
                 }
             }
 
-            if (table.isRerenderRequest(context)) {
+            if (table.isFullUpdateRequest(context)) {
                 render(context, table);
             }
         }

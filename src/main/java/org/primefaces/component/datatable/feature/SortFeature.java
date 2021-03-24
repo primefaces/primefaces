@@ -105,7 +105,7 @@ public class SortFeature implements DataTableFeature {
         }
         else {
             //reset the value given in the filter feature property before sorting
-            if (table.isRerenderRequest(context)) {
+            if (table.isFullUpdateRequest(context)) {
                 table.setValue(null);
             }
 
@@ -117,7 +117,7 @@ public class SortFeature implements DataTableFeature {
 
             //update filtered value accordingly to take account sorting
             if (table.isFilteringCurrentlyActive()) {
-                if (table.isRerenderRequest(context)) {
+                if (table.isFullUpdateRequest(context)) {
                     FilterFeature filterFeature = (FilterFeature) table.getFeature(DataTableFeatureKey.FILTER);
                     filterFeature.filter(context, table);
                 }
@@ -144,7 +144,7 @@ public class SortFeature implements DataTableFeature {
 
     @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
-        if (!table.isRerenderRequest(context)) {
+        if (!table.isFullUpdateRequest(context)) {
             renderer.encodeTbody(context, table, true);
         }
     }

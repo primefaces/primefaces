@@ -211,8 +211,8 @@ public class DataTable extends DataTableBase {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_encodeFeature");
     }
 
-    public boolean isRerenderRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_rerender");
+    public boolean isFullUpdateRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_fullUpdate");
     }
 
     public boolean isRowEditRequest(FacesContext context) {
