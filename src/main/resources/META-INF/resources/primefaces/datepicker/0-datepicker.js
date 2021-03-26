@@ -2133,7 +2133,11 @@
 
             var $this = this;
             $(window).on('resize.' + this.options.id, function() {
-                $this.hideOverlay();
+                if (PrimeFaces.env.mobile) {
+                   $this.alignPanel();
+                } else {
+                   $this.hideOverlay();
+                }
             });
         },
 

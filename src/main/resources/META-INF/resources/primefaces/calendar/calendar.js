@@ -183,10 +183,10 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
             };
 
             PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_hide', $('#ui-datepicker-div'), function() {
-                $.datepicker._hideDatepicker();
+                $this.handleViewportChange();
             });
             PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_hide', function() {
-                $.datepicker._hideDatepicker();
+                $this.handleViewportChange();
             });
         }
 
@@ -275,6 +275,20 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
                 maskCfg.mask = this.cfg.mask;
             }
             this.input.inputmask('remove').inputmask(maskCfg);
+        }
+    },
+
+    /**
+     * Fired when the browser viewport is resized or scrolled.  In Mobile environment we don't want to hider the overlay
+     * we want to re-align it.  This is because on some mobile browser the popup may force the browser to trigger a 
+     * resize immediately and close the overlay. See GitHub #7075.
+     * @private
+     */
+    handleViewportChange() {
+        if (PrimeFaces.env.mobile) {
+            this.alignPanel();
+        } else {
+            $.datepicker._hideDatepicker();
         }
     },
 
