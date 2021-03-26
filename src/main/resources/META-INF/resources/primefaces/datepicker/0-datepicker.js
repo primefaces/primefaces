@@ -2262,9 +2262,6 @@
             }
 
             if (!this.options.inline && this.isSingleSelection() && (!this.options.showTime || this.options.hideOnDateTimeSelect)) {
-                //put the focus back to the inputfield
-                this.inputfield.trigger('focus');
-
                 setTimeout(function () {
                     $this.hideOverlay();
                 }, 100);
