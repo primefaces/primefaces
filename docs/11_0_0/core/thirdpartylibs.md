@@ -15,7 +15,7 @@ are many other third party libraries and plugins used to support features.
 | FontAwesome | 4.7.0 | https://fontawesome.com/ |
 | [FullCalendar](../jsdocs/classes/node_modules__fullcalendar_core_main.calendar.html) | 5.5.1 | https://fullcalendar.io/ |
 | [Idle Timer](../jsdocs/interfaces/src_primefaces.jquery-1.html#idletimer) | 1.1.0 - 2016-03-21 | https://github.com/thorst/jquery-idletimer |
-| [Input Mask](../jsdocs/interfaces/node_modules__types_inputmask.default.static.html) | 5.0.5 | https://github.com/RobinHerbots/Inputmask |
+| [Input Mask](../jsdocs/interfaces/node_modules__types_inputmask.default.static.html) | 5.0.6 | https://github.com/RobinHerbots/Inputmask |
 | jqPlot | 1.0.9 | http://www.jqplot.com/ |
 | [jQuery Autosize](../jsdocs/modules/src_primefaces.html#autosize-1) | 4.0.2 | http://www.jacklmoore.com/autosize |
 | [jQuery Browser Plugin](../jsdocs/interfaces/src_primefaces.jquerystatic.html#browser)  | 0.1.0 | https://github.com/gabceb/jquery-browser-plugin |
