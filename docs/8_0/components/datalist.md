@@ -111,7 +111,7 @@ documentation for more information and examples.
 
 ```xhtml
 <p:dataList var="car" value="#{carBean.model}">
-    <p:ajax event="page" update=”anothercomponent" />
+    <p:ajax event="page" update="anothercomponent" />
     //content
 </p:dataList>
 ```

@@ -218,7 +218,7 @@ template.
 
 ```xhtml
 <p:dataView var="car" value="#{carBean.model}">
-    <p:ajax event="page" update=”anothercomponent" />
+    <p:ajax event="page" update="anothercomponent" />
     //content
 </p:dataView>
 ```

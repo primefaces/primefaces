@@ -99,7 +99,7 @@ load would be;
 
 ```html
 <p:dataScroller>
-   <p:ajax event=”load” listener=”#{bean.onLoad}” />
+   <p:ajax event="load" listener="#{bean.onLoad}" />
 </p:dataScroller>
 ```
 

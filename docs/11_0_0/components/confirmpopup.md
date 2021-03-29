@@ -49,7 +49,7 @@ Message can be defined in two ways, either via message option or message facet. 
 useful if you need to place custom content instead of simple text.
 
 ```xhtml
-<p:confirmPopup widgetVar="cp" header=”Confirm”>
+<p:confirmPopup widgetVar="cp" header="Confirm">
     <f:facet name="message">
         <h:outputText value="Are you sure?" />
     </f:facet>

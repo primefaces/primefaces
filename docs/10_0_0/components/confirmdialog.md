@@ -61,7 +61,7 @@ defined using the _header_ attribute or the _header_ facet. Severity defines the
 the message, default severity is _alert_ and the other option is _info_.
 
 ```xhtml
-<p:confirmDialog widgetVar="cd" header=”Confirm”>
+<p:confirmDialog widgetVar="cd" header="Confirm">
     <f:facet name="message">
         <h:outputText value="Are you sure?" />
     </f:facet>

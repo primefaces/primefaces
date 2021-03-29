@@ -194,7 +194,7 @@ On a smaller screen, grid mode adjusts the content for the optimal view.
 
 ```xhtml
 <p:dataGrid var="car" value="#{carBean.model}">
-    <p:ajax event="page" update=”anothercomponent" />
+    <p:ajax event="page" update="anothercomponent" />
     //content
 </p:dataGrid>
 ```
