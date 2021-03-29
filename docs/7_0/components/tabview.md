@@ -89,7 +89,7 @@ changed and closed respectively. Here is an example of a tabChange behavior impl
 
 ```xhtml
 <p:tabView>
-    <p:ajax event=”tabChange” listener=”#{bean.onChange}” />
+    <p:ajax event="tabChange" listener="#{bean.onChange}" />
     //tabs
 </p:tabView>
 ```

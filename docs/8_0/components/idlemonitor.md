@@ -53,7 +53,7 @@ Example below displays messages for each event;
     <p:ajax event="idle" listener="#{bean.idleListener}" update="msg" />
     <p:ajax event="active" listener="#{bean.activeListener}" update="msg" />
 </p:idleMonitor>
-<p:growl id=”msg” />
+<p:growl id="msg" />
 ```
 ```java
 public class Bean {

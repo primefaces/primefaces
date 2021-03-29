@@ -201,7 +201,7 @@ Translation is a simple javascript object, we suggest adding the code to a javas
 in your application. Following is a Turkish calendar.
 
 ```xhtml
-<h:outputScript name=”path_to_your_translations.js” />
+<h:outputScript name="path_to_your_translations.js" />
 <p:calendar value="#{dateController.date}" locale="tr" navigator="true" showButtonPanel="true"/>
 ```
 
@@ -236,7 +236,7 @@ _org.primefaces.event.SelectEvent_ instance.
 
 ```xhtml
 <p:calendar value="#{calendarBean.date}">
-    <p:ajax event=”dateSelect” listener=”#{bean.handleDateSelect}” update=”msg” />
+    <p:ajax event="dateSelect" listener="#{bean.handleDateSelect}" update="msg" />
 </p:calendar>
 <p:messages id="msg" />
 ```
@@ -272,7 +272,7 @@ Navigator is an easy way to jump between months/years quickly.
 TimePicker functionality is enabled by adding time format to your pattern.
 
 ```xhtml
-<p:calendar value="#{dateBean.date}" pattern=”MM/dd/yyyy HH:mm” />
+<p:calendar value="#{dateBean.date}" pattern="MM/dd/yyyy HH:mm" />
 ```
 ## Advanced Customization
 Use beforeShowDay javascript callback to customize the look of each date. The function returns an
