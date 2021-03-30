@@ -26,7 +26,7 @@ value | null | Object | Value of the component.
 converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
 immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
 required | false | Boolean | Marks component as required
-validator | null | MethodExpr | A method expression that refers to a method validationg the input
+validator | null | MethodExpr | A method expression that refers to a method validating the input
 valueChangeListener | null | MethodExpr | A method expression that refers to a method for handling a valuechangeevent
 requiredMessage | null | String | Message to be displayed when required field validation fails.
 converterMessage | null | String | Message to be displayed when conversion fails.
