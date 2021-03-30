@@ -129,7 +129,7 @@ ajax selection and more.
 | title | null | String | Advisory tooltip information.
 | touchable | true | Boolean | Enable touch support if browser detection supports it.
 | type | text | String | Input field type. Default is text.
-| validator | null | Method Expr | A method expression that refers to a method validationg the input
+| validator | null | Method Expr | A method expression that refers to a method validating the input
 | validatorMessage | null | String | Message to be displayed when validation fails.
 | valueChangeListener | null | Method Expr | A method expression that refers to a method for handling a valuchangeevent
 | widgetVar | null | String | Name of the client side widget.
