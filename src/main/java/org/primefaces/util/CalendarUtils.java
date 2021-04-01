@@ -574,7 +574,7 @@ public class CalendarUtils {
     public static List<String> splitRange(final String dateRange, final String pattern, final String separator) {
         final String token = Constants.SPACE + separator + Constants.SPACE;
         if (pattern.contains(token)) {
-            throw new FacesException("Pattern '" + pattern + "' contains separator ' " + separator + " '");
+            throw new FacesException("Pattern '" + pattern + "' contains separator '" + token + "'");
         }
         final List<String> dates = new ArrayList<>();
         if (!dateRange.contains(token)) {
