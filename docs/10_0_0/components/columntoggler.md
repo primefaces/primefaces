@@ -26,19 +26,3 @@ ColumnToggler is a helper component for datatable to toggle visibility of column
 
 ## Getting Started with ColumnToggler
 See column toggler section in datatable documentation for detailed information.
-
-## Ajax Behavior Events
-The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
-  
-**Default Event:** `toggle`  
-**Available Events:** `toggle, close`
-
-In order to react to changes of the visible columns on the server side the AJAX behavior can be used. You can either listen to
-single toggle events which are fired once the checkbox of a specific column is checked or unchecked, or to a summarized AJAX event
-containing a list of all currently visible columns once the column toggle is closed again.
-For this to contain meaningful ids your columns should define an id attribute otherwise the automatically generated ids will be returned.
-
-| Event | Listener Parameter | Fired |
-| --- | --- | --- |
-| toggle | org.primefaces.event.ToggleEvent | On item selection/unselection. |
-| close | org.primefaces.event.ToggleCloseEvent | On closing of toggler popup. |
