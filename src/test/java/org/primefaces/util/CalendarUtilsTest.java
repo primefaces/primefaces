@@ -202,7 +202,7 @@ public class CalendarUtilsTest {
         Date now = (Date) CalendarUtils.now(datePicker, java.util.Date.class);
         assertTrue(new Date().compareTo(now) >= 0);
     }
-    
+
     @Test
     public void convertPattern() {
         assertNull(CalendarUtils.convertPattern(null));
@@ -210,4 +210,17 @@ public class CalendarUtilsTest {
         assertEquals("mm/dd/yy HH:mm:ss", CalendarUtils.convertPattern("MM/dd/yyyy HH:mm:ss"));
         // more in-depth tests are in DateTimePatternConverterTest
     }
+
+    @Test
+    public void splitRange() {
+        List<String> splitRange = CalendarUtils.splitRange("2021-03-01 - 2021-03-31", "yyyy-MM-dd", "-");
+        assertEquals(2, splitRange.size());
+        assertEquals("2021-03-01", splitRange.get(0));
+        assertEquals("2021-03-31", splitRange.get(1));
+        splitRange = CalendarUtils.splitRange("2021-03-01", "yyyy-MM-dd", "-");
+        assertTrue(splitRange.isEmpty());
+        splitRange = CalendarUtils.splitRange("", "yyyy-MM-dd", "-");
+        assertTrue(splitRange.isEmpty());
+    }
+
 }
