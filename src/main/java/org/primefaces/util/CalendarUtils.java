@@ -582,7 +582,7 @@ public class CalendarUtils {
         }
         final int index = dateRange.indexOf(token);
         dates.add(dateRange.substring(0, index));
-        dates.add(dateRange.substring(index + token.length(), dateRange.length()));
+        dates.add(dateRange.substring(index + token.length()));
         return dates;
     }
 
