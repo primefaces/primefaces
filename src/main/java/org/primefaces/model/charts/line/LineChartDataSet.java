@@ -532,7 +532,7 @@ public class LineChartDataSet extends ChartDataSet {
     }
 
     /**
-     * Sets the spanGaps
+     * Sets stepped. true to show the line as a stepped line (tension will be ignored).
      *
      * @param spanGaps If true, lines will be drawn between points with no or null data.
      * If false, points with NaN data will create a break in the line
@@ -542,7 +542,7 @@ public class LineChartDataSet extends ChartDataSet {
     }
 
     /**
-     * Gets the steppedLine
+     * Gets stepped. true to show the line as a stepped line (tension will be ignored).
      * @see <a href="https://www.chartjs.org/docs/latest/charts/line.html#stepped">https://www.chartjs.org/docs/latest/charts/line.html#stepped</a>
      *
      * @return stepped
