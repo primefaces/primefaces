@@ -49,7 +49,7 @@ public class LineChartDataSet extends ChartDataSet {
     private String borderCapStyle;
     private String borderJoinStyle;
     private String cubicInterpolationMode;
-    private Object fill;
+    private Boolean fill;
     private Number lineTension;
     private Object pointBackgroundColor;
     private Object pointBorderColor;
@@ -284,20 +284,20 @@ public class LineChartDataSet extends ChartDataSet {
     }
 
     /**
-     * Gets the fill
+     * Fill the area under the line?
      *
      * @return fill
      */
-    public Object getFill() {
+    public Boolean getFill() {
         return fill;
     }
 
     /**
-     * Sets the fill
+     * Fill the area under the line?
      *
-     * @param fill How to fill the area under the line.
+     * @param fill Fill the area under the line?
      */
-    public void setFill(Object fill) {
+    public void setFill(Boolean fill) {
         this.fill = fill;
     }
 
