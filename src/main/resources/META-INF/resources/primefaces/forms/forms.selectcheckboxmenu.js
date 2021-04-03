@@ -278,7 +278,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.itemContainer = this.itemContainerWrapper.children('ul.ui-selectcheckboxmenu-items');
 
         //check if inputs must be grouped
-        var grouped = this.inputs.filter('[group-label]');
+        var grouped = this.inputs.filter('[data-group-label]');
 
         var currentGroupName = null;
         for(var i = 0; i < this.inputs.length; i++) {
@@ -291,8 +291,8 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             itemClass = 'ui-selectcheckboxmenu-item ui-selectcheckboxmenu-list-item ui-corner-all',
             escaped = input.data('escaped');
 
-            if(grouped.length && currentGroupName !== input.attr('group-label')) {
-                currentGroupName = input.attr('group-label');
+            if(grouped.length && currentGroupName !== input.attr('data-group-label')) {
+                currentGroupName = input.attr('data-group-label');
             	var itemGroup = $('<li class="ui-selectcheckboxmenu-item-group ui-selectcheckboxmenu-group-list-item ui-corner-all"></li>');
             	itemGroup.text(currentGroupName);
             	$this.itemContainer.append(itemGroup);

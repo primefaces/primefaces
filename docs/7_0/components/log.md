@@ -34,7 +34,7 @@ details of an ajax request. Log API is also available via global PrimeFaces obje
 to use the log component to display your logs.
 
 ```js
-<script type=”text/javascript”>
+<script type="text/javascript">
     PrimeFaces.info(‘Info message’);
     PrimeFaces.debug(‘Debug message’);
     PrimeFaces.warn(‘Warning message’);

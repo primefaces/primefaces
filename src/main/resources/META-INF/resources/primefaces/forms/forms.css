@@ -852,7 +852,7 @@ div.ui-button, .ui-splitbutton {
     position: relative;
 }
 
-.ui-cascadeselect-group-icon {
+body .ui-cascadeselect-item-content .ui-cascadeselect-group-icon {
     margin-left: auto;
 }
 

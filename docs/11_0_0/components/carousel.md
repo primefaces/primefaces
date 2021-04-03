@@ -117,7 +117,7 @@ Carousel can display the contents in a slideshow, for this purpose _autoPlayInte
 attributes are used. Following carousel displays a collection of images as a slideshow.
 
 ```xhtml
-<p:carousel autoPlayInterval="2000" rows="1" effect="easeInStrong" circular="true" itemStyle=”width:200px” >
+<p:carousel autoPlayInterval="2000" rows="1" effect="easeInStrong" circular="true" itemStyle="width:200px" >
     <p:graphicImage value="/images/nature1.jpg"/>
     <p:graphicImage value="/images/nature2.jpg"/>
     <p:graphicImage value="/images/nature3.jpg"/>
@@ -153,8 +153,8 @@ Another use case of carousel is tab based content display.
 Sample below selects an item from the carousel and displays details within a dialog.
 
 ```xhtml
-<h:form id=”form">
-    <p:carousel value="#{carBean.cars}" var="car" itemStyle=”width:200px” >
+<h:form id="form">
+    <p:carousel value="#{carBean.cars}" var="car" itemStyle="width:200px" >
         <p:graphicImage value="/images/cars/#{car.manufacturer}.jpg"/>
         <p:commandLink update=":form:detail" oncomplete="PF('dlg').show()">
             <h:outputText value="Model: #{car.model}" />

@@ -117,17 +117,17 @@ public abstract class SelectOneRenderer extends SelectRenderer {
      */
     private SelectItem findSelectItem(FacesContext fc, UIComponent component, Converter converter, List<SelectItem> selectItems,
                 String valueOrLabel, boolean byValue) {
-        SelectItem foundValue = null;
+
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem item = selectItems.get(i);
             if (item instanceof SelectItemGroup) {
                 SelectItemGroup selectItemGroup = (SelectItemGroup) item;
-                if (selectItemGroup.getSelectItems() == null) {
-                    continue;
-                }
-                foundValue = findSelectItem(fc, component,  converter, Arrays.asList(selectItemGroup.getSelectItems()), valueOrLabel, byValue);
-                if (foundValue != null) {
-                    break;
+                if (selectItemGroup.getSelectItems() != null) {
+                    SelectItem foundValue = findSelectItem(fc, component, converter,
+                            Arrays.asList(selectItemGroup.getSelectItems()), valueOrLabel, byValue);
+                    if (foundValue != null) {
+                        return foundValue;
+                    }
                 }
             }
             else {
@@ -139,13 +139,12 @@ public abstract class SelectOneRenderer extends SelectRenderer {
                     itemString = item.getLabel();
                 }
                 if (Objects.equals(valueOrLabel, itemString)) {
-                    foundValue = item;
-                    break;
+                    return item;
                 }
             }
         }
 
-        return foundValue;
+        return null;
     }
 
     protected abstract String getSubmitParam(FacesContext context, UISelectOne selectOne);

@@ -170,7 +170,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("value", itemValueAsString, null);
         writer.writeAttribute("data-escaped", String.valueOf(escaped), null);
         if (selectItemGroupLabel != null) {
-            writer.writeAttribute("group-label", selectItemGroupLabel, null);
+            writer.writeAttribute("data-group-label", selectItemGroupLabel, null);
         }
 
         if (checked) {
@@ -235,7 +235,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         String listClass = createStyleClass(menu, null, SelectCheckboxMenu.MULTIPLE_CONTAINER_CLASS);
 
         writer.startElement("ul", null);
-        writer.writeAttribute("label", menu.getLabel(), null);
+        writer.writeAttribute("data-label", menu.getLabel(), null);
         writer.writeAttribute("class", listClass, null);
         if (valuesArray != null) {
             int length = Array.getLength(valuesArray);

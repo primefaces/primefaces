@@ -42,7 +42,6 @@ import org.krysalis.barcode4j.HumanReadablePlacement;
 import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
 import org.krysalis.barcode4j.output.svg.SVGCanvasProvider;
 import org.primefaces.application.resource.BaseDynamicContentHandler;
-import org.primefaces.util.AgentUtils;
 import org.primefaces.util.Constants;
 import org.w3c.dom.DocumentFragment;
 
@@ -85,10 +84,6 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
                 boolean cache = Boolean.parseBoolean(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
 
                 generator.getBarcodeBean().setMsgPosition(HumanReadablePlacement.byName(hrp));
-
-                if (AgentUtils.isLessThanIE(context, 9)) {
-                    format = "png";
-                }
 
                 OutputStream out = externalContext.getResponseOutputStream();
 

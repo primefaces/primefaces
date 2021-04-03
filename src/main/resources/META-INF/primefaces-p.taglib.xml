@@ -8505,6 +8505,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[When disabled, it updates the whole table instead of updating a specific field such as body element in the client requests of the dataTable. Default is true.]]>
+            </description>
+            <name>partialUpdate</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -24685,7 +24693,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Base zIndex value to use in layering.]]>
+                <![CDATA[Base zIndex value to use in layering. Only use this attribute if you are having issues with your sidebar displaying as this may cause issues with overlay components inside the sidebar.]]>
             </description>
             <name>baseZIndex</name>
             <required>false</required>

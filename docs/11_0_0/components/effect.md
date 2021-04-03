@@ -109,7 +109,7 @@ with pulsate effect after ajax request completes.
 
 ```xhtml
 <p:messages id="messages">
-    <p:effect type="pulsate" event="load" delay=” 500 ”>
+    <p:effect type="pulsate" event="load" delay=" 500 ">
         <f:param name="mode" value="'show'" />
     </p:effect>
 </p:messages>

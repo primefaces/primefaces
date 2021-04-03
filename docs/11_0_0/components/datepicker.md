@@ -130,7 +130,7 @@ ajax selection and more.
 | touchable | true | Boolean | Enable touch support if browser detection supports it.
 | triggerButtonIcon | null | String | Icon of the datepicker element that toggles the visibility in popup mode.
 | type | text | String | Type of the input field
-| validator | null | Method Expr | A method expression that refers to a method validationg the input
+| validator | null | Method Expr | A method expression that refers to a method validating the input
 | validatorMessage | null | String | Message to be displayed when validation fails.
 | valueChangeListener | null | Method Expr | A method expression that refers to a method for handling a valuchangeevent
 | view | date | String | Defines the view mode, valid values are "date" for datepicker and "month" for month picker.

@@ -107,7 +107,8 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         stripedRows,
         showGridlines,
         size,
-        widgetVar
+        widgetVar,
+        partialUpdate
     }
 
     public DataTableBase() {
@@ -687,5 +688,13 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
 
     public void setSelectionPageOnly(boolean selectionPageOnly) {
         getStateHelper().put(PropertyKeys.selectionPageOnly, selectionPageOnly);
+    }
+
+    public boolean isPartialUpdate() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.partialUpdate, true);
+    }
+
+    public void setPartialUpdate(boolean partialUpdate) {
+        getStateHelper().put(PropertyKeys.partialUpdate, partialUpdate);
     }
 }

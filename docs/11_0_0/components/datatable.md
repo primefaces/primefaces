@@ -109,6 +109,7 @@ DataTable displays data in tabular format.
 | virtualScroll             | false              | Boolean          | Loads data on demand as the scrollbar gets close to the bottom. Default is false.
 | widgetVar                 | null               | String           | Name of the client side widget.
 | touchable                 | true               | Boolean          | Enable touch support if browser detection supports it.
+| partialUpdate             | true               | Boolean          | When disabled, it updates the whole table instead of updating a specific field such as body element in the client requests of the dataTable.
 
 ## Getting started with the DataTable
 We will be using the same Car and CarBean classes described in DataGrid section.

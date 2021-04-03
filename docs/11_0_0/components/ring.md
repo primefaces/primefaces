@@ -37,7 +37,7 @@ autoplayInitialDelay | 0 | Integer | Time in milliseconds to delay the start of 
 A collection is required to use the Ring component.
 
 ```xhtml
-<p:ring value="#{ringBean.players}" var="player”>
+<p:ring value="#{ringBean.players}" var="player">
    <p:graphicImage value="/images/barca/#{player.photo}"/>
 </p:ring>
 ```
