@@ -32,10 +32,9 @@ import org.primefaces.util.FastStringWriter;
 
 /**
  * Used to provide DataSet objects to Line chart component.
+ * @see <a href="https://www.chartjs.org/docs/latest/configuration/elements.html#line-configuration">https://www.chartjs.org/docs/latest/configuration/elements.html#line-configuration</a>
  */
 public class LineChartDataSet extends ChartDataSet {
-
-    // TODO: cross-check with https://www.chartjs.org/docs/next/api/interfaces/lineoptions.html
 
     private static final long serialVersionUID = 1L;
 
@@ -51,7 +50,7 @@ public class LineChartDataSet extends ChartDataSet {
     private String borderCapStyle;
     private String borderJoinStyle;
     private String cubicInterpolationMode;
-    private Boolean fill;
+    private Object fill;
     private Number tension;
     private Object pointBackgroundColor;
     private Object pointBorderColor;
@@ -65,7 +64,7 @@ public class LineChartDataSet extends ChartDataSet {
     private Object pointHoverRadius;
     private boolean showLine = true;
     private boolean spanGaps;
-    private Object steppedLine;
+    private Object stepped;
 
     /**
      * Gets the list of data in this dataSet. Can either be a Number or a type of ChartJs Point.
@@ -269,6 +268,7 @@ public class LineChartDataSet extends ChartDataSet {
 
     /**
      * Gets the cubicInterpolationMode
+     * @see <a href="https://www.chartjs.org/docs/latest/charts/line.html#cubicinterpolationmode">https://www.chartjs.org/docs/latest/charts/line.html#cubicinterpolationmode</a>
      *
      * @return cubicInterpolationMode
      */
@@ -278,6 +278,7 @@ public class LineChartDataSet extends ChartDataSet {
 
     /**
      * Sets the cubicInterpolationMode
+     * @see <a href="https://www.chartjs.org/docs/latest/charts/line.html#cubicinterpolationmode">https://www.chartjs.org/docs/latest/charts/line.html#cubicinterpolationmode</a>
      *
      * @param cubicInterpolationMode Algorithm used to interpolate a smooth curve from the discrete data points.
      */
@@ -287,19 +288,21 @@ public class LineChartDataSet extends ChartDataSet {
 
     /**
      * Fill the area under the line?
+     * @see <a href="https://www.chartjs.org/docs/latest/charts/area.html#filling-modes">https://www.chartjs.org/docs/latest/charts/area.html#filling-modes</a>
      *
      * @return fill
      */
-    public Boolean getFill() {
+    public Object getFill() {
         return fill;
     }
 
     /**
      * Fill the area under the line?
+     * @see <a href="https://www.chartjs.org/docs/latest/charts/area.html#filling-modes">https://www.chartjs.org/docs/latest/charts/area.html#filling-modes</a>
      *
      * @param fill Fill the area under the line?
      */
-    public void setFill(Boolean fill) {
+    public void setFill(Object fill) {
         this.fill = fill;
     }
 
@@ -540,20 +543,22 @@ public class LineChartDataSet extends ChartDataSet {
 
     /**
      * Gets the steppedLine
+     * @see <a href="https://www.chartjs.org/docs/latest/charts/line.html#stepped">https://www.chartjs.org/docs/latest/charts/line.html#stepped</a>
      *
-     * @return steppedLine
+     * @return stepped
      */
-    public Object getSteppedLine() {
-        return steppedLine;
+    public Object getStepped() {
+        return stepped;
     }
 
     /**
-     * Sets the steppedLine
+     * Sets the stepped
+     * @see <a href="https://www.chartjs.org/docs/latest/charts/line.html#stepped">https://www.chartjs.org/docs/latest/charts/line.html#stepped</a>
      *
-     * @param steppedLine If the line is shown as a stepped line.
+     * @param stepped If the line is shown as a stepped line.
      */
-    public void setSteppedLine(Object steppedLine) {
-        this.steppedLine = steppedLine;
+    public void setStepped(Object stepped) {
+        this.stepped = stepped;
     }
 
     /**
@@ -595,7 +600,7 @@ public class LineChartDataSet extends ChartDataSet {
             ChartUtils.writeDataValue(fsw, "pointHoverRadius", this.pointHoverRadius, true);
             ChartUtils.writeDataValue(fsw, "showLine", this.showLine, true);
             ChartUtils.writeDataValue(fsw, "spanGaps", this.spanGaps, true);
-            ChartUtils.writeDataValue(fsw, "steppedLine", this.steppedLine, true);
+            ChartUtils.writeDataValue(fsw, "stepped", this.stepped, true);
 
             fsw.write("}");
 

@@ -32,6 +32,7 @@ import org.primefaces.util.FastStringWriter;
 
 /**
  * Used to provide DataSet objects to Radar chart component.
+ * @see <a href="https://www.chartjs.org/docs/latest/configuration/elements.html#point-configuration">https://www.chartjs.org/docs/latest/configuration/elements.html#point-configuration</a>
  */
 public class RadarChartDataSet extends ChartDataSet {
 
