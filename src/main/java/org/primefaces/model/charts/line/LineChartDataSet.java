@@ -35,6 +35,8 @@ import org.primefaces.util.FastStringWriter;
  */
 public class LineChartDataSet extends ChartDataSet {
 
+    // TODO: cross-check with https://www.chartjs.org/docs/next/api/interfaces/lineoptions.html
+
     private static final long serialVersionUID = 1L;
 
     private List<Object> data;
@@ -50,7 +52,7 @@ public class LineChartDataSet extends ChartDataSet {
     private String borderJoinStyle;
     private String cubicInterpolationMode;
     private Boolean fill;
-    private Number lineTension;
+    private Number tension;
     private Object pointBackgroundColor;
     private Object pointBorderColor;
     private Object pointBorderWidth;
@@ -302,22 +304,21 @@ public class LineChartDataSet extends ChartDataSet {
     }
 
     /**
-     * Gets the lineTension
+     * Gets the Bézier curve tension (0 for no Bézier curves)
      *
-     * @return lineTension
+     * @return tension
      */
-    public Number getLineTension() {
-        return lineTension;
+    public Number getTension() {
+        return tension;
     }
 
     /**
-     * Sets the lineTension
+     * Sets the tension
      *
-     * @param lineTension Bezier curve tension of the line. Set to 0 to draw straightlines.
-     * This option is ignored if monotone cubic interpolation is used.
+     * @param tension Bézier curve tension (0 for no Bézier curves)
      */
-    public void setLineTension(Number lineTension) {
-        this.lineTension = lineTension;
+    public void setTension(Number tension) {
+        this.tension = tension;
     }
 
     /**
@@ -581,7 +582,7 @@ public class LineChartDataSet extends ChartDataSet {
             ChartUtils.writeDataValue(fsw, "borderJoinStyle", this.borderJoinStyle, true);
             ChartUtils.writeDataValue(fsw, "cubicInterpolationMode", this.cubicInterpolationMode, true);
             ChartUtils.writeDataValue(fsw, "fill", this.fill, true);
-            ChartUtils.writeDataValue(fsw, "lineTension", this.lineTension, true);
+            ChartUtils.writeDataValue(fsw, "tension", this.tension, true);
             ChartUtils.writeDataValue(fsw, "pointBackgroundColor", this.pointBackgroundColor, true);
             ChartUtils.writeDataValue(fsw, "pointBorderColor", this.pointBorderColor, true);
             ChartUtils.writeDataValue(fsw, "pointBorderWidth", this.pointBorderWidth, true);

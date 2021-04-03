@@ -606,7 +606,7 @@ public class Bean {
         dataSet.setFill(false);
         dataSet.setLabel("My First Dataset");
         dataSet.setBorderColor("rgb(75, 192, 192)");
-        dataSet.setLineTension(0.1);
+        dataSet.setTension(0.1);
         data.addChartDataSet(dataSet);
         
         List<String> labels = new ArrayList<>();
