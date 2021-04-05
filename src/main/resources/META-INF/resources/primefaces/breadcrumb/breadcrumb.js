@@ -1,0 +1,89 @@
+/**
+ * __PrimeFaces BreadCrumb Widget__
+ *
+ * BreadCrumb is an component used to output a navigation trail.
+ *
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ */
+PrimeFaces.widget.BreadCrumb = PrimeFaces.widget.BaseWidget.extend({
+
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
+    init: function(cfg) {
+        this._super(cfg);
+        if (this.cfg.responsive === true) {
+            this.addExpander(0);
+            this.limit();
+        }
+    },
+
+    /**
+     * Limit bread crumb to the items on the first line.
+     * @returns {undefined}
+     */
+    limit: function() {
+        var items = $('li', this.jq);
+        if (items.length <= 2) {
+            return;
+        }
+        this.expander.hide();
+        items.show();
+        var end = items.length - 1;
+        var firstY = this.getY(items.get(0));
+        for (i = 1; i < end; i++) {
+            if (this.getY(items.get(end)) > firstY) {
+                $(items.get(i)).hide();
+                this.expander.show();
+            }
+            else {
+                return;
+            }
+        }
+
+    },
+
+    /**
+     * Get Y position of the provided HTML node.
+     * @returns {number} Y position.
+     */
+    getY: function(node) {
+        return node.getBoundingClientRect().y;
+    },
+
+    /**
+     * Inserts expander before the provided menu item index.
+     * @param {number} index of the menu item to insert the expander before.
+     */
+    addExpander: function(index) {
+        var obj = this;
+        this.expander = $('<li class=expander><a tabindex=0 class="ui-menuitem-link ui-corner-all" href="#"><span class=ui-menuitem-text>…</span></a></li>');
+        this.expander.hide();
+        this.expander.click(function(){
+           $('li', this.jq).show();
+           obj.expander.hide();
+           $('li:visible', obj.jq).get(0).focus();
+        });
+        this.expander.insertBefore($('li:visible', this.jq).eq(index));
+    },
+
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
+    refresh: function(cfg) {
+        this._super(cfg);
+    },
+
+    /**
+     * @override
+     * @inheritdoc
+     */
+    destroy: function() {
+        this._super();
+    },
+
+});

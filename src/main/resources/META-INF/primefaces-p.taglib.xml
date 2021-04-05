@@ -2270,6 +2270,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean flag indicating whether to only show the end of the breadcrumb which fits on a single line. Default is false.]]>
+            </description>
+            <name>responsive</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>

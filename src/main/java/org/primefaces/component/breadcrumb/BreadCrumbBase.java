@@ -23,9 +23,10 @@
  */
 package org.primefaces.component.breadcrumb;
 
+import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
 
-public abstract class BreadCrumbBase extends AbstractMenu {
+public abstract class BreadCrumbBase extends AbstractMenu implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -38,7 +39,8 @@ public abstract class BreadCrumbBase extends AbstractMenu {
         styleClass,
         homeDisplay,
         tabindex,
-        lastItemDisabled;
+        lastItemDisabled,
+        responsive;
     }
 
     public BreadCrumbBase() {
@@ -99,5 +101,13 @@ public abstract class BreadCrumbBase extends AbstractMenu {
 
     public void setLastItemDisabled(boolean lastItemDisabled) {
         getStateHelper().put(PropertyKeys.lastItemDisabled, lastItemDisabled);
+    }
+
+    public boolean isResponsive() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.responsive, false);
+    }
+
+    public void setResponsive(boolean responsive) {
+        getStateHelper().put(PropertyKeys.responsive, responsive);
     }
 }
