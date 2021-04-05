@@ -122,8 +122,8 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.rangeSeparator = this.cfg.rangeSeparator||'-';
         this.cfg.timeSeparator = this.cfg.timeSeparator||':';
 
+        this.applyMask(); // must be before datepicker see #6445 and #7176
         this.jq.datePicker(this.cfg);
-        this.applyMask(); // moved below datapicker initialization because of race condition in event handling. See https://github.com/primefaces/primefaces/issues/6445
 
         //extensions
         if(!this.cfg.inline && this.cfg.showIcon) {
