@@ -15,34 +15,33 @@ PrimeFaces.widget.BreadCrumb = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         if (this.cfg.responsive === true) {
-            this.addExpander(0);
             this.limit();
         }
     },
 
     /**
      * Limit bread crumb to the items on the first line.
-     * @returns {undefined}
      */
     limit: function() {
         var items = $('li', this.jq);
         if (items.length <= 2) {
             return;
         }
-        this.expander.hide();
-        items.show();
-        var end = items.length - 1;
-        var firstY = this.getY(items.get(0));
+        var end = items.length - 1,
+                firstY = this.getY(items.get(0)),
+                showExpander = false;
         for (i = 1; i < end; i++) {
             if (this.getY(items.get(end)) > firstY) {
                 $(items.get(i)).hide();
-                this.expander.show();
+                showExpander = true;
             }
             else {
-                return;
+                break;
             }
         }
-
+        if (showExpander) {
+            this.addExpander(0);
+        }
     },
 
     /**
@@ -61,11 +60,10 @@ PrimeFaces.widget.BreadCrumb = PrimeFaces.widget.BaseWidget.extend({
     addExpander: function(index) {
         var obj = this;
         this.expander = $('<li class=expander><a tabindex=0 class="ui-menuitem-link ui-corner-all" href="#"><span class=ui-menuitem-text>…</span></a></li>');
-        this.expander.hide();
         this.expander.click(function(){
            $('li', this.jq).show();
-           obj.expander.hide();
-           $('li:visible', obj.jq).get(0).focus();
+           obj.expander.remove();
+           $('li:visible a', obj.jq).get(0).focus();
         });
         this.expander.insertBefore($('li:visible', this.jq).eq(index));
     },
