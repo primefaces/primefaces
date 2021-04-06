@@ -3,7 +3,12 @@
  *
  * BreadCrumb is an component used to output a navigation trail.
  *
+ * @interface {PrimeFaces.widget.BreadCrumbCfg} cfg The configuration for the {@link BreadCrumb| BreadCrumb widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ *
+ * @prop {boolean} cfg.responsive When `true`, enables responsive mode.
  */
 PrimeFaces.widget.BreadCrumb = PrimeFaces.widget.BaseWidget.extend({
 
