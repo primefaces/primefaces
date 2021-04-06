@@ -26,7 +26,6 @@ package org.primefaces.component.fileupload;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import javax.faces.FacesException;
 import javax.faces.application.ProjectStage;
 
 import javax.faces.component.UIComponent;
