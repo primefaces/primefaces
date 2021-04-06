@@ -123,6 +123,9 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         BreadCrumb breadCrumb = (BreadCrumb) abstractMenu;
+        if (!breadCrumb.isResponsive()) {
+            return;
+        }
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("BreadCrumb", breadCrumb)
                     .attr("responsive", breadCrumb.isResponsive())

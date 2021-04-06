@@ -47,6 +47,7 @@ PrimeFaces.widget.BreadCrumb = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Get Y position of the provided HTML node.
+     * @param {HTMLElement} to get the Y position of.
      * @returns {number} Y position.
      */
     getY: function(node) {
@@ -67,23 +68,6 @@ PrimeFaces.widget.BreadCrumb = PrimeFaces.widget.BaseWidget.extend({
            $('li:visible', obj.jq).get(0).focus();
         });
         this.expander.insertBefore($('li:visible', this.jq).eq(index));
-    },
-
-    /**
-     * @override
-     * @inheritdoc
-     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
-     */
-    refresh: function(cfg) {
-        this._super(cfg);
-    },
-
-    /**
-     * @override
-     * @inheritdoc
-     */
-    destroy: function() {
-        this._super();
     },
 
 });
