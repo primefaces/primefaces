@@ -65,27 +65,29 @@ public class StackRenderer extends BaseMenuRenderer {
         writer.endElement("img");
 
         if (stack.getElementsCount() > 0) {
-            List<MenuElement> elements = stack.getElements();
+            List<Object> elements = stack.getElements();
 
             writer.startElement("ul", null);
             writer.writeAttribute("id", clientId + "_stack", "id");
 
-            for (MenuElement element : elements) {
-                if (element.isRendered() && element instanceof MenuItem) {
-                    MenuItem menuItem = (MenuItem) element;
-                    String containerStyle = menuItem.getContainerStyle();
-                    String containerStyleClass = menuItem.getContainerStyleClass();
+            if (elements != null && !elements.isEmpty()) {
+                for (Object element : elements) {
+                    if (element instanceof MenuItem && ((MenuElement) element).isRendered()) {
+                        MenuItem menuItem = (MenuItem) element;
+                        String containerStyle = menuItem.getContainerStyle();
+                        String containerStyleClass = menuItem.getContainerStyleClass();
 
-                    writer.startElement("li", null);
-                    if (containerStyle != null) {
-                        writer.writeAttribute("style", containerStyle, null);
-                    }
-                    if (containerStyleClass != null) {
-                        writer.writeAttribute("class", containerStyleClass, null);
-                    }
+                        writer.startElement("li", null);
+                        if (containerStyle != null) {
+                            writer.writeAttribute("style", containerStyle, null);
+                        }
+                        if (containerStyleClass != null) {
+                            writer.writeAttribute("class", containerStyleClass, null);
+                        }
 
-                    encodeMenuItem(context, stack, menuItem, "-1");
-                    writer.endElement("li");
+                        encodeMenuItem(context, stack, menuItem, "-1");
+                        writer.endElement("li");
+                    }
                 }
             }
         }

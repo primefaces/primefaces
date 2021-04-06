@@ -101,22 +101,24 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
 
     protected void encodeRootItems(FacesContext context, MegaMenu menu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        List<MenuElement> elements = menu.getElements();
+        List<Object> elements = menu.getElements();
 
-        for (MenuElement element : elements) {
-            if (element.isRendered()) {
-                if (element instanceof MenuItem) {
-                    writer.startElement("li", null);
-                    writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
-                    writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
-                    encodeMenuItem(context, menu, (MenuItem) element, "-1");
-                    writer.endElement("li");
-                }
-                else if (element instanceof Submenu) {
-                    encodeRootSubmenu(context, menu, (Submenu) element);
-                }
-                else if (element instanceof Separator) {
-                    encodeSeparator(context, (Separator) element);
+        if (elements != null && !elements.isEmpty()) {
+            for (Object element : elements) {
+                if (element instanceof MenuElement && ((MenuElement) element).isRendered()) {
+                    if (element instanceof MenuItem) {
+                        writer.startElement("li", null);
+                        writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
+                        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
+                        encodeMenuItem(context, menu, (MenuItem) element, "-1");
+                        writer.endElement("li");
+                    }
+                    else if (element instanceof Submenu) {
+                        encodeRootSubmenu(context, menu, (Submenu) element);
+                    }
+                    else if (element instanceof Separator) {
+                        encodeSeparator(context, (Separator) element);
+                    }
                 }
             }
         }

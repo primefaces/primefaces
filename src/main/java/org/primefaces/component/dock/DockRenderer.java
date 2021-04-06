@@ -34,7 +34,6 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
-import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -82,19 +81,21 @@ public class DockRenderer extends BaseMenuRenderer {
     protected void encodeMenuItems(FacesContext context, Dock dock) throws IOException {
         if (dock.getElementsCount() > 0) {
             ResponseWriter writer = context.getResponseWriter();
-            List<MenuElement> menuElements = new ArrayList<>(dock.getElements());
+            List<Object> menuElements = new ArrayList<>(dock.getElements());
 
             if (ComponentUtils.isRTL(context, dock)) {
                 Collections.reverse(menuElements);
             }
 
-            for (MenuElement element : menuElements) {
-                if (element.isRendered() && element instanceof MenuItem) {
-                    writer.startElement("li", null);
-                    writer.writeAttribute("class", "ui-dock-item", "styleClass");
-                    writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
-                    encodeMenuItem(context, dock, (MenuItem) element, "-1");
-                    writer.endElement("li");
+            if (menuElements != null && !menuElements.isEmpty()) {
+                for (Object element : menuElements) {
+                    if (element instanceof MenuItem && ((MenuItem) element).isRendered()) {
+                        writer.startElement("li", null);
+                        writer.writeAttribute("class", "ui-dock-item", "styleClass");
+                        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
+                        encodeMenuItem(context, dock, (MenuItem) element, "-1");
+                        writer.endElement("li");
+                    }
                 }
             }
         }

@@ -36,7 +36,6 @@ import org.primefaces.component.menu.Menu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.model.menu.MenuElement;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
@@ -139,7 +138,7 @@ public class MenuButtonRenderer extends TieredMenuRenderer {
         writer.writeAttribute("class", MenuButton.LIST_CLASS, "styleClass");
 
         if (button.getElementsCount() > 0) {
-            List<MenuElement> elements = button.getElements();
+            List<Object> elements = button.getElements();
             encodeElements(context, button, elements);
         }
 

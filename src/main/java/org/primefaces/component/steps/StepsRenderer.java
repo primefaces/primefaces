@@ -46,7 +46,7 @@ public class StepsRenderer extends BaseMenuRenderer {
         String containerClass = steps.isReadonly() ? Steps.READONLY_CONTAINER_CLASS : Steps.CONTAINER_CLASS;
         styleClass = styleClass == null ? containerClass : containerClass + " " + styleClass;
         int activeIndex = steps.getActiveIndex();
-        List<MenuElement> elements = steps.getElements();
+        List<Object> elements = steps.getElements();
 
         writer.startElement("div", steps);
         writer.writeAttribute("id", clientId, null);
@@ -60,8 +60,8 @@ public class StepsRenderer extends BaseMenuRenderer {
 
         int i = 0;
         if (elements != null && !elements.isEmpty()) {
-            for (MenuElement element : elements) {
-                if (element.isRendered() && (element instanceof MenuItem)) {
+            for (Object element : elements) {
+                if (element instanceof MenuItem && ((MenuElement) element).isRendered()) {
                     encodeItem(context, steps, (MenuItem) element, activeIndex, i);
                     i++;
                 }

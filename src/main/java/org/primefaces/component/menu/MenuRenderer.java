@@ -98,36 +98,38 @@ public class MenuRenderer extends BaseMenuRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeElements(FacesContext context, Menu menu, List<MenuElement> elements, boolean isSubmenu) throws IOException {
+    protected void encodeElements(FacesContext context, Menu menu, List<Object> elements, boolean isSubmenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean toggleable = menu.isToggleable();
 
-        for (MenuElement element : elements) {
-            if (element.isRendered()) {
-                if (element instanceof MenuItem) {
-                    MenuItem menuItem = (MenuItem) element;
-                    String containerStyle = menuItem.getContainerStyle();
-                    String containerStyleClass = menuItem.getContainerStyleClass();
-                    containerStyleClass = (containerStyleClass == null) ? Menu.MENUITEM_CLASS : Menu.MENUITEM_CLASS + " " + containerStyleClass;
+        if (elements != null && !elements.isEmpty()) {
+            for (Object element : elements) {
+                if (element instanceof MenuElement && ((MenuElement) element).isRendered()) {
+                    if (element instanceof MenuItem) {
+                        MenuItem menuItem = (MenuItem) element;
+                        String containerStyle = menuItem.getContainerStyle();
+                        String containerStyleClass = menuItem.getContainerStyleClass();
+                        containerStyleClass = (containerStyleClass == null) ? Menu.MENUITEM_CLASS : Menu.MENUITEM_CLASS + " " + containerStyleClass;
 
-                    if (toggleable && isSubmenu) {
-                        containerStyleClass = containerStyleClass + " " + Menu.SUBMENU_CHILD_CLASS;
-                    }
+                        if (toggleable && isSubmenu) {
+                            containerStyleClass = containerStyleClass + " " + Menu.SUBMENU_CHILD_CLASS;
+                        }
 
-                    writer.startElement("li", null);
-                    writer.writeAttribute("class", containerStyleClass, null);
-                    writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM, null);
-                    if (containerStyle != null) {
-                        writer.writeAttribute("style", containerStyle, null);
+                        writer.startElement("li", null);
+                        writer.writeAttribute("class", containerStyleClass, null);
+                        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM, null);
+                        if (containerStyle != null) {
+                            writer.writeAttribute("style", containerStyle, null);
+                        }
+                        encodeMenuItem(context, menu, menuItem, "-1");
+                        writer.endElement("li");
                     }
-                    encodeMenuItem(context, menu, menuItem, "-1");
-                    writer.endElement("li");
-                }
-                else if (element instanceof Submenu) {
-                    encodeSubmenu(context, menu, (Submenu) element);
-                }
-                else if (element instanceof Separator) {
-                    encodeSeparator(context, (Separator) element);
+                    else if (element instanceof Submenu) {
+                        encodeSubmenu(context, menu, (Submenu) element);
+                    }
+                    else if (element instanceof Separator) {
+                        encodeSeparator(context, (Separator) element);
+                    }
                 }
             }
         }

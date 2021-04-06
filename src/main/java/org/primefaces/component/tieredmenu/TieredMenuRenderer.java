@@ -104,46 +104,48 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeElements(FacesContext context, AbstractMenu menu, List<MenuElement> elements) throws IOException {
+    protected void encodeElements(FacesContext context, AbstractMenu menu, List<Object> elements) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        for (MenuElement element : elements) {
-            if (element.isRendered()) {
-                if (element instanceof MenuItem) {
-                    MenuItem menuItem = (MenuItem) element;
-                    String containerStyle = menuItem.getContainerStyle();
-                    String containerStyleClass = menuItem.getContainerStyleClass();
-                    containerStyleClass = (containerStyleClass == null) ? Menu.MENUITEM_CLASS : Menu.MENUITEM_CLASS + " " + containerStyleClass;
+        if (elements != null && !elements.isEmpty()) {
+            for (Object element : elements) {
+                if (element instanceof MenuElement && ((MenuElement) element).isRendered()) {
+                    if (element instanceof MenuItem) {
+                        MenuItem menuItem = (MenuItem) element;
+                        String containerStyle = menuItem.getContainerStyle();
+                        String containerStyleClass = menuItem.getContainerStyleClass();
+                        containerStyleClass = (containerStyleClass == null) ? Menu.MENUITEM_CLASS : Menu.MENUITEM_CLASS + " " + containerStyleClass;
 
-                    writer.startElement("li", null);
-                    writer.writeAttribute("class", containerStyleClass, null);
-                    writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
-                    if (containerStyle != null) {
-                        writer.writeAttribute("style", containerStyle, null);
+                        writer.startElement("li", null);
+                        writer.writeAttribute("class", containerStyleClass, null);
+                        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
+                        if (containerStyle != null) {
+                            writer.writeAttribute("style", containerStyle, null);
+                        }
+                        encodeMenuItem(context, menu, menuItem, "-1");
+                        writer.endElement("li");
                     }
-                    encodeMenuItem(context, menu, menuItem, "-1");
-                    writer.endElement("li");
-                }
-                else if (element instanceof Submenu) {
-                    Submenu submenu = (Submenu) element;
-                    String style = submenu.getStyle();
-                    String styleClass = submenu.getStyleClass();
-                    styleClass = styleClass == null ? Menu.TIERED_SUBMENU_CLASS : Menu.TIERED_SUBMENU_CLASS + " " + styleClass;
+                    else if (element instanceof Submenu) {
+                        Submenu submenu = (Submenu) element;
+                        String style = submenu.getStyle();
+                        String styleClass = submenu.getStyleClass();
+                        styleClass = styleClass == null ? Menu.TIERED_SUBMENU_CLASS : Menu.TIERED_SUBMENU_CLASS + " " + styleClass;
 
-                    writer.startElement("li", null);
-                    if (shouldRenderId(submenu)) {
-                        writer.writeAttribute("id", submenu.getClientId(), null);
+                        writer.startElement("li", null);
+                        if (shouldRenderId(submenu)) {
+                            writer.writeAttribute("id", submenu.getClientId(), null);
+                        }
+                        writer.writeAttribute("class", styleClass, null);
+                        if (style != null) {
+                            writer.writeAttribute("style", style, null);
+                        }
+                        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
+                        encodeSubmenu(context, menu, submenu);
+                        writer.endElement("li");
                     }
-                    writer.writeAttribute("class", styleClass, null);
-                    if (style != null) {
-                        writer.writeAttribute("style", style, null);
+                    else if (element instanceof Separator) {
+                        encodeSeparator(context, (Separator) element);
                     }
-                    writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
-                    encodeSubmenu(context, menu, submenu);
-                    writer.endElement("li");
-                }
-                else if (element instanceof Separator) {
-                    encodeSeparator(context, (Separator) element);
                 }
             }
         }

@@ -68,11 +68,13 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         writer.writeAttribute(HTML.ARIA_ROLE, "tablist", null);
 
         if (menu.getElementsCount() > 0) {
-            List<MenuElement> elements = menu.getElements();
+            List<Object> elements = menu.getElements();
 
-            for (MenuElement element : elements) {
-                if (element.isRendered() && element instanceof Submenu) {
-                    encodeRootSubmenu(context, menu, (Submenu) element);
+            if (elements != null && !elements.isEmpty()) {
+                for (Object element : elements) {
+                    if (element instanceof Submenu && ((MenuElement) element).isRendered()) {
+                        encodeRootSubmenu(context, menu, (Submenu) element);
+                    }
                 }
             }
         }

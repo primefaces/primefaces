@@ -49,14 +49,20 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
                     .add(breadCrumb.getStyleClass())
                     .build();
         int elementCount = menu.getElementsCount();
-        List<MenuElement> menuElements = menu.getElements();
+        List<Object> menuElements = menu.getElements();
         boolean isIconHome = breadCrumb.getHomeDisplay().equals("icon");
         String wrapper = "nav";
         String listType = "ol";
 
         //home icon for first item
         if (isIconHome && elementCount > 0) {
-            ((MenuItem) menuElements.get(0)).setStyleClass("ui-breadcrumb-home-icon ui-icon ui-icon-home");
+            MenuItem firstMenuItem = null;
+            for (Object element : menuElements) {
+                if (element instanceof MenuItem) {
+                    firstMenuItem = (MenuItem) element;
+                }
+            }
+            firstMenuItem.setStyleClass("ui-breadcrumb-home-icon ui-icon ui-icon-home");
         }
 
         writer.startElement(wrapper, null);
@@ -72,9 +78,9 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
             writer.writeAttribute("class", BreadCrumb.ITEMS_CLASS, null);
 
             for (int i = 0; i < elementCount; i++) {
-                MenuElement element = menuElements.get(i);
+                Object element = menuElements.get(i);
 
-                if (element.isRendered() && element instanceof MenuItem) {
+                if (element instanceof MenuItem && ((MenuElement) element).isRendered()) {
                     MenuItem item = (MenuItem) element;
 
                     writer.startElement("li", null);
