@@ -24693,7 +24693,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Base zIndex value to use in layering.]]>
+                <![CDATA[Base zIndex value to use in layering. Only use this attribute if you are having issues with your sidebar displaying as this may cause issues with overlay components inside the sidebar.]]>
             </description>
             <name>baseZIndex</name>
             <required>false</required>

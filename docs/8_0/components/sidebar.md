@@ -27,7 +27,7 @@ visible | false | Boolean | Specifies the visibility of the sidebar.
 position | left | String | Position of the sidebar.
 fullScreen | false | Boolean | Whether to enable the whole screen.
 blockScroll | false | Boolean | Whether to block scrolling of the document when sidebar is active.
-baseZIndex | 0 | Integer | Base zIndex value to use in layering.
+baseZIndex | 0 | Integer | Base zIndex value to use in layering. Only use this attribute if you are having issues with your sidebar displaying as this may cause issues with overlay components inside the sidebar.
 appendTo | null | String | Appends the sidebar to the given search expression.
 onShow | null | String | Client side callback to execute when sidebar is displayed.
 onHide | null | String | Client side callback to execute when sidebar is hidden.

@@ -91,7 +91,7 @@ tabChange would be;
 
 ```html
 <p:accordionPanel>
- <p:ajax event=”tabChange” listener=”#{bean.onChange}” />
+ <p:ajax event="tabChange" listener="#{bean.onChange}" />
 </p:accordionPanel>
 ```
 
@@ -111,7 +111,7 @@ closed.
 When the tabs to display are not static, use the built-in iteration feature similar to ui:repeat.
 
 ```html
-<p:accordionPanel value=”#{bean.list}” var=”listItem”>
+<p:accordionPanel value="#{bean.list}" var="listItem">
     <p:tab title="#{listItem.propertyA}">
         <h:outputText value= "#{listItem.propertyB}"/>
         ...More content
@@ -124,7 +124,7 @@ A tab can be disabled by setting disabled attribute to true.
 
 ```html
 <p:accordionPanel>
-    <p:tab title="First Tab Title" disabled=”true”>
+    <p:tab title="First Tab Title" disabled="true">
         <h:outputText value= "Lorem"/>
         ...More content for first tab
     </p:tab>
@@ -139,7 +139,7 @@ A tab can be disabled by setting disabled attribute to true.
 By default, only one tab at a time can be active, enable _multiple_ mode to activate multiple tabs.
 
 ```html
-<p:accordionPanel multiple=”true”>
+<p:accordionPanel multiple="true">
     //tabs
 </p:accordionPanel>
 ```

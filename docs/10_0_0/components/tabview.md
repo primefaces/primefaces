@@ -46,7 +46,7 @@ TabView is a container component to group content in tabs.
 
 ## Getting started with the TabView
 TabView requires one more child tab components to display. Titles can also be defined by using
-“title” facet.
+“title" facet.
 
 ```xhtml
 <p:tabView>
@@ -99,7 +99,7 @@ changed and closed respectively. Here is an example of a tabChange behavior impl
 
 ```xhtml
 <p:tabView>
-    <p:ajax event=”tabChange” listener=”#{bean.onChange}” />
+    <p:ajax event="tabChange" listener="#{bean.onChange}" />
     //tabs
 </p:tabView>
 ```

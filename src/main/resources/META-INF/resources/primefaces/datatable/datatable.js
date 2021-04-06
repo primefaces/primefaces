@@ -2538,6 +2538,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             this.updateHeaderCheckbox();
         }
 
+        if(this.isRadioSelectionEnabled()) {
+            if(this.cfg.nativeElements)
+                row.children('td.ui-selection-column').find(':radio').prop('checked', false);
+            else
+                this.unselectRadio(row.children('td.ui-selection-column').find('> div.ui-radiobutton > div.ui-radiobutton-box'));
+        }
+
         this.removeSelection(rowMeta.key);
 
         this.writeSelections();

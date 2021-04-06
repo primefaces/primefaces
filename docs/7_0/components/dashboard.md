@@ -77,7 +77,7 @@ Following dashboard displays a message about the reorder event
 
 ```xhtml
 <p:dashboard model="#{bean.model}">
-    <p:ajax event=”reorder” update=”messages” listener=”#{bean.handleReorder}” />
+    <p:ajax event="reorder" update="messages" listener="#{bean.handleReorder}" />
     //panels
 </p:dashboard>
 <p:growl id="messages" />

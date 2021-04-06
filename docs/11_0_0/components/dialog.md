@@ -192,7 +192,7 @@ As skinning style classes are global, see the main theming section for more info
     visible overflow defined, in cases like these functionality might be broken. This is not a limitation
     but a result of DOM model. For example dialog inside a layout unit, tabview, accordion are a
     couple of examples. Same applies to confirmDialog as well.
-- A facet called “header” is available to provide custom content inside header instead of using
+- A facet called “header" is available to provide custom content inside header instead of using
     header attribute.
     
 ## Modal

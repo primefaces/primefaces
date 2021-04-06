@@ -97,7 +97,7 @@ AutoComplete provides live suggestions while an input is being typed.
 | tabindex | null | String | Position of the input field in the tabbing order.
 | type | text | String | Input field type.
 | unique | false | Boolean | Ensures uniqueness of selected items.
-| validator | null | Method Expr | A method expression that refers to a method validationg the input.
+| validator | null | Method Expr | A method expression that refers to a method validating the input.
 | validatorMessage | null | String | Message to be displayed when validation fails.
 | value | null | Object | Value of the component than can be either an EL expression of a literal text.
 | valueChangeListener | null | Method Expr | A method expression that refers to a method for handling a valuchangeevent.
@@ -311,7 +311,7 @@ display a message about the selected item instantly.
 <p:autoComplete value="#{bean.text}" completeMethod="#{bean.complete}">
     <p:ajax event="itemSelect" listener="#{bean.handleSelect}" update="msg" />
 </p:autoComplete>
-<p:messages id=”msg” />
+<p:messages id="msg" />
 ```
 ```java
 public class Bean {

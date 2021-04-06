@@ -110,7 +110,7 @@ As checkbox selection have a special hierarchy, use _CheckboxTreeNode_ in checkb
 
 ## Paginator
 Node hierarchy can be displayed as paged using paginator. Usage is similar to DataTable, DataList
-and DataGrid where paginator is enabled by setting paginator=”true” and defining a rows property
+and DataGrid where paginator is enabled by setting paginator="true" and defining a rows property
 to define the number of nodes to be displayed per page.
 
 ## Ajax Behavior Events

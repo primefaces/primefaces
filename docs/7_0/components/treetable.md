@@ -47,7 +47,7 @@ caseSensitiveSort | false | Boolean | Case sensitivity for sorting, insensitive 
 skipChildren | false | Boolean | Ignores processing of children during lifecycle, improves performance if table only has output components.
 showUnselectableCheckbox | false | Boolean | Defines if in checkbox selection mode, a readonly checkbox should be displayed for an unselectable node.
 nodeVar | null | String | Name of the request-scoped variable that'll be used to refer current treenode using EL.
-expandMode | children | String | Updates children only when set to “children” or the node itself with children when set to “self” on node expand.
+expandMode | children | String | Updates children only when set to “children" or the node itself with children when set to “self" on node expand.
 stickyHeader | false | Boolean | Sticky header stays in window viewport during scrolling.
 editable | false | Boolean | Controls incell editing.
 editMode | row | String | Defines edit mode, valid values are "row" (default) and "cell".

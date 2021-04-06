@@ -251,7 +251,7 @@ and the optional _sortOrder._ Table below would be initially displayed as sorted
 
 ```xhtml
 <p:dataTable var="car" value="#{carBean.cars}" sortBy="#{car.model}">
-    <p:column sortBy="#{car.model}" headerText=”Model”>
+    <p:column sortBy="#{car.model}" headerText="Model">
         <h:outputText value="#{car.model}" />
     </p:column>
     <p:column sortBy="#{car.year}" headerText="Year">
@@ -932,7 +932,7 @@ For example, datatable below makes an ajax request when a row is selected with a
 
 ```xhtml
 <p:dataTable var="car" value="#{carBean.model}">
-    <p:ajax event=”rowSelect” update=”another_component” />
+    <p:ajax event="rowSelect" update="another_component" />
     //columns
 </p:dataTable>
 ```

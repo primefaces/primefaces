@@ -181,8 +181,8 @@ timeline javascript gets loaded. Following is an example of Spanish localization
         xmlns:p="http://primefaces.org/ui">
     <h:head>
         <f:facet name="first">
-            <h:outputScript name=”path/to/your/moment.js” />
-            <h:outputScript name=”path/to/your/moment/locale/es.js” />
+            <h:outputScript name="path/to/your/moment.js" />
+            <h:outputScript name="path/to/your/moment/locale/es.js" />
         </f:facet>
     </h:head>
     <h:body>
