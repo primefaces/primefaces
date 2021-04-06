@@ -98,10 +98,6 @@ public class FileUploadRenderer extends CoreRenderer {
         else {
             wb.init("SimpleFileUpload", fileUpload)
                     .attr("skinSimple", fileUpload.isSkinSimple(), false);
-
-            if (fileUpload.getOnAdd() != null || fileUpload.getOncancel() != null || fileUpload.getOnupload() != null) {
-                throw new FacesException("Client side callbacks onadd, onupdate, and oncancel are only available in 'advanced' mode.");
-            }
         }
 
         wb.attr("auto", fileUpload.isAuto(), false)
