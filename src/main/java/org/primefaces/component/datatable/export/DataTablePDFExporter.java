@@ -196,13 +196,7 @@ public class DataTablePDFExporter extends DataTableExporter {
         }
 
         if (facetText != null) {
-            int colspan = 0;
-
-            for (UIColumn col : table.getColumns()) {
-                if (col.isRendered() && col.isExportable()) {
-                    colspan++;
-                }
-            }
+            int colspan = getExportableColumns(table).size();
 
             PdfPCell cell = new PdfPCell(new Paragraph(facetText, facetFont));
             if (facetBgColor != null) {
@@ -218,49 +212,45 @@ public class DataTablePDFExporter extends DataTableExporter {
     @Override
     protected void exportCells(DataTable table, Object document) {
         PdfPTable pdfTable = (PdfPTable) document;
-        for (UIColumn col : table.getColumns()) {
+        for (UIColumn col : getExportableColumns(table)) {
             if (col instanceof DynamicColumn) {
                 ((DynamicColumn) col).applyStatelessModel();
             }
 
-            if (col.isRendered() && col.isExportable()) {
-                addColumnValue(table, pdfTable, col.getChildren(), cellFont, col);
-            }
+            addColumnValue(table, pdfTable, col.getChildren(), cellFont, col);
         }
     }
 
     protected void addColumnFacets(DataTable table, PdfPTable pdfTable, ColumnType columnType) {
-        for (UIColumn col : table.getColumns()) {
+        for (UIColumn col : getExportableColumns(table)) {
             if (col instanceof DynamicColumn) {
                 ((DynamicColumn) col).applyStatelessModel();
             }
 
-            if (col.isRendered() && col.isExportable()) {
-                UIComponent facet = col.getFacet(columnType.facet());
-                String textValue;
-                switch (columnType) {
-                    case HEADER:
-                        textValue = (col.getExportHeaderValue() != null) ? col.getExportHeaderValue() : col.getHeaderText();
-                        break;
+            UIComponent facet = col.getFacet(columnType.facet());
+            String textValue;
+            switch (columnType) {
+                case HEADER:
+                    textValue = (col.getExportHeaderValue() != null) ? col.getExportHeaderValue() : col.getHeaderText();
+                    break;
 
-                    case FOOTER:
-                        textValue = (col.getExportFooterValue() != null) ? col.getExportFooterValue() : col.getFooterText();
-                        break;
+                case FOOTER:
+                    textValue = (col.getExportFooterValue() != null) ? col.getExportFooterValue() : col.getFooterText();
+                    break;
 
-                    default:
-                        textValue = null;
-                        break;
-                }
+                default:
+                    textValue = null;
+                    break;
+            }
 
-                if (textValue != null) {
-                    addColumnValue(pdfTable, textValue, 1, 1);
-                }
-                else if (ComponentUtils.shouldRenderFacet(facet)) {
-                    addColumnValue(pdfTable, facet);
-                }
-                else {
-                    addColumnValue(pdfTable, Constants.EMPTY_STRING, 1, 1);
-                }
+            if (textValue != null) {
+                addColumnValue(pdfTable, textValue, 1, 1);
+            }
+            else if (ComponentUtils.shouldRenderFacet(facet)) {
+                addColumnValue(pdfTable, facet);
+            }
+            else {
+                addColumnValue(pdfTable, Constants.EMPTY_STRING, 1, 1);
             }
         }
     }
@@ -340,21 +330,7 @@ public class DataTablePDFExporter extends DataTableExporter {
     }
 
     protected int getColumnsCount(DataTable table) {
-        int count = 0;
-
-        for (UIColumn col : table.getColumns()) {
-            if (col instanceof DynamicColumn) {
-                ((DynamicColumn) col).applyStatelessModel();
-            }
-
-            if (!col.isRendered() || !col.isExportable()) {
-                continue;
-            }
-
-            count++;
-        }
-
-        return count;
+        return getExportableColumns(table).size();
     }
 
     protected void addEmptyLine(Paragraph paragraph, int number) {

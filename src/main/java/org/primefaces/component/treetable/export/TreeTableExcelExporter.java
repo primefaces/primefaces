@@ -106,15 +106,9 @@ public class TreeTableExcelExporter extends TreeTableExporter {
 
         if (options == null || options.isAutoSizeColumn()) {
             short colIndex = 0;
-            for (UIColumn col : table.getColumns()) {
-                if (col instanceof DynamicColumn) {
-                    ((DynamicColumn) col).applyStatelessModel();
-                }
-
-                if (col.isRendered() && col.isExportable()) {
-                    sheet.autoSizeColumn(colIndex);
-                    colIndex++;
-                }
+            for (UIColumn col : getExportableColumns(table)) {
+                sheet.autoSizeColumn(colIndex);
+                colIndex++;
             }
         }
     }
@@ -137,14 +131,12 @@ public class TreeTableExcelExporter extends TreeTableExporter {
         int sheetRowIndex = sheet.getLastRowNum() + 1;
         Row row = sheet.createRow(sheetRowIndex);
 
-        for (UIColumn col : table.getColumns()) {
+        for (UIColumn col : getExportableColumns(table)) {
             if (col instanceof DynamicColumn) {
                 ((DynamicColumn) col).applyStatelessModel();
             }
 
-            if (col.isRendered() && col.isExportable()) {
-                addColumnValue(table, row, col.getChildren(), col);
-            }
+            addColumnValue(table, row, col.getChildren(), col);
         }
     }
 
@@ -152,37 +144,35 @@ public class TreeTableExcelExporter extends TreeTableExporter {
         int sheetRowIndex = sheet.getLastRowNum() + 1;
         Row rowHeader = sheet.createRow(sheetRowIndex);
 
-        for (UIColumn col : table.getColumns()) {
+        for (UIColumn col : getExportableColumns(table)) {
             if (col instanceof DynamicColumn) {
                 ((DynamicColumn) col).applyStatelessModel();
             }
 
-            if (col.isRendered() && col.isExportable()) {
-                UIComponent facet = col.getFacet(columnType.facet());
-                String textValue;
-                switch (columnType) {
-                    case HEADER:
-                        textValue = (col.getExportHeaderValue() != null) ? col.getExportHeaderValue() : col.getHeaderText();
-                        break;
+            UIComponent facet = col.getFacet(columnType.facet());
+            String textValue;
+            switch (columnType) {
+                case HEADER:
+                    textValue = (col.getExportHeaderValue() != null) ? col.getExportHeaderValue() : col.getHeaderText();
+                    break;
 
-                    case FOOTER:
-                        textValue = (col.getExportFooterValue() != null) ? col.getExportFooterValue() : col.getFooterText();
-                        break;
+                case FOOTER:
+                    textValue = (col.getExportFooterValue() != null) ? col.getExportFooterValue() : col.getFooterText();
+                    break;
 
-                    default:
-                        textValue = null;
-                        break;
-                }
+                default:
+                    textValue = null;
+                    break;
+            }
 
-                if (textValue != null) {
-                    addColumnValue(rowHeader, textValue);
-                }
-                else if (ComponentUtils.shouldRenderFacet(facet)) {
-                    addColumnValue(rowHeader, facet);
-                }
-                else {
-                    addColumnValue(rowHeader, Constants.EMPTY_STRING);
-                }
+            if (textValue != null) {
+                addColumnValue(rowHeader, textValue);
+            }
+            else if (ComponentUtils.shouldRenderFacet(facet)) {
+                addColumnValue(rowHeader, facet);
+            }
+            else {
+                addColumnValue(rowHeader, Constants.EMPTY_STRING);
             }
         }
     }
@@ -209,14 +199,7 @@ public class TreeTableExcelExporter extends TreeTableExporter {
         }
 
         if (facetText != null) {
-            int colspan = 0;
-
-            for (UIColumn col : table.getColumns()) {
-                if (col.isRendered() && col.isExportable()) {
-                    colspan++;
-                }
-            }
-
+            int colspan = getExportableColumns(table).size();
             int rowIndex = sheet.getLastRowNum() + 1;
             Row rowHeader = sheet.createRow(rowIndex);
 

@@ -23,18 +23,24 @@
  */
 package org.primefaces.component.export;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
+
 import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+
+import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.UITable;
+import org.primefaces.model.ColumnMeta;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 
 public abstract class TableExporter<T extends UIComponent & UITable> extends Exporter<T> {
+
+    private List<UIColumn> exportableColumns;
 
     protected void exportColumn(FacesContext context, T table, UIColumn column, List<UIComponent> components,
             boolean joinComponents, Consumer<String> callback) {
@@ -72,5 +78,42 @@ public abstract class TableExporter<T extends UIComponent & UITable> extends Exp
                 callback.accept(sb == null ? null : sb.toString());
             }
         }
+    }
+
+    /**
+     * Gets and caches the list of UIColumns that are exportable="true" and rendered="true".
+     * Orders them by displayPriority so they match the UI display of the columns.
+     *
+     * @param table the Table with columns to export
+     * @return the List<UIColumn> that are exportable
+     */
+    protected List<UIColumn> getExportableColumns(UITable table) {
+        if (exportableColumns != null) {
+            return exportableColumns;
+        }
+
+        // sort by display priority
+        List<ColumnMeta> columnMeta = table.getColumnMeta().values().stream().
+                    sorted(Comparator.comparingInt(ColumnMeta::getDisplayPriority))
+                    .collect(Collectors.toList());
+
+        List<UIColumn> columns = table.getColumns();
+        exportableColumns = new ArrayList<>(table.getColumns().size());
+        META: for (ColumnMeta meta : columnMeta) {
+            String columnKey = meta.getColumnKey();
+            for (UIColumn col : columns) {
+                if (col instanceof DynamicColumn) {
+                    ((DynamicColumn) col).applyStatelessModel();
+                }
+                if (col.getColumnKey().equals(columnKey)) {
+                    if (col.isRendered() && col.isExportable()) {
+                        exportableColumns.add(col);
+                    }
+                    continue META;
+                }
+            }
+        }
+
+        return exportableColumns;
     }
 }
