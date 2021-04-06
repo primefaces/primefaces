@@ -47,7 +47,7 @@ PrimeFaces.widget.BreadCrumb = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Get Y position of the provided HTML node.
-     * @param {HTMLElement} to get the Y position of.
+     * @param {HTMLElement} node to get the Y position of.
      * @returns {number} Y position.
      */
     getY: function(node) {
