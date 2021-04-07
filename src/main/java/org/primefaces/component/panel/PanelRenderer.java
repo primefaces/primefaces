@@ -157,8 +157,9 @@ public class PanelRenderer extends CoreRenderer {
         UIComponent header = panel.getFacet("header");
         String headerText = panel.getHeader();
         String clientId = panel.getClientId(context);
+        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(header, panel.isRenderEmptyFacets());
 
-        if (headerText == null && header == null) {
+        if (headerText == null && !shouldRenderFacet && !panel.isRenderEmptyFacets()) {
             return;
         }
 
@@ -170,7 +171,7 @@ public class PanelRenderer extends CoreRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", Panel.PANEL_TITLE_CLASS, null);
 
-        if (ComponentUtils.shouldRenderFacet(header)) {
+        if (shouldRenderFacet) {
             renderChild(context, header);
         }
         else if (headerText != null) {
@@ -224,21 +225,24 @@ public class PanelRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent footer = panel.getFacet("footer");
         String footerText = panel.getFooter();
+        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(footer, panel.isRenderEmptyFacets());
 
-        if (footerText != null || ComponentUtils.shouldRenderFacet(footer)) {
-            writer.startElement("div", null);
-            writer.writeAttribute("id", panel.getClientId(context) + "_footer", null);
-            writer.writeAttribute("class", Panel.PANEL_FOOTER_CLASS, null);
-
-            if (footer != null) {
-                renderChild(context, footer);
-            }
-            else if (footerText != null) {
-                writer.writeText(footerText, null);
-            }
-
-            writer.endElement("div");
+        if (footerText == null && !shouldRenderFacet && !panel.isRenderEmptyFacets()) {
+            return;
         }
+
+        writer.startElement("div", null);
+        writer.writeAttribute("id", panel.getClientId(context) + "_footer", null);
+        writer.writeAttribute("class", Panel.PANEL_FOOTER_CLASS, null);
+
+        if (shouldRenderFacet) {
+            renderChild(context, footer);
+        }
+        else if (footerText != null) {
+            writer.writeText(footerText, null);
+        }
+
+        writer.endElement("div");
     }
 
     protected void encodeIcon(FacesContext context, Panel panel, String iconClass, String id, String title, String ariaLabel) throws IOException {
