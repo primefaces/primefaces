@@ -18978,6 +18978,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Render facets even if their children are not rendered. Default is false.]]>
+            </description>
+            <name>renderEmptyFacets</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Defines the orientation of the toggle animation, valid values are "vertical" and "horizontal".]]>
             </description>
             <name>toggleOrientation</name>
