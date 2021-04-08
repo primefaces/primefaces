@@ -27,7 +27,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
+
 import org.primefaces.component.api.Widget;
+import org.primefaces.util.ComponentUtils;
 
 public class WidgetVarVisitCallback implements VisitCallback {
 
@@ -45,7 +47,7 @@ public class WidgetVarVisitCallback implements VisitCallback {
     public VisitResult visit(VisitContext context, UIComponent target) {
 
         if (target instanceof Widget) {
-            if (widgetVar.equalsIgnoreCase(((Widget) target).resolveWidgetVar(context.getFacesContext()))) {
+            if (widgetVar.equalsIgnoreCase(ComponentUtils.resolveWidgetVar(((Widget) target), context.getFacesContext()))) {
                 component = target;
                 return VisitResult.COMPLETE;
             }

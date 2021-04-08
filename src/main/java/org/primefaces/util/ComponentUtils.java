@@ -30,6 +30,7 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -432,31 +433,23 @@ public class ComponentUtils {
     /**
      * Checks if the facet and one of the first level children is rendered.
      * @param facet The Facet component to check
-     * @param ignoreChildren flag to ignore children and only check the facet itself
      * @return true if the facet should be rendered, false if not
      */
-    public static boolean shouldRenderFacet(UIComponent facet, boolean ignoreChildren) {
+    public static boolean shouldRenderFacet(UIComponent facet) {
         if (facet == null || !facet.isRendered()) {
             // For any future version of JSF where the f:facet gets a rendered attribute (https://github.com/javaserverfaces/mojarra/issues/4299)
             // or there is only 1 child.
             return false;
         }
 
+        boolean renderEmptyFacet = facet instanceof Widget && ((Widget) facet).isRenderEmptyFacets();
+
         // Facet has no child but is rendered
-        if (ignoreChildren || facet.getChildCount() == 0) {
+        if (renderEmptyFacet || facet.getChildCount() == 0) {
             return true;
         }
 
         return shouldRenderChildren(facet);
-    }
-
-    /**
-     * Checks if the facet and one of the first level children is rendered.
-     * @param facet The Facet component to check
-     * @return true when facet and one of the first level children is rendered.
-     */
-    public static boolean shouldRenderFacet(UIComponent facet) {
-        return shouldRenderFacet(facet, false);
     }
 
     /**
@@ -538,6 +531,22 @@ public class ComponentUtils {
         }
 
         return false;
+    }
+
+    public static String resolveWidgetVar(Widget component, FacesContext context) {
+        String userWidgetVar = component.getWidgetVar();
+        if (LangUtils.isNotBlank(userWidgetVar)) {
+            return userWidgetVar;
+        }
+
+        Pattern pattern = (Pattern) context.getAttributes().get(Widget.ATTR_WIDGET_VAR_PATTERN);
+        if (pattern == null) {
+            pattern = Pattern.compile("-|" + UINamingContainer.getSeparatorChar(context));
+            context.getAttributes().put(Widget.ATTR_WIDGET_VAR_PATTERN, pattern);
+        }
+
+        String widgetVar = "widget_" + component.getClientId(context);
+        return pattern.matcher(widgetVar).replaceAll("_");
     }
 
     public static ViewPoolingResetMode isViewPooling(FacesContext context) {

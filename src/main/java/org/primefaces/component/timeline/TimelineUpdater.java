@@ -30,6 +30,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.model.timeline.TimelineEvent;
+import org.primefaces.util.ComponentUtils;
 
 public abstract class TimelineUpdater {
 
@@ -59,7 +60,7 @@ public abstract class TimelineUpdater {
             throw new FacesException("Timeline component with Id " + id + " was not found");
         }
 
-        TimelineUpdater timelineUpdater = map.get(((Timeline) timeline).resolveWidgetVar(context));
+        TimelineUpdater timelineUpdater = map.get(ComponentUtils.resolveWidgetVar(((Timeline) timeline), context));
         if (timelineUpdater != null) {
             timelineUpdater.id = id;
         }

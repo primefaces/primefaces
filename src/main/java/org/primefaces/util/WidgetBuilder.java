@@ -73,7 +73,7 @@ public class WidgetBuilder {
     public <T extends UIComponent & Widget> WidgetBuilder init(String widgetClass, T widget)
             throws IOException {
 
-        return init(widgetClass, widget.resolveWidgetVar(context), widget.getClientId(context))
+        return init(widgetClass, ComponentUtils.resolveWidgetVar(widget, context), widget.getClientId(context))
                 .renderLifecycleCallbacks(widget);
     }
 
@@ -102,7 +102,7 @@ public class WidgetBuilder {
     public <T extends UIComponent & Widget> WidgetBuilder initWithWindowLoad(String widgetClass, T widget)
             throws IOException {
 
-        return initWithWindowLoad(widgetClass, widget.resolveWidgetVar(context), widget.getClientId(context))
+        return initWithWindowLoad(widgetClass, ComponentUtils.resolveWidgetVar(widget, context), widget.getClientId(context))
                 .renderLifecycleCallbacks(widget);
     }
 
@@ -119,7 +119,7 @@ public class WidgetBuilder {
     public <T extends UIComponent & Widget> WidgetBuilder initWithComponentLoad(String widgetClass, T widget, String targetId)
             throws IOException {
 
-        return initWithComponentLoad(widgetClass, widget.resolveWidgetVar(context), widget.getClientId(context), targetId)
+        return initWithComponentLoad(widgetClass, ComponentUtils.resolveWidgetVar(widget, context), widget.getClientId(context), targetId)
                 .renderLifecycleCallbacks(widget);
     }
 

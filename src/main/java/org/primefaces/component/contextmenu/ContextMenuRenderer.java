@@ -52,7 +52,7 @@ public class ContextMenuRenderer extends TieredMenuRenderer {
             wb.attr("target", target.getClientId(context));
 
             if (target instanceof Widget) {
-                wb.attr("targetWidgetVar", ((Widget) target).resolveWidgetVar(context));
+                wb.attr("targetWidgetVar", ComponentUtils.resolveWidgetVar(((Widget) target), context));
             }
         }
 

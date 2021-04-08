@@ -34,10 +34,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.UINotificationRenderer;
-import org.primefaces.util.Constants;
-import org.primefaces.util.EscapeUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.*;
 
 public class GrowlRenderer extends UINotificationRenderer {
 
@@ -46,7 +43,7 @@ public class GrowlRenderer extends UINotificationRenderer {
         ResponseWriter writer = context.getResponseWriter();
         Growl growl = (Growl) component;
         String clientId = growl.getClientId(context);
-        String widgetVar = growl.resolveWidgetVar(context);
+        String widgetVar = ComponentUtils.resolveWidgetVar(growl, context);
 
         writer.startElement("span", growl);
         writer.writeAttribute("id", clientId, "id");

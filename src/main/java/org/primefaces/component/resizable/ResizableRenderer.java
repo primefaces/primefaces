@@ -32,6 +32,7 @@ import javax.faces.context.FacesContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class ResizableRenderer extends CoreRenderer {
@@ -53,7 +54,7 @@ public class ResizableRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
 
         if (target instanceof UIGraphic) {
-            wb.initWithComponentLoad("Resizable", resizable.resolveWidgetVar(context), clientId, targetId);
+            wb.initWithComponentLoad("Resizable", ComponentUtils.resolveWidgetVar(resizable, context), clientId, targetId);
         }
         else {
             wb.init("Resizable", resizable);

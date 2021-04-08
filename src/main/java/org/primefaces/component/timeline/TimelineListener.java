@@ -24,6 +24,8 @@
 package org.primefaces.component.timeline;
 
 
+import org.primefaces.util.ComponentUtils;
+
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PhaseListener;
@@ -37,7 +39,7 @@ public class TimelineListener implements SystemEventListener {
 
         FacesContext context = FacesContext.getCurrentInstance();
         Timeline timeline = (Timeline) cse.getSource();
-        String widgetVar = timeline.resolveWidgetVar(context);
+        String widgetVar = ComponentUtils.resolveWidgetVar(timeline, context);
 
         boolean alreadyRegistred = false;
         for (PhaseListener listener : context.getViewRoot().getPhaseListeners()) {

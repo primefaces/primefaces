@@ -38,10 +38,7 @@ public abstract class AccordionPanelBase extends UITabPanel implements Widget, R
 
     public enum PropertyKeys {
 
-        widgetVar,
         activeIndex,
-        style,
-        styleClass,
         onTabChange,
         onTabShow,
         onTabClose,
@@ -61,36 +58,12 @@ public abstract class AccordionPanelBase extends UITabPanel implements Widget, R
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
     public String getActiveIndex() {
         return (String) getStateHelper().eval(PropertyKeys.activeIndex, "0");
     }
 
     public void setActiveIndex(String activeIndex) {
         getStateHelper().put(PropertyKeys.activeIndex, activeIndex);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
     public String getOnTabChange() {

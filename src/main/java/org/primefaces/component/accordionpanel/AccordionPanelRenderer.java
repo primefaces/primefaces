@@ -94,7 +94,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, AccordionPanel acco) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = acco.getClientId(context);
-        String widgetVar = acco.resolveWidgetVar(context);
+        String widgetVar = ComponentUtils.resolveWidgetVar(acco, context);
         String styleClass = acco.getStyleClass();
         styleClass = styleClass == null ? AccordionPanel.CONTAINER_CLASS : AccordionPanel.CONTAINER_CLASS + " " + styleClass;
 

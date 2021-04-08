@@ -123,7 +123,7 @@ public class TabViewRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, TabView tabView) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = tabView.getClientId(context);
-        String widgetVar = tabView.resolveWidgetVar(context);
+        String widgetVar = ComponentUtils.resolveWidgetVar(tabView, context);
         String orientation = tabView.getOrientation();
         String styleClass = tabView.getStyleClass();
         String defaultStyleClass = TabView.CONTAINER_CLASS + " ui-tabs-" + orientation;

@@ -50,7 +50,7 @@ public class WidgetBuilderTest {
         FacesContext context = new FacesContextMock(writer);
 
         Panel panel = mock(Panel.class);
-        when(panel.resolveWidgetVar(context)).thenReturn("acco");
+        when(ComponentUtils.resolveWidgetVar(panel, context)).thenReturn("acco");
         when(panel.getClientId(context)).thenReturn("accoId");
 
         WidgetBuilder builder= getWidgetBuilder(context);
@@ -72,7 +72,7 @@ public class WidgetBuilderTest {
         WidgetBuilder builder = new WidgetBuilder(context, config);
 
         Panel panel = mock(Panel.class);
-        when(panel.resolveWidgetVar(context)).thenReturn("acco");
+        when(ComponentUtils.resolveWidgetVar(panel, context)).thenReturn("acco");
         when(panel.getClientId(context)).thenReturn("accoId");
         builder.init("AccordionPanel", panel);
         builder.finish();
@@ -116,7 +116,7 @@ public class WidgetBuilderTest {
         FacesContext context = new FacesContextMock(writer);
 
         Panel table = mock(Panel.class);
-        when(table.resolveWidgetVar(context)).thenReturn("dt");
+        when(ComponentUtils.resolveWidgetVar(table, context)).thenReturn("dt");
         when(table.getClientId(context)).thenReturn("dt1");
 
         WidgetBuilder builder = getWidgetBuilder(context);
@@ -138,7 +138,7 @@ public class WidgetBuilderTest {
         FacesContext context = new FacesContextMock(writer);
 
         Panel table = mock(Panel.class);
-        when(table.resolveWidgetVar(context)).thenReturn("dt");
+        when(ComponentUtils.resolveWidgetVar(table, context)).thenReturn("dt");
         when(table.getClientId(context)).thenReturn("dt1");
 
         WidgetBuilder builder = getWidgetBuilder(context);
@@ -163,7 +163,7 @@ public class WidgetBuilderTest {
         WidgetBuilder builder = new WidgetBuilder(context, config);
 
         Panel panel = mock(Panel.class);
-        when(panel.resolveWidgetVar(context)).thenReturn("myComponent");
+        when(ComponentUtils.resolveWidgetVar(panel, context)).thenReturn("myComponent");
         when(panel.getClientId(context)).thenReturn("myComponent1");
 
         builder.init("MyComponent", panel);
@@ -188,7 +188,7 @@ public class WidgetBuilderTest {
         WidgetBuilder builder = new WidgetBuilder(context, config);
 
         Panel panel = mock(Panel.class);
-        when(panel.resolveWidgetVar(context)).thenReturn("myComponent");
+        when(ComponentUtils.resolveWidgetVar(panel, context)).thenReturn("myComponent");
         when(panel.getClientId(context)).thenReturn("myComponent1");
 
         builder.init("MyComponent", panel);

@@ -36,6 +36,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.behavior.ajax.AjaxBehavior;
 import org.primefaces.model.map.*;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.WidgetBuilder;
 
@@ -71,7 +72,7 @@ public class GMapRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, GMap map) throws IOException {
-        String widgetVar = map.resolveWidgetVar(context);
+        String widgetVar = ComponentUtils.resolveWidgetVar(map, context);
         GMapInfoWindow infoWindow = map.getInfoWindow();
 
 

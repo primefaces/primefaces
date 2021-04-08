@@ -30,6 +30,7 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 import org.primefaces.component.api.Widget;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 
 public class DialogActionListener implements ActionListener {
@@ -46,7 +47,7 @@ public class DialogActionListener implements ActionListener {
         // don't use event#getFacesContext() - it's only available in JSF 2.3
         Map<Object, Object> attrs = FacesContext.getCurrentInstance().getAttributes();
         if (source instanceof Widget) {
-            attrs.put(Constants.DialogFramework.SOURCE_WIDGET, ((Widget) source).resolveWidgetVar());
+            attrs.put(Constants.DialogFramework.SOURCE_WIDGET, ComponentUtils.resolveWidgetVar(((Widget) source), FacesContext.getCurrentInstance()));
         }
 
         attrs.put(Constants.DialogFramework.SOURCE_COMPONENT, source.getClientId());

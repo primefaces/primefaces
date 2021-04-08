@@ -98,7 +98,7 @@ public class PanelRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, Panel panel, Menu optionsMenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = panel.getClientId(context);
-        String widgetVar = panel.resolveWidgetVar(context);
+        String widgetVar = ComponentUtils.resolveWidgetVar(panel, context);
         boolean collapsed = panel.isCollapsed();
         boolean visible = panel.isVisible();
 

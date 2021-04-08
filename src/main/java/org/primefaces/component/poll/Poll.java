@@ -29,6 +29,7 @@ import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.util.ComponentUtils;
 
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
@@ -53,7 +54,7 @@ public class Poll extends PollBase {
             Boolean stop = (Boolean) expr.getValue(facesContext.getELContext());
 
             if (Boolean.TRUE.equals(stop)) {
-                String widgetVar = resolveWidgetVar();
+                String widgetVar = ComponentUtils.resolveWidgetVar(this, FacesContext.getCurrentInstance());
                 PrimeFaces.current().executeScript("PF('" + widgetVar + "').stop();");
             }
         }

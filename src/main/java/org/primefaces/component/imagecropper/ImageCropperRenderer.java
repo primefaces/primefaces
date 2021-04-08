@@ -71,7 +71,7 @@ public class ImageCropperRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, ImageCropper cropper) throws IOException {
-        String widgetVar = cropper.resolveWidgetVar(context);
+        String widgetVar = ComponentUtils.resolveWidgetVar(cropper, context);
         String clientId = cropper.getClientId(context);
         String image = clientId + "_image";
         String select = null;

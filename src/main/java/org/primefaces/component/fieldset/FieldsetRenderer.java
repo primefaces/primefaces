@@ -67,7 +67,7 @@ public class FieldsetRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, Fieldset fieldset) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = fieldset.getClientId(context);
-        String widgetVar = fieldset.resolveWidgetVar(context);
+        String widgetVar = ComponentUtils.resolveWidgetVar(fieldset, context);
         boolean toggleable = fieldset.isToggleable();
         String title = fieldset.getTitle();
 

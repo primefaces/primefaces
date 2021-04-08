@@ -23,40 +23,63 @@
  */
 package org.primefaces.component.api;
 
-import java.util.regex.Pattern;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.context.FacesContext;
-import org.primefaces.util.LangUtils;
+import org.primefaces.util.ComponentUtils;
 
-public interface Widget {
+import javax.faces.context.FacesContext;
+
+public interface Widget extends PrimeUIComponent {
 
     String CALLBACK_POST_CONSTRUCT = "widgetPostConstruct";
     String CALLBACK_POST_REFRESH = "widgetPostRefresh";
     String CALLBACK_PRE_DESTROY = "widgetPreDestroy";
-
     String ATTR_WIDGET_VAR_PATTERN = Widget.class.getName() + ".ATTR_WIDGET_VAR_PATTERN";
 
-    // backwards compatibility
-    default String resolveWidgetVar() {
-        return resolveWidgetVar(FacesContext.getCurrentInstance());
+    enum PropertyKeys {
+        widgetVar,
+        style,
+        styleClass,
+        renderEmptyFacets;
     }
 
+    default String getWidgetVar() {
+        return (String) getState().eval(PropertyKeys.widgetVar, null);
+    }
+
+    default void setWidgetVar(String widgetVar) {
+        getState().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+    default String getStyle() {
+        return (String) getState().eval(PropertyKeys.style, null);
+    }
+
+    default void setStyle(String style) {
+        getState().put(PropertyKeys.style, style);
+    }
+
+    default String getStyleClass() {
+        return (String) getState().eval(PropertyKeys.styleClass, null);
+    }
+
+    default void setStyleClass(String styleClass) {
+        getState().put(PropertyKeys.styleClass, styleClass);
+    }
+
+    default boolean isRenderEmptyFacets() {
+        return (Boolean) getState().eval(PropertyKeys.renderEmptyFacets, false);
+    }
+
+    default void setRenderEmptyFacets(boolean renderEmptyFacets) {
+        getState().put(PropertyKeys.renderEmptyFacets, renderEmptyFacets);
+    }
+
+    @Deprecated
+    default String resolveWidgetVar() {
+        return ComponentUtils.resolveWidgetVar(this, FacesContext.getCurrentInstance());
+    }
+
+    @Deprecated
     default String resolveWidgetVar(FacesContext context) {
-        UIComponent component = (UIComponent) this;
-
-        String userWidgetVar = (String) component.getAttributes().get("widgetVar");
-        if (LangUtils.isNotBlank(userWidgetVar)) {
-            return userWidgetVar;
-        }
-
-        Pattern pattern = (Pattern) context.getAttributes().get(ATTR_WIDGET_VAR_PATTERN);
-        if (pattern == null) {
-            pattern = Pattern.compile("-|" + UINamingContainer.getSeparatorChar(context));
-            context.getAttributes().put(ATTR_WIDGET_VAR_PATTERN, pattern);
-        }
-
-        String widgetVar = "widget_" + component.getClientId(context);
-        return pattern.matcher(widgetVar).replaceAll("_");
+        return ComponentUtils.resolveWidgetVar(this, context);
     }
 }

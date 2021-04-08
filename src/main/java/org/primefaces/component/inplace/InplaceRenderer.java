@@ -50,7 +50,7 @@ public class InplaceRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, Inplace inplace) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = inplace.getClientId(context);
-        String widgetVar = inplace.resolveWidgetVar(context);
+        String widgetVar = ComponentUtils.resolveWidgetVar(inplace, context);
 
         String userStyleClass = inplace.getStyleClass();
         String userStyle = inplace.getStyle();
