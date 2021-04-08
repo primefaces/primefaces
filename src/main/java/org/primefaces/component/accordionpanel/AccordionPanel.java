@@ -193,9 +193,4 @@ public class AccordionPanel extends AccordionPanelBase {
             }
         }
     }
-
-    @Override
-    public StateHelper getState() {
-        return getStateHelper();
-    }
 }

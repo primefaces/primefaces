@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.accordionpanel;
 
+import javax.faces.component.StateHelper;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
@@ -128,5 +129,10 @@ public abstract class AccordionPanelBase extends UITabPanel implements Widget, R
 
     public void setTabController(javax.el.MethodExpression tabController) {
         getStateHelper().put(PropertyKeys.tabController, tabController);
+    }
+
+    @Override
+    public StateHelper getState() {
+        return getStateHelper();
     }
 }
