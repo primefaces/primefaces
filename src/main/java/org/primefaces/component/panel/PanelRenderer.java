@@ -159,7 +159,7 @@ public class PanelRenderer extends CoreRenderer {
         String clientId = panel.getClientId(context);
         boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(header, panel.isRenderEmptyFacets());
 
-        if (headerText == null && !shouldRenderFacet && !panel.isRenderEmptyFacets()) {
+        if (headerText == null && !shouldRenderFacet) {
             return;
         }
 
@@ -174,7 +174,7 @@ public class PanelRenderer extends CoreRenderer {
         if (shouldRenderFacet) {
             renderChild(context, header);
         }
-        else if (headerText != null) {
+        else {
             writer.writeText(headerText, null);
         }
 
@@ -227,7 +227,7 @@ public class PanelRenderer extends CoreRenderer {
         String footerText = panel.getFooter();
         boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(footer, panel.isRenderEmptyFacets());
 
-        if (footerText == null && !shouldRenderFacet && !panel.isRenderEmptyFacets()) {
+        if (footerText == null && !shouldRenderFacet) {
             return;
         }
 
@@ -238,7 +238,7 @@ public class PanelRenderer extends CoreRenderer {
         if (shouldRenderFacet) {
             renderChild(context, footer);
         }
-        else if (footerText != null) {
+        else {
             writer.writeText(footerText, null);
         }
 
