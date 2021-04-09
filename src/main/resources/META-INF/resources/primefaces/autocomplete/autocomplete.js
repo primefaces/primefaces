@@ -512,15 +512,16 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
                     case keyCode.ENTER:
                         var itemValue = $(this).val();
+                        var valid = true;
                         if($this.cfg.queryEvent === 'enter' || ($this.timeout > 0) || $this.querying) {
                             e.preventDefault();
                         }
 
                         if($this.cfg.queryEvent !== 'enter') {
-                            $this.isValid(itemValue, true);
+                            valid = $this.isValid(itemValue, true);
                         }
 
-                        if($this.cfg.multiple && itemValue) {
+                        if($this.cfg.multiple && itemValue && valid) {
                             $this.addItem(itemValue);
                             e.preventDefault();
                             e.stopPropagation();
