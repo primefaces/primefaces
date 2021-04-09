@@ -762,16 +762,19 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
             //highlight query string
             if(this.panel.children().is('ul') && query.length > 0) {
-                var queryParts = query.trim().replaceAll(/(\s+)/g, ' ').split(' ');
-                for(var i = 0; i < queryParts.length; i++) {
-                    queryParts[i] = PrimeFaces.escapeRegExp(queryParts[i]);
+                var cleanedQuery = query.trim().replaceAll(/(\s+)/g, ' ');
+                if (cleanedQuery.length > 0) {
+                    var queryParts = cleanedQuery.split(' ');
+                    for(var i = 0; i < queryParts.length; i++) {
+                        queryParts[i] = PrimeFaces.escapeRegExp(queryParts[i]);
+                    }
+                    var re = new RegExp('(' + queryParts.join('|') + ')', 'gi');
+                    this.items.filter(':not(.ui-autocomplete-moretext)').each(function() {
+                        var item = $(this);
+                        var text = $this.cfg.escape ? item.html() : item.text();
+                        item.html(text.replace(re, '<span class="ui-autocomplete-query">$&</span>'));
+                    });
                 }
-                var re = new RegExp('(' + queryParts.join('|') + ')', 'gi');
-                this.items.filter(':not(.ui-autocomplete-moretext)').each(function() {
-                    var item = $(this);
-                    var text = $this.cfg.escape ? item.html() : item.text();
-                    item.html(text.replace(re, '<span class="ui-autocomplete-query">$&</span>'));
-                });
             }
 
             if(this.cfg.forceSelection) {
