@@ -26,6 +26,7 @@ package org.primefaces.component.datatable.export;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
@@ -46,10 +47,7 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExcelOptions;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.ExporterOptions;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
-
+import org.primefaces.util.*;
 
 public class DataTableExcelExporter extends DataTableExporter {
 
@@ -59,7 +57,9 @@ public class DataTableExcelExporter extends DataTableExporter {
     private CellStyle cellStyleCenterAlign;
     private CellStyle cellStyleLeftAlign;
     private CellStyle facetStyle;
+    private CellStyle currencyStyle;
     private boolean stronglyTypedCells;
+    private Locale locale;
 
     @Override
     protected void preExport(FacesContext context, ExportConfiguration exportConfiguration) throws IOException {
@@ -88,6 +88,9 @@ public class DataTableExcelExporter extends DataTableExporter {
         }
         else {
             stronglyTypedCells = options.isStronglyTypedCells();
+        }
+        if (stronglyTypedCells) {
+            locale = LocaleUtils.getCurrentLocale(context);
         }
         Sheet sheet = createSheet(wb, sheetName, options);
         applyOptions(wb, table, sheet, options);
@@ -339,17 +342,37 @@ public class DataTableExcelExporter extends DataTableExporter {
     }
 
     /**
-     * If ExcelOptions.isStronglyTypedCells = true then for cells that are all numbers make them a numeric cell
-     * instead of a String cell.  Possible future enhancement of Date cells as well.
+     * If ExcelOptions.isStronglyTypedCells = true then for cells check:
+     * <pre>
+     * Numeric - String that are all numbers make them a numeric cell
+     * Currency - Convert to currency cell so math can be done in Excel
+     * String - fallback to just a normal string cell
+     * </pre>
+     * Possible future enhancement of Date cells as well.
      *
      * @param cell the cell to operate on
      * @param value the String value to put in the cell
      */
     protected void updateCell(Cell cell, String value) {
-        if (stronglyTypedCells && LangUtils.isNumeric(value)) {
-            cell.setCellValue(Double.parseDouble(value));
+        boolean printed = false;
+        if (stronglyTypedCells) {
+            if (LangUtils.isNumeric(value)) {
+                cell.setCellValue(Double.parseDouble(value));
+                printed = true;
+            }
+
+            if (!printed) {
+                Number currency = CurrencyValidator.getInstance().validate(value, locale);
+                if (currency != null) {
+                    cell.setCellValue(currency.doubleValue());
+                    cell.setCellStyle(currencyStyle);
+                    printed = true;
+                }
+            }
         }
-        else {
+
+        // fall back to just printing the string value
+        if (!printed) {
             cell.setCellValue(createRichTextString(value));
         }
     }
@@ -432,6 +455,16 @@ public class DataTableExcelExporter extends DataTableExporter {
         cellStyleRightAlign.setAlignment(HorizontalAlignment.RIGHT);
         applyCellOptions(wb, options, cellStyleRightAlign);
 
+        if (stronglyTypedCells) {
+            currencyStyle = wb.createCellStyle();
+            currencyStyle.setFont(font);
+            currencyStyle.setAlignment(HorizontalAlignment.RIGHT);
+            String pattern = CurrencyValidator.getInstance().getPattern(locale);
+            short currencyPattern = wb.getCreationHelper().createDataFormat().getFormat(pattern);
+            currencyStyle.setDataFormat(currencyPattern);
+            applyCellOptions(wb, options, currencyStyle);
+        }
+
         PrintSetup printSetup = sheet.getPrintSetup();
         printSetup.setLandscape(true);
         printSetup.setPaperSize(PrintSetup.A4_PAPERSIZE);
@@ -511,6 +544,10 @@ public class DataTableExcelExporter extends DataTableExporter {
     }
 
     protected Cell applyColumnAlignments(UIColumn column, Cell cell) {
+        if (cell.getCellStyle() != null) {
+            // don't apply style if cell already has one
+            return cell;
+        }
         String[] styles = new String[] {column.getStyle(), column.getStyleClass()};
         if (LangUtils.containsIgnoreCase(styles, "right")) {
             cell.setCellStyle(cellStyleRightAlign);
