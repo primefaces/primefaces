@@ -37,10 +37,12 @@ import java.time.temporal.Temporal;
 import java.util.*;
 
 import javax.el.ELContext;
+import javax.faces.FacesException;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.primefaces.component.datepicker.DatePicker;
@@ -221,6 +223,10 @@ public class CalendarUtilsTest {
         assertTrue(splitRange.isEmpty());
         splitRange = CalendarUtils.splitRange("", "yyyy-MM-dd", "-");
         assertTrue(splitRange.isEmpty());
+
+        Assertions.assertThrows(FacesException.class, () -> {
+            CalendarUtils.splitRange("2021 - 03 - 01 - 2021 - 03 - 31", "yyyy - MM - dd", "-");
+        });
     }
 
 }
