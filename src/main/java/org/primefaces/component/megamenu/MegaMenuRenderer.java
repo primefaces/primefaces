@@ -209,7 +209,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         }
 
         if (column.getElementsCount() > 0) {
-            List columnElements = column.getElements();
+            List<MenuElement> columnElements = column.getElements();
             for (Object element : columnElements) {
                 if (element instanceof MenuElement) {
                     if (((MenuElement) element).isRendered()) {
