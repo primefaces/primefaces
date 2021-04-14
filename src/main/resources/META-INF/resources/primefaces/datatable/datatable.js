@@ -4417,6 +4417,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
             }
         });
+
+        // GitHub #5013 Frozen Columns should not be draggable/droppable
+        if($this.cfg.frozenColumns) {
+            var frozenHeaders = this.frozenThead.find('.ui-frozen-column');
+            frozenHeaders.draggable('disable');
+            frozenHeaders.droppable('disable');
+            frozenHeaders.disableSelection();
+        }
     },
 
     /**
