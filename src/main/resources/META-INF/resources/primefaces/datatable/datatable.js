@@ -2402,7 +2402,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @param {JQuery.TriggeredEvent} event Event that occurred.
      * @param {JQuery} rowElement Row that was clicked.
      * @param {PrimeFaces.widget.DataTable.CmSelectionMode} cmSelMode The current selection mode.
-     * @param {function} fnShowMenu callback to open menu.
+     * @param {() => void} [fnShowMenu] Optional callback function invoked when the menu was opened.
      */
     onRowRightClick: function(event, rowElement, cmSelMode, fnShowMenu) {
         var row = $(rowElement),
@@ -2584,7 +2584,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      * @param {string} rowKey The key of the row that was selected.
      * @param {string} behaviorEvent Name of the event to fire.
-     * @param {function} fnShowMenu Callback to open context menu.
+     * @param {() => void} [fnShowMenu] Optional callback function invoked when the menu was opened.
      */
     fireRowSelectEvent: function(rowKey, behaviorEvent, fnShowMenu) {
         if(this.hasBehavior(behaviorEvent)) {
