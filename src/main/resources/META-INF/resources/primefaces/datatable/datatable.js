@@ -1229,9 +1229,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var row = $(this);
 
             if(targetWidget.cfg.selectionMode && row.hasClass('ui-datatable-selectable')) {
-                targetWidget.onRowRightClick(e, this, cfg.selectionMode);
+                var isContextMenuDelayed = targetWidget.onRowRightClick(e, this, cfg.selectionMode, function() {
+                    menuWidget.show(e);
+                });
                 targetWidget.updateContextMenuCell(e, targetWidget);
-                menuWidget.show(e);
+
+                if(isContextMenuDelayed) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
             }
             else if(targetWidget.cfg.editMode === 'cell') {
                 targetWidget.updateContextMenuCell(e, targetWidget);
@@ -2396,8 +2402,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @param {JQuery.TriggeredEvent} event Event that occurred.
      * @param {JQuery} rowElement Row that was clicked.
      * @param {PrimeFaces.widget.DataTable.CmSelectionMode} cmSelMode The current selection mode.
+     * @param {function} fnShowMenu callback to open menu.
      */
-    onRowRightClick: function(event, rowElement, cmSelMode) {
+    onRowRightClick: function(event, rowElement, cmSelMode, fnShowMenu) {
         var row = $(rowElement),
         rowMeta = this.getRowMeta(row),
         selected = row.hasClass('ui-state-highlight');
@@ -2410,7 +2417,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         this.selectRow(row, true);
 
-        this.fireRowSelectEvent(rowMeta.key, 'contextMenu');
+        this.fireRowSelectEvent(rowMeta.key, 'contextMenu', fnShowMenu);
 
         if(this.cfg.disabledTextSelection) {
             PrimeFaces.clearSelection();
@@ -2577,12 +2584,18 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      * @param {string} rowKey The key of the row that was selected.
      * @param {string} behaviorEvent Name of the event to fire.
+     * @param {function} fnShowMenu Callback to open context menu.
      */
-    fireRowSelectEvent: function(rowKey, behaviorEvent) {
+    fireRowSelectEvent: function(rowKey, behaviorEvent, fnShowMenu) {
         if(this.hasBehavior(behaviorEvent)) {
             var ext = {
                     params: [{name: this.id + '_instantSelectedRowKey', value: rowKey}
-                ]
+                ],
+                oncomplete: function() {
+                    if(typeof fnShowMenu === "function") {
+                        fnShowMenu();
+                    }
+                }
             };
 
             this.callBehavior(behaviorEvent, ext);
