@@ -1,26 +1,26 @@
 /**
  * __PrimeFaces AutoComplete Widget__
- * 
+ *
  * AutoComplete provides live suggestions while the user is entering text
- * 
+ *
  * @typedef {"blank" | "current"} PrimeFaces.widget.AutoComplete.DropdownMode Specifies the behavior of the dropdown
  * button.
  * - `blank`: Sends an empty string.
  * - `current`: Send the input value.
- * 
+ *
  * @typedef {"keyup" | "enter"} PrimeFaces.widget.AutoComplete.QueryEvent  Event to initiate the autocomplete search.
  * - `enter`: Starts the search for suggestion items when the enter key is pressed.
  * - `keyup`: Starts the search for suggestion items as soon as a key is released.
- * 
+ *
  * @typedef {"server" | "client" | "hybrid"} PrimeFaces.widget.AutoComplete.QueryMode Specifies whether filter requests
  * are evaluated by the client's browser or whether they are sent to the server.
- * 
+ *
  * @typedef PrimeFaces.widget.AutoComplete.OnChangeCallback Client side callback to invoke when value changes.
  * @param {JQuery} PrimeFaces.widget.AutoComplete.OnChangeCallback.input (Input) element on which the change occurred.
- * 
+ *
  * @prop {boolean} active Whether the autocomplete is active.
  * @prop {Record<string, string>} [cache] The cache for the results of an autocomplete search.
- * @prop {number} [cacheTimeout] The set-interval timer ID for the cache timeout. 
+ * @prop {number} [cacheTimeout] The set-interval timer ID for the cache timeout.
  * @prop {JQuery} dropdown The DOM element for the container with the dropdown suggestions.
  * @prop {PrimeFaces.UnbindCallback} [hideOverlayHandler] Unbind callback for the hide overlay handler.
  * @prop {JQuery} input The DOM element for the input element.
@@ -33,7 +33,7 @@
  * @prop {JQuery} [itemContainer] The DOM element for the container with the suggestion items.
  * @prop {boolean} [itemSelectedWithEnter] Whether an item was selected via the enter key.
  * @prop {JQuery} [multiItemContainer] The DOM element for the container with multiple selection items.
- * @prop {JQuery} panel The DOM element for the overlay panel with the suggestion items. 
+ * @prop {JQuery} panel The DOM element for the overlay panel with the suggestion items.
  * @prop {string} panelId The client ID of the overlay panel with the suggestion items.
  * @prop {PrimeFaces.UnbindCallback} [resizeHandler] Unbind callback for the resize handler.
  * @prop {PrimeFaces.UnbindCallback} [scrollHandler] Unbind callback for the scroll handler.
@@ -41,14 +41,14 @@
  * @prop {boolean} suppressInput Whether key input events should be ignored currently.
  * @prop {boolean} touchToDropdownButton Whether a touch is made on the dropdown button.
  * @prop {PrimeFaces.CssTransitionHandler | null} [transition] Handler for CSS transitions used by this widget.
- * @prop {string} wrapperStartTag The starting HTML with the wrapper element of the suggestions box.  
+ * @prop {string} wrapperStartTag The starting HTML with the wrapper element of the suggestions box.
  * @prop {string} wrapperEndTag The finishing HTML with the wrapper element of the suggestions box.
- * 
+ *
  * @interface {PrimeFaces.widget.AutoCompleteCfg} cfg The configuration for the {@link  AutoComplete| AutoComplete widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
- * 
+ *
  * @prop {boolean} cfg.active Whether autocompletion search is initially active.
  * @prop {string} cfg.appendTo ID of the container to which the suggestion box is appended.
  * @prop {string} cfg.atPos Defines which position on the target element to align the positioned element against.
@@ -81,7 +81,7 @@
  * @prop {number} cfg.scrollHeight Height of the container with the suggestion items.
  * @prop {boolean} cfg.unique Ensures uniqueness of the selected items.
  * @prop {string} cfg.completeEndpoint REST endpoint for fetching autocomplete suggestions. Takes precedence over the
- * bean command specified via `completeMethod` on the component. 
+ * bean command specified via `completeMethod` on the component.
  * @prop {string} cfg.moreText The text shown in the panel when the number of suggestions is greater than `maxResults`.
  */
 PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
@@ -123,7 +123,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.cache) {
             this.initCache();
         }
-        
+
         if (this.cfg.queryMode !== 'server') {
             this.fetchItems();
         }
@@ -131,7 +131,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
         this.hinput.data(PrimeFaces.CLIENT_ID_DATA, this.id);
-        
+
         this.placeholder = this.input.attr('placeholder');
 
         if(this.cfg.multiple) {
@@ -312,7 +312,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         if (this.resizeHandler) {
             this.resizeHandler.unbind();
         }
-    
+
         if (this.scrollHandler) {
             this.scrollHandler.unbind();
         }
@@ -530,7 +530,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
                     case keyCode.BACKSPACE:
                         if ($this.cfg.multiple && !$this.input.val().length) {
-                            
+
                             if (e.metaKey||e.ctrlKey||e.shiftKey) {
                                 $this.removeAllItems();
                             } else {
@@ -671,7 +671,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
             else {
                  $this.search(value);
-            } 
+            }
         }
         else if(value.length === 0) {
             if($this.timeout) {
@@ -731,7 +731,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Performs the search for the available suggestion items.
      * @private
-     * @param {string} query Keyword for the search. 
+     * @param {string} query Keyword for the search.
      */
     showSuggestions: function(query) {
         this.items = this.panel.find('.ui-autocomplete-item');
@@ -763,14 +763,19 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
             //highlight query string
             if(this.panel.children().is('ul') && query.length > 0) {
-                this.items.filter(':not(.ui-autocomplete-moretext)').each(function() {
-                    var item = $(this);
-                    var text = $this.cfg.escape ? item.html() : item.text();
-                    var re = new RegExp(PrimeFaces.escapeRegExp(query), 'gi'),
-                    highlighedText = text.replace(re, '<span class="ui-autocomplete-query">$&</span>');
-
-                    item.html(highlighedText);
-                });
+                var cleanedQuery = query.trim().replaceAll(/(\s+)/g, ' ');
+                if (cleanedQuery.length > 0) {
+                    var queryParts = cleanedQuery.split(' ');
+                    for(var i = 0; i < queryParts.length; i++) {
+                        queryParts[i] = PrimeFaces.escapeRegExp(queryParts[i]);
+                    }
+                    var re = new RegExp('(' + queryParts.join('|') + ')', 'gi');
+                    this.items.filter(':not(.ui-autocomplete-moretext)').each(function() {
+                        var item = $(this);
+                        var text = $this.cfg.escape ? item.html() : item.text();
+                        item.html(text.replace(re, '<span class="ui-autocomplete-query">$&</span>'));
+                    });
+                }
             }
 
             if(this.cfg.forceSelection) {
@@ -816,7 +821,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Initiates a search with given value, that is, look for matching options and present the options that were found
      * to the user.
-     * @param {string} query Keyword for the search. 
+     * @param {string} query Keyword for the search.
      */
     search: function(query) {
         //allow empty string but not undefined or null
@@ -838,15 +843,15 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         suggestions += item[1].replace(re, '');
                     });
                     suggestions += this.wrapperEndTag;
-                    
+
                     this.panel.html(suggestions);
-                    
+
                     this.isSearchWithDropdown = false;
                 }
                 else {
                     this.panel.empty();
                 }
-                
+
                 this.showSuggestions(query);
                 return;
             }
@@ -1076,7 +1081,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             itemValue = '',
             itemStyleClass = '',
             itemLabel = '';
- 
+
         if($this.input.hasClass('ui-state-disabled')) {
             return;
         }
@@ -1187,13 +1192,13 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             token.remove();
             $this.invokeItemUnselectBehavior(itemValue);
         });
-        
+
         // if empty return placeholder
         if (this.placeholder && this.hinput.children('option').length === 0) {
             this.input.attr('placeholder', this.placeholder);
         }
     },
-    
+
     /**
      * Removes all items if in multiple mode.
      */
@@ -1344,7 +1349,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Takes the available suggestion items and groups them. 
+     * Takes the available suggestion items and groups them.
      * @private
      */
     groupItems: function() {
@@ -1458,14 +1463,14 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         return valid;
     },
-    
+
     /**
      * Fetches the suggestion items for the current query from the server.
      * @private
      */
     fetchItems: function() {
         var $this = this;
-        
+
         var options = {
             source: this.id,
             process: this.id,
@@ -1487,7 +1492,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         PrimeFaces.ajax.Request.handle(options);
     },
-    
+
     /**
      * Adds the suggestions items in the given wrapper to the local cache of suggestion items.
      * @private
@@ -1507,15 +1512,15 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             key = item.data('item-key');
 
             this.cache[key] = (this.cache[key] || this.wrapperStartTag) + item.get(0).outerHTML;
-            
+
             if ((prevKey !== null && prevKey !== key) || (i === items.length - 1)) {
                 this.cache[prevKey] += $this.wrapperEndTag;
             }
-            
+
             prevKey = key;
         }
     },
-    
+
     /**
      * Finds and sets the wrapper HTML snippets on this instance.
      * @private
@@ -1547,5 +1552,5 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             this.hinput.val('');
         }
     }
-    
+
 });
