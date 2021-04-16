@@ -27,7 +27,9 @@ import org.primefaces.util.Lazy;
 import org.primefaces.util.SerializableSupplier;
 
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
+import java.util.function.Consumer;
 
 /**
  * Default implementation of a StreamedContent
@@ -35,11 +37,13 @@ import java.io.Serializable;
 public class DefaultStreamedContent implements StreamedContent, Serializable {
 
     private Lazy<InputStream> stream;
+    
     private String contentType;
     private String name;
     private String contentEncoding;
     private Integer contentLength;
-
+    private Consumer<OutputStream> outputConsumer;
+   
     public DefaultStreamedContent() {
         // NOOP
     }
@@ -72,12 +76,19 @@ public class DefaultStreamedContent implements StreamedContent, Serializable {
     public Integer getContentLength() {
         return contentLength;
     }
+    
+    @Override
+    public Consumer<OutputStream> getOutputConsumer() {
+  		return outputConsumer;
+  	}
 
     public static Builder builder() {
         return new Builder();
     }
 
-    public static final class Builder {
+  
+
+	public static final class Builder {
 
         private final DefaultStreamedContent streamedContent;
 
@@ -107,6 +118,11 @@ public class DefaultStreamedContent implements StreamedContent, Serializable {
 
         public Builder contentLength(Integer contentLength) {
             streamedContent.contentLength = contentLength;
+            return this;
+        }
+        
+        public Builder outputConsumer(Consumer<OutputStream> outputConsumer) {
+            streamedContent.outputConsumer = outputConsumer;
             return this;
         }
 

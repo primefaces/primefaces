@@ -24,17 +24,21 @@
 package org.primefaces.model;
 
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.function.Consumer;
 
 public interface StreamedContent {
 
-    String getName();
+	String getName();
 
-    InputStream getStream();
+	InputStream getStream();
 
-    String getContentType();
+	String getContentType();
 
-    String getContentEncoding();
+	String getContentEncoding();
 
-    Integer getContentLength();
+	Integer getContentLength();
+
+	Consumer<OutputStream> getOutputConsumer();
 
 }
