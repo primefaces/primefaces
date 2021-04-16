@@ -73,7 +73,7 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
         }
 
         if (PrimeFaces.current().isAjaxRequest()) {
-            ajaxDownload(context,  content);
+            ajaxDownload(context, content);
         }
         else {
             regularDownload(context, content);
@@ -83,8 +83,8 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
     protected void ajaxDownload(FacesContext context, StreamedContent content) {
         String uri = DynamicContentSrcBuilder.buildStreaming(context, value, false);
         String monitorKeyCookieName = ResourceUtils.getMonitorKeyCookieName(context, monitorKey);
-        PrimeFaces.current().executeScript(String.format("PrimeFaces.download('%s', '%s', '%s', '%s')",
-                uri, content.getContentType(), content.getName(), monitorKeyCookieName));
+        PrimeFaces.current().executeScript(
+                String.format("PrimeFaces.download('%s', '%s', '%s', '%s')", uri, content.getContentType(), content.getName(), monitorKeyCookieName));
     }
 
     protected void regularDownload(FacesContext context, StreamedContent content) {
@@ -96,9 +96,13 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
         String monitorKeyCookieName = ResourceUtils.getMonitorKeyCookieName(context, monitorKey);
 
         Map<String, Object> cookieOptions = new HashMap<>(4);
-        cookieOptions.put("path", LangUtils.isValueBlank(externalContext.getRequestContextPath())
-                ? "/"
-                : externalContext.getRequestContextPath()); // Always add cookies to context root; see #3108
+        cookieOptions.put("path", LangUtils.isValueBlank(externalContext.getRequestContextPath()) ? "/" : externalContext.getRequestContextPath()); // Always
+                                                                                                                                                    // add
+                                                                                                                                                    // cookies
+                                                                                                                                                    // to
+                                                                                                                                                    // context
+                                                                                                                                                    // root; see
+                                                                                                                                                    // #3108
         ResourceUtils.addResponseCookie(context, monitorKeyCookieName, "true", cookieOptions);
         ResourceUtils.addNoCacheControl(externalContext);
 
@@ -107,23 +111,25 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
         }
 
         try {
-			if (content.getOutputConsumer() != null) {
-				content.getOutputConsumer().accept(externalContext.getResponseOutputStream());
+            if (content.getOutputConsumer() != null) {
+                content.getOutputConsumer().accept(externalContext.getResponseOutputStream());
 
-			} else {
-				try (InputStream is = content.getStream()) {
-					IOUtils.copyLarge(is, externalContext.getResponseOutputStream());
-				}
-			}
-			if (!externalContext.isResponseCommitted()) {
-				externalContext.setResponseStatus(200);
-			}
+            }
+            else {
+                try (InputStream is = content.getStream()) {
+                    IOUtils.copyLarge(is, externalContext.getResponseOutputStream());
+                }
+            }
+            if (!externalContext.isResponseCommitted()) {
+                externalContext.setResponseStatus(200);
+            }
 
-			externalContext.responseFlushBuffer();
-			context.responseComplete();
-		} catch (IOException e) {
-			throw new FacesException(e);
-		}
+            externalContext.responseFlushBuffer();
+            context.responseComplete();
+        }
+        catch (IOException e) {
+            throw new FacesException(e);
+        }
     }
 
     @Override

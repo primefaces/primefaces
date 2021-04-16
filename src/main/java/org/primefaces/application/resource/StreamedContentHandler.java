@@ -66,14 +66,13 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
 
                     if (dynamicContentEL != null) {
                         ELContext eLContext = context.getELContext();
-                        ValueExpression ve = context.getApplication().getExpressionFactory().createValueExpression(
-                                context.getELContext(), dynamicContentEL, Object.class);
+                        ValueExpression ve = context.getApplication().getExpressionFactory().createValueExpression(context.getELContext(), dynamicContentEL,
+                                Object.class);
                         Object value = ve.getValue(eLContext);
 
                         if (value == null) {
                             if (context.isProjectStage(ProjectStage.Development)) {
-                                LOGGER.log(Level.WARNING,
-                                        "Dynamic content resolved to null - skip streaming resource for ValueExpression: {0}",
+                                LOGGER.log(Level.WARNING, "Dynamic content resolved to null - skip streaming resource for ValueExpression: {0}",
                                         dynamicContentEL);
                             }
                             sendNotFound(externalContext);
@@ -83,51 +82,48 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
                         if (value instanceof StreamedContent) {
                             StreamedContent streamedContent = (StreamedContent) value;
                             if (streamedContent.getOutputConsumer() != null) {
-								if (streamedContent.getContentType() != null) {
-									externalContext.setResponseContentType(streamedContent.getContentType());
-								}
-								if (streamedContent.getContentLength() != null) {
-									externalContext.setResponseContentLength(streamedContent.getContentLength());
-								}
-								if (streamedContent.getContentEncoding() != null) {
-									externalContext.setResponseHeader("Content-Encoding",
-											streamedContent.getContentEncoding());
-								}
-								if (streamedContent.getName() != null) {
-									externalContext.setResponseHeader("Content-Disposition",
-											"inline;filename=\"" + streamedContent.getName() + "\"");
-								}
-								stream(externalContext, streamedContent.getOutputConsumer(), cache);
-							} else {
-								try (InputStream inputStream = streamedContent.getStream()) {
-									if (inputStream == null) {
-										if (context.isProjectStage(ProjectStage.Development)) {
-											LOGGER.log(Level.WARNING,
-													"Stream of StreamedContent resolved to null - skip streaming resource for ValueExpression: {0}",
-													dynamicContentEL);
-										}
-										sendNotFound(externalContext);
-										return;
-									}
+                                if (streamedContent.getContentType() != null) {
+                                    externalContext.setResponseContentType(streamedContent.getContentType());
+                                }
+                                if (streamedContent.getContentLength() != null) {
+                                    externalContext.setResponseContentLength(streamedContent.getContentLength());
+                                }
+                                if (streamedContent.getContentEncoding() != null) {
+                                    externalContext.setResponseHeader("Content-Encoding", streamedContent.getContentEncoding());
+                                }
+                                if (streamedContent.getName() != null) {
+                                    externalContext.setResponseHeader("Content-Disposition", "inline;filename=\"" + streamedContent.getName() + "\"");
+                                }
+                                stream(externalContext, streamedContent.getOutputConsumer(), cache);
+                            }
+                            else {
+                                try (InputStream inputStream = streamedContent.getStream()) {
+                                    if (inputStream == null) {
+                                        if (context.isProjectStage(ProjectStage.Development)) {
+                                            LOGGER.log(Level.WARNING,
+                                                    "Stream of StreamedContent resolved to null - skip streaming resource for ValueExpression: {0}",
+                                                    dynamicContentEL);
+                                        }
+                                        sendNotFound(externalContext);
+                                        return;
+                                    }
 
-									if (streamedContent.getContentType() != null) {
-										externalContext.setResponseContentType(streamedContent.getContentType());
-									}
-									if (streamedContent.getContentLength() != null) {
-										externalContext.setResponseContentLength(streamedContent.getContentLength());
-									}
-									if (streamedContent.getContentEncoding() != null) {
-										externalContext.setResponseHeader("Content-Encoding",
-												streamedContent.getContentEncoding());
-									}
-									if (streamedContent.getName() != null) {
-										externalContext.setResponseHeader("Content-Disposition",
-												"inline;filename=\"" + streamedContent.getName() + "\"");
-									}
+                                    if (streamedContent.getContentType() != null) {
+                                        externalContext.setResponseContentType(streamedContent.getContentType());
+                                    }
+                                    if (streamedContent.getContentLength() != null) {
+                                        externalContext.setResponseContentLength(streamedContent.getContentLength());
+                                    }
+                                    if (streamedContent.getContentEncoding() != null) {
+                                        externalContext.setResponseHeader("Content-Encoding", streamedContent.getContentEncoding());
+                                    }
+                                    if (streamedContent.getName() != null) {
+                                        externalContext.setResponseHeader("Content-Disposition", "inline;filename=\"" + streamedContent.getName() + "\"");
+                                    }
 
-									stream(externalContext, inputStream, cache);
-								}
-							}
+                                    stream(externalContext, inputStream, cache);
+                                }
+                            }
                         }
                         else if (value instanceof InputStream) {
                             try (InputStream inputStream = (InputStream) value) {
@@ -163,18 +159,16 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
             externalContext.getResponseOutputStream().write(buffer, 0, length);
         }
     }
-    
-    protected void stream(ExternalContext externalContext, Consumer<OutputStream> consumerOutput, boolean cache)
-			throws IOException {
-		externalContext.setResponseStatus(HttpServletResponse.SC_OK);
-		handleCache(externalContext, cache);
-		consumerOutput.accept(externalContext.getResponseOutputStream());
-	}
+
+    protected void stream(ExternalContext externalContext, Consumer<OutputStream> consumerOutput, boolean cache) throws IOException {
+        externalContext.setResponseStatus(HttpServletResponse.SC_OK);
+        handleCache(externalContext, cache);
+        consumerOutput.accept(externalContext.getResponseOutputStream());
+    }
 
     protected void sendNotFound(ExternalContext externalContext) throws IOException {
         if (externalContext.getRequest() instanceof HttpServletRequest) {
-            externalContext.responseSendError(HttpServletResponse.SC_NOT_FOUND,
-                    ((HttpServletRequest) externalContext.getRequest()).getRequestURI());
+            externalContext.responseSendError(HttpServletResponse.SC_NOT_FOUND, ((HttpServletRequest) externalContext.getRequest()).getRequestURI());
         }
         else {
             externalContext.responseSendError(HttpServletResponse.SC_NOT_FOUND, null);
