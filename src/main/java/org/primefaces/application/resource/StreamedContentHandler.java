@@ -24,6 +24,15 @@
 package org.primefaces.application.resource;
 
 import java.io.ByteArrayInputStream;
+import org.primefaces.model.StreamedContent;
+import org.primefaces.util.Constants;
+
+import javax.el.ELContext;
+import javax.el.ValueExpression;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -31,17 +40,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.el.ELContext;
-import javax.el.ValueExpression;
 import javax.faces.application.ProjectStage;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.primefaces.model.StreamedContent;
-import org.primefaces.util.Constants;
 
 public class StreamedContentHandler extends BaseDynamicContentHandler {
 
@@ -66,13 +65,14 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
 
                     if (dynamicContentEL != null) {
                         ELContext eLContext = context.getELContext();
-                        ValueExpression ve = context.getApplication().getExpressionFactory().createValueExpression(context.getELContext(), dynamicContentEL,
-                                Object.class);
+                        ValueExpression ve = context.getApplication().getExpressionFactory().createValueExpression(
+                                context.getELContext(), dynamicContentEL, Object.class);
                         Object value = ve.getValue(eLContext);
 
                         if (value == null) {
                             if (context.isProjectStage(ProjectStage.Development)) {
-                                LOGGER.log(Level.WARNING, "Dynamic content resolved to null - skip streaming resource for ValueExpression: {0}",
+                                LOGGER.log(Level.WARNING,
+                                        "Dynamic content resolved to null - skip streaming resource for ValueExpression: {0}",
                                         dynamicContentEL);
                             }
                             sendNotFound(externalContext);
@@ -168,7 +168,8 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
 
     protected void sendNotFound(ExternalContext externalContext) throws IOException {
         if (externalContext.getRequest() instanceof HttpServletRequest) {
-            externalContext.responseSendError(HttpServletResponse.SC_NOT_FOUND, ((HttpServletRequest) externalContext.getRequest()).getRequestURI());
+            externalContext.responseSendError(HttpServletResponse.SC_NOT_FOUND,
+                    ((HttpServletRequest) externalContext.getRequest()).getRequestURI());
         }
         else {
             externalContext.responseSendError(HttpServletResponse.SC_NOT_FOUND, null);
