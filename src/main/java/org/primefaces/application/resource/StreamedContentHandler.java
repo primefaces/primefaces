@@ -24,15 +24,6 @@
 package org.primefaces.application.resource;
 
 import java.io.ByteArrayInputStream;
-import org.primefaces.model.StreamedContent;
-import org.primefaces.util.Constants;
-
-import javax.el.ELContext;
-import javax.el.ValueExpression;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -40,49 +31,58 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.el.ELContext;
+import javax.el.ValueExpression;
 import javax.faces.application.ProjectStage;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.primefaces.model.StreamedContent;
+import org.primefaces.util.Constants;
 
 public class StreamedContentHandler extends BaseDynamicContentHandler {
 
-	private static final Logger LOGGER = Logger.getLogger(StreamedContentHandler.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(StreamedContentHandler.class.getName());
 
-	@Override
-	public void handle(FacesContext context) throws IOException {
-		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-		String library = params.get("ln");
-		String resourceKey = params.get(Constants.DYNAMIC_CONTENT_PARAM);
+    @Override
+    public void handle(FacesContext context) throws IOException {
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String library = params.get("ln");
+        String resourceKey = params.get(Constants.DYNAMIC_CONTENT_PARAM);
 
-		if (resourceKey != null && library != null && library.equals(Constants.LIBRARY)) {
-			boolean cache = Boolean.parseBoolean(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
+        if (resourceKey != null && library != null && library.equals(Constants.LIBRARY)) {
+            boolean cache = Boolean.parseBoolean(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
 
-			try {
-				ExternalContext externalContext = context.getExternalContext();
-				Map<String, Object> session = externalContext.getSessionMap();
-				Map<String, String> dynamicResourcesMapping = (Map) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
+            try {
+                ExternalContext externalContext = context.getExternalContext();
+                Map<String, Object> session = externalContext.getSessionMap();
+                Map<String, String> dynamicResourcesMapping = (Map) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
 
-				if (dynamicResourcesMapping != null) {
-					String dynamicContentEL = dynamicResourcesMapping.get(resourceKey);
+                if (dynamicResourcesMapping != null) {
+                    String dynamicContentEL = dynamicResourcesMapping.get(resourceKey);
 
-					if (dynamicContentEL != null) {
-						ELContext eLContext = context.getELContext();
-						ValueExpression ve = context.getApplication().getExpressionFactory()
-								.createValueExpression(context.getELContext(), dynamicContentEL, Object.class);
-						Object value = ve.getValue(eLContext);
+                    if (dynamicContentEL != null) {
+                        ELContext eLContext = context.getELContext();
+                        ValueExpression ve = context.getApplication().getExpressionFactory().createValueExpression(
+                                context.getELContext(), dynamicContentEL, Object.class);
+                        Object value = ve.getValue(eLContext);
 
-						if (value == null) {
-							if (context.isProjectStage(ProjectStage.Development)) {
-								LOGGER.log(Level.WARNING,
-										"Dynamic content resolved to null - skip streaming resource for ValueExpression: {0}",
-										dynamicContentEL);
-							}
-							sendNotFound(externalContext);
-							return;
-						}
+                        if (value == null) {
+                            if (context.isProjectStage(ProjectStage.Development)) {
+                                LOGGER.log(Level.WARNING,
+                                        "Dynamic content resolved to null - skip streaming resource for ValueExpression: {0}",
+                                        dynamicContentEL);
+                            }
+                            sendNotFound(externalContext);
+                            return;
+                        }
 
-						if (value instanceof StreamedContent) {
-							StreamedContent streamedContent = (StreamedContent) value;
-
-							if (streamedContent.getOutputConsumer() != null) {
+                        if (value instanceof StreamedContent) {
+                            StreamedContent streamedContent = (StreamedContent) value;
+                            if (streamedContent.getOutputConsumer() != null) {
 								if (streamedContent.getContentType() != null) {
 									externalContext.setResponseContentType(streamedContent.getContentType());
 								}
@@ -128,52 +128,56 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
 									stream(externalContext, inputStream, cache);
 								}
 							}
-						} else if (value instanceof InputStream) {
-							try (InputStream inputStream = (InputStream) value) {
-								stream(externalContext, inputStream, cache);
-							}
-						} else if (value instanceof byte[]) {
-							try (InputStream inputStream = new ByteArrayInputStream((byte[]) value)) {
-								stream(externalContext, inputStream, cache);
-							}
-						}
-					}
-				}
+                        }
+                        else if (value instanceof InputStream) {
+                            try (InputStream inputStream = (InputStream) value) {
+                                stream(externalContext, inputStream, cache);
+                            }
+                        }
+                        else if (value instanceof byte[]) {
+                            try (InputStream inputStream = new ByteArrayInputStream((byte[]) value)) {
+                                stream(externalContext, inputStream, cache);
+                            }
+                        }
+                    }
+                }
 
-				externalContext.responseFlushBuffer();
-				context.responseComplete();
-			} catch (Exception e) {
-				throw new IOException("Error in streaming dynamic resource", e);
-			}
-		}
-	}
+                externalContext.responseFlushBuffer();
+                context.responseComplete();
+            }
+            catch (Exception e) {
+                throw new IOException("Error in streaming dynamic resource", e);
+            }
+        }
+    }
 
-	protected void stream(ExternalContext externalContext, InputStream inputStream, boolean cache) throws IOException {
-		externalContext.setResponseStatus(HttpServletResponse.SC_OK);
+    protected void stream(ExternalContext externalContext, InputStream inputStream, boolean cache) throws IOException {
+        externalContext.setResponseStatus(HttpServletResponse.SC_OK);
 
-		handleCache(externalContext, cache);
+        handleCache(externalContext, cache);
 
-		byte[] buffer = new byte[2048];
+        byte[] buffer = new byte[2048];
 
-		int length;
-		while ((length = (inputStream.read(buffer))) >= 0) {
-			externalContext.getResponseOutputStream().write(buffer, 0, length);
-		}
-	}
-
-	protected void stream(ExternalContext externalContext, Consumer<OutputStream> consumerOutput, boolean cache)
+        int length;
+        while ((length = (inputStream.read(buffer))) >= 0) {
+            externalContext.getResponseOutputStream().write(buffer, 0, length);
+        }
+    }
+    
+    protected void stream(ExternalContext externalContext, Consumer<OutputStream> consumerOutput, boolean cache)
 			throws IOException {
 		externalContext.setResponseStatus(HttpServletResponse.SC_OK);
 		handleCache(externalContext, cache);
 		consumerOutput.accept(externalContext.getResponseOutputStream());
 	}
 
-	protected void sendNotFound(ExternalContext externalContext) throws IOException {
-		if (externalContext.getRequest() instanceof HttpServletRequest) {
-			externalContext.responseSendError(HttpServletResponse.SC_NOT_FOUND,
-					((HttpServletRequest) externalContext.getRequest()).getRequestURI());
-		} else {
-			externalContext.responseSendError(HttpServletResponse.SC_NOT_FOUND, null);
-		}
-	}
+    protected void sendNotFound(ExternalContext externalContext) throws IOException {
+        if (externalContext.getRequest() instanceof HttpServletRequest) {
+            externalContext.responseSendError(HttpServletResponse.SC_NOT_FOUND,
+                    ((HttpServletRequest) externalContext.getRequest()).getRequestURI());
+        }
+        else {
+            externalContext.responseSendError(HttpServletResponse.SC_NOT_FOUND, null);
+        }
+    }
 }

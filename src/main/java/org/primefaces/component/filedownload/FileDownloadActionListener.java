@@ -45,69 +45,68 @@ import org.primefaces.util.*;
 
 public class FileDownloadActionListener implements ActionListener, StateHolder {
 
-	private ValueExpression value;
+    private ValueExpression value;
 
-	private ValueExpression contentDisposition;
+    private ValueExpression contentDisposition;
 
-	private ValueExpression monitorKey;
+    private ValueExpression monitorKey;
 
-	public FileDownloadActionListener() {
-		ResourceUtils.addComponentResource(FacesContext.getCurrentInstance(), "filedownload/filedownload.js");
-	}
+    public FileDownloadActionListener() {
+        ResourceUtils.addComponentResource(FacesContext.getCurrentInstance(), "filedownload/filedownload.js");
+    }
 
-	public FileDownloadActionListener(ValueExpression value, ValueExpression contentDisposition,
-			ValueExpression monitorKey) {
-		this();
-		this.value = value;
-		this.contentDisposition = contentDisposition;
-		this.monitorKey = monitorKey;
-	}
+    public FileDownloadActionListener(ValueExpression value, ValueExpression contentDisposition, ValueExpression monitorKey) {
+        this();
+        this.value = value;
+        this.contentDisposition = contentDisposition;
+        this.monitorKey = monitorKey;
+    }
 
-	@Override
-	public void processAction(ActionEvent actionEvent) throws AbortProcessingException {
-		FacesContext context = FacesContext.getCurrentInstance();
-		ELContext elContext = context.getELContext();
-		StreamedContent content = (StreamedContent) value.getValue(elContext);
+    @Override
+    public void processAction(ActionEvent actionEvent) throws AbortProcessingException {
+        FacesContext context = FacesContext.getCurrentInstance();
+        ELContext elContext = context.getELContext();
+        StreamedContent content = (StreamedContent) value.getValue(elContext);
 
-		if (content == null) {
-			return;
-		}
+        if (content == null) {
+            return;
+        }
 
-		if (PrimeFaces.current().isAjaxRequest()) {
-			ajaxDownload(context, content);
-		} else {
-			regularDownload(context, content);
-		}
-	}
+        if (PrimeFaces.current().isAjaxRequest()) {
+            ajaxDownload(context,  content);
+        }
+        else {
+            regularDownload(context, content);
+        }
+    }
 
-	protected void ajaxDownload(FacesContext context, StreamedContent content) {
-		String uri = DynamicContentSrcBuilder.buildStreaming(context, value, false);
-		String monitorKeyCookieName = ResourceUtils.getMonitorKeyCookieName(context, monitorKey);
-		PrimeFaces.current().executeScript(String.format("PrimeFaces.download('%s', '%s', '%s', '%s')", uri,
-				content.getContentType(), content.getName(), monitorKeyCookieName));
-	}
+    protected void ajaxDownload(FacesContext context, StreamedContent content) {
+        String uri = DynamicContentSrcBuilder.buildStreaming(context, value, false);
+        String monitorKeyCookieName = ResourceUtils.getMonitorKeyCookieName(context, monitorKey);
+        PrimeFaces.current().executeScript(String.format("PrimeFaces.download('%s', '%s', '%s', '%s')",
+                uri, content.getContentType(), content.getName(), monitorKeyCookieName));
+    }
 
-	protected void regularDownload(FacesContext context, StreamedContent content) {
-		ExternalContext externalContext = context.getExternalContext();
-		externalContext.setResponseContentType(content.getContentType());
-		String contentDispositionValue = contentDisposition != null
-				? (String) contentDisposition.getValue(context.getELContext())
-				: "attachment";
-		externalContext.setResponseHeader("Content-Disposition",
-				ComponentUtils.createContentDisposition(contentDispositionValue, content.getName()));
+    protected void regularDownload(FacesContext context, StreamedContent content) {
+        ExternalContext externalContext = context.getExternalContext();
+        externalContext.setResponseContentType(content.getContentType());
+        String contentDispositionValue = contentDisposition != null ? (String) contentDisposition.getValue(context.getELContext()) : "attachment";
+        externalContext.setResponseHeader("Content-Disposition", ComponentUtils.createContentDisposition(contentDispositionValue, content.getName()));
 
-		String monitorKeyCookieName = ResourceUtils.getMonitorKeyCookieName(context, monitorKey);
+        String monitorKeyCookieName = ResourceUtils.getMonitorKeyCookieName(context, monitorKey);
 
-		Map<String, Object> cookieOptions = new HashMap<>(4);
-		cookieOptions.put("path", LangUtils.isValueBlank(externalContext.getRequestContextPath()) ? "/"
-				: externalContext.getRequestContextPath()); // Always add cookies to context root; see #3108
-		ResourceUtils.addResponseCookie(context, monitorKeyCookieName, "true", cookieOptions);
-		ResourceUtils.addNoCacheControl(externalContext);
+        Map<String, Object> cookieOptions = new HashMap<>(4);
+        cookieOptions.put("path", LangUtils.isValueBlank(externalContext.getRequestContextPath())
+                ? "/"
+                : externalContext.getRequestContextPath()); // Always add cookies to context root; see #3108
+        ResourceUtils.addResponseCookie(context, monitorKeyCookieName, "true", cookieOptions);
+        ResourceUtils.addNoCacheControl(externalContext);
 
-		if (content.getContentLength() != null) {
-			externalContext.setResponseContentLength(content.getContentLength());
-		}
-		try {
+        if (content.getContentLength() != null) {
+            externalContext.setResponseContentLength(content.getContentLength());
+        }
+
+        try {
 			if (content.getOutputConsumer() != null) {
 				content.getOutputConsumer().accept(externalContext.getResponseOutputStream());
 
@@ -125,35 +124,35 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
 		} catch (IOException e) {
 			throw new FacesException(e);
 		}
-	}
+    }
 
-	@Override
-	public boolean isTransient() {
-		return false;
-	}
+    @Override
+    public boolean isTransient() {
+        return false;
+    }
 
-	@Override
-	public void setTransient(boolean value) {
-		// NOOP
-	}
+    @Override
+    public void setTransient(boolean value) {
+        // NOOP
+    }
 
-	@Override
-	public void restoreState(FacesContext facesContext, Object state) {
-		Object[] values = (Object[]) state;
+    @Override
+    public void restoreState(FacesContext facesContext, Object state) {
+        Object[] values = (Object[]) state;
 
-		value = (ValueExpression) values[0];
-		contentDisposition = (ValueExpression) values[1];
-		monitorKey = (ValueExpression) values[2];
-	}
+        value = (ValueExpression) values[0];
+        contentDisposition = (ValueExpression) values[1];
+        monitorKey = (ValueExpression) values[2];
+    }
 
-	@Override
-	public Object saveState(FacesContext facesContext) {
-		Object[] values = new Object[3];
+    @Override
+    public Object saveState(FacesContext facesContext) {
+        Object[] values = new Object[3];
 
-		values[0] = value;
-		values[1] = contentDisposition;
-		values[2] = monitorKey;
+        values[0] = value;
+        values[1] = contentDisposition;
+        values[2] = monitorKey;
 
-		return (values);
-	}
+        return (values);
+    }
 }
