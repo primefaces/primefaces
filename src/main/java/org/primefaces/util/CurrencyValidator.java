@@ -25,6 +25,7 @@ package org.primefaces.util;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.*;
 import java.util.Locale;
 
@@ -167,7 +168,7 @@ public class CurrencyValidator implements Serializable {
 
         int scale = determineScale(formatter);
         if (scale >= 0) {
-            decimal = decimal.setScale(scale, BigDecimal.ROUND_DOWN);
+            decimal = decimal.setScale(scale, RoundingMode.DOWN);
         }
 
         return decimal;
