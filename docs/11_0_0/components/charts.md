@@ -1018,47 +1018,28 @@ Charts are canvas based and can be exported as static images with client side ap
 ## Extender
 Extender function allows access to the underlying chart.js api using the setExtender method of the model. The extender function needs to be defined before the chart component, otherwise it could happen that on the first model load, the script isn't found.
 
-TODO: Check against Chart.js 3
-
 ```xhtml
 <h:outputScript>
-        function chartExtender() {
-           //copy the config options into a variable
-           var options = $.extend(true, {}, this.cfg.config);
-        
-           options = {
-              options: {
-                  //remove the legend
-                  legend: {
-                     display: false
-                  },
-                  scales: {
-                     x: {
-                        display: true,
-                        type: "time",
-                        time: {
-                           parser: 'h:mm:ss a',
-                           tooltipFormat: 'h:mm:ss a',
-                           unit: 'hour',
-                           displayFormats: {
-                              'hour': 'h:mm:ss a'
-                           }
+        function chartExtender() { 
+            //copy the config options into a variable
+            var options = $.extend(true, {}, this.cfg.config);
+
+            options = {
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: "title set from JavaScript"
+                        },
+                        legend: {
+                            display: false
                         }
-                     },
-                     y: {
-                        display: true,
-                        scaleLabel: {
-                           display: true,
-                           labelString: 'Your Y Axis',
-                           fontSize: 13,
-                        }
-                     }
-                  }
+                    }
                 }
-           };
+            };
         
-           //merge all options into the main chart options
-           $.extend(true, this.cfg.config, options);
+            //merge all options into the main chart options
+            $.extend(true, this.cfg.config, options);
         };
 </h:outputScript>
 
