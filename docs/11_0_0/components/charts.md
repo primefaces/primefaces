@@ -4,8 +4,6 @@ Chart.js based components are a modern replacement for the older p:chart compone
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.basechart-1.html)
 
-TODO: Check against Chart.js 3
-
 ## BarChart
 
 A bar chart provides a way of showing data values represented as vertical bars. It is sometimes used to show trend data, and the comparison of multiple data sets side by side.
@@ -1018,7 +1016,7 @@ Charts are canvas based and can be exported as static images with client side ap
 ```
 
 ## Extender
-Extender function allows access to the underlying chart.js api using the setExtender method of the model. The exstender function needs to be defined before the chart component, otherwise it could happen that on the first model load, the script isn't found.
+Extender function allows access to the underlying chart.js api using the setExtender method of the model. The extender function needs to be defined before the chart component, otherwise it could happen that on the first model load, the script isn't found.
 
 TODO: Check against Chart.js 3
 
