@@ -26,9 +26,22 @@ package org.primefaces.component.api;
 import java.util.Collection;
 
 /**
- * InputHolder is implemented by components that have both obstrusive and non-obstrusive client behavior events
+ * MixedClientBehaviorHolder is implemented by input components that have both obstrusive and non-obstrusive
+ * client behavior events.  Components such as DataTable are not input components and thus do not need this interface
+ * as it will never support obtrusive events.
+ * <p>
+ * Obtrusive events are rendered directly in the HTML DOM such as onclick="alert('test');"
+ * </p>
+ * <p>
+ * Unobtrusive events are fired by the JS widget and need to be rendered as a widget parameter. e.g. DataTable "sort".
+ * </p>
  */
 public interface MixedClientBehaviorHolder {
 
+    /**
+     * Gets the collection of unobtrusive event names.
+     *
+     * @return the collection of unobtrusive event names.
+     */
     Collection<String> getUnobstrusiveEventNames();
 }
