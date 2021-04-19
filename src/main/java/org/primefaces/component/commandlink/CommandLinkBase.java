@@ -28,9 +28,10 @@ import javax.faces.component.html.HtmlCommandLink;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.Confirmable;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.PrimeUICommand;
 
 
-public abstract class CommandLinkBase extends HtmlCommandLink implements AjaxSource, Confirmable, PrimeClientBehaviorHolder {
+public abstract class CommandLinkBase extends HtmlCommandLink implements PrimeUICommand, Confirmable, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

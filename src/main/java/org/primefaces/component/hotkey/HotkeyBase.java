@@ -25,10 +25,10 @@ package org.primefaces.component.hotkey;
 
 import javax.faces.component.UICommand;
 
-import org.primefaces.component.api.AjaxSource;
+import org.primefaces.component.api.PrimeUICommand;
 
 
-public abstract class HotkeyBase extends UICommand implements AjaxSource {
+public abstract class HotkeyBase extends UICommand implements PrimeUICommand {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

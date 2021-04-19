@@ -31,9 +31,7 @@ import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.component.api.Widget;
 
-public abstract class AccordionPanelBase extends UITabPanel implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder {
-
-    public static final String COMPONENT_FAMILY = "org.primefaces.component";
+public abstract class AccordionPanelBase extends UITabPanel implements Widget, RTLAware, PrimeClientBehaviorHolder {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.AccordionPanelRenderer";
 
@@ -52,11 +50,6 @@ public abstract class AccordionPanelBase extends UITabPanel implements Widget, R
 
     public AccordionPanelBase() {
         setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
     }
 
     public String getActiveIndex() {

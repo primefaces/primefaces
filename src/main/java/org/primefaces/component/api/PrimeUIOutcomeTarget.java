@@ -27,20 +27,29 @@ import java.util.List;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIOutcomeTarget;
 
-public interface UIOutcomeTarget {
+public interface PrimeUIOutcomeTarget {
 
+    /**
+     * See {@link UIOutcomeTarget#getOutcome()}
+     */
     String getOutcome();
 
+    /**
+     * See {@link UIOutcomeTarget#isIncludeViewParams()}
+     */
     boolean isIncludeViewParams();
 
-    String getFragment();
+    /**
+     * See {@link UIOutcomeTarget#isDisableClientWindow()}
+     */
+    boolean isDisableClientWindow();
 
-    List<UIComponent> getChildren();
+    String getFragment();
 
     Map<String, List<String>> getParams();
 
     String getHref();
 
-    boolean isDisableClientWindow();
 }

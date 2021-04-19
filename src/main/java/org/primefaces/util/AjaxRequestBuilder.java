@@ -25,6 +25,8 @@ package org.primefaces.util;
 
 import java.util.Collections;
 import java.util.EnumSet;
+
+import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;

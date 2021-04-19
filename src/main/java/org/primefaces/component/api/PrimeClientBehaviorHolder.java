@@ -23,11 +23,30 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.util.Constants;
+
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.event.BehaviorEvent;
 
-public interface PrimeClientBehaviorHolder {
+/**
+ * See #1098
+ */
+public interface PrimeClientBehaviorHolder extends ClientBehaviorHolder {
 
     Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping();
+
+    @Override
+    default Collection<String> getEventNames() {
+        Map<String, Class<? extends BehaviorEvent>> events = getBehaviorEventMapping();
+        return events != null ? events.keySet() : Collections.emptySet();
+    }
+
+    @Override
+    default String getDefaultEventName() {
+        return Constants.EMPTY_STRING;
+    }
 }

@@ -25,10 +25,10 @@ package org.primefaces.component.poll;
 
 import javax.faces.component.UIComponentBase;
 
-import org.primefaces.component.api.AjaxSource;
+import org.primefaces.component.api.PrimeUICommand;
 import org.primefaces.component.api.Widget;
 
-public abstract class PollBase extends UIComponentBase implements AjaxSource, Widget {
+public abstract class PollBase extends UIComponentBase implements PrimeUICommand, Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

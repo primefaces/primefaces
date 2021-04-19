@@ -36,9 +36,6 @@ public interface Widget extends PrimeUIComponent {
 
     enum PropertyKeys {
         widgetVar,
-        style,
-        styleClass,
-        renderEmptyFacets;
     }
 
     default String getWidgetVar() {
@@ -47,30 +44,6 @@ public interface Widget extends PrimeUIComponent {
 
     default void setWidgetVar(String widgetVar) {
         getState().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    default String getStyle() {
-        return (String) getState().eval(PropertyKeys.style, null);
-    }
-
-    default void setStyle(String style) {
-        getState().put(PropertyKeys.style, style);
-    }
-
-    default String getStyleClass() {
-        return (String) getState().eval(PropertyKeys.styleClass, null);
-    }
-
-    default void setStyleClass(String styleClass) {
-        getState().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    default boolean isRenderEmptyFacets() {
-        return (Boolean) getState().eval(PropertyKeys.renderEmptyFacets, false);
-    }
-
-    default void setRenderEmptyFacets(boolean renderEmptyFacets) {
-        getState().put(PropertyKeys.renderEmptyFacets, renderEmptyFacets);
     }
 
     @Deprecated

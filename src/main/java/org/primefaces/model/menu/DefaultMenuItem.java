@@ -24,14 +24,14 @@
 package org.primefaces.model.menu;
 
 import org.primefaces.component.api.AjaxSource;
-import org.primefaces.component.api.UIOutcomeTarget;
+import org.primefaces.component.api.PrimeUIOutcomeTarget;
 import org.primefaces.util.SerializableFunction;
 
 import javax.faces.component.UIComponent;
 import java.io.Serializable;
 import java.util.*;
 
-public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, Serializable {
+public class DefaultMenuItem implements MenuItem, PrimeUIOutcomeTarget, AjaxSource, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -259,11 +259,6 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     @Override
     public boolean shouldRenderChildren() {
         return false;
-    }
-
-    @Override
-    public List<UIComponent> getChildren() {
-        return Collections.emptyList();
     }
 
     @Override

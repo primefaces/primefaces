@@ -40,7 +40,7 @@ import javax.faces.convert.Converter;
 import javax.faces.render.Renderer;
 import javax.faces.validator.Validator;
 
-import org.primefaces.component.api.AjaxSource;
+import org.primefaces.component.api.PrimeUICommand;
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.context.PrimeApplicationContext;
@@ -412,11 +412,11 @@ public abstract class CoreRenderer extends Renderer {
         return LangUtils.isValueBlank(value);
     }
 
-    protected <T extends UIComponent & AjaxSource> AjaxRequestBuilder preConfiguredAjaxRequestBuilder(FacesContext context, T source) {
+    protected <T extends UIComponent & PrimeUICommand> AjaxRequestBuilder preConfiguredAjaxRequestBuilder(FacesContext context, T source) {
         return preConfiguredAjaxRequestBuilder(context, source, source, null);
     }
 
-    protected AjaxRequestBuilder preConfiguredAjaxRequestBuilder(FacesContext context, UIComponent component, AjaxSource source, UIForm form) {
+    protected AjaxRequestBuilder preConfiguredAjaxRequestBuilder(FacesContext context, UIComponent component, PrimeUICommand source, UIForm form) {
         String clientId = component.getClientId(context);
         AjaxRequestBuilder builder = PrimeRequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
 
@@ -440,11 +440,11 @@ public abstract class CoreRenderer extends Renderer {
         return builder;
     }
 
-    protected <T extends UIComponent & AjaxSource> String buildAjaxRequest(FacesContext context, T source) {
+    protected <T extends UIComponent & PrimeUICommand> String buildAjaxRequest(FacesContext context, T source) {
         return buildAjaxRequest(context, source, null);
     }
 
-    protected <T extends UIComponent & AjaxSource> String buildAjaxRequest(FacesContext context, T source, UIForm form) {
+    protected <T extends UIComponent & PrimeUICommand> String buildAjaxRequest(FacesContext context, T source, UIForm form) {
         AjaxRequestBuilder builder = preConfiguredAjaxRequestBuilder(context, source, source, form)
                 .params(source)
                 .preventDefault();
@@ -452,7 +452,7 @@ public abstract class CoreRenderer extends Renderer {
         return builder.build();
     }
 
-    protected String buildAjaxRequest(FacesContext context, UIComponent component, AjaxSource source, UIForm form, Map<String, List<String>> params) {
+    protected String buildAjaxRequest(FacesContext context, UIComponent component, PrimeUICommand source, UIForm form, Map<String, List<String>> params) {
         AjaxRequestBuilder builder = preConfiguredAjaxRequestBuilder(context, component, source, form)
                 .params(params)
                 .preventDefault();

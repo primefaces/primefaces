@@ -25,10 +25,10 @@ package org.primefaces.renderkit;
 
 import org.primefaces.component.api.MenuItemAware;
 import org.primefaces.behavior.confirm.ConfirmBehavior;
-import org.primefaces.component.api.AjaxSource;
+import org.primefaces.component.api.PrimeUICommand;
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
 import org.primefaces.component.api.DialogReturnAware;
-import org.primefaces.component.api.UIOutcomeTarget;
+import org.primefaces.component.api.PrimeUIOutcomeTarget;
 import org.primefaces.component.divider.Divider;
 import org.primefaces.event.MenuActionEvent;
 import org.primefaces.model.menu.*;
@@ -65,7 +65,7 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
 
         //GET
         if (menuitem.getUrl() != null || menuitem.getOutcome() != null) {
-            String targetURL = getTargetURL(context, (UIOutcomeTarget) menuitem);
+            String targetURL = getTargetURL(context, (PrimeUIOutcomeTarget) menuitem);
             writer.writeAttribute("href", targetURL, null);
 
             if (menuitem.getTarget() != null) {
@@ -92,12 +92,12 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
                 params.put(menuClientId + "_menuid", idParams);
 
                 command = menuitem.isAjax()
-                        ? buildAjaxRequest(context, source, (AjaxSource) menuitem, form, params)
+                        ? buildAjaxRequest(context, source, (PrimeUICommand) menuitem, form, params)
                         : buildNonAjaxRequest(context, source, form, menuClientId, params, true);
             }
             else {
                 command = menuitem.isAjax()
-                        ? buildAjaxRequest(context, (UIComponent & AjaxSource) menuitem, form)
+                        ? buildAjaxRequest(context, (UIComponent & PrimeUICommand) menuitem, form)
                         : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
             }
 

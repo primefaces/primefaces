@@ -23,12 +23,13 @@
  */
 package org.primefaces.component.api;
 
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import java.util.Collection;
 
 /**
  * InputHolder is implemented by components that have both obstrusive and non-obstrusive client behavior events
  */
-public interface MixedClientBehaviorHolder {
+public interface MixedClientBehaviorHolder extends ClientBehaviorHolder {
 
     Collection<String> getUnobstrusiveEventNames();
 }

@@ -25,10 +25,10 @@ package org.primefaces.component.linkbutton;
 
 import javax.faces.component.html.HtmlOutcomeTargetLink;
 
-import org.primefaces.component.api.UIOutcomeTarget;
+import org.primefaces.component.api.PrimeUIOutcomeTarget;
 import org.primefaces.component.api.Widget;
 
-public abstract class LinkButtonBase extends HtmlOutcomeTargetLink implements UIOutcomeTarget, Widget {
+public abstract class LinkButtonBase extends HtmlOutcomeTargetLink implements PrimeUIOutcomeTarget, Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

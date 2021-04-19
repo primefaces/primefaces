@@ -26,15 +26,15 @@ package org.primefaces.component.menuitem;
 import javax.faces.component.UICommand;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 
-import org.primefaces.component.api.AjaxSource;
+import org.primefaces.component.api.PrimeUICommand;
 import org.primefaces.component.api.Confirmable;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
-import org.primefaces.component.api.UIOutcomeTarget;
+import org.primefaces.component.api.PrimeUIOutcomeTarget;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.util.SerializableFunction;
 
 
-public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcomeTarget, MenuItem, Confirmable,
+public abstract class UIMenuItemBase extends UICommand implements PrimeUICommand, PrimeUIOutcomeTarget, MenuItem, Confirmable,
         ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";

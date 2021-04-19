@@ -34,13 +34,13 @@ import javax.faces.event.ActionListener;
 import javax.faces.flow.FlowHandler;
 import javax.faces.lifecycle.ClientWindow;
 
-import org.primefaces.component.api.UIOutcomeTarget;
+import org.primefaces.component.api.PrimeUIOutcomeTarget;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.util.LangUtils;
 
 public class OutcomeTargetRenderer extends CoreRenderer {
 
-    protected NavigationCase findNavigationCase(FacesContext context, UIOutcomeTarget outcomeTarget) {
+    protected NavigationCase findNavigationCase(FacesContext context, PrimeUIOutcomeTarget outcomeTarget) {
         ConfigurableNavigationHandler navigationHandler = (ConfigurableNavigationHandler) context.getApplication().getNavigationHandler();
         String outcome = outcomeTarget.getOutcome();
 
@@ -98,7 +98,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
     /**
      * Find all parameters to include by looking at nested uiparams and params of navigation case
      */
-    protected Map<String, List<String>> getParams(FacesContext context, NavigationCase navCase, UIOutcomeTarget outcomeTarget) {
+    protected Map<String, List<String>> getParams(FacesContext context, NavigationCase navCase, PrimeUIOutcomeTarget outcomeTarget) {
         //UI Params
         Map<String, List<String>> params = outcomeTarget.getParams();
 
@@ -147,11 +147,11 @@ public class OutcomeTargetRenderer extends CoreRenderer {
         return params;
     }
 
-    protected boolean isIncludeViewParams(UIOutcomeTarget outcomeTarget, NavigationCase navCase) {
+    protected boolean isIncludeViewParams(PrimeUIOutcomeTarget outcomeTarget, NavigationCase navCase) {
         return outcomeTarget.isIncludeViewParams() || navCase.isIncludeViewParams();
     }
 
-    protected String getTargetURL(FacesContext context, UIOutcomeTarget outcomeTarget) {
+    protected String getTargetURL(FacesContext context, PrimeUIOutcomeTarget outcomeTarget) {
         String url;
 
         boolean clientWindowRenderingModeEnabled = false;
