@@ -159,89 +159,63 @@ public class ChartRenderer extends CoreRenderer {
             if (hasComma) {
                 writer.write(",");
             }
-            hasComma = false;
-
-            boolean hasAttrs = false;
-
-            // TODO: requires some refactorings for hasAttrs
 
             if (scales instanceof CartesianScales) {
                 writer.write("\"scales\":{");
                 CartesianScales cScales = (CartesianScales) scales;
-//                encodeScaleCommon(writer, cScales);
+                StringBuilder scaleAttrs = new StringBuilder(20);
                 List<CartesianAxes> xAxes = cScales.getXAxes();
                 if (xAxes != null && !xAxes.isEmpty()) {
-                    if (hasAttrs) {
-                        writer.write(",");
-                    }
                     encodeAxes(context, chartName, "x", xAxes);
-                    hasAttrs = true;
                 }
 
                 List<CartesianAxes> yAxes = cScales.getYAxes();
                 if (yAxes != null && !yAxes.isEmpty()) {
-                    if (hasAttrs) {
+                    if (xAxes != null && !xAxes.isEmpty()) {
                         writer.write(",");
                     }
                     encodeAxes(context, chartName, "y", yAxes);
-                    hasAttrs = true;
                 }
 
+                writer.write(scaleAttrs.toString());
                 writer.write("}");
             }
             else if (scales instanceof RadialScales) {
                 writer.write("\"scale\":{");
                 RadialScales rScales = (RadialScales) scales;
-//                encodeScaleCommon(writer, rScales);
+                StringBuilder scaleAttrs = new StringBuilder(50);
                 if (rScales.getAngelLines() != null) {
-                    if (hasAttrs) {
-                        writer.write(",");
-                    }
-                    writer.write("\"angleLines\":" + rScales.getAngelLines().encode());
-                    hasAttrs = true;
+                    writeJsonAttribute(scaleAttrs, "angleLines", rScales.getAngelLines().encode());
                 }
 
                 if (rScales.getGridLines() != null) {
-                    if (hasAttrs) {
-                        writer.write(",");
-                    }
-                    writer.write("\"gridLines\":" + rScales.getGridLines().encode());
-                    hasAttrs = true;
+                    writeJsonAttribute(scaleAttrs, "gridLines", rScales.getGridLines().encode());
                 }
 
                 if (rScales.getPointLabels() != null) {
-                    if (hasAttrs) {
-                        writer.write(",");
-                    }
-                    writer.write("\"pointLabels\":" + rScales.getPointLabels().encode());
-                    hasAttrs = true;
+                    writeJsonAttribute(scaleAttrs, "pointLabels", rScales.getPointLabels().encode());
                 }
 
                 if (rScales.getTicks() != null) {
-                    if (hasAttrs) {
-                        writer.write(",");
-                    }
-                    writer.write("\"ticks\":" + rScales.getTicks().encode());
-                    hasAttrs = true;
+                    writeJsonAttribute(scaleAttrs, "ticks", rScales.getTicks().encode());
                 }
 
                 if (rScales.getStartAngle() != null) {
-                    if (hasAttrs) {
-                        writer.write(",");
-                    }
-                    writer.write("\"startAngle\":" + rScales.getStartAngle());
-                    hasAttrs = true;
+                    writeJsonAttribute(scaleAttrs, "startAngle", rScales.getStartAngle().toString());
                 }
 
+                writer.write(scaleAttrs.toString());
                 writer.write("}");
             }
         }
     }
 
-//    protected void encodeScaleCommon(ResponseWriter writer, AxesScale scale) throws IOException {
-//        ChartUtils.writeDataValue(writer, "display", scale.isDisplay(), false);
-//        ChartUtils.writeDataValue(writer, "weight", scale.getWeight(), true);
-//    }
+    private void writeJsonAttribute(StringBuilder stringBuilder, String attributeName, String attributeValue) {
+        if (stringBuilder.length() > 0) {
+            stringBuilder.append(",");
+        }
+        stringBuilder.append("\"" + attributeName + "\":" + attributeValue);
+    }
 
     protected void encodeAxes(FacesContext context, String chartName, String defaultAxeId, List<CartesianAxes> axes) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
