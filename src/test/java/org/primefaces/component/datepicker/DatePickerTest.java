@@ -307,6 +307,7 @@ public class DatePickerTest {
     public void convertToJava8DateTimeAPI_LocalDateTime() {
          Class<?> type = LocalDateTime.class;
         setupValues(type, Locale.ENGLISH);
+        when(datePicker.hasTime()).thenReturn(Boolean.TRUE);
         when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
         Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "7/23/2019 21:31");
         assertEquals(type, temporal.getClass());
@@ -314,9 +315,21 @@ public class DatePickerTest {
     }
 
     @Test
+    public void convertToJava8DateTimeAPI_LocalDateTime_NoTime() {
+         Class<?> type = LocalDateTime.class;
+        setupValues(type, Locale.ENGLISH);
+        when(datePicker.hasTime()).thenReturn(Boolean.FALSE);
+        when(datePicker.isShowTime()).thenReturn(Boolean.FALSE);
+        Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "07/23/2019");
+        assertEquals(type, temporal.getClass());
+        assertEquals(LocalDateTime.of(2019, 7, 23,  0, 0), temporal);
+    }
+
+    @Test
     public void convertToJava8DateTimeAPI_LocalDateTimeSecondsAmPm() {
          Class<?> type = LocalDateTime.class;
         setupValues(type, Locale.ENGLISH);
+        when(datePicker.hasTime()).thenReturn(Boolean.TRUE);
         when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
         when(datePicker.getHourFormat()).thenReturn("12");
         when(datePicker.isShowSeconds()).thenReturn(Boolean.TRUE);
