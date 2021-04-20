@@ -26,7 +26,7 @@ package org.primefaces.application.resource;
 import java.io.IOException;
 import javax.faces.context.FacesContext;
 
-public interface DynamicContentHandler {
+public interface PrimeContentHandler {
 
     void handle(FacesContext context) throws IOException;
 

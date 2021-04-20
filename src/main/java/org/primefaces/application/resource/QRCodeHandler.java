@@ -33,7 +33,7 @@ import javax.imageio.ImageIO;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 
-public class QRCodeHandler extends BaseDynamicContentHandler {
+public class QRCodeHandler extends PrimeCacheContentHandler {
 
     @Override
     public void handle(FacesContext context) throws IOException {
@@ -45,7 +45,6 @@ public class QRCodeHandler extends BaseDynamicContentHandler {
         String value = barcodeMapping.get(sessionKey);
 
         if (value != null) {
-            boolean cache = Boolean.parseBoolean(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
 
             QrCode qrCode = QrCode.encodeText(value, getErrorCorrection(params.get("qrec")));
             if ("png".equals(params.get("fmt"))) {
@@ -56,7 +55,9 @@ public class QRCodeHandler extends BaseDynamicContentHandler {
                 externalContext.setResponseContentType("image/svg+xml");
                 externalContext.getResponseOutputWriter().write(qrCode.toSvgString(0));
             }
-            handleCache(externalContext, cache);
+
+            super.handle(context);
+
             externalContext.setResponseStatus(200);
             externalContext.responseFlushBuffer();
             context.responseComplete();

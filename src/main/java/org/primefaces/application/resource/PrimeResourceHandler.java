@@ -42,7 +42,7 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
 
     private static final Logger LOGGER = Logger.getLogger(PrimeResourceHandler.class.getName());
 
-    private final Map<String, DynamicContentHandler> handlers;
+    private final Map<String, PrimeContentHandler> handlers;
 
     private final ResourceHandler wrapped;
 
@@ -87,7 +87,7 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
             super.handleResourceRequest(context);
         }
         else {
-            DynamicContentHandler handler = handlers.get(handlerType);
+            PrimeContentHandler handler = handlers.get(handlerType);
             if (handler == null) {
                 LOGGER.log(Level.WARNING,
                         "No dynamic resource handler registered for: {0}. Do you miss a dependency?",

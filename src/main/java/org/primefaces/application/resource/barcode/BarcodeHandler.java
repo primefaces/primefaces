@@ -41,11 +41,11 @@ import javax.xml.transform.TransformerFactory;
 import org.krysalis.barcode4j.HumanReadablePlacement;
 import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
 import org.krysalis.barcode4j.output.svg.SVGCanvasProvider;
-import org.primefaces.application.resource.BaseDynamicContentHandler;
+import org.primefaces.application.resource.PrimeCacheContentHandler;
 import org.primefaces.util.Constants;
 import org.w3c.dom.DocumentFragment;
 
-public class BarcodeHandler extends BaseDynamicContentHandler {
+public class BarcodeHandler extends PrimeCacheContentHandler {
 
     private static final Logger LOGGER = Logger.getLogger(BarcodeHandler.class.getName());
 
@@ -81,13 +81,12 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
                 String format = params.get("fmt");
                 String hrp = params.get("hrp");
                 int orientation = Integer.parseInt(params.get("ori"));
-                boolean cache = Boolean.parseBoolean(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
 
                 generator.getBarcodeBean().setMsgPosition(HumanReadablePlacement.byName(hrp));
 
                 OutputStream out = externalContext.getResponseOutputStream();
 
-                handleCache(externalContext, cache);
+                super.handle(context);
 
                 if ("png".equals(format)) {
                     externalContext.setResponseContentType("image/png");

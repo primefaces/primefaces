@@ -24,6 +24,8 @@
 package org.primefaces.application.resource;
 
 import java.io.ByteArrayInputStream;
+
+import org.apache.commons.io.IOUtils;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.util.Constants;
 
@@ -40,7 +42,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.ProjectStage;
 
-public class StreamedContentHandler extends BaseDynamicContentHandler {
+public class StreamedContentHandler extends PrimeCacheContentHandler {
 
     private static final Logger LOGGER = Logger.getLogger(StreamedContentHandler.class.getName());
 
@@ -51,8 +53,6 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
         String resourceKey = params.get(Constants.DYNAMIC_CONTENT_PARAM);
 
         if (resourceKey != null && library != null && library.equals(Constants.LIBRARY)) {
-            boolean cache = Boolean.parseBoolean(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
-
             try {
                 ExternalContext externalContext = context.getExternalContext();
                 Map<String, Object> session = externalContext.getSessionMap();
@@ -103,17 +103,17 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
                                     externalContext.setResponseHeader("Content-Disposition", "inline;filename=\"" + streamedContent.getName() + "\"");
                                 }
 
-                                stream(externalContext, inputStream, cache);
+                                stream(context, inputStream);
                             }
                         }
                         else if (value instanceof InputStream) {
                             try (InputStream inputStream = (InputStream) value) {
-                                stream(externalContext, inputStream, cache);
+                                stream(context, inputStream);
                             }
                         }
                         else if (value instanceof byte[]) {
                             try (InputStream inputStream = new ByteArrayInputStream((byte[]) value)) {
-                                stream(externalContext, inputStream, cache);
+                                stream(context, inputStream);
                             }
                         }
                     }
@@ -128,17 +128,11 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
         }
     }
 
-    protected void stream(ExternalContext externalContext, InputStream inputStream, boolean cache) throws IOException {
-        externalContext.setResponseStatus(HttpServletResponse.SC_OK);
-
-        handleCache(externalContext, cache);
-
-        byte[] buffer = new byte[2048];
-
-        int length;
-        while ((length = (inputStream.read(buffer))) >= 0) {
-            externalContext.getResponseOutputStream().write(buffer, 0, length);
-        }
+    protected void stream(FacesContext context, InputStream inputStream) throws IOException {
+        ExternalContext ectxt = context.getExternalContext();
+        ectxt.setResponseStatus(HttpServletResponse.SC_OK);
+        super.handle(context);
+        IOUtils.copyLarge(inputStream, ectxt.getResponseOutputStream());
     }
 
     protected void sendNotFound(ExternalContext externalContext) throws IOException {

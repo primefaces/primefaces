@@ -23,29 +23,37 @@
  */
 package org.primefaces.application.resource;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 
+import org.primefaces.util.Constants;
 import org.primefaces.util.ResourceUtils;
 
-public abstract class BaseDynamicContentHandler implements DynamicContentHandler {
+public abstract class PrimeCacheContentHandler implements PrimeContentHandler {
 
-    public void handleCache(ExternalContext externalContext, boolean cache) {
+    @Override
+    public void handle(FacesContext context) throws IOException {
+        ExternalContext ectxt = context.getExternalContext();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        boolean cache = Boolean.parseBoolean(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
         if (cache) {
             DateFormat httpDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.US);
             httpDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
             Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.YEAR, 1);
-            externalContext.setResponseHeader("Cache-Control", "max-age=29030400");
-            externalContext.setResponseHeader("Expires", httpDateFormat.format(calendar.getTime()));
+            ectxt.setResponseHeader("Cache-Control", "max-age=29030400");
+            ectxt.setResponseHeader("Expires", httpDateFormat.format(calendar.getTime()));
         }
         else {
-            ResourceUtils.addNoCacheControl(externalContext);
+            ResourceUtils.addNoCacheControl(ectxt);
         }
     }
 }
