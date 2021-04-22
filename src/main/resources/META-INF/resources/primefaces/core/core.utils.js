@@ -215,8 +215,7 @@ if (!PrimeFaces.utils) {
 
             if (overlay) {
                 overlay.attr({
-                    'role': ''
-                    ,'aria-hidden': true
+                    'aria-hidden': true
                     ,'aria-modal': false
                     ,'aria-live': 'off'
                 });
