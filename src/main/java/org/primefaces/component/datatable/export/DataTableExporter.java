@@ -26,14 +26,10 @@ package org.primefaces.component.datatable.export;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Array;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
+import java.util.*;
 import javax.el.MethodExpression;
 import javax.faces.FacesException;
-import javax.faces.component.*;
+import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
@@ -70,14 +66,7 @@ public abstract class DataTableExporter extends TableExporter<DataTable> {
         }
     }
 
-    protected List<UIColumn> getColumnsToExport(UIData table) {
-        return table.getChildren().stream()
-                .filter(UIColumn.class::isInstance)
-                .map(UIColumn.class::cast)
-                .collect(Collectors.toList());
-    }
-
-    protected boolean hasColumnFooter(List<UIColumn> columns) {
+    protected boolean hasColumnFooter(List<javax.faces.component.UIColumn> columns) {
         return columns.stream().anyMatch(c -> c.getFooter() != null);
     }
 
@@ -207,6 +196,8 @@ public abstract class DataTableExporter extends TableExporter<DataTable> {
     }
 
     protected abstract void exportCells(DataTable table, Object document);
+
+
 
     @Override
     public void export(FacesContext context, List<DataTable> tables, OutputStream outputStream, ExportConfiguration exportConfiguration) throws IOException {

@@ -31,13 +31,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
 import javax.el.MethodExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIData;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
@@ -72,13 +69,6 @@ public abstract class TreeTableExporter extends TableExporter<TreeTable> {
         public String toString() {
             return facet;
         }
-    }
-
-    protected List<UIColumn> getColumnsToExport(UIData table) {
-        return table.getChildren().stream()
-                .filter(UIColumn.class::isInstance)
-                .map(UIColumn.class::cast)
-                .collect(Collectors.toList());
     }
 
     protected boolean hasColumnFooter(List<UIColumn> columns) {
