@@ -83,6 +83,7 @@ title | null | String | Advisory tooltip information.
 type | text | String | Input field type.
 counter | null | String | Id of the label component to display remaining and entered characters.
 counterTemplate | {0} | String | Template text to display in counter. Placeholders: {0} = remaining chars, {1} = length, {2} = maxlength.
+countBytesAsChars | false | Boolean | Should bytes instead of characters be counted.
 
 ## Getting Started with InputText
 InputText usage is same as standard inputText;

@@ -14601,6 +14601,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Should bytes instead of characters be counted, default value is false.]]>
+            </description>
+            <name>countBytesAsChars</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Method providing suggestions.]]>
             </description>
             <name>completeMethod</name>
