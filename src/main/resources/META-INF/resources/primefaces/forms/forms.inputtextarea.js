@@ -142,8 +142,11 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
             this.counter.text(counterText);
         }
     },
-
-    // borrowed from the ckeditor wordcount plugin
+    /**
+     * Count the bytes of the inputtext.
+     * borrowed from the ckeditor wordcount plugin
+     * @private
+     */
     countBytes: function(text) {
         var count = 0, stringLength = text.length, i;
         text = String(text || "");
