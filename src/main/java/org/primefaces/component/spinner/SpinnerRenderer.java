@@ -60,10 +60,12 @@ public class SpinnerRenderer extends InputRenderer {
             if (suffix != null && submittedValue.endsWith(suffix)) {
                 submittedValue = submittedValue.substring(0, (submittedValue.length() - suffix.length()));
             }
-            if (!LangUtils.isValueEmpty(spinner.getThousandSeparator())) {
+            if (LangUtils.isNotEmpty(spinner.getThousandSeparator())) {
                 submittedValue = submittedValue.replace(spinner.getThousandSeparator(), "");
             }
-            submittedValue = submittedValue.replace(spinner.getDecimalSeparator(), ".");
+            if (LangUtils.isNotEmpty(spinner.getDecimalSeparator())) {
+                submittedValue = submittedValue.replace(spinner.getDecimalSeparator(), ".");
+            }
         }
 
         spinner.setSubmittedValue(submittedValue);
