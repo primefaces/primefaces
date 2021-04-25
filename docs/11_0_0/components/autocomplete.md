@@ -315,6 +315,7 @@ Sample-useage within AutoComplete. Note `completeEndpoint`-attribute.
 The following AJAX behavior events are available for this component. If no event is specified the default event is called.
 
 **Default Event:** `valueChange`
+
 **Available Events:** `blur, change, clear, click, contextmenu, copy, cut, dblclick, drag, dragend, dragenter, dragleave, dragover, dragstart, drop, focus, input, invalid, itemSelect, itemUnselect, keydown, keypress, keyup, moreTextSelect, emptyMessageSelect, mousedown, mousemove, mouseout, mouseover, mouseup, paste, query, reset, scroll, search, select, valueChange, wheel`
 
 
