@@ -126,7 +126,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
      */
     updateCounter: function() {
         var value = this.jq.val(),
-        length = this.cfg.countBytesAsChars ? this.countBytes(value) : value.length;
+        length = this.cfg.countBytesAsChars ? PrimeFaces.utils.countBytes(value) : value.length;
 
         if(this.counter) {
             var remaining = this.cfg.maxlength - length;
@@ -141,22 +141,6 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
 
             this.counter.text(counterText);
         }
-    },
-    /**
-     * Count the bytes of the inputtext.
-     * borrowed from the ckeditor wordcount plugin
-     * @private
-     * @param {string} text Text to count bytes from.
-     * @return {number} the byte count
-     */
-    countBytes: function(text) {
-        var count = 0, stringLength = text.length, i;
-        text = String(text || "");
-        for (i = 0; i < stringLength; i++) {
-            var partCount = encodeURI(text[i]).split("%").length;
-            count += partCount === 1 ? 1 : partCount - 1;
-        }
-        return count;
     },
     /**
      * Sets up the server-side auto complete functionality that suggests tokens while the user types.

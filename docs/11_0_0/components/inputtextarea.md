@@ -82,6 +82,7 @@ autoResize | true | Boolean | Specifies auto growing when being typed.
 maxlength | null | Integer | Maximum number of characters that may be entered in this field.
 counter | null | String | Id of the output component to display remaining chars.
 counterTemplate | {0} | String | Template text to display in counter. Placeholders: {0} = remaining chars, {1} = length, {2} = maxlength.
+countBytesAsChars | false | Boolean | Should bytes instead of characters be counted.
 completeMethod | null | MethodExpr | Method to provide suggestions.
 minQueryLength |3 | Integer | Number of characters to be typed to run a query.
 queryDelay | 700 | Integer | Delay in ms before sending each query.
