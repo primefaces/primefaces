@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.stream.Collectors;
 import javax.el.MethodExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -39,7 +40,6 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.TableExporter;
 import org.primefaces.model.LazyDataModel;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 
 public abstract class DataTableExporter extends TableExporter<DataTable> {
@@ -205,12 +205,8 @@ public abstract class DataTableExporter extends TableExporter<DataTable> {
 
         preExport(context, exportConfiguration);
 
-        int index = 0;
-        for (DataTable table : tables) {
-            DataTableVisitCallBack visitCallback = new DataTableVisitCallBack(table, exportConfiguration, index);
-            int nbTables = visitCallback.invoke(context);
-            index += nbTables;
-        }
+        ExportVisitCallback exportCallback = new ExportVisitCallback(tables, exportConfiguration);
+        exportCallback.export(context);
 
         postExport(context, exportConfiguration);
 
@@ -227,49 +223,38 @@ public abstract class DataTableExporter extends TableExporter<DataTable> {
      */
     protected abstract void doExport(FacesContext facesContext, DataTable table, ExportConfiguration exportConfiguration, int index) throws IOException;
 
-    private class DataTableVisitCallBack implements VisitCallback {
+    private class ExportVisitCallback implements VisitCallback {
 
         private ExportConfiguration config;
-
-        private DataTable target;
-
+        private List<DataTable> tables;
         private int index;
 
-        private int counter;
-
-        public DataTableVisitCallBack(DataTable target, ExportConfiguration config, int index) {
-            this.target = target;
+        public ExportVisitCallback(List<DataTable> tables, ExportConfiguration config) {
+            this.tables = tables;
             this.config = config;
-            this.index = index;
+            this.index = 0;
         }
 
         @Override
         public VisitResult visit(VisitContext context, UIComponent component) {
-            if (target == component) {
-                try {
-                    doExport(context.getFacesContext(), target, config, index);
-                    index++;
-                    counter++;
-                }
-                catch (IOException e) {
-                    throw new FacesException(e);
-                }
+            try {
+                doExport(context.getFacesContext(), (DataTable) component, config, index);
+                index++;
             }
+            catch (IOException e) {
+                throw new FacesException(e);
+            }
+
             return VisitResult.ACCEPT;
         }
 
-        /**
-         * Returns number of tables exported
-         * @param context faces context
-         * @return number of tables exported
-         */
-        public int invoke(FacesContext context) {
-            ComponentUtils.invokeOnClosestIteratorParent(target, p -> {
-                VisitContext visitContext = VisitContext.createVisitContext(context);
-                p.visitTree(visitContext, this);
-            }, true);
+        public void export(FacesContext context) {
+            List<String> tableIds = tables.stream()
+                    .map(dt -> dt.getClientId(context))
+                    .collect(Collectors.toList());
 
-            return counter;
+            VisitContext visitContext = VisitContext.createVisitContext(context, tableIds, null);
+            context.getViewRoot().visitTree(visitContext, this);
         }
     }
 

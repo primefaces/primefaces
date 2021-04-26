@@ -42,6 +42,7 @@ public abstract class InputTextareaBase extends AbstractPrimeHtmlInputTextArea i
         maxlength,
         counter,
         counterTemplate,
+        countBytesAsChars,
         completeMethod,
         minQueryLength,
         queryDelay,
@@ -104,6 +105,14 @@ public abstract class InputTextareaBase extends AbstractPrimeHtmlInputTextArea i
 
     public void setCounterTemplate(String counterTemplate) {
         getStateHelper().put(PropertyKeys.counterTemplate, counterTemplate);
+    }
+
+    public boolean getCountBytesAsChars() {
+        return (Boolean) this.getStateHelper().eval(PropertyKeys.countBytesAsChars, false);
+    }
+
+    public void setCountBytesAsChars(boolean countBytesAsChars) {
+        this.getStateHelper().put(PropertyKeys.countBytesAsChars, countBytesAsChars);
     }
 
     public javax.el.MethodExpression getCompleteMethod() {

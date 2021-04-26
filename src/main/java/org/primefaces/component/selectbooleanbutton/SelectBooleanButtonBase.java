@@ -26,12 +26,16 @@ package org.primefaces.component.selectbooleanbutton;
 import javax.faces.component.html.HtmlSelectBooleanCheckbox;
 
 import org.primefaces.component.api.Widget;
+import org.primefaces.util.MessageFactory;
 
 public abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SelectBooleanButtonRenderer";
+
+    public static final String LABEL_ON = "primefaces.switch.LABEL_ON";
+    public static final String LABEL_OFF = "primefaces.switch.LABEL_OFF";
 
     public enum PropertyKeys {
 
@@ -60,7 +64,7 @@ public abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox 
     }
 
     public String getOnLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.onLabel, null);
+        return (String) getStateHelper().eval(PropertyKeys.onLabel, MessageFactory.getMessage(LABEL_ON));
     }
 
     public void setOnLabel(String onLabel) {
@@ -68,7 +72,7 @@ public abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox 
     }
 
     public String getOffLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.offLabel, null);
+        return (String) getStateHelper().eval(PropertyKeys.offLabel, MessageFactory.getMessage(LABEL_OFF));
     }
 
     public void setOffLabel(String offLabel) {

@@ -36,6 +36,7 @@ AutoComplete provides live suggestions while an input is being typed.
 | disabled | false | Boolean | Disables input field
 | dropdown | false | Boolean | Enables dropdown mode when set true.
 | dropdownTabindex | null | String | Position of the dropdown button in the tabbing order.
+| dropdownAriaLabel | null | String | ARIA Label for the dropdown button.
 | dynamic | false | Boolean | Defines if dynamic loading is enabled for the element's panel. If the value is "true", the overlay is not rendered on page load to improve performance.
 | escape | true | Boolean | Defines if autocomplete results are escaped or not.
 | forceSelection | false | Boolean | When enabled, autoComplete only accepts input from the selection list.
@@ -211,11 +212,11 @@ empty query or search with the current value in input.
 ```
 
 ## Footer
-A footer can be added to the suggestion list using the `panelFooter` facet. You could use this for example to offer
-UI to add a new item. For example:
+A footer can be added to the suggestion list using the `footer` facet. You could use this for example to offer UI to
+add a new item. For example:
 
 ```xhtml
-<f:facet name="panelFooter">
+<f:facet name="footer">
     <p:button value="Add new" onclick="..."/>
 </f:facet>
 ```

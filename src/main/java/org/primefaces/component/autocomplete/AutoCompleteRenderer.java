@@ -318,6 +318,9 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.startElement("button", ac);
         writer.writeAttribute("class", dropdownClass, null);
         writer.writeAttribute("type", "button", null);
+        if (LangUtils.isNotBlank(ac.getDropdownAriaLabel())) {
+            writer.writeAttribute(HTML.ARIA_LABEL, ac.getDropdownAriaLabel(), null);
+        }
         if (disabled) {
             writer.writeAttribute("disabled", "disabled", null);
         }
@@ -498,7 +501,7 @@ public class AutoCompleteRenderer extends InputRenderer {
     }
 
     protected void encodeFooter(FacesContext context, AutoComplete ac) throws IOException {
-        UIComponent footer = ac.getFacet("panelFooter");
+        UIComponent footer = ac.getFacet("footer");
         if (ComponentUtils.shouldRenderFacet(footer)) {
             ResponseWriter writer = context.getResponseWriter();
             writer.startElement("div", null);
