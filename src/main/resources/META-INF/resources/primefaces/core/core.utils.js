@@ -734,6 +734,22 @@ if (!PrimeFaces.utils) {
             }
 
             return null;
+        },
+        /**
+         * Count the bytes of the inputtext.
+         * borrowed from the ckeditor wordcount plugin
+         * @private
+         * @param {string} text Text to count bytes from.
+         * @return {number} the byte count
+         */
+        countBytes: function(text) {
+            var count = 0, stringLength = text.length, i;
+            text = String(text || "");
+            for (i = 0; i < stringLength; i++) {
+                var partCount = encodeURI(text[i]).split("%").length;
+                count += partCount === 1 ? 1 : partCount - 1;
+            }
+            return count;
         }
     };
 

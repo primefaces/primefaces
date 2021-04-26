@@ -1,22 +1,22 @@
 /**
  * __PrimeFaces InputTextarea Widget__
- * 
+ *
  * InputTextarea is an extension to standard inputTextarea with autoComplete, autoResize, remaining characters counter
  * and theming features.
- * 
+ *
  * @prop {JQuery} counter The DOM element for the counter that informs the user about the number of characters they can
  * still enter before they reach the limit.
  * @prop {JQuery} panel The DOM element for the overlay panel with the autocomplete suggestions.
  * @prop {JQuery} items The DOM elements in the autocomplete panel that the user can select.
  * @prop {number} timeout The internal timeout ID of the most recent timeout that was started.
- * 
+ *
  * @interface {PrimeFaces.widget.InputTextareaCfg} cfg The configuration for the {@link  InputTextarea| InputTextarea widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.DeferredWidgetCfg} cfg
- * 
+ *
  * @prop {boolean} cfg.autoResize Enables auto growing when being typed.
- * @prop {boolean} cfg.autoComplete Enables autocompletion that suggests tokens to the user as they type. 
+ * @prop {boolean} cfg.autoComplete Enables autocompletion that suggests tokens to the user as they type.
  * @prop {string} cfg.counter ID of the label component to display remaining and entered characters.
  * @prop {string} cfg.counterTemplate Template text to display in counter, default value is `{0}`.
  * @prop {number} cfg.maxlength Maximum number of characters that may be entered in this field.
@@ -39,7 +39,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
         else
             this._render();
     },
-    
+
     /**
      * @include
      * @override
@@ -126,7 +126,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
      */
     updateCounter: function() {
         var value = this.jq.val(),
-        length = value.length;
+        length = this.cfg.countBytesAsChars ? PrimeFaces.utils.countBytes(value) : value.length;
 
         if(this.counter) {
             var remaining = this.cfg.maxlength - length;
@@ -142,7 +142,6 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
             this.counter.text(counterText);
         }
     },
-
     /**
      * Sets up the server-side auto complete functionality that suggests tokens while the user types.
      * @private

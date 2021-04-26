@@ -78,7 +78,8 @@ public class InputTextRenderer extends InputRenderer {
             UIComponent counterComponent = SearchExpressionFacade.resolveComponent(context, inputText, counter);
 
             wb.attr("counter", counterComponent.getClientId(context))
-                    .attr("counterTemplate", inputText.getCounterTemplate(), null);
+                    .attr("counterTemplate", inputText.getCounterTemplate(), null)
+                    .attr("countBytesAsChars", inputText.getCountBytesAsChars());
         }
 
         wb.finish();

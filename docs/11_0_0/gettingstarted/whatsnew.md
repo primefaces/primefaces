@@ -4,6 +4,7 @@ This page contains a list of big features. Please check the GitHub issues for al
 
 ## 11.0.0
 
+  * InputText, InputTextarea: counter can count bytes instead of characters.
   * TODO
 
 Look into [migration guide](https://primefaces.github.io/primefaces/11_0_0/#/../migrationguide/10_0_0?id=datatable) for more enhancements and changes.
