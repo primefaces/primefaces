@@ -40,7 +40,8 @@ import org.primefaces.util.LangUtils;
 
 public abstract class TableExporter<T extends UIComponent & UITable> extends Exporter<T> {
 
-    private List<UIColumn> exportableColumns;
+    // Because more than 1 table can be exported we cache each one for performance
+    private Map<UITable, List<UIColumn>> exportableColumns = new HashMap<>();
 
     protected void exportColumn(FacesContext context, T table, UIColumn column, List<UIComponent> components,
             boolean joinComponents, Consumer<String> callback) {
@@ -88,32 +89,48 @@ public abstract class TableExporter<T extends UIComponent & UITable> extends Exp
      * @return the List<UIColumn> that are exportable
      */
     protected List<UIColumn> getExportableColumns(UITable table) {
-        if (exportableColumns != null) {
-            return exportableColumns;
+        if (exportableColumns.containsKey(table)) {
+            return exportableColumns.get(table);
         }
 
-        // sort by display priority
-        List<ColumnMeta> columnMeta = table.getColumnMeta().values().stream().
-                    sorted(Comparator.comparingInt(ColumnMeta::getDisplayPriority))
-                    .collect(Collectors.toList());
+        List<UIColumn> allColumns = table.getColumns();
+        List<UIColumn> exportcolumns = new ArrayList<>(allColumns.size());
+        Map<String, ColumnMeta> columnMetadata = table.getColumnMeta();
 
-        List<UIColumn> columns = table.getColumns();
-        exportableColumns = new ArrayList<>(table.getColumns().size());
-        META: for (ColumnMeta meta : columnMeta) {
-            String columnKey = meta.getColumnKey();
-            for (UIColumn col : columns) {
+        if (columnMetadata == null || columnMetadata.isEmpty()) {
+            for (UIColumn col : allColumns) {
                 if (col instanceof DynamicColumn) {
                     ((DynamicColumn) col).applyStatelessModel();
                 }
-                if (col.getColumnKey().equals(columnKey)) {
-                    if (col.isRendered() && col.isExportable()) {
-                        exportableColumns.add(col);
+                if (col.isRendered() && col.isExportable()) {
+                    exportcolumns.add(col);
+                }
+            }
+        }
+        else {
+            // sort by display priority
+            List<ColumnMeta> columnMetas = columnMetadata.values().stream().
+                        sorted(Comparator.comparingInt(ColumnMeta::getDisplayPriority))
+                        .collect(Collectors.toList());
+
+            META: for (ColumnMeta meta : columnMetas) {
+                String columnKey = meta.getColumnKey();
+                for (UIColumn col : allColumns) {
+                    if (col instanceof DynamicColumn) {
+                        ((DynamicColumn) col).applyStatelessModel();
                     }
-                    continue META;
+                    if (col.getColumnKey().equals(columnKey)) {
+                        if (col.isRendered() && col.isExportable()) {
+                            exportcolumns.add(col);
+                        }
+                        continue META;
+                    }
                 }
             }
         }
 
-        return exportableColumns;
+        exportableColumns.put(table, exportcolumns);
+
+        return exportcolumns;
     }
 }
