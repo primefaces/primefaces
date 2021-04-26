@@ -27,8 +27,6 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import javax.el.ValueExpression;
@@ -525,31 +523,6 @@ public class ComponentUtils {
         return value;
     }
 
-    public static boolean isNestedWithinIterator(UIComponent component) {
-        return invokeOnClosestIteratorParent(component, p -> { }, false);
-    }
-
-    public static boolean invokeOnClosestIteratorParent(UIComponent component, Consumer<UIComponent> function, boolean includeSelf) {
-        Predicate<UIComponent> isIteratorComponent = p -> p instanceof javax.faces.component.UIData
-                || p.getClass().getName().endsWith("UIRepeat")
-                || (p instanceof UITabPanel && ((UITabPanel) p).isRepeating());
-
-        UIComponent parent = component;
-        while (null != (parent = parent.getParent())) {
-            if (isIteratorComponent.test(parent)) {
-                function.accept(parent);
-                return true;
-            }
-        }
-
-        if (includeSelf && isIteratorComponent.test(component)) {
-            function.accept(component);
-            return true;
-        }
-
-        return false;
-    }
-
     public static ViewPoolingResetMode isViewPooling(FacesContext context) {
         if (context.getViewRoot() != null) {
             Object mode = context.getViewRoot().getAttributes().get("oam.view.resetSaveStateMode");
@@ -569,5 +542,24 @@ public class ComponentUtils {
         OFF,
         SOFT,
         HARD;
+    }
+
+    /**
+     * Hack for Mojarra as our UIData is copied from Mojarra.
+     * This is required because the way how UIData is implemented in Mojarra requires to check for parent iterator-components.
+     *
+     * @param component
+     * @return
+     */
+    public static boolean isNestedWithinIterator(UIComponent component) {
+        UIComponent parent = component;
+        while (null != (parent = parent.getParent())) {
+            if (parent instanceof javax.faces.component.UIData || parent.getClass().getName().endsWith("UIRepeat")
+                    || (parent instanceof UITabPanel && ((UITabPanel) parent).isRepeating())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

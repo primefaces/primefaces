@@ -29,8 +29,7 @@ import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import javax.el.MethodExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIColumn;
@@ -43,7 +42,6 @@ import javax.faces.context.FacesContext;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.TableExporter;
 import org.primefaces.component.treetable.TreeTable;
-import org.primefaces.component.treetable.TreeTableBase;
 import org.primefaces.model.TreeNode;
 import org.primefaces.util.Constants;
 
@@ -201,12 +199,8 @@ public abstract class TreeTableExporter extends TableExporter<TreeTable> {
 
         preExport(context, exportConfiguration);
 
-        int index = 0;
-        for (TreeTable table : tables) {
-            TreeTableVisitCallBack visitCallback = new TreeTableVisitCallBack(table, exportConfiguration, index);
-            int nbTables = visitCallback.invoke(context);
-            index += nbTables;
-        }
+        ExportVisitCallback exportCallback = new ExportVisitCallback(tables, exportConfiguration);
+        exportCallback.export(context);
 
         postExport(context, exportConfiguration);
 
@@ -223,68 +217,38 @@ public abstract class TreeTableExporter extends TableExporter<TreeTable> {
      */
     protected abstract void doExport(FacesContext facesContext, TreeTable table, ExportConfiguration exportConfiguration, int index) throws IOException;
 
-    private class TreeTableVisitCallBack implements VisitCallback {
+    private class ExportVisitCallback implements VisitCallback {
 
         private ExportConfiguration config;
-
-        private TreeTable target;
-
+        private List<TreeTable> tables;
         private int index;
 
-        private int counter;
-
-        public TreeTableVisitCallBack(TreeTable target, ExportConfiguration config, int index) {
-            this.target = target;
+        public ExportVisitCallback(List<TreeTable> tables, ExportConfiguration config) {
+            this.tables = tables;
             this.config = config;
-            this.index = index;
+            this.index = 0;
         }
 
         @Override
         public VisitResult visit(VisitContext context, UIComponent component) {
-            if (target == component) {
-                try {
-                    doExport(context.getFacesContext(), target, config, index);
-                    index++;
-                    counter++;
-                }
-                catch (IOException e) {
-                    throw new FacesException(e);
-                }
+            try {
+                doExport(context.getFacesContext(), (TreeTable) component, config, index);
+                index++;
             }
+            catch (IOException e) {
+                throw new FacesException(e);
+            }
+
             return VisitResult.ACCEPT;
         }
 
-        /**
-         * Returns number of tables exported
-         * @param context faces context
-         * @return number of tables exported
-         */
-        public int invoke(FacesContext context) {
-            invokeOnClosestTreeTableParent(target, p -> {
-                VisitContext visitContext = VisitContext.createVisitContext(context);
-                p.visitTree(visitContext, this);
-            }, true);
+        public void export(FacesContext context) {
+            List<String> tableIds = tables.stream()
+                    .map(dt -> dt.getClientId(context))
+                    .collect(Collectors.toList());
 
-            return counter;
-        }
-
-        public boolean invokeOnClosestTreeTableParent(UIComponent component, Consumer<UIComponent> function, boolean includeSelf) {
-            Predicate<UIComponent> isIteratorComponent = p -> p instanceof TreeTableBase;
-
-            UIComponent parent = component;
-            while (null != (parent = parent.getParent())) {
-                if (isIteratorComponent.test(parent)) {
-                    function.accept(parent);
-                    return true;
-                }
-            }
-
-            if (includeSelf && isIteratorComponent.test(component)) {
-                function.accept(component);
-                return true;
-            }
-
-            return false;
+            VisitContext visitContext = VisitContext.createVisitContext(context, tableIds, null);
+            context.getViewRoot().visitTree(visitContext, this);
         }
     }
 
