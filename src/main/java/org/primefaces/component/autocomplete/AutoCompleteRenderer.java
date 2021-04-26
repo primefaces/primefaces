@@ -318,6 +318,9 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.startElement("button", ac);
         writer.writeAttribute("class", dropdownClass, null);
         writer.writeAttribute("type", "button", null);
+        if (LangUtils.isNotBlank(ac.getDropdownAriaLabel())) {
+            writer.writeAttribute(HTML.ARIA_LABEL, ac.getDropdownAriaLabel(), null);
+        }
         if (disabled) {
             writer.writeAttribute("disabled", "disabled", null);
         }
