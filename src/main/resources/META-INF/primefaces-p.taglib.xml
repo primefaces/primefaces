@@ -22332,18 +22332,18 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                 <![CDATA[Custom label for on state. Default is "On".]]>
             </description>
             <name>onLabel</name>
-            <required>true</required>
+            <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                 <![CDATA[Custom label for off state. Default is "Off".]]>
             </description>
             <name>offLabel</name>
-            <required>true</required>
+            <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
