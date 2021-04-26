@@ -271,7 +271,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
     protected void encodeElements(FacesContext context, SplitButton button, List<MenuElement> elements, boolean isSubmenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        for (Object element : elements) {
+        for (MenuElement element : elements) {
             if (element instanceof MenuItem) {
                 MenuItem menuItem = (MenuItem) element;
                 if (menuItem.isRendered()) {

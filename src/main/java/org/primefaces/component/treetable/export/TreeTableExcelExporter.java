@@ -109,10 +109,8 @@ public class TreeTableExcelExporter extends TreeTableExporter {
         exportTable(context, table, sheet, exportConfiguration);
 
         if (options == null || options.isAutoSizeColumn()) {
-            short colIndex = 0;
-            for (UIColumn col : getExportableColumns(table)) {
-                sheet.autoSizeColumn(colIndex);
-                colIndex++;
+            for (int i = 0; i < getExportableColumns(table).size(); i++) {
+                sheet.autoSizeColumn(i);
             }
         }
     }
