@@ -1200,7 +1200,7 @@ public class UIData extends javax.faces.component.UIData {
         }
     }
 
-    protected Boolean isNestedWithinIterator() {
+    protected boolean isNestedWithinIterator() {
         if (isNested == null) {
             isNested = ComponentUtils.isNestedWithinIterator(this);
         }
