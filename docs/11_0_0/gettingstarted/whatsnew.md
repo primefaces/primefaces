@@ -4,6 +4,7 @@ This page contains a list of big features. Please check the GitHub issues for al
 
 ## 11.0.0
 
+  * AutoComplete: added `footer` facet which will be added to the suggestion list.
   * BreadCrumb: added responsive mode to automatically limit the items to one line.
   * InputText, InputTextarea: counter can count bytes instead of characters.
 

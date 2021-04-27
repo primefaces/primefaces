@@ -63,6 +63,7 @@
  * the overlay is not rendered on page load to improve performance.
  * @prop {string} cfg.emptyMessage Text to display when there is no data to display.
  * @prop {boolean} cfg.escape Whether the text of the suggestion items is escaped for HTML.
+ * @prop {boolean} cfg.hasFooter Whether a footer facet is present.
  * @prop {boolean} cfg.forceSelection Whether one of the available suggestion items is forced to be preselected.
  * @prop {boolean} cfg.grouping Whether suggestion items are grouped.
  * @prop {boolean} cfg.itemtip Whether a tooltip is shown for the suggestion items.
@@ -114,6 +115,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.dynamic = this.cfg.dynamic === true ? true : false;
         this.cfg.autoSelection = this.cfg.autoSelection === false ? false : true;
         this.cfg.escape = this.cfg.escape === false ? false : true;
+        this.cfg.hasFooter = this.cfg.hasFooter === true ? true : false;
         this.suppressInput = true;
         this.touchToDropdownButton = false;
         this.isTabPressed = false;
@@ -795,9 +797,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         else {
             if(this.cfg.emptyMessage) {
                 var emptyText = '<div class="ui-autocomplete-emptyMessage ui-widget">' + PrimeFaces.escapeHTML(this.cfg.emptyMessage) + '</div>';
-                this.panel.html(emptyText);
+                this.panel.prepend(emptyText);
             }
-            else {
+            else if(!this.cfg.hasFooter){
                 this.panel.hide();
             }
 

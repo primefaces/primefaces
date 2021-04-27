@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.splitbutton;
 
+import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuModel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -33,6 +34,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -114,13 +116,16 @@ public class SplitButton extends SplitButtonBase {
     }
 
     @Override
-    public List getElements() {
+    public List<MenuElement> getElements() {
         MenuModel model = getModel();
         if (model != null) {
             return model.getElements();
         }
         else {
-            return getChildren();
+            return getChildren().stream()
+                        .filter(MenuElement.class::isInstance)
+                        .map(MenuElement.class::cast)
+                        .collect(Collectors.toList());
         }
     }
 

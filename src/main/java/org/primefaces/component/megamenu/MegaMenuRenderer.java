@@ -210,21 +210,15 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
 
         if (column.getElementsCount() > 0) {
             List<MenuElement> columnElements = column.getElements();
-            for (Object element : columnElements) {
-                if (element instanceof MenuElement) {
-                    if (((MenuElement) element).isRendered()) {
-                        if (element instanceof Submenu) {
-                            encodeDescendantSubmenu(context, menu, (Submenu) element);
-                        }
-                        else if (element instanceof Separator) {
-                            encodeSubmenuSeparator(context, (Separator) element);
-                        }
+            for (MenuElement element : columnElements) {
+                if (element.isRendered()) {
+                    if (element instanceof Submenu) {
+                        encodeDescendantSubmenu(context, menu, (Submenu) element);
+                    }
+                    else if (element instanceof Separator) {
+                        encodeSubmenuSeparator(context, (Separator) element);
                     }
                 }
-                else if (element instanceof UIComponent) {
-                    ((UIComponent) element).encodeAll(context);
-                }
-
             }
         }
 
