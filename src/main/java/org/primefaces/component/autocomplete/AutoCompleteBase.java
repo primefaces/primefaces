@@ -27,12 +27,15 @@ import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
+import org.primefaces.util.MessageFactory;
 
 public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implements Widget, InputHolder, MixedClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.AutoCompleteRenderer";
+
+    public static final String DROPDOWN_LABEL = "primefaces.autocomplete.aria.DROPDOWN_LABEL";
 
     public enum PropertyKeys {
 
@@ -78,6 +81,7 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
         escape,
         queryMode,
         dropdownTabindex,
+        dropdownAriaLabel,
         completeEndpoint
     }
 
@@ -424,6 +428,14 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
 
     public void setDropdownTabindex(String dropdownTabindex) {
         getStateHelper().put(PropertyKeys.dropdownTabindex, dropdownTabindex);
+    }
+
+    public String getDropdownAriaLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.dropdownAriaLabel, MessageFactory.getMessage(DROPDOWN_LABEL));
+    }
+
+    public void setDropdownAriaLabel(String dropdownAriaLabel) {
+        getStateHelper().put(PropertyKeys.dropdownAriaLabel, dropdownAriaLabel);
     }
 
     public String getCompleteEndpoint() {

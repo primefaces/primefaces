@@ -37,8 +37,8 @@ label | null | String | User presentable name.
 onchange | null | String | Callback to execute on value change.
 style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the container.
-onLabel | null | String | Label to display when button is selected.
-offLabel | null | String | Label to display when button is unselected.
+onLabel | null | String | Label to display when button is selected. Default is "On".
+offLabel | null | String | Label to display when button is unselected. Default is "Off".
 onIcon | null | String | Icon to display when button is selected.
 offIcon | null | String | Icon to display when button is unselected.
 tabindex | 0 | String | Position of the element in the tabbing order.

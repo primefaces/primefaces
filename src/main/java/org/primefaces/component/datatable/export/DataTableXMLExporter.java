@@ -101,19 +101,17 @@ public class DataTableXMLExporter extends DataTableExporter {
     @Override
     protected void exportCells(DataTable table, Object document) {
         PrintWriter writer = (PrintWriter) document;
-        for (UIColumn col : table.getColumns()) {
+        for (UIColumn col : getExportableColumns(table)) {
             if (col instanceof DynamicColumn) {
                 ((DynamicColumn) col).applyStatelessModel();
             }
 
-            if (col.isRendered() && col.isExportable()) {
-                String columnTag = getColumnTag(col);
-                try {
-                    addColumnValue(writer, table, col.getChildren(), columnTag, col);
-                }
-                catch (IOException ex) {
-                    throw new FacesException(ex);
-                }
+            String columnTag = getColumnTag(col);
+            try {
+                addColumnValue(writer, table, col.getChildren(), columnTag, col);
+            }
+            catch (IOException ex) {
+                throw new FacesException(ex);
             }
         }
     }

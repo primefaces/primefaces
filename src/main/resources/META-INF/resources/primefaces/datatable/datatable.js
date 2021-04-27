@@ -278,6 +278,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     _render: function() {
         this.isRTL = this.jq.hasClass('ui-datatable-rtl');
         this.cfg.partialUpdate = (this.cfg.partialUpdate === false) ? false : true;
+        this.hasColumnGroup = this.hasColGroup();
 
         if(this.cfg.scrollable) {
             this.setupScrolling();
@@ -3906,7 +3907,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         this.fixColumnWidths();
 
-        this.hasColumnGroup = this.hasColGroup();
         if(this.hasColumnGroup) {
             this.addGhostRow();
         }
@@ -4417,6 +4417,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
             }
         });
+
+        // GitHub #5013 Frozen Columns should not be draggable/droppable
+        if($this.cfg.frozenColumns) {
+            var frozenHeaders = this.frozenThead.find('.ui-frozen-column');
+            frozenHeaders.draggable('disable');
+            frozenHeaders.droppable('disable');
+            frozenHeaders.disableSelection();
+        }
     },
 
     /**
@@ -5118,8 +5126,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             return;
         }
 
-        // update the visibility of columns but ignore expanded rows
-        if(this.headers) {
+        // update the visibility of columns but ignore expanded rows and GitHub #7255 grouped headers
+        if(this.headers && !this.hasColumnGroup) {
             for(var i = 0; i < this.headers.length; i++) {
                 var header = this.headers.eq(i),
                     col = this.tbody.find('> tr:not(.ui-expanded-row-content) > td:nth-child(' + (header.index() + 1) + ')');

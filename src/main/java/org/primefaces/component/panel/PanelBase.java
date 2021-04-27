@@ -51,6 +51,7 @@ public abstract class PanelBase extends UIPanel implements Widget, ClientBehavio
         closeTitle,
         toggleTitle,
         menuTitle,
+        renderEmptyFacets,
         toggleOrientation,
         toggleableHeader
     }
@@ -190,5 +191,13 @@ public abstract class PanelBase extends UIPanel implements Widget, ClientBehavio
 
     public void setToggleableHeader(boolean toggleableHeader) {
         getStateHelper().put(PropertyKeys.toggleableHeader, toggleableHeader);
+    }
+
+    public boolean isRenderEmptyFacets() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.renderEmptyFacets, false);
+    }
+
+    public void setRenderEmptyFacets(boolean renderEmptyFacets) {
+        getStateHelper().put(PropertyKeys.renderEmptyFacets, renderEmptyFacets);
     }
 }
