@@ -26,7 +26,6 @@ package org.primefaces.component.datatable.export;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -109,42 +108,40 @@ public class DataTableCSVExporter extends DataTableExporter {
     protected void addColumnFacets(PrintWriter writer, DataTable table, ColumnType columnType) throws IOException {
         boolean firstCellWritten = false;
 
-        for (UIColumn col : table.getColumns()) {
+        for (UIColumn col : getExportableColumns(table)) {
             if (col instanceof DynamicColumn) {
                 ((DynamicColumn) col).applyStatelessModel();
             }
 
-            if (col.isRendered() && col.isExportable()) {
-                if (firstCellWritten) {
-                    writer.append(csvOptions.getDelimiterChar());
-                }
-
-                UIComponent facet = col.getFacet(columnType.facet());
-                String textValue;
-                switch (columnType) {
-                    case HEADER:
-                        textValue = col.getExportHeaderValue() != null ? col.getExportHeaderValue() : col.getHeaderText();
-                        break;
-                    case FOOTER:
-                        textValue = col.getExportFooterValue() != null ? col.getExportFooterValue() : col.getFooterText();
-                        break;
-                    default:
-                        textValue = null;
-                        break;
-                }
-
-                if (textValue != null) {
-                    addColumnValue(writer, textValue);
-                }
-                else if (ComponentUtils.shouldRenderFacet(facet)) {
-                    addColumnValue(writer, facet);
-                }
-                else {
-                    addColumnValue(writer, Constants.EMPTY_STRING);
-                }
-
-                firstCellWritten = true;
+            if (firstCellWritten) {
+                writer.append(csvOptions.getDelimiterChar());
             }
+
+            UIComponent facet = col.getFacet(columnType.facet());
+            String textValue;
+            switch (columnType) {
+                case HEADER:
+                    textValue = col.getExportHeaderValue() != null ? col.getExportHeaderValue() : col.getHeaderText();
+                    break;
+                case FOOTER:
+                    textValue = col.getExportFooterValue() != null ? col.getExportFooterValue() : col.getFooterText();
+                    break;
+                default:
+                    textValue = null;
+                    break;
+            }
+
+            if (textValue != null) {
+                addColumnValue(writer, textValue);
+            }
+            else if (ComponentUtils.shouldRenderFacet(facet)) {
+                addColumnValue(writer, facet);
+            }
+            else {
+                addColumnValue(writer, Constants.EMPTY_STRING);
+            }
+
+            firstCellWritten = true;
         }
 
         writer.append(csvOptions.getEndOfLineSymbols());
@@ -155,38 +152,26 @@ public class DataTableCSVExporter extends DataTableExporter {
         PrintWriter writer = (PrintWriter) document;
         boolean firstCellWritten = false;
 
-        for (UIColumn col : table.getColumns()) {
+        for (UIColumn col : getExportableColumns(table)) {
             if (col instanceof DynamicColumn) {
                 ((DynamicColumn) col).applyStatelessModel();
             }
 
-            if (col.isRendered() && col.isExportable()) {
-                if (firstCellWritten) {
-                    writer.append(csvOptions.getDelimiterChar());
-                }
-
-                try {
-                    addColumnValue(writer, table, col.getChildren(), col);
-                }
-                catch (IOException ex) {
-                    throw new FacesException(ex);
-                }
-
-                firstCellWritten = true;
-            }
-        }
-    }
-
-    protected void addColumnValues(PrintWriter writer, DataTable table, List<UIColumn> columns) throws IOException {
-        for (Iterator<UIColumn> iterator = columns.iterator(); iterator.hasNext(); ) {
-            UIColumn col = iterator.next();
-            addColumnValue(writer, table, col.getChildren(), col);
-
-            if (iterator.hasNext()) {
+            if (firstCellWritten) {
                 writer.append(csvOptions.getDelimiterChar());
             }
+
+            try {
+                addColumnValue(writer, table, col.getChildren(), col);
+            }
+            catch (IOException ex) {
+                throw new FacesException(ex);
+            }
+
+            firstCellWritten = true;
         }
     }
+
 
     protected void addColumnValue(PrintWriter writer, UIComponent component) throws IOException {
         String value = component == null ? Constants.EMPTY_STRING : exportValue(FacesContext.getCurrentInstance(), component);

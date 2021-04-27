@@ -123,6 +123,11 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
         var el = document.getElementById(this.id);
         var items = new vis.DataSet(this.cfg.data);
 
+        // #7217 must allow HTML in elements
+        this.cfg.opts.xss = {
+            disabled: true
+        };
+
         // bind items events
         this._bindItemsEvents();
         if (this.cfg.groups) {

@@ -1850,6 +1850,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[ARIA Label for the dropdown button.]]>
+            </description>
+            <name>dropdownAriaLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[REST-endpoint for fetching autocomplete-suggestions. (instead of completeMethod)]]>
             </description>
             <name>completeEndpoint</name>
@@ -14099,6 +14107,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Should bytes instead of characters be counted, default value is false.]]>
+            </description>
+            <name>countBytesAsChars</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -14606,6 +14622,14 @@
             <name>counterTemplate</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Should bytes instead of characters be counted, default value is false.]]>
+            </description>
+            <name>countBytesAsChars</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -18986,6 +19010,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Render facets even if their children are not rendered. Default is false.]]>
+            </description>
+            <name>renderEmptyFacets</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Defines the orientation of the toggle animation, valid values are "vertical" and "horizontal".]]>
             </description>
             <name>toggleOrientation</name>
@@ -22332,18 +22364,18 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                 <![CDATA[Custom label for on state. Default is "On".]]>
             </description>
             <name>onLabel</name>
-            <required>true</required>
+            <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                 <![CDATA[Custom label for off state. Default is "Off".]]>
             </description>
             <name>offLabel</name>
-            <required>true</required>
+            <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>

@@ -29,6 +29,7 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.Temporal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -569,4 +570,20 @@ public class CalendarUtils {
         }
         return now;
     }
+
+    public static List<String> splitRange(final String dateRange, final String pattern, final String separator) {
+        final String token = Constants.SPACE + separator + Constants.SPACE;
+        if (pattern.contains(token)) {
+            throw new FacesException("Pattern '" + pattern + "' contains separator '" + token + "'");
+        }
+        final List<String> dates = new ArrayList<>();
+        if (!dateRange.contains(token)) {
+            return dates;
+        }
+        final int index = dateRange.indexOf(token);
+        dates.add(dateRange.substring(0, index));
+        dates.add(dateRange.substring(index + token.length()));
+        return dates;
+    }
+
 }

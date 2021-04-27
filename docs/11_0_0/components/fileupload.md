@@ -47,11 +47,12 @@ powered rich solution with graceful degradation for legacy browsers.
 | messageTemplate | {name} {size} | String | Message template to use when displaying file validation errors.
 | mode | advanced | String | Mode of the fileupload, can be _simple_ or _advanced_.
 | multiple | false | Boolean | Allows choosing of multi file uploads from native file browse dialog
-| onAdd | null | String | Callback to execute before adding a file.
+| onAdd | null | String | Advanced Mode Only. Callback to execute before adding a file.
+| oncancel | null | String | Advanced Mode Only. Callback to execute after fileupload request is cancelled.
 | oncomplete | null | String | Client side callback to execute when upload ends.
 | onerror | null | String | Callback to execute if fileupload request fails.
 | onstart | null | String | Client side callback to execute when upload begins.
-| onupload | null | String | Callback to execute before the files are sent. If this callback returns false, the file upload request is not started.
+| onupload | null | String | Advanced Mode Only. Callback to execute before the files are sent. If this callback returns false, the file upload request is not started.
 | onvalidationfailure | null | String | Handler called when client-side validation fails.
 | previewWidth | 80 | Integer | Width for image previews in pixels.
 | process | @all | String | Component(s) to process in fileupload request.

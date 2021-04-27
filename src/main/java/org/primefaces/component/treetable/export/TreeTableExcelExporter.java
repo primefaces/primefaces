@@ -26,6 +26,7 @@ package org.primefaces.component.treetable.export;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import javax.faces.component.UIComponent;
@@ -57,9 +58,7 @@ import org.primefaces.component.export.ExcelOptions;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.ExporterOptions;
 import org.primefaces.component.treetable.TreeTable;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
+import org.primefaces.util.*;
 
 
 public class TreeTableExcelExporter extends TreeTableExporter {
@@ -70,7 +69,9 @@ public class TreeTableExcelExporter extends TreeTableExporter {
     private CellStyle cellStyleCenterAlign;
     private CellStyle cellStyleLeftAlign;
     private CellStyle facetStyle;
+    private CellStyle currencyStyle;
     private boolean stronglyTypedCells;
+    private Locale locale;
 
     @Override
     protected void preExport(FacesContext context, ExportConfiguration exportConfiguration) throws IOException {
@@ -100,21 +101,18 @@ public class TreeTableExcelExporter extends TreeTableExporter {
         else {
             stronglyTypedCells = options.isStronglyTypedCells();
         }
+        if (stronglyTypedCells) {
+            locale = LocaleUtils.getCurrentLocale(context);
+        }
         Sheet sheet = createSheet(wb, sheetName, options);
         applyOptions(wb, table, sheet, options);
         exportTable(context, table, sheet, exportConfiguration);
 
         if (options == null || options.isAutoSizeColumn()) {
             short colIndex = 0;
-            for (UIColumn col : table.getColumns()) {
-                if (col instanceof DynamicColumn) {
-                    ((DynamicColumn) col).applyStatelessModel();
-                }
-
-                if (col.isRendered() && col.isExportable()) {
-                    sheet.autoSizeColumn(colIndex);
-                    colIndex++;
-                }
+            for (UIColumn col : getExportableColumns(table)) {
+                sheet.autoSizeColumn(colIndex);
+                colIndex++;
             }
         }
     }
@@ -137,14 +135,12 @@ public class TreeTableExcelExporter extends TreeTableExporter {
         int sheetRowIndex = sheet.getLastRowNum() + 1;
         Row row = sheet.createRow(sheetRowIndex);
 
-        for (UIColumn col : table.getColumns()) {
+        for (UIColumn col : getExportableColumns(table)) {
             if (col instanceof DynamicColumn) {
                 ((DynamicColumn) col).applyStatelessModel();
             }
 
-            if (col.isRendered() && col.isExportable()) {
-                addColumnValue(table, row, col.getChildren(), col);
-            }
+            addColumnValue(table, row, col.getChildren(), col);
         }
     }
 
@@ -152,37 +148,35 @@ public class TreeTableExcelExporter extends TreeTableExporter {
         int sheetRowIndex = sheet.getLastRowNum() + 1;
         Row rowHeader = sheet.createRow(sheetRowIndex);
 
-        for (UIColumn col : table.getColumns()) {
+        for (UIColumn col : getExportableColumns(table)) {
             if (col instanceof DynamicColumn) {
                 ((DynamicColumn) col).applyStatelessModel();
             }
 
-            if (col.isRendered() && col.isExportable()) {
-                UIComponent facet = col.getFacet(columnType.facet());
-                String textValue;
-                switch (columnType) {
-                    case HEADER:
-                        textValue = (col.getExportHeaderValue() != null) ? col.getExportHeaderValue() : col.getHeaderText();
-                        break;
+            UIComponent facet = col.getFacet(columnType.facet());
+            String textValue;
+            switch (columnType) {
+                case HEADER:
+                    textValue = (col.getExportHeaderValue() != null) ? col.getExportHeaderValue() : col.getHeaderText();
+                    break;
 
-                    case FOOTER:
-                        textValue = (col.getExportFooterValue() != null) ? col.getExportFooterValue() : col.getFooterText();
-                        break;
+                case FOOTER:
+                    textValue = (col.getExportFooterValue() != null) ? col.getExportFooterValue() : col.getFooterText();
+                    break;
 
-                    default:
-                        textValue = null;
-                        break;
-                }
+                default:
+                    textValue = null;
+                    break;
+            }
 
-                if (textValue != null) {
-                    addColumnValue(rowHeader, textValue);
-                }
-                else if (ComponentUtils.shouldRenderFacet(facet)) {
-                    addColumnValue(rowHeader, facet);
-                }
-                else {
-                    addColumnValue(rowHeader, Constants.EMPTY_STRING);
-                }
+            if (textValue != null) {
+                addColumnValue(rowHeader, textValue);
+            }
+            else if (ComponentUtils.shouldRenderFacet(facet)) {
+                addColumnValue(rowHeader, facet);
+            }
+            else {
+                addColumnValue(rowHeader, Constants.EMPTY_STRING);
             }
         }
     }
@@ -209,14 +203,7 @@ public class TreeTableExcelExporter extends TreeTableExporter {
         }
 
         if (facetText != null) {
-            int colspan = 0;
-
-            for (UIColumn col : table.getColumns()) {
-                if (col.isRendered() && col.isExportable()) {
-                    colspan++;
-                }
-            }
-
+            int colspan = getExportableColumns(table).size();
             int rowIndex = sheet.getLastRowNum() + 1;
             Row rowHeader = sheet.createRow(rowIndex);
 
@@ -352,17 +339,37 @@ public class TreeTableExcelExporter extends TreeTableExporter {
     }
 
     /**
-     * If ExcelOptions.isStronglyTypedCells = true then for cells that are all numbers make them a numeric cell
-     * instead of a String cell.  Possible future enhancement of Date cells as well.
+     * If ExcelOptions.isStronglyTypedCells = true then for cells check:
+     * <pre>
+     * Numeric - String that are all numbers make them a numeric cell
+     * Currency - Convert to currency cell so math can be done in Excel
+     * String - fallback to just a normal string cell
+     * </pre>
+     * Possible future enhancement of Date cells as well.
      *
      * @param cell the cell to operate on
      * @param value the String value to put in the cell
      */
     protected void updateCell(Cell cell, String value) {
-        if (stronglyTypedCells && LangUtils.isNumeric(value)) {
-            cell.setCellValue(Double.parseDouble(value));
+        boolean printed = false;
+        if (stronglyTypedCells) {
+            if (LangUtils.isNumeric(value)) {
+                cell.setCellValue(Double.parseDouble(value));
+                printed = true;
+            }
+
+            if (!printed) {
+                Number currency = CurrencyValidator.getInstance().validate(value, locale);
+                if (currency != null) {
+                    cell.setCellValue(currency.doubleValue());
+                    cell.setCellStyle(currencyStyle);
+                    printed = true;
+                }
+            }
         }
-        else {
+
+        // fall back to just printing the string value
+        if (!printed) {
             cell.setCellValue(createRichTextString(value));
         }
     }
@@ -443,6 +450,16 @@ public class TreeTableExcelExporter extends TreeTableExporter {
         cellStyleRightAlign.setAlignment(HorizontalAlignment.RIGHT);
         applyCellOptions(wb, options, cellStyleRightAlign);
 
+        if (stronglyTypedCells) {
+            currencyStyle = wb.createCellStyle();
+            currencyStyle.setFont(font);
+            currencyStyle.setAlignment(HorizontalAlignment.RIGHT);
+            String pattern = CurrencyValidator.getInstance().getPattern(locale);
+            short currencyPattern = wb.getCreationHelper().createDataFormat().getFormat(pattern);
+            currencyStyle.setDataFormat(currencyPattern);
+            applyCellOptions(wb, options, currencyStyle);
+        }
+
         PrintSetup printSetup = sheet.getPrintSetup();
         printSetup.setLandscape(true);
         printSetup.setPaperSize(PrintSetup.A4_PAPERSIZE);
@@ -522,6 +539,10 @@ public class TreeTableExcelExporter extends TreeTableExporter {
     }
 
     protected Cell applyColumnAlignments(UIColumn column, Cell cell) {
+        if (cell.getCellStyle() != null) {
+            // don't apply style if cell already has one
+            return cell;
+        }
         String[] styles = new String[] {column.getStyle(), column.getStyleClass()};
         if (LangUtils.containsIgnoreCase(styles, "right")) {
             cell.setCellStyle(cellStyleRightAlign);

@@ -21,27 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.api;
+package org.primefaces.event;
 
-import java.util.Collection;
+import java.util.List;
 
-/**
- * MixedClientBehaviorHolder is implemented by input components that have both obstrusive and non-obstrusive
- * client behavior events.  Components such as DataTable are not input components and thus do not need this interface
- * as it will never support obtrusive events.
- * <p>
- * Obtrusive events are rendered directly in the HTML DOM such as onclick="alert('test');"
- * </p>
- * <p>
- * Unobtrusive events are fired by the JS widget and need to be rendered as a widget parameter. e.g. DataTable "sort".
- * </p>
- */
-public interface MixedClientBehaviorHolder {
+import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.Behavior;
 
+public class ToggleCloseEvent extends AbstractAjaxBehaviorEvent {
+
+    private static final long serialVersionUID = 5378485831348769121L;
     /**
-     * Gets the collection of unobtrusive event names.
-     *
-     * @return the collection of unobtrusive event names.
+     * Visibility columnIds
      */
-    Collection<String> getUnobstrusiveEventNames();
+    private List<String> visibleColumnIds;
+
+    public ToggleCloseEvent(UIComponent component, Behavior behavior, List<String> columnIds) {
+        super(component, behavior);
+        this.visibleColumnIds = columnIds;
+    }
+
+    public List<String> getVisibleColumnIds() {
+        return visibleColumnIds;
+    }
+
 }

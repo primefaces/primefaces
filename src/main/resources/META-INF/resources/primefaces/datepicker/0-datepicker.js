@@ -1752,7 +1752,10 @@
         },
 
         onInputKeyDown: function (event) {
-            this.isKeydown = true;
+            if (PrimeFaces.env.isIE()) {
+                this.isKeydown = true;
+            }
+
             if (event.keyCode === 27) {
                 //put the focus back to the inputfield
                 this.inputfield.trigger('focus');
@@ -1768,11 +1771,13 @@
         },
 
         onUserInput: function (event) {
-            // IE 11 Workaround for input placeholder
-            if (!this.isKeydown) {
-                return;
+            if (PrimeFaces.env.isIE()) {
+                // IE 11 Workaround for input placeholder
+                if (!this.isKeydown) {
+                   return;
+                }
+                this.isKeydown = false;
             }
-            this.isKeydown = false;
 
             var rawValue = event.target.value;
 
