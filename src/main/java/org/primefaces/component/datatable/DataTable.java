@@ -109,6 +109,7 @@ public class DataTable extends DataTableBase {
     public static final String ROW_EDITOR_COLUMN_CLASS = "ui-row-editor-column";
     public static final String ROW_EDITOR_CLASS = "ui-row-editor ui-helper-clearfix";
     public static final String SELECTION_COLUMN_CLASS = "ui-selection-column";
+    public static final String GROUPED_COLUMN_CLASS = "ui-grouped-column";
     public static final String EVEN_ROW_CLASS = "ui-datatable-even";
     public static final String ODD_ROW_CLASS = "ui-datatable-odd";
     public static final String SCROLLABLE_CONTAINER_CLASS = "ui-datatable-scrollable";
