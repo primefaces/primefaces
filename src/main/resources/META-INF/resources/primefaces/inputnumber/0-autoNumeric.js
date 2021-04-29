@@ -110,25 +110,29 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _AutoNumericEnum__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AutoNumericEnum */ "./src/AutoNumericEnum.js");
 /* harmony import */ var _maths_Evaluator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./maths/Evaluator */ "./src/maths/Evaluator.js");
 /* harmony import */ var _maths_Parser__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./maths/Parser */ "./src/maths/Parser.js");
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
 
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(n); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -139,8 +143,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /**
  *               AutoNumeric.js
  *
- * @version      4.5.9
- * @date         2019-10-12 UTC 07:07
+ * @version      4.6.0
+ * @date         2020-04-26 UTC 10:45
  *
  * @authors      Bob Knothe, Alexandre Bonneau
  * @contributors Sokolov Yura and others, cf. AUTHORS
@@ -193,9 +197,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * An AutoNumeric element is an object wrapper that keeps a reference to the DOM element it manages (usually an <input> one), and provides autoNumeric-specific variables and functions.
  */
 
-var AutoNumeric =
-/*#__PURE__*/
-function () {
+var AutoNumeric = /*#__PURE__*/function () {
   /**
    * Initialize the AutoNumeric object onto the given DOM element, and attach the settings and related event listeners to it.
    * The options passed as a parameter is an object that contains the settings (ie. {digitGroupSeparator: ".", decimalCharacter: ",", currencySymbol: '€ '})
@@ -338,18 +340,20 @@ function () {
 
     this._setPersistentStorageName(); // --------------------------------------------------------
     // -------------- Tracking
-    // Keep track if the element is currently focused
 
 
-    this.isFocused = false; // Keep track if a mouse wheel event is currently ongoing
+    this.validState = true; // Keep track if the element is in the valid state
 
-    this.isWheelEvent = false; // Keep track if a drop event is currently ongoing
+    this.isFocused = false; // Keep track if the element is currently focused
 
-    this.isDropEvent = false; // Keep track if the user is currently editing the element
+    this.isWheelEvent = false; // Keep track if a mouse wheel event is currently ongoing
 
-    this.isEditing = false; // Keep track of the rawValue (needed to define if a change event must be sent on blur or enter key)
+    this.isDropEvent = false; // Keep track if a drop event is currently ongoing
 
-    this.rawValueOnFocus = void 0; // Watch any external changes to the element value/textContent/nodeValue and `set()` the new value so that it gets formatted/saved in the history
+    this.isEditing = false; // Keep track if the user is currently editing the element
+
+    this.rawValueOnFocus = void 0; // Keep track of the rawValue (needed to define if a change event must be sent on blur or enter key)
+    // Watch any external changes to the element value/textContent/nodeValue and `set()` the new value so that it gets formatted/saved in the history
 
     this.internalModification = false; // This is temporarily set to `true` only when the AutoNumeric object does update the element value
 
@@ -938,17 +942,17 @@ function () {
         return _this;
       },
       failOnUnknownOption: function failOnUnknownOption(_failOnUnknownOption) {
-        _this.settings.failOnUnknownOption = _failOnUnknownOption; //FIXME test this
+        _this.settings.failOnUnknownOption = _failOnUnknownOption; //TODO test this with unit tests
 
         return _this;
       },
       formatOnPageLoad: function formatOnPageLoad(_formatOnPageLoad) {
-        _this.settings.formatOnPageLoad = _formatOnPageLoad; //FIXME test this
+        _this.settings.formatOnPageLoad = _formatOnPageLoad; //TODO test this with unit tests
 
         return _this;
       },
       formulaMode: function formulaMode(_formulaMode) {
-        _this.settings.formulaMode = _formulaMode; //FIXME Test this
+        _this.settings.formulaMode = _formulaMode; //TODO test this with unit tests
 
         return _this;
       },
@@ -956,8 +960,13 @@ function () {
         _this.settings.historySize = _historySize;
         return _this;
       },
+      invalidClass: function invalidClass(_invalidClass) {
+        _this.settings.invalidClass = _invalidClass; //TODO test this with unit tests
+
+        return _this;
+      },
       isCancellable: function isCancellable(_isCancellable) {
-        _this.settings.isCancellable = _isCancellable; //FIXME test this
+        _this.settings.isCancellable = _isCancellable; //TODO test this with unit tests
 
         return _this;
       },
@@ -983,7 +992,7 @@ function () {
         return _this;
       },
       modifyValueOnWheel: function modifyValueOnWheel(_modifyValueOnWheel) {
-        _this.settings.modifyValueOnWheel = _modifyValueOnWheel; //FIXME test this
+        _this.settings.modifyValueOnWheel = _modifyValueOnWheel; //TODO test this with unit tests
 
         return _this;
       },
@@ -1009,7 +1018,7 @@ function () {
         return _this;
       },
       noEventListeners: function noEventListeners(_noEventListeners) {
-        //FIXME test this
+        //TODO test this with unit tests
         if (_noEventListeners === AutoNumeric.options.noEventListeners.noEvents && _this.settings.noEventListeners === AutoNumeric.options.noEventListeners.addEvents) {
           // Remove the events once
           _this._removeEventListeners();
@@ -1022,7 +1031,7 @@ function () {
         return _this;
       },
       onInvalidPaste: function onInvalidPaste(_onInvalidPaste) {
-        _this.settings.onInvalidPaste = _onInvalidPaste; //FIXME test this
+        _this.settings.onInvalidPaste = _onInvalidPaste; //TODO test this with unit tests
 
         return _this;
       },
@@ -1081,17 +1090,17 @@ function () {
         return _this;
       },
       selectNumberOnly: function selectNumberOnly(_selectNumberOnly) {
-        _this.settings.selectNumberOnly = _selectNumberOnly; //FIXME test this
+        _this.settings.selectNumberOnly = _selectNumberOnly; //TODO test this with unit tests
 
         return _this;
       },
       selectOnFocus: function selectOnFocus(_selectOnFocus) {
-        _this.settings.selectOnFocus = _selectOnFocus; //FIXME test this
+        _this.settings.selectOnFocus = _selectOnFocus; //TODO test this with unit tests
 
         return _this;
       },
       serializeSpaces: function serializeSpaces(_serializeSpaces) {
-        _this.settings.serializeSpaces = _serializeSpaces; //FIXME test this
+        _this.settings.serializeSpaces = _serializeSpaces; //TODO test this with unit tests
 
         return _this;
       },
@@ -1110,7 +1119,7 @@ function () {
         return _this;
       },
       showWarnings: function showWarnings(_showWarnings) {
-        _this.settings.showWarnings = _showWarnings; //FIXME test this
+        _this.settings.showWarnings = _showWarnings; //TODO test this with unit tests
 
         return _this;
       },
@@ -1129,12 +1138,12 @@ function () {
         return _this;
       },
       unformatOnHover: function unformatOnHover(_unformatOnHover) {
-        _this.settings.unformatOnHover = _unformatOnHover; //FIXME test this
+        _this.settings.unformatOnHover = _unformatOnHover; //TODO test this with unit tests
 
         return _this;
       },
       unformatOnSubmit: function unformatOnSubmit(_unformatOnSubmit2) {
-        _this.settings.unformatOnSubmit = _unformatOnSubmit2; //FIXME test this
+        _this.settings.unformatOnSubmit = _unformatOnSubmit2; //TODO test this with unit tests
 
         return _this;
       },
@@ -1146,7 +1155,7 @@ function () {
         return _this;
       },
       watchExternalChanges: function watchExternalChanges(_watchExternalChanges) {
-        //FIXME test this
+        //TODO test this with unit tests
         _this.update({
           watchExternalChanges: _watchExternalChanges
         });
@@ -1154,12 +1163,12 @@ function () {
         return _this;
       },
       wheelOn: function wheelOn(_wheelOn) {
-        _this.settings.wheelOn = _wheelOn; //FIXME test this
+        _this.settings.wheelOn = _wheelOn; //TODO test this with unit tests
 
         return _this;
       },
       wheelStep: function wheelStep(_wheelStep) {
-        _this.settings.wheelStep = _wheelStep; //FIXME test this
+        _this.settings.wheelStep = _wheelStep; //TODO test this with unit tests
 
         return _this;
       }
@@ -2352,17 +2361,14 @@ function () {
             this._saveValueToPersistentStorage();
           }
 
-          this._setElementAndRawValue(value, forcedRawValue, saveChangeToHistory);
+          this._setElementAndRawValue(value, forcedRawValue, saveChangeToHistory); // Special case when the user is allowed to enter invalid numbers outside of the min/max range
+
+
+          this._setValidOrInvalidState(forcedRawValue);
 
           return this;
         } else {
-          if (!minTest) {
-            this._triggerEvent(AutoNumeric.events.minRangeExceeded, this.domElement);
-          }
-
-          if (!maxTest) {
-            this._triggerEvent(AutoNumeric.events.maxRangeExceeded, this.domElement);
-          }
+          this._triggerRangeEvents(minTest, maxTest);
 
           _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].throwError("The value [".concat(value, "] being set falls outside of the minimumValue [").concat(this.settings.minimumValue, "] and maximumValue [").concat(this.settings.maximumValue, "] range set for this element"));
 
@@ -2422,12 +2428,7 @@ function () {
         _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].throwError("The value is not a valid one, it's not a numeric string nor a recognized currency.");
       }
 
-      var _this$constructor$_ch3 = this.constructor._checkIfInRangeWithOverrideOption(normalizedValue, this.settings),
-          _this$constructor$_ch4 = _slicedToArray(_this$constructor$_ch3, 2),
-          minTest = _this$constructor$_ch4[0],
-          maxTest = _this$constructor$_ch4[1];
-
-      if (minTest && maxTest) {
+      if (this.constructor._isWithinRangeWithOverrideOption(normalizedValue, this.settings)) {
         // If the `normalizedValue` is in the range
         this.setValue(value);
       } else {
@@ -4542,12 +4543,101 @@ function () {
      */
 
   }, {
-    key: "_keepAnOriginalSettingsCopy",
+    key: "_triggerRangeEvents",
 
+    /**
+     * Helper function that triggers the range events if they are needed
+     *
+     * @param {boolean} minTest
+     * @param {boolean} maxTest
+     * @private
+     */
+    value: function _triggerRangeEvents(minTest, maxTest) {
+      if (!minTest) {
+        this._triggerEvent(AutoNumeric.events.minRangeExceeded, this.domElement);
+      }
+
+      if (!maxTest) {
+        this._triggerEvent(AutoNumeric.events.maxRangeExceeded, this.domElement);
+      }
+    }
+    /**
+     * Set the invalid state on the AutoNumeric element.
+     * If the element is not an input, and therefore a contenteditable-enabled element, its validity state cannot be changed.
+     * In that case, the invalid css class defined with the `settings.invalidClass` option is added to the element.
+     * The 'autoNumeric:invalidValue' event is always sent when this function is called.
+     *
+     * @private
+     */
+
+  }, {
+    key: "_setInvalidState",
+    value: function _setInvalidState() {
+      if (this.isInputElement) {
+        _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].setInvalidState(this.domElement);
+      } else {
+        this._addCSSClass(this.settings.invalidClass);
+      }
+
+      this._triggerEvent(AutoNumeric.events.invalidValue, this.domElement);
+
+      this.validState = false;
+    }
+    /**
+     * Set the valid state on the AutoNumeric element.
+     * If the element is not an input, and therefore a contenteditable-enabled element, its validity state cannot be changed.
+     * In that case, the invalid css class defined with the `settings.invalidClass` option is removed.
+     * The 'autoNumeric:correctedValue' event is sent if the element state is invalid when this is called.
+     *
+     * @private
+     */
+
+  }, {
+    key: "_setValidState",
+    value: function _setValidState() {
+      if (this.isInputElement) {
+        _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].setValidState(this.domElement);
+      } else {
+        this._removeCSSClass(this.settings.invalidClass);
+      }
+
+      if (!this.validState) {
+        this._triggerEvent(AutoNumeric.events.correctedValue, this.domElement);
+      }
+
+      this.validState = true;
+    }
+    /**
+     * Sets the valid or invalid state on the DOM element, if the value is within the range set by the minimum and maximum value
+     *
+     * @param {string} value
+     * @private
+     */
+
+  }, {
+    key: "_setValidOrInvalidState",
+    value: function _setValidOrInvalidState(value) {
+      if (this.settings.overrideMinMaxLimits === AutoNumeric.options.overrideMinMaxLimits.invalid) {
+        var minRangeOk = this.constructor._isMinimumRangeRespected(value, this.settings);
+
+        var maxRangeOk = this.constructor._isMaximumRangeRespected(value, this.settings);
+
+        if (minRangeOk && maxRangeOk) {
+          this._setValidState();
+        } else {
+          this._setInvalidState();
+        }
+
+        this._triggerRangeEvents(minRangeOk, maxRangeOk);
+      }
+    }
     /**
      * Original settings saved for use when the `decimalPlacesShownOnFocus` and `showOnlyNumbersOnFocus` options are used.
      * Those original settings are used exclusively in the `focusin` and `focusout` event handlers.
      */
+
+  }, {
+    key: "_keepAnOriginalSettingsCopy",
     value: function _keepAnOriginalSettingsCopy() {
       this.originalDigitGroupSeparator = this.settings.digitGroupSeparator;
       this.originalCurrencySymbol = this.settings.currencySymbol;
@@ -5057,10 +5147,16 @@ function () {
 
 
       if (this.eventKey === _AutoNumericEnum__WEBPACK_IMPORTED_MODULE_1__["default"].keyName.Backspace || this.eventKey === _AutoNumericEnum__WEBPACK_IMPORTED_MODULE_1__["default"].keyName.Delete) {
-        this._processCharacterDeletion(); // Because backspace and delete only triggers keydown and keyup events, not keypress
+        var isDeletionAllowed = this._processCharacterDeletion(); // Because backspace and delete only triggers keydown and keyup events, not keypress
 
 
         this.processed = true;
+
+        if (!isDeletionAllowed) {
+          // Prevent the deletion if `overrideMinMaxLimits` option is `doNotOverride` and the result goes out of the allowed range
+          e.preventDefault();
+          return;
+        }
 
         this._formatValue(e); // If and only if the resulting value has changed after that backspace/delete, then we have to send an 'input' event like browsers normally do.
 
@@ -5146,6 +5242,10 @@ function () {
 
         this.lastVal = _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].getElementValue(e.target);
         this.throwInput = true;
+
+        this._setValidOrInvalidState(this.rawValue); // Updates the valid state as soon as the number is entered (in the case where the user keeps pressing the number key)
+
+
         return;
       }
 
@@ -5267,7 +5367,9 @@ function () {
       if (!this.formatted) {
         //TODO Is this line needed? Considering that onKeydown and onKeypress both finish by setting it to false...
         this._formatValue(e);
-      } // Force the `rawValue` update on Android Chrome
+      }
+
+      this._setValidOrInvalidState(this.rawValue); // Force the `rawValue` update on Android Chrome
 
 
       this._saveRawValueForAndroid(); // If the input value has changed during the key press event chain, an event is sent to alert that a formatting has been done (cf. Issue #187)
@@ -5328,7 +5430,7 @@ function () {
     key: "_onFocusOutAndMouseLeave",
     value: function _onFocusOutAndMouseLeave(e) {
       //TODO Create separate handlers for blur and mouseleave
-      this.isEditing = false; // Just in case no `keyUp` event have been sent (if the user lost the focus to the window while typing)
+      this.isEditing = false; // Just in case no `keyUp` event have been sent (if the user lost the focus on the window while typing)
 
       if (e.type === 'mouseleave' && this.formulaMode) {
         return;
@@ -5359,22 +5461,16 @@ function () {
 
         var isRawValueNull = _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isNull(rawValueToFormat);
 
-        var _this$constructor$_ch5 = this.constructor._checkIfInRangeWithOverrideOption(rawValueToFormat, this.settings),
-            _this$constructor$_ch6 = _slicedToArray(_this$constructor$_ch5, 2),
-            minTest = _this$constructor$_ch6[0],
-            maxTest = _this$constructor$_ch6[1]; // Directly set the formatted value if the `rawValue` is found in `valuesToStrings`
+        var _this$constructor$_ch3 = this.constructor._checkIfInRangeWithOverrideOption(rawValueToFormat, this.settings),
+            _this$constructor$_ch4 = _slicedToArray(_this$constructor$_ch3, 2),
+            minTest = _this$constructor$_ch4[0],
+            maxTest = _this$constructor$_ch4[1]; // Directly set the formatted value if the `rawValue` is found in `valuesToStrings`
 
 
         var elementValueIsAlreadySet = false;
 
         if (rawValueToFormat !== '' && !isRawValueNull) {
-          if (!minTest) {
-            this._triggerEvent(AutoNumeric.events.minRangeExceeded, this.domElement);
-          }
-
-          if (!maxTest) {
-            this._triggerEvent(AutoNumeric.events.maxRangeExceeded, this.domElement);
-          }
+          this._triggerRangeEvents(minTest, maxTest);
 
           if (this.settings.valuesToStrings && this._checkValuesToStrings(rawValueToFormat)) {
             // Set the formatted value with the corresponding string
@@ -5406,13 +5502,7 @@ function () {
               value = this.constructor._roundFormattedValueShownOnBlur(value, this.settings);
               value = this.constructor._modifyNegativeSignAndDecimalCharacterForFormattedValue(value, this.settings);
             } else {
-              if (!minTest) {
-                this._triggerEvent(AutoNumeric.events.minRangeExceeded, this.domElement);
-              }
-
-              if (!maxTest) {
-                this._triggerEvent(AutoNumeric.events.maxRangeExceeded, this.domElement);
-              }
+              this._triggerRangeEvents(minTest, maxTest);
             }
           } else if (rawValueToFormat === '') {
             switch (this.settings.emptyInputBehavior) {
@@ -5460,6 +5550,8 @@ function () {
             this._setElementValue(groupedValue);
           }
         }
+
+        this._setValidOrInvalidState(this.rawValue);
 
         if (e.type === 'blur') {
           //TODO Create separate handlers for blur and mouseleave, really.
@@ -6469,13 +6561,13 @@ function () {
       if (update) {
         // The settings are updated
         // Update the original data, if it has changed
-        var decimalPlacesRawValueInOptions = 'decimalPlacesRawValue' in options;
+        var decimalPlacesRawValueInOptions = ('decimalPlacesRawValue' in options);
 
         if (decimalPlacesRawValueInOptions) {
           this.settings.originalDecimalPlacesRawValue = options.decimalPlacesRawValue;
         }
 
-        var decimalPlacesInOptions = 'decimalPlaces' in options;
+        var decimalPlacesInOptions = ('decimalPlaces' in options);
 
         if (decimalPlacesInOptions) {
           this.settings.originalDecimalPlaces = options.decimalPlaces;
@@ -6869,11 +6961,7 @@ function () {
         return true;
       }
 
-      if (!minTest) {
-        this._triggerEvent(AutoNumeric.events.minRangeExceeded, this.domElement);
-      } else if (!maxTest) {
-        this._triggerEvent(AutoNumeric.events.maxRangeExceeded, this.domElement);
-      }
+      this._triggerRangeEvents(minTest, maxTest);
 
       return false;
     }
@@ -7036,7 +7124,7 @@ function () {
         }
 
         return e.type === 'keydown' || e.type === 'keypress' || this.eventKey === _AutoNumericEnum__WEBPACK_IMPORTED_MODULE_1__["default"].keyName.c;
-      } // The undo shortcut, as well as all the other ctrl/meta key usage
+      } // If the ctrl/meta key is used (during the undo shortcut for instance)
 
 
       if (e.ctrlKey || e.metaKey) {
@@ -7064,9 +7152,8 @@ function () {
     /**
      * Process deletion of characters when the minus sign is to the right of the numeric characters.
      *
-     * @param {string} left The part on the left of the caret or selection
-     * @param {string} right The part on the right of the caret or selection
-     * @returns {[string, string]}
+     * @param {string[]} leftAndRight The parts on the left and on the right of the caret or selection as an array with [left, right]
+     * @returns {string[]} Processed left and right as an array with [left, right]
      * @private
      */
 
@@ -7154,6 +7241,9 @@ function () {
     }
     /**
      * Process the deletion of characters.
+     * Returns `true` if the deletion is allowed (within the min and max range, according to the `overrideMinMaxLimits` option, `false` otherwise.
+     *
+     * @returns {boolean}
      */
 
   }, {
@@ -7199,7 +7289,14 @@ function () {
         right = _this$_getUnformatted4[1];
       }
 
+      if (!this.constructor._isWithinRangeWithOverrideOption("".concat(left).concat(right), this.settings)) {
+        // If the result with the deletion would be out of the range, we prevent it
+        return false;
+      }
+
       this._setValueParts(left, right);
+
+      return true;
     }
     /**
      * Return `true` if a decimal character is allowed to be typed.
@@ -7418,7 +7515,7 @@ function () {
           leftReg = new RegExp("^.*?".concat(leftAr.join('.*?')));
         } else {
           // prefix is assumed
-          leftReg = new RegExp("^.*".concat(this.settings.currencySymbol, ".*").concat(leftAr.join('.*?'))); // Fixes issue #647 when using a currency that has some characters in it that matches the value we just entered (ie. numbers in the currency)
+          leftReg = new RegExp("^.*?".concat(this.settings.currencySymbol).concat(leftAr.join('.*?'))); // Fixes issue #647 when using a currency that has some characters in it that matches the value we just entered (ie. numbers in the currency)
         } // Search cursor position in formatted value
 
 
@@ -7484,7 +7581,7 @@ function () {
   }], [{
     key: "version",
     value: function version() {
-      return '4.5.9';
+      return '4.6.0';
     }
     /**
      * Take the parameters given to the AutoNumeric object, and output the three variables that are needed to finish initializing it :
@@ -8094,8 +8191,12 @@ function () {
         _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].throwError("The positive sign character option 'positiveSignCharacter' is invalid ; it should not be equal or a part of the digit separator, the decimal character, the decimal character alternative, the negative brackets or the suffix text, [".concat(options.positiveSignCharacter, "] given."));
       }
 
-      if (!_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isNull(options.overrideMinMaxLimits) && !_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isInArray(options.overrideMinMaxLimits, [AutoNumeric.options.overrideMinMaxLimits.ceiling, AutoNumeric.options.overrideMinMaxLimits.floor, AutoNumeric.options.overrideMinMaxLimits.ignore])) {
-        _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].throwError("The override min & max limits option 'overrideMinMaxLimits' is invalid ; it should either be 'ceiling', 'floor' or 'ignore', [".concat(options.overrideMinMaxLimits, "] given."));
+      if (!_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isNull(options.overrideMinMaxLimits) && !_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isInArray(options.overrideMinMaxLimits, [AutoNumeric.options.overrideMinMaxLimits.ceiling, AutoNumeric.options.overrideMinMaxLimits.floor, AutoNumeric.options.overrideMinMaxLimits.ignore, AutoNumeric.options.overrideMinMaxLimits.invalid])) {
+        _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].throwError("The override min & max limits option 'overrideMinMaxLimits' is invalid ; it should either be 'ceiling', 'floor', 'ignore' or 'invalid', [".concat(options.overrideMinMaxLimits, "] given."));
+      }
+
+      if (options.overrideMinMaxLimits !== AutoNumeric.options.overrideMinMaxLimits.invalid && options.overrideMinMaxLimits !== AutoNumeric.options.overrideMinMaxLimits.ignore && (options.minimumValue > 0 || options.maximumValue < 0)) {
+        _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].warning("You've set a `minimumValue` or a `maximumValue` excluding the value `0`. AutoNumeric will force the users to always have a valid value in the input, hence preventing them to clear the field. If you want to allow for temporary invalid values (ie. out-of-range), you should use the 'invalid' option for the 'overrideMinMaxLimits' setting.");
       }
 
       if (!_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isString(options.maximumValue) || !testFloatOrIntegerAndPossibleNegativeSign.test(options.maximumValue)) {
@@ -8171,12 +8272,7 @@ function () {
       }
 
       if (testFloatOrIntegerAndPossibleNegativeSign.test(String(options.emptyInputBehavior))) {
-        var _this$_checkIfInRange = this._checkIfInRangeWithOverrideOption(options.emptyInputBehavior, options),
-            _this$_checkIfInRange2 = _slicedToArray(_this$_checkIfInRange, 2),
-            minTest = _this$_checkIfInRange2[0],
-            maxTest = _this$_checkIfInRange2[1];
-
-        if (!minTest || !maxTest) {
+        if (!this._isWithinRangeWithOverrideOption(options.emptyInputBehavior, options)) {
           _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].throwError("The 'emptyInputBehavior' option is set to a number or a string that represents a number, but its value [".concat(options.emptyInputBehavior, "] is outside of the range defined by the 'minimumValue' and 'maximumValue' options [").concat(options.minimumValue, ", ").concat(options.maximumValue, "]."));
         }
       }
@@ -8187,6 +8283,11 @@ function () {
 
       if (!_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isTrueOrFalseString(options.eventIsCancelable) && !_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isBoolean(options.eventIsCancelable)) {
         _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].throwError("The event is cancelable option 'eventIsCancelable' is invalid ; it should be either 'true' or 'false', [".concat(options.eventIsCancelable, "] given."));
+      }
+
+      if (_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isBoolean(options.invalidClass) || !/^-?[_a-zA-Z]+[_a-zA-Z0-9-]*$/.test(options.invalidClass)) {
+        //TODO Make sure this covers all the CSS class names
+        _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].throwError("The name of the 'invalidClass' option is not a valid CSS class name ; it should not be empty, and should follow the '^-?[_a-zA-Z]+[_a-zA-Z0-9-]*$' regex, [".concat(options.invalidClass, "] given."));
       }
 
       if (!_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isInArray(options.leadingZero, [AutoNumeric.options.leadingZero.allow, AutoNumeric.options.leadingZero.deny, AutoNumeric.options.leadingZero.keep])) {
@@ -8451,15 +8552,10 @@ function () {
 
       if (isNaN(Number(valueString))) {
         _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].throwError("The value [".concat(valueString, "] that you are trying to format is not a recognized number."));
-      } // Basic tests to check if the given valueString is valid
+      } // Check if the given valueString is valid
 
 
-      var _this$_checkIfInRange3 = this._checkIfInRangeWithOverrideOption(valueString, settings),
-          _this$_checkIfInRange4 = _slicedToArray(_this$_checkIfInRange3, 2),
-          minTest = _this$_checkIfInRange4[0],
-          maxTest = _this$_checkIfInRange4[1];
-
-      if (!minTest || !maxTest) {
+      if (!this._isWithinRangeWithOverrideOption(valueString, settings)) {
         // Throw a custom event
         _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].triggerEvent(AutoNumeric.events.formatted, document, {
           oldValue: null,
@@ -9778,20 +9874,19 @@ function () {
       return value;
     }
     /**
-     * Check that the number satisfy the format conditions
-     * and lays between settings.minimumValue and settings.maximumValue
-     * and the string length does not exceed the digits in settings.minimumValue and settings.maximumValue
+     * Check if the given value is within the `minimumValue` and `maximumValue` range, while using the override options set with `overrideMinMaxLimits`.
+     * The minimum and maximum limit test results are returned in a array like `[isMinimumLimitRespected, isMaximumLimitRespected]`.
      *
      * @param {string} value
      * @param {object} settings
-     * @returns {*}
+     * @returns {[boolean, boolean]}
      */
 
   }, {
     key: "_checkIfInRangeWithOverrideOption",
     value: function _checkIfInRangeWithOverrideOption(value, settings) {
-      if (_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isNull(value) && settings.emptyInputBehavior === AutoNumeric.options.emptyInputBehavior["null"]) {
-        // When the `null` value is accepted as the `rawValue`, the limits are ignored
+      if (_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isNull(value) && settings.emptyInputBehavior === AutoNumeric.options.emptyInputBehavior["null"] || // When the `null` value is accepted as the `rawValue`, the limits are ignored
+      settings.overrideMinMaxLimits === AutoNumeric.options.overrideMinMaxLimits.ignore || settings.overrideMinMaxLimits === AutoNumeric.options.overrideMinMaxLimits.invalid) {
         return [true, true];
       }
 
@@ -9811,15 +9906,72 @@ function () {
           result = [true, _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].testMinMax(maxParse, valParse) < 1];
           break;
 
-        case AutoNumeric.options.overrideMinMaxLimits.ignore:
-          result = [true, true];
-          break;
-
         default:
           result = [_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].testMinMax(minParse, valParse) > -1, _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].testMinMax(maxParse, valParse) < 1];
       }
 
       return result;
+    }
+    /**
+     * Returns `true` if the given value is within the `minimumValue` and `maximumValue` limits, while using the override options set with `overrideMinMaxLimits`, `false` otherwise
+     *
+     * @param {string} value
+     * @param {object} settings
+     * @returns {boolean}
+     * @private
+     */
+
+  }, {
+    key: "_isWithinRangeWithOverrideOption",
+    value: function _isWithinRangeWithOverrideOption(value, settings) {
+      var _this$_checkIfInRange = this._checkIfInRangeWithOverrideOption(value, settings),
+          _this$_checkIfInRange2 = _slicedToArray(_this$_checkIfInRange, 2),
+          minTest = _this$_checkIfInRange2[0],
+          maxTest = _this$_checkIfInRange2[1];
+
+      return minTest && maxTest;
+    }
+    /**
+     * Helper function that prepares the value string for the min/max test
+     *
+     * @param {string} value
+     * @returns {{}}
+     * @private
+     */
+
+  }, {
+    key: "_cleanValueForRangeParse",
+    value: function _cleanValueForRangeParse(value) {
+      value = value.toString().replace(',', '.');
+      return _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].parseStr(value);
+    }
+    /**
+     * Returns `true` is the value is superior or equal to the `minimumValue` limit, discarding any override options
+     *
+     * @param {string} value
+     * @param {object} settings
+     * @returns {boolean}
+     * @private
+     */
+
+  }, {
+    key: "_isMinimumRangeRespected",
+    value: function _isMinimumRangeRespected(value, settings) {
+      return _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].testMinMax(_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].parseStr(settings.minimumValue), this._cleanValueForRangeParse(value)) > -1;
+    }
+    /**
+     * Returns `true` is the value is inferior or equal to the `maximumValue` limit, discarding any override options
+     *
+     * @param {string} value
+     * @param {object} settings
+     * @returns {boolean}
+     * @private
+     */
+
+  }, {
+    key: "_isMaximumRangeRespected",
+    value: function _isMaximumRangeRespected(value, settings) {
+      return _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].testMinMax(_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].parseStr(settings.maximumValue), this._cleanValueForRangeParse(value)) < 1;
     }
   }, {
     key: "_readCookie",
@@ -10009,7 +10161,7 @@ function () {
         _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].throwError("When updating the settings, the previous ones should be passed as an argument.");
       }
 
-      var decimalPlacesInOptions = 'decimalPlaces' in settings;
+      var decimalPlacesInOptions = ('decimalPlaces' in settings);
 
       if (!(decimalPlacesInOptions || 'decimalPlacesRawValue' in settings || 'decimalPlacesShownOnFocus' in settings || 'decimalPlacesShownOnBlur' in settings || 'rawValueDivisor' in settings)) {
         // Do Nothing if no decimal places-related options are modified
@@ -10714,6 +10866,7 @@ _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].defaultSettings = {
   formatOnPageLoad: _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options.formatOnPageLoad.format,
   formulaMode: _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options.formulaMode.disabled,
   historySize: _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options.historySize.medium,
+  invalidClass: _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options.invalidClass,
   isCancellable: _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options.isCancellable.cancellable,
   leadingZero: _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options.leadingZero.deny,
   maximumValue: _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options.maximumValue.tenTrillions,
@@ -11339,12 +11492,14 @@ __webpack_require__.r(__webpack_exports__);
 /**
  * Event list managed by AutoNumeric
  *
- * @type {{initialized: string, invalidFormula: string, formatted: string, minRangeExceeded: string, maxRangeExceeded: string, native: {input: string, change: string}, validFormula: string}}
+ * @type {{correctedValue: string, initialized: string, invalidFormula: string, invalidValue: string, formatted: string, rawValueModified: string, minRangeExceeded: string, maxRangeExceeded: string, native: {input: string, change: string}, validFormula: string}}
  */
 
 _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].events = {
+  correctedValue: 'autoNumeric:correctedValue',
   initialized: 'autoNumeric:initialized',
   invalidFormula: 'autoNumeric:invalidFormula',
+  invalidValue: 'autoNumeric:invalidValue',
   formatted: 'autoNumeric:formatted',
   rawValueModified: 'autoNumeric:rawValueModified',
   minRangeExceeded: 'autoNumeric:minExceeded',
@@ -11375,25 +11530,29 @@ Object.defineProperty(_AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"], 'eve
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return AutoNumericHelper; });
 /* harmony import */ var _AutoNumericEnum__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AutoNumericEnum */ "./src/AutoNumericEnum.js");
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
 
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(n); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -11435,9 +11594,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * Note : none of the functions in there are aware of any autoNumeric internals (which means there are no references to autoNumeric-specific info like options names or data structures).
  */
 
-var AutoNumericHelper =
-/*#__PURE__*/
-function () {
+var AutoNumericHelper = /*#__PURE__*/function () {
   function AutoNumericHelper() {
     _classCallCheck(this, AutoNumericHelper);
   }
@@ -12881,6 +13038,35 @@ function () {
       }
     }
     /**
+     * Set the invalid state for the given element.
+     * A custom message can be passed as the second argument.
+     * Note: This does not work with contenteditable elements
+     *
+     * @param {HTMLElement|HTMLInputElement} element
+     * @param {string|null} message
+     * @throws Error
+     */
+
+  }, {
+    key: "setInvalidState",
+    value: function setInvalidState(element) {
+      var message = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'Invalid';
+      if (message === '' || this.isNull(message)) this.throwError('Cannot set the invalid state with an empty message.');
+      element.setCustomValidity(message);
+    }
+    /**
+     * Set the valid state for the given element.
+     * Note: This does not work with contenteditable elements
+     *
+     * @param {HTMLElement|HTMLInputElement} element
+     */
+
+  }, {
+    key: "setValidState",
+    value: function setValidState(element) {
+      element.setCustomValidity('');
+    }
+    /**
      * This clone the given object, and return it.
      * WARNING: This does not do a deep cloning.
      * cf. https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign#Examples
@@ -13651,6 +13837,11 @@ _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options = {
     insane: Number.MAX_SAFE_INTEGER
   },
 
+  /* Defines the name of the CSS class to use on contenteditable-enabled elements when the input is invalid
+   * This is not used when the HTML element used is an input.
+   */
+  invalidClass: 'an-invalid',
+
   /* Allow the user to 'cancel' and undo the changes he made to the given autonumeric-managed element, by pressing the 'Escape' key.
    * Whenever the user 'validate' the input (either by hitting 'Enter', or blurring the element), the new value is saved for subsequent 'cancellation'.
    *
@@ -13831,15 +14022,42 @@ _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options = {
     none: null
   },
 
-  /* Override the minimum and maximum limits
-   * overrideMinMaxLimits: "ceiling" adheres to maximumValue and ignores minimumValue settings
-   * overrideMinMaxLimits: "floor" adheres to minimumValue and ignores maximumValue settings
-   * overrideMinMaxLimits: "ignore" ignores both minimumValue & maximumValue
+  /* Defines if AutoNumeric should let the user override the minimum and/or maximum limits when he types numbers in the element.
+   * - 'ceiling' strictly adheres to `maximumValue` and ignores the `minimumValue` settings
+   *             It allows the user to enter anything between -∞ `and maximumValue`.
+   *             If `maximumValue` is less than 0, then it will allow emptying the field and typing a value between `maximumValue` and 0 (and hence setting the invalid state)
+   * - 'floor'   strictly adheres to `minimumValue` and ignores the `maximumValue` settings
+   *             It allows the user to enter anything between `minimumValue` and +∞.
+   *             If `minimumValue` is higher than 0, then it will allow emptying the field and typing a value between 0 and `minimumValue` (and hence setting the invalid state)
+   * - 'ignore'  ignores both the `minimumValue` and `maximumValue` settings
+   *             When using this option, the field will always be valid range-wise
+   * - 'never'   strictly adheres to the `maximumValue` and `minimumValue` settings
+   *             Use this if you want to _always_ have a valid input in the field (This is how AutoNumeric has always behaved before `4.6.0`).
+   *             Note: If `0` is out of the min/max range, this will prevent the user clearing the input field.
+   * - 'doNotOverride' This is the default behavior.
+   *                   The user can temporarily type out-of-bound values. In doing so, the invalid state is set on the field.
+   *                   When the value is correctly set within the limit boundaries, the invalid state is removed.
+   * //FIXME Finish this -> Or, when the user set a minimumValue > 0 or a maximumValue < 0, display a warning in the console to tell the dev to set the 'temporary' option for 'overrideMinMaxLimits'
+   *  The other option would be to :
+   * - 'ceiling' Strictly adheres to `maximumValue` and ignores the `minimumValue` settings
+   *             It allows the user to enter anything between -∞ `and maximumValue`
+   *             If `maximumValue` is less than 0, then it will prevent the user emptying the field or typing value above `maximumValue`, making sure the value entered is always valid
+   * - 'floor'   Strictly adheres to `minimumValue` and ignores the `maximumValue` settings
+   *             It allows the user to enter anything between `minimumValue` and +∞
+   *             If `minimumValue` is higher than 0, then it will prevent the user emptying the field or typing value below `minimumValue`, making sure the value entered is always valid
+   * - 'ignore'  Ignores both the `minimumValue` and `maximumValue` settings
+   *             When using this option, the field will always be valid range-wise
+   * - 'invalid' The user can temporarily type out-of-bound values. In doing so, the invalid state is set on the field.
+   *             When the value is correctly set within the limit boundaries, the invalid state is removed
+   * - 'doNotOverride' Strictly adheres to the `maximumValue` and `minimumValue` settings
+   *                   This is the default behavior
+   *                   If `0` is out of the min/max range, this will prevent the user clearing the input field, making sure the value entered is always valid
    */
   overrideMinMaxLimits: {
     ceiling: 'ceiling',
     floor: 'floor',
     ignore: 'ignore',
+    invalid: 'invalid',
     doNotOverride: null
   },
 
@@ -14565,9 +14783,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  *
  * Each node carries the node information such as type (operator type), value (if it's a leaf), and the left and right branches
  */
-var ASTNode =
-/*#__PURE__*/
-function () {
+var ASTNode = /*#__PURE__*/function () {
   function ASTNode() {
     _classCallCheck(this, ASTNode);
   }
@@ -14665,9 +14881,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /**
  * Recursively evaluate the abstract syntax tree (AST) and return the result for the given sub-tree
  */
-var Evaluator =
-/*#__PURE__*/
-function () {
+var Evaluator = /*#__PURE__*/function () {
   function Evaluator(ast) {
     _classCallCheck(this, Evaluator);
 
@@ -14769,9 +14983,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
-var Lexer =
-/*#__PURE__*/
-function () {
+var Lexer = /*#__PURE__*/function () {
   function Lexer(text) {
     _classCallCheck(this, Lexer);
 
@@ -14982,9 +15194,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  *             - FACTOR
  */
 
-var Parser =
-/*#__PURE__*/
-function () {
+var Parser = /*#__PURE__*/function () {
   /**
    * Parse the given string, and generate an abstract syntax tree (AST) from the math expression
    *
@@ -15179,3 +15389,4 @@ var Token = function Token(type, value, symbol) {
 
 /******/ })["default"];
 });
+//# sourceMappingURL=autoNumeric.js.map
