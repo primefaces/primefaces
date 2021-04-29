@@ -610,7 +610,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 return;
             }
             var item = $(this.children[0]),
-            isEmptyMessage = item.hasClass('ui-autocomplete-emptymsg');
+            isEmptyMessage = item.hasClass('ui-autocomplete-empty-message');
 
             if(isEmptyMessage) {
                 $this.invokeEmptyMessageBehavior();
@@ -796,7 +796,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
         else {
             if(this.cfg.emptyMessage) {
-                var emptyText = '<div class="ui-autocomplete-emptymsg ui-widget">' + PrimeFaces.escapeHTML(this.cfg.emptyMessage) + '</div>';
+                var emptyText = '<div class="ui-autocomplete-empty-message ui-widget">' + PrimeFaces.escapeHTML(this.cfg.emptyMessage) + '</div>';
                 this.panel.prepend(emptyText);
             }
             else if(!this.cfg.hasFooter){
