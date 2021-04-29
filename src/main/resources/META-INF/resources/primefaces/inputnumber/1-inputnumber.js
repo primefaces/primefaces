@@ -146,7 +146,11 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         this.input.off('blur.inputnumber').on('blur.inputnumber', function(e) {
             var element = AutoNumeric.getAutoNumericElement(this);
             if (element && this.value && this.value.length > 0) {
-                element.set(this.value, null, true);
+                var newValue = this.value;
+                if($this.cfg.digitGroupSeparator) {
+                    newValue = newValue.replace($this.cfg.digitGroupSeparator, '');
+                }
+                element.set(newValue, null, true);
             }
             $this.copyValueToHiddenInput();
         });
