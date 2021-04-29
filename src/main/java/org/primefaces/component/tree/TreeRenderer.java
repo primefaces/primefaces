@@ -733,7 +733,7 @@ public class TreeRenderer extends CoreRenderer {
             contentClass += " ui-treenode-droppable";
         }
 
-        writer.startElement("span", null);
+        writer.startElement("div", null);
         writer.writeAttribute("class", contentClass, null);
         writer.writeAttribute("role", "treeitem", null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(expanded), null);
@@ -769,7 +769,7 @@ public class TreeRenderer extends CoreRenderer {
         uiTreeNode.encodeAll(context);
         writer.endElement("span");
 
-        writer.endElement("span");
+        writer.endElement("div");
 
         //children nodes
         writer.startElement("ul", null);
