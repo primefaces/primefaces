@@ -5069,7 +5069,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      * @param {JQuery} row A column to update.
      */
-     updateRowspan: function(row) {
+    updateRowspan: function(row) {
         if (this.cfg.groupColumnIndexes) {
             var isGroupedRow = row.hasClass('ui-datatable-grouped-row');
             var groupedRow = isGroupedRow ? row : row.prevAll('.ui-datatable-grouped-row:first');
