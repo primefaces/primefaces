@@ -153,6 +153,7 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         if (table.isPaginator()) {
+            table.calculateRows();
             table.calculateFirst();
         }
 

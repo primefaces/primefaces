@@ -237,6 +237,12 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
         return ve != null && !ve.isReadOnly(elContext);
     }
 
+    public void calculateRows() {
+        if ("*".equals(getRowsPerPage())) {
+            setRows(getRowCount());
+        }
+    }
+
     public void calculateFirst() {
         int rows = getRows();
 
@@ -333,5 +339,14 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
         setFirst(Integer.parseInt(firstParam));
         int newRowsValue = "*".equals(rowsParam) ? getRowCount() : Integer.parseInt(rowsParam);
         setRows(newRowsValue);
+        setRowsPerPage(rowsParam);
+    }
+
+    public String getRowsPerPage() {
+        return (String) getStateHelper().eval("rowsPerPage", null);
+    }
+
+    public void setRowsPerPage(String rowsPerPage) {
+        getStateHelper().put("rowsPerPage", rowsPerPage);
     }
 }
