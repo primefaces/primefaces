@@ -33,6 +33,7 @@ import org.primefaces.virusscan.VirusException;
 import javax.el.MethodExpression;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ResourceDependency;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
@@ -60,6 +61,9 @@ public class FileUpload extends FileUploadBase {
 
     public static final String CONTAINER_CLASS_SIMPLE = "ui-fileupload-simple ui-widget";
     public static final String FILENAME_CLASS = "ui-fileupload-filename";
+    public static final String DROPZONE_CLASS = "ui-fileupload-dropzone";
+
+    private Boolean hasDropZoneFacet;
 
     @Override
     public void broadcast(FacesEvent event) throws AbortProcessingException {
@@ -104,4 +108,16 @@ public class FileUpload extends FileUploadBase {
             }
         }
     }
+
+    public UIComponent getDropZoneFacet() {
+        return this.getFacet("dropZone");
+    }
+
+    public boolean hasDropZoneFacet() {
+        if (hasDropZoneFacet == null) {
+            hasDropZoneFacet = ComponentUtils.shouldRenderFacet(getDropZoneFacet());
+        }
+        return hasDropZoneFacet;
+    }
+
 }

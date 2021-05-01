@@ -68,6 +68,12 @@ public class FileUploadRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         FileUpload fileUpload = (FileUpload) component;
 
+        if (fileUpload.hasDropZoneFacet()) {
+            fileUpload.setMode("advanced");
+            fileUpload.setAuto(true);
+            fileUpload.setDragDropSupport(true);
+        }
+
         encodeMarkup(context, fileUpload);
         encodeScript(context, fileUpload);
     }
@@ -89,6 +95,7 @@ public class FileUploadRenderer extends CoreRenderer {
                     .attr("maxRetries", fileUpload.getMaxRetries(), 30)
                     .attr("retryTimeout", fileUpload.getRetryTimeout(), 1000)
                     .attr("resumeContextPath", pfContext.getFileUploadResumeUrl(), null)
+                    .attr("hasDropZone", fileUpload.hasDropZoneFacet())
                     .callback("onAdd", "function(file, callback)", fileUpload.getOnAdd())
                     .callback("oncancel", "function()", fileUpload.getOncancel())
                     .callback("onupload", "function()", fileUpload.getOnupload());
@@ -151,6 +158,9 @@ public class FileUploadRenderer extends CoreRenderer {
 
         //buttonbar
         writer.startElement("div", fileUpload);
+        if (fileUpload.hasDropZoneFacet()) {
+            writer.writeAttribute("style", "display:none", null);
+        }
         writer.writeAttribute("class", FileUpload.BUTTON_BAR_CLASS, null);
 
         //choose button
@@ -168,6 +178,9 @@ public class FileUploadRenderer extends CoreRenderer {
         //content
         writer.startElement("div", null);
         writer.writeAttribute("class", FileUpload.CONTENT_CLASS, null);
+        if (fileUpload.hasDropZoneFacet()) {
+            writer.writeAttribute("style", "display:none", null);
+        }
 
         writer.startElement("div", null);
         writer.writeAttribute("class", FileUpload.FILES_CLASS, null);
@@ -176,6 +189,13 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.endElement("div");
 
         writer.endElement("div");
+
+        if (fileUpload.hasDropZoneFacet()) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", FileUpload.DROPZONE_CLASS, null);
+            fileUpload.getDropZoneFacet().encodeAll(context);
+            writer.endElement("div");
+        }
 
         writer.endElement("div");
     }
