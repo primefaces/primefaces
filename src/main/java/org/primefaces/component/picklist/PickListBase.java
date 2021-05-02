@@ -28,12 +28,23 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
+import org.primefaces.util.MessageFactory;
 
 public abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.PickListRenderer";
+
+    private static final String ADD = "primefaces.picklist.ADD";
+    private static final String ADD_ALL = "primefaces.picklist.ADD_ALL";
+    private static final String REMOVE = "primefaces.picklist.REMOVE";
+    private static final String REMOVE_ALL = "primefaces.picklist.REMOVE_ALL";
+
+    private static final String MOVE_UP = "primefaces.picklist.MOVE_UP";
+    private static final String MOVE_TOP = "primefaces.picklist.MOVE_TOP";
+    private static final String MOVE_DOWN = "primefaces.picklist.MOVE_DOWN";
+    private static final String MOVE_BOTTOM = "primefaces.picklist.MOVE_BOTTOM";
 
     public enum PropertyKeys {
 
@@ -156,7 +167,7 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
     }
 
     public String getAddLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.addLabel, "Add");
+        return (String) getStateHelper().eval(PropertyKeys.addLabel, MessageFactory.getMessage(ADD));
     }
 
     public void setAddLabel(String addLabel) {
@@ -164,7 +175,7 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
     }
 
     public String getAddAllLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.addAllLabel, "Add All");
+        return (String) getStateHelper().eval(PropertyKeys.addAllLabel, MessageFactory.getMessage(ADD_ALL));
     }
 
     public void setAddAllLabel(String addAllLabel) {
@@ -172,7 +183,7 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
     }
 
     public String getRemoveLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.removeLabel, "Remove");
+        return (String) getStateHelper().eval(PropertyKeys.removeLabel, MessageFactory.getMessage(REMOVE));
     }
 
     public void setRemoveLabel(String removeLabel) {
@@ -180,7 +191,7 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
     }
 
     public String getRemoveAllLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.removeAllLabel, "Remove All");
+        return (String) getStateHelper().eval(PropertyKeys.removeAllLabel, MessageFactory.getMessage(REMOVE_ALL));
     }
 
     public void setRemoveAllLabel(String removeAllLabel) {
@@ -188,7 +199,7 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
     }
 
     public String getMoveUpLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.moveUpLabel, "Move Up");
+        return (String) getStateHelper().eval(PropertyKeys.moveUpLabel, MessageFactory.getMessage(MOVE_UP));
     }
 
     public void setMoveUpLabel(String moveUpLabel) {
@@ -196,7 +207,7 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
     }
 
     public String getMoveTopLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.moveTopLabel, "Move Top");
+        return (String) getStateHelper().eval(PropertyKeys.moveTopLabel, MessageFactory.getMessage(MOVE_TOP));
     }
 
     public void setMoveTopLabel(String moveTopLabel) {
@@ -204,7 +215,7 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
     }
 
     public String getMoveDownLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.moveDownLabel, "Move Down");
+        return (String) getStateHelper().eval(PropertyKeys.moveDownLabel, MessageFactory.getMessage(MOVE_DOWN));
     }
 
     public void setMoveDownLabel(String moveDownLabel) {
@@ -212,7 +223,7 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
     }
 
     public String getMoveBottomLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.moveBottomLabel, "Move Bottom");
+        return (String) getStateHelper().eval(PropertyKeys.moveBottomLabel, MessageFactory.getMessage(MOVE_BOTTOM));
     }
 
     public void setMoveBottomLabel(String moveBottomLabel) {
