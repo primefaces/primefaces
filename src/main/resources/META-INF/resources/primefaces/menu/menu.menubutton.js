@@ -202,11 +202,11 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
         }
 
         this.resizeHandler = PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', this.menu, function() {
-            $this.hide();
+            $this.handleOverlayViewportChange();
         });
 
         this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', this.jq, function() {
-            $this.hide();
+            $this.handleOverlayViewportChange();
         });
     },
 
@@ -226,6 +226,20 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
     
         if (this.scrollHandler) {
             this.scrollHandler.unbind();
+        }
+    },
+
+    /**
+     * Fired when the browser viewport is resized or scrolled.  In Mobile environment we don't want to hider the overlay
+     * we want to re-align it.  This is because on some mobile browser the popup may force the browser to trigger a 
+     * resize immediately and close the overlay. See GitHub #7075.
+     * @private
+     */
+    handleOverlayViewportChange() {
+        if (PrimeFaces.env.mobile) {
+            this.alignPanel();
+        } else {
+            this.hide();
         }
     },
 

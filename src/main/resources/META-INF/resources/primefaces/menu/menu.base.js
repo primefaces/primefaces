@@ -155,6 +155,20 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
+     * Fired when the browser viewport is resized or scrolled.  In Mobile environment we don't want to hider the overlay
+     * we want to re-align it.  This is because on some mobile browser the popup may force the browser to trigger a 
+     * resize immediately and close the overlay. See GitHub #7075.
+     * @private
+     */
+    handleViewportChange() {
+        if (PrimeFaces.env.mobile) {
+            this.align();
+        } else {
+            this.hide();
+        }
+    },
+
+    /**
      * Performs some setup required to make this overlay menu work with dialogs.
      * @protected
      */
