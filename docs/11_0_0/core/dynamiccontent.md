@@ -105,6 +105,31 @@ public class ImageView {
 You may already have your image in memory in an `InputStream` or `byte[]` array. The content-type header will not be set in the response.
 If you need to set a content-type, we recommend to use the _org.primefaces.model.StreamedContent_.
 
+## Dynamic content rendering via Data URI (stream=_false_ - currently only supported by _p:graphicImage_)
+
+!> This should only be used for very small images!
+
+### What happens when rendering the _p:graphicImage_:
+
+- _ImageView_ and therefore _DefaultStreamedContent_ is instantiated
+- the _StreamedContent_ is received via the _ValueExpression_ (_#{imageView.image}_)
+- the stream from the _StreamedContent_ is now converted and into a base64 string and rendered as _src_ attribute
+
+### Advantages
+
+- it supports _@ViewScoped_ beans
+- it supports _MethodExpression_ and parameters
+
+### Disadvantages
+
+- slower rendering time; it should be avoided to use it very often in the view or inside repeating components like _ui:repeat_
+- larger content size
+
+### Use InputStream / byte[] array
+
+You may already have your image in memory in an `InputStream` or `byte[]` array. We will try to determine your image content using magic bytes to figure out if its a PNG, JPG, or GIF.
+If you need to set a content-type, we recommend to use the _org.primefaces.model.StreamedContent_.
+
 ## Avoid PrimeFaces internal buffering
 
 `StreamedContent` can either be used with a `InputStream` or with a `Consumer<OutputStream>` to write directly to the response:
@@ -134,28 +159,3 @@ public class ImageView {
     }
 }
 ```
-
-## Dynamic content rendering via Data URI (stream=_false_ - currently only supported by _p:graphicImage_)
-
-!> This should only be used for very small images!
-
-### What happens when rendering the _p:graphicImage_:
-
-- _ImageView_ and therefore _DefaultStreamedContent_ is instantiated
-- the _StreamedContent_ is received via the _ValueExpression_ (_#{imageView.image}_)
-- the stream from the _StreamedContent_ is now converted and into a base64 string and rendered as _src_ attribute
-
-### Advantages
-
-- it supports _@ViewScoped_ beans
-- it supports _MethodExpression_ and parameters
-
-### Disadvantages
-
-- slower rendering time; it should be avoided to use it very often in the view or inside repeating components like _ui:repeat_
-- larger content size
-
-### Use InputStream / byte[] array
-
-You may already have your image in memory in an `InputStream` or `byte[]` array. We will try to determine your image content using magic bytes to figure out if its a PNG, JPG, or GIF.
-If you need to set a content-type, we recommend to use the _org.primefaces.model.StreamedContent_.
