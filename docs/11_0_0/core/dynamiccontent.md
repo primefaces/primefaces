@@ -105,6 +105,36 @@ public class ImageView {
 You may already have your image in memory in an `InputStream` or `byte[]` array. The content-type header will not be set in the response.
 If you need to set a content-type, we recommend to use the _org.primefaces.model.StreamedContent_.
 
+## Avoid PrimeFaces internal buffering
+
+`StreamedContent` can either be used with a `InputStream` or with a `Consumer<OutputStream>` to write directly to the response:
+
+```java
+@Named
+@RequestScoped
+public class ImageView {
+    private StreamedContent image;
+
+    public ImageView() {
+        image = DefaultStreamedContent.builder()
+                    .contentType("image/jpeg")
+                    .writer((os) -> {
+                        try {
+                            os.write(...);
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    })
+                    .build();
+    }
+
+    public StreamedContent getImage() {
+        return image;
+    }
+}
+```
+
 ## Dynamic content rendering via Data URI (stream=_false_ - currently only supported by _p:graphicImage_)
 
 !> This should only be used for very small images!
