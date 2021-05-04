@@ -1132,19 +1132,19 @@ public class TreeTableRenderer extends DataRenderer {
                 .collect(Collectors.toMap(i -> sortKeys[i], i -> i));
 
         for (Map.Entry<String, SortMeta> entry : sortByMap.entrySet()) {
-            SortMeta sortBy = entry.getValue();
-            if (!(sortBy.getComponent() instanceof UIColumn)) {
+            SortMeta sortMeta = entry.getValue();
+            if (sortMeta.isHeaderRow()) {
                 continue;
             }
 
             Integer index = sortKeysIndexes.get(entry.getKey());
             if (index != null) {
-                sortBy.setOrder(SortOrder.of(sortOrders[index]));
-                sortBy.setPriority(index);
+                sortMeta.setOrder(SortOrder.of(sortOrders[index]));
+                sortMeta.setPriority(index);
             }
             else {
-                sortBy.setOrder(SortOrder.UNSORTED);
-                sortBy.setPriority(SortMeta.MIN_PRIORITY);
+                sortMeta.setOrder(SortOrder.UNSORTED);
+                sortMeta.setPriority(SortMeta.MIN_PRIORITY);
             }
         }
     }
@@ -1359,9 +1359,7 @@ public class TreeTableRenderer extends DataRenderer {
                 if (filter == null || filter.isGlobalFilter()) {
                     return true;
                 }
-                filter.setColumn(column);
-
-                Object columnValue = filter.getLocalValue(elContext);
+                Object columnValue = filter.getLocalValue(elContext, column);
 
                 if (globalFilter != null && globalFilter.isActive() && !globalMatch.get() && !hasGlobalFilterFunction) {
                     FilterConstraint constraint = globalFilter.getConstraint();

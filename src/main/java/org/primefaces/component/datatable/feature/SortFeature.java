@@ -24,7 +24,6 @@
 package org.primefaces.component.datatable.feature;
 
 import org.primefaces.PrimeFaces;
-import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.DataTableState;
@@ -42,7 +41,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.el.ValueExpression;
 import org.primefaces.component.api.DynamicColumn;
-import org.primefaces.component.headerrow.HeaderRow;
 
 public class SortFeature implements DataTableFeature {
 
@@ -69,19 +67,19 @@ public class SortFeature implements DataTableFeature {
                 .collect(Collectors.toMap(i -> sortKeys[i], i -> i));
 
         for (Map.Entry<String, SortMeta> entry : sortByMap.entrySet()) {
-            SortMeta sortBy = entry.getValue();
-            if (!(sortBy.getComponent() instanceof UIColumn)) {
+            SortMeta sortMeta = entry.getValue();
+            if (sortMeta.isHeaderRow()) {
                 continue;
             }
 
             Integer index = sortKeysIndexes.get(entry.getKey());
             if (index != null) {
-                sortBy.setOrder(SortOrder.of(sortOrders[index]));
-                sortBy.setPriority(index);
+                sortMeta.setOrder(SortOrder.of(sortOrders[index]));
+                sortMeta.setPriority(index);
             }
             else {
-                sortBy.setOrder(SortOrder.UNSORTED);
-                sortBy.setPriority(SortMeta.MIN_PRIORITY);
+                sortMeta.setOrder(SortOrder.UNSORTED);
+                sortMeta.setPriority(SortMeta.MIN_PRIORITY);
             }
         }
 
@@ -168,7 +166,7 @@ public class SortFeature implements DataTableFeature {
             for (SortMeta sortMeta : sortBy.values()) {
                 comparisonResult.set(0);
 
-                if (sortMeta.getComponent() instanceof HeaderRow) {
+                if (sortMeta.isHeaderRow()) {
                     int result = compare(context, var, sortMeta, o1, o2, collator, locale);
                     comparisonResult.set(result);
                 }
