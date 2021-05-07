@@ -1,8 +1,8 @@
 /**
  * __PrimeFaces CascadeSelect Widget__
- * 
+ *
  * CascadeSelect CascadeSelect displays a nested structure of options.
- * 
+ *
  * @prop {JQuery} contents The DOM element for the content in the available selectable options.
  * @prop {PrimeFaces.UnbindCallback} [hideOverlayHandler] Unbind callback for the hide overlay handler.
  * @prop {JQuery} input The DOM element for the hidden input with the current value.
@@ -16,12 +16,12 @@
  * @prop {PrimeFaces.UnbindCallback} [scrollHandler] Unbind callback for the scroll handler.
  * @prop {JQuery} triggers The DOM elements for the buttons that can trigger (hide or show) the overlay panel with the
  * available selectable options.
- * 
+ *
  * @interface {PrimeFaces.widget.CascadeSelectCfg} cfg The configuration for the {@link  CascadeSelect| CascadeSelect widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
- * 
+ *
  * @prop {string} cfg.appendTo Appends the overlay to the element defined by search expression. Defaults to the document
  * body.
  * @prop {boolean} cfg.disabled If true, disables the component.
@@ -35,7 +35,7 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
      */
     init: function(cfg) {
         this._super(cfg);
-        
+
         this.input = $(this.jqId + '_input');
         this.label = this.jq.children('.ui-cascadeselect-label');
         this.triggers = this.jq.children('.ui-cascadeselect-trigger').add(this.label);
@@ -45,22 +45,22 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
         this.contents = this.items.children('.ui-cascadeselect-item-content');
         this.cfg.disabled = this.jq.hasClass('ui-state-disabled');
         this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this, this.panel);
-        
+
         if (!this.cfg.disabled) {
             this.bindEvents();
-        
+
             PrimeFaces.utils.registerDynamicOverlay(this, this.panel, this.id + '_panel');
             this.transition = PrimeFaces.utils.registerCSSTransition(this.panel, 'ui-connected-overlay');
         }
     },
-    
+
     /**
      * Sets up all event listeners that are required by this widget.
      * @private
      */
     bindEvents: function() {
         var $this = this;
-    
+
         this.triggers.off('click.cascadeselect').on('click.cascadeselect', function(e) {
             if ($this.panel.is(':hidden')) {
                 $this.show();
@@ -72,7 +72,7 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
             $this.input.trigger('focus.cascadeselect');
             e.preventDefault();
         });
-    
+
         this.input.off('focus.cascadeselect blur.cascadeselect keydown.cascadeselect')
             .on('focus.cascadeselect', function() {
                 $this.jq.addClass('ui-state-focus');
@@ -83,7 +83,7 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
             .on('keydown.cascadeselect', function(e) {
                 var keyCode = $.ui.keyCode,
                 key = e.which;
-        
+
                 switch(key) {
                     case keyCode.DOWN:
                         if ($this.panel.is(':visible')) {
@@ -94,23 +94,23 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
                         }
                         e.preventDefault();
                         break;
-        
+
                     case keyCode.ESCAPE:
                         if ($this.panel.is(':visible')) {
                             $this.hide();
                             e.preventDefault();
                         }
                         break;
-        
+
                     case keyCode.TAB:
                         $this.hide();
                         break;
-        
+
                     default:
                         break;
                 }
             });
-    
+
         this.contents.off('click.cascadeselect keydown.cascadeselect')
             .on('click.cascadeselect', function(e) {
                 var item = $(this).parent();
@@ -118,7 +118,7 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
 
                 $this.deactivateItems(item);
                 item.addClass('ui-cascadeselect-item-active ui-state-highlight');
-                
+
                 if (subpanel.length > 0) {
                     var parentPanel = item.closest('.ui-cascadeselect-panel');
                     $this.alignSubPanel(subpanel, parentPanel);
@@ -136,7 +136,7 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
                 var item = $(this).parent();
                 var keyCode = $.ui.keyCode,
                 key = e.which;
-        
+
                 switch(key) {
                     case keyCode.DOWN:
                         var nextItem = item.next();
@@ -144,14 +144,14 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
                             nextItem.children('.ui-cascadeselect-item-content').focus();
                         }
                         break;
-        
+
                     case keyCode.UP:
                         var prevItem = item.prev();
                         if (prevItem) {
                             prevItem.children('.ui-cascadeselect-item-content').focus();
                         }
                         break;
-        
+
                     case keyCode.RIGHT:
                         if (item.hasClass('ui-cascadeselect-item-group')) {
                             if (item.hasClass('ui-cascadeselect-item-active')) {
@@ -162,7 +162,7 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
                             }
                         }
                         break;
-        
+
                     case keyCode.LEFT:
                         $this.hideGroup(item);
                         $this.hideGroup(item.siblings('.ui-cascadeselect-item-active'));
@@ -172,18 +172,18 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
                             parentItem.children('.ui-cascadeselect-item-content').focus();
                         }
                         break;
-        
+
                     case keyCode.ENTER:
                         item.children('.ui-cascadeselect-item-content').trigger('click.cascadeselect');
                         if (!item.hasClass('ui-cascadeselect-item-group')) {
                             $this.input.trigger('focus.cascadeselect');
                         }
                         break;
-        
+
                     default:
                         break;
                 }
-        
+
                 e.preventDefault();
             });
     },
@@ -233,7 +233,7 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
 
         this.hideGroup(siblings);
         this.hideGroup(siblings.find('.ui-cascadeselect-item-active'));
-        
+
         if (!parentItem.is(this.itemsWrapper)) {
             this.deactivateItems(parentItem);
         }
@@ -247,7 +247,7 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
 
         this.hideOverlayHandler = PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', this.panel,
-            function() { return  $this.triggers },
+            function() { return $this.triggers; },
             function(e, eventTarget) {
                 if(!($this.panel.is(eventTarget) || $this.panel.has(eventTarget).length > 0)) {
                     $this.hide();
@@ -265,7 +265,7 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Fired when the browser viewport is resized or scrolled.  In Mobile environment we don't want to hider the overlay
-     * we want to re-align it.  This is because on some mobile browser the popup may force the browser to trigger a 
+     * we want to re-align it.  This is because on some mobile browser the popup may force the browser to trigger a
      * resize immediately and close the overlay. See GitHub #7075.
      * @private
      */
@@ -289,7 +289,7 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
         if (this.resizeHandler) {
             this.resizeHandler.unbind();
         }
-    
+
         if (this.scrollHandler) {
             this.scrollHandler.unbind();
         }
@@ -344,7 +344,7 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Adjust the width of the overlay panel.
-     * @private 
+     * @private
      */
     alignPanelWidth: function() {
         //align panel and container
