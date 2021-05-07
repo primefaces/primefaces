@@ -148,7 +148,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
             if (element && this.value && this.value.length > 0) {
                 var newValue = this.value;
                 if($this.cfg.digitGroupSeparator) {
-                    newValue = newValue.replace($this.cfg.digitGroupSeparator, '');
+                    newValue = newValue.replaceAll($this.cfg.digitGroupSeparator, '');
                 }
                 element.set(newValue, null, true);
             }
