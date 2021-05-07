@@ -1,13 +1,13 @@
 /**
  * __PrimeFaces Menubar Widget__
- * 
+ *
  * Menubar is a horizontal navigation component.
- * 
+ *
  * @interface {PrimeFaces.widget.MenubarCfg} cfg The configuration for the {@link  Menubar| Menubar widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.TieredMenuCfg} cfg
- * 
+ *
  * @prop {number} cfg.delay Delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.
  */
 PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
@@ -48,7 +48,7 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
             this.timeoutId = setTimeout(function () {
                submenu.css('z-index', PrimeFaces.nextZindex())
                       .show()
-                      .position(pos)
+                      .position(pos);
             }, this.cfg.delay);
         } else {
             submenu.css('z-index', PrimeFaces.nextZindex())
