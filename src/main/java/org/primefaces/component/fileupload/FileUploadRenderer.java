@@ -68,7 +68,7 @@ public class FileUploadRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         FileUpload fileUpload = (FileUpload) component;
 
-        if (fileUpload.hasDropZoneFacet()) {
+        if (fileUpload.getDropZone() != null) {
             fileUpload.setMode("advanced");
             fileUpload.setAuto(true);
             fileUpload.setDragDropSupport(true);
@@ -86,16 +86,21 @@ public class FileUploadRenderer extends CoreRenderer {
         if (fileUpload.getMode().equals("advanced")) {
             PrimeApplicationContext pfContext = PrimeApplicationContext.getCurrentInstance(context);
 
-            wb.init("FileUpload", fileUpload);
+            String dropZone = null;
+            if (fileUpload.getDropZone() != null) {
+                dropZone = SearchExpressionFacade.resolveClientIds(context, fileUpload, fileUpload.getDropZone(),
+                        SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE);
+            }
 
-            wb.attr("dnd", fileUpload.isDragDropSupport(), true)
+            wb.init("FileUpload", fileUpload)
+                    .attr("dnd", fileUpload.isDragDropSupport(), true)
                     .attr("previewWidth", fileUpload.getPreviewWidth(), 80)
                     .attr("sequentialUploads", fileUpload.isSequential(), false)
                     .attr("maxChunkSize", fileUpload.getMaxChunkSize(), 0)
                     .attr("maxRetries", fileUpload.getMaxRetries(), 30)
                     .attr("retryTimeout", fileUpload.getRetryTimeout(), 1000)
                     .attr("resumeContextPath", pfContext.getFileUploadResumeUrl(), null)
-                    .attr("hasDropZone", fileUpload.hasDropZoneFacet())
+                    .attr("dropZone", dropZone, null)
                     .callback("onAdd", "function(file, callback)", fileUpload.getOnAdd())
                     .callback("oncancel", "function()", fileUpload.getOncancel())
                     .callback("onupload", "function()", fileUpload.getOnupload());
@@ -145,22 +150,22 @@ public class FileUploadRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = fileUpload.getClientId(context);
         String style = fileUpload.getStyle();
-        String styleClass = fileUpload.getStyleClass();
-        styleClass = styleClass == null ? FileUpload.CONTAINER_CLASS : FileUpload.CONTAINER_CLASS + " " + styleClass;
+        String styleClass = getStyleClassBuilder(context)
+                .add(FileUpload.CONTAINER_CLASS)
+                .add(fileUpload.getStyleClass())
+                .add(fileUpload.getDropZone() != null, FileUpload.WITHDROPZONE_CLASS)
+                .build();
         boolean disabled = fileUpload.isDisabled();
 
         writer.startElement("div", fileUpload);
         writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("class", styleClass, styleClass);
+        writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
 
         //buttonbar
         writer.startElement("div", fileUpload);
-        if (fileUpload.hasDropZoneFacet()) {
-            writer.writeAttribute("style", "display:none", null);
-        }
         writer.writeAttribute("class", FileUpload.BUTTON_BAR_CLASS, null);
 
         //choose button
@@ -178,9 +183,6 @@ public class FileUploadRenderer extends CoreRenderer {
         //content
         writer.startElement("div", null);
         writer.writeAttribute("class", FileUpload.CONTENT_CLASS, null);
-        if (fileUpload.hasDropZoneFacet()) {
-            writer.writeAttribute("style", "display:none", null);
-        }
 
         writer.startElement("div", null);
         writer.writeAttribute("class", FileUpload.FILES_CLASS, null);
@@ -189,13 +191,6 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.endElement("div");
 
         writer.endElement("div");
-
-        if (fileUpload.hasDropZoneFacet()) {
-            writer.startElement("div", null);
-            writer.writeAttribute("class", FileUpload.DROPZONE_CLASS, null);
-            fileUpload.getDropZoneFacet().encodeAll(context);
-            writer.endElement("div");
-        }
 
         writer.endElement("div");
     }

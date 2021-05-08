@@ -14,8 +14,8 @@
  * @typedef PrimeFaces.widget.FileUpload.OnCancelCallback Callback that is invoked when a file upload was canceled. See
  * also {@link FileUploadCfg.oncancel}.
  * @this {PrimeFaces.widget.FileUpload} PrimeFaces.widget.FileUpload.OnCancelCallback
- * 
- * @typedef PrimeFaces.widget.FileUpload.OnUploadCallback Callback to execute before the files are sent. 
+ *
+ * @typedef PrimeFaces.widget.FileUpload.OnUploadCallback Callback to execute before the files are sent.
  * If this callback returns false, the file upload request is not started. See also {@link FileUploadCfg.onupload}.
  * @this {PrimeFaces.widget.FileUpload} PrimeFaces.widget.FileUpload.OnUploadCallback
  *
@@ -51,6 +51,9 @@
  * @prop {JQueryFileUpload.FileUploadOptions} ucfg Options for the BlueImp jQuery file upload plugin.
  * @prop {JQuery} form The DOM element for the form containing this upload widget.
  * @prop {JQuery} buttonBar The DOM element for the bar with the buttons of this widget.
+ * @prop {number} dragoverCount Amount of dragover on drop zone and its children.
+ * @prop {string} customDropZone Custom drop zone to use for drag and drop.
+ * @prop {string} dropZone Drop zone to use for drag and drop.
  * @prop {JQuery} chooseButton The DOM element for the button for selecting a file.
  * @prop {JQuery} uploadButton The DOM element for the button for starting the file upload.
  * @prop {JQuery} cancelButton The DOM element for the button for canceling a file upload.
@@ -76,6 +79,7 @@
  * @prop {RegExp} cfg.allowTypes Regular expression for accepted file types.
  * @prop {boolean} cfg.auto When set to true, selecting a file starts the upload process implicitly.
  * @prop {boolean} cfg.dnd Whether drag and drop is enabled.
+ * @prop {string} cfg.dropZone Custom drop zone to use for drag and drop.
  * @prop {boolean} cfg.disabled Whether this file upload is disabled.
  * @prop {number} cfg.fileLimit Maximum number of files allowed to upload.
  * @prop {string} cfg.fileLimitMessage Message to display when file limit exceeds.
@@ -86,7 +90,7 @@
  * @prop {number} cfg.maxFileSize Maximum allowed size in bytes for files.
  * @prop {string} cfg.messageTemplate Message template to use when displaying file validation errors.
  * @prop {PrimeFaces.widget.FileUpload.OnAddCallback} cfg.onAdd Callback invoked when an uploaded file is added.
- * @prop {PrimeFaces.widget.FileUpload.OnUploadCallback} cfg.onupload Callback to execute before the files are sent. 
+ * @prop {PrimeFaces.widget.FileUpload.OnUploadCallback} cfg.onupload Callback to execute before the files are sent.
  * If this callback returns false, the file upload request is not started.
  * @prop {PrimeFaces.widget.FileUpload.OnCancelCallback} cfg.oncancel Callback that is invoked when a file upload was
  * canceled.
@@ -132,6 +136,9 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.ucfg = {};
         this.form = this.jq.closest('form');
         this.buttonBar = this.jq.children('.ui-fileupload-buttonbar');
+        this.dragoverCount = 0;
+        this.customDropZone = this.cfg.dropZone !== undefined ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.dropZone) : null;
+        this.dropZone = (this.cfg.dnd === false) ? null : this.customDropZone || this.jq;
         this.chooseButton = this.buttonBar.children('.ui-fileupload-choose');
         this.uploadButton = this.buttonBar.children('.ui-fileupload-upload');
         this.cancelButton = this.buttonBar.children('.ui-fileupload-cancel');
@@ -164,7 +171,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             portletForms: PrimeFaces.ajax.Utils.getPorletForms(this.form, parameterPrefix),
             paramName: this.id,
             dataType: 'xml',
-            dropZone: (this.cfg.dnd === false) ? null : this.jq,
+            dropZone: this.dropZone,
             sequentialUploads: this.cfg.sequentialUploads,
             maxChunkSize: this.cfg.maxChunkSize,
             maxRetries: this.cfg.maxRetries,
@@ -476,14 +483,14 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
         // For JAWS support
         this.chooseButton.on('click.fileupload', function() {
-            $this.chooseButton.children('input').trigger('click');
+            $this.show();
         })
         .on('keydown.fileupload', function(e) {
             var keyCode = $.ui.keyCode,
             key = e.which;
 
             if(key === keyCode.SPACE || key === keyCode.ENTER) {
-                $this.chooseButton.children('input').trigger('click');
+                $this.show();
                 $(this).trigger('blur');
                 e.preventDefault();
             }
@@ -576,6 +583,29 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
                     e.preventDefault();
                 });
+
+        if (this.dropZone) {
+            this.dropZone
+                    .off('dragover.fucdropzone dragenter.fucdropzone dragleave.fucdropzone drop.fucdropzone dragdrop.fucdropzone')
+                    .on('dragover.fucdropzone', function(e){
+                        e.preventDefault();
+                    })
+                    .on('dragenter.fucdropzone', function(e){
+                        e.preventDefault();
+                        $this.dragoverCount++;
+                        $this.dropZone.addClass('ui-state-drag');
+                    })
+                    .on('dragleave.fucdropzone', function(e){
+                        $this.dragoverCount--;
+                        if ($this.dragoverCount === 0) {
+                            $this.dropZone.removeClass('ui-state-drag');
+                        }
+                    })
+                    .on('drop.fucdropzone dragdrop.fucdropzone', function(e){
+                        $this.dragoverCount = 0;
+                        $this.dropZone.removeClass('ui-state-drag');
+                    });
+        }
     },
 
     /**
@@ -586,7 +616,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.global) {
             $(document).trigger('pfAjaxStart');
         }
-        
+
         for(var i = 0; i < this.files.length; i++) {
             this.files[i].ajaxRequest = this.files[i].row.data('filedata');
             this.files[i].ajaxRequest.submit();

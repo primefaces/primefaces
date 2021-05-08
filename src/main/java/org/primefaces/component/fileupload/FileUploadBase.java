@@ -79,7 +79,8 @@ public abstract class FileUploadBase extends UIInput implements Widget {
         title,
         chooseButtonTitle,
         uploadButtonTitle,
-        cancelButtonTitle
+        cancelButtonTitle,
+        dropZone
     }
 
     public FileUploadBase() {
@@ -450,6 +451,14 @@ public abstract class FileUploadBase extends UIInput implements Widget {
 
     public void setGlobal(boolean global) {
         getStateHelper().put(PropertyKeys.global, global);
+    }
+
+    public String getDropZone() {
+        return (String) getStateHelper().eval(PropertyKeys.dropZone, null);
+    }
+
+    public void setDropZone(String dropZone) {
+        getStateHelper().put(PropertyKeys.dropZone, dropZone);
     }
 
 }

@@ -34,6 +34,7 @@ powered rich solution with graceful degradation for legacy browsers.
 | converterMessage | null | String | Message to be displayed when conversion fails.
 | disabled | false | Boolean | Disables component when set true.
 | dragDropSupport | true | Boolean | Specifies dragdrop based file selection from filesystem, default is true and works only on supported browsers.
+| dropZone | null | String | Component that should be used as custom drop zone.
 | fileLimit | null | Integer | Maximum number of files allowed to upload.
 | fileLimitMessage | Maximum number of files exceeded | String | Message to display when file limit exceeds.
 | global | true | Boolean | Global AJAX requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus. Default is false.
@@ -250,13 +251,18 @@ FileLimit restricts the number of maximum files that can be uploaded.
 <p:fileUpload listener="#{fileBean.handleFileUpload}" fileLimit="3" />
 ```
 ## Validation Messages
-_invalidFileMessage_ , _invalidSizeMessage_ and _fileLimitMessage_ options are provided to display
+`invalidFileMessage` , `invalidSizeMessage` and `fileLimitMessage` options are provided to display
 validation messages to the users. Similar to the FacesMessage message API, these message define
-the summary part, the detail part is retrieved from the _messageTemplate_ option where default value
-is “{name} {size}”.
+the summary part, the detail part is retrieved from the `messageTemplate` option where default value
+is `{name} {size}`.
+
+## Custom Drop Zone
+With the `dropZone` attribute your can specify which component should be used as the drop zone for the
+upload component. If you set this attribute, the following will be set by default: `mode="advanced"`,
+ `auto="true"` and `dragDropSupport="true"`.
 
 ## Skinning
-FileUpload resides in a container element which _style_ and _styleClass_ options apply. As skinning
+FileUpload resides in a container element which `style` and `styleClass` options apply. As skinning
 style classes are global, see the main theming section for more information. Following is the list of
 structural style classes
 
