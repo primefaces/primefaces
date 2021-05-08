@@ -563,6 +563,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     default String getColumnsWidthForClientSide() {
         return getColumnMeta().entrySet()
                 .stream()
+                .filter(e -> LangUtils.isNotBlank(e.getValue().getWidth()))
                 .map(e -> e.getKey() + '_' + e.getValue().getWidth())
                 .collect(Collectors.joining(","));
     }
