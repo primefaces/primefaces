@@ -40,6 +40,9 @@ public class Spinner extends SpinnerBase {
     public static final String DOWN_BUTTON_CLASS = "ui-spinner-button ui-spinner-down ui-corner-br ui-button ui-widget ui-state-default ui-button-text-only";
     public static final String UP_ICON_CLASS = "ui-icon ui-icon-triangle-1-n ui-c";
     public static final String DOWN_ICON_CLASS = "ui-icon ui-icon-triangle-1-s ui-c";
+    public static final String HORIZONTAL_CLASS = "ui-spinner-horizontal";
+    public static final String HORIZONTAL_UP_ICON_CLASS = "pi pi-plus";
+    public static final String HORIZONTAL_DOWN_ICON_CLASS = "pi pi-minus";
 
     @Override
     public String getInputClientId() {

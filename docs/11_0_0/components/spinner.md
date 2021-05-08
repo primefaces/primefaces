@@ -17,7 +17,7 @@ Spinner is an input component to provide a numerical input via increment and dec
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -46,7 +46,8 @@ accesskey | null | String | Access key that when pressed transfers focus to the 
 alt | null | String | Alternate textual description of the input field.
 autocomplete | null | String | Controls browser autocomplete behavior.
 dir | null | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
-disabled | false | Boolean | Disables input field
+disabled | false | Boolean | Disables input field.
+horizontal | false | Boolean | Enables horizontal mode.
 inputmode | null | String | Hint at the type of data this control has for touch devices to display appropriate virtual keyboard.
 label | null | String | A localized user presentable name.
 lang | null | String | Code describing the language used in the generated markup for this component.
@@ -147,10 +148,10 @@ request is done to update the outputtext with new value whenever a spinner butto
 
 ## Ajax Behavior Events
 
-The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
-  
-**Default Event:** `valueChange`  
-**Available Events:** `blur, change, click, contextmenu, copy, cut, dblclick, drag, dragend, dragenter, dragleave, dragover, dragstart, drop, focus, input, invalid, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, paste, reset, scroll, search, select, valueChange, wheel`  
+The following AJAX behavior events are available for this component. If no event is specified the default event is called.
+
+**Default Event:** `valueChange`
+**Available Events:** `blur, change, click, contextmenu, copy, cut, dblclick, drag, dragend, dragenter, dragleave, dragover, dragstart, drop, focus, input, invalid, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, paste, reset, scroll, search, select, valueChange, wheel`
 
 ```xhtml
 <p:ajax event="valueChange" listener="#{bean.handlevalueChange}" update="msgs" />
@@ -160,8 +161,8 @@ The following AJAX behavior events are available for this component. If no event
 Spinner resides in a container element that using _style_ and _styleClass_ applies. Following is the list of
 structural style classes;
 
-| Class | Applies | 
-| --- | --- | 
+| Class | Applies |
+| --- | --- |
 .ui-spinner | Main container element of spinner
 .ui-spinner-input | Input field
 .ui-spinner-button | Spinner buttons

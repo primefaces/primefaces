@@ -110,10 +110,20 @@ public class SpinnerRenderer extends InputRenderer {
     protected void encodeMarkup(FacesContext context, Spinner spinner) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = spinner.getClientId(context);
-        String styleClass = createStyleClass(spinner, Spinner.CONTAINER_CLASS);
+        String styleClass = getStyleClassBuilder(context)
+                .add(createStyleClass(spinner, Spinner.CONTAINER_CLASS))
+                .add(spinner.isHorizontal(), Spinner.HORIZONTAL_CLASS)
+                .build();
         boolean valid = spinner.isValid();
-        String upButtonClass = (valid) ? Spinner.UP_BUTTON_CLASS : Spinner.UP_BUTTON_CLASS + " ui-state-error";
-        String downButtonClass = (valid) ? Spinner.DOWN_BUTTON_CLASS : Spinner.DOWN_BUTTON_CLASS + " ui-state-error";
+
+        String upButtonClass = getStyleClassBuilder(context)
+                .add(Spinner.UP_BUTTON_CLASS)
+                .add(!valid, "ui-state-error")
+                .build();
+        String downButtonClass = getStyleClassBuilder(context)
+                .add(Spinner.DOWN_BUTTON_CLASS)
+                .add(!valid, "ui-state-error")
+                .build();
 
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId, null);
@@ -124,8 +134,8 @@ public class SpinnerRenderer extends InputRenderer {
 
         encodeInput(context, spinner);
 
-        encodeButton(context, upButtonClass, Spinner.UP_ICON_CLASS);
-        encodeButton(context, downButtonClass, Spinner.DOWN_ICON_CLASS);
+        encodeButton(context, upButtonClass, spinner.isHorizontal() ? Spinner.HORIZONTAL_UP_ICON_CLASS : Spinner.UP_ICON_CLASS);
+        encodeButton(context, downButtonClass, spinner.isHorizontal() ? Spinner.HORIZONTAL_DOWN_ICON_CLASS : Spinner.DOWN_ICON_CLASS);
 
         writer.endElement("span");
     }
