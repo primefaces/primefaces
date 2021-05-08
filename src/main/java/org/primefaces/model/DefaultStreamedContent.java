@@ -27,7 +27,10 @@ import org.primefaces.util.Lazy;
 import org.primefaces.util.SerializableSupplier;
 
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
+import java.util.function.Consumer;
+import javax.faces.FacesException;
 
 /**
  * Default implementation of a StreamedContent
@@ -39,6 +42,7 @@ public class DefaultStreamedContent implements StreamedContent, Serializable {
     private String name;
     private String contentEncoding;
     private Integer contentLength;
+    private Consumer<OutputStream> writer;
 
     public DefaultStreamedContent() {
         // NOOP
@@ -71,6 +75,11 @@ public class DefaultStreamedContent implements StreamedContent, Serializable {
     @Override
     public Integer getContentLength() {
         return contentLength;
+    }
+
+    @Override
+    public Consumer<OutputStream> getWriter() {
+        return writer;
     }
 
     public static Builder builder() {
@@ -110,7 +119,16 @@ public class DefaultStreamedContent implements StreamedContent, Serializable {
             return this;
         }
 
+        public Builder writer(Consumer<OutputStream> writer) {
+            streamedContent.writer = writer;
+            return this;
+        }
+
         public DefaultStreamedContent build() {
+            if (streamedContent.writer == null && streamedContent.stream == null) {
+                throw new FacesException("Either provide a 'stream' or 'writer'!");
+            }
+
             return streamedContent;
         }
     }

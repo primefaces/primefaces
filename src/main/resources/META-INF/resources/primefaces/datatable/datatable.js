@@ -89,6 +89,7 @@
  * @prop {boolean} liveScrollActive Whether live scrolling is currently active.
  * @prop {boolean} loadingLiveScroll Whether data is currently being loaded due to the live scrolling feature.
  * @prop {boolean} mousedownOnRow Whether a mousedown event occurred on a row.
+ * @prop {boolean} ignoreRowHoverEvent Whether to ignore row hover event.
  * @prop {JQuery} orderStateHolder INPUT element storing the current column / row order.
  * @prop {number | null} originRowIndex The original row index of the row that was clicked.
  * @prop {PrimeFaces.widget.Paginator} paginator When pagination is enabled: The paginator widget instance used for
@@ -278,6 +279,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     _render: function() {
         this.isRTL = this.jq.hasClass('ui-datatable-rtl');
         this.cfg.partialUpdate = (this.cfg.partialUpdate === false) ? false : true;
+        this.hasColumnGroup = this.hasColGroup();
 
         if(this.cfg.scrollable) {
             this.setupScrolling();
@@ -385,6 +387,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     refresh: function(cfg) {
         this.columnWidthsFixed = false;
+        this.ignoreRowHoverEvent = false;
 
         this.unbindEvents();
 
@@ -786,7 +789,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.rowSelector = '> tr.ui-widget-content.ui-datatable-selectable';
         this.cfg.disabledTextSelection = this.cfg.disabledTextSelection === false ? false : true;
         this.cfg.selectionPageOnly = this.cfg.selectionPageOnly === false ? !this.cfg.paginator : true;
-        this.rowSelectorForRowClick = this.cfg.rowSelector||'td:not(.ui-column-unselectable),span:not(.ui-c)';
+        this.rowSelectorForRowClick = this.cfg.rowSelector||'td:not(.ui-column-unselectable):not(.ui-grouped-column),span:not(.ui-c)';
 
         var preselection = $(this.selectionHolder).val();
         this.selection = !preselection ? [] : preselection.split(',');
@@ -824,11 +827,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * Sets up all event listeners for event triggered on a row of this data table.
      * @private
      */
-    bindRowEvents: function() {
+     bindRowEvents: function() {
         var $this = this;
-
+    
         this.bindRowHover(this.rowSelector);
-
+    
         this.tbody.off('click.dataTable mousedown.dataTable', this.rowSelector).on('mousedown.dataTable', this.rowSelector, null, function(e) {
             $this.mousedownOnRow = true;
         })
@@ -836,9 +839,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             $this.onRowClick(e, this);
             $this.mousedownOnRow = false;
         });
-
+    
         //double click
-        if(this.hasBehavior('rowDblselect')) {
+        if (this.hasBehavior('rowDblselect')) {
             this.tbody.off('dblclick.dataTable', this.rowSelector).on('dblclick.dataTable', this.rowSelector, null, function(e) {
                 $this.onRowDblclick(e, $(this));
             });
@@ -958,17 +961,42 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Sets up the event listeners for hovering over a data table row.
      * @protected
-     * @param {string} selector Selector for the row elements. Any hover event that does not reach an element that
+     * @param {string} rowSelector Selector for the row elements. Any hover event that does not reach an element that
      * matches this selector will be ignored.
      */
-    bindRowHover: function(selector) {
-        this.tbody.off('mouseenter.dataTable mouseleave.dataTable', selector)
-                    .on('mouseenter.dataTable', selector, null, function() {
-                        $(this).addClass('ui-state-hover');
-                    })
-                    .on('mouseleave.dataTable', selector, null, function() {
-                        $(this).removeClass('ui-state-hover');
-                    });
+    bindRowHover: function(rowSelector) {
+        var $this = this;
+        this.tbody.off('mouseenter.dataTable mouseleave.dataTable', rowSelector)
+            .on('mouseenter.dataTable', rowSelector, null, function() {
+                if (!$this.ignoreRowHoverEvent) {
+                    $(this).addClass('ui-state-hover');
+                }
+            })
+            .on('mouseleave.dataTable', rowSelector, null, function() {
+                if (!$this.ignoreRowHoverEvent) {
+                    $(this).removeClass('ui-state-hover');
+                }
+            });
+
+        if (this.cfg.groupColumnIndexes) {
+            var columnSelector = rowSelector + ' > td';
+            this.tbody.off('mouseenter.dataTable mouseleave.dataTable', columnSelector)
+                .on('mouseenter.dataTable', columnSelector, null, function() {
+                    var row = $(this).parent();
+                    if ($(this).hasClass('ui-grouped-column')) {
+                        row.removeClass('ui-state-hover');
+                        $this.ignoreRowHoverEvent = true;
+                    }
+                    else {
+                        row.addClass('ui-state-hover');
+                    }
+                })
+                .on('mouseleave.dataTable', columnSelector, null, function() {
+                    if (!$(this).hasClass('ui-grouped-column')) {
+                        $this.ignoreRowHoverEvent = false;
+                    }
+                });
+        }
     },
 
     /**
@@ -2383,7 +2411,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         //Check if rowclick triggered this event not a clickable element in row content
-        if($(event.target).is('td,span:not(.ui-c)')) {
+        if($(event.target).is(this.rowSelectorForRowClick)) {
             var rowMeta = this.getRowMeta(row);
 
             this.fireRowSelectEvent(rowMeta.key, 'rowDblselect');
@@ -2536,6 +2564,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 this.unselectCheckbox(row.children('td.ui-selection-column').find('> div.ui-chkbox > div.ui-chkbox-box'));
 
             this.updateHeaderCheckbox();
+        }
+
+        if(this.isRadioSelectionEnabled()) {
+            if(this.cfg.nativeElements)
+                row.children('td.ui-selection-column').find(':radio').prop('checked', false);
+            else
+                this.unselectRadio(row.children('td.ui-selection-column').find('> div.ui-radiobutton > div.ui-radiobutton-box'));
         }
 
         this.removeSelection(rowMeta.key);
@@ -2990,6 +3025,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     displayExpandedRow: function(row, content) {
         row.after(content);
+        this.updateRowspan(row);
         this.updateColspan(row.next());
     },
 
@@ -3021,6 +3057,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     collapseRow: function(row) {
         // #942: need to use "hide" instead of "remove" to avoid incorrect form mapping when a row is collapsed
         row.removeClass('ui-expanded-row').next('.ui-expanded-row-content').hide();
+        this.updateRowspan(row);
     },
 
     /**
@@ -3899,7 +3936,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         this.fixColumnWidths();
 
-        this.hasColumnGroup = this.hasColGroup();
         if(this.hasColumnGroup) {
             this.addGhostRow();
         }
@@ -4410,6 +4446,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
             }
         });
+
+        // GitHub #5013 Frozen Columns should not be draggable/droppable
+        if($this.cfg.frozenColumns) {
+            var frozenHeaders = this.frozenThead.find('.ui-frozen-column');
+            frozenHeaders.draggable('disable');
+            frozenHeaders.droppable('disable');
+            frozenHeaders.disableSelection();
+        }
     },
 
     /**
@@ -4935,6 +4979,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     rowGroupCount = parseInt(column.attr('rowspan'));
                     i += rowGroupCount - 1;
                 }
+
+                row.addClass('ui-datatable-grouped-row');
             }
             else {
                 column.addClass('ui-duplicated-column');
@@ -4981,7 +5027,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @return {number} The computed `colspan` value.
      */
     calculateColspan: function() {
-        var visibleHeaderColumns = this.thead.find('> tr:first th:not(.ui-helper-hidden)'),
+        var visibleHeaderColumns = this.thead.find('> tr:first th:not(.ui-helper-hidden):not(.ui-grouped-column)'),
             colSpanValue = 0;
 
         for(var i = 0; i < visibleHeaderColumns.length; i++) {
@@ -5015,6 +5061,33 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         var emptyRow = this.tbody.children('tr:first');
         if(emptyRow && emptyRow.hasClass('ui-datatable-empty-message')) {
             this.updateColspan(emptyRow);
+        }
+    },
+
+    /**
+     * Updates the `rowspan` attribute of the given row.
+     * @private
+     * @param {JQuery} row A column to update.
+     */
+    updateRowspan: function(row) {
+        if (this.cfg.groupColumnIndexes) {
+            var isGroupedRow = row.hasClass('ui-datatable-grouped-row');
+            var groupedRow = isGroupedRow ? row : row.prevAll('.ui-datatable-grouped-row:first');
+            var groupedColumn = groupedRow.children('.ui-grouped-column:first');
+            var rowSpan = groupedRow.nextUntil('.ui-datatable-grouped-row').not(':hidden').length + 1;
+            var diff = rowSpan - parseInt(groupedColumn.attr('rowspan') || 1);
+            groupedColumn.attr('rowspan', rowSpan);
+    
+            var groupedColumnIndex = groupedColumn.index();
+            if (groupedColumnIndex > 0) {
+                var columns = row.children('td:visible');
+                for (var i = 0; i < groupedColumnIndex; i++) {
+                    var column = columns.eq(i);
+                    if (column) {
+                        column.attr('rowspan', parseInt(column.attr('rowspan') || 1) + diff);
+                    }
+                }
+            }
         }
     },
 
@@ -5111,8 +5184,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             return;
         }
 
-        // update the visibility of columns but ignore expanded rows
-        if(this.headers) {
+        // update the visibility of columns but ignore expanded rows and GitHub #7255 grouped headers
+        if(this.headers && !this.hasColumnGroup) {
             for(var i = 0; i < this.headers.length; i++) {
                 var header = this.headers.eq(i),
                     col = this.tbody.find('> tr:not(.ui-expanded-row-content) > td:nth-child(' + (header.index() + 1) + ')');
@@ -5616,6 +5689,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
     displayExpandedRow: function(row, content) {
         var twinRow = this.getTwinRow(row);
         row.after(content);
+        this.updateRowspan(row);
         var expansionRow = row.next();
         this.updateColspan(expansionRow);
         expansionRow.show();

@@ -125,7 +125,8 @@ public class InputTextareaRenderer extends InputRenderer {
             UIComponent counterComponent = SearchExpressionFacade.resolveComponent(context, inputTextarea, counter);
 
             wb.attr("counter", counterComponent.getClientId(context))
-                    .attr("counterTemplate", inputTextarea.getCounterTemplate(), null);
+                    .attr("counterTemplate", inputTextarea.getCounterTemplate(), null)
+                    .attr("countBytesAsChars", inputTextarea.getCountBytesAsChars());
         }
 
         if (inputTextarea.getCompleteMethod() != null) {

@@ -1,15 +1,15 @@
 /**
  * __PrimeFaces Captcha Widget__
- * 
+ *
  * Captcha is a form validation component based on Recaptcha API V2.
- * 
+ *
  * @typedef {"light" | "dark"} PrimeFaces.widget.Captcha.Theme Captcha features light and dark modes for theme.
- * 
+ *
  * @interface {PrimeFaces.widget.CaptchaCfg} cfg The configuration for the {@link  Captcha| Captcha widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
- * 
+ *
  * @prop {string} cfg.callback Name of a function in the global scope. Callback to be executed when the user submits a
  * successful CAPTCHA response. The user's response, goggle recaptcha-response, will be the input for your callback
  * function.
@@ -23,11 +23,11 @@
  */
 PrimeFaces.widget.Captcha = PrimeFaces.widget.BaseWidget.extend({
 
-	/**
-	 * @override
-	 * @inheritdoc
+    /**
+     * @override
+     * @inheritdoc
      * @param {TCfg} cfg
-	 */
+     */
     init: function(cfg) {
         this._super(cfg);
         this.cfg.language = this.cfg.language||'en';

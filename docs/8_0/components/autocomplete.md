@@ -24,7 +24,7 @@ AutoComplete provides live suggestions while an input is being typed.
 | converter | null | Object | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id.
 | immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
 | required | false | Boolean | Marks component as required.
-| validator | null | Method Expr | A method expression that refers to a method validationg the input.
+| validator | null | Method Expr | A method expression that refers to a method validating the input.
 | valueChangeListener | null | Method Expr | A method expression that refers to a method for handling a valuchangeevent.
 | requiredMessage | null | String | Message to be displayed when required field validation fails.
 | converterMessage | null | String | Message to be displayed when conversion fails.
@@ -247,7 +247,7 @@ display a message about the selected item instantly.
 <p:autoComplete value="#{bean.text}" completeMethod="#{bean.complete}">
     <p:ajax event="itemSelect" listener="#{bean.handleSelect}" update="msg" />
 </p:autoComplete>
-<p:messages id=”msg” />
+<p:messages id="msg" />
 ```
 ```java
 public class Bean {

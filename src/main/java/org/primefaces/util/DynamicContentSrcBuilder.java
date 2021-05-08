@@ -25,6 +25,7 @@ package org.primefaces.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.net.URLEncoder;
@@ -32,6 +33,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.Map;
+import java.util.function.Consumer;
 import javax.el.ELException;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -95,6 +97,9 @@ public class DynamicContentSrcBuilder {
             }
             else {
                 StreamedContent streamedContent = (StreamedContent) value.get();
+                if (streamedContent.getWriter() != null) {
+                    return buildBase64(context, streamedContent.getWriter(), streamedContent.getContentType());
+                }
                 return buildBase64(context, streamedContent.getStream(), streamedContent.getContentType());
             }
         }
@@ -180,6 +185,10 @@ public class DynamicContentSrcBuilder {
         return buildBase64(context, toByteArray(is), null);
     }
 
+    public static String buildBase64(FacesContext context, Consumer<OutputStream> writer, String contentType) {
+        return buildBase64(context, toByteArray(writer), contentType);
+    }
+
     public static String buildBase64(FacesContext context, InputStream is, String contentType) {
         return buildBase64(context, toByteArray(is), contentType);
     }
@@ -227,6 +236,13 @@ public class DynamicContentSrcBuilder {
         catch (Exception e) {
             throw new FacesException("Could not read InputStream to byte[]", e);
         }
+    }
+
+    protected static byte[] toByteArray(Consumer<OutputStream> os) {
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        os.accept(buffer);
+
+        return buffer.toByteArray();
     }
 
     protected static String md5(String input) {

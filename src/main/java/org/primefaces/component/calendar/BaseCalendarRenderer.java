@@ -188,7 +188,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
     }
 
     protected Temporal convertToJava8DateTimeAPI(FacesContext context, UICalendar calendar, Class<?> type, String submittedValue) {
-        if (type == LocalDate.class || type == YearMonth.class) {
+        if (type == LocalDate.class || type == YearMonth.class || (type == LocalDateTime.class && !calendar.hasTime())) {
             DateTimeFormatter formatter = new DateTimeFormatterBuilder()
                     .parseCaseInsensitive()
                     .appendPattern(calendar.calculatePattern())
@@ -199,9 +199,18 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
                     .withResolverStyle(resolveResolverStyle(calendar.getResolverStyle()));
 
             try {
-                return type == LocalDate.class
-                        ? LocalDate.parse(submittedValue, formatter)
-                        : YearMonth.parse(submittedValue, formatter);
+                Temporal result;
+                if (type == LocalDate.class) {
+                    result = LocalDate.parse(submittedValue, formatter);
+                }
+                else if (type == LocalDateTime.class) {
+                    result = LocalDate.parse(submittedValue, formatter).atStartOfDay();
+                }
+                else {
+                    result = YearMonth.parse(submittedValue, formatter);
+                }
+
+                return result;
             }
             catch (DateTimeParseException e) {
                 throw createConverterException(context, calendar, submittedValue, formatter.format(LocalDateTime.now()));

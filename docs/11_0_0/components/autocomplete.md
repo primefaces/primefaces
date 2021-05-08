@@ -28,7 +28,7 @@ AutoComplete provides live suggestions while an input is being typed.
 | autoHighlight | true | Boolean | Highlights the first suggested item automatically.
 | autoSelection | true | Boolean | Defines if auto selection of items that are equal to the typed input is enabled. If true, an item that is equal to the typed input is selected.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
-| completeEndpoint | null | String | REST-endpoint for fetching autocomplete-suggestions. (instead of completeMethod) Can´t be combined with dynamic=true, queryMode!=server, cache=true. 
+| completeEndpoint | null | String | REST-endpoint for fetching autocomplete-suggestions. (instead of completeMethod) Can´t be combined with dynamic=true, queryMode!=server, cache=true.
 | completeMethod | null | Method Expr | Method providing suggestions.
 | converter | null | Object | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id.
 | converterMessage | null | String | Message to be displayed when conversion fails.
@@ -36,6 +36,7 @@ AutoComplete provides live suggestions while an input is being typed.
 | disabled | false | Boolean | Disables input field
 | dropdown | false | Boolean | Enables dropdown mode when set true.
 | dropdownTabindex | null | String | Position of the dropdown button in the tabbing order.
+| dropdownAriaLabel | null | String | ARIA Label for the dropdown button.
 | dynamic | false | Boolean | Defines if dynamic loading is enabled for the element's panel. If the value is "true", the overlay is not rendered on page load to improve performance.
 | escape | true | Boolean | Defines if autocomplete results are escaped or not.
 | forceSelection | false | Boolean | When enabled, autoComplete only accepts input from the selection list.
@@ -97,7 +98,7 @@ AutoComplete provides live suggestions while an input is being typed.
 | tabindex | null | String | Position of the input field in the tabbing order.
 | type | text | String | Input field type.
 | unique | false | Boolean | Ensures uniqueness of selected items.
-| validator | null | Method Expr | A method expression that refers to a method validationg the input.
+| validator | null | Method Expr | A method expression that refers to a method validating the input.
 | validatorMessage | null | String | Message to be displayed when validation fails.
 | value | null | Object | Value of the component than can be either an EL expression of a literal text.
 | valueChangeListener | null | Method Expr | A method expression that refers to a method for handling a valuchangeevent.
@@ -200,6 +201,7 @@ AutoComplete can display custom content by nesting columns.
     </p:column>
 </p:autoComplete>
 ```
+
 ## Dropdown Mode
 When dropdown mode is enabled, a dropdown button is displayed next to the input field.
 Depending on dropdownMode configuration, clicking this button will either do a search with an
@@ -208,9 +210,23 @@ empty query or search with the current value in input.
 ```xhtml
 <p:autoComplete value="#{bean.text}" completeMethod="#{bean.complete}" dropdown="true" />
 ```
+
+## Footer
+A footer can be added to the suggestion list using the `footer` facet. You could use this for example to offer UI to
+add a new item. For example:
+
+```xhtml
+<f:facet name="footer">
+    <p:button value="Add new" onclick="..."/>
+</f:facet>
+```
+
+Note that the panel is placed at the end of the body in the DOM tree, so not in the same form as the `AutoComplete`
+component is in. So you might want to wrap the contents of this facet in a form if needed.
+
 ## Multiple Selection
-AutoComplete supports multiple selection as well, to use this feature set multiple option to true and
-define a list as your back-end model. Use BACKSPACE key to remove a selected item and CTRL or SHIFT+BACKSPACE 
+`AutoComplete` supports multiple selection as well, to use this feature set multiple option to true and
+define a list as your back-end model. Use BACKSPACE key to remove a selected item and CTRL or SHIFT+BACKSPACE
 to remove all items at once.
 Following example demonstrates multiple selection with custom content support.
 
@@ -249,13 +265,13 @@ Or existing REST-endpoints may be re-used.
 
 AutoComplete does a HTTP-GET against the REST-endpoint and passes query-url-parameter. (eg `/rest/theme/autocomplete?query=lu`)
 
-The REST-endpoint has to return following JSON-response: 
+The REST-endpoint has to return following JSON-response:
 ```json
 {"suggestions":[{"value":"0","label":"Nova-Light"},{"value":"1","label":"Nova-Dark"},{"value":"2","label":"Nova-Colored"}],"moreAvailable":false}
 ```
-Each suggestion-item needs to have value- and label-property. In most cases you can simply use `org.primefaces.model.rest.AutoCompleteSuggestionResponse` as response as the following example shows. 
+Each suggestion-item needs to have value- and label-property. In most cases you can simply use `org.primefaces.model.rest.AutoCompleteSuggestionResponse` as response as the following example shows.
 
-Sample REST-service based one JAX-RS and CDI: 
+Sample REST-service based one JAX-RS and CDI:
 
 ```java
 import org.primefaces.model.rest.AutoCompleteSuggestion;
@@ -289,17 +305,18 @@ public class ThemeService {
                 .collect(Collectors.toList()));
     }
 }
-``` 
+```
 
-Sample-useage within AutoComplete. Note `completeEndpoint`-attribute. 
+Sample-useage within AutoComplete. Note `completeEndpoint`-attribute.
 ```xhtml
 <p:autoComplete id="themePojoRest" value="#{autoCompleteView.theme}" var="theme" itemLabel="#{theme.displayName}" itemValue="#{theme}" converter="#{themeConverter}" completeEndpoint="#{request.contextPath}/rest/theme/autocomplete" forceSelection="true" />
-``` 
+```
 
 ## Ajax Behavior Events
-The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
-  
-**Default Event:** `valueChange`  
+The following AJAX behavior events are available for this component. If no event is specified the default event is called.
+
+**Default Event:** `valueChange`
+
 **Available Events:** `blur, change, clear, click, contextmenu, copy, cut, dblclick, drag, dragend, dragenter, dragleave, dragover, dragstart, drop, focus, input, invalid, itemSelect, itemUnselect, keydown, keypress, keyup, moreTextSelect, emptyMessageSelect, mousedown, mousemove, mouseout, mouseover, mouseup, paste, query, reset, scroll, search, select, valueChange, wheel`
 
 
@@ -311,7 +328,7 @@ display a message about the selected item instantly.
 <p:autoComplete value="#{bean.text}" completeMethod="#{bean.complete}">
     <p:ajax event="itemSelect" listener="#{bean.handleSelect}" update="msg" />
 </p:autoComplete>
-<p:messages id=”msg” />
+<p:messages id="msg" />
 ```
 ```java
 public class Bean {

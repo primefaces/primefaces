@@ -118,7 +118,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         forEachColumn(c -> {
             FilterMeta f = filterBy.get(c.getColumnKey());
             if (f != null && !invalidate) {
-                f.setColumn(c);
+
             }
             else {
                 f = FilterMeta.of(context, getVar(), c);

@@ -814,7 +814,7 @@ Additionally _style_ and _styleClass_ options of chart component apply to the co
 charts, use these attribute to specify the dimensions of a chart.
 
 ```xhtml
-<p:chart type="pie" model="#{bean.model}" style=”width:320px;height:200px” />
+<p:chart type="pie" model="#{bean.model}" style="width:320px;height:200px" />
 ```
 In case you’d like to change the colors of series, use the _seriesColors_ option in ChartModel API.
 

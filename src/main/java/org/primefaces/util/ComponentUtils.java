@@ -27,8 +27,6 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import javax.el.ValueExpression;
@@ -432,18 +430,28 @@ public class ComponentUtils {
     /**
      * Checks if the facet and one of the first level children is rendered.
      * @param facet The Facet component to check
-     * @param ignoreChildren flag to ignore children and only check the facet itself
+     * @param alwaysRender flag to ignore children and only check the facet itself
      * @return true if the facet should be rendered, false if not
      */
-    public static boolean shouldRenderFacet(UIComponent facet, boolean ignoreChildren) {
-        if (facet == null || !facet.isRendered()) {
+    public static boolean shouldRenderFacet(UIComponent facet, boolean alwaysRender) {
+        if (facet == null) {
+            // no facet declared at all
+            return false;
+        }
+
+        // user wants to always render this facet so it can be updated
+        if (alwaysRender) {
+            return true;
+        }
+
+        if (!facet.isRendered()) {
             // For any future version of JSF where the f:facet gets a rendered attribute (https://github.com/javaserverfaces/mojarra/issues/4299)
             // or there is only 1 child.
             return false;
         }
 
         // Facet has no child but is rendered
-        if (ignoreChildren || facet.getChildCount() == 0) {
+        if (facet.getChildCount() == 0) {
             return true;
         }
 
@@ -515,31 +523,6 @@ public class ComponentUtils {
         return value;
     }
 
-    public static boolean isNestedWithinIterator(UIComponent component) {
-        return invokeOnClosestIteratorParent(component, p -> { }, false);
-    }
-
-    public static boolean invokeOnClosestIteratorParent(UIComponent component, Consumer<UIComponent> function, boolean includeSelf) {
-        Predicate<UIComponent> isIteratorComponent = p -> p instanceof javax.faces.component.UIData
-                || p.getClass().getName().endsWith("UIRepeat")
-                || (p instanceof UITabPanel && ((UITabPanel) p).isRepeating());
-
-        UIComponent parent = component;
-        while (null != (parent = parent.getParent())) {
-            if (isIteratorComponent.test(parent)) {
-                function.accept(parent);
-                return true;
-            }
-        }
-
-        if (includeSelf && isIteratorComponent.test(component)) {
-            function.accept(component);
-            return true;
-        }
-
-        return false;
-    }
-
     public static ViewPoolingResetMode isViewPooling(FacesContext context) {
         if (context.getViewRoot() != null) {
             Object mode = context.getViewRoot().getAttributes().get("oam.view.resetSaveStateMode");
@@ -559,5 +542,24 @@ public class ComponentUtils {
         OFF,
         SOFT,
         HARD;
+    }
+
+    /**
+     * Hack for Mojarra as our UIData is copied from Mojarra.
+     * This is required because the way how UIData is implemented in Mojarra requires to check for parent iterator-components.
+     *
+     * @param component
+     * @return
+     */
+    public static boolean isNestedWithinIterator(UIComponent component) {
+        UIComponent parent = component;
+        while (null != (parent = parent.getParent())) {
+            if (parent instanceof javax.faces.component.UIData || parent.getClass().getName().endsWith("UIRepeat")
+                    || (parent instanceof UITabPanel && ((UITabPanel) parent).isRepeating())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

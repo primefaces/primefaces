@@ -293,7 +293,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
 
         String selectionMode = datePicker.getSelectionMode();
         switch (selectionMode) {
-            case "multiple": {
+            case "multiple":
                 String[] parts = submittedValue.split(",");
                 List<Object> multi = new ArrayList<>();
                 for (String part : parts) {
@@ -301,18 +301,16 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
                 }
 
                 return multi;
-            }
-            case "range": {
-                String[] parts = submittedValue.split(datePicker.getRangeSeparator());
+            case "range":
+                List<String> rangeStr = CalendarUtils.splitRange(submittedValue, datePicker.calculatePattern(), datePicker.getRangeSeparator());
                 List<Object> range = new ArrayList<>();
-                if (parts.length == 2) {
-                    for (String part : parts) {
-                        range.add(super.getConvertedValue(context, component, part));
+                if (rangeStr.size() == 2) {
+                    for (int i = 0; i < rangeStr.size(); i++) {
+                        range.add(super.getConvertedValue(context, component, rangeStr.get(i)));
                     }
                 }
 
                 return range;
-            }
             default:
                 return super.getConvertedValue(context, component, value);
         }

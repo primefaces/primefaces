@@ -59,7 +59,8 @@ public class LinkButtonRenderer extends OutcomeTargetRenderer {
                     .add(linkButton.getStyleClass())
                     .add(hasValue && !hasIcon, HTML.BUTTON_TEXT_ONLY_BUTTON_CLASS)
                     .add(!hasValue && hasIcon, HTML.BUTTON_ICON_ONLY_BUTTON_CLASS)
-                    .add(isTextAndIcon && "left".equals(linkButton.getIconPos()), HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS, HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS)
+                    .add(isTextAndIcon && "left".equals(linkButton.getIconPos()), HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS)
+                    .add(isTextAndIcon && "right".equals(linkButton.getIconPos()), HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS)
                     .add(disabled, "ui-state-disabled")
                     .build();
 

@@ -86,6 +86,6 @@ Example below hides the dialog when ajax request completes;
 
 ```java
 public void save() {
-    PrimeFaces.current().executeScript(“dialog.hide()”);
+    PrimeFaces.current().executeScript("dialog.hide()");
 }
 ```

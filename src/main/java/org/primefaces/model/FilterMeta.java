@@ -49,7 +49,6 @@ public class FilterMeta implements Serializable {
 
     private String field;
     private String columnKey;
-    private transient UIColumn column;
     private ValueExpression filterBy;
     private Object filterValue;
     private MatchMode matchMode = MatchMode.CONTAINS;
@@ -60,14 +59,13 @@ public class FilterMeta implements Serializable {
     }
 
     FilterMeta(String columnKey, String field, FilterConstraint constraint,
-               ValueExpression filterBy, Object filterValue, MatchMode matchMode, UIColumn column) {
+               ValueExpression filterBy, Object filterValue, MatchMode matchMode) {
         this.field = field;
         this.columnKey = columnKey;
         this.filterBy = filterBy;
         this.constraint = constraint;
         this.filterValue = filterValue;
         this.matchMode = matchMode;
-        this.column = column;
     }
 
     /**
@@ -112,8 +110,7 @@ public class FilterMeta implements Serializable {
                               constraint,
                               filterByVE,
                               column.getFilterValue(),
-                              matchMode,
-                              column);
+                              matchMode);
     }
 
     public static FilterMeta of(Object globalFilterValue, MethodExpression globalFilterFunction) {
@@ -126,8 +123,7 @@ public class FilterMeta implements Serializable {
                               constraint,
                               null,
                               globalFilterValue,
-                              MatchMode.GLOBAL,
-                              null);
+                              MatchMode.GLOBAL);
     }
 
     public String getField() {
@@ -154,14 +150,6 @@ public class FilterMeta implements Serializable {
         this.filterValue = filterValue;
     }
 
-    public UIColumn getColumn() {
-        return column;
-    }
-
-    public void setColumn(UIColumn column) {
-        this.column = column;
-    }
-
     public FilterConstraint getConstraint() {
         return constraint;
     }
@@ -186,7 +174,7 @@ public class FilterMeta implements Serializable {
         return GLOBAL_FILTER_KEY.equals(columnKey);
     }
 
-    public Object getLocalValue(ELContext elContext) {
+    public Object getLocalValue(ELContext elContext, UIColumn column) {
         if (column instanceof DynamicColumn) {
             ((DynamicColumn) column).applyStatelessModel();
         }
@@ -265,7 +253,6 @@ public class FilterMeta implements Serializable {
         return "FilterMeta{" +
                 "field='" + field + '\'' +
                 ", columnKey='" + columnKey + '\'' +
-                ", column=" + column +
                 ", filterBy=" + filterBy +
                 ", filterValue=" + filterValue +
                 ", matchMode=" + matchMode +

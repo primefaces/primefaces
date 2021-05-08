@@ -39,10 +39,7 @@ import org.primefaces.component.menu.Menu;
 import org.primefaces.component.menubutton.MenuButton;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.model.menu.MenuItem;
-import org.primefaces.model.menu.MenuModel;
-import org.primefaces.model.menu.Separator;
-import org.primefaces.model.menu.Submenu;
+import org.primefaces.model.menu.*;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.MenuItemAwareRenderer;
 import org.primefaces.util.*;
@@ -271,10 +268,10 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeElements(FacesContext context, SplitButton button, List<Object> elements, boolean isSubmenu) throws IOException {
+    protected void encodeElements(FacesContext context, SplitButton button, List<MenuElement> elements, boolean isSubmenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        for (Object element : elements) {
+        for (MenuElement element : elements) {
             if (element instanceof MenuItem) {
                 MenuItem menuItem = (MenuItem) element;
                 if (menuItem.isRendered()) {

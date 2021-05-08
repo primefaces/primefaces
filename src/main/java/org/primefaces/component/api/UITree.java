@@ -56,6 +56,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     public static final String ROOT_ROW_KEY = "root";
     private static final String SB_GET_CONTAINER_CLIENT_ID = UITree.class.getName() + "#getContainerClientId";
     private static final String SB_GET_SELECTED_ROW_KEYS_AS_STRING = UITree.class.getName() + "#getSelectedRowKeysAsString";
+
     private String rowKey;
 
     private TreeNode rowNode;
@@ -63,8 +64,6 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     private boolean rtl;
 
     private List<TreeNode> preselection;
-
-    private Boolean isNested;
 
     public enum PropertyKeys {
         var,
@@ -1080,12 +1079,5 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     }
 
     protected void preEncode(FacesContext context) {
-    }
-
-    protected Boolean isNestedWithinIterator() {
-        if (isNested == null) {
-            isNested = ComponentUtils.isNestedWithinIterator(this);
-        }
-        return isNested;
     }
 }

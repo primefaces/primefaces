@@ -25,6 +25,7 @@ package org.primefaces.component.fileupload;
 
 import java.io.IOException;
 import java.util.logging.Logger;
+
 import javax.faces.application.ProjectStage;
 
 import javax.faces.component.UIComponent;
@@ -89,7 +90,8 @@ public class FileUploadRenderer extends CoreRenderer {
                     .attr("retryTimeout", fileUpload.getRetryTimeout(), 1000)
                     .attr("resumeContextPath", pfContext.getFileUploadResumeUrl(), null)
                     .callback("onAdd", "function(file, callback)", fileUpload.getOnAdd())
-                    .callback("oncancel", "function()", fileUpload.getOncancel());
+                    .callback("oncancel", "function()", fileUpload.getOncancel())
+                    .callback("onupload", "function()", fileUpload.getOnupload());
 
         }
         else {
@@ -110,7 +112,6 @@ public class FileUploadRenderer extends CoreRenderer {
                 .attr("messageTemplate", fileUpload.getMessageTemplate(), null)
                 .attr("maxFileSize", fileUpload.getSizeLimit(), Long.MAX_VALUE)
                 .attr("fileLimit", fileUpload.getFileLimit(), Integer.MAX_VALUE)
-                .callback("onupload", "function()", fileUpload.getOnupload())
                 .callback("onstart", "function()", fileUpload.getOnstart())
                 .callback("onerror", "function()", fileUpload.getOnerror())
                 .callback("oncomplete", "function(args)", fileUpload.getOncomplete())

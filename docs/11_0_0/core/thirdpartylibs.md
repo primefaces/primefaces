@@ -5,7 +5,7 @@ are many other third party libraries and plugins used to support features.
 
 | Library | Version | URL |
 | --- | --- | --- |
-| [AutoNumeric](../jsdocs/classes/node_modules_autonumeric.export_-1.html) | 4.5.9 | https://github.com/autoNumeric/autoNumeric |
+| [AutoNumeric](../jsdocs/classes/node_modules_autonumeric.export_-1.html) | 4.6.0 | https://github.com/autoNumeric/autoNumeric |
 | [Chart.js](../jsdocs/classes/node_modules__types_chart_js.export_-1.html) | 2.9.4 | https://www.chartjs.org |
 | [Color Picker](../jsdocs/interfaces/src_primefaces.jquery-1.html#colorpicker) | (2012) | www.eyecon.ro |
 | [Cookie](../jsdocs/modules/node_modules__types_js_cookie.html) | 3.0.0 | https://github.com/js-cookie/js-cookie |
@@ -40,6 +40,6 @@ are many other third party libraries and plugins used to support features.
 | [Quill Editor](../jsdocs/modules/node_modules__types_quill.html) | 1.3.7 | https://quilljs.com/ |
 | [Raphaël](../jsdocs/interfaces/node_modules__types_raphael.raphaelstatic.html) | 2.3.0 | http://raphaeljs.com |
 | [Signature](../jsdocs/interfaces/src_primefaces.jquery-1.html#signature) | 1.2.0 | http://keith-wood.name/signature.html |
-| [Timeline](../jsdocs/modules/node_modules_vis_timeline_declarations.html) | 7.4.6 | https://github.com/visjs/vis-timeline |
+| [Timeline](../jsdocs/modules/node_modules_vis_timeline_declarations.html) | 7.4.7 | https://github.com/visjs/vis-timeline |
 | [TouchSwipe](../jsdocs/interfaces/src_primefaces.jquery-1.html#swipe) | 1.6.18 | https://github.com/mattbryson/TouchSwipe-Jquery-Plugin |
 | [WebcamJS](../jsdocs/modules/src_primefaces.webcam.html) | 1.0.26 | http://github.com/jhuckaby |

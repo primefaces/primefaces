@@ -1,16 +1,16 @@
 /**
  * __PrimeFaces InputText Widget__
- * 
+ *
  * InputText is an extension to standard inputText with skinning capabilities.
- * 
+ *
  * @prop {JQuery} counter The DOM element for the counter that informs the user about the number of characters they can
  * still enter before they reach the limit.
- * 
+ *
  * @interface {PrimeFaces.widget.InputTextCfg} cfg The configuration for the {@link  InputText| InputText widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
- * 
+ *
  * @prop {string} cfg.counter ID of the label component to display remaining and entered characters.
  * @prop {string} cfg.counterTemplate Template text to display in counter, default value is `{0}`.
  */
@@ -62,7 +62,7 @@ PrimeFaces.widget.InputText = PrimeFaces.widget.BaseWidget.extend({
      */
     updateCounter: function() {
         var value = this.normalizeNewlines(this.jq.val()),
-        length = value.length;
+        length = this.cfg.countBytesAsChars ? PrimeFaces.utils.countBytes(value) : value.length;
 
         if(this.counter && this.cfg.maxlength) {
             var remaining = this.cfg.maxlength - length;
@@ -83,7 +83,7 @@ PrimeFaces.widget.InputText = PrimeFaces.widget.BaseWidget.extend({
      * Replaces all line breaks with a Window-style line break (carriage return + line feed).
      * @private
      * @param {string} text Text to normalize.
-     * @return {string} The given text, with all line breaks replaced with carriage return + line feed. 
+     * @return {string} The given text, with all line breaks replaced with carriage return + line feed.
      */
     normalizeNewlines: function(text) {
         return text.replace(/(\r\n|\r|\n)/g, '\r\n');

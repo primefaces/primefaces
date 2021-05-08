@@ -90,12 +90,7 @@ public class CommandLinkRenderer extends CoreRenderer {
             writer.writeAttribute("id", clientId, "id");
             writer.writeAttribute("href", "#", null);
             writer.writeAttribute("class", styleClass, null);
-            if (link.getAriaLabel() != null) {
-                writer.writeAttribute(HTML.ARIA_LABEL, link.getAriaLabel(), null);
-            }
-            else if (link.getTitle() != null) {
-                writer.writeAttribute(HTML.ARIA_LABEL, link.getTitle(), null);
-            }
+            writer.writeAttribute(HTML.ARIA_LABEL, link.getAriaLabel(), null);
 
             if (ajax) {
                 request = buildAjaxRequest(context, link);

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
+    <suppress>
+        <notes>
+            <![CDATA[file name: commons-io-2.4.jar. PrimeFaces shades this JAR and does not use the function in this report.]]>
+        </notes>
+        <packageUrl regex="true">^pkg:maven/commons\-io/commons\-io@.*$</packageUrl>
+        <cve>CVE-2021-29425</cve>
+    </suppress>
+    <suppress>
+        <notes>
+            <![CDATA[file name: url-regex:5.0.0 PrimeFaces uses this from FullCalendar.io but it is a transitive build dependency.]]>
+        </notes>
+        <packageUrl regex="true">^pkg:npm/url\-regex@.*$</packageUrl>
+        <cve>CVE-2020-7661</cve>
+    </suppress>
+</suppressions>
