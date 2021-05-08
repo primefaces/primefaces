@@ -235,7 +235,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * resize immediately and close the overlay. See GitHub #7075.
      * @private
      */
-    handleViewportChange() {
+    handleViewportChange: function() {
         if (PrimeFaces.env.mobile) {
             this.align(this.target);
         } else {

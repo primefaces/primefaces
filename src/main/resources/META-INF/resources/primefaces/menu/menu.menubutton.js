@@ -235,7 +235,7 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
      * resize immediately and close the overlay. See GitHub #7075.
      * @private
      */
-    handleOverlayViewportChange() {
+    handleOverlayViewportChange: function() {
         if (PrimeFaces.env.mobile) {
             this.alignPanel();
         } else {
