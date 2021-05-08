@@ -160,7 +160,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
      * resize immediately and close the overlay. See GitHub #7075.
      * @private
      */
-    handleViewportChange() {
+    handleViewportChange: function() {
         if (PrimeFaces.env.mobile) {
             this.align();
         } else {
