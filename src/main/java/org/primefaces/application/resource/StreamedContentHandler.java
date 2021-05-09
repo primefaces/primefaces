@@ -35,7 +35,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.ProjectStage;
@@ -79,31 +81,24 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
 
                         if (value instanceof StreamedContent) {
                             StreamedContent streamedContent = (StreamedContent) value;
-                            try (InputStream inputStream = streamedContent.getStream()) {
-                                if (inputStream == null) {
-                                    if (context.isProjectStage(ProjectStage.Development)) {
-                                        LOGGER.log(Level.WARNING,
-                                                "Stream of StreamedContent resolved to null - skip streaming resource for ValueExpression: {0}",
-                                                dynamicContentEL);
+                            if (streamedContent.getWriter() != null) {
+                                setResponseHeaders(streamedContent, externalContext);
+                                stream(externalContext, streamedContent.getWriter(), cache);
+                            }
+                            else {
+                                try (InputStream inputStream = streamedContent.getStream()) {
+                                    if (inputStream == null) {
+                                        if (context.isProjectStage(ProjectStage.Development)) {
+                                            LOGGER.log(Level.WARNING,
+                                                    "Stream of StreamedContent resolved to null - skip streaming resource for ValueExpression: {0}",
+                                                    dynamicContentEL);
+                                        }
+                                        sendNotFound(externalContext);
+                                        return;
                                     }
-                                    sendNotFound(externalContext);
-                                    return;
+                                    setResponseHeaders(streamedContent, externalContext);
+                                    stream(externalContext, inputStream, cache);
                                 }
-
-                                if (streamedContent.getContentType() != null) {
-                                    externalContext.setResponseContentType(streamedContent.getContentType());
-                                }
-                                if (streamedContent.getContentLength() != null) {
-                                    externalContext.setResponseContentLength(streamedContent.getContentLength());
-                                }
-                                if (streamedContent.getContentEncoding() != null) {
-                                    externalContext.setResponseHeader("Content-Encoding", streamedContent.getContentEncoding());
-                                }
-                                if (streamedContent.getName() != null) {
-                                    externalContext.setResponseHeader("Content-Disposition", "inline;filename=\"" + streamedContent.getName() + "\"");
-                                }
-
-                                stream(externalContext, inputStream, cache);
                             }
                         }
                         else if (value instanceof InputStream) {
@@ -128,6 +123,21 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
         }
     }
 
+    protected void setResponseHeaders(StreamedContent streamedContent, ExternalContext externalContext) {
+        if (streamedContent.getContentType() != null) {
+            externalContext.setResponseContentType(streamedContent.getContentType());
+        }
+        if (streamedContent.getContentLength() != null) {
+            externalContext.setResponseContentLength(streamedContent.getContentLength());
+        }
+        if (streamedContent.getContentEncoding() != null) {
+            externalContext.setResponseHeader("Content-Encoding", streamedContent.getContentEncoding());
+        }
+        if (streamedContent.getName() != null) {
+            externalContext.setResponseHeader("Content-Disposition", "inline;filename=\"" + streamedContent.getName() + "\"");
+        }
+    }
+
     protected void stream(ExternalContext externalContext, InputStream inputStream, boolean cache) throws IOException {
         externalContext.setResponseStatus(HttpServletResponse.SC_OK);
 
@@ -139,6 +149,12 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
         while ((length = (inputStream.read(buffer))) >= 0) {
             externalContext.getResponseOutputStream().write(buffer, 0, length);
         }
+    }
+
+    protected void stream(ExternalContext externalContext, Consumer<OutputStream> writer, boolean cache) throws IOException {
+        externalContext.setResponseStatus(HttpServletResponse.SC_OK);
+        handleCache(externalContext, cache);
+        writer.accept(externalContext.getResponseOutputStream());
     }
 
     protected void sendNotFound(ExternalContext externalContext) throws IOException {

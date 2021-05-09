@@ -727,7 +727,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * Adds all selected items in the source list by transferring them to the target list.
      */
     add: function() {
-        var items = this.sourceList.children('li.ui-picklist-item.ui-state-highlight')
+        var items = this.sourceList.children('li.ui-picklist-item.ui-state-highlight');
 
         this.transfer(items, this.sourceList, this.targetList, 'command');
     },

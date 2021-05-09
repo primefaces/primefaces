@@ -129,3 +129,33 @@ If you need to set a content-type, we recommend to use the _org.primefaces.model
 
 You may already have your image in memory in an `InputStream` or `byte[]` array. We will try to determine your image content using magic bytes to figure out if its a PNG, JPG, or GIF.
 If you need to set a content-type, we recommend to use the _org.primefaces.model.StreamedContent_.
+
+## Avoid PrimeFaces internal buffering
+
+`StreamedContent` can either be used with a `InputStream` or with a `Consumer<OutputStream>` to write directly to the response:
+
+```java
+@Named
+@RequestScoped
+public class ImageView {
+    private StreamedContent image;
+
+    public ImageView() {
+        image = DefaultStreamedContent.builder()
+                    .contentType("image/jpeg")
+                    .writer((os) -> {
+                        try {
+                            os.write(...);
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    })
+                    .build();
+    }
+
+    public StreamedContent getImage() {
+        return image;
+    }
+}
+```

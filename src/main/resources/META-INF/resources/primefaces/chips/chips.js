@@ -1,19 +1,19 @@
 /**
  * __PrimeFaces Chips Widget__
- * 
+ *
  * Chips is used to enter multiple values on an inputfield.
- * 
+ *
  * @prop {JQuery} input DOM element of the visible INPUT field.
  * @prop {JQuery} hinput DOM element of the hidden INPUT field with the current value.
  * @prop {JQuery} itemContainer DOM element of the container of the items (chips).
  * @prop {JQuery} inputContainer DOM element of the container for the visible INPUT.
  * @prop {string} placeholder Placeholder for the input field.
- * 
+ *
  * @interface {PrimeFaces.widget.ChipsCfg} cfg The configuration for the {@link  Chips| Chips widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
- * 
+ *
  * @prop {boolean} cfg.addOnBlur Whether to add an item when the input loses focus.
  * @prop {boolean} cfg.unique Prevent duplicate entries from being added.
  * @prop {number} cfg.max Maximum number of entries allowed.
@@ -112,7 +112,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
      * Adds a new item (chip) to the list of currently displayed items.
      * @param {string} value Value of the chip to add.
      * @param {boolean} [refocus] `true` to put focus back on the INPUT again after the chip was added, or `false`
-     * otherwise. 
+     * otherwise.
      */
     addItem: function(value, refocus) {
         var $this = this;
@@ -157,7 +157,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Deletes the currently editing input value and refocus the input box if necessary.
      * @param {boolean} [refocus] `true` to put focus back on the INPUT again after the chip was added, or `false`
-     * otherwise. 
+     * otherwise.
      * @private
      */
     refocus: function(refocus) {
@@ -176,8 +176,8 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
      */
     removeItem: function(item, silent) {
         var itemIndex = this.itemContainer.children('li.ui-chips-token').index(item);
-        var itemValue = item.find('span.ui-chips-token-label').html()
-        $this = this;
+        var itemValue = item.find('span.ui-chips-token-label').html();
+        var $this = this;
 
         //remove from options
         this.hinput.children('option').eq(itemIndex).remove();
@@ -206,7 +206,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
     toggleEditor: function() {
         var $this = this,
             tokens = this.itemContainer.children('li.ui-chips-token');
-  
+
         if(tokens.length) {
             var editor = '';
             tokens.each(function() {
@@ -217,7 +217,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
             });
 
             if(editor) {
-                editor = editor.slice(0, -1); 
+                editor = editor.slice(0, -1);
                 this.input.val(editor);
             }
         }
@@ -246,7 +246,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Triggers the behaviors and event listeners for when an item (chip) was unselected.
      * @param {string} itemValue Value of the unselected item.
-     * @private 
+     * @private
      */
     invokeItemUnselectBehavior: function(itemValue) {
         if(this.hasBehavior('itemUnselect')) {

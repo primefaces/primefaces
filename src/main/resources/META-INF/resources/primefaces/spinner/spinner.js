@@ -48,7 +48,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         if (this.cfg.thousandSeparator == undefined) {
           this.cfg.thousandSeparator = '';
         }
-        if (!this.cfg.decimalSeparator) {
+        if (this.cfg.decimalSeparator == undefined) {
           this.cfg.decimalSeparator = '.';
         }
         this.cursorOffset = this.cfg.prefix ? this.cfg.prefix.length: 0;
@@ -268,8 +268,13 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
             }
         }
 
-        value = value.replace(new RegExp(PrimeFaces.escapeRegExp(this.cfg.thousandSeparator), 'g'), '');
-        value = value.replace(new RegExp(PrimeFaces.escapeRegExp(this.cfg.decimalSeparator), 'g'), '\.');
+        if(this.cfg.thousandSeparator) {
+            value = value.replace(new RegExp(PrimeFaces.escapeRegExp(this.cfg.thousandSeparator), 'g'), '');
+        }
+        if(this.cfg.decimalSeparator) {
+            value = value.replace(new RegExp(PrimeFaces.escapeRegExp(this.cfg.decimalSeparator), 'g'), '\.');
+        }
+
         this.value = this.parseValue(value);
     },
 

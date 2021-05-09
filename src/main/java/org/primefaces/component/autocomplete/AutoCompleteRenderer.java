@@ -318,6 +318,9 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.startElement("button", ac);
         writer.writeAttribute("class", dropdownClass, null);
         writer.writeAttribute("type", "button", null);
+        if (LangUtils.isNotBlank(ac.getDropdownAriaLabel())) {
+            writer.writeAttribute(HTML.ARIA_LABEL, ac.getDropdownAriaLabel(), null);
+        }
         if (disabled) {
             writer.writeAttribute("disabled", "disabled", null);
         }
@@ -492,6 +495,19 @@ public class AutoCompleteRenderer extends InputRenderer {
         }
         else {
             encodeSuggestionsAsList(context, ac, items, converter);
+        }
+
+        encodeFooter(context, ac);
+    }
+
+    protected void encodeFooter(FacesContext context, AutoComplete ac) throws IOException {
+        UIComponent footer = ac.getFacet("footer");
+        if (ComponentUtils.shouldRenderFacet(footer)) {
+            ResponseWriter writer = context.getResponseWriter();
+            writer.startElement("div", null);
+            writer.writeAttribute("class", "ui-autocomplete-footer", null);
+            footer.encodeAll(context);
+            writer.endElement("div");
         }
     }
 
@@ -740,7 +756,8 @@ public class AutoCompleteRenderer extends InputRenderer {
                 .attr("escape", ac.isEscape(), true)
                 .attr("queryMode", ac.getQueryMode())
                 .attr("completeEndpoint", ac.getCompleteEndpoint())
-                .attr("moreText", ac.getMoreText());
+                .attr("moreText", ac.getMoreText())
+                .attr("hasFooter", ComponentUtils.shouldRenderFacet(ac.getFacet("footer")));
 
         if (ac.isCache()) {
             wb.attr("cache", true).attr("cacheTimeout", ac.getCacheTimeout());

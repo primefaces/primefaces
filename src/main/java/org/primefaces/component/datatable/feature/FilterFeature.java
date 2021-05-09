@@ -162,7 +162,7 @@ public class FilterFeature implements DataTableFeature {
                     return true;
                 }
 
-                Object columnValue = filter.getLocalValue(elContext);
+                Object columnValue = filter.getLocalValue(elContext, column);
 
                 if (globalFilter != null && globalFilter.isActive() && !globalMatch.get() && !hasGlobalFilterFunction) {
                     FilterConstraint constraint = globalFilter.getConstraint();

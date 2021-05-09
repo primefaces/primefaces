@@ -1,24 +1,24 @@
 /**
  * __PrimeFaces Signature Widget__
- * 
+ *
  * Signature is used to draw a signature as an input. Various options such as background color, foreground color,
  * thickness are available for customization. Signature also supports touch enabled devices and legacy browsers without
  * canvas support.
- * 
+ *
  * @typedef PrimeFaces.widget.Signature.OnChangeCallback Callback that is invoked when the signature changes. See also
  * {@link SignatureCfg.onchange}.
- * @this {PrimeFaces.widget.Signature} PrimeFaces.widget.Signature.OnChangeCallback 
- * 
+ * @this {PrimeFaces.widget.Signature} PrimeFaces.widget.Signature.OnChangeCallback
+ *
  * @prop {JQuery} base64Input The DOM element for the hidden input element storing the base 64 value.
  * @prop {HTMLCanvasElement} canvasEL The canvas element where the signature is drawn.
  * @prop {JQuery} input The DOM element for the hidden input storing the value of this widget.
- * 
+ *
  * @interface {PrimeFaces.widget.SignatureCfg} cfg The configuration for the {@link  Signature| Signature widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  * @extends {JQuerySignature.SignatureSettings} cfg
- * 
+ *
  * @prop {boolean} cfg.base64 Whether the signature data should be saved as a base 64 string.
  * @prop {PrimeFaces.widget.Signature.OnChangeCallback} cfg.onchange Callback that is invoked when the signature
  * changes.
@@ -40,7 +40,7 @@ PrimeFaces.widget.Signature = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
         this.cfg.change = function() {
             $this.handleChange();
-        }
+        };
 
         this.render();
 
@@ -51,7 +51,7 @@ PrimeFaces.widget.Signature = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Clears this signature widget, removing all drawn lines. 
+     * Clears this signature widget, removing all drawn lines.
      */
     clear: function() {
         this.jq.signature('clear');

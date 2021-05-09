@@ -285,10 +285,10 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
                 focusedTab.addClass('ui-tabs-outline');
 
                 if($this.cfg.scrollable) {
-                    if(focusedTab.position().left + focusedTab.width() > $this.navcrollerRight.position().left) {
+                    if($this.navcrollerRight.is(':visible') && (focusedTab.position().left + focusedTab.width() > $this.navcrollerRight.position().left)) {
                         $this.navcrollerRight.trigger('click.tabview');
                     }
-                    else if(focusedTab.position().left < $this.navcrollerLeft.position().left) {
+                    else if($this.navcrollerLeft.is(':visible') && (focusedTab.position().left < $this.navcrollerLeft.position().left)) {
                         $this.navcrollerLeft.trigger('click.tabview');
                     }
                 }

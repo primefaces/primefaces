@@ -35,6 +35,7 @@ visible | true | Boolean | Renders panel as visible.
 closeTitle | null | String | Tooltip for the close button.
 toggleTitle | null | String | Tooltip for the toggle button.
 menuTitle | null | String | Tooltip for the menu button.
+renderEmptyFacets | false | Boolean | Render facets even if their children are not rendered. Default is false.
 toggleOrientation | vertical | String | Defines the orientation of the toggling, valid values are vertical and horizontal.
 widgetVar | null | String | Name of the client side widget
 toggleableHeader | false | Boolean | Defines if the panel is toggleable by clicking on the whole panel header.

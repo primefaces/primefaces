@@ -37,10 +37,12 @@ import java.time.temporal.Temporal;
 import java.util.*;
 
 import javax.el.ELContext;
+import javax.faces.FacesException;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.primefaces.component.datepicker.DatePicker;
@@ -202,7 +204,7 @@ public class CalendarUtilsTest {
         Date now = (Date) CalendarUtils.now(datePicker, java.util.Date.class);
         assertTrue(new Date().compareTo(now) >= 0);
     }
-    
+
     @Test
     public void convertPattern() {
         assertNull(CalendarUtils.convertPattern(null));
@@ -210,4 +212,21 @@ public class CalendarUtilsTest {
         assertEquals("mm/dd/yy HH:mm:ss", CalendarUtils.convertPattern("MM/dd/yyyy HH:mm:ss"));
         // more in-depth tests are in DateTimePatternConverterTest
     }
+
+    @Test
+    public void splitRange() {
+        List<String> splitRange = CalendarUtils.splitRange("2021-03-01 - 2021-03-31", "yyyy-MM-dd", "-");
+        assertEquals(2, splitRange.size());
+        assertEquals("2021-03-01", splitRange.get(0));
+        assertEquals("2021-03-31", splitRange.get(1));
+        splitRange = CalendarUtils.splitRange("2021-03-01", "yyyy-MM-dd", "-");
+        assertTrue(splitRange.isEmpty());
+        splitRange = CalendarUtils.splitRange("", "yyyy-MM-dd", "-");
+        assertTrue(splitRange.isEmpty());
+
+        Assertions.assertThrows(FacesException.class, () -> {
+            CalendarUtils.splitRange("2021 - 03 - 01 - 2021 - 03 - 31", "yyyy - MM - dd", "-");
+        });
+    }
+
 }

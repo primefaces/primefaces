@@ -28,6 +28,8 @@ body .ui-icon {
   text-indent: 0;
   overflow: visible;
   background-repeat: no-repeat; }
+body .pi {
+  font-size: 1rem; }
 body .ui-widget-overlay {
   -webkit-animation-name: modal-in;
   animation-name: modal-in;
@@ -816,6 +818,10 @@ body .ui-datatable .ui-datatable-data > tr {
       color: rgba(255, 255, 255, 0.87); }
   body .ui-datatable .ui-datatable-data > tr.ui-datatable-selectable {
     cursor: pointer; }
+    body .ui-datatable .ui-datatable-data > tr.ui-datatable-selectable > .ui-grouped-column {
+      background: #1e1e1e;
+      color: rgba(255, 255, 255, 0.87);
+      cursor: default; }
   body .ui-datatable .ui-datatable-data > tr.ui-rowgroup-header, body .ui-datatable .ui-datatable-data > tr.ui-datatable-summaryrow {
     font-weight: 700; }
   body .ui-datatable .ui-datatable-data > tr .ui-row-editor > a {
@@ -2725,9 +2731,21 @@ body .ui-inputgroup .ui-inputgroup-addon-checkbox {
 body .ui-inputgroup button:first-child, body .ui-inputgroup input:first-child {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px; }
+body .ui-inputgroup .ui-float-label:first-child input {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px; }
 body .ui-inputgroup button:last-child, body .ui-inputgroup input:last-child {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px; }
+body .ui-inputgroup .ui-float-label:last-child input {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px; }
+body .ui-inputgroup > .ui-widget,
+body .ui-inputgroup > .ui-float-label > .ui-widget {
+  border-radius: 0; }
+  body .ui-inputgroup > .ui-widget + .ui-inputgroup-addon,
+  body .ui-inputgroup > .ui-float-label > .ui-widget + .ui-inputgroup-addon {
+    border-left: 0 none; }
 body .ui-inputgroup .ui-inputgroup-addon-checkbox {
   padding: 0;
   position: relative; }
@@ -5143,6 +5161,7 @@ body .ui-panel {
     margin: 0; }
   body .ui-panel .ui-panel-titlebar {
     border: 1px solid #383838;
+    border-bottom: 0 none;
     background: #1e1e1e;
     color: rgba(255, 255, 255, 0.87);
     padding: 1rem;
@@ -5208,7 +5227,6 @@ body .ui-panel {
     background: #1e1e1e;
     color: rgba(255, 255, 255, 0.87);
     padding: 1rem;
-    border-top: 0 none;
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px; }
   body .ui-panel .ui-panel-footer {

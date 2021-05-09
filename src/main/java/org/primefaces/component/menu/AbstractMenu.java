@@ -24,12 +24,14 @@
 package org.primefaces.component.menu;
 
 import org.primefaces.component.api.MenuItemAware;
+import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuModel;
 
 import javax.faces.component.UIPanel;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class AbstractMenu extends UIPanel implements MenuItemAware {
 
@@ -58,18 +60,21 @@ public abstract class AbstractMenu extends UIPanel implements MenuItemAware {
     }
 
     @Override
-    public List getElements() {
+    public List<MenuElement> getElements() {
         MenuModel model = getModel();
         if (model != null) {
             return model.getElements();
         }
         else {
-            return getChildren();
+            return getChildren().stream()
+                        .filter(MenuElement.class::isInstance)
+                        .map(MenuElement.class::cast)
+                        .collect(Collectors.toList());
         }
     }
 
     public int getElementsCount() {
-        List elements = getElements();
+        List<MenuElement> elements = getElements();
 
         return (elements == null) ? 0 : elements.size();
     }

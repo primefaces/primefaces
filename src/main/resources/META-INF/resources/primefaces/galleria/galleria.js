@@ -1,22 +1,22 @@
 /**
  * __PrimeFaces Galleria Widget__
- * 
+ *
  * Galleria is used to display a set of images, optionally with a slideshow.
- * 
+ *
  * @prop {JQuery} caption The DOM element for the caption below the image.
- * @prop {JQuery} frames The DOM elements for the frames in the image strip with the image preview. 
+ * @prop {JQuery} frames The DOM elements for the frames in the image strip with the image preview.
  * @prop {number} interval ID of the set-interval ID for the slideshow.
  * @prop {JQuery} panels The DOM element for the panels with the images.
  * @prop {JQuery} panelWrapper The DOM element for the wrapper with the panel with the images.
  * @prop {boolean} slideshowActive Whether the slideshow is currently running.
  * @prop {JQuery} strip The DOM element for the strip at the bottom with the preview images.
  * @prop {JQuery} stripWrapper The DOM element for the wrapper with strip at the bottom with the preview images.
- * 
+ *
  * @interface {PrimeFaces.widget.GalleriaCfg} cfg The configuration for the {@link  Galleria| Galleria widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.DeferredWidgetCfg} cfg
- * 
+ *
  * @prop {boolean} cfg.autoPlay Images are displayed in a slideshow in autoPlay.
  * @prop {number} cfg.activeIndex Index of the image that is currently displayed.
  * @prop {string} cfg.effect Name of animation to use.
@@ -31,7 +31,7 @@
  * @prop {number} cfg.transitionInterval Defines interval of slideshow, in milliseconds.
  */
 PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
-    
+
     /**
      * @override
      * @inheritdoc
@@ -54,10 +54,10 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
 
         this.panelWrapper = this.jq.children('ul.ui-galleria-panel-wrapper');
         this.panels = this.panelWrapper.children('li.ui-galleria-panel');
-        
+
         this.renderDeferred();
     },
-    
+
     /**
      * @include
      * @override
@@ -71,7 +71,7 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
 
         if(this.cfg.showFilmstrip) {
             this.renderStrip();
-            
+
             if(this.panels.length) {
                 this.bindEvents();
             }
@@ -107,14 +107,14 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
     renderStrip: function() {
         //strip
         var frameStyle = 'style="width:' + this.cfg.frameWidth + "px;height:" + this.cfg.frameHeight + 'px;"';
-                    
+
         this.stripWrapper = $('<div class="ui-galleria-filmstrip-wrapper"></div>')
                 .width(this.panelWrapper.width() - 50)
                 .height(this.cfg.frameHeight)
                 .appendTo(this.jq);
-                
+
         this.strip = $('<ul class="ui-galleria-filmstrip"></ul>').appendTo(this.stripWrapper);
-                    
+
         for(var i = 0; i < this.panels.length; i++) {
             var image = this.panels.eq(i).children('img'),
             frameClass = (i == this.cfg.activeIndex) ? 'ui-galleria-frame ui-galleria-frame-active' : 'ui-galleria-frame',
@@ -122,17 +122,17 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
             + '<div class="ui-galleria-frame-content" ' + frameStyle + '>'
             + '<img src="' + image.attr('src') + '" class="ui-galleria-frame-image" ' + frameStyle + '></img>'
             + '</div></li>';
-                                      
+
             this.strip.append(frameMarkup);
         }
-                    
+
         this.frames = this.strip.children('li.ui-galleria-frame');
-                    
+
         //navigators
-        this.jq.append('<div class="ui-galleria-nav-prev ui-icon ui-icon-circle-triangle-w" style="bottom:' + (this.cfg.frameHeight / 2) + 'px"></div>' + 
+        this.jq.append('<div class="ui-galleria-nav-prev ui-icon ui-icon-circle-triangle-w" style="bottom:' + (this.cfg.frameHeight / 2) + 'px"></div>' +
             '<div class="ui-galleria-nav-next ui-icon ui-icon-circle-triangle-e" style="bottom:' + (this.cfg.frameHeight / 2) + 'px"></div>');
     },
-                
+
     /**
      * Sets up all event listenters required by this widget.
      * @private
@@ -186,31 +186,31 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
             }
         });
     },
-                
+
     /**
      * Starts the slideshow, if it is not started already.
      */
     startSlideshow: function() {
         var $this = this;
-                    
+
         this.interval = setInterval(function() {
             $this.next();
         }, this.cfg.transitionInterval);
-        
+
         this.slideshowActive = true;
     },
-    
+
     /**
      * Starts the slideshow, if it is not stopped already.
      */
     stopSlideshow: function() {
         if(this.slideshowActive) {
            clearInterval(this.interval);
-        
+
            this.slideshowActive = false;
         }
     },
-    
+
     /**
      * Checks whether the slideshow is currently active.
      * @return {boolean} `true` if the slideshow is currently active, or `false` otherwise.
@@ -221,7 +221,7 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Moves the slideshow to the image at the given index.
-     * @param {number} index 0-based index of the image to display. 
+     * @param {number} index 0-based index of the image to display.
      * @param {boolean} [reposition] `true` (or not given) to reposition the image strip with an animation.
      */
     select: function(index, reposition) {
@@ -229,24 +229,24 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
             if(this.cfg.showCaption) {
                 this.hideCaption();
             }
-            
+
             var oldPanel = this.panels.eq(this.cfg.activeIndex),
             newPanel = this.panels.eq(index);
-    
+
             //content
             oldPanel.hide(this.cfg.effect, this.cfg.effectOptions, this.cfg.effectSpeed);
             newPanel.show(this.cfg.effect, this.cfg.effectOptions, this.cfg.effectSpeed);
-    
+
             //frame
             if(this.cfg.showFilmstrip) {
                 var oldFrame = this.frames.eq(this.cfg.activeIndex),
                 newFrame = this.frames.eq(index);
-        
+
                 oldFrame.removeClass('ui-galleria-frame-active').css('opacity', '');
                 newFrame.animate({opacity:1.0}, this.cfg.effectSpeed, null, function() {
-                   $(this).addClass('ui-galleria-frame-active'); 
+                   $(this).addClass('ui-galleria-frame-active');
                 });
-                
+
                 //viewport
                 if(reposition === undefined || reposition === true) {
                     var frameLeft = newFrame.position().left,
@@ -262,23 +262,23 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
                     }
                 }
             }
-                        
+
             //caption
             if(this.cfg.showCaption) {
                 this.showCaption(newPanel);
             }
-            
+
             this.cfg.activeIndex = index;
         }
     },
-    
+
     /**
      * Hides the caption text below the image.
      */
     hideCaption: function() {
         this.caption.stop().slideUp(this.cfg.effectSpeed);
     },
-        
+
     /**
      * Shows the caption text below the image. Pass the `activePanel` property of this panel as the parameter.
      * @param {JQuery} panel The panel that contains the caption text.
@@ -289,7 +289,7 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
             $(this).html('<h4>' + PrimeFaces.escapeHTML(image.attr('title')) + '</h4><p>' + PrimeFaces.escapeHTML(image.attr('alt')) + '</p>').dequeue();
         }).slideDown(this.cfg.effectSpeed);
     },
-                
+
     /**
      * Moves to the previous image that comes before the currently shown image.
      */
@@ -297,12 +297,12 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
         if (this.isAnimating()) {
             return;
         }
-        
+
         if(this.cfg.activeIndex != 0) {
             this.select(this.cfg.activeIndex - 1);
         }
     },
-                
+
     /**
      * Moves to the next image that comes after the currently shown image.
      */
@@ -310,16 +310,16 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
         if (this.isAnimating()) {
             return;
         }
-        
+
         if(this.cfg.activeIndex !== (this.panels.length - 1)) {
             this.select(this.cfg.activeIndex + 1);
-        } 
+        }
         else {
             this.select(0, false);
             this.strip.animate({left: 0}, this.cfg.effectSpeed, 'easeInOutCirc');
         }
     },
-    
+
     /**
      * Checks whether an animation is currently in progress.
      * @return {boolean} `true` if an animation is currently active, or `false` otherwise.
@@ -327,5 +327,5 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
     isAnimating: function() {
         return this.frames.is(':animated');
     }
-    
+
 });

@@ -25,6 +25,7 @@ package org.primefaces.component.datatable;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -153,6 +154,7 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         if (table.isPaginator()) {
+            table.calculateRows();
             table.calculateFirst();
         }
 
@@ -597,6 +599,7 @@ public class DataTableRenderer extends DataRenderer {
 
         boolean sortable = table.isColumnSortable(context, column);
         boolean filterable = table.isColumnFilterable(column);
+        boolean isGroupedColumn = column.isGroupRow();
         String selectionMode = column.getSelectionMode();
         SortMeta sortMeta = null;
         boolean resizable = table.isResizableColumns() && column.isResizable();
@@ -613,6 +616,7 @@ public class DataTableRenderer extends DataRenderer {
                 .add(sortable, DataTable.SORTABLE_COLUMN_CLASS)
                 .add(filterable, DataTable.FILTER_COLUMN_CLASS)
                 .add(selectionMode != null, DataTable.SELECTION_COLUMN_CLASS)
+                .add(isGroupedColumn, DataTable.GROUPED_COLUMN_CLASS)
                 .add(resizable,  DataTable.RESIZABLE_COLUMN_CLASS)
                 .add(draggable, DataTable.DRAGGABLE_COLUMN_CLASS)
                 .add(!column.isToggleable(), DataTable.STATIC_COLUMN_CLASS)
@@ -1296,6 +1300,7 @@ public class DataTableRenderer extends DataRenderer {
 
         ResponseWriter writer = context.getResponseWriter();
         boolean selectionEnabled = column.getSelectionMode() != null;
+        boolean isGroupedColumn = column.isGroupRow();
         CellEditor editor = column.getCellEditor();
         boolean editorEnabled = editor != null && editor.isRendered();
         int responsivePriority = column.getResponsivePriority();
@@ -1303,6 +1308,7 @@ public class DataTableRenderer extends DataRenderer {
 
         String styleClass = getStyleClassBuilder(context)
                 .add(selectionEnabled, DataTable.SELECTION_COLUMN_CLASS)
+                .add(isGroupedColumn, DataTable.GROUPED_COLUMN_CLASS)
                 .add(editorEnabled && editor.isDisabled(), DataTable.CELL_EDITOR_DISABLED_CLASS)
                 .add(editorEnabled && !editor.isDisabled(), DataTable.EDITABLE_COLUMN_CLASS)
                 .add(!column.isSelectRow(), DataTable.UNSELECTABLE_COLUMN_CLASS)
@@ -1702,8 +1708,14 @@ public class DataTableRenderer extends DataRenderer {
 
     protected List<String> getSortableHeadersText(FacesContext context, DataTable table) {
         return table.getSortByAsMap().values().stream()
-                .filter(s -> s.getComponent() instanceof UIColumn)
-                .map(s -> getHeaderLabel(context, (UIColumn) s.getComponent()))
+                .filter(s -> !s.isHeaderRow())
+                .map(sortMeta -> {
+                    AtomicReference<String> headerLabel = new AtomicReference<>(null);
+                    table.invokeOnColumn(sortMeta.getColumnKey(), (column) -> {
+                        headerLabel.set(getHeaderLabel(context, column));
+                    });
+                    return headerLabel.get();
+                })
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
