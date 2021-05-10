@@ -133,7 +133,7 @@ public class CurrencyValidator implements Serializable {
      */
     protected Object parseFormat(String value, DecimalFormat formatter) {
         ParsePosition pos = new ParsePosition(0);
-        Object parsedValue = formatter.parse(value, pos);
+        Number parsedValue = formatter.parse(value, pos);
         if (pos.getErrorIndex() > -1) {
             return null;
         }
@@ -143,6 +143,9 @@ public class CurrencyValidator implements Serializable {
         }
 
         if (parsedValue != null) {
+            if (Double.isInfinite(parsedValue.doubleValue())) {
+                return null;
+            }
             parsedValue = processParsedValue(parsedValue, formatter);
         }
 
@@ -157,7 +160,7 @@ public class CurrencyValidator implements Serializable {
      * @param formatter The Format used to parse the value with.
      * @return The parsed <code>Number</code> converted to a <code>BigDecimal</code>.
      */
-    protected Object processParsedValue(Object value, DecimalFormat formatter) {
+    protected BigDecimal processParsedValue(Number value, DecimalFormat formatter) {
         BigDecimal decimal = null;
         if (value instanceof Long) {
             decimal = BigDecimal.valueOf(((Long) value).longValue());

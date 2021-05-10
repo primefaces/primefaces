@@ -17,6 +17,7 @@
 package org.primefaces.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -130,6 +131,20 @@ public class CurrencyValidatorTest {
         assertEquals(US_DOLLAR + "#,##0.00", validator.getPattern(Locale.US), "US");
         assertEquals(UK_POUND + "#,##0.00", validator.getPattern(Locale.UK), "UK");
     }
+
+
+
+    /**
+     * Test Infinity is not parsed
+     */
+    @Test
+    public void testWeirdPatternIsNotParsed() {
+        CurrencyValidator validator = CurrencyValidator.getInstance();
+
+        Number result = validator.validate("74E12341", Locale.UK);
+        assertNull(result);
+    }
+
 
     @Test
     public void testBrazilianReal() {
