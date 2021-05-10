@@ -42,7 +42,7 @@ import java.util.regex.Pattern;
 public class AvatarRenderer extends CoreRenderer {
 
     private static final Pattern LETTER_PATTTERN = Pattern.compile("\\b[a-zA-Z]");
-    private static final String GRAVATAR_URL = "http://www.gravatar.com/avatar/";
+    private static final String GRAVATAR_URL = "https://www.gravatar.com/avatar/";
     private static final String SB_AVATAR = AvatarRenderer.class.getName() + "#avatar";
 
     @Override
