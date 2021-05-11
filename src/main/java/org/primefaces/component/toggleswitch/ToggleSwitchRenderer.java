@@ -76,8 +76,7 @@ public class ToggleSwitchRenderer extends InputRenderer {
         writer.startElement("div", toggleSwitch);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        writer.writeAttribute("role", "checkbox", null);
-        writer.writeAttribute(HTML.ARIA_CHECKED, checked, null);
+
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
@@ -99,6 +98,7 @@ public class ToggleSwitchRenderer extends InputRenderer {
     protected void encodeInput(FacesContext context, ToggleSwitch toggleSwitch, String clientId, boolean checked) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = clientId + "_input";
+        String ariaLabel = toggleSwitch.getAriaLabel() != null ? toggleSwitch.getAriaLabel() : toggleSwitch.getLabel();
 
         writer.startElement("div", toggleSwitch);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
@@ -107,6 +107,9 @@ public class ToggleSwitchRenderer extends InputRenderer {
         writer.writeAttribute("id", inputId, "id");
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "checkbox", null);
+        writer.writeAttribute("autocomplete", "off", null);
+        writer.writeAttribute(HTML.ARIA_CHECKED, checked, null);
+        writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
 
         if (checked) {
             writer.writeAttribute("checked", "checked", null);

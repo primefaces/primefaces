@@ -42,6 +42,7 @@ styleClass | null | String | Style class of the main container.
 tabindex | null | Integer | The tabindex attribute specifies the tab order of an element when the "tab" button is used for navigating.
 onfocus | null | String | Client side callback to execute when component receives focus.
 onblur | null | Sring | Client side callback to execute when component loses focus.
+ariaLabel | null | String | The aria-label attribute is used to define a string that labels the current element for accessibility.
 
 ## Getting started with ToggleSwitch
 ToggleSwitch requires a boolean reference as the value.
