@@ -47,7 +47,6 @@ alt | null | String | Alternate textual description of the input field.
 autocomplete | null | String | Controls browser autocomplete behavior.
 dir | null | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
 disabled | false | Boolean | Disables input field.
-horizontal | false | Boolean | Enables horizontal mode.
 inputmode | null | String | Hint at the type of data this control has for touch devices to display appropriate virtual keyboard.
 label | null | String | A localized user presentable name.
 lang | null | String | Code describing the language used in the generated markup for this component.
@@ -90,6 +89,11 @@ style | null | String | Inline style of the input element.
 styleClass | null | String | Style class of the input element.
 tabindex | null | Integer | Position of the input element in the tabbing order.
 title | null | String | Advisory tooltip information.
+buttons | "stacked" | String | Buttons position ("stacked", "horizontal" or "horizontal-after").
+upIcon | null | String | Up icon (if buttons are not stacked, default is "pi pi-plus").
+downIcon | null | String | Down icon (if buttons are not stacked, default is "pi pi-minus").
+upButtonStyleClass | null | String | Up button style class. Default is null.
+downButtonStyleClass | null | String | Down button style class. Default is null.
 
 ## Getting Started with Spinner
 Spinner is an input component and used just like a standard input text.

@@ -25907,11 +25907,43 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Horizontal mode. Default is false.]]>
+                <![CDATA[Buttons mode ('stacked', 'horizontal' or 'horizontal-after'). Default is 'stacked'.]]>
             </description>
-            <name>horizontal</name>
+            <name>buttons</name>
             <required>false</required>
-            <type>boolean</type>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Up button icon, if buttons are not stacked. Default is 'pi pi-plus'.]]>
+            </description>
+            <name>upIcon</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Down button icon, if buttons are not stacked. Default is 'pi pi-minus'.]]>
+            </description>
+            <name>downIcon</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Up button style class. Default is null.]]>
+            </description>
+            <name>upButtonStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Down button style class. Default is null.]]>
+            </description>
+            <name>downButtonStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
