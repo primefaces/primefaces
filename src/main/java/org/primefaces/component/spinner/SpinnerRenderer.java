@@ -25,7 +25,6 @@ package org.primefaces.component.spinner;
 
 import java.io.IOException;
 import java.math.BigInteger;
-import java.util.Optional;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -165,7 +164,7 @@ public class SpinnerRenderer extends InputRenderer {
     protected String getIconClass(FacesContext context, String custom, String fallback) {
         return getStyleClassBuilder(context)
                 .add(Spinner.ICON_BASE_CLASS)
-                .add(Optional.ofNullable(custom).orElse(fallback))
+                .addOrElse(custom, fallback)
                 .build();
     }
 
