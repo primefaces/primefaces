@@ -28505,6 +28505,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
+            </description>
+            <name>ariaLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Disables or enables the switch.]]>
             </description>
             <name>disabled</name>
