@@ -25907,7 +25907,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Buttons mode ('stacked', 'horizontal' or 'horizontal-after'). Default is 'stacked'.]]>
+                <![CDATA[Buttons mode ('stacked', 'horizontal', 'horizontal-after' or 'vertical'). Default is 'stacked'.]]>
             </description>
             <name>buttons</name>
             <required>false</required>

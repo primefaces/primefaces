@@ -58,6 +58,7 @@ public abstract class SpinnerBase extends AbstractPrimeHtmlInputText implements 
     public static final String BUTTONS_STACKED = "stacked";
     public static final String BUTTONS_HORIZONTAL = "horizontal";
     public static final String BUTTONS_HORIZONTAL_AFTER = "horizontal-after";
+    public static final String BUTTONS_VERTICAL = "vertical";
 
     public SpinnerBase() {
         setRendererType(DEFAULT_RENDERER);

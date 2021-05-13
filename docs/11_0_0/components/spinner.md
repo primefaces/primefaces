@@ -89,7 +89,7 @@ style | null | String | Inline style of the input element.
 styleClass | null | String | Style class of the input element.
 tabindex | null | Integer | Position of the input element in the tabbing order.
 title | null | String | Advisory tooltip information.
-buttons | "stacked" | String | Buttons position ("stacked", "horizontal" or "horizontal-after").
+buttons | "stacked" | String | Buttons position ("stacked", "horizontal", "horizontal-after" or "vertical").
 upIcon | null | String | Up icon (if buttons are not stacked, default is "pi pi-plus").
 downIcon | null | String | Down icon (if buttons are not stacked, default is "pi pi-minus").
 upButtonStyleClass | null | String | Up button style class. Default is null.

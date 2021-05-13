@@ -147,6 +147,8 @@ public class SpinnerRenderer extends InputRenderer {
                 return SpinnerBase.BUTTONS_HORIZONTAL;
             case SpinnerBase.BUTTONS_HORIZONTAL_AFTER:
                 return SpinnerBase.BUTTONS_HORIZONTAL_AFTER;
+            case SpinnerBase.BUTTONS_VERTICAL:
+                return SpinnerBase.BUTTONS_VERTICAL;
             default:
                 return SpinnerBase.BUTTONS_STACKED;
         }

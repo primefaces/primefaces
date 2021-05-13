@@ -78,10 +78,35 @@ body .ui-spinner.ui-spinner-horizontal-after .ui-spinner-button.ui-button.ui-spi
     right: unset;
 }
 
-body .ui-fluid .ui-spinner-horizontal-after .ui-spinner-input, .ui-spinner-horizontal-after .ui-spinner-input {
+body .ui-fluid .ui-spinner-horizontal-after .ui-spinner-input, body .ui-spinner-horizontal-after .ui-spinner-input {
     padding-right: 5.214rem;
 }
 
 .ui-spinner-horizontal-after .ui-spinner-down {
     right: 2.357rem;
+}
+
+body .ui-fluid .ui-spinner.ui-spinner-vertical .ui-spinner-input, body .ui-spinner.ui-spinner-vertical .ui-spinner-input {
+    padding-right: unset;
+    padding: 2.857rem 0;
+    text-align: center;
+}
+
+body .ui-spinner.ui-spinner-vertical .ui-spinner-button {
+    width: 100%;
+    height: 2.357rem;
+    right: unset;
+}
+
+.ui-spinner-vertical .ui-spinner-down {
+    right: unset;
+    bottom: 0;
+}
+
+body .ui-spinner.ui-spinner-vertical .ui-spinner-button.ui-button.ui-spinner-up {
+    border-radius: 4px 4px 0 0;
+}
+
+body .ui-spinner.ui-spinner-vertical .ui-spinner-button.ui-button.ui-spinner-down {
+    border-radius: 0 0 4px 4px;
 }
