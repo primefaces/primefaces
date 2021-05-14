@@ -29,7 +29,6 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
-import org.primefaces.component.selectbooleancheckbox.SelectBooleanCheckboxBase;
 
 public abstract class ToggleSwitchBase extends UIInput implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, InputHolder {
 
@@ -77,11 +76,11 @@ public abstract class ToggleSwitchBase extends UIInput implements Widget, Client
     }
 
     public String getAriaLabel() {
-        return (String) getStateHelper().eval(SelectBooleanCheckboxBase.PropertyKeys.ariaLabel, null);
+        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
     }
 
     public void setAriaLabel(String ariaLabel) {
-        getStateHelper().put(SelectBooleanCheckboxBase.PropertyKeys.ariaLabel, ariaLabel);
+        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
     }
 
     public boolean isDisabled() {

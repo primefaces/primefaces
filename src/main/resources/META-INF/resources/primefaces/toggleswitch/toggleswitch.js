@@ -25,7 +25,6 @@ PrimeFaces.widget.ToggleSwitch = PrimeFaces.widget.BaseWidget.extend({
 
         this.slider = this.jq.children('.ui-toggleswitch-slider');
         this.input = $(this.jqId + '_input');
-        this.triggerChangeEvent = true;
 
         if(!this.input.is(':disabled')) {
             this._bindEvents();
@@ -42,8 +41,8 @@ PrimeFaces.widget.ToggleSwitch = PrimeFaces.widget.BaseWidget.extend({
     _bindEvents: function() {
         var $this = this;
 
-        this.jq.on('click.toggleSwitch', function(e) {
-            $this.input.trigger('click.toggleSwitch').trigger('focus.toggleSwitch');
+        this.slider.on('click.toggleSwitch', function(e) {
+            $this.input.trigger('click').trigger('focus.toggleSwitch');
         });
 
         this.input.on('focus.toggleSwitch', function(e) {
@@ -67,17 +66,17 @@ PrimeFaces.widget.ToggleSwitch = PrimeFaces.widget.BaseWidget.extend({
             }
         })
         .on('change.toggleSwitch', function(e) {
-            $this.triggerChangeEvent = false;
             if($this.isChecked()) {
-                $this.check();
+                $this.input.prop('checked', true).attr('aria-checked', true);
+                $this.jq.addClass('ui-toggleswitch-checked');
             }
             else {
-                $this.uncheck();
+                $this.input.prop('checked', false).attr('aria-checked', false);
+                $this.jq.removeClass('ui-toggleswitch-checked');
             }
-            $this.triggerChangeEvent = true;
         });
     },
-    
+
     /**
      * Checks whether this checkbox is currently checked.
      * @return {boolean} `true` if this checkbox is checked, or `false` otherwise.
@@ -100,21 +99,15 @@ PrimeFaces.widget.ToggleSwitch = PrimeFaces.widget.BaseWidget.extend({
      * Turns this switch on if it is not already turned on.
      */
     check: function() {
-        this.input.prop('checked', true).attr('aria-checked', true);
+        this.input.prop('checked', true).attr('aria-checked', true).trigger('change');
         this.jq.addClass('ui-toggleswitch-checked');
-        if(this.triggerChangeEvent && !this.isChecked()) {
-            this.input.trigger('change')
-        }
     },
 
     /**
      * Turns this switch off if it is not already turned of.
      */
     uncheck: function() {
-        this.input.prop('checked', false).attr('aria-checked', false);
+        this.input.prop('checked', false).attr('aria-checked', false).trigger('change');
         this.jq.removeClass('ui-toggleswitch-checked');
-        if(this.triggerChangeEvent && this.isChecked()) {
-            this.input.trigger('change')
-        }
     }
 });
