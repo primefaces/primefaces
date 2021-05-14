@@ -27,6 +27,7 @@ import org.primefaces.model.charts.bar.BarChartDataSet;
 
 /**
  * Used to provide DataSet objects to HorizontalBar chart component.
+ * @see <a href="https://www.chartjs.org/docs/latest/configuration/elements.html#bar-configuration">https://www.chartjs.org/docs/latest/configuration/elements.html#bar-configuration</a>
  */
 public class HorizontalBarChartDataSet extends BarChartDataSet {
 
@@ -39,7 +40,7 @@ public class HorizontalBarChartDataSet extends BarChartDataSet {
      */
     @Override
     public String getType() {
-        return "horizontalBar";
+        return "bar";
     }
 }
 

@@ -32,6 +32,7 @@ import org.primefaces.util.FastStringWriter;
 
 /**
  * Used to provide DataSet objects to PolarArea chart component.
+ * @see <a href="https://www.chartjs.org/docs/latest/configuration/elements.html#arc-configuration">https://www.chartjs.org/docs/latest/configuration/elements.html#arc-configuration</a>v
  */
 public class PolarAreaChartDataSet extends ChartDataSet {
 

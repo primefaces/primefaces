@@ -32,6 +32,7 @@ import org.primefaces.util.FastStringWriter;
 
 /**
  * Used to provide DataSet objects to Bar chart component.
+ * @see <a href="https://www.chartjs.org/docs/latest/configuration/elements.html#bar-configuration">https://www.chartjs.org/docs/latest/configuration/elements.html#bar-configuration</a>
  */
 public class BarChartDataSet extends ChartDataSet {
 

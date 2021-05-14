@@ -32,6 +32,7 @@ import org.primefaces.util.FastStringWriter;
 
 /**
  * Used to provide DataSet objects to Radar chart component.
+ * @see <a href="https://www.chartjs.org/docs/latest/configuration/elements.html#point-configuration">https://www.chartjs.org/docs/latest/configuration/elements.html#point-configuration</a>
  */
 public class RadarChartDataSet extends ChartDataSet {
 
@@ -47,7 +48,7 @@ public class RadarChartDataSet extends ChartDataSet {
     private String borderCapStyle;
     private String borderJoinStyle;
     private Object fill;
-    private Number lineTension;
+    private Number tension;
     private Object pointBackgroundColor;
     private Object pointBorderColor;
     private Object pointBorderWidth;
@@ -240,21 +241,21 @@ public class RadarChartDataSet extends ChartDataSet {
     }
 
     /**
-     * Gets the lineTension
+     * Gets the Bézier curve tension (0 for no Bézier curves)
      *
-     * @return lineTension
+     * @return tension
      */
-    public Number getLineTension() {
-        return lineTension;
+    public Number getTension() {
+        return tension;
     }
 
     /**
-     * Sets the lineTension
+     * Sets the tension
      *
-     * @param lineTension Bezier curve tension of the line. Set to 0 to draw straightlines.
+     * @param tension Bézier curve tension (0 for no Bézier curves)
      */
-    public void setLineTension(Number lineTension) {
-        this.lineTension = lineTension;
+    public void setTension(Number tension) {
+        this.tension = tension;
     }
 
     /**
@@ -460,7 +461,7 @@ public class RadarChartDataSet extends ChartDataSet {
             ChartUtils.writeDataValue(fsw, "borderCapStyle", this.borderCapStyle, true);
             ChartUtils.writeDataValue(fsw, "borderJoinStyle", this.borderJoinStyle, true);
             ChartUtils.writeDataValue(fsw, "fill", this.fill, true);
-            ChartUtils.writeDataValue(fsw, "lineTension", this.lineTension, true);
+            ChartUtils.writeDataValue(fsw, "tension", this.tension, true);
             ChartUtils.writeDataValue(fsw, "pointBackgroundColor", this.pointBackgroundColor, true);
             ChartUtils.writeDataValue(fsw, "pointBorderColor", this.pointBorderColor, true);
             ChartUtils.writeDataValue(fsw, "pointBorderWidth", this.pointBorderWidth, true);

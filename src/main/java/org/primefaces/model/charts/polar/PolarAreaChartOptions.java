@@ -33,28 +33,9 @@ public class PolarAreaChartOptions extends ChartOptions {
 
     private static final long serialVersionUID = 1L;
 
-    private Number startAngle;
     private boolean animateRotate = true;
     private boolean animateScale = true;
     private RadialScales scales;
-
-    /**
-     * Gets the startAngle
-     *
-     * @return startAngle
-     */
-    public Number getStartAngle() {
-        return startAngle;
-    }
-
-    /**
-     * Sets the startAngle
-     *
-     * @param startAngle Starting angle to draw arcs for the first item in a dataset.
-     */
-    public void setStartAngle(Number startAngle) {
-        this.startAngle = startAngle;
-    }
 
     /**
      * Gets the animateRotate

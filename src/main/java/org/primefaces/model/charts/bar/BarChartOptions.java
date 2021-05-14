@@ -40,6 +40,8 @@ public class BarChartOptions extends ChartOptions {
     private boolean offsetGridLines = true;
     private CartesianScales scales;
 
+    private String indexAxis = "x";
+
     /**
      * Gets the barPercentage
      *
@@ -151,5 +153,21 @@ public class BarChartOptions extends ChartOptions {
      */
     public void setScales(CartesianScales scales) {
         this.scales = scales;
+    }
+
+    /**
+     * Vertical bar chart (x) or horizontal bar char (y)
+     * @return
+     */
+    public String getIndexAxis() {
+        return indexAxis;
+    }
+
+    /**
+     * Switches between vertical and horizontal Bar Chart
+     * @param indexAxis x (=vertical bar chart) or y (=horizontal bar chart)
+     */
+    public void setIndexAxis(String indexAxis) {
+        this.indexAxis = indexAxis;
     }
 }

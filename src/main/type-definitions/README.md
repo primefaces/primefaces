@@ -603,7 +603,7 @@ To prevent these libraries from being processed, add them to the blacklist in
 ```
 # List of files to be excluded from the type declaration file.
 # Mainly third-party libraries we do not want to document.
-chartjs/0-chartjs.js
+chartjs/0-chartjs.min.js
 charts/0-jqPlot.js
 keyboard/0-jquery.keypad.js
 touch/touchswipe.js

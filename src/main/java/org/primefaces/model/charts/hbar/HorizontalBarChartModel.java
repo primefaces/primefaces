@@ -24,21 +24,24 @@
 package org.primefaces.model.charts.hbar;
 
 import org.primefaces.model.charts.bar.BarChartModel;
+import org.primefaces.model.charts.bar.BarChartOptions;
 
 /**
- * Defines the horizontalBar model used to create horizontalBar chart component.
+ * Defines the horizontalBar model used to create bar chart component with indexAxis=y.
  */
 public class HorizontalBarChartModel extends BarChartModel {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Gets the type
-     *
-     * @return type of current chart
-     */
     @Override
     public String getType() {
-        return "horizontalBar";
+        return "bar";
+    }
+
+    @Override
+    public BarChartOptions getOptions() {
+        BarChartOptions barChartOptions = super.getOptions();
+        barChartOptions.setIndexAxis("y");
+        return  barChartOptions;
     }
 }
