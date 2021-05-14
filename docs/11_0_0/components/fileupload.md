@@ -274,6 +274,8 @@ structural style classes
 | .ui-fileupload-upload | Upload button
 | .ui-fileupload-cancel | Cancel button
 | .ui-fileupload-content | Content container
+| .ui-state-drag | Added to main container element when file is dragged over this component
+| .ui-fileupload-withdropzone | Added to main container element if a custom drop zone is set
 
 ## Browser Compatibility
 Advanced uploader is implemented with HTML5 and provides far more features compared to single
