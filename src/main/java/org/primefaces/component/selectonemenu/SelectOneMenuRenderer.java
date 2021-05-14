@@ -282,7 +282,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             if (label != null) {
                 writer.writeText(label, null);
             }
-            writer.write("&nbsp;");
+            writer.write("&#160;");
             writer.endElement("label");
         }
     }
@@ -604,7 +604,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
     protected String getOptionLabel(SelectItem option) {
         String itemLabel = option.getLabel();
-        return isValueBlank(itemLabel) ? "&nbsp;" : itemLabel;
+        return isValueBlank(itemLabel) ? "&#160;" : itemLabel;
     }
 
 

@@ -215,7 +215,7 @@ public class FileUploadRenderer extends CoreRenderer {
             writer.writeAttribute("id", clientId + "_label", null);
             writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
             if (isValueBlank(label)) {
-                writer.write("&nbsp;");
+                writer.write("&#160;");
             }
             else {
                 writer.writeText(label, "value");
@@ -270,7 +270,7 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId + "_label", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
         if (isValueBlank(label)) {
-            writer.write("&nbsp;");
+            writer.write("&#160;");
         }
         else {
             writer.writeText(label, "value");
@@ -371,7 +371,7 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
         if (isValueBlank(label)) {
-            writer.write("&nbsp;");
+            writer.write("&#160;");
         }
         else {
             writer.writeText(label, "value");

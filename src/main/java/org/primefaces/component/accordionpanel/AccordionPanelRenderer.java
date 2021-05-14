@@ -246,7 +246,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
             writer.writeText(title, null);
         }
         else {
-            writer.write("&nbsp;");
+            writer.write("&#160;");
         }
 
         writer.endElement("div");

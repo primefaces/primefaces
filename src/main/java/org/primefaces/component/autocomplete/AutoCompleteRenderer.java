@@ -337,7 +337,7 @@ public class AutoCompleteRenderer extends InputRenderer {
 
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-button-text", null);
-        writer.write("&nbsp;");
+        writer.write("&#160;");
         writer.endElement("span");
 
         writer.endElement("button");

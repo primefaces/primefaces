@@ -103,7 +103,7 @@ public class ChronolineRenderer extends CoreRenderer {
             oppositeFacet.encodeAll(context);
         }
         else {
-            writer.write("&nbsp;");
+            writer.write("&#160;");
         }
 
         writer.endElement("div");
