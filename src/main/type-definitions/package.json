@@ -105,6 +105,7 @@
     "jsplumb": "^2.15.5",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",
+    "print-js": "^1.6.0",
     "vis-data": "^7.1.2",
     "vis-timeline": "^7.4.6",
     "vis-util": "^5.0.2"

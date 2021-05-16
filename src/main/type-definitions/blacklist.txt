@@ -5,6 +5,7 @@ charts/0-jqPlot.js
 inputnumber/0-autoNumeric.js
 keyboard/0-jquery.keypad.js
 moment/moment-timezone-with-data.js
+printer/printer.js
 signature/0-signature.js
 touch/touchswipe.js
 locales/locale-ar.js
