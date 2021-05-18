@@ -26,9 +26,11 @@ powered rich solution with graceful degradation for legacy browsers.
 | auto | false | Boolean | When set to true, selecting a file starts the upload process implicitly.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
 | cancelButtonTitle | null | String | Native title tooltip for cancel button
+| cancelButtonStyleClass | null | String | Style class for cancel button.
 | cancelIcon | ui-icon-cancel | String | The icon of cancel button
 | cancelLabel | Cancel | String | Label of the cancel button.
 | chooseButtonTitle | null | String | Native title tooltip for choose button
+| chooseButtonStyleClass | null | String | Style class for choose button.
 | chooseIcon | ui-icon-plusthick | String | The icon of choose button
 | converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id.
 | converterMessage | null | String | Message to be displayed when conversion fails.
@@ -67,6 +69,7 @@ powered rich solution with graceful degradation for legacy browsers.
 | styleClass | null | String | Style class of the component.
 | title | null | String | Native title tooltip for simple mode
 | update | @none | String | Component(s) to update after fileupload completes.
+| uploadButtonStyleClass | null | String | Style class for upload button.
 | uploadButtonTitle | null | String | Native title tooltip for upload button
 | uploadIcon | ui-icon-arrowreturnthick-1-n | String | The icon of upload button
 | uploadLabel | Upload | String | Label of the upload button.
