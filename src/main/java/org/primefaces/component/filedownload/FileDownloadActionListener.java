@@ -106,8 +106,15 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
             externalContext.setResponseContentLength(content.getContentLength());
         }
 
-        try (InputStream is = content.getStream()) {
-            IOUtils.copyLarge(is, externalContext.getResponseOutputStream());
+        try {
+            if (content.getWriter() != null) {
+                content.getWriter().accept(externalContext.getResponseOutputStream());
+            }
+            else {
+                try (InputStream is = content.getStream()) {
+                    IOUtils.copyLarge(is, externalContext.getResponseOutputStream());
+                }
+            }
 
             if (!externalContext.isResponseCommitted()) {
                 externalContext.setResponseStatus(200);

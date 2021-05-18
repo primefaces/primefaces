@@ -24,12 +24,12 @@
 package org.primefaces.model;
 
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.function.Consumer;
 
 public interface StreamedContent {
 
     String getName();
-
-    InputStream getStream();
 
     String getContentType();
 
@@ -37,4 +37,18 @@ public interface StreamedContent {
 
     Integer getContentLength();
 
+    /**
+     * {@link InputStream} which will be buffered and written to the response.
+     *
+     * @return the {@link InputStream}
+     */
+    InputStream getStream();
+
+    /**
+     * {@link Consumer} to write directly to the response.
+     * This method doesn't require buffering and should be preffered over {@link #getStream()} from performance perspective.
+     *
+     * @return The {@link Consumer}
+     */
+    Consumer<OutputStream> getWriter();
 }

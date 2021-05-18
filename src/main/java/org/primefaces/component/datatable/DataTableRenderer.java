@@ -25,6 +25,7 @@ package org.primefaces.component.datatable;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -1707,8 +1708,14 @@ public class DataTableRenderer extends DataRenderer {
 
     protected List<String> getSortableHeadersText(FacesContext context, DataTable table) {
         return table.getSortByAsMap().values().stream()
-                .filter(s -> s.getComponent() instanceof UIColumn)
-                .map(s -> getHeaderLabel(context, (UIColumn) s.getComponent()))
+                .filter(s -> !s.isHeaderRow())
+                .map(sortMeta -> {
+                    AtomicReference<String> headerLabel = new AtomicReference<>(null);
+                    table.invokeOnColumn(sortMeta.getColumnKey(), (column) -> {
+                        headerLabel.set(getHeaderLabel(context, column));
+                    });
+                    return headerLabel.get();
+                })
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }

@@ -1,20 +1,20 @@
 /**
  * __PrimeFaces MegaMenu Widget__
- * 
+ *
  * MegaMenu is a horizontal navigation component that displays submenus together.
- * 
+ *
  * @prop {boolean} active Whether the current menu is active and displayed.
  * @prop {JQuery} activeitem The currently active (highlighted) menu item.
  * @prop {JQuery} keyboardTarget The DOM element for the input element accessible via keyboard keys.
- * @prop {JQuery} rootLinks The DOM elements for the root level menu links with the class `.ui-menuitem-link`. 
+ * @prop {JQuery} rootLinks The DOM elements for the root level menu links with the class `.ui-menuitem-link`.
  * @prop {JQuery} rootList The DOM elements for the root level menu items with the class `.ui-menu-list`.
  * @prop {JQuery} subLinks The DOM elements for all menu links not a the root level, with the class `.ui-menuitem-link`.
- * 
+ *
  * @interface {PrimeFaces.widget.MegaMenuCfg} cfg The configuration for the {@link  MegaMenu| MegaMenu widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
- * 
+ *
  * @prop {number} cfg.activeIndex Index of the menu item initially active.
  * @prop {boolean} cfg.autoDisplay Defines whether submenus will be displayed on mouseover or not. When set to false,
  * click event is required to display.
@@ -76,7 +76,7 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
         });
 
         if(this.cfg.autoDisplay === false) {
-            this.rootLinks.data('primefaces-megamenu', this.id).find('*').data('primefaces-megamenu', this.id)
+            this.rootLinks.data('primefaces-megamenu', this.id).find('*').data('primefaces-megamenu', this.id);
 
             this.rootLinks.on("click", function(e) {
                 var link = $(this),
@@ -358,7 +358,7 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Deactivates the menu item, i.e. closes the sub menu.
      * @param {JQuery} menuitem A menu item to close.
-     * @param {boolean} [animate] If `true`, closes the sub menu with an animation, or `false` otherwise. 
+     * @param {boolean} [animate] If `true`, closes the sub menu with an animation, or `false` otherwise.
      */
     deactivate: function(menuitem, animate) {
         var link = menuitem.children('a.ui-menuitem-link'),
@@ -405,8 +405,8 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Opens and shows the sub menu of the given menu item.
-     * @param {JQuery} menuitem A menu item with a submenu. 
-     * @param {JQuery} submenu One of the submenus of the given menu item to show. 
+     * @param {JQuery} menuitem A menu item with a submenu.
+     * @param {JQuery} submenu One of the submenus of the given menu item to show.
      * @private
      */
     showSubmenu: function(menuitem, submenu) {

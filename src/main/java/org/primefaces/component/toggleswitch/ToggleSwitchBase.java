@@ -26,10 +26,11 @@ package org.primefaces.component.toggleswitch;
 import javax.faces.component.UIInput;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 
+import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 
-public abstract class ToggleSwitchBase extends UIInput implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+public abstract class ToggleSwitchBase extends UIInput implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, InputHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -39,6 +40,7 @@ public abstract class ToggleSwitchBase extends UIInput implements Widget, Client
 
         widgetVar,
         label,
+        ariaLabel,
         disabled,
         onchange,
         style,
@@ -71,6 +73,14 @@ public abstract class ToggleSwitchBase extends UIInput implements Widget, Client
 
     public void setLabel(String label) {
         getStateHelper().put(PropertyKeys.label, label);
+    }
+
+    public String getAriaLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
+    }
+
+    public void setAriaLabel(String ariaLabel) {
+        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
     }
 
     public boolean isDisabled() {
@@ -127,5 +137,25 @@ public abstract class ToggleSwitchBase extends UIInput implements Widget, Client
 
     public void setOnblur(String onblur) {
         getStateHelper().put(PropertyKeys.onblur, onblur);
+    }
+
+    @Override
+    public String getInputClientId() {
+        return this.getClientId(getFacesContext()) + "_input";
+    }
+
+    @Override
+    public String getValidatableInputClientId() {
+        return this.getInputClientId();
+    }
+
+    @Override
+    public String getLabelledBy() {
+        return (String) getStateHelper().get("labelledby");
+    }
+
+    @Override
+    public void setLabelledBy(String labelledBy) {
+        getStateHelper().put("labelledby", labelledBy);
     }
 }

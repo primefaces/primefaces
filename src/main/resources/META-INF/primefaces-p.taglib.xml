@@ -10480,6 +10480,30 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Style class for choose button.]]>
+            </description>
+            <name>chooseButtonStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class for upload button.]]>
+            </description>
+            <name>uploadButtonStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class for cancel button.]]>
+            </description>
+            <name>cancelButtonStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Component that should be used as the drop zone.]]>
             </description>
             <name>dropZone</name>
@@ -28508,6 +28532,14 @@
                 <![CDATA[User presentable name.]]>
             </description>
             <name>label</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
+            </description>
+            <name>ariaLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>

@@ -118,7 +118,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         forEachColumn(c -> {
             FilterMeta f = filterBy.get(c.getColumnKey());
             if (f != null && !invalidate) {
-                f.setColumn(c);
+
             }
             else {
                 f = FilterMeta.of(context, getVar(), c);
@@ -563,6 +563,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     default String getColumnsWidthForClientSide() {
         return getColumnMeta().entrySet()
                 .stream()
+                .filter(e -> LangUtils.isNotBlank(e.getValue().getWidth()))
                 .map(e -> e.getKey() + '_' + e.getValue().getWidth())
                 .collect(Collectors.joining(","));
     }

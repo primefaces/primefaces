@@ -47,8 +47,8 @@ public class PrimeClientWindowLifecycle extends LifecycleWrapper {
         }
 
         try {
-            facesContext.getExternalContext().setClientWindow(clientWindow);
             clientWindow.decode(facesContext);
+            facesContext.getExternalContext().setClientWindow(clientWindow);
         }
         catch (RuntimeException e) {
             facesContext.getExternalContext().setClientWindow(null);

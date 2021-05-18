@@ -14,7 +14,7 @@ Source code bundles:  [GitHub Server Message Bundle Files](https://github.com/pr
 ### Default Messages.properties
 
 ```
-primefaces.calendar.DATE_INVALID_RANGE_MESSAGE_ID = {0}: Validation Error: Start date is greater than the end date.
+primefaces.autocomplete.aria.DROPDOWN_LABEL=Show Optionsprimefaces.calendar.DATE_INVALID_RANGE_MESSAGE_ID = {0}: Validation Error: Start date is greater than the end date.
 primefaces.calendar.INVALID = {0}: Validation Error: Value is not valid.
 primefaces.calendar.MAX_DATE = {0}: Validation Error: Value must be {2} or before.
 primefaces.calendar.MIN_DATE = {0}: Validation Error: Value must be {1} or later.
@@ -46,9 +46,19 @@ primefaces.panel.aria.OPTIONS_MENU = Toggle Options Menu
 primefaces.panel.aria.TOGGLE = Toggle Panel
 primefaces.password.INVALID_MATCH = {0}: Validation Error.
 primefaces.password.INVALID_MATCH_detail = {0} should match with {1}.
+primefaces.picklist.ADD = Add
+primefaces.picklist.ADD_ALL = Add all
+primefaces.picklist.REMOVE = Remove
+primefaces.picklist.REMOVE_ALL = Remove all
+primefaces.picklist.MOVE_UP = Move up
+primefaces.picklist.MOVE_TOP = Move top
+primefaces.picklist.MOVE_DOWN = Move down
+primefaces.picklist.MOVE_BOTTOM = Move bottom
 primefaces.rowgrouptoggler.aria.ROW_GROUP_TOGGLER = Toggle Row Group
 primefaces.rowtoggler.aria.ROW_TOGGLER = Toggle Row
 primefaces.slider.OUT_OF_RANGE = {0}: Validation Error: Value is out of range.
+primefaces.switch.LABEL_ON = On
+primefaces.switch.LABEL_OFF = Off
 primefaces.tree.REQUIRED = {0}: Validation Error.
 primefaces.tree.REQUIRED_detail = Selection is required.
 
