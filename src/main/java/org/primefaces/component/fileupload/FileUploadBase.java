@@ -478,6 +478,7 @@ public abstract class FileUploadBase extends UIInput implements Widget {
     public void setCancelButtonStyleClass(String cancelButtonStyleClass) {
         getStateHelper().put(PropertyKeys.cancelButtonStyleClass, cancelButtonStyleClass);
     }
+
     public String getDropZone() {
         return (String) getStateHelper().eval(PropertyKeys.dropZone, null);
     }
@@ -485,5 +486,4 @@ public abstract class FileUploadBase extends UIInput implements Widget {
     public void setDropZone(String dropZone) {
         getStateHelper().put(PropertyKeys.dropZone, dropZone);
     }
-
 }
