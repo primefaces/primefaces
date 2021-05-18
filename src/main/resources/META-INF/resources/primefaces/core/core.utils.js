@@ -620,6 +620,38 @@ if (!PrimeFaces.utils) {
         },
 
         /**
+         * Enables a widget for editing and sets it style as enabled.
+         *
+         * @param {JQuery} jq a required jQuery element to enable
+         * @param {JQuery | undefined | null} input an optional jQuery input to enable (will use jq if null)
+         */
+        enableWidget: function(jq, input) {
+            if(!input) {
+                input = jq;
+            }
+            if (input.is(':disabled')) {
+                input.prop('disabled', false);
+                jq.removeClass('ui-state-disabled');
+            }
+        },
+
+        /**
+         * Disables a widget from editing and sets it style as disabled.
+         *
+         * @param {JQuery} jq a required jQuery element to disable
+         * @param {JQuery | undefined | null} input an optional jQuery input to disable (will use jq if null)
+         */
+        disableWidget: function(jq, input) {
+            if(!input) {
+                input = jq;
+            }
+            if (!input.is(':disabled')) {
+                input.prop('disabled', true);
+                jq.addClass('ui-state-disabled');
+            }
+        },
+
+        /**
          * Enables CSS and jQuery animation.
          */
         enableAnimations: function() {

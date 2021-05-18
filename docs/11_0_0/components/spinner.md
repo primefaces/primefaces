@@ -156,6 +156,18 @@ The following AJAX behavior events are available for this component. If no event
 <p:ajax event="valueChange" listener="#{bean.handlevalueChange}" update="msgs" />
 ```
 
+## Client Side API
+Widget: _PrimeFaces.widget.Spinner_
+
+
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
+| spin(dir) | integer | void | Spin up or down based on dir value 1 or -1 |
+| getValue() | void | void | Gets the current value of the spinner |
+| setValue(val) | number | void | Sets the current value of the spinner |
+| disable() | - | void | Disables the input field |
+| enable() | - | void | Enables the input field |
+
 ## Skinning
 Spinner resides in a container element that using _style_ and _styleClass_ applies. Following is the list of
 structural style classes;

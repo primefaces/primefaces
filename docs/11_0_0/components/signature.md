@@ -163,3 +163,12 @@ public class SigGen {
     }
 }
 ```
+
+## Client Side API
+Widget: _PrimeFaces.widget.Signature_
+
+
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
+| disable() | - | void | Disables the input field |
+| enable() | - | void | Enables the input field |

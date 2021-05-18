@@ -186,9 +186,8 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
      * Enables this input field, so that the user can enter data.
      */
     enable: function () {
-        this.input.removeAttr("disabled");
-        this.input.removeClass("ui-state-disabled");
-        this.hiddenInput.removeAttr("disabled");
+        PrimeFaces.utils.enableWidget(this.input);
+        PrimeFaces.utils.enableWidget(this.hiddenInput);
         this.disabled = false;
     },
 
@@ -196,9 +195,8 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
      * Enables this input field, so that the user cannot enter data.
      */
     disable: function () {
-        this.input.attr("disabled", "disabled");
-        this.input.addClass("ui-state-disabled");
-        this.hiddenInput.attr("disabled", "disabled");
+        PrimeFaces.utils.disableWidget(this.input);
+        PrimeFaces.utils.disableWidget(this.hiddenInput);
         this.disabled = true;
     },
 

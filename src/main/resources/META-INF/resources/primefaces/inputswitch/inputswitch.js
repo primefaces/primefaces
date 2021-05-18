@@ -179,5 +179,20 @@ PrimeFaces.widget.InputSwitch = PrimeFaces.widget.DeferredWidget.extend({
         this.onLabel.animate({marginLeft:-this.offset}, 200);
         this.offLabel.animate({marginRight:0}, 200);
         this.handle.animate({left:0}, 200);
+    },
+
+    /**
+     * Disables this input so that the user cannot enter a value anymore.
+     */
+    disable: function() {
+        PrimeFaces.utils.disableWidget(this.jq, this.input);
+    },
+
+    /**
+     * Enables this input so that the user can enter a value.
+     */
+    enable: function() {
+        PrimeFaces.utils.enableWidget(this.jq, this.input);
     }
+
 });

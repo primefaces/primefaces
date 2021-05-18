@@ -42,17 +42,17 @@ PrimeFaces.widget.InputText = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Disabled this input field so that the user cannot enter text anymore.
+     * Disables this input so that the user cannot enter a value anymore.
      */
     disable: function() {
-        this.jq.prop('disabled', true).addClass('ui-state-disabled');
+        PrimeFaces.utils.disableWidget(this.jq);
     },
 
     /**
-     * Enables this input field so that the user can enter text.
+     * Enables this input so that the user can enter a value.
      */
     enable: function() {
-        this.jq.prop('disabled', false).removeClass('ui-state-disabled');
+        PrimeFaces.utils.enableWidget(this.jq);
     },
 
     /**

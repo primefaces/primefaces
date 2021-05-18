@@ -124,6 +124,8 @@ Widget: _PrimeFaces.widget.AccordionPanel_
 | getValue() | none | void | Returns the current value of this input field including the mask like "12/31/1999".|
 | getValueUnmasked() | none | void | Returns the current value of this input field without the mask like "12311999".|
 | setValue(value) |value: the new value | void | Sets the value of this input field to the given value. If the value does not fit the mask, it is adjusted appropriately.|
+| disable() | - | void | Disables the input field |
+| enable() | - | void | Enables the input field |
 
 ## Skinning
 _style_ and _styleClass_ options apply to the displayed input element. As skinning style classes are

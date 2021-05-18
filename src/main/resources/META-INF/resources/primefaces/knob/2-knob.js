@@ -183,6 +183,20 @@ PrimeFaces.widget.Knob = PrimeFaces.widget.BaseWidget.extend({
         var value = this.getValue() - this.step;
         value = value >= this.min ? value : this.min;
         this.setValue(value);
+    },
+
+    /**
+     * Disables this input so that the user cannot enter a value anymore.
+     */
+    disable: function() {
+        PrimeFaces.utils.disableWidget(this.jq, this.input);
+    },
+
+    /**
+     * Enables this input so that the user can enter a value.
+     */
+    enable: function() {
+        PrimeFaces.utils.enableWidget(this.jq, this.input);
     }
 });
 

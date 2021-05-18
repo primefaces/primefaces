@@ -4,7 +4,7 @@
  * Rating component features a star based rating system.
  * 
  * @prop {JQuery} cancel The DOM element for the cancel button.
- * @prop {JQuery} jqInput The DOM element for the hidden input field storing the value of this widget.
+ * @prop {JQuery} input The DOM element for the hidden input field storing the value of this widget.
  * @prop {JQuery} stars The DOM elements for the clickable stars.
  * @prop {number} value The current value, i.e. the number of selected stars
  * 
@@ -31,7 +31,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
      */
     init: function(cfg) {
         this._super(cfg);
-        this.jqInput = $(this.jqId + '_input');
+        this.input = $(this.jqId + '_input');
         this.value = this.getValue();
         this.stars = this.jq.children('.ui-rating-star');
         this.cancel = this.jq.children('.ui-rating-cancel');
@@ -82,7 +82,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
      * @return {number | null} The current rating value.
      */
     getValue: function() {
-        var inputVal = this.jqInput.val();
+        var inputVal = this.input.val();
 
         return inputVal == '' ? null : parseInt(inputVal);
     },
@@ -108,7 +108,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
         }
 
         //set hidden value
-        this.jqInput.val(newValue);
+        this.input.val(newValue);
 
         //update visuals
         this.stars.removeClass('ui-rating-star-on');
@@ -139,7 +139,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
      * @return {boolean} `true` if this rating widget is read-only, `false` otherwise.
      */
     isReadOnly: function() {
-        return this.jqInput.is('[readonly]');
+        return this.input.is('[readonly]');
     },
 
     /**
@@ -153,7 +153,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
 
         this.bindEvents();
 
-        this.jq.removeClass('ui-state-disabled');
+        PrimeFaces.utils.enableWidget(this.jq, this.input);
     },
 
     /**
@@ -167,14 +167,14 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
 
         this.unbindEvents();
 
-        this.jq.addClass('ui-state-disabled');
+        PrimeFaces.utils.disableWidget(this.jq, this.input);
     },
 
     /**
      * Resets the rating so that no stars are selected.
      */
     reset: function() {
-        this.jqInput.val('');
+        this.input.val('');
 
         this.stars.filter('.ui-rating-star-on').removeClass('ui-rating-star-on');
 

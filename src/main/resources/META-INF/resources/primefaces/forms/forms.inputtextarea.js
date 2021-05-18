@@ -449,6 +449,20 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
+     * Disables this input so that the user cannot enter a value anymore.
+     */
+    disable: function() {
+        PrimeFaces.utils.disableWidget(this.jq);
+    },
+
+    /**
+     * Enables this input so that the user can enter a value.
+     */
+    enable: function() {
+        PrimeFaces.utils.enableWidget(this.jq);
+    },
+
+    /**
      * Brings up the search window panel of the autocomplete feature.
      * @private
      */

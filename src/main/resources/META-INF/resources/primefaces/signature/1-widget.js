@@ -97,6 +97,20 @@ PrimeFaces.widget.Signature = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.onchange) {
             this.cfg.onchange.call(this);
         }
+    },
+
+    /**
+     * Disables this input so that the user cannot enter a value anymore.
+     */
+    disable: function() {
+        PrimeFaces.utils.disableWidget(this.jq, this.input);
+    },
+
+    /**
+     * Enables this input so that the user can enter a value.
+     */
+    enable: function() {
+        PrimeFaces.utils.enableWidget(this.jq, this.input);
     }
 
 });

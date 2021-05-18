@@ -99,6 +99,22 @@ PrimeFaces.widget.SelectManyButton = PrimeFaces.widget.BaseWidget.extend({
      */
     unselect: function(button) {
         button.children(':checkbox').prop('checked', false).trigger('change');
+    },
+
+    /**
+     * Enables this input so that the user can enter a value.
+     */
+    enable: function() {
+        PrimeFaces.utils.enableWidget(this.jq, this.inputs);
+        this.disabled = false;
+    },
+
+    /**
+     * Disables this input so that the user cannot enter a value anymore.
+     */
+    disable: function() {
+        PrimeFaces.utils.disableWidget(this.jq, this.inputs);
+        this.disabled = true;
     }
 
 });
