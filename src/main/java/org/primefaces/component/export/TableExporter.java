@@ -109,8 +109,9 @@ public abstract class TableExporter<T extends UIComponent & UITable> extends Exp
         }
         else {
             // sort by display priority
+            Comparator<Integer> sortIntegersNaturallyWithNullsLast = Comparator.nullsLast(Comparator.naturalOrder());
             List<ColumnMeta> columnMetas = columnMetadata.values().stream().
-                        sorted(Comparator.comparingInt(ColumnMeta::getDisplayPriority))
+                        sorted(Comparator.comparing(ColumnMeta::getDisplayPriority, sortIntegersNaturallyWithNullsLast))
                         .collect(Collectors.toList());
 
             META: for (ColumnMeta meta : columnMetas) {
