@@ -9,8 +9,15 @@
 /// <reference types="jquery" />
 /// <reference types="jqueryui" />
 /// <reference types="moment-timezone" />
-
 /// <reference path="PrimeFaces-module.d.ts" />
+
+/**
+  * Exposes the Print.js library as a global variable. Normally you do not
+  * have to use this yourself, as PrimeFaces calls it for you when you use
+  * the printer component. Also note that while PrimeFaces currently uses
+  * this library for printing, this is subject to change in future releases.
+  */
+ declare const printJS: typeof import("print-js");
 
 // Additional required type declarations for PrimeFaces that are not picked up from the source code
 

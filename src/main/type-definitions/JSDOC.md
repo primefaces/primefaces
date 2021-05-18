@@ -48,6 +48,7 @@ npm install --save-dev  \
   jsplumb \
   moment \
   moment-timezone \
+  print-js \
   vis-data \
   vis-timeline \
   vis-util

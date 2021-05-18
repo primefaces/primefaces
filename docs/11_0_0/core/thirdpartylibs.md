@@ -31,12 +31,12 @@ are many other third party libraries and plugins used to support features.
 | jQuery UI Touch Punch | 1.0.8 | https://github.com/RWAP/jquery-ui-touch-punch |
 | [jQuery UI](../jsdocs/modules/node_modules__types_jqueryui.html) | 1.12.1 | https://github.com/jquery/jquery-ui |
 | [jQuery](../jsdocs/interfaces/src_primefaces.jquery-1.html) | 3.6.0 | https://jquery.com/ |
-| [Jquery.print](../jsdocs/interfaces/src_primefaces.jquery-1.html#print) | 1.6.0 | https://github.com/DoersGuild/jQuery.print |
 | [jScrollPane](../jsdocs/interfaces/src_primefaces.jquery-1.html#jscrollpane) | 2.2.3 | https://github.com/vitch/jScrollPane |
 | [JSPlumb Diagram](../jsdocs/modules/node_modules_jsplumb.export_.html) | 2.14.6 | https://github.com/jsplumb/jsplumb |
 | [Keypad](../jsdocs/interfaces/src_primefaces.jquery-1.html#keypad) | 2.1.0 | http://keith-wood.name/keypad.html |
 | [Moment](../jsdocs/modules/node_modules_moment_ts3_1_typings_moment.html) | 2.22.2 | https://github.com/moment/moment |
 | [moment-timezone.js](../jsdocs/modules/node_modules_moment_ts3_1_typings_moment.html#tz) | 0.5.25 | https://github.com/moment/moment-timezone |
+| [Print.js](../jsdocs/modules/node_modules_print_js_src.html) | 1.6.0 | https://printjs.crabbly.com |
 | [Quill Editor](../jsdocs/modules/node_modules__types_quill.html) | 1.3.7 | https://quilljs.com/ |
 | [Raphaël](../jsdocs/interfaces/node_modules__types_raphael.raphaelstatic.html) | 2.3.0 | http://raphaeljs.com |
 | [Signature](../jsdocs/interfaces/src_primefaces.jquery-1.html#signature) | 1.2.0 | http://keith-wood.name/signature.html |
