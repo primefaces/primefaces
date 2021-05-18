@@ -23,6 +23,13 @@
  */
 package org.primefaces.component.fileupload;
 
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.file.UploadedFile;
+import org.primefaces.model.file.UploadedFiles;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FileUploadUtils;
+import org.primefaces.virusscan.VirusException;
+
 import javax.el.MethodExpression;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ResourceDependency;
@@ -30,13 +37,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.validator.ValidatorException;
-import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.FilesUploadEvent;
-import org.primefaces.model.file.UploadedFile;
-import org.primefaces.model.file.UploadedFiles;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.FileUploadUtils;
-import org.primefaces.virusscan.VirusException;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "fileupload/fileupload.css")
