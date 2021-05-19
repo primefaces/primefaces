@@ -97,8 +97,8 @@ public void view() {
 
 Here is the full list of configuration options;
 
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
+| Name | Default | Type | Description |
+|------|---------|------|-------------|
 widgetVar | null | String | Custom widgetVar of the dialog, if not declared it will be automatically created as "id+dlgWidget".
 modal | false | Boolean | Controls modality of the dialog.
 resizable | true | Boolean | When enabled, makes dialog resizable.
