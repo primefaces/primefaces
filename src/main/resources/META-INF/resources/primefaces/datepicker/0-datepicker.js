@@ -1628,7 +1628,7 @@
         },
 
         toISODateString: function (date) {
-            return date.toISOString().substring(0, 10);
+            return new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().substring(0, 10)
         },
 
         _bindEvents: function () {
