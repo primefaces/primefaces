@@ -527,6 +527,14 @@ public class DataTable extends DataTableBase {
         setScrollOffset(0);
     }
 
+    /**
+     * Recalculates filteredValue (for a non-lazy value) after adding or removing rows to a filtered DataTable
+     */
+    public void reapplyFilter() {
+        FilterFeature filterFeature = (FilterFeature) getFeature(DataTableFeatureKey.FILTER);
+        filterFeature.filter(FacesContext.getCurrentInstance(), this);
+    }
+
     public RowExpansion getRowExpansion() {
         for (int i = 0; i < getChildCount(); i++) {
             UIComponent child = getChildren().get(i);
