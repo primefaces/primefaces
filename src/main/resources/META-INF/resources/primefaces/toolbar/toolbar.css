@@ -10,3 +10,6 @@
     align-items: center;
     flex-wrap: wrap;
 }
+.ui-toolbar-group-right {
+    margin-left: auto;
+}
