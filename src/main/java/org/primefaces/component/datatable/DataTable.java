@@ -528,11 +528,13 @@ public class DataTable extends DataTableBase {
     }
 
     /**
-     * Recalculates filteredValue (for a non-lazy value) after adding or removing rows to a filtered DataTable
+     * Recalculates filteredValue (for a non-lazy DataTable eg bound to a java.util.List) after adding, updating or removing rows to/from a filtered DataTable.
      */
-    public void reapplyFilter() {
+    public void filterAndSort() {
         FilterFeature filterFeature = (FilterFeature) getFeature(DataTableFeatureKey.FILTER);
         filterFeature.filter(FacesContext.getCurrentInstance(), this);
+        SortFeature sortFeature = (SortFeature) getFeature(DataTableFeatureKey.SORT);
+        sortFeature.sort(FacesContext.getCurrentInstance(), this);
     }
 
     public RowExpansion getRowExpansion() {
