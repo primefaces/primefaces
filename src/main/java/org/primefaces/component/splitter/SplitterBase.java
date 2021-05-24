@@ -41,7 +41,7 @@ public abstract class SplitterBase extends UIComponentBase implements Widget, Cl
         gutterSize,
         stateKey,
         stateStorage,
-        onresizeend,
+        onResizeEnd,
         style,
         styleClass
     }
@@ -87,12 +87,12 @@ public abstract class SplitterBase extends UIComponentBase implements Widget, Cl
         getStateHelper().put(PropertyKeys.stateStorage, stateStorage);
     }
 
-    public String getOnresizeend() {
-        return (String) getStateHelper().eval(PropertyKeys.onresizeend, null);
+    public String getOnResizeEnd() {
+        return (String) getStateHelper().eval(PropertyKeys.onResizeEnd, null);
     }
 
-    public void setOnresizeend(String onresizeend) {
-        getStateHelper().put(PropertyKeys.onresizeend, onresizeend);
+    public void setOnResizeEnd(String onResizeEnd) {
+        getStateHelper().put(PropertyKeys.onResizeEnd, onResizeEnd);
     }
 
     public String getStyle() {
