@@ -160,7 +160,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             // #7325 restore global filter value
             if (FilterMeta.GLOBAL_FILTER_KEY.equals(entry.getKey())) {
                 UIComponent globalFilterComponent = SearchExpressionFacade
-                            .resolveComponent(context, (UIComponent) this, FilterMeta.GLOBAL_FILTER_KEY, SearchExpressionUtils.SET_NONE);
+                            .resolveComponent(context, (UIComponent) this, FilterMeta.GLOBAL_FILTER_COMPONENT_ID, SearchExpressionUtils.SET_NONE);
                 if (globalFilterComponent != null && globalFilterComponent instanceof ValueHolder) {
                     ((ValueHolder) globalFilterComponent).setValue(entry.getValue().getFilterValue());
                 }
@@ -211,7 +211,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 ? SearchExpressionUtils.SET_IGNORE_NO_RESULT
                 : SearchExpressionUtils.SET_NONE;
         UIComponent globalFilterComponent = SearchExpressionFacade
-                .resolveComponent(context, (UIComponent) this, FilterMeta.GLOBAL_FILTER_KEY, hint);
+                .resolveComponent(context, (UIComponent) this, FilterMeta.GLOBAL_FILTER_COMPONENT_ID, hint);
         if (globalFilterComponent != null) {
             if (globalFilterComponent instanceof ValueHolder) {
                 ((ValueHolder) globalFilterComponent).setValue(globalFilterDefaultValue);
