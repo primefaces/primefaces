@@ -23,7 +23,20 @@
  */
 package org.primefaces.component.splitter;
 
+import org.primefaces.event.SplitterResizeEvent;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.MapBuilder;
+
 import javax.faces.application.ResourceDependency;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.BehaviorEvent;
+import javax.faces.event.FacesEvent;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -38,4 +51,52 @@ public class Splitter extends SplitterBase {
     public static final String LAYOUT_HORIZONTAL_CLASS = "ui-splitter-horizontal";
     public static final String GUTTER_CLASS = "ui-splitter-gutter";
     public static final String GUTTER_HANDLE_CLASS = "ui-splitter-gutter-handle";
+
+    private static final String DEFAULT_EVENT = "onResizeEnd";
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
+            .put("onResizeEnd", SplitterResizeEvent.class)
+            .build();
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
+    @Override
+    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
+        return BEHAVIOR_EVENT_MAPPING;
+    }
+
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
+    }
+
+    @Override
+    public String getDefaultEventName() {
+        return DEFAULT_EVENT;
+    }
+
+    @Override
+    public void queueEvent(FacesEvent event) {
+        FacesContext context = getFacesContext();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+
+        if (ComponentUtils.isRequestSource(this, context)) {
+            String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
+            String clientId = getClientId(context);
+
+            if ("onResizeEnd".equals(eventName)) {
+                AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
+                List<Float> panelSizes = new ArrayList<>();
+                String[] sizes = params.get(clientId + "_panelSizes").split("_");
+
+                for (int i = 0; i < sizes.length; i++) {
+                    panelSizes.add(Float.valueOf(sizes[i]));
+                }
+
+                super.queueEvent(new SplitterResizeEvent(this, behaviorEvent.getBehavior(), panelSizes));
+            }
+
+        }
+        else {
+            super.queueEvent(event);
+        }
+    }
 }

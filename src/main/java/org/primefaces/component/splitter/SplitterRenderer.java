@@ -35,6 +35,11 @@ import java.io.IOException;
 public class SplitterRenderer extends CoreRenderer {
 
     @Override
+    public void decode(FacesContext context, UIComponent component) {
+        decodeBehaviors(context, component);
+    }
+
+    @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Splitter splitter = (Splitter) component;
 
@@ -116,6 +121,10 @@ public class SplitterRenderer extends CoreRenderer {
                 .attr("gutterSize", splitter.getGutterSize())
                 .attr("stateKey", splitter.getStateKey())
                 .attr("stateStorage", splitter.getStateStorage());
+
+        wb.callback("onResizeEnd", "function(event,ui)", splitter.getOnResizeEnd());
+        encodeClientBehaviors(context, splitter);
+
         wb.finish();
     }
 
