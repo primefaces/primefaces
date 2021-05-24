@@ -44,7 +44,6 @@ import org.primefaces.component.api.UITable;
 public class FilterMeta implements Serializable {
 
     public static final String GLOBAL_FILTER_KEY = "globalFilter";
-    public static final String GLOBAL_FILTER_COMPONENT_ID = "globalFilter";
 
     private static final long serialVersionUID = 1L;
 
