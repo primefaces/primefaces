@@ -177,9 +177,10 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
         this.jq.removeClass('ui-splitter-resizing');
 
         if(this.hasBehavior('onResizeEnd')) {
+            var sizesArr = this.panelSizes;
             var ext = {
                 params: [
-                    {name: this.id + '_panelSizes', value: this.panelSizes.join('_')},
+                    {name: this.id + '_panelSizes', value: sizesArr.map(e => e.toFixed(2)).join('_')},
                 ]
             };
 
