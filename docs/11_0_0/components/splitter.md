@@ -26,7 +26,7 @@ Splitter component is used to categorize content.
 | gutterSize | 4 | Integer | Size of the divider in pixels.
 | stateKey | null | string | Storage identifier of a stateful Splitter.
 | stateStorage | session | string | Defines where a stateful splitter keeps its state, valid values are "session" for sessionStorage and "local" for localStorage.
-| onResizeEnd | null | String | Client-side callback to execute after the resizing end.
+| onresizeend | null | String | Client-side callback to execute after the resizing end.
 | style | null | String | Style of the splitter.
 | styleClass | null | String | StyleClass of the splitter.
 

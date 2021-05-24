@@ -122,7 +122,7 @@ public class SplitterRenderer extends CoreRenderer {
                 .attr("stateKey", splitter.getStateKey())
                 .attr("stateStorage", splitter.getStateStorage());
 
-        wb.callback("resizeEnd", "function(event,ui)", splitter.getOnResizeEnd());
+        wb.callback("onresizeend", "function(event,ui)", splitter.getOnresizeend());
         encodeClientBehaviors(context, splitter);
 
         wb.finish();
