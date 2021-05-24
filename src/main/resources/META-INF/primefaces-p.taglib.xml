@@ -32613,6 +32613,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Client-side callback to execute after resizing end.]]>
+            </description>
+            <name>onResizeEnd</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Inline style of the component.]]>
             </description>
             <name>style</name>
