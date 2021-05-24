@@ -68,6 +68,12 @@ public class ToolbarRenderer extends CoreRenderer {
             if (child.isRendered() && child instanceof ToolbarGroup) {
                 ToolbarGroup group = (ToolbarGroup) child;
 
+                if (toolbar.getChildCount() == 1 && "right".equals(group.getAlign())) {
+                    writer.startElement("div", null);
+                    writer.writeAttribute("class", "ui-toolbar-group-left", null);
+                    writer.endElement("div");
+                }
+
                 String defaultGroupClass = "ui-toolbar-group-" + group.getAlign();
                 String groupClass = group.getStyleClass();
                 String groupStyle = group.getStyle();
@@ -92,12 +98,10 @@ public class ToolbarRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent facet = toolbar.getFacet(facetName);
 
-        if (ComponentUtils.shouldRenderFacet(facet)) {
-            writer.startElement("div", null);
-            writer.writeAttribute("class", "ui-toolbar-group-" + facetName, null);
-            facet.encodeAll(context);
-            writer.endElement("div");
-        }
+        writer.startElement("div", null);
+        writer.writeAttribute("class", "ui-toolbar-group-" + facetName, null);
+        if (ComponentUtils.shouldRenderFacet(facet)) facet.encodeAll(context);
+        writer.endElement("div");
     }
 
     @Override
