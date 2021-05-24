@@ -153,11 +153,11 @@ local storage which can be configured using the ```stateStorage``` property.
 ## Ajax Behavior Events
 The following AJAX behavior event are available for this component. If no event is specified the default event is called.
 
-**Default Event:** `onResizeEnd`
+**Default Event:** `resizeEnd`
 
 | Event | Listener Parameter | Fired |
 | --- | --- | --- |
-| onResizeEnd | org.primefaces.event.SplitterResizeEvent | Is fired after the resizing end. |
+| resizeEnd | org.primefaces.event.SplitterResizeEvent | Is fired after the resizing end. |
 
 ## Skinning of Splitter
 Splitter resides in a main container element which _style_ and _styleClass_ options apply. As skinning

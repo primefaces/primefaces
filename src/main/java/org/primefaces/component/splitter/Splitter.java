@@ -52,9 +52,9 @@ public class Splitter extends SplitterBase {
     public static final String GUTTER_CLASS = "ui-splitter-gutter";
     public static final String GUTTER_HANDLE_CLASS = "ui-splitter-gutter-handle";
 
-    private static final String DEFAULT_EVENT = "onResizeEnd";
+    private static final String DEFAULT_EVENT = "resizeEnd";
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("onResizeEnd", SplitterResizeEvent.class)
+            .put(DEFAULT_EVENT, SplitterResizeEvent.class)
             .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
@@ -82,13 +82,13 @@ public class Splitter extends SplitterBase {
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = getClientId(context);
 
-            if ("onResizeEnd".equals(eventName)) {
+            if (DEFAULT_EVENT.equals(eventName)) {
                 AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
-                List<Float> panelSizes = new ArrayList<>();
+                List<Double> panelSizes = new ArrayList<>();
                 String[] sizes = params.get(clientId + "_panelSizes").split("_");
 
                 for (int i = 0; i < sizes.length; i++) {
-                    panelSizes.add(Float.valueOf(sizes[i]));
+                    panelSizes.add(Double.valueOf(sizes[i]));
                 }
 
                 super.queueEvent(new SplitterResizeEvent(this, behaviorEvent.getBehavior(), panelSizes));

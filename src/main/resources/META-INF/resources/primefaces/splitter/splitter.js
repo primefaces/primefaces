@@ -176,7 +176,7 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
         this.gutterElement.removeClass('ui-splitter-gutter-resizing');
         this.jq.removeClass('ui-splitter-resizing');
 
-        if(this.hasBehavior('onResizeEnd')) {
+        if(this.hasBehavior('resizeEnd')) {
             var sizesArr = this.panelSizes;
             var ext = {
                 params: [
@@ -184,7 +184,7 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
                 ]
             };
 
-            this.callBehavior('onResizeEnd', ext);
+            this.callBehavior('resizeEnd', ext);
         }
 
         this.clear();

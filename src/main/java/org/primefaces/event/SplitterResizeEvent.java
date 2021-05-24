@@ -29,14 +29,14 @@ import javax.faces.component.behavior.Behavior;
 
 public class SplitterResizeEvent extends AbstractAjaxBehaviorEvent {
     private static final long serialVersionUID = 1L;
-    private List<Float> panelSizes;
+    private List<Double> panelSizes;
 
-    public SplitterResizeEvent(UIComponent component, Behavior behavior, List<Float> panelSizes) {
+    public SplitterResizeEvent(UIComponent component, Behavior behavior, List<Double> panelSizes) {
         super(component, behavior);
         this.panelSizes = panelSizes;
     }
 
-    public List<Float> getPanelSizes() {
+    public List<Double> getPanelSizes() {
         return this.panelSizes;
     }
 }
