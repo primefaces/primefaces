@@ -13,7 +13,7 @@ are many other third party libraries and plugins used to support features.
 | [Cropper.js](../jsdocs/classes/node_modules_cropperjs_types.cropper-1.html) | 1.5.6 | https://github.com/fengyuanchen/cropperjs |
 | [Download.js](../jsdocs/modules/node_modules__types_downloadjs.html) | 4.2 | http://danml.com/download.html |
 | FontAwesome | 4.7.0 | https://fontawesome.com/ |
-| [FullCalendar](../jsdocs/classes/node_modules__fullcalendar_core_main.calendar.html) | 5.5.1 | https://fullcalendar.io/ |
+| [FullCalendar](../jsdocs/classes/node_modules__fullcalendar_core_main.calendar.html) | 5.7.0 | https://fullcalendar.io/ |
 | [Idle Timer](../jsdocs/interfaces/src_primefaces.jquery-1.html#idletimer) | 1.1.0 - 2016-03-21 | https://github.com/thorst/jquery-idletimer |
 | [Input Mask](../jsdocs/interfaces/node_modules__types_inputmask.default.static.html) | 5.0.5 | https://github.com/RobinHerbots/Inputmask |
 | jqPlot | 1.0.9 | http://www.jqplot.com/ |
