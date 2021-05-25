@@ -57,6 +57,9 @@ public class PollRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Poll poll = (Poll) component;
+        String clientId = poll.getClientId(context);
+
+        renderDummyMarkup(context, component, clientId);
 
         String request = preConfiguredAjaxRequestBuilder(context, poll)
                 .params(poll)
