@@ -153,7 +153,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
 
         this.bindEvents();
 
-        PrimeFaces.utils.enableWidget(this.jq, this.input);
+        PrimeFaces.utils.enableInputWidget(this.jq, this.input);
     },
 
     /**
@@ -167,7 +167,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
 
         this.unbindEvents();
 
-        PrimeFaces.utils.disableWidget(this.jq, this.input);
+        PrimeFaces.utils.disableInputWidget(this.jq, this.input);
     },
 
     /**

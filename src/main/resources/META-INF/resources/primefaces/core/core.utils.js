@@ -625,7 +625,7 @@ if (!PrimeFaces.utils) {
          * @param {JQuery} jq a required jQuery element to enable
          * @param {JQuery | undefined | null} input an optional jQuery input to enable (will use jq if null)
          */
-        enableWidget: function(jq, input) {
+        enableInputWidget: function(jq, input) {
             if(!input) {
                 input = jq;
             }
@@ -641,7 +641,7 @@ if (!PrimeFaces.utils) {
          * @param {JQuery} jq a required jQuery element to disable
          * @param {JQuery | undefined | null} input an optional jQuery input to disable (will use jq if null)
          */
-        disableWidget: function(jq, input) {
+        disableInputWidget: function(jq, input) {
             if(!input) {
                 input = jq;
             }

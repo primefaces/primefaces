@@ -121,7 +121,7 @@ PrimeFaces.widget.SelectBooleanButton = PrimeFaces.widget.BaseWidget.extend({
      * Enables this input so that the user can enter a value.
      */
     enable: function() {
-        PrimeFaces.utils.enableWidget(this.jq);
+        PrimeFaces.utils.enableInputWidget(this.jq);
         this.disabled = false;
     },
 
@@ -129,7 +129,7 @@ PrimeFaces.widget.SelectBooleanButton = PrimeFaces.widget.BaseWidget.extend({
      * Disables this input so that the user cannot enter a value anymore.
      */
     disable: function() {
-        PrimeFaces.utils.disableWidget(this.jq);
+        PrimeFaces.utils.disableInputWidget(this.jq);
         this.disabled = true;
     }
 

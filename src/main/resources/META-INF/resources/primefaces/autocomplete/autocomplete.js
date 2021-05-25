@@ -1256,7 +1256,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      * Disables the input field.
      */
     disable: function() {
-        PrimeFaces.utils.disableWidget(this.input);
+        PrimeFaces.utils.disableInputWidget(this.input);
 
         if(this.dropdown.length) {
             this.dropdown.addClass('ui-state-disabled').prop('disabled', true);
@@ -1267,7 +1267,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      * Enables the input field.
      */
     enable: function() {
-        PrimeFaces.utils.enableWidget(this.input);
+        PrimeFaces.utils.enableInputWidget(this.input);
 
         if(this.dropdown.length) {
             this.dropdown.removeClass('ui-state-disabled').prop('disabled', false);
