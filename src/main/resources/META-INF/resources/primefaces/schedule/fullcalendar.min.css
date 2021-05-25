@@ -396,7 +396,7 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
     background: #fff;
     position: -webkit-sticky;
     position: sticky;
-    z-index: 2; /* TODO: var */
+    z-index: 3; /* TODO: var */
     /* TODO: box-shadow when sticking */
   }
 .fc .fc-scrollgrid-section-header.fc-scrollgrid-section-sticky > * {
@@ -659,11 +659,9 @@ A HORIZONTAL event
   right: -4px;
   right: calc(8px / -2);
 }
-
-
 .fc .fc-popover {
-    position: fixed;
-    top: 0; /* for when not positioned yet */
+    position: absolute;
+    z-index: 9999;
     box-shadow: 0 2px 6px rgba(0,0,0,.15);
   }
 .fc .fc-popover-header {
@@ -691,6 +689,8 @@ A HORIZONTAL event
     background: rgba(208, 208, 208, 0.3);
     background: rgba(208, 208, 208, 0.3);
   }
+
+
 /* help things clear margins of inner content */
 .fc-daygrid-day-frame,
 .fc-daygrid-day-events,
@@ -811,8 +811,12 @@ A HORIZONTAL event
 }
 .fc .fc-daygrid-day-bottom {
     font-size: .85em;
-    margin: 2px 3px 0;
+    padding: 2px 3px 0
   }
+.fc .fc-daygrid-day-bottom:before {
+  content: "";
+  clear: both;
+  display: table; }
 .fc .fc-daygrid-more-link {
     position: relative;
     z-index: 4;
@@ -840,9 +844,6 @@ A HORIZONTAL event
   /* popover */
 
 }
-.fc .fc-more-popover {
-    z-index: 8;
-  }
 .fc .fc-more-popover .fc-popover-body {
     min-width: 220px;
     padding: 10px;
@@ -1162,9 +1163,6 @@ A VERTICAL event
     left: 0;
     right: 0;
   }
-.fc-media-screen .fc-timegrid-event-harness {
-    position: absolute; /* top/left/right/bottom will all be set by JS */
-  }
 .fc {
 
   /* bg */
@@ -1208,18 +1206,30 @@ A VERTICAL event
 .fc-direction-rtl .fc-timegrid-col-events {
     margin: 0 2px 0 2.5%;
   }
+.fc-timegrid-event-harness {
+  position: absolute /* top/left/right/bottom will all be set by JS */
+}
+.fc-timegrid-event-harness > .fc-timegrid-event {
+    position: absolute; /* absolute WITHIN the harness */
+    top: 0; /* for when not yet positioned */
+    bottom: 0; /* " */
+    left: 0;
+    right: 0;
+  }
 .fc-timegrid-event-harness-inset .fc-timegrid-event,
-.fc-timegrid-event.fc-event-mirror {
+.fc-timegrid-event.fc-event-mirror,
+.fc-timegrid-more-link {
   box-shadow: 0px 0px 0px 1px #fff;
   box-shadow: 0px 0px 0px 1px #fff;
 }
+.fc-timegrid-event,
+.fc-timegrid-more-link { /* events need to be root */
+  font-size: .85em;
+  font-size: .85em;
+  border-radius: 3px;
+}
 .fc-timegrid-event { /* events need to be root */
-
-  font-size: .85em;
-
-  font-size: .85em;
-  border-radius: 3px
-
+  margin-bottom: 1px /* give some space from bottom */
 }
 .fc-timegrid-event .fc-event-main {
     padding: 1px 1px 0;
@@ -1230,23 +1240,36 @@ A VERTICAL event
     font-size: .85em;
     margin-bottom: 1px;
   }
-.fc-timegrid-event-condensed .fc-event-main-frame {
+.fc-timegrid-event-short .fc-event-main-frame {
     flex-direction: row;
     overflow: hidden;
   }
-.fc-timegrid-event-condensed .fc-event-time:after {
+.fc-timegrid-event-short .fc-event-time:after {
     content: '\00a0-\00a0'; /* dash surrounded by non-breaking spaces */
   }
-.fc-timegrid-event-condensed .fc-event-title {
+.fc-timegrid-event-short .fc-event-title {
     font-size: .85em;
     font-size: .85em
   }
-.fc-media-screen .fc-timegrid-event {
-    position: absolute; /* absolute WITHIN the harness */
-    top: 0;
-    bottom: 1px; /* stay away from bottom slot line */
-    left: 0;
+.fc-timegrid-more-link { /* does NOT inherit from fc-timegrid-event */
+  position: absolute;
+  z-index: 9999; /* hack */
+  color: inherit;
+  color: inherit;
+  background: #d0d0d0;
+  background: #d0d0d0;
+  cursor: pointer;
+  margin-bottom: 1px; /* match space below fc-timegrid-event */
+}
+.fc-timegrid-more-link-inner { /* has fc-sticky */
+  padding: 3px 2px;
+  top: 0;
+}
+.fc-direction-ltr .fc-timegrid-more-link {
     right: 0;
+  }
+.fc-direction-rtl .fc-timegrid-more-link {
+    left: 0;
   }
 .fc {
 

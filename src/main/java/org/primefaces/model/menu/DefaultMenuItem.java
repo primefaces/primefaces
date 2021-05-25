@@ -61,7 +61,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     private String update;
     private String process;
     private boolean partialSubmit;
-    private boolean global;
+    private boolean global = true;
     private boolean async;
     private boolean partialSubmitSet;
     private boolean resetValues;

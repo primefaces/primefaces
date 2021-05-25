@@ -59,7 +59,6 @@
  * @prop {JQuery} cancelButton The DOM element for the button for canceling a file upload.
  * @prop {JQuery} content The DOM element for the content of this widget.
  * @prop {JQuery} filesTbody The DOM element for the table tbody with the files.
- * @prop {JQuery} input The DOM element for the file input element.
  * @prop {string[]} sizes Suffixes for formatting files sizes.
  * @prop {File[]} files List of currently selected files.
  * @prop {number} fileAddIndex Current index where to add files.
@@ -358,7 +357,6 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         };
 
         this.jq.fileupload(this.ucfg);
-        this.input = $(this.jqId + '_input');
     },
 
     /**
@@ -453,6 +451,9 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
         PrimeFaces.skinButton(this.buttonBar.children('button'));
 
+        var isChooseButtonClick = false;
+
+        this.chooseButton.off('mouseover.fileupload mouseout.fileupload mouseup.fileupload focus.fileupload blur.fileupload mousedown.fileupload click.fileupload keydown.fileupload');
         this.chooseButton.on('mouseover.fileupload', function(){
             var el = $(this);
             if(!el.prop('disabled')) {
@@ -462,27 +463,23 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         .on('mouseout.fileupload', function() {
             $(this).removeClass('ui-state-active ui-state-hover');
         })
+        .on('mouseup.fileupload', function() {
+            $(this).removeClass('ui-state-active').addClass('ui-state-hover');
+        })
+        .on('focus.fileupload', function() {
+            $(this).addClass('ui-state-focus');
+        })
+        .on('blur.fileupload', function() {
+            $(this).removeClass('ui-state-focus');
+            isChooseButtonClick = false;
+        })
         .on('mousedown.fileupload', function() {
             var el = $(this);
             if(!el.prop('disabled')) {
                 el.addClass('ui-state-active').removeClass('ui-state-hover');
             }
         })
-        .on('mouseup.fileupload', function() {
-            $(this).removeClass('ui-state-active').addClass('ui-state-hover');
-        });
-
-        var isChooseButtonClick = false;
-        this.chooseButton.on('focus.fileupload', function() {
-            $(this).addClass('ui-state-focus');
-        })
-        .on('blur.fileupload', function() {
-            $(this).removeClass('ui-state-focus');
-            isChooseButtonClick = false;
-        });
-
-        // For JAWS support
-        this.chooseButton.on('click.fileupload', function() {
+        .on('click.fileupload', function(e) {
             $this.show();
         })
         .on('keydown.fileupload', function(e) {
@@ -496,8 +493,8 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             }
         });
 
-        this.chooseButton.children('input').on('click', function(e){
-            if(isChooseButtonClick) {
+        this.chooseButton.children('input').off('click.fileupload').on('click.fileupload', function(e){
+            if (isChooseButtonClick) {
                 isChooseButtonClick = false;
                 e.preventDefault();
                 e.stopPropagation();
@@ -507,7 +504,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             }
         });
 
-        this.uploadButton.on('click.fileupload', function(e) {
+        this.uploadButton.off('click.fileupload').on('click.fileupload', function(e) {
             e.preventDefault();
 
             // GitHub #6396 allow cancel of upload with callback
@@ -523,7 +520,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             $this.upload();
         });
 
-        this.cancelButton.on('click.fileupload', function(e) {
+        this.cancelButton.off('click.fileupload').on('click.fileupload', function(e) {
             $this.clear();
             $this.disableButton($this.uploadButton);
             $this.disableButton($this.cancelButton);
@@ -531,7 +528,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             e.preventDefault();
         });
 
-        this.clearMessageLink.on('click.fileupload', function(e) {
+        this.clearMessageLink.off('click.fileupload').on('click.fileupload', function(e) {
             $this.messageContainer.fadeOut(function() {
                 $this.messageList.children().remove();
             });
@@ -814,6 +811,6 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
      * Brings up the native file selection dialog.
      */
     show: function() {
-        this.input.trigger("click");
+        this.chooseButton.children('input').trigger('click');
     }
 });

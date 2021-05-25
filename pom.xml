@@ -124,12 +124,12 @@
                     <artifactId>SparseBitSet</artifactId>
                 </exclusion>
                 <exclusion>
-                	<groupId>org.slf4j</groupId>
-                	<artifactId>slf4j-api</artifactId>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
                 </exclusion>
                 <exclusion>
-                	<groupId>org.slf4j</groupId>
-                	<artifactId>jcl-over-slf4j</artifactId>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>jcl-over-slf4j</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -148,24 +148,24 @@
                     <artifactId>curvesapi</artifactId>
                 </exclusion>
                 <exclusion>
-                	<groupId>org.apache.xmlgraphics</groupId>
-                	<artifactId>batik-all</artifactId>
+                    <groupId>org.apache.xmlgraphics</groupId>
+                    <artifactId>batik-all</artifactId>
                 </exclusion>
                 <exclusion>
-                	<groupId>org.apache.santuario</groupId>
-                	<artifactId>xmlsec</artifactId>
+                    <groupId>org.apache.santuario</groupId>
+                    <artifactId>xmlsec</artifactId>
                 </exclusion>
                 <exclusion>
-                	<groupId>de.rototor.pdfbox</groupId>
-                	<artifactId>graphics2d</artifactId>
+                    <groupId>de.rototor.pdfbox</groupId>
+                    <artifactId>graphics2d</artifactId>
                 </exclusion>
                 <exclusion>
-                	<groupId>org.bouncycastle</groupId>
-                	<artifactId>bcpkix-jdk15on</artifactId>
+                    <groupId>org.bouncycastle</groupId>
+                    <artifactId>bcpkix-jdk15on</artifactId>
                 </exclusion>
                 <exclusion>
-                	<groupId>org.bouncycastle</groupId>
-                	<artifactId>bcprov-jdk15on</artifactId>
+                    <groupId>org.bouncycastle</groupId>
+                    <artifactId>bcprov-jdk15on</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -191,10 +191,10 @@
             <version>1.13.0</version>
             <scope>provided</scope>
             <exclusions>
-            	<exclusion>
-            		<groupId>org.slf4j</groupId>
-            		<artifactId>slf4j-api</artifactId>
-            	</exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
@@ -285,10 +285,10 @@
             <version>2.7.4</version>
             <scope>provided</scope>
             <exclusions>
-            	<exclusion>
-            		<groupId>org.slf4j</groupId>
-            		<artifactId>slf4j-api</artifactId>
-            	</exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -297,10 +297,10 @@
             <version>3.7.1</version>
             <scope>provided</scope>
             <exclusions>
-            	<exclusion>
-            		<groupId>org.slf4j</groupId>
-            		<artifactId>slf4j-api</artifactId>
-            	</exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
@@ -1501,6 +1501,7 @@
                                 <exclude>**/0-timeline.min.js</exclude>
                                 <exclude>**/0-chartjs.min.js</exclude>
                                 <exclude>**/0-jquery.inputmask.js</exclude>
+                                <exclude>**/printer.js</exclude>
                                 <exclude>**/raphael.js</exclude>
                                 <exclude>**/theme.css</exclude>
                                 <exclude>**/build/**</exclude>
