@@ -14,8 +14,8 @@
  * @typedef PrimeFaces.widget.FileUpload.OnCancelCallback Callback that is invoked when a file upload was canceled. See
  * also {@link FileUploadCfg.oncancel}.
  * @this {PrimeFaces.widget.FileUpload} PrimeFaces.widget.FileUpload.OnCancelCallback
- * 
- * @typedef PrimeFaces.widget.FileUpload.OnUploadCallback Callback to execute before the files are sent. 
+ *
+ * @typedef PrimeFaces.widget.FileUpload.OnUploadCallback Callback to execute before the files are sent.
  * If this callback returns false, the file upload request is not started. See also {@link FileUploadCfg.onupload}.
  * @this {PrimeFaces.widget.FileUpload} PrimeFaces.widget.FileUpload.OnUploadCallback
  *
@@ -86,7 +86,7 @@
  * @prop {number} cfg.maxFileSize Maximum allowed size in bytes for files.
  * @prop {string} cfg.messageTemplate Message template to use when displaying file validation errors.
  * @prop {PrimeFaces.widget.FileUpload.OnAddCallback} cfg.onAdd Callback invoked when an uploaded file is added.
- * @prop {PrimeFaces.widget.FileUpload.OnUploadCallback} cfg.onupload Callback to execute before the files are sent. 
+ * @prop {PrimeFaces.widget.FileUpload.OnUploadCallback} cfg.onupload Callback to execute before the files are sent.
  * If this callback returns false, the file upload request is not started.
  * @prop {PrimeFaces.widget.FileUpload.OnCancelCallback} cfg.oncancel Callback that is invoked when a file upload was
  * canceled.
@@ -135,6 +135,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.chooseButton = this.buttonBar.children('.ui-fileupload-choose');
         this.uploadButton = this.buttonBar.children('.ui-fileupload-upload');
         this.cancelButton = this.buttonBar.children('.ui-fileupload-cancel');
+        this.input = $(this.jqId + '_input');
         this.content = this.jq.children('.ui-fileupload-content');
         this.filesTbody = this.content.find('> div.ui-fileupload-files > div');
         this.sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
@@ -351,7 +352,6 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         };
 
         this.jq.fileupload(this.ucfg);
-        this.input = $(this.jqId + '_input');
     },
 
     /**
@@ -446,6 +446,9 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
         PrimeFaces.skinButton(this.buttonBar.children('button'));
 
+        var isChooseButtonClick = false;
+
+        this.chooseButton.off('mouseover.fileupload mouseout.fileupload mouseup.fileupload focus.fileupload blur.fileupload mousedown.fileupload click.fileupload keydown.fileupload');
         this.chooseButton.on('mouseover.fileupload', function(){
             var el = $(this);
             if(!el.prop('disabled')) {
@@ -455,42 +458,38 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         .on('mouseout.fileupload', function() {
             $(this).removeClass('ui-state-active ui-state-hover');
         })
+        .on('mouseup.fileupload', function() {
+            $(this).removeClass('ui-state-active').addClass('ui-state-hover');
+        })
+        .on('focus.fileupload', function() {
+            $(this).addClass('ui-state-focus');
+        })
+        .on('blur.fileupload', function() {
+            $(this).removeClass('ui-state-focus');
+            isChooseButtonClick = false;
+        })
         .on('mousedown.fileupload', function() {
             var el = $(this);
             if(!el.prop('disabled')) {
                 el.addClass('ui-state-active').removeClass('ui-state-hover');
             }
         })
-        .on('mouseup.fileupload', function() {
-            $(this).removeClass('ui-state-active').addClass('ui-state-hover');
-        });
-
-        var isChooseButtonClick = false;
-        this.chooseButton.on('focus.fileupload', function() {
-            $(this).addClass('ui-state-focus');
-        })
-        .on('blur.fileupload', function() {
-            $(this).removeClass('ui-state-focus');
-            isChooseButtonClick = false;
-        });
-
-        // For JAWS support
-        this.chooseButton.on('click.fileupload', function() {
-            $this.chooseButton.children('input').trigger('click');
+        .on('click.fileupload', function(e) {
+            $this.input.trigger('click');
         })
         .on('keydown.fileupload', function(e) {
             var keyCode = $.ui.keyCode,
             key = e.which;
 
             if(key === keyCode.SPACE || key === keyCode.ENTER) {
-                $this.chooseButton.children('input').trigger('click');
+                $this.input.trigger('click');
                 $(this).trigger('blur');
                 e.preventDefault();
             }
         });
 
-        this.chooseButton.children('input').on('click', function(e){
-            if(isChooseButtonClick) {
+        this.input.off('click.fileupload').on('click.fileupload', function(e){
+            if (isChooseButtonClick) {
                 isChooseButtonClick = false;
                 e.preventDefault();
                 e.stopPropagation();
@@ -500,7 +499,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             }
         });
 
-        this.uploadButton.on('click.fileupload', function(e) {
+        this.uploadButton.off('click.fileupload').on('click.fileupload', function(e) {
             e.preventDefault();
 
             // GitHub #6396 allow cancel of upload with callback
@@ -516,7 +515,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             $this.upload();
         });
 
-        this.cancelButton.on('click.fileupload', function(e) {
+        this.cancelButton.off('click.fileupload').on('click.fileupload', function(e) {
             $this.clear();
             $this.disableButton($this.uploadButton);
             $this.disableButton($this.cancelButton);
@@ -524,7 +523,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             e.preventDefault();
         });
 
-        this.clearMessageLink.on('click.fileupload', function(e) {
+        this.clearMessageLink.off('click.fileupload').on('click.fileupload', function(e) {
             $this.messageContainer.fadeOut(function() {
                 $this.messageList.children().remove();
             });
@@ -586,7 +585,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.global) {
             $(document).trigger('pfAjaxStart');
         }
-        
+
         for(var i = 0; i < this.files.length; i++) {
             this.files[i].ajaxRequest = this.files[i].row.data('filedata');
             this.files[i].ajaxRequest.submit();
