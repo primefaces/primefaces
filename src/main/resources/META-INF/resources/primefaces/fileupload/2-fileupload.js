@@ -56,7 +56,6 @@
  * @prop {JQuery} cancelButton The DOM element for the button for canceling a file upload.
  * @prop {JQuery} content The DOM element for the content of this widget.
  * @prop {JQuery} filesTbody The DOM element for the table tbody with the files.
- * @prop {JQuery} input The DOM element for the file input element.
  * @prop {string[]} sizes Suffixes for formatting files sizes.
  * @prop {File[]} files List of currently selected files.
  * @prop {number} fileAddIndex Current index where to add files.
@@ -135,7 +134,6 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.chooseButton = this.buttonBar.children('.ui-fileupload-choose');
         this.uploadButton = this.buttonBar.children('.ui-fileupload-upload');
         this.cancelButton = this.buttonBar.children('.ui-fileupload-cancel');
-        this.input = $(this.jqId + '_input');
         this.content = this.jq.children('.ui-fileupload-content');
         this.filesTbody = this.content.find('> div.ui-fileupload-files > div');
         this.sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
@@ -475,20 +473,20 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             }
         })
         .on('click.fileupload', function(e) {
-            $this.input.trigger('click');
+            $this.chooseButton.children('input').trigger('click');
         })
         .on('keydown.fileupload', function(e) {
             var keyCode = $.ui.keyCode,
             key = e.which;
 
             if(key === keyCode.SPACE || key === keyCode.ENTER) {
-                $this.input.trigger('click');
+                $this.chooseButton.children('input').trigger('click');
                 $(this).trigger('blur');
                 e.preventDefault();
             }
         });
 
-        this.input.off('click.fileupload').on('click.fileupload', function(e){
+        this.chooseButton.children('input').off('click.fileupload').on('click.fileupload', function(e){
             if (isChooseButtonClick) {
                 isChooseButtonClick = false;
                 e.preventDefault();
@@ -783,9 +781,6 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
      * Brings up the native file selection dialog.
      */
     show: function() {
-        // #7284 - reinit widget, somehow the JQ FileUpload plugin looses the change event
-        this.refresh(this.cfg);
-
-        this.input.trigger("click");
+        this.chooseButton.children('input').trigger("click");
     }
 });
