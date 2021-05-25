@@ -783,6 +783,9 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
      * Brings up the native file selection dialog.
      */
     show: function() {
+        // #7284 - reinit widget, somehow the JQ FileUpload plugin looses the change event
+        this.refresh(this.cfg);
+
         this.input.trigger("click");
     }
 });
