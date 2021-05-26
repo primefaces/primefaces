@@ -28346,6 +28346,15 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[By default, the timeline shows nested groups without collapsed. When "showNested" is false, all nested groups shown as collapsed.
+                If "showNested" is set different in TimelineGroup model, it will override this. Default is true.]]>
+            </description>
+            <name>showNested</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Deprecated, use editableTime property instead.
                 If false, items can not be moved or dragged horizontally (neither start time nor end time is changable).
                 This is useful when items should be editable but can only be changed regarding group or content (typical use case: scheduling events).

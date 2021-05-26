@@ -81,6 +81,12 @@ public class TimelineGroup<T> implements Serializable {
      */
     private String subgroupVisibility;
 
+    /**
+     * Assuming the group has nested groups, this will set the initial state of the group - shown or collapsed.
+     * It will default as true.
+     */
+    private String showNested;
+
     public TimelineGroup() {
     }
 
@@ -179,6 +185,14 @@ public class TimelineGroup<T> implements Serializable {
 
     public void setSubgroupVisibility(String subgroupVisibility) {
         this.subgroupVisibility = subgroupVisibility;
+    }
+
+    public String getShowNested() {
+        return showNested;
+    }
+
+    public void setShowNested(String showNested) {
+        this.showNested = showNested;
     }
 
     @Override
