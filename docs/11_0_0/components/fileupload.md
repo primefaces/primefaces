@@ -150,6 +150,7 @@ public class FileUploadView {
 
 #### Multiple
 Multiple file slection and upload can be enabled by setting `multiple=true`.
+!> This is not supported by legacy browsers!
 
 In multiple mode, you can use `UploadedFiles` as `value` binding or `FilesUploadEvent` via `listener`,
 as all files get uploaded within a single request:
@@ -308,7 +309,7 @@ structural style classes
 | .ui-fileupload-content | Content container
 
 ## Browser Compatibility
-Advanced uploader is implemented with HTML5 and provides far more features compared to single version.  
+Advanced uploader is implemented with HTML5 and provides far more features compared to single version.
 For legacy browsers, that do not support HMTL5 features like canvas or file api, fileupload uses graceful degradation
 (iframe is used for transport, detailed file informations are not shown,  GIF animation instead of progress bar).
 It is suggested to offer simple uploader as a fallback.
