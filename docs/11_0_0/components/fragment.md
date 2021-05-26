@@ -3,7 +3,7 @@
 Fragment component is used to define automatically partially process and update sections whenever
 AJAX request is triggered by a descendant component.
 
-!> Nested fragments is currently not supported!
+!> Nested fragments are currently not supported!
 
 ## Info
 
