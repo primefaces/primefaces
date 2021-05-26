@@ -127,7 +127,7 @@ AJAX uploads are not supported in simple upload, however AJAX is used to automat
 
 You can enable `skinSimple` option to style the simple uploader, to have a themed look, that works the same across different environments.
 
-### Single
+#### Single
 In single mode, you can use `UploadedFile` as `value` binding or `FileUploadEvent` via `listener`.
 
 ```xhtml
@@ -150,8 +150,8 @@ public class FileUploadView {
 }
 ```
 
-### Multiple
-Multiple uploads can be enabled using the `multiple` attribute, so that multiple files can be selected from browser dialog.
+#### Multiple
+Multiple file slection and upload can be enabled by setting `multiple=true`.
 
 In multiple mode, you can use `UploadedFiles` as `value` binding or `FilesUploadEvent` via `listener`,
 as all files get uploaded within a single request:
@@ -187,10 +187,18 @@ public class FileUploadView {
 }
 ```
 
+#### Auto Upload
+Default behavior requires a user to trigger the upload process, you can change this way by setting `auto` to `true`.
+Auto uploads are triggered as soon as files are selected from the dialog.
+
+```xhtml
+<p:fileUpload listener="#{fileUploadView.handleFileUpload}" mode="simple" auto="true" />
+```
+
 ## Advanced FileUpload
 Advanced FileUpload provies a more complex UI compared to the Simple FileUpload.
 
-### Single
+#### Single
 In single mode, you can use `UploadedFile` as `value` binding or `FileUploadEvent` via `listener`.
 
 ```xhtml
@@ -207,8 +215,8 @@ public class FileUploadView {
 }
 ```
 
-### Multiple
-Multiple uploads can be enabled using the `multiple` attribute, so that multiple files can be selected from browser dialog.
+#### Multiple
+Multiple file slection and upload can be enabled by setting `multiple=true`.
 As advanced mode does _not_ send all files in one request, you must use the `listener` with `FileUploadEvent`, which will be called multiple times:
 
 ```xhtml
@@ -224,25 +232,25 @@ public class FileUploadView {
 }
 ```
 
-## Auto Upload
-Default behavior requires users to trigger the upload process, you can change this way by setting `auto` to `true`.
+#### Auto Upload
+Default behavior requires a user to trigger the upload process, you can change this way by setting `auto` to `true`.
 Auto uploads are triggered as soon as files are selected from the dialog.
 
 ```xhtml
-<p:fileUpload listener="#{fileBean.handleFileUpload}" auto="true" />
+<p:fileUpload listener="#{fileUploadView.handleFileUpload}" auto="true" />
 ```
 
-## Partial Page Update
-After the fileUpload process completes you can use the PrimeFaces PPR to update any component
-on the page. FileUpload is equipped with the update attribute for this purpose. Following example
-displays a "File Uploaded" message using the growl component after file upload.
+#### Partial Page Update
+After the upload process completes, you can use the PrimeFaces PPR to update any component on the page.
+FileUpload is equipped with the `update` attribute for this purpose.
+Following example displays a "File Uploaded" message using the Growl component after upload:
 
 ```xhtml
-<p:fileUpload listener="#{fileBean.handleFileUpload}" update="msg" />
+<p:fileUpload listener="#{fileUploadView.handleFileUpload}" update="msg" />
 <p:growl id="msg" />
 ```
 ```java
-public class FileBean {
+public class FileUploadView {
     public void handleFileUpload(FileUploadEvent event) {
         //add facesmessage to display with growl
         //application code
@@ -250,13 +258,17 @@ public class FileBean {
 }
 ```
 
-## Confirmation Before Upload
-You can add a client side callback if you want a confirmation dialog before the uploads begin. Any return of `false`
-from the `onupload` callback will not send the files.
+#### Confirmation Before Upload
+You can add a client side callback, if you want a confirmation dialog before the uploads begin.
+Any return of `false` from the `onupload` callback will not send the files:
 
 ```xhtml
-<p:fileUpload listener="#{fileBean.handleFileUpload}" onupload="return confirm('Are you sure?')"/>
+<p:fileUpload listener="#{fileUploadView.handleFileUpload}" onupload="return confirm('Are you sure?')"/>
 ```
+
+
+
+
 
 ## File Filters
 Users can be restricted to only select the file types you’ve configured, example below demonstrates
@@ -265,6 +277,23 @@ how to accept images only.
 ```xhtml
 <p:fileUpload listener="#{fileBean.handleFileUpload}" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
 ```
+
+
+## File Limit
+FileLimit restricts the number of maximum files that can be uploaded.
+
+```xhtml
+<p:fileUpload listener="#{fileBean.handleFileUpload}" fileLimit="3" />
+```
+
+
+## Validation Messages
+_invalidFileMessage_ , _invalidSizeMessage_ and _fileLimitMessage_ options are provided to display
+validation messages to the users. Similar to the FacesMessage message API, these message define
+the summary part, the detail part is retrieved from the _messageTemplate_ option where default value
+is “{name} {size}”.
+
+
 ## Size Limit
 Most of the time you might need to restrict the file upload size for a file, this is as simple as setting
 the sizeLimit configuration. Following fileUpload limits the size to 1000 bytes for each file.
@@ -273,17 +302,7 @@ the sizeLimit configuration. Following fileUpload limits the size to 1000 bytes 
 <p:fileUpload listener="#{fileBean.handleFileUpload}" sizeLimit="1000" />
 ```
 
-## File Limit
-FileLimit restricts the number of maximum files that can be uploaded.
 
-```xhtml
-<p:fileUpload listener="#{fileBean.handleFileUpload}" fileLimit="3" />
-```
-## Validation Messages
-_invalidFileMessage_ , _invalidSizeMessage_ and _fileLimitMessage_ options are provided to display
-validation messages to the users. Similar to the FacesMessage message API, these message define
-the summary part, the detail part is retrieved from the _messageTemplate_ option where default value
-is “{name} {size}”.
 
 ## Skinning
 FileUpload resides in a container element which _style_ and _styleClass_ options apply. As skinning
