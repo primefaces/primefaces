@@ -108,9 +108,7 @@ your web deployment descriptor.
 ```xml
 <filter>
     <filter-name>PrimeFaces FileUpload Filter</filter-name>
-    <filter-class>
-    org.primefaces.webapp.filter.FileUploadFilter
-    </filter-class>
+    <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
 </filter>
 <filter-mapping>
     <filter-name>PrimeFaces FileUpload Filter</filter-name>
