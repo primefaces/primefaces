@@ -308,11 +308,10 @@ structural style classes
 | .ui-fileupload-content | Content container
 
 ## Browser Compatibility
-Advanced uploader is implemented with HTML5 and provides far more features compared to single
-version. For legacy browsers that do not support HMTL5 features like canvas or file api, fileupload
-uses graceful degradation so that iframe is used for transport, detailed file information is not shown
-and a gif animation is displayed instead of progress bar. It is suggested to offer simple uploader as a
-fallback.
+Advanced uploader is implemented with HTML5 and provides far more features compared to single version.  
+For legacy browsers, that do not support HMTL5 features like canvas or file api, fileupload uses graceful degradation
+(iframe is used for transport, detailed file informations are not shown,  GIF animation instead of progress bar).
+It is suggested to offer simple uploader as a fallback.
 
 ## Filter Configuration
 
