@@ -42,6 +42,15 @@ hideNoSelectionOption | false | boolean  | Flag indicating that, if this compone
 ## Getting started with SelectManyButton
 SelectManyButton usage is same as selectManyCheckbox, buttons just replace checkboxes.
 
+## Client Side API
+Widget: _PrimeFaces.widget.SelectManyButton_
+
+
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
+| disable() | - | void | Disables the input field |
+| enable() | - | void | Enables the input field |
+
 ## Skinning
 SelectManyButton resides in a main container which _style_ and _styleClass_ attributes apply. As
 skinning style classes are global, see the main theming section for more information. Following is

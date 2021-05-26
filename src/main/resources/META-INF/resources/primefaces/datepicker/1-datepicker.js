@@ -475,7 +475,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
     enable: function() {
         this.jq.data().primeDatePicker.options.disabled = false;
         this.updatePanel();
-        this.input.prop('disabled', false).removeClass('ui-state-disabled');
+        PrimeFaces.utils.enableInputWidget(this.input);
     },
 
     /**
@@ -485,7 +485,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         this.hide();
         this.jq.data().primeDatePicker.options.disabled = true;
         this.updatePanel();
-        this.input.prop('disabled', true).addClass('ui-state-disabled');
+        PrimeFaces.utils.disableInputWidget(this.input);
     }
 
 });

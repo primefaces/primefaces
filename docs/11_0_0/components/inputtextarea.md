@@ -141,6 +141,15 @@ public class AutoCompleteBean {
 <p:inputTextarea rows="10" cols="50" minQueryLength="4" completeMethod="#{autoCompleteBean.completeArea}" />
 ```
 
+## Client Side API
+Widget: _PrimeFaces.widget.InputTextarea_
+
+
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
+| disable() | - | void | Disables the input field |
+| enable() | - | void | Enables the input field |
+
 ## Skinning
 InputTextarea renders a textarea element which _style_ and _styleClass_ options apply. Following is the
 list of structural style classes;

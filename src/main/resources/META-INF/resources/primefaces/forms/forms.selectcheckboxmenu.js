@@ -1234,6 +1234,22 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.multiple) {
             this.createMultipleItem(item);
         }
+    },
+
+    /**
+     * Enables this input so that the user can enter a value.
+     */
+    enable: function() {
+        PrimeFaces.utils.enableInputWidget(this.jq, this.inputs);
+        this.disabled = false;
+    },
+
+    /**
+     * Disables this input so that the user cannot enter a value anymore.
+     */
+    disable: function() {
+        PrimeFaces.utils.disableInputWidget(this.jq, this.inputs);
+        this.disabled = true;
     }
 
 });

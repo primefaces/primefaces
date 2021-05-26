@@ -66,6 +66,8 @@ Widget: _PrimeFaces.widget.TriStateCheckbox_
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |
 toggle() | - | void | Switches to next state.
+disable() | - | void | Disables the input field
+enable() | - | void | Enables the input field
 
 ## Skinning
 TriStateCheckbox resides in a main container which _style_ and _styleClass_ attributes apply. As
