@@ -149,7 +149,7 @@ public class FileUploadView {
 ```
 
 #### Multiple
-Multiple file slection and upload can be enabled by setting `multiple=true`.
+Multiple file selection and upload can be enabled by setting `multiple=true`.
 !> This is not supported by legacy browsers!
 
 In multiple mode, you can use `UploadedFiles` as `value` binding or `FilesUploadEvent` via `listener`,
@@ -207,7 +207,7 @@ public class FileUploadView {
 ```
 
 #### Multiple
-Multiple file slection and upload can be enabled by setting `multiple=true`.
+Multiple file selection and upload can be enabled by setting `multiple=true`.
 As advanced mode does _not_ send all files in one request, you must use the `listener` with `FileUploadEvent`, which will be called multiple times:
 
 ```xhtml
