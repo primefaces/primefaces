@@ -84,18 +84,15 @@ public class PhotoCamRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, PhotoCam cam) throws IOException {
-        String camera = getResourceRequestPath(context, "photocam/webcam.swf");
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("PhotoCam", cam)
-                .attr("camera", camera)
                 .attr("width", cam.getWidth(), 320)
                 .attr("height", cam.getHeight(), 240)
                 .attr("photoWidth", cam.getPhotoWidth(), 320)
                 .attr("photoHeight", cam.getPhotoHeight(), 240)
                 .attr("format", cam.getFormat(), null)
                 .attr("jpegQuality", cam.getJpegQuality(), 90)
-                .attr("forceFlash", cam.isForceFlash(), false)
                 .attr("autoStart", cam.isAutoStart(), true)
                 .attr("device", cam.getDevice(), null)
                 .callback("onCameraError", "function(errorObj)", cam.getOnCameraError());

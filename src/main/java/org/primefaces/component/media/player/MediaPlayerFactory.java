@@ -30,7 +30,6 @@ public class MediaPlayerFactory {
 
     private static final Map<String, MediaPlayer> PLAYERS = MapBuilder.<String, MediaPlayer>builder()
             .put(MediaPlayer.QUICKTIME, new QuickTimePlayer())
-            .put(MediaPlayer.FLASH, new FlashPlayer())
             .put(MediaPlayer.WINDOWS, new WindowsPlayer())
             .put(MediaPlayer.REAL, new RealPlayer())
             .put(MediaPlayer.PDF, new PDFPlayer())
