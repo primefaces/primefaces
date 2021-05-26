@@ -91,7 +91,8 @@ public class Constants {
 
     public static final String BARCODE_MAPPING = "primefaces.barcodeMapping";
 
-    public static final String FRAGMENT_ID = "primefaces.fragment";
+    public static final String FRAGMENT_PROCESS = "primefaces.fragment.process";
+    public static final String FRAGMENT_UPDATE = "primefaces.fragment.update";
 
     public static class DialogFramework {
 
