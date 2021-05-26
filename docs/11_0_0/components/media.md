@@ -21,7 +21,7 @@ id | null | String | Unique identifier of the component.
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
 value | null | String | Media source to play.
-player | null | String | Type of the player, possible values are "quicktime","windows","flash","real" and "pdf".
+player | null | String | Type of the player, possible values are "quicktime","windows","real" and "pdf".
 width | null | String | Width of the player.
 height | null | String | Height of the player.
 style | null | String | Style of the player.

@@ -10020,7 +10020,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[FileUpload goes beyond the browser input type="file" functionality and features a flash-javascript solution for uploading files.
+            <![CDATA[FileUpload goes beyond the browser input type="file" functionality and features a javascript solution for uploading files.
         File filtering, multiple uploads, partial page rendering and progress tracking are the significant features compared to legacy fileUploads.]]>
         </description>
         <tag-name>fileUpload</tag-name>
@@ -16549,7 +16549,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Type of the player, possible values are "quicktime","windows","flash","real" and "pdf".]]>
+                <![CDATA[Type of the player, possible values are "quicktime","windows","real" and "pdf".]]>
             </description>
             <name>player</name>
             <required>false</required>
@@ -20056,14 +20056,6 @@
             <name>jpegQuality</name>
             <required>false</required>
             <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Enables always using flash fallback even in an HTML5 environment.]]>
-            </description>
-            <name>forceFlash</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
