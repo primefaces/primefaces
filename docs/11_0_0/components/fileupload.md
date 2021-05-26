@@ -187,14 +187,6 @@ public class FileUploadView {
 }
 ```
 
-#### Auto Upload
-Default behavior requires a user to trigger the upload process, you can change this way by setting `auto` to `true`.
-Auto uploads are triggered as soon as files are selected from the dialog.
-
-```xhtml
-<p:fileUpload listener="#{fileUploadView.handleFileUpload}" mode="simple" auto="true" />
-```
-
 ## Advanced FileUpload
 Advanced FileUpload provies a more complex UI compared to the Simple FileUpload.
 
@@ -232,14 +224,6 @@ public class FileUploadView {
 }
 ```
 
-#### Auto Upload
-Default behavior requires a user to trigger the upload process, you can change this way by setting `auto` to `true`.
-Auto uploads are triggered as soon as files are selected from the dialog.
-
-```xhtml
-<p:fileUpload listener="#{fileUploadView.handleFileUpload}" auto="true" />
-```
-
 #### Partial Page Update
 After the upload process completes, you can use the PrimeFaces PPR to update any component on the page.
 FileUpload is equipped with the `update` attribute for this purpose.
@@ -269,6 +253,13 @@ Any return of `false` from the `onupload` callback will not send the files:
 
 
 
+## Auto Upload
+Default behavior requires a user to trigger the upload process, you can change this way by setting `auto` to `true`.
+Auto uploads are triggered as soon as files are selected from the dialog.
+
+```xhtml
+<p:fileUpload listener="#{fileUploadView.handleFileUpload}" auto="true" />
+```
 
 ## File Filters
 Users can be restricted to only select the file types you’ve configured, example below demonstrates
@@ -356,13 +347,12 @@ folder.
 contents yourself in your backing bean.
 
 ## Chunking and Resume
-FileUpload supports chunked fileupload in advanced-mode using `maxChunkSize` attribute.
+FileUpload supports chunked upload using the `maxChunkSize` attribute but only in advanced mode!
 
-Chunked file upload comes with following restrictions:
-1. It is only supported for `mode="advanced"`
+#### Resuming chunked file uploads
+FileUpload is able to resume uploads that have been canceled (e.g user abort, lost of connection etc.)
+At first, you'll need to enable chunking and add this servlet:
 
-### Resuming chunked file uploads
-FileUpload is able to resume uploads that have been canceled (e.g user abort, lost of connection etc.) At first, you'll need to enable chunking and add this servlet:
 ```xml
 <servlet>
     <servlet-name>FileUpload Resume Servlet</servlet-name>
@@ -376,7 +366,7 @@ FileUpload is able to resume uploads that have been canceled (e.g user abort, lo
 
 > You're free to choose `url-pattern` mapping, as long it doesn't conflict with an existing page
 
-### Deleting aborted chunked uploads
+#### Deleting aborted chunked uploads
 For Servlet 3.0 and later versions, uploaded files are automatically removed from the internal
 upload directory after the request is destroyed.
 
@@ -395,11 +385,11 @@ Though it is recommended to run a cron-job that deletes incomplete uploaded file
 
 ## More secure file upload
 
-### Introduction
+#### Introduction
 
 File uploads per se introduce some security risks, for best practices you should consult OWASP's recommendations: https://www.owasp.org/index.php/Unrestricted_File_Upload
 
-### Measures
+#### Measures
 
 Here are some measures that can be taken into account when using PrimeFaces's `fileUpload` component:
 1. Consider **limiting the size** of uploaded files. As of PrimeFaces 6.2 this will be double-checked at server side as well: `p:fileUpload sizeLimit="1024"`. See https://github.com/primefaces/primefaces/issues/3290.
