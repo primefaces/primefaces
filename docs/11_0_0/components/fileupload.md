@@ -95,8 +95,8 @@ using an **optional** configuration param.
 **auto**: This is the default mode and PrimeFaces tries to detect the best method by checking the
 runtime environment, if JSF runtime is at least 2.2 native uploader is selected, otherwise commons.
 
-**native:** Native mode uses servlet 3.x Part API to upload the files and if JSF runtime is less than 2.2
-and exception is being thrown.
+**native:** Native mode uses servlet 3.x Part API to upload the files, and if JSF runtime is less than 2.2,
+an exception is being thrown.
 
 **commons**: This option chooses commons fileupload regardless of the environment, advantage of
 this option is that it works even on a Servlet 2.5 environment.
@@ -117,38 +117,32 @@ your web deployment descriptor.
     <servlet-name>Faces Servlet</servlet-name>
 </filter-mapping>
 ```
-Note that the servlet-name should match the configured name of the JSF servlet which is Faces
-Servlet in this case. Alternatively you can do a configuration based on url-pattern as well.
+Note that the servlet-name should match the configured name of the JSF servlet which is `Faces Servlet` in this case.
+Alternatively you can do a configuration based on url-pattern as well.
 
-## Simple File Upload
-Simple file upload mode works in legacy mode with a file input whose value should be an
-UploadedFile instance. AJAX uploads are not supported in simple upload, however AJAX is used to automatically upload the file when `auto` is set to `true`.
+
+## Simple FileUpload
+Simple FileUpload mode works with a plain HTML `input type=file`.
+AJAX uploads are not supported in simple upload, however AJAX is used to automatically upload the file when using `auto=true`.
+
+You can enable `skinSimple` option to style the simple uploader, to have a themed look, that works the same across different environments.
+
+### Single
+In single mode, you can use `UploadedFile` as `value` binding or `FileUploadEvent` via `listener`.
 
 ```xhtml
 <h:form enctype="multipart/form-data">
-    <p:fileUpload value="#{fileBean.file}" mode="simple" />
+    <p:fileUpload value="#{fileUploadView.file}" mode="simple" />
     <p:commandButton value="Submit" ajax="false"/>
 </h:form>
 ```
 ```java
-import org.primefaces.model.file.UploadedFile;
-public class FileBean {
+@Named
+@RequestScoped
+public class FileUploadView {
     private UploadedFile file;
     //getter-setter
-}
-```
-Enable skinSimple option to style the simple uploader to have a themed look that works the same
-across different environments.
 
-## Advanced File Upload
-`listener` is the way to access the uploaded files in this mode. When a file is uploaded,
-defined `listener` is processed with a `FileUploadEvent` as the parameter.
-
-```xhtml
-<p:fileUpload listener="#{fileBean.handleFileUpload}" />
-```
-```java
-public class FileBean {
     public void handleFileUpload(FileUploadEvent event) {
         UploadedFile file = event.getFile();
         //application code
@@ -156,16 +150,12 @@ public class FileBean {
 }
 ```
 
-## Multiple Uploads
-Multiple uploads can be enabled using the `multiple` attribute so that multiple files can be selected from browser dialog.
-Multiple uploads are not supported in legacy browsers.
-In `advanced` mode, it does not send all files in one request, but always uses a new request for each file.
+### Multiple
+Multiple uploads can be enabled using the `multiple` attribute, so that multiple files can be selected from browser dialog.
 
-```xhtml
-<p:fileUpload listener="#{fileBean.handleFileUpload}" multiple="true" />
-```
+In multiple mode, you can use `UploadedFiles` as `value` binding or `FilesUploadEvent` via `listener`,
+as all files get uploaded within a single request:
 
-However, in `simple` mode, it is possible to get all updated files at once via the `UploadedFiles` model:
 ```xhtml
 <p:fileUpload value="#{fileUploadView.files}" multiple="true" mode="simple" />
 <p:commandButton value="Submit" action="#{fileUploadView.upload}" ajax="false"/>
@@ -193,6 +183,43 @@ public class FileUploadView {
                 FacesContext.getCurrentInstance().addMessage(null, message);
             }
         }
+    }
+}
+```
+
+## Advanced FileUpload
+Advanced FileUpload provies a more complex UI compared to the Simple FileUpload.
+
+### Single
+In single mode, you can use `UploadedFile` as `value` binding or `FileUploadEvent` via `listener`.
+
+```xhtml
+<p:fileUpload listener="#{fileUploadView.handleFileUpload}" />
+```
+```java
+@Named
+@RequestScoped
+public class FileUploadView {
+    public void handleFileUpload(FileUploadEvent event) {
+        UploadedFile file = event.getFile();
+        //application code
+    }
+}
+```
+
+### Multiple
+Multiple uploads can be enabled using the `multiple` attribute, so that multiple files can be selected from browser dialog.
+As advanced mode does _not_ send all files in one request, you must use the `listener` with `FileUploadEvent`, which will be called multiple times:
+
+```xhtml
+<p:fileUpload listener="#{fileUploadView.handleFileUpload}" multiple="true" />
+```
+```java
+@Named
+@RequestScoped
+public class FileUploadView {
+    public void handleFileUpload(FileUploadEvent event) {
+        // will be invoked for each uploaded file
     }
 }
 ```
