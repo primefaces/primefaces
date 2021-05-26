@@ -153,11 +153,32 @@ By default, only one tab at a time can be active, enable _multiple_ mode to acti
 ```
 
 ## TabController
-TabController is a server side listener that can be utilized to decide if a client side tab change or tab
-close action is allowed. When one of these two events occur, an ajax call is made to invoke the tab
-controller, then the boolean return value of this controller is sent back to click to decide if the event
-should be performed. An example use case is disallowing tab change if current tab has invalid
-inputs.
+`tabController` is a server side listener that can be utilized to decide if a client side tab change or tab close action is allowed.
+When one of these two events occur, an AJAX call is made to invoke the `tabController`,
+then the boolean return value of this method is sent back to client, to decide if the event should be performed.
+An example usecase is disallowing tab change, if current tab has invalid inputs.
+
+```html
+<p:accordionPanel tabController="#{accordionView.isTabActionAllowed}">
+    //tabs
+</p:accordionPanel>
+```
+```java
+@Named
+@RequestScoped
+public class AccordionView {
+    public void isTabActionAllowed(TabEvent event) {
+        if (event instanceof TabCloseEvent) {
+            return false;
+        }
+        if (event instanceof TabChangeEvent) {
+            return true;
+        }
+        // should not happen
+        return false;
+    }
+}
+```
 
 ## Client Side API
 Widget: _PrimeFaces.widget.AccordionPanel_
