@@ -48,6 +48,6 @@ Fragment makes it easy to define partial AJAX process and update, without explic
 </h:form>
 ```
 
-`update` works different compared to `p:autoUpdate`.
+The `update` attribute works different compared to `p:autoUpdate`.
 The fragment is updated automatically, if set to `true`, when a AJAX request is triggered from a descendant component.
 With `p:autoUpdate` the component is always updated, it doesnt matter if the AJAX source component is a descendant or not.
