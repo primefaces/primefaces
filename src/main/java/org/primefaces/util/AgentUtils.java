@@ -56,7 +56,7 @@ public class AgentUtils {
     /**
      * @deprecated it is unused
      */
-    @Deprecated(since = "11.0.0")
+    @Deprecated
     public static boolean isIE(FacesContext context, int value) {
         String userAgent = getUserAgent(context);
 
@@ -80,7 +80,7 @@ public class AgentUtils {
     /**
      * @deprecated it is unused
      */
-    @Deprecated(since = "11.0.0")
+    @Deprecated
     public static boolean isLessThanIE(FacesContext context, int value) {
         String userAgent = getUserAgent(context);
 
