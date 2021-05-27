@@ -5,6 +5,7 @@ This page contains a list of big features. Please check the GitHub issues for al
 ## 11.0.0
 
   * AutoComplete: added `footer` facet which will be added to the suggestion list.
+  * Hotkey: added `bindMac` to use alternative binding on macOS.
   * InputText, InputTextarea: counter can count bytes instead of characters.
 
 Look into [migration guide](https://primefaces.github.io/primefaces/11_0_0/#/../migrationguide/10_0_0?id=datatable) for more enhancements and changes.

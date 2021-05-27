@@ -30,30 +30,35 @@ public class AgentUtils {
     private AgentUtils() {
     }
 
-    public static boolean isEdge(FacesContext context) {
-        String userAgent = context.getExternalContext().getRequestHeaderMap().get("User-Agent");
+    private static String getUserAgent(FacesContext context) {
+        return context.getExternalContext().getRequestHeaderMap().get("User-Agent");
+    }
+
+    private static boolean userAgentContains(FacesContext context, String fragment) {
+        String userAgent = getUserAgent(context);
 
         if (userAgent == null) {
             return false;
         }
         else {
-            return userAgent.contains("Edge");
+            return userAgent.contains(fragment);
         }
+    }
+
+    public static boolean isEdge(FacesContext context) {
+        return userAgentContains(context, "Edge");
     }
 
     public static boolean isIE(FacesContext context) {
-        String userAgent = context.getExternalContext().getRequestHeaderMap().get("User-Agent");
-
-        if (userAgent == null) {
-            return false;
-        }
-        else {
-            return userAgent.contains("MSIE");
-        }
+        return userAgentContains(context, "MSIE");
     }
 
+    /**
+     * @deprecated it is unused
+     */
+    @Deprecated(since = "11.0.0")
     public static boolean isIE(FacesContext context, int value) {
-        String userAgent = context.getExternalContext().getRequestHeaderMap().get("User-Agent");
+        String userAgent = getUserAgent(context);
 
         if (userAgent == null) {
             return false;
@@ -72,8 +77,12 @@ public class AgentUtils {
         }
     }
 
+    /**
+     * @deprecated it is unused
+     */
+    @Deprecated(since = "11.0.0")
     public static boolean isLessThanIE(FacesContext context, int value) {
-        String userAgent = context.getExternalContext().getRequestHeaderMap().get("User-Agent");
+        String userAgent = getUserAgent(context);
 
         if (userAgent == null) {
             return false;
@@ -90,5 +99,9 @@ public class AgentUtils {
                 return version > value;
             }
         }
+    }
+
+    public static boolean isMac(FacesContext context) {
+        return userAgentContains(context, "Mac");
     }
 }

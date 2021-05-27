@@ -16,12 +16,13 @@ handlers or ajax calls.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component.
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-bind | null | String | The Key binding.
+bind | null | String | The key binding.
+bindMac | null | String | Alternative key binding for MacOS.
 handler | null | String | Javascript event handler to be executed when the key binding is pressed.
 action | null | MethodExpr | A method expression that’d be processed in the partial request caused by uiajax.
 actionListener | null | MethodExpr | An actionlistener that’d be processed in the partial request caused by uiajax.
@@ -51,19 +52,89 @@ Simplest example would be;
 ```xhtml
 <p:hotkey bind="a" handler="alert(‘Pressed a’);" />
 ```
-When this hotkey is on page, pressing the a key will alert the ‘Pressed key a’ text.
 
-## Key combinations
-Most of the time you’d need key combinations rather than a single key.
+When this hotkey is on page, pressing the `a` key will alert the ‘Pressed a’ text.
 
+## Bind values
+Either an integer key code or an string key name (combination) is allowed. Combinations are separated with the `+`
+character. For example:
 
 ```xhtml
 <p:hotkey bind="ctrl+s" handler="alert(‘Pressed ctrl+s’);" />
 <p:hotkey bind="ctrl+shift+s" handler="alert(‘Pressed ctrl+shift+s’)" />
 ```
+
+## Key names
+The following key names are supported:
+"meta",
+"backspace",
+"tab",
+"return",
+"return",
+"shift",
+"ctrl",
+"alt",
+"pause",
+"capslock",
+"esc",
+"space",
+"pageup",
+"pagedown",
+"end",
+"home",
+"left",
+"up",
+"right",
+"down",
+"insert",
+"del",
+";",
+"=",
+"0",
+"1",
+"2",
+"3",
+"4",
+"5",
+"6",
+"7",
+"8",
+"9",
+"*",
+"+",
+"-",
+".",
+"/",
+"f1",
+"f2",
+"f3",
+"f4",
+"f5",
+"f6",
+"f7",
+"f8",
+"f9",
+"f10",
+"f11",
+"f12",
+"numlock",
+"scroll",
+"-",
+";",
+"=",
+",",
+"-",
+".",
+"/",
+"`",
+"[",
+"\\",
+"]",
+"'".
+
 ## Integration
-Here’s an example demonstrating how to integrate hotkeys with a client side api. Using left and
-right keys will switch the images displayed via the p:imageSwitch component.
+Here’s an example demonstrating how to integrate hotkeys with a client side API. Using left and
+right keys will switch the images displayed via the `p:imageSwitch` component.
 
 ```xhtml
 <p:hotkey bind="left" handler="PF('switcher').previous();" />
@@ -72,9 +143,10 @@ right keys will switch the images displayed via the p:imageSwitch component.
     //content
 </p:imageSwitch>
 ```
+
 ## Ajax Support
-Ajax is a built-in feature of hotKeys meaning you can do ajax calls with key combinations.
-Following form can be submitted with the _ctrl+shift+s_ combination.
+Ajax is a built-in feature of HotKeys meaning you can do ajax calls with key combinations.
+Following form can be submitted with the `ctrl+shift+s` combination.
 
 ```xhtml
 <h:form>
@@ -86,4 +158,5 @@ Following form can be submitted with the _ctrl+shift+s_ combination.
     <h:outputText id="display" value="Hello: #{bean.firstname}" />
 </h:form>
 ```
+
 Note that hotkey will not be triggered if there is a focused input on page.
