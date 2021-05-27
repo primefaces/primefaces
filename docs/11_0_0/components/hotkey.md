@@ -50,7 +50,7 @@ HotKey is used in two ways, either on client side with the event handler or with
 Simplest example would be;
 
 ```xhtml
-<p:hotkey bind="a" handler="alert(‘Pressed a’);" />
+<p:hotkey bind="a" handler="alert('Pressed a');" />
 ```
 
 When this hotkey is on page, pressing the `a` key will alert the ‘Pressed a’ text.
@@ -60,8 +60,8 @@ Either an integer key code or an string key name (combination) is allowed. Combi
 character. For example:
 
 ```xhtml
-<p:hotkey bind="ctrl+s" handler="alert(‘Pressed ctrl+s’);" />
-<p:hotkey bind="ctrl+shift+s" handler="alert(‘Pressed ctrl+shift+s’)" />
+<p:hotkey bind="ctrl+s" handler="alert('Pressed ctrl+s');" />
+<p:hotkey bind="ctrl+shift+s" handler="alert('Pressed ctrl+shift+s')" />
 ```
 
 ## Key names
