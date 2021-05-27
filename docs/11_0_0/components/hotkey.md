@@ -71,7 +71,6 @@ The following key names are supported:
 `backspace`,
 `tab`,
 `return`,
-`return`,
 `shift`,
 `ctrl`,
 `alt`,
