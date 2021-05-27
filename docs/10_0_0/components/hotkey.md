@@ -125,7 +125,7 @@ The following key names are supported:
 `-`,
 `.`,
 `/`,
-<code>`</code>,
+`` ` ``,
 `[`,
 `\`,
 `]`,
