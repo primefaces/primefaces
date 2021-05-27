@@ -55,8 +55,7 @@ Simplest example would be;
 When this hotkey is on page, pressing the `a` key will alert the ‘Pressed a’ text.
 
 ## Bind values
-Either an integer key code or an string key name (combination) is allowed. Combinations are separated with the `+`
-character. For example:
+A string key name (combination) is allowed. Combinations are separated with the `+` character. For example:
 
 ```xhtml
 <p:hotkey bind="ctrl+s" handler="alert('Pressed ctrl+s');" />
