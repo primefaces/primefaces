@@ -295,7 +295,7 @@ public class DataTable extends DataTableBase {
     @Override
     public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
         super.processEvent(event);
-        
+
         // restore "value" from "filteredValue"
         if (!isLazy() && event instanceof PostRestoreStateEvent && (this == event.getComponent())) {
             Object filteredValue = getFilteredValue();
