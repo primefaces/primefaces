@@ -17,7 +17,7 @@ Spinner is an input component to provide a numerical input via increment and dec
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -147,26 +147,29 @@ request is done to update the outputtext with new value whenever a spinner butto
 
 ## Ajax Behavior Events
 
-The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
-  
-**Default Event:** `valueChange`  
-**Available Events:** `blur, change, click, contextmenu, copy, cut, dblclick, drag, dragend, dragenter, dragleave, dragover, dragstart, drop, focus, input, invalid, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, paste, reset, scroll, search, select, valueChange, wheel`  
+The following AJAX behavior events are available for this component. If no event is specified the default event is called.
+
+**Default Event:** `valueChange`
+**Available Events:** `blur, change, click, contextmenu, copy, cut, dblclick, drag, dragend, dragenter, dragleave, dragover, dragstart, drop, focus, input, invalid, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, paste, reset, scroll, search, select, valueChange, wheel`
 
 ```xhtml
 <p:ajax event="valueChange" listener="#{bean.handlevalueChange}" update="msgs" />
 ```
 
 ## Skinning
-Spinner resides in a container element that using _style_ and _styleClass_ applies. Following is the list of
-structural style classes;
+Spinner resides in a container element that using `style` and `styleClass` applies. Following is the list of
+structural style classes:
 
-| Class | Applies | 
-| --- | --- | 
+| Class | Applies |
+| --- | --- |
 .ui-spinner | Main container element of spinner
 .ui-spinner-input | Input field
 .ui-spinner-button | Spinner buttons
 .ui-spinner-button-up | Increment button
 .ui-spinner-button-down | Decrement button
+
+### PrimeFlex
+The PrimeFlex classes `p-text-left`, `p-text-center` and `p-text-right` are supported to align the text of the Spinner input field.
 
 As skinning style classes are global, see the main theming section for more information.
 
