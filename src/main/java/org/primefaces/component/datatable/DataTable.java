@@ -33,10 +33,13 @@ import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
+import javax.faces.event.ComponentSystemEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
+import javax.faces.event.PostRestoreStateEvent;
 import javax.faces.model.DataModel;
 
 import org.primefaces.PrimeFaces;
@@ -286,6 +289,29 @@ public class DataTable extends DataTableBase {
         else {
             String columnSelectionMode = getColumnSelectionMode();
             return "single".equalsIgnoreCase(columnSelectionMode);
+        }
+    }
+
+    @Override
+    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
+        super.processEvent(event);
+        
+        // restore "value" from "filteredValue"
+        if (!isLazy() && event instanceof PostRestoreStateEvent && (this == event.getComponent())) {
+            Object filteredValue = getFilteredValue();
+            if (filteredValue != null) {
+                updateValue(filteredValue);
+            }
+        }
+    }
+
+    public void updateValue(Object value) {
+        Object originalValue = getValue();
+        if (originalValue instanceof SelectableDataModel) {
+            setValue(new SelectableDataModelWrapper((SelectableDataModel) originalValue, value));
+        }
+        else {
+            setValue(value);
         }
     }
 
