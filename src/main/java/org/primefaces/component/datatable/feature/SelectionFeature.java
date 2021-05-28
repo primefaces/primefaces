@@ -60,7 +60,7 @@ public class SelectionFeature implements DataTableFeature {
         decodeSelection(context, table, rowKeys);
 
         if (isFiltered) {
-            table.setValue(originalValue);
+            table.updateValue(originalValue);
         }
 
         if (table.isMultiViewState()) {
