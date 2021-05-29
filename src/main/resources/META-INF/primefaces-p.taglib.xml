@@ -11513,10 +11513,18 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[The Key binding. Required.]]>
+                <![CDATA[The key binding. Required.]]>
             </description>
             <name>bind</name>
             <required>true</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An alternative key binding for macOS.]]>
+            </description>
+            <name>bindMac</name>
+            <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>

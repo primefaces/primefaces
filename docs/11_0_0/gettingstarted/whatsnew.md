@@ -5,6 +5,7 @@ This page contains a list of big features. Please check the GitHub issues for al
 ## 11.0.0
 
   * AutoComplete: added `footer` facet which will be added to the suggestion list.
+  * Hotkey: added `bindMac` to use alternative binding on macOS.
   * InputText, InputTextarea: counter can count bytes instead of characters.
   * Spinner: support for PrimeFlex `p-text-left`, `p-text-center`, `p-text-right`.
 
