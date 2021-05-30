@@ -303,18 +303,8 @@ public class DataTable extends DataTableBase {
                 && (this == event.getComponent())) {
             Object filteredValue = getFilteredValue();
             if (filteredValue != null) {
-                updateValue(filteredValue);
+                setValue(filteredValue);
             }
-        }
-    }
-
-    public void updateValue(Object value) {
-        Object originalValue = getValue();
-        if (originalValue instanceof SelectableDataModel) {
-            setValue(new SelectableDataModelWrapper((SelectableDataModel) originalValue, value));
-        }
-        else {
-            setValue(value);
         }
     }
 
