@@ -282,7 +282,7 @@ Or
 Ajax based filtering is enabled by setting _field_ or _filterBy_ at column level and providing a list to keep the
 filtered sublist. It is suggested to use a scope longer than request like viewscope to keep the
 filteredValue so that filtered list is still accessible after filtering.
-(Attention: Please be aware sessionscope is not supported vor this. Instead set multiViewState="true" to keep table state including filter across views.)
+(Attention: Please be aware sessionscope is not supported for this. Instead set multiViewState="true" to keep table state including filter across views.)
 
 ```xhtml
 <p:dataTable var="car" value="#{carBean.cars}" filteredValue="#{carBean.filteredCars}">
