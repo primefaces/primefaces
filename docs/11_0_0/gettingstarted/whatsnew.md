@@ -7,6 +7,7 @@ This page contains a list of big features. Please check the GitHub issues for al
   * AutoComplete: added `footer` facet which will be added to the suggestion list.
   * Hotkey: added `bindMac` to use alternative binding on macOS.
   * InputText, InputTextarea: counter can count bytes instead of characters.
+  * Spinner: added `horizontal`, `horizontal-after` and `vertical` buttons mode.
   * Spinner: support for PrimeFlex `p-text-left`, `p-text-center`, `p-text-right`.
 
 Look into [migration guide](https://primefaces.github.io/primefaces/11_0_0/#/../migrationguide/11_0_0) for more enhancements and changes.

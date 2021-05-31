@@ -60,3 +60,62 @@
 .ui-spinner-input::-ms-clear {
     display: none;
 }
+
+.ui-spinner-horizontal .ui-spinner-input {
+    padding-left: 20px;
+}
+
+body .ui-spinner.ui-spinner-horizontal .ui-spinner-button.ui-button.ui-spinner-up,
+body .ui-spinner.ui-spinner-horizontal-after .ui-spinner-button.ui-button.ui-spinner-up {
+    border-radius: 0 4px 4px 0;
+}
+
+body .ui-spinner.ui-spinner-horizontal .ui-spinner-button.ui-button.ui-spinner-down {
+    border-radius: 4px 0 0 4px;
+}
+
+body .ui-spinner.ui-spinner-horizontal-after .ui-spinner-button.ui-button.ui-spinner-down {
+    border-radius: 0;
+}
+
+.ui-spinner-horizontal .ui-spinner-button, .ui-spinner-horizontal-after .ui-spinner-button {
+    height: 100%;
+    top: 0;
+}
+
+.ui-spinner-horizontal .ui-spinner-down {
+    right: unset;
+}
+
+body .ui-fluid .ui-spinner-horizontal-after .ui-spinner-input, body .ui-spinner-horizontal-after .ui-spinner-input {
+    padding-right: 5.214rem;
+}
+
+.ui-spinner-horizontal-after .ui-spinner-down {
+    right: 2.357rem;
+}
+
+body .ui-fluid .ui-spinner.ui-spinner-vertical .ui-spinner-input, body .ui-spinner.ui-spinner-vertical .ui-spinner-input {
+    padding-right: unset;
+    padding: 2.857rem 0;
+    text-align: center;
+}
+
+body .ui-spinner.ui-spinner-vertical .ui-spinner-button {
+    width: 100%;
+    height: 2.357rem;
+    right: unset;
+}
+
+.ui-spinner-vertical .ui-spinner-down {
+    right: unset;
+    bottom: 0;
+}
+
+body .ui-spinner.ui-spinner-vertical .ui-spinner-button.ui-button.ui-spinner-up {
+    border-radius: 4px 4px 0 0;
+}
+
+body .ui-spinner.ui-spinner-vertical .ui-spinner-button.ui-button.ui-spinner-down {
+    border-radius: 0 0 4px 4px;
+}
