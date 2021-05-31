@@ -1257,7 +1257,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
             if(targetWidget.cfg.selectionMode && row.hasClass('ui-datatable-selectable')) {
                 var isContextMenuDelayed = targetWidget.onRowRightClick(e, this, cfg.selectionMode, function() {
-                    menuWidget.show(e);
+                    $this.contextMenuWidget.show(e);
                 });
                 targetWidget.updateContextMenuCell(e, targetWidget);
 
@@ -1268,10 +1268,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
             else if(targetWidget.cfg.editMode === 'cell') {
                 targetWidget.updateContextMenuCell(e, targetWidget);
-                menuWidget.show(e);
+                $this.contextMenuWidget.show(e);
             }
             else if(row.hasClass('ui-datatable-empty-message') && !$this.cfg.disableContextMenuIfEmpty) {
-                menuWidget.show(e);
+                $this.contextMenuWidget.show(e);
             }
         });
 
@@ -2626,6 +2626,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             };
 
             this.callBehavior(behaviorEvent, ext);
+        }
+        else {
+            if(typeof fnShowMenu === "function") {
+                fnShowMenu();
+            }
         }
     },
 
