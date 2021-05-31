@@ -30,5 +30,5 @@ This page contains a list of big features. Please check the GitHub issues for al
   * supports JSF 3.0 (Jakarta Server Faces, package jakarta.faces)
   * new context-param `primefaces.CLIENT_SIDE_LOCALISATION` to automatically add client side language JS file
 
-Look into [migration guide](https://primefaces.github.io/primefaces/10_0_0/#/../migrationguide/10_0_0?id=datatable) for more enhancements and changes.
+Look into [migration guide](https://primefaces.github.io/primefaces/10_0_0/#/../migrationguide/10_0_0) for more enhancements and changes.
 Or check the list of 600+ issues closed for [10.0.0-RC1](https://github.com/primefaces/primefaces/milestone/12?closed=1), [10.0.0-RC2](https://github.com/primefaces/primefaces/milestone/17?closed=1) and [10.0.0(-Final)](https://github.com/primefaces/primefaces/milestone/18?closed=1).

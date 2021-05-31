@@ -344,6 +344,14 @@ public class TimelineRenderer extends CoreRenderer {
                 }
 
                 fsw.write("]");
+
+                if (LangUtils.isNotBlank(group.getShowNested())) {
+                    fsw.write(", showNested: " + EscapeUtils.forJavaScript(group.getShowNested()));
+                }
+
+                else {
+                    fsw.write(", showNested: " + timeline.isShowNested());
+                }
             }
         }
 

@@ -25,7 +25,7 @@ but not add javax.faces.CLIENT_WINDOW_MODE!
 ```
 
 All PrimeFaces MultiViewState-aware components support client-window-mode.
-See [MultiViewState](multiviewstate.md) for details.
+See [MultiViewState](core/multiviewstate.md) for details.
 
 Prime Client Window adds jfwid-parameter to all url´s rendered by JSF and PrimeFaces.
 Prime Client Window offers improved handling compared to JSF´s built in mechanism in following points:

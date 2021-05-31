@@ -82,7 +82,10 @@ public class SortFeature implements DataTableFeature {
                 sortMeta.setPriority(SortMeta.MIN_PRIORITY);
             }
         }
+    }
 
+    @Override
+    public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         table.setFirst(0);
 
         if (table.isLazy()) {
@@ -127,6 +130,10 @@ public class SortFeature implements DataTableFeature {
 
         context.getApplication().publishEvent(context, PostSortEvent.class, table);
 
+        if (!table.isFullUpdateRequest(context)) {
+            renderer.encodeTbody(context, table, true);
+        }
+
         if (table.isMultiViewState()) {
             Map<String, SortMeta> sortMeta = table.getSortByAsMap();
             if (!sortMeta.isEmpty()) {
@@ -137,13 +144,6 @@ public class SortFeature implements DataTableFeature {
                     ts.setRows(table.getRows());
                 }
             }
-        }
-    }
-
-    @Override
-    public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
-        if (!table.isFullUpdateRequest(context)) {
-            renderer.encodeTbody(context, table, true);
         }
     }
 

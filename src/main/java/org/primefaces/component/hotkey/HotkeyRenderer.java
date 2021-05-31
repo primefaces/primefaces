@@ -32,6 +32,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.AgentUtils;
 
 public class HotkeyRenderer extends CoreRenderer {
 
@@ -58,8 +59,11 @@ public class HotkeyRenderer extends CoreRenderer {
         writer.write("$(function(){");
 
         if (!hotkey.isDisabled()) {
-            writer.write("$(document).off('" + event + "').on('" + event + "',null,'" + hotkey.getBind()
-                + "',function(){");
+            String bind = hotkey.getBindMac() != null && AgentUtils.isMac(context)
+                    ? hotkey.getBindMac()
+                    : hotkey.getBind();
+
+            writer.write("$(document).off('" + event + "').on('" + event + "',null,'" + bind + "',function(){");
 
             if (hotkey.isAjaxified()) {
                 String request = preConfiguredAjaxRequestBuilder(context, hotkey)

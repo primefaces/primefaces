@@ -419,9 +419,13 @@ public class AjaxRequestBuilder {
 
     private void addFragmentConfig() {
         Map<Object, Object> attrs = context.getAttributes();
-        Object fragmentId = attrs.get(Constants.FRAGMENT_ID);
-        if (fragmentId != null) {
-            buffer.append(",fi:\"").append(fragmentId).append("\"");
+        Object fragmentProcess = attrs.get(Constants.FRAGMENT_PROCESS);
+        if (fragmentProcess != null) {
+            buffer.append(",fp:\"").append(fragmentProcess).append("\"");
+        }
+        Object fragmentUpdate = attrs.get(Constants.FRAGMENT_UPDATE);
+        if (fragmentUpdate != null) {
+            buffer.append(",fu:\"").append(fragmentUpdate).append("\"");
         }
     }
 }

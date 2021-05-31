@@ -189,8 +189,7 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
      */
     enable: function () {
         this.editor.enable();
-        this.input.removeAttr("disabled");
-        this.jq.removeClass("ui-state-disabled");
+        PrimeFaces.utils.enableInputWidget(this.jq, this.input);
         this.disabled = false;
     },
 
@@ -199,8 +198,7 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
      */
     disable: function () {
         this.editor.disable();
-        this.input.attr("disabled", "disabled");
-        this.jq.addClass("ui-state-disabled");
+        PrimeFaces.utils.disableInputWidget(this.jq, this.input);
         this.disabled = true;
     }
 

@@ -154,6 +154,8 @@ Widget: _PrimeFaces.widget.Password_
 show() | - | void | Shows password feedback panel.
 hide() | - | void | Hides password feedback panel.
 toggleMask() | - | void | Toggle masking and unmasking the password.
+disable() | - | void | Disables the input field
+enable() | - | void | Enables the input field
 
 ## Skinning
 Structural selectors for password are;

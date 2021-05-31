@@ -56,6 +56,8 @@ Widget: _PrimeFaces.widget.SelectBooleanCheckbox_
 check() | - | void | Checks the checkbox.
 uncheck() | - | void | Unchecks the checkbox.
 toggle() | - | void | Toggles check state.
+disable() | - | void | Disables the input field
+enable() | - | void | Enables the input field
 
 ## Skinning
 SelectBooleanCheckbox resides in a main container which _style_ and _styleClass_ attributes apply. As

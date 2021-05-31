@@ -36,7 +36,6 @@ public abstract class SpinnerBase extends AbstractPrimeHtmlInputText implements 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SpinnerRenderer";
 
     public enum PropertyKeys {
-
         placeholder,
         widgetVar,
         stepFactor,
@@ -48,8 +47,18 @@ public abstract class SpinnerBase extends AbstractPrimeHtmlInputText implements 
         decimalSeparator,
         thousandSeparator,
         rotate,
-        round
+        round,
+        buttons,
+        upIcon,
+        downIcon,
+        upButtonStyleClass,
+        downButtonStyleClass
     }
+
+    public static final String BUTTONS_STACKED = "stacked";
+    public static final String BUTTONS_HORIZONTAL = "horizontal";
+    public static final String BUTTONS_HORIZONTAL_AFTER = "horizontal-after";
+    public static final String BUTTONS_VERTICAL = "vertical";
 
     public SpinnerBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -156,5 +165,45 @@ public abstract class SpinnerBase extends AbstractPrimeHtmlInputText implements 
 
     public void setRound(boolean round) {
         getStateHelper().put(PropertyKeys.round, round);
+    }
+
+    public String getButtons() {
+        return (String) getStateHelper().eval(PropertyKeys.buttons, BUTTONS_STACKED);
+    }
+
+    public void setButtons(String buttons) {
+        getStateHelper().put(PropertyKeys.buttons, buttons);
+    }
+
+    public String getUpIcon() {
+        return (String) getStateHelper().eval(PropertyKeys.upIcon, null);
+    }
+
+    public void setUpIcon(String upIcon) {
+        getStateHelper().put(PropertyKeys.upIcon, upIcon);
+    }
+
+    public String getDownIcon() {
+        return (String) getStateHelper().eval(PropertyKeys.downIcon, null);
+    }
+
+    public void setDownIcon(String downIcon) {
+        getStateHelper().put(PropertyKeys.downIcon, downIcon);
+    }
+
+    public String getUpButtonStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.upButtonStyleClass, null);
+    }
+
+    public void setUpButtonStyleClass(String upButtonStyleClass) {
+        getStateHelper().put(PropertyKeys.upButtonStyleClass, upButtonStyleClass);
+    }
+
+    public String getDownButtonStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.downButtonStyleClass, null);
+    }
+
+    public void setDownButtonStyleClass(String downButtonStyleClass) {
+        getStateHelper().put(PropertyKeys.downButtonStyleClass, downButtonStyleClass);
     }
 }

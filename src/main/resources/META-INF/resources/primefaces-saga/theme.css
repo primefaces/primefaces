@@ -3450,23 +3450,23 @@ body .ui-spinner .ui-spinner-button.ui-button {
     margin-top: -0.5rem; }
   body .ui-spinner .ui-spinner-button.ui-button.ui-spinner-up {
     border-top-right-radius: 4px; }
-    body .ui-spinner .ui-spinner-button.ui-button.ui-spinner-up .ui-icon {
+    body .ui-spinner .ui-spinner-button.ui-button.ui-spinner-up .ui-icon-triangle-1-n {
       font-family: 'primeicons' !important;
       font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
-      body .ui-spinner .ui-spinner-button.ui-button.ui-spinner-up .ui-icon:before {
+      body .ui-spinner .ui-spinner-button.ui-button.ui-spinner-up .ui-icon-triangle-1-n:before {
         content: ""; }
   body .ui-spinner .ui-spinner-button.ui-button.ui-spinner-down {
     border-bottom-right-radius: 4px; }
-    body .ui-spinner .ui-spinner-button.ui-button.ui-spinner-down .ui-icon {
+    body .ui-spinner .ui-spinner-button.ui-button.ui-spinner-down .ui-icon-triangle-1-s {
       font-family: 'primeicons' !important;
       font-style: normal;
       font-weight: normal;
       display: inline-block;
       background: none; }
-      body .ui-spinner .ui-spinner-button.ui-button.ui-spinner-down .ui-icon:before {
+      body .ui-spinner .ui-spinner-button.ui-button.ui-spinner-down .ui-icon-triangle-1-s:before {
         content: ""; }
 body .ui-fluid .ui-spinner .ui-spinner-input {
   padding-right: 2.857rem; }

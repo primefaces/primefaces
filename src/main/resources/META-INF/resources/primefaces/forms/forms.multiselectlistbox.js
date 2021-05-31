@@ -118,7 +118,7 @@ PrimeFaces.widget.MultiSelectListbox = PrimeFaces.widget.BaseWidget.extend({
     enable: function() {
        if(this.cfg.disabled) {
            this.cfg.disabled = false;
-           this.jq.removeClass('ui-state-disabled');
+           PrimeFaces.utils.enableInputWidget(this.jq, this.input);
            this.bindEvents();
        }
 
@@ -130,7 +130,7 @@ PrimeFaces.widget.MultiSelectListbox = PrimeFaces.widget.BaseWidget.extend({
     disable: function() {
        if(!this.cfg.disabled) {
            this.cfg.disabled = true;
-           this.jq.addClass('ui-state-disabled');
+           PrimeFaces.utils.disableInputWidget(this.jq, this.input);
            this.unbindEvents();
            this.root.nextAll().remove();
        }

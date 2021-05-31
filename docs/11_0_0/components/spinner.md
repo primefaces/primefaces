@@ -17,7 +17,7 @@ Spinner is an input component to provide a numerical input via increment and dec
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -46,7 +46,7 @@ accesskey | null | String | Access key that when pressed transfers focus to the 
 alt | null | String | Alternate textual description of the input field.
 autocomplete | null | String | Controls browser autocomplete behavior.
 dir | null | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
-disabled | false | Boolean | Disables input field
+disabled | false | Boolean | Disables input field.
 inputmode | null | String | Hint at the type of data this control has for touch devices to display appropriate virtual keyboard.
 label | null | String | A localized user presentable name.
 lang | null | String | Code describing the language used in the generated markup for this component.
@@ -89,6 +89,11 @@ style | null | String | Inline style of the input element.
 styleClass | null | String | Style class of the input element.
 tabindex | null | Integer | Position of the input element in the tabbing order.
 title | null | String | Advisory tooltip information.
+buttons | "stacked" | String | Buttons position ("stacked", "horizontal", "horizontal-after" or "vertical").
+upIcon | null | String | Up icon (if buttons are not stacked, default is "pi pi-plus").
+downIcon | null | String | Down icon (if buttons are not stacked, default is "pi pi-minus").
+upButtonStyleClass | null | String | Up button style class. Default is null.
+downButtonStyleClass | null | String | Down button style class. Default is null.
 
 ## Getting Started with Spinner
 Spinner is an input component and used just like a standard input text.
@@ -147,26 +152,41 @@ request is done to update the outputtext with new value whenever a spinner butto
 
 ## Ajax Behavior Events
 
-The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
-  
-**Default Event:** `valueChange`  
-**Available Events:** `blur, change, click, contextmenu, copy, cut, dblclick, drag, dragend, dragenter, dragleave, dragover, dragstart, drop, focus, input, invalid, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, paste, reset, scroll, search, select, valueChange, wheel`  
+The following AJAX behavior events are available for this component. If no event is specified the default event is called.
+
+**Default Event:** `valueChange`
+**Available Events:** `blur, change, click, contextmenu, copy, cut, dblclick, drag, dragend, dragenter, dragleave, dragover, dragstart, drop, focus, input, invalid, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, paste, reset, scroll, search, select, valueChange, wheel`
 
 ```xhtml
 <p:ajax event="valueChange" listener="#{bean.handlevalueChange}" update="msgs" />
 ```
 
-## Skinning
-Spinner resides in a container element that using _style_ and _styleClass_ applies. Following is the list of
-structural style classes;
+## Client Side API
+Widget: _PrimeFaces.widget.Spinner_
 
-| Class | Applies | 
-| --- | --- | 
+
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
+| spin(dir) | integer | void | Spin up or down based on dir value 1 or -1 |
+| getValue() | void | void | Gets the current value of the spinner |
+| setValue(val) | number | void | Sets the current value of the spinner |
+| disable() | - | void | Disables the input field |
+| enable() | - | void | Enables the input field |
+
+## Skinning
+Spinner resides in a container element that using `style` and `styleClass` applies. Following is the list of
+structural style classes:
+
+| Class | Applies |
+| --- | --- |
 .ui-spinner | Main container element of spinner
 .ui-spinner-input | Input field
 .ui-spinner-button | Spinner buttons
 .ui-spinner-button-up | Increment button
 .ui-spinner-button-down | Decrement button
+
+### PrimeFlex
+The PrimeFlex classes `p-text-left`, `p-text-center` and `p-text-right` are supported to align the text of the Spinner input field.
 
 As skinning style classes are global, see the main theming section for more information.
 

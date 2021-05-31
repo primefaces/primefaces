@@ -184,7 +184,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 xhr.pfSettings = settings;
                 xhr.pfArgs = {}; // default should be an empty object
                 if($this.cfg.global) {
-                     $(document).trigger('pfAjaxSend', [xhr, this]);
+                    $(document).trigger('pfAjaxSend', [xhr, this]);
                 }
             },
             start: function(e) {

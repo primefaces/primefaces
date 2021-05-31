@@ -10020,7 +10020,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[FileUpload goes beyond the browser input type="file" functionality and features a flash-javascript solution for uploading files.
+            <![CDATA[FileUpload goes beyond the browser input type="file" functionality and features a javascript solution for uploading files.
         File filtering, multiple uploads, partial page rendering and progress tracking are the significant features compared to legacy fileUploads.]]>
         </description>
         <tag-name>fileUpload</tag-name>
@@ -10584,6 +10584,46 @@
             <component-type>org.primefaces.component.Fragment</component-type>
             <renderer-type>org.primefaces.component.FragmentRenderer</renderer-type>
         </component>
+        <attribute>
+            <description>
+                <![CDATA[Unique identifier of the component in a namingContainer.]]>
+            </description>
+            <name>id</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
+            </description>
+            <name>rendered</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
+            </description>
+            <name>binding</name>
+            <required>false</required>
+            <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Updates the fragment automatically.]]>
+            </description>
+            <name>update</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Process the fragment automatically.]]>
+            </description>
+            <name>process</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -11481,10 +11521,18 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[The Key binding. Required.]]>
+                <![CDATA[The key binding. Required.]]>
             </description>
             <name>bind</name>
             <required>true</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An alternative key binding for macOS.]]>
+            </description>
+            <name>bindMac</name>
+            <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
@@ -16517,7 +16565,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Type of the player, possible values are "quicktime","windows","flash","real" and "pdf".]]>
+                <![CDATA[Type of the player, possible values are "quicktime","windows","real" and "pdf".]]>
             </description>
             <name>player</name>
             <required>false</required>
@@ -20024,14 +20072,6 @@
             <name>jpegQuality</name>
             <required>false</required>
             <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Enables always using flash fallback even in an HTML5 environment.]]>
-            </description>
-            <name>forceFlash</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -25943,6 +25983,46 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Buttons mode ('stacked', 'horizontal', 'horizontal-after' or 'vertical'). Default is 'stacked'.]]>
+            </description>
+            <name>buttons</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Up button icon, if buttons are not stacked. Default is 'pi pi-plus'.]]>
+            </description>
+            <name>upIcon</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Down button icon, if buttons are not stacked. Default is 'pi pi-minus'.]]>
+            </description>
+            <name>downIcon</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Up button style class. Default is null.]]>
+            </description>
+            <name>upButtonStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Down button style class. Default is null.]]>
+            </description>
+            <name>downButtonStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -28309,6 +28389,15 @@
                 When both "showMajorLabels" and "showMinorLabels" are false, no horizontal axis will be visible. Default is true.]]>
             </description>
             <name>showMinorLabels</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[By default, the timeline shows nested groups without collapsed. When "showNested" is false, all nested groups shown as collapsed.
+                If "showNested" is set different in TimelineGroup model, it will override this. Default is true.]]>
+            </description>
+            <name>showNested</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>

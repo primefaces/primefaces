@@ -1,7 +1,9 @@
 # Fragment
 
 Fragment component is used to define automatically partially process and update sections whenever
-ajax request is triggered by a descendant component.
+AJAX request is triggered by a descendant component.
+
+!> Nested fragments are currently not supported!
 
 ## Info
 
@@ -16,19 +18,18 @@ ajax request is triggered by a descendant component.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 | id | null | String | Unique identifier of the component
 | rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| autoUpdate | false | Boolean | Updates the fragment automatically.
+| process | true | Boolean | Process the fragment automatically.
+| update | false | Boolean | Updates the fragment automatically.
 
 ## Getting started with Fragment
 In the following case, required input field outside the fragment is ignored and only the contents of
-the fragment are processed-updated automatically on button click since button is inside the
-fragment. Fragment makes it easy to define partial ajax process and update without explicitly
-defining component identifiers.
-
+the fragment are processed / updated automatically on button click, since button is inside the fragment.
+Fragment makes it easy to define partial AJAX process and update, without explicitly defining component identifiers.
 
 ```xhtml
 <h:form>
@@ -36,7 +37,7 @@ defining component identifiers.
         <p:outputLabel for="ign" value="Required:" />
         <p:inputText id="ign" required="true" />
     </h:panelGrid>
-    <p:fragment autoUpdate="true">
+    <p:fragment update="true">
         <h:panelGrid columns="4" cellpadding="5">
             <h:outputLabel for="name" value="Name:" />
             <p:inputText id="name" value="#{pprBean.firstname}" />
@@ -46,7 +47,7 @@ defining component identifiers.
     </p:fragment>
 </h:form>
 ```
-AutoUpdate has different notion compared to autoUpdate of message, growl and outputPanel. The
-fragment is updated automatically after an ajax request if the source is a descendant. In other
-mentioned components, there is no such restriction as they are updated for every ajax request
-regardless of the source.
+
+The `update` attribute works different compared to `p:autoUpdate`.
+The fragment is updated automatically, if set to `true`, when a AJAX request is triggered from a descendant component.  
+With `p:autoUpdate` the component is always updated, it doesnt matter if the AJAX source component is a descendant or not.

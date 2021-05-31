@@ -41,7 +41,9 @@ public class FragmentRenderer extends CoreRenderer {
         Fragment fragment = (Fragment) component;
         String clientId = fragment.getClientId(context);
         Map<Object, Object> attrs = context.getAttributes();
-        attrs.put(Constants.FRAGMENT_ID, clientId);
+
+        attrs.put(Constants.FRAGMENT_PROCESS, fragment.isProcess() ? clientId : null);
+        attrs.put(Constants.FRAGMENT_UPDATE, fragment.isUpdate() ? clientId : null);
 
         writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
@@ -51,6 +53,7 @@ public class FragmentRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         context.getResponseWriter().endElement("div");
 
-        context.getAttributes().remove(Constants.FRAGMENT_ID);
+        context.getAttributes().remove(Constants.FRAGMENT_PROCESS);
+        context.getAttributes().remove(Constants.FRAGMENT_UPDATE);
     }
 }

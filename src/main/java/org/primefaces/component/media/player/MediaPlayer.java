@@ -27,7 +27,6 @@ public interface MediaPlayer {
 
     String WINDOWS = "windows";
     String QUICKTIME = "quicktime";
-    String FLASH = "flash";
     String REAL = "real";
     String PDF = "pdf";
 

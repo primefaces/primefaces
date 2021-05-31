@@ -91,6 +91,7 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
         showCurrentTime,
         showMajorLabels,
         showMinorLabels,
+        showNested,
         clickToUse,
         showTooltips,
         tooltipFollowMouse,
@@ -492,6 +493,14 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
 
     public void setShowMinorLabels(boolean showMinorLabels) {
         getStateHelper().put(PropertyKeys.showMinorLabels, showMinorLabels);
+    }
+
+    public boolean isShowNested() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showNested, true);
+    }
+
+    public void setShowNested(boolean showNested) {
+        getStateHelper().put(PropertyKeys.showNested, showNested);
     }
 
     public boolean isClickToUse() {

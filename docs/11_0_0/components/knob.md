@@ -76,12 +76,14 @@ Color scheme of the know are changed with foregroundColor and backgroundColor op
 <p:knob foregroundColor="red" backgroundColor="#00000" value="25"/>
 ```
 ## Client Side API
-Widget: _PrimeFaces.widget.Know_
+Widget: _PrimeFaces.widget.Knob_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 
 setValue(value) | value | void | Updates the value with given value
 getValue() | - | number | Returns the current knob value.
 increment() | - | void | Increments current value by step factor.
-Decrement() | - | void | Decremenets current value by step factor.
+decrement() | - | void | Decrements current value by step factor.
+disable() | - | void | Disables the input field
+enable() | - | void | Enables the input field
 

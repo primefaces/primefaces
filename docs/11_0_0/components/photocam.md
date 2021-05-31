@@ -43,7 +43,6 @@ photoWidth | 320 | Integer | Width of the captured photo, defaults to width.
 photoHeight | 240 | Integer | Height of the captured photo, defaults to height.
 format | jpeg | Boolean | Format of the image, valid values are "jpeg" default and png.
 jpegQuality | 90 | Integer | Quality of the image between 0 and 100 when the format is jpeg, default value is 90.
-forceFlash | false | Boolean | Enables always using flash fallback even in an HTML5 environment.
 device | false | String | Suggests a video input device such as 'user' (aka font camera) or 'environment' (aka rear camera).
 onCameraError | false | String | Client side callback executed if the camera has an error.
 
@@ -130,5 +129,5 @@ This component is strongly dependent of browser / operational system faculties a
 
 - Navigators like Google Chrome (version 47 and later) require secure origins (HTTPS or LOCALHOST) to activate media devices functionality. Thus, unless you are accessing the page from LOCALHOST, PhotoCam is likely to do not work in a plain HTTP call. More details can be found here: https://developers.google.com/web/updates/2015/10/chrome-47-webrtc
 - Third-party browsers on iOS devices (Iphone, Ipad, etc) do not have the same access to media devices as the Apple native browser Safari has. Thus, on an iOS device, PhotoCam should works fine on Safari but not on Chrome or Firefox (or other non-Safari navigator). See http://www.openradar.me/33571214 for any updates about this. Note that this restriction is applied only for iOS devices. In general, third-party browsers running on OSx systems (mackbooks, iMacs and so on) don't have this same restriction.
-- Since Adobe Flash support is becoming scarse, PhotoCam is likely to do not run on Microsoft Internet Explorer 11 or below. Other legacy browsers are also not likely to be functional.
+- Adobe Flash support ended in January 2021, PhotoCam is not likely to run on Microsoft Internet Explorer 11 or below. Other legacy browsers are also not likely to be functional.
 

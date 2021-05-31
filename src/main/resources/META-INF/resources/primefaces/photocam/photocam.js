@@ -1075,8 +1075,6 @@ else {
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  * 
  * @prop {boolean} cfg.autoStart Whether access to the camera should be requested automatically upon page load.
- * @prop {string} cfg.camera URL to the `swf` flash fallback.
- * @prop {boolean} cfg.forceFlash Enables always using flash fallback even in an HTML5 environment.
  * @prop {Webcam.ImageFormat} cfg.format Format of the image file.
  * @prop {number} cfg.height Height of the camera viewport in pixels.
  * @prop {number} cfg.jpegQuality Quality of the image between `0` and `100` when the format is `jpeg`, default value is `90`.
@@ -1117,8 +1115,6 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
         
         this.device = this.cfg.device;
 
-        Webcam.setSWFLocation(this.cfg.camera);
-
         if (this.cfg.autoStart) {
             this.attach();
         }
@@ -1149,7 +1145,8 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
                 dest_height: this.cfg.photoHeight,
                 image_format: this.cfg.format,
                 jpeg_quality: this.cfg.jpegQuality,
-                force_flash: this.cfg.forceFlash,
+                force_flash: false,
+                enable_flash: false,
                 device: this.device,
                 user_callback: function(data) {
                     var options = {
@@ -1179,7 +1176,7 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
      */
     onCameraError: function(errorObj) {
         var message;
-        if ((errorObj instanceof Webcam.errors.FlashError) || (errorObj instanceof Webcam.errors.WebcamError)) {
+        if (errorObj instanceof Webcam.errors.WebcamError) {
             message = errorObj.message;
         } else {
             message = "Could not access webcam: " + errorObj.name + ": " + 
@@ -1192,7 +1189,7 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Detaches the web camera so that no more photos can be taken.
      */
-    dettach: function() {
+    detach: function() {
         if (this.attached) {
             Webcam.reset();
             this.attached = false;
@@ -1233,7 +1230,7 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
      */
     reload: function () {
         if (this.attached) {
-            this.dettach();
+            this.detach();
             this.attach();
         }
     }

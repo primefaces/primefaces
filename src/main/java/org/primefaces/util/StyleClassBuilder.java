@@ -46,18 +46,22 @@ public class StyleClassBuilder {
     }
 
     public StyleClassBuilder add(boolean condition, String styleClass, String notStyleClass) {
-        add(condition, styleClass).add(!condition, notStyleClass);
-        return this;
+        return add(condition, styleClass).add(!condition, notStyleClass);
     }
 
     public StyleClassBuilder add(String styleClass) {
-        add(LangUtils.isNotBlank(styleClass), styleClass);
-        return this;
+        return add(LangUtils.isNotBlank(styleClass), styleClass);
     }
 
     public StyleClassBuilder add(String defaultStyleClass, String userStyleClass) {
-        add(defaultStyleClass).add(userStyleClass);
-        return this;
+        return add(defaultStyleClass).add(userStyleClass);
+    }
+
+    public StyleClassBuilder addOrElse(String styleClass, String fallback) {
+        if (LangUtils.isNotBlank(styleClass)) {
+            return add(true, styleClass);
+        }
+        return add(fallback);
     }
 
     public String build() {

@@ -25,11 +25,9 @@ package org.primefaces.component.spinner;
 
 import java.io.IOException;
 import java.math.BigInteger;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -110,10 +108,10 @@ public class SpinnerRenderer extends InputRenderer {
     protected void encodeMarkup(FacesContext context, Spinner spinner) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = spinner.getClientId(context);
-        String styleClass = createStyleClass(spinner, Spinner.CONTAINER_CLASS);
-        boolean valid = spinner.isValid();
-        String upButtonClass = (valid) ? Spinner.UP_BUTTON_CLASS : Spinner.UP_BUTTON_CLASS + " ui-state-error";
-        String downButtonClass = (valid) ? Spinner.DOWN_BUTTON_CLASS : Spinner.DOWN_BUTTON_CLASS + " ui-state-error";
+        String styleClass = getStyleClassBuilder(context)
+                .add(createStyleClass(spinner, Spinner.CONTAINER_CLASS))
+                .add(Spinner.BUTTONS_CLASS_PREFIX + getButtonsClassSuffix(spinner))
+                .build();
 
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId, null);
@@ -124,10 +122,50 @@ public class SpinnerRenderer extends InputRenderer {
 
         encodeInput(context, spinner);
 
-        encodeButton(context, upButtonClass, Spinner.UP_ICON_CLASS);
-        encodeButton(context, downButtonClass, Spinner.DOWN_ICON_CLASS);
+        boolean valid = spinner.isValid();
+        String upButtonClass = getButtonClass(context, Spinner.UP_BUTTON_CLASS, spinner.getUpButtonStyleClass(), valid);
+        String downButtonClass = getButtonClass(context, Spinner.DOWN_BUTTON_CLASS, spinner.getDownButtonStyleClass(), valid);
+
+        boolean stacked = SpinnerBase.BUTTONS_STACKED.equals(spinner.getButtons());
+        String upIconClass = getIconClass(context,
+                spinner.getUpIcon(),
+                stacked ? Spinner.STACKED_UP_ICON_CLASS : Spinner.HORIZONTAL_UP_ICON_CLASS);
+        String downIconClass = getIconClass(context,
+                spinner.getDownIcon(),
+                stacked ? Spinner.STACKED_DOWN_ICON_CLASS : Spinner.HORIZONTAL_DOWN_ICON_CLASS);
+
+        encodeButton(context, upButtonClass, upIconClass);
+        encodeButton(context, downButtonClass, downIconClass);
 
         writer.endElement("span");
+    }
+
+    protected String getButtonsClassSuffix(Spinner spinner) {
+        switch (spinner.getButtons()) {
+            case SpinnerBase.BUTTONS_HORIZONTAL:
+                return SpinnerBase.BUTTONS_HORIZONTAL;
+            case SpinnerBase.BUTTONS_HORIZONTAL_AFTER:
+                return SpinnerBase.BUTTONS_HORIZONTAL_AFTER;
+            case SpinnerBase.BUTTONS_VERTICAL:
+                return SpinnerBase.BUTTONS_VERTICAL;
+            default:
+                return SpinnerBase.BUTTONS_STACKED;
+        }
+    }
+
+    protected String getButtonClass(FacesContext context, String fixedStyleClass, String styleClass, boolean valid) {
+        return getStyleClassBuilder(context)
+                .add(fixedStyleClass)
+                .add(styleClass)
+                .add(!valid, "ui-state-error")
+                .build();
+    }
+
+    protected String getIconClass(FacesContext context, String custom, String fallback) {
+        return getStyleClassBuilder(context)
+                .add(Spinner.ICON_BASE_CLASS)
+                .addOrElse(custom, fallback)
+                .build();
     }
 
     protected void encodeInput(FacesContext context, Spinner spinner) throws IOException {
