@@ -71,6 +71,15 @@ ColorPicker has two modes, default mode is _popup_ and other available option is
 | close | javax.faces.event.AjaxBehaviorEvent | On close of the popup in popup mode.
 
 
+## Client Side API
+Widget: _PrimeFaces.widget.ColorPicker_
+
+
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
+| disable() | - | void | Disables the input field |
+| enable() | - | void | Enables the input field |
+
 ## Skinning
 ColorPicker resides in a container element which _style_ and _styleClass_ options apply. Following is
 the list of structural style classes;

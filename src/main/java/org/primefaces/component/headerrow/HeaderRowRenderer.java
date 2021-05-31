@@ -27,6 +27,7 @@ import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.MessageFactory;
@@ -45,6 +46,9 @@ public class HeaderRowRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         boolean expandable = row.isExpandable();
         boolean expanded = row.isExpanded();
+
+        // GitHub #7296 prevent issue with PanelGrid rendering
+        Object helperRenderer = context.getAttributes().remove(Constants.HELPER_RENDERER);
 
         writer.startElement("tr", null);
         writer.writeAttribute("class", DataTable.HEADER_ROW_CLASS, null);
@@ -66,6 +70,7 @@ public class HeaderRowRenderer extends CoreRenderer {
         }
 
         writer.endElement("tr");
+        context.getAttributes().put(Constants.HELPER_RENDERER, helperRenderer);
     }
 
     protected void encodeToggleIcon(FacesContext context, boolean expanded) throws IOException {

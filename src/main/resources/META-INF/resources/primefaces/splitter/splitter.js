@@ -163,7 +163,9 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * The method that is called when the 'resize' event ends.
+     * The method that is called when the 'resize' event ends and calls the server-side `resizeEnd` ajax behavior event
+     * if such a behavior exists and call user 'onResizeEnd' callback.
+     * Use `<p:ajax event="resizeEnd" listener="#{splitterView.onResizeEnd}" />` on the component to define a behavior.
      * @private
      * @param {JQuery.TriggeredEvent} event Event triggered for the resize end.
      */
@@ -174,6 +176,23 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
 
         this.gutterElement.removeClass('ui-splitter-gutter-resizing');
         this.jq.removeClass('ui-splitter-resizing');
+
+        //Call user onResizeEnd callback
+        if(this.cfg.onResizeEnd) {
+            this.cfg.onResizeEnd.call(this, this.panelSizes);
+        }
+
+        if(this.hasBehavior('resizeEnd')) {
+            var sizesArr = this.panelSizes;
+            var ext = {
+                params: [
+                    {name: this.id + '_panelSizes', value: sizesArr.map(e => e.toFixed(2)).join('_')},
+                ]
+            };
+
+            this.callBehavior('resizeEnd', ext);
+        }
+
         this.clear();
     },
     

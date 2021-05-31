@@ -73,10 +73,6 @@ public class PolarAreaChartRenderer extends ChartRenderer {
         writer.write(",\"animateScale\":" + polarOptions.isAnimateScale());
         writer.write("}");
 
-        if (polarOptions.getStartAngle() != null) {
-            writer.write(",\"startAngle\":" + polarOptions.getStartAngle());
-        }
-
         encodeScales(context, type, polarOptions.getScales(), true);
         encodeElements(context, polarOptions.getElements(), true);
         encodeTitle(context, polarOptions.getTitle(), true);

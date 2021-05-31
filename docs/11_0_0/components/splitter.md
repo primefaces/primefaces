@@ -26,6 +26,7 @@ Splitter component is used to categorize content.
 | gutterSize | 4 | Integer | Size of the divider in pixels.
 | stateKey | null | string | Storage identifier of a stateful Splitter.
 | stateStorage | session | string | Defines where a stateful splitter keeps its state, valid values are "session" for sessionStorage and "local" for localStorage.
+| onResizeEnd | null | String | Client-side callback to execute after the resizing end.
 | style | null | String | Style of the splitter.
 | styleClass | null | String | StyleClass of the splitter.
 
@@ -147,6 +148,30 @@ local storage which can be configured using the ```stateStorage``` property.
         Panel 2
     </p:splitterPanel>
 </p:splitter>
+```
+
+## Ajax Behavior Events
+The following AJAX behavior event are available for this component. If no event is specified the default event is called.
+
+**Default Event:** `resizeEnd`
+
+| Event | Listener Parameter | Fired |
+| --- | --- | --- |
+| resizeEnd | org.primefaces.event.SplitterResizeEvent | Is fired after the resizing end. |
+
+## Client Side Callbacks
+_onResizeEnd_ is called to invoke when resize ends.
+
+```html
+<p:splitter onResizeEnd="resizeEnd(panelSizes)">
+    //...splitterPanels
+</p:splitter>
+
+<script type="text/javascript">
+    function resizeEnd(panelSizes) {
+        //panelSizes: Sizes of the panels as an array
+    }
+</script>
 ```
 
 ## Skinning of Splitter

@@ -111,6 +111,9 @@ public class InputMaskRenderer extends InputRenderer {
         else if (c == 'a') {
             translated = "[A-Za-z]";
         }
+        else if (c == 'A') {
+            translated = "[A-Z]";
+        }
         else if (c == '*') {
             translated = "[A-Za-z0-9]";
         }

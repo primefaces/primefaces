@@ -6,14 +6,14 @@ are many other third party libraries and plugins used to support features.
 | Library | Version | URL |
 | --- | --- | --- |
 | [AutoNumeric](../jsdocs/classes/node_modules_autonumeric.export_-1.html) | 4.6.0 | https://github.com/autoNumeric/autoNumeric |
-| [Chart.js](../jsdocs/classes/node_modules__types_chart_js.export_-1.html) | 2.9.4 | https://www.chartjs.org |
+| [Chart.js](../jsdocs/classes/node_modules__types_chart_js.export_-1.html) | 3.2.1 | https://www.chartjs.org |
 | [Color Picker](../jsdocs/interfaces/src_primefaces.jquery-1.html#colorpicker) | (2012) | www.eyecon.ro |
 | [Cookie](../jsdocs/modules/node_modules__types_js_cookie.html) | 3.0.0 | https://github.com/js-cookie/js-cookie |
 | [ContentFlow](../jsdocs/classes/src_primefaces.contentflow.html) | 1.0.2 | http://www.jacksasylum.eu/ContentFlow |
 | [Cropper.js](../jsdocs/classes/node_modules_cropperjs_types.cropper-1.html) | 1.5.6 | https://github.com/fengyuanchen/cropperjs |
 | [Download.js](../jsdocs/modules/node_modules__types_downloadjs.html) | 4.2 | http://danml.com/download.html |
 | FontAwesome | 4.7.0 | https://fontawesome.com/ |
-| [FullCalendar](../jsdocs/classes/node_modules__fullcalendar_core_main.calendar.html) | 5.5.1 | https://fullcalendar.io/ |
+| [FullCalendar](../jsdocs/classes/node_modules__fullcalendar_core_main.calendar.html) | 5.7.0 | https://fullcalendar.io/ |
 | [Idle Timer](../jsdocs/interfaces/src_primefaces.jquery-1.html#idletimer) | 1.1.0 - 2016-03-21 | https://github.com/thorst/jquery-idletimer |
 | [Input Mask](../jsdocs/interfaces/node_modules__types_inputmask.default.static.html) | 5.0.5 | https://github.com/RobinHerbots/Inputmask |
 | jqPlot | 1.0.9 | http://www.jqplot.com/ |
@@ -31,15 +31,15 @@ are many other third party libraries and plugins used to support features.
 | jQuery UI Touch Punch | 1.0.8 | https://github.com/RWAP/jquery-ui-touch-punch |
 | [jQuery UI](../jsdocs/modules/node_modules__types_jqueryui.html) | 1.12.1 | https://github.com/jquery/jquery-ui |
 | [jQuery](../jsdocs/interfaces/src_primefaces.jquery-1.html) | 3.6.0 | https://jquery.com/ |
-| [Jquery.print](../jsdocs/interfaces/src_primefaces.jquery-1.html#print) | 1.6.0 | https://github.com/DoersGuild/jQuery.print |
 | [jScrollPane](../jsdocs/interfaces/src_primefaces.jquery-1.html#jscrollpane) | 2.2.3 | https://github.com/vitch/jScrollPane |
 | [JSPlumb Diagram](../jsdocs/modules/node_modules_jsplumb.export_.html) | 2.14.6 | https://github.com/jsplumb/jsplumb |
 | [Keypad](../jsdocs/interfaces/src_primefaces.jquery-1.html#keypad) | 2.1.0 | http://keith-wood.name/keypad.html |
 | [Moment](../jsdocs/modules/node_modules_moment_ts3_1_typings_moment.html) | 2.22.2 | https://github.com/moment/moment |
 | [moment-timezone.js](../jsdocs/modules/node_modules_moment_ts3_1_typings_moment.html#tz) | 0.5.25 | https://github.com/moment/moment-timezone |
+| [Print.js](../jsdocs/modules/node_modules_print_js_src.html) | 1.6.0 | https://printjs.crabbly.com |
 | [Quill Editor](../jsdocs/modules/node_modules__types_quill.html) | 1.3.7 | https://quilljs.com/ |
 | [Raphaël](../jsdocs/interfaces/node_modules__types_raphael.raphaelstatic.html) | 2.3.0 | http://raphaeljs.com |
 | [Signature](../jsdocs/interfaces/src_primefaces.jquery-1.html#signature) | 1.2.0 | http://keith-wood.name/signature.html |
-| [Timeline](../jsdocs/modules/node_modules_vis_timeline_declarations.html) | 7.4.7 | https://github.com/visjs/vis-timeline |
+| [Timeline](../jsdocs/modules/node_modules_vis_timeline_declarations.html) | 7.4.8 | https://github.com/visjs/vis-timeline |
 | [TouchSwipe](../jsdocs/interfaces/src_primefaces.jquery-1.html#swipe) | 1.6.18 | https://github.com/mattbryson/TouchSwipe-Jquery-Plugin |
 | [WebcamJS](../jsdocs/modules/src_primefaces.webcam.html) | 1.0.26 | http://github.com/jhuckaby |

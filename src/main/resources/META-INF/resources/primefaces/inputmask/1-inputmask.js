@@ -21,12 +21,20 @@ PrimeFaces.widget.InputMask = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
 
-        if(this.cfg.mask) {
-            this.jq.inputmask('remove').inputmask(this.cfg);
-        }
+        this.applyMask();
 
         //Visuals
         PrimeFaces.skinInput(this.jq);
+    },
+
+    /**
+     * Applys the mask to the input.
+     * @private
+     */
+    applyMask: function() {
+        if(this.cfg.mask && !this.jq.is('[readonly]') && !this.jq.is(':disabled')) {
+            this.jq.inputmask('remove').inputmask(this.cfg);
+        }
     },
 
     /**
@@ -52,6 +60,22 @@ PrimeFaces.widget.InputMask = PrimeFaces.widget.BaseWidget.extend({
      */
     getValueUnmasked: function() {
         return this.jq.inputmask('unmaskedvalue');
+    },
+
+    /**
+     * Disables this input so that the user cannot enter a value anymore.
+     */
+    disable: function() {
+        this.jq.inputmask('remove');
+        PrimeFaces.utils.disableInputWidget(this.jq);
+    },
+
+    /**
+     * Enables this input so that the user can enter a value.
+     */
+    enable: function() {
+        PrimeFaces.utils.enableInputWidget(this.jq);
+        this.applyMask();
     }
 
 });

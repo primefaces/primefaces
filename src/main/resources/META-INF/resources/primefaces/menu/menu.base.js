@@ -126,11 +126,11 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
 
         //Hide overlay on resize
         this.resizeHandler = PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_hide', this.jq, function() {
-            $this.hide();
+            $this.handleViewportChange();
         });
 
         this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', this.trigger, function() {
-            $this.hide();
+            $this.handleViewportChange();
         });
     },
 
@@ -160,7 +160,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
      * resize immediately and close the overlay. See GitHub #7075.
      * @private
      */
-    handleViewportChange() {
+    handleViewportChange: function() {
         if (PrimeFaces.env.mobile) {
             this.align();
         } else {

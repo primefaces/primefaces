@@ -79,7 +79,10 @@ public abstract class FileUploadBase extends UIInput implements Widget {
         title,
         chooseButtonTitle,
         uploadButtonTitle,
-        cancelButtonTitle
+        cancelButtonTitle,
+        chooseButtonStyleClass,
+        uploadButtonStyleClass,
+        cancelButtonStyleClass
     }
 
     public FileUploadBase() {
@@ -452,4 +455,27 @@ public abstract class FileUploadBase extends UIInput implements Widget {
         getStateHelper().put(PropertyKeys.global, global);
     }
 
+    public String getChooseButtonStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.chooseButtonStyleClass, null);
+    }
+
+    public void setChooseButtonStyleClass(String chooseButtonStyleClass) {
+        getStateHelper().put(PropertyKeys.chooseButtonStyleClass, chooseButtonStyleClass);
+    }
+
+    public String getUploadButtonStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.uploadButtonStyleClass, null);
+    }
+
+    public void setUploadButtonStyleClass(String uploadButtonStyleClass) {
+        getStateHelper().put(PropertyKeys.uploadButtonStyleClass, uploadButtonStyleClass);
+    }
+
+    public String getCancelButtonStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.cancelButtonStyleClass, null);
+    }
+
+    public void setCancelButtonStyleClass(String cancelButtonStyleClass) {
+        getStateHelper().put(PropertyKeys.cancelButtonStyleClass, cancelButtonStyleClass);
+    }
 }

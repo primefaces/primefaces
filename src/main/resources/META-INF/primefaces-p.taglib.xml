@@ -374,6 +374,12 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>Title of the Print window (default to page title).</description>
+            <name>title</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
 
     <tag>
@@ -10014,7 +10020,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[FileUpload goes beyond the browser input type="file" functionality and features a flash-javascript solution for uploading files.
+            <![CDATA[FileUpload goes beyond the browser input type="file" functionality and features a javascript solution for uploading files.
         File filtering, multiple uploads, partial page rendering and progress tracking are the significant features compared to legacy fileUploads.]]>
         </description>
         <tag-name>fileUpload</tag-name>
@@ -10478,6 +10484,30 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class for choose button.]]>
+            </description>
+            <name>chooseButtonStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class for upload button.]]>
+            </description>
+            <name>uploadButtonStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class for cancel button.]]>
+            </description>
+            <name>cancelButtonStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -10546,6 +10576,46 @@
             <component-type>org.primefaces.component.Fragment</component-type>
             <renderer-type>org.primefaces.component.FragmentRenderer</renderer-type>
         </component>
+        <attribute>
+            <description>
+                <![CDATA[Unique identifier of the component in a namingContainer.]]>
+            </description>
+            <name>id</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
+            </description>
+            <name>rendered</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
+            </description>
+            <name>binding</name>
+            <required>false</required>
+            <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Updates the fragment automatically.]]>
+            </description>
+            <name>update</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Process the fragment automatically.]]>
+            </description>
+            <name>process</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -11443,10 +11513,18 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[The Key binding. Required.]]>
+                <![CDATA[The key binding. Required.]]>
             </description>
             <name>bind</name>
             <required>true</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An alternative key binding for macOS.]]>
+            </description>
+            <name>bindMac</name>
+            <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
@@ -16479,7 +16557,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Type of the player, possible values are "quicktime","windows","flash","real" and "pdf".]]>
+                <![CDATA[Type of the player, possible values are "quicktime","windows","real" and "pdf".]]>
             </description>
             <name>player</name>
             <required>false</required>
@@ -19986,14 +20064,6 @@
             <name>jpegQuality</name>
             <required>false</required>
             <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Enables always using flash fallback even in an HTML5 environment.]]>
-            </description>
-            <name>forceFlash</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -28316,6 +28386,15 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[By default, the timeline shows nested groups without collapsed. When "showNested" is false, all nested groups shown as collapsed.
+                If "showNested" is set different in TimelineGroup model, it will override this. Default is true.]]>
+            </description>
+            <name>showNested</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Deprecated, use editableTime property instead.
                 If false, items can not be moved or dragged horizontally (neither start time nor end time is changable).
                 This is useful when items should be editable but can only be changed regarding group or content (typical use case: scheduling events).
@@ -28540,6 +28619,14 @@
                 <![CDATA[User presentable name.]]>
             </description>
             <name>label</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
+            </description>
+            <name>ariaLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -32610,6 +32697,14 @@
                 <![CDATA[Defines where a stateful splitter keeps its state, valid values are "session" for sessionStorage and "local" for localStorage.]]>
             </description>
             <name>stateStorage</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client-side callback to execute after resizing end.]]>
+            </description>
+            <name>onResizeEnd</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>

@@ -47,7 +47,6 @@ public abstract class PhotoCamBase extends UIInput implements Widget {
         photoHeight,
         format,
         jpegQuality,
-        forceFlash,
         autoStart,
         device,
         onCameraError
@@ -156,14 +155,6 @@ public abstract class PhotoCamBase extends UIInput implements Widget {
 
     public void setJpegQuality(int jpegQuality) {
         getStateHelper().put(PropertyKeys.jpegQuality, jpegQuality);
-    }
-
-    public boolean isForceFlash() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.forceFlash, false);
-    }
-
-    public void setForceFlash(boolean forceFlash) {
-        getStateHelper().put(PropertyKeys.forceFlash, forceFlash);
     }
 
     public boolean isAutoStart() {

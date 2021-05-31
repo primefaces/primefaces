@@ -23,10 +23,13 @@
  */
 package org.primefaces.component.splitter;
 
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
-import javax.faces.component.UIComponentBase;
 
-public abstract class SplitterBase extends UIComponentBase implements Widget {
+import javax.faces.component.UIComponentBase;
+import javax.faces.component.behavior.ClientBehaviorHolder;
+
+public abstract class SplitterBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -38,6 +41,7 @@ public abstract class SplitterBase extends UIComponentBase implements Widget {
         gutterSize,
         stateKey,
         stateStorage,
+        onResizeEnd,
         style,
         styleClass
     }
@@ -81,6 +85,14 @@ public abstract class SplitterBase extends UIComponentBase implements Widget {
 
     public void setStateStorage(String stateStorage) {
         getStateHelper().put(PropertyKeys.stateStorage, stateStorage);
+    }
+
+    public String getOnResizeEnd() {
+        return (String) getStateHelper().eval(PropertyKeys.onResizeEnd, null);
+    }
+
+    public void setOnResizeEnd(String onResizeEnd) {
+        getStateHelper().put(PropertyKeys.onResizeEnd, onResizeEnd);
     }
 
     public String getStyle() {

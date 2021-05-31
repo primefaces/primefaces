@@ -54,7 +54,8 @@ public abstract class HotkeyBase extends UICommand implements AjaxSource {
         partialSubmitFilter,
         form,
         disabled,
-        ignoreComponentNotFound
+        ignoreComponentNotFound,
+        bindMac
     }
 
     public HotkeyBase() {
@@ -233,5 +234,13 @@ public abstract class HotkeyBase extends UICommand implements AjaxSource {
 
     public void setIgnoreComponentNotFound(boolean ignoreComponentNotFound) {
         getStateHelper().put(PropertyKeys.ignoreComponentNotFound, ignoreComponentNotFound);
+    }
+
+    public String getBindMac() {
+        return (String) getStateHelper().eval(PropertyKeys.bindMac, null);
+    }
+
+    public void setBindMac(String bindMac) {
+        getStateHelper().put(PropertyKeys.bindMac, bindMac);
     }
 }

@@ -26,9 +26,11 @@ powered rich solution with graceful degradation for legacy browsers.
 | auto | false | Boolean | When set to true, selecting a file starts the upload process implicitly.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
 | cancelButtonTitle | null | String | Native title tooltip for cancel button
+| cancelButtonStyleClass | null | String | Style class for cancel button.
 | cancelIcon | ui-icon-cancel | String | The icon of cancel button
 | cancelLabel | Cancel | String | Label of the cancel button.
 | chooseButtonTitle | null | String | Native title tooltip for choose button
+| chooseButtonStyleClass | null | String | Style class for choose button.
 | chooseIcon | ui-icon-plusthick | String | The icon of choose button
 | converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id.
 | converterMessage | null | String | Message to be displayed when conversion fails.
@@ -67,6 +69,7 @@ powered rich solution with graceful degradation for legacy browsers.
 | styleClass | null | String | Style class of the component.
 | title | null | String | Native title tooltip for simple mode
 | update | @none | String | Component(s) to update after fileupload completes.
+| uploadButtonStyleClass | null | String | Style class for upload button.
 | uploadButtonTitle | null | String | Native title tooltip for upload button
 | uploadIcon | ui-icon-arrowreturnthick-1-n | String | The icon of upload button
 | uploadLabel | Upload | String | Label of the upload button.
@@ -92,8 +95,8 @@ using an **optional** configuration param.
 **auto**: This is the default mode and PrimeFaces tries to detect the best method by checking the
 runtime environment, if JSF runtime is at least 2.2 native uploader is selected, otherwise commons.
 
-**native:** Native mode uses servlet 3.x Part API to upload the files and if JSF runtime is less than 2.2
-and exception is being thrown.
+**native:** Native mode uses servlet 3.x Part API to upload the files, and if JSF runtime is less than 2.2,
+an exception is being thrown.
 
 **commons**: This option chooses commons fileupload regardless of the environment, advantage of
 this option is that it works even on a Servlet 2.5 environment.
@@ -105,47 +108,39 @@ your web deployment descriptor.
 ```xml
 <filter>
     <filter-name>PrimeFaces FileUpload Filter</filter-name>
-    <filter-class>
-    org.primefaces.webapp.filter.FileUploadFilter
-    </filter-class>
+    <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
 </filter>
 <filter-mapping>
     <filter-name>PrimeFaces FileUpload Filter</filter-name>
     <servlet-name>Faces Servlet</servlet-name>
 </filter-mapping>
 ```
-Note that the servlet-name should match the configured name of the JSF servlet which is Faces
-Servlet in this case. Alternatively you can do a configuration based on url-pattern as well.
+Note that the servlet-name should match the configured name of the JSF servlet which is `Faces Servlet` in this case.
+Alternatively you can do a configuration based on url-pattern as well.
 
-## Simple File Upload
-Simple file upload mode works in legacy mode with a file input whose value should be an
-UploadedFile instance. AJAX uploads are not supported in simple upload, however AJAX is used to automatically upload the file when `auto` is set to `true`.
+
+## Simple FileUpload
+Simple FileUpload mode works with a plain HTML `input type=file`.
+AJAX uploads are not supported in simple upload, however AJAX is used to automatically upload the file when using `auto=true`.
+
+You can enable `skinSimple` option to style the simple uploader, to have a themed look, that works the same across different environments.
+
+#### Single
+In single mode, you can use `UploadedFile` as `value` binding or `FileUploadEvent` via `listener`.
 
 ```xhtml
 <h:form enctype="multipart/form-data">
-    <p:fileUpload value="#{fileBean.file}" mode="simple" />
+    <p:fileUpload value="#{fileUploadView.file}" mode="simple" />
     <p:commandButton value="Submit" ajax="false"/>
 </h:form>
 ```
 ```java
-import org.primefaces.model.file.UploadedFile;
-public class FileBean {
+@Named
+@RequestScoped
+public class FileUploadView {
     private UploadedFile file;
     //getter-setter
-}
-```
-Enable skinSimple option to style the simple uploader to have a themed look that works the same
-across different environments.
 
-## Advanced File Upload
-`listener` is the way to access the uploaded files in this mode. When a file is uploaded,
-defined `listener` is processed with a `FileUploadEvent` as the parameter.
-
-```xhtml
-<p:fileUpload listener="#{fileBean.handleFileUpload}" />
-```
-```java
-public class FileBean {
     public void handleFileUpload(FileUploadEvent event) {
         UploadedFile file = event.getFile();
         //application code
@@ -153,16 +148,14 @@ public class FileBean {
 }
 ```
 
-## Multiple Uploads
-Multiple uploads can be enabled using the `multiple` attribute so that multiple files can be selected from browser dialog.
-Multiple uploads are not supported in legacy browsers.
-In `advanced` mode, it does not send all files in one request, but always uses a new request for each file.
+#### Multiple
+Multiple file selection and upload can be enabled by setting `multiple=true`.
 
-```xhtml
-<p:fileUpload listener="#{fileBean.handleFileUpload}" multiple="true" />
-```
+!> This is not supported by legacy browsers!
 
-However, in `simple` mode, it is possible to get all updated files at once via the `UploadedFiles` model:
+In multiple mode, you can use `UploadedFiles` as `value` binding or `FilesUploadEvent` via `listener`,
+as all files get uploaded within a single request:
+
 ```xhtml
 <p:fileUpload value="#{fileUploadView.files}" multiple="true" mode="simple" />
 <p:commandButton value="Submit" action="#{fileUploadView.upload}" ajax="false"/>
@@ -194,25 +187,54 @@ public class FileUploadView {
 }
 ```
 
-## Auto Upload
-Default behavior requires users to trigger the upload process, you can change this way by setting `auto` to `true`.
-Auto uploads are triggered as soon as files are selected from the dialog.
+## Advanced FileUpload
+Advanced FileUpload provies a more complex UI compared to the Simple FileUpload.
+
+#### Single
+In single mode, you can use `UploadedFile` as `value` binding or `FileUploadEvent` via `listener`.
 
 ```xhtml
-<p:fileUpload listener="#{fileBean.handleFileUpload}" auto="true" />
+<p:fileUpload listener="#{fileUploadView.handleFileUpload}" />
+```
+```java
+@Named
+@RequestScoped
+public class FileUploadView {
+    public void handleFileUpload(FileUploadEvent event) {
+        UploadedFile file = event.getFile();
+        //application code
+    }
+}
 ```
 
-## Partial Page Update
-After the fileUpload process completes you can use the PrimeFaces PPR to update any component
-on the page. FileUpload is equipped with the update attribute for this purpose. Following example
-displays a "File Uploaded" message using the growl component after file upload.
+#### Multiple
+Multiple file selection and upload can be enabled by setting `multiple=true`.
+As advanced mode does _not_ send all files in one request, you must use the `listener` with `FileUploadEvent`, which will be called multiple times:
 
 ```xhtml
-<p:fileUpload listener="#{fileBean.handleFileUpload}" update="msg" />
+<p:fileUpload listener="#{fileUploadView.handleFileUpload}" multiple="true" />
+```
+```java
+@Named
+@RequestScoped
+public class FileUploadView {
+    public void handleFileUpload(FileUploadEvent event) {
+        // will be invoked for each uploaded file
+    }
+}
+```
+
+#### Partial Page Update
+After the upload process completes, you can use the PrimeFaces PPR to update any component on the page.
+FileUpload is equipped with the `update` attribute for this purpose.
+Following example displays a "File Uploaded" message using the Growl component after upload:
+
+```xhtml
+<p:fileUpload listener="#{fileUploadView.handleFileUpload}" update="msg" />
 <p:growl id="msg" />
 ```
 ```java
-public class FileBean {
+public class FileUploadView {
     public void handleFileUpload(FileUploadEvent event) {
         //add facesmessage to display with growl
         //application code
@@ -220,12 +242,23 @@ public class FileBean {
 }
 ```
 
-## Confirmation Before Upload
-You can add a client side callback if you want a confirmation dialog before the uploads begin. Any return of `false`
-from the `onupload` callback will not send the files.
+#### Confirmation Before Upload
+You can add a client side callback, if you want a confirmation dialog before the uploads begin.
+Any return of `false` from the `onupload` callback will not send the files:
 
 ```xhtml
-<p:fileUpload listener="#{fileBean.handleFileUpload}" onupload="return confirm('Are you sure?')"/>
+<p:fileUpload listener="#{fileUploadView.handleFileUpload}" onupload="return confirm('Are you sure?')"/>
+```
+
+
+
+
+## Auto Upload
+Default behavior requires a user to trigger the upload process, you can change this way by setting `auto` to `true`.
+Auto uploads are triggered as soon as files are selected from the dialog.
+
+```xhtml
+<p:fileUpload listener="#{fileUploadView.handleFileUpload}" auto="true" />
 ```
 
 ## File Filters
@@ -235,6 +268,23 @@ how to accept images only.
 ```xhtml
 <p:fileUpload listener="#{fileBean.handleFileUpload}" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
 ```
+
+
+## File Limit
+FileLimit restricts the number of maximum files that can be uploaded.
+
+```xhtml
+<p:fileUpload listener="#{fileBean.handleFileUpload}" fileLimit="3" />
+```
+
+
+## Validation Messages
+_invalidFileMessage_ , _invalidSizeMessage_ and _fileLimitMessage_ options are provided to display
+validation messages to the users. Similar to the FacesMessage message API, these message define
+the summary part, the detail part is retrieved from the _messageTemplate_ option where default value
+is “{name} {size}”.
+
+
 ## Size Limit
 Most of the time you might need to restrict the file upload size for a file, this is as simple as setting
 the sizeLimit configuration. Following fileUpload limits the size to 1000 bytes for each file.
@@ -243,17 +293,7 @@ the sizeLimit configuration. Following fileUpload limits the size to 1000 bytes 
 <p:fileUpload listener="#{fileBean.handleFileUpload}" sizeLimit="1000" />
 ```
 
-## File Limit
-FileLimit restricts the number of maximum files that can be uploaded.
 
-```xhtml
-<p:fileUpload listener="#{fileBean.handleFileUpload}" fileLimit="3" />
-```
-## Validation Messages
-_invalidFileMessage_ , _invalidSizeMessage_ and _fileLimitMessage_ options are provided to display
-validation messages to the users. Similar to the FacesMessage message API, these message define
-the summary part, the detail part is retrieved from the _messageTemplate_ option where default value
-is “{name} {size}”.
 
 ## Skinning
 FileUpload resides in a container element which _style_ and _styleClass_ options apply. As skinning
@@ -270,11 +310,10 @@ structural style classes
 | .ui-fileupload-content | Content container
 
 ## Browser Compatibility
-Advanced uploader is implemented with HTML5 and provides far more features compared to single
-version. For legacy browsers that do not support HMTL5 features like canvas or file api, fileupload
-uses graceful degradation so that iframe is used for transport, detailed file information is not shown
-and a gif animation is displayed instead of progress bar. It is suggested to offer simple uploader as a
-fallback.
+Advanced uploader is implemented with HTML5 and provides far more features compared to single version.
+For legacy browsers, that do not support HMTL5 features like canvas or file api, fileupload uses graceful degradation
+(iframe is used for transport, detailed file informations are not shown,  GIF animation instead of progress bar).
+It is suggested to offer simple uploader as a fallback.
 
 ## Filter Configuration
 
@@ -307,13 +346,12 @@ folder.
 contents yourself in your backing bean.
 
 ## Chunking and Resume
-FileUpload supports chunked fileupload in advanced-mode using `maxChunkSize` attribute.
+FileUpload supports chunked upload using the `maxChunkSize` attribute but only in advanced mode!
 
-Chunked file upload comes with following restrictions:
-1. It is only supported for `mode="advanced"`
+#### Resuming chunked file uploads
+FileUpload is able to resume uploads that have been canceled (e.g user abort, lost of connection etc.)
+At first, you'll need to enable chunking and add this servlet:
 
-### Resuming chunked file uploads
-FileUpload is able to resume uploads that have been canceled (e.g user abort, lost of connection etc.) At first, you'll need to enable chunking and add this servlet:
 ```xml
 <servlet>
     <servlet-name>FileUpload Resume Servlet</servlet-name>
@@ -327,7 +365,7 @@ FileUpload is able to resume uploads that have been canceled (e.g user abort, lo
 
 > You're free to choose `url-pattern` mapping, as long it doesn't conflict with an existing page
 
-### Deleting aborted chunked uploads
+#### Deleting aborted chunked uploads
 For Servlet 3.0 and later versions, uploaded files are automatically removed from the internal
 upload directory after the request is destroyed.
 
@@ -346,11 +384,11 @@ Though it is recommended to run a cron-job that deletes incomplete uploaded file
 
 ## More secure file upload
 
-### Introduction
+#### Introduction
 
 File uploads per se introduce some security risks, for best practices you should consult OWASP's recommendations: https://www.owasp.org/index.php/Unrestricted_File_Upload
 
-### Measures
+#### Measures
 
 Here are some measures that can be taken into account when using PrimeFaces's `fileUpload` component:
 1. Consider **limiting the size** of uploaded files. As of PrimeFaces 6.2 this will be double-checked at server side as well: `p:fileUpload sizeLimit="1024"`. See https://github.com/primefaces/primefaces/issues/3290.

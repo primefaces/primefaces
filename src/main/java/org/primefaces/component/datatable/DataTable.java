@@ -33,10 +33,13 @@ import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
+import javax.faces.event.ComponentSystemEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
+import javax.faces.event.PostRestoreStateEvent;
 import javax.faces.model.DataModel;
 
 import org.primefaces.PrimeFaces;
@@ -286,6 +289,22 @@ public class DataTable extends DataTableBase {
         else {
             String columnSelectionMode = getColumnSelectionMode();
             return "single".equalsIgnoreCase(columnSelectionMode);
+        }
+    }
+
+    @Override
+    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
+        super.processEvent(event);
+
+        // restore "value" from "filteredValue"
+        if (isFilteringEnabled()
+                && !isLazy()
+                && event instanceof PostRestoreStateEvent
+                && (this == event.getComponent())) {
+            Object filteredValue = getFilteredValue();
+            if (filteredValue != null) {
+                setValue(filteredValue);
+            }
         }
     }
 
@@ -937,6 +956,12 @@ public class DataTable extends DataTableBase {
 
     @Override
     public Object saveState(FacesContext context) {
+        // reset value when filtering is enabled
+        // filtering stores the filtered values the value property, so it needs to be resetted; see #7336
+        if (isFilteringEnabled()) {
+            setValue(null);
+        }
+
         resetDynamicColumns();
 
         // reset component for MyFaces view pooling

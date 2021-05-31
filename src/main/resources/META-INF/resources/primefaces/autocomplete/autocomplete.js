@@ -308,7 +308,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      * resize immediately and close the overlay. See GitHub #7075.
      * @private
      */
-    handleViewportChange() {
+    handleViewportChange: function() {
         if (PrimeFaces.env.mobile) {
             this.alignPanel();
         } else {
@@ -1256,7 +1256,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      * Disables the input field.
      */
     disable: function() {
-        this.input.addClass('ui-state-disabled').prop('disabled', true);
+        PrimeFaces.utils.disableInputWidget(this.input);
 
         if(this.dropdown.length) {
             this.dropdown.addClass('ui-state-disabled').prop('disabled', true);
@@ -1267,7 +1267,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      * Enables the input field.
      */
     enable: function() {
-        this.input.removeClass('ui-state-disabled').prop('disabled', false);
+        PrimeFaces.utils.enableInputWidget(this.input);
 
         if(this.dropdown.length) {
             this.dropdown.removeClass('ui-state-disabled').prop('disabled', false);

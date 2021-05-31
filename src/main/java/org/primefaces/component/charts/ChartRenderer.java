@@ -34,7 +34,6 @@ import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.model.charts.ChartData;
 import org.primefaces.model.charts.ChartDataSet;
 import org.primefaces.model.charts.ChartModel;
-import org.primefaces.model.charts.axes.AxesScale;
 import org.primefaces.model.charts.axes.cartesian.CartesianAxes;
 import org.primefaces.model.charts.axes.cartesian.CartesianScales;
 import org.primefaces.model.charts.axes.radial.RadialScales;
@@ -44,7 +43,6 @@ import org.primefaces.model.charts.optionconfig.legend.Legend;
 import org.primefaces.model.charts.optionconfig.title.Title;
 import org.primefaces.model.charts.optionconfig.tooltip.Tooltip;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ChartUtils;
 import org.primefaces.util.EscapeUtils;
 
 public class ChartRenderer extends CoreRenderer {
@@ -161,72 +159,78 @@ public class ChartRenderer extends CoreRenderer {
             if (hasComma) {
                 writer.write(",");
             }
-            hasComma = false;
 
             if (scales instanceof CartesianScales) {
                 writer.write("\"scales\":{");
                 CartesianScales cScales = (CartesianScales) scales;
-                encodeScaleCommon(writer, cScales);
+                StringBuilder scaleAttrs = new StringBuilder(20);
                 List<CartesianAxes> xAxes = cScales.getXAxes();
                 if (xAxes != null && !xAxes.isEmpty()) {
-                    writer.write(",");
-                    encodeAxes(context, chartName, "xAxes", xAxes);
+                    encodeAxes(context, chartName, "x", xAxes);
                 }
 
                 List<CartesianAxes> yAxes = cScales.getYAxes();
                 if (yAxes != null && !yAxes.isEmpty()) {
-                    writer.write(",");
-                    encodeAxes(context, chartName, "yAxes", yAxes);
+                    if (xAxes != null && !xAxes.isEmpty()) {
+                        writer.write(",");
+                    }
+                    encodeAxes(context, chartName, "y", yAxes);
                 }
 
+                writer.write(scaleAttrs.toString());
                 writer.write("}");
             }
             else if (scales instanceof RadialScales) {
                 writer.write("\"scale\":{");
                 RadialScales rScales = (RadialScales) scales;
-                encodeScaleCommon(writer, rScales);
+                StringBuilder scaleAttrs = new StringBuilder(50);
                 if (rScales.getAngelLines() != null) {
-                    writer.write(",\"angleLines\":" + rScales.getAngelLines().encode());
+                    writeJsonAttribute(scaleAttrs, "angleLines", rScales.getAngelLines().encode());
                 }
 
                 if (rScales.getGridLines() != null) {
-                    writer.write(",\"gridLines\":" + rScales.getGridLines().encode());
+                    writeJsonAttribute(scaleAttrs, "gridLines", rScales.getGridLines().encode());
                 }
 
                 if (rScales.getPointLabels() != null) {
-                    writer.write(",\"pointLabels\":" + rScales.getPointLabels().encode());
+                    writeJsonAttribute(scaleAttrs, "pointLabels", rScales.getPointLabels().encode());
                 }
 
                 if (rScales.getTicks() != null) {
-                    writer.write(",\"ticks\":" + rScales.getTicks().encode());
+                    writeJsonAttribute(scaleAttrs, "ticks", rScales.getTicks().encode());
                 }
 
+                if (rScales.getStartAngle() != null) {
+                    writeJsonAttribute(scaleAttrs, "startAngle", rScales.getStartAngle().toString());
+                }
+
+                writer.write(scaleAttrs.toString());
                 writer.write("}");
             }
         }
     }
 
-    protected void encodeScaleCommon(ResponseWriter writer, AxesScale scale) throws IOException {
-        ChartUtils.writeDataValue(writer, "display", scale.isDisplay(), false);
-        ChartUtils.writeDataValue(writer, "weight", scale.getWeight(), true);
+    private void writeJsonAttribute(StringBuilder stringBuilder, String attributeName, String attributeValue) {
+        if (stringBuilder.length() > 0) {
+            stringBuilder.append(",");
+        }
+        stringBuilder.append("\"" + attributeName + "\":" + attributeValue);
     }
 
-    protected void encodeAxes(FacesContext context, String chartName, String name, List<CartesianAxes> axes) throws IOException {
+    protected void encodeAxes(FacesContext context, String chartName, String defaultAxeId, List<CartesianAxes> axes) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        writer.write("\"" + name + "\":[");
         for (int i = 0; i < axes.size(); i++) {
-            CartesianAxes data = axes.get(i);
-
-            if (i != 0) {
+            if (i > 0) {
                 writer.write(",");
             }
 
-            writer.write("{");
+            CartesianAxes data = axes.get(i);
+            String axeId = data.getId() == null ? defaultAxeId : data.getId();
+            writer.write("\"" + axeId + "\": {");
             writer.write(data.encode());
             writer.write("}");
         }
-        writer.write("]");
     }
 
     protected void encodeElements(FacesContext context, Elements elements, boolean hasComma) throws IOException {
@@ -251,8 +255,10 @@ public class ChartRenderer extends CoreRenderer {
                 writer.write(",");
             }
 
+            writer.write("\"plugins\":{");
             writer.write("\"title\":{");
             writer.write(title.encode());
+            writer.write("}");
             writer.write("}");
         }
     }
@@ -270,7 +276,7 @@ public class ChartRenderer extends CoreRenderer {
                 tooltip.setTextDirection("rtl");
             }
 
-            writer.write("\"tooltips\":{");
+            writer.write("\"tooltip\":{");
             writer.write(tooltip.encode());
             writer.write("}");
         }

@@ -21,34 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.media.player;
+package org.primefaces.event;
 
-public class FlashPlayer implements MediaPlayer {
+import java.util.List;
+import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.Behavior;
 
-    private static final String[] SUPPORTED_TYPES = new String[]{"flv", "mp3", "swf"};
+public class SplitterResizeEvent extends AbstractAjaxBehaviorEvent {
+    private static final long serialVersionUID = 1L;
+    private List<Double> panelSizes;
 
-    @Override
-    public String getClassId() {
-        return "clsid:d27cdb6e-ae6d-11cf-96b8-444553540000";
+    public SplitterResizeEvent(UIComponent component, Behavior behavior, List<Double> panelSizes) {
+        super(component, behavior);
+        this.panelSizes = panelSizes;
     }
 
-    @Override
-    public String getCodebase() {
-        return "http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7";
-    }
-
-    @Override
-    public String getSourceParam() {
-        return "movie";
-    }
-
-    @Override
-    public String getType() {
-        return "application/x-shockwave-flash";
-    }
-
-    @Override
-    public String[] getSupportedTypes() {
-        return SUPPORTED_TYPES;
+    public List<Double> getPanelSizes() {
+        return this.panelSizes;
     }
 }

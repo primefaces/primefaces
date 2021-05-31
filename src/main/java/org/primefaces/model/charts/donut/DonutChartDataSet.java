@@ -27,6 +27,7 @@ import org.primefaces.model.charts.pie.PieChartDataSet;
 
 /**
  * Used to provide DataSet objects to Donut chart component.
+ * @see <a href="https://www.chartjs.org/docs/latest/configuration/elements.html#arc-configuration">https://www.chartjs.org/docs/latest/configuration/elements.html#arc-configuration</a>
  */
 public class DonutChartDataSet extends PieChartDataSet {
 

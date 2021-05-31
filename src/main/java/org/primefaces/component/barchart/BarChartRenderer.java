@@ -31,6 +31,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.charts.ChartRenderer;
 import org.primefaces.model.charts.bar.BarChartOptions;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class BarChartRenderer extends ChartRenderer {
@@ -69,6 +70,10 @@ public class BarChartRenderer extends ChartRenderer {
         writer.write(",\"options\":{");
 
         writer.write("\"barPercentage\":" + barOptions.getBarPercentage());
+
+        if (LangUtils.isNotBlank(barOptions.getIndexAxis())) {
+            writer.write(",\"indexAxis\":\"" + barOptions.getIndexAxis() + "\"");
+        }
 
         if (barOptions.getCategoryPercentage() != null) {
             writer.write(",\"categoryPercentage\":" + barOptions.getCategoryPercentage());

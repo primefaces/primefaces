@@ -32,6 +32,7 @@ import org.primefaces.util.FastStringWriter;
 
 /**
  * Used to provide DataSet objects to Pie chart component.
+ * @see <a href="https://www.chartjs.org/docs/latest/configuration/elements.html#arc-configuration">https://www.chartjs.org/docs/latest/configuration/elements.html#arc-configuration</a>
  */
 public class PieChartDataSet extends ChartDataSet {
 
