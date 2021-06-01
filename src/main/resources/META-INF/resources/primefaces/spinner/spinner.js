@@ -1,8 +1,8 @@
 /**
  * __PrimeFaces Spinner Widget__
- * 
+ *
  * Spinner is an input component to provide a numerical input via increment and decrement buttons.
- * 
+ *
  * @prop {number} cursorOffset Index where the number starts in the input field's string value, i.e. after the
  * {@link SpinnerCfg.prefix}.
  * @prop {JQuery} downButton The DOM element for the button that decrements this spinner's value.
@@ -11,18 +11,18 @@
  * is pressed.
  * @prop {JQuery} upButton The DOM element for the button that increments this spinner's value.
  * @prop {number} value The current numerical value of this spinner.
- * 
+ *
  * @interface {PrimeFaces.widget.SpinnerCfg} cfg The configuration for the {@link  Spinner| Spinner widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
- * 
+ *
  * @prop {string} cfg.decimalPlaces Number of decimal places.
  * @prop {string} cfg.decimalSeparator The character separating the integral and fractional parts of the number.
  * @prop {number} cfg.max Minimum allowed value for this spinner.
  * @prop {number} cfg.maxlength Maximum number of characters that may be entered in this field.
  * @prop {number} cfg.min Minimum allowed value for this spinner.
- * @prop {number} cfg.precision The number of digits to appear after the decimal point. 
+ * @prop {number} cfg.precision The number of digits to appear after the decimal point.
  * @prop {string} cfg.prefix Prefix added to the displayed value.
  * @prop {boolean} cfg.required Whether this spinner is a required field.
  * @prop {boolean} cfg.rotate Rotate to the minimum value when maximum value is reached and vice versa.
@@ -146,6 +146,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                 case keyCode.DELETE:
                 case keyCode.LEFT:
                 case keyCode.RIGHT:
+                case keyCode.TAB:
                     return;
                 break;
 
@@ -172,12 +173,12 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
             var value = $(this).val();
             var isNumber = isFinite(event.key);
             var isThousandsSeparator = event.key === $this.cfg.thousandSeparator;
-            if ((isNegative && value.indexOf('-') != -1) 
+            if ((isNegative && value.indexOf('-') != -1)
                     || (isDecimalSeparator && value.indexOf($this.cfg.decimalSeparator)!= -1)
                     || (isThousandsSeparator && value.indexOf($this.cfg.thousandSeparator)!= -1)) {
                 e.preventDefault();
                 return;
-            } 
+            }
 
             if (!isNumber && !(isNegative || isDecimalSeparator || isThousandsSeparator)) {
                 e.preventDefault();
@@ -206,7 +207,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                     $this.spin(1);
                 else
                     $this.spin(-1);
-                
+
                 $this.input.trigger('change');
 
                 return false;
@@ -279,7 +280,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Takes the string representation of a number, parses it and restricts it to the limits imposed by the 
+     * Takes the string representation of a number, parses it and restricts it to the limits imposed by the
      * {@link SpinnerCfg|configuration of this widget}.
      * @private
      * @param {string} value String to parse as a number.
@@ -347,7 +348,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * If roundStep is enabled then round to the nearest step value. 
+     * If roundStep is enabled then round to the nearest step value.
      * For example if step=5 and value=8 it would be rounded 10.
      * @private
      * @param {number} value The value for this spinner.
