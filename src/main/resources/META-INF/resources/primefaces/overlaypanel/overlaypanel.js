@@ -422,6 +422,8 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
         this.callBehavior('show');
 
+        PrimeFaces.invokeDeferredRenders(this.id);
+
         if(this.cfg.onShow) {
             this.cfg.onShow.call(this);
         }
