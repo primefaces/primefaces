@@ -1106,4 +1106,19 @@ public class DataTable extends DataTableBase {
     public void setWidth(String width) {
         getStateHelper().put(InternalPropertyKeys.width, width);
     }
+
+    /**
+     * Recalculates filteredValue after adding, updating or removing rows to/from a filtered DataTable.
+     * NOTE: this is only supported for non-lazy DataTables, eg bound to a java.util.List.
+     */
+    public void filterAndSort() {
+        if (isLazy()) {
+            return;
+        }
+
+        FilterFeature filterFeature = (FilterFeature) getFeature(DataTableFeatureKey.FILTER);
+        filterFeature.filter(FacesContext.getCurrentInstance(), this);
+        SortFeature sortFeature = (SortFeature) getFeature(DataTableFeatureKey.SORT);
+        sortFeature.sort(FacesContext.getCurrentInstance(), this);
+    }
 }
