@@ -1116,8 +1116,10 @@ public class DataTable extends DataTableBase {
             return;
         }
 
-        FilterFeature filterFeature = (FilterFeature) getFeature(DataTableFeatureKey.FILTER);
-        filterFeature.filter(FacesContext.getCurrentInstance(), this);
+        if (getFilteredValue() != null) {
+            FilterFeature filterFeature = (FilterFeature) getFeature(DataTableFeatureKey.FILTER);
+            filterFeature.filter(FacesContext.getCurrentInstance(), this);
+        }
         SortFeature sortFeature = (SortFeature) getFeature(DataTableFeatureKey.SORT);
         sortFeature.sort(FacesContext.getCurrentInstance(), this);
     }
