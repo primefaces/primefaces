@@ -110,6 +110,10 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                 $this.input.trigger('change');
             })
             .on('mousedown.spinner', function(e) {
+                // only act on left click
+                if (e.which !== 1) {
+                    return;
+                }
                 var element = $(this),
                 dir = element.hasClass('ui-spinner-up') ? 1 : -1;
 
@@ -148,7 +152,6 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                 case keyCode.RIGHT:
                 case keyCode.TAB:
                     return;
-                break;
 
                 default:
                     //do nothing
