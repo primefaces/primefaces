@@ -13,7 +13,7 @@ are many other third party libraries and plugins used to support features.
 | [Cropper.js](../jsdocs/classes/node_modules_cropperjs_types.cropper-1.html) | 1.5.6 | https://github.com/fengyuanchen/cropperjs |
 | [Download.js](../jsdocs/modules/node_modules__types_downloadjs.html) | 4.2 | http://danml.com/download.html |
 | FontAwesome | 4.7.0 | https://fontawesome.com/ |
-| [FullCalendar](../jsdocs/classes/node_modules__fullcalendar_core_main.calendar.html) | 5.7.0 | https://fullcalendar.io/ |
+| [FullCalendar](../jsdocs/classes/node_modules__fullcalendar_core_main.calendar.html) | 5.7.2 | https://fullcalendar.io/ |
 | [Idle Timer](../jsdocs/interfaces/src_primefaces.jquery-1.html#idletimer) | 1.1.0 - 2016-03-21 | https://github.com/thorst/jquery-idletimer |
 | [Input Mask](../jsdocs/interfaces/node_modules__types_inputmask.default.static.html) | 5.0.5 | https://github.com/RobinHerbots/Inputmask |
 | jqPlot | 1.0.9 | http://www.jqplot.com/ |
@@ -34,8 +34,8 @@ are many other third party libraries and plugins used to support features.
 | [jScrollPane](../jsdocs/interfaces/src_primefaces.jquery-1.html#jscrollpane) | 2.2.3 | https://github.com/vitch/jScrollPane |
 | [JSPlumb Diagram](../jsdocs/modules/node_modules_jsplumb.export_.html) | 2.14.6 | https://github.com/jsplumb/jsplumb |
 | [Keypad](../jsdocs/interfaces/src_primefaces.jquery-1.html#keypad) | 2.1.0 | http://keith-wood.name/keypad.html |
-| [Moment](../jsdocs/modules/node_modules_moment_ts3_1_typings_moment.html) | 2.22.2 | https://github.com/moment/moment |
-| [moment-timezone.js](../jsdocs/modules/node_modules_moment_ts3_1_typings_moment.html#tz) | 0.5.25 | https://github.com/moment/moment-timezone |
+| [Moment](../jsdocs/modules/node_modules_moment_ts3_1_typings_moment.html) | 2.29.1 | https://github.com/moment/moment |
+| [moment-timezone.js](../jsdocs/modules/node_modules_moment_ts3_1_typings_moment.html#tz) | 0.5.33 | https://github.com/moment/moment-timezone |
 | [Print.js](../jsdocs/modules/node_modules_print_js_src.html) | 1.6.0 | https://printjs.crabbly.com |
 | [Quill Editor](../jsdocs/modules/node_modules__types_quill.html) | 1.3.7 | https://quilljs.com/ |
 | [Raphaël](../jsdocs/interfaces/node_modules__types_raphael.raphaelstatic.html) | 2.3.0 | http://raphaeljs.com |

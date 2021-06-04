@@ -367,10 +367,6 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
         /* for most browsers, if a height isn't set on the table, can't do liquid-height within cells */
         /* serves as a min-height. harmless */
     }
-.fc .fc-scrollgrid-section-liquid {
-    height: auto
-
-  }
 .fc .fc-scrollgrid-section-liquid > td {
       height: 100%; /* better than `auto`, for firefox */
     }
@@ -394,7 +390,6 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
 .fc .fc-scrollgrid-section-sticky > * {
     background: #fff;
     background: #fff;
-    position: -webkit-sticky;
     position: sticky;
     z-index: 3; /* TODO: var */
     /* TODO: box-shadow when sticking */
@@ -411,7 +406,6 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
     margin-bottom: -1px;
   }
 .fc-sticky { /* no .fc wrap because used as child of body */
-  position: -webkit-sticky;
   position: sticky;
 }
 .fc .fc-view-harness {
@@ -1352,7 +1346,6 @@ A VERTICAL event
     border-right: 0;
   }
 .fc .fc-list-sticky .fc-list-day > * { /* the cells */
-      position: -webkit-sticky;
       position: sticky;
       top: 0;
       background: #fff;
