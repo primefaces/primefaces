@@ -60,6 +60,7 @@ public class FileUpload extends FileUploadBase {
 
     public static final String CONTAINER_CLASS_SIMPLE = "ui-fileupload-simple ui-widget";
     public static final String FILENAME_CLASS = "ui-fileupload-filename";
+    public static final String WITHDROPZONE_CLASS = "ui-fileupload-withdropzone";
 
     @Override
     public void broadcast(FacesEvent event) throws AbortProcessingException {

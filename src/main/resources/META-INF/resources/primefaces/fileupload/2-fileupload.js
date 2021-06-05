@@ -51,6 +51,9 @@
  * @prop {JQueryFileUpload.FileUploadOptions} ucfg Options for the BlueImp jQuery file upload plugin.
  * @prop {JQuery} form The DOM element for the form containing this upload widget.
  * @prop {JQuery} buttonBar The DOM element for the bar with the buttons of this widget.
+ * @prop {number} dragoverCount Amount of dragover on drop zone and its children.
+ * @prop {string} customDropZone Custom drop zone to use for drag and drop.
+ * @prop {string} dropZone Drop zone to use for drag and drop.
  * @prop {JQuery} chooseButton The DOM element for the button for selecting a file.
  * @prop {JQuery} uploadButton The DOM element for the button for starting the file upload.
  * @prop {JQuery} cancelButton The DOM element for the button for canceling a file upload.
@@ -75,6 +78,7 @@
  * @prop {RegExp} cfg.allowTypes Regular expression for accepted file types.
  * @prop {boolean} cfg.auto When set to true, selecting a file starts the upload process implicitly.
  * @prop {boolean} cfg.dnd Whether drag and drop is enabled.
+ * @prop {string} cfg.dropZone Custom drop zone to use for drag and drop.
  * @prop {boolean} cfg.disabled Whether this file upload is disabled.
  * @prop {number} cfg.fileLimit Maximum number of files allowed to upload.
  * @prop {string} cfg.fileLimitMessage Message to display when file limit exceeds.
@@ -131,6 +135,9 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.ucfg = {};
         this.form = this.jq.closest('form');
         this.buttonBar = this.jq.children('.ui-fileupload-buttonbar');
+        this.dragoverCount = 0;
+        this.customDropZone = this.cfg.dropZone !== undefined ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.dropZone) : null;
+        this.dropZone = (this.cfg.dnd === false) ? null : this.customDropZone || this.jq;
         this.chooseButton = this.buttonBar.children('.ui-fileupload-choose');
         this.uploadButton = this.buttonBar.children('.ui-fileupload-upload');
         this.cancelButton = this.buttonBar.children('.ui-fileupload-cancel');
@@ -163,7 +170,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             portletForms: PrimeFaces.ajax.Utils.getPorletForms(this.form, parameterPrefix),
             paramName: this.id,
             dataType: 'xml',
-            dropZone: (this.cfg.dnd === false) ? null : this.jq,
+            dropZone: this.dropZone,
             sequentialUploads: this.cfg.sequentialUploads,
             maxChunkSize: this.cfg.maxChunkSize,
             maxRetries: this.cfg.maxRetries,
@@ -473,14 +480,14 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             }
         })
         .on('click.fileupload', function(e) {
-            $this.chooseButton.children('input').trigger('click');
+            $this.show();
         })
         .on('keydown.fileupload', function(e) {
             var keyCode = $.ui.keyCode,
             key = e.which;
 
             if(key === keyCode.SPACE || key === keyCode.ENTER) {
-                $this.chooseButton.children('input').trigger('click');
+                $this.show();
                 $(this).trigger('blur');
                 e.preventDefault();
             }
@@ -573,6 +580,29 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
                     e.preventDefault();
                 });
+
+        if (this.dropZone) {
+            this.dropZone
+                    .off('dragover.fucdropzone dragenter.fucdropzone dragleave.fucdropzone drop.fucdropzone dragdrop.fucdropzone')
+                    .on('dragover.fucdropzone', function(e){
+                        e.preventDefault();
+                    })
+                    .on('dragenter.fucdropzone', function(e){
+                        e.preventDefault();
+                        $this.dragoverCount++;
+                        $this.dropZone.addClass('ui-state-drag');
+                    })
+                    .on('dragleave.fucdropzone', function(e){
+                        $this.dragoverCount--;
+                        if ($this.dragoverCount === 0) {
+                            $this.dropZone.removeClass('ui-state-drag');
+                        }
+                    })
+                    .on('drop.fucdropzone dragdrop.fucdropzone', function(e){
+                        $this.dragoverCount = 0;
+                        $this.dropZone.removeClass('ui-state-drag');
+                    });
+        }
     },
 
     /**
@@ -781,6 +811,6 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
      * Brings up the native file selection dialog.
      */
     show: function() {
-        this.chooseButton.children('input').trigger("click");
+        this.chooseButton.children('input').trigger('click');
     }
 });
