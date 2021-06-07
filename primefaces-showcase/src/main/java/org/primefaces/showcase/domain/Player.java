@@ -27,16 +27,16 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Player {
-    
+
     private String name;
-    
-    private Map<Integer,Integer> goals;
-    
+
+    private Map<Integer, Integer> goals;
+
     public Player() {
-        goals = new LinkedHashMap<Integer,Integer>();
+        goals = new LinkedHashMap<>();
     }
-    
-    public Player(String name, Map<Integer,Integer> goals) {
+
+    public Player(String name, Map<Integer, Integer> goals) {
         this.name = name;
         this.goals = goals;
     }
@@ -48,7 +48,7 @@ public class Player {
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public int getGoals(int year) {
         return goals.get(year);
     }

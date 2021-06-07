@@ -37,14 +37,14 @@ import java.util.List;
 @Named
 @ViewScoped
 public class CarouselView implements Serializable {
-    
+
     private List<Product> products;
-    
+
     private Product selectedProduct;
-    
+
     @Inject
     private ProductService service;
-    
+
     @PostConstruct
     public void init() {
         products = service.getProducts(9);

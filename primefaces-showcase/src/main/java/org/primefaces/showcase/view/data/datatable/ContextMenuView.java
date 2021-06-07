@@ -36,11 +36,11 @@ import java.util.List;
 @Named("dtContextMenuView")
 @ViewScoped
 public class ContextMenuView implements Serializable {
-    
+
     private List<Product> products;
-    
+
     private Product selectedProduct;
-    
+
     @Inject
     private ProductService service;
 
@@ -48,7 +48,7 @@ public class ContextMenuView implements Serializable {
     public void init() {
         products = service.getProducts(10);
     }
-    
+
     public List<Product> getProducts() {
         return products;
     }
@@ -64,7 +64,7 @@ public class ContextMenuView implements Serializable {
     public void setService(ProductService service) {
         this.service = service;
     }
-    
+
     public void deleteProduct() {
         products.remove(selectedProduct);
         selectedProduct = null;

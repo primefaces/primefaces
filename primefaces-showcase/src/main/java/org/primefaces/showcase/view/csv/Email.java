@@ -33,17 +33,16 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 import org.primefaces.validate.bean.ClientConstraint;
 
-@Target({METHOD,FIELD,ANNOTATION_TYPE})
+@Target({METHOD, FIELD, ANNOTATION_TYPE})
 @Retention(RUNTIME)
-@Constraint(validatedBy=EmailConstraintValidator.class)
-@ClientConstraint(resolvedBy=EmailClientValidationConstraint.class)
+@Constraint(validatedBy = EmailConstraintValidator.class)
+@ClientConstraint(resolvedBy = EmailClientValidationConstraint.class)
 @Documented
 public @interface Email {
-    
+
     String message() default "{org.primefaces.examples.primefaces}";
-    
+
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
 }
-

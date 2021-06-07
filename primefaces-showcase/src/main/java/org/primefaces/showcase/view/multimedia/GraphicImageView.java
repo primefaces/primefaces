@@ -66,7 +66,8 @@ public class GraphicImageView {
                         }
                     })
                     .build();
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -89,12 +90,13 @@ public class GraphicImageView {
                         }
                     })
                     .build();
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
-    
+
     public StreamedContent getChartWithoutBuffering() {
         try {
             return DefaultStreamedContent.builder()
@@ -109,16 +111,17 @@ public class GraphicImageView {
                         }
                     })
                     .build();
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
-    
+
     public InputStream getChartAsStream() {
         return getChart().getStream();
     }
-    
+
     public byte[] getChartAsByteArray() throws IOException {
         InputStream is = getChartAsStream();
         byte[] array = new byte[is.available()];

@@ -24,8 +24,6 @@
 package org.primefaces.showcase.domain;
 
 public class Order implements java.io.Serializable {
-	
-	private static final long serialVersionUID = 1L;
 
     private final int number;
     private final String imagePath;

@@ -35,36 +35,36 @@ import java.util.List;
 @Named
 @RequestScoped
 public class GeocodeView {
-    
+
     private MapModel geoModel;
     private MapModel revGeoModel;
     private String centerGeoMap = "41.850033, -87.6500523";
     private String centerRevGeoMap = "41.850033, -87.6500523";
-    
+
     @PostConstruct
     public void init() {
         geoModel = new DefaultMapModel();
         revGeoModel = new DefaultMapModel();
     }
-    
+
     public void onGeocode(GeocodeEvent event) {
         List<GeocodeResult> results = event.getResults();
-        
+
         if (results != null && !results.isEmpty()) {
             LatLng center = results.get(0).getLatLng();
             centerGeoMap = center.getLat() + "," + center.getLng();
-            
+
             for (int i = 0; i < results.size(); i++) {
                 GeocodeResult result = results.get(i);
                 geoModel.addOverlay(new Marker(result.getLatLng(), result.getAddress()));
             }
         }
     }
-    
+
     public void onReverseGeocode(ReverseGeocodeEvent event) {
         List<String> addresses = event.getAddresses();
         LatLng coord = event.getLatlng();
-        
+
         if (addresses != null && !addresses.isEmpty()) {
             centerRevGeoMap = coord.getLat() + "," + coord.getLng();
             revGeoModel.addOverlay(new Marker(coord, addresses.get(0)));

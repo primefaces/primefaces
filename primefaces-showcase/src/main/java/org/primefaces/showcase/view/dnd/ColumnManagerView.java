@@ -42,25 +42,25 @@ import java.util.Map;
 @Named
 @ViewScoped
 public class ColumnManagerView implements Serializable {
-    
+
     private final List<String> VALID_COLUMN_KEYS = Arrays.asList("id", "code", "name", "description", "price", "category", "quantity");
-    
+
     private List<ColumnModel> columns = new ArrayList<>();
-    
+
     private List<Product> products;
-    
+
     private TreeNode availableColumns;
-    
+
     @Inject
     private ProductService service;
-    
+
     @PostConstruct
     public void init() {
         products = service.getProducts(9);
         createAvailableColumns();
         createDynamicColumns();
     }
-    
+
     private void createAvailableColumns() {
         availableColumns = new DefaultTreeNode("Root", null);
         TreeNode root = new DefaultTreeNode("Columns", availableColumns);
@@ -73,51 +73,51 @@ public class ColumnManagerView implements Serializable {
         TreeNode category = new DefaultTreeNode("column", new ColumnModel("Category", "category"), root);
         TreeNode quantity = new DefaultTreeNode("column", new ColumnModel("Quantity", "quantity"), root);
     }
-      
+
     public void createDynamicColumns() {
-        String[] columnKeys = new String[]{"code","name","quantity"};
-        columns.clear();  
-         
-        for(String columnKey : columnKeys) {
+        String[] columnKeys = new String[]{"code", "name", "quantity"};
+        columns.clear();
+
+        for (String columnKey : columnKeys) {
             String key = columnKey.trim();
-             
-            if(VALID_COLUMN_KEYS.contains(key)) {
+
+            if (VALID_COLUMN_KEYS.contains(key)) {
                 columns.add(new ColumnModel(columnKey.toUpperCase(), columnKey));
             }
         }
     }
-        
+
     public void treeToTable() {
-        Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         String property = params.get("property");
         String droppedColumnId = params.get("droppedColumnId");
         String dropPos = params.get("dropPos");
-         
+
         String[] droppedColumnTokens = droppedColumnId.split(":");
         int draggedColumnIndex = Integer.parseInt(droppedColumnTokens[droppedColumnTokens.length - 1]);
         int dropColumnIndex = draggedColumnIndex + Integer.parseInt(dropPos);
-         
+
         //add to columns
         this.columns.add(dropColumnIndex, new ColumnModel(property.toUpperCase(), property));
-         
+
         //remove from nodes
         TreeNode root = availableColumns.getChildren().get(0);
-        for(TreeNode node : root.getChildren()) {
+        for (TreeNode node : root.getChildren()) {
             ColumnModel model = (ColumnModel) node.getData();
-            if(model.getProperty().equals(property)) {
+            if (model.getProperty().equals(property)) {
                 root.getChildren().remove(node);
                 break;
             }
         }
     }
-     
+
     public void tableToTree() {
-        Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         int colIndex = Integer.parseInt(params.get("colIndex"));
-         
+
         //remove from table
         ColumnModel model = this.columns.remove(colIndex);
-         
+
         //add to nodes
         TreeNode property = new DefaultTreeNode("column", model, availableColumns.getChildren().get(0));
     }
@@ -137,21 +137,21 @@ public class ColumnManagerView implements Serializable {
     public void setService(ProductService service) {
         this.service = service;
     }
-    
+
     static public class ColumnModel implements Serializable {
- 
+
         private String header;
         private String property;
- 
+
         public ColumnModel(String header, String property) {
             this.header = header;
             this.property = property;
         }
- 
+
         public String getHeader() {
             return header;
         }
- 
+
         public String getProperty() {
             return property;
         }

@@ -35,16 +35,16 @@ import java.util.List;
 @Named
 @RequestScoped
 public class SelectManyView {
-    
+
     private List<String> selectedOptions;
     private List<String> selectedOptions2;
     private List<Country> selectedCountries;
     private List<Country> selectedCountries2;
     private List<Country> countries;
-    
+
     @Inject
     private CountryService service;
-    
+
     @PostConstruct
     public void init() {
         countries = service.getCountries();

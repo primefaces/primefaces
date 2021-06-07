@@ -139,7 +139,7 @@ public class FileContentMarkerUtil {
         if (bean == null) {
             return;
         }
-        
+
         Class<?> beanClass = LangUtils.getUnproxiedClass(bean.getClass());
         if (isEligibleFile(beanClass.getName())) {
             // special handling for member classes (like ColumnsView and ColumnsView$ColumnModel)

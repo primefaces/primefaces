@@ -36,9 +36,9 @@ import java.util.List;
 @Named("dtRowGroupView")
 @ViewScoped
 public class RowGroupView implements Serializable {
-    
+
     private List<Customer> customers;
-    
+
     @Inject
     private CustomerService service;
 

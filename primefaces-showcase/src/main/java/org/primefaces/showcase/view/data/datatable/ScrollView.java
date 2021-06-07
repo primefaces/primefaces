@@ -37,7 +37,7 @@ import java.util.List;
 @Named("dtScrollView")
 @ViewScoped
 public class ScrollView implements Serializable {
-    
+
     private List<Customer> products1;
     private List<Customer> products2;
     private List<Customer> products3;

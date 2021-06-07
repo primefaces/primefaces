@@ -35,14 +35,14 @@ import java.io.Serializable;
 @Named("ttContextMenuView")
 @ViewScoped
 public class ContextMenuView implements Serializable {
-    
+
     private TreeNode root;
-    
+
     private TreeNode selectedNode;
-        
+
     @Inject
     private DocumentService service;
-    
+
     @PostConstruct
     public void init() {
         root = service.createDocuments();
@@ -63,12 +63,12 @@ public class ContextMenuView implements Serializable {
     public void setSelectedNode(TreeNode selectedNode) {
         this.selectedNode = selectedNode;
     }
-    
+
     public void deleteNode() {
         selectedNode.getChildren().clear();
         selectedNode.getParent().getChildren().remove(selectedNode);
         selectedNode.setParent(null);
-        
+
         selectedNode = null;
     }
 }

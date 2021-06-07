@@ -39,14 +39,14 @@ import java.io.Serializable;
 @Named
 @RequestScoped
 public class CirclesView implements Serializable {
- 
+
     private MapModel circleModel;
-     
+
     @PostConstruct
     public void init() {
-        
+
         circleModel = new DefaultMapModel();
- 
+
         //Shared coordinates
         LatLng coord1 = new LatLng(36.879466, 30.667648);
         LatLng coord4 = new LatLng(36.885233, 30.702323);
@@ -66,11 +66,11 @@ public class CirclesView implements Serializable {
         circleModel.addOverlay(circle1);
         circleModel.addOverlay(circle2);
     }
- 
+
     public MapModel getCircleModel() {
         return circleModel;
     }
- 
+
     public void onCircleSelect(OverlaySelectEvent event) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Circle Selected", null));
     }

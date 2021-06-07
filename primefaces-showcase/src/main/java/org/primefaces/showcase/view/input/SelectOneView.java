@@ -35,14 +35,14 @@ import java.util.List;
 @Named
 @RequestScoped
 public class SelectOneView {
-    
-    private String option;   
+
+    private String option;
     private Country country;
     private List<Country> countries;
-    
+
     @Inject
     private CountryService service;
-    
+
     @PostConstruct
     public void init() {
         countries = service.getCountries();

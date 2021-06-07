@@ -31,7 +31,7 @@ import javax.inject.Named;
 @Named
 @RequestScoped
 public class ProcessView {
-    
+
     private String firstname;
     private String middlename;
     private String lastname;

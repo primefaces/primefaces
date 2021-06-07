@@ -34,12 +34,12 @@ import javax.inject.Named;
 @Named("treeIconView")
 @RequestScoped
 public class IconView {
-    
+
     private TreeNode root;
-    
+
     @Inject
     private DocumentService service;
-    
+
     @PostConstruct
     public void init() {
         root = service.createDocuments();

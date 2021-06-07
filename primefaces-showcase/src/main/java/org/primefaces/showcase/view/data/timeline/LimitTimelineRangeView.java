@@ -37,51 +37,51 @@ import java.time.LocalDateTime;
 @ViewScoped
 public class LimitTimelineRangeView implements Serializable {
 
-	private TimelineModel<String, ?> model;
+    private TimelineModel<String, ?> model;
 
-	private LocalDateTime min;
-	private LocalDateTime max;
-	private long zoomMin;
-	private long zoomMax;
+    private LocalDateTime min;
+    private LocalDateTime max;
+    private long zoomMin;
+    private long zoomMax;
 
-	@PostConstruct
-	public void init() {
-		model = new TimelineModel<>();
+    @PostConstruct
+    public void init() {
+        model = new TimelineModel<>();
 
-		model.add(TimelineEvent.<String>builder().data("First").startDate(LocalDate.of(2015, 5, 25)).build());
-		model.add(TimelineEvent.<String>builder().data("Last").startDate(LocalDate.of(2015, 5, 26)).build());
+        model.add(TimelineEvent.<String>builder().data("First").startDate(LocalDate.of(2015, 5, 25)).build());
+        model.add(TimelineEvent.<String>builder().data("Last").startDate(LocalDate.of(2015, 5, 26)).build());
 
-		// lower limit of visible range
-		min = LocalDate.of(2015, 1,1).atStartOfDay();
+        // lower limit of visible range
+        min = LocalDate.of(2015, 1, 1).atStartOfDay();
 
-		// upper limit of visible range
-		max = LocalDate.of(2015, 12, 31).atStartOfDay();
+        // upper limit of visible range
+        max = LocalDate.of(2015, 12, 31).atStartOfDay();
 
-		// one day in milliseconds for zoomMin
-		zoomMin = 1000L * 60 * 60 * 24;
+        // one day in milliseconds for zoomMin
+        zoomMin = 1000L * 60 * 60 * 24;
 
-		// about three months in milliseconds for zoomMax
-		zoomMax = 1000L * 60 * 60 * 24 * 31 * 3;
-	}
+        // about three months in milliseconds for zoomMax
+        zoomMax = 1000L * 60 * 60 * 24 * 31 * 3;
+    }
 
-	public TimelineModel<String, ?> getModel() {
-		return model;
-	}
+    public TimelineModel<String, ?> getModel() {
+        return model;
+    }
 
-	public LocalDateTime getMin() {
-		return min;
-	}
+    public LocalDateTime getMin() {
+        return min;
+    }
 
-	public LocalDateTime getMax() {
-		return max;
-	}
+    public LocalDateTime getMax() {
+        return max;
+    }
 
-	public long getZoomMin() {
-		return zoomMin;
-	}
+    public long getZoomMin() {
+        return zoomMin;
+    }
 
-	public long getZoomMax() {
-		return zoomMax;
-	}
-    
+    public long getZoomMax() {
+        return zoomMax;
+    }
+
 }

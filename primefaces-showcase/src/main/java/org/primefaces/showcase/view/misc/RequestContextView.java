@@ -35,14 +35,14 @@ import javax.inject.Named;
 @Named
 @RequestScoped
 public class RequestContextView {
-  
+
     private User user;
-    
+
     @PostConstruct
     public void init() {
         user = new User();
-        
-        if(!FacesContext.getCurrentInstance().isPostback()) {
+
+        if (!FacesContext.getCurrentInstance().isPostback()) {
             PrimeFaces.current().executeScript("PrimeFaces.info('This message is added from backing bean.')");
         }
     }
@@ -55,20 +55,20 @@ public class RequestContextView {
         this.user = user;
     }
 
-	public void save() {
-	    PrimeFaces.current().ajax().addCallbackParam("saved", true);    //basic parameter
-	    PrimeFaces.current().ajax().addCallbackParam("user", user);     //pojo as json
-        
+    public void save() {
+        PrimeFaces.current().ajax().addCallbackParam("saved", true);    //basic parameter
+        PrimeFaces.current().ajax().addCallbackParam("user", user);     //pojo as json
+
         //execute javascript oncomplete
-	    PrimeFaces.current().executeScript("PrimeFaces.info('Hello from the Backing Bean');");
-        
+        PrimeFaces.current().executeScript("PrimeFaces.info('Hello from the Backing Bean');");
+
         //update panel
         PrimeFaces.current().ajax().update("form:panel");
-        
+
         //scroll to panel
         PrimeFaces.current().scrollTo("form:panel");
-        
+
         //add facesmessage
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Success", "Success"));
-	}
+    }
 }

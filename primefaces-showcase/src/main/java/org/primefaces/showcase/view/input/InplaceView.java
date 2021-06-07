@@ -30,7 +30,7 @@ import java.io.Serializable;
 @Named
 @RequestScoped
 public class InplaceView implements Serializable {
-    
+
     private String text = "PrimeFaces";
 
     public String getText() {

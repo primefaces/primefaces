@@ -37,14 +37,14 @@ import java.io.Serializable;
 @Named("treeContextMenuView")
 @ViewScoped
 public class ContextMenuView implements Serializable {
-    
-     private TreeNode root;
-    
+
+    private TreeNode root;
+
     private TreeNode selectedNode;
-    
+
     @Inject
     private DocumentService service;
-    
+
     @PostConstruct
     public void init() {
         root = service.createDocuments();
@@ -65,19 +65,19 @@ public class ContextMenuView implements Serializable {
     public void setService(DocumentService service) {
         this.service = service;
     }
-    
+
     public void displaySelectedSingle() {
-        if(selectedNode != null) {
+        if (selectedNode != null) {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Selected", selectedNode.getData().toString());
             FacesContext.getCurrentInstance().addMessage(null, message);
         }
-	}
-     
-    public void deleteNode() { 
+    }
+
+    public void deleteNode() {
         selectedNode.getChildren().clear();
         selectedNode.getParent().getChildren().remove(selectedNode);
         selectedNode.setParent(null);
-        
-        selectedNode = null; 
-    }  
+
+        selectedNode = null;
+    }
 }

@@ -59,7 +59,7 @@ public class SelectOneMenuView {
 
     private String longItemLabel;
     private String labeled;
-    
+
     @Inject
     private CountryService service;
 
@@ -70,16 +70,16 @@ public class SelectOneMenuView {
 
         SelectItemGroup europeCountries = new SelectItemGroup("Europe Countries");
         europeCountries.setSelectItems(new SelectItem[]{
-                new SelectItem("Germany", "Germany"),
-                new SelectItem("Turkey", "Turkey"),
-                new SelectItem("Spain", "Spain")
+            new SelectItem("Germany", "Germany"),
+            new SelectItem("Turkey", "Turkey"),
+            new SelectItem("Spain", "Spain")
         });
 
         SelectItemGroup americaCountries = new SelectItemGroup("America Countries");
         americaCountries.setSelectItems(new SelectItem[]{
-                new SelectItem("United States", "United States"),
-                new SelectItem("Brazil", "Brazil"),
-                new SelectItem("Mexico", "Mexico")
+            new SelectItem("United States", "United States"),
+            new SelectItem("Brazil", "Brazil"),
+            new SelectItem("Mexico", "Mexico")
         });
 
         countriesGroup.add(europeCountries);
@@ -115,7 +115,7 @@ public class SelectOneMenuView {
     public String getRtl() {
         return rtl;
     }
-    
+
     public String getHideNoSelectOption() {
         return hideNoSelectOption;
     }

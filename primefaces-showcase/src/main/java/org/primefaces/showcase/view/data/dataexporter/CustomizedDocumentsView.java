@@ -47,26 +47,26 @@ import java.util.List;
 @Named
 @RequestScoped
 public class CustomizedDocumentsView implements Serializable {
-    
+
     private List<Product> products;
-    
+
     private List<Product> products2;
-    
+
     private ExcelOptions excelOpt;
-    
+
     private PDFOptions pdfOpt;
-        
+
     @Inject
     private ProductService service;
-    
+
     @PostConstruct
     public void init() {
         products = service.getProducts(100);
-        
+
         products2 = service.getProducts(100);
         customizationOptions();
     }
-    
+
     public void customizationOptions() {
         excelOpt = new ExcelOptions();
         excelOpt.setFacetBgColor("#F88017");
@@ -76,7 +76,7 @@ public class CustomizedDocumentsView implements Serializable {
         excelOpt.setCellFontColor("#00ff00");
         excelOpt.setCellFontSize("8");
         excelOpt.setFontName("Verdana");
-        
+
         pdfOpt = new PDFOptions();
         pdfOpt.setFacetBgColor("#F88017");
         pdfOpt.setFacetFontColor("#0000ff");
@@ -113,31 +113,31 @@ public class CustomizedDocumentsView implements Serializable {
     public void setService(ProductService service) {
         this.service = service;
     }
-    
+
     public void postProcessXLS(Object document) {
-		HSSFWorkbook wb = (HSSFWorkbook) document;
-		HSSFSheet sheet = wb.getSheetAt(0);
-		HSSFRow header = sheet.getRow(0);
-		
-		HSSFCellStyle cellStyle = wb.createCellStyle();  
-		cellStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.GREEN.getIndex());
-		cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-		
-		for(int i=0; i < header.getPhysicalNumberOfCells();i++) {
-			HSSFCell cell = header.getCell(i);
-			
-			cell.setCellStyle(cellStyle);
-		}
-	}
-	
-	public void preProcessPDF(Object document) throws IOException, BadElementException, DocumentException {
-		Document pdf = (Document) document;
+        HSSFWorkbook wb = (HSSFWorkbook) document;
+        HSSFSheet sheet = wb.getSheetAt(0);
+        HSSFRow header = sheet.getRow(0);
+
+        HSSFCellStyle cellStyle = wb.createCellStyle();
+        cellStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.GREEN.getIndex());
+        cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+        for (int i = 0; i < header.getPhysicalNumberOfCells(); i++) {
+            HSSFCell cell = header.getCell(i);
+
+            cell.setCellStyle(cellStyle);
+        }
+    }
+
+    public void preProcessPDF(Object document) throws IOException, BadElementException, DocumentException {
+        Document pdf = (Document) document;
         pdf.open();
         pdf.setPageSize(PageSize.A4);
 
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         String logo = externalContext.getRealPath("") + File.separator + "resources" + File.separator + "showcase" + File.separator + "images" + File.separator + "primefaces-logo.png";
-		
-		pdf.add(Image.getInstance(logo));
-	}
+
+        pdf.add(Image.getInstance(logo));
+    }
 }

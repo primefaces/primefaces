@@ -46,7 +46,7 @@ import org.primefaces.util.LangUtils;
 @Named("dtFilterView")
 @ViewScoped
 public class FilterView implements Serializable {
-	
+
     @Inject
     private CustomerService service;
 
@@ -85,7 +85,7 @@ public class FilterView implements Serializable {
                 .build());
 
     }
-    
+
     public boolean globalFilterFunction(Object value, Object filter, Locale locale) {
         String filterText = (filter == null) ? null : filter.toString().trim().toLowerCase();
         if (LangUtils.isValueBlank(filterText)) {
@@ -101,7 +101,7 @@ public class FilterView implements Serializable {
                 || customer.getStatus().name().toLowerCase().contains(filterText)
                 || customer.getActivity() < filterInt;
     }
-    
+
     private int getInteger(String string) {
         try {
             return Integer.parseInt(string);

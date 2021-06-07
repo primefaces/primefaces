@@ -31,7 +31,7 @@ import javax.inject.Named;
 @Named
 @RequestScoped
 public class ConfirmView {
-        
+
     public void confirm() {
         addMessage("Confirmed", "You have accepted");
     }
@@ -39,7 +39,7 @@ public class ConfirmView {
     public void delete() {
         addMessage("Confirmed", "Record deleted");
     }
-    
+
     public void addMessage(String summary, String detail) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail);
         FacesContext.getCurrentInstance().addMessage(null, message);

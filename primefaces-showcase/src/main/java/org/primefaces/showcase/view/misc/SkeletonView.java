@@ -36,6 +36,7 @@ import java.util.List;
 @Named
 @RequestScoped
 public class SkeletonView implements Serializable {
+
     private List<Product> products;
 
     @Inject

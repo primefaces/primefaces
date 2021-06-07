@@ -40,19 +40,19 @@ import org.primefaces.model.SortOrder;
 @Named("ttBasicView")
 @ViewScoped
 public class BasicView implements Serializable {
-    
+
     private TreeNode root;
     private List<SortMeta> sortBy;
-    
+
     private Document selectedDocument;
-        
+
     @Inject
     private DocumentService service;
-    
+
     @PostConstruct
     public void init() {
         root = service.createDocuments();
-        
+
         sortBy = new ArrayList<>();
         sortBy.add(SortMeta.builder()
                 .field("name")

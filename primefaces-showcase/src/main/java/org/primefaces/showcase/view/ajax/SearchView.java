@@ -29,8 +29,8 @@ import javax.inject.Named;
 @Named
 @RequestScoped
 public class SearchView {
-    
-    private String text1;   
+
+    private String text1;
     private String text2;
 
     public String getText1() {
@@ -49,4 +49,3 @@ public class SearchView {
         this.text2 = text2;
     }
 }
-

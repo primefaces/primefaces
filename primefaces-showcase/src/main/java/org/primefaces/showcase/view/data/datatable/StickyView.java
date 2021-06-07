@@ -36,9 +36,9 @@ import java.util.List;
 @Named("dtStickyView")
 @RequestScoped
 public class StickyView implements Serializable {
-    
+
     private List<Product> products;
-    
+
     @Inject
     private ProductService service;
 
@@ -46,7 +46,7 @@ public class StickyView implements Serializable {
     public void init() {
         products = service.getProducts(50);
     }
-    
+
     public List<Product> getProducts() {
         return products;
     }

@@ -63,12 +63,16 @@ public class Place {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Place place = (Place) o;
-        return Objects.equals(name, place.name) &&
-                Objects.equals(code, place.code) &&
-                Objects.equals(status, place.status);
+        return Objects.equals(name, place.name)
+                && Objects.equals(code, place.code)
+                && Objects.equals(status, place.status);
     }
 
     @Override

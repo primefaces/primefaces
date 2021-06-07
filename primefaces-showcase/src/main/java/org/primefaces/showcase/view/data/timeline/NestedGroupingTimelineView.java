@@ -59,14 +59,14 @@ public class NestedGroupingTimelineView implements Serializable {
         // create nested groups
         TimelineGroup<String> group1 = new TimelineGroup<>("groupId1", "Truck Group Level 1", "groupId1", 1, Arrays.asList("groupId2", "id1", "id2", "id5", "id6"));
         TimelineGroup<String> group2 = new TimelineGroup<>("groupId2", "Truck Group Level 2", "groupId2", 2, Arrays.asList("id3", "id4"));
-        TimelineGroup<String> group3 = new TimelineGroup<>("id1", "Truck 1",2);
-        TimelineGroup<String> group4 = new TimelineGroup<>("id2", "Truck 2",2);
+        TimelineGroup<String> group3 = new TimelineGroup<>("id1", "Truck 1", 2);
+        TimelineGroup<String> group4 = new TimelineGroup<>("id2", "Truck 2", 2);
         TimelineGroup<String> group5 = new TimelineGroup<>("id3", "Truck 3", 3);
         TimelineGroup<String> group6 = new TimelineGroup<>("id4", "Truck 4", 3);
         TimelineGroup<String> group7 = new TimelineGroup<>("id5", "Truck 5", 2);
         TimelineGroup<String> group8 = new TimelineGroup<>("id6", "Truck 6", 2);
         TimelineGroup<String> group9 = new TimelineGroup<>("groupId3", "Truck Group Level 1", "groupId3", 1, Arrays.asList("id7", "id8", "id9"));
-        TimelineGroup<String> group10 = new TimelineGroup<>("id7", "Truck 7",2);
+        TimelineGroup<String> group10 = new TimelineGroup<>("id7", "Truck 7", 2);
         TimelineGroup<String> group11 = new TimelineGroup<>("id8", "Truck 8", 2);
         TimelineGroup<String> group12 = new TimelineGroup<>("id9", "Truck 9", 2);
 
@@ -153,9 +153,10 @@ public class NestedGroupingTimelineView implements Serializable {
         // merge orders and update UI if the user selected some orders to be merged
         if (ordersToMerge != null && !ordersToMerge.isEmpty()) {
             model.merge(event, ordersToMerge, TimelineUpdater.getCurrentInstance(":form:timeline"));
-        } else {
-            FacesMessage msg =
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Nothing to merge, please choose orders to be merged", null);
+        }
+        else {
+            FacesMessage msg
+                    = new FacesMessage(FacesMessage.SEVERITY_INFO, "Nothing to merge, please choose orders to be merged", null);
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
 

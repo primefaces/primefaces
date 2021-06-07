@@ -33,10 +33,10 @@ import javax.inject.Named;
 @Named
 @RequestScoped
 public class ResizableView {
-    
+
     public void onResize(ResizeEvent event) {
-        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, 
-                        "Image resized", "Width:" + event.getWidth() + ",Height:" + event.getHeight());
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+                "Image resized", "Width:" + event.getWidth() + ",Height:" + event.getHeight());
 
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }

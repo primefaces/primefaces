@@ -51,7 +51,6 @@ public class ButtonView {
                 .icon("pi pi-home")
                 .build();
 
-
         DefaultSubMenu firstSubmenu = DefaultSubMenu.builder()
                 .label("Dynamic Submenu")
                 .addElement(item)

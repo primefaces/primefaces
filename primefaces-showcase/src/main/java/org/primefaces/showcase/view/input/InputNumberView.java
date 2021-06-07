@@ -42,7 +42,6 @@ public class InputNumberView implements Serializable {
     private Double input7 = null;
     private BigDecimal input8 = new BigDecimal(0);
 
-
     public InputNumberView() {
         input1 = 0d;
         input2 = 0d;

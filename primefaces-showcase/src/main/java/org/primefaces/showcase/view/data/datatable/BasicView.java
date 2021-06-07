@@ -36,9 +36,9 @@ import java.util.List;
 @Named("dtBasicView")
 @ViewScoped
 public class BasicView implements Serializable {
-    
+
     private List<Product> products;
-    
+
     @Inject
     private ProductService service;
 
@@ -46,7 +46,7 @@ public class BasicView implements Serializable {
     public void init() {
         products = service.getProducts(10);
     }
-    
+
     public List<Product> getProducts() {
         return products;
     }

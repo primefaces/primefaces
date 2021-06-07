@@ -39,14 +39,14 @@ import java.io.Serializable;
 @Named("dtLazyView")
 @ViewScoped
 public class LazyView implements Serializable {
-    
+
     private LazyDataModel<Customer> lazyModel;
-    
+
     private Customer selectedCustomer;
-    
+
     @Inject
     private CustomerService service;
-    
+
     @PostConstruct
     public void init() {
         lazyModel = new LazyCustomerDataModel(service.getCustomers(200));
@@ -63,11 +63,11 @@ public class LazyView implements Serializable {
     public void setSelectedCustomer(Customer selectedCustomer) {
         this.selectedCustomer = selectedCustomer;
     }
-    
+
     public void setService(CustomerService service) {
         this.service = service;
     }
-    
+
     public void onRowSelect(SelectEvent<Customer> event) {
         FacesMessage msg = new FacesMessage("Customer Selected", String.valueOf(event.getObject().getId()));
         FacesContext.getCurrentInstance().addMessage(null, msg);

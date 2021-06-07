@@ -29,7 +29,7 @@ import javax.inject.Named;
 @Named
 @RequestScoped
 public class InputTextView {
-    
+
     private String text;
 
     public String getText() {

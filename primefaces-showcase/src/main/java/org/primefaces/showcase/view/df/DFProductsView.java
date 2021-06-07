@@ -37,17 +37,17 @@ import java.util.List;
 @Named("dfProductsView")
 @ViewScoped
 public class DFProductsView implements Serializable {
-    
+
     private List<Product> products;
 
     @Inject
     private ProductService service;
-    
+
     @PostConstruct
     public void init() {
         products = service.getProducts(9);
     }
-    
+
     public List<Product> getProducts() {
         return products;
     }
@@ -55,7 +55,7 @@ public class DFProductsView implements Serializable {
     public void setService(ProductService service) {
         this.service = service;
     }
-    
+
     public void selectProductFromDialog(Product product) {
         PrimeFaces.current().dialog().closeDynamic(product);
     }

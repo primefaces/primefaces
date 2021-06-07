@@ -40,27 +40,27 @@ import java.util.List;
 @Named("dtColumnsView")
 @ViewScoped
 public class ColumnsView implements Serializable {
-    
+
     private final static List<String> VALID_COLUMN_KEYS = Arrays.asList("code", "name", "category", "quantity");
-	
+
     private String columnTemplate = "code name quantity";
-    
+
     private List<ColumnModel> columns;
-    
+
     private List<Product> products;
-    
+
     private List<Product> filteredProducts;
-    
+
     @Inject
     private ProductService service;
 
     @PostConstruct
     public void init() {
         products = service.getProducts(10);
-        
+
         createDynamicColumns();
     }
-    
+
     public List<Product> getProducts() {
         return products;
     }
@@ -92,25 +92,25 @@ public class ColumnsView implements Serializable {
     private void createDynamicColumns() {
         String[] columnKeys = columnTemplate.split(" ");
         columns = new ArrayList<>();
-        
-        for(String columnKey : columnKeys) {
+
+        for (String columnKey : columnKeys) {
             String key = columnKey.trim();
-            
-            if(VALID_COLUMN_KEYS.contains(key)) {
+
+            if (VALID_COLUMN_KEYS.contains(key)) {
                 columns.add(new ColumnModel(columnKey.toUpperCase(), columnKey));
             }
         }
     }
-    
+
     public void updateColumns() {
         //reset table state
         UIComponent table = FacesContext.getCurrentInstance().getViewRoot().findComponent(":form:products");
         table.setValueExpression("sortBy", null);
-        
+
         //update columns
         createDynamicColumns();
     }
-    
+
     static public class ColumnModel implements Serializable {
 
         private String header;

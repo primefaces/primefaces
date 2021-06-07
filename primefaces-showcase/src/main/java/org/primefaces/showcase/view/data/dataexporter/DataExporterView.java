@@ -39,14 +39,14 @@ import org.primefaces.showcase.service.ProductService;
 @Named
 @ViewScoped
 public class DataExporterView implements Serializable {
-    
+
     private List<Product> products;
-    
+
     private Exporter<DataTable> textExporter;
-        
+
     @Inject
     private ProductService service;
-    
+
     @PostConstruct
     public void init() {
         products = service.getProducts(100);
@@ -68,6 +68,5 @@ public class DataExporterView implements Serializable {
     public void setTextExporter(Exporter<DataTable> textExporter) {
         this.textExporter = textExporter;
     }
-    
-    
+
 }

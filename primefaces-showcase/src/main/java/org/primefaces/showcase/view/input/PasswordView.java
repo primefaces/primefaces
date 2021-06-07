@@ -31,14 +31,13 @@ import javax.inject.Named;
 @Named
 @RequestScoped
 public class PasswordView implements Serializable {
-    
-    private String password1;   
-    private String password2;  
-    private String password3;  
-    private String password4;  
+
+    private String password1;
+    private String password2;
+    private String password3;
+    private String password4;
     private String password5;
     private String password6 = "OpenSesame";
-
 
     public String getPassword1() {
         return password1;
@@ -78,14 +77,13 @@ public class PasswordView implements Serializable {
 
     public void setPassword5(String password5) {
         this.password5 = password5;
-    } 
-    
+    }
+
     public String getPassword6() {
         return password6;
     }
 
     public void setPassword6(String password6) {
         this.password6 = password6;
-    } 
+    }
 }
-

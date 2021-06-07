@@ -32,9 +32,9 @@ import java.util.List;
 @Named
 @RequestScoped
 public class ImagesView {
-    
+
     private List<String> images;
-    
+
     @PostConstruct
     public void init() {
         images = new ArrayList<String>();

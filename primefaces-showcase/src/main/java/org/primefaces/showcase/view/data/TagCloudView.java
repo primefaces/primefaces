@@ -38,9 +38,9 @@ import javax.inject.Named;
 @Named
 @RequestScoped
 public class TagCloudView {
-    
+
     private TagCloudModel model;
-    
+
     @PostConstruct
     public void init() {
         model = new DefaultTagCloudModel();
@@ -51,7 +51,7 @@ public class TagCloudView {
         model.addTag(new DefaultTagCloudItem("interface", 4));
         model.addTag(new DefaultTagCloudItem("team", "#", 2));
         model.addTag(new DefaultTagCloudItem("product", 5));
-        model.addTag(new DefaultTagCloudItem("data",  3));
+        model.addTag(new DefaultTagCloudItem("data", 3));
         model.addTag(new DefaultTagCloudItem("usability", "#", 4));
         model.addTag(new DefaultTagCloudItem("experience", "#", 1));
     }
@@ -59,7 +59,7 @@ public class TagCloudView {
     public TagCloudModel getModel() {
         return model;
     }
-    
+
     public void onSelect(SelectEvent<TagCloudItem> event) {
         TagCloudItem item = event.getObject();
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Item Selected", item.getLabel());

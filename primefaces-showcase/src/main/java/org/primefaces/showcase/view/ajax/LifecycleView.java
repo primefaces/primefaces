@@ -29,7 +29,7 @@ import javax.inject.Named;
 @Named
 @RequestScoped
 public class LifecycleView {
-    
+
     private String text;
 
     public String getText() {
@@ -40,4 +40,3 @@ public class LifecycleView {
         this.text = text;
     }
 }
-

@@ -32,13 +32,13 @@ import java.util.List;
 @Named
 @RequestScoped
 public class RadioView {
-    
-    private String console;    
-    private String city; 
-    private String city2; 
-    private List<String> cities;  
+
+    private String console;
+    private String city;
+    private String city2;
+    private List<String> cities;
     private String color;
-    
+
     @PostConstruct
     public void init() {
         cities = new ArrayList<String>();
@@ -76,7 +76,7 @@ public class RadioView {
     public void setCity2(String city2) {
         this.city2 = city2;
     }
-    
+
     public String getColor() {
         return color;
     }

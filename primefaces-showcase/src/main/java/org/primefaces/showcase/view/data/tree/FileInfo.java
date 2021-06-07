@@ -35,7 +35,8 @@ public class FileInfo implements Serializable {
         this.path = path;
         if (this.path.equals(File.separator)) {
             this.name = this.path;
-        } else {
+        }
+        else {
             String[] parts = path.split(File.separator.equals("\\") ? "\\\\" : File.separator);
             this.name = parts[parts.length - 1];
         }

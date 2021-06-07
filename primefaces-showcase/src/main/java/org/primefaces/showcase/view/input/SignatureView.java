@@ -29,7 +29,7 @@ import javax.inject.Named;
 @Named
 @RequestScoped
 public class SignatureView {
-    
+
     private String value;
 
     public String getValue() {

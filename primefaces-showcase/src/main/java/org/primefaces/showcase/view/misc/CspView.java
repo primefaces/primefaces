@@ -35,10 +35,10 @@ import java.io.Serializable;
 @Named
 @ViewScoped
 public class CspView implements Serializable {
-    
+
     private boolean cspEnabled;
     private String userSuppliedInput;
-    
+
     public CspView() {
         cspEnabled = PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig().isCsp();
         userSuppliedInput = "<b>Huhu</b><script>window.cspScriptExecuted=true;alert('XSS');</script>";
@@ -46,7 +46,7 @@ public class CspView implements Serializable {
 
     public void check() {
         FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage("Success",  "PASS"));
+        context.addMessage(null, new FacesMessage("Success", "PASS"));
     }
 
     public String getUserSuppliedInput() {
@@ -60,7 +60,7 @@ public class CspView implements Serializable {
     public boolean isCspEnabled() {
         return cspEnabled;
     }
-    
+
     public void executeScript() {
         PrimeFaces.current().executeScript("alert('PASS');");
     }

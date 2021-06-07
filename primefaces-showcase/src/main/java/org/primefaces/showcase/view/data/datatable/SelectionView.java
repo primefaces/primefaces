@@ -40,7 +40,7 @@ import java.util.List;
 @Named("dtSelectionView")
 @ViewScoped
 public class SelectionView implements Serializable {
-    
+
     private List<Product> products1;
     private List<Product> products2;
     private List<Product> products3;
@@ -49,10 +49,10 @@ public class SelectionView implements Serializable {
     private List<Product> products6;
     private Product selectedProduct;
     private List<Product> selectedProducts;
-   
+
     @Inject
     private ProductService service;
-    
+
     @PostConstruct
     public void init() {
         products1 = service.getProducts(10);
@@ -86,7 +86,7 @@ public class SelectionView implements Serializable {
     public List<Product> getProducts6() {
         return products6;
     }
-    
+
     public void setService(ProductService service) {
         this.service = service;
     }
@@ -106,7 +106,7 @@ public class SelectionView implements Serializable {
     public void setSelectedProducts(List<Product> selectedProducts) {
         this.selectedProducts = selectedProducts;
     }
-    
+
     public void onRowSelect(SelectEvent<Product> event) {
         FacesMessage msg = new FacesMessage("Product Selected", String.valueOf(event.getObject().getId()));
         FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -117,4 +117,3 @@ public class SelectionView implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 }
-

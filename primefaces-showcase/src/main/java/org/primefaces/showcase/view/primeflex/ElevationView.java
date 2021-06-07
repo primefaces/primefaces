@@ -33,7 +33,7 @@ import java.util.List;
 @Named
 @RequestScoped
 public class ElevationView {
-    
+
     private List<Object> levels;
 
     @PostConstruct

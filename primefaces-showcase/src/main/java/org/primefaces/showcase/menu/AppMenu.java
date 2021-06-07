@@ -122,7 +122,6 @@ public class AppMenu {
         calendarMenuItems.add(new MenuItem("Date (java.util.Date)", "/ui/input/calendar/calendar"));
         calendarMenuItems.add(new MenuItem("LocalDate (java.time.Local*)", "/ui/input/calendar/calendarJava8"));
         formMenuItems.add(new MenuItem("Calendar", calendarMenuItems));*/
-
         formMenuItems.add(new MenuItem("CascadeSelect", "/ui/input/cascadeSelect", "New"));
         formMenuItems.add(new MenuItem("Chips", "/ui/input/chips"));
         formMenuItems.add(new MenuItem("ColorPicker", "/ui/input/colorPicker"));
@@ -206,7 +205,6 @@ public class AppMenu {
         dataListMenuItems.add(new MenuItem("MultiViewState", "/ui/data/datalist/multiViewState"));
         dataListMenuItems.add(new MenuItem("Lazy", "/ui/data/datalist/lazy"));
         dataMenuItems.add(new MenuItem("DataList", dataListMenuItems));*/
-
         //DataScroller Nested MenuItem
         List<MenuItem> dataScrollerMenuItems = new ArrayList<>();
         dataScrollerMenuItems.add(new MenuItem("Basic", "/ui/data/datascroller/basic"));
@@ -584,14 +582,14 @@ public class AppMenu {
         menuCategories.add(new MenuCategory("Misc", miscMenuItems));
         //MISC CATEGORY END
 
-        for (MenuCategory category: menuCategories) {
-            for (MenuItem menuItem: category.getMenuItems()) {
+        for (MenuCategory category : menuCategories) {
+            for (MenuItem menuItem : category.getMenuItems()) {
                 menuItem.setParentLabel(category.getLabel());
                 if (menuItem.getUrl() != null) {
                     menuItems.add(menuItem);
                 }
                 if (menuItem.getMenuItems() != null) {
-                    for (MenuItem item: menuItem.getMenuItems()) {
+                    for (MenuItem item : menuItem.getMenuItems()) {
                         item.setParentLabel(menuItem.getLabel());
                         if (item.getUrl() != null) {
                             menuItems.add(item);
@@ -605,12 +603,12 @@ public class AppMenu {
     public List<MenuItem> completeMenuItem(String query) {
         String queryLowerCase = query.toLowerCase();
         List<MenuItem> filteredItems = new ArrayList<>();
-        for (MenuItem item: menuItems) {
+        for (MenuItem item : menuItems) {
             if (item.getUrl() != null && (item.getLabel().toLowerCase().contains(queryLowerCase) || item.getParentLabel().toLowerCase().contains(queryLowerCase))) {
                 filteredItems.add(item);
             }
             if (item.getBadge() != null) {
-                if (item.getBadge().toLowerCase().contains(queryLowerCase)){
+                if (item.getBadge().toLowerCase().contains(queryLowerCase)) {
                     filteredItems.add(item);
                 }
             }

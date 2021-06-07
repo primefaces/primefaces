@@ -33,7 +33,6 @@ import javax.inject.Named;
 import org.primefaces.showcase.domain.InventoryStatus;
 import org.primefaces.showcase.domain.Product;
 
-
 @Named
 @ApplicationScoped
 public class ProductService {
@@ -100,12 +99,12 @@ public class ProductService {
 
     }
 
-	public List<Product> getClonedProducts(int size) {
-		List<Product> results = new ArrayList<>();
-		List<Product> originals = getProducts(size);
-		for (Product original : originals) {
-			results.add(original.clone());
-		}
-		return results;
-	}
+    public List<Product> getClonedProducts(int size) {
+        List<Product> results = new ArrayList<>();
+        List<Product> originals = getProducts(size);
+        for (Product original : originals) {
+            results.add(original.clone());
+        }
+        return results;
+    }
 }

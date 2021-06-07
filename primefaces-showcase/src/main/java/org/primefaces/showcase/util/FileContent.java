@@ -35,14 +35,9 @@ import java.util.List;
  */
 public class FileContent implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-
-	private final String title;
-
+    private final String title;
     private final String value;
-
     private final String type;
-
     private final List<FileContent> attached;
 
     public FileContent(String title, String value, String type, List<FileContent> attached) {
@@ -78,18 +73,24 @@ public class FileContent implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         FileContent other = (FileContent) obj;
         if (title == null) {
-            if (other.title != null)
+            if (other.title != null) {
                 return false;
-        } else if (!title.equals(other.title))
+            }
+        }
+        else if (!title.equals(other.title)) {
             return false;
+        }
         return true;
     }
 

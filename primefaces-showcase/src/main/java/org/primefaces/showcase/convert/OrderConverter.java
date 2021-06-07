@@ -39,8 +39,7 @@ import org.primefaces.showcase.domain.Order;
 @FacesConverter("org.primefaces.showcase.converter.OrderConverter")
 public class OrderConverter implements Converter<TimelineEvent<Order>>, Serializable {
 
-	private static final long serialVersionUID = 1L;
-	private List<TimelineEvent<Order>> events;
+    private List<TimelineEvent<Order>> events;
 
     public OrderConverter() {
     }

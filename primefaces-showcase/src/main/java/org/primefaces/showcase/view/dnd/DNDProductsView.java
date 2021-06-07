@@ -38,29 +38,29 @@ import java.util.List;
 @Named("dndProductsView")
 @ViewScoped
 public class DNDProductsView implements Serializable {
- 
+
     @Inject
     private ProductService service;
 
     private List<Product> products;
-    
+
     private List<Product> droppedProducts;
-    
+
     private Product selectedProduct;
-    
+
     @PostConstruct
     public void init() {
         products = service.getProducts(9);
         droppedProducts = new ArrayList<>();
     }
-    
+
     public void onProductDrop(DragDropEvent<Product> ddEvent) {
         Product product = ddEvent.getData();
- 
+
         droppedProducts.add(product);
         products.remove(product);
     }
-    
+
     public void setService(ProductService service) {
         this.service = service;
     }
@@ -71,7 +71,7 @@ public class DNDProductsView implements Serializable {
 
     public List<Product> getDroppedProducts() {
         return droppedProducts;
-    }    
+    }
 
     public Product getSelectedProduct() {
         return selectedProduct;

@@ -32,9 +32,9 @@ import java.util.Date;
 @Named
 @RequestScoped
 public class AutoUpdateView {
-    
+
     private String time;
-    
+
     @PostConstruct
     public void init() {
         SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

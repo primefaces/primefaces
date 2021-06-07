@@ -42,14 +42,14 @@ public class LazyLoadingTreeNode extends DefaultTreeNode {
     @Override
     public List<TreeNode> getChildren() {
         lazyLoad();
-        
+
         return super.getChildren();
     }
 
     @Override
     public int getChildCount() {
         lazyLoad();
-        
+
         return super.getChildCount();
     }
 

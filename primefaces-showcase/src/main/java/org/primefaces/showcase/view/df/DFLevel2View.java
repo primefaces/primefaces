@@ -34,13 +34,13 @@ import java.util.Map;
 @Named("dfLevel2View")
 @RequestScoped
 public class DFLevel2View {
-    
+
     public void openLevel3() {
-        Map<String,Object> options = new HashMap<String, Object>();
+        Map<String, Object> options = new HashMap<String, Object>();
         options.put("modal", true);
         PrimeFaces.current().dialog().openDynamic("level3", options, null);
     }
-    
+
     public void onReturnFromLevel3(SelectEvent event) {
         //pass back to level 1
         PrimeFaces.current().dialog().closeDynamic(event.getObject());

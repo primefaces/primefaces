@@ -36,7 +36,7 @@ import java.util.List;
 @Named
 @RequestScoped
 public class RingView implements Serializable {
-    
+
     private List<Product> products;
     private Product selectedProduct;
 

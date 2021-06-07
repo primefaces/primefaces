@@ -31,7 +31,7 @@ import javax.inject.Named;
 @Named
 @RequestScoped
 public class RemoteValidationView {
-    
+
     private String firstname;
     private String lastname;
 

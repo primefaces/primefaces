@@ -35,20 +35,20 @@ import java.io.Serializable;
 @Named("ttScrollableView")
 @ViewScoped
 public class ScrollableView implements Serializable {
-    
+
     private TreeNode root1;
     private TreeNode root2;
     private TreeNode root3;
-    
+
     @Inject
     private DocumentService service;
-    
+
     @PostConstruct
     public void init() {
         root1 = service.createDocuments();
         root2 = service.createDocuments();
         root3 = service.createDocuments();
-        
+
         root1.getChildren().get(0).setExpanded(true);
         root1.getChildren().get(1).setExpanded(true);
     }
@@ -69,4 +69,3 @@ public class ScrollableView implements Serializable {
         this.service = service;
     }
 }
-

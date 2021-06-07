@@ -49,41 +49,40 @@ public class CustomerService {
         customers = new ArrayList<>();
 
         countries = new Country[]{
-                new Country(0, "Argentina", "ar"),
-                new Country(1, "Australia", "au"),
-                new Country(2, "Brazil", "br"),
-                new Country(3, "Canada", "ca"),
-                new Country(4, "Germany", "de"),
-                new Country(5, "France", "fr"),
-                new Country(6, "India", "in"),
-                new Country(7, "Italy", "it"),
-                new Country(8, "Japan", "jp"),
-                new Country(9, "Russia", "ru"),
-                new Country(10, "Spain", "es"),
-                new Country(11, "United Kingdom", "gb")};
+            new Country(0, "Argentina", "ar"),
+            new Country(1, "Australia", "au"),
+            new Country(2, "Brazil", "br"),
+            new Country(3, "Canada", "ca"),
+            new Country(4, "Germany", "de"),
+            new Country(5, "France", "fr"),
+            new Country(6, "India", "in"),
+            new Country(7, "Italy", "it"),
+            new Country(8, "Japan", "jp"),
+            new Country(9, "Russia", "ru"),
+            new Country(10, "Spain", "es"),
+            new Country(11, "United Kingdom", "gb")};
 
         companies = new String[]{"Benton, John B Jr", "Chanay, Jeffrey A Esq", "Chemel, James L Cpa", "Feltz Printing Service",
-                "Printing Dimensions", "Chapman, Ross E Esq", "Morlong Associates", "Commercial Press", "Truhlar And Truhlar Attys",
-                "King, Christopher A Esq","Dorl, James J Esq","Rangoni Of Florence","Feiner Bros","Buckley Miller Wright","Rousseaux, Michael Esq",};
+            "Printing Dimensions", "Chapman, Ross E Esq", "Morlong Associates", "Commercial Press", "Truhlar And Truhlar Attys",
+            "King, Christopher A Esq", "Dorl, James J Esq", "Rangoni Of Florence", "Feiner Bros", "Buckley Miller Wright", "Rousseaux, Michael Esq",};
 
         representatives = new Representative[]{new Representative("Amy Elsner", "amyelsner.png"), new Representative("Anna Fali", "annafali.png"),
-                new Representative("Asiya Javayant", "asiyajavayant.png"), new Representative("Bernardo Dominic", "bernardodominic.png"),
-                new Representative("Elwin Sharvill", "elwinsharvill.png"), new Representative("Ioni Bowcher", "ionibowcher.png"),
-                new Representative("Ivan Magalhaes", "ivanmagalhaes.png"), new Representative("Onyama Limba", "onyamalimba.png"),
-                new Representative("Stephen Shaw", "stephenshaw.png"), new Representative("Xuxue Feng", "xuxuefeng.png")};
+            new Representative("Asiya Javayant", "asiyajavayant.png"), new Representative("Bernardo Dominic", "bernardodominic.png"),
+            new Representative("Elwin Sharvill", "elwinsharvill.png"), new Representative("Ioni Bowcher", "ionibowcher.png"),
+            new Representative("Ivan Magalhaes", "ivanmagalhaes.png"), new Representative("Onyama Limba", "onyamalimba.png"),
+            new Representative("Stephen Shaw", "stephenshaw.png"), new Representative("Xuxue Feng", "xuxuefeng.png")};
 
         names = new String[]{"James Butt", "David Darakjy", "Jeanfrancois Venere", "Ivar Paprocki", "Tony Foller",
-                "Adams Morasca", "Claire Tollner", "Costa Dilliard", "Juan Wieser", "Maria Marrier", "Jennifer Amigon",
-                "Stacey Maclead", "Leja Caldarera", "Morrow Ruta", "Arvin Albares", "Darci Poquette", "Izzy Garufi",
-                "Ricardo Gaucho", "Clifford Rim", "Emily Whobrey", "Kadeem Flosi", "Mujtaba Nicka", "Aika Inouye",
-                "Mayumi Kolmetz", "Misaki Royster", "Silvio Slusarski", "Nicolas Iturbide", "Antonio Caudy", "" +
-                "Deepesh Chui", "Aditya Kusko", "Aruna Figeroa", "Jones Vocelka", "Julie Stenseth", "Smith Glick",
-                "Johnson Sergi", "Francesco Shinko", "Salvatore Stockham", "Kaitlin Ostrosky", "Faith Gillian",
-                "Maisha Rulapaugh", "Jefferson Schemmer", "Leon Oldroyd", "Rodrigues Campain", "Alejandro Perin",
-                "Munro Ferencz", "Cody Saylors", "Chavez Briddick", "Sinclair Waycott", "Isabel Bowley", "Octavia Malet",
-                "Murillo Malet", "Greenwood Bolognia", "Wickens Nestle", "Ashley Doe"};
+            "Adams Morasca", "Claire Tollner", "Costa Dilliard", "Juan Wieser", "Maria Marrier", "Jennifer Amigon",
+            "Stacey Maclead", "Leja Caldarera", "Morrow Ruta", "Arvin Albares", "Darci Poquette", "Izzy Garufi",
+            "Ricardo Gaucho", "Clifford Rim", "Emily Whobrey", "Kadeem Flosi", "Mujtaba Nicka", "Aika Inouye",
+            "Mayumi Kolmetz", "Misaki Royster", "Silvio Slusarski", "Nicolas Iturbide", "Antonio Caudy", ""
+            + "Deepesh Chui", "Aditya Kusko", "Aruna Figeroa", "Jones Vocelka", "Julie Stenseth", "Smith Glick",
+            "Johnson Sergi", "Francesco Shinko", "Salvatore Stockham", "Kaitlin Ostrosky", "Faith Gillian",
+            "Maisha Rulapaugh", "Jefferson Schemmer", "Leon Oldroyd", "Rodrigues Campain", "Alejandro Perin",
+            "Munro Ferencz", "Cody Saylors", "Chavez Briddick", "Sinclair Waycott", "Isabel Bowley", "Octavia Malet",
+            "Murillo Malet", "Greenwood Bolognia", "Wickens Nestle", "Ashley Doe"};
     }
-
 
     public List<Customer> getCustomers(int number) {
         List<Customer> customers = new ArrayList<>();

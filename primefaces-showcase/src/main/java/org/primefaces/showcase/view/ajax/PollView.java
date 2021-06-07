@@ -31,13 +31,13 @@ import javax.faces.view.ViewScoped;
 @Named
 @ViewScoped
 public class PollView implements Serializable {
-    
+
     private int number;
 
     public void increment() {
         number++;
     }
-    
+
     public int getNumber() {
         return number;
     }

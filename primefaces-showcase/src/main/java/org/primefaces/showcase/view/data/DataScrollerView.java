@@ -36,12 +36,12 @@ import java.util.List;
 @Named
 @ViewScoped
 public class DataScrollerView implements Serializable {
-    
+
     private List<Product> products;
-        
+
     @Inject
     private ProductService service;
-    
+
     @PostConstruct
     public void init() {
         products = service.getProducts(100);

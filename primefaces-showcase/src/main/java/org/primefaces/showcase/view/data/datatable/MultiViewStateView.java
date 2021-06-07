@@ -40,13 +40,13 @@ import java.util.List;
 @Named("dtMultiViewStateView")
 @ViewScoped
 public class MultiViewStateView implements Serializable {
-    
+
     private List<Customer> customers;
-    
+
     private List<Customer> filteredCustomers;
-    
+
     private Customer selectedCustomer;
-    
+
     @Inject
     private CustomerService service;
 
@@ -54,7 +54,7 @@ public class MultiViewStateView implements Serializable {
     public void init() {
         customers = service.getCustomers(50);
     }
-    
+
     public List<Customer> getCustomers() {
         return customers;
     }

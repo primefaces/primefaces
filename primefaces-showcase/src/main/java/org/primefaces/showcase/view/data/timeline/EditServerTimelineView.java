@@ -227,7 +227,8 @@ public class EditServerTimelineView implements Serializable {
         Integer room = event.getData().getRoomNumber();
         if (room == null) {
             return "(new booking)";
-        } else {
+        }
+        else {
             return "(room " + room + ")";
         }
     }

@@ -32,17 +32,21 @@ import java.util.Date;
 @Named("terminalBasicView")
 @ViewScoped
 public class BasicView implements Serializable {
-    
+
     public String handleCommand(String command, String[] params) {
-		if(command.equals("greet")) {
-            if(params.length > 0)
+        if (command.equals("greet")) {
+            if (params.length > 0) {
                 return "Hello " + params[0];
-            else
+            }
+            else {
                 return "Hello Stranger";
+            }
         }
-        else if(command.equals("date"))
+        else if (command.equals("date")) {
             return new Date().toString();
-        else
+        }
+        else {
             return command + " not found";
         }
+    }
 }

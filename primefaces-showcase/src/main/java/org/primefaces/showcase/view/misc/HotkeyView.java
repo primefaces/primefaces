@@ -31,7 +31,7 @@ import javax.inject.Named;
 @Named
 @RequestScoped
 public class HotkeyView {
-    
+
     private String text;
 
     public String getText() {
@@ -41,8 +41,8 @@ public class HotkeyView {
     public void setText(String text) {
         this.text = text;
     }
-    
+
     public void save() {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Submitted with Hotkey"));
-	}
+    }
 }

@@ -31,7 +31,7 @@ import javax.inject.Named;
 @Named("dfLevel3View")
 @RequestScoped
 public class DFLevel3View {
-    
+
     private String val;
 
     public String getVal() {

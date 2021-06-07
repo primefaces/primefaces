@@ -33,7 +33,7 @@ import javax.inject.Named;
 @Named
 @RequestScoped
 public class FieldsetView {
-    
+
     public void handleToggle(ToggleEvent event) {
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Toggled", "Visibility:" + event.getVisibility());
         FacesContext.getCurrentInstance().addMessage(null, msg);

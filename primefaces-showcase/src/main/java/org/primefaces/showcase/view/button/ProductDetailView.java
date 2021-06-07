@@ -29,8 +29,8 @@ import javax.inject.Named;
 @Named
 @RequestScoped
 public class ProductDetailView {
-    
-    private String productId; 
+
+    private String productId;
 
     public String getProductId() {
         return productId;

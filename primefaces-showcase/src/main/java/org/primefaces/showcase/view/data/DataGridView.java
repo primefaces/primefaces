@@ -39,13 +39,13 @@ import java.util.List;
 @Named
 @ViewScoped
 public class DataGridView implements Serializable {
-    
+
     private List<Product> products;
     private Product selectedProduct;
-    
+
     @Inject
     private ProductService service;
-    
+
     @PostConstruct
     public void init() {
         products = service.getProducts(48);
@@ -66,7 +66,6 @@ public class DataGridView implements Serializable {
     public void setSelectedProduct(Product selectedProduct) {
         this.selectedProduct = selectedProduct;
     }
-
 
     public void clearMultiViewState() {
         FacesContext context = FacesContext.getCurrentInstance();

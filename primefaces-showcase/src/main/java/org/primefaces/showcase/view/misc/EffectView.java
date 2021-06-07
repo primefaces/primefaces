@@ -31,7 +31,7 @@ import javax.inject.Named;
 @Named
 @RequestScoped
 public class EffectView {
-    
+
     private String text;
 
     public String getText() {
@@ -41,8 +41,8 @@ public class EffectView {
     public void setText(String text) {
         this.text = text;
     }
-    
+
     public void echo() {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("You said:'" + text + "'"));
-	}
+    }
 }

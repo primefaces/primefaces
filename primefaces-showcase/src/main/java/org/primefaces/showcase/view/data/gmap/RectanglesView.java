@@ -36,9 +36,9 @@ import java.io.Serializable;
 @Named
 @RequestScoped
 public class RectanglesView implements Serializable {
- 
+
     private MapModel rectangleModel;
-     
+
     @PostConstruct
     public void init() {
         rectangleModel = new DefaultMapModel();
@@ -54,13 +54,12 @@ public class RectanglesView implements Serializable {
         rect.setFillOpacity(0.5);
         rectangleModel.addOverlay(rect);
     }
- 
+
     public MapModel getRectangleModel() {
         return rectangleModel;
     }
- 
+
     public void onRectangleSelect(OverlaySelectEvent event) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Rectangle Selected", null));
     }
 }
-                    

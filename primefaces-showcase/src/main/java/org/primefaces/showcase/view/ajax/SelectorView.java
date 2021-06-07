@@ -29,8 +29,8 @@ import javax.inject.Named;
 @Named
 @RequestScoped
 public class SelectorView {
-    
-    private String text1;   
+
+    private String text1;
     private String text2;
     private String text3;
 

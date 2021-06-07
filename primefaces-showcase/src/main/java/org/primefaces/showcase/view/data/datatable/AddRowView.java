@@ -40,12 +40,12 @@ import org.primefaces.showcase.domain.InventoryStatus;
 @Named("dtAddRowView")
 @ViewScoped
 public class AddRowView implements Serializable {
-    
+
     private List<Product> products1;
 
     @Inject
     private ProductService service;
-    
+
     @PostConstruct
     public void init() {
         products1 = service.getClonedProducts(15);
@@ -58,12 +58,12 @@ public class AddRowView implements Serializable {
     public void setService(ProductService service) {
         this.service = service;
     }
-    
+
     public void onRowEdit(RowEditEvent<Product> event) {
         FacesMessage msg = new FacesMessage("Product Edited", String.valueOf(event.getObject().getId()));
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-    
+
     public void onRowCancel(RowEditEvent<Product> event) {
         FacesMessage msg = new FacesMessage("Edit Cancelled", String.valueOf(event.getObject().getId()));
         FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -76,5 +76,5 @@ public class AddRowView implements Serializable {
         FacesMessage msg = new FacesMessage("New Product added", String.valueOf(newProduct.getId()));
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-    
+
 }

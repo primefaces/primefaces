@@ -42,25 +42,28 @@ public class CountryConverter implements Converter<Country> {
     @Inject
     private CountryService countryService;
 
-	@Override
-	public Country getAsObject(FacesContext context, UIComponent component, String value) {
-		if (value != null && value.trim().length() > 0) {
+    @Override
+    public Country getAsObject(FacesContext context, UIComponent component, String value) {
+        if (value != null && value.trim().length() > 0) {
             try {
                 return countryService.getCountriesAsMap().get(Integer.parseInt(value));
-            } catch (NumberFormatException e) {
+            }
+            catch (NumberFormatException e) {
                 throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Not a valid country."));
             }
-        } else {
+        }
+        else {
             return null;
         }
-	}
+    }
 
-	@Override
-	public String getAsString(FacesContext context, UIComponent component, Country value) {
-		if (value != null) {
+    @Override
+    public String getAsString(FacesContext context, UIComponent component, Country value) {
+        if (value != null) {
             return String.valueOf(value.getId());
-        } else {
+        }
+        else {
             return null;
         }
-	}
+    }
 }

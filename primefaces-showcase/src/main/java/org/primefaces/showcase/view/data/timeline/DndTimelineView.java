@@ -48,7 +48,7 @@ public class DndTimelineView implements Serializable {
 
     private LocalDateTime start;
     private LocalDateTime end;
-    
+
     private final List<Event> events = new ArrayList<>();
 
     @PostConstruct

@@ -49,37 +49,37 @@ public class GroupView implements Serializable {
     private List<Player> players;
 
     static {
-		manufacturers = new String[10];
-		manufacturers[0] = "Bamboo Watch";
-		manufacturers[1] = "Black Watch";
-		manufacturers[2] = "Blue Band";
-		manufacturers[3] = "Blue T-Shirt";
-		manufacturers[4] = "Brown Purse";
-		manufacturers[5] = "Chakra Bracelet";
-		manufacturers[6] = "Galaxy Earrings";
-		manufacturers[7] = "Game Controller";
-		manufacturers[8] = "Gaming Set";
-		manufacturers[9] = "Gold Phone Case";
-	}
+        manufacturers = new String[10];
+        manufacturers[0] = "Bamboo Watch";
+        manufacturers[1] = "Black Watch";
+        manufacturers[2] = "Blue Band";
+        manufacturers[3] = "Blue T-Shirt";
+        manufacturers[4] = "Brown Purse";
+        manufacturers[5] = "Chakra Bracelet";
+        manufacturers[6] = "Galaxy Earrings";
+        manufacturers[7] = "Game Controller";
+        manufacturers[8] = "Gaming Set";
+        manufacturers[9] = "Gold Phone Case";
+    }
 
     static {
-		playerNames = new String[10];
-		playerNames[0] = "Lionel Messi";
-		playerNames[1] = "Cristiano Ronaldo";
-		playerNames[2] = "Arjen Robben";
-		playerNames[3] = "Franck Ribery";
-		playerNames[4] = "Ronaldinho";
-		playerNames[5] = "Luis Suarez";
-		playerNames[6] = "Sergio Aguero";
-		playerNames[7] = "Zlatan Ibrahimovic";
-		playerNames[8] = "Neymar Jr";
-		playerNames[9] = "Andres Iniesta";
-	}
+        playerNames = new String[10];
+        playerNames[0] = "Lionel Messi";
+        playerNames[1] = "Cristiano Ronaldo";
+        playerNames[2] = "Arjen Robben";
+        playerNames[3] = "Franck Ribery";
+        playerNames[4] = "Ronaldinho";
+        playerNames[5] = "Luis Suarez";
+        playerNames[6] = "Sergio Aguero";
+        playerNames[7] = "Zlatan Ibrahimovic";
+        playerNames[8] = "Neymar Jr";
+        playerNames[9] = "Andres Iniesta";
+    }
 
     @PostConstruct
     public void init() {
         sales = new ArrayList<>();
-        for(int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10; i++) {
             sales.add(new Sale(manufacturers[i], getRandomAmount(), getRandomAmount(), getRandomPercentage(), getRandomPercentage()));
         }
 
@@ -91,7 +91,7 @@ public class GroupView implements Serializable {
         years.add(2014);
 
         players = new ArrayList<>();
-        for(int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10; i++) {
             players.add(new Player(playerNames[i], generateRandomGoalStatsData()));
         }
     }
@@ -101,12 +101,12 @@ public class GroupView implements Serializable {
     }
 
     private int getRandomAmount() {
-		return (int) (Math.random() * 100000);
-	}
+        return (int) (Math.random() * 100000);
+    }
 
     private int getRandomPercentage() {
-		return (int) (Math.random() * 100);
-	}
+        return (int) (Math.random() * 100);
+    }
 
     public Integer getLastYearTotal() {
         if (lastYearTotal == null) {
@@ -134,8 +134,8 @@ public class GroupView implements Serializable {
         return players;
     }
 
-    private Map<Integer,Integer> generateRandomGoalStatsData() {
-        Map<Integer,Integer> stats = new LinkedHashMap<>();
+    private Map<Integer, Integer> generateRandomGoalStatsData() {
+        Map<Integer, Integer> stats = new LinkedHashMap<>();
         for (int i = 0; i < 5; i++) {
             stats.put(years.get(i), getRandomGoals());
         }

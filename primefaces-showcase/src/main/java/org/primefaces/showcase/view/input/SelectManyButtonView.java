@@ -30,9 +30,8 @@ import java.util.List;
 @Named
 @RequestScoped
 public class SelectManyButtonView {
-    
+
     private List<String> selectedOptions;
-    
 
     public List<String> getSelectedOptions() {
         return selectedOptions;

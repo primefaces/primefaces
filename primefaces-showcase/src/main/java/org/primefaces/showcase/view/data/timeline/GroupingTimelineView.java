@@ -61,12 +61,12 @@ public class GroupingTimelineView implements Serializable {
 
     }
 
-    public TimelineModel<Order,Truck> newModelWithNumber(int n) {
-        TimelineModel<Order, Truck>  model = new TimelineModel<>();
+    public TimelineModel<Order, Truck> newModelWithNumber(int n) {
+        TimelineModel<Order, Truck> model = new TimelineModel<>();
 
         int orderNumber = 1;
         for (int j = 1; j <= n; j++) {
-            model.addGroup(new TimelineGroup<Truck>("id" + j, new Truck(String.valueOf(9+j))));
+            model.addGroup(new TimelineGroup<Truck>("id" + j, new Truck(String.valueOf(9 + j))));
             LocalDateTime referenceDate = LocalDateTime.of(2015, Month.DECEMBER, 14, 8, 0);
 
             for (int i = 0; i < 6; i++) {
@@ -137,9 +137,10 @@ public class GroupingTimelineView implements Serializable {
         // merge orders and update UI if the user selected some orders to be merged
         if (ordersToMerge != null && !ordersToMerge.isEmpty()) {
             model.merge(event, ordersToMerge, TimelineUpdater.getCurrentInstance(":form:timeline"));
-        } else {
-            FacesMessage msg =
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Nothing to merge, please choose orders to be merged", null);
+        }
+        else {
+            FacesMessage msg
+                    = new FacesMessage(FacesMessage.SEVERITY_INFO, "Nothing to merge, please choose orders to be merged", null);
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
 
@@ -178,4 +179,4 @@ public class GroupingTimelineView implements Serializable {
             return code;
         }
     }
-}  
+}

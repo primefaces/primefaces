@@ -98,7 +98,8 @@ public class CalendarJava8View implements Serializable {
         }
 
         invalidDays = new ArrayList<>();
-        invalidDays.add(0); /* the first day of week is disabled */
+        invalidDays.add(0);
+        /* the first day of week is disabled */
         invalidDays.add(3);
 
         minDate = LocalDate.now().minusYears(1);
@@ -114,7 +115,7 @@ public class CalendarJava8View implements Serializable {
         dateTimeDe = LocalDateTime.of(2019, 7, 27, 12, 59);
         dateTime4 = LocalDateTime.now();
 
-        time4= LocalTime.of(10, 30);
+        time4 = LocalTime.of(10, 30);
     }
 
     public void onDateSelect(SelectEvent<LocalDate> event) {

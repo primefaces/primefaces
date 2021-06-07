@@ -36,7 +36,6 @@ import org.primefaces.component.colorpicker.ColorPicker;
 public class ColorView {
 
     private String colorInline;
-
     private String colorPopup;
 
     public String getColorInline() {
@@ -60,7 +59,7 @@ public class ColorView {
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Color changed: " + picker.getValue(), null);
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-    
+
     public void onPopupClosed(AjaxBehaviorEvent e) {
         ColorPicker picker = (ColorPicker) e.getComponent();
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Popup closed: " + picker.getValue(), null);

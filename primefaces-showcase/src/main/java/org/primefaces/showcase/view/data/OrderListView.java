@@ -40,13 +40,13 @@ import java.util.List;
 @Named
 @RequestScoped
 public class OrderListView {
-    
+
     @Inject
     private CountryService service;
-    
+
     private List<String> cities;
     private List<Country> countries;
-    
+
     @PostConstruct
     public void init() {
         //Cities
@@ -58,9 +58,9 @@ public class OrderListView {
         cities.add("Berlin");
         cities.add("Barcelona");
         cities.add("Rome");
-             
+
         //Countrys
-        countries = service.getCountries().subList(0,10);
+        countries = service.getCountries().subList(0, 10);
     }
 
     public CountryService getService() {
@@ -85,18 +85,18 @@ public class OrderListView {
 
     public void setCountries(List<Country> countries) {
         this.countries = countries;
-    }    
-    
+    }
+
     public void onSelect(SelectEvent<Country> event) {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Item Selected", event.getObject().getName()));
     }
-    
+
     public void onUnselect(UnselectEvent<Country> event) {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Item Unselected", event.getObject().getName()));
     }
-    
+
     public void onReorder() {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "List Reordered", null));

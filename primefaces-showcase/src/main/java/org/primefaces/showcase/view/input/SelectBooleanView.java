@@ -32,7 +32,7 @@ import javax.inject.Named;
 @RequestScoped
 public class SelectBooleanView {
 
-    private boolean value1;  
+    private boolean value1;
     private boolean value2;
 
     public boolean isValue1() {
@@ -50,9 +50,9 @@ public class SelectBooleanView {
     public void setValue2(boolean value2) {
         this.value2 = value2;
     }
-    
+
     public void addMessage() {
-		String summary = value2 ? "Checked" : "Unchecked";
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(summary));
-	}
+        String summary = value2 ? "Checked" : "Unchecked";
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(summary));
+    }
 }

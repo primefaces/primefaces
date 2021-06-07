@@ -46,7 +46,7 @@ public class CountryService {
 
     @GET
     @Path("/autocomplete")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     public AutoCompleteSuggestionResponse autocomplete(@QueryParam("query") String query) {
         String queryLowerCase = query.toLowerCase();
         List<Country> allCountrys = service.getCountries();

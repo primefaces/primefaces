@@ -36,13 +36,13 @@ import java.util.Map;
 @Named("dfRootView")
 @RequestScoped
 public class DFRootView {
-    
+
     public void openLevel1() {
-        Map<String,Object> options = new HashMap<String, Object>();
+        Map<String, Object> options = new HashMap<String, Object>();
         options.put("modal", true);
         PrimeFaces.current().dialog().openDynamic("level1", options, null);
     }
-    
+
     public void onReturnFromLevel1(SelectEvent event) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Data Returned", event.getObject().toString()));
     }

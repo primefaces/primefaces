@@ -36,7 +36,7 @@ import org.primefaces.event.FilesUploadEvent;
 @Named
 @RequestScoped
 public class FileUploadView {
-    
+
     private UploadedFile file;
     private UploadedFiles files;
 
@@ -62,7 +62,7 @@ public class FileUploadView {
             FacesContext.getCurrentInstance().addMessage(null, message);
         }
     }
-    
+
     public void uploadMultiple() {
         if (files != null) {
             for (UploadedFile f : files.getFiles()) {

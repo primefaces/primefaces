@@ -70,6 +70,7 @@ public class AutoCompleteView {
 
         return countryList.stream().filter(t -> t.toLowerCase().startsWith(queryLowerCase)).collect(Collectors.toList());
     }
+
     public List<String> noResults(String query) {
         return Collections.EMPTY_LIST;
     }

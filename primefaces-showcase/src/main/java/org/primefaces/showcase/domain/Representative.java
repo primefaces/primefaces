@@ -27,13 +27,14 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class Representative implements Serializable, Comparable<Representative> {
-	
-	private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 1L;
 
     public String name;
     public String image;
 
-    public Representative() {}
+    public Representative() {
+    }
 
     public Representative(String name, String image) {
         this.name = name;
@@ -58,11 +59,15 @@ public class Representative implements Serializable, Comparable<Representative> 
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Representative that = (Representative) o;
-        return Objects.equals(name, that.name) &&
-                Objects.equals(image, that.image);
+        return Objects.equals(name, that.name)
+                && Objects.equals(image, that.image);
     }
 
     @Override

@@ -27,32 +27,21 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Product implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
 
     private int id;
-
     private String code;
-
     private String name;
-
     private String description;
-
     private String image;
-
     private double price;
-
     private String category;
-
     private int quantity;
-
     private InventoryStatus inventoryStatus;
-
     private int rating;
-
     private List<Order> orders;
 
-    public Product() {}
+    public Product() {
+    }
 
     public Product(int id, String code, String name, String description, String image, double price, String category, int quantity, InventoryStatus inventoryStatus, int rating) {
         this.id = id;
@@ -68,7 +57,7 @@ public class Product implements Serializable {
     }
 
     public Product clone() {
-    	return new Product(getId(), getCode(), getName(), getDescription(), getImage(), getPrice(), getCategory(), getQuantity(), getInventoryStatus(), getRating());
+        return new Product(getId(), getCode(), getName(), getDescription(), getImage(), getPrice(), getCategory(), getQuantity(), getInventoryStatus(), getRating());
     }
 
     public int getId() {
@@ -169,17 +158,22 @@ public class Product implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Product other = (Product) obj;
         if (code == null) {
             return other.code == null;
-        } else return code.equals(other.code);
+        }
+        else {
+            return code.equals(other.code);
+        }
     }
-
 
 }

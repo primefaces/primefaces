@@ -28,29 +28,27 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class Country implements Serializable, Comparable<Country> {
-	
-	private static final long serialVersionUID = 1L;
-	
+
     private int id;
     private String name;
     private String code;
     private Locale locale;
     private boolean rtl;
 
-    public Country() {}
-    
+    public Country() {
+    }
+
     public Country(int id, Locale locale) {
-    	this(id, locale.getDisplayCountry(), locale.getCountry().toLowerCase(), locale);
+        this(id, locale.getDisplayCountry(), locale.getCountry().toLowerCase(), locale);
     }
-    
+
     public Country(int id, Locale locale, boolean rtl) {
-    	this(id, locale.getDisplayCountry(), locale.getCountry().toLowerCase(), locale);
-    	this.rtl = rtl;
+        this(id, locale.getDisplayCountry(), locale.getCountry().toLowerCase(), locale);
+        this.rtl = rtl;
     }
-   
-    
+
     public Country(int id, String name, String code) {
-    	this(id, name, code, null);
+        this(id, name, code, null);
     }
 
     public Country(int id, String name, String code, Locale locale) {
@@ -83,39 +81,43 @@ public class Country implements Serializable, Comparable<Country> {
     public void setCode(String code) {
         this.code = code;
     }
-    
-	public Locale getLocale() {
-		return locale;
-	}
 
-	public void setLocale(Locale locale) {
-		this.locale = locale;
-	}
-	
-	public String getLanguage( ) {
-		return locale == null ? "en" : locale.getLanguage();
-	}
-	
-	public String getDisplayLanguage( ) {
-		return locale == null ? "English" : locale.getDisplayLanguage();
-	}
-	
-	public boolean isRtl() {
-		return rtl;
-	}
+    public Locale getLocale() {
+        return locale;
+    }
 
-	public void setRtl(boolean rtl) {
-		this.rtl = rtl;
-	}
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
+
+    public String getLanguage() {
+        return locale == null ? "en" : locale.getLanguage();
+    }
+
+    public String getDisplayLanguage() {
+        return locale == null ? "English" : locale.getDisplayLanguage();
+    }
+
+    public boolean isRtl() {
+        return rtl;
+    }
+
+    public void setRtl(boolean rtl) {
+        this.rtl = rtl;
+    }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Country country = (Country) o;
-        return id == country.id &&
-                Objects.equals(name, country.name) &&
-                Objects.equals(code, country.code);
+        return id == country.id
+                && Objects.equals(name, country.name)
+                && Objects.equals(code, country.code);
     }
 
     @Override

@@ -33,9 +33,9 @@ import javax.inject.Named;
 @Named
 @RequestScoped
 public class ResetInputView {
-    
+
     private String text1;
-    
+
     private String text2;
 
     public String getText1() {
@@ -53,19 +53,19 @@ public class ResetInputView {
     public void setText2(String text2) {
         this.text2 = text2;
     }
-    
+
     public void save() {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Data Saved"));
     }
-    
+
     public void reset() {
         PrimeFaces.current().resetInputs("form:panel");
     }
-    
+
     public void resetFail() {
         this.text1 = null;
         this.text2 = null;
-        
+
         FacesMessage msg = new FacesMessage("Model reset, but it won't work properly.");
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }

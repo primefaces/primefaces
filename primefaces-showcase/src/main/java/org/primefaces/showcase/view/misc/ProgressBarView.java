@@ -33,7 +33,7 @@ import java.io.Serializable;
 @Named
 @ViewScoped
 public class ProgressBarView implements Serializable {
-    
+
     private Integer progress1;
     private Integer progress2;
 
@@ -48,16 +48,17 @@ public class ProgressBarView implements Serializable {
     }
 
     private static Integer updateProgress(Integer progress) {
-        if(progress == null) {
+        if (progress == null) {
             progress = 0;
         }
         else {
-            progress = progress + (int)(Math.random() * 35);
-            
-            if(progress > 100)
+            progress = progress + (int) (Math.random() * 35);
+
+            if (progress > 100) {
                 progress = 100;
+            }
         }
-        
+
         return progress;
     }
 
@@ -69,7 +70,7 @@ public class ProgressBarView implements Serializable {
         progress1 = null;
         progress2 = null;
     }
-    
+
     public Integer getProgress1() {
         progress1 = updateProgress(progress1);
         return progress1;

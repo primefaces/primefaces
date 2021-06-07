@@ -36,9 +36,9 @@ import java.util.List;
 @Named("dtSummaryRowView")
 @RequestScoped
 public class SummaryRowView implements Serializable {
-    
+
     private List<Product> products;
-    
+
     @Inject
     private ProductService service;
 
@@ -46,7 +46,7 @@ public class SummaryRowView implements Serializable {
     public void init() {
         products = service.getProducts(50);
     }
-    
+
     public List<Product> getProducts() {
         return products;
     }
@@ -54,8 +54,8 @@ public class SummaryRowView implements Serializable {
     public void setService(ProductService service) {
         this.service = service;
     }
-    
+
     public int getRandomPrice() {
-		return (int) (Math.random() * 100000);
-	}
+        return (int) (Math.random() * 100000);
+    }
 }

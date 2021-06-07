@@ -49,10 +49,12 @@ public class LocaleConverter implements Converter<Country> {
         if (value != null && value.trim().length() > 0) {
             try {
                 return countryService.getLocalesAsMap().get(Integer.parseInt(value));
-            } catch (NumberFormatException e) {
+            }
+            catch (NumberFormatException e) {
                 throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Not a valid locale."));
             }
-        } else {
+        }
+        else {
             return null;
         }
     }
@@ -61,7 +63,8 @@ public class LocaleConverter implements Converter<Country> {
     public String getAsString(FacesContext context, UIComponent component, Country value) {
         if (value != null) {
             return String.valueOf(value.getId());
-        } else {
+        }
+        else {
             return null;
         }
     }

@@ -37,9 +37,9 @@ import java.util.List;
 @Named("dtPaginatorView")
 @ViewScoped
 public class PaginatorView implements Serializable {
-    
+
     private List<Customer> customers;
-    
+
     @Inject
     private CustomerService service;
 
@@ -47,7 +47,7 @@ public class PaginatorView implements Serializable {
     public void init() {
         customers = service.getCustomers(50);
     }
-    
+
     public List<Customer> getCustomers() {
         return customers;
     }

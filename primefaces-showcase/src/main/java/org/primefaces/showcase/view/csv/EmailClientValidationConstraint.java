@@ -36,9 +36,9 @@ public class EmailClientValidationConstraint extends AbstractClientValidationCon
         super(null, MESSAGE_METADATA);
     }
 
+    @Override
     public String getValidatorId() {
         return Email.class.getSimpleName();
     }
-    
-}
 
+}

@@ -34,18 +34,18 @@ import java.io.Serializable;
 @Named("treeBasicView")
 @ViewScoped
 public class BasicView implements Serializable {
-    
+
     private TreeNode root;
-    
+
     @PostConstruct
     public void init() {
-		root = new DefaultTreeNode("Files", null);
-		TreeNode node0 = new DefaultTreeNode("Documents", root);
-		TreeNode node1 = new DefaultTreeNode("Events", root);
+        root = new DefaultTreeNode("Files", null);
+        TreeNode node0 = new DefaultTreeNode("Documents", root);
+        TreeNode node1 = new DefaultTreeNode("Events", root);
         TreeNode node2 = new DefaultTreeNode("Movies", root);
-		
-		TreeNode node00 = new DefaultTreeNode("Work", node0);
-		TreeNode node01 = new DefaultTreeNode("Home", node0);
+
+        TreeNode node00 = new DefaultTreeNode("Work", node0);
+        TreeNode node01 = new DefaultTreeNode("Home", node0);
 
         node00.getChildren().add(new DefaultTreeNode("Expenses.doc"));
         node00.getChildren().add(new DefaultTreeNode("Resume.doc"));
@@ -64,7 +64,7 @@ public class BasicView implements Serializable {
         node21.getChildren().add(new DefaultTreeNode("Goodfellas"));
         node21.getChildren().add(new DefaultTreeNode("Untouchables"));
 
-	}
+    }
 
     public TreeNode getRoot() {
         return root;

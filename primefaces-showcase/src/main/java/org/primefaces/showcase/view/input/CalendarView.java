@@ -72,7 +72,6 @@ public class CalendarView implements Serializable {
     private Date minDateTime;
     private Date maxDateTime;
 
-
     @PostConstruct
     public void init() {
         invalidDates = new ArrayList<>();
@@ -84,7 +83,8 @@ public class CalendarView implements Serializable {
         }
 
         invalidDays = new ArrayList<>();
-        invalidDays.add(0); /* the first day of week is disabled */
+        invalidDays.add(0);
+        /* the first day of week is disabled */
         invalidDays.add(3);
 
         minDate = new Date(today.getTime() - (365 * oneDay));
@@ -102,7 +102,7 @@ public class CalendarView implements Serializable {
         tmp.set(Calendar.MINUTE, 0);
         tmp.set(Calendar.SECOND, 0);
         tmp.set(Calendar.MILLISECOND, 0);
-        maxTime =  tmp.getTime();
+        maxTime = tmp.getTime();
 
         minDateTime = new Date(today.getTime() - (7 * oneDay));
         maxDateTime = new Date(today.getTime() + (7 * oneDay));

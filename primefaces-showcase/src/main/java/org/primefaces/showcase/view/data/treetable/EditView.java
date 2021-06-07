@@ -38,17 +38,17 @@ import java.io.Serializable;
 
 @Named("ttEditView")
 @ViewScoped
-public class EditView implements Serializable{
-    
+public class EditView implements Serializable {
+
     private TreeNode root;
-    
+
     private TreeNode root2;
-    
+
     private TreeNode root3;
-    
+
     @Inject
     private DocumentService service;
-    
+
     @PostConstruct
     public void init() {
         root = service.createDocuments();
@@ -63,32 +63,32 @@ public class EditView implements Serializable{
     public TreeNode getRoot2() {
         return root2;
     }
-    
+
     public TreeNode getRoot3() {
         return root3;
     }
-    
+
     public void setService(DocumentService service) {
         this.service = service;
     }
-    
+
     public void onRowEdit(RowEditEvent<TreeNode> event) {
         FacesMessage msg = new FacesMessage("Document Edited", event.getObject().toString());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-    
+
     public void onRowCancel(RowEditEvent<TreeNode> event) {
         FacesMessage msg = new FacesMessage("Edit Cancelled", event.getObject().toString());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-    
+
     public void onCellEdit(CellEditEvent event) {
         Object oldValue = event.getOldValue();
         Object newValue = event.getNewValue();
-        
-        if(newValue != null && !newValue.equals(oldValue)) {
+
+        if (newValue != null && !newValue.equals(oldValue)) {
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
-    } 
+    }
 }

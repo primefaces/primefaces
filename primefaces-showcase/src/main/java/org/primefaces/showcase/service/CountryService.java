@@ -57,7 +57,7 @@ public class CountryService {
         }
 
         Collections.sort(countries, (Country c1, Country c2) -> c1.getName().compareTo(c2.getName()));
-        
+
         int i = 0;
         locales.add(new Country(i++, Locale.US));
         locales.add(new Country(i++, Locale.FRANCE));
@@ -104,14 +104,14 @@ public class CountryService {
         }
         return countriesAsMap;
     }
-    
+
     public List<Country> getLocales() {
         return new ArrayList<>(locales);
     }
-    
+
     public Map<Integer, Country> getLocalesAsMap() {
         if (localesAsMap == null) {
-        	localesAsMap = getLocales().stream().collect(Collectors.toMap(Country::getId, country -> country));
+            localesAsMap = getLocales().stream().collect(Collectors.toMap(Country::getId, country -> country));
         }
         return localesAsMap;
     }

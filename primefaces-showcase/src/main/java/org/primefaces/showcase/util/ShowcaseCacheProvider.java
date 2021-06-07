@@ -38,7 +38,7 @@ public class ShowcaseCacheProvider {
     public void init() {
         cacheProvider = new EHCache3Provider();
     }
-    
+
     public CacheProvider getCacheProvider() {
         return cacheProvider;
     }

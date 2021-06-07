@@ -35,7 +35,6 @@ public class ClockView implements Serializable {
 
     private LocalDateTime dateTime;
 
-
     @PostConstruct
     public void init() {
         dateTime = LocalDateTime.now().plusYears(37).plusMonths(3).plusHours(4);

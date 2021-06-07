@@ -39,12 +39,12 @@ import org.primefaces.showcase.domain.Document;
 @Named("ttMultiViewStateView")
 @ViewScoped
 public class MultiViewStateView implements Serializable {
-    
+
     private TreeNode root;
-    
+
     @Inject
     private DocumentService service;
-    
+
     @PostConstruct
     public void init() {
         root = service.createDocuments();
@@ -70,10 +70,9 @@ public class MultiViewStateView implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_INFO, clientId + " multiview state has been cleared out", null));
     }
-    
+
     public void someAction(Document document) {
         FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_INFO, "Action on " + document.getName(), null));
     }
 }
-

@@ -31,14 +31,14 @@ import javax.inject.Named;
 @Named
 @RequestScoped
 public class IdleMonitorView {
-    
+
     public void onIdle() {
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, 
-										"No activity.", "User is idle"));
-	}
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+                "No activity.", "User is idle"));
+    }
 
     public void onActive() {
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
-										"Activity detected", "User is active"));
-	}
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+                "Activity detected", "User is active"));
+    }
 }

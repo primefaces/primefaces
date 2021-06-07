@@ -59,7 +59,7 @@ public class LinkedTimelinesView implements Serializable {
         modelFirst.add(TimelineEvent.<Task>builder().data(new Task("Travel to Spain", "images/timeline/location.png", false)).startDate(LocalDateTime.of(2015, 8, 24, 21, 45)).build());
         modelFirst.add(TimelineEvent.<Task>builder().data(new Task("Do homework", "images/timeline/homework.png", true)).startDate(LocalDate.of(2015, 8, 26)).endDate(LocalDate.of(2015, 9, 2)).build());
         modelFirst.add(TimelineEvent.<Task>builder().data(new Task("Create memo", "images/timeline/memo.png", false)).startDate(LocalDate.of(2015, 8, 28)).build());
-        modelFirst.add(TimelineEvent.<Task>builder().data(new Task("Create report", "images/timeline/report.png", true)).startDate(LocalDate.of(2015, 8, 31)).endDate(LocalDate.of(2015,9, 3)).build());
+        modelFirst.add(TimelineEvent.<Task>builder().data(new Task("Create report", "images/timeline/report.png", true)).startDate(LocalDate.of(2015, 8, 31)).endDate(LocalDate.of(2015, 9, 3)).build());
     }
 
     private void createSecondTimeline() {
@@ -76,7 +76,8 @@ public class LinkedTimelinesView implements Serializable {
         if (aSelected) {
             // select project B visually (index in the event's list is 1)  
             timelineUpdater.select("projectB");
-        } else {
+        }
+        else {
             // select project A visually (index in the event's list is 0)  
             timelineUpdater.select("projectA");
         }

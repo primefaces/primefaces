@@ -39,18 +39,18 @@ import java.util.List;
 @Named
 @SessionScoped
 public class DataListView implements Serializable {
-    
+
     private List<Product> products1;
-    
+
     private List<Product> products2;
-    
+
     private List<Product> products3;
-    
+
     private Product selectedProduct;
-    
+
     @Inject
     private ProductService service;
-    
+
     @PostConstruct
     public void init() {
         products1 = service.getProducts(10);
@@ -68,7 +68,7 @@ public class DataListView implements Serializable {
 
     public List<Product> getProducts3() {
         return products3;
-    }    
+    }
 
     public void setService(ProductService service) {
         this.service = service;

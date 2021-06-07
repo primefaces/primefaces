@@ -91,7 +91,6 @@ public class LazyCustomerDataModel extends LazyDataModel<Customer> {
         return customers;
     }
 
-
     private boolean filter(FacesContext context, Collection<FilterMeta> filterBy, Object o) {
         boolean matching = true;
 
@@ -102,7 +101,8 @@ public class LazyCustomerDataModel extends LazyDataModel<Customer> {
             try {
                 Object columnValue = String.valueOf(o.getClass().getField(filter.getField()).get(o));
                 matching = constraint.isMatching(context, columnValue, filterValue, LocaleUtils.getCurrentLocale());
-            } catch (ReflectiveOperationException e) {
+            }
+            catch (ReflectiveOperationException e) {
                 matching = false;
             }
 

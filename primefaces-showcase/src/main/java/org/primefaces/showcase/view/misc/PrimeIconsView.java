@@ -43,20 +43,21 @@ import java.util.logging.Logger;
 public class PrimeIconsView implements Serializable {
 
     private List<Icon> icons;
-    
+
     @PostConstruct
     public void init() {
         icons = new ArrayList<>();
-        
+
         String url = "https://raw.githubusercontent.com/primefaces/primeicons/4.1.0/selection.json";
         try {
             JSONObject json = readJsonFromUrl(url);
             JSONArray iconsArray = json.getJSONArray("icons");
-            for(int i = 0; i < iconsArray.length(); i++) {
+            for (int i = 0; i < iconsArray.length(); i++) {
                 JSONObject properties = iconsArray.optJSONObject(i).getJSONObject("properties");
                 icons.add(new Icon(properties.getString("name"), properties.getInt("code")));
             }
-        } catch (IOException | JSONException ex) {
+        }
+        catch (IOException | JSONException ex) {
             Logger.getLogger(PrimeIconsView.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -77,7 +78,8 @@ public class PrimeIconsView implements Serializable {
             String jsonText = readAll(rd);
             JSONObject json = new JSONObject(jsonText);
             return json;
-        } finally {
+        }
+        finally {
             is.close();
         }
     }
@@ -89,12 +91,12 @@ public class PrimeIconsView implements Serializable {
     public void setIcons(List<Icon> icons) {
         this.icons = icons;
     }
-    
+
     public class Icon {
-        
+
         private String name;
         private int key;
-        
+
         public Icon(String name, int key) {
             this.name = name;
             this.key = key;

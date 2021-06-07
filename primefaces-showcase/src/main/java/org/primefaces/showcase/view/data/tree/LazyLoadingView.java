@@ -37,9 +37,9 @@ import javax.faces.context.FacesContext;
 @Named("treeLazyLoadingView")
 @ViewScoped
 public class LazyLoadingView implements Serializable {
-    
+
     private TreeNode root;
-    
+
     @PostConstruct
     public void init() {
         FacesContext context = FacesContext.getCurrentInstance();

@@ -32,13 +32,13 @@ import java.util.List;
 @Named
 @RequestScoped
 public class ImageSwitchView {
-    
+
     private List<String> images;
 
     @PostConstruct
     public void init() {
         images = new ArrayList<String>();
-        
+
         images.add("nature1.jpg");
         images.add("nature2.jpg");
         images.add("nature3.jpg");

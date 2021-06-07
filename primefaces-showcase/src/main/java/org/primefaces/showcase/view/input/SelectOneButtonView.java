@@ -29,9 +29,9 @@ import javax.inject.Named;
 @Named
 @RequestScoped
 public class SelectOneButtonView {
-    
+
     private String option;
-    
+
     public String getOption() {
         return option;
     }

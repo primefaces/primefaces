@@ -34,17 +34,17 @@ import java.util.List;
 @Named
 @RequestScoped
 public class DefaultCommandView {
-    
+
     private String text;
     private String text2;
-    
+
     private String btn = "btn1";
-    
+
     private List<String> buttons;
-    
+
     @PostConstruct
     public void init() {
-        buttons = new ArrayList<String>();
+        buttons = new ArrayList<>();
         buttons.add("btn1");
         buttons.add("btn2");
         buttons.add("btn3");
@@ -81,19 +81,19 @@ public class DefaultCommandView {
     public void setText2(String text2) {
         this.text2 = text2;
     }
-    
+
     public void addMessage(String btn) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Submitted with " + btn));
     }
-    
+
     public void btn1Submit() {
         addMessage("btn1");
     }
-    
+
     public void btn2Submit() {
         addMessage("btn2");
     }
-    
+
     public void btn3Submit() {
         addMessage("btn3");
     }
