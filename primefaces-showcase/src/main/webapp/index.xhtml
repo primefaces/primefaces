@@ -1,0 +1,307 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    
+    <ui:define name="content">
+        <div class="home">
+            <div id="homepage-intro" class="introduction #{app.darkMode ? 'introduction-dark' : ''}">
+                <div class="introduction-promo">Always bet on Prime!</div>
+                <div class="introduction-title">The Ultimate UI Component Library</div>
+                <div class="introduction-subtitle">for JSF</div>
+    
+                <h:link styleClass="action-button" outcome="/getstarted">GET STARTED</h:link>
+                <p:graphicImage alt="devices" styleClass="introduction-devices" name="images/home/intro-devices.png" library="showcase" />
+            </div>
+            
+            <div class="features">
+                <h4>Features</h4>
+                <p>Congratulations! <span role="img" aria-label="celebrate" class="p-mx-2">🎉</span> Your quest to find the UI library for JavaServer Faces is now complete.</p>
+
+                <div class="p-grid">
+                    <div class="p-col-12 p-md-4">
+                        <div class="feature-card">
+                            <p:graphicImage name="images/home/jsf-components.png" library="showcase" />
+                            <div class="feature-card-detail">
+                                <div class="feature-name">100+ COMPONENTS</div>
+                                <p>The most complete set of UI Components featuring 100+ easy to use components for all your UI requirements.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-col-12 p-md-4">
+                        <div class="feature-card">
+                            <p:graphicImage name="images/home/jsf-opensource.png" library="showcase" />
+                            <div class="feature-card-detail">
+                                <div class="feature-name">OPEN SOURCE</div>
+                                <p>Hosted at <a href="https://github.com/primefaces/primefaces" target="_blank">GitHub</a>, all components are open source and free to use under MIT license. Feel the power of open source.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-col-12 p-md-4">
+                        <div class="feature-card">
+                            <p:graphicImage name="images/home/jsf-themes.png" library="showcase" />
+                            <div class="feature-card-detail">
+                                <div class="feature-name">THEMES</div>
+                                <p>Don’t get tied up in just one look and feel. Choose from a variety of options including material and flat design.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-col-12 p-md-4">
+                        <div class="feature-card">
+                            <p:graphicImage name="images/home/jsf-templates.png" library="showcase" />
+                            <div class="feature-card-detail">
+                                <div class="feature-name">TEMPLATES</div>
+                                <p>Professionally designed highly customizable facelets based application templates to get you started in no time.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-col-12 p-md-4">
+                        <div class="feature-card">
+                            <p:graphicImage name="images/home/jsf-accesibility.png" library="showcase" />
+                            <div class="feature-card-detail">
+                                <div class="feature-name">ACCESSIBILITY</div>
+                                <p>Fully accessible and in compliance with Section 508 standards.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-col-12 p-md-4">
+                        <div class="feature-card">
+                            <p:graphicImage name="images/home/jsf-pro.png" library="showcase" />
+                            <div class="feature-card-detail">
+                                <div class="feature-name">PRO SUPPORT</div>
+                                <p>With the exclusive services of Pro account, you no longer need to post your questions in the community forum and your issues to community issue tracker.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-col-12 p-md-4">
+                        <div class="feature-card">
+                            <p:graphicImage name="images/home/jsf-productivity.png" library="showcase" />
+                            <div class="feature-card-detail">
+                                <div class="feature-name">PRODUCTIVITY</div>
+                                <p>Allocate your valuable time to business logic rather than dealing with the complex user interface requirements.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-col-12 p-md-4">
+                        <div class="feature-card">
+                            <p:graphicImage name="images/home/jsf-community.png" library="showcase" />
+                            <div class="feature-card-detail">
+                                <div class="feature-name">COMMUNITY</div>
+                                <p>Join PrimeFaces community to become a part of an active, vibrant and growing open source foundation.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-col-12 p-md-4">
+                        <div class="feature-card">
+                            <p:graphicImage name="images/home/jsf-mobile.png" library="showcase" />
+                            <div class="feature-card-detail">
+                                <div class="feature-name">MOBILE</div>
+                                <p>Enhanced mobile user experience with touch optimized responsive design elements.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="whouses">
+                <h4>Key Users</h4>
+                <p>The creator of PrimeFaces is PrimeTek Informatics, the distinguished component library vendor who built popular open source projects such as PrimeNG, PrimeReact and PrimeVue over the past years.</p>
+                <div class="p-grid">
+                    <div class="p-col-6 p-md-2"><p:graphicImage name="images/whouses/fox.svg" library="showcase" /></div>
+                    <div class="p-col-6 p-md-2"><p:graphicImage name="images/whouses/airbus.svg" library="showcase" /></div>
+                    <div class="p-col-6 p-md-2"><p:graphicImage name="images/whouses/nike.svg" library="showcase" /></div>
+                    <div class="p-col-6 p-md-2"><p:graphicImage name="images/whouses/mercedes.svg" library="showcase" styleClass="circular"/></div>
+                    <div class="p-col-6 p-md-2"><p:graphicImage name="images/whouses/ebay.svg" library="showcase" styleClass="circular"/></div>
+                    <div class="p-col-6 p-md-2"><p:graphicImage name="images/whouses/ford.svg" library="showcase" /></div>
+                    <div class="p-col-6 p-md-2"><p:graphicImage name="images/whouses/vw.svg" library="showcase" styleClass="circular" /></div>
+                    <div class="p-col-6 p-md-2"><p:graphicImage name="images/whouses/unicredit.svg" library="showcase" /></div>
+                    <div class="p-col-6 p-md-2"><p:graphicImage name="images/whouses/lufthansa.svg" library="showcase" /></div>
+                    <div class="p-col-6 p-md-2"><p:graphicImage name="images/whouses/nvidia.svg" library="showcase" /></div>
+                    <div class="p-col-6 p-md-2"><p:graphicImage name="images/whouses/verizon.svg" library="showcase" /></div>
+                    <div class="p-col-6 p-md-2"><p:graphicImage name="images/whouses/sap.svg" library="showcase" styleClass="circular"/></div>
+                    <div class="p-col-6 p-md-2"><p:graphicImage name="images/whouses/amex.svg" library="showcase" /></div>
+                    <div class="p-col-6 p-md-2"><p:graphicImage name="images/whouses/viacom.svg" library="showcase" /></div>
+                    <div class="p-col-6 p-md-2"><p:graphicImage name="images/whouses/volvo.svg" library="showcase" /></div>
+                    <div class="p-col-6 p-md-2"><p:graphicImage name="images/whouses/siemens.svg" library="showcase" /></div>
+                    <div class="p-col-6 p-md-2"><p:graphicImage name="images/whouses/hp.svg" library="showcase" styleClass="circular"/></div>
+                    <div class="p-col-6 p-md-2"><p:graphicImage name="images/whouses/generali.svg" library="showcase" styleClass="circular"/></div>
+                </div>
+            </div>
+
+            <div class="templates">
+                <h4>Premium Application Templates</h4>
+                <p>Create awesome applications in no time using the premium templates and impress your users.</p>
+
+                 <div class="p-grid">
+                    <div class="p-col-12 p-md-3">
+                        <a href="https://www.primefaces.org/layouts/freya" target="_blank">
+                            <p:graphicImage name="images/layouts/freya.jpg" library="showcase" />
+                        </a>
+                    </div>
+                    <div class="p-col-12 p-md-3">
+                        <a href="https://www.primefaces.org/layouts/rain" target="_blank">
+                            <p:graphicImage name="images/layouts/rain.jpg" library="showcase" />
+                        </a>
+                    </div>
+                    <div class="p-col-12 p-md-3">
+                        <a href="https://www.primefaces.org/layouts/diamond" target="_blank">
+                            <p:graphicImage name="images/layouts/diamond.jpg" library="showcase" />
+                        </a>
+                    </div>
+                    <div class="p-col-12 p-md-3">
+                        <a href="https://www.primefaces.org/layouts/poseidon" target="_blank">
+                            <p:graphicImage name="images/layouts/poseidon.jpg" library="showcase" />
+                        </a>
+                    </div>
+                    <div class="p-col-12 p-md-3">
+                        <a href="https://www.primefaces.org/layouts/serenity" target="_blank">
+                            <p:graphicImage name="images/layouts/serenity.jpg" library="showcase" />
+                        </a>
+                    </div>
+                    <div class="p-col-12 p-md-3">
+                        <a href="https://www.primefaces.org/layouts/sapphire" target="_blank">
+                            <p:graphicImage name="images/layouts/sapphire.jpg" library="showcase" />
+                        </a>
+                    </div>
+                    <div class="p-col-12 p-md-3">
+                        <a href="https://www.primefaces.org/layouts/avalon" target="_blank">
+                            <p:graphicImage name="images/layouts/avalon.jpg" library="showcase" />
+                        </a>
+                    </div>  
+                    <div class="p-col-12 p-md-3">
+                        <a href="https://www.primefaces.org/layouts/mirage" target="_blank">
+                            <p:graphicImage name="images/layouts/mirage.jpg" library="showcase"/>
+                        </a>
+                    </div>
+                    <div class="p-col-12 p-md-3">
+                        <a href="https://www.primefaces.org/layouts/prestige" target="_blank">
+                            <p:graphicImage name="images/layouts/prestige.jpg" library="showcase" />
+                        </a>
+                    </div>
+                    <div class="p-col-12 p-md-3">
+                        <a href="https://www.primefaces.org/layouts/roma" target="_blank">
+                            <p:graphicImage name="images/layouts/roma.jpg" library="showcase" />
+                        </a>
+                    </div>
+                    <div class="p-col-12 p-md-3">
+                        <a href="https://www.primefaces.org/layouts/babylon" target="_blank">
+                            <p:graphicImage name="images/layouts/babylon.jpg" library="showcase" />
+                        </a>
+                    </div>
+                    <div class="p-col-12 p-md-3">
+                        <a href="https://www.primefaces.org/layouts/apollo" target="_blank">
+                            <p:graphicImage name="images/layouts/apollo.jpg" library="showcase" />
+                        </a>
+                    </div>  
+                    <div class="p-col-12 p-md-3">
+                        <a href="https://www.primefaces.org/layouts/olympia" target="_blank">
+                            <p:graphicImage name="images/layouts/olympia.jpg" library="showcase" />
+                        </a>
+                    </div>
+                    <div class="p-col-12 p-md-3">
+                        <a href="https://www.primefaces.org/layouts/manhattan" target="_blank">
+                            <p:graphicImage name="images/layouts/manhattan.jpg" library="showcase" />
+                        </a>
+                    </div>
+                    <div class="p-col-12 p-md-3">
+                        <a href="https://www.primefaces.org/layouts/ecuador" target="_blank">
+                            <p:graphicImage name="images/layouts/ecuador.jpg" library="showcase" />
+                        </a>
+                    </div>
+                    <div class="p-col-12 p-md-3">
+                        <a href="https://www.primefaces.org/layouts/harmony" target="_blank">
+                            <p:graphicImage name="images/layouts/harmony.jpg" library="showcase" />
+                        </a>
+                    </div>
+                    <div class="p-col-12 p-md-3">
+                        <a href="https://www.primefaces.org/layouts/california" target="_blank">
+                            <p:graphicImage name="images/layouts/california.jpg" library="showcase" />
+                        </a>
+                    </div>            
+                    <div class="p-col-12 p-md-3">
+                        <a href="https://www.primefaces.org/layouts/paradise" target="_blank">
+                            <p:graphicImage name="images/layouts/paradise.jpg" library="showcase" />
+                        </a>
+                    </div>
+                    <div class="p-col-12 p-md-3">
+                        <a href="https://www.primefaces.org/layouts/ultima" target="_blank">
+                            <p:graphicImage name="images/layouts/ultima.jpg" library="showcase" />
+                        </a>
+                    </div>
+                    <div class="p-col-12 p-md-3">
+                        <a href="https://www.primefaces.org/layouts/barcelona" target="_blank">
+                            <p:graphicImage name="images/layouts/barcelona.jpg" library="showcase" />
+                        </a>
+                    </div>
+                    <div class="p-col-12 p-md-3">
+                        <a href="https://www.primefaces.org/layouts/morpheus" target="_blank">
+                            <p:graphicImage name="images/layouts/morpheus.jpg" library="showcase" />
+                        </a>
+                    </div>
+                    <div class="p-col-12 p-md-3">
+                        <a href="https://www.primefaces.org/layouts/verona" target="_blank">
+                            <p:graphicImage name="images/layouts/verona.jpg" library="showcase" />
+                        </a>
+                    </div>
+                    <div class="p-col-12 p-md-3">
+                        <a href="https://www.primefaces.org/layouts/atlantis" target="_blank">
+                            <p:graphicImage name="images/layouts/atlantis.jpg" library="showcase" />
+                        </a>
+                    </div>
+                    <div class="p-col-12 p-md-3">
+                        <a href="https://www.primefaces.org/layouts/pandora" target="_blank">
+                            <p:graphicImage name="images/layouts/pandora.jpg" library="showcase" />
+                        </a>
+                    </div>
+                    <div class="p-col-12 p-md-3">
+                        <a href="https://www.primefaces.org/layouts/siberia" target="_blank">
+                            <p:graphicImage name="images/layouts/siberia.jpg" library="showcase" />
+                        </a>
+                    </div>
+                    <div class="p-col-12 p-md-3">
+                        <a href="https://www.primefaces.org/layouts/omega" target="_blank">
+                            <p:graphicImage name="images/layouts/omega.jpg" library="showcase" />
+                        </a>
+                    </div>
+                    <div class="p-col-12 p-md-3">
+                        <a href="https://www.primefaces.org/layouts/icarus" target="_blank">
+                            <p:graphicImage name="images/layouts/icarus.jpg" library="showcase" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="prime-designer">
+                <h4>Theme Designer</h4>
+                <p>PrimeFaces is a design-agnostic library and the theming system is based on the Theme Designer, the official tool to create themes for the components. Designer includes a SASS enabled infrastructure that has over 500 customizable variables, a live editor
+                    and a sample application to test your themes with ease along with built-in theme samples that are embedded in PrimeFaces Core.</p>
+    
+                <p>Visit <a href="https://www.primefaces.org/designer/primefaces">Designer API HomePage</a> to learn more about the features and interact with the <a href="https://www.primefaces.org/designer-jsf">live editor</a>.</p>
+                <div class="p-grid">
+                    <div class="p-col-12">
+                        <p:graphicImage name="images/prime-designer.jpg" library="showcase" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="prosupport">
+                <div class="p-grid">
+                    <div class="p-col-12 p-md-6">
+                        <h4>PrimeFaces PRO Support</h4>
+                        <p>No time to wait for a response at forum or issue tracker? Then PrimeFaces PRO Support is definitely for you.</p>
+                        <p>PrimeFaces PRO is an exceptional support service where you'll contact the PrimeTek via a private channel and receive assistance just in a couple of hours. Optionally PrimeFaces PRO offers the ability to request changes and new features for the component library.</p>
+                        <a class="action-button" href="mailto:contact@primetek.com.tr">
+                            GET A QUOTE
+                        </a>
+                    </div>
+                    <div class="p-col-12 p-md-6">
+                        <p:graphicImage name="images/pro.png" library="showcase" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+
+</ui:composition>

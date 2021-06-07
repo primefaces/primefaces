@@ -1,0 +1,102 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DataExporter <span class="subitem">Customized Documents</span>
+    </ui:define>
+
+    <ui:define name="description">
+        DataExporter provides easy customization options for the exported document using pre and post processors or ExcelOptions and PDFOptions objects.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/dataexporter"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <h5>Processors</h5>
+                <p:commandButton value="XLS" styleClass="p-mr-2 p-mb-2">
+                    <p:dataExporter type="xls" target="tbl" fileName="products"
+                                    postProcessor="#{customizedDocumentsView.postProcessXLS}"/>
+                </p:commandButton>
+
+                <p:commandButton value="PDF" styleClass="p-mr-2 p-mb-2">
+                    <p:dataExporter type="pdf" target="tbl" fileName="products"
+                                    preProcessor="#{customizedDocumentsView.preProcessPDF}"/>
+                </p:commandButton>
+
+                <p:dataTable id="tbl" var="product" value="#{customizedDocumentsView.products}"
+                             paginator="true" rows="10" styleClass="p-mt-2">
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Code"/>
+                        </f:facet>
+                        <h:outputText value="#{product.code}"/>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Name"/>
+                        </f:facet>
+                        <h:outputText value="#{product.name}"/>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Category"/>
+                        </f:facet>
+                        <h:outputText value="#{product.category}"/>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Quantity"/>
+                        </f:facet>
+                        <h:outputText value="#{product.quantity}"/>
+                    </p:column>
+                </p:dataTable>
+
+                <h5>Options</h5>
+                <p:commandButton value="XLS" styleClass="p-mr-2 p-mb-2">
+                    <p:dataExporter type="xls" target="tbl2" fileName="products"
+                                    options="#{customizedDocumentsView.excelOpt}"/>
+                </p:commandButton>
+
+                <p:commandButton value="PDF" styleClass="p-mr-2 p-mb-2">
+                    <p:dataExporter type="pdf" target="tbl2" fileName="products"
+                                    options="#{customizedDocumentsView.pdfOpt}"/>
+                </p:commandButton>
+
+                <p:dataTable id="tbl2" var="product" value="#{customizedDocumentsView.products2}"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                             paginator="true" rows="10" styleClass="p-mt-2">
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Name"/>
+                        </f:facet>
+                        <h:outputText value="#{product.name}"/>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Category"/>
+                        </f:facet>
+                        <h:outputText value="#{product.category}"/>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Quantity"/>
+                        </f:facet>
+                        <h:outputText value="#{product.quantity}"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

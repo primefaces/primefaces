@@ -1,0 +1,26 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Button <span class="subitem"></span>
+    </ui:define>
+
+    <ui:define name="description">
+        <f:metadata>
+            <f:viewParam name="productId" value="#{productDetailView.productId}"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p class="p-m-0">You've been redirected to this bookmarkable page with button.
+                ViewParameter you've passed is <strong>"#{productDetailView.productId}"</strong>
+            </p>
+        </div>
+    </ui:define>
+
+</ui:composition>

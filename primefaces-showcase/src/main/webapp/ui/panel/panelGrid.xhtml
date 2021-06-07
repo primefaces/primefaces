@@ -1,0 +1,423 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        PanelGrid
+    </ui:define>
+
+    <ui:define name="description">
+        PanelGrid is an extension to the standard panelGrid with theme integration, grouping and responsive features.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/panelgrid"/>
+
+    <ui:define name="head">
+        <style type="text/css">
+            .ui-panelgrid.showcase-text-align-center .ui-grid-responsive .ui-panelgrid-cell {
+                text-align: center;
+            }
+
+            .customPanelGrid .ui-panelgrid-content {
+                align-items: center;
+            }
+        </style>
+    </ui:define>
+
+
+    <ui:define name="implementation">
+
+        <div class="card">
+            <h5 style="margin-top:0">Basic</h5>
+            <p:panelGrid columns="2">
+                <f:facet name="header">
+                    <p:graphicImage name="demo/images/misc/kobe.png"/>
+                </f:facet>
+
+                <h:outputText value="Name:"/>
+                <h:outputText value="Kobe Bryant"/>
+
+                <h:outputText value="Team:"/>
+                <h:outputText value="Los Angeles Lakers"/>
+
+                <h:outputText value="Position:"/>
+                <h:outputText value="Shooting Guard"/>
+
+                <h:outputText value="Number:"/>
+                <h:outputText value="24"/>
+            </p:panelGrid>
+        </div>
+
+        <div class="card">
+            <h5>Responsive (Basic)</h5>
+            <p:panelGrid columns="3" layout="grid" styleClass="showcase-text-align-center">
+                <h:outputText value="Content"/>
+                <h:outputText value="Content"/>
+                <h:outputText value="Content"/>
+
+                <h:outputText value="Content"/>
+                <h:outputText value="Content"/>
+                <h:outputText value="Content"/>
+
+                <h:outputText value="Content"/>
+                <h:outputText value="Content"/>
+                <h:outputText value="Content"/>
+            </p:panelGrid>
+        </div>
+
+        <div class="card">
+            <h5>Responsive (ColumnClasses)</h5>
+            <p:panelGrid columns="4" layout="grid" styleClass="showcase-text-align-center"
+                         columnClasses="ui-g-12 ui-md-6 ui-lg-3, ui-g-12 ui-md-6 ui-lg-3, ui-g-12 ui-md-6 ui-lg-3, ui-g-12 ui-md-6 ui-lg-3">
+                <h:outputText value="Content"/>
+                <h:outputText value="Content"/>
+                <h:outputText value="Content"/>
+                <h:outputText value="Content"/>
+
+                <h:outputText value="Content"/>
+                <h:outputText value="Content"/>
+                <h:outputText value="Content"/>
+                <h:outputText value="Content"/>
+
+                <h:outputText value="Content"/>
+                <h:outputText value="Content"/>
+                <h:outputText value="Content"/>
+                <h:outputText value="Content"/>
+            </p:panelGrid>
+        </div>
+
+        <div class="card">
+            <h5>Responsive (PrimeFlex, Basic)</h5>
+            <p:panelGrid columns="3" layout="flex" styleClass="showcase-text-align-center">
+                <h:outputText value="Content"/>
+                <h:outputText value="Content"/>
+                <h:outputText value="Content"/>
+
+                <h:outputText value="Content"/>
+                <h:outputText value="Content"/>
+                <h:outputText value="Content"/>
+
+                <h:outputText value="Content"/>
+                <h:outputText value="Content"/>
+                <h:outputText value="Content"/>
+            </p:panelGrid>
+        </div>
+
+        <div class="card">
+            <h5>Responsive (PrimeFlex, ColumnClasses)</h5>
+            <p:panelGrid columns="4" layout="flex" styleClass="showcase-text-align-center"
+                         columnClasses="p-col-12 p-md-6 p-lg-3, p-col-12 p-md-6 p-lg-3, p-col-12 p-md-6 p-lg-3, p-col-12 p-md-6 p-lg-3">
+                <h:outputText value="Content"/>
+                <h:outputText value="Content"/>
+                <h:outputText value="Content"/>
+                <h:outputText value="Content"/>
+
+                <h:outputText value="Content"/>
+                <h:outputText value="Content"/>
+                <h:outputText value="Content"/>
+                <h:outputText value="Content"/>
+
+                <h:outputText value="Content"/>
+                <h:outputText value="Content"/>
+                <h:outputText value="Content"/>
+                <h:outputText value="Content"/>
+            </p:panelGrid>
+        </div>
+
+        <div class="card">
+            <h5>Responsive (PrimeFlex, p-align-baseline)</h5>
+            <p:panelGrid columns="4" layout="flex"
+                         columnClasses="p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4, p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4"
+                         contentStyleClass="p-align-baseline ui-fluid">
+                <p:outputLabel for="text1" value="Text 1"/>
+                <p:inputText id="text1"/>
+
+                <p:outputLabel for="text2" value="Text 2"/>
+                <p:inputText id="text2"/>
+
+                <p:outputLabel for="date" value="Date"/>
+                <p:datePicker id="date" showIcon="true" style="width:auto"/>
+
+                <p:outputLabel for="checkbox" value="Checkbox"/>
+                <p:selectBooleanCheckbox id="checkbox" itemLabel="Checkbox"/>
+
+                <p:outputLabel for="text3" value="Text 3"/>
+                <p:inputText id="text3"/>
+
+                <p:outputLabel for="selectOne" value="SelectOne (misaligned)"/>
+                <p:selectOneMenu id="selectOne">
+                    <f:selectItem itemLabel="Select One" itemValue=""/>
+                    <f:selectItem itemLabel="Xbox One" itemValue="Xbox One"/>
+                    <f:selectItem itemLabel="PS4" itemValue="PS4"/>
+                    <f:selectItem itemLabel="Wii U" itemValue="Wii U"/>
+                </p:selectOneMenu>
+            </p:panelGrid>
+        </div>
+
+        <div class="card">
+            <h5>Responsive (PrimeFlex, align-items: center)</h5>
+            <p:panelGrid columns="4" layout="flex"
+                         columnClasses="p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4, p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4"
+                         styleClass="customPanelGrid" contentStyleClass="ui-fluid">
+                <p:outputLabel for="textA1" value="Text 1"/>
+                <p:inputText id="textA1"/>
+
+                <p:outputLabel for="textA2" value="Text 2"/>
+                <p:inputText id="textA2"/>
+
+                <p:outputLabel for="dateA" value="Date"/>
+                <p:datePicker id="dateA" showIcon="true" style="width:auto"/>
+
+                <p:outputLabel for="checkboxA" value="Checkbox"/>
+                <p:selectBooleanCheckbox id="checkboxA" itemLabel="Checkbox"/>
+
+                <p:outputLabel for="text3A" value="Text 3"/>
+                <p:inputText id="text3A"/>
+
+                <p:outputLabel for="selectOneA" value="SelectOne"/>
+                <p:selectOneMenu id="selectOneA">
+                    <f:selectItem itemLabel="Select One" itemValue=""/>
+                    <f:selectItem itemLabel="Xbox One" itemValue="Xbox One"/>
+                    <f:selectItem itemLabel="PS4" itemValue="PS4"/>
+                    <f:selectItem itemLabel="Wii U" itemValue="Wii U"/>
+                </p:selectOneMenu>
+            </p:panelGrid>
+        </div>
+
+        <div class="card">
+            <h5>Responsive (PrimeFlex, Default alignment)</h5>
+            <p:panelGrid columns="4" layout="flex"
+                         columnClasses="p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4, p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4"
+                         contentStyleClass="ui-fluid">
+                <p:outputLabel for="textB1" value="Text 1"/>
+                <p:inputText id="textB1"/>
+
+                <p:outputLabel for="textB2" value="Text 2"/>
+                <p:inputText id="textB2"/>
+
+                <p:outputLabel for="dateB" value="Date"/>
+                <p:datePicker id="dateB" showIcon="true" style="width:auto"/>
+
+                <p:outputLabel for="checkboxB" value="Checkbox"/>
+                <p:selectBooleanCheckbox id="checkboxB" itemLabel="Checkbox"/>
+
+                <p:outputLabel for="text3B" value="Text 3"/>
+                <p:inputText id="text3B"/>
+
+                <p:outputLabel for="selectOneB" value="SelectOne"/>
+                <p:selectOneMenu id="selectOneB">
+                    <f:selectItem itemLabel="Select One" itemValue=""/>
+                    <f:selectItem itemLabel="Xbox One" itemValue="Xbox One"/>
+                    <f:selectItem itemLabel="PS4" itemValue="PS4"/>
+                    <f:selectItem itemLabel="Wii U" itemValue="Wii U"/>
+                </p:selectOneMenu>
+            </p:panelGrid>
+        </div>
+
+        <div class="card">
+            <h5>Grouping</h5>
+            <p:panelGrid style="margin-top:20px">
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="7">1995-96 NBA Playoffs</p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="2">Conf. Semifinals</p:column>
+                        <p:column colspan="2">Conf. Finals</p:column>
+                        <p:column colspan="2">NBA Finals</p:column>
+                        <p:column>Champion</p:column>
+                    </p:row>
+
+                </f:facet>
+
+                <p:row>
+                    <p:column style="font-weight: bold;">Seattle</p:column>
+                    <p:column style="font-weight: bold;">4</p:column>
+
+                    <p:column rowspan="2" style="font-weight: bold;">Seattle</p:column>
+                    <p:column rowspan="2" style="font-weight: bold;">4</p:column>
+
+                    <p:column rowspan="5">Seattle</p:column>
+                    <p:column rowspan="5">2</p:column>
+
+                    <p:column rowspan="11" style="font-weight: bold;">Chicago</p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column>Houston</p:column>
+                    <p:column>0</p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column colspan="4" styleClass="ui-widget-header">
+                        <p:spacer height="0"/>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column style="font-weight: bold;">Utah</p:column>
+                    <p:column style="font-weight: bold;">4</p:column>
+
+                    <p:column rowspan="2">Utah</p:column>
+                    <p:column rowspan="2">3</p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column>San Antonio</p:column>
+                    <p:column>2</p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column colspan="6" styleClass="ui-widget-header">
+                        <p:spacer height="0"/>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column style="font-weight: bold;">Chicago</p:column>
+                    <p:column style="font-weight: bold;">4</p:column>
+
+                    <p:column rowspan="2" style="font-weight: bold;">Chicago</p:column>
+                    <p:column rowspan="2" style="font-weight: bold;">4</p:column>
+
+                    <p:column rowspan="5" style="font-weight: bold;">Chicago</p:column>
+                    <p:column rowspan="5" style="font-weight: bold;">4</p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column>New York</p:column>
+                    <p:column>1</p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column colspan="4" styleClass="ui-widget-header">
+                        <p:spacer height="0"/>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column>Atlanta</p:column>
+                    <p:column>1</p:column>
+
+                    <p:column rowspan="2">Orlando</p:column>
+                    <p:column rowspan="2">0</p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column style="font-weight: bold;">Orlando</p:column>
+                    <p:column style="font-weight: bold;">4</p:column>
+                </p:row>
+
+
+                <f:facet name="footer">
+                    <p:row>
+                        <p:column colspan="4" style="text-align: right">
+                            Finals MVP
+                        </p:column>
+                        <p:column colspan="3" rowspan="3">
+                            Michael Jordan (Chicago)
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="4" style="text-align: right">
+                            Season MVP
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="4" style="text-align: right">
+                            Top Scorer
+                        </p:column>
+                    </p:row>
+                </f:facet>
+            </p:panelGrid>
+        </div>
+
+        <div class="card">
+            <h5>Responsive Grid</h5>
+            <style>
+                /* reset on the showcase style*/
+                body .ui-panelgrid .ui-panelgrid-cell {
+                    background-color: transparent;
+                }
+
+                /* example use of styles for your form */
+                .my-heading-row {
+                    background-color: var(--surface-c);
+                    font-weight: bold;
+                }
+            </style>
+
+            <!--
+            Note: Rows and columns can have style, styleClass, and id.
+            Note: A column with a defined styleClass will ignore the styleClass specified in the columnClasses list.
+            Note: Note the use of ui-fluid to ensure that components are sized correctly and the use of ui-panelgrid-blank to remove borders.
+            -->
+            <p:panelGrid columns="4"
+                         columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+                         layout="grid"
+                         styleClass="ui-panelgrid-blank ui-fluid"
+                         style="border:0px none; background-color:transparent;">
+
+                <p:row styleClass="my-heading-row">
+                    Biographic
+                </p:row>
+
+                <p:outputLabel for="@next" value="First Name"/>
+                <p:inputText/>
+
+                <p:outputLabel for="@next" value="Last Name"/>
+                <p:inputText/>
+
+                <p:outputLabel for="@next" value="Phone"/>
+                <p:inputText/>
+
+                <p:outputLabel for="@next" value="Email"/>
+                <p:inputText/>
+
+                <p:outputLabel for="@next" value="Address"/>
+                <p:inputTextarea rows="3"/>
+
+                <p:row id="my-row-id" styleClass="my-heading-row" style="font-weight: bold">
+                    Vehicle
+                </p:row>
+
+                <p:outputLabel for="@next" value="Manufacturer"/>
+                <p:inputText/>
+
+                <p:outputLabel for="@next" value="Series"/>
+                <p:inputText/>
+
+                <p:outputLabel for="@next" value="Color"/>
+                <p:inputText/>
+
+                <p:outputLabel for="idReg" value="Registration Number"/>
+                <p:column style="background-color: lightcoral">
+                    <p:inputText id="idReg"/>
+                </p:column>
+
+                <p:row>
+                    <p:column styleClass="ui-grid-col-12">
+                        <p>It should be noted that the use of @next is not possible for the
+                            <u>Registration Number</u> outputLabel and the <u>for</u> attribute
+                            should utilize an ID as shown in the example. The other outputLabel and inputText fields do not require this
+                            as they are the natural next element whereas
+                            <u>Registration Number</u> is encapsulated in a column.</p>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column styleClass="ui-grid-col-12">
+                        <p:commandButton value="Accept" styleClass="p-mr-2" style="width: auto"/>
+                        <p:commandButton value="Reject" styleClass="p-mr-2" style="width: auto"/>
+                        <p:commandButton value="Refer" style="width: auto" />
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+        </div>
+    </ui:define>
+
+</ui:composition>

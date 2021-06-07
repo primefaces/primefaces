@@ -1,0 +1,43 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Focus
+    </ui:define>
+
+    <ui:define name="description">
+        Focus manages element focus in forms. By default first visible and enabled input element(e.g. text, textarea, select) is chosen to receive focus automatically.
+        It is also possible to explicitly declare the component to receive focus via the for attribute. Focus is also aware of failed validations, first invalid input component receives a focus automatically.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/focus"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:focus context="panel"/>
+
+                <p:messages/>
+
+                <h:panelGrid id="panel" columns="3" cellpadding="7">
+                    <p:outputLabel for="username" value="Username"/>
+                    <p:inputText id="username" value="#{focusView.username}" required="true" label="Firstname">
+                        <f:validateLength minimum="2"/>
+                    </p:inputText>
+                    <p:message for="username"/>
+
+                    <p:outputLabel for="email" value="Email"/>
+                    <p:inputText id="email" value="#{focusView.email}" required="true" label="Surname"/>
+                    <p:message for="email"/>
+                </h:panelGrid>
+
+                <p:commandButton id="submitButton" value="Save" update="@parent" action="#{focusView.save}" styleClass="p-mt-3" />
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

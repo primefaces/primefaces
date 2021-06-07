@@ -1,0 +1,77 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .ui-panel {
+                margin: 15px;
+                width: 300px;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        DragDrop <span class="subitem">Draggable</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Draggable adds dragdrop capability to a component.
+    </ui:define>
+
+    <ui:define name="implementation">
+
+        <div class="card">
+            <p:panel id="pnl" header="Draggable Panel">
+                <h:outputText value="A regular p:panel."/>
+            </p:panel>
+            <p:draggable for="pnl"/>
+
+            <p:panel id="handlepnl" header="Handle">
+                <h:outputText value="Can only be dragged with my header."/>
+            </p:panel>
+            <p:draggable for="handlepnl" handle=".ui-panel-titlebar"/>
+
+            <p:panel id="hpnl" header="Horizontal Only">
+                <h:outputText value="Can only be dragged horizontally."/>
+            </p:panel>
+            <p:draggable for="hpnl" axis="x"/>
+
+            <p:panel id="vpnl" header="Vertical Only">
+                <h:outputText value="Can only be dragged vertically"/>
+            </p:panel>
+            <p:draggable for="vpnl" axis="y"/>
+
+            <p:panel id="rpnl" header="Revert">
+                <h:outputText value="Will be reverted back to my original position"/>
+            </p:panel>
+            <p:draggable for="rpnl" revert="true"/>
+
+            <p:panel id="opnl" header="Opacity">
+                <h:outputText value="Opacity is lower when I'm being dragged"/>
+            </p:panel>
+            <p:draggable for="opnl" opacity="0.3"/>
+
+            <p:panel id="gpnl" header="Grid">
+                <h:outputText value="Dragged in grid mode"/>
+            </p:panel>
+            <p:draggable for="gpnl" grid="20,40"/>
+
+            <p:outputPanel id="restrictPanel" layout="block"
+                           style="width:400px;height:200px;border:1px solid var(--surface-d);margin-bottom:20px">
+                <p:panel id="conpnl" header="Restricted">
+                    <h:outputText value="Restricted to my parent's boundaries"/>
+                </p:panel>
+            </p:outputPanel>
+            <p:draggable for="conpnl" containment="parent"/>
+
+            <p:graphicImage id="pic" name="demo/images/nature/nature10.jpg"/>
+            <p:draggable for="pic"/>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

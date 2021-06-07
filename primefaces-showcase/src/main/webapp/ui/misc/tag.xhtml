@@ -1,0 +1,43 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Tag
+    </ui:define>
+
+    <ui:define name="description">
+        Tag component is used to categorize content.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/tag"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h5>Tags</h5>
+            <p:tag styleClass="p-mr-2" value="Primary"></p:tag>
+            <p:tag styleClass="p-mr-2" severity="success" value="Success"></p:tag>
+            <p:tag styleClass="p-mr-2" severity="info" value="Info"></p:tag>
+            <p:tag styleClass="p-mr-2" severity="warning" value="Warning"></p:tag>
+            <p:tag severity="danger" value="Danger"></p:tag>
+
+            <h5>Pills</h5>
+            <p:tag styleClass="p-mr-2" value="Primary" rounded="true"></p:tag>
+            <p:tag styleClass="p-mr-2" severity="success" value="Success" rounded="true"></p:tag>
+            <p:tag styleClass="p-mr-2" severity="info" value="Info" rounded="true"></p:tag>
+            <p:tag styleClass="p-mr-2" severity="warning" value="Warning" rounded="true"></p:tag>
+            <p:tag severity="danger" value="Danger" rounded="true"></p:tag>
+
+            <h5>Icons</h5>
+            <p:tag styleClass="p-mr-2" icon="pi pi-user" value="Primary"></p:tag>
+            <p:tag styleClass="p-mr-2" icon="pi pi-check" severity="success" value="Success"></p:tag>
+            <p:tag styleClass="p-mr-2" icon="pi pi-info-circle" severity="info" value="Info"></p:tag>
+            <p:tag styleClass="p-mr-2" icon="pi pi-exclamation-triangle" severity="warning" value="Warning"></p:tag>
+            <p:tag icon="pi pi-times" severity="danger" value="Danger"></p:tag>
+        </div>
+    </ui:define>
+
+</ui:composition>
