@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true">
+                <p:autoUpdate />
+            </p:messages>
+
+            <p:chips id="chips" value="#{chips001.values}">
+                <p:ajax event="itemSelect" listener="#{chips001.itemSelect}" />
+                <p:ajax event="itemUnselect" listener="#{chips001.itemUnselect}" />
+            </p:chips>
+
+            <p:commandButton id="button" value="Submit" update="@form" action="#{chips001.submit}"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

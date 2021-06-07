@@ -45,3 +45,4 @@ node_modules/
 /primefaces-selenium/target/
 /primefaces-selenium/primefaces-selenium-core/target/
 /primefaces-selenium/primefaces-selenium-components/target/
+/primefaces-integration-tests/target/

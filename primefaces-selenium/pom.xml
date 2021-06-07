@@ -138,9 +138,6 @@
                     <includes>
                         <include>src/main/java/**</include>
                     </includes>
-                    <excludes>
-                        <exclude>**/json/JSON*.java</exclude>
-                    </excludes>
                 </configuration>
                 <executions>
                     <execution>

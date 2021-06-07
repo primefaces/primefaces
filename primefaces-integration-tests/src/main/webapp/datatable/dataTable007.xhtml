@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true"/>
+
+            <p:dataTable id="datatable" widgetVar="wgtTable" value="#{dataTable007.progLanguages}" var="lang" editable="true"
+                         filteredValue="#{dataTable001.filteredProgLanguages}">
+                <p:ajax event="rowEdit" listener="#{dataTable007.onRowEdit}" update="form:msgs"/>
+                <p:ajax event="rowEditCancel" listener="#{dataTable007.onRowCancel}" update="form:msgs"/>
+
+                <p:column headerText="ID" sortBy="#{lang.id}">
+                    <h:outputText value="#{lang.id}"/>
+                </p:column>
+
+                <p:column headerText="Name" sortBy="#{lang.name}" filterBy="#{lang.name}" filterMatchMode="contains">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{lang.name}"/></f:facet>
+                        <f:facet name="input"><p:inputText value="#{lang.name}" style="width:100%" label="Name"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="First appeared" sortBy="#{lang.firstAppeared}">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{lang.firstAppeared}"/></f:facet>
+                        <f:facet name="input"><p:inputText value="#{lang.firstAppeared}" style="width:100%" label="First appeared"
+                                                           converter="javax.faces.Integer"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column style="width:35px">
+                    <p:rowEditor/>
+                </p:column>
+            </p:dataTable>
+
+            <br/>
+            <p:commandButton id="btnSubmit" value="Submit" update="@form" action="#{dataTable007.submit}"/>
+            <p:commandButton id="btnAddRow" value="Add new row"
+                             action="#{dataTable007.onAddNew()}"
+                             oncomplete="PF('wgtTable').addRow();"
+                             process="@this" update="form:msgs" ignoreAutoUpdate="true"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>
