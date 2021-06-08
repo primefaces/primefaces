@@ -344,6 +344,7 @@
                 <configuration>
                     <consoleOutput>true</consoleOutput>
                     <configLocation>${project.basedir}/../conf/checkstyle.xml</configLocation>
+                    <includeResources>false</includeResources>
                 </configuration>
                 <executions>
                     <execution>
