@@ -91,9 +91,17 @@
         </repository>
     </distributionManagement>
 
+    <repositories>
+        <repository>
+            <id>primefaces-repo</id>
+            <name>PrimeFaces Maven Repository</name>
+            <url>https://repository.primefaces.org</url>
+        </repository>
+    </repositories>
+
     <pluginRepositories>
         <pluginRepository>
-            <id>apache-snapshots</id>
+            <id>apache-snapshots-repo</id>
             <url>https://repository.apache.org/snapshots/</url>
         </pluginRepository>
     </pluginRepositories>
