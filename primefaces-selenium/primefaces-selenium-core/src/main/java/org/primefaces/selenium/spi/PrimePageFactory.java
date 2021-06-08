@@ -34,7 +34,7 @@ public class PrimePageFactory {
 
     public static <T extends AbstractPrimePage> T create(Class<T> page, WebDriver driver) {
         try {
-            T instance = page.newInstance();
+            T instance = page.getDeclaredConstructor().newInstance();
 
             PrimePageFragmentFactory.setMembers(driver, new DefaultElementLocatorFactory(driver), instance);
 

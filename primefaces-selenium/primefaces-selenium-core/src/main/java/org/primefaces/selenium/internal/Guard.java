@@ -189,9 +189,9 @@ public class Guard {
                     .getLoaded();
 
         try {
-            return proxyClass.newInstance();
+            return proxyClass.getDeclaredConstructor().newInstance();
         }
-        catch (InstantiationException | IllegalAccessException e) {
+        catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }

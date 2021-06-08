@@ -81,7 +81,7 @@ public class ConfigProvider {
 
                 String adapter = properties.getProperty("adapter");
                 if (adapter != null && !adapter.trim().isEmpty()) {
-                    this.adapter = (PrimeSeleniumAdapter) Class.forName(adapter).newInstance();
+                    this.adapter = (PrimeSeleniumAdapter) Class.forName(adapter).getDeclaredConstructor().newInstance();
                 }
             }
 

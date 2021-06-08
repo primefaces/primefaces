@@ -23,6 +23,7 @@
  */
 package org.primefaces.selenium;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -168,10 +169,10 @@ public abstract class AbstractPrimePageTest {
     protected void assertIsAt(Class<? extends AbstractPrimePage> pageClass) {
         String location;
         try {
-            location = PrimeSelenium.getUrl((AbstractPrimePage) pageClass.newInstance());
+            location = PrimeSelenium.getUrl((AbstractPrimePage) pageClass.getDeclaredConstructor().newInstance());
         }
-        catch (InstantiationException | IllegalAccessException ex) {
-            throw new RuntimeException(ex);
+        catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
 
         assertIsAt(location);

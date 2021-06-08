@@ -93,6 +93,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
         <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces-selenium-core</artifactId>
