@@ -131,10 +131,10 @@ public class GraphicImageView {
 
     private PieDataset createDataset() {
         DefaultPieDataset dataset = new DefaultPieDataset();
-        dataset.setValue("New York", new Double(45.0));
-        dataset.setValue("London", new Double(15.0));
-        dataset.setValue("Paris", new Double(25.2));
-        dataset.setValue("Berlin", new Double(14.8));
+        dataset.setValue("New York", Double.valueOf(45.0));
+        dataset.setValue("London", Double.valueOf(15.0));
+        dataset.setValue("Paris", Double.valueOf(25.2));
+        dataset.setValue("Berlin", Double.valueOf(14.8));
 
         return dataset;
     }

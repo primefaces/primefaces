@@ -1,16 +1,18 @@
 /target/
+**/target/**
 .settings/
-/nbactions.xml
+nbactions.xml
 .DS_STORE
 .idea/
 *.iml
 *~
-/.classpath
-/.project
+.classpath
+.project
 .vscode/
 .checkstyle
-src/main/type-definitions/src/PrimeFaces-modules.d.ts
-src/main/type-definitions/src/PrimeFaces.d.ts
+nb-configuration.xml
+/primefaces/src/main/type-definitions/src/PrimeFaces-modules.d.ts
+/primefaces/src/main/type-definitions/src/PrimeFaces.d.ts
 
 # Created by https://www.gitignore.io/api/node
 # Edit at https://www.gitignore.io/?templates=node
@@ -42,8 +44,3 @@ node_modules/
 /src/main/resources/META-INF/resources/primefaces-bootstrap4-*/
 
 # End of https://www.gitignore.io/api/node
-/primefaces-selenium/target/
-/primefaces-selenium/primefaces-selenium-core/target/
-/primefaces-selenium/primefaces-selenium-components/target/
-/primefaces-integration-tests/target/
-/primefaces-showcase/target/

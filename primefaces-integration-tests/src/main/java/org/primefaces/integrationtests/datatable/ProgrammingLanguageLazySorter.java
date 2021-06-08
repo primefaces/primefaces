@@ -45,7 +45,8 @@ public class ProgrammingLanguageLazySorter implements Comparator<ProgrammingLang
         this.sortOrder = sortOrder;
     }
 
-    @Override public int compare(ProgrammingLanguage lang1, ProgrammingLanguage lang2) {
+    @Override
+    public int compare(ProgrammingLanguage lang1, ProgrammingLanguage lang2) {
         try {
             Field field = getLangField(sortField);
             Object value1 = field.get(lang1);

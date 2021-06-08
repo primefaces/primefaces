@@ -33,14 +33,14 @@ import java.math.BigDecimal;
 @ViewScoped
 public class InputNumberView implements Serializable {
 
-    private Double input1 = new Double(0);
-    private Double input2 = new Double(0);
-    private Double input3 = new Double(0);
-    private Double input4 = new Double(0);
-    private Double input5 = new Double(0);
-    private Double input6 = new Double(0);
+    private Double input1 = Double.valueOf(0);
+    private Double input2 = Double.valueOf(0);
+    private Double input3 = Double.valueOf(0);
+    private Double input4 = Double.valueOf(0);
+    private Double input5 = Double.valueOf(0);
+    private Double input6 = Double.valueOf(0);
     private Double input7 = null;
-    private BigDecimal input8 = new BigDecimal(0);
+    private BigDecimal input8 = BigDecimal.valueOf(0);
 
     public InputNumberView() {
         input1 = 0d;

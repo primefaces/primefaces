@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.primefaces</groupId>
+        <artifactId>primefaces-parent</artifactId>
+        <version>11.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
 
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces-integration-tests</artifactId>
-    <version>11.0.0-SNAPSHOT</version>
     <packaging>war</packaging>
-
+	
     <name>PrimeFaces Integration Tests</name>
     <description>
         <![CDATA[PrimeFaces regression test suite using Selenium.]]>
@@ -19,14 +26,8 @@
         <primefaces.CSP>false</primefaces.CSP>
         <primefaces.THEME>saga</primefaces.THEME>
         <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
-        <!-- build configuration -->
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <main.basedir>${project.basedir}</main.basedir>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+
         <!-- dependency versions -->
-        <primefaces.version>11.0.0-SNAPSHOT</primefaces.version>
-        <primefaces-selenium.version>11.0.0-SNAPSHOT</primefaces-selenium.version>
         <hibernate-validator.version>7.0.1.Final</hibernate-validator.version>
         <lombok.version>1.18.20</lombok.version>
         <myfaces.version>2.3.9</myfaces.version>
@@ -34,10 +35,6 @@
         <mojarra.version>2.3.16</mojarra.version>
         <junit.version>5.7.2</junit.version>
         <tomee.version>8.0.6</tomee.version>
-        <!-- plugin versions -->
-        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-        <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
-        <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     </properties>
 
     <dependencies>
@@ -45,7 +42,7 @@
         <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
-            <version>${primefaces.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -99,13 +96,13 @@
         <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces-selenium-core</artifactId>
-            <version>${primefaces-selenium.version}</version>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces-selenium-components</artifactId>
-            <version>${primefaces-selenium.version}</version>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -122,37 +119,13 @@
             </testResource>
         </testResources>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin.version}</version>
-                <configuration>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
-            </plugin>
-            <!--
-            <plugin>
-                <groupId>com.diffplug.spotless</groupId>
-                <artifactId>spotless-maven-plugin</artifactId>
-                <version>2.11.1</version>
-                <configuration>
-                    <java>
-                        <licenseHeader>
-                            <file>${main.basedir}/src/conf/license.txt</file>
-                        </licenseHeader>
-                    </java>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>spotless-check</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            -->
+			<plugin>
+				<groupId>com.mycila</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<configuration>
+					<header>../conf/header.txt</header>
+				</configuration>
+			</plugin>
             <plugin>
                 <groupId>org.apache.tomee.maven</groupId>
                 <artifactId>tomee-embedded-maven-plugin</artifactId>
@@ -164,90 +137,54 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>${maven-failsafe-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <includes>
-                        <include>**/*Test</include>
-                    </includes>
-                    <systemPropertyVariables>
-                        <webdriver.headless>${webdriver.headless}</webdriver.headless>
-                        <primefaces.CSP>${primefaces.CSP}</primefaces.CSP>
-                        <primefaces.THEME>${primefaces.THEME}</primefaces.THEME>
-                        <junit.jupiter.execution.parallel.enabled>${junit.jupiter.execution.parallel.enabled}</junit.jupiter.execution.parallel.enabled>
-                        <junit.jupiter.execution.parallel.mode.default>same_thread</junit.jupiter.execution.parallel.mode.default>
-                        <junit.jupiter.execution.parallel.mode.classes.default>concurrent</junit.jupiter.execution.parallel.mode.classes.default>
-                        <junit.jupiter.execution.parallel.config.dynamic.factor>1</junit.jupiter.execution.parallel.config.dynamic.factor>
-                    </systemPropertyVariables>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven-surefire-plugin.version}</version>
                 <configuration>
                     <skip>true</skip>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.mycila</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <version>4.0.rc2</version>
-                <configuration>
-                    <header>../conf/header.txt</header>
-                    <includes>
-                        <include>src/main/java/**</include>
-                        <include>src/test/java/**</include>
-                    </includes>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
+            </plugin> 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.1.2</version>
+                <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <consoleOutput>true</consoleOutput>
-                    <configLocation>${project.basedir}/../conf/checkstyle.xml</configLocation>
+                    <skip>true</skip>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>checkstyle</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                        <configuration>
-                            <failOnViolation>true</failOnViolation>
-                        </configuration>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.puppycrawl.tools</groupId>
-                        <artifactId>checkstyle</artifactId>
-                        <version>8.43</version>
-                    </dependency>
-                </dependencies>
             </plugin>
         </plugins>
     </build>
 
     <profiles>
+		<profile>
+			<id>integration-tests</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-failsafe-plugin</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>integration-test</goal>
+									<goal>verify</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<includes>
+								<include>**/*Test</include>
+							</includes>
+							<systemPropertyVariables>
+								<webdriver.headless>${webdriver.headless}</webdriver.headless>
+								<primefaces.CSP>${primefaces.CSP}</primefaces.CSP>
+								<primefaces.THEME>${primefaces.THEME}</primefaces.THEME>
+								<junit.jupiter.execution.parallel.enabled>${junit.jupiter.execution.parallel.enabled}</junit.jupiter.execution.parallel.enabled>
+								<junit.jupiter.execution.parallel.mode.default>same_thread</junit.jupiter.execution.parallel.mode.default>
+								<junit.jupiter.execution.parallel.mode.classes.default>concurrent</junit.jupiter.execution.parallel.mode.classes.default>
+								<junit.jupiter.execution.parallel.config.dynamic.factor>1</junit.jupiter.execution.parallel.config.dynamic.factor>
+							</systemPropertyVariables>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
         <profile>
             <id>headless</id>
             <properties>
@@ -376,5 +313,4 @@
             </dependencies>
         </profile>
     </profiles>
-
 </project>

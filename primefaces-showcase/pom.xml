@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.primefaces</groupId>
-    <artifactId>primefaces-showcase</artifactId>
-    <version>11.0.0-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <parent>
+		<groupId>org.primefaces</groupId>
+		<artifactId>primefaces-parent</artifactId>
+        <version>11.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
 
+	<groupId>org.primefaces</groupId>
+    <artifactId>primefaces-showcase</artifactId>
+	<packaging>war</packaging>
+	
     <name>PrimeFaces Showcase</name>
-    <url>http://maven.apache.org</url>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <owasp-sanitizer.version>20200713.1</owasp-sanitizer.version>
         <owb.version>2.0.20</owb.version>
         <hibernate-validator.version>6.1.5.Final</hibernate-validator.version>
@@ -207,14 +212,6 @@
         </dependency>
     </dependencies>
 
-    <repositories>
-        <repository>
-            <id>prime-repo</id>
-            <name>PrimeFaces Maven Repository</name>
-            <url>https://repository.primefaces.org</url>
-        </repository>
-    </repositories>
-
     <build>
         <resources>
             <resource>
@@ -232,16 +229,13 @@
         </resources>
 
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.7.0</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
-            </plugin>
+			<plugin>
+				<groupId>com.mycila</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<configuration>
+					<header>../conf/header.txt</header>
+				</configuration>
+			</plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -296,7 +290,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>3.1.0</version>
                 <executions>
                     <execution>
                         <id>copy-java-files</id>
@@ -316,56 +309,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-           <plugin>
-                <groupId>com.mycila</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <version>4.0.rc2</version>
-                <configuration>
-                    <header>../conf/header.txt</header>
-                    <includes>
-                        <include>src/main/java/**</include>
-                        <include>src/test/java/**</include>
-                    </includes>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.1.2</version>
-                <configuration>
-                    <consoleOutput>true</consoleOutput>
-                    <configLocation>${project.basedir}/../conf/checkstyle.xml</configLocation>
-                    <includeResources>false</includeResources>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>checkstyle</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                        <configuration>
-                            <failOnViolation>true</failOnViolation>
-                        </configuration>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.puppycrawl.tools</groupId>
-                        <artifactId>checkstyle</artifactId>
-                        <version>8.43</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
         </plugins>
 
         <extensions>
@@ -377,14 +320,6 @@
         </extensions>
     </build>
 
-    <distributionManagement>
-        <repository>
-            <id>prime-repo</id>
-            <name>PrimeFaces Maven Repository</name>
-            <url>sftp://primefaces.org/var/www/repository</url>
-        </repository>
-    </distributionManagement>
-
     <profiles>
         <profile>
             <id>dev</id>
@@ -393,13 +328,13 @@
             </activation>
             <properties>
                 <jsfVersion>Mojarra-${mojarra.version}</jsfVersion>
-                <primefacesVersion>PrimeFaces-11.0.0-SNAPSHOT</primefacesVersion>
+                <primefacesVersion>PrimeFaces-${project.version}</primefacesVersion>
             </properties>
             <dependencies>
                 <dependency>
                     <groupId>org.primefaces</groupId>
                     <artifactId>primefaces</artifactId>
-                    <version>11.0.0-SNAPSHOT</version>
+                    <version>${project.version}</version>
                 </dependency>
                 <dependency>
                     <groupId>org.glassfish</groupId>
