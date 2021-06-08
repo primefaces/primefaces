@@ -28,10 +28,10 @@ import java.util.Date;
 
 public class Mail implements Serializable {
 
-    public String from;
-    public String subject;
-    public String body;
-    public Date date;
+    private String from;
+    private String subject;
+    private String body;
+    private Date date;
 
     public Mail() {
     }

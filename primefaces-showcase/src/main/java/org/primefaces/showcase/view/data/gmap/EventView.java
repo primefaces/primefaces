@@ -51,7 +51,8 @@ public class EventView implements Serializable {
     public void onPointSelect(PointSelectEvent event) {
         LatLng latlng = event.getLatLng();
 
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Point Selected", "Lat:" + latlng.getLat() + ", Lng:" + latlng.getLng()));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Point Selected",
+                "Lat:" + latlng.getLat() + ", Lng:" + latlng.getLng()));
     }
 
     public void addMessage(FacesMessage message) {

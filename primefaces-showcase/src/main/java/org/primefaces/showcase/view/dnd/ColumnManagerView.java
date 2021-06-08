@@ -43,7 +43,8 @@ import java.util.Map;
 @ViewScoped
 public class ColumnManagerView implements Serializable {
 
-    private final List<String> VALID_COLUMN_KEYS = Arrays.asList("id", "code", "name", "description", "price", "category", "quantity");
+    private static final List<String> VALID_COLUMN_KEYS = Arrays.asList("id", "code", "name", "description",
+            "price", "category", "quantity");
 
     private List<ColumnModel> columns = new ArrayList<>();
 
@@ -138,7 +139,7 @@ public class ColumnManagerView implements Serializable {
         this.service = service;
     }
 
-    static public class ColumnModel implements Serializable {
+    public static class ColumnModel implements Serializable {
 
         private String header;
         private String property;

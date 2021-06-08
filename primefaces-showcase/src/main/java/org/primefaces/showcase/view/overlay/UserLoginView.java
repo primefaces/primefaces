@@ -58,7 +58,7 @@ public class UserLoginView {
         FacesMessage message = null;
         boolean loggedIn = false;
 
-        if (username != null && username.equals("admin") && password != null && password.equals("admin")) {
+        if (username != null && "admin".equals(username) && password != null && "admin".equals(password)) {
             loggedIn = true;
             message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", username);
         }

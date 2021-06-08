@@ -63,7 +63,7 @@ public class UserWizard implements Serializable {
 
     public String onFlowProcess(FlowEvent event) {
         if (skip) {
-            skip = false;	//reset in case user goes back
+            skip = false; //reset in case user goes back
             return "confirm";
         }
         else {

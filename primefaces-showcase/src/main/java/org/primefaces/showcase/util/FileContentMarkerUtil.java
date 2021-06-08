@@ -42,7 +42,7 @@ import org.primefaces.util.LangUtils;
  */
 public class FileContentMarkerUtil {
 
-    private static final FileContentSettings javaFileSettings = new FileContentSettings()
+    private static final FileContentSettings JAVA_FILE_SETTINGS = new FileContentSettings()
             .setType("java")
             .setStartMarkers(
                     Marker.of("@Named"),
@@ -56,7 +56,7 @@ public class FileContentMarkerUtil {
                     Marker.of("EXCLUDE-SOURCE-END").excluded())
             .setEndMarkers(Marker.of("EXCLUDE-SOURCE-START").excluded());
 
-    private static final FileContentSettings xhtmlFileSettings = new FileContentSettings()
+    private static final FileContentSettings XHTML_FILE_SETTINGS = new FileContentSettings()
             .setType("xml")
             .setStartMarkers(
                     Marker.of("EXAMPLE-SOURCE-START").excluded(),
@@ -70,15 +70,19 @@ public class FileContentMarkerUtil {
 
     private static final String SC_PREFIX = "org.primefaces.showcase";
 
+    private FileContentMarkerUtil() {
+
+    }
+
     public static FileContent readFileContent(String fullPathToFile, InputStream is, boolean readBeans) {
         try {
             String fileName = fullPathToFile.substring(fullPathToFile.lastIndexOf("/") + 1);
             if (fullPathToFile.endsWith(".java")) {
-                return readFileContent(fileName, is, javaFileSettings, readBeans);
+                return readFileContent(fileName, is, JAVA_FILE_SETTINGS, readBeans);
             }
 
             if (fullPathToFile.endsWith(".xhtml")) {
-                return readFileContent(fileName, is, xhtmlFileSettings, readBeans);
+                return readFileContent(fileName, is, XHTML_FILE_SETTINGS, readBeans);
             }
 
             throw new UnsupportedOperationException();
@@ -178,7 +182,7 @@ public class FileContentMarkerUtil {
 
         return readFileContent(fileName.substring(fileName.lastIndexOf(".") + 1) + ".java",
                 is,
-                javaFileSettings,
+                JAVA_FILE_SETTINGS,
                 false);
     }
 

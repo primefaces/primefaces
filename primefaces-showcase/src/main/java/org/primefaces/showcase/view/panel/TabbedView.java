@@ -41,10 +41,10 @@ import java.util.List;
 @RequestScoped
 public class TabbedView {
 
-    private List<Product> products;
-
     @Inject
-    ProductService service;
+    private ProductService service;
+
+    private List<Product> products;
 
     @PostConstruct
     public void init() {

@@ -65,7 +65,7 @@ public class App implements Serializable {
     }
 
     public String getInputStyleClass() {
-        return this.inputStyle.equals("filled") ? "ui-input-filled" : "";
+        return "filled".equals(this.inputStyle) ? "ui-input-filled" : "";
     }
 
     public Country getLocale() {

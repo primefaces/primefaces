@@ -170,7 +170,11 @@ public class ScheduleJava8View implements Serializable {
             public void loadEvents(LocalDateTime start, LocalDateTime end) {
                 for (int i = 1; i <= 5; i++) {
                     LocalDateTime random = getRandomDateTime(start);
-                    addEvent(DefaultScheduleEvent.builder().title("Lazy Event " + i).startDate(random).endDate(random.plusHours(3)).build());
+                    addEvent(DefaultScheduleEvent.builder()
+                            .title("Lazy Event " + i)
+                            .startDate(random)
+                            .endDate(random.plusHours(3))
+                            .build());
                 }
             }
         };
@@ -280,17 +284,22 @@ public class ScheduleJava8View implements Serializable {
     }
 
     public void onDateSelect(SelectEvent<LocalDateTime> selectEvent) {
-        event = DefaultScheduleEvent.builder().startDate(selectEvent.getObject()).endDate(selectEvent.getObject().plusHours(1)).build();
+        event = DefaultScheduleEvent.builder()
+                .startDate(selectEvent.getObject())
+                .endDate(selectEvent.getObject().plusHours(1))
+                .build();
     }
 
     public void onEventMove(ScheduleEntryMoveEvent event) {
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event moved", "Delta:" + event.getDeltaAsDuration());
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event moved",
+                "Delta:" + event.getDeltaAsDuration());
 
         addMessage(message);
     }
 
     public void onEventResize(ScheduleEntryResizeEvent event) {
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event resized", "Start-Delta:" + event.getDeltaStartAsDuration() + ", End-Delta: " + event.getDeltaEndAsDuration());
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event resized",
+                "Start-Delta:" + event.getDeltaStartAsDuration() + ", End-Delta: " + event.getDeltaEndAsDuration());
 
         addMessage(message);
     }

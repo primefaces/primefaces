@@ -39,48 +39,46 @@ import java.util.Map;
 @ViewScoped
 public class GroupView implements Serializable {
 
-    private static final String[] manufacturers;
+    private static final String[] MANUFACTORS;
+    private static final String[] PLAYER_NAMES;
+
     private List<Sale> sales;
     private Integer lastYearTotal;
     private Integer thisYearTotal;
-
-    private static final String[] playerNames;
     private List<Integer> years;
     private List<Player> players;
 
     static {
-        manufacturers = new String[10];
-        manufacturers[0] = "Bamboo Watch";
-        manufacturers[1] = "Black Watch";
-        manufacturers[2] = "Blue Band";
-        manufacturers[3] = "Blue T-Shirt";
-        manufacturers[4] = "Brown Purse";
-        manufacturers[5] = "Chakra Bracelet";
-        manufacturers[6] = "Galaxy Earrings";
-        manufacturers[7] = "Game Controller";
-        manufacturers[8] = "Gaming Set";
-        manufacturers[9] = "Gold Phone Case";
-    }
+        MANUFACTORS = new String[10];
+        MANUFACTORS[0] = "Bamboo Watch";
+        MANUFACTORS[1] = "Black Watch";
+        MANUFACTORS[2] = "Blue Band";
+        MANUFACTORS[3] = "Blue T-Shirt";
+        MANUFACTORS[4] = "Brown Purse";
+        MANUFACTORS[5] = "Chakra Bracelet";
+        MANUFACTORS[6] = "Galaxy Earrings";
+        MANUFACTORS[7] = "Game Controller";
+        MANUFACTORS[8] = "Gaming Set";
+        MANUFACTORS[9] = "Gold Phone Case";
 
-    static {
-        playerNames = new String[10];
-        playerNames[0] = "Lionel Messi";
-        playerNames[1] = "Cristiano Ronaldo";
-        playerNames[2] = "Arjen Robben";
-        playerNames[3] = "Franck Ribery";
-        playerNames[4] = "Ronaldinho";
-        playerNames[5] = "Luis Suarez";
-        playerNames[6] = "Sergio Aguero";
-        playerNames[7] = "Zlatan Ibrahimovic";
-        playerNames[8] = "Neymar Jr";
-        playerNames[9] = "Andres Iniesta";
+        PLAYER_NAMES = new String[10];
+        PLAYER_NAMES[0] = "Lionel Messi";
+        PLAYER_NAMES[1] = "Cristiano Ronaldo";
+        PLAYER_NAMES[2] = "Arjen Robben";
+        PLAYER_NAMES[3] = "Franck Ribery";
+        PLAYER_NAMES[4] = "Ronaldinho";
+        PLAYER_NAMES[5] = "Luis Suarez";
+        PLAYER_NAMES[6] = "Sergio Aguero";
+        PLAYER_NAMES[7] = "Zlatan Ibrahimovic";
+        PLAYER_NAMES[8] = "Neymar Jr";
+        PLAYER_NAMES[9] = "Andres Iniesta";
     }
 
     @PostConstruct
     public void init() {
         sales = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            sales.add(new Sale(manufacturers[i], getRandomAmount(), getRandomAmount(), getRandomPercentage(), getRandomPercentage()));
+            sales.add(new Sale(MANUFACTORS[i], getRandomAmount(), getRandomAmount(), getRandomPercentage(), getRandomPercentage()));
         }
 
         years = new ArrayList<>();
@@ -92,7 +90,7 @@ public class GroupView implements Serializable {
 
         players = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            players.add(new Player(playerNames[i], generateRandomGoalStatsData()));
+            players.add(new Player(PLAYER_NAMES[i], generateRandomGoalStatsData()));
         }
     }
 

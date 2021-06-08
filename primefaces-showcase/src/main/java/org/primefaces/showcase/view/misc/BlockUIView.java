@@ -38,12 +38,12 @@ import java.util.List;
 @RequestScoped
 public class BlockUIView {
 
+    @Inject
+    private CustomerService service;
+
     private String firstname;
     private String lastname;
     private List<Customer> customers;
-
-    @Inject
-    CustomerService service;
 
     @PostConstruct
     public void init() {

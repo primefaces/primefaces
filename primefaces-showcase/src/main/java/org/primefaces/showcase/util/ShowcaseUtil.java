@@ -39,6 +39,10 @@ import org.primefaces.component.tabview.Tab;
 
 public class ShowcaseUtil {
 
+    private ShowcaseUtil() {
+
+    }
+
     public static final List<FileContent> getFilesContent(String fullPath, Boolean readBeans) {
         CacheProvider provider = CDI.current().select(ShowcaseCacheProvider.class).get().getCacheProvider();
         List<FileContent> files = (List<FileContent>) provider.get("contents", fullPath);
@@ -75,7 +79,8 @@ public class ShowcaseUtil {
             if (is != null) {
                 return FileContentMarkerUtil.readFileContent(fullPath, is, readBeans);
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new IllegalStateException("Internal error: file " + fullPath + " could not be read", e);
         }
 
@@ -102,7 +107,7 @@ public class ShowcaseUtil {
     private static void flatFileContent(FileContent source, List<FileContent> dest) {
         dest.add(new FileContent(source.getTitle(), source.getValue(), source.getType(), Collections.<FileContent>emptyList()));
 
-        for(FileContent file : source.getAttached()) {
+        for (FileContent file : source.getAttached()) {
             flatFileContent(file, dest);
         }
     }

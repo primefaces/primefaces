@@ -39,16 +39,14 @@ import java.util.List;
 @ViewScoped
 public class ColumnsView implements Serializable {
 
-    private final static List<String> VALID_COLUMN_KEYS = Arrays.asList("name", "size", "type");
-
-    private String columnTemplate = "name size type";
-
-    private List<ColumnModel> columns;
-
-    private TreeNode root;
+    private static final List<String> VALID_COLUMN_KEYS = Arrays.asList("name", "size", "type");
 
     @Inject
     private DocumentService service;
+
+    private String columnTemplate = "name size type";
+    private List<ColumnModel> columns;
+    private TreeNode root;
 
     @PostConstruct
     public void init() {
@@ -67,7 +65,7 @@ public class ColumnsView implements Serializable {
 
     public void createDynamicColumns() {
         String[] columnKeys = columnTemplate.split(" ");
-        columns = new ArrayList<ColumnModel>();
+        columns = new ArrayList<>();
 
         for (String columnKey : columnKeys) {
             String key = columnKey.trim();
@@ -90,7 +88,7 @@ public class ColumnsView implements Serializable {
         return columns;
     }
 
-    static public class ColumnModel implements Serializable {
+    public static class ColumnModel implements Serializable {
 
         private String header;
         private String property;

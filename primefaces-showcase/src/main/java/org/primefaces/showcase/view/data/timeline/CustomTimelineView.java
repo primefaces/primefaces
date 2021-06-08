@@ -43,17 +43,17 @@ public class CustomTimelineView implements Serializable {
 
     @PostConstruct
     public void init() {
-        // set initial start / end dates for the axis of the timeline  
+        // set initial start / end dates for the axis of the timeline
         start = LocalDate.of(-140, 1, 1).atStartOfDay();
         end = LocalDate.of(-140, 1, 2).atStartOfDay();
 
-        // groups  
-        String[] NAMES = new String[]{"User 1", "User 2", "User 3", "User 4", "User 5", "User 6"};
+        // groups
+        String[] names = new String[]{"User 1", "User 2", "User 3", "User 4", "User 5", "User 6"};
 
-        // create timeline model  
+        // create timeline model
         model = new TimelineModel<>();
 
-        for (String name : NAMES) {
+        for (String name : names) {
             LocalDateTime end = start.minusHours(12).withMinute(0).withSecond(0).withNano(0);
 
             for (int i = 0; i < 5; i++) {

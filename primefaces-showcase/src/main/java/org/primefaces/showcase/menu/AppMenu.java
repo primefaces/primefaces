@@ -34,9 +34,10 @@ import java.util.List;
 @ApplicationScoped
 public class AppMenu {
 
-    List<MenuCategory> menuCategories;
-    List<MenuItem> menuItems;
+    private List<MenuCategory> menuCategories;
+    private List<MenuItem> menuItems;
 
+    // CHECKSTYLE:OFF
     @PostConstruct
     public void init() {
         menuCategories = new ArrayList<>();
@@ -604,7 +605,8 @@ public class AppMenu {
         String queryLowerCase = query.toLowerCase();
         List<MenuItem> filteredItems = new ArrayList<>();
         for (MenuItem item : menuItems) {
-            if (item.getUrl() != null && (item.getLabel().toLowerCase().contains(queryLowerCase) || item.getParentLabel().toLowerCase().contains(queryLowerCase))) {
+            if (item.getUrl() != null && (item.getLabel().toLowerCase().contains(queryLowerCase)
+                    || item.getParentLabel().toLowerCase().contains(queryLowerCase))) {
                 filteredItems.add(item);
             }
             if (item.getBadge() != null) {

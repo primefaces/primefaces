@@ -34,7 +34,7 @@ import java.util.Date;
 public class BasicView implements Serializable {
 
     public String handleCommand(String command, String[] params) {
-        if (command.equals("greet")) {
+        if ("greet".equals(command)) {
             if (params.length > 0) {
                 return "Hello " + params[0];
             }
@@ -42,11 +42,10 @@ public class BasicView implements Serializable {
                 return "Hello Stranger";
             }
         }
-        else if (command.equals("date")) {
+        else if ("date".equals(command)) {
             return new Date().toString();
         }
-        else {
-            return command + " not found";
-        }
+
+        return command + " not found";
     }
 }

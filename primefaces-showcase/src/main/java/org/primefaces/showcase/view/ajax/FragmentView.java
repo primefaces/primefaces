@@ -29,7 +29,7 @@ import javax.inject.Named;
 @Named
 @RequestScoped
 public class FragmentView {
-    
+
     private String text;
 
     public String getText() {
@@ -40,4 +40,3 @@ public class FragmentView {
         this.text = text;
     }
 }
-

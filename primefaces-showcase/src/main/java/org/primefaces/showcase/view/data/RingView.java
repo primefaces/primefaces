@@ -37,11 +37,11 @@ import java.util.List;
 @RequestScoped
 public class RingView implements Serializable {
 
+    @Inject
+    private ProductService service;
+
     private List<Product> products;
     private Product selectedProduct;
-
-    @Inject
-    ProductService service;
 
     @PostConstruct
     public void init() {

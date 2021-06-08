@@ -60,11 +60,11 @@ public class ChronolineView {
     }
 
     public static class Event {
-        String status;
-        String date;
-        String icon;
-        String color;
-        String image;
+        private String status;
+        private String date;
+        private String icon;
+        private String color;
+        private String image;
 
         public Event() {
         }

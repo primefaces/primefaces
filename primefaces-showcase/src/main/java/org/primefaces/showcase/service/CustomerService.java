@@ -38,7 +38,7 @@ import java.util.concurrent.ThreadLocalRandom;
 @ApplicationScoped
 public class CustomerService {
 
-    List<Customer> customers;
+    private List<Customer> customers;
     private Country[] countries;
     private Representative[] representatives;
     private String[] names;
@@ -64,20 +64,27 @@ public class CustomerService {
 
         companies = new String[]{"Benton, John B Jr", "Chanay, Jeffrey A Esq", "Chemel, James L Cpa", "Feltz Printing Service",
             "Printing Dimensions", "Chapman, Ross E Esq", "Morlong Associates", "Commercial Press", "Truhlar And Truhlar Attys",
-            "King, Christopher A Esq", "Dorl, James J Esq", "Rangoni Of Florence", "Feiner Bros", "Buckley Miller Wright", "Rousseaux, Michael Esq",};
+            "King, Christopher A Esq", "Dorl, James J Esq", "Rangoni Of Florence", "Feiner Bros", "Buckley Miller Wright",
+            "Rousseaux, Michael Esq"};
 
-        representatives = new Representative[]{new Representative("Amy Elsner", "amyelsner.png"), new Representative("Anna Fali", "annafali.png"),
-            new Representative("Asiya Javayant", "asiyajavayant.png"), new Representative("Bernardo Dominic", "bernardodominic.png"),
-            new Representative("Elwin Sharvill", "elwinsharvill.png"), new Representative("Ioni Bowcher", "ionibowcher.png"),
-            new Representative("Ivan Magalhaes", "ivanmagalhaes.png"), new Representative("Onyama Limba", "onyamalimba.png"),
-            new Representative("Stephen Shaw", "stephenshaw.png"), new Representative("Xuxue Feng", "xuxuefeng.png")};
+        representatives = new Representative[]{
+            new Representative("Amy Elsner", "amyelsner.png"),
+            new Representative("Anna Fali", "annafali.png"),
+            new Representative("Asiya Javayant", "asiyajavayant.png"),
+            new Representative("Bernardo Dominic", "bernardodominic.png"),
+            new Representative("Elwin Sharvill", "elwinsharvill.png"),
+            new Representative("Ioni Bowcher", "ionibowcher.png"),
+            new Representative("Ivan Magalhaes", "ivanmagalhaes.png"),
+            new Representative("Onyama Limba", "onyamalimba.png"),
+            new Representative("Stephen Shaw", "stephenshaw.png"),
+            new Representative("Xuxue Feng", "xuxuefeng.png")};
 
         names = new String[]{"James Butt", "David Darakjy", "Jeanfrancois Venere", "Ivar Paprocki", "Tony Foller",
             "Adams Morasca", "Claire Tollner", "Costa Dilliard", "Juan Wieser", "Maria Marrier", "Jennifer Amigon",
             "Stacey Maclead", "Leja Caldarera", "Morrow Ruta", "Arvin Albares", "Darci Poquette", "Izzy Garufi",
             "Ricardo Gaucho", "Clifford Rim", "Emily Whobrey", "Kadeem Flosi", "Mujtaba Nicka", "Aika Inouye",
-            "Mayumi Kolmetz", "Misaki Royster", "Silvio Slusarski", "Nicolas Iturbide", "Antonio Caudy", ""
-            + "Deepesh Chui", "Aditya Kusko", "Aruna Figeroa", "Jones Vocelka", "Julie Stenseth", "Smith Glick",
+            "Mayumi Kolmetz", "Misaki Royster", "Silvio Slusarski", "Nicolas Iturbide", "Antonio Caudy",
+            "Deepesh Chui", "Aditya Kusko", "Aruna Figeroa", "Jones Vocelka", "Julie Stenseth", "Smith Glick",
             "Johnson Sergi", "Francesco Shinko", "Salvatore Stockham", "Kaitlin Ostrosky", "Faith Gillian",
             "Maisha Rulapaugh", "Jefferson Schemmer", "Leon Oldroyd", "Rodrigues Campain", "Alejandro Perin",
             "Munro Ferencz", "Cody Saylors", "Chavez Briddick", "Sinclair Waycott", "Isabel Bowley", "Octavia Malet",
@@ -87,7 +94,9 @@ public class CustomerService {
     public List<Customer> getCustomers(int number) {
         List<Customer> customers = new ArrayList<>();
         for (int i = 0; i < number; i++) {
-            customers.add(new Customer(i + 1000, getName(), getCompany(), getCountry(), getDate(), CustomerStatus.random(), getActivity(), getRepresentative()));
+            customers.add(
+                    new Customer(i + 1000, getName(), getCompany(), getCountry(), getDate(),
+                            CustomerStatus.random(), getActivity(), getRepresentative()));
         }
         return customers;
     }

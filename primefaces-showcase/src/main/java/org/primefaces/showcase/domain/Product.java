@@ -43,7 +43,8 @@ public class Product implements Serializable {
     public Product() {
     }
 
-    public Product(int id, String code, String name, String description, String image, double price, String category, int quantity, InventoryStatus inventoryStatus, int rating) {
+    public Product(int id, String code, String name, String description, String image, double price, String category, int quantity,
+            InventoryStatus inventoryStatus, int rating) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -56,8 +57,10 @@ public class Product implements Serializable {
         this.rating = rating;
     }
 
+    @Override
     public Product clone() {
-        return new Product(getId(), getCode(), getName(), getDescription(), getImage(), getPrice(), getCategory(), getQuantity(), getInventoryStatus(), getRating());
+        return new Product(getId(), getCode(), getName(), getDescription(), getImage(), getPrice(), getCategory(), getQuantity(),
+                getInventoryStatus(), getRating());
     }
 
     public int getId() {

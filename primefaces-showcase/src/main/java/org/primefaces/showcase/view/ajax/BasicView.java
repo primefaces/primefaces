@@ -39,47 +39,37 @@ import java.util.Map;
 public class BasicView implements Serializable {
 
     private String text1;
-
     private String text2;
-
     private String text3;
-
     private String text4;
-
     private String text5;
-
     private int number;
-
-    private Map<String, Map<String, String>> data = new HashMap<String, Map<String, String>>();
-
+    private Map<String, Map<String, String>> data = new HashMap<>();
     private String country;
-
     private String city;
-
     private Map<String, String> countries;
-
     private Map<String, String> cities;
 
     @PostConstruct
     public void init() {
-        countries = new HashMap<String, String>();
+        countries = new HashMap<>();
         countries.put("USA", "USA");
         countries.put("Germany", "Germany");
         countries.put("Brazil", "Brazil");
 
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put("New York", "New York");
         map.put("San Francisco", "San Francisco");
         map.put("Denver", "Denver");
         data.put("USA", map);
 
-        map = new HashMap<String, String>();
+        map = new HashMap<>();
         map.put("Berlin", "Berlin");
         map.put("Munich", "Munich");
         map.put("Frankfurt", "Frankfurt");
         data.put("Germany", map);
 
-        map = new HashMap<String, String>();
+        map = new HashMap<>();
         map.put("Sao Paulo", "Sao Paulo");
         map.put("Rio de Janerio", "Rio de Janerio");
         map.put("Salvador", "Salvador");
@@ -167,11 +157,11 @@ public class BasicView implements Serializable {
     }
 
     public void onCountryChange() {
-        if (country != null && !country.equals("")) {
+        if (country != null && !"".equals(country)) {
             cities = data.get(country);
         }
         else {
-            cities = new HashMap<String, String>();
+            cities = new HashMap<>();
         }
     }
 

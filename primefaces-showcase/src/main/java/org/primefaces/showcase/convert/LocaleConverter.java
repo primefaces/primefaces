@@ -42,7 +42,7 @@ import org.primefaces.showcase.service.CountryService;
 public class LocaleConverter implements Converter<Country> {
 
     @Inject
-    CountryService countryService;
+    private CountryService countryService;
 
     @Override
     public Country getAsObject(FacesContext context, UIComponent component, String value) {

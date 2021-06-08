@@ -99,7 +99,8 @@ public class OrganigramView implements Serializable {
 
     public void nodeDragDropListener(OrganigramNodeDragDropEvent event) {
         FacesMessage message = new FacesMessage();
-        message.setSummary("Node '" + event.getOrganigramNode().getData() + "' moved from " + event.getSourceOrganigramNode().getData() + " to '" + event.getTargetOrganigramNode().getData() + "'");
+        message.setSummary("Node '" + event.getOrganigramNode().getData()
+                + "' moved from " + event.getSourceOrganigramNode().getData() + " to '" + event.getTargetOrganigramNode().getData() + "'");
         message.setSeverity(FacesMessage.SEVERITY_INFO);
 
         FacesContext.getCurrentInstance().addMessage(null, message);

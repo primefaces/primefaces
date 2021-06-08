@@ -41,14 +41,11 @@ import java.util.List;
 @ViewScoped
 public class ColumnsView implements Serializable {
 
-    private final static List<String> VALID_COLUMN_KEYS = Arrays.asList("code", "name", "category", "quantity");
+    private static final List<String> VALID_COLUMN_KEYS = Arrays.asList("code", "name", "category", "quantity");
 
     private String columnTemplate = "code name quantity";
-
     private List<ColumnModel> columns;
-
     private List<Product> products;
-
     private List<Product> filteredProducts;
 
     @Inject
@@ -111,7 +108,7 @@ public class ColumnsView implements Serializable {
         createDynamicColumns();
     }
 
-    static public class ColumnModel implements Serializable {
+    public static class ColumnModel implements Serializable {
 
         private String header;
         private String property;

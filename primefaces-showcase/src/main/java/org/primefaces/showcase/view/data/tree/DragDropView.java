@@ -102,7 +102,8 @@ public class DragDropView implements Serializable {
         TreeNode dropNode = event.getDropNode();
         int dropIndex = event.getDropIndex();
 
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Dragged " + dragNode.getData(), "Dropped on " + dropNode.getData() + " at " + dropIndex);
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
+                "Dragged " + dragNode.getData(), "Dropped on " + dropNode.getData() + " at " + dropIndex);
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 }

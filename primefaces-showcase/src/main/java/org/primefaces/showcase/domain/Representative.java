@@ -30,8 +30,8 @@ public class Representative implements Serializable, Comparable<Representative> 
 
     private static final long serialVersionUID = 1L;
 
-    public String name;
-    public String image;
+    private String name;
+    private String image;
 
     public Representative() {
     }

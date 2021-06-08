@@ -29,19 +29,20 @@ import java.util.Objects;
 
 public class Customer implements Serializable {
 
-    public int id;
-    public String name;
-    public String company;
-    public Country country;
-    public LocalDate date;
-    public CustomerStatus status;
-    public int activity;
-    public Representative representative;
+    private int id;
+    private String name;
+    private String company;
+    private Country country;
+    private LocalDate date;
+    private CustomerStatus status;
+    private int activity;
+    private Representative representative;
 
     public Customer() {
     }
 
-    public Customer(int id, String name, String company, Country country, LocalDate date, CustomerStatus status, int activity, Representative representative) {
+    public Customer(int id, String name, String company, Country country, LocalDate date, CustomerStatus status, int activity,
+            Representative representative) {
         this.id = id;
         this.name = name;
         this.company = company;

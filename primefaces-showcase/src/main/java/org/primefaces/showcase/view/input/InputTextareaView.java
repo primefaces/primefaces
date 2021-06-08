@@ -38,9 +38,9 @@ import java.util.List;
 public class InputTextareaView {
 
     public List<String> completeArea(String query) {
-        List<String> results = new ArrayList<String>();
+        List<String> results = new ArrayList<>();
 
-        if (query.equals("PrimeFaces")) {
+        if ("PrimeFaces".equals(query)) {
             results.add("PrimeFaces Rocks!!!");
             results.add("PrimeFaces has 100+ components.");
             results.add("PrimeFaces is lightweight.");
