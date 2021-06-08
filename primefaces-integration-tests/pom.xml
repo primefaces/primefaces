@@ -169,6 +169,7 @@
                             </execution>
                         </executions>
                         <configuration>
+							<skip>false</skip>
                             <includes>
                                 <include>**/*Test</include>
                             </includes>
