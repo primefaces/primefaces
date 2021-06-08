@@ -34,3 +34,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Integration Tests
+        if: github.repository == 'primefaces/primefaces' && github.ref == 'refs/heads/master' && matrix.java == 11
+        run: mvn clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,headless,chrome,theme-saga,myfaces-2.3.x
