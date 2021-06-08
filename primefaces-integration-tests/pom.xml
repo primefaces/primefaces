@@ -14,7 +14,7 @@
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces-integration-tests</artifactId>
     <packaging>war</packaging>
-	
+
     <name>PrimeFaces Integration Tests</name>
     <description>
         <![CDATA[PrimeFaces regression test suite using Selenium.]]>
@@ -120,13 +120,13 @@
             </testResource>
         </testResources>
         <plugins>
-			<plugin>
-				<groupId>com.mycila</groupId>
-				<artifactId>license-maven-plugin</artifactId>
-				<configuration>
-					<header>../conf/header.txt</header>
-				</configuration>
-			</plugin>
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <configuration>
+                    <header>../conf/header.txt</header>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.tomee.maven</groupId>
                 <artifactId>tomee-embedded-maven-plugin</artifactId>
@@ -149,43 +149,48 @@
                     <skip>true</skip>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.1</version>
+            </plugin>
         </plugins>
     </build>
 
     <profiles>
-		<profile>
-			<id>integration-tests</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-failsafe-plugin</artifactId>
-						<executions>
-							<execution>
-								<goals>
-									<goal>integration-test</goal>
-									<goal>verify</goal>
-								</goals>
-							</execution>
-						</executions>
-						<configuration>
-							<includes>
-								<include>**/*Test</include>
-							</includes>
-							<systemPropertyVariables>
-								<webdriver.headless>${webdriver.headless}</webdriver.headless>
-								<primefaces.CSP>${primefaces.CSP}</primefaces.CSP>
-								<primefaces.THEME>${primefaces.THEME}</primefaces.THEME>
-								<junit.jupiter.execution.parallel.enabled>${junit.jupiter.execution.parallel.enabled}</junit.jupiter.execution.parallel.enabled>
-								<junit.jupiter.execution.parallel.mode.default>same_thread</junit.jupiter.execution.parallel.mode.default>
-								<junit.jupiter.execution.parallel.mode.classes.default>concurrent</junit.jupiter.execution.parallel.mode.classes.default>
-								<junit.jupiter.execution.parallel.config.dynamic.factor>1</junit.jupiter.execution.parallel.config.dynamic.factor>
-							</systemPropertyVariables>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
+        <profile>
+            <id>integration-tests</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <includes>
+                                <include>**/*Test</include>
+                            </includes>
+                            <systemPropertyVariables>
+                                <webdriver.headless>${webdriver.headless}</webdriver.headless>
+                                <primefaces.CSP>${primefaces.CSP}</primefaces.CSP>
+                                <primefaces.THEME>${primefaces.THEME}</primefaces.THEME>
+                                <junit.jupiter.execution.parallel.enabled>${junit.jupiter.execution.parallel.enabled}</junit.jupiter.execution.parallel.enabled>
+                                <junit.jupiter.execution.parallel.mode.default>same_thread</junit.jupiter.execution.parallel.mode.default>
+                                <junit.jupiter.execution.parallel.mode.classes.default>concurrent</junit.jupiter.execution.parallel.mode.classes.default>
+                                <junit.jupiter.execution.parallel.config.dynamic.factor>1</junit.jupiter.execution.parallel.config.dynamic.factor>
+                            </systemPropertyVariables>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
         <profile>
             <id>headless</id>
             <properties>

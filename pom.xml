@@ -71,13 +71,13 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
 
-        <npm.token></npm.token>
-        <npm.username></npm.username>
-        <npm.password></npm.password>
-        <npm.email></npm.email>
+        <npm.token/>
+        <npm.username/>
+        <npm.password/>
+        <npm.email/>
     </properties>
 
     <distributionManagement>
@@ -106,15 +106,15 @@
         </pluginRepository>
     </pluginRepositories>
 
-	<modules>
-		<module>primefaces</module>
-		<module>primefaces-showcase</module>
-		<module>primefaces-selenium</module>
-		<module>primefaces-integration-tests</module>
-	</modules>
+    <modules>
+        <module>primefaces</module>
+        <module>primefaces-showcase</module>
+        <module>primefaces-selenium</module>
+        <module>primefaces-integration-tests</module>
+    </modules>
 
     <build>
-		<plugins>
+        <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -159,7 +159,7 @@
                     </execution>
                 </executions>
             </plugin>
-			
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -178,7 +178,7 @@
                     </execution>
                 </executions>
             </plugin>
-	
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -197,26 +197,26 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-				<version>2.22.2</version>
-			</plugin>
-			
+                <version>2.22.2</version>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.2</version>
             </plugin>
 
-			<plugin>
-				<groupId>org.sonatype.plugins</groupId>
-				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>1.6.8</version>
-				<extensions>true</extensions>
-				<configuration>
-					<serverId>ossrh</serverId>
-					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-					<autoReleaseAfterClose>true</autoReleaseAfterClose>
-				</configuration>
-			</plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.8</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
 
             <plugin>
                 <groupId>com.mycila</groupId>
@@ -226,7 +226,7 @@
                     <header>${project.basedir}/conf/header.txt</header>
                     <includes>
                         <include>src/main/java/**</include>
-						<include>src/test/java/**</include>
+                        <include>src/test/java/**</include>
                     </includes>
                 </configuration>
                 <executions>
@@ -245,7 +245,7 @@
                 <configuration>
                     <consoleOutput>true</consoleOutput>
                     <configLocation>/conf/checkstyle.xml</configLocation>
-					<includeResources>false</includeResources>
+                    <includeResources>false</includeResources>
                 </configuration>
                 <executions>
                     <execution>
@@ -271,5 +271,31 @@
         </plugins>
     </build>
 
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>3.0.1</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>gpg2</executable>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
