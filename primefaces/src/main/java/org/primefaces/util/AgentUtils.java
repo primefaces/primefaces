@@ -45,6 +45,10 @@ public class AgentUtils {
         }
     }
 
+    public static boolean isFirefox(FacesContext context) {
+        return userAgentContains(context, "Firefox");
+    }
+
     public static boolean isEdge(FacesContext context) {
         return userAgentContains(context, "Edge");
     }

@@ -23,9 +23,11 @@
  */
 package org.primefaces.application.resource;
 
+import org.primefaces.util.AgentUtils;
 import org.primefaces.util.LangUtils;
 
 import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.context.ResponseWriterWrapper;
 import java.io.IOException;
@@ -35,6 +37,10 @@ import java.util.Map;
 import java.util.UUID;
 
 public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
+
+    private static final String SCRIPT_TAG = "script";
+    private static final String BODY_TAG = "body";
+    private static final String HTML_TAG = "html";
 
     private final ResponseWriter wrapped;
     private final MoveScriptsToBottomState state;
@@ -154,9 +160,16 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
 
     @Override
     public void startElement(String name, UIComponent component) throws IOException {
-        if ("script".equalsIgnoreCase(name)) {
+        if (SCRIPT_TAG.equalsIgnoreCase(name)) {
             inScript = true;
             scriptType = "text/javascript";
+        }
+        else if (BODY_TAG.equalsIgnoreCase(name) && isFirefox()) {
+            // GitHub #7395 FireFox FOUC Fix
+            getWrapped().startElement(name, component);
+            getWrapped().startElement(SCRIPT_TAG, null);
+            getWrapped().writeText("/*FIREFOX_FOUC_FIX*/", null);
+            getWrapped().endElement(SCRIPT_TAG);
         }
         else {
             getWrapped().startElement(name, component);
@@ -165,7 +178,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
 
     @Override
     public void endElement(String name) throws IOException {
-        if ("script".equalsIgnoreCase(name)) {
+        if (SCRIPT_TAG.equalsIgnoreCase(name)) {
             inScript = false;
 
             state.addInline(scriptType, inline);
@@ -175,7 +188,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
             include.setLength(0);
             inline.setLength(0);
         }
-        else if ("body".equalsIgnoreCase(name) || ("html".equalsIgnoreCase(name) && !scriptsRendered)) {
+        else if (BODY_TAG.equalsIgnoreCase(name) || (HTML_TAG.equalsIgnoreCase(name) && !scriptsRendered)) {
 
             // write script includes
             for (Map.Entry<String, List<String>> entry : state.getIncludes().entrySet()) {
@@ -185,10 +198,10 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
                 for (int i = 0; i < includes.size(); i++) {
                     String src = includes.get(i);
                     if (src != null && !src.isEmpty()) {
-                        getWrapped().startElement("script", null);
+                        getWrapped().startElement(SCRIPT_TAG, null);
                         getWrapped().writeAttribute("type", type, null);
                         getWrapped().writeAttribute("src", src, null);
-                        getWrapped().endElement("script");
+                        getWrapped().endElement(SCRIPT_TAG);
                     }
                 }
             }
@@ -202,11 +215,11 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
                 String merged = mergeAndMinimizeInlineScripts(id, type, inlines);
 
                 if (LangUtils.isNotBlank(merged)) {
-                    getWrapped().startElement("script", null);
+                    getWrapped().startElement(SCRIPT_TAG, null);
                     getWrapped().writeAttribute("id", id, null);
                     getWrapped().writeAttribute("type", type, null);
                     getWrapped().write(merged);
-                    getWrapped().endElement("script");
+                    getWrapped().endElement(SCRIPT_TAG);
                 }
             }
 
@@ -267,5 +280,9 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
                 scriptType = value;
             }
         }
+    }
+
+    protected boolean isFirefox() {
+        return AgentUtils.isFirefox(FacesContext.getCurrentInstance());
     }
 }

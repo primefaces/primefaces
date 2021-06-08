@@ -28,6 +28,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
+import org.mockito.Mockito;
 
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
@@ -52,6 +53,8 @@ public class MoveScriptsToBottomResponseWriterTest {
         wrappedWriter = mock(ResponseWriter.class);
         state = new MoveScriptsToBottomState();
         writer = new MoveScriptsToBottomResponseWriter(wrappedWriter, state);
+        writer = Mockito.spy(writer);
+        Mockito.doReturn(Boolean.FALSE).when(writer).isFirefox();
     }
 
     @Test
