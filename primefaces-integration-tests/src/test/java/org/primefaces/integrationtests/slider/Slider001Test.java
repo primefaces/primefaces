@@ -186,7 +186,6 @@ public class Slider001Test extends AbstractPrimePageTest {
     public void testMinimum(Page page) {
         // Arrange
         Slider slider = page.sliderfloat;
-        InputText inputText = page.inputFloat;
         Assertions.assertEquals(3.14f, slider.getValue().floatValue());
 
         // Act - add value
@@ -206,7 +205,6 @@ public class Slider001Test extends AbstractPrimePageTest {
     public void testMaximum(Page page) {
         // Arrange
         Slider slider = page.sliderfloat;
-        InputText inputText = page.inputFloat;
         Assertions.assertEquals(3.14f, slider.getValue().floatValue());
 
         // Act - add value

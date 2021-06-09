@@ -74,6 +74,7 @@ public class Dialog001Test extends AbstractPrimePageTest {
     public void testBasicOk(Page page) {
         // Arrange
         Dialog dialog = page.dialog;
+        Assertions.assertTrue(dialog.isVisible());
 
         // Act
         page.buttonShowDialog.click();
@@ -88,6 +89,7 @@ public class Dialog001Test extends AbstractPrimePageTest {
     public void testClose(Page page) {
         // Arrange
         Dialog dialog = page.dialog;
+        Assertions.assertTrue(dialog.isVisible());
         page.buttonShowDialog.click();
         page.inputText2Dialog.setValue("test123");
 
