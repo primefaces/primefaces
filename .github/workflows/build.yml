@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    if: github.event_name != 'schedule'
+    if: github.event_name == 'schedule'
     runs-on: ubuntu-latest
     name: Java ${{ matrix.java }}
     strategy:
@@ -43,7 +43,7 @@ jobs:
         run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,headless,firefox,theme-saga,myfaces-2.3.x
 
   nightly:
-    if: github.event_name == 'schedule'
+    if: github.event_name != 'schedule'
     runs-on: macos-11
     name: Java ${{ matrix.java }}, Profile ${{ matrix.profile }}
     strategy:
