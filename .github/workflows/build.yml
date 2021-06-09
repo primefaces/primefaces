@@ -67,6 +67,6 @@ jobs:
       - name: Log github.ref
         run: echo "${{ github.ref }}"
       - name: Build with Maven
-        run: mvn clean install -Psecurity-checks -Pjsdoc -Dmaven.javadoc.skip=true -Djsdoc.skip.typedoc=true --batch-mode --show-version
+        run: mvn clean install --batch-mode --show-version
       - name: Integration Tests
         run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -P${{ matrix.profile }}
