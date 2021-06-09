@@ -31795,6 +31795,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Detects if mobile browser and sets optimized interface for touch devices. Default is true.]]>
+            </description>
+            <name>autoDetectDisplay</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[When enabled, calendar overlay is displayed as optimized for touch devices. Default is false.]]>
             </description>
             <name>touchUI</name>
