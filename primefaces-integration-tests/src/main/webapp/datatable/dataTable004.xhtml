@@ -39,6 +39,7 @@
 
             <p:commandButton id="button" value="Submit" update="@form" action="#{dataTable004.submit}"/>
             <p:commandButton id="buttonMsgOnly" value="Submit - update card only" process="form:datatable" update="form:card"/>
+            <p:commandButton id="buttonUnselect" value="Unselect" update="@form" action="#{dataTable004.unselectRow}"/>
 
             <p:card id="card" style="width: 25rem; margin-top: 2em">
                 <f:facet name="title">
@@ -48,7 +49,7 @@
                     #{dataTable004.selectedProgLanguage.name}
                 </p:outputPanel>
                 <p:outputPanel rendered="#{empty dataTable004.selectedProgLanguage}">
-                    no ProgrammingLanguage selected
+                    NO ProgrammingLanguage selected
                 </p:outputPanel>
             </p:card>
         </h:form>

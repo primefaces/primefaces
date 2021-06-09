@@ -82,8 +82,8 @@ public class DataTable004Test extends AbstractDataTableTest {
         page.button.click();
 
         // Assert (no row selected)
-        dataTable.getRows().forEach(r -> Assertions.assertEquals("false", r.getWebElement().getAttribute("aria-selected")));
-        assertMessage(page, "no ProgrammingLanguage selected", "");
+        dataTable.getRows().forEach(r -> Assertions.assertEquals("false", r.getWebElement().getAttribute("aria-selected"), "Found a selected row!"));
+        assertMessage(page, "NO ProgrammingLanguage selected", "");
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
@@ -100,7 +100,7 @@ public class DataTable004Test extends AbstractDataTableTest {
         page.buttonMsgOnly.click();
 
         // Assert
-        WebElement card = page.getWebDriver().findElement(By.id("form:card"));
+        WebElement card = page.card;
         Assertions.assertTrue(card.getText().contains(languages.get(2).getName()));
 
         // Act - unselect row
@@ -109,9 +109,34 @@ public class DataTable004Test extends AbstractDataTableTest {
         page.buttonMsgOnly.click();
 
         // Assert (no row selected)
-        dataTable.getRows().forEach(r -> Assertions.assertEquals("false", r.getWebElement().getAttribute("aria-selected")));
-        card = page.getWebDriver().findElement(By.id("form:card"));
-        Assertions.assertTrue(card.getText().contains("no ProgrammingLanguage selected"));
+        dataTable.getRows().forEach(r -> Assertions.assertEquals("false", r.getWebElement().getAttribute("aria-selected"), "Found a selected row!"));
+        Assertions.assertTrue(card.getText().contains("NO ProgrammingLanguage selected"));
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(3)
+    @DisplayName("DataTable: selection - single - unselect programmatically; https://github.com/primefaces/primefaces/issues/7391")
+    public void testSelectionSingleUnselectProgrammatically(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        Assertions.assertNotNull(dataTable);
+
+        // Act
+        dataTable.getCell(2, 0).getWebElement().click();
+        page.buttonMsgOnly.click();
+
+        // Assert
+        WebElement card = page.card;
+        Assertions.assertTrue(card.getText().contains(languages.get(2).getName()));
+
+        // Act - unselect row programmatically
+        page.buttonUnselect.click();
+
+        // Assert (no row selected)
+        assertMessage(page, "NO ProgrammingLanguage selected", "");
+        dataTable.getRows().forEach(r -> Assertions.assertEquals("false", r.getWebElement().getAttribute("aria-selected"), "Found a selected row!"));
+        Assertions.assertTrue(card.getText().contains("NO ProgrammingLanguage selected"));
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
@@ -138,6 +163,12 @@ public class DataTable004Test extends AbstractDataTableTest {
 
         @FindBy(id = "form:buttonMsgOnly")
         CommandButton buttonMsgOnly;
+
+        @FindBy(id = "form:buttonUnselect")
+        CommandButton buttonUnselect;
+
+        @FindBy(id = "form:card")
+        WebElement card;
 
         @Override
         public String getLocation() {
