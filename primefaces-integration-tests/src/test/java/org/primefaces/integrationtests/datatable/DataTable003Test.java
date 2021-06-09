@@ -107,12 +107,6 @@ public class DataTable003Test extends AbstractDataTableTest {
         assertRows(dataTable, langsSorted);
     }
 
-    private void logColumnIconCssClasses(WebElement eltSortName, WebElement eltSortFirstAppeared) {
-        System.out.println(
-                    "eltSortFirstAppeared; css-classes: " + eltSortFirstAppeared.findElement(By.className("ui-sortable-column-icon")).getAttribute("class"));
-        System.out.println("eltSortName; css-classes: " + eltSortName.findElement(By.className("ui-sortable-column-icon")).getAttribute("class"));
-    }
-
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);

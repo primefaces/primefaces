@@ -11,7 +11,6 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <groupId>org.primefaces</groupId>
     <artifactId>primefaces-integration-tests</artifactId>
     <packaging>war</packaging>
 
@@ -170,7 +169,7 @@
                             </execution>
                         </executions>
                         <configuration>
-			    <skip>false</skip>
+                            <skip>false</skip>
                             <includes>
                                 <include>**/*Test</include>
                             </includes>

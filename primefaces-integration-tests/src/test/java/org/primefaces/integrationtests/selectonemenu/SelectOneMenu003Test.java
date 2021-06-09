@@ -23,6 +23,8 @@
  */
 package org.primefaces.integrationtests.selectonemenu;
 
+import java.util.List;
+
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -33,11 +35,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.SelectOneMenu;
-
-import java.util.List;
 
 public class SelectOneMenu003Test extends AbstractPrimePageTest {
 

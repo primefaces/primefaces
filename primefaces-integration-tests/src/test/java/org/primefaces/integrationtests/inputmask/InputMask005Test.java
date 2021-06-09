@@ -23,7 +23,6 @@
  */
 package org.primefaces.integrationtests.inputmask;
 
-import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
@@ -42,6 +41,7 @@ public class InputMask005Test extends AbstractInputMaskTest {
     public void testReadonlyDisabled(final Page page) {
         // Arrange
         final InputMask inputMask = page.inputMask;
+        Assertions.assertNotNull(inputMask);
 
         // Act
         page.button.click();

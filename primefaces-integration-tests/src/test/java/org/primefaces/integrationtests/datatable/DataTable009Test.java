@@ -177,6 +177,7 @@ public class DataTable009Test extends AbstractDataTableTest {
 
         int rowNumber = 0;
         for (Row row : dataTable.getRows()) {
+        	Assertions.assertNotNull(row);
             SelectOneMenu firstAppeared = PrimeSelenium.createFragment(SelectOneMenu.class, By.id("form:datatable:" + rowNumber + ":firstAppeared"));
             Assertions.assertEquals(firstAppearedExpected, firstAppeared.getSelectedLabel());
             rowNumber++;
