@@ -44,7 +44,7 @@ jobs:
 
   nightly:
     if: github.event_name != 'schedule'
-    runs-on: macos-11.0
+    runs-on: windows-latest
     name: Java ${{ matrix.java }}, Profile ${{ matrix.profile }}
     strategy:
       matrix:
