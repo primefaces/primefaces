@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     name: Java ${{ matrix.java }}
-    if: ${{ github.event_name != schedule }}
+    if: github.event_name != 'schedule'
     strategy:
       matrix:
         java: [8, 11, 16]
@@ -45,7 +45,7 @@ jobs:
   nightly:
     runs-on: macos-11
     name: Java ${{ matrix.java }}, Profile ${{ matrix.profile }}
-    if: ${{ github.event_name == schedule }}
+    if: github.event_name == 'schedule'
     strategy:
       matrix:
         java: [8, 11, 16]
