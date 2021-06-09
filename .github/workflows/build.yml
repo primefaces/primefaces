@@ -36,4 +36,4 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Integration Tests
         if: matrix.java == 11
-        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,headless,chrome,theme-saga,myfaces-2.3.x
+        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,headless,firefox,theme-saga,myfaces-2.3.x
