@@ -201,7 +201,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     applyMask: function() {
-        if (this.cfg.inline || this.input.prop('readonly')) {
+        if (this.cfg.inline || this.input.is('[readonly]') || this.input.is(':disabled')) {
             return;
         }
         if (this.cfg.mask) {
