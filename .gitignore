@@ -14,6 +14,9 @@ nb-configuration.xml
 /primefaces/src/main/type-definitions/src/PrimeFaces-modules.d.ts
 /primefaces/src/main/type-definitions/src/PrimeFaces.d.ts
 
+# Selenium Drivers
+*.exe
+
 # Created by https://www.gitignore.io/api/node
 # Edit at https://www.gitignore.io/?templates=node
 
