@@ -1127,6 +1127,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @param {string} value Value of the option to select.
      */
     selectValue : function(value) {
+        if(!this.items || this.items.length === 0) {
+           this.callHandleMethod(null, null); 
+        }
+
         var option = this.options.filter('[value="' + $.escapeSelector(value) + '"]');
 
         this.selectItem(this.items.eq(option.index()), true);
@@ -1365,7 +1369,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
             var interval = setInterval(function() {
                 if($this.isDynamicLoaded) {
-                    handleMethod.call($this, event);
+                    if (handleMethod) {
+                        handleMethod.call($this, event);
+                    }
 
                     clearInterval(interval);
                 }
@@ -1374,7 +1380,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         else {
             this.renderPanelContentFromHiddenSelect(true);
 
-            handleMethod.call(this, event);
+            if (handleMethod) {
+                handleMethod.call(this, event);
+            }
         }
     },
 
