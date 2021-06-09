@@ -507,29 +507,53 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     bindButtonEvents: function() {
-        var _self = this;
+        var $this = this;
 
         //visuals
         PrimeFaces.skinButton(this.jq.find('.ui-button'));
 
         //events
-        $(this.jqId + ' .ui-picklist-button-add').on("click", function() {_self.add();});
-        $(this.jqId + ' .ui-picklist-button-add-all').on("click", function() {_self.addAll();});
-        $(this.jqId + ' .ui-picklist-button-remove').on("click", function() {_self.remove();});
-        $(this.jqId + ' .ui-picklist-button-remove-all').on("click", function() {_self.removeAll();});
+        $(this.jqId + ' .ui-picklist-button-add').on("click", function() {
+            $this.add();
+        });
+        $(this.jqId + ' .ui-picklist-button-add-all').on("click", function() {
+            $this.addAll();
+        });
+        $(this.jqId + ' .ui-picklist-button-remove').on("click", function() {
+            $this.remove();
+        });
+        $(this.jqId + ' .ui-picklist-button-remove-all').on("click", function() {
+            $this.removeAll();
+        });
 
         if(this.cfg.showSourceControls) {
-            $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-up').on("click", function() {_self.moveUp(_self.sourceList);});
-            $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-top').on("click", function() {_self.moveTop(_self.sourceList);});
-            $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-down').on("click", function() {_self.moveDown(_self.sourceList);});
-            $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-bottom').on("click", function() {_self.moveBottom(_self.sourceList);});
+            $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-up').on("click", function() {
+                $this.moveUp($this.sourceList);
+            });
+            $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-top').on("click", function() {
+                $this.moveTop($this.sourceList);
+            });
+            $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-down').on("click", function() {
+                $this.moveDown($this.sourceList);
+            });
+            $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-bottom').on("click", function() {
+                $this.moveBottom($this.sourceList);
+            });
         }
 
         if(this.cfg.showTargetControls) {
-            $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-up').on("click", function() {_self.moveUp(_self.targetList);});
-            $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-top').on("click", function() {_self.moveTop(_self.targetList);});
-            $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-down').on("click", function() {_self.moveDown(_self.targetList);});
-            $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-bottom').on("click", function() {_self.moveBottom(_self.targetList);});
+            $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-up').on("click", function() {
+                $this.moveUp($this.targetList);
+            });
+            $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-top').on("click", function() {
+                $this.moveTop($this.targetList);
+            });
+            $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-down').on("click", function() {
+                $this.moveDown($this.targetList);
+            });
+            $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-bottom').on("click", function() {
+                $this.moveBottom($this.targetList);
+            });
         }
     },
 
@@ -558,10 +582,12 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} filter The filter input of the source or target list.
      */
     bindTextFilter: function(filter) {
-        if(this.cfg.filterEvent === 'enter')
+        if(this.cfg.filterEvent === 'enter') {
             this.bindEnterKeyFilter(filter);
-        else
+        }
+        else {
             this.bindFilterEvent(filter);
+        }
     },
 
     /**
@@ -573,17 +599,18 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     bindEnterKeyFilter: function(filter) {
         var $this = this;
 
-        filter.on('keydown', PrimeFaces.utils.blockEnterKey)
-        .on('keyup', function(e) {
-            var key = e.which,
-            keyCode = $.ui.keyCode;
+        filter
+            .on('keydown', PrimeFaces.utils.blockEnterKey)
+            .on('keyup', function(e) {
+                var key = e.which,
+                keyCode = $.ui.keyCode;
 
-            if((key === keyCode.ENTER)) {
-                $this.filter(this.value, $this.getFilteredList($(this)));
+                if((key === keyCode.ENTER)) {
+                    $this.filter(this.value, $this.getFilteredList($(this)));
 
-                e.preventDefault();
-            }
-        });
+                    e.preventDefault();
+                }
+            });
     },
 
     /**
@@ -767,8 +794,8 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} list The source or target list with items to move up.
      */
     moveUp: function(list) {
-        var _self = this,
-        animated = _self.isAnimated(),
+        var $this = this,
+        animated = $this.isAnimated(),
         items = list.children('.ui-state-highlight'),
         itemsCount = items.length,
         movedCount = 0;
@@ -780,13 +807,13 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 if(!item.is(':first-child')) {
 
                     if(animated) {
-                        item.hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
-                            item.insertBefore(item.prev()).show(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+                        item.hide($this.cfg.effect, {}, $this.cfg.effectSpeed, function() {
+                            item.insertBefore(item.prev()).show($this.cfg.effect, {}, $this.cfg.effectSpeed, function() {
                                 movedCount++;
 
                                 if(movedCount === itemsCount) {
-                                    _self.saveState();
-                                    _self.fireReorderEvent();
+                                    $this.saveState();
+                                    $this.fireReorderEvent();
                                 }
                             });
                         });
@@ -811,8 +838,8 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} list The source or target list with items to move to the top.
      */
     moveTop: function(list) {
-        var _self = this,
-        animated = _self.isAnimated(),
+        var $this = this,
+        animated = $this.isAnimated(),
         items = list.children('.ui-state-highlight'),
         itemsCount = items.length,
         movedCount = 0;
@@ -824,13 +851,13 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 if(!item.is(':first-child')) {
 
                     if(animated) {
-                        item.hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
-                            item.prependTo(item.parent()).show(_self.cfg.effect, {}, _self.cfg.effectSpeed, function(){
+                        item.hide($this.cfg.effect, {}, $this.cfg.effectSpeed, function() {
+                            item.prependTo(item.parent()).show($this.cfg.effect, {}, $this.cfg.effectSpeed, function(){
                                 movedCount++;
 
                                 if(movedCount === itemsCount) {
-                                    _self.saveState();
-                                    _self.fireReorderEvent();
+                                    $this.saveState();
+                                    $this.fireReorderEvent();
                                 }
                             });
                         });
@@ -853,8 +880,8 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} list The source or target list with items to move down.
      */
     moveDown: function(list) {
-        var _self = this,
-        animated = _self.isAnimated(),
+        var $this = this,
+        animated = $this.isAnimated(),
         items = list.children('.ui-state-highlight'),
         itemsCount = items.length,
         movedCount = 0;
@@ -865,13 +892,13 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
                 if(!item.is(':last-child')) {
                     if(animated) {
-                        item.hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
-                            item.insertAfter(item.next()).show(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+                        item.hide($this.cfg.effect, {}, $this.cfg.effectSpeed, function() {
+                            item.insertAfter(item.next()).show($this.cfg.effect, {}, $this.cfg.effectSpeed, function() {
                                 movedCount++;
 
                                 if(movedCount === itemsCount) {
-                                    _self.saveState();
-                                    _self.fireReorderEvent();
+                                    $this.saveState();
+                                    $this.fireReorderEvent();
                                 }
                             });
                         });
@@ -895,8 +922,8 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} list The source or target list with items to move to the bottom.
      */
     moveBottom: function(list) {
-        var _self = this,
-        animated = _self.isAnimated(),
+        var $this = this,
+        animated = $this.isAnimated(),
         items = list.children('.ui-state-highlight'),
         itemsCount = items.length,
         movedCount = 0;
@@ -908,13 +935,13 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 if(!item.is(':last-child')) {
 
                     if(animated) {
-                        item.hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
-                            item.appendTo(item.parent()).show(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+                        item.hide($this.cfg.effect, {}, $this.cfg.effectSpeed, function() {
+                            item.appendTo(item.parent()).show($this.cfg.effect, {}, $this.cfg.effectSpeed, function() {
                                 movedCount++;
 
                                 if(movedCount === itemsCount) {
-                                    _self.saveState();
-                                    _self.fireReorderEvent();
+                                    $this.saveState();
+                                    $this.fireReorderEvent();
                                 }
                             });
                         });
