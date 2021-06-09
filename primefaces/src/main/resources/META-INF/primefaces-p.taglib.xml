@@ -20476,6 +20476,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if items should be transfered on dblclick. Default is true.]]>
+            </description>
+            <name>transferOnDblclick</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>

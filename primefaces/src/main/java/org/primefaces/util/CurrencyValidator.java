@@ -40,7 +40,7 @@ import java.util.Locale;
  * <li>It is <i>lenient</i> about the presence of the <i>currency symbol</i></li>
  * <li>It converts the currency to a <code>java.math.BigDecimal</code></li>
  * </ul>
- * @implNote Modified from Commons Validator to fit PF needs
+ * Modified from Commons Validator to fit PF needs
  * @see <a href="https://github.com/apache/commons-validator">Commons Validator</a>
  */
 public class CurrencyValidator implements Serializable {

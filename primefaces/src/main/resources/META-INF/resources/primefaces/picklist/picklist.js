@@ -250,21 +250,24 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             $this.removeOutline();
             $this.focusedItem = item;
             parentList.trigger('focus.pickList');
-        })
-        .on('dblclick.pickList', function() {
-            var item = $(this);
-
-            if($(this).parent().hasClass('ui-picklist-source'))
-                $this.transfer(item, $this.sourceList, $this.targetList, 'dblclick');
-            else
-                $this.transfer(item, $this.targetList, $this.sourceList, 'dblclick');
-
-            /* For keyboard navigation */
-            $this.removeOutline();
-            $this.focusedItem = null;
-
-            PrimeFaces.clearSelection();
         });
+
+        if (this.cfg.transferOnDblclick) {
+            this.items.on('dblclick.pickList', function() {
+                var item = $(this);
+
+                if($(this).parent().hasClass('ui-picklist-source'))
+                    $this.transfer(item, $this.sourceList, $this.targetList, 'dblclick');
+                else
+                    $this.transfer(item, $this.targetList, $this.sourceList, 'dblclick');
+
+                /* For keyboard navigation */
+                $this.removeOutline();
+                $this.focusedItem = null;
+
+                PrimeFaces.clearSelection();
+            });
+        }
 
         if(this.cfg.showCheckbox) {
             this.checkboxes.on('mouseenter.pickList', function(e) {
