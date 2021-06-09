@@ -44,11 +44,11 @@ jobs:
 
   nightly:
     if: github.event_name != 'schedule'
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     name: Java ${{ matrix.java }}, Profile ${{ matrix.profile }}
     strategy:
       matrix:
-        java: [8, 11, 16]
+        java: [8, 11]
         profile: [ 'headless,firefox,theme-saga,myfaces-2.3.x', 'headless,chrome,theme-saga,myfaces-2.3.x', 'headless,chrome,csp,theme-nova,myfaces-2.3.x', 'headless,chrome,csp,theme-nova,mojarra-2.3.x' ]
 
     steps:
