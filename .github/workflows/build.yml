@@ -69,5 +69,4 @@ jobs:
       - name: Build with Maven
         run: mvn clean install -Psecurity-checks -Pjsdoc -Dmaven.javadoc.skip=true -Djsdoc.skip.typedoc=true --batch-mode --show-version
       - name: Integration Tests
-        if: matrix.java == 11 &&  || github.event_name == 'schedule'
         run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -P${{ matrix.profile }}
