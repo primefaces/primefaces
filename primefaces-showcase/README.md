@@ -13,8 +13,10 @@ For a full list of the available downloads, please visit the [download page](htt
 ##### Build from sources
 
 ```
-git clone https://github.com/primefaces/showcase-facelift.git
-cd showcase-facelift
+git clone https://github.com/primefaces/primefaces.git
+cd primefaces/primefaces
+mvn clean install          -- first build PrimeFaces
+cd ../primefaces-showcase
 mvn clean                  -- clean temp files from target folder
 mvn package                -- create war file (under target directory)
 mvn jetty:run              -- run showcase project locally
