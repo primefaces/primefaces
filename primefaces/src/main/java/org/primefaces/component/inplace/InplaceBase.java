@@ -53,7 +53,8 @@ public abstract class InplaceBase extends UIComponentBase implements Widget, Cli
         cancelLabel,
         event,
         toggleable,
-        mode
+        mode,
+        tabindex
     }
 
     public InplaceBase() {
@@ -175,5 +176,13 @@ public abstract class InplaceBase extends UIComponentBase implements Widget, Cli
 
     public void setMode(String mode) {
         getStateHelper().put(PropertyKeys.mode, mode);
+    }
+
+    public String getTabindex() {
+        return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
+    }
+
+    public void setTabindex(String tabindex) {
+        getStateHelper().put(PropertyKeys.tabindex, tabindex);
     }
 }

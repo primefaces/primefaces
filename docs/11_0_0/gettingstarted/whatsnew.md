@@ -6,6 +6,7 @@ This page contains a list of big features. Please check the GitHub issues for al
 
   * AutoComplete: added `footer` facet which will be added to the suggestion list.
   * Hotkey: added `bindMac` to use alternative binding on macOS.
+  * Inplace: added `tabindex` for keyboard focus and toggle support.
   * InputText, InputTextarea: counter can count bytes instead of characters.
   * Spinner
     * Added buttons modes: `horizontal`, `horizontal-after` and `vertical`.

@@ -50,13 +50,26 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
             if(this.cfg.toggleable) {
                 this.display.on(this.cfg.event, function(){
                     $this.show();
-                });
-
-                this.display.on("mouseover", function(){
+                }).on("mouseover", function(){
                     $(this).toggleClass("ui-state-highlight");
                 }).on("mouseout", function(){
                     $(this).toggleClass("ui-state-highlight");
                 });
+                if (this.display.attr("tabindex") >= 0) {
+                    this.display.on("keydown", function(e){
+                        var keyCode = $.ui.keyCode,
+                        key = e.which;
+
+                        if(key === keyCode.SPACE || key === keyCode.ENTER) {
+                            $this.display.trigger($this.cfg.event);
+                            e.preventDefault();
+                        }
+                    }).on("focus", function(){
+                        $(this).toggleClass("ui-state-focus");
+                    }).on("blur", function(){
+                        $(this).toggleClass("ui-state-focus");
+                    });
+                }
             }
             else {
                 this.display.css('cursor', 'default');
