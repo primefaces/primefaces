@@ -52,9 +52,8 @@ public class InplaceRenderer extends CoreRenderer {
         String clientId = inplace.getClientId(context);
         String widgetVar = inplace.resolveWidgetVar(context);
 
-        String userStyleClass = inplace.getStyleClass();
         String userStyle = inplace.getStyle();
-        String styleClass = userStyleClass == null ? Inplace.CONTAINER_CLASS : Inplace.CONTAINER_CLASS + " " + userStyleClass;
+        String styleClass = getStyleClassBuilder(context).add(Inplace.CONTAINER_CLASS, inplace.getStyleClass()).build();
         boolean disabled = inplace.isDisabled();
         String displayClass = disabled ? Inplace.DISABLED_DISPLAY_CLASS : Inplace.DISPLAY_CLASS;
 
@@ -82,6 +81,10 @@ public class InplaceRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId + "_display", "id");
         writer.writeAttribute("class", displayClass, null);
         writer.writeAttribute("style", "display:" + outputStyle, null);
+        if (inplace.getTabindex() != null) {
+            writer.writeAttribute("tabindex", inplace.getTabindex(), null);
+            writer.writeAttribute("role", "button", null);
+        }
 
         if (ComponentUtils.shouldRenderFacet(outputFacet)) {
             outputFacet.encodeAll(context);

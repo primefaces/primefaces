@@ -38,6 +38,7 @@ cancelLabel | Cancel | String | Tooltip text of cancel button in editor mode.
 event | click | String | Name of the client side event to display inline content.
 toggleable | true | Boolean | Defines if inplace is toggleable or not.
 mode | output | String | Defines the default mode to display (input or ouput).
+tabindex | "0" | String | Position of the output in the tabbing order.
 
 ## Getting Started with Inplace
 The inline component needs to be a child of inplace.
