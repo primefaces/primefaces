@@ -20492,6 +20492,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if items should be transfered, instead of selected, on checkbox click. This only works in combination with showCheckbox=true. Default is false.]]>
+            </description>
+            <name>transferOnCheckboxClick</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>

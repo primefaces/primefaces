@@ -157,7 +157,8 @@ public class PickListRenderer extends InputRenderer {
                 .callback("onTransfer", "function(e)", pickList.getOnTransfer())
                 .attr("tabindex", pickList.getTabindex(), "0")
                 .attr("escapeValue", pickList.isEscapeValue())
-                .attr("transferOnDblclick", pickList.isTransferOnDblclick());
+                .attr("transferOnDblclick", pickList.isTransferOnDblclick(), true)
+                .attr("transferOnCheckboxClick", pickList.isTransferOnCheckboxClick(), false);
 
         encodeClientBehaviors(context, pickList);
 

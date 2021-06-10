@@ -83,7 +83,8 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
         filterEvent,
         filterDelay,
         escapeValue,
-        transferOnDblclick
+        transferOnDblclick,
+        transferOnCheckboxClick
     }
 
     public PickListBase() {
@@ -381,5 +382,13 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
 
     public void setTransferOnDblclick(boolean transferOnDblclick) {
         getStateHelper().put(PropertyKeys.transferOnDblclick, transferOnDblclick);
+    }
+
+    public boolean isTransferOnCheckboxClick() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.transferOnCheckboxClick, false);
+    }
+
+    public void setTransferOnCheckboxClick(boolean transferOnCheckboxClick) {
+        getStateHelper().put(PropertyKeys.transferOnCheckboxClick, transferOnCheckboxClick);
     }
 }

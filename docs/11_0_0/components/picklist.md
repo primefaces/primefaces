@@ -67,6 +67,7 @@ filterEvent | keyup | String | Client side event to invoke picklist filtering fo
 filterDelay | 300 | Integer  | Delay to wait in milliseconds before sending each filter query.
 escapeValue | true | Boolean | Defines if values of the component are escaped or not.
 transferOnDblclick | true | Boolean | Defines if items should be transfered on dblclick.
+transferOnCheckboxClick | false | Boolean | Defines if items should be transfered, instead of selected, on checkbox click. This only works in combination with showCheckbox=true.
 
 ## Getting started with PickList
 You need to create custom model called _org.primefaces.model.DualListModel_ to use PickList. As
@@ -184,7 +185,7 @@ to _onTransfer_ attribute.
         //item = e.item
         //fromList = e.from
         //toList = e.toList
-        //type = e.type (type of transfer; command, dblclick or dragdrop)
+        //type = e.type (type of transfer; command, dblclick, checkbox or dragdrop)
     }
 </script>
 ```

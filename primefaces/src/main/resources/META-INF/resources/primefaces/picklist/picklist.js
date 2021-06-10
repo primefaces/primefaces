@@ -11,6 +11,7 @@
  * - `command`: The item was transferred as a result of the user clicking one of the command buttons next to the lists.
  * - `dblclick`: The item was transferred as a result of a double click by the user.
  * - `dragdrop`:  The item was transferred as a result of a drag&drop interaction by the user.
+ * - `checkbox`:The item was transferred as a result of a checkbox click by the user.
  *
  * @typedef {"startsWith" |  "contains" |  "endsWith" | "custom"} PrimeFaces.widget.PickList.FilterMatchMode
  * Available modes for filtering the options of a pick list. When `custom` is set, a `filterFunction` must be specified.
@@ -85,6 +86,9 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      */
     init: function(cfg) {
         this._super(cfg);
+
+        this.cfg.transferOnDblclick = this.cfg.transferOnDblclick || true;
+        this.cfg.transferOnCheckboxClick = this.cfg.transferOnCheckboxClick || false;
 
         this.sourceList = this.jq.find('ul.ui-picklist-source');
         this.targetList = this.jq.find('ul.ui-picklist-target');
@@ -256,10 +260,12 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             this.items.on('dblclick.pickList', function() {
                 var item = $(this);
 
-                if($(this).parent().hasClass('ui-picklist-source'))
+                if ($(this).parent().hasClass('ui-picklist-source')) {
                     $this.transfer(item, $this.sourceList, $this.targetList, 'dblclick');
-                else
+                }
+                else {
                     $this.transfer(item, $this.targetList, $this.sourceList, 'dblclick');
+                }
 
                 /* For keyboard navigation */
                 $this.removeOutline();
@@ -280,13 +286,27 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 $this.checkboxClick = true;
 
                 var item = $(this).closest('li.ui-picklist-item');
-                if(item.hasClass('ui-state-highlight')) {
-                    $this.unselectItem(item, true);
+                if ($this.cfg.transferOnCheckboxClick) {
+                    if (item.parent().hasClass('ui-picklist-source')) {
+                        $this.transfer(item, $this.sourceList, $this.targetList, 'checkbox', function() {
+                            $this.unselectItem(item);
+                        });
+                    }
+                    else {
+                        $this.transfer(item, $this.targetList, $this.sourceList, 'checkbox', function() {
+                            $this.unselectItem(item);
+                        });
+                    }
                 }
                 else {
-                    $this.selectItem(item, true);
+                    if (item.hasClass('ui-state-highlight')) {
+                        $this.unselectItem(item, true);
+                    }
+                    else {
+                        $this.selectItem(item, true);
+                    }
+                    $this.focusedItem = item;
                 }
-                $this.focusedItem = item;
             });
         }
     },
@@ -421,7 +441,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     selectItem: function(item, silent) {
         item.addClass('ui-state-highlight');
 
-        if(this.cfg.showCheckbox) {
+        if(this.cfg.showCheckbox && !this.cfg.transferOnCheckboxClick) {
             this.selectCheckbox(item.find('div.ui-chkbox-box'));
         }
 
@@ -438,10 +458,16 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * @param {boolean} [silent] `true` to imit triggering event listeners and behaviors, or `false` otherwise.
      */
     unselectItem: function(item, silent) {
+        item.removeClass('ui-state-hover');
         item.removeClass('ui-state-highlight');
 
         if(this.cfg.showCheckbox) {
-            this.unselectCheckbox(item.find('div.ui-chkbox-box'));
+            var chkbox = item.find('div.ui-chkbox-box');
+            chkbox.removeClass('ui-state-hover');
+
+            if (!this.cfg.transferOnCheckboxClick) {
+                this.unselectCheckbox(item.find('div.ui-chkbox-box'));
+            }
         }
 
         if(silent) {
@@ -980,8 +1006,9 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} from List from which the items were transferred.
      * @param {JQuery} to List to which the items were transferred.
      * @param {PrimeFaces.widget.PickList.TransferType} type Type of the action that caused the items to be transferred.
+     * @param {Function} callback after transfer finished.
      */
-    transfer: function(items, from, to, type) {
+    transfer: function(items, from, to, type, callback) {
         $(this.jqId + ' ul').sortable('disable');
         var $this = this;
         var itemsCount = items.length;
@@ -991,6 +1018,15 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             items.hide(this.cfg.effect, {}, this.cfg.effectSpeed, function() {
                 var item = $(this);
                 $this.unselectItem(item);
+
+                if ($this.cfg.transferOnCheckboxClick) {
+                    if (from.hasClass('ui-picklist-source')) {
+                        $this.selectCheckbox(item.find('div.ui-chkbox-box'));
+                    }
+                    else {
+                        $this.unselectCheckbox(item.find('div.ui-chkbox-box'));
+                    }
+                }
 
                 item.appendTo(to).show($this.cfg.effect, {}, $this.cfg.effectSpeed, function() {
                     transferCount++;
@@ -1003,6 +1039,10 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 });
 
                 $this.updateListRole();
+
+                if (callback) {
+                    callback.call($this);
+                }
             });
         }
         else {
@@ -1010,7 +1050,17 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
             if(this.cfg.showCheckbox) {
                 items.each(function() {
-                    $this.unselectItem($(this));
+                    var item = $(this);
+                    $this.unselectItem(item);
+
+                    if ($this.cfg.transferOnCheckboxClick) {
+                        if (from.hasClass('ui-picklist-source')) {
+                            $this.selectCheckbox(item.find('div.ui-chkbox-box'));
+                        }
+                        else {
+                            $this.unselectCheckbox(item.find('div.ui-chkbox-box'));
+                        }
+                    }
                 });
             }
 
@@ -1019,6 +1069,10 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             this.saveState();
             this.fireTransferEvent(items, from, to, type);
             this.updateListRole();
+
+            if (callback) {
+                callback.call($this);
+            }
         }
     },
 

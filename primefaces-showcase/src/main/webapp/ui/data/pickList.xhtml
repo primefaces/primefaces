@@ -27,8 +27,15 @@
             </div>
 
             <div class="card">
+                <h5 style="margin-top: 0">Instant Checkbox PickList</h5>
+                <p:pickList id="instantPickList" value="#{pickListView.cities}" var="cities" itemLabel="#{cities}" itemValue="#{cities}" transferOnCheckboxClick="true"
+                            showCheckbox="true" showSourceControls="false" showTargetControls="false" />
+            </div>
+
+
+            <div class="card">
                 <h5>Advanced</h5>
-                <p:pickList id="PojoPickList" value="#{pickListView.countries}" var="country"
+                <p:pickList id="pojoPickList" value="#{pickListView.countries}" var="country"
                             itemValue="#{country}" itemLabel="#{country.name}" showSourceControls="true"
                             showTargetControls="true" showCheckbox="true"
                             showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains"
