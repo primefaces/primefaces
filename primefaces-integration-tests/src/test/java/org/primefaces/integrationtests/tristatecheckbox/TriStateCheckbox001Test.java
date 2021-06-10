@@ -24,10 +24,7 @@
 package org.primefaces.integrationtests.tristatecheckbox;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
@@ -98,6 +95,7 @@ public class TriStateCheckbox001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(3)
+    @Disabled("Freezes on Chrome 91")
     @DisplayName("TriStateCheckbox: setValue")
     public void testSetValue(Page page) {
         // Arrange

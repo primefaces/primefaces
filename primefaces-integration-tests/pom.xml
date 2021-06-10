@@ -24,7 +24,7 @@
         <webdriver.headless>false</webdriver.headless>
         <primefaces.CSP>false</primefaces.CSP>
         <primefaces.THEME>saga</primefaces.THEME>
-        <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
+        <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
 
         <!-- dependency versions -->
         <hibernate-validator.version>7.0.1.Final</hibernate-validator.version>
@@ -211,35 +211,35 @@
                 <primefaces-selenium.adapter>org.primefaces.integrationtests.PrimeFacesSeleniumTomEEFirefoxAdapterImpl</primefaces-selenium.adapter>
             </properties>
         </profile>
-<!--        <profile>-->
-<!--            <id>safari</id>-->
-<!--            <properties>-->
-<!--                <primefaces-selenium.adapter>org.primefaces.integrationtests.PrimeFacesSeleniumTomEESafariAdapterImpl</primefaces-selenium.adapter>-->
-<!--                &lt;!&ndash; optionally only run tests with specific @Tag &ndash;&gt;-->
-<!--                &lt;!&ndash;-->
-<!--                <groups>SafariBasic</groups>-->
-<!--                &ndash;&gt;-->
-<!--                <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>-->
-<!--            </properties>-->
-<!--        </profile>-->
-<!--        <profile>-->
-<!--            <id>csp</id>-->
-<!--            <properties>-->
-<!--                <primefaces.CSP>true</primefaces.CSP>-->
-<!--            </properties>-->
-<!--        </profile>-->
-<!--        <profile>-->
-<!--            <id>theme-nova</id>-->
-<!--            <properties>-->
-<!--                <primefaces.THEME>nova-light</primefaces.THEME>-->
-<!--            </properties>-->
-<!--        </profile>-->
-<!--        <profile>-->
-<!--            <id>theme-saga</id>-->
-<!--            <properties>-->
-<!--                <primefaces.THEME>saga</primefaces.THEME>-->
-<!--            </properties>-->
-<!--        </profile>-->
+        <profile>
+            <id>safari</id>
+            <properties>
+                <primefaces-selenium.adapter>org.primefaces.integrationtests.PrimeFacesSeleniumTomEESafariAdapterImpl</primefaces-selenium.adapter>
+                <!-- optionally only run tests with specific @Tag -->
+                <!--
+                <groups>SafariBasic</groups>
+                -->
+                <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
+            </properties>
+        </profile>
+        <profile>
+            <id>csp</id>
+            <properties>
+                <primefaces.CSP>true</primefaces.CSP>
+            </properties>
+        </profile>
+        <profile>
+            <id>theme-nova</id>
+            <properties>
+                <primefaces.THEME>nova-light</primefaces.THEME>
+            </properties>
+        </profile>
+        <profile>
+            <id>theme-saga</id>
+            <properties>
+                <primefaces.THEME>saga</primefaces.THEME>
+            </properties>
+        </profile>
         <profile>
             <id>myfaces-2.3.x</id>
             <activation>
@@ -260,65 +260,65 @@
                 </dependency>
             </dependencies>
         </profile>
-<!--        <profile>-->
-<!--            <id>myfaces-next-2.3.x</id>-->
-<!--            <dependencies>-->
-<!--                <dependency>-->
-<!--                    <groupId>org.apache.tomee</groupId>-->
-<!--                    <artifactId>tomee-myfaces</artifactId>-->
-<!--                    <version>${tomee.version}</version>-->
-<!--                    <scope>test</scope>-->
-<!--                </dependency>-->
-<!--                <dependency>-->
-<!--                    <groupId>org.apache.myfaces.core</groupId>-->
-<!--                    <artifactId>myfaces-api</artifactId>-->
-<!--                    <version>${myfaces-next.version}</version>-->
-<!--                    <scope>provided</scope>-->
-<!--                </dependency>-->
-<!--                <dependency>-->
-<!--                    <groupId>org.apache.myfaces.core</groupId>-->
-<!--                    <artifactId>myfaces-impl</artifactId>-->
-<!--                    <version>${myfaces-next.version}</version>-->
-<!--                    <scope>test</scope>-->
-<!--                </dependency>-->
-<!--            </dependencies>-->
-<!--        </profile>-->
-<!--        <profile>-->
-<!--            <id>mojarra-2.3.x</id>-->
-<!--            <dependencies>-->
-<!--                <dependency>-->
-<!--                    <groupId>org.apache.tomee</groupId>-->
-<!--                    <artifactId>tomee-mojarra</artifactId>-->
-<!--                    <version>${tomee.version}</version>-->
-<!--                    <scope>test</scope>-->
-<!--                </dependency>-->
-<!--                <dependency>-->
-<!--                    <groupId>org.glassfish</groupId>-->
-<!--                    <artifactId>jakarta.faces</artifactId>-->
-<!--                    <version>${mojarra.version}</version>-->
-<!--                    <scope>compile</scope>-->
-<!--                </dependency>-->
-<!--                <dependency>-->
-<!--                    <groupId>org.apache.tomee</groupId>-->
-<!--                    <artifactId>tomee-embedded</artifactId>-->
-<!--                    <version>${tomee.version}</version>-->
-<!--                    <scope>test</scope>-->
-<!--                    <exclusions>-->
-<!--                        <exclusion>-->
-<!--                            <groupId>org.apache.tomee</groupId>-->
-<!--                            <artifactId>tomee-myfaces</artifactId>-->
-<!--                        </exclusion>-->
-<!--                        <exclusion>-->
-<!--                            <groupId>org.apache.myfaces.core</groupId>-->
-<!--                            <artifactId>myfaces-api</artifactId>-->
-<!--                        </exclusion>-->
-<!--                        <exclusion>-->
-<!--                            <groupId>org.apache.myfaces.core</groupId>-->
-<!--                            <artifactId>myfaces-impl</artifactId>-->
-<!--                        </exclusion>-->
-<!--                    </exclusions>-->
-<!--                </dependency>-->
-<!--            </dependencies>-->
-<!--        </profile>-->
+        <profile>
+            <id>myfaces-next-2.3.x</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.tomee</groupId>
+                    <artifactId>tomee-myfaces</artifactId>
+                    <version>${tomee.version}</version>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.myfaces.core</groupId>
+                    <artifactId>myfaces-api</artifactId>
+                    <version>${myfaces-next.version}</version>
+                    <scope>provided</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.myfaces.core</groupId>
+                    <artifactId>myfaces-impl</artifactId>
+                    <version>${myfaces-next.version}</version>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>mojarra-2.3.x</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.tomee</groupId>
+                    <artifactId>tomee-mojarra</artifactId>
+                    <version>${tomee.version}</version>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.glassfish</groupId>
+                    <artifactId>jakarta.faces</artifactId>
+                    <version>${mojarra.version}</version>
+                    <scope>compile</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.tomee</groupId>
+                    <artifactId>tomee-embedded</artifactId>
+                    <version>${tomee.version}</version>
+                    <scope>test</scope>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>org.apache.tomee</groupId>
+                            <artifactId>tomee-myfaces</artifactId>
+                        </exclusion>
+                        <exclusion>
+                            <groupId>org.apache.myfaces.core</groupId>
+                            <artifactId>myfaces-api</artifactId>
+                        </exclusion>
+                        <exclusion>
+                            <groupId>org.apache.myfaces.core</groupId>
+                            <artifactId>myfaces-impl</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+            </dependencies>
+        </profile>
     </profiles>
 </project>
