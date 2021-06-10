@@ -82,12 +82,13 @@ public class SelectionFeature implements DataTableFeature {
     }
 
     public void decodeSelectionRowKeys(FacesContext context, DataTable table) {
+        Set<String> rowKeys = null;
         ValueExpression selectionByVE = table.getValueExpression(DataTableBase.PropertyKeys.selection.name());
         if (selectionByVE != null) {
             Object selection = selectionByVE.getValue(context.getELContext());
 
             if (selection != null) {
-                Set<String> rowKeys = new HashSet<>();
+                rowKeys = new HashSet<>();
 
                 if (table.isSingleSelectionMode()) {
                     rowKeys.add(table.getRowKey(selection));
@@ -106,10 +107,9 @@ public class SelectionFeature implements DataTableFeature {
                         rowKeys.add(table.getRowKey(o));
                     }
                 }
-
-                table.setSelectedRowKeys(rowKeys);
             }
         }
+        table.setSelectedRowKeys(rowKeys);
     }
 
     protected void decodeSingleSelection(FacesContext context, DataTable table, Set<String> rowKeys) {

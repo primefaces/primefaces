@@ -61,12 +61,17 @@ public class DataTable004 implements Serializable {
         TestUtils.addMessage("ProgrammingLanguage Unselected", event.getObject().getId() + " - " + event.getObject().getName());
     }
 
+    public void unselectRow() {
+        selectedProgLanguage = null;
+        TestUtils.addMessage("NO ProgrammingLanguage selected", "");
+    }
+
     public void submit() {
         if (selectedProgLanguage != null) {
             TestUtils.addMessage("Selected ProgrammingLanguage", selectedProgLanguage.getId() + " - " + selectedProgLanguage.getName());
         }
         else {
-            TestUtils.addMessage("no ProgrammingLanguage selected", "");
+            TestUtils.addMessage("NO ProgrammingLanguage selected", "");
         }
     }
 }
