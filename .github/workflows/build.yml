@@ -1,4 +1,4 @@
-name: Java CI
+name: Continuous Integration
 
 on: [push, pull_request]
 
@@ -25,7 +25,7 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Log github.ref
         run: echo "${{ github.ref }}"
-      - name: Build with Maven
+      - name: Build
         run: mvn clean install -Psecurity-checks -Pjsdoc -Dmaven.javadoc.skip=true -Djsdoc.skip.typedoc=true --batch-mode --show-version
       - name: SonarCloud
         if: github.repository == 'primefaces/primefaces' && github.ref == 'refs/heads/master' && matrix.java == 11
