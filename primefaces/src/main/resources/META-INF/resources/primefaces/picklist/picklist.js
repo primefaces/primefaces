@@ -1006,7 +1006,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} from List from which the items were transferred.
      * @param {JQuery} to List to which the items were transferred.
      * @param {PrimeFaces.widget.PickList.TransferType} type Type of the action that caused the items to be transferred.
-     * @param {Function} callback after transfer finished.
+     * @param {() => JQuery} callback after transfer finished.
      */
     transfer: function(items, from, to, type, callback) {
         $(this.jqId + ' ul').sortable('disable');
