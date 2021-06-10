@@ -21,7 +21,7 @@
 
     <properties>
         <primefaces-selenium.adapter>org.primefaces.integrationtests.PrimeFacesSeleniumTomEEFirefoxAdapterImpl</primefaces-selenium.adapter>
-        <webdriver.headless>false</webdriver.headless>
+        <webdriver.headless>true</webdriver.headless>
         <primefaces.CSP>false</primefaces.CSP>
         <primefaces.THEME>saga</primefaces.THEME>
         <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
@@ -174,10 +174,14 @@
                                 <include>**/*Test</include>
                             </includes>
                             <systemPropertyVariables>
-                                <webdriver.headless>${webdriver.headless}</webdriver.headless>
-                                <primefaces.CSP>${primefaces.CSP}</primefaces.CSP>
-                                <primefaces.THEME>${primefaces.THEME}</primefaces.THEME>
-                                <junit.jupiter.execution.parallel.enabled>${junit.jupiter.execution.parallel.enabled}</junit.jupiter.execution.parallel.enabled>
+                                <webdriver.headless>true</webdriver.headless>
+                                <primefaces.CSP>true</primefaces.CSP>
+                                <primefaces.THEME>saga</primefaces.THEME>
+                                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
+<!--                                <webdriver.headless>${webdriver.headless}</webdriver.headless>-->
+<!--                                <primefaces.CSP>${primefaces.CSP}</primefaces.CSP>-->
+<!--                                <primefaces.THEME>${primefaces.THEME}</primefaces.THEME>-->
+<!--                                <junit.jupiter.execution.parallel.enabled>${junit.jupiter.execution.parallel.enabled}</junit.jupiter.execution.parallel.enabled>-->
                                 <junit.jupiter.execution.parallel.mode.default>same_thread</junit.jupiter.execution.parallel.mode.default>
                                 <junit.jupiter.execution.parallel.mode.classes.default>concurrent</junit.jupiter.execution.parallel.mode.classes.default>
                                 <junit.jupiter.execution.parallel.config.dynamic.factor>1</junit.jupiter.execution.parallel.config.dynamic.factor>
