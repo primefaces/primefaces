@@ -28,7 +28,7 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Log github.ref
         run: echo "${{ github.ref }}"
-      - name: Build with Maven
+      - name: Build
         run: mvn clean install --batch-mode --show-version
       - name: Integration Tests
         run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,${{ matrix.profile }}
