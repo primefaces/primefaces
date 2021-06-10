@@ -35,6 +35,7 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.InputText;
+import org.primefaces.selenium.component.Messages;
 
 public class DataTable019Test extends AbstractDataTableTest {
 
@@ -130,7 +131,14 @@ public class DataTable019Test extends AbstractDataTableTest {
         List<ProgrammingLanguage> langsFiltered = filterByType(ProgrammingLanguage.ProgrammingLanguageType.INTERPRETED);
         Assertions.assertEquals(3, langsFiltered.size());
         assertRows(dataTable, langsFiltered);
+        assertMessage(page, "Column Filter: INTERPRETED", "");
         assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    private void assertMessage(Page page, String summary, String detail) {
+        Assertions.assertEquals(1, page.messages.getAllMessages().size(), "Messages was empty when a message was expected!");
+        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains(summary));
+        Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains(detail));
     }
 
     private void assertConfiguration(JSONObject cfg) {
@@ -147,6 +155,9 @@ public class DataTable019Test extends AbstractDataTableTest {
 
         @FindBy(id = "form:datatable:globalFilter")
         InputText globalFilter;
+
+        @FindBy(id = "form:msgs")
+        Messages messages;
 
         @Override
         public String getLocation() {
