@@ -85,7 +85,8 @@
                                 pattern="dd.MM.yyyy"/>
 
                     <p:outputLabel for="restricted" value="Restricted:"/>
-                    <p:calendar id="restricted" value="#{calendarJava8View.date6}" mindate="4/1/14" maxdate="7/1/14"/>
+                    <p:calendar id="restricted" value="#{calendarJava8View.date6}" mindate="#{calendarJava8View.minDate}"
+                                      maxdate="#{calendarJava8View.maxDate}" />
 
                     <p:outputLabel for="multi" value="Multiple:"/>
                     <p:calendar id="multi" value="#{calendarJava8View.date7}" pages="3"/>
