@@ -2,7 +2,6 @@
 .ui-helper-hidden-accessible select {
     -webkit-transform: scale(0); 
     -moz-transform: scale(0); 
-    -ms-transform: scale(0);
     transform: scale(0);
 }
 

@@ -76,10 +76,6 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
             input = checkbox.prev().children(':checkbox');
 
             input.trigger('click').trigger('focus');
-
-            if($.browser.msie && parseInt($.browser.version) < 9) {
-                input.trigger('change');
-            }
         });
 
         //delegate focus-blur-change states

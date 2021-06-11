@@ -193,10 +193,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
 
             var keyCode = $.ui.keyCode;
 
-            /* Github #2636 */
-            var checkForIE = (PrimeFaces.env.isIE(11) || PrimeFaces.env.isLtIE(11)) && (e.which === keyCode.ENTER);
-
-            if(e.which === keyCode.UP||e.which === keyCode.DOWN||checkForIE) {
+            if(e.which === keyCode.UP||e.which === keyCode.DOWN) {
                 $this.input.trigger('change');
                 $this.format();
             }

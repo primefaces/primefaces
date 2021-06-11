@@ -233,14 +233,7 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
      * Puts focus on this terminal input.
      */
     focus: function() {
-        if (PrimeFaces.env.isIE()) {
-            window.setTimeout(function(terminal){
-                terminal.input.trigger('focus');
-            }, 50);
-        }
-        else {
-            this.input.trigger('focus');
-        }
+        this.input.trigger('focus');
     },
 
     /**
