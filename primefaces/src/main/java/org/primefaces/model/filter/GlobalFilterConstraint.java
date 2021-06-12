@@ -26,6 +26,7 @@ package org.primefaces.model.filter;
 public class GlobalFilterConstraint extends ContainsFilterConstraint {
 
     public GlobalFilterConstraint() {
+        // NOOP
     }
 
 }
