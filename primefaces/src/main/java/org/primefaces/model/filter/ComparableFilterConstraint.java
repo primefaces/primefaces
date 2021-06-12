@@ -25,13 +25,8 @@ package org.primefaces.model.filter;
 
 import javax.faces.context.FacesContext;
 import java.util.Locale;
-import java.util.function.BiPredicate;
 
-public class ComparableFilterConstraint extends StringFilterConstraint {
-
-    public ComparableFilterConstraint(BiPredicate<String, String> predicate) {
-        super(predicate);
-    }
+public abstract class ComparableFilterConstraint extends StringFilterConstraint {
 
     @Override
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {

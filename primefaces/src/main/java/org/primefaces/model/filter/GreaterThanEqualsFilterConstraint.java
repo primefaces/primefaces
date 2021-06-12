@@ -23,9 +23,12 @@
  */
 package org.primefaces.model.filter;
 
+import java.util.function.BiPredicate;
+
 public class GreaterThanEqualsFilterConstraint extends ComparableFilterConstraint {
 
-    public GreaterThanEqualsFilterConstraint() {
-        super((o1, o2) -> o1.compareTo(o2) == 0);
+    @Override
+    protected BiPredicate<String, String> getPredicate() {
+        return (o1, o2) -> o1.compareTo(o2) == 0;
     }
 }
