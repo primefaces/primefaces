@@ -33,7 +33,6 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.primefaces.integrationtests.general.utilities.TestUtils;
 import org.primefaces.util.LangUtils;
 
 import lombok.Data;
@@ -71,8 +70,11 @@ public class DataTable019 implements Serializable {
     }
 
     public boolean columnFilterFunction(Object value, Object filter, Locale locale) {
-        TestUtils.addMessage("Column Filter: " + filter);
         String filterText = Objects.toString(filter);
+        // prove the custom filter is actually working
+        if ("CUSTOM".equalsIgnoreCase(filterText)) {
+            filterText = "INTERPRETED";
+        }
         return Objects.equals(filterText, Objects.toString(value));
     }
 
