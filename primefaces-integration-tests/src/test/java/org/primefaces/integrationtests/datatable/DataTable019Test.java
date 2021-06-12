@@ -35,6 +35,7 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.InputText;
+import org.primefaces.selenium.component.Messages;
 
 public class DataTable019Test extends AbstractDataTableTest {
 
@@ -124,7 +125,7 @@ public class DataTable019Test extends AbstractDataTableTest {
         dataTable.sort("Type");
 
         // Act
-        dataTable.filter("Type", "INTERPRETED");
+        dataTable.filter("Type", "CUSTOM");
 
         // Assert
         List<ProgrammingLanguage> langsFiltered = filterByType(ProgrammingLanguage.ProgrammingLanguageType.INTERPRETED);
