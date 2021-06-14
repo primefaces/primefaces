@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         java: [8, 11]
-        profile: [ 'headless,firefox,theme-saga,myfaces-2.3.x', 'headless,firefox,csp,theme-saga,myfaces-2.3.x', 'headless,firefox,theme-saga,myfaces-next-2.3.x', 'headless,chrome,theme-saga,myfaces-2.3.x', 'headless,chrome,csp,theme-nova,myfaces-2.3.x', 'headless,chrome,csp,theme-nova,mojarra-2.3.x' ]
+        profile: [ 'headless,firefox,theme-saga,myfaces-2.3.x', 'headless,firefox,csp,theme-saga,myfaces-2.3.x', 'headless,chrome,theme-saga,myfaces-2.3.x', 'headless,chrome,csp,theme-nova,myfaces-2.3.x', 'headless,chrome,csp,theme-nova,mojarra-2.3.x' ]
 
     steps:
       - uses: actions/checkout@v2
