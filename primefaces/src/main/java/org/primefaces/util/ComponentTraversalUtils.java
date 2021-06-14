@@ -35,6 +35,14 @@ public class ComponentTraversalUtils {
     }
 
     public static <T> T closest(Class<T> type, UIComponent base) {
+        return closest(type, base, false);
+    }
+
+    public static <T> T closest(Class<T> type, UIComponent base, boolean considerBase) {
+        if (considerBase && type.isAssignableFrom(base.getClass())) {
+            return (T) base;
+        }
+
         UIComponent parent = base.getParent();
 
         while (parent != null) {
