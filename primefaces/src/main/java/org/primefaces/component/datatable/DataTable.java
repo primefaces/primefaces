@@ -192,7 +192,6 @@ public class DataTable extends DataTableBase {
 
     private boolean reset = false;
     private List<UIColumn> columns;
-    private Set<Integer> expandedRowsSet;
     private Map<String, AjaxBehaviorEvent> deferredEvents = new HashMap<>(1);
 
     protected enum InternalPropertyKeys {
@@ -203,6 +202,7 @@ public class DataTable extends DataTableBase {
         visibleColumnsAsMap,
         resizableColumnsAsMap,
         selectedRowKeys,
+        expandedRowKeys,
         columnMeta,
         width;
     }
@@ -630,6 +630,14 @@ public class DataTable extends DataTableBase {
         }
     }
 
+    public Set<String> getExpandedRowKeys() {
+        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.expandedRowKeys, Collections::emptySet);
+    }
+
+    public void setExpandedRowKeys(Set<String> expandedRowKeys) {
+        getStateHelper().put(InternalPropertyKeys.expandedRowKeys, expandedRowKeys);
+    }
+
     public Set<String> getSelectedRowKeys() {
         return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.selectedRowKeys, Collections::emptySet);
     }
@@ -836,7 +844,9 @@ public class DataTable extends DataTableBase {
                         }
                     }
                     else if (child instanceof RowExpansion) {
-                        if (getExpandedRowsSet().contains(rowIndex)) {
+                        Object rowData = getRowData();
+                        String rowKey = getRowKey(rowData);
+                        if (getExpandedRowKeys().contains(rowKey)) {
                             process(context, child, phaseId);
                         }
                     }
@@ -866,25 +876,6 @@ public class DataTable extends DataTableBase {
     @Override
     public void setDefaultFilter(boolean defaultFilter) {
         getStateHelper().put(InternalPropertyKeys.defaultFilter, defaultFilter);
-    }
-
-    public Set<Integer> getExpandedRowsSet() {
-        if (expandedRowsSet == null) {
-            expandedRowsSet = new HashSet<>();
-
-            FacesContext context = getFacesContext();
-            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            String expandedRows = params.get(getClientId(context) + "_rowExpansionState");
-
-            if (LangUtils.isNotBlank(expandedRows)) {
-                String[] tmp = expandedRows.split(",");
-                for (int i = 0; i < tmp.length; ++i) {
-                    expandedRowsSet.add(Integer.parseInt(tmp[i]));
-                }
-            }
-        }
-
-        return expandedRowsSet;
     }
 
     public List<UIColumn> findOrderedColumns(String columnOrder) {
@@ -970,7 +961,6 @@ public class DataTable extends DataTableBase {
         }
         reset = false;
         columns = null;
-        expandedRowsSet = null;
 
         return super.saveState(context);
     }
@@ -1021,6 +1011,10 @@ public class DataTable extends DataTableBase {
                 updateSelectionWithMVS(ts.getSelectedRowKeys());
             }
 
+            if (ts.getExpandedRowKeys() != null) {
+                updateExpansionWithMVS(ts.getExpandedRowKeys());
+            }
+
             setColumnMeta(ts.getColumnMeta());
         }
     }
@@ -1028,6 +1022,10 @@ public class DataTable extends DataTableBase {
     public void updateSelectionWithMVS(Set<String> rowKeys) {
         SelectionFeature feature = (SelectionFeature) FEATURES.get(DataTableFeatureKey.SELECT);
         feature.decodeSelection(getFacesContext(), this, rowKeys);
+    }
+
+    public void updateExpansionWithMVS(Set<String> rowKeys) {
+        setExpandedRowKeys(rowKeys);
     }
 
     @Override

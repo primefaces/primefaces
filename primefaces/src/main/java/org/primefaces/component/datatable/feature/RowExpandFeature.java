@@ -24,21 +24,37 @@
 package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Map;
-import javax.faces.FacesException;
+import java.util.Set;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
+import org.primefaces.component.datatable.DataTableState;
 import org.primefaces.component.rowexpansion.RowExpansion;
+import org.primefaces.util.LangUtils;
 
 public class RowExpandFeature implements DataTableFeature {
 
     @Override
     public void decode(FacesContext context, DataTable table) {
-        throw new FacesException("RowExpandFeature should not encode.");
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String rowExpansionState = params.get(table.getClientId(context) + "_rowExpansionState");
+
+        Set<String> rowKeys = Collections.emptySet();
+        if (LangUtils.isNotBlank(rowExpansionState)) {
+            rowKeys = LangUtils.newLinkedHashSet(rowExpansionState.split(","));
+        }
+
+        table.setExpandedRowKeys(rowKeys);
+
+        if (table.isMultiViewState()) {
+            DataTableState ts = table.getMultiViewState(true);
+            ts.setExpandedRowKeys(rowKeys);
+        }
     }
 
     @Override
@@ -85,7 +101,7 @@ public class RowExpandFeature implements DataTableFeature {
 
     @Override
     public boolean shouldDecode(FacesContext context, DataTable table) {
-        return false;
+        return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_rowExpansionState");
     }
 
     @Override

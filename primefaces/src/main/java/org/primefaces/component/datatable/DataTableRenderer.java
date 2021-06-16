@@ -1226,11 +1226,12 @@ public class DataTableRenderer extends DataRenderer {
 
         ResponseWriter writer = context.getResponseWriter();
         boolean selectionEnabled = table.isSelectionEnabled();
+        boolean rowExpansionAvailable = table.getRowExpansion() != null;
         String rowKey = null;
         List<UIColumn> columns = table.getColumns();
         HeaderRow headerRow = table.getHeaderRow();
 
-        if (selectionEnabled) {
+        if (selectionEnabled || rowExpansionAvailable) {
             rowKey = table.getRowKey(table.getRowData());
         }
 
@@ -1278,7 +1279,7 @@ public class DataTableRenderer extends DataRenderer {
 
         writer.endElement("tr");
 
-        if (table.isExpandedRow()) {
+        if (table.isExpandedRow() || (rowExpansionAvailable && table.getExpandedRowKeys().contains(rowKey))) {
             ((RowExpandFeature) table.getFeature(DataTableFeatureKey.ROW_EXPAND)).encodeExpansion(context, this, table, rowIndex);
         }
 
