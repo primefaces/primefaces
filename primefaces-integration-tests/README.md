@@ -27,7 +27,7 @@ Safari already comes with webdriver OOTB - look for more information into https:
   - `mojarra-2.3.x` current Mojarra 2.3 JSF implementation
   - `myfaces-2.3.x` current MyFaces 2.3 JSF implementation
 - Run integration tests with the _verify_ phase and profiles activated: `mvn verify -Pintegration-tests,mojarra-2.3.x`
-- Run a single test with `mvn verify -Pintegration-tests,mojarra-2.3.x -Dit.test=org.primefaces.extensions.integrationtests.datepicker.DatePicker001Test`
+- Run a single test with `mvn verify -Pintegration-tests,mojarra-2.3.x -Dit.test=org.primefaces.integrationtests.datepicker.DatePicker001Test`
 
 ### Firefox (default)
 
