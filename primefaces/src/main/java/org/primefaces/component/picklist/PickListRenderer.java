@@ -273,6 +273,7 @@ public class PickListRenderer extends InputRenderer {
         String var = pickList.getVar();
         Converter converter = pickList.getConverter();
         boolean showCheckbox = pickList.isShowCheckbox();
+        boolean checkboxChecked = pickList.isTransferOnCheckboxClick() ? !isSource : false;
 
         for (Iterator it = model.iterator(); it.hasNext(); ) {
             Object item = it.next();
@@ -297,7 +298,7 @@ public class PickListRenderer extends InputRenderer {
 
                 if (showCheckbox) {
                     writer.startElement("td", null);
-                    RendererUtils.encodeCheckbox(context, !isSource);
+                    RendererUtils.encodeCheckbox(context, checkboxChecked);
                     writer.endElement("td");
                 }
 
@@ -324,7 +325,7 @@ public class PickListRenderer extends InputRenderer {
             }
             else {
                 if (showCheckbox) {
-                    RendererUtils.encodeCheckbox(context, !isSource);
+                    RendererUtils.encodeCheckbox(context, checkboxChecked);
                 }
 
                 if (pickList.isEscape()) {
