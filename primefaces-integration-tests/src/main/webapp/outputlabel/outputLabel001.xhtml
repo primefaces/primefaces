@@ -30,6 +30,18 @@
                 <p:outputLabel id="readonly" for="@next" value="Read Only"/>
                 <p:inputText required="true" readonly="true"/>
 
+                <p:outputLabel id="disabledSkipped" for="@next" value="Disabled Skipped" indicateRequired="autoSkipDisabled" />
+                <p:inputText required="true" disabled="true"/>
+
+                <p:outputLabel id="readonlySkipped" for="@next" value="Read Only Skipped" indicateRequired="autoSkipDisabled" />
+                <p:inputText required="true" readonly="true"/>
+
+                <p:outputLabel id="enabledNotSkipped" for="@next" value="Enabled Not Skipped" indicateRequired="autoSkipDisabled" />
+                <p:inputText required="true" disabled="false"/>
+
+                <p:outputLabel id="readonlyNotSkipped" for="@next" value="Read Only Not Skipped" indicateRequired="autoSkipDisabled" />
+                <p:inputText required="true" readonly="false"/>
+
                 <p:outputLabel id="noannotations" for="@next" value="Label with no annotations:"/>
                 <p:inputText value="#{outputLabel001.nullableValue}"/>
 
