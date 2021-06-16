@@ -87,7 +87,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
 
-        this.cfg.transferOnDblclick = this.cfg.transferOnDblclick || true;
+        this.cfg.transferOnDblclick = this.cfg.transferOnDblclick !== false;
         this.cfg.transferOnCheckboxClick = this.cfg.transferOnCheckboxClick || false;
 
         this.sourceList = this.jq.find('ul.ui-picklist-source');
