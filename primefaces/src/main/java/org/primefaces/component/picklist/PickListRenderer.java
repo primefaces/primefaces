@@ -245,7 +245,7 @@ public class PickListRenderer extends InputRenderer {
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
 
-        encodeOptions(context, pickList, model);
+        encodeOptions(context, pickList, model, isSource);
 
         writer.endElement("ul");
 
@@ -268,7 +268,7 @@ public class PickListRenderer extends InputRenderer {
     }
 
     @SuppressWarnings("unchecked")
-    protected void encodeOptions(FacesContext context, PickList pickList, List model) throws IOException {
+    protected void encodeOptions(FacesContext context, PickList pickList, List model, boolean isSource) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String var = pickList.getVar();
         Converter converter = pickList.getConverter();
@@ -297,7 +297,7 @@ public class PickListRenderer extends InputRenderer {
 
                 if (showCheckbox) {
                     writer.startElement("td", null);
-                    RendererUtils.encodeCheckbox(context, false);
+                    RendererUtils.encodeCheckbox(context, !isSource);
                     writer.endElement("td");
                 }
 
@@ -324,7 +324,7 @@ public class PickListRenderer extends InputRenderer {
             }
             else {
                 if (showCheckbox) {
-                    RendererUtils.encodeCheckbox(context, false);
+                    RendererUtils.encodeCheckbox(context, !isSource);
                 }
 
                 if (pickList.isEscape()) {
