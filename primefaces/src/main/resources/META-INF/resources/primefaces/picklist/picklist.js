@@ -151,7 +151,19 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                     }
                 },
                 receive: function(event, ui) {
-                    $this.fireTransferEvent(ui.item, ui.sender, ui.item.parents('ul.ui-picklist-list:first'), 'dragdrop');
+                    var parentList = ui.item.parents('ul.ui-picklist-list:first');
+                    var item = ui.item;
+
+                    if ($this.cfg.transferOnCheckboxClick) {
+                        if (parentList.hasClass('ui-picklist-source')) {
+                            $this.unselectCheckbox(item.find('div.ui-chkbox-box'));
+                        }
+                        else {
+                            $this.selectCheckbox(item.find('div.ui-chkbox-box'));
+                        }
+                    }
+
+                    $this.fireTransferEvent(item, ui.sender, parentList, 'dragdrop');
                 },
 
                 start: function(event, ui) {
