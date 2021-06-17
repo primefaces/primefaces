@@ -49,10 +49,10 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
      * @protected
      */
     bindItemEvents: function() {
-        if(this.cfg.toggleEvent === 'hover')
-            this.bindHoverModeEvents();
-        else if(this.cfg.toggleEvent === 'click')
+        if(this.cfg.toggleEvent === 'click' || PrimeFaces.env.isTouchable(this.cfg))
             this.bindClickModeEvents();
+        else if(this.cfg.toggleEvent === 'hover')
+            this.bindHoverModeEvents();
     },
 
     /**
