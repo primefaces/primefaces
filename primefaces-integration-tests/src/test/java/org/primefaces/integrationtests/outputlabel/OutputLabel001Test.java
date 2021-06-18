@@ -170,6 +170,51 @@ public class OutputLabel001Test extends AbstractPrimePageTest {
         assertLabel(label, "Read Only*", true);
     }
 
+    @Test
+    @Order(11)
+    @DisplayName("OutputLabel: disabled=true indicateRequired=autoSkipDisabled")
+    public void testDisabledSkipped(Page page) {
+        // Arrange
+        OutputLabel label = page.disabledSkipped;
+
+        // Act and Assert
+        assertLabel(label, "Disabled Skipped", false);
+    }
+
+    @Test
+    @Order(12)
+    @DisplayName("OutputLabel: readonly=true indicateRequired=autoSkipDisabled")
+    public void testReadOnlySkipped(Page page) {
+        // Arrange
+        OutputLabel label = page.readonlySkipped;
+
+        // Act and Assert
+        assertLabel(label, "Read Only Skipped", false);
+    }
+
+    @Test
+    @Order(13)
+    @DisplayName("OutputLabel: disabled=false indicateRequired=autoSkipDisabled")
+    public void testEnabledNotSkipped(Page page) {
+        // Arrange
+        OutputLabel label = page.enabledNotSkipped;
+
+        // Act and Assert
+        assertLabel(label, "Enabled Not Skipped*", true);
+    }
+
+    @Test
+    @Order(14)
+    @DisplayName("OutputLabel: readonly=false indicateRequired=autoSkipDisabled")
+    public void testReadOnlyNotSkipped(Page page) {
+        // Arrange
+        OutputLabel label = page.readonlyNotSkipped;
+
+        // Act and Assert
+        assertLabel(label, "Read Only Not Skipped*", true);
+    }
+
+
     private void assertLabel(OutputLabel label, String text, boolean required) {
         Assertions.assertEquals(required, label.hasRequiredIndicator());
         Assertions.assertEquals(text, label.getText());
@@ -191,6 +236,18 @@ public class OutputLabel001Test extends AbstractPrimePageTest {
 
         @FindBy(id = "form:readonly")
         OutputLabel readonly;
+
+        @FindBy(id = "form:disabledSkipped")
+        OutputLabel disabledSkipped;
+
+        @FindBy(id = "form:readonlySkipped")
+        OutputLabel readonlySkipped;
+
+        @FindBy(id = "form:enabledNotSkipped")
+        OutputLabel enabledNotSkipped;
+
+        @FindBy(id = "form:readonlyNotSkipped")
+        OutputLabel readonlyNotSkipped;
 
         @FindBy(id = "form:noannotations")
         OutputLabel noannotations;
