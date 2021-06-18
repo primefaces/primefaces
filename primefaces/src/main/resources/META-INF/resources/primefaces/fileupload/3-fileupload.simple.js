@@ -47,6 +47,7 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
 
         this.maxFileSize = this.cfg.maxFileSize;
         this.form = this.jq.closest('form');
+        this.input = $(this.jqId);
 
         if (this.cfg.skinSimple) {
             this.input = $(this.jqId + '_input');
@@ -59,7 +60,6 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
         }
         else if (this.cfg.auto) {
             var $this = this;
-            this.input = $(this.jqId);
             this.input.on('change.fileupload', function() {
                 $this.upload();
             });
