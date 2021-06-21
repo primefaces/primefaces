@@ -23,19 +23,20 @@
  */
 package org.primefaces.showcase.view.data.timeline;
 
-import org.primefaces.event.timeline.*;
-import org.primefaces.model.timeline.TimelineEvent;
-import org.primefaces.model.timeline.TimelineModel;
-import org.primefaces.showcase.domain.Event;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
+import org.primefaces.event.timeline.*;
+import org.primefaces.model.timeline.TimelineEvent;
+import org.primefaces.model.timeline.TimelineModel;
+import org.primefaces.showcase.domain.Event;
 
 @Named("allEventsTimelineView")
 @ViewScoped
@@ -86,8 +87,11 @@ public class AllEventsTimelineView implements Serializable {
 
     public void onAdd(TimelineAddEvent e) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "add",
-                e.getStartDate().format(FORMATTER) + " - " + e.getEndDate().format(FORMATTER)));
+        String dates =  e.getStartDate().format(FORMATTER);
+        if (e.getEndDate() != null) {
+            dates += " - " + e.getEndDate().format(FORMATTER);
+        }
+        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "add", dates));
     }
 
     public void onChange(TimelineModificationEvent<String> e) {
