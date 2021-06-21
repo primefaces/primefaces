@@ -23,16 +23,18 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import lombok.Data;
-import org.primefaces.component.datatable.DataTable;
+import java.io.Serializable;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.Serializable;
-import java.util.List;
+
+import org.primefaces.component.datatable.DataTable;
+
+import lombok.Data;
 
 @Named
 @ViewScoped
@@ -43,6 +45,7 @@ public class DataTable001 implements Serializable {
 
     private List<ProgrammingLanguage> progLanguages;
     private List<ProgrammingLanguage> filteredProgLanguages;
+    private boolean globalFilterOnly;
 
     @Inject
     private ProgrammingLanguageService service;
@@ -50,6 +53,7 @@ public class DataTable001 implements Serializable {
     @PostConstruct
     public void init() {
         progLanguages = service.getLangs();
+        globalFilterOnly = false;
     }
 
     public void resetTable() {
@@ -57,5 +61,9 @@ public class DataTable001 implements Serializable {
         dataTable.reset();
 
         progLanguages = service.getLangs(); //progLanguages may have been sorted from DataTable
+    }
+
+    public void toggleGlobalFilter() {
+        setGlobalFilterOnly(!isGlobalFilterOnly());
     }
 }

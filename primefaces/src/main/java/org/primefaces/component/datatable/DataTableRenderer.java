@@ -751,6 +751,9 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void encodeFilter(FacesContext context, DataTable table, UIColumn column) throws IOException {
+        if (table.isGlobalFilterOnly()) {
+            return;
+        }
         ResponseWriter writer = context.getResponseWriter();
         UIComponent filterFacet = column.getFacet("filter");
 
@@ -774,10 +777,9 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer) throws IOException {
         String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
         boolean disableTabbing = table.getScrollWidth() != null;
-
         String filterId = column.getContainerClientId(context) + separator + "filter";
-        String filterStyleClass = column.getFilterStyleClass();
         Object filterValue = findFilterValueForColumn(context, table, column, filterId);
+        String filterStyleClass = column.getFilterStyleClass();
 
         //aria
         String ariaLabelId = filterId + "_label";

@@ -49,6 +49,7 @@ DataTable displays data in tabular format.
 | frozenColumns             | 0                  | Integer          | Number of columns to freeze from start index 0.
 | frozenRows                | null               | Object           | Collection to display as fixed in scrollable mode.
 | globalFilter              | null               | String           | Value of the global filter to use when filtering by default.
+| globalFilterOnly          | false              | Boolean          | When true this will hide all column filters and allow all columns to be filtered by global filter only.
 | globalFilterFunction      | null               | MethodExpression | Custom implementation to globally filter a value against a constraint.
 | id                        | null               | String           | Unique identifier of the component
 | lazy                      | false              | Boolean          | Controls lazy loading. In most cases this is detected automatically based on value-binding to LazyDataModel. So no need to set this explicit.
