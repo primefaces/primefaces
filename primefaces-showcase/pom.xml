@@ -187,6 +187,12 @@
             <version>${owasp-sanitizer.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20210307</version>
+        </dependency>
+
         <!-- REST -->
         <dependency>
             <groupId>org.jboss.resteasy</groupId>

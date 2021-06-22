@@ -809,9 +809,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
      bindRowEvents: function() {
         var $this = this;
-    
+
         this.bindRowHover(this.rowSelector);
-    
+
         this.tbody.off('click.dataTable mousedown.dataTable', this.rowSelector).on('mousedown.dataTable', this.rowSelector, null, function(e) {
             $this.mousedownOnRow = true;
         })
@@ -819,7 +819,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             $this.onRowClick(e, this);
             $this.mousedownOnRow = false;
         });
-    
+
         //double click
         if (this.hasBehavior('rowDblselect')) {
             this.tbody.off('dblclick.dataTable', this.rowSelector).on('dblclick.dataTable', this.rowSelector, null, function(e) {
@@ -2976,14 +2976,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         var $this = this,
-        rowIndex = this.getRowMeta(row).index,
+        rowMeta = this.getRowMeta(row),
         options = {
             source: this.id,
             process: this.id,
             update: this.id,
             formId: this.getParentFormId(),
             params: [{name: this.id + '_rowExpansion', value: true},
-                     {name: this.id + '_expandedRowIndex', value: rowIndex},
+                     {name: this.id + '_expandedRowIndex', value: rowMeta.index},
+                     {name: this.id + '_expandedRowKey', value: rowMeta.key},
                      {name: this.id + '_encodeFeature', value: true},
                      {name: this.id + '_skipChildren', value: true}],
             onsuccess: function(responseXML, status, xhr) {
@@ -2992,7 +2993,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         handle: function(content) {
                             if(content && PrimeFaces.trim(content).length) {
                                 row.addClass('ui-expanded-row');
-                                this.rowExpansionLoaded(rowIndex);
                                 this.displayExpandedRow(row, content);
                             }
                         }
@@ -3002,10 +3002,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             },
             oncomplete: function() {
                 $this.expansionProcess = $.grep($this.expansionProcess, function(r) {
-                    return r !== rowIndex;
+                    return r !== rowMeta.index;
                 });
             }
         };
+
+        this.addToRowExpansionState(rowMeta.key);
 
         if(this.hasBehavior('rowToggle')) {
             this.callBehavior('rowToggle', options);
@@ -3033,12 +3035,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @param {JQuery} row A row of this data table.
      */
     fireRowCollapseEvent: function(row) {
-        var rowIndex = this.getRowMeta(row).index;
+        var rowMeta = this.getRowMeta(row);
 
         if(this.hasBehavior('rowToggle')) {
             var ext = {
                 params: [
-                    {name: this.id + '_collapsedRowIndex', value: rowIndex},
+                    {name: this.id + '_collapsedRowIndex', value: rowMeta.index},
+                    {name: this.id + '_collapsedRowKey', value: rowMeta.key},
                     {name: this.id + '_skipChildren', value: true}
                 ]
             };
@@ -4788,7 +4791,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         this.expansionHolder = $(this.jqId + '_rowExpansionState');
         this.loadedExpansionRows = this.tbody.children('.ui-expanded-row-content').prev().map(function() {
-            return $this.getRowMeta($(this)).index;
+            return $this.getRowMeta($(this)).key;
         }).get();
 
         this.writeRowExpansions();
@@ -4805,11 +4808,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Detect if row expansion for this row has been loaded and if not load it.
      * @protected
-     * @param {number} rowIndex The row index to check for expansion
+     * @param {number} rowKey The row key to check for expansion
      */
-    rowExpansionLoaded: function(rowIndex) {
-        if(!PrimeFaces.inArray(this.loadedExpansionRows, rowIndex)) {
-            this.loadedExpansionRows.push(rowIndex);
+    addToRowExpansionState: function(rowKey) {
+        if(!PrimeFaces.inArray(this.loadedExpansionRows, rowKey)) {
+            this.loadedExpansionRows.push(rowKey);
             this.writeRowExpansions();
         }
     },
@@ -5068,7 +5071,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var rowSpan = groupedRow.nextUntil('.ui-datatable-grouped-row').not(':hidden').length + 1;
             var diff = rowSpan - parseInt(groupedColumn.attr('rowspan') || 1);
             groupedColumn.attr('rowspan', rowSpan);
-    
+
             var groupedColumnIndex = groupedColumn.index();
             if (groupedColumnIndex > 0) {
                 var columns = row.children('td:visible');

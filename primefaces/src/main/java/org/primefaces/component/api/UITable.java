@@ -321,7 +321,9 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
     void setGlobalFilterFunction(MethodExpression globalFilterFunction);
 
+    boolean isGlobalFilterOnly();
 
+    void setGlobalFilterOnly(boolean globalFilterOnly);
 
     default Map<String, SortMeta> initSortBy(FacesContext context) {
         Map<String, SortMeta> sortMeta = new HashMap<>();

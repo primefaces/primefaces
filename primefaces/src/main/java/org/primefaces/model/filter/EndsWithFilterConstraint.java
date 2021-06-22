@@ -23,9 +23,12 @@
  */
 package org.primefaces.model.filter;
 
+import java.util.function.BiPredicate;
+
 public class EndsWithFilterConstraint extends StringFilterConstraint {
 
-    public EndsWithFilterConstraint() {
-        super(String::endsWith);
+    @Override
+    protected BiPredicate<String, String> getPredicate() {
+        return String::endsWith;
     }
 }

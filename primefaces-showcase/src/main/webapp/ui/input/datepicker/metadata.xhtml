@@ -7,13 +7,9 @@
 
     <ui:define name="head">
         <style type="text/css">
-            .start {
-                background: #81c784;
-            }
-
-            .deadline {
-                background: #ef9a9a;
-            }
+            .start { background: #81c784; }
+            .deadline { background: #ef9a9a; }
+            .ui-datepicker-calendar .ui-state-disabled { opacity: .2; }
         </style>
     </ui:define>
 
@@ -30,7 +26,6 @@
     <ui:param name="widgetLink" value="datepicker-1"/>
 
     <ui:define name="implementation">
-
         <p:growl id="growl"/>
 
         <div class="card">
@@ -40,9 +35,10 @@
                     <p:datePicker id="basic" value="#{datePickerMetadataView.date1}"
                                   model="#{datePickerMetadataView.model}"/>
 
-                    <p:outputLabel for="lazy" value="Lazy"/>
+                    <p:outputLabel for="lazy" value="Lazy and Navigator"/>
                     <p:datePicker pattern="yyyy-MM-dd" id="lazy" value="#{datePickerMetadataView.date2}"
-                                  model="#{datePickerMetadataView.modelLazy}"/>
+                                  model="#{datePickerMetadataView.modelLazy}"
+                                  monthNavigator="true" yearNavigator="true"/>
 
                     <p:outputLabel for="basicEvent" value="Basic and Event"/>
                     <p:datePicker id="basicEvent" value="#{datePickerMetadataView.date3}"

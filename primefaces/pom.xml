@@ -1278,6 +1278,8 @@
                                 <exclude>**/0-timeline.min.js</exclude>
                                 <exclude>**/0-chartjs.min.js</exclude>
                                 <exclude>**/0-jquery.inputmask.js</exclude>
+                                <exclude>**/moment.js</exclude>
+                                <exclude>**/moment-timezone-with-data.js</exclude>
                                 <exclude>**/printer.js</exclude>
                                 <exclude>**/raphael.js</exclude>
                                 <exclude>**/theme.css</exclude>

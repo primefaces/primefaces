@@ -24,10 +24,11 @@
 package org.primefaces.model.filter;
 
 import javax.faces.context.FacesContext;
+import java.io.Serializable;
 import java.util.Locale;
 
 @FunctionalInterface
-public interface FilterConstraint {
+public interface FilterConstraint extends Serializable {
 
     boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale);
 }

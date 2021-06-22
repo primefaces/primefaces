@@ -23,11 +23,11 @@
  */
 package org.primefaces.component.treetable;
 
-import org.primefaces.component.api.*;
-import org.primefaces.util.MessageFactory;
-
 import javax.el.MethodExpression;
 import javax.faces.component.behavior.ClientBehaviorHolder;
+
+import org.primefaces.component.api.*;
+import org.primefaces.util.MessageFactory;
 
 public abstract class TreeTableBase extends UITree implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable,
         UITable<TreeTableState> {
@@ -73,6 +73,7 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         filterBy,
         globalFilter,
         globalFilterFunction,
+        globalFilterOnly,
         filteredValue,
         filterEvent,
         filterDelay,
@@ -450,6 +451,16 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
     @Override
     public void setGlobalFilterFunction(MethodExpression globalFilterFunction) {
         getStateHelper().put(PropertyKeys.globalFilterFunction, globalFilterFunction);
+    }
+
+    @Override
+    public boolean isGlobalFilterOnly() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.globalFilterOnly, false);
+    }
+
+    @Override
+    public void setGlobalFilterOnly(boolean globalFilterOnly) {
+        getStateHelper().put(PropertyKeys.globalFilterOnly, globalFilterOnly);
     }
 
     public boolean isAllowUnsorting() {

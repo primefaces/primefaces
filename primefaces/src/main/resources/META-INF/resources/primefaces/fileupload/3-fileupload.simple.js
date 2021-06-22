@@ -46,11 +46,11 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
 
         this.maxFileSize = this.cfg.maxFileSize;
-
         this.form = this.jq.closest('form');
         this.input = $(this.jqId);
 
         if (this.cfg.skinSimple) {
+            this.input = $(this.jqId + '_input');
             this.button = this.jq.children('.ui-button');
             this.display = this.jq.children('.ui-fileupload-filename');
 

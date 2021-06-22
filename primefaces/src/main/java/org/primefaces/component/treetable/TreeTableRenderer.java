@@ -869,6 +869,10 @@ public class TreeTableRenderer extends DataRenderer {
     }
 
     protected void encodeFilter(FacesContext context, TreeTable tt, UIColumn column) throws IOException {
+        if (tt.isGlobalFilterOnly()) {
+            return;
+        }
+
         ResponseWriter writer = context.getResponseWriter();
         UIComponent filterFacet = column.getFacet("filter");
 
@@ -877,12 +881,13 @@ public class TreeTableRenderer extends DataRenderer {
             boolean disableTabbing = tt.getScrollWidth() != null;
 
             String filterId = column.getContainerClientId(context) + separator + "filter";
-            String filterStyleClass = column.getFilterStyleClass();
-
             Object filterValue = tt.getFilterValue(column);
             filterValue = (filterValue == null) ? Constants.EMPTY_STRING : filterValue.toString();
 
-            filterStyleClass = filterStyleClass == null ? TreeTable.COLUMN_INPUT_FILTER_CLASS : TreeTable.COLUMN_INPUT_FILTER_CLASS + " " + filterStyleClass;
+            String filterStyleClass = getStyleClassBuilder(context)
+                        .add(TreeTable.COLUMN_INPUT_FILTER_CLASS)
+                        .add(column.getFilterStyleClass())
+                        .build();
 
             writer.startElement("input", null);
             writer.writeAttribute("id", filterId, null);

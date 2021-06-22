@@ -37,6 +37,8 @@ public class DataTableState extends UITableState {
 
     private Set<String> selectedRowKeys;
 
+    private Set<String> expandedRowKeys;
+
     public int getFirst() {
         return first;
     }
@@ -59,5 +61,13 @@ public class DataTableState extends UITableState {
 
     public void setSelectedRowKeys(Set<String> selectedRowKeys) {
         this.selectedRowKeys = selectedRowKeys;
+    }
+
+    public Set<String> getExpandedRowKeys() {
+        return expandedRowKeys;
+    }
+
+    public void setExpandedRowKeys(Set<String> expandedRowKeys) {
+        this.expandedRowKeys = expandedRowKeys;
     }
 }
