@@ -51,6 +51,7 @@ import net.bytebuddy.implementation.Implementation;
 import net.bytebuddy.implementation.InvocationHandlerAdapter;
 import net.bytebuddy.implementation.MethodDelegation;
 import net.bytebuddy.matcher.ElementMatchers;
+import org.primefaces.selenium.internal.OnloadScripts;
 
 public class PrimePageFragmentFactory {
 
@@ -82,7 +83,10 @@ public class PrimePageFragmentFactory {
     public static <T extends WebElement> T create(Class<T> fragment, WebElement element, ElementLocator el) {
         try {
             T proxy = proxy(fragment,
-                        InvocationHandlerAdapter.of((Object p, Method method, Object[] args) -> method.invoke(el.findElement(), args)));
+                    InvocationHandlerAdapter.of((Object p, Method method, Object[] args) -> {
+                        OnloadScripts.execute();
+                        return method.invoke(el.findElement(), args);
+                    }));
 
             WebDriver driver = WebDriverProvider.get();
 
