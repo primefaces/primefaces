@@ -36,6 +36,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
+import org.primefaces.integrationtests.datatable.ProgrammingLanguage.ProgrammingLanguageType;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
@@ -73,14 +74,15 @@ public class DataTable001Test extends AbstractDataTableTest {
 
         Row firstRow = dataTable.getRow(0);
         Assertions.assertEquals("1", firstRow.getCell(0).getText());
-        Assertions.assertEquals("Java", firstRow.getCell(1).getText());
+        Assertions.assertEquals("Java", firstRow.getCell(2).getText());
 
         Header header = dataTable.getHeader();
         Assertions.assertNotNull(header);
         Assertions.assertNotNull(header.getCells());
-        Assertions.assertEquals(3, header.getCells().size());
+        Assertions.assertEquals(4, header.getCells().size());
         Assertions.assertEquals("ID", header.getCell(0).getColumnTitle().getText());
-        Assertions.assertEquals("Name", header.getCell(1).getColumnTitle().getText());
+        Assertions.assertEquals("Type", header.getCell(1).getColumnTitle().getText());
+        Assertions.assertEquals("Name", header.getCell(2).getColumnTitle().getText());
 
         Paginator paginator = dataTable.getPaginator();
         Assertions.assertNotNull(paginator);
@@ -161,7 +163,7 @@ public class DataTable001Test extends AbstractDataTableTest {
 
     @Test
     @Order(4)
-    @DisplayName("DataTable: global filter")
+    @DisplayName("DataTable: global filter with globalFilterOnly=false")
     public void testGlobalFilter(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
@@ -181,6 +183,27 @@ public class DataTable001Test extends AbstractDataTableTest {
 
     @Test
     @Order(5)
+    @DisplayName("DataTable: GitHub #7193 global filter with globalFilterOnly=true")
+    public void testGlobalFilterIncludeNotDisplayedFilter(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        InputText globalFilter = page.globalFilter;
+        Assertions.assertNotNull(globalFilter);
+        dataTable.selectPage(1);
+        dataTable.sort("Type");
+
+        // Act
+        page.buttonGlobalFilterOnly.click();
+        filterGlobal(globalFilter, ProgrammingLanguageType.INTERPRETED.name());
+
+        // Assert
+        List<ProgrammingLanguage> langsFiltered = filterByType(ProgrammingLanguageType.INTERPRETED);
+        assertRows(dataTable, langsFiltered);
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(6)
     @DisplayName("DataTable: rows per page & reset; includes https://github.com/primefaces/primefaces/issues/5465 & https://github.com/primefaces/primefaces/issues/5481")
     public void testRowsPerPageAndReset_5465_5481(Page page) {
         // Arrange
@@ -234,6 +257,9 @@ public class DataTable001Test extends AbstractDataTableTest {
 
         @FindBy(id = "form:buttonResetTable")
         CommandButton buttonResetTable;
+        
+        @FindBy(id = "form:buttonGlobalFilterOnly")
+        CommandButton buttonGlobalFilterOnly;
 
         @Override
         public String getLocation() {

@@ -6,12 +6,12 @@
  * @typedef {"horizontal" | "vertical"} PrimeFaces.widget.Splitter.Layout Defines how the panel are split.
  * - `horizontal`: The two panels are split in two horizontally by the splitter.
  * - `vertically`: The two panels are split in two vertically by the splitter.
- * 
+ *
  * @typedef {"local" | "session"} PrimeFaces.widget.Splitter.StateStorage Defines where to store the current position of the
  * splitter so that it can be restored later.
  * - `local`: Use the browser's local storage which keeps data between sessions.
  * - `session`: Use the browser's session storage which is cleared when the session ends.
- * 
+ *
  * @prop {JQuery} panels DOM elements of the splitter panels in splitter.
  * @prop {JQuery} gutters DOM elements of the gutter elements in splitter.
  * @prop {boolean} horizontal Whether splitter element is horizontal or vertical.
@@ -42,11 +42,11 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
         this.gutters = this.jq.children('.ui-splitter-gutter');
         this.panelSizes = [];
         this.horizontal = this.cfg.layout === 'horizontal';
-        
+
         this.initPanelSize();
         this.bindGutterEvent();
     },
-    
+
     /**
      * Initialize panels size.
      * @private
@@ -75,7 +75,7 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
      */
     bindDocumentEvents: function() {
         var $this = this;
-        
+
         $(document).on('mousemove.splitter', function(event) {
                 $this.onResize(event);
             })
@@ -84,7 +84,7 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
                 $this.unbindDocumentEvents();
             });
     },
-    
+
     /**
      * Removes document events
      * @private
@@ -92,14 +92,14 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
     unbindDocumentEvents: function() {
         $(document).off('mousemove.splitter mouseup.splitter');
     },
-    
+
     /**
      * Set up event for the gutters.
      * @private
      */
     bindGutterEvent: function() {
         var $this = this;
-        
+
         this.gutters.off('mousedown.splitter touchstart.splitter touchmove.splitter touchend.splitter')
             .on('mousedown.splitter', function(event) {
                 $this.onResizeStart(event);
@@ -118,7 +118,7 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
                 event.preventDefault();
             });
     },
-    
+
     /**
      * The method that is called when the 'resize' event starts.
      * @private
@@ -186,7 +186,7 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
             var sizesArr = this.panelSizes;
             var ext = {
                 params: [
-                    {name: this.id + '_panelSizes', value: sizesArr.map(e => e.toFixed(2)).join('_')},
+                    {name: this.id + '_panelSizes', value: sizesArr.map(function(e) { return e.toFixed(2) }).join('_')},
                 ]
             };
 
@@ -195,7 +195,7 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
 
         this.clear();
     },
-    
+
     /**
      * Clear all variables
      * @private
@@ -211,7 +211,7 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
         this.gutterElement = null;
         this.prevPanelIndex = null;
     },
-    
+
     /**
      * Checks the new values according to the size and minimum size values
      * @private
@@ -238,7 +238,7 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
     isStateful: function() {
         return this.cfg.stateKey != null;
     },
-    
+
     /**
      * Save current panel sizes to the (local or session) storage.
      * @private
@@ -261,10 +261,10 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
             this.panels.each(function(i, panel) {
                 panel.style.flexBasis = 'calc(' + $this.panelSizes[i] + '% - ' + (($this.panels.length - 1) * $this.cfg.gutterSize) + 'px)';
             });
-            
+
             return true;
         }
-        
+
         return false;
     },
 

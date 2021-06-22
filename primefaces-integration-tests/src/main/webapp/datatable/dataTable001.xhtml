@@ -13,7 +13,9 @@
 
         <h:form id="form">
             <p:dataTable id="datatable" widgetVar="wgtTable" value="#{dataTable001.progLanguages}" var="lang" paginator="true" rows="3"
-                         filteredValue="#{dataTable001.filteredProgLanguages}" filterEvent="enter"
+                         filteredValue="#{dataTable001.filteredProgLanguages}" 
+                         filterEvent="enter"
+                         globalFilterOnly="#{dataTable001.globalFilterOnly}"
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          rowsPerPageTemplate="2,3,5,10">
                 <f:facet name="header">
@@ -27,6 +29,8 @@
                     <h:outputText value="#{lang.id}"/>
                 </p:column>
 
+                <p:column field="type" />
+
                 <p:column headerText="Name" sortBy="#{lang.name}" filterBy="#{lang.name}" filterMatchMode="contains">
                     <h:outputText value="#{lang.name}"/>
                 </p:column>
@@ -38,7 +42,8 @@
 
             <p:commandButton id="button" value="Submit" update="@form"/>
             <p:commandButton id="buttonUpdate" value="Update" update="datatable"/>
-            <p:commandButton id="buttonResetTable" value="reset table" update="@form" action="#{dataTable001.resetTable()}"/>
+            <p:commandButton id="buttonResetTable" value="Reset" update="@form" action="#{dataTable001.resetTable()}"/>
+            <p:commandButton id="buttonGlobalFilterOnly" value="Global Filter Only" update="@form" action="#{dataTable001.toggleGlobalFilter()}"/>
         </h:form>
 
     </h:body>

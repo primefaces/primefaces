@@ -30,6 +30,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -90,49 +91,50 @@ public class TreeTableRenderer extends DataRenderer {
     }
 
     protected void decodeSelection(FacesContext context, TreeTable tt, TreeNode root) {
+        boolean multiple = tt.isMultipleSelectionMode();
+        Class<?> selectionType = tt.getSelectionType();
+
+        if (multiple && !selectionType.isArray() && !List.class.isAssignableFrom(selectionType)) {
+            throw new FacesException("Multiple selection reference must be an Array or a List for TreeTable " + tt.getClientId());
+        }
+
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String selectionMode = tt.getSelectionMode();
         String clientId = tt.getClientId(context);
 
         //decode selection
-        if (selectionMode != null) {
-            String selectionValue = params.get(tt.getClientId(context) + "_selection");
-            boolean isSingle = "single".equalsIgnoreCase(selectionMode);
-
-            if (isValueBlank(selectionValue)) {
-                if (isSingle) {
-                    tt.setSelection(null);
-                }
-                else {
-                    tt.setSelection(new TreeNode[0]);
-                }
+        String selectionValue = params.get(tt.getClientId(context) + "_selection");
+        if (isValueBlank(selectionValue)) {
+            if (multiple) {
+                tt.setSelection(selectionType.isArray() ? new TreeNode[0] : Collections.emptyList());
             }
             else {
-                String[] selectedRowKeys = selectionValue.split(",");
-
-                if (isSingle) {
-                    tt.setRowKey(root, selectedRowKeys[0]);
-                    tt.setSelection(tt.getRowNode());
-                }
-                else {
-                    List<TreeNode> selectedNodes = new ArrayList<>();
-
-                    for (int i = 0; i < selectedRowKeys.length; i++) {
-                        tt.setRowKey(root, selectedRowKeys[i]);
-                        TreeNode rowNode = tt.getRowNode();
-                        if (rowNode != null) {
-                            selectedNodes.add(rowNode);
-                        }
-                    }
-
-                    tt.setSelection(selectedNodes.toArray(new TreeNode[selectedNodes.size()]));
-                }
-
-                tt.setRowKey(root, null);     //cleanup
+                tt.setSelection(null);
             }
         }
+        else {
+            String[] selectedRowKeys = selectionValue.split(",");
+            if (multiple) {
+                List<TreeNode> selectedNodes = new ArrayList<>();
 
-        if (tt.isCheckboxSelection() && tt.isSelectionRequest(context)) {
+                for (int i = 0; i < selectedRowKeys.length; i++) {
+                    tt.setRowKey(root, selectedRowKeys[i]);
+                    TreeNode rowNode = tt.getRowNode();
+                    if (rowNode != null) {
+                        selectedNodes.add(rowNode);
+                    }
+                }
+
+                tt.setSelection(selectionType.isArray() ? selectedNodes.toArray(new TreeNode[selectedNodes.size()]) : selectedNodes);
+            }
+            else {
+                tt.setRowKey(root, selectedRowKeys[0]);
+                tt.setSelection(tt.getRowNode());
+            }
+
+            tt.setRowKey(root, null);     //cleanup
+        }
+
+        if (tt.isCheckboxSelectionMode() && tt.isSelectionRequest(context)) {
             String selectedNodeRowKey = params.get(clientId + "_instantSelection");
             tt.setRowKey(root, selectedNodeRowKey);
             TreeNode selectedNode = tt.getRowNode();
@@ -620,10 +622,9 @@ public class TreeTableRenderer extends DataRenderer {
         tt.setRowKey(root, rowKey);
         String icon = treeNode.isExpanded() ? TreeTable.COLLAPSE_ICON : TreeTable.EXPAND_ICON;
         int depth = rowKey.split(UITree.SEPARATOR).length - 1;
-        String selectionMode = tt.getSelectionMode();
-        boolean selectionEnabled = selectionMode != null;
+        boolean selectionEnabled = tt.isSelectionEnabled();
         boolean selectable = treeNode.isSelectable() && selectionEnabled;
-        boolean checkboxSelection = selectionEnabled && "checkbox".equals(selectionMode);
+        boolean checkboxSelection = selectionEnabled && tt.isCheckboxSelectionMode();
         boolean selected = treeNode.isSelected();
         boolean partialSelected = treeNode.isPartialSelected();
         boolean nativeElements = tt.isNativeElements();
@@ -869,6 +870,10 @@ public class TreeTableRenderer extends DataRenderer {
     }
 
     protected void encodeFilter(FacesContext context, TreeTable tt, UIColumn column) throws IOException {
+        if (tt.isGlobalFilterOnly()) {
+            return;
+        }
+
         ResponseWriter writer = context.getResponseWriter();
         UIComponent filterFacet = column.getFacet("filter");
 
@@ -877,12 +882,13 @@ public class TreeTableRenderer extends DataRenderer {
             boolean disableTabbing = tt.getScrollWidth() != null;
 
             String filterId = column.getContainerClientId(context) + separator + "filter";
-            String filterStyleClass = column.getFilterStyleClass();
-
             Object filterValue = tt.getFilterValue(column);
             filterValue = (filterValue == null) ? Constants.EMPTY_STRING : filterValue.toString();
 
-            filterStyleClass = filterStyleClass == null ? TreeTable.COLUMN_INPUT_FILTER_CLASS : TreeTable.COLUMN_INPUT_FILTER_CLASS + " " + filterStyleClass;
+            String filterStyleClass = getStyleClassBuilder(context)
+                        .add(TreeTable.COLUMN_INPUT_FILTER_CLASS)
+                        .add(column.getFilterStyleClass())
+                        .build();
 
             writer.startElement("input", null);
             writer.writeAttribute("id", filterId, null);

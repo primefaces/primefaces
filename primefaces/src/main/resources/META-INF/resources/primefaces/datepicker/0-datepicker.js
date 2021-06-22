@@ -1315,7 +1315,7 @@
 
         renderTitleMonthElement: function (month, index) {
             if (this.options.monthNavigator && this.options.view !== 'month' && index === 0) {
-                return '<select class="ui-datepicker-month">' + this.renderTitleOptions('month', this.options.locale.monthNamesShort) + '</select>';
+                return '<select class="ui-datepicker-month">' + this.renderTitleOptions('month', this.options.locale.monthNamesShort, month) + '</select>';
             }
             else {
                 return '<span class="ui-datepicker-month">' + this.escapeHTML(this.options.locale.monthNames[month]) + '</span>' + '&#xa0;';
@@ -1334,14 +1334,14 @@
                     yearOptions.push(i);
                 }
 
-                return '<select class="ui-datepicker-year">' + this.renderTitleOptions('year', yearOptions) + '</select>';
+                return '<select class="ui-datepicker-year">' + this.renderTitleOptions('year', yearOptions, year) + '</select>';
             }
             else {
                 return '<span class="ui-datepicker-year">' + year + '</span>';
             }
         },
 
-        renderTitleOptions: function (name, options) {
+        renderTitleOptions: function (name, options, current) {
             var _options = '',
                 minDate = this.options.minDate,
                 maxDate = this.options.maxDate;
@@ -1350,13 +1350,13 @@
                 switch(name) {
                     case 'month':
                         if ((!this.isInMinYear() || i >= minDate.getMonth()) && (!this.isInMaxYear() || i <= maxDate.getMonth())) {
-                            _options += '<option value="' + i + '">' + this.escapeHTML(options[i]) + '</option>';
+                            _options += '<option value="' + i + '"' + (i === current ? ' selected' : '') + '>' + this.escapeHTML(options[i]) + '</option>';
                         }
                         break;
                     case 'year':
                         var option = options[i];
                         if (!(minDate && minDate.getFullYear() > option) && !(maxDate && maxDate.getFullYear() < option)) {
-                            _options += '<option value="' +  option + '">' +  option + '</option>';
+                            _options += '<option value="' +  option + '"' + (option === current ? ' selected' : '') + '>' +  option + '</option>';
                         }
                         break;
                 }
@@ -2055,7 +2055,7 @@
                                 $this.bindScrollListener();
                             }
                         }
-        
+
                         if (($this.options.showTime || $this.options.timeOnly) && $this.options.timeInput) {
                             $this.panel.find('.ui-hour-picker input').trigger('focus');
                         }

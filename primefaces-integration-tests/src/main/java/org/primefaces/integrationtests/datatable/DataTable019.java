@@ -71,6 +71,10 @@ public class DataTable019 implements Serializable {
 
     public boolean columnFilterFunction(Object value, Object filter, Locale locale) {
         String filterText = Objects.toString(filter);
+        // prove the custom filter is actually working
+        if ("CUSTOM".equalsIgnoreCase(filterText)) {
+            filterText = "INTERPRETED";
+        }
         return Objects.equals(filterText, Objects.toString(value));
     }
 

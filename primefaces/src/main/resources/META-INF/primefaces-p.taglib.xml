@@ -8385,6 +8385,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[When true this will hide all column filters and allow all columns to be filtered by global filter only, defaults to false.]]>
+            </description>
+            <name>globalFilterOnly</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Defines the cell edit behavior, valid values are "eager" (default) and "lazy".]]>
             </description>
             <name>cellEditMode</name>
@@ -18672,7 +18680,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Controls the required (*) indicator. Auto = displayed based on the required attribute OR if @NotNull is present. false = never displayed. true = always displayed.]]>
+                <![CDATA[Controls the required (*) indicator. Auto = displayed based on the required attribute OR if @NotNull is present. AutoSkipDisabled = Auto but checks input for disabled/readonly. false = never displayed. true = always displayed.]]>
             </description>
             <name>indicateRequired</name>
             <required>false</required>
@@ -29858,6 +29866,14 @@
             <name>globalFilter</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[When true this will hide all column filters and allow all columns to be filtered by global filter only, defaults to false.]]>
+            </description>
+            <name>globalFilterOnly</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>

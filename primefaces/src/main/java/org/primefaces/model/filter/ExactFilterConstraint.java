@@ -23,9 +23,12 @@
  */
 package org.primefaces.model.filter;
 
+import java.util.function.BiPredicate;
+
 public class ExactFilterConstraint extends StringFilterConstraint {
 
-    public ExactFilterConstraint() {
-        super(String::equalsIgnoreCase);
+    @Override
+    protected BiPredicate<String, String> getPredicate() {
+        return String::equalsIgnoreCase;
     }
 }

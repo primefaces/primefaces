@@ -352,10 +352,6 @@ public class TreeTable extends TreeTableBase {
         return value == null ? "0,0" : value;
     }
 
-    public boolean isCheckboxSelection() {
-        return "checkbox".equals(getSelectionMode());
-    }
-
     public Locale resolveDataLocale() {
         FacesContext context = getFacesContext();
         return LocaleUtils.resolveLocale(context, getDataLocale(), getClientId(context));
@@ -392,22 +388,6 @@ public class TreeTable extends TreeTableBase {
         filteredRowKeys = new ArrayList<>();
 
         return super.saveState(context);
-    }
-
-    @Override
-    protected void validateSelection(FacesContext context) {
-        String selectionMode = getSelectionMode();
-
-        if (selectionMode != null && isRequired()) {
-            Object selection = getLocalSelectedNodes();
-            boolean isValueBlank = ("single".equalsIgnoreCase(selectionMode)) ? (selection == null) : (((TreeNode[]) selection).length == 0);
-
-            if (isValueBlank) {
-                super.updateSelection(context);
-            }
-        }
-
-        super.validateSelection(context);
     }
 
     @Override
@@ -499,10 +479,6 @@ public class TreeTable extends TreeTableBase {
         if (rowsVe != null && !rowsVe.isReadOnly(elContext)) {
             rowsVe.setValue(context.getELContext(), getRows());
         }
-    }
-
-    public boolean isFilteringEnabled() {
-        return !getFilterByAsMap().isEmpty();
     }
 
     public void updateFilteredValue(FacesContext context, TreeNode node) {
@@ -662,6 +638,7 @@ public class TreeTable extends TreeTableBase {
         return value;
     }
 
+    @Override
     public void setColumnMeta(Map<String, ColumnMeta> columnMeta) {
         getStateHelper().put(InternalPropertyKeys.columnMeta, columnMeta);
     }

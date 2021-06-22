@@ -64,8 +64,11 @@ public class FilterView implements Serializable {
 
     private List<FilterMeta> filterBy;
 
+    private boolean globalFilterOnly;
+
     @PostConstruct
     public void init() {
+        globalFilterOnly = false;
         customers1 = service.getCustomers(10);
         customers2 = service.getCustomers(50);
         customers3 = service.getCustomers(10);
@@ -100,6 +103,10 @@ public class FilterView implements Serializable {
                 || customer.getDate().toString().toLowerCase().contains(filterText)
                 || customer.getStatus().name().toLowerCase().contains(filterText)
                 || customer.getActivity() < filterInt;
+    }
+
+    public void toggleGlobalFilter() {
+        setGlobalFilterOnly(!isGlobalFilterOnly());
     }
 
     private int getInteger(String string) {
@@ -161,5 +168,13 @@ public class FilterView implements Serializable {
 
     public List<FilterMeta> getFilterBy() {
         return filterBy;
+    }
+
+    public boolean isGlobalFilterOnly() {
+        return globalFilterOnly;
+    }
+
+    public void setGlobalFilterOnly(boolean globalFilterOnly) {
+        this.globalFilterOnly = globalFilterOnly;
     }
 }

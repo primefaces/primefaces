@@ -72,6 +72,7 @@ public class OutputLabelRenderer extends CoreRenderer {
         final EditableValueHolderState state = new EditableValueHolderState();
 
         final String indicateRequired = label.getIndicateRequired();
+        boolean isAuto = "auto".equals(indicateRequired) || "autoSkipDisabled".equals(indicateRequired);
 
         String _for = label.getFor();
         if (!isValueBlank(_for)) {
@@ -113,14 +114,24 @@ public class OutputLabelRenderer extends CoreRenderer {
                             styleClass.append(" ui-state-error");
                         }
 
-                        if ("auto".equals(indicateRequired)) {
-                            state.setRequired(input.isRequired());
+                        if (isAuto) {
+                            boolean disabled = false;
+                            if ("autoSkipDisabled".equals(indicateRequired)) {
+                                disabled = Boolean.parseBoolean(String.valueOf(input.getAttributes().get("disabled"))) ||
+                                            Boolean.parseBoolean(String.valueOf(input.getAttributes().get("readonly")));
+                            }
 
-                            // fallback if required=false
-                            if (!state.isRequired()) {
-                                PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
-                                if (applicationContext.getConfig().isBeanValidationEnabled() && isBeanValidationDefined(input, context)) {
-                                    state.setRequired(true);
+                            if (disabled) {
+                                state.setRequired(false);
+                            }
+                            else {
+                                state.setRequired(input.isRequired());
+                                // fallback if required=false
+                                if (!state.isRequired()) {
+                                    PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
+                                    if (applicationContext.getConfig().isBeanValidationEnabled() && isBeanValidationDefined(input, context)) {
+                                        state.setRequired(true);
+                                    }
                                 }
                             }
                         }
@@ -159,7 +170,7 @@ public class OutputLabelRenderer extends CoreRenderer {
 
         renderChildren(context, label);
 
-        if ("true".equals(indicateRequired) || ("auto".equals(indicateRequired) && !isValueBlank(_for) && state.isRequired())) {
+        if ("true".equals(indicateRequired) || (isAuto && !isValueBlank(_for) && state.isRequired())) {
             encodeRequiredIndicator(writer, label);
         }
 

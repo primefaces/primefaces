@@ -65,6 +65,7 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         frozenRows,
         globalFilter,
         globalFilterFunction,
+        globalFilterOnly,
         liveResize,
         liveScroll,
         liveScrollBuffer,
@@ -550,6 +551,16 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
     @Override
     public void setGlobalFilter(String globalFilter) {
         getStateHelper().put(PropertyKeys.globalFilter, globalFilter);
+    }
+
+    @Override
+    public boolean isGlobalFilterOnly() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.globalFilterOnly, false);
+    }
+
+    @Override
+    public void setGlobalFilterOnly(boolean globalFilterOnly) {
+        getStateHelper().put(PropertyKeys.globalFilterOnly, globalFilterOnly);
     }
 
     public String getCellEditMode() {

@@ -33,6 +33,7 @@ import org.openqa.selenium.support.pagefactory.ElementLocator;
 import net.bytebuddy.implementation.bind.annotation.AllArguments;
 import net.bytebuddy.implementation.bind.annotation.Origin;
 import net.bytebuddy.implementation.bind.annotation.RuntimeType;
+import org.primefaces.selenium.internal.OnloadScripts;
 
 public class ElementLocatorInterceptor {
 
@@ -61,6 +62,8 @@ public class ElementLocatorInterceptor {
         if (method.getName().equals("equals")) {
             return located.equals(args[0]);
         }
+
+        OnloadScripts.execute();
 
         try {
             return method.invoke(located, args);

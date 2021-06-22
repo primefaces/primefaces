@@ -25,6 +25,7 @@ package org.primefaces.model;
 
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.api.UITable;
 import org.primefaces.component.column.ColumnBase;
 import org.primefaces.component.datatable.feature.FilterFeature;
 import org.primefaces.model.filter.FilterConstraint;
@@ -35,11 +36,8 @@ import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Objects;
-import org.primefaces.component.api.UITable;
 
 public class FilterMeta implements Serializable {
 
@@ -52,7 +50,7 @@ public class FilterMeta implements Serializable {
     private ValueExpression filterBy;
     private Object filterValue;
     private MatchMode matchMode = MatchMode.CONTAINS;
-    private transient FilterConstraint constraint;
+    private FilterConstraint constraint;
 
     public FilterMeta() {
         // NOOP
@@ -272,14 +270,5 @@ public class FilterMeta implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(field, columnKey);
-    }
-
-    private void readObject(ObjectInputStream is) throws ClassNotFoundException, IOException {
-        is.defaultReadObject();
-
-        FilterConstraint c = FilterFeature.FILTER_CONSTRAINTS.get(matchMode);
-        if (c != null) {
-            this.constraint = c;
-        }
     }
 }

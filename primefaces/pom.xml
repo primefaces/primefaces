@@ -137,7 +137,7 @@
         <dependency>
             <groupId>com.rometools</groupId>
             <artifactId>rome</artifactId>
-            <version>1.13.0</version>
+            <version>1.15.0</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -660,6 +660,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.resources.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.clientwindow.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.polyfills.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.polyfill.replaceall.min.js</include>
 
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/ajaxstatus/ajaxstatus.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/poll/poll.js</include>
@@ -1169,9 +1170,9 @@
                     <plugin>
                         <groupId>org.owasp</groupId>
                         <artifactId>dependency-check-maven</artifactId>
-                        <version>6.1.6</version>
+                        <version>6.2.2</version>
                         <configuration>
-                            <skipProvidedScope>false</skipProvidedScope>
+                            <skipProvidedScope>true</skipProvidedScope>
                             <skipRuntimeScope>false</skipRuntimeScope>
                             <failBuildOnCVSS>5</failBuildOnCVSS>
                             <suppressionFile>${project.basedir}/src/conf/owasp-suppressions.xml</suppressionFile>
@@ -1278,6 +1279,8 @@
                                 <exclude>**/0-timeline.min.js</exclude>
                                 <exclude>**/0-chartjs.min.js</exclude>
                                 <exclude>**/0-jquery.inputmask.js</exclude>
+                                <exclude>**/moment.js</exclude>
+                                <exclude>**/moment-timezone-with-data.js</exclude>
                                 <exclude>**/printer.js</exclude>
                                 <exclude>**/raphael.js</exclude>
                                 <exclude>**/theme.css</exclude>
