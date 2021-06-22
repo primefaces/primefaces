@@ -273,15 +273,13 @@ public class Tree extends TreeBase {
     @Override
     public void processUpdates(FacesContext context) {
         if (shouldSkipNodes(context)) {
-            updateSelection(context);
+            if (isSelectionEnabled()) {
+                updateSelection(context);
+            }
         }
         else {
             super.processUpdates(context);
         }
-    }
-
-    public boolean isCheckboxSelection() {
-        return "checkbox".equals(getSelectionMode());
     }
 
     TreeNode getDragNode() {
@@ -352,22 +350,6 @@ public class Tree extends TreeBase {
                 }
             }
         }
-    }
-
-    @Override
-    protected void validateSelection(FacesContext context) {
-        String selectionMode = getSelectionMode();
-
-        if (selectionMode != null && isRequired()) {
-            Object selection = getLocalSelectedNodes();
-            boolean isValueBlank = ("single".equalsIgnoreCase(selectionMode)) ? (selection == null) : (((TreeNode[]) selection).length == 0);
-
-            if (isValueBlank) {
-                super.updateSelection(context);
-            }
-        }
-
-        super.validateSelection(context);
     }
 
     public TreeNode createCopyOfTreeNode(TreeNode node) {

@@ -215,7 +215,7 @@ public class SelectionFeature implements DataTableFeature {
         boolean isArray = clazz != null && clazz.isArray();
 
         if (multiple && clazz != null && !isArray && !List.class.isAssignableFrom(clazz)) {
-            throw new FacesException("Multiple selection reference must be an Array or a List for datatable " + table.getClientId());
+            throw new FacesException("Multiple selection reference must be an Array or a List for DataTable " + table.getClientId());
         }
 
         Object selection = null;
