@@ -45,6 +45,7 @@ import org.primefaces.component.tree.UITreeNode;
 import org.primefaces.model.CheckboxTreeNode;
 import org.primefaces.model.TreeNode;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.MessageFactory;
 import org.primefaces.util.SharedStringBuilder;
 
@@ -312,22 +313,24 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         ValueExpression ve = getValueExpression(UITree.PropertyKeys.selection.toString());
         if (ve != null) {
             if (preselection != null) {
-                String selectionMode = getSelectionMode();
-                if (selectionMode != null) {
-                    if ("single".equals(selectionMode)) {
-                        if (!preselection.isEmpty()) {
-                            ve.setValue(FacesContext.getCurrentInstance().getELContext(), preselection.get(0));
-                        }
+                if (isSelectionEnabled()) {
+                    if (isMultipleSelectionMode()) {
+                        Class<?> selectionType = getSelectionType();
+                        ve.setValue(getFacesContext().getELContext(), selectionType.isArray()
+                                ? preselection.toArray(new TreeNode[0])
+                                : preselection);
                     }
                     else {
-                        ve.setValue(FacesContext.getCurrentInstance().getELContext(), preselection.toArray(new TreeNode[0]));
+                        if (!preselection.isEmpty()) {
+                            ve.setValue(getFacesContext().getELContext(), preselection.get(0));
+                        }
                     }
 
                     preselection = null;
                 }
             }
             else {
-                ve.setValue(FacesContext.getCurrentInstance().getELContext(), null);
+                ve.setValue(getFacesContext().getELContext(), null);
             }
         }
     }
@@ -356,25 +359,29 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     public String getSelectedRowKeysAsString() {
         String value = null;
         Object selection = getSelection();
-        String selectionMode = getSelectionMode();
 
         if (selection != null) {
-            if ("single".equals(selectionMode)) {
-                TreeNode node = (TreeNode) selection;
-                value = node.getRowKey();
-            }
-            else {
-                TreeNode[] nodes = (TreeNode[]) selection;
+            if (isMultipleSelectionMode()) {
+                Class<?> selectionType = getSelectionType();
+                if (!selectionType.isArray() && !List.class.isAssignableFrom(selection.getClass())) {
+                    throw new FacesException("Multiple selection reference must be an Array or a List for Tree " + getClientId());
+                }
+
+                List<TreeNode> nodes = selectionType.isArray() ? Arrays.asList((TreeNode[]) selection) : (List<TreeNode>) selection;
                 StringBuilder builder = SharedStringBuilder.get(SB_GET_SELECTED_ROW_KEYS_AS_STRING);
 
-                for (int i = 0; i < nodes.length; i++) {
-                    builder.append(nodes[i].getRowKey());
-                    if (i != (nodes.length - 1)) {
+                for (int i = 0; i < nodes.size(); i++) {
+                    if (i > 0) {
                         builder.append(",");
                     }
+                    builder.append(nodes.get(i).getRowKey());
                 }
 
                 value = builder.toString();
+            }
+            else {
+                TreeNode node = (TreeNode) selection;
+                value = node.getRowKey();
             }
         }
 
@@ -481,19 +488,32 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     }
 
     protected void validateSelection(FacesContext context) {
-        String selectionMode = getSelectionMode();
-        if (selectionMode != null && isRequired()) {
+        if (isSelectionEnabled() && isRequired()) {
+            Class<?> selectionType = getSelectionType();
+            Object localSelection = getLocalSelectedNodes();
+            boolean isValueBlank = !isMultipleSelectionMode()
+                    ? localSelection == null
+                    : (selectionType.isArray()
+                        ? ((TreeNode[]) localSelection).length == 0
+                        : ((List<TreeNode>) localSelection).isEmpty());
+            if (isValueBlank) {
+                updateSelection(context);
+            }
+
             boolean valid = true;
             Object selection = getSelection();
+            if (isMultipleSelectionMode()) {
+                if (!selectionType.isArray() && !List.class.isAssignableFrom(selection.getClass())) {
+                    throw new FacesException("Multiple selection reference must be an Array or a List for Tree " + getClientId());
+                }
 
-            if ("single".equals(selectionMode)) {
-                if (selection == null) {
+                List<TreeNode> nodes = selectionType.isArray() ? Arrays.asList((TreeNode[]) selection) : (List<TreeNode>) selection;
+                if (nodes.isEmpty()) {
                     valid = false;
                 }
             }
             else {
-                TreeNode[] selectionArray = (TreeNode[]) selection;
-                if (selectionArray.length == 0) {
+                if (selection == null) {
                     valid = false;
                 }
             }
@@ -528,33 +548,30 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 
         processNodes(context, PhaseId.UPDATE_MODEL_VALUES, getValue());
 
-        updateSelection(context);
+        if (isSelectionEnabled()) {
+            updateSelection(context);
+        }
 
         popComponentFromEL(context);
     }
 
     public void updateSelection(FacesContext context) {
-        String selectionMode = getSelectionMode();
         boolean propagateSelectionDown = isPropagateSelectionDown();
         boolean propagateSelectionUp = isPropagateSelectionUp();
 
         ValueExpression selectionVE = getValueExpression(UITree.PropertyKeys.selection.toString());
-
-        if (selectionMode != null && selectionVE != null) {
+        if (selectionVE != null) {
+            Class<?> selectionType = getSelectionType();
             Object selection = getLocalSelectedNodes();
             Object previousSelection = selectionVE.getValue(context.getELContext());
 
-            if ("single".equals(selectionMode)) {
-                if (previousSelection != null) {
-                    ((TreeNode) previousSelection).setSelected(false);
-                }
-                if (selection != null) {
-                    ((TreeNode) selection).setSelected(true);
-                }
-            }
-            else {
-                TreeNode[] previousSelections = (TreeNode[]) previousSelection;
-                TreeNode[] selections = (TreeNode[]) selection;
+            if (isMultipleSelectionMode()) {
+                List<TreeNode> previousSelections = selectionType.isArray()
+                        ? (previousSelection == null ? null : Arrays.asList((TreeNode[]) previousSelection))
+                        : (List<TreeNode>) previousSelection;
+                List<TreeNode> selections = selectionType.isArray()
+                        ? (selection == null ? null : Arrays.asList((TreeNode[]) selection))
+                        : (List<TreeNode>) selection;
 
                 if (previousSelections != null) {
                     for (TreeNode node : previousSelections) {
@@ -576,6 +593,14 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
                             node.setSelected(true);
                         }
                     }
+                }
+            }
+            else {
+                if (previousSelection != null) {
+                    ((TreeNode) previousSelection).setSelected(false);
+                }
+                if (selection != null) {
+                    ((TreeNode) selection).setSelected(true);
                 }
             }
 
@@ -1079,5 +1104,25 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     }
 
     protected void preEncode(FacesContext context) {
+    }
+
+    public boolean isSelectionEnabled() {
+        String selectionMode = getSelectionMode();
+        return LangUtils.isNotBlank(selectionMode);
+    }
+
+    public boolean isMultipleSelectionMode() {
+        String selectionMode = getSelectionMode();
+        return !"single".equalsIgnoreCase(selectionMode);
+    }
+
+    public Class<?> getSelectionType() {
+        ValueExpression selectionVE = getValueExpression(UITree.PropertyKeys.selection.toString());
+        return selectionVE == null ? null : selectionVE.getType(getFacesContext().getELContext());
+    }
+
+    public boolean isCheckboxSelectionMode() {
+        String selectionMode = getSelectionMode();
+        return "checkbox".equals(selectionMode);
     }
 }

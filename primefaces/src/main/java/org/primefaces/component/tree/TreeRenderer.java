@@ -66,7 +66,7 @@ public class TreeRenderer extends CoreRenderer {
             decodeDragDrop(context, tree, root);
         }
 
-        if (tree.getSelectionMode() != null) {
+        if (tree.isSelectionEnabled()) {
             decodeSelection(context, tree, root);
         }
 
@@ -74,28 +74,29 @@ public class TreeRenderer extends CoreRenderer {
     }
 
     public void decodeSelection(FacesContext context, Tree tree, TreeNode root) {
+        boolean multiple = tree.isMultipleSelectionMode();
+        Class<?> selectionType = tree.getSelectionType();
+
+        if (multiple && !selectionType.isArray() && !List.class.isAssignableFrom(selectionType)) {
+            throw new FacesException("Multiple selection reference must be an Array or a List for Tree " + tree.getClientId());
+        }
+
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String clientId = tree.getClientId(context);
         String selection = params.get(clientId + "_selection");
 
-        boolean isSingle = tree.getSelectionMode().equalsIgnoreCase("single");
-
         if (isValueBlank(selection)) {
-            if (isSingle) {
-                tree.setSelection(null);
+            if (multiple) {
+                tree.setSelection(selectionType.isArray() ? new TreeNode[0] : Collections.emptyList());
             }
             else {
-                tree.setSelection(new TreeNode[0]);
+                tree.setSelection(null);
             }
         }
         else {
             String[] selectedRowKeys = selection.split(",");
 
-            if (isSingle) {
-                tree.setRowKey(root, selectedRowKeys[0]);
-                tree.setSelection(tree.getRowNode());
-            }
-            else {
+            if (multiple) {
                 List<TreeNode> selectedNodes = new ArrayList<>();
 
                 for (int i = 0; i < selectedRowKeys.length; i++) {
@@ -106,13 +107,17 @@ public class TreeRenderer extends CoreRenderer {
                     }
                 }
 
-                tree.setSelection(selectedNodes.toArray(new TreeNode[selectedNodes.size()]));
+                tree.setSelection(selectionType.isArray() ? selectedNodes.toArray(new TreeNode[selectedNodes.size()]) : selectedNodes);
+            }
+            else {
+                tree.setRowKey(root, selectedRowKeys[0]);
+                tree.setSelection(tree.getRowNode());
             }
 
             tree.setRowKey(root, null);
         }
 
-        if (tree.isCheckboxSelection() && tree.isDynamic() && tree.isSelectionRequest(context) && tree.isPropagateSelectionDown()) {
+        if (tree.isCheckboxSelectionMode() && tree.isDynamic() && tree.isSelectionRequest(context) && tree.isPropagateSelectionDown()) {
             String selectedNodeRowKey = params.get(clientId + "_instantSelection");
             tree.setRowKey(root, selectedNodeRowKey);
             TreeNode selectedNode = tree.getRowNode();
@@ -216,7 +221,7 @@ public class TreeRenderer extends CoreRenderer {
 
             if (!vertical && rowKey.equals(ROOT_ROW_KEY)) {
                 encodeHorizontalTreeNodeChildren(context, tree, root, root, tree.getClientId(context), null, tree.isDynamic(),
-                        tree.isCheckboxSelection());
+                        tree.isCheckboxSelectionMode());
             }
             else {
                 tree.setRowKey(root, rowKey);
@@ -224,11 +229,11 @@ public class TreeRenderer extends CoreRenderer {
                 node.setExpanded(true);
 
                 if (vertical) {
-                    encodeTreeNodeChildren(context, tree, root, node, clientId, tree.isDynamic(), tree.isCheckboxSelection(), tree.isDroppable());
+                    encodeTreeNodeChildren(context, tree, root, node, clientId, tree.isDynamic(), tree.isCheckboxSelectionMode(), tree.isDroppable());
                 }
                 else {
                     encodeHorizontalTreeNodeChildren(context, tree, root, node, tree.getClientId(context), rowKey, tree.isDynamic(),
-                            tree.isCheckboxSelection());
+                            tree.isCheckboxSelectionMode());
                 }
 
                 tree.setRowKey(root, null);
@@ -250,7 +255,7 @@ public class TreeRenderer extends CoreRenderer {
             }
 
             if (root != null && (LangUtils.isValueBlank(filteredValue) || !tree.getFilteredRowKeys().isEmpty())) {
-                encodeTreeNodeChildren(context, tree, root, root, clientId, tree.isDynamic(), tree.isCheckboxSelection(), tree.isDroppable());
+                encodeTreeNodeChildren(context, tree, root, root, clientId, tree.isDynamic(), tree.isCheckboxSelectionMode(), tree.isDroppable());
             }
         }
         else {
@@ -284,8 +289,7 @@ public class TreeRenderer extends CoreRenderer {
 
     protected void encodeScript(FacesContext context, Tree tree) throws IOException {
         boolean dynamic = tree.isDynamic();
-        String selectionMode = tree.getSelectionMode();
-        boolean filter = (tree.getValueExpression("filterBy") != null);
+        boolean filter = tree.getValueExpression("filterBy") != null;
         String widget = tree.getOrientation().equals("vertical") ? "VerticalTree" : "HorizontalTree";
 
         WidgetBuilder wb = getWidgetBuilder(context);
@@ -301,6 +305,7 @@ public class TreeRenderer extends CoreRenderer {
                 .callback("onNodeClick", "function(node, event)", tree.getOnNodeClick());
 
         //selection
+        String selectionMode = tree.getSelectionMode();
         if (selectionMode != null) {
             wb.attr("selectionMode", selectionMode);
             wb.attr("propagateUp", tree.isPropagateSelectionUp());
@@ -352,10 +357,9 @@ public class TreeRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = tree.getClientId(context);
         boolean dynamic = tree.isDynamic();
-        String selectionMode = tree.getSelectionMode();
-        boolean selectable = selectionMode != null;
-        boolean multiselectable = selectable && "single".equals(selectionMode);
-        boolean checkbox = selectable && "checkbox".equals(selectionMode);
+        boolean selectionEnabled = tree.isSelectionEnabled();
+        boolean multipleSelectionMode = selectionEnabled && tree.isMultipleSelectionMode();
+        boolean checkboxSelectionMode = selectionEnabled && tree.isCheckboxSelectionMode();
         boolean droppable = tree.isDroppable();
         boolean filter = (tree.getValueExpression("filterBy") != null);
         boolean isDisabled = tree.isDisabled();
@@ -389,7 +393,7 @@ public class TreeRenderer extends CoreRenderer {
             writer.writeAttribute("tabindex", tree.getTabindex(), null);
         }
 
-        writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, String.valueOf(multiselectable), null);
+        writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, String.valueOf(multipleSelectionMode), null);
         if (tree.getStyle() != null) {
             writer.writeAttribute("style", tree.getStyle(), null);
         }
@@ -402,12 +406,12 @@ public class TreeRenderer extends CoreRenderer {
         writer.writeAttribute("class", Tree.ROOT_NODES_CLASS, null);
 
         if (root != null) {
-            encodeTreeNodeChildren(context, tree, root, root, clientId, dynamic, checkbox, droppable);
+            encodeTreeNodeChildren(context, tree, root, root, clientId, dynamic, checkboxSelectionMode, droppable);
         }
 
         writer.endElement("ul");
 
-        if (selectable) {
+        if (selectionEnabled) {
             encodeStateHolder(context, tree, clientId + "_selection", tree.getSelectedRowKeysAsString());
         }
 
@@ -442,8 +446,7 @@ public class TreeRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = tree.getClientId(context);
         boolean dynamic = tree.isDynamic();
-        String selectionMode = tree.getSelectionMode();
-        boolean checkbox = "checkbox".equals(selectionMode);
+        boolean checkboxSelectionMode = tree.isCheckboxSelectionMode();
 
         String containerClass = tree.getStyleClass() == null
                                 ? Tree.HORIZONTAL_CONTAINER_CLASS
@@ -459,10 +462,10 @@ public class TreeRenderer extends CoreRenderer {
         writer.writeAttribute("role", "tree", null);
 
         if (root != null) {
-            encodeHorizontalTreeNode(context, tree, root, root, clientId, null, NodeOrder.NONE, dynamic, checkbox);
+            encodeHorizontalTreeNode(context, tree, root, root, clientId, null, NodeOrder.NONE, dynamic, checkboxSelectionMode);
         }
 
-        if (selectionMode != null) {
+        if (tree.isSelectionEnabled()) {
             encodeStateHolder(context, tree, clientId + "_selection", tree.getSelectedRowKeysAsString());
         }
 
@@ -524,7 +527,7 @@ public class TreeRenderer extends CoreRenderer {
         nodeClass = uiTreeNode.getStyleClass() == null ? nodeClass : nodeClass + " " + uiTreeNode.getStyleClass();
         writer.writeAttribute("class", nodeClass, null);
 
-        String nodeContentClass = (tree.getSelectionMode() != null && node.isSelectable()) ? Tree.SELECTABLE_NODE_CONTENT_CLASS_H : Tree.NODE_CONTENT_CLASS_H;
+        String nodeContentClass = (tree.isSelectionEnabled() && node.isSelectable()) ? Tree.SELECTABLE_NODE_CONTENT_CLASS_H : Tree.NODE_CONTENT_CLASS_H;
         if (selected) {
             nodeContentClass += " ui-state-highlight";
         }
@@ -694,7 +697,7 @@ public class TreeRenderer extends CoreRenderer {
         tree.setRowKey(root, rowKey);
         boolean isLeaf = node.isLeaf();
         boolean expanded = node.isExpanded();
-        boolean selectable = tree.getSelectionMode() != null && node.isSelectable();
+        boolean selectable = tree.isSelectionEnabled() && node.isSelectable();
         String toggleIcon = expanded
                             ? Tree.EXPANDED_ICON_CLASS_V
                             : (tree.isRTLRendering() ? Tree.COLLAPSED_ICON_RTL_CLASS_V : Tree.COLLAPSED_ICON_CLASS_V);
