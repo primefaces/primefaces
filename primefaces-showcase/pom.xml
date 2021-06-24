@@ -159,7 +159,6 @@
             <artifactId>encoder</artifactId>
             <version>1.2.3</version>
         </dependency>
-
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
