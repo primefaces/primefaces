@@ -148,6 +148,7 @@
             <artifactId>owasp-java-html-sanitizer</artifactId>
         </dependency>
 
+        <!-- JSON-parsing used by PrimeIconsView -->
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
