@@ -29,6 +29,15 @@
                           showButtonBar="true"/>
             <p:commandButton id="btnSeconds" value="Seconds" update="@form"/>
         </h:form>
+        <br/>
+        <h:form id="form3">
+            <!-- #7448 showMilliseconds="true" automatically detected because of pattern contains 'S'-->
+            <p:datePicker id="dpMilliseconds"
+                          value="#{datePicker004.localDateTimeMilliseconds}"
+                          pattern="MM/dd/yyyy HH:mm:ss.SSS"
+                          showButtonBar="true"/>
+            <p:commandButton id="btnMilliseconds" value="Milliseconds" update="@form"/>
+        </h:form>
 
     </h:body>
 </f:view>
