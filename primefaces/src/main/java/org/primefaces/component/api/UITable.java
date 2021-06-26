@@ -589,20 +589,21 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
     default <C extends UIComponent & ValueHolder> C getFilterComponent(UIColumn column) {
         UIComponent filterFacet = column.getFacet("filter");
-        if (filterFacet instanceof ValueHolder) {
-            return (C) filterFacet;
-        }
-
-        for (UIComponent child : filterFacet.getChildren()) {
-            if (!child.isRendered()) {
-                continue;
+        if (filterFacet != null) {
+            if (filterFacet instanceof ValueHolder) {
+                return (C) filterFacet;
             }
 
-            if (child instanceof ValueHolder) {
-                return (C) child;
+            for (UIComponent child : filterFacet.getChildren()) {
+                if (!child.isRendered()) {
+                    continue;
+                }
+
+                if (child instanceof ValueHolder) {
+                    return (C) child;
+                }
             }
         }
-
         return null;
     }
 }
