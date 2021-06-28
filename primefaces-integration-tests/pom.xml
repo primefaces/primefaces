@@ -32,7 +32,6 @@
         <myfaces.version>2.3.9</myfaces.version>
         <myfaces-next.version>2.3-next-M6</myfaces-next.version>
         <mojarra.version>2.3.16</mojarra.version>
-        <junit.version>5.7.2</junit.version>
         <tomee.version>8.0.6</tomee.version>
     </properties>
 
@@ -67,13 +66,11 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
-            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -141,7 +138,7 @@
                 <configuration>
                     <skip>true</skip>
                 </configuration>
-            </plugin> 
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>

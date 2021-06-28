@@ -378,6 +378,18 @@
                 <artifactId>barcode4j-light</artifactId>
                 <version>2.0</version>
             </dependency>
+
+            <!-- JUnit -->
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>5.7.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-params</artifactId>
+                <version>5.7.2</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
