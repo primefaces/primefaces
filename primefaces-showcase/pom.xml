@@ -24,7 +24,7 @@
         <open-pdf.version>1.3.24</open-pdf.version>
         <mojarra.version>2.3.16</mojarra.version>
         <myfaces.version>2.3.9</myfaces.version>
-        <resteasy.version>4.5.8.Final</resteasy.version>
+        <resteasy.version>4.6.1.Final</resteasy.version>
         <jetty.version>9.4.36.v20210114</jetty.version>
     </properties>
 
