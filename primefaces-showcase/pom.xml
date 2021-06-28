@@ -22,7 +22,7 @@
         <mojarra.version>2.3.16</mojarra.version>
         <myfaces.version>2.3.9</myfaces.version>
         <resteasy.version>4.6.1.Final</resteasy.version>
-        <jetty.version>9.4.36.v20210114</jetty.version>
+        <jetty.version>11.0.5</jetty.version>
     </properties>
 
     <dependencies>
