@@ -28,7 +28,7 @@
                                      oncomplete="PF('customersTable').clearFilters()"/>
                 </div>
 
-                <p:dataTable id="customers" var="product" value="#{dtColumnsView.customers}" widgetVar="customersTable"
+                <p:dataTable id="customers" var="customer" value="#{dtColumnsView.customers}" widgetVar="customersTable"
                              filteredValue="#{dtColumnsView.filteredCustomers}">
 
                     <p:columns value="#{dtColumnsView.columns}" var="column" headerText="#{column.header}" field="#{column.property}">
