@@ -54,19 +54,7 @@ public class TextEditorRenderer extends InputRenderer {
 
         String inputParam = editor.getClientId(context) + "_input";
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String value = params.get(inputParam);
-
-        if (editor.isSecure() && PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isHtmlSanitizerAvailable()) {
-            value = HtmlSanitizer.sanitizeHtml(value,
-                    editor.isAllowBlocks(), editor.isAllowFormatting(),
-                    editor.isAllowLinks(), editor.isAllowStyles(), editor.isAllowImages());
-        }
-        else {
-            if (!editor.isAllowBlocks() || !editor.isAllowFormatting()
-                    || !editor.isAllowLinks() || !editor.isAllowStyles() || !editor.isAllowImages()) {
-                LOGGER.warning("HTML sanitizer not available - skip sanitizing....");
-            }
-        }
+        String value = sanitizeHtml(context, editor, params.get(inputParam));
 
         if ("<br/>".equals(value)) {
             value = Constants.EMPTY_STRING;
@@ -89,7 +77,7 @@ public class TextEditorRenderer extends InputRenderer {
     protected void encodeMarkup(FacesContext context, TextEditor editor) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = editor.getClientId(context);
-        String valueToRender = ComponentUtils.getValueToRender(context, editor);
+        String valueToRender = sanitizeHtml(context, editor, ComponentUtils.getValueToRender(context, editor));
         String inputId = clientId + "_input";
         String editorId = clientId + "_editor";
         UIComponent toolbar = editor.getFacet("toolbar");
@@ -178,5 +166,29 @@ public class TextEditorRenderer extends InputRenderer {
                         + "Either add the HTML sanitizer to the classpath per the documentation"
                         + " or mark secure='false' if you would like to use the component without the sanitizer.");
         }
+    }
+
+    /**
+     * If security is enabled sanitize the HTML string to prevent XSS.
+     *
+     * @param context the FacesContext
+     * @param editor the TextEditor instance
+     * @param value the value to sanitize
+     * @return the sanitized value
+     */
+    private String sanitizeHtml(FacesContext context, TextEditor editor, String value) {
+        String result = value;
+        if (editor.isSecure() && PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isHtmlSanitizerAvailable()) {
+            result = HtmlSanitizer.sanitizeHtml(value,
+                    editor.isAllowBlocks(), editor.isAllowFormatting(),
+                    editor.isAllowLinks(), editor.isAllowStyles(), editor.isAllowImages());
+        }
+        else {
+            if (!editor.isAllowBlocks() || !editor.isAllowFormatting()
+                    || !editor.isAllowLinks() || !editor.isAllowStyles() || !editor.isAllowImages()) {
+                LOGGER.warning("HTML sanitizer not available - skip sanitizing....");
+            }
+        }
+        return result;
     }
 }
