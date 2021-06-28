@@ -51,6 +51,8 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     private StringBuilder inline;
     private boolean scriptsRendered;
 
+    private boolean writeFouc;
+
     @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public MoveScriptsToBottomResponseWriter(ResponseWriter wrapped, MoveScriptsToBottomState state) {
         this.wrapped = wrapped;
@@ -58,6 +60,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
 
         inScript = false;
         scriptsRendered = false;
+        writeFouc = false;
 
         include = new StringBuilder(50);
         inline = new StringBuilder(75);
@@ -164,15 +167,14 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
             inScript = true;
             scriptType = "text/javascript";
         }
-        else if (BODY_TAG.equalsIgnoreCase(name) && isFirefox()) {
-            // GitHub #7395 FireFox FOUC Fix
-            getWrapped().startElement(name, component);
-            getWrapped().startElement(SCRIPT_TAG, null);
-            getWrapped().writeText("/*FIREFOX_FOUC_FIX*/", null);
-            getWrapped().endElement(SCRIPT_TAG);
-        }
         else {
+            writeFouc();
+
             getWrapped().startElement(name, component);
+
+            if (BODY_TAG.equalsIgnoreCase(name) && isFirefox()) {
+                writeFouc = true;
+            }
         }
     }
 
@@ -229,6 +231,15 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
         }
         else {
             getWrapped().endElement(name);
+        }
+    }
+
+    protected void writeFouc() throws IOException {
+        if (writeFouc) {
+            writeFouc = false;
+            getWrapped().startElement(SCRIPT_TAG, null);
+            getWrapped().writeText("/*FIREFOX_FOUC_FIX*/", null);
+            getWrapped().endElement(SCRIPT_TAG);
         }
     }
 
