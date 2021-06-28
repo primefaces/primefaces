@@ -248,18 +248,12 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 return true;
             }
 
-            UIComponent filterFacet = column.getFacet("filter");
-            boolean hasCustomFilter = filterFacet != null;
             if (column instanceof DynamicColumn) {
-                if (hasCustomFilter) {
-                    ((DynamicColumn) column).applyModel();
-                    // UIColumn#rendered might change after restoring p:columns state at the right index
-                    hasCustomFilter = ComponentUtils.shouldRenderFacet(filterFacet);
-                }
-                else {
-                    ((DynamicColumn) column).applyStatelessModel();
-                }
+                ((DynamicColumn) column).applyModel();
             }
+
+            UIComponent filterFacet = getFilterComponent(column);
+            boolean hasCustomFilter = ComponentUtils.shouldRenderFacet(filterFacet);
 
             Object filterValue;
             if (hasCustomFilter) {
@@ -591,5 +585,25 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
     default boolean isFilteringCurrentlyActive() {
         return getFilterByAsMap().values().stream().anyMatch(FilterMeta::isActive);
+    }
+
+    default <C extends UIComponent & ValueHolder> C getFilterComponent(UIColumn column) {
+        UIComponent filterFacet = column.getFacet("filter");
+        if (filterFacet != null) {
+            if (filterFacet instanceof ValueHolder) {
+                return (C) filterFacet;
+            }
+
+            for (UIComponent child : filterFacet.getChildren()) {
+                if (!child.isRendered()) {
+                    continue;
+                }
+
+                if (child instanceof ValueHolder) {
+                    return (C) child;
+                }
+            }
+        }
+        return null;
     }
 }

@@ -754,8 +754,9 @@ public class DataTableRenderer extends DataRenderer {
         if (table.isGlobalFilterOnly()) {
             return;
         }
+
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent filterFacet = column.getFacet("filter");
+        UIComponent filterFacet = table.getFilterComponent(column);
 
         if (!ComponentUtils.shouldRenderFacet(filterFacet, table.isRenderEmptyFacets())) {
             encodeDefaultFilter(context, table, column, writer);
