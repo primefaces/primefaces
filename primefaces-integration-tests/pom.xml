@@ -31,7 +31,7 @@
         <lombok.version>1.18.20</lombok.version>
         <myfaces.version>2.3.9</myfaces.version>
         <myfaces-next.version>2.3-next-M6</myfaces-next.version>
-        <mojarra.version>2.3.16</mojarra.version>
+        <mojarra.version>3.0.1</mojarra.version>
         <tomee.version>8.0.6</tomee.version>
     </properties>
 
