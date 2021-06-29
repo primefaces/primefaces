@@ -103,7 +103,7 @@
         <dependency>
             <groupId>org.twitter4j</groupId>
             <artifactId>twitter4j-core</artifactId>
-            <version>3.0.5</version>
+            <version>4.0.7</version>
         </dependency>
 
         <!-- Logging -->
