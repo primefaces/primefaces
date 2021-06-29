@@ -1,5 +1,4 @@
 [![Maven](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg)](https://repo.maven.apache.org/maven2/org/primefaces/primefaces/)
-[![Javadocs](http://javadoc.io/badge/org.primefaces/primefaces.svg)](http://javadoc.io/doc/org.primefaces/primefaces)
 [![Actions Status CI](https://github.com/primefaces/primefaces/workflows/CI/badge.svg)](https://github.com/primefaces/primefaces/actions/workflows/build.yml)
 [![Actions Status Integration Tests](https://github.com/primefaces/primefaces/workflows/IT/badge.svg)](https://github.com/primefaces/primefaces/actions/workflows/nightly.yml)
 [![Sonar](https://sonarcloud.io/api/project_badges/measure?project=org.primefaces%3Aprimefaces&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.primefaces%3Aprimefaces)
