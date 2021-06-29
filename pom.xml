@@ -304,4 +304,93 @@
         </profile>
     </profiles>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.apache.tomee</groupId>
+                <artifactId>javaee-api</artifactId>
+                <version>8.0-5</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish</groupId>
+                <artifactId>jakarta.faces</artifactId>
+                <version>2.3.16</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.json</groupId>
+                <artifactId>json</artifactId>
+                <version>20201115</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
+                <artifactId>owasp-java-html-sanitizer</artifactId>
+                <version>20200713.1</version>
+            </dependency>
+
+            <!-- Data Exporter -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>5.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>5.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.librepdf</groupId>
+                <artifactId>openpdf</artifactId>
+                <version>1.3.23</version>
+            </dependency>
+
+            <!-- File Upload -->
+            <dependency>
+                <groupId>commons-fileupload</groupId>
+                <artifactId>commons-fileupload</artifactId>
+                <version>1.4</version>
+            </dependency>
+
+            <!-- FeedReader -->
+            <dependency>
+                <groupId>com.rometools</groupId>
+                <artifactId>rome</artifactId>
+                <version>1.13.0</version>
+            </dependency>
+
+            <!-- File Upload -->
+            <dependency>
+                <groupId>org.overviewproject</groupId>
+                <artifactId>mime-types</artifactId>
+                <version>1.0.1</version>
+            </dependency>
+
+            <!-- Barcode -->
+            <dependency>
+                <groupId>io.nayuki</groupId>
+                <artifactId>qrcodegen</artifactId>
+                <version>1.6.0</version>
+            </dependency>
+            <dependency>
+                <groupId>net.sf.barcode4j</groupId>
+                <artifactId>barcode4j-light</artifactId>
+                <version>2.0</version>
+            </dependency>
+
+            <!-- JUnit -->
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>5.7.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-params</artifactId>
+                <version>5.7.2</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
 </project>

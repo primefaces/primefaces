@@ -1,5 +1,6 @@
 [![Maven](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg)](https://repo.maven.apache.org/maven2/org/primefaces/primefaces/)
-[![Actions Status](https://github.com/primefaces/primefaces/workflows/Java%20CI/badge.svg)](https://github.com/primefaces/primefaces/actions)
+[![Actions Status CI](https://github.com/primefaces/primefaces/workflows/CI/badge.svg)](https://github.com/primefaces/primefaces/actions/workflows/build.yml)
+[![Actions Status Integration Tests](https://github.com/primefaces/primefaces/workflows/IT/badge.svg)](https://github.com/primefaces/primefaces/actions/workflows/nightly.yml)
 [![Sonar](https://sonarcloud.io/api/project_badges/measure?project=org.primefaces%3Aprimefaces&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.primefaces%3Aprimefaces)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Discord Chat](https://img.shields.io/discord/591914197219016707.svg?color=7289da&label=chat&logo=discord&style=flat-square)](https://discord.gg/gzKFYnpmCY)

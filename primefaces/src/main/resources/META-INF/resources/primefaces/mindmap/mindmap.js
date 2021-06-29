@@ -526,8 +526,6 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
         for(var i = 0; i < connections.length; i++) {
             this.raphael.connection(connections[i]);
         }
-
-        this.raphael.safari();
     }
 });
 

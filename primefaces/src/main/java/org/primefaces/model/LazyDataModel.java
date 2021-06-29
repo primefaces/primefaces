@@ -47,8 +47,8 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
      *
      * @param first the first entry
      * @param pageSize the page size
-     * @param sortBy a list with all sort information
-     * @param filterBy a map with all filter information
+     * @param sortBy a list with all sort information (only relevant for DataTable, not for eg DataView)
+     * @param filterBy a map with all filter information (only relevant for DataTable, not for eg DataView)
      * @return the data
      */
     public abstract List<T> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy);
