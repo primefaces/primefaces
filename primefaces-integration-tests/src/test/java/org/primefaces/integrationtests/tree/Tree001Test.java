@@ -23,6 +23,17 @@
  */
 package org.primefaces.integrationtests.tree;
 
-public class Tree001Test {
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.AbstractPrimePageTest;
+
+public class Tree001Test extends AbstractPrimePageTest {
     
+
+    public static class Page extends AbstractPrimePage {
+
+        @Override
+        public String getLocation() {
+            return "tree/tree001.xhtml";
+        }
+    }
 }

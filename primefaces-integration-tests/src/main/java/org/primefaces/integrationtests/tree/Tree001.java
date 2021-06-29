@@ -24,7 +24,6 @@
 package org.primefaces.integrationtests.tree;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -40,6 +39,5 @@ public class Tree001 implements Serializable {
 
     private TreeNode root;
     private TreeNode[] arraySelection;
-    private List<TreeNode> listSelection;
 
 }
