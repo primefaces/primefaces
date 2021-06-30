@@ -17,7 +17,7 @@
     <name>PrimeFaces Showcase</name>
 
     <properties>
-        <owb.version>2.0.20</owb.version>
+        <owb.version>2.0.23</owb.version>
         <hibernate-validator.version>6.1.5.Final</hibernate-validator.version>
         <mojarra.version>2.3.16</mojarra.version>
         <myfaces.version>2.3.9</myfaces.version>
@@ -330,7 +330,7 @@
                 <dependency>
                     <groupId>org.apache.geronimo.specs</groupId>
                     <artifactId>geronimo-jcdi_2.0_spec</artifactId>
-                    <version>1.1</version>
+                    <version>1.3</version>
                 </dependency>
 
                 <dependency>
