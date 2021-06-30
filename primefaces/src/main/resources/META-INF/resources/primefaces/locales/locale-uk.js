@@ -18,6 +18,7 @@ PrimeFaces.locales['uk'] = {
     hourText: 'Година',
     minuteText: 'Хвилина',
     secondText: 'Секунда',
+    millisecondText: 'Мілісекунд',
     currentText: 'Сьогодні',
     ampm: false,
     month: 'Місяць',

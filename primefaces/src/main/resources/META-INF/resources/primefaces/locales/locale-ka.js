@@ -19,6 +19,7 @@ PrimeFaces.locales['ka'] = {
     minuteText: 'წუთი',
     secondText: 'წამი',
     currentText: 'დღევანდელი თარიღი',
+    millisecondText: 'მილიწამი',
     ampm: false,
     month: 'თვე',
     week: 'კვირა',

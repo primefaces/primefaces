@@ -19,6 +19,7 @@ PrimeFaces.locales['zh_CN'] = {
     hourText: '时',
     minuteText: '分',
     secondText: '秒',
+    millisecondText: '毫秒',
     ampm: false,
     month: '月',
     week: '周',

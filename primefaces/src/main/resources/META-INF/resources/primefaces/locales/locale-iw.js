@@ -18,6 +18,7 @@ PrimeFaces.locales['iw'] = {
     hourText: 'שעה',
     minuteText: 'דקה',
     secondText: 'שניה',
+    millisecondText: 'אלפית השנייה',
     currentText: 'היום',
     ampm: false,
     month: 'חודש',
