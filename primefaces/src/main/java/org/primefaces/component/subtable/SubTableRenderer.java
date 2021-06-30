@@ -28,8 +28,8 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.component.api.UIColumn;
 
+import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.datatable.DataTable;
@@ -115,7 +115,7 @@ public class SubTableRenderer extends CoreRenderer {
         writer.writeAttribute("class", DataTable.ROW_CLASS, null);
 
         for (UIColumn column : table.getColumns()) {
-            if (column instanceof Column) { //Columns are not supported yet
+            if (column.isRendered() && column instanceof Column) { //Columns are not supported yet
                 String style = column.getStyle();
                 String styleClass = column.getStyleClass();
 
