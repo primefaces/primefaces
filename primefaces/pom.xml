@@ -159,7 +159,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>3.1.0</version>
+            <version>3.11.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -222,7 +222,7 @@
         <dependency>
             <groupId>net.sf.saxon</groupId>
             <artifactId>Saxon-HE</artifactId>
-            <version>9.9.0-2</version>
+            <version>10.5</version>
             <scope>test</scope>
         </dependency>
 
@@ -386,7 +386,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.2.0</version>
                 <executions>
                     <execution>
                         <id>parse-version</id>
