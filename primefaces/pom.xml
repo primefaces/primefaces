@@ -186,6 +186,12 @@
             <version>1.4.01</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-nop</artifactId>
+            <version>1.7.16</version>
+            <scope>test</scope>
+        </dependency>
 
         <!-- Cache -->
         <dependency>
