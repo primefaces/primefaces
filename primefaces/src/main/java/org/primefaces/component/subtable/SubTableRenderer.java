@@ -118,6 +118,8 @@ public class SubTableRenderer extends CoreRenderer {
             if (column.isRendered() && column instanceof Column) { //Columns are not supported yet
                 String style = column.getStyle();
                 String styleClass = column.getStyleClass();
+                int colspan = column.getColspan();
+                int rowspan = column.getRowspan();
 
                 writer.startElement("td", null);
                 if (style != null) {
@@ -125,6 +127,12 @@ public class SubTableRenderer extends CoreRenderer {
                 }
                 if (styleClass != null) {
                     writer.writeAttribute("class", styleClass, null);
+                }
+                if (colspan != 1) {
+                    writer.writeAttribute("colspan", colspan, null);
+                }
+                if (rowspan != 1) {
+                    writer.writeAttribute("rowspan", rowspan, null);
                 }
 
                 column.encodeAll(context);
