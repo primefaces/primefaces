@@ -25,15 +25,14 @@ PrimeFaces.widget.CommandButton = PrimeFaces.widget.BaseWidget.extend({
      * Disables this button so that the user cannot press the button anymore.
      */
     disable: function() {
-        this.jq.removeClass('ui-state-hover ui-state-focus ui-state-active')
-                .addClass('ui-state-disabled').attr('disabled', 'disabled');
+        PrimeFaces.utils.disableButton(this.jq);
     },
 
     /**
      * Enables this button so that the user can press the button.
      */
     enable: function() {
-        this.jq.removeClass('ui-state-disabled').removeAttr('disabled');
+        PrimeFaces.utils.enableButton(this.jq);
     }
 
 });

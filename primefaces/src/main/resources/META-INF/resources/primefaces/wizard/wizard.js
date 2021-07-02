@@ -222,6 +222,20 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
+     * Enables the button for navigating to the next wizard step.
+     */
+    enableNextNav: function() {
+        PrimeFaces.utils.enableButton(this.nextNav);
+    },
+
+    /**
+     * Disables the button for navigating to the next wizard step.
+     */
+    disableNextNav: function() {
+        PrimeFaces.utils.disableButton(this.nextNav);
+    },
+
+    /**
      * Shows the button for navigating to the previous wizard step.
      */
     showBackNav: function() {
@@ -233,6 +247,20 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
      */
     hideBackNav: function() {
         this.backNav.fadeOut();
+    },
+
+    /**
+     * Enables the button for navigating to the previous wizard step.
+     */
+    enableBackNav: function() {
+        PrimeFaces.utils.enableButton(this.backNav);
+    },
+
+    /**
+     * Disables the button for navigating to the previous wizard step.
+     */
+    disableBackNav: function() {
+        PrimeFaces.utils.disableButton(this.backNav);
     }
 
 });

@@ -652,6 +652,30 @@ if (!PrimeFaces.utils) {
         },
 
         /**
+         * Enables a button.
+         *
+         * @param {JQuery} jq a required jQuery element to enable
+         */
+        enableButton: function(jq) {
+            if (jq) {
+                jq.removeClass('ui-state-disabled').removeAttr('disabled');
+            }
+        },
+
+        /**
+         * Disables a button from being clicked.
+         *
+         * @param {JQuery} jq a required jQuery button to disable
+         */
+        disableButton: function(jq) {
+            if (jq) {
+                jq.removeClass('ui-state-hover ui-state-focus ui-state-active')
+                  .addClass('ui-state-disabled')
+                  .attr('disabled', 'disabled');
+            }
+        },
+
+        /**
          * Enables CSS and jQuery animation.
          */
         enableAnimations: function() {
