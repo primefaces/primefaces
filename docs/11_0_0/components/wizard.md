@@ -211,8 +211,12 @@ back() | - | void | Goes back in flow.
 getStepIndex() | - | Number | Returns the index of current step.
 showNextNav() | - | void | Shows next button.
 hideNextNav() | - | void | Hides next button.
+enableNextNav() | - | void | Enables next button.
+disableNextNav() | - | void | Disables next button.
 showBackNav() | - | void | Shows back button.
 hideBackNav() | - | void | Hides back button.
+enableBackNav() | - | void | Enables back button.
+disableBackNav() | - | void | Disables back button
 
 ## Skinning
 Wizard resides in a container element that _style_ and _styleClass_ attributes apply. Following is the list
