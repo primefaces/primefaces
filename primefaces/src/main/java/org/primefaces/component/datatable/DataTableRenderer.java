@@ -1360,6 +1360,9 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("td");
     }
 
+    /**
+     * Encodes dynamic column. Allows to override default behavior.
+     */
     protected void encodeDynamicCell(FacesContext context, DataTable table, UIColumn column) throws IOException {
         column.encodeAll(context);
     }
