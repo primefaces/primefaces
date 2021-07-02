@@ -1,5 +1,3 @@
-
-
 /**
  * __PrimeFaces DataTable with Frozen Columns Widget__
  *
