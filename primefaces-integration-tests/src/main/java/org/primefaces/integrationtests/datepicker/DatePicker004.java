@@ -39,12 +39,15 @@ public class DatePicker004 implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private LocalDateTime localDateTimeMilliseconds;
+
     private LocalDateTime localDateTimeSeconds;
 
     private LocalDateTime localDateTimeHours;
 
     @PostConstruct
     public void init() {
+        localDateTimeMilliseconds = LocalDateTime.of(2021, 6, 25, 23, 22, 21, 19_000_000);
         localDateTimeSeconds = LocalDateTime.of(2020, 8, 20, 22, 20, 19);
         localDateTimeHours = LocalDateTime.of(2020, 10, 31, 13, 13, 13);
     }

@@ -18,6 +18,7 @@ PrimeFaces.locales['lv'] = {
     hourText: 'Stunda',
     minuteText: 'Minūte',
     secondText: 'Sekunde',
+    millisecondText: 'Millisekunde',
     currentText: 'Šodiena',
     ampm: false,
     month: 'Mēnesis',

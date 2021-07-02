@@ -19,6 +19,7 @@ PrimeFaces.locales['nl'] = {
     hourText: 'Uur',
     minuteText: 'Minuut',
     secondText: 'Seconde',
+    millisecondText: 'Milliseconde',
     ampm: false,
     month: 'Maand',
     week: 'Week',

@@ -33,6 +33,7 @@
             selectionMode: 'single',
             rangeSeparator: '-',
             timeSeparator: ':',
+            fractionSeparator: '.',
             inputId: null,
             inputStyle: null,
             inputStyleClass: null,
@@ -54,10 +55,12 @@
             showTime: false,
             timeOnly: false,
             showSeconds: false,
+            showMilliseconds: false,
             hourFormat: '24',
             stepHour: 1,
             stepMinute: 1,
             stepSecond: 1,
+            stepMillisecond: 1,
             shortYearCutoff: '+10',
             hideOnDateTimeSelect: false,
             userLocale: null,
@@ -163,10 +166,12 @@
                 }
                 if (this.viewDate === null) {
                     this.viewDate = new Date();
-                    if (!this.options.showSeconds) {
+                    if (!this.options.showSeconds && !this.options.showMilliseconds) {
                         this.viewDate.setSeconds(0);
                     }
-                    this.viewDate.setMilliseconds(0);
+                    if (!this.options.showMilliseconds) {
+                        this.viewDate.setMilliseconds(0);
+                    }
                     viewDateDefaultsToNow = true;
                 }
             }
@@ -712,7 +717,8 @@
             var output = '',
                 hours = date.getHours(),
                 minutes = date.getMinutes(),
-                seconds = date.getSeconds();
+                seconds = date.getSeconds(),
+                milliseconds = date.getMilliseconds();
 
             if (this.options.hourFormat == '12' && hours > 11 && hours != 12) {
                 hours -= 12;
@@ -731,6 +737,11 @@
                 output += (seconds < 10) ? '0' + seconds : seconds;
             }
 
+            if (this.options.showMilliseconds) {
+                output += this.options.fractionSeparator;
+                output += (milliseconds < 10) ? '00' + milliseconds : (milliseconds < 100) ? '0' + milliseconds : milliseconds;
+            }
+
             if (this.options.hourFormat == '12') {
                 output += date.getHours() > 11 ? ' PM' : ' AM';
             }
@@ -739,8 +750,10 @@
         },
 
         parseTime: function (value, ampm) {
-            var tokens = value.split(this.options.timeSeparator),
-                validTokenLength = this.options.showSeconds ? 3 : 2;
+            var val = value.replace(this.options.fractionSeparator, this.options.timeSeparator),
+                tokens = val.split(this.options.timeSeparator),
+                showSeconds = this.options.showSeconds || this.options.showMilliseconds
+                validTokenLength = 2 + (showSeconds ? 1 : 0) + (this.options.showMilliseconds ? 1 : 0);
 
             if (tokens.length !== validTokenLength) {
                 throw "Invalid time";
@@ -748,9 +761,10 @@
 
             var h = parseInt(tokens[0]),
                 m = parseInt(tokens[1]),
-                s = this.options.showSeconds ? parseInt(tokens[2]) : null;
+                s = showSeconds ? parseInt(tokens[2]) : null,
+                ms = this.options.showMilliseconds ? parseInt(tokens[3]) : null;
 
-            if (isNaN(h) || isNaN(m) || h > 23 || m > 59 || (this.options.hourFormat == '12' && h > 12) || (this.options.showSeconds && (isNaN(s) || s > 59))) {
+            if (isNaN(h) || isNaN(m) || h > 23 || m > 59 || (this.options.hourFormat == '12' && h > 12) || (this.options.showSeconds && (isNaN(s) || s > 59)) || (this.options.showMilliseconds && (isNaN(ms) || ms > 999))) {
                 throw "Invalid time";
             }
             else {
@@ -758,7 +772,7 @@
                     h += 12;
                 }
 
-                return { hour: h, minute: m, second: s };
+                return { hour: h, minute: m, second: s, millisecond: ms };
             }
         },
 
@@ -992,13 +1006,18 @@
             var time = this.parseTime(timeString, ampm);
             value.setHours(time.hour);
             value.setMinutes(this.stepMinute(time.minute));
-            if (this.options.showSeconds) {
+            if (this.options.showSeconds || this.options.showMilliseconds) {
                 value.setSeconds(time.second);
             }
             else {
                 value.setSeconds(0);
             }
-            value.setMilliseconds(0);
+            if (this.options.showMilliseconds) {
+                value.setMilliseconds(time.millisecond);
+            }
+            else {
+                value.setMilliseconds(0);
+            }
         },
 
         isInMinYear: function() {
@@ -1218,6 +1237,10 @@
             timepicker += this.options.showSeconds ? this.renderSeparator() : '';
             //second
             timepicker += this.renderSecondPicker();
+            //separator
+            timepicker += this.options.showMilliseconds ? this.renderFractionSeparator() : '';
+            //millisecond
+            timepicker += this.renderMillisecondPicker();
             //ampm
             timepicker += this.renderAmPmPicker();
 
@@ -1573,12 +1596,25 @@
             return '';
         },
 
-        renderAmPmPicker: function () {
+        renderMillisecondPicker: function () {
+            if (this.options.showMilliseconds) {
+                var millisecond = this.isDate(this.value) ? this.value.getMilliseconds() : this.viewDate.getMilliseconds(),
+                    millisecondDisplay = millisecond < 10 ? '00' + millisecond : millisecond < 100 ? '0' + millisecond : millisecond;
+
+                //type="number" min="0" max="999" does not work well on Firefox 70, so we don´t use it
+                var html =  this.options.timeInput ? '<input value="' + millisecondDisplay + '" size="3" maxlength="3" tabindex="4"></input>' : '<span>' + millisecondDisplay + '</span>';
+                return this.renderTimeElements("ui-millisecond-picker", html, 3);
+            }
+
+            return '';
+        },
+
+    renderAmPmPicker: function () {
             if (this.options.hourFormat === '12') {
                 var hour = this.isDate(this.value) ? this.value.getHours() : this.viewDate.getHours(),
                     display = hour > 11 ? 'PM' : 'AM';
 
-                return this.renderTimeElements("ui-ampm-picker", '<span>' + display + '</span>', 3);
+                return this.renderTimeElements("ui-ampm-picker", '<span>' + display + '</span>', 4);
             }
 
             return '';
@@ -1588,7 +1624,11 @@
             return this.renderTimeElements("ui-separator", '<span>:</span>', -1);
         },
 
-        renderTimeElements: function (containerClass, text, type) {
+        renderFractionSeparator: function () {
+            return this.renderTimeElements("ui-separator", '<span>.</span>', -1);
+        },
+
+    renderTimeElements: function (containerClass, text, type) {
             var container = '<div class="' + containerClass + '" data-type="' + type + '">';
 
             //up
@@ -1663,7 +1703,7 @@
                 $this.onMonthSelect(e, $(this).index());
             });
 
-            var timeSelector = '.ui-hour-picker > a,  .ui-minute-picker > a, .ui-second-picker > a',
+            var timeSelector = '.ui-hour-picker > a,  .ui-minute-picker > a, .ui-second-picker > a, .ui-millisecond-picker > a',
                 ampmSelector = '.ui-ampm-picker > a';
             this.panel.off('mousedown.datePicker-time mouseup.datePicker-time mouseleave.datePicker-time', timeSelector).off('click.datePicker-ampm', ampmSelector)
                 .on('mousedown.datePicker-time', timeSelector, null, function (event) {
@@ -1691,12 +1731,16 @@
                     $this.oldMinutes = this.value;
                 }).off('focus', '.ui-second-picker input').on('focus', '.ui-second-picker input', null, function (event) {
                     $this.oldSeconds = this.value;
+                }).off('focus', '.ui-millisecond-picker input').on('focus', '.ui-millisecond-picker input', null, function (event) {
+                    $this.oldMilliseconds = this.value;
                 }).off('change', '.ui-hour-picker input').on('change', '.ui-hour-picker input', null, function (event) {
                     $this.handleHoursInput(this, event);
                 }).off('change', '.ui-minute-picker input').on('change', '.ui-minute-picker input', null, function (event) {
                     $this.handleMinutesInput(this, event);
                 }).off('change', '.ui-second-picker input').on('change', '.ui-second-picker input', null, function (event) {
                     $this.handleSecondsInput(this, event);
+                }).off('change', '.ui-millisecond-picker input').on('change', '.ui-millisecond-picker input', null, function (event) {
+                    $this.handleMillisecondsInput(this, event);
                 });
             }
 
@@ -2036,6 +2080,13 @@
                     else
                         this.decrementSecond(event);
                     break;
+
+                case 3:
+                    if (direction === 1)
+                        this.incrementMillisecond(event);
+                    else
+                        this.decrementMillisecond(event);
+                    break;
             }
         },
 
@@ -2293,7 +2344,7 @@
                 date.setHours(time.getHours());
                 date.setMinutes(this.stepMinute(time.getMinutes()));
                 date.setSeconds(time.getSeconds());
-                date.setMilliseconds(0);
+                date.setMilliseconds(time.getMilliseconds());
             }
 
             if (this.options.minDate && this.options.minDate > date) {
@@ -2341,8 +2392,8 @@
                 newHour = currentHour + this.options.stepHour;
             newHour = (newHour >= 24) ? (newHour - 24) : newHour;
 
-            if (this.validateTime(newHour, currentTime.getMinutes(), currentTime.getSeconds(), currentTime, "INCREMENT")) {
-                this.updateTime(event, newHour, currentTime.getMinutes(), currentTime.getSeconds());
+            if (this.validateTime(newHour, currentTime.getMinutes(), currentTime.getSeconds(), currentTime.getMilliseconds(), currentTime, "INCREMENT")) {
+                this.updateTime(event, newHour, currentTime.getMinutes(), currentTime.getSeconds(), currentTime.getMilliseconds());
             }
 
             event.preventDefault();
@@ -2354,8 +2405,8 @@
                 newHour = currentHour - this.options.stepHour;
             newHour = (newHour < 0) ? (newHour + 24) : newHour;
 
-            if (this.validateTime(newHour, currentTime.getMinutes(), currentTime.getSeconds(), currentTime, "DECREMENT")) {
-                this.updateTime(event, newHour, currentTime.getMinutes(), currentTime.getSeconds());
+            if (this.validateTime(newHour, currentTime.getMinutes(), currentTime.getSeconds(), currentTime.getMilliseconds(), currentTime, "DECREMENT")) {
+                this.updateTime(event, newHour, currentTime.getMinutes(), currentTime.getSeconds(), currentTime.getMilliseconds());
             }
 
             event.preventDefault();
@@ -2367,8 +2418,8 @@
                 newMinute = this.stepMinute(currentMinute, this.options.stepMinute);
             newMinute = (newMinute > 59) ? (newMinute - 60) : newMinute;
 
-            if (this.validateTime(currentTime.getHours(), newMinute, currentTime.getSeconds(), currentTime, "INCREMENT")) {
-                this.updateTime(event, currentTime.getHours(), newMinute, currentTime.getSeconds());
+            if (this.validateTime(currentTime.getHours(), newMinute, currentTime.getSeconds(), currentTime.getMilliseconds(), currentTime, "INCREMENT")) {
+                this.updateTime(event, currentTime.getHours(), newMinute, currentTime.getSeconds(), currentTime.getMilliseconds());
             }
 
             event.preventDefault();
@@ -2380,8 +2431,8 @@
                 newMinute = this.stepMinute(currentMinute, -this.options.stepMinute);
             newMinute = (newMinute < 0) ? (newMinute + 60) : newMinute;
 
-            if (this.validateTime(currentTime.getHours(), newMinute, currentTime.getSeconds(), currentTime, "DECREMENT")) {
-                this.updateTime(event, currentTime.getHours(), newMinute, currentTime.getSeconds());
+            if (this.validateTime(currentTime.getHours(), newMinute, currentTime.getSeconds(), currentTime.getMilliseconds(), currentTime, "DECREMENT")) {
+                this.updateTime(event, currentTime.getHours(), newMinute, currentTime.getSeconds(), currentTime.getMilliseconds());
             }
 
             event.preventDefault();
@@ -2413,8 +2464,8 @@
                 newSecond = currentSecond + this.options.stepSecond;
             newSecond = (newSecond > 59) ? (newSecond - 60) : newSecond;
 
-            if (this.validateTime(currentTime.getHours(), currentTime.getMinutes(), newSecond, currentTime, "INCREMENT")) {
-                this.updateTime(event, currentTime.getHours(), currentTime.getMinutes(), newSecond);
+            if (this.validateTime(currentTime.getHours(), currentTime.getMinutes(), newSecond, currentTime.getMilliseconds(), currentTime, "INCREMENT")) {
+                this.updateTime(event, currentTime.getHours(), currentTime.getMinutes(), newSecond, currentTime.getMilliseconds());
             }
 
             event.preventDefault();
@@ -2426,8 +2477,34 @@
                 newSecond = currentSecond - this.options.stepSecond;
             newSecond = (newSecond < 0) ? (newSecond + 60) : newSecond;
 
-            if (this.validateTime(currentTime.getHours(), currentTime.getMinutes(), newSecond, currentTime, "DECREMENT")) {
-                this.updateTime(event, currentTime.getHours(), currentTime.getMinutes(), newSecond);
+            if (this.validateTime(currentTime.getHours(), currentTime.getMinutes(), newSecond, currentTime.getMilliseconds(), currentTime, "DECREMENT")) {
+                this.updateTime(event, currentTime.getHours(), currentTime.getMinutes(), newSecond, currentTime.getMilliseconds());
+            }
+
+            event.preventDefault();
+        },
+
+        incrementMillisecond: function (event) {
+            var currentTime = this.isDate(this.value) ? this.value : this.viewDate,
+                currentMillisecond = currentTime.getMilliseconds(),
+                newMillisecond = currentMillisecond + this.options.stepMillisecond;
+            newMillisecond = (newMillisecond > 999) ? (newMillisecond - 1000) : newMillisecond;
+
+            if (this.validateTime(currentTime.getHours(), currentTime.getMinutes(), currentTime.getSeconds(), newMillisecond, currentTime, "INCREMENT")) {
+                this.updateTime(event, currentTime.getHours(), currentTime.getMinutes(), currentTime.getSeconds(), newMillisecond);
+            }
+
+            event.preventDefault();
+        },
+
+        decrementMillisecond: function (event) {
+            var currentTime = this.isDate(this.value) ? this.value : this.viewDate,
+                currentMillisecond = currentTime.getMilliseconds(),
+                newMillisecond = currentMillisecond - this.options.stepMillisecond;
+            newMillisecond = (newMillisecond < 0) ? (newMillisecond + 1000) : newMillisecond;
+
+            if (this.validateTime(currentTime.getHours(), currentTime.getMinutes(), currentTime.getSeconds(), newMillisecond, currentTime, "DECREMENT")) {
+                this.updateTime(event, currentTime.getHours(), currentTime.getMinutes(), currentTime.getSeconds(), newMillisecond);
             }
 
             event.preventDefault();
@@ -2438,7 +2515,7 @@
                 currentHour = currentTime.getHours(),
                 newHour = (currentHour >= 12) ? currentHour - 12 : currentHour + 12;
 
-            this.updateTime(event, newHour, currentTime.getMinutes(), currentTime.getSeconds());
+            this.updateTime(event, newHour, currentTime.getMinutes(), currentTime.getSeconds(), currentTime.getMilliseconds());
             event.preventDefault();
         },
 
@@ -2453,11 +2530,11 @@
                 newHours = parseInt(value);
                 if (this.options.hourFormat === '12') {
                     if (newHours >= 1 || newHours <= 12) {
-                        valid = this.validateTime(newHours, currentTime.getMinutes(), currentTime.getSeconds(), currentTime);
+                        valid = this.validateTime(newHours, currentTime.getMinutes(), currentTime.getSeconds(), currentTime.getMilliseconds(), currentTime);
                     }
                 } else {
                     if (newHours >= 0 || newHours <= 23) {
-                        valid = this.validateTime(newHours, currentTime.getMinutes(), currentTime.getSeconds(), currentTime);
+                        valid = this.validateTime(newHours, currentTime.getMinutes(), currentTime.getSeconds(), currentTime.getMilliseconds(), currentTime);
                     }
                 }
             }
@@ -2484,7 +2561,7 @@
             if (reg.test(value)) {
                 newMinutes = parseInt(value);
                 if (newMinutes >= 0 || newMinutes <= 59) {
-                    valid = this.validateTime(currentTime.getHours(), newMinutes, currentTime.getSeconds(), currentTime);
+                    valid = this.validateTime(currentTime.getHours(), newMinutes, currentTime.getSeconds(), currentTime.getMilliseconds(), currentTime);
                 }
             }
 
@@ -2510,7 +2587,7 @@
             if (reg.test(value)) {
                 newSeconds = parseInt(value);
                 if (newSeconds >= 0 || newSeconds <= 59) {
-                    valid = this.validateTime(currentTime.getHours(), currentTime.getMinutes(), newSeconds, currentTime);
+                    valid = this.validateTime(currentTime.getHours(), currentTime.getMinutes(), newSeconds, currentTime.getMilliseconds(), currentTime);
                 }
             }
 
@@ -2526,9 +2603,35 @@
             this.updateTimeAfterInput(event, newDateTime);
         },
 
-        validateTime: function(hour, minute, second, value, direction) {
+        handleMillisecondsInput: function(input, event) {
+            var currentTime = this.isDate(this.value) ? this.value : this.viewDate,
+                value = input.value,
+                valid = false,
+                newMilliseconds;
+
+            var reg = new RegExp('^([0-9]){1,3}$');
+            if (reg.test(value)) {
+                newMilliseconds = parseInt(value);
+                if (newMilliseconds >= 0 || newMilliseconds <= 999) {
+                    valid = this.validateTime(currentTime.getHours(), currentTime.getMinutes(), currentTime.getSeconds(), newMilliseconds, currentTime);
+                }
+            }
+
+            if (!valid) {
+                event.preventDefault();
+                input.value = this.oldMilliseconds;
+                return;
+            }
+
+            var newDateTime = this.isDate(this.value) ? new Date(this.value) : new Date();
+            newDateTime.setMilliseconds(newMilliseconds);
+
+            this.updateTimeAfterInput(event, newDateTime);
+        },
+
+        validateTime: function(hour, minute, second, millisecond, value, direction) {
             var valid = true;
-            var dateNew = new Date(value.getFullYear(), value.getMonth(), value.getDate(), hour, minute, second, 0);
+            var dateNew = new Date(value.getFullYear(), value.getMonth(), value.getDate(), hour, minute, second, millisecond);
 
             if (this.options.minDate && value) {
                 if (this.options.minDate > dateNew) {
@@ -2555,13 +2658,13 @@
             return valid;
         },
 
-        updateTime: function (event, hour, minute, second) {
+        updateTime: function (event, hour, minute, second, millisecond) {
             var newDateTime = this.isDate(this.value) ? new Date(this.value) : new Date();
 
             newDateTime.setHours(hour);
             newDateTime.setMinutes(minute);
             newDateTime.setSeconds(second);
-            newDateTime.setMilliseconds(0);
+            newDateTime.setMilliseconds(millisecond);
 
             this.updateModel(event, newDateTime);
 

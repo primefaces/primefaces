@@ -45,11 +45,16 @@ public class AbstractDatePickerTest extends AbstractPrimePageTest {
     }
 
     protected void assertTime(WebElement panel, String hours, String minutes, String seconds) {
+        assertTime(panel, hours, minutes, seconds, null);
+    }
+
+    protected void assertTime(WebElement panel, String hours, String minutes, String seconds, String milliseconds) {
         Assertions.assertNotNull(panel);
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(panel));
         WebElement timePicker = panel.findElement(By.className("ui-timepicker"));
         if (hours != null) {
-            Assertions.assertEquals(Integer.parseInt(hours), Integer.parseInt(timePicker.findElement(By.cssSelector("div.ui-hour-picker > span")).getText()));
+            Assertions.assertEquals(Integer.parseInt(hours),
+                        Integer.parseInt(timePicker.findElement(By.cssSelector("div.ui-hour-picker > span")).getText()));
         }
         if (minutes != null) {
             Assertions.assertEquals(Integer.parseInt(minutes),
@@ -58,6 +63,10 @@ public class AbstractDatePickerTest extends AbstractPrimePageTest {
         if (seconds != null) {
             Assertions.assertEquals(Integer.parseInt(seconds),
                         Integer.parseInt(timePicker.findElement(By.cssSelector("div.ui-second-picker > span")).getText()));
+        }
+        if (milliseconds != null) {
+            Assertions.assertEquals(Integer.parseInt(milliseconds),
+                        Integer.parseInt(timePicker.findElement(By.cssSelector("div.ui-millisecond-picker > span")).getText()));
         }
     }
 }

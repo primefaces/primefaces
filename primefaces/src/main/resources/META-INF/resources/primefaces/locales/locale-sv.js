@@ -18,6 +18,7 @@ PrimeFaces.locales['sv'] = {
     hourText: 'timmar',
     minuteText: 'minuter',
     secondText: 'sekunder',
+    millisecondText: 'millisekunder',
     currentText: 'Nuvarande datum',
     ampm: false,
     month: 'månad',

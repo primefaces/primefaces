@@ -21,6 +21,7 @@
      hourText: 'Jam',
      minuteText: 'Menit',
      secondText: 'Detik',
+     millisecondText: 'Mili Detik',
      currentText: 'Tanggal Hari Ini',
      ampm: false,
      year: 'Tahun',

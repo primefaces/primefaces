@@ -18,6 +18,7 @@ PrimeFaces.locales['el'] = {
     hourText: 'Ώρα',
     minuteText: 'Λεπτό',
     secondText: 'Δευτερόλεπτο',
+    millisecondText: 'Μιλιδευτερόλεπτο',
     currentText: 'Σημερινή Ημερομηνία',
     ampm: false,
     month: 'Μήνας',
