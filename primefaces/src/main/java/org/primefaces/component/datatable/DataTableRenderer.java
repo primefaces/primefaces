@@ -1351,13 +1351,17 @@ public class DataTableRenderer extends DataRenderer {
             encodeDefaultFieldCell(context, table, column, writer);
         }
         else if (column instanceof DynamicColumn) {
-            column.encodeAll(context);
+            encodeDynamicCell(context, table, column);
         }
         else {
             column.renderChildren(context);
         }
 
         writer.endElement("td");
+    }
+
+    protected void encodeDynamicCell(FacesContext context, DataTable table, UIColumn column) throws IOException {
+        column.encodeAll(context);
     }
 
     protected void encodeDefaultFieldCell(FacesContext context, DataTable table, UIColumn column, ResponseWriter writer) throws IOException {
