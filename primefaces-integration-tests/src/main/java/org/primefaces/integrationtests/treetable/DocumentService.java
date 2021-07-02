@@ -21,12 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.showcase.service;
+package org.primefaces.integrationtests.treetable;
 
 import org.primefaces.model.CheckboxTreeNode;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
-import org.primefaces.showcase.domain.Document;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
@@ -35,8 +34,8 @@ import javax.inject.Named;
 @ApplicationScoped
 public class DocumentService {
 
-    public TreeNode<Document> createDocuments() {
-        TreeNode<Document> root = new DefaultTreeNode(new Document("Files", "-", "Folder"), null);
+    public TreeNode createDocuments() {
+        TreeNode root = new DefaultTreeNode(new Document("Files", "-", "Folder"), null);
 
         TreeNode applications = new DefaultTreeNode(new Document("Applications", "100kb", "Folder"), root);
         TreeNode cloud = new DefaultTreeNode(new Document("Cloud", "20kb", "Folder"), root);
@@ -100,8 +99,8 @@ public class DocumentService {
         return root;
     }
 
-    public TreeNode<Document> createCheckboxDocuments() {
-        TreeNode<Document> root = new CheckboxTreeNode(new Document("Files", "-", "Folder"), null);
+    public TreeNode createCheckboxDocuments() {
+        TreeNode root = new CheckboxTreeNode(new Document("Files", "-", "Folder"), null);
 
         TreeNode applications = new CheckboxTreeNode(new Document("Applications", "100kb", "Folder"), root);
         TreeNode cloud = new CheckboxTreeNode(new Document("Cloud", "20kb", "Folder"), root);

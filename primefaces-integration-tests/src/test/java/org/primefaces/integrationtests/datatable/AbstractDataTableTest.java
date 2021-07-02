@@ -23,21 +23,20 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.junit.jupiter.api.Assertions;
-import org.openqa.selenium.By;
 import org.openqa.selenium.HasCapabilities;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.integrationtests.AbstractTableTest;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.model.datatable.Row;
 
-public abstract class AbstractDataTableTest extends AbstractPrimePageTest {
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public abstract class AbstractDataTableTest extends AbstractTableTest {
 
     protected final List<ProgrammingLanguage> languages = new ProgrammingLanguageService().getLangs();
     protected final ProgrammingLanguageLazyDataModel model = new ProgrammingLanguageLazyDataModel();
@@ -99,28 +98,6 @@ public abstract class AbstractDataTableTest extends AbstractPrimePageTest {
                 Assertions.assertEquals(programmingLanguage.getId(), Integer.parseInt(rowText));
                 row++;
             }
-        }
-    }
-
-    protected void assertHeaderSorted(WebElement header, String sortDirection, int sortPriority) {
-        String directionClass = null;
-        switch (sortDirection) {
-            case "ASC":
-                directionClass = "ui-icon-triangle-1-n";
-                break;
-            case "DESC":
-                directionClass = "ui-icon-triangle-1-s";
-                break;
-            default:
-                break;
-        }
-        Assertions.assertTrue(PrimeSelenium.hasCssClass(header.findElement(By.className("ui-sortable-column-icon")), directionClass));
-        WebElement badge = header.findElement(By.className("ui-sortable-column-badge"));
-        if (sortPriority > 0) {
-            Assertions.assertEquals(sortPriority, Integer.parseInt(badge.getText()));
-        }
-        else {
-            Assertions.assertEquals("", badge.getText());
         }
     }
 

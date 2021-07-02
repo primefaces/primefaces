@@ -23,18 +23,6 @@
  */
 package org.primefaces.component.tree;
 
-import java.util.*;
-
-import javax.el.MethodExpression;
-import javax.faces.FacesException;
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.PhaseId;
-
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.*;
 import org.primefaces.model.CheckboxTreeNode;
@@ -45,6 +33,17 @@ import org.primefaces.model.filter.*;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.MapBuilder;
+
+import javax.el.MethodExpression;
+import javax.faces.FacesException;
+import javax.faces.application.ResourceDependency;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.BehaviorEvent;
+import javax.faces.event.FacesEvent;
+import javax.faces.event.PhaseId;
+import java.util.*;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -352,7 +351,7 @@ public class Tree extends TreeBase {
         }
     }
 
-    public TreeNode createCopyOfTreeNode(TreeNode node) {
+    public TreeNode createCopyOfTreeNode(TreeNode<?> node) {
         TreeNode newNode;
         if (node instanceof CheckboxTreeNode) {
             newNode = new CheckboxTreeNode(node.getData());

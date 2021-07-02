@@ -21,52 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.showcase.view.data.treetable;
+package org.primefaces.integrationtests.treetable;
 
-import org.primefaces.model.TreeNode;
-import org.primefaces.showcase.domain.Document;
-import org.primefaces.showcase.service.DocumentService;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import javax.annotation.PostConstruct;
-import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
 import java.io.Serializable;
 
-@Named("ttScrollableView")
-@ViewScoped
-public class ScrollableView implements Serializable {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString(onlyExplicitlyIncluded = true)
+public class Document implements Serializable, Comparable<Document> {
 
-    private TreeNode<Document> root1;
-    private TreeNode<Document> root2;
-    private TreeNode<Document> root3;
+    @ToString.Include
+    private String name;
+    private String size;
+    private String type;
 
-    @Inject
-    private DocumentService service;
-
-    @PostConstruct
-    public void init() {
-        root1 = service.createDocuments();
-        root2 = service.createDocuments();
-        root3 = service.createDocuments();
-
-        root1.getChildren().get(0).setExpanded(true);
-        root1.getChildren().get(1).setExpanded(true);
-    }
-
-    public TreeNode<Document> getRoot1() {
-        return root1;
-    }
-
-    public TreeNode<Document> getRoot2() {
-        return root2;
-    }
-
-    public TreeNode<Document> getRoot3() {
-        return root3;
-    }
-
-    public void setService(DocumentService service) {
-        this.service = service;
+    public int compareTo(Document document) {
+        return this.getName().compareTo(document.getName());
     }
 }

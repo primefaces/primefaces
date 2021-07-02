@@ -21,47 +21,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model;
+package org.primefaces.selenium.component.model;
+
+import org.openqa.selenium.By;
+import org.primefaces.selenium.component.base.AbstractTable;
+import org.primefaces.selenium.component.model.datatable.Cell;
+import org.primefaces.selenium.component.model.treetable.Row;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-public interface TreeNode<T> {
+/**
+ * Component wrapper for the PrimeFaces {@code p:treeTable}.
+ */
+public abstract class TreeTable extends AbstractTable<Row> {
 
-    String getType();
+    public List<Row> getRows() {
+        return getRowsWebElement().stream().map(rowElt -> {
+            List<Cell> cells = rowElt.findElements(By.tagName("td")).stream().map(cellElt -> new Cell(cellElt)).collect(Collectors.toList());
+            return new Row(rowElt, cells);
+        }).collect(Collectors.toList());
+    }
 
-    void setType(String type);
-
-    T getData();
-
-    List<TreeNode<T>> getChildren();
-
-    TreeNode<T> getParent();
-
-    void setParent(TreeNode<T> treeNode);
-
-    boolean isExpanded();
-
-    void setExpanded(boolean expanded);
-
-    int getChildCount();
-
-    boolean isLeaf();
-
-    boolean isSelected();
-
-    void setSelected(boolean value);
-
-    boolean isSelectable();
-
-    void setSelectable(boolean selectable);
-
-    boolean isPartialSelected();
-
-    void setPartialSelected(boolean value);
-
-    void setRowKey(String rowKey);
-
-    String getRowKey();
-
-    void clearParent();
+    @Override
+    public Row getRow(int index) {
+        return getRows().get(index);
+    }
 }

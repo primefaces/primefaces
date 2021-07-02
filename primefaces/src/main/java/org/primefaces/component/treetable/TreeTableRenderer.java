@@ -23,32 +23,6 @@
  */
 package org.primefaces.component.treetable;
 
-import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
-
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import javax.el.ELContext;
-import javax.faces.FacesException;
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.component.ValueHolder;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
@@ -66,6 +40,27 @@ import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.*;
 import org.primefaces.visit.ResetInputVisitCallback;
+
+import javax.el.ELContext;
+import javax.faces.FacesException;
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
+import javax.faces.component.ValueHolder;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
 
 public class TreeTableRenderer extends DataRenderer {
 
@@ -1336,7 +1331,7 @@ public class TreeTableRenderer extends DataRenderer {
         }
     }
 
-    protected void collectFilteredRowKeys(FacesContext context, TreeTable tt, TreeNode root, TreeNode node,  Map<String, FilterMeta> filterBy,
+    protected void collectFilteredRowKeys(FacesContext context, TreeTable tt, TreeNode<?> root, TreeNode<?> node,  Map<String, FilterMeta> filterBy,
             Locale filterLocale, List<String> filteredRowKeys) throws IOException {
 
         ELContext elContext = context.getELContext();
@@ -1398,7 +1393,7 @@ public class TreeTableRenderer extends DataRenderer {
         }
     }
 
-    private void createFilteredValueFromRowKeys(TreeTable tt, TreeNode node, TreeNode filteredNode, List<String> filteredRowKeys) {
+    private void createFilteredValueFromRowKeys(TreeTable tt, TreeNode<?> node, TreeNode<?> filteredNode, List<String> filteredRowKeys) {
         int childCount = node.getChildCount();
         for (int i = 0; i < childCount; i++) {
             TreeNode childNode = node.getChildren().get(i);
@@ -1418,7 +1413,7 @@ public class TreeTableRenderer extends DataRenderer {
         }
     }
 
-    protected TreeNode cloneTreeNode(TreeTable tt, TreeNode node, TreeNode parent) {
+    protected TreeNode cloneTreeNode(TreeTable tt, TreeNode<?> node, TreeNode<?> parent) {
         TreeNode clone = null;
 
         // equals check instead of instanceof to allow subclassing

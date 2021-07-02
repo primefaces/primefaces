@@ -21,30 +21,46 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.selenium.component;
+package org.primefaces.selenium.component.model.treetable;
 
 import org.openqa.selenium.By;
-import org.primefaces.selenium.component.base.AbstractTable;
+import org.openqa.selenium.WebElement;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.model.datatable.Cell;
-import org.primefaces.selenium.component.model.datatable.Row;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
-/**
- * Component wrapper for the PrimeFaces {@code p:dataTable}.
- */
-public abstract class DataTable extends AbstractTable<Row> {
+public class Row extends org.primefaces.selenium.component.model.datatable.Row {
 
-    public List<Row> getRows() {
-        return getRowsWebElement().stream().map(rowElt -> {
-            List<Cell> cells = rowElt.findElements(By.tagName("td")).stream().map(cellElt -> new Cell(cellElt)).collect(Collectors.toList());
-            return new Row(rowElt, cells);
-        }).collect(Collectors.toList());
+    public Row(WebElement webElement, List<Cell> cells) {
+        super(webElement, cells);
     }
 
-    @Override
-    public Row getRow(int index) {
-        return getRows().get(index);
+    public boolean isToggleable() {
+        return (getToggler() != null);
+    }
+
+    public void toggle() {
+        if (isToggleable()) {
+            PrimeSelenium.guardAjax(getToggler()).click();
+        }
+    }
+
+    private WebElement getToggler() {
+        return getCell(0).getWebElement().findElement(By.className("ui-treetable-toggler"));
+    }
+
+    public int getLevel() {
+        String cssClasses = getWebElement().getAttribute("class");
+        Optional<String> levelClassOpt = Arrays.stream(cssClasses.split(" ")).filter(c -> c.startsWith("ui-node-level")).findFirst();
+        if (levelClassOpt.isPresent()) {
+            String levelClass = levelClassOpt.get();
+            return Integer.parseInt(levelClass.replace("ui-node-level-", ""));
+        }
+        else {
+            return -1;
+        }
     }
 }

@@ -23,21 +23,6 @@
  */
 package org.primefaces.component.api;
 
-import java.io.IOException;
-import java.util.*;
-
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.application.Application;
-import javax.faces.application.FacesMessage;
-import javax.faces.component.*;
-import javax.faces.component.UIColumn;
-import javax.faces.component.visit.VisitCallback;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.component.visit.VisitResult;
-import javax.faces.context.FacesContext;
-import javax.faces.event.*;
-
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
@@ -48,6 +33,20 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.MessageFactory;
 import org.primefaces.util.SharedStringBuilder;
+
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.application.Application;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIColumn;
+import javax.faces.component.*;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitResult;
+import javax.faces.context.FacesContext;
+import javax.faces.event.*;
+import java.io.IOException;
+import java.util.*;
 
 public abstract class UITree extends UIComponentBase implements NamingContainer {
 
@@ -229,7 +228,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         getStateHelper().put(PropertyKeys.propagateSelectionUp, _propagateSelectionUp);
     }
 
-    protected TreeNode findTreeNode(TreeNode searchRoot, String rowKey) {
+    protected TreeNode<?> findTreeNode(TreeNode<?> searchRoot, String rowKey) {
         if (rowKey == null || searchRoot == null) {
             return null;
         }
@@ -261,7 +260,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         }
     }
 
-    public void buildRowKeys(TreeNode node) {
+    public void buildRowKeys(TreeNode<?> node) {
         if (node.isExpanded() || node.getParent() == null || node.getParent().isExpanded()) {
             int childCount = node.getChildCount();
             if (childCount > 0) {
@@ -279,7 +278,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         }
     }
 
-    public void populateRowKeys(TreeNode node, List<String> keys) {
+    public void populateRowKeys(TreeNode<?> node, List<String> keys) {
         if (node == null) {
             return;
         }
@@ -296,7 +295,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         }
     }
 
-    public void updateRowKeys(TreeNode node) {
+    public void updateRowKeys(TreeNode<?> node) {
         int childCount = node.getChildCount();
         if (childCount > 0) {
             for (int i = 0; i < childCount; i++) {
@@ -335,11 +334,11 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         }
     }
 
-    private void updateSelectedNodes(TreeNode node) {
+    private void updateSelectedNodes(TreeNode<?> node) {
         int childCount = node.getChildCount();
         if (childCount > 0) {
             for (int i = 0; i < childCount; i++) {
-                TreeNode childNode = node.getChildren().get(i);
+                TreeNode<?> childNode = node.getChildren().get(i);
                 if (childNode.isSelected()) {
                     addToPreselection(childNode);
                 }

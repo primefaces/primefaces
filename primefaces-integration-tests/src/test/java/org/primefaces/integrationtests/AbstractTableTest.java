@@ -21,30 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.selenium.component;
+package org.primefaces.integrationtests;
 
+import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
-import org.primefaces.selenium.component.base.AbstractTable;
-import org.primefaces.selenium.component.model.datatable.Cell;
-import org.primefaces.selenium.component.model.datatable.Row;
+import org.openqa.selenium.WebElement;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeSelenium;
 
-import java.util.List;
-import java.util.stream.Collectors;
+public class AbstractTableTest extends AbstractPrimePageTest {
 
-/**
- * Component wrapper for the PrimeFaces {@code p:dataTable}.
- */
-public abstract class DataTable extends AbstractTable<Row> {
-
-    public List<Row> getRows() {
-        return getRowsWebElement().stream().map(rowElt -> {
-            List<Cell> cells = rowElt.findElements(By.tagName("td")).stream().map(cellElt -> new Cell(cellElt)).collect(Collectors.toList());
-            return new Row(rowElt, cells);
-        }).collect(Collectors.toList());
-    }
-
-    @Override
-    public Row getRow(int index) {
-        return getRows().get(index);
+    protected void assertHeaderSorted(WebElement header, String sortDirection, int sortPriority) {
+        String directionClass = null;
+        switch (sortDirection) {
+            case "ASC":
+                directionClass = "ui-icon-triangle-1-n";
+                break;
+            case "DESC":
+                directionClass = "ui-icon-triangle-1-s";
+                break;
+            default:
+                break;
+        }
+        Assertions.assertTrue(PrimeSelenium.hasCssClass(header.findElement(By.className("ui-sortable-column-icon")), directionClass));
+        WebElement badge = header.findElement(By.className("ui-sortable-column-badge"));
+        if (sortPriority > 0) {
+            Assertions.assertEquals(sortPriority, Integer.parseInt(badge.getText()));
+        }
+        else {
+            Assertions.assertEquals("", badge.getText());
+        }
     }
 }

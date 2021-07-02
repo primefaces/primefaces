@@ -27,17 +27,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class TreeNodeChildren extends TreeNodeList {
+public class TreeNodeChildren<T> extends TreeNodeList<T> {
 
     private static final long serialVersionUID = 1L;
 
-    private TreeNode parent;
+    private TreeNode<T> parent;
 
-    public TreeNodeChildren(TreeNode parent) {
+    public TreeNodeChildren(TreeNode<T> parent) {
         this.parent = parent;
     }
 
-    private void eraseParent(TreeNode node) {
+    private void eraseParent(TreeNode<T> node) {
         TreeNode parentNode = node.getParent();
         if (parentNode != null) {
             parentNode.getChildren().remove(node);
@@ -46,7 +46,7 @@ public class TreeNodeChildren extends TreeNodeList {
     }
 
     @Override
-    public boolean add(TreeNode node) {
+    public boolean add(TreeNode<T> node) {
         if (node == null) {
             throw new NullPointerException();
         }
@@ -60,7 +60,7 @@ public class TreeNodeChildren extends TreeNodeList {
     }
 
     @Override
-    public void add(int index, TreeNode node) {
+    public void add(int index, TreeNode<T> node) {
         if (node == null) {
             throw new NullPointerException();
         }
@@ -76,8 +76,8 @@ public class TreeNodeChildren extends TreeNodeList {
     }
 
     @Override
-    public boolean addAll(Collection<? extends TreeNode> collection) {
-        Iterator<TreeNode> elements = (new ArrayList<TreeNode>(collection)).iterator();
+    public boolean addAll(Collection<? extends TreeNode<T>> collection) {
+        Iterator<TreeNode<T>> elements = (new ArrayList<TreeNode<T>>(collection)).iterator();
         int index = collection.size();
         boolean changed = false;
         while (elements.hasNext()) {
@@ -101,8 +101,8 @@ public class TreeNodeChildren extends TreeNodeList {
     }
 
     @Override
-    public boolean addAll(int index, Collection<? extends TreeNode> collection) {
-        Iterator<TreeNode> elements = (new ArrayList<TreeNode>(collection)).iterator();
+    public boolean addAll(int index, Collection<? extends TreeNode<T>> collection) {
+        Iterator<TreeNode<T>> elements = (new ArrayList<TreeNode<T>>(collection)).iterator();
         boolean changed = false;
         while (elements.hasNext()) {
             TreeNode node = elements.next();
@@ -204,7 +204,7 @@ public class TreeNodeChildren extends TreeNodeList {
         }
     }
 
-    private void updateRowKeys(TreeNode node) {
+    private void updateRowKeys(TreeNode<?> node) {
         int childCount = node.getChildCount();
         if (childCount > 0) {
             for (int i = 0; i < childCount; i++) {
@@ -215,7 +215,7 @@ public class TreeNodeChildren extends TreeNodeList {
         }
     }
 
-    private void updateRowKeys(int index, TreeNode node) {
+    private void updateRowKeys(int index, TreeNode<?> node) {
         int childCount = node.getChildCount();
         if (childCount > 0) {
             for (int i = index; i < childCount; i++) {
@@ -225,7 +225,7 @@ public class TreeNodeChildren extends TreeNodeList {
         }
     }
 
-    private void updateRowKeys(TreeNode node, TreeNode childNode, int i) {
+    private void updateRowKeys(TreeNode<?> node, TreeNode<?> childNode, int i) {
         String childRowKey = node.getParent() == null ? String.valueOf(i) : node.getRowKey() + "_" + i;
         childNode.setRowKey(childRowKey);
         this.updateRowKeys(childNode);
