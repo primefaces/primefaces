@@ -3026,7 +3026,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
         };
 
-        this.addToRowExpansionState(rowMeta.key);
+        if(!PrimeFaces.inArray(this.loadedExpansionRows, rowMeta.key)) {
+            this.loadedExpansionRows.push(rowMeta.key);
+            this.writeRowExpansions();
+        }
 
         if(this.hasBehavior('rowToggle')) {
             this.callBehavior('rowToggle', options);
@@ -3077,6 +3080,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     collapseRow: function(row) {
         // #942: need to use "hide" instead of "remove" to avoid incorrect form mapping when a row is collapsed
         row.removeClass('ui-expanded-row').next('.ui-expanded-row-content').hide();
+
+        var rowMeta = this.getRowMeta(row);
+        if(PrimeFaces.inArray(this.loadedExpansionRows, rowMeta.key)) {
+            this.loadedExpansionRows = this.loadedExpansionRows.filter(function(value, index, arr){
+                return value != rowMeta.key;
+            });
+            this.writeRowExpansions();
+        }
+
         this.updateRowspan(row);
     },
 
@@ -4830,18 +4842,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     writeRowExpansions: function() {
         this.expansionHolder.val(this.loadedExpansionRows.join(','));
-    },
-
-    /**
-     * Detect if row expansion for this row has been loaded and if not load it.
-     * @protected
-     * @param {number} rowKey The row key to check for expansion
-     */
-    addToRowExpansionState: function(rowKey) {
-        if(!PrimeFaces.inArray(this.loadedExpansionRows, rowKey)) {
-            this.loadedExpansionRows.push(rowKey);
-            this.writeRowExpansions();
-        }
     },
 
     /**
