@@ -51,7 +51,7 @@ public class Messages001Test extends AbstractPrimePageTest {
         // Assert
         assertDisplayed(messages);
         Assertions.assertEquals(1, messages.getAllMessages().size());
-        Assertions.assertTrue(messages.getMessage(0).getSummary().contains("may not be null")); //Mojarra and MyFaces have slightly different messages
+        Assertions.assertTrue(messages.getMessage(0).getSummary().contains("not be null")); //Mojarra and MyFaces have slightly different messages
         Assertions.assertEquals(Severity.ERROR, messages.getMessage(0).getSeverity());
         Assertions.assertTrue(PrimeSelenium.hasCssClass(page.inputTextVal2, "ui-state-error"));
 
