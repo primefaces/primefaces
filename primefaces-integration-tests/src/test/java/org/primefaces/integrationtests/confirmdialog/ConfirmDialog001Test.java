@@ -33,7 +33,6 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.ConfirmDialog;
 import org.primefaces.selenium.component.Messages;
@@ -114,7 +113,7 @@ public class ConfirmDialog001Test extends AbstractPrimePageTest {
         Assertions.assertTrue(dialog.isVisible());
 
         // Act
-        PrimeSelenium.guardAjax(dialog.getYesButton()).click();
+        dialog.getYesButton().click();
 
         // Assert
         Assertions.assertEquals("You have accepted", page.message.getMessage(0).getDetail());
@@ -148,7 +147,7 @@ public class ConfirmDialog001Test extends AbstractPrimePageTest {
         page.delete.click();
 
         // Act
-        PrimeSelenium.guardAjax(dialog.getYesButton()).click();
+        dialog.getYesButton().click();
 
         // Assert
         Assertions.assertEquals("Record deleted", page.message.getMessage(0).getDetail());
