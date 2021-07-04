@@ -43,7 +43,7 @@ public abstract class CommandButton extends AbstractComponent {
         if (button.getAttribute("data-pfconfirmcommand") != null) {
             // Confirm Dialog/Popup we don't want to guard for AJAX
         }
-        else if (isAjaxified("onclick") || PrimeSelenium.hasCssClass(button, "ui-confirmdialog-yes")) {
+        else if (isAjaxified("onclick")) {
             button = PrimeSelenium.guardAjax(button);
         }
         else if ("submit".equals(button.getAttribute("type"))) {
