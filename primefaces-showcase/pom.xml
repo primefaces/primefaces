@@ -209,7 +209,7 @@
             <plugin>
                 <groupId>nl.geodienstencentrum.maven</groupId>
                 <artifactId>sass-maven-plugin</artifactId>
-                <version>3.5.4</version>
+                <version>3.7.2</version>
                 <executions>
                     <execution>
                         <phase>generate-resources</phase>
