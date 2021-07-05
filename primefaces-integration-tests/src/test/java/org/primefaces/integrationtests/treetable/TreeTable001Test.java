@@ -49,7 +49,6 @@ public class TreeTable001Test extends AbstractTreeTableTest {
     @DisplayName("TreeTable: Basic & Toggling")
     public void testBasicAndToggling(Page page) {
         // Arrange
-        page.buttonResetTable.click();
         TreeTable treeTable = page.treeTable;
         Assertions.assertNotNull(treeTable);
 
@@ -115,7 +114,6 @@ public class TreeTable001Test extends AbstractTreeTableTest {
     @DisplayName("TreeTable: single sort including recursive subtree sorting")
     public void testSortSingle(Page page) {
         // Arrange
-        page.buttonResetTable.click();
         TreeTable treeTable = page.treeTable;
         Assertions.assertNotNull(treeTable);
 
@@ -149,7 +147,6 @@ public class TreeTable001Test extends AbstractTreeTableTest {
     @Order(3)
     @DisplayName("TreeTable: filter")
     public void testFilter(Page page) {
-        page.buttonResetTable.click();
         TreeTable treeTable = page.treeTable;
         treeTable.sort("Name");
 
@@ -204,7 +201,6 @@ public class TreeTable001Test extends AbstractTreeTableTest {
     @Order(4)
     @DisplayName("TreeTable: global filter")
     public void testGlobalFilter(Page page) {
-        page.buttonResetTable.click();
         TreeTable treeTable = page.treeTable;
         treeTable.sort("Name");
 
