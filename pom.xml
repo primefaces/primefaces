@@ -322,6 +322,17 @@
                 <artifactId>json</artifactId>
                 <version>20210307</version>
             </dependency>
+            <dependency>
+                <groupId>org.owasp.encoder</groupId>
+                <artifactId>encoder</artifactId>
+                <version>1.2.3</version>
+            </dependency>
+            <!-- use 2.4 as later versions would require multiple files to shade -->
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.4</version>
+            </dependency>
 
             <dependency>
                 <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
