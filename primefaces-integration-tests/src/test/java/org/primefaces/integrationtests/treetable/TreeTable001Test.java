@@ -32,7 +32,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.model.TreeNode;
 import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.InputText;
 import org.primefaces.selenium.component.model.TreeTable;
 import org.primefaces.selenium.component.model.datatable.Header;
 import org.primefaces.selenium.component.model.treetable.Row;
@@ -47,6 +49,7 @@ public class TreeTable001Test extends AbstractTreeTableTest {
     @DisplayName("TreeTable: Basic & Toggling")
     public void testBasicAndToggling(Page page) {
         // Arrange
+        page.buttonResetTable.click();
         TreeTable treeTable = page.treeTable;
         Assertions.assertNotNull(treeTable);
 
@@ -112,6 +115,7 @@ public class TreeTable001Test extends AbstractTreeTableTest {
     @DisplayName("TreeTable: single sort including recursive subtree sorting")
     public void testSortSingle(Page page) {
         // Arrange
+        page.buttonResetTable.click();
         TreeTable treeTable = page.treeTable;
         Assertions.assertNotNull(treeTable);
 
@@ -141,11 +145,11 @@ public class TreeTable001Test extends AbstractTreeTableTest {
         assertConfiguration(treeTable.getWidgetConfiguration());
     }
 
-
     @Test
     @Order(3)
     @DisplayName("TreeTable: filter")
     public void testFilter(Page page) {
+        page.buttonResetTable.click();
         TreeTable treeTable = page.treeTable;
         treeTable.sort("Name");
 
@@ -153,7 +157,7 @@ public class TreeTable001Test extends AbstractTreeTableTest {
         treeTable.filter("Name", "mobi");
 
         // Assert
-        // we try to avoid duplicating logic from TreeTableRenderer#filter
+        // we try to avoid duplicating logic from TreeTableRenderer#filter, so we take the simple/stupid way
         List<Row> rows = treeTable.getRows();
         Assertions.assertNotNull(rows);
         Assertions.assertEquals(3, rows.size());
@@ -196,6 +200,61 @@ public class TreeTable001Test extends AbstractTreeTableTest {
         assertConfiguration(treeTable.getWidgetConfiguration());
     }
 
+    @Test
+    @Order(4)
+    @DisplayName("TreeTable: global filter")
+    public void testGlobalFilter(Page page) {
+        page.buttonResetTable.click();
+        TreeTable treeTable = page.treeTable;
+        treeTable.sort("Name");
+
+        // Act (filter on L3)
+        filterGlobal(page.globalFilter, "mobi");
+
+        // Assert
+        // we try to avoid duplicating logic from TreeTableRenderer#filter, so we take the simple/stupid way
+        List<Row> rows = treeTable.getRows();
+        Assertions.assertNotNull(rows);
+        Assertions.assertEquals(3, rows.size());
+        Assertions.assertEquals("Applications", rows.get(0).getCell(0).getText());
+        Assertions.assertEquals("Primefaces", rows.get(1).getCell(0).getText());
+        Assertions.assertEquals("mobile.app", rows.get(2).getCell(0).getText());
+        Assertions.assertEquals(1, rows.get(0).getLevel());
+        Assertions.assertEquals(2, rows.get(1).getLevel());
+        Assertions.assertEquals(3, rows.get(2).getLevel());
+
+        // Act (filter on L1)
+        filterGlobal(page.globalFilter, "down");
+        PrimeSelenium.wait(500); //there should be a better way but guardAjax as part of filterGlobal does not work
+        treeTable.getRow(0).toggle();
+
+        // Assert
+        rows = treeTable.getRows();
+        Assertions.assertNotNull(rows);
+        Assertions.assertEquals(3, rows.size());
+        Assertions.assertEquals("Downloads", rows.get(0).getCell(0).getText());
+        Assertions.assertEquals("Spanish", rows.get(1).getCell(0).getText());
+        Assertions.assertEquals("Travel", rows.get(2).getCell(0).getText());
+        Assertions.assertEquals(1, rows.get(0).getLevel());
+        Assertions.assertEquals(2, rows.get(1).getLevel());
+        Assertions.assertEquals(2, rows.get(1).getLevel());
+
+        // Act
+        PrimeSelenium.guardAjax(page.buttonUpdate).click();
+
+        // Assert - filter must not be lost after update
+        rows = treeTable.getRows();
+        Assertions.assertNotNull(rows);
+        Assertions.assertEquals(3, rows.size());
+        Assertions.assertEquals("Downloads", rows.get(0).getCell(0).getText());
+        Assertions.assertEquals("Spanish", rows.get(1).getCell(0).getText());
+        Assertions.assertEquals("Travel", rows.get(2).getCell(0).getText());
+        Assertions.assertEquals(1, rows.get(0).getLevel());
+        Assertions.assertEquals(2, rows.get(1).getLevel());
+        Assertions.assertEquals(2, rows.get(1).getLevel());
+
+        assertConfiguration(treeTable.getWidgetConfiguration());
+    }
 
 
 //    @Test
@@ -373,15 +432,15 @@ public class TreeTable001Test extends AbstractTreeTableTest {
         @FindBy(id = "form:treeTable")
         TreeTable treeTable;
 
-//        @FindBy(id = "form:datatable:globalFilter")
-//        InputText globalFilter;
+        @FindBy(id = "form:treeTable:globalFilter")
+        InputText globalFilter;
 
         @FindBy(id = "form:buttonUpdate")
         CommandButton buttonUpdate;
 
-//        @FindBy(id = "form:buttonResetTable")
-//        CommandButton buttonResetTable;
-//
+        @FindBy(id = "form:buttonResetTable")
+        CommandButton buttonResetTable;
+
 //        @FindBy(id = "form:buttonGlobalFilterOnly")
 //        CommandButton buttonGlobalFilterOnly;
 

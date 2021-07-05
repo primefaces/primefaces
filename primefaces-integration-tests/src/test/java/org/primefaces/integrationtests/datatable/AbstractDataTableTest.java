@@ -25,10 +25,7 @@ package org.primefaces.integrationtests.datatable;
 
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.HasCapabilities;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
 import org.primefaces.integrationtests.AbstractTableTest;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.model.datatable.Row;
 
@@ -113,10 +110,4 @@ public abstract class AbstractDataTableTest extends AbstractTableTest {
         }
     }
 
-    protected void filterGlobal(WebElement inputGlobalFilter, String filter) {
-        // maybe we can move some of this to PF Selenium (InputText?, DataTable?)
-        inputGlobalFilter.clear();
-        inputGlobalFilter.sendKeys(filter);
-        PrimeSelenium.guardAjax(inputGlobalFilter).sendKeys(Keys.TAB);
-    }
 }

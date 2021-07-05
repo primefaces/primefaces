@@ -24,9 +24,11 @@
 package org.primefaces.integrationtests.treetable;
 
 import lombok.Data;
+import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.model.TreeNode;
 
 import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -49,5 +51,12 @@ public class TreeTable001 implements Serializable {
     @PostConstruct
     public void init() {
         root = service.createDocuments();
+    }
+
+    public void resetTable() {
+        TreeTable treeTable = (TreeTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:treeTable");
+        treeTable.reset();
+
+        init();
     }
 }
