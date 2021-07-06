@@ -26,6 +26,7 @@ package org.primefaces.showcase.view.data.treetable;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.TreeNode;
+import org.primefaces.showcase.domain.Document;
 import org.primefaces.showcase.service.DocumentService;
 
 import javax.annotation.PostConstruct;
@@ -40,11 +41,11 @@ import java.io.Serializable;
 @ViewScoped
 public class EditView implements Serializable {
 
-    private TreeNode root;
+    private TreeNode<Document> root;
 
-    private TreeNode root2;
+    private TreeNode<Document> root2;
 
-    private TreeNode root3;
+    private TreeNode<Document> root3;
 
     @Inject
     private DocumentService service;
@@ -56,15 +57,15 @@ public class EditView implements Serializable {
         root3 = service.createDocuments();
     }
 
-    public TreeNode getRoot() {
+    public TreeNode<Document> getRoot() {
         return root;
     }
 
-    public TreeNode getRoot2() {
+    public TreeNode<Document> getRoot2() {
         return root2;
     }
 
-    public TreeNode getRoot3() {
+    public TreeNode<Document> getRoot3() {
         return root3;
     }
 

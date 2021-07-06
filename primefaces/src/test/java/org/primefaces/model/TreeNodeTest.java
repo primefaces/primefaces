@@ -23,10 +23,10 @@
  */
 package org.primefaces.model;
 
+import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-
-import org.junit.jupiter.api.Test;
 
 public class TreeNodeTest {
 
@@ -77,7 +77,7 @@ public class TreeNodeTest {
 	
 	@Test
 	public void shouldHaveConsistenKeys() {
-		TreeNode root = new DefaultTreeNode(null);
+		TreeNode<?> root = new DefaultTreeNode(null);
 
 		TreeNode child0 = new DefaultTreeNode(null, root);
 		TreeNode child1 = new DefaultTreeNode(null, root);

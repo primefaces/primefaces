@@ -21,26 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.showcase.view.data.treetable;
+package org.primefaces.integrationtests.treetable;
 
-import org.primefaces.PrimeFaces;
+import lombok.Data;
+import org.primefaces.integrationtests.general.utilities.TestUtils;
 import org.primefaces.model.TreeNode;
-import org.primefaces.showcase.domain.Document;
-import org.primefaces.showcase.service.DocumentService;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
-@Named("ttMultiViewStateView")
+@Named
 @ViewScoped
-public class MultiViewStateView implements Serializable {
+@Data
+public class TreeTable004 implements Serializable {
+
+    private static final long serialVersionUID = -3049074201208091926L;
 
     private TreeNode<Document> root;
+    private TreeNode<Document>[] selectedNodes;
 
     @Inject
     private DocumentService service;
@@ -50,29 +53,11 @@ public class MultiViewStateView implements Serializable {
         root = service.createDocuments();
     }
 
-    public TreeNode<Document> getRoot() {
-        return root;
+    public void showSelectedNodes() {
+        if (selectedNodes != null) {
+            String selectedNodesStr = Arrays.stream(selectedNodes).map(n -> n.getData().getName()).collect(Collectors.joining(","));
+            TestUtils.addMessage("selected nodes", selectedNodesStr);
+        }
     }
 
-    public void setService(DocumentService service) {
-        this.service = service;
-    }
-
-    public void clearMultiViewState() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        String viewId = context.getViewRoot().getViewId();
-        PrimeFaces.current().multiViewState().clearAll(viewId, true, (clientId) -> {
-            showMessage(clientId);
-        });
-    }
-
-    private void showMessage(String clientId) {
-        FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_INFO, clientId + " multiview state has been cleared out", null));
-    }
-
-    public void someAction(Document document) {
-        FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_INFO, "Action on " + document.getName(), null));
-    }
 }

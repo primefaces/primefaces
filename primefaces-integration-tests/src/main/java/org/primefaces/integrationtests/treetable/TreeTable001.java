@@ -21,26 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.showcase.view.data.treetable;
+package org.primefaces.integrationtests.treetable;
 
-import org.primefaces.PrimeFaces;
+import lombok.Data;
+import org.primefaces.component.treetable.TreeTable;
+import org.primefaces.event.NodeSelectEvent;
+import org.primefaces.event.NodeUnselectEvent;
+import org.primefaces.integrationtests.general.utilities.TestUtils;
 import org.primefaces.model.TreeNode;
-import org.primefaces.showcase.domain.Document;
-import org.primefaces.showcase.service.DocumentService;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 
-@Named("ttMultiViewStateView")
+@Named
 @ViewScoped
-public class MultiViewStateView implements Serializable {
+@Data
+public class TreeTable001 implements Serializable {
+
+    private static final long serialVersionUID = 4336050122274677022L;
 
     private TreeNode<Document> root;
+    private TreeNode<Document> selectedNode;
+
+    private Document selectedDocument;
 
     @Inject
     private DocumentService service;
@@ -50,29 +57,26 @@ public class MultiViewStateView implements Serializable {
         root = service.createDocuments();
     }
 
-    public TreeNode<Document> getRoot() {
-        return root;
+    public void resetTable() {
+        TreeTable treeTable = (TreeTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:treeTable");
+        treeTable.reset();
+
+        init();
     }
 
-    public void setService(DocumentService service) {
-        this.service = service;
+    public void showSelectedDocument() {
+        TestUtils.addMessage("selected document", selectedDocument.getName());
     }
 
-    public void clearMultiViewState() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        String viewId = context.getViewRoot().getViewId();
-        PrimeFaces.current().multiViewState().clearAll(viewId, true, (clientId) -> {
-            showMessage(clientId);
-        });
+    public void showSelectedNode() {
+        TestUtils.addMessage("selected node", selectedNode.getData().getName());
     }
 
-    private void showMessage(String clientId) {
-        FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_INFO, clientId + " multiview state has been cleared out", null));
+    public void selectNode(NodeSelectEvent event) {
+        TestUtils.addMessage("select-event", ((Document) event.getTreeNode().getData()).getName());
     }
 
-    public void someAction(Document document) {
-        FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_INFO, "Action on " + document.getName(), null));
+    public void unselectNode(NodeUnselectEvent event) {
+        TestUtils.addMessage("unselect-event", ((Document) event.getTreeNode().getData()).getName());
     }
 }

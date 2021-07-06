@@ -21,26 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.showcase.view.data.treetable;
+package org.primefaces.integrationtests.treetable;
 
-import org.primefaces.PrimeFaces;
+import lombok.Data;
 import org.primefaces.model.TreeNode;
-import org.primefaces.showcase.domain.Document;
-import org.primefaces.showcase.service.DocumentService;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 
-@Named("ttMultiViewStateView")
+@Named
 @ViewScoped
-public class MultiViewStateView implements Serializable {
+@Data
+public class TreeTable003 implements Serializable {
 
-    private TreeNode<Document> root;
+    private static final long serialVersionUID = -7938825859167766622L;
+
+    private TreeNode root;
+
+    private Document selectedDocument;
 
     @Inject
     private DocumentService service;
@@ -48,31 +49,5 @@ public class MultiViewStateView implements Serializable {
     @PostConstruct
     public void init() {
         root = service.createDocuments();
-    }
-
-    public TreeNode<Document> getRoot() {
-        return root;
-    }
-
-    public void setService(DocumentService service) {
-        this.service = service;
-    }
-
-    public void clearMultiViewState() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        String viewId = context.getViewRoot().getViewId();
-        PrimeFaces.current().multiViewState().clearAll(viewId, true, (clientId) -> {
-            showMessage(clientId);
-        });
-    }
-
-    private void showMessage(String clientId) {
-        FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_INFO, clientId + " multiview state has been cleared out", null));
-    }
-
-    public void someAction(Document document) {
-        FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_INFO, "Action on " + document.getName(), null));
     }
 }

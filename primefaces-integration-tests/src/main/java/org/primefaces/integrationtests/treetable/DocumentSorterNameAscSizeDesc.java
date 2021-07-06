@@ -21,52 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.showcase.view.data.treetable;
+package org.primefaces.integrationtests.treetable;
 
 import org.primefaces.model.TreeNode;
-import org.primefaces.showcase.domain.Document;
-import org.primefaces.showcase.service.DocumentService;
 
-import javax.annotation.PostConstruct;
-import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
-import java.io.Serializable;
+import java.util.Comparator;
 
-@Named("ttScrollableView")
-@ViewScoped
-public class ScrollableView implements Serializable {
+public class DocumentSorterNameAscSizeDesc implements Comparator<TreeNode<Document>> {
 
-    private TreeNode<Document> root1;
-    private TreeNode<Document> root2;
-    private TreeNode<Document> root3;
+    @Override
+    public int compare(TreeNode<Document> treeNodeDoc1, TreeNode<Document> treeNodeDoc2) {
+        Document doc1 = treeNodeDoc1.getData();
+        Document doc2 = treeNodeDoc2.getData();
 
-    @Inject
-    private DocumentService service;
-
-    @PostConstruct
-    public void init() {
-        root1 = service.createDocuments();
-        root2 = service.createDocuments();
-        root3 = service.createDocuments();
-
-        root1.getChildren().get(0).setExpanded(true);
-        root1.getChildren().get(1).setExpanded(true);
-    }
-
-    public TreeNode<Document> getRoot1() {
-        return root1;
-    }
-
-    public TreeNode<Document> getRoot2() {
-        return root2;
-    }
-
-    public TreeNode<Document> getRoot3() {
-        return root3;
-    }
-
-    public void setService(DocumentService service) {
-        this.service = service;
+        try {
+            if (doc1.getName().equalsIgnoreCase(doc2.getName())) {
+                return doc2.getSize().compareToIgnoreCase(doc1.getSize());
+            }
+            else {
+                return doc1.getName().compareToIgnoreCase(doc2.getName());
+            }
+        }
+        catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 }
