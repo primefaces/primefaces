@@ -17,7 +17,8 @@
             </p:messages>
 
             <p:treeTable value="#{treeTable001.root}" var="document" id="treeTable" widgetVar="treeTable"
-                         sortMode="single" allowUnsorting="true">
+                         sortMode="single" allowUnsorting="true" selectionMode="single"
+                         selection="#{treeTable001.selectedNode}">
                 <f:facet name="header">
                     <div class="p-d-flex p-ai-center p-jc-between">
                         <span>Document Viewer</span>
@@ -51,16 +52,19 @@
                     <h:outputText value="#{document.type}"/>
                 </p:column>
                 <p:column style="width:3rem">
-                    <p:commandButton update="form:msgs"
-                                     title="View Detail" icon="pi pi-search">
+                    <p:commandButton title="View Detail" icon="pi pi-search" action="#{treeTable001.showSelectedDocument}">
                         <f:setPropertyActionListener value="#{document}" target="#{treeTable001.selectedDocument}"/>
                     </p:commandButton>
                 </p:column>
+
+                <p:ajax event="select" listener="#{treeTable001.selectNode}" />
+                <p:ajax event="unselect" listener="#{treeTable001.unselectNode}" />
             </p:treeTable>
 
             <p:commandButton id="button" value="Submit" update="@form"/>
             <p:commandButton id="buttonUpdate" value="Update" update="treeTable"/>
-            <p:commandButton id="buttonResetTable" value="Reset" update="@form" action="#{treeTable001.resetTable()}"/>
+            <p:commandButton id="buttonResetTable" value="Reset" update="@form" action="#{treeTable001.resetTable()}" />
+            <p:commandButton id="buttonShowSelectedNode" value="show selected node" action="#{treeTable001.showSelectedNode}" />
         </h:form>
 
     </h:body>

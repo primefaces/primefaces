@@ -25,6 +25,9 @@ package org.primefaces.integrationtests.treetable;
 
 import lombok.Data;
 import org.primefaces.component.treetable.TreeTable;
+import org.primefaces.event.NodeSelectEvent;
+import org.primefaces.event.NodeUnselectEvent;
+import org.primefaces.integrationtests.general.utilities.TestUtils;
 import org.primefaces.model.TreeNode;
 
 import javax.annotation.PostConstruct;
@@ -41,7 +44,8 @@ public class TreeTable001 implements Serializable {
 
     private static final long serialVersionUID = 4336050122274677022L;
 
-    private TreeNode root;
+    private TreeNode<Document> root;
+    private TreeNode<Document> selectedNode;
 
     private Document selectedDocument;
 
@@ -58,5 +62,21 @@ public class TreeTable001 implements Serializable {
         treeTable.reset();
 
         init();
+    }
+
+    public void showSelectedDocument() {
+        TestUtils.addMessage("selected document", selectedDocument.getName());
+    }
+
+    public void showSelectedNode() {
+        TestUtils.addMessage("selected node", selectedNode.getData().getName());
+    }
+
+    public void selectNode(NodeSelectEvent event) {
+        TestUtils.addMessage("select-event", ((Document) event.getTreeNode().getData()).getName());
+    }
+
+    public void unselectNode(NodeUnselectEvent event) {
+        TestUtils.addMessage("unselect-event", ((Document) event.getTreeNode().getData()).getName());
     }
 }

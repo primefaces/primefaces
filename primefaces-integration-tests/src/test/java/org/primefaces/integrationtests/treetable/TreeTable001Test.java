@@ -28,13 +28,18 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.model.TreeNode;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.InputText;
+import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.model.TreeTable;
 import org.primefaces.selenium.component.model.datatable.Header;
 import org.primefaces.selenium.component.model.treetable.Row;
@@ -252,6 +257,67 @@ public class TreeTable001Test extends AbstractTreeTableTest {
         assertConfiguration(treeTable.getWidgetConfiguration());
     }
 
+    @Test
+    @Order(5)
+    @DisplayName("TreeTable: show selected document (not a TreeTable feature)")
+    public void testShowSelectedDocument(Page page) {
+        TreeTable treeTable = page.treeTable;
+        treeTable.sort("Name");
+
+        // Act
+        PrimeSelenium.guardAjax(treeTable.getRow(0).getCell(3).getWebElement().findElement(By.cssSelector("button"))).click();
+
+        // Assert
+        assertMessage(page.messages, 0, "selected document", "Applications");
+    }
+
+    @Test
+    @Order(6)
+    @DisplayName("TreeTable: show selected node (via TreeTable-selection feature)")
+    public void testShowSelectedNode(Page page) {
+        TreeTable treeTable = page.treeTable;
+        treeTable.sort("Name");
+
+        // Act
+        PrimeSelenium.guardAjax(treeTable.getRow(0).getWebElement()).click();
+        page.buttonShowSelectedNode.click();
+
+        // Assert
+        assertMessage(page.messages, 0, "selected node", "Applications");
+    }
+
+    @Test
+    @Order(7)
+    @DisplayName("TreeTable: select-event")
+    public void testSelectedEvent(Page page) {
+        TreeTable treeTable = page.treeTable;
+        treeTable.sort("Name");
+
+        // Act
+        PrimeSelenium.guardAjax(treeTable.getRow(0).getWebElement()).click();
+
+        // Assert
+        assertMessage(page.messages, 0, "select-event", "Applications");
+    }
+
+
+    @Test
+    @Order(8)
+    @DisplayName("TreeTable: unselect-event")
+    public void testUnselectedEvent(Page page) {
+        TreeTable treeTable = page.treeTable;
+        treeTable.sort("Name");
+
+        // Act
+        PrimeSelenium.guardAjax(treeTable.getRow(0).getWebElement()).click(); //select
+        Actions actions = new Actions(page.getWebDriver());
+        Action actionUnselect = actions.keyDown(Keys.META).click(treeTable.getRow(0).getWebElement()).keyUp(Keys.META).build();
+        PrimeSelenium.guardAjax(actionUnselect).perform();
+
+        // Assert
+        assertMessage(page.messages, 0, "unselect-event", "Applications");
+    }
+
 
 //    @Test
 //    @Order(1)
@@ -428,6 +494,9 @@ public class TreeTable001Test extends AbstractTreeTableTest {
         @FindBy(id = "form:treeTable")
         TreeTable treeTable;
 
+        @FindBy(id = "form:msgs")
+        Messages messages;
+
         @FindBy(id = "form:treeTable:globalFilter")
         InputText globalFilter;
 
@@ -436,6 +505,9 @@ public class TreeTable001Test extends AbstractTreeTableTest {
 
         @FindBy(id = "form:buttonResetTable")
         CommandButton buttonResetTable;
+
+        @FindBy(id = "form:buttonShowSelectedNode")
+        CommandButton buttonShowSelectedNode;
 
 //        @FindBy(id = "form:buttonGlobalFilterOnly")
 //        CommandButton buttonGlobalFilterOnly;

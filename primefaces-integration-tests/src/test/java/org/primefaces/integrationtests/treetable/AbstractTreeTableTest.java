@@ -28,6 +28,8 @@ import org.primefaces.integrationtests.AbstractTableTest;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.TreeNodeList;
+import org.primefaces.selenium.component.Messages;
+import org.primefaces.selenium.component.model.Msg;
 import org.primefaces.selenium.component.model.TreeTable;
 import org.primefaces.selenium.component.model.treetable.Row;
 
@@ -104,5 +106,11 @@ public class AbstractTreeTableTest extends AbstractTableTest {
         treeSorted.setChildren(listSortedRecursive);
         treeSorted.setExpanded(root.isExpanded());
         return treeSorted;
+    }
+
+    protected void assertMessage(Messages messages, int index, String summary, String detail) {
+        Msg message = messages.getMessage(index);
+        Assertions.assertEquals(summary, message.getSummary());
+        Assertions.assertEquals(detail, message.getDetail());
     }
 }
