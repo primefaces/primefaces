@@ -28,10 +28,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.model.TreeNode;
 import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.model.TreeTable;
 
 public class TreeTable002Test extends AbstractTreeTableTest {
@@ -44,17 +48,36 @@ public class TreeTable002Test extends AbstractTreeTableTest {
         TreeTable treeTable = page.treeTable;
         Assertions.assertNotNull(treeTable);
 
+        // ... expand first node
         treeTable.getRow(0).toggle();
         TreeNode<Document> treeSorted = sortBy(root, new DocumentSorterNameAscSizeDesc());
         treeSorted.getChildren().get(0).setExpanded(true);
 
-        // Assert - predefined sort
+        // Assert - predefined sort (column 1 asc, column 2 desc)
         WebElement eltSortName= treeTable.getHeader().getCell(0).getWebElement();
         WebElement eltSortSize = treeTable.getHeader().getCell(1).getWebElement();
         assertHeaderSorted(eltSortName, "ASC", 1);
         assertHeaderSorted(eltSortSize, "DESC", 2);
-
         //assertRows(treeTable, treeSorted); // TODO: activate after https://github.com/primefaces/primefaces/issues/7537 is fixed
+
+        // ... undo expand first node
+        treeTable.getRow(0).toggle();
+        treeSorted.getChildren().get(0).setExpanded(false);
+
+        // Act - sort (column 2 desc, column 1 asc)
+        treeTable.sort(1); //asc
+        treeTable.sort(1); //desc
+        Actions actions = new Actions(page.getWebDriver());
+        Action actionUnselect = actions.keyDown(Keys.META).click(treeTable.getHeader().getCell(0).getWebElement()).keyUp(Keys.META).build();
+        PrimeSelenium.guardAjax(actionUnselect).perform();
+        assertHeaderSorted(eltSortName, "ASC", 2);
+        assertHeaderSorted(eltSortSize, "DESC", 1);
+
+        // ... expand first node
+        treeTable.getRow(0).toggle();
+        treeSorted = sortBy(treeSorted, new DocumentSorterSizeDescNameAsc());
+        treeSorted.getChildren().get(0).setExpanded(true);
+        assertRows(treeTable, treeSorted);
 
         assertConfiguration(treeTable.getWidgetConfiguration());
     }

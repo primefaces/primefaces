@@ -27,7 +27,7 @@ import org.primefaces.model.TreeNode;
 
 import java.util.Comparator;
 
-public class DocumentSorterNameAscSizeDesc implements Comparator<TreeNode<Document>> {
+public class DocumentSorterSizeDescNameAsc implements Comparator<TreeNode<Document>> {
 
     @Override
     public int compare(TreeNode<Document> treeNodeDoc1, TreeNode<Document> treeNodeDoc2) {
@@ -35,11 +35,11 @@ public class DocumentSorterNameAscSizeDesc implements Comparator<TreeNode<Docume
         Document doc2 = treeNodeDoc2.getData();
 
         try {
-            if (doc1.getName().equalsIgnoreCase(doc2.getName())) {
-                return doc2.getSize().compareToIgnoreCase(doc1.getSize());
+            if (doc1.getSize().equalsIgnoreCase(doc2.getSize())) {
+                return doc1.getName().compareToIgnoreCase(doc2.getName());
             }
             else {
-                return doc1.getName().compareToIgnoreCase(doc2.getName());
+                return doc2.getSize().compareToIgnoreCase(doc1.getSize());
             }
         }
         catch (Exception e) {
