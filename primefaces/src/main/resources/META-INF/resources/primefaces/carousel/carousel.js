@@ -86,7 +86,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.totalPages = Math.ceil(this.itemsCount / this.cfg.numVisible);
 
         if(this.cfg.stateful) {
-            this.stateKey = PrimeFaces.createStorageKey(this.id, 'Carousel');
+            this.createStorageKey();
 
             this.restoreState();
         }
@@ -130,6 +130,14 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.collapsed) {
             this.toggleableContent.hide();
         }
+    },
+
+    /**
+     * Create the key where the state for this component is stored.  By default it is stored per view. Override this 
+     * method to change the behavior to be global.
+     */
+    createStorageKey: function() {
+        this.stateKey = PrimeFaces.createStorageKey(this.id, 'Carousel', false);
     },
 
     /**

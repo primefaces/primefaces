@@ -48,7 +48,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         this.bindEvents();
 
         if(this.cfg.stateful) {
-            this.stateKey = PrimeFaces.createStorageKey(this.id, 'PanelMenu');
+            this.createStorageKey();
         }
 
         this.restoreState();
@@ -268,6 +268,14 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
                $this.removeFocusedItem();
             }
         });
+    },
+
+    /**
+     * Create the key where the state for this component is stored.  By default PanelMenu state is global so it is 
+     * remembered between page navigations.
+     */
+    createStorageKey: function() {
+        this.stateKey = PrimeFaces.createStorageKey(this.id, 'PanelMenu', true);
     },
 
     /**

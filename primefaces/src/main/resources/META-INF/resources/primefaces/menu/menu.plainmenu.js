@@ -33,7 +33,7 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
 
         if(this.cfg.toggleable) {
             this.collapsedIds = [];
-            this.stateKey = PrimeFaces.createStorageKey(this.id, 'PlainMenu');
+            this.createStorageKey();
             this.restoreState();
         }
     },
@@ -146,6 +146,14 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
 
             }
         });
+    },
+    
+    /**
+     * Create the key where the state for this component is stored.  By default it is stored per view. Override this 
+     * method to change the behavior to be global.
+     */
+    createStorageKey: function() {
+        this.stateKey = PrimeFaces.createStorageKey(this.id, 'PlainMenu', false);
     },
 
     /**
