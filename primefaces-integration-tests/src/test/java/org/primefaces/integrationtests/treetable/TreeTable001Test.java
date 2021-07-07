@@ -281,7 +281,7 @@ public class TreeTable001Test extends AbstractTreeTableTest {
         treeTable.sort("Name");
 
         // Act
-        PrimeSelenium.guardAjax(treeTable.getRow(0).getWebElement()).click();
+        PrimeSelenium.guardAjax(treeTable.getRow(0).getCell(1).getWebElement()).click();
         page.buttonShowSelectedNode.click();
 
         // Assert
@@ -298,7 +298,7 @@ public class TreeTable001Test extends AbstractTreeTableTest {
         treeTable.sort("Name");
 
         // Act
-        PrimeSelenium.guardAjax(treeTable.getRow(0).getWebElement()).click();
+        PrimeSelenium.guardAjax(treeTable.getRow(0).getCell(1).getWebElement()).click();
 
         // Assert
         assertMessage(page.messages, 0, "select-event", "Applications");
@@ -314,9 +314,9 @@ public class TreeTable001Test extends AbstractTreeTableTest {
         treeTable.sort("Name");
 
         // Act
-        PrimeSelenium.guardAjax(treeTable.getRow(0).getWebElement()).click(); //select
+        PrimeSelenium.guardAjax(treeTable.getRow(0).getCell(1).getWebElement()).click(); //select
         Actions actions = new Actions(page.getWebDriver());
-        Action actionUnselect = actions.keyDown(Keys.META).click(treeTable.getRow(0).getWebElement()).keyUp(Keys.META).build();
+        Action actionUnselect = actions.keyDown(Keys.META).click(treeTable.getRow(0).getCell(1).getWebElement()).keyUp(Keys.META).build();
         PrimeSelenium.guardAjax(actionUnselect).perform();
 
         // Assert
