@@ -245,6 +245,7 @@ public class HTML {
     public static final List<String> IMG_ATTRS = LangUtils.concat(IMG_ATTRS_WITHOUT_EVENTS, COMMON_EVENTS);
 
     public static final List<String> LINK_ATTRS = LangUtils.concat(LINK_ATTRS_WITHOUT_EVENTS, OUTPUT_EVENTS);
+    public static final List<String> LINK_WITHOUT_CLICK_ATTRS = LangUtils.concat(LINK_ATTRS_WITHOUT_EVENTS, OUTPUT_EVENTS_WITHOUT_CLICK);
 
     public static final List<String> LABEL_ATTRS = LangUtils.concat(LABEL_ATTRS_WITHOUT_EVENTS, OUTPUT_EVENTS);
     public static final List<String> LABEL_EVENTS = OUTPUT_EVENTS;
