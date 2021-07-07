@@ -23,24 +23,24 @@
  */
 package org.primefaces.showcase.view.data.treetable;
 
-import javax.faces.view.ViewScoped;
+import org.primefaces.PrimeFaces;
 import org.primefaces.model.TreeNode;
+import org.primefaces.showcase.domain.Document;
 import org.primefaces.showcase.service.DocumentService;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import org.primefaces.PrimeFaces;
-import org.primefaces.showcase.domain.Document;
 
 @Named("ttMultiViewStateView")
 @ViewScoped
 public class MultiViewStateView implements Serializable {
 
-    private TreeNode root;
+    private TreeNode<Document> root;
 
     @Inject
     private DocumentService service;
@@ -50,7 +50,7 @@ public class MultiViewStateView implements Serializable {
         root = service.createDocuments();
     }
 
-    public TreeNode getRoot() {
+    public TreeNode<Document> getRoot() {
         return root;
     }
 

@@ -23,30 +23,31 @@
  */
 package org.primefaces.showcase.view.data.treetable;
 
-import javax.faces.view.ViewScoped;
 import org.primefaces.event.NodeCollapseEvent;
 import org.primefaces.event.NodeExpandEvent;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.event.NodeUnselectEvent;
+import org.primefaces.event.data.FilterEvent;
+import org.primefaces.event.data.SortEvent;
 import org.primefaces.model.TreeNode;
+import org.primefaces.showcase.domain.Document;
 import org.primefaces.showcase.service.DocumentService;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import org.primefaces.event.data.FilterEvent;
-import org.primefaces.event.data.SortEvent;
 
 @Named("ttEventsView")
 @ViewScoped
 public class EventsView implements Serializable {
 
-    private TreeNode root;
+    private TreeNode<Document> root;
 
-    private TreeNode selectedNode;
+    private TreeNode<Document> selectedNode;
 
     @Inject
     private DocumentService service;
@@ -56,15 +57,15 @@ public class EventsView implements Serializable {
         root = service.createDocuments();
     }
 
-    public TreeNode getRoot() {
+    public TreeNode<Document> getRoot() {
         return root;
     }
 
-    public TreeNode getSelectedNode() {
+    public TreeNode<Document> getSelectedNode() {
         return selectedNode;
     }
 
-    public void setSelectedNode(TreeNode selectedNode) {
+    public void setSelectedNode(TreeNode<Document> selectedNode) {
         this.selectedNode = selectedNode;
     }
 

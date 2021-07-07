@@ -31739,6 +31739,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Whether to show the milliseconds in time picker. Default is false.]]>
+            </description>
+            <name>showMilliseconds</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Hours to change per step. Default is 1.]]>
             </description>
             <name>stepHour</name>
@@ -31758,6 +31766,14 @@
                 <![CDATA[Seconds to change per step. Default is 1.]]>
             </description>
             <name>stepSecond</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Milliseconds to change per step. Default is 1.]]>
+            </description>
+            <name>stepMillisecond</name>
             <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>

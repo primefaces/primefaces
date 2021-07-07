@@ -23,13 +23,14 @@
  */
 package org.primefaces.showcase.view.data.tree;
 
-import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
-public class LazyLoadingTreeNode extends DefaultTreeNode {
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+public class LazyLoadingTreeNode extends DefaultTreeNode<FileInfo> {
 
     private Function<String, List<FileInfo>> loadFunction;
     private boolean lazyLoaded;
@@ -40,7 +41,7 @@ public class LazyLoadingTreeNode extends DefaultTreeNode {
     }
 
     @Override
-    public List<TreeNode> getChildren() {
+    public List<TreeNode<FileInfo>> getChildren() {
         lazyLoad();
 
         return super.getChildren();

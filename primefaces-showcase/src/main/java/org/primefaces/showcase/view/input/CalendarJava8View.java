@@ -67,6 +67,7 @@ public class CalendarJava8View implements Serializable {
     private LocalTime time6;
     private LocalTime time7;
     private LocalTime time8;
+    private LocalTime time9;
     private LocalDateTime dateTime1;
     @Future
     private LocalDateTime dateTime2;
@@ -485,5 +486,13 @@ public class CalendarJava8View implements Serializable {
 
     public void setTime8(LocalTime time8) {
         this.time8 = time8;
+    }
+
+    public LocalTime getTime9() {
+        return time9;
+    }
+
+    public void setTime9(LocalTime time9) {
+        this.time9 = time9;
     }
 }

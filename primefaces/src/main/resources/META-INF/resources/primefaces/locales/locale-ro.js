@@ -19,6 +19,7 @@ PrimeFaces.locales['ro'] = {
     hourText: 'Ora',
     minuteText: 'Minut',
     secondText: 'Secunde',
+    millisecondText: 'Milisecunde',
     ampm: false,
     month: 'Luna',
     week: 'Săptămâna',

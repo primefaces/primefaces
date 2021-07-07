@@ -35,8 +35,8 @@ import javax.inject.Named;
 @ApplicationScoped
 public class DocumentService {
 
-    public TreeNode createDocuments() {
-        TreeNode root = new DefaultTreeNode(new Document("Files", "-", "Folder"), null);
+    public TreeNode<Document> createDocuments() {
+        TreeNode<Document> root = new DefaultTreeNode(new Document("Files", "-", "Folder"), null);
 
         TreeNode applications = new DefaultTreeNode(new Document("Applications", "100kb", "Folder"), root);
         TreeNode cloud = new DefaultTreeNode(new Document("Cloud", "20kb", "Folder"), root);
@@ -100,8 +100,8 @@ public class DocumentService {
         return root;
     }
 
-    public TreeNode createCheckboxDocuments() {
-        TreeNode root = new CheckboxTreeNode(new Document("Files", "-", "Folder"), null);
+    public TreeNode<Document> createCheckboxDocuments() {
+        TreeNode<Document> root = new CheckboxTreeNode(new Document("Files", "-", "Folder"), null);
 
         TreeNode applications = new CheckboxTreeNode(new Document("Applications", "100kb", "Folder"), root);
         TreeNode cloud = new CheckboxTreeNode(new Document("Cloud", "20kb", "Folder"), root);

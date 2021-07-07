@@ -1241,6 +1241,7 @@ public class DataTableRenderer extends DataRenderer {
         //Preselection
         boolean selected = table.getSelectedRowKeys().contains(rowKey);
         boolean disabled = table.isDisabledSelection();
+        boolean expanded = table.isExpandedRow() || (rowExpansionAvailable && table.getExpandedRowKeys().contains(rowKey));
 
         String rowStyleClass = getStyleClassBuilder(context)
                 .add(DataTable.ROW_CLASS)
@@ -1249,7 +1250,7 @@ public class DataTableRenderer extends DataRenderer {
                 .add(selected && !disabled, "ui-state-highlight")
                 .add(table.isEditingRow(),  DataTable.EDITING_ROW_CLASS)
                 .add(table.getRowStyleClass())
-                .add(table.isExpandedRow(), DataTable.EXPANDED_ROW_CLASS)
+                .add(expanded, DataTable.EXPANDED_ROW_CLASS)
                 .build();
 
         writer.startElement("tr", null);
@@ -1282,7 +1283,7 @@ public class DataTableRenderer extends DataRenderer {
 
         writer.endElement("tr");
 
-        if (table.isExpandedRow() || (rowExpansionAvailable && table.getExpandedRowKeys().contains(rowKey))) {
+        if (expanded) {
             ((RowExpandFeature) table.getFeature(DataTableFeatureKey.ROW_EXPAND)).encodeExpansion(context, this, table, rowIndex);
         }
 
@@ -1351,13 +1352,20 @@ public class DataTableRenderer extends DataRenderer {
             encodeDefaultFieldCell(context, table, column, writer);
         }
         else if (column instanceof DynamicColumn) {
-            column.encodeAll(context);
+            encodeDynamicCell(context, table, column);
         }
         else {
             column.renderChildren(context);
         }
 
         writer.endElement("td");
+    }
+
+    /**
+     * Encodes dynamic column. Allows to override default behavior.
+     */
+    protected void encodeDynamicCell(FacesContext context, DataTable table, UIColumn column) throws IOException {
+        column.encodeAll(context);
     }
 
     protected void encodeDefaultFieldCell(FacesContext context, DataTable table, UIColumn column, ResponseWriter writer) throws IOException {

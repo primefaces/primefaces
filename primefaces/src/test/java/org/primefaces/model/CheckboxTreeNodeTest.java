@@ -23,17 +23,14 @@
  */
 package org.primefaces.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 public class CheckboxTreeNodeTest {
 
-    private TreeNode root;
+    private TreeNode<?> root;
 
     @SuppressWarnings("unused")
 	@BeforeEach
@@ -70,7 +67,7 @@ public class CheckboxTreeNodeTest {
 
     @Test
     public void shouldPropagateDown() {
-        TreeNode work = root.getChildren().get(0).getChildren().get(0);
+        TreeNode<?> work = root.getChildren().get(0).getChildren().get(0);
         assertEquals("Work", work.getData());
 
         work.setSelected(true);
@@ -84,8 +81,8 @@ public class CheckboxTreeNodeTest {
 
     @Test
     public void shouldPropagateUpWhenOneChildOfANodeIsSelected() {
-        TreeNode document = root.getChildren().get(0);
-        TreeNode work = document.getChildren().get(0);
+        TreeNode<?> document = root.getChildren().get(0);
+        TreeNode<?> work = document.getChildren().get(0);
         TreeNode expenses = work.getChildren().get(0);
 
         expenses.setSelected(true);
@@ -98,9 +95,9 @@ public class CheckboxTreeNodeTest {
 
     @Test
     public void shouldPropagateUpWhenAllChildrenOfANodeIsSelected() {
-        TreeNode document = root.getChildren().get(0);
-        TreeNode work = document.getChildren().get(0);
-        TreeNode expenses = work.getChildren().get(0);
+        TreeNode<?> document = root.getChildren().get(0);
+        TreeNode<?> work = document.getChildren().get(0);
+        TreeNode<?> expenses = work.getChildren().get(0);
         TreeNode resume = work.getChildren().get(1);
 
         expenses.setSelected(true);
@@ -153,7 +150,7 @@ public class CheckboxTreeNodeTest {
 
     @Test
     public void shouldUpdateSelectionStateWhenNodesAreRemoved() {
-        TreeNode work = root.getChildren().get(0).getChildren().get(0);
+        TreeNode<?> work = root.getChildren().get(0).getChildren().get(0);
         assertEquals("Work", work.getData());
         assertEquals(2, work.getChildCount());
 

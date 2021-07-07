@@ -18,6 +18,7 @@ PrimeFaces.locales['vi'] = {
     hourText: 'Giờ',
     minuteText: 'Phút',
     secondText: 'Giây',
+    millisecondText: 'Mili giây',
     currentText: 'Giờ hiện hành',
     ampm: false,
     month: 'Tháng',

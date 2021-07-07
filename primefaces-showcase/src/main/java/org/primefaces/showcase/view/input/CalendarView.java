@@ -61,6 +61,7 @@ public class CalendarView implements Serializable {
     private Date date15;
     private Date date16;
     private Date dateTimeDe;
+    private Date dateTimeMillis;
     private List<Date> multi;
     private List<Date> range;
     private List<Date> invalidDates;
@@ -109,6 +110,7 @@ public class CalendarView implements Serializable {
 
         dateDe = GregorianCalendar.getInstance().getTime();
         dateTimeDe = GregorianCalendar.getInstance().getTime();
+        dateTimeMillis = GregorianCalendar.getInstance().getTime();
     }
 
     public void onDateSelect(SelectEvent<Date> event) {
@@ -304,6 +306,14 @@ public class CalendarView implements Serializable {
 
     public void setDateDe(Date dateDe) {
         this.dateDe = dateDe;
+    }
+
+    public Date getDateTimeMillis() {
+        return dateTimeMillis;
+    }
+
+    public void setDateTimeMillis(Date dateTimeMillis) {
+        this.dateTimeMillis = dateTimeMillis;
     }
 
     public Date getDate15() {

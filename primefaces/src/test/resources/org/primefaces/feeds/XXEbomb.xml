@@ -1,0 +1,4 @@
+<!DOCTYPE foo [<!ELEMENT foo ANY><!ENTITY bar "World ">
+	<!ENTITY t1 "&bar;&bar;"><!ENTITY t2 "&t1;&t1;&t1;&t1;">
+	<!ENTITY t3 "&t2;&t2;&t2;&t2;&t2;">]>
+<foo>Hello &t3;</foo>

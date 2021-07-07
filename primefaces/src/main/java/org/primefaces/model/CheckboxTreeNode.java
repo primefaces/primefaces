@@ -26,7 +26,7 @@ package org.primefaces.model;
 import java.io.Serializable;
 import java.util.List;
 
-public class CheckboxTreeNode implements TreeNode, Serializable {
+public class CheckboxTreeNode<T> implements TreeNode<T>, Serializable {
 
     public static final String DEFAULT_TYPE = "default";
 
@@ -34,9 +34,9 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
 
     private String type;
 
-    private Object data;
+    private T data;
 
-    private List<TreeNode> children;
+    private List<TreeNode<T>> children;
 
     private TreeNode parent;
 
@@ -55,13 +55,13 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
         this.children = new CheckboxTreeNodeChildren(this);
     }
 
-    public CheckboxTreeNode(Object data) {
+    public CheckboxTreeNode(T data) {
         this.type = DEFAULT_TYPE;
         this.children = new CheckboxTreeNodeChildren(this);
         this.data = data;
     }
 
-    public CheckboxTreeNode(Object data, TreeNode parent) {
+    public CheckboxTreeNode(T data, TreeNode parent) {
         this.type = DEFAULT_TYPE;
         this.data = data;
         this.children = new CheckboxTreeNodeChildren(this);
@@ -70,7 +70,7 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
         }
     }
 
-    public CheckboxTreeNode(String type, Object data, TreeNode parent) {
+    public CheckboxTreeNode(String type, T data, TreeNode parent) {
         this.type = type;
         this.data = data;
         this.children = new CheckboxTreeNodeChildren(this);
@@ -90,25 +90,25 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
     }
 
     @Override
-    public Object getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(T data) {
         this.data = data;
     }
 
     @Override
-    public List<TreeNode> getChildren() {
+    public List<TreeNode<T>> getChildren() {
         return children;
     }
 
-    public void setChildren(List<TreeNode> children) {
+    public void setChildren(List<TreeNode<T>> children) {
         if (children instanceof CheckboxTreeNodeChildren) {
             this.children = children;
         }
         else {
-            CheckboxTreeNodeChildren nodeChildren = new CheckboxTreeNodeChildren(this);
+            CheckboxTreeNodeChildren<T> nodeChildren = new CheckboxTreeNodeChildren<T>(this);
             nodeChildren.addAll(children);
             this.children = nodeChildren;
         }

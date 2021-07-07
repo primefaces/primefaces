@@ -25,19 +25,19 @@ package org.primefaces.model;
 
 import java.util.List;
 
-public interface TreeNode {
+public interface TreeNode<T> {
 
     String getType();
 
     void setType(String type);
 
-    Object getData();
+    T getData();
 
-    List<TreeNode> getChildren();
+    List<TreeNode<T>> getChildren();
 
-    TreeNode getParent();
+    TreeNode<T> getParent();
 
-    void setParent(TreeNode treeNode);
+    void setParent(TreeNode<T> treeNode);
 
     boolean isExpanded();
 

@@ -413,7 +413,7 @@ public class AutoCompleteRenderer extends InputRenderer {
             String var = ac.getVar();
             boolean pojo = var != null;
 
-            Collection<Object> items = ac.isUnique() ? new HashSet<>(values) : values;
+            Collection<Object> items = ac.isUnique() ? new LinkedHashSet<>(values) : values;
             for (Object value : items) {
                 Object itemValue = null;
                 String itemLabel = null;

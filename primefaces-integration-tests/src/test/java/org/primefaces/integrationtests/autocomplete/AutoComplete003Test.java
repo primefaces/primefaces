@@ -60,9 +60,9 @@ public class AutoComplete003Test extends AbstractPrimePageTest {
         // Assert
         values = autoComplete.getValues();
         Assertions.assertEquals(3, values.size());
-        Assertions.assertEquals("George", values.get(0));
+        Assertions.assertEquals("Ringo", values.get(0));
         Assertions.assertEquals("John", values.get(1));
-        Assertions.assertEquals("Ringo", values.get(2));
+        Assertions.assertEquals("George", values.get(2));
         assertConfiguration(autoComplete.getWidgetConfiguration());
     }
 

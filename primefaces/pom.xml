@@ -159,7 +159,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>3.1.0</version>
+            <version>3.11.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -181,9 +181,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>xml-apis</groupId>
-            <artifactId>xml-apis</artifactId>
-            <version>1.4.01</version>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-nop</artifactId>
+            <version>1.7.31</version>
             <scope>test</scope>
         </dependency>
 
@@ -191,13 +191,13 @@
         <dependency>
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast</artifactId>
-            <version>4.2</version>
+            <version>4.2.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache</artifactId>
-            <version>2.7.4</version>
+            <version>2.10.9.2</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -222,7 +222,7 @@
         <dependency>
             <groupId>net.sf.saxon</groupId>
             <artifactId>Saxon-HE</artifactId>
-            <version>9.9.0-2</version>
+            <version>9.9.1-8</version>
             <scope>test</scope>
         </dependency>
 
@@ -241,14 +241,12 @@
         <dependency>
             <groupId>org.owasp.encoder</groupId>
             <artifactId>encoder</artifactId>
-            <version>1.2.3</version>
             <optional>true</optional>
         </dependency>
         <!-- use 2.4 as later versions would require multiple files to shade -->
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.4</version>
             <optional>true</optional>
         </dependency>
     </dependencies>
@@ -260,7 +258,7 @@
                 <plugin>
                     <groupId>com.github.eirslett</groupId>
                     <artifactId>frontend-maven-plugin</artifactId>
-                    <version>1.9.1</version>
+                    <version>1.12.0</version>
                     <configuration>
                         <installDirectory>${project.build.directory}</installDirectory>
                         <nodeVersion>v15.6.0</nodeVersion>
@@ -352,7 +350,7 @@
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
                 <artifactId>wagon-ssh</artifactId>
-                <version>3.0.0</version>
+                <version>3.4.3</version>
             </extension>
         </extensions>
 
@@ -386,7 +384,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.2.0</version>
                 <executions>
                     <execution>
                         <id>parse-version</id>
@@ -399,7 +397,7 @@
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-                <version>5.1.1</version>
+                <version>5.1.2</version>
                 <extensions>true</extensions>
                 <configuration>
                     <supportedProjectTypes>
@@ -646,6 +644,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/datalist/datalist.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/datascroller/datascroller.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/datatable/datatable.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/datatable/datatable.frozen.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/dialog/dialog.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/dragdrop/dragdrop.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/effect/effect.js</include>
@@ -1134,7 +1133,7 @@
                         <artifactId>dependency-check-maven</artifactId>
                         <version>6.2.2</version>
                         <configuration>
-                            <skipProvidedScope>true</skipProvidedScope>
+                            <skipProvidedScope>false</skipProvidedScope>
                             <skipRuntimeScope>false</skipRuntimeScope>
                             <failBuildOnCVSS>5</failBuildOnCVSS>
                             <suppressionFile>${project.basedir}/src/conf/owasp-suppressions.xml</suppressionFile>

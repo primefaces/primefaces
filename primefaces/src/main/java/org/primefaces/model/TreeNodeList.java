@@ -25,7 +25,7 @@ package org.primefaces.model;
 
 import java.util.ArrayList;
 
-public class TreeNodeList extends ArrayList<TreeNode> {
+public class TreeNodeList<T> extends ArrayList<TreeNode<T>> {
 
     private static final long serialVersionUID = 1L;
 
@@ -36,7 +36,7 @@ public class TreeNodeList extends ArrayList<TreeNode> {
      * @param node node to be stored at the specified position
      * @return the node previously at the specified position
      */
-    public TreeNode setSibling(int index, TreeNode node) {
+    public TreeNode<T> setSibling(int index, TreeNode<T> node) {
         throw new UnsupportedOperationException();
     }
 }

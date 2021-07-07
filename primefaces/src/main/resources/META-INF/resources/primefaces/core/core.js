@@ -1344,6 +1344,7 @@
             hourText: 'Hour',
             minuteText: 'Minute',
             secondText: 'Second',
+            millisecondText: 'Millisecond',
             currentText: 'Current Date',
             ampm: false,
             year: 'Year',
