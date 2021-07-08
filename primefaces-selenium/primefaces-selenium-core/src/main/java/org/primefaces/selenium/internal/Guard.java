@@ -23,6 +23,16 @@
  */
 package org.primefaces.selenium.internal;
 
+import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.implementation.InvocationHandlerAdapter;
+import net.bytebuddy.matcher.ElementMatcher;
+import net.bytebuddy.matcher.ElementMatchers;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.primefaces.selenium.AbstractPrimePageFragment;
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.spi.WebDriverProvider;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -30,19 +40,6 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.spi.WebDriverProvider;
-
-import net.bytebuddy.ByteBuddy;
-import net.bytebuddy.implementation.InvocationHandlerAdapter;
-import net.bytebuddy.matcher.ElementMatcher;
-import net.bytebuddy.matcher.ElementMatchers;
 
 public class Guard {
 
@@ -162,9 +159,12 @@ public class Guard {
         Class<?> classToProxy = target.getClass();
         List<Class> interfacesToImplement = new ArrayList<>();
         ElementMatcher.Junction methods = ElementMatchers.isPublic();
+        Class<T> proxyClass = null;
+        boolean classProxyable = true;
 
         // class is not proxyable - lets try to implement interfaces
         if (Modifier.isPrivate(classToProxy.getModifiers()) || Modifier.isFinal(classToProxy.getModifiers())) {
+            classProxyable = false;
             interfacesToImplement = Arrays.asList(classToProxy.getInterfaces());
             classToProxy = Object.class;
             methods = null;
@@ -179,17 +179,25 @@ public class Guard {
             }
         }
 
-        Class<T> proxyClass = new ByteBuddy()
-                    .subclass(classToProxy)
-                    .implement(interfacesToImplement)
-                    .method(methods)
-                    .intercept(InvocationHandlerAdapter.of(handler))
-                    .make()
-                    .load(target.getClass().getClassLoader())
-                    .getLoaded();
+        proxyClass = new ByteBuddy()
+                .subclass(classToProxy)
+                .implement(interfacesToImplement)
+                .method(methods)
+                .intercept(InvocationHandlerAdapter.of(handler))
+                .make()
+                .load(target.getClass().getClassLoader())
+                .getLoaded();
 
         try {
-            return proxyClass.getDeclaredConstructor().newInstance();
+            if (classProxyable && !classToProxy.getName().contains("$ByteBuddy$") &&
+                    target instanceof WrapsElement && !(target instanceof AbstractPrimePageFragment))  {
+                // e.g. org.openqa.selenium.support.ui.Select ("native" Selenium-components?)
+                return proxyClass.getDeclaredConstructor(WebElement.class).newInstance(((WrapsElement) target).getWrappedElement());
+            }
+            else {
+                // PrimeSelenium-wrapper for PrimeFaces-components
+                return proxyClass.getDeclaredConstructor().newInstance();
+            }
         }
         catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
