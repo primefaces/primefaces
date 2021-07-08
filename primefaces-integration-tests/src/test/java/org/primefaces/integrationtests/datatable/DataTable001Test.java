@@ -23,10 +23,6 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -46,6 +42,10 @@ import org.primefaces.selenium.component.InputText;
 import org.primefaces.selenium.component.model.data.Paginator;
 import org.primefaces.selenium.component.model.datatable.Header;
 import org.primefaces.selenium.component.model.datatable.Row;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class DataTable001Test extends AbstractDataTableTest {
 
@@ -163,6 +163,36 @@ public class DataTable001Test extends AbstractDataTableTest {
 
     @Test
     @Order(4)
+    @DisplayName("DataTable: filter plus paging")
+    public void testFilterPlusPaging(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        dataTable.selectPage(1);
+        dataTable.sort("Name");
+        Select selectRowsPerPage = new Select(dataTable.getPaginatorWebElement().findElement(By.className("ui-paginator-rpp-options")));
+        PrimeSelenium.guardAjax(selectRowsPerPage).selectByValue("2");
+
+        // Act
+        dataTable.filter("Name", "t");
+
+        // Assert
+        List<ProgrammingLanguage> langsFiltered = languages.stream()
+                .sorted(Comparator.comparing(ProgrammingLanguage::getName))
+                .filter(l -> l.getName().toLowerCase().contains("t"))
+                .collect(Collectors.toList());
+        assertRows(dataTable, langsFiltered.stream().limit(2).collect(Collectors.toList()));
+
+        // Act
+        dataTable.selectPage(2);
+
+        // Assert - filter must not be lost after update
+        assertRows(dataTable, langsFiltered.stream().skip(2).limit(2).collect(Collectors.toList()));
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(5)
     @DisplayName("DataTable: global filter with globalFilterOnly=false")
     public void testGlobalFilter(Page page) {
         // Arrange
@@ -182,7 +212,7 @@ public class DataTable001Test extends AbstractDataTableTest {
     }
 
     @Test
-    @Order(5)
+    @Order(6)
     @DisplayName("DataTable: GitHub #7193 global filter with globalFilterOnly=true")
     public void testGlobalFilterIncludeNotDisplayedFilter(Page page) {
         // Arrange
@@ -203,7 +233,7 @@ public class DataTable001Test extends AbstractDataTableTest {
     }
 
     @Test
-    @Order(6)
+    @Order(7)
     @DisplayName("DataTable: rows per page & reset; includes https://github.com/primefaces/primefaces/issues/5465 & https://github.com/primefaces/primefaces/issues/5481")
     public void testRowsPerPageAndReset_5465_5481(Page page) {
         // Arrange
