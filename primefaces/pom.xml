@@ -209,7 +209,7 @@
         <dependency>
             <groupId>org.ehcache</groupId>
             <artifactId>ehcache</artifactId>
-            <version>3.7.1</version>
+            <version>3.9.4</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -1216,7 +1216,7 @@
             </build>
         </profile>
         <profile>
-            <id>release</id>
+            <id>minify</id>
             <build>
                 <plugins>
                     <!--
@@ -1253,7 +1253,13 @@
                             </includes>
                         </configuration>
                     </plugin>
-
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
                     <!-- Write docs and *.d.ts file to the current documentation directory docs/jsdocs -->
                     <plugin>
                         <groupId>com.github.eirslett</groupId>
