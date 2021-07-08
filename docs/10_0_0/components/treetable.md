@@ -64,9 +64,11 @@ disabledTextSelection | true | Boolean | Disables text selection on row click.
 touchable | true | Boolean | Enable touch support if browser detection supports it.
 editInitEvent | null | String | Defines a client side event to open cell on editable treetable.
 filterBy | null | SortMeta / Collection<SortMeta> | Property to be used for default sorting. Expects a single or a collection of SortMeta.
+filterDelay | 300 | Integer | Delay in milliseconds before sending an ajax filter query.
+filterEvent | keyup | String | Event triggering filter for input filters.
+filteredValue  | null | TreeNode | TreeNode to keep filtered data.
 allowUnsorting | false | Boolean | Defines whether columns are allowed to be unsorted. Default is false.
 sortMode | multiple | String | Defines sorting mode, valid values are _single_ and _multiple_.
-filteredValue  | null | TreeNode | TreeNode to keep filtered data.
 cloneOnFilter | false | Boolean | Defines if nodes should be cloned on filter via Cloneable interface or Copy-Constructor (CustomNode(CustomNode original) or CustomNode(String type, Object data, TreeNode parent)). Normally the filtered nodes are new instanceof of DefaultTreeNode.
 saveOnCellBlur | true | Boolean | Saves the changes in cell editing on blur, when set to false changes are discarded.
 size | regular | String | Size of the table content, valid values are "small" and "large". Leave empty for regular size.
