@@ -226,7 +226,6 @@ public class TreeTable001Test extends AbstractTreeTableTest {
 
         // Act (filter on L1)
         filterGlobal(page.globalFilter, "down");
-        PrimeSelenium.wait(500); //there should be a better way but guardAjax as part of filterGlobal does not work
         treeTable.getRow(0).toggle();
 
         // Assert
