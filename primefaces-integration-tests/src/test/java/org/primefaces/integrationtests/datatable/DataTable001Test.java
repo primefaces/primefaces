@@ -170,7 +170,7 @@ public class DataTable001Test extends AbstractDataTableTest {
         dataTable.selectPage(1);
         dataTable.sort("Name");
         Select selectRowsPerPage = new Select(dataTable.getPaginatorWebElement().findElement(By.className("ui-paginator-rpp-options")));
-        // PrimeSelenium.guardAjax(selectRowsPerPage).selectByValue("2"); // does not work - maybe because of native Select
+//        PrimeSelenium.guardAjax(selectRowsPerPage).selectByValue("2"); // does not work because ByteBuddy can´t create a proxy-class for org.openqa.selenium.support.ui.Select
         selectRowsPerPage.selectByValue("2");
         PrimeSelenium.wait(500);
 
