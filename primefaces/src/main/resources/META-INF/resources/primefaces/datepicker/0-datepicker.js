@@ -770,6 +770,8 @@
             else {
                 if (this.options.hourFormat == '12' && h !== 12 && ampm === 'PM') {
                     h += 12;
+                } else if (this.options.hourFormat === '12' && h === 12 && ampm === 'AM') {
+                    h -= 12;
                 }
 
                 return { hour: h, minute: m, second: s, millisecond: ms };
@@ -1609,7 +1611,7 @@
             return '';
         },
 
-    renderAmPmPicker: function () {
+        renderAmPmPicker: function () {
             if (this.options.hourFormat === '12') {
                 var hour = this.isDate(this.value) ? this.value.getHours() : this.viewDate.getHours(),
                     display = hour > 11 ? 'PM' : 'AM';
@@ -1628,7 +1630,7 @@
             return this.renderTimeElements("ui-separator", '<span>.</span>', -1);
         },
 
-    renderTimeElements: function (containerClass, text, type) {
+        renderTimeElements: function (containerClass, text, type) {
             var container = '<div class="' + containerClass + '" data-type="' + type + '">';
 
             //up
