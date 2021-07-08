@@ -461,7 +461,7 @@
             }
 
             if (this.options.disabledDays) {
-                validDay = !this.isDayDisabled(day, month, year)
+                validDay = !this.isDayDisabled(day, month, year);
             }
 
             if (this.options.selectOtherMonths === false && otherMonth) {
@@ -492,7 +492,7 @@
                     if (this.value[1])
                         return this.isDateEquals(this.value[0], dateMeta) || this.isDateEquals(this.value[1], dateMeta) || this.isDateBetween(this.value[0], this.value[1], dateMeta);
                     else
-                        return this.isDateEquals(this.value[0], dateMeta)
+                        return this.isDateEquals(this.value[0], dateMeta);
                 }
             }
             else {
@@ -508,7 +508,7 @@
                     if (this.value[1])
                         return this.isDateEquals(this.value[0], dateMeta) || this.isDateEquals(this.value[1], dateMeta) || this.isDateBetween(this.value[0], this.value[1], dateMeta);
                     else
-                        return this.isDateEquals(this.value[0], dateMeta)
+                        return this.isDateEquals(this.value[0], dateMeta);
                 }
                 else {
                     return (this.value.getMonth() === month && this.value.getFullYear() === this.viewDate.getFullYear());
@@ -720,11 +720,11 @@
                 seconds = date.getSeconds(),
                 milliseconds = date.getMilliseconds();
 
-            if (this.options.hourFormat == '12' && hours > 11 && hours != 12) {
+            if (this.options.hourFormat === '12' && hours > 11 && hours !== 12) {
                 hours -= 12;
             }
 
-            if (this.options.hourFormat == '12') {
+            if (this.options.hourFormat === '12') {
                 output += hours === 0 ? 12 : (hours < 10) ? '0' + hours : hours;
             } else {
                 output += (hours < 10) ? '0' + hours : hours;
@@ -742,7 +742,7 @@
                 output += (milliseconds < 10) ? '00' + milliseconds : (milliseconds < 100) ? '0' + milliseconds : milliseconds;
             }
 
-            if (this.options.hourFormat == '12') {
+            if (this.options.hourFormat === '12') {
                 output += date.getHours() > 11 ? ' PM' : ' AM';
             }
 
@@ -752,7 +752,7 @@
         parseTime: function (value, ampm) {
             var val = value.replace(this.options.fractionSeparator, this.options.timeSeparator),
                 tokens = val.split(this.options.timeSeparator),
-                showSeconds = this.options.showSeconds || this.options.showMilliseconds
+                showSeconds = this.options.showSeconds || this.options.showMilliseconds,
                 validTokenLength = 2 + (showSeconds ? 1 : 0) + (this.options.showMilliseconds ? 1 : 0);
 
             if (tokens.length !== validTokenLength) {
@@ -764,12 +764,14 @@
                 s = showSeconds ? parseInt(tokens[2]) : null,
                 ms = this.options.showMilliseconds ? parseInt(tokens[3]) : null;
 
-            if (isNaN(h) || isNaN(m) || h > 23 || m > 59 || (this.options.hourFormat == '12' && h > 12) || (this.options.showSeconds && (isNaN(s) || s > 59)) || (this.options.showMilliseconds && (isNaN(ms) || ms > 999))) {
+            if (isNaN(h) || isNaN(m) || h > 23 || m > 59 || (this.options.hourFormat === '12' && h > 12) || (this.options.showSeconds && (isNaN(s) || s > 59)) || (this.options.showMilliseconds && (isNaN(ms) || ms > 999))) {
                 throw "Invalid time";
             }
             else {
-                if (this.options.hourFormat == '12' && h !== 12 && ampm === 'PM') {
+                if (this.options.hourFormat === '12' && h !== 12 && ampm === 'PM') {
                     h += 12;
+                } else if (this.options.hourFormat === '12' && h === 12 && ampm === 'AM') {
+                    h -= 12;
                 }
 
                 return { hour: h, minute: m, second: s, millisecond: ms };
@@ -984,7 +986,7 @@
             }
             else {
                 if (this.options.showTime) {
-                    var ampm = this.options.hourFormat == '12' ? parts.pop() : null;
+                    var ampm = this.options.hourFormat === '12' ? parts.pop() : null;
                     var timeString = parts.pop();
 
                     date = this.parseDate(parts.join(' '), this.options.dateFormat);
@@ -1179,10 +1181,10 @@
             }
 
             if (!this.options.timeOnly) {
-                if (this.options.view == 'date') {
+                if (this.options.view === 'date') {
                     elementsHtml += this.renderDateView();
                 }
-                else if (this.options.view == 'month') {
+                else if (this.options.view === 'month') {
                     elementsHtml += this.renderMonthView();
                 }
             }
@@ -1609,7 +1611,7 @@
             return '';
         },
 
-    renderAmPmPicker: function () {
+        renderAmPmPicker: function () {
             if (this.options.hourFormat === '12') {
                 var hour = this.isDate(this.value) ? this.value.getHours() : this.viewDate.getHours(),
                     display = hour > 11 ? 'PM' : 'AM';
@@ -1628,7 +1630,7 @@
             return this.renderTimeElements("ui-separator", '<span>.</span>', -1);
         },
 
-    renderTimeElements: function (containerClass, text, type) {
+        renderTimeElements: function (containerClass, text, type) {
             var container = '<div class="' + containerClass + '" data-type="' + type + '">';
 
             //up
@@ -1668,7 +1670,7 @@
         },
 
         toISODateString: function (date) {
-            return new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().substring(0, 10)
+            return new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().substring(0, 10);
         },
 
         _bindEvents: function () {
@@ -1905,7 +1907,7 @@
                 // #5967 check if month can be navigated to by checking last day in month
                 var testDate = new Date(newViewDate.getTime()),
                     minDate = this.options.minDate;
-                testDate.setMonth(testDate.getMonth()+1)
+                testDate.setMonth(testDate.getMonth()+1);
                 testDate.setHours(-1);
                 if (minDate && minDate > testDate) {
                     this.setNavigationState(newViewDate);
@@ -2016,7 +2018,7 @@
             // previous
             var testDate = new Date(newViewDate.getTime()),
                 minDate = this.options.minDate;
-            testDate.setMonth(testDate.getMonth()+1)
+            testDate.setMonth(testDate.getMonth()+1);
             testDate.setHours(-1);
             if (minDate && minDate > testDate) {
                 navPrev.addClass('ui-state-disabled');
