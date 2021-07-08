@@ -29,14 +29,10 @@ import net.bytebuddy.matcher.ElementMatcher;
 import net.bytebuddy.matcher.ElementMatchers;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.primefaces.selenium.AbstractPrimePageFragment;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.spi.WebDriverProvider;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
+import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -159,12 +155,9 @@ public class Guard {
         Class<?> classToProxy = target.getClass();
         List<Class> interfacesToImplement = new ArrayList<>();
         ElementMatcher.Junction methods = ElementMatchers.isPublic();
-        Class<T> proxyClass = null;
-        boolean classProxyable = true;
 
         // class is not proxyable - lets try to implement interfaces
         if (Modifier.isPrivate(classToProxy.getModifiers()) || Modifier.isFinal(classToProxy.getModifiers())) {
-            classProxyable = false;
             interfacesToImplement = Arrays.asList(classToProxy.getInterfaces());
             classToProxy = Object.class;
             methods = null;
@@ -179,7 +172,7 @@ public class Guard {
             }
         }
 
-        proxyClass = new ByteBuddy()
+        Class<T> proxyClass = new ByteBuddy()
                 .subclass(classToProxy)
                 .implement(interfacesToImplement)
                 .method(methods)
@@ -189,18 +182,32 @@ public class Guard {
                 .getLoaded();
 
         try {
-            if (classProxyable && !classToProxy.getName().contains("$ByteBuddy$") &&
-                    target instanceof WrapsElement && !(target instanceof AbstractPrimePageFragment))  {
-                // e.g. org.openqa.selenium.support.ui.Select ("native" Selenium-components?)
-                return proxyClass.getDeclaredConstructor(WebElement.class).newInstance(((WrapsElement) target).getWrappedElement());
+            try {
+                // try default constructor first
+                Constructor<T> defaultCtor = proxyClass.getDeclaredConstructor();
+                return defaultCtor.newInstance();
             }
-            else {
-                // PrimeSelenium-wrapper for PrimeFaces-components
-                return proxyClass.getDeclaredConstructor().newInstance();
+            catch (NoSuchMethodException ex) {
+                // ignore
+            }
+
+            try {
+                // try WebElement constructor, used e.g. by Select
+                if (target instanceof WrapsElement) {
+                    Constructor<T> ctor = proxyClass.getDeclaredConstructor(WebElement.class);
+                    return ctor.newInstance(((WrapsElement) target).getWrappedElement());
+                }
+            }
+            catch (NoSuchMethodException ex) {
+                // ignore
             }
         }
-        catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+        catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
+
+        throw new RuntimeException("Could not proxy class "
+                + classToProxy.getName()
+                + " because of missing constructor (default or WebElement)");
     }
 }
