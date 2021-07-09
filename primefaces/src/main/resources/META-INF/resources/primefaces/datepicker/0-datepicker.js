@@ -345,8 +345,8 @@
                 var m = month + i,
                     y = year;
                 if (m > 11) {
-                    m = m % 11 - 1;
-                    y = year + 1;
+                    y = year + Math.floor(m / 12);
+                    m = m % 12;
                 }
 
                 months.push(this.createMonth(m, y, i));
