@@ -18,7 +18,7 @@
 
             <p:treeTable value="#{treeTable001.root}" var="document" id="treeTable" widgetVar="treeTable"
                          sortMode="single" allowUnsorting="true" selectionMode="single"
-                         selection="#{treeTable001.selectedNode}">
+                         selection="#{treeTable001.selectedNode}" filterEvent="enter">
                 <f:facet name="header">
                     <div class="p-d-flex p-ai-center p-jc-between">
                         <span>Document Viewer</span>

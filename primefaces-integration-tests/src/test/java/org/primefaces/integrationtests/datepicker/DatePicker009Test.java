@@ -23,9 +23,10 @@
  */
 package org.primefaces.integrationtests.datepicker;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
-import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
@@ -34,56 +35,51 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DatePicker;
 
-public class DatePicker007Test extends AbstractDatePickerTest {
+public class DatePicker009Test extends AbstractDatePickerTest {
+
+    private final List<String> MONTHS = Arrays.asList(new String[] {
+        "January", "February", "March", "April", "May", "June", "July",
+        "August", "September", "October", "November", "December"
+    });
 
     @Test
     @Order(1)
-    @DisplayName("DatePicker: GitHub #6636 TimeOnly at 12AM issue")
-    public void testBasic(Page page) {
+    @DisplayName("DatePicker: numberOfMonths greater than 12. See GitHub #7563")
+    public void testWithShowNumberOfMonths(Page page) throws Exception {
         // Arrange
         DatePicker datePicker = page.datePicker;
-        Assertions.assertEquals(LocalTime.of(0, 4), datePicker.getValue().toLocalTime());
+        Assertions.assertEquals(LocalDateTime.of(2020, 11, 01, 00, 00, 00), datePicker.getValue());
 
         // Act
-        WebElement panel = datePicker.showPanel(); // focus to bring up panel
+        datePicker.click(); // focus to bring up panel
 
-        // Assert Panel (12:04 AM)
-        Assertions.assertNotNull(panel);
-        assertTime(panel, "12", "04", null);
-        Assertions.assertTrue(panel.getText().contains("AM"));
-
-        // Act (go down by 1 hour)
-        WebElement hourPicker = panel.findElement(By.className("ui-hour-picker"));
-        hourPicker.findElement(By.className("ui-picker-down")).click();
-
-        // Assert (new time should be 11:04 PM)
-        assertTime(panel, "11", "04", null);
-        Assertions.assertTrue(panel.getText().contains("PM"));
-        assertConfiguration(datePicker.getWidgetConfiguration(), "12:04 AM");
-    }
-
-    private void assertConfiguration(JSONObject cfg, String defaultDate) {
+        // Assert
         assertNoJavascriptErrors();
-        System.out.println("DatePicker Config = " + cfg);
-        Assertions.assertEquals(defaultDate, cfg.getString("defaultDate"));
-        Assertions.assertEquals("single", cfg.getString("selectionMode"));
-        Assertions.assertFalse(cfg.getBoolean("inline"));
-        Assertions.assertTrue(cfg.getBoolean("timeOnly"));
+        WebElement panel = datePicker.getPanel();
+        Assertions.assertNotNull(panel);
+        List<WebElement> elements = panel.findElements(By.cssSelector(".ui-datepicker-group"));
+        Assertions.assertNotNull(elements);
+        Assertions.assertEquals(27, elements.size());
+        for (WebElement mon : elements) {
+            List<WebElement> titles = mon.findElements(By.cssSelector(".ui-datepicker-title .ui-datepicker-month"));
+            Assertions.assertNotNull(titles);
+            Assertions.assertEquals(1, titles.size());
+            WebElement title = titles.get(0);
+            Assertions.assertNotNull(title);
+            String monthName = title.getText();
+            Assertions.assertTrue(MONTHS.contains(monthName), "unknown month `" + monthName + "´");
+        }
     }
 
     public static class Page extends AbstractPrimePage {
         @FindBy(id = "form:datepicker")
         DatePicker datePicker;
 
-        @FindBy(id = "form:button")
-        CommandButton button;
-
         @Override
         public String getLocation() {
-            return "datepicker/datePicker007.xhtml";
+            return "datepicker/datePicker009.xhtml";
         }
     }
 }
