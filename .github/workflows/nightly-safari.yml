@@ -8,7 +8,7 @@ on: [push, pull_request]
 jobs:
   nightly:
 #    if: github.repository == 'primefaces/primefaces' && github.ref == 'refs/heads/master'
-    runs-on: macos-11
+    runs-on: macos-11.4
     name: Java ${{ matrix.java }}, Profile ${{ matrix.profile }}
     strategy:
       matrix:
