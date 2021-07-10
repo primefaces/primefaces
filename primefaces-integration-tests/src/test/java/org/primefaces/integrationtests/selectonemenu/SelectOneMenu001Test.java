@@ -31,6 +31,7 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.SelectOneMenu;
 
@@ -127,6 +128,24 @@ public class SelectOneMenu001Test extends AbstractPrimePageTest {
 
         // Assert
         assertClickable(selectOneMenu);
+        Assertions.assertEquals("Max", selectOneMenu.getSelectedLabel());
+        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(5)
+    @DisplayName("SelectOneMenu: selectValue via JavaScript")
+    public void testJsSelectValue(Page page) {
+        // Arrange
+        SelectOneMenu selectOneMenu = page.selectOneMenu;
+        Assertions.assertEquals("Lewis", selectOneMenu.getSelectedLabel());
+
+        // Act
+        PrimeSelenium.executeScript("PF('selectonemenu').selectValue('Max');");
+        selectOneMenu.select("Max");
+        page.button.click();
+
+        // Assert - part 1
         Assertions.assertEquals("Max", selectOneMenu.getSelectedLabel());
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
