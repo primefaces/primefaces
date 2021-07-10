@@ -48,10 +48,10 @@ public class TreeTable004Test extends AbstractTreeTableTest {
 
         // Act - select 3 nodes
         Actions actions = new Actions(page.getWebDriver());
-        actions.keyDown(Keys.META).click(treeTable.getRow(2).getWebElement()).keyUp(Keys.META).perform();
+        actions.keyDown(Keys.META).click(treeTable.getRow(2).getCell(1).getWebElement()).keyUp(Keys.META).perform();
         treeTable.getRow(0).toggle();
-        actions.keyDown(Keys.META).click(treeTable.getRow(1).getWebElement()).keyUp(Keys.META).perform();
-        actions.keyDown(Keys.META).click(treeTable.getRow(3).getWebElement()).keyUp(Keys.META).perform();
+        actions.keyDown(Keys.META).click(treeTable.getRow(1).getCell(1).getWebElement()).keyUp(Keys.META).perform();
+        actions.keyDown(Keys.META).click(treeTable.getRow(3).getCell(1).getWebElement()).keyUp(Keys.META).perform();
         page.buttonShowSelectedNodes.click();
 
         // Assert
