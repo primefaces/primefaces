@@ -21,7 +21,7 @@
         <hibernate-validator.version>6.1.5.Final</hibernate-validator.version>
         <mojarra.version>2.3.16</mojarra.version>
         <myfaces.version>2.3.9</myfaces.version>
-        <resteasy.version>4.6.2.Final</resteasy.version>
+        <resteasy.version>4.7.0.Final</resteasy.version>
         <jetty.version>9.4.43.v20210629</jetty.version>
     </properties>
 
