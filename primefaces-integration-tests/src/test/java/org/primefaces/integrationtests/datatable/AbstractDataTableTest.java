@@ -92,7 +92,7 @@ public abstract class AbstractDataTableTest extends AbstractTableTest {
         for (ProgrammingLanguage programmingLanguage : langs) {
             String rowText = rows.get(row).getCell(0).getText();
             if (!rowText.equalsIgnoreCase("No records found.")) {
-                Assertions.assertEquals(programmingLanguage.getId(), Integer.parseInt(rowText));
+                Assertions.assertEquals(programmingLanguage.getId(), Integer.parseInt(rowText.trim()));
                 row++;
             }
         }
