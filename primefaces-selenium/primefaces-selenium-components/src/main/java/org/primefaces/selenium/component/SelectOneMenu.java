@@ -23,9 +23,6 @@
  */
 package org.primefaces.selenium.component;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.primefaces.selenium.PrimeExpectedConditions;
@@ -33,6 +30,9 @@ import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractInputComponent;
 import org.primefaces.selenium.component.base.ComponentUtils;
 import org.primefaces.selenium.findby.FindByParentPartialId;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:selectOneMenu}.
@@ -165,6 +165,10 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
         }
 
         deselect(getLabel(index));
+    }
+
+    public void selectByValue(String value) {
+        PrimeSelenium.executeScript(String.format("PrimeFaces.getWidgetById('%s').selectValue('%s');", getId(), value));
     }
 
     public boolean isSelected(int index) {
