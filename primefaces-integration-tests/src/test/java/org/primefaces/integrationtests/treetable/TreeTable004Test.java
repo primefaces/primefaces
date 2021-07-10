@@ -58,7 +58,7 @@ public class TreeTable004Test extends AbstractTreeTableTest {
         assertMessage(page.messages, 0, "selected nodes", "Desktop,editor.app,settings.app");
 
         // Act - unselect 1 node
-        actions.keyDown(Keys.META).click(treeTable.getRow(3).getWebElement()).keyUp(Keys.META).perform();
+        actions.keyDown(Keys.META).click(treeTable.getRow(3).getCell(1).getWebElement()).keyUp(Keys.META).perform();
         page.buttonShowSelectedNodes.click();
 
         // Assert
