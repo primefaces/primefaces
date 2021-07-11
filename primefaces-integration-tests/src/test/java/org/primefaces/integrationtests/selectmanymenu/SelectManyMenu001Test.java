@@ -30,17 +30,13 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.SelectManyMenu;
 
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
-public class SelectManyMenu001Test extends AbstractPrimePageTest {
+public class SelectManyMenu001Test extends AbstractSelectManyMenuTest {
 
     @Test
     @Order(1)
@@ -88,14 +84,6 @@ public class SelectManyMenu001Test extends AbstractPrimePageTest {
         assertNoJavascriptErrors();
         System.out.println("SelectManyMenu Config = " + cfg);
         Assertions.assertTrue(cfg.has("id"));
-    }
-
-    private void assertSelected(SelectManyMenu selectManyMenu, List<String> expectedSelection) {
-        Set<String> selectedLabels = new HashSet<>(selectManyMenu.getSelectedLabels());
-        Assertions.assertEquals(expectedSelection.size(), selectedLabels.size());
-        expectedSelection.forEach(s -> {
-            Assertions.assertTrue(selectedLabels.contains(s));
-        });
     }
 
     public static class Page extends AbstractPrimePage {
