@@ -49,19 +49,27 @@ public abstract class SelectManyMenu extends AbstractInputComponent {
     private WebElement selectlistbox;
 
     public void deselect(WebDriver webDriver, String label) {
-        if (!isSelected(label) || !isEnabled()) {
+        if (!isSelected(label)) {
             return;
         }
 
-        clickOnListItemWithMetaKey(webDriver, label, true);
+        toogleSelection(webDriver, label, true);
     }
 
-    public void select(WebDriver webDriver, String label, boolean keepExistingSelection) {
-        if (isSelected(label) || !isEnabled()) {
+    public void select(WebDriver webDriver, String label, boolean withMetaKey) {
+        if (isSelected(label)) {
             return;
         }
 
-        clickOnListItemWithMetaKey(webDriver, label, keepExistingSelection);
+        toogleSelection(webDriver, label, withMetaKey);
+    }
+
+    public void toogleSelection(WebDriver webDriver, String label, boolean withMetaKey) {
+        if (!isEnabled()) {
+            return;
+        }
+
+        clickOnListItemWithMetaKey(webDriver, label, withMetaKey);
     }
 
     private void clickOnListItemWithMetaKey(WebDriver webDriver, String label, boolean withMetaKey) {
