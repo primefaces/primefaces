@@ -2,7 +2,7 @@ name: IT Safari
 
 on:
   schedule:
-    - cron: '0 6 * * *'
+    - cron: '0 7 * * *'
 
 jobs:
   nightly:
