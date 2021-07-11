@@ -47,7 +47,7 @@ public class SelectManyMenu002Test extends AbstractSelectManyMenuTest {
         assertSelected(selectManyMenu, Arrays.asList("Max", "Charles"));
 
         // Act
-        selectManyMenu.toogleSelection(page.getWebDriver(), "Lando", false);
+        selectManyMenu.toggleSelection(page.getWebDriver(), "Lando", false);
         page.button.click();
 
         // Assert - part 1
@@ -58,7 +58,7 @@ public class SelectManyMenu002Test extends AbstractSelectManyMenuTest {
         assertConfiguration(selectManyMenu.getWidgetConfiguration());
 
         // Act
-        selectManyMenu.toogleSelection(page.getWebDriver(), "Charles", false);
+        selectManyMenu.toggleSelection(page.getWebDriver(), "Charles", false);
         page.button.click();
 
         // Assert - part 2

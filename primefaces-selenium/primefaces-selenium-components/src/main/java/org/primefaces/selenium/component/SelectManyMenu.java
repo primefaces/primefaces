@@ -53,7 +53,7 @@ public abstract class SelectManyMenu extends AbstractInputComponent {
             return;
         }
 
-        toogleSelection(webDriver, label, true);
+        toggleSelection(webDriver, label, true);
     }
 
     public void select(WebDriver webDriver, String label, boolean withMetaKey) {
@@ -61,10 +61,10 @@ public abstract class SelectManyMenu extends AbstractInputComponent {
             return;
         }
 
-        toogleSelection(webDriver, label, withMetaKey);
+        toggleSelection(webDriver, label, withMetaKey);
     }
 
-    public void toogleSelection(WebDriver webDriver, String label, boolean withMetaKey) {
+    public void toggleSelection(WebDriver webDriver, String label, boolean withMetaKey) {
         if (!isEnabled()) {
             return;
         }
