@@ -18,7 +18,3 @@
     margin-left: 2px;
     -moz-margin-start: 3px;
 }
-
-.ui-terminal-input::-ms-clear {
-    display: none;
-}

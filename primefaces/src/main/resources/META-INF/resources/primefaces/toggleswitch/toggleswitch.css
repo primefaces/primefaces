@@ -31,6 +31,5 @@
 
 .ui-toggleswitch-checked .ui-toggleswitch-slider:before {
     -webkit-transform: translateX(1.250em);
-    -ms-transform: translateX(1.250em);
     transform: translateX(1.250em);
 }

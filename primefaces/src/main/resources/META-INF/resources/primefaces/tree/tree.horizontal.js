@@ -18,10 +18,6 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
      */
     init: function(cfg) {
         this._super(cfg);
-
-        if(PrimeFaces.env.isIE() && !this.cfg.disabled) {
-            this.drawConnectors();
-        }
     },
 
     /**
@@ -96,10 +92,6 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
         toggleIcon.addClass('ui-icon-minus').removeClass('ui-icon-plus');
         node.removeClass('ui-treenode-collapsed');
         childrenContainer.show();
-
-        if($.browser.msie) {
-            this.drawConnectors();
-        }
     },
 
     /**
@@ -127,10 +119,6 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
 
         if(!this.cfg.cache) {
             this.fireCollapseEvent(node);
-        }
-
-        if($.browser.msie) {
-            this.drawConnectors();
         }
     },
 
@@ -282,19 +270,6 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
     uncheck: function(checkbox) {
         this._super(checkbox);
         checkbox.parent('.ui-treenode-content').removeClass('ui-state-highlight');
-    },
-
-    /**
-     * Draws the lines connection the tree nodes.
-     * @private
-     */
-    drawConnectors: function() {
-        this.jq.find('table.ui-treenode-connector-table').each(function() {
-            var table = $(this),
-            row = table.closest('tr');
-
-            table.height(0).height(row.height());
-        });
     },
 
     /**
