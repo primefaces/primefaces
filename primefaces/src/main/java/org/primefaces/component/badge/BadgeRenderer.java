@@ -56,11 +56,14 @@ public class BadgeRenderer extends CoreRenderer {
 
         if (hasChild) {
             writer.startElement("div", null);
+            writer.writeAttribute("id", badge.getClientId(context), "id");
             writer.writeAttribute("class", Badge.OVERLAY_CLASS, "styleClass");
         }
 
         writer.startElement("span", null);
-        writer.writeAttribute("id", badge.getClientId(context), "id");
+        if (!hasChild) {
+            writer.writeAttribute("id", badge.getClientId(context), "id");
+        }
         writer.writeAttribute("class", styleClass, "styleClass");
         if (badge.getStyle() != null) {
             writer.writeAttribute("style", badge.getStyle(), "style");

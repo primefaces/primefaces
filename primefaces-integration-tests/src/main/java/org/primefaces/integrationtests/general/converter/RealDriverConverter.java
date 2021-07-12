@@ -69,7 +69,7 @@ public class RealDriverConverter implements Converter {
 
     @Override
     public String getAsString(FacesContext fc, UIComponent uic, Object driver) {
-        if (driver != null) {
+        if (driver != null && driver instanceof Driver) {
             return String.valueOf(((Driver) driver).getId());
         }
         else {

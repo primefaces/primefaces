@@ -131,6 +131,23 @@ public class SelectOneMenu001Test extends AbstractPrimePageTest {
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
 
+    @Test
+    @Order(5)
+    @DisplayName("SelectOneMenu: selectValue via JavaScript")
+    public void testJsSelectValue(Page page) {
+        // Arrange
+        SelectOneMenu selectOneMenu = page.selectOneMenu;
+        Assertions.assertEquals("Lewis", selectOneMenu.getSelectedLabel());
+
+        // Act
+        selectOneMenu.selectByValue("2");
+        page.button.click();
+
+        // Assert - part 1
+        Assertions.assertEquals("Max", selectOneMenu.getSelectedLabel());
+        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+    }
+
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("SelectOneMenu Config = " + cfg);
