@@ -65,6 +65,12 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         this.jqEl = this.cfg.inline ? $(this.jqId + '_inline') : this.input;
         var $this = this;
 
+        // auto detect touch interface for mobile
+        this.cfg.autoDetectDisplay = (this.cfg.autoDetectDisplay === undefined) ? true : this.cfg.autoDetectDisplay;
+        if(this.cfg.autoDetectDisplay) {
+            this.cfg.touchUI = PrimeFaces.env.mobile;
+        }
+
         //i18n and l7n
         this.configureLocale();
 
