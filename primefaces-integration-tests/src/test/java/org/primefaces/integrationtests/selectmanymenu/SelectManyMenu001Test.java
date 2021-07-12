@@ -47,7 +47,7 @@ public class SelectManyMenu001Test extends AbstractSelectManyMenuTest {
         assertSelected(selectManyMenu, Arrays.asList("Max", "Charles"));
 
         // Act
-        selectManyMenu.select(page.getWebDriver(), "Lando", true);
+        selectManyMenu.select("Lando", true);
         page.button.click();
 
         // Assert - part 1
@@ -58,7 +58,7 @@ public class SelectManyMenu001Test extends AbstractSelectManyMenuTest {
         assertConfiguration(selectManyMenu.getWidgetConfiguration());
 
         // Act
-        selectManyMenu.deselect(page.getWebDriver(), "Charles");
+        selectManyMenu.deselect("Charles");
         page.button.click();
 
         // Assert - part 2
@@ -69,7 +69,7 @@ public class SelectManyMenu001Test extends AbstractSelectManyMenuTest {
         assertConfiguration(selectManyMenu.getWidgetConfiguration());
 
         // Act
-        selectManyMenu.select(page.getWebDriver(), "Lewis", false);
+        selectManyMenu.select("Lewis", false);
         page.button.click();
 
         // Assert - part 3

@@ -25,7 +25,6 @@ package org.primefaces.selenium.component;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
@@ -48,35 +47,35 @@ public abstract class SelectManyMenu extends AbstractInputComponent {
     @FindBy(css = ".ui-selectlistbox-listcontainer .ui-selectlistbox-list")
     private WebElement selectlistbox;
 
-    public void deselect(WebDriver webDriver, String label) {
+    public void deselect(String label) {
         if (!isSelected(label)) {
             return;
         }
 
-        toggleSelection(webDriver, label, true);
+        toggleSelection(label, true);
     }
 
-    public void select(WebDriver webDriver, String label, boolean withMetaKey) {
+    public void select(String label, boolean withMetaKey) {
         if (isSelected(label)) {
             return;
         }
 
-        toggleSelection(webDriver, label, withMetaKey);
+        toggleSelection(label, withMetaKey);
     }
 
-    public void toggleSelection(WebDriver webDriver, String label, boolean withMetaKey) {
+    public void toggleSelection(String label, boolean withMetaKey) {
         if (!isEnabled()) {
             return;
         }
 
-        clickOnListItemWithMetaKey(webDriver, label, withMetaKey);
+        clickOnListItemWithMetaKey(label, withMetaKey);
     }
 
-    private void clickOnListItemWithMetaKey(WebDriver webDriver, String label, boolean withMetaKey) {
+    private void clickOnListItemWithMetaKey(String label, boolean withMetaKey) {
         for (WebElement element : getSelectlistbox().findElements(By.tagName("li"))) {
             if (element.getText().equalsIgnoreCase(label)) {
                 if (withMetaKey) {
-                    Actions actions = new Actions(webDriver);
+                    Actions actions = new Actions(getWebDriver());
                     actions.keyDown(Keys.META).click(element).keyUp(Keys.META).perform();
                 }
                 else {
