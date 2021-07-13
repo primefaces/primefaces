@@ -1,0 +1,35 @@
+name: IT Safari
+
+on:
+  schedule:
+    - cron: '0 7 * * *'
+
+jobs:
+  nightly:
+    if: github.repository == 'primefaces/primefaces' && github.ref == 'refs/heads/master'
+    runs-on: macos-latest
+    name: Java ${{ matrix.java }}, Profile ${{ matrix.profile }}
+    strategy:
+      matrix:
+        java: [11]
+        profile: [ 'headless,safari,csp,theme-nova,mojarra-2.3.x' ]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: ${{ matrix.java }}
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: Log github.ref
+        run: echo "${{ github.ref }}"
+      - name: Build
+        run: mvn clean install --batch-mode --show-version
+      - name: Integration Tests
+        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,${{ matrix.profile }}
