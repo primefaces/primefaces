@@ -23,13 +23,43 @@
  */
 package org.primefaces.integrationtests.tree;
 
+import org.json.JSONObject;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.component.Messages;
+import org.primefaces.selenium.component.Tree;
 
 public class Tree001Test extends AbstractPrimePageTest {
-    
+
+    @Test
+    @Order(1)
+    @DisplayName("Tree: Basic & Toggling")
+    public void testBasicAndToggling(Page page) {
+        // Arrange
+        Tree tree = page.tree;
+        Assertions.assertNotNull(tree);
+
+        // Assert
+        assertConfiguration(tree.getWidgetConfiguration());
+    }
+
+    private void assertConfiguration(JSONObject cfg) {
+        assertNoJavascriptErrors();
+        System.out.println("Tree Config = " + cfg);
+        Assertions.assertEquals("tree", cfg.getString("widgetVar"));
+    }
 
     public static class Page extends AbstractPrimePage {
+        @FindBy(id = "form:tree")
+        Tree tree;
+
+        @FindBy(id = "form:msgs")
+        Messages messages;
 
         @Override
         public String getLocation() {

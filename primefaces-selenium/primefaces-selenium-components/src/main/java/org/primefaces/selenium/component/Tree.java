@@ -28,5 +28,5 @@ import org.primefaces.selenium.component.base.AbstractComponent;
  * Component wrapper for the PrimeFaces {@code p:tree}.
  */
 public abstract class Tree extends AbstractComponent {
-    
+
 }
