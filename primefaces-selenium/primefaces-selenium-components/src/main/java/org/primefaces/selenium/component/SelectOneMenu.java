@@ -166,17 +166,6 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
         }
     }
 
-//    /**
-//     * Available labels still available after filter is applied.
-//     * @return
-//     */
-//    public List<String> getAvailableLabels() {
-//        return getItems().findElements(By.cssSelector("li.ui-selectonemenu-item")).stream()
-//                .filter(listElt -> listElt.isDisplayed())
-//                .map(e -> e.getAttribute("innerHTML"))
-//                .collect(Collectors.toList());
-//    }
-
     public void select(int index) {
         if (isSelected(index)) {
             return;
