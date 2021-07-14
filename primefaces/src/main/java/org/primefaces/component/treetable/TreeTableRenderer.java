@@ -1479,6 +1479,7 @@ public class TreeTableRenderer extends DataRenderer {
             }
         }
 
+        clone.setSelectable(node.isSelectable());
         clone.setSelected(node.isSelected());
         clone.setExpanded(node.isExpanded());
 
