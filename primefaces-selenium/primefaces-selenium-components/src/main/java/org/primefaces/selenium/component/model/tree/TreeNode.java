@@ -21,27 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.selenium.component;
+package org.primefaces.selenium.component.model.tree;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
-import org.primefaces.selenium.component.base.AbstractComponent;
-import org.primefaces.selenium.component.model.tree.TreeNode;
+import org.openqa.selenium.WebElement;
+import org.primefaces.selenium.component.Tree;
 
-/**
- * Component wrapper for the PrimeFaces {@code p:tree}.
- */
-public abstract class Tree extends AbstractComponent {
+public class TreeNode {
 
-    public static final String CONTAINER_CLASS = "ui-tree";
-    public static final String ROOT_NODES_CLASS = "ui-tree-container";
-    public static final String TREE_NODE_CLASS = "ui-treenode";
-    public static final String PARENT_NODE_CLASS = "ui-treenode-parent";
-    public static final String CHILDREN_NODES_CLASS = "ui-treenode-children";
-    public static final String NODE_CONTENT_CLASS = "ui-treenode-content";
-    public static final String LEAF_NODE_CLASS = "ui-treenode-leaf";
+    private WebElement webElement;
 
-    public TreeNode getRootNode() {
-        return new TreeNode(findElement(By.className(ROOT_NODES_CLASS)));
+    public TreeNode(WebElement webElement) {
+        this.webElement = webElement;
+    }
+
+    public WebElement getWebElement() {
+        return webElement;
+    }
+
+    public void setWebElement(WebElement webElement) {
+        this.webElement = webElement;
+    }
+
+    public List<TreeNode> getChildren() {
+        return webElement.findElements(By.className(Tree.CHILDREN_NODES_CLASS)).stream().map(e -> new TreeNode(e))
+                    .collect(Collectors.toList());
     }
 
 }

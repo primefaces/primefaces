@@ -28,11 +28,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.Tree;
+import org.primefaces.selenium.component.model.tree.TreeNode;
 
 public class Tree001Test extends AbstractPrimePageTest {
 
@@ -43,6 +45,11 @@ public class Tree001Test extends AbstractPrimePageTest {
         // Arrange
         Tree tree = page.tree;
         Assertions.assertNotNull(tree);
+
+        TreeNode root = tree.getRootNode();
+        Assertions.assertNotNull(root);
+
+        root.getWebElement().findElement(By.className(Tree.PARENT_NODE_CLASS)).findElement(By.className("ui-tree-toggler")).click();
 
         // Assert
         assertConfiguration(tree.getWidgetConfiguration());
