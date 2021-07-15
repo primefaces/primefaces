@@ -25,7 +25,7 @@ package org.primefaces.selenium.component;
 
 import org.openqa.selenium.By;
 import org.primefaces.selenium.component.base.AbstractComponent;
-import org.primefaces.selenium.component.model.tree.TreeNode;
+import org.primefaces.selenium.component.model.tree.RootNode;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:tree}.
@@ -40,8 +40,8 @@ public abstract class Tree extends AbstractComponent {
     public static final String NODE_CONTENT_CLASS = "ui-treenode-content";
     public static final String LEAF_NODE_CLASS = "ui-treenode-leaf";
 
-    public TreeNode getRootNode() {
-        return new TreeNode(findElement(By.className(ROOT_NODES_CLASS)));
+    public RootNode getRootNode() {
+        return new RootNode(findElement(By.className(ROOT_NODES_CLASS)));
     }
 
 }

@@ -23,6 +23,8 @@
  */
 package org.primefaces.integrationtests.tree;
 
+import java.util.List;
+
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -34,6 +36,7 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.Tree;
+import org.primefaces.selenium.component.model.tree.RootNode;
 import org.primefaces.selenium.component.model.tree.TreeNode;
 
 public class Tree001Test extends AbstractPrimePageTest {
@@ -46,12 +49,31 @@ public class Tree001Test extends AbstractPrimePageTest {
         Tree tree = page.tree;
         Assertions.assertNotNull(tree);
 
-        TreeNode root = tree.getRootNode();
+        RootNode root = tree.getRootNode();
         Assertions.assertNotNull(root);
 
-        root.getWebElement().findElement(By.className(Tree.PARENT_NODE_CLASS)).findElement(By.className("ui-tree-toggler")).click();
+        List<TreeNode> children = root.getChildren();
+
+        Assertions.assertNotNull(children);
+        Assertions.assertEquals(3, children.size());
+
+        TreeNode first = children.get(0);
+        Assertions.assertEquals("Documents", first.getLabel().getText());
+
+        List<TreeNode> firstChildren = first.getChildren();
+        Assertions.assertNotNull(firstChildren);
+        Assertions.assertEquals(2, firstChildren.size());
+
+        TreeNode firstOfFirst = firstChildren.get(0);
+        Assertions.assertFalse(firstOfFirst.getWebElement().isDisplayed());
+
+        // Act
+        first.getTreeToggler().click();
 
         // Assert
+        Assertions.assertTrue(firstOfFirst.getWebElement().isDisplayed());
+        Assertions.assertEquals("Work", firstOfFirst.getLabel().getText());
+
         assertConfiguration(tree.getWidgetConfiguration());
     }
 

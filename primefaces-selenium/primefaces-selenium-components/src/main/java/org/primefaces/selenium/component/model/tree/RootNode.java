@@ -29,16 +29,13 @@ import java.util.stream.Collectors;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-public class TreeNode {
+public class RootNode {
 
+    public static final String CHILD_SELECTOR = ".ui-tree-container>li";
     private WebElement webElement;
-    private String selector;
-    private String childSelector;
 
-    public TreeNode(WebElement webElement, String selector) {
+    public RootNode(WebElement webElement) {
         this.webElement = webElement;
-        this.selector = selector;
-        this.childSelector = selector + ">.ui-treenode-children>li";
     }
 
     public WebElement getWebElement() {
@@ -49,25 +46,9 @@ public class TreeNode {
         this.webElement = webElement;
     }
 
-    public String getSelector() {
-        return selector;
-    }
-
-    public void setSelector(String selector) {
-        this.selector = selector;
-    }
-
-    public WebElement getTreeToggler() {
-        return webElement.findElement(By.cssSelector(".ui-treenode-content .ui-tree-toggler"));
-    }
-
-    public WebElement getLabel() {
-        return webElement.findElement(By.cssSelector(".ui-treenode-content .ui-treenode-label"));
-    }
-
     public List<TreeNode> getChildren() {
-        return webElement.findElements(By.cssSelector(childSelector)).stream().map(e -> new TreeNode(e, childSelector))
-                    .collect(Collectors.toList());
+        return webElement.findElements(By.cssSelector(CHILD_SELECTOR)).stream()
+                    .map(e -> new TreeNode(e, CHILD_SELECTOR)).collect(Collectors.toList());
     }
 
 }
