@@ -45,6 +45,9 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
     @FindByParentPartialId(value = "_panel", searchFromRoot = true)
     private WebElement panel;
 
+    @FindByParentPartialId(value = "_filter", searchFromRoot = true)
+    private WebElement filterInput;
+
     /**
      * Is the input using AJAX "itemSelect" event?
      *
@@ -55,7 +58,7 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
     }
 
     /**
-     * Either display the dropdown or select the item it if is already displayed.
+     * Either display the dropdown or hide it if is already displayed.
      */
     public void toggleDropdown() {
         if (getPanel().isDisplayed()) {
@@ -145,10 +148,22 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
         return result;
     }
 
+    /**
+     * All labels independent of filter.
+     * @return
+     */
     public List<String> getLabels() {
-        return getInput().findElements(By.tagName("option")).stream()
+        if (getWidgetConfiguration().has("filter") &&  getWidgetConfiguration().getBoolean("filter")) {
+            return getItems().findElements(By.cssSelector("li.ui-selectonemenu-item")).stream()
+                    .filter(listElt -> listElt.isDisplayed())
                     .map(e -> e.getAttribute("innerHTML"))
                     .collect(Collectors.toList());
+        }
+        else {
+            return getInput().findElements(By.tagName("option")).stream()
+                    .map(e -> e.getAttribute("innerHTML"))
+                    .collect(Collectors.toList());
+        }
     }
 
     public void select(int index) {
@@ -207,5 +222,9 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
         else {
             element.click();
         }
+    }
+
+    public WebElement getFilterInput() {
+        return filterInput;
     }
 }
