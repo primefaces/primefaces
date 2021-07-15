@@ -21,26 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.integrationtests.selectonemenu;
+package org.primefaces.integrationtests.selectmanymenu;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.integrationtests.general.model.Driver;
 import org.primefaces.integrationtests.general.service.RealDriverService;
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
-import org.primefaces.selenium.component.SelectOneMenu;
+import org.primefaces.selenium.component.SelectManyMenu;
 import org.primefaces.selenium.component.base.ComponentUtils;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SelectOneMenu009Test extends AbstractPrimePageTest {
+public class SelectManyMenu003Test extends AbstractSelectManyMenuTest {
 
     private RealDriverService driverService;
 
@@ -52,61 +50,58 @@ public class SelectOneMenu009Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
-    @DisplayName("SelectOneMenu: filter")
+    @DisplayName("SelectManyMenu: filter")
     public void testFilter(Page page) {
         List<Driver> drivers = driverService.getDrivers();
 
         // Arrange
-        SelectOneMenu selectOneMenu = page.selectOneMenu;
-        Assertions.assertEquals("Lewis", selectOneMenu.getSelectedLabel());
-        selectOneMenu.show();
-        Assertions.assertEquals("some-filter-placeholder", selectOneMenu.getFilterInput().getAttribute("placeholder"));
-        Assertions.assertEquals(drivers.size(), selectOneMenu.getLabels().size() - 1); // -1 because of noSelectionOption
+        SelectManyMenu selectManyMenu = page.selectManyMenu;
+        assertSelected(selectManyMenu, Arrays.asList("Max", "Charles"));
+        Assertions.assertEquals(drivers.size(), selectManyMenu.getLabels().size());
+        selectManyMenu.deselect("Charles");
 
         // Act + Assert - Loop
-        List<String> filter = Arrays.asList("L", "asfsd", "Char");
+        List<String> filter = Arrays.asList("Char", "asfsd", "Lan");
         filter.forEach(f -> {
             // Act
-            selectOneMenu.getFilterInput().clear();
-            ComponentUtils.sendKeys(selectOneMenu.getFilterInput(),f);
+            selectManyMenu.getFilterInput().clear();
+            ComponentUtils.sendKeys(selectManyMenu.getFilterInput(),f);
 
             // Assert
-            Assertions.assertEquals(drivers.stream().filter(d -> d.getName().startsWith(f)).collect(Collectors.toList()).size(), selectOneMenu.getLabels().size());
+            Assertions.assertEquals(drivers.stream().filter(d -> d.getName().startsWith(f)).collect(Collectors.toList()).size(), selectManyMenu.getLabels().size());
         });
 
         // Act
-        selectOneMenu.getFilterInput().sendKeys(Keys.TAB);
+        selectManyMenu.select("Lando", true);
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("Charles", selectOneMenu.getSelectedLabel());
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertSelected(selectManyMenu, Arrays.asList("Max", "Lando"));
+        Assertions.assertEquals(1, page.messages.getAllMessages().size());
+        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("selected drivers"));
+        Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains("Max,Lando"));
+        assertConfiguration(selectManyMenu.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
-        System.out.println("SelectOneMenu Config = " + cfg);
-        Assertions.assertTrue(cfg.has("appendTo"));
-        Assertions.assertTrue(cfg.getBoolean("autoWidth"));
-        Assertions.assertFalse(cfg.getBoolean("dynamic"));
-        Assertions.assertTrue(cfg.getBoolean("filter"));
-        Assertions.assertEquals("fade", cfg.getString("effect"));
-        Assertions.assertEquals("normal", cfg.getString("effectSpeed"));
+        System.out.println("SelectManyMenu Config = " + cfg);
+        Assertions.assertTrue(cfg.has("id"));
     }
 
     public static class Page extends AbstractPrimePage {
         @FindBy(id = "form:msgs")
         Messages messages;
 
-        @FindBy(id = "form:selectonemenu")
-        SelectOneMenu selectOneMenu;
+        @FindBy(id = "form:selectmanymenu")
+        SelectManyMenu selectManyMenu;
 
         @FindBy(id = "form:button")
         CommandButton button;
 
         @Override
         public String getLocation() {
-            return "selectonemenu/selectOneMenu009.xhtml";
+            return "selectmanymenu/selectManyMenu003.xhtml";
         }
     }
 }
