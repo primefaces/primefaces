@@ -23,6 +23,7 @@
  */
 package org.primefaces.selenium.component;
 
+import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.primefaces.selenium.PrimeExpectedConditions;
@@ -153,7 +154,9 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
      * @return
      */
     public List<String> getLabels() {
-        if (getWidgetConfiguration().has("filter") &&  getWidgetConfiguration().getBoolean("filter")) {
+        JSONObject widgetConfiguration = getWidgetConfiguration();
+
+        if (widgetConfiguration.has("filter") && widgetConfiguration.getBoolean("filter")) {
             return getItems().findElements(By.cssSelector("li.ui-selectonemenu-item")).stream()
                     .filter(listElt -> listElt.isDisplayed())
                     .map(e -> e.getAttribute("innerHTML"))
