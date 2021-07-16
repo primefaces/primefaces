@@ -23,13 +23,12 @@
  */
 package org.primefaces.component.badge;
 
-import org.primefaces.renderkit.CoreRenderer;
-
+import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import java.io.IOException;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.LangUtils;
 
 public class BadgeRenderer extends CoreRenderer {
 
@@ -39,13 +38,14 @@ public class BadgeRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String value = badge.getValue();
         boolean hasChild = badge.getChildCount() > 0;
+        boolean valueEmpty = LangUtils.isValueEmpty(value);
         String severity = badge.getSeverity();
         String size = badge.getSize();
         String styleClass = getStyleClassBuilder(context)
                     .add(Badge.STYLE_CLASS)
                     .add(badge.getStyleClass())
-                    .add(value != null && value.length() == 1, Badge.NO_GUTTER_CLASS)
-                    .add(value == null, Badge.DOT_CLASS)
+                    .add(!valueEmpty && value.length() == 1, Badge.NO_GUTTER_CLASS)
+                    .add(valueEmpty, Badge.DOT_CLASS)
                     .add("large".equals(size), Badge.SIZE_LARGE_CLASS)
                     .add("xlarge".equals(size), Badge.SIZE_XLARGE_CLASS)
                     .add("info".equals(severity), Badge.SEVERITY_INFO_CLASS)
@@ -69,7 +69,7 @@ public class BadgeRenderer extends CoreRenderer {
             writer.writeAttribute("style", badge.getStyle(), "style");
         }
 
-        if (value != null) {
+        if (!valueEmpty) {
             writer.write(value);
         }
         writer.endElement("span");
