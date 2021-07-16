@@ -48,6 +48,8 @@ pageLinks | 10 | Integer | Maximum number of page links to display.
 paginatorAlwaysVisible | true | Boolean | Defines if paginator should be hidden if total data count is less than number of rows per page.
 paginatorPosition | both | String | Position of the paginator.
 paginatorTemplate | null | String | Template of the paginator.
+propagateSelectionUp | true | Boolean | Defines upwards selection propagation for checkbox mode.
+propagateSelectionDown | true | Boolean | Defines downwards selection propagation for checkbox mode.
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 required | false | Boolean | Validation constraint for selection.
 requiredMessage | null | String | Message for required selection validation.
