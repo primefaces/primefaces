@@ -88,7 +88,7 @@ For a full list of the available downloads, please visit the [download page](htt
       <groupId>com.github.primefaces</groupId>
       <artifactId>primefaces</artifactId>
       <version>master-SNAPSHOT</version>
-      <classifier>jakarta</classifier>  
+      <classifier>jakarta</classifier>
   </dependency>
 
   <repositories>

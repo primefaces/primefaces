@@ -271,6 +271,13 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             this.bindEnterKeyFilter(filter);
         else
             this.bindFilterEvent(filter);
+
+        // #7562 draggable columns cannot be filtered with touch
+        if (PrimeFaces.env.isTouchable(this.cfg)) {
+            filter.on('touchstart', function(e) {
+                e.stopPropagation();
+            });
+        }
     },
 
     /**

@@ -181,12 +181,12 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                                 this.showNodeChildren(node);
 
                                 if(this.cfg.draggable) {
-                                    this.makeDraggable(nodeChildrenContainer.find('span.ui-treenode-content'));
+                                    this.makeDraggable(nodeChildrenContainer.find('div.ui-treenode-content'));
                                 }
 
                                 if(this.cfg.droppable) {
                                     this.makeDropPoints(nodeChildrenContainer.find('li.ui-tree-droppoint'));
-                                    this.makeDropNodes(nodeChildrenContainer.find('span.ui-treenode-droppable'));
+                                    this.makeDropNodes(nodeChildrenContainer.find('div.ui-treenode-droppable'));
                                 }
                             }
                         });

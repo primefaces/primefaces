@@ -191,6 +191,9 @@ public class CheckboxTreeNode<T> implements TreeNode<T>, Serializable {
     }
 
     protected void propagateSelectionDown(boolean value) {
+        if (!this.isSelectable()) {
+            return;
+        }
         this.selected = value;
         this.partialSelected = false;
 
@@ -200,6 +203,9 @@ public class CheckboxTreeNode<T> implements TreeNode<T>, Serializable {
     }
 
     protected void propagateSelectionUp() {
+        if (!this.isSelectable()) {
+            return;
+        }
         boolean allChildrenSelected = true;
         this.partialSelected = false;
 
