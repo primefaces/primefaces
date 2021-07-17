@@ -30,8 +30,8 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.primefaces.event.NodeCollapseEvent;
-import org.primefaces.event.NodeExpandEvent;
+import org.primefaces.event.NodeSelectEvent;
+import org.primefaces.event.NodeUnselectEvent;
 import org.primefaces.integrationtests.general.utilities.TestUtils;
 import org.primefaces.model.TreeNode;
 
@@ -40,24 +40,34 @@ import lombok.Data;
 @Named
 @ViewScoped
 @Data
-public class Tree001 implements Serializable {
+public class Tree002 implements Serializable {
 
     @Inject
     TreeNodeService treeNodeService;
 
     private TreeNode<String> root;
+    private TreeNode<String> selectedNode;
 
     @PostConstruct
     public void init() {
         root = treeNodeService.createNodes();
     }
 
-    public void onNodeExpand(NodeExpandEvent event) {
-        TestUtils.addMessage("Expanded", event.getTreeNode().toString());
+    public void onNodeSelect(NodeSelectEvent event) {
+        TestUtils.addMessage("Selected", event.getTreeNode().toString());
     }
 
-    public void onNodeCollapse(NodeCollapseEvent event) {
-        TestUtils.addMessage("Collapsed", event.getTreeNode().toString());
+    public void onNodeUnselect(NodeUnselectEvent event) {
+        TestUtils.addMessage("Unselected", event.getTreeNode().toString());
+    }
+
+    public void showSelectedNode() {
+        if (selectedNode != null) {
+            TestUtils.addMessage("Selected node", selectedNode.toString());
+        }
+        else {
+            TestUtils.addMessage("No node selected!", "");
+        }
     }
 
 }

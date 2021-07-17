@@ -29,18 +29,21 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.Tree;
 import org.primefaces.selenium.component.model.tree.TreeNode;
 
-public class Tree001Test extends AbstractTreeTest {
+public class Tree002Test extends AbstractTreeTest {
 
     @Test
     @Order(1)
-    @DisplayName("Tree: Basic & Toggling")
-    public void testBasicAndToggling(Page page) {
+    @DisplayName("Tree: Single selection")
+    public void testSingleSelection(Page page) {
         // Arrange
         Tree tree = page.tree;
         Assertions.assertNotNull(tree);
@@ -53,27 +56,22 @@ public class Tree001Test extends AbstractTreeTest {
         TreeNode first = children.get(0);
         Assertions.assertEquals("Documents", first.getLabelText());
 
-        List<TreeNode> firstChildren = first.getChildren();
-        Assertions.assertNotNull(firstChildren);
-        Assertions.assertEquals(2, firstChildren.size());
-
-        TreeNode firstOfFirst = firstChildren.get(0);
-        Assertions.assertFalse(firstOfFirst.getWebElement().isDisplayed());
-
         // Act
-        first.toggle();
+        first.select();
 
         // Assert
-        Assertions.assertTrue(firstOfFirst.getWebElement().isDisplayed());
-        Assertions.assertEquals("Work", firstOfFirst.getLabelText());
-        assertMessage(page.messages, 0, "Expanded", "Documents");
+        assertMessage(page.messages, 0, "Selected", "Documents");
+        page.buttonShowSelectedNode.click();
+        assertMessage(page.messages, 0, "Selected node", "Documents");
 
         // Act Pt. 2
-        first.toggle();
+        Actions actions = new Actions(page.getWebDriver());
+        actions.keyDown(Keys.META).click(first.getLabel()).keyUp(Keys.META).perform();
 
         // Assert Pt. 2
-        Assertions.assertFalse(firstOfFirst.getWebElement().isDisplayed());
-        assertMessage(page.messages, 0, "Collapsed", "Documents");
+        assertMessage(page.messages, 0, "Unselected", "Documents");
+        page.buttonShowSelectedNode.click();
+        assertMessage(page.messages, 0, "No node selected!", "");
 
         assertConfiguration(tree.getWidgetConfiguration());
     }
@@ -85,9 +83,12 @@ public class Tree001Test extends AbstractTreeTest {
         @FindBy(id = "form:msgs")
         Messages messages;
 
+        @FindBy(id = "form:buttonShowSelectedNode")
+        CommandButton buttonShowSelectedNode;
+
         @Override
         public String getLocation() {
-            return "tree/tree001.xhtml";
+            return "tree/tree002.xhtml";
         }
     }
 }

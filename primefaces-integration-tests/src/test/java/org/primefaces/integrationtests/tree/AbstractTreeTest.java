@@ -21,34 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.selenium.component.model.tree;
+package org.primefaces.integrationtests.tree;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import org.json.JSONObject;
+import org.junit.jupiter.api.Assertions;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.component.Messages;
+import org.primefaces.selenium.component.model.Msg;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+public abstract class AbstractTreeTest extends AbstractPrimePageTest {
 
-public class RootNode {
-
-    public static final String CHILD_SELECTOR = ".ui-tree-container>li";
-    private WebElement webElement;
-
-    public RootNode(WebElement webElement) {
-        this.webElement = webElement;
+    protected void assertConfiguration(JSONObject cfg) {
+        assertNoJavascriptErrors();
+        System.out.println("Tree Config = " + cfg);
+        Assertions.assertEquals("tree", cfg.getString("widgetVar"));
     }
 
-    public WebElement getWebElement() {
-        return webElement;
-    }
-
-    public void setWebElement(WebElement webElement) {
-        this.webElement = webElement;
-    }
-
-    public List<TreeNode> getChildren() {
-        return webElement.findElements(By.cssSelector(CHILD_SELECTOR)).stream()
-                    .map(e -> new TreeNode(e, CHILD_SELECTOR)).collect(Collectors.toList());
+    protected void assertMessage(Messages messages, int index, String summary, String detail) {
+        Msg message = messages.getMessage(index);
+        Assertions.assertEquals(summary, message.getSummary());
+        Assertions.assertEquals(detail, message.getDetail());
     }
 
 }

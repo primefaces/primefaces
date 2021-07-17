@@ -13,15 +13,17 @@
                 <p:autoUpdate />
             </p:messages>
 
-            <p:tree id="tree" value="#{tree001.root}" var="document" widgetVar="tree">
-                <p:ajax event="expand" update=":form:msgs" listener="#{tree001.onNodeExpand}" />
-                <p:ajax event="collapse" update=":form:msgs" listener="#{tree001.onNodeCollapse}" />
+            <p:tree id="tree" value="#{tree002.root}" var="document" widgetVar="tree" selectionMode="single"
+                selection="#{tree002.selectedNode}">
+                <p:ajax event="select" update=":form:msgs" listener="#{tree002.onNodeSelect}" />
+                <p:ajax event="unselect" update=":form:msgs" listener="#{tree002.onNodeUnselect}" />
 
                 <p:treeNode>
                     <h:outputText value="#{document}" />
                 </p:treeNode>
             </p:tree>
 
+            <p:commandButton id="buttonShowSelectedNode" value="Show selected nodes" action="#{tree002.showSelectedNode}" />
         </h:form>
 
     </h:body>

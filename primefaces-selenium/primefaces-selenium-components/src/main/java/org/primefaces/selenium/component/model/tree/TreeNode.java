@@ -28,17 +28,30 @@ import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.Tree;
 
 public class TreeNode {
 
     private WebElement webElement;
+    private TreeNode parent;
+    private Tree tree;
     private String selector;
     private String childSelector;
 
-    public TreeNode(WebElement webElement, String selector) {
+    public TreeNode(WebElement webElement, String selector, Tree tree) {
         this.webElement = webElement;
         this.selector = selector;
         this.childSelector = selector + ">.ui-treenode-children>li";
+        this.tree = tree;
+    }
+
+    public TreeNode(WebElement webElement, String selector, TreeNode parent) {
+        this.webElement = webElement;
+        this.selector = selector;
+        this.childSelector = selector + ">.ui-treenode-children>li";
+        this.parent = parent;
+        this.tree = parent.getTree();
     }
 
     public WebElement getWebElement() {
@@ -49,6 +62,14 @@ public class TreeNode {
         this.webElement = webElement;
     }
 
+    public Tree getTree() {
+        return tree;
+    }
+
+    public TreeNode getParent() {
+        return parent;
+    }
+
     public String getSelector() {
         return selector;
     }
@@ -57,8 +78,20 @@ public class TreeNode {
         this.selector = selector;
     }
 
+    public void toggle() {
+        PrimeSelenium.guardAjax(getTreeToggler()).click();
+    }
+
+    public void select() {
+        PrimeSelenium.guardAjax(getLabel()).click();
+    }
+
     public WebElement getTreeToggler() {
         return webElement.findElement(By.cssSelector(".ui-treenode-content .ui-tree-toggler"));
+    }
+
+    public String getLabelText() {
+        return getLabel().getText();
     }
 
     public WebElement getLabel() {
@@ -66,7 +99,7 @@ public class TreeNode {
     }
 
     public List<TreeNode> getChildren() {
-        return webElement.findElements(By.cssSelector(childSelector)).stream().map(e -> new TreeNode(e, childSelector))
+        return webElement.findElements(By.cssSelector(childSelector)).stream().map(e -> new TreeNode(e, childSelector, this))
                     .collect(Collectors.toList());
     }
 
