@@ -34,8 +34,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractInputComponent;
-import org.primefaces.selenium.component.base.ComponentUtils;
 import org.primefaces.selenium.internal.ConfigProvider;
 import org.primefaces.selenium.spi.WebDriverProvider;
 
@@ -65,11 +65,12 @@ public abstract class FileUpload extends AbstractInputComponent {
      * @param value the file name to set
      */
     public void setValue(Serializable value) {
-        if (getInput() != this) {
-            // input file cannot be cleared if skinSimple=false
+        if (getInput() != this && !PrimeSelenium.isChrome()) {
+            // input file cannot be cleared if skinSimple=false or in Chrome
             getInput().clear();
         }
-        ComponentUtils.sendKeys(getInput(), value.toString());
+        // ComponentUtils.sendKeys will break tests in Chrome
+        getInput().sendKeys(value.toString());
     }
 
     /**

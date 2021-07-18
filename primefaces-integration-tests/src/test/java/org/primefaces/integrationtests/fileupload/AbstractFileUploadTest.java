@@ -29,23 +29,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.faces.context.FacesContext;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Assumptions;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.model.datatable.Row;
 
 public abstract class AbstractFileUploadTest extends AbstractPrimePageTest {
-    /**
-     * The file upload tests only work in conjunction with Mojarra.
-     * Unfortunately MyFaces does not work.
-     * Call {@code assumeMojarra()} at the beginning of each file upload test.
-     * This method should be removed if file upload tests also work with MyFaces.
-     */
-    protected void assumeMojarra() {
-        Assumptions.assumeTrue(!FacesContext.class.getPackage().getImplementationVendor().contains("Apache"));
-    }
 
     protected File locateClientSideFile(String fileName) {
         String folder = AbstractFileUploadTest.class.getPackage().getName().replace(".", "/");

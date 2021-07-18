@@ -41,7 +41,6 @@ public class FileUpload001Test extends AbstractFileUploadTest {
     @Test
     @Order(1)
     public void testBasicSingleUpload(Page page) {
-        assumeMojarra();
         // Arrange
         FileUpload fileUpload = page.fileupload;
         Assertions.assertEquals("", fileUpload.getValue());
@@ -62,7 +61,6 @@ public class FileUpload001Test extends AbstractFileUploadTest {
     @Test
     @Order(2)
     public void testBasicSingleUploadTwice(Page page) {
-        assumeMojarra();
         // Arrange
         FileUpload fileUpload = page.fileupload;
         Assertions.assertEquals("", fileUpload.getValue());
