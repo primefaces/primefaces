@@ -19,11 +19,11 @@
 
             <p:dataTable id="uploadedfiles" var="file" value="#{fileUploadView.uploadedFiles}">
                 <p:column headerText="Name">
-                    <h:outputText value="#{file.file.fileName}" />
+                    <h:outputText value="#{file.fileName}" />
                 </p:column>
 
                 <p:column headerText="Size">
-                    <h:outputText value="#{file.file.size}" />
+                    <h:outputText value="#{file.size}" />
                 </p:column>
 
                 <p:column headerText="Error">

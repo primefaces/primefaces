@@ -79,8 +79,8 @@ public abstract class AbstractFileUploadTest extends AbstractPrimePageTest {
         for (int f = 0; f < files.length; ++f) {
             Row row = rows.get(f);
             Assertions.assertEquals(files[f].getName(), row.getCell(0).getText()); // same file name
-            Assertions.assertEquals(files[f].length(), Long.parseLong(row.getCell(1).getText())); // same file size
             Assertions.assertEquals("", row.getCell(2).getText(), row.getCell(2).getText()); // empty error message
+            Assertions.assertEquals(files[f].length(), Long.parseLong(row.getCell(1).getText())); // same file size
         }
     }
 }

@@ -41,8 +41,7 @@ import org.primefaces.model.file.UploadedFile;
 public class FileUploadView implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    // UploadedFile is not seralizable and therefore UploadFile isn't either
-    private transient List<UploadFile> uploadedFiles = Collections.synchronizedList(new ArrayList<>());
+    private List<UploadFile> uploadedFiles = Collections.synchronizedList(new ArrayList<>());
 
     // Note: this method may be called in parallel threads
     public void doFileUpload(UploadedFile uf) {
@@ -65,12 +64,15 @@ public class FileUploadView implements Serializable {
     }
 
     @Data
-    public static final class UploadFile {
-        private final UploadedFile file;
+    public static final class UploadFile implements Serializable {
+        private static final long serialVersionUID = 1L;
+        private final String fileName;
+        private final int size;
         private String errorMessage;
 
         public UploadFile(UploadedFile file) {
-            this.file = file;
+            this.fileName = file.getFileName();
+            this.size = (int) file.getSize();
         }
     }
 }
