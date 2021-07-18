@@ -47,7 +47,7 @@ public class FileUpload007Test extends AbstractFileUploadTest {
         // Act
         File file = locateClientSideFile("file1.csv");
         fileUpload.setValue(file);
-        fileUpload.waitAdvancedUntilAllFilesAreUploaded();
+        fileUpload.waitAdvancedUntilAllFilesAreUploaded(page.uploadedFiles);
 
         // Assert
         assertNoJavascriptErrors();
@@ -66,7 +66,7 @@ public class FileUpload007Test extends AbstractFileUploadTest {
         // Act
         File file1 = locateClientSideFile("file1.csv");
         fileUpload.setValue(file1);
-        fileUpload.waitAdvancedUntilAllFilesAreUploaded();
+        fileUpload.waitAdvancedUntilAllFilesAreUploaded(page.uploadedFiles);
 
         // Assert
         assertNoJavascriptErrors();
@@ -75,7 +75,7 @@ public class FileUpload007Test extends AbstractFileUploadTest {
         // Act
         File file2 = locateClientSideFile("file2.csv");
         fileUpload.setValue(file2);
-        fileUpload.waitAdvancedUntilAllFilesAreUploaded();
+        fileUpload.waitAdvancedUntilAllFilesAreUploaded(page.uploadedFiles);
 
         // Assert
         assertNoJavascriptErrors();

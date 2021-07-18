@@ -34,6 +34,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractInputComponent;
 import org.primefaces.selenium.internal.ConfigProvider;
@@ -107,8 +108,9 @@ public abstract class FileUpload extends AbstractInputComponent {
     /**
      * Waits until all selected files are uploaded.
      * This only works in advanced mode.
+     * @param additionalElementToWaitFor element to wait for stable GUI
      */
-    public void waitAdvancedUntilAllFilesAreUploaded() {
+    public void waitAdvancedUntilAllFilesAreUploaded(WebElement additionalElementToWaitFor) {
         ConfigProvider config = ConfigProvider.getInstance();
         WebDriver driver = WebDriverProvider.get();
 
@@ -117,6 +119,9 @@ public abstract class FileUpload extends AbstractInputComponent {
         // all files are uploaded if widgets file array is empty
         String jsScript = "if (" + getWidgetByIdScript() + ".files.length === 0) return true;";
         wait.until(ExpectedConditions.jsReturnsValue(jsScript));
+        PrimeSelenium.guardAjax(this);
+        PrimeSelenium.wait(200);
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(additionalElementToWaitFor));
     }
 
     /**

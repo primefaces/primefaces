@@ -13,9 +13,11 @@
 
         <h:form id="form">
 
-            <p:fileUpload id="fileupload" listener="#{fileUploadHandler.handleFileUpload}"
+            <p:remoteCommand name="updateUploadedFiles" update="uploadedfiles"/>
+            <p:fileUpload id="fileupload" widgetVar="fileUpload" listener="#{fileUploadHandler.handleFileUpload}"
                           mode="advanced" dragDropSupport="false" auto="true"
-                          update="uploadedfiles" allowTypes="/(\.|\/)(csv)$/"/>
+                          oncomplete="if ( !PF('fileUpload').files.length ) updateUploadedFiles();"
+                          allowTypes="/(\.|\/)(csv)$/"/>
 
             <p:dataTable id="uploadedfiles" var="file" value="#{fileUploadView.uploadedFiles}">
                 <p:column headerText="Name">

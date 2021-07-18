@@ -49,7 +49,7 @@ public class FileUpload006Test extends AbstractFileUploadTest {
         fileUpload.setValue(file);
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedUploadButton().click();
-        fileUpload.waitAdvancedUntilAllFilesAreUploaded();
+        fileUpload.waitAdvancedUntilAllFilesAreUploaded(page.uploadedFiles);
 
         // Assert
         assertNoJavascriptErrors();
@@ -74,7 +74,7 @@ public class FileUpload006Test extends AbstractFileUploadTest {
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file1.getName()), fileUpload.getWidgetValues().toString());
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file2.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedUploadButton().click();
-        fileUpload.waitAdvancedUntilAllFilesAreUploaded();
+        fileUpload.waitAdvancedUntilAllFilesAreUploaded(page.uploadedFiles);
 
         // Assert
         assertNoJavascriptErrors();
@@ -99,7 +99,7 @@ public class FileUpload006Test extends AbstractFileUploadTest {
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file1.getName()), fileUpload.getWidgetValues().toString());
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file2.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedUploadButton().click();
-        fileUpload.waitAdvancedUntilAllFilesAreUploaded();
+        fileUpload.waitAdvancedUntilAllFilesAreUploaded(page.uploadedFiles);
 
         // Assert
         assertNoJavascriptErrors();
@@ -114,7 +114,7 @@ public class FileUpload006Test extends AbstractFileUploadTest {
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file3.getName()), fileUpload.getWidgetValues().toString());
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file3.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedUploadButton().click();
-        fileUpload.waitAdvancedUntilAllFilesAreUploaded();
+        fileUpload.waitAdvancedUntilAllFilesAreUploaded(page.uploadedFiles);
 
         // Assert
         assertNoJavascriptErrors();
