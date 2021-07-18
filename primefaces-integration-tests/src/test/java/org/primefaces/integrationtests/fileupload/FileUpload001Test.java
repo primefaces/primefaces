@@ -89,7 +89,6 @@ public class FileUpload001Test extends AbstractFileUploadTest {
     }
 
     private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
         System.out.println("FileInput Config = " + cfg);
         Assertions.assertTrue(cfg.getBoolean("skinSimple"));
         Assertions.assertFalse(cfg.has("auto"));
