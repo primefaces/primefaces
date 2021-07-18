@@ -37,8 +37,8 @@ import org.primefaces.selenium.component.model.datatable.Row;
 public abstract class AbstractFileUploadTest extends AbstractPrimePageTest {
 
     protected File locateClientSideFile(String fileName) {
-        String folder = AbstractFileUploadTest.class.getPackageName().replace(".", "/");
-        URL url = FileUpload001Test.class.getResource("/" + folder + "/" + fileName);
+        String folder = AbstractFileUploadTest.class.getPackage().getName().replace(".", "/");
+        URL url = AbstractFileUploadTest.class.getResource("/" + folder + "/" + fileName);
         Assertions.assertNotNull(url, "client side file " + fileName + " does not exist in /" + folder);
         return new File(url.getPath());
     }
