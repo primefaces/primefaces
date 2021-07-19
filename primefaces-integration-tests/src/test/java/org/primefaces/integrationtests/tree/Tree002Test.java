@@ -33,6 +33,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.Tree;
@@ -61,7 +62,7 @@ public class Tree002Test extends AbstractTreeTest {
 
         // Assert
         assertMessage(page.messages, 0, "Selected", "Documents");
-        page.buttonShowSelectedNode.click();
+        PrimeSelenium.guardAjax(page.buttonShowSelectedNode).click();
         assertMessage(page.messages, 0, "Selected node", "Documents");
 
         // Act Pt. 2
@@ -70,7 +71,7 @@ public class Tree002Test extends AbstractTreeTest {
 
         // Assert Pt. 2
         assertMessage(page.messages, 0, "Unselected", "Documents");
-        page.buttonShowSelectedNode.click();
+        PrimeSelenium.guardAjax(page.buttonShowSelectedNode).click();
         assertMessage(page.messages, 0, "No node selected!", "");
 
         assertConfiguration(tree.getWidgetConfiguration());
