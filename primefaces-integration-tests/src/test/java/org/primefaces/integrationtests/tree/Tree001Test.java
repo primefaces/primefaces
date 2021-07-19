@@ -102,6 +102,15 @@ public class Tree001Test extends AbstractTreeTest {
         TreeNode third = children.get(2);
         Assertions.assertEquals("Movies", third.getLabelText());
 
+        first.toggle();
+
+        List<TreeNode> firstChildren = first.getChildren();
+        Assertions.assertNotNull(firstChildren);
+        Assertions.assertEquals(2, firstChildren.size());
+
+        TreeNode firstOfFirst = firstChildren.get(0);
+        Assertions.assertTrue(firstOfFirst.getWebElement().isDisplayed());
+
         // Act
         PrimeSelenium.guardAjax(page.buttonUpdate).click();
 
@@ -124,6 +133,13 @@ public class Tree001Test extends AbstractTreeTest {
         Assertions.assertTrue(first.getWebElement().isDisplayed());
         Assertions.assertTrue(second.getWebElement().isDisplayed());
         Assertions.assertTrue(third.getWebElement().isDisplayed());
+
+        firstChildren = first.getChildren();
+        Assertions.assertNotNull(firstChildren);
+        Assertions.assertEquals(2, firstChildren.size());
+
+        firstOfFirst = firstChildren.get(0);
+        Assertions.assertTrue(firstOfFirst.getWebElement().isDisplayed());
 
         assertConfiguration(tree.getWidgetConfiguration());
     }
