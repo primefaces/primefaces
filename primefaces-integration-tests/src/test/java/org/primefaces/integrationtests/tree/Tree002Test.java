@@ -30,6 +30,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
@@ -67,7 +68,8 @@ public class Tree002Test extends AbstractTreeTest {
 
         // Act Pt. 2
         Actions actions = new Actions(page.getWebDriver());
-        actions.keyDown(Keys.META).click(first.getLabel()).keyUp(Keys.META).perform();
+        Action actionUnselect = actions.keyDown(Keys.META).click(first.getLabel()).keyUp(Keys.META).build();
+        PrimeSelenium.guardAjax(actionUnselect).perform();
 
         // Assert Pt. 2
         assertMessage(page.messages, 0, "Unselected", "Documents");
