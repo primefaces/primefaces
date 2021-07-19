@@ -295,7 +295,8 @@ public class DataTable001Test extends AbstractDataTableTest {
                 Arguments.of("datatable/dataTable001.xhtml"),
                 Arguments.of("datatable/dataTable001Dynamic.xhtml"),
                 //Arguments.of("datatable/dataTable001DynamicOtherSyntax.xhtml"),
-                Arguments.of("datatable/dataTable001DynamicOtherSyntax2.xhtml"));
+                Arguments.of("datatable/dataTable001DynamicOtherSyntax2.xhtml"),
+                Arguments.of("datatable/dataTable001DynamicOtherSyntax3.xhtml"));
     }
 
     private DataTable getDataTable() {

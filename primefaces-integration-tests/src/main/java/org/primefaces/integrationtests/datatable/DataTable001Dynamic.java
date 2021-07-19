@@ -96,4 +96,8 @@ public class DataTable001Dynamic implements Serializable {
             return filterMatchMode;
         }
     }
+
+    public Object justReturn(Object value) {
+        return value;
+    }
 }
