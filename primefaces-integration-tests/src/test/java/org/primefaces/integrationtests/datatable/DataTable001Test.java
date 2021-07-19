@@ -293,9 +293,9 @@ public class DataTable001Test extends AbstractDataTableTest {
     private static Stream<Arguments> provideXhtmls() {
         return Stream.of(
                 Arguments.of("datatable/dataTable001.xhtml"),
-                Arguments.of("datatable/dataTable001Dynamic.xhtml")/*,
-                Arguments.of("datatable/dataTable001DynamicOtherSyntax.xhtml")*/ // may be activated after https://github.com/primefaces/primefaces/issues/7597 is fixed
-        );
+                Arguments.of("datatable/dataTable001Dynamic.xhtml"),
+                //Arguments.of("datatable/dataTable001DynamicOtherSyntax.xhtml"),
+                Arguments.of("datatable/dataTable001DynamicOtherSyntax2.xhtml"));
     }
 
     private DataTable getDataTable() {
