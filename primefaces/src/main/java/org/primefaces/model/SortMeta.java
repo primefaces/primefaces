@@ -83,7 +83,8 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
         }
 
         String field = resolveSortField(context, column);
-        if (field == null) {
+        ValueExpression sortByVE = column.getValueExpression(ColumnBase.PropertyKeys.sortBy.name());
+        if (field == null && sortByVE == null) {
             return null;
         }
 
@@ -92,7 +93,6 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
             order = SortOrder.ASCENDING;
         }
 
-        ValueExpression sortByVE = column.getValueExpression(ColumnBase.PropertyKeys.sortBy.name());
         sortByVE = sortByVE != null ? sortByVE : UITable.createValueExprFromVarField(context, var, field);
 
         return new SortMeta(column.getColumnKey(),
