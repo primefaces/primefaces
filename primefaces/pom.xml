@@ -252,7 +252,7 @@
         <dependency>
             <artifactId>junit</artifactId>
             <groupId>junit</groupId>
-            <version>4.11</version>
+            <version>4.13.1</version>
         </dependency>
     </dependencies>
 
