@@ -43,7 +43,7 @@ import lombok.Data;
 public class Tree002 implements Serializable {
 
     @Inject
-    TreeNodeService treeNodeService;
+    private TreeNodeService treeNodeService;
 
     private TreeNode<String> root;
     private TreeNode<String> selectedNode;
