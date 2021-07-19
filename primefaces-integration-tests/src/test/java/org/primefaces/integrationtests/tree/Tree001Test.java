@@ -31,6 +31,8 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.Tree;
 import org.primefaces.selenium.component.model.tree.TreeNode;
@@ -78,12 +80,63 @@ public class Tree001Test extends AbstractTreeTest {
         assertConfiguration(tree.getWidgetConfiguration());
     }
 
+    @Test
+    @Order(2)
+    @DisplayName("Tree: Ajax update")
+    public void testAjaxUpdate(Page page) {
+        // Arrange
+        Tree tree = page.tree;
+        Assertions.assertNotNull(tree);
+
+        List<TreeNode> children = tree.getChildren();
+
+        Assertions.assertNotNull(children);
+        Assertions.assertEquals(3, children.size());
+
+        TreeNode first = children.get(0);
+        Assertions.assertEquals("Documents", first.getLabelText());
+
+        TreeNode second = children.get(1);
+        Assertions.assertEquals("Events", second.getLabelText());
+
+        TreeNode third = children.get(2);
+        Assertions.assertEquals("Movies", third.getLabelText());
+
+        // Act
+        PrimeSelenium.guardAjax(page.buttonUpdate).click();
+
+        // Assert
+        children = tree.getChildren();
+
+        Assertions.assertNotNull(children);
+        Assertions.assertEquals(3, children.size());
+
+        first = children.get(0);
+        Assertions.assertEquals("Documents", first.getLabelText());
+
+        second = children.get(1);
+        Assertions.assertEquals("Events", second.getLabelText());
+
+        third = children.get(2);
+        Assertions.assertEquals("Movies", third.getLabelText());
+
+        Assertions.assertTrue(tree.isDisplayed());
+        Assertions.assertTrue(first.getWebElement().isDisplayed());
+        Assertions.assertTrue(second.getWebElement().isDisplayed());
+        Assertions.assertTrue(third.getWebElement().isDisplayed());
+
+        assertConfiguration(tree.getWidgetConfiguration());
+    }
+
     public static class Page extends AbstractPrimePage {
         @FindBy(id = "form:tree")
         Tree tree;
 
         @FindBy(id = "form:msgs")
         Messages messages;
+
+        @FindBy(id = "form:buttonUpdate")
+        CommandButton buttonUpdate;
 
         @Override
         public String getLocation() {
