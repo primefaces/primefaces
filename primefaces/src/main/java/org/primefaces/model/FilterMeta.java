@@ -25,7 +25,6 @@ package org.primefaces.model;
 
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.api.UITable;
 import org.primefaces.component.column.ColumnBase;
 import org.primefaces.component.datatable.feature.FilterFeature;
 import org.primefaces.model.filter.FilterConstraint;
@@ -88,13 +87,18 @@ public class FilterMeta implements Serializable {
             return null;
         }
 
-        String field = resolveFilterField(context, column);
-        if (field == null) {
+        String field = column.getField();
+        ValueExpression filterByVE = column.getValueExpression(ColumnBase.PropertyKeys.filterBy.name());
+        if (field == null && filterByVE == null) {
             return null;
         }
 
-        ValueExpression filterByVE = column.getValueExpression(ColumnBase.PropertyKeys.filterBy.name());
-        filterByVE = filterByVE != null ? filterByVE : UITable.createValueExprFromVarField(context, var, field);
+        if (field == null) {
+            field = UIColumn.extractFieldFromValueExpression(context, filterByVE, column.isDynamic());
+        }
+        else if (filterByVE == null) {
+            filterByVE = UIColumn.createValueExpressionFromField(context, var, field);
+        }
 
         MatchMode matchMode = MatchMode.of(column.getFilterMatchMode());
         FilterConstraint constraint = FilterFeature.FILTER_CONSTRAINTS.get(matchMode);
@@ -177,26 +181,6 @@ public class FilterMeta implements Serializable {
             ((DynamicColumn) column).applyStatelessModel();
         }
         return filterBy.getValue(elContext);
-    }
-
-    static String resolveFilterField(FacesContext context, UIColumn column) {
-        ValueExpression columnFilterByVE = column.getValueExpression(ColumnBase.PropertyKeys.filterBy.toString());
-
-        if (column.isDynamic()) {
-            String field = column.getField();
-            if (field == null) {
-                Object filterBy = column.getFilterBy();
-                field = (filterBy == null) ? UITable.resolveDynamicField(context, columnFilterByVE) : filterBy.toString();
-            }
-            return field;
-        }
-        else {
-            String field = column.getField();
-            if (field == null) {
-                field = (columnFilterByVE == null) ? (String) column.getFilterBy() : UITable.resolveStaticField(columnFilterByVE);
-            }
-            return field;
-        }
     }
 
     public static Builder builder() {

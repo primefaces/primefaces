@@ -27,11 +27,8 @@ import java.lang.reflect.Array;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -53,61 +50,9 @@ import org.primefaces.util.LangUtils;
 public interface UITable<T extends UITableState> extends ColumnAware, MultiViewStateAware<T> {
 
     /**
-     * Backward compatibility for column properties (e.g sortBy, filterBy)
-     * using old syntax #{car[column.property]}) instead of #{column.property}
-     */
-    Pattern OLD_SYNTAX_COLUMN_PROPERTY_REGEX = Pattern.compile("^#\\{\\w+\\[(.+)]}$");
-
-    /**
      * ID of the global filter component
      */
     String GLOBAL_FILTER_COMPONENT_ID = "globalFilter";
-
-    static String resolveStaticField(ValueExpression expression) {
-        if (expression != null) {
-            String expressionString = expression.getExpressionString();
-            if (expressionString.startsWith("#{")) {
-                expressionString = expressionString.substring(2, expressionString.indexOf('}')); //Remove #{}
-                return expressionString.substring(expressionString.indexOf('.') + 1); //Remove var
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Get bean's property value from a value expression.
-     * Support old syntax (e.g #{car[column.property]}) instead of #{column.property}
-     * @param context
-     * @param exprVE
-     * @return
-     */
-    static String resolveDynamicField(FacesContext context, ValueExpression exprVE) {
-        if (exprVE == null) {
-            return null;
-        }
-
-        ELContext elContext = context.getELContext();
-        String exprStr = exprVE.getExpressionString();
-
-        Matcher matcher = OLD_SYNTAX_COLUMN_PROPERTY_REGEX.matcher(exprStr );
-        if (matcher.find()) {
-            exprStr = matcher.group(1);
-            exprVE = context.getApplication().getExpressionFactory()
-                    .createValueExpression(elContext, "#{" + exprStr  + "}", String.class);
-        }
-
-        return (String) exprVE.getValue(elContext);
-    }
-
-    static ValueExpression createValueExprFromVarField(FacesContext context, String var, String field) {
-        if (LangUtils.isValueBlank(var) || LangUtils.isValueBlank(field)) {
-            throw new FacesException("Table 'var' and Column 'field' attributes must be non null.");
-        }
-
-        return context.getApplication().getExpressionFactory()
-                .createValueExpression(context.getELContext(), "#{" + var + "." + field + "}", Object.class);
-    }
 
     String getVar();
 
@@ -191,13 +136,13 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
         for (FilterMeta userFM : filterByTmp) {
             FilterMeta intlFM = intlFilterBy.values().stream()
-                    .filter(o -> o.getField().equals(userFM.getField()))
+                    .filter(o -> Objects.equals(o.getField(), userFM.getField()) || Objects.equals(o.getColumnKey(), userFM.getColumnKey()))
                     .findAny()
                     .orElseThrow(() -> new FacesException("No column with field '" + userFM.getField() + "' has been found"));
 
             ValueExpression filterByVE = userFM.getFilterBy();
             if (filterByVE == null) {
-                filterByVE = createValueExprFromVarField(context, getVar(), userFM.getField());
+                filterByVE = UIColumn.createValueExpressionFromField(context, getVar(), userFM.getField());
             }
 
             intlFM.setFilterValue(userFM.getFilterValue());
@@ -380,13 +325,13 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
         for (SortMeta userSM : sortBy) {
             SortMeta intlSM = intlSortBy.values().stream()
-                    .filter(o -> o.getField().equals(userSM.getField()))
+                    .filter(o -> Objects.equals(o.getField(), userSM.getField()) || Objects.equals(o.getColumnKey(), userSM.getColumnKey()))
                     .findAny()
                     .orElseThrow(() -> new FacesException("No column with field '" + userSM.getField() + "' has been found"));
 
             ValueExpression sortByVE = userSM.getSortBy();
             if (sortByVE == null) {
-                sortByVE = createValueExprFromVarField(context, getVar(), userSM.getField());
+                sortByVE = UIColumn.createValueExpressionFromField(context, getVar(), userSM.getField());
             }
 
             intlSM.setPriority(userSM.getPriority());
@@ -578,7 +523,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     }
 
     default String getConvertedFieldValue(FacesContext context, UIColumn column) {
-        Object value = createValueExprFromVarField(context, getVar(), column.getField()).getValue(context.getELContext());
+        Object value = UIColumn.createValueExpressionFromField(context, getVar(), column.getField()).getValue(context.getELContext());
         UIComponent component = column instanceof DynamicColumn ? ((DynamicColumn) column).getColumns() : (UIComponent) column;
         return ComponentUtils.getConvertedAsString(context, component, value);
     }
