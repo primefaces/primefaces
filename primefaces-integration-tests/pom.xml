@@ -225,6 +225,7 @@
                 <!--
                 <groups>SafariBasic</groups>
                 -->
+                <excludedGroups>SafariExclude</excludedGroups>
                 <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
             </properties>
         </profile>

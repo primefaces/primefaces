@@ -35,6 +35,7 @@ import org.primefaces.selenium.component.FileUpload;
  * Tests advanced auto multiple sequential file upload.
  * p:fileUpload mode=advanced auto=true multiple=true dragDropSupport=false sequential=true
  */
+@Tag("SafariExclude") // Selenium SafariDriver does not support file uploads
 public class FileUpload010Test extends AbstractFileUploadTest {
 
     @Test
