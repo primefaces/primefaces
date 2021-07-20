@@ -47,6 +47,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.*;
 import java.io.IOException;
 import java.util.*;
+import org.primefaces.util.Lazy;
 
 public abstract class UITree extends UIComponentBase implements NamingContainer {
 
@@ -89,6 +90,14 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     }
 
     public void setRowKey(TreeNode root, String rowKey) {
+        setRowKey(null, root, rowKey);
+    }
+
+    public void setRowKey(Lazy<TreeNode> root, String rowKey) {
+        setRowKey(root, null, rowKey);
+    }
+
+    protected void setRowKey(Lazy<TreeNode> lazyRoot, TreeNode root, String rowKey) {
         Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
         saveDescendantState();
         String nodeVar = getNodeVar();
@@ -103,7 +112,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             }
         }
         else {
-            rowNode = findTreeNode(root, rowKey);
+            rowNode = findTreeNode(lazyRoot == null ? root : lazyRoot.get(), rowKey);
 
             if (rowNode != null) {
                 requestMap.put(getVar(), rowNode.getData());
@@ -833,7 +842,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 
         FacesContext facesContext = context.getFacesContext();
         boolean visitNodes = !ComponentUtils.isSkipIteration(context, facesContext);
-        TreeNode root = getValue();
+        Lazy<TreeNode> root = new Lazy<>(() -> getValue());
 
         String oldRowKey = getRowKey();
         if (visitNodes) {
@@ -880,7 +889,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         return (!idsToVisit.isEmpty());
     }
 
-    protected boolean visitFacets(VisitContext context, TreeNode root, VisitCallback callback, boolean visitNodes) {
+    protected boolean visitFacets(VisitContext context, Lazy<TreeNode> root, VisitCallback callback, boolean visitNodes) {
         if (visitNodes) {
             setRowKey(root, null);
         }
@@ -896,7 +905,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         return false;
     }
 
-    private boolean visitColumns(VisitContext context, TreeNode root, VisitCallback callback, String rowKey, boolean visitNodes) {
+    private boolean visitColumns(VisitContext context, Lazy<TreeNode> root, VisitCallback callback, String rowKey, boolean visitNodes) {
         String treeNodeType = null;
         if (visitNodes) {
             setRowKey(root, rowKey);
@@ -956,10 +965,10 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         return false;
     }
 
-    protected boolean visitNodes(VisitContext context, TreeNode root, VisitCallback callback, boolean visitRows) {
+    protected boolean visitNodes(VisitContext context, Lazy<TreeNode> root, VisitCallback callback, boolean visitRows) {
         if (visitRows) {
             if (root != null) {
-                if (visitNode(context, root, callback, root, null)) {
+                if (visitNode(context, root, callback, root.get(), null)) {
                     return true;
                 }
             }
@@ -976,7 +985,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         return false;
     }
 
-    protected boolean visitNode(VisitContext context, TreeNode root, VisitCallback callback, TreeNode treeNode, String rowKey) {
+    protected boolean visitNode(VisitContext context, Lazy<TreeNode> root, VisitCallback callback, TreeNode treeNode, String rowKey) {
         if (visitColumns(context, root, callback, rowKey, true)) {
             return true;
         }
@@ -1002,7 +1011,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         return false;
     }
 
-    protected boolean visitColumnsAndColumnFacets(VisitContext context, VisitCallback callback, boolean visitRows, TreeNode root) {
+    protected boolean visitColumnsAndColumnFacets(VisitContext context, VisitCallback callback, boolean visitRows, Lazy<TreeNode> root) {
         if (visitRows) {
             setRowKey(root, null);
         }
