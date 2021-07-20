@@ -33,6 +33,7 @@ import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.celleditor.CellEditor;
@@ -41,48 +42,44 @@ import org.primefaces.util.LangUtils;
 public interface UIColumn {
 
     /**
-     * Currently there 3 expression type for attributes like filterBy, sortBy:
-     * 1) #{car[column.property]}
-     *    this is a valid expression and resolves to a real value
-     * 2) #{column.property}
-     *    this is a invalid expressions and would need modification before calling the VE
-     *    currently not supported anymore
-     * 3) #{testView.tableModel.getValue(row, column.keyId)}
-     *    this is a valid expression and resolves to a real value
+     * Used to extract bean's property from a value expression in dynamic columns
+     * (e.g #{car[column.property]} = name)
      */
-    Pattern VALUE_EXPRESSION_VALID_SYNTAX = Pattern.compile("^#\\{\\w+\\[(.+)]}$");
+    Pattern DYNAMIC_FIELD_VE_LEGACY_PATTERN = Pattern.compile("^#\\{\\w+\\[([\\w.]+)]}$");
 
     /**
-     * This method is used to extract the optional "field" of SortMeta and FieldMeta,
-     * based on the defined "sortBy" or "filterBy" expression.
+     * Used to extract bean's property from a value expression in static columns (e.g "#{car.year}" = year)
+     */
+    Pattern STATIC_FIELD_VE_LEGACY_PATTERN = Pattern.compile("^#\\{\\w+\\.([\\w.]+)}$");
+
+    /**
+     * Used to extract UIColumn#field if not defined. Supports strictly two kind of expressions:
      *
-     * #{car.name} -> name
-     * #{car[column.property]} -> name
-     * #{testView.tableModel.getValue(row, column.keyId)} -> null
+     * #{car.name} -> name (for static columns)
+     * #{car[column.property]} -> name (for dynamic columns)
      *
      * @param context the {@link FacesContext}
      * @param expression the {@link ValueExpression} like "filterBy" or "sortBy"
-     * @param dynamic if its a dynamic column
-     * @return the "field" name, can be null
+     * @return the "field" name if found, otherwise null
      */
-    static String extractFieldFromValueExpression(FacesContext context, ValueExpression expression, boolean dynamic) {
-        String expressionString = expression.getExpressionString();
+    default String resolveField(FacesContext context, ValueExpression expression) {
+        String exprStr = expression.getExpressionString();
 
-        if (dynamic) {
+        if (isDynamic()) {
             ELContext elContext = context.getELContext();
 
-            Matcher matcher = VALUE_EXPRESSION_VALID_SYNTAX.matcher(expressionString);
+            Matcher matcher = DYNAMIC_FIELD_VE_LEGACY_PATTERN.matcher(exprStr);
             if (matcher.find()) {
-                expressionString = matcher.group(1);
+                exprStr = matcher.group(1);
                 expression = context.getApplication().getExpressionFactory()
-                        .createValueExpression(elContext, "#{" + expressionString  + "}", String.class);
+                        .createValueExpression(elContext, "#{" + exprStr  + "}", String.class);
                 return (String) expression.getValue(elContext);
             }
         }
         else {
-            if (expressionString.startsWith("#{")) {
-                expressionString = expressionString.substring(2, expressionString.indexOf('}')); //Remove #{}
-                return expressionString.substring(expressionString.indexOf('.') + 1); //Remove var
+            Matcher matcher = STATIC_FIELD_VE_LEGACY_PATTERN.matcher(exprStr);
+            if (matcher.find()) {
+                return matcher.group(1);
             }
         }
 
@@ -90,10 +87,10 @@ public interface UIColumn {
     }
 
     /**
-     * This method is used to build a valid {@link ValueExpression} for sorting or filtering, if the "field"
-     * shortcut attribute is defined.
+     * Used to build a valid {@link ValueExpression} using {@link UIData#getVar()} and {@link UIColumn#getField()}
+     * Mostly used if sortBy and/or filterBy are not defined.
      *
-     * field="name" -> #{car.name}
+     * var="car" and field="name" -> #{car.name}
      *
      * @param context the {@link FacesContext}
      * @param var the "var" attribute of the parent table
