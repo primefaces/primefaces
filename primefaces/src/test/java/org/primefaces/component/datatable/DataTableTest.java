@@ -26,6 +26,9 @@ package org.primefaces.component.datatable;
 import de.odysseus.el.util.SimpleContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.primefaces.component.api.DynamicColumn;
+import org.primefaces.component.column.Column;
+import org.primefaces.component.columns.Columns;
 import org.primefaces.el.MyBean;
 import org.primefaces.el.MyContainer;
 import org.primefaces.mock.FacesContextMock;
@@ -35,8 +38,6 @@ import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
 
 import static org.mockito.Mockito.*;
-import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.api.UITable;
 
 public class DataTableTest {
 
@@ -49,26 +50,32 @@ public class DataTableTest {
     @Test
     public void testResolveStaticField() {
         FacesContext context = new FacesContextMock();
-        DataTable table = new DataTable();
+
+        Column column = new Column();
         ValueExpression exprVE = mock(ValueExpression.class);
 
         when(exprVE.getExpressionString()).thenReturn("#{car.year}");
-        Assertions.assertEquals("year", UIColumn.extractFieldFromValueExpression(context, exprVE, false));
+        Assertions.assertEquals("year", column.resolveField(context, exprVE));
 
         when(exprVE.getExpressionString()).thenReturn("#{car.wrapper.year}");
-        Assertions.assertEquals("wrapper.year", UIColumn.extractFieldFromValueExpression(context, exprVE, false));
+        Assertions.assertEquals("wrapper.year", column.resolveField(context, exprVE));
 
         when(exprVE.getExpressionString()).thenReturn("#{car}");
-        Assertions.assertEquals("car", UIColumn.extractFieldFromValueExpression(context, exprVE, false));
+        Assertions.assertNull(column.resolveField(context, exprVE));
 
         when(exprVE.getExpressionString()).thenReturn("car.year");
-        Assertions.assertNull(UIColumn.extractFieldFromValueExpression(context, exprVE, false));
+        Assertions.assertNull(column.resolveField(context, exprVE));
+
+        when(exprVE.getExpressionString()).thenReturn("#{i18n[row][property]}");
+        Assertions.assertNull(column.resolveField(context, exprVE));
     }
 
     @Test
     public void testResolveDynamicField() {
         FacesContext context = new FacesContextMock();
         ExpressionFactory expFactory = context.getApplication().getExpressionFactory();
+
+        DynamicColumn column = new DynamicColumn(0, mock(Columns.class), context);
 
         MyBean bean = new MyBean();
         MyContainer container = new MyContainer();
@@ -78,13 +85,23 @@ public class DataTableTest {
         ((SimpleContext)context.getELContext()).setVariable("column",
                 expFactory.createValueExpression(bean, MyBean.class));
 
-        // old syntax
+        // correct syntax
         ValueExpression exprVE = expFactory.createValueExpression(
                 context.getELContext(), "#{car[column.container.value]}", String.class);
-        Assertions.assertEquals("MyValue", UIColumn.extractFieldFromValueExpression(context, exprVE, true));
+        Assertions.assertEquals("MyValue", column.resolveField(context, exprVE));
 
-        // new syntax
+        // unsupported syntax
+        exprVE = expFactory.createValueExpression(
+                context.getELContext(), "#{i18n[column][property]}", String.class);
+        Assertions.assertNull(column.resolveField(context, exprVE));
+
+        // incorrect syntax
         exprVE = expFactory.createValueExpression(context.getELContext(), "#{column.container.value}", String.class);
-        //Assertions.assertEquals("MyValue", UITable.extractFieldForColumn(context, exprVE, true));
+        Assertions.assertNull(column.resolveField(context, exprVE));
+
+        // unsupported syntax
+        exprVE = expFactory.createValueExpression(
+                context.getELContext(), "#{i18n[row][column[property]]}", String.class);
+        Assertions.assertNull(column.resolveField(context, exprVE));
     }
 }

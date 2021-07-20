@@ -94,7 +94,7 @@ public class FilterMeta implements Serializable {
         }
 
         if (field == null) {
-            field = UIColumn.extractFieldFromValueExpression(context, filterByVE, column.isDynamic());
+            field = column.resolveField(context, filterByVE);
         }
         else if (filterByVE == null) {
             filterByVE = UIColumn.createValueExpressionFromField(context, var, field);

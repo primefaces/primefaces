@@ -88,7 +88,7 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
         }
 
         if (field == null) {
-            field = UIColumn.extractFieldFromValueExpression(context, sortByVE, column.isDynamic());
+            field = column.resolveField(context, sortByVE);
         }
         else if (sortByVE == null) {
             sortByVE = UIColumn.createValueExpressionFromField(context, var, field);

@@ -181,7 +181,7 @@ public class DynamicColumn implements UIColumn {
 
     @Override
     public boolean isDynamic() {
-        return columns.isDynamic();
+        return true;
     }
 
     @Override
