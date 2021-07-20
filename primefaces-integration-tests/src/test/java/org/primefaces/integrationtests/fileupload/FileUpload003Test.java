@@ -36,6 +36,7 @@ import org.primefaces.selenium.component.FileUpload;
  * Tests basic auto single file upload.
  * p:fileUpload mode=simple auto=true multiple=false (skinSimple=true)
  */
+@Tag("SafariExclude") // Selenium SafariDriver does not support file uploads
 public class FileUpload003Test extends AbstractFileUploadTest {
 
     @Test
