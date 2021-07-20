@@ -138,7 +138,8 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             FilterMeta intlFM = intlFilterBy.values().stream()
                     .filter(o -> Objects.equals(o.getField(), userFM.getField()) || Objects.equals(o.getColumnKey(), userFM.getColumnKey()))
                     .findAny()
-                    .orElseThrow(() -> new FacesException("No column with field '" + userFM.getField() + "' has been found"));
+                    .orElseThrow(() -> new FacesException("No column with field '" + userFM.getField()
+                            + "' or columnKey '" + userFM.getColumnKey() + "' has been found"));
 
             ValueExpression filterByVE = userFM.getFilterBy();
             if (filterByVE == null) {
@@ -327,7 +328,8 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             SortMeta intlSM = intlSortBy.values().stream()
                     .filter(o -> Objects.equals(o.getField(), userSM.getField()) || Objects.equals(o.getColumnKey(), userSM.getColumnKey()))
                     .findAny()
-                    .orElseThrow(() -> new FacesException("No column with field '" + userSM.getField() + "' has been found"));
+                    .orElseThrow(() -> new FacesException("No column with field '" + userSM.getField()
+                            + "' or columnKey '" + userSM.getColumnKey() + "' has been found"));
 
             ValueExpression sortByVE = userSM.getSortBy();
             if (sortByVE == null) {
