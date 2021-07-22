@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true">
+                <p:autoUpdate/>
+            </p:messages>
+
+            <p:dataTable id="datatable" value="#{dataTable005.progLanguages}" var="lang" selectionMode="multiple"
+                         selection="#{dataTable005.selectedProgLanguages}" rowKey="#{lang.id}">
+                <p:column field="id"/>
+
+                <p:column field="name"/>
+
+                <p:column field="firstAppeared"/>
+            </p:dataTable>
+
+            <p:commandButton id="button" value="Submit" update="@form" action="#{dataTable005.submit}"/>
+            <p:commandButton id="buttonUpdate" value="Update" update="datatable"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

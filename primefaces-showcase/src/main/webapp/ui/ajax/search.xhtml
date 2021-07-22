@@ -1,0 +1,51 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Ajax Framework <span class="subitem">Search Expressions</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Search Expression Framework extends the default search expressions by more keywords and allows the combine/nest expressions.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/core/searchexpression"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:panel id="panel" header="Search Form" styleClass="p-mb-3">
+                    <p:growl id="messages"/>
+
+                    <h:panelGrid columns="4" cellpadding="7">
+                        <h:outputLabel for="txt1" value="Text 1: *"/>
+                        <p:inputText id="txt1" value="#{searchView.text1}" required="true" label="Text 1" style="width: 12rem">
+                            <f:validateLength minimum="2"/>
+                        </p:inputText>
+                        <p:message for="txt1"/>
+                        <h:outputText value="#{searchView.text1}"/>
+
+                        <h:outputLabel for="txt2" value="Text 2: *"/>
+                        <p:selectOneMenu id="txt2" value="#{searchView.text2}" required="true" label="Text 2" style="width: 12rem">
+                            <f:selectItem itemLabel="Select One" itemValue="" noSelectionOption="true"/>
+                            <f:selectItem itemLabel="Option 1" itemValue="1"/>
+                            <f:selectItem itemLabel="Option 2" itemValue="2"/>
+                            <f:selectItem itemLabel="Option 3" itemValue="3"/>
+                        </p:selectOneMenu>
+                        <p:message for="@previous"/>
+                        <h:outputText value="#{searchView.text2}"/>
+                    </h:panelGrid>
+                </p:panel>
+
+                <p:commandButton process="@parent:@parent" update="@form" value="Process: @parent:parent (Form)" styleClass="p-mr-2" />
+                    <p:commandButton process="@form:@child(1):txt1" update="@form"
+                                     value="Process: @form:@child(1):txt1 (Text 1)"/>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,85 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DataExporter <span class="subitem">TreeTable</span>
+    </ui:define>
+
+    <ui:define name="description">
+        EXCEL, PDF, CSV and XML are the supported formats. The TreeTable columns content will be justified as left aligned, center aligned and right aligned based on the content type.
+        If a style or styleClass contains the word "right" the cell will be right aligned in the Excel/PDF output.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/dataexporter"/>
+
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form id="form">
+               <div class="p-d-flex p-jc-between">
+                    <div>
+                        <h5>Standard</h5>
+                        <p:commandButton value="XLS" styleClass="p-mr-2 p-mb-2">
+                            <p:dataExporter type="xls" target="tbl" fileName="documents"/>
+                        </p:commandButton>
+    
+                        <p:commandButton value="XLSX" styleClass="p-mr-2 p-mb-2">
+                            <p:dataExporter type="xlsxstream" target="tbl" fileName="documents"/>
+                        </p:commandButton>
+    
+                        <p:commandButton value="PDF" styleClass="p-mr-2 p-mb-2">
+                            <p:dataExporter type="pdf" target="tbl" fileName="documents"/>
+                        </p:commandButton>
+    
+                        <p:commandButton value="CSV" styleClass="p-mr-2 p-mb-2">
+                            <p:dataExporter type="csv" target="tbl" fileName="documents" />
+                        </p:commandButton>
+    
+                        <p:commandButton value="XML" styleClass="p-mr-2 p-mb-2">
+                            <p:dataExporter type="xml" target="tbl" fileName="documents"/>
+                        </p:commandButton>
+                    </div>
+
+                    <div>
+                        <h5>Page Only</h5>
+                        <p:commandButton value="XLS" styleClass="p-mr-2 p-mb-2 ui-button-outlined">
+                            <p:dataExporter type="xls" target="tbl" fileName="documents" pageOnly="true"/>
+                        </p:commandButton>
+        
+                        <p:commandButton value="XLSX" styleClass="p-mr-2 p-mb-2 ui-button-outlined">
+                            <p:dataExporter type="xlsxstream" target="tbl" fileName="documents" pageOnly="true"/>
+                        </p:commandButton>
+        
+                        <p:commandButton value="PDF" styleClass="p-mr-2 p-mb-2 ui-button-outlined">
+                            <p:dataExporter type="pdf" target="tbl" fileName="documents" pageOnly="true"/>
+                        </p:commandButton>
+        
+                        <p:commandButton value="CSV" styleClass="p-mr-2 p-mb-2 ui-button-outlined">
+                            <p:dataExporter type="csv" target="tbl" fileName="documents" pageOnly="true"/>
+                        </p:commandButton>
+        
+                        <p:commandButton value="XML" styleClass="p-mr-2 p-mb-2 ui-button-outlined">
+                            <p:dataExporter type="xml" target="tbl" fileName="documents" pageOnly="true"/>
+                        </p:commandButton>
+                    </div>
+                </div>
+                <p:treeTable id="tbl" value="#{ttBasicView.root}" var="document" paginator="true" rows="5">
+                    <p:column headerText="Name">
+                        <h:outputText value="#{document.name}"/>
+                    </p:column>
+                    <p:column headerText="Size" >
+                        <h:outputText value="#{document.size}"/>
+                    </p:column>
+                    <p:column headerText="Type" >
+                        <h:outputText value="#{document.type}"/>
+                    </p:column>
+                </p:treeTable>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,65 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        ResetInput
+    </ui:define>
+
+    <ui:define name="description">
+        Input components keep their local values at state when validation fails. ResetInput is used to clear the cached
+        values from state so that components retrieve their values from the backing bean model instead.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/resetinput"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form id="form">
+                <p:outputPanel id="panel" styleClass="p-mb-2">
+                    <h:panelGrid columns="3" cellpadding="7">
+                        <p:outputLabel for="text1" value="Text 1:"/>
+                        <p:inputText id="text1" value="#{resetInputView.text1}" required="true" label="Firstname">
+                            <f:validateLength minimum="2"/>
+                        </p:inputText>
+                        <p:message for="text1"/>
+
+                        <p:outputLabel for="text2" value="Text 2:"/>
+                        <p:inputText id="text2" value="#{resetInputView.text2}" required="true" label="Surname"/>
+                        <p:message for="text2"/>
+                    </h:panelGrid>
+                </p:outputPanel>
+
+                <div class="p-d-flex p-jc-between">
+                    <p:commandButton value="Submit" update="panel" action="#{resetInputView.save}" styleClass="p-mr-2" />
+
+                    <div>
+                        <p:commandButton value="Reset Fail" update="panel" process="@this"
+                                         action="#{resetInputView.resetFail}" styleClass="p-mr-2 ui-button-outlined"/>
+
+                        <p:commandButton value="Reset Tag" update="panel" process="@this" styleClass="p-mr-2 ui-button-outlined">
+                            <p:resetInput target="panel"/>
+                        </p:commandButton>
+
+                        <p:commandButton value="Reset Code" update="panel" process="@this"
+                                         action="#{resetInputView.reset}"
+                                         styleClass="p-mr-2 ui-button-outlined"/>
+
+                        <p:commandButton value="Reset Non-Ajax" action="#{resetInputView.reset}" immediate="true"
+                                         ajax="false" styleClass="p-mr-2 ui-button-outlined">
+                            <p:resetInput target="panel"/>
+                        </p:commandButton>
+
+                        <p:commandButton value="Reset p:ajax">
+                            <p:ajax update="panel" resetValues="true"/>
+                        </p:commandButton>
+                    </div>
+                </div>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

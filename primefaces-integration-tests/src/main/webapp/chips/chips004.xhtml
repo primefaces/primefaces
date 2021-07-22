@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true">
+                <p:autoUpdate/>
+            </p:messages>
+
+            <!-- GitHub #1895/#6691: Chips allow pasting of delimited list -->
+            <p:inputText id="clipboard" value="#{chips004.clipboard}"/>
+            <p:chips id="chips" value="#{chips004.values}" unique="true" separator=";" addOnPaste="true"/>
+
+            <p:commandButton id="button" value="Submit" update="@form" action="#{chips004.submit}"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

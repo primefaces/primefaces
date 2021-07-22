@@ -1,0 +1,369 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:sc="http://primefaces.org/ui/showcase"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            /** Demo **/
+            .ui-outputlabel {
+                font-weight: bold;
+            }
+
+            .ui-orderlist .ui-orderlist-list {
+                height: auto;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        Responsive Design
+    </ui:define>
+
+    <ui:define name="description">
+        In combination with <h:link outcome="/ui/panel/grid"
+                                    value="Grid CSS"/>, ui-fluid style class provides fluid width for efficient use of space in screen. This example
+        demonstrates ui-fluid in combination with the components having built-in responsive modes.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/core/responsive?id=responsive-design"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <div class="ui-fluid">
+                    <p:panelGrid columns="4"
+                                 columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-4,ui-g-12 ui-md-2,ui-g-12 ui-md-4"
+                                 layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+                        <p:outputLabel for="input" value="Input"/>
+                        <p:inputText id="input"/>
+
+                        <p:outputLabel for="area" value="Textarea"/>
+                        <p:inputTextarea id="area"/>
+
+                        <p:outputLabel for="calendar" value="Calendar"/>
+                        <p:calendar id="calendar"/>
+
+                        <p:outputLabel for="ac" value="Auto Complete"/>
+                        <p:autoComplete id="ac" completeMethod="#{autoCompleteView.completeText}"/>
+
+                        <p:outputLabel for="mask" value="Mask"/>
+                        <p:inputMask id="mask" mask="99/99/9999"/>
+
+                        <p:outputLabel for="pwd" value="Password"/>
+                        <p:password id="pwd"/>
+
+                        <p:outputLabel for="keyboard" value="Keyboard"/>
+                        <p:keyboard id="keyboard"/>
+
+                        <p:outputLabel for="onemenu" value="OneMenu"/>
+                        <p:selectOneMenu id="onemenu">
+                            <f:selectItem itemLabel="Select One" itemValue=""/>
+                            <f:selectItem itemLabel="Option 1" itemValue="Option 1"/>
+                            <f:selectItem itemLabel="Option 2" itemValue="Option 2"/>
+                            <f:selectItem itemLabel="Option 3" itemValue="Option 3"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="spinner" value="Spinner"/>
+                        <p:spinner id="spinner"/>
+
+                        <p:outputLabel for="slider" value="Slider"/>
+                        <p:outputPanel>
+                            <p:inputText id="slider"/>
+                            <p:slider for="slider"/>
+                        </p:outputPanel>
+
+                        <p:outputLabel for="radio" value="Radio"/>
+                        <p:selectOneRadio id="radio" value="#{radioView.city2}" layout="responsive" columns="3">
+                            <f:selectItems value="#{radioView.cities}" var="c" itemLabel="#{c}" itemValue="#{c}"/>
+                        </p:selectOneRadio>
+
+                        <p:outputLabel for="chkbox" value="Checkbox"/>
+                        <p:selectManyCheckbox id="chkbox" value="#{checkboxView.selectedCities2}" layout="responsive"
+                                              columns="3">
+                            <f:selectItems value="#{checkboxView.cities}" var="c" itemLabel="#{city}"
+                                           itemValue="#{city}"/>
+                        </p:selectManyCheckbox>
+
+                        <p:outputLabel for="btn" value="Button"/>
+                        <p:commandButton id="btn" value="Edit" icon="pi pi-pencil" type="button"/>
+
+                        <p:outputLabel for="spbtn" value="SplitButton"/>
+                        <p:splitButton id="spbtn" value="Save" type="button" icon="pi pi-save">
+                            <p:menuitem value="Update" url="#" icon="pi pi-refresh"/>
+                            <p:menuitem value="Delete" url="#" icon="pi pi-times"/>
+                            <p:divider />
+                            <p:menuitem value="Homepage" url="http://www.primefaces.org" icon="pi pi-home"/>
+                        </p:splitButton>
+
+                        <p:outputLabel for="chkmenu" value="Checkbox Menu"/>
+                        <p:selectCheckboxMenu id="chkmenu" label="Cities">
+                            <f:selectItems value="#{checkboxView.cities}"/>
+                        </p:selectCheckboxMenu>
+
+                        <p:outputLabel for="booleanBtn" value="Boolean Button"/>
+                        <p:selectBooleanButton id="booleanBtn" onLabel="Yes" offLabel="No" onIcon="pi pi-check"
+                                               offIcon="pi pi-times"/>
+
+                        <p:outputLabel for="oneBtn" value="OneButton"/>
+                        <p:selectOneButton id="oneBtn">
+                            <f:selectItem itemLabel="Option 1" itemValue="Option 1"/>
+                            <f:selectItem itemLabel="Option 2" itemValue="Option 2"/>
+                        </p:selectOneButton>
+
+                        <p:outputLabel for="manyBtn" value="Many Button"/>
+                        <p:selectOneButton id="manyBtn">
+                            <f:selectItem itemLabel="Spark" itemValue="Spark"/>
+                            <f:selectItem itemLabel="Ronin" itemValue="Ronin"/>
+                            <f:selectItem itemLabel="Rio" itemValue="Rio"/>
+                        </p:selectOneButton>
+
+                        <p:outputLabel for="listbox" value="Listbox"/>
+                        <p:selectOneListbox id="listbox">
+                            <f:selectItem itemLabel="Sentinel" itemValue="Sentinel"/>
+                            <f:selectItem itemLabel="Spark" itemValue="Spark"/>
+                            <f:selectItem itemLabel="Ronin" itemValue="Ronin"/>
+                            <f:selectItem itemLabel="Rio" itemValue="Rio"/>
+                            <f:selectItem itemLabel="Primus" itemValue="Primus"/>
+                        </p:selectOneListbox>
+
+                        <p:spacer/>
+                        <p:spacer/>
+                    </p:panelGrid>
+
+                    <p:commandButton id="dialog" value="Dialog" icon="pi pi-home" type="button"
+                                     onclick="PF('dlg').show()"
+                                     style="margin-top:20px;display:block"/>
+
+                    <p:dialog header="Login" widgetVar="dlg" resizable="false" draggable="false" responsive="true">
+                        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank"
+                                     columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-8">
+                            <h:outputLabel for="username" value="Username:"/>
+                            <p:inputText id="username"/>
+
+                            <h:outputLabel for="password" value="Password:"/>
+                            <p:password id="password"/>
+
+                            <f:facet name="footer">
+                                <p:commandButton value="Login" type="button" onclick="PF('dlg').hide()"/>
+                            </f:facet>
+                        </p:panelGrid>
+                    </p:dialog>
+
+                    <p:chart type="line" model="#{chartView.lineModel1}" style="height:300px;margin:20px 0"
+                             responsive="true"/>
+
+                    <p:dataTable var="product" value="#{dtBasicView.products}" reflow="true" style="margin-top:20px">
+                        <f:facet name="header">
+                            DataTable
+                        </f:facet>
+                        <p:column headerText="Code">
+                            <h:outputText value="#{product.code}"/>
+                        </p:column>
+
+                        <p:column headerText="Name">
+                            <h:outputText value="#{product.name}"/>
+                        </p:column>
+
+                        <p:column headerText="Category">
+                            <h:outputText value="#{product.category}"/>
+                        </p:column>
+
+                        <p:column headerText="Quantity">
+                            <h:outputText value="#{product.quantity}"/>
+                        </p:column>
+                    </p:dataTable>
+
+                    <p:dataGrid var="product" value="#{dataGridView.products}" columns="3" layout="grid"
+                                rows="12" paginator="true" style="margin-top:20px">
+
+                        <f:facet name="header">
+                            DataGrid
+                        </f:facet>
+
+                        <div class="product">
+                            <div class="product-grid-item card" style="margin-bottom: 0">
+                                <div class="product-grid-item-top">
+                                    <div>
+                                        <i class="pi pi-tag product-category-icon"/>
+                                        <span class="product-category">#{product.category}</span>
+                                    </div>
+                                    <span class="product-badge status-#{product.inventoryStatus.name().toLowerCase()}">#{product.inventoryStatus.text}</span>
+                                </div>
+                                <div class="product-grid-item-content">
+                                    <p:graphicImage name="demo/images/product/#{product.image}"/>
+                                    <div class="product-name">#{product.name}</div>
+                                    <div class="product-description">#{product.description}</div>
+                                    <p:rating readonly="true" value="#{product.rating}"/>
+                                </div>
+                                <div class="product-grid-item-bottom">
+                                    <h:outputText value="#{product.price}" styleClass="product-price">
+                                        <f:convertNumber currencySymbol="$" type="currency"/>
+                                    </h:outputText>
+                                    <p:commandButton value="Add To Cart" icon="pi pi-shopping-cart" style="width: 10rem"
+                                                     disabled="#{product.inventoryStatus == 'OUTOFSTOCK'}">
+                                    </p:commandButton>
+                                </div>
+                            </div>
+                        </div>
+
+                    </p:dataGrid>
+
+                    <p:tree value="#{treeIconView.root}" var="doc" style="margin-top:20px">
+
+                        <p:treeNode expandedIcon="pi pi-folder-open" collapsedIcon="pi pi-folder">
+                            <h:outputText value="#{doc}"/>
+                        </p:treeNode>
+
+                    </p:tree>
+
+                    <p:pickList id="PojoPickList" value="#{pickListView.countries}" var="c" effect="bounce"
+                                style="margin-top:20px"
+                                itemValue="#{c}" itemLabel="#{c.name}" showSourceControls="true"
+                                showTargetControls="true" converter="#{countryConverter}" responsive="true">
+
+                        <f:facet name="sourceCaption">Available</f:facet>
+                        <f:facet name="targetCaption">Starting</f:facet>
+
+                        <p:column style="width:45px">
+                            <span class="flag flag-#{c.code}" style="width: 30px; height: 20px"/>
+                        </p:column>
+
+                        <p:column>
+                            <h:outputText value="#{c.name}"/>
+                        </p:column>
+                    </p:pickList>
+
+                    <p:carousel value="#{carouselView.products}" headerText="Carousel" var="product"
+                                itemStyle="text-align:center" responsive="true" style="margin-top:20px">
+                        <div class="product">
+                            <div class="product-grid-item card" style="margin-bottom: 0">
+                                <div class="product-grid-item-top">
+                                    <div>
+                                        <i class="pi pi-tag product-category-icon"/>
+                                        <span class="product-category">#{product.category}</span>
+                                    </div>
+                                    <span class="product-badge status-#{product.inventoryStatus.name().toLowerCase()}">#{product.inventoryStatus.text}</span>
+                                </div>
+                                <div class="product-grid-item-content">
+                                    <p:graphicImage name="demo/images/product/#{product.image}"/>
+                                    <div class="product-name">#{product.name}</div>
+                                    <div class="product-description">#{product.description}</div>
+                                    <p:rating readonly="true" value="#{product.rating}"/>
+                                </div>
+                                <div class="product-grid-item-bottom">
+                                    <h:outputText value="#{product.price}" styleClass="product-price">
+                                        <f:convertNumber currencySymbol="$" type="currency"/>
+                                    </h:outputText>
+                                    <p:commandButton value="Add To Cart" icon="pi pi-shopping-cart" style="width: 10rem"
+                                                     disabled="#{product.inventoryStatus == 'OUTOFSTOCK'}">
+                                    </p:commandButton>
+                                </div>
+                            </div>
+                        </div>
+
+                    </p:carousel>
+
+                    <p:orderList value="#{orderListView.countries}" var="c" itemValue="#{c}"
+                                 converter="#{countryConverter}" controlsLocation="left" responsive="true"
+                                 style="margin-top:20px">
+                        <f:facet name="caption">Available</f:facet>
+
+                        <p:column style="width:45px">
+                            <span class="flag flag-#{c.code}" style="width: 30px; height: 20px"/>
+                        </p:column>
+
+                        <p:column>
+                            <h:outputText value="#{c.name}"/>
+                        </p:column>
+                    </p:orderList>
+
+
+                    <p:accordionPanel style="margin-top:20px">
+                        <p:tab title="Header I">
+                            <p:panelGrid columns="2" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-8" layout="grid"
+                                         styleClass="ui-panelgrid-blank">
+                                <h:outputText
+                                        value="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."/>
+                            </p:panelGrid>
+                        </p:tab>
+                        <p:tab title="Header II">
+                            <p:panelGrid columns="2" columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-10" layout="grid"
+                                         styleClass="ui-panelgrid-blank">
+                                <h:outputText
+                                        value="Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi."/>
+                            </p:panelGrid>
+                        </p:tab>
+                        <p:tab title="Header III">
+                            <p:panelGrid columns="2" columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-10" layout="grid"
+                                         styleClass="ui-panelgrid-blank">
+                                <h:outputText
+                                        value="At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus."/>
+                            </p:panelGrid>
+                        </p:tab>
+                    </p:accordionPanel>
+
+                    <div class="ui-g" style="margin-top: 20px;">
+                        <div class="ui-g-12 ui-md-6">
+                            <p:menu toggleable="true">
+                                <p:submenu label="File">
+                                    <p:menuitem value="Save" url="#" icon="pi pi-save"/>
+                                    <p:menuitem value="Update" url="#" icon="pi pi-refresh"/>
+                                </p:submenu>
+                                <p:submenu label="Edit">
+                                    <p:menuitem value="Delete" url="#" icon="pi pi-times"/>
+                                </p:submenu>
+                                <p:submenu label="View">
+                                    <p:menuitem value="External" url="http://www.primefaces.org" icon="pi pi-home"/>
+                                    <p:menuitem value="Internal" icon="pi pi-star"/>
+                                </p:submenu>
+                            </p:menu>
+                        </div>
+                        <div class="ui-g-12 ui-md-6">
+                            <p:panelMenu>
+                                <p:submenu label="Ajax Menuitems">
+                                    <p:menuitem value="Save" url="#" icon="pi pi-save"/>
+                                    <p:menuitem value="Update" url="#" icon="pi pi-refresh"/>
+                                </p:submenu>
+                                <p:submenu label="Non-Ajax Menuitem">
+                                    <p:menuitem value="Delete" url="#" icon="pi pi-times"/>
+                                </p:submenu>
+                                <p:divider />
+                                <p:submenu label="Navigations">
+                                    <p:submenu label="Links" icon="pi pi-home">
+                                        <p:submenu label="PrimeFaces" icon="pi pi-briefcase">
+                                            <p:menuitem value="Home" url="http://www.primefaces.org" icon="pi pi-home"/>
+                                            <p:menuitem value="Docs" url="http://www.primefaces.org/documentation"
+                                                        icon="pi pi-file"/>
+                                            <p:menuitem value="Download" url="http://www.primefaces.org/downloads"
+                                                        icon="pi pi-arrow-down"/>
+                                            <p:menuitem value="Support" url="http://www.primefaces.org/support"
+                                                        icon="pi pi-briefcase"/>
+                                        </p:submenu>
+                                    </p:submenu>
+                                    <p:menuitem value="Mobile" icon="pi pi-mobile"/>
+                                </p:submenu>
+                            </p:panelMenu>
+                        </div>
+                    </div>
+
+                    <p:panel header="Panel" footer="Details" style="margin-top:20px">
+                        <p:panelGrid columns="2" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-8" layout="grid"
+                                     styleClass="ui-panelgrid-blank">
+                            <h:outputText
+                                    value="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."/>
+                        </p:panelGrid>
+                    </p:panel>
+                </div>
+            </h:form>
+        </div>
+    </ui:define>
+
+    <ui:define name="source">
+        <sc:tabscode value="#{sc:getFilesContent('/ui/misc/responsive.xhtml', false)}"/>
+    </ui:define>
+
+</ui:composition>

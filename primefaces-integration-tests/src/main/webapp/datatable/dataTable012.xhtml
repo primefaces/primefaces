@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form1">
+            <p:dataTable id="datatable1" value="#{dataTable012.progLanguages1}" var="lang" sortBy="#{dataTable012.sortBy}">
+                <f:facet name="header">
+                    Single sort; sortBy on p:column; initial sort via sortBy on dataTable
+                </f:facet>
+
+                <p:column headerText="ID" sortBy="#{lang.id}">
+                    <h:outputText value="#{lang.id}" />
+                </p:column>
+
+                <p:column headerText="Name" sortBy="#{lang.name}">
+                    <h:outputText value="#{lang.name}" />
+                </p:column>
+
+                <p:column headerText="First appeared" sortBy="#{lang.firstAppeared}">
+                    <h:outputText value="#{lang.firstAppeared}" />
+                </p:column>
+            </p:dataTable>
+
+            <p:commandButton id="button1" value="Submit" update="@form"/>
+            <p:commandButton id="buttonResetTable1" value="reset table" update="@form" action="#{dataTable012.resetTable1()}" />
+        </h:form>
+
+        <h:form id="form2">
+            <p:dataTable id="datatable2" value="#{dataTable012.progLanguages2}" var="lang" sortBy="#{dataTable012.sortBy}">
+                <f:facet name="header">
+                    Single sort; field on p:column; initial sort via sortBy on dataTable
+                </f:facet>
+
+                <p:column headerText="ID" field="id">
+                    <h:outputText value="#{lang.id}" />
+                </p:column>
+
+                <p:column headerText="Name" field="name">
+                    <h:outputText value="#{lang.name}" />
+                </p:column>
+
+                <p:column headerText="First appeared" field="firstAppeared">
+                    <h:outputText value="#{lang.firstAppeared}" />
+                </p:column>
+            </p:dataTable>
+
+            <p:commandButton id="button2" value="Submit" update="@form"/>
+            <p:commandButton id="buttonResetTable2" value="reset table" update="@form" action="#{dataTable012.resetTable2()}" />
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

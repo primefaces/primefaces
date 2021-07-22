@@ -40,7 +40,7 @@ onmousedown | null | String | Client side callback to execute when a pointer is 
 onmouseout | null | String | Client side callback to execute when a pointer is moved away from component.
 onmouseover | null | String | Client side callback to execute when a pointer is moved onto component.
 onmouseup | null | String | Client side callback to execute when a pointer is released over component.
-indicateRequired | auto | String | auto, true or false. Displays * symbol if the input is required.
+indicateRequired | auto | String | auto, autoSkipDisabled, true or false. Displays * symbol if the input is required.
 
 ## Getting Started with OutputLabel
 Usage is same as standard outputLabel, an input component is associated with for attribute.
@@ -80,6 +80,9 @@ When _indicateRequired_ is `auto` and the target input is required, or _indicate
 
 In case of _indicateRequired_ is set to `auto` and the input is not marked as required, PrimeFaces will automatically check for @NotBlank/@NotEmpty.
 PrimeFaces also checks for @NotNull, but only when `javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL` is set to `true`.
+
+In case of _indicateRequired_ is set to `autoSkipDisabled` it is the same as `auto` except is will check the state of the 
+input component if it is read-only or disabled.
 
 ## Validation failed
 In case any validation fails on target input, the label will also be displayed with theme aware error styles.

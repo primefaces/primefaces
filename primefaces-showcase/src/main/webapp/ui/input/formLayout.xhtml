@@ -1,0 +1,173 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Form Layout
+    </ui:define>
+
+    <ui:define name="description">
+        Form layout is a CSS utility optimized for creating forms with ease. FormLayout is not included in PrimeFaces as it is provided by
+        <a href="https://github.com/primefaces/primeflex">PrimeFlex</a>,
+        a shared grid library between PrimeFaces, PrimeNG, PrimeReact and PrimeVue projects.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/formlayout"/>
+
+    <ui:define name="implementation">
+
+        <h:form>
+
+            <div class="card">
+                <h5>Vertical</h5>
+                <div class="ui-fluid">
+                    <div class="p-field">
+                        <p:outputLabel for="firstname1" value="Firstname"/>
+                        <p:inputText id="firstname1"/>
+                    </div>
+                    <div class="p-field">
+                        <p:outputLabel for="lastname1" value="Lastname"/>
+                        <p:inputText id="lastname1"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h5>Vertical and Grid</h5>
+                <div class="ui-fluid p-formgrid p-grid">
+                    <div class="p-field p-col">
+                        <p:outputLabel for="firstname2" value="Firstname"/>
+                        <p:inputText id="firstname2"/>
+                    </div>
+                    <div class="p-field p-col">
+                        <p:outputLabel for="lastname2" value="Lastname"/>
+                        <p:inputText id="lastname2"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h5>Horizontal and Fixed Width</h5>
+                <div class="p-field p-grid">
+                    <p:outputLabel for="firstname3" styleClass="p-col-fixed" style="width:100px" value="Firstname"/>
+                    <div class="p-col">
+                        <p:inputText id="firstname3"/>
+                    </div>
+                </div>
+                <div class="p-field p-grid">
+                    <p:outputLabel for="lastname3" styleClass="p-col-fixed" style="width:100px" value="Lastname"/>
+                    <div class="p-col">
+                        <p:inputText id="lastname3"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h5>Horizontal and Fluid</h5>
+                <div class="ui-fluid">
+                    <div class="p-field p-grid">
+                        <p:outputLabel for="firstname4" styleClass="p-col-12 p-md-2" value="Firstname"/>
+                        <div class="p-col-12 p-md-10">
+                            <p:inputText id="firstname4"/>
+                        </div>
+                    </div>
+                    <div class="p-field p-grid">
+                        <p:outputLabel for="lastname4" styleClass="p-col-12 p-md-2" value="Lastname"/>
+                        <div class="p-col-12 p-md-10">
+                            <p:inputText id="lastname4"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h5>Inline</h5>
+                <div class="p-formgroup-inline">
+                    <div class="p-field">
+                        <p:outputLabel for="firstname5" styleClass="ui-sr-only" value="Firstname"/>
+                        <p:inputText id="firstname5" placeholder="Firstname"/>
+                    </div>
+                    <div class="p-field">
+                        <p:outputLabel for="lastname5" styleClass="ui-sr-only" value="Lastname"/>
+                        <p:inputText id="lastname5" placeholder="Lastname"/>
+                    </div>
+                    <p:button value="Submit"/>
+                </div>
+            </div>
+
+            <div class="card">
+                <h5>Vertical Checkbox</h5>
+                <div class="p-field-checkbox">
+                    <p:selectBooleanCheckbox id="v_option1"/>
+                    <p:outputLabel for="v_option1" value="Option 1"/>
+                </div>
+                <div class="p-field-checkbox">
+                    <p:selectBooleanCheckbox id="v_option2"/>
+                    <p:outputLabel for="v_option2" value="Option 2"/>
+                </div>
+
+                <h5>Horizontal Checkbox</h5>
+                <div class="p-formgroup-inline">
+                    <div class="p-field-checkbox">
+                        <p:selectBooleanCheckbox id="h_option1"/>
+                        <p:outputLabel for="h_option1" value="Option 1"/>
+                    </div>
+                    <div class="p-field-checkbox">
+                        <p:selectBooleanCheckbox id="h_option2"/>
+                        <p:outputLabel for="h_option2" value="Option 2"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h5>Help Text</h5>
+                <div class="p-field ui-fluid">
+                    <p:outputLabel for="username" value="Username"/>
+                    <p:inputText id="username"/>
+                    <small id="username-help">Enter your username to reset your password.</small>
+                </div>
+            </div>
+
+            <div class="card">
+                <h5>Advanced</h5>
+                <div class="ui-fluid p-formgrid p-grid">
+                    <div class="p-field p-col-12 p-md-6">
+                        <p:outputLabel for="firstname6" value="Firstname"/>
+                        <p:inputText id="firstname6"/>
+                    </div>
+                    <div class="p-field p-col-12 p-md-6">
+                        <p:outputLabel for="lastname6" value="Lastname"/>
+                        <p:inputText id="lastname6"/>
+                    </div>
+                    <div class="p-field p-col-12">
+                        <p:outputLabel for="address" value="Address"/>
+                        <p:inputTextarea id="address" rows="4"/>
+                    </div>
+                    <div class="p-field p-col-12 p-md-6">
+                        <p:outputLabel for="city" value="City"/>
+                        <p:inputText id="city"/>
+                    </div>
+                    <div class="p-field p-col-12 p-md-3">
+                        <p:outputLabel for="state" value="State"/>
+                        <p:selectOneMenu id="state">
+                            <f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItem itemLabel="Option 1" itemValue="Option 1"/>
+                            <f:selectItem itemLabel="Option 2" itemValue="Option 2"/>
+                            <f:selectItem itemLabel="Option 3" itemValue="Option 3"/>
+                        </p:selectOneMenu>
+                    </div>
+                    <div class="p-field p-col-12 p-md-3">
+                        <p:outputLabel for="zip" value="Zip"/>
+                        <p:inputText id="zip"/>
+                    </div>
+                </div>
+            </div>
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

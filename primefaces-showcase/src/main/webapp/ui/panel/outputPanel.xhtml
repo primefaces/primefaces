@@ -1,0 +1,45 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        OutputPanel
+    </ui:define>
+
+    <ui:define name="description">
+        Output panel is a container element with several use cases such as autoUpdate and deferred loading. This example demonstrates the deferred loading feature with two modes
+        where the content of the panel is loaded after the page itself is loaded to speed up initial page load time. There are two deferred modes, "load" (after page load) and "visible"
+        (after page load and visible after page scroll). A progress indicator is also provided while loading the content.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/outputpanel"/>
+    <ui:param name="widgetLink" value="outputpanel-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:outputPanel deferred="true">
+                    <h5>Loaded after page load.</h5>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </p:outputPanel>
+
+                <div style="height:1000px"></div>
+
+                <p:outputPanel deferred="true" deferredMode="visible">
+                    <h5>Loaded after the panel becomes visible on page scroll</h5>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </p:outputPanel>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Barcode
+    </ui:define>
+
+    <ui:define name="description">
+        Barcode component generates various types of barcodes in PNG or SVG formats. Browsers with no SVG support fallsback to PNG automatically.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/barcode"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:panelGrid columns="2" cellpadding="7">
+                <h:outputText value="Interleaved 2 of 5"/>
+                <p:barcode value="0123456789" type="int2of5"/>
+
+                <h:outputText value="Codabar"/>
+                <p:barcode value="0123456789" type="codabar"/>
+
+                <h:outputText value="Code39"/>
+                <p:barcode value="0123456789" type="code39"/>
+
+                <h:outputText value="Code128"/>
+                <p:barcode value="0123456789" type="code128"/>
+
+                <h:outputText value="EAN-8"/>
+                <p:barcode value="20123451" type="ean8"/>
+
+                <h:outputText value="EAN-13"/>
+                <p:barcode value="0123456789012" type="ean13"/>
+
+                <h:outputText value="UPC-A (PNG)"/>
+                <p:barcode value="01234567895" type="upca" format="png"/>
+
+                <h:outputText value="UPC-E (Vertical)"/>
+                <p:barcode value="01234133" type="upce" orientation="90"/>
+
+                <h:outputText value="PDF417"/>
+                <p:barcode value="0123456789" type="pdf417"/>
+
+                <h:outputText value="DataMatrix"/>
+                <p:barcode value="0123456789" type="datamatrix"/>
+
+                <h:outputText value="Postnet"/>
+                <p:barcode value="0123456789" type="postnet"/>
+
+                <h:outputText value="QR"/>
+                <p:barcode value="0123456789" type="qr" width="125" height="125"/>
+            </h:panelGrid>
+        </div>
+    </ui:define>
+
+</ui:composition>

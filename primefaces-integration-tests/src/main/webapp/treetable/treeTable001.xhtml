@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true">
+                <p:autoUpdate/>
+            </p:messages>
+
+            <p:treeTable value="#{treeTable001.root}" var="document" id="treeTable" widgetVar="treeTable"
+                         sortMode="single" allowUnsorting="true" selectionMode="single"
+                         selection="#{treeTable001.selectedNode}" filterEvent="enter">
+                <f:facet name="header">
+                    <div class="p-d-flex p-ai-center p-jc-between">
+                        <span>Document Viewer</span>
+                        <p:inputText id="globalFilter" onchange="PF('treeTable').filter()" style="width:10rem" placeholder="Enter keyword" />
+                    </div>
+                </f:facet>
+                <p:column headerText="Name" sortBy="#{document.name}" filterBy="#{document.name}" filterMatchMode="contains">
+                    <h:outputText value="#{document.name}"/>
+                </p:column>
+                <p:column headerText="Size" sortBy="#{document.size}">
+                    <h:outputText value="#{document.size}"/>
+                </p:column>
+                <p:column headerText="Type" sortBy="#{document.type}" filterBy="#{document.type}" filterMatchMode="exact">
+                    <f:facet name="filter">
+                        <p:selectOneMenu onchange="PF('treeTable').filter()" styleClass="custom-filter">
+                            <f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItem itemLabel="Folder" itemValue="Folder"/>
+                            <f:selectItem itemLabel="Application" itemValue="Application"/>
+                            <f:selectItem itemLabel="Zip" itemValue="Zip"/>
+                            <f:selectItem itemLabel="Text" itemValue="Text"/>
+                            <f:selectItem itemLabel="Document" itemValue="Document"/>
+                            <f:selectItem itemLabel="Resume" itemValue="Resume"/>
+                            <f:selectItem itemLabel="Excel" itemValue="Excel"/>
+                            <f:selectItem itemLabel="PDF" itemValue="PDF"/>
+                            <f:selectItem itemLabel="Link" itemValue="Link"/>
+                            <f:selectItem itemLabel="Picture" itemValue="Picture"/>
+                            <f:selectItem itemLabel="Video" itemValue="Video"/>
+                        </p:selectOneMenu>
+                    </f:facet>
+
+                    <h:outputText value="#{document.type}"/>
+                </p:column>
+                <p:column style="width:3rem">
+                    <p:commandButton title="View Detail" icon="pi pi-search" action="#{treeTable001.showSelectedDocument}">
+                        <f:setPropertyActionListener value="#{document}" target="#{treeTable001.selectedDocument}"/>
+                    </p:commandButton>
+                </p:column>
+
+                <p:ajax event="select" listener="#{treeTable001.selectNode}" />
+                <p:ajax event="unselect" listener="#{treeTable001.unselectNode}" />
+            </p:treeTable>
+
+            <p:commandButton id="button" value="Submit" update="@form"/>
+            <p:commandButton id="buttonUpdate" value="Update" update="treeTable"/>
+            <p:commandButton id="buttonResetTable" value="Reset" update="@form" action="#{treeTable001.resetTable()}" />
+            <p:commandButton id="buttonShowSelectedNode" value="show selected node" action="#{treeTable001.showSelectedNode}" />
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

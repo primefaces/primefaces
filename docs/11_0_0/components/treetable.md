@@ -20,57 +20,62 @@ Treetable is is used for displaying hierarchical data in tabular format.
 | Name | Default | Type | Description |
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
+allowUnsorting | false | Boolean | Defines whether columns are allowed to be unsorted. Default is false.
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-value | null | Object | A TreeNode instance as the backing model.
-var | null | String | Name of the request-scoped variable used to refer each treenode.
-widgetVar | null | String | Name of the client side widget.
-style | null | String | Inline style of the container element.
-styleClass | null | String | Style class of the container element.
-selection | null | Object | Selection reference.
-selectionMode | null | String | Type of selection mode.
+cellSeparator | null | String | Separator text to use in output mode of editable cells with multiple components.
+cloneOnFilter | false | Boolean | Defines if nodes should be cloned on filter via Cloneable interface or Copy-Constructor (CustomNode(CustomNode original) or CustomNode(String type, Object data, TreeNode parent)). Normally the filtered nodes are new instanceof of DefaultTreeNode.
+currentPageReportTemplate | null | String | Template of the currentPageReport UI.
+dataLocale | null | Object | Locale to be used in features such as sorting, defaults to view locale.
+disabledTextSelection | true | Boolean | Disables text selection on row click.
+editable | false | Boolean | Controls incell editing.
+editingRow | false | Boolean | Defines if cell editors of row should be displayed as editable or not. Default is false meaning display mode
+editInitEvent | null | String | Defines a client side event to open cell on editable treetable.
+editMode | row | String | Defines edit mode, valid values are "row" (default) and "cell".
+emptyMessage | No records found | String | Text to display when there is no data to display.
+expandMode | children | String | Updates children only when set to “children” or the node itself with children when set to “self” on node expand.
+filterBy | null | SortMeta / Collection<SortMeta> | Property to be used for default sorting. Expects a single or a collection of SortMeta.
+filterDelay | 300 | Integer | Delay in milliseconds before sending an ajax filter query.
+filterEvent | keyup | String | Event triggering filter for input filters.
+filteredValue  | null | TreeNode | TreeNode to keep filtered data.
+first | 0 | Integer | Index of the first data to display.
+globalFilter | null | String | Value of the global filter to use when filtering by default.
+globalFilterFunction | null | MethodExpression | Custom implementation to globally filter a value against a constraint.
+globalFilterOnly | false | Boolean | When true this will hide all column filters and allow all columns to be filtered by global filter only.
+liveResize | false | Boolean | Columns are resized live in this mode without using a resize helper.
+nativeElements | false | Boolean | In native mode, treetable uses native checkboxes.
+nodeVar | null | String | Name of the request-scoped variable that'll be used to refer current treenode using EL.
+pageLinks | 10 | Integer | Maximum number of page links to display.
+paginatorAlwaysVisible | true | Boolean | Defines if paginator should be hidden if total data count is less than number of rows per page.
+paginatorPosition | both | String | Position of the paginator.
+paginatorTemplate | null | String | Template of the paginator.
+rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
+required | false | Boolean | Validation constraint for selection.
+requiredMessage | null | String | Message for required selection validation.
+resizableColumns | false | Boolean | Defines if colums can be resized or not.
+rows | 0 | Integer | Number of rows to display per page. Default value is 0 meaning to display all data available.
+rowsPerPageTemplate | null | String | Template of the rowsPerPage dropdown.
+rowStyleClass | null | String | Style class for each row.
+saveOnCellBlur | true | Boolean | Saves the changes in cell editing on blur, when set to false changes are discarded.
 scrollable | false | Boolean | Whether or not the data should be scrollable.
 scrollHeight | null | Integer | Height of scrollable data.
 scrollWidth | null | Integer | Width of scrollable data.
+selection | null | Object | Selection reference.
+selectionMode | null | String | Type of selection mode.
+showGridlines | false | Boolean | When enabled, cell borders are displayed.
+showUnselectableCheckbox | false | Boolean | Defines if in checkbox selection mode, a readonly checkbox should be displayed for an unselectable node.
+size | regular | String | Size of the table content, valid values are "small" and "large". Leave empty for regular size.
+skipChildren | false | Boolean | Ignores processing of children during lifecycle, improves performance if table only has output components.
+sortBy | null | FilterMeta / Collection<FilterMeta> | Property to be used for default sorting. Expects a single or a collection of SortMeta.
+sortMode | multiple | String | Defines sorting mode, valid values are _single_ and _multiple_.
+stickyHeader | false | Boolean | Sticky header stays in window viewport during scrolling.
+style | null | String | Inline style of the container element.
+styleClass | null | String | Style class of the container element.
 tableStyle | null | String | Inline style of the table element.
 tableStyleClass | null | String | Style class of the table element.
-emptyMessage | No records found | String | Text to display when there is no data to display.
-resizableColumns | false | Boolean | Defines if colums can be resized or not.
-rowStyleClass | null | String | Style class for each row.
-liveResize | false | Boolean | Columns are resized live in this mode without using a resize helper.
-required | false | Boolean | Validation constraint for selection.
-requiredMessage | null | String | Message for required selection validation.
-sortBy | null | FilterMeta / Collection<FilterMeta> | Property to be used for default sorting. Expects a single or a collection of SortMeta.
-nativeElements | false | Boolean | In native mode, treetable uses native checkboxes.
-dataLocale | null | Object | Locale to be used in features such as sorting, defaults to view locale.
-skipChildren | false | Boolean | Ignores processing of children during lifecycle, improves performance if table only has output components.
-showUnselectableCheckbox | false | Boolean | Defines if in checkbox selection mode, a readonly checkbox should be displayed for an unselectable node.
-nodeVar | null | String | Name of the request-scoped variable that'll be used to refer current treenode using EL.
-expandMode | children | String | Updates children only when set to “children” or the node itself with children when set to “self” on node expand.
-stickyHeader | false | Boolean | Sticky header stays in window viewport during scrolling.
-editable | false | Boolean | Controls incell editing.
-editMode | row | String | Defines edit mode, valid values are "row" (default) and "cell".
-editingRow | false | Boolean | Defines if cell editors of row should be displayed as editable or not. Default is false meaning display mode
-cellSeparator | null | String | Separator text to use in output mode of editable cells with multiple components.
-paginatorTemplate | null | String | Template of the paginator.
-rowsPerPageTemplate | null | String | Template of the rowsPerPage dropdown.
-currentPageReportTemplate | null | String | Template of the currentPageReport UI.
-pageLinks | 10 | Integer | Maximum number of page links to display.
-paginatorPosition | both | String | Position of the paginator.
-paginatorAlwaysVisible | true | Boolean | Defines if paginator should be hidden if total data count is less than number of rows per page.
-rows | 0 | Integer | Number of rows to display per page. Default value is 0 meaning to display all data available.
-first | 0 | Integer | Index of the first data to display.
-disabledTextSelection | true | Boolean | Disables text selection on row click.
 touchable | true | Boolean | Enable touch support if browser detection supports it.
-editInitEvent | null | String | Defines a client side event to open cell on editable treetable.
-filterBy | null | SortMeta / Collection<SortMeta> | Property to be used for default sorting. Expects a single or a collection of SortMeta.
-allowUnsorting | false | Boolean | Defines whether columns are allowed to be unsorted. Default is false.
-sortMode | multiple | String | Defines sorting mode, valid values are _single_ and _multiple_.
-filteredValue  | null | TreeNode | TreeNode to keep filtered data.
-cloneOnFilter | false | Boolean | Defines if nodes should be cloned on filter via Cloneable interface or Copy-Constructor (CustomNode(CustomNode original) or CustomNode(String type, Object data, TreeNode parent)). Normally the filtered nodes are new instanceof of DefaultTreeNode.
-saveOnCellBlur | true | Boolean | Saves the changes in cell editing on blur, when set to false changes are discarded.
-size | regular | String | Size of the table content, valid values are "small" and "large". Leave empty for regular size.
-showGridlines | false | Boolean | When enabled, cell borders are displayed.
+value | null | Object | A TreeNode instance as the backing model.
+var | null | String | Name of the request-scoped variable used to refer each treenode.
+widgetVar | null | String | Name of the client side widget.
 
 ## Getting started with the TreeTable
 Similar to the Tree, TreeTable is populated with an _org.primefaces.model.TreeNode_ instance that

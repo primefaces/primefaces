@@ -1,0 +1,64 @@
+@mixin navlink {
+    text-decoration: none;
+    color: $linkColor;
+    font-weight: 600;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+@mixin flex() {
+    display: -ms-flexbox;
+    display: flex;
+}
+
+@mixin flex-wrap($value) {
+    -ms-flex-wrap: $value;
+    flex-wrap: $value;
+}
+
+@mixin flex-direction-row() {
+    -ms-flex-direction: row;
+    flex-direction: row;
+}
+
+@mixin flex-direction-column() {
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
+@mixin flex-justify-center() {
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+
+@mixin flex-justify-between() {
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+}
+
+@mixin flex-align-center() {
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+@mixin flex-align-start() {
+    -ms-flex-align: start;
+    align-items: flex-start;
+}
+
+@mixin flex-align-end() {
+    -ms-flex-align: end;
+    align-items: flex-end;
+}
+
+@mixin flex-justify-start() {
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+}
+
+@mixin flex-justify-end() {
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+}

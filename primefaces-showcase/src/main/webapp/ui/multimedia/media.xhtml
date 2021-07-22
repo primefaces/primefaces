@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Media
+    </ui:define>
+
+    <ui:define name="description">
+        Media component is a cross browser generic player to embed multimedia content in JSF pages.
+        Various formats such as flash, quicktime, windows media, realplayer and pdf are supported.
+        Suitable player is discovered using the source extension type and a player can be specified explicitly as well.
+        Media component can also play binary media using the StreamedContent API.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/media"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h5>PDF</h5>
+            <p:media value="/resources/demo/media/guide.pdf" width="100%" height="300px">
+                Your browser can't display pdf, <h:outputLink
+                    value="#{request.contextPath}/resources/demo/media/guide.pdf">click</h:outputLink> to download pdf instead.
+            </p:media>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,48 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Toolbar
+    </ui:define>
+
+    <ui:define name="description">
+        Toolbar is a grouping component for buttons and other content.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/toolbar"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl id="messages" showDetail="true"/>
+
+                <p:toolbar>
+                    <p:toolbarGroup>
+                        <p:commandButton type="button" value="New" icon="pi pi-file" styleClass="p-mr-2" />
+                        <p:commandButton type="button" value="Open" icon="pi pi-folder-open" styleClass="ui-button-success" />
+
+                        <i class="pi pi-bars p-px-2"/>
+
+                        <p:commandButton type="button" title="Save" icon="pi pi-save" styleClass="ui-button-help p-mr-2" />
+                        <p:commandButton type="button" title="Print" icon="pi pi-print" styleClass="ui-button-warning p-mr-2"/>
+                        <p:commandButton type="button" title="Delete" icon="pi pi-trash" styleClass="ui-button-danger"/>
+                    </p:toolbarGroup>
+
+                    <p:toolbarGroup align="right">
+                        <p:menuButton value="Options">
+                            <p:menuitem value="Save" action="#{toolbarView.save}" update="messages" icon="pi pi-save"/>
+                            <p:menuitem value="Update" action="#{toolbarView.update}" update="messages" icon="pi pi-refresh"/>
+                            <p:menuitem value="Delete" action="#{toolbarView.delete}" ajax="false" icon="pi pi-times"/>
+                            <p:menuitem value="Homepage" url="http://www.primefaces.org" icon="pi pi-home"/>
+                        </p:menuButton>
+                    </p:toolbarGroup>
+                </p:toolbar>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<facelet-taglib xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                version="2.2"
+                xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+                xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facelettaglibrary_2_2.xsd">
+
+    <namespace>http://primefaces.org/ui/showcase</namespace>
+
+    <function>
+        <function-name>getFilesContent</function-name>
+        <function-class>org.primefaces.showcase.util.ShowcaseUtil</function-class>
+        <function-signature>java.util.List getFilesContent(java.lang.String,java.lang.Boolean))</function-signature>
+    </function>
+
+    <tag>
+        <tag-name>tabscode</tag-name>
+        <source>tags/tabscode.xhtml</source>
+    </tag>
+
+    <tag>
+        <tag-name>convertOrder</tag-name>
+        <converter>
+            <converter-id>org.primefaces.showcase.converter.OrderConverter</converter-id>
+        </converter>
+        <attribute>
+            <name>events</name>
+            <required>true</required>
+            <type>java.util.List</type>
+        </attribute>
+    </tag>
+</facelet-taglib>

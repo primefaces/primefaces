@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true"/>
+
+            <p:datePicker id="datepicker" value="#{datePicker008.localDate}" pattern="MM/dd/yyyy">
+                <p:ajax event="dateSelect" process="@this" listener="#{datePicker008.select}" update="msgs"/>
+                <p:ajax event="change" process="@this" listener="#{datePicker008.select}" update="msgs"/>
+                <p:ajax event="viewChange" process="@none"/>
+                <p:ajax event="close" process="@this"/>
+            </p:datePicker>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

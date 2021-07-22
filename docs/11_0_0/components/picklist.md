@@ -63,9 +63,11 @@ orientation | horizontal | String | Defines layout orientation, valid values are
 responsive | false | Boolean | In responsive mode, picklist adjusts itself based on screen width.
 escape | true | Boolean | Defines if labels of the component are escaped or not.
 tabindex | null | String | Position of the element in the tabbing order.
-filterEvent | keyup | String | Client side event to invoke picklist filtering for input fields. Default is keyup.
-filterDelay | 300 | Integer  | Delay to wait in milliseconds before sending each filter query. Default is 300.
+filterEvent | keyup | String | Client side event to invoke picklist filtering for input fields.
+filterDelay | 300 | Integer  | Delay to wait in milliseconds before sending each filter query.
 escapeValue | true | Boolean | Defines if values of the component are escaped or not.
+transferOnDblclick | true | Boolean | Defines if items should be transfered on dblclick.
+transferOnCheckboxClick | false | Boolean | Defines if items should be transfered, instead of selected, on checkbox click. This only works in combination with showCheckbox=true.
 
 ## Getting started with PickList
 You need to create custom model called _org.primefaces.model.DualListModel_ to use PickList. As
@@ -183,7 +185,7 @@ to _onTransfer_ attribute.
         //item = e.item
         //fromList = e.from
         //toList = e.toList
-        //type = e.type (type of transfer; command, dblclick or dragdrop)
+        //type = e.type (type of transfer; command, dblclick, checkbox or dragdrop)
     }
 </script>
 ```

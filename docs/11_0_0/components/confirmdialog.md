@@ -72,8 +72,8 @@ the message, default severity is _alert_ and the other option is _info_.
 ## Global
 Creating a confirmDialog for a specific action is a repetitive task, to solve this global confirmDialog
 which is a singleton has been introduced. Trigger components need to have p:confirm behavior to
-use the confirm dialog. Component that trigger the actual command in dialog must have _ui-confirm-
-dialog-yes_ style class, similarly component to cancel the command must have _ui-confirm-dialog-no_.
+use the confirm dialog. Component that trigger the actual command in dialog must have _ui-confirmdialog-yes_
+style class, similarly component to cancel the command must have _ui-confirm-dialog-no_.
 At the moment p:confirm is supported by p:commandButton, p:commandLink and p:menuitem.
 
 ```xhtml

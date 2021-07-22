@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true">
+                <p:autoUpdate/>
+            </p:messages>
+
+            <p:treeTable value="#{treeTable001.root}" var="document" id="treetable" widgetVar="wgtTreeTable"
+                         sortMode="single" allowUnsorting="true" paginator="true" rows="3">
+                <f:facet name="header">
+                    Document Viewer
+                </f:facet>
+                <p:column headerText="Name" sortBy="#{document.name}">
+                    <h:outputText value="#{document.name}"/>
+                </p:column>
+                <p:column headerText="Size" sortBy="#{document.size}">
+                    <h:outputText value="#{document.size}"/>
+                </p:column>
+                <p:column headerText="Type" sortBy="#{document.type}">
+                    <h:outputText value="#{document.type}"/>
+                </p:column>
+                <p:column style="width:3rem">
+                    <p:commandButton update="form:msgs"
+                                     title="View Detail" icon="pi pi-search">
+                        <f:setPropertyActionListener value="#{document}" target="#{treeTable001.selectedDocument}"/>
+                    </p:commandButton>
+                </p:column>
+            </p:treeTable>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

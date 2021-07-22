@@ -95,6 +95,8 @@ public void view() {
 }
 ```
 
+!> If you use `contentWidth` you cannot use `contentWidth="auto"` because the dialog is displayed inside an IFrame. See: https://github.com/primefaces/primefaces/issues/2831
+
 Here is the full list of configuration options;
 
 | Name | Default | Type | Description |
@@ -105,7 +107,7 @@ resizable | true | Boolean | When enabled, makes dialog resizable.
 draggable | true | Boolean | When enabled, makes dialog draggable.
 width | auto | String | Width of the dialog.
 height | auto | String | Height of the dialog.
-contentWidth | 640 | String | Width of the dialog content.
+contentWidth | 640 | String | Width of the dialog content. NOTE: 'auto' cannot be used because the dialog is displayed in an IFrame.
 contentHeight | auto | String | Height of the dialog content.
 closable | true | Boolean | Whether the dialog can be closed or not.
 includeViewParams | false | Boolean | When enabled, includes the view parameters.

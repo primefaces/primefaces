@@ -1,7 +1,6 @@
-name: Java CI
+name: CI
 
 on: [push, pull_request]
-#on: push
 
 jobs:
   build:
@@ -26,11 +25,14 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Log github.ref
         run: echo "${{ github.ref }}"
-      - name: Build with Maven
-        run: mvn clean install -Psecurity-checks -Pjsdoc -Dmaven.javadoc.skip=true -Djsdoc.skip.typedoc=true --batch-mode --show-version
+      - name: Build
+        run: mvn clean install -Psecurity-checks,jsdoc,minify -Dmaven.javadoc.skip=true -Djsdoc.skip.typedoc=true --batch-mode --show-version
       - name: SonarCloud
         if: github.repository == 'primefaces/primefaces' && github.ref == 'refs/heads/master' && matrix.java == 11
-        run: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.organization=primefaces -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{secrets.SONAR_TOKEN}}
+        run: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.organization=primefaces -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{secrets.SONAR_TOKEN}}  -fprimefaces/pom.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Integration Tests
+        if: matrix.java == 11
+        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,headless,chrome,theme-saga,myfaces-2.3.x

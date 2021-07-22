@@ -1,0 +1,63 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .designer-image,
+            .architecture-image {
+                width: 75%;
+                margin: 0 auto;
+                display: block;
+                margin-top: 2rem;
+                margin-bottom: 2rem;
+            }
+            
+            @media screen and (max-width: 960px) {
+                .designer-image,
+                .architecture-image {
+                    width: 100%;
+                }
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        Theming
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="content-section documentation">
+            <h1>Theming</h1>
+            <p>Choose from a variety of themes or develop your own theme easily.</p>
+
+            <h5>Architecture</h5>
+            <p:graphicImage name="images/architecture.jpg" library="showcase" styleClass="architecture-image" />
+            <p>PrimeFaces is a design agnostic library so unlike other UI libraries it does not enforce a certain styling such as material or bootstrap. In order to achieve this, styling has been
+                separated into core and theme. Core resides inside PrimeFaces to implement the structure of the components such as positioning whereas theme brings the colors, paddings
+                and margins.</p>
+
+            <h5>Themes</h5>
+            <p>PrimeFaces offers various free themes and premium themes along with premium templates that provide an application layout as well. All the free themes are built with
+                the <a href="https://www.primefaces.org/designer/primefaces">Theme Designer</a> and the npm package brings the CSS output of the theme whereas SCSS is kept as a premium feature
+                in the designer. This means free themes are open source and for customization with SASS, a designer license needs to be acquired.</p>
+
+            <h5>Customization</h5>
+            <p>CSS of the themes share the same license as PrimeFaces which is MIT, this means the generated CSS can be customized per your needs however this should be avoided if your customizations
+                are not simple. For instance even to change a primary color, since there is no variable a find and replace should be performed various times. On the other hand, this can be achieved
+                by changing a single variable e.g. $primaryColor. Visit the <a href="https://www.primefaces.org/designer/api/primefaces/10.0.0">SASS API</a> for the documentation of available customization options.</p>
+
+            <p><a href="https://www.primefaces.org/designer/primefaces">Designer</a> is the ultimate tool to create your own PrimeFaces experience powered by a SASS based theme engine
+                with 500+ variables and a Visual Designer. PrimeFaces only ships the generated CSS of <b>Saga</b>, <b>Vela</b>, <b>Arya</b> and legacy themes whereas Designer provides
+                full access to the whole SASS structure and the variables of these pre-built themes for easier customization.</p>
+
+            <p>Whether you have your own style guide or just need a custom theme, Designer API is the right tool to design and bring them to existence.</p>
+
+            <p>Visit <a href="https://www.primefaces.org/designer/primefaces">Designer API HomePage</a> for more information and live demos.</p>
+            <a href="http://www.primefaces.org/designer/primefaces" class="designer-image">
+                <p:graphicImage name="images/prime-designer.jpg" library="showcase" style="width: 100%"  />
+            </a>
+
+        </div>
+    </ui:define>
+    
+</ui:composition>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:sc="http://primefaces.org/ui/showcase"
+      lang="#{p:language()}" xml:lang="#{p:language()}">
+
+    <h:head>
+        <f:facet name="first">
+            <script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-93461466-1"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'UA-93461466-1');
+            </script>
+            <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes"/>
+            <link href="#{resource['showcase/images/favicon-32x32.png']}" rel="icon" type="image/png" sizes="32x32"/>
+            <link href="#{resource['showcase/images/favicon-16x16.png']}" rel="icon" type="image/png" sizes="16x16"/>
+        </f:facet>
+        <title>PrimeFaces Showcase</title>
+
+        <h:outputStylesheet name="css/primeflex.css" library="showcase"/>
+        <h:outputStylesheet name="css/flags/flags.css" library="showcase"/>
+
+        <h:outputScript name="jquery/jquery.js" library="primefaces"/>
+        <h:outputScript name="jquery/jquery-plugins.js" library="primefaces"/>
+        <h:outputScript name="locales/locale-#{app.locale.language}.js" library="primefaces"/>
+
+        <ui:insert name="head"/>
+        
+    </h:head>
+
+    <h:body>
+        <f:view locale="#{app.locale.locale}">
+        <div class="layout-wrapper #{app.inputStyleClass}">
+            <ui:fragment rendered="false">
+                <div class="layout-news">
+                    <div class="layout-news-container">
+                        <h:graphicImage name="showcase/images/news/topbar-pandora-device.png" alt="Pandora" styleClass="layouts-news-mockup-image" />
+                        <a href="https://www.primefaces.org/store" target="_blank" class="layout-news-button">
+                            LEARN MORE<i class="pi pi-angle-right"></i>
+                        </a>
+                        <a tabindex="0" class="layout-news-close">
+                            <i class="pi pi-times"></i>
+                        </a>
+                    </div>
+                </div>
+            </ui:fragment>
+            
+            <ui:include src="./topbar.xhtml"></ui:include>
+            <ui:include src="./menu.xhtml"></ui:include>
+            <ui:include src="./config.xhtml"></ui:include>
+            <div class="layout-mask"></div>
+
+            <div class="layout-content">
+                <ui:insert name="content">
+                    <div class="content-section introduction">
+                        <div class="feature-intro">
+                            <h1><ui:insert name="title"></ui:insert></h1>
+                            <p><ui:insert name="description"></ui:insert></p>
+                        </div>
+                        <div class="feature-documentation">
+                            <ui:fragment rendered="#{not empty documentationLink}">
+                                <a class="documentation-link" href="https://primefaces.github.io/primefaces/10_0_0/##{documentationLink}" target="_blank">
+                                    <i class="pi pi-external-link"></i> 
+                                    <span>SERVER API</span>
+                                </a>
+                            </ui:fragment>
+                            <ui:fragment rendered="#{not empty widgetLink}">
+                                <a class="documentation-link" href="https://primefaces.github.io/primefaces/jsdocs/classes/src_primefaces.primefaces.widget.#{widgetLink}.html#{not empty widgetLinkHash ? '#'.concat(widgetLinkHash) : ''}" target="_blank">
+                                    <i class="pi pi-external-link"></i> 
+                                    <span>CLIENT API</span>
+                                </a>
+                            </ui:fragment>
+                            <ui:fragment rendered="#{not empty primefacesClientApiLink}">
+                                <a class="documentation-link" href="https://primefaces.github.io/primefaces/jsdocs/#{primefacesClientApiLink}" target="_blank">
+                                    <i class="pi pi-external-link"></i> 
+                                    <span>CLIENT API</span>
+                                </a>
+                            </ui:fragment>
+                        </div>
+                    </div>
+                    <div class="content-section implementation">
+                        <ui:insert name="implementation"></ui:insert>
+                    </div>
+                    <div class="content-section documentation">
+                        <ui:insert name="static-documentation"/>
+                        <ui:insert name="source">
+                            <sc:tabscode
+                                    value="#{sc:getFilesContent(facesContext.externalContext.requestServletPath, true)}">
+                                <ui:insert name="more-source-tabs"/>
+                            </sc:tabscode>
+                        </ui:insert>
+                    </div>
+                </ui:insert>
+                <ui:include src="./footer.xhtml"></ui:include>
+                <p:ajaxExceptionHandler type="javax.faces.application.ViewExpiredException" update="viewExpiredDialog" onexception="PF('viewExpiredDialog').show();" />
+                <p:dialog id="viewExpiredDialog" header="Session expired" widgetVar="viewExpiredDialog" height="500px" onShow="document.location.href = document.location.href;">
+                    <h3>Reloading page</h3>
+                    Message: #{pfExceptionHandler.message} <br/>
+                    StackTrace: <h:outputText value="#{pfExceptionHandler.formattedStackTrace}" escape="false" />
+                </p:dialog>
+            </div>
+        </div>
+
+        <ui:insert name="status">
+            <p:ajaxStatus styleClass="status-indicator">
+                <f:facet name="start">
+                    <i class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+                </f:facet>
+
+                <f:facet name="complete">
+                    <h:outputText value=""/>
+                </f:facet>
+            </p:ajaxStatus>
+        </ui:insert>
+
+        <ui:insert name="body"></ui:insert>
+
+        <h:outputStylesheet name="css/layout/layout.css" library="showcase"/>
+        <h:outputScript name="script/layout.js" library="showcase" />
+        <h:outputScript name="showcase/script/prism.js" />
+        </f:view>
+    </h:body>
+
+</html>
