@@ -27,7 +27,10 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -297,10 +300,16 @@ public class FileUploadUtils {
         PrimeApplicationContext appContext = PrimeApplicationContext.getCurrentInstance(context);
 
         if (sizeLimit != null && uploadedFile.getSize() > sizeLimit) {
+            if (LOGGER.isLoggable(Level.WARNING)) {
+                LOGGER.log(Level.WARNING, "File size exceeded. " + fileUpload.getInvalidSizeMessage());
+            }
             throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileUpload.getInvalidSizeMessage(), ""));
         }
 
         if (!isValidType(appContext, fileUpload, uploadedFile)) {
+            if (LOGGER.isLoggable(Level.WARNING)) {
+                LOGGER.log(Level.WARNING, "File type is invalid. " + fileUpload.getInvalidFileMessage());
+            }
             throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileUpload.getInvalidFileMessage(), ""));
         }
 

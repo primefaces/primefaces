@@ -23,15 +23,16 @@
  */
 package org.primefaces.model.file;
 
+import java.io.*;
+import java.net.URLDecoder;
+
+import javax.faces.FacesException;
+import javax.servlet.http.Part;
+
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.input.BoundedInputStream;
 import org.primefaces.shaded.owasp.SafeFile;
 import org.primefaces.util.FileUploadUtils;
-
-import javax.faces.FacesException;
-import javax.servlet.http.Part;
-import java.io.*;
-import java.net.URLDecoder;
 
 public class NativeUploadedFile implements UploadedFile, Serializable {
 
@@ -67,6 +68,9 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
 
     @Override
     public long getSize() {
+        if (part == null) {
+            return Long.MAX_VALUE;
+        }
         return part.getSize();
     }
 
