@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:dataTable id="datatable" widgetVar="wgtTable" value="#{dataTable001Dynamic.progLanguages}" var="lang" paginator="true" rows="3"
+                         filteredValue="#{dataTable001Dynamic.filteredProgLanguages}"
+                         filterEvent="enter"
+                         globalFilterOnly="#{dataTable001Dynamic.globalFilterOnly}"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="2,3,5,10">
+                <f:facet name="header">
+                    <div class="p-d-flex p-ai-center p-jc-between">
+                        <span>Programming Languages</span>
+                        <p:inputText id="globalFilter" onchange="PF('wgtTable').filter()" placeholder="Enter keyword"/>
+                    </div>
+                </f:facet>
+
+                <p:columns value="#{dataTable001Dynamic.columns}" var="column" headerText="#{column.header}" sortBy="#{dataTable001Dynamic.justReturn(lang[column.property])}" filterBy="#{dataTable001Dynamic.justReturn(lang[column.property])}" filterMatchMode="#{column.filterMatchMode}" >
+                    <h:outputText value="#{lang[column.property]}" />
+                </p:columns>
+            </p:dataTable>
+
+            <p:commandButton id="button" value="Submit" update="@form"/>
+            <p:commandButton id="buttonUpdate" value="Update" update="datatable"/>
+            <p:commandButton id="buttonResetTable" value="Reset" update="@form" action="#{dataTable001Dynamic.resetTable()}"/>
+            <p:commandButton id="buttonGlobalFilterOnly" value="Global Filter Only" update="@form" action="#{dataTable001Dynamic.toggleGlobalFilter()}"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

@@ -535,9 +535,9 @@ component is used to define the columns programmatically. It requires a collecti
 iterator variables called _var_ and _columnIndexVar_.
 
 ```xhtml
-<p:dataTable var="cars" value="#{tableBean.cars}">
-    <p:columns value="#{tableBean.columns}" var="column" headerText="#{column.header}" sortBy="#{column.property}" filterBy="#{column.property}">
-        <h:outputText value="#{cars[column.property]}" />
+<p:dataTable var="car" value="#{tableBean.cars}">
+    <p:columns value="#{tableBean.columns}" var="column" headerText="#{column.header}" sortBy="#{car[column.property]}" filterBy="#{car[column.property]}">
+        <h:outputText value="#{car[column.property]}" />
     </p:columns>
 </p:dataTable>
 ```
@@ -640,7 +640,7 @@ For frozen columns, use _frozenHeader_ , _frozenFooter_ , _scrollableHeader_ and
 Rows can be grouped in two ways, using headerRow, summaryRow components or with groupRow
 attribute on a column.
 
-!> Row Grouping does not work with Lazy Loading and LiveScroll as the grouping needs to know about all rows to properly 
+!> Row Grouping does not work with Lazy Loading and LiveScroll as the grouping needs to know about all rows to properly
 group the rows.
 
 ```xhtml

@@ -23,6 +23,7 @@
  */
 package org.primefaces.selenium.component;
 
+import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
@@ -46,6 +47,9 @@ public abstract class SelectManyMenu extends AbstractInputComponent {
 
     @FindBy(css = ".ui-selectlistbox-listcontainer .ui-selectlistbox-list")
     private WebElement selectlistbox;
+
+    @FindByParentPartialId(value = "_filter", searchFromRoot = true)
+    private WebElement filterInput;
 
     public void deselect(String label) {
         if (!isSelected(label)) {
@@ -103,9 +107,19 @@ public abstract class SelectManyMenu extends AbstractInputComponent {
     }
 
     public List<String> getLabels() {
-        return getInput().findElements(By.tagName("option")).stream()
+        JSONObject widgetConfiguration = getWidgetConfiguration();
+
+        if (widgetConfiguration.has("filter") && widgetConfiguration.getBoolean("filter")) {
+            return getSelectlistbox().findElements(By.cssSelector("li.ui-selectlistbox-item")).stream()
+                    .filter(listElt -> listElt.isDisplayed())
                     .map(e -> e.getAttribute("innerHTML"))
                     .collect(Collectors.toList());
+        }
+        else {
+            return getInput().findElements(By.tagName("option")).stream()
+                    .map(e -> e.getAttribute("innerHTML"))
+                    .collect(Collectors.toList());
+        }
     }
 
     public boolean isSelected(int index) {
@@ -135,5 +149,9 @@ public abstract class SelectManyMenu extends AbstractInputComponent {
 
     public WebElement getSelectlistbox() {
         return selectlistbox;
+    }
+
+    public WebElement getFilterInput() {
+        return filterInput;
     }
 }

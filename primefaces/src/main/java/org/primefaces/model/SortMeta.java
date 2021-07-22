@@ -33,7 +33,6 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.api.UITable;
 import org.primefaces.component.column.ColumnBase;
 import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.component.headerrow.HeaderRowBase;
@@ -82,18 +81,23 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
             return null;
         }
 
-        String field = resolveSortField(context, column);
-        if (field == null) {
+        String field = column.getField();
+        ValueExpression sortByVE = column.getValueExpression(ColumnBase.PropertyKeys.sortBy.name());
+        if (field == null && sortByVE == null) {
             return null;
+        }
+
+        if (field == null) {
+            field = column.resolveField(context, sortByVE);
+        }
+        else if (sortByVE == null) {
+            sortByVE = UIColumn.createValueExpressionFromField(context, var, field);
         }
 
         SortOrder order = SortOrder.of(column.getSortOrder());
         if (order.isUnsorted() && column.isGroupRow()) {
             order = SortOrder.ASCENDING;
         }
-
-        ValueExpression sortByVE = column.getValueExpression(ColumnBase.PropertyKeys.sortBy.name());
-        sortByVE = sortByVE != null ? sortByVE : UITable.createValueExprFromVarField(context, var, field);
 
         return new SortMeta(column.getColumnKey(),
                             field,
@@ -114,7 +118,7 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
             throw new FacesException("HeaderRow must have 'groupBy' or 'field' attribute value");
         }
 
-        groupByVE = groupByVE != null ? groupByVE : UITable.createValueExprFromVarField(context, var, headerRow.getField());
+        groupByVE = groupByVE != null ? groupByVE : UIColumn.createValueExpressionFromField(context, var, headerRow.getField());
 
         return new SortMeta(headerRow.getClientId(context),
                             headerRow.getField(),
@@ -218,26 +222,6 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
                 ", nullSortOrder=" + nullSortOrder +
                 ", caseSensitiveSort=" + caseSensitiveSort +
                 '}';
-    }
-
-    static String resolveSortField(FacesContext context, UIColumn column) {
-        ValueExpression columnSortByVE = column.getValueExpression(ColumnBase.PropertyKeys.sortBy.toString());
-
-        if (column.isDynamic()) {
-            String field = column.getField();
-            if (field == null) {
-                Object sortByProperty = column.getSortBy();
-                field = (sortByProperty == null) ? UITable.resolveDynamicField(context, columnSortByVE) : sortByProperty.toString();
-            }
-            return field;
-        }
-        else {
-            String field = column.getField();
-            if (field == null) {
-                field = (columnSortByVE == null) ? (String) column.getSortBy() : UITable.resolveStaticField(columnSortByVE);
-            }
-            return field;
-        }
     }
 
     public static Builder builder() {
