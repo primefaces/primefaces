@@ -1349,7 +1349,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      * @return {JQuery} The first node of this tree.
      */
     getFirstNode: function() {
-        return this.jq.find('> ul.ui-tree-container > li:first-child');
+        return this.jq.find("> ul.ui-tree-container > li.ui-treenode").first();
     },
 
     /**
@@ -1358,7 +1358,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      * @return {JQuery} The element with the label for the given node.
      */
     getNodeLabel: function(node) {
-        return node.find('> span.ui-treenode-content > span.ui-treenode-label');
+        return node.find('> div.ui-treenode-content > span.ui-treenode-label');
     },
 
     /**
