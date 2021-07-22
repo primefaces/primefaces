@@ -40,7 +40,7 @@ import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.InputText;
 import org.primefaces.selenium.component.Messages;
-import org.primefaces.selenium.component.model.TreeTable;
+import org.primefaces.selenium.component.TreeTable;
 import org.primefaces.selenium.component.model.datatable.Header;
 import org.primefaces.selenium.component.model.treetable.Row;
 
