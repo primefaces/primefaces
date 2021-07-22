@@ -36,7 +36,7 @@ import org.openqa.selenium.support.FindBy;
 import org.primefaces.model.TreeNode;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.model.TreeTable;
+import org.primefaces.selenium.component.TreeTable;
 
 public class TreeTable002Test extends AbstractTreeTableTest {
 

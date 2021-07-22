@@ -32,7 +32,7 @@ import org.openqa.selenium.support.FindBy;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.CommandButton;
-import org.primefaces.selenium.component.model.TreeTable;
+import org.primefaces.selenium.component.TreeTable;
 
 public class TreeTable003Test extends AbstractTreeTableTest {
 
