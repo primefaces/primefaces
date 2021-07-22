@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.selenium.component.model;
+package org.primefaces.selenium.component;
 
 import org.openqa.selenium.By;
 import org.primefaces.selenium.component.base.AbstractTable;

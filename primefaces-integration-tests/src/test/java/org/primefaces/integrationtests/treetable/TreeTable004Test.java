@@ -35,7 +35,7 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.InputText;
 import org.primefaces.selenium.component.Messages;
-import org.primefaces.selenium.component.model.TreeTable;
+import org.primefaces.selenium.component.TreeTable;
 
 public class TreeTable004Test extends AbstractTreeTableTest {
 
