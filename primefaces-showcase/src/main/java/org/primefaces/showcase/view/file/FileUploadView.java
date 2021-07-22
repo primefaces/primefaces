@@ -31,7 +31,9 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import org.primefaces.PrimeFaces;
 import org.primefaces.event.FilesUploadEvent;
+import org.primefaces.util.EscapeUtils;
 
 @Named
 @RequestScoped
@@ -39,22 +41,7 @@ public class FileUploadView {
 
     private UploadedFile file;
     private UploadedFiles files;
-
-    public UploadedFile getFile() {
-        return file;
-    }
-
-    public void setFile(UploadedFile file) {
-        this.file = file;
-    }
-
-    public UploadedFiles getFiles() {
-        return files;
-    }
-
-    public void setFiles(UploadedFiles files) {
-        this.files = files;
-    }
+    private String dropZoneText = "Drop zone p:inputTextarea demo.";
 
     public void upload() {
         if (file != null) {
@@ -77,10 +64,41 @@ public class FileUploadView {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
+    public void handleFileUploadTextarea(FileUploadEvent event) {
+        String jsVal = "PF('textarea').jq.val";
+        String fileName = EscapeUtils.forJavaScript(event.getFile().getFileName());
+        PrimeFaces.current().executeScript(jsVal + "(" + jsVal + "() + '\\n\\n" + fileName + " uploaded.')");
+    }
+
     public void handleFilesUpload(FilesUploadEvent event) {
         for (UploadedFile f : event.getFiles().getFiles()) {
             FacesMessage message = new FacesMessage("Successful", f.getFileName() + " is uploaded.");
             FacesContext.getCurrentInstance().addMessage(null, message);
         }
     }
+
+    public UploadedFile getFile() {
+        return file;
+    }
+
+    public void setFile(UploadedFile file) {
+        this.file = file;
+    }
+
+    public UploadedFiles getFiles() {
+        return files;
+    }
+
+    public void setFiles(UploadedFiles files) {
+        this.files = files;
+    }
+
+    public String getDropZoneText() {
+        return dropZoneText;
+    }
+
+    public void setDropZoneText(String dropZoneText) {
+        this.dropZoneText = dropZoneText;
+    }
+
 }

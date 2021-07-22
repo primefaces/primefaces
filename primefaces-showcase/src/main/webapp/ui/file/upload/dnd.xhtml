@@ -5,6 +5,14 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
+    <ui:define name="head">
+        <style type="text/css">
+            body .ui-inputfield.ui-state-drag {
+                background: #ffffd6;
+            }
+        </style>
+    </ui:define>
+
     <ui:define name="title">
         FileUpload <span class="subitem">Drag and Drop</span>
     </ui:define>
@@ -19,10 +27,26 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form>
+                <p:growl id="messages" showDetail="true"/>
+
+                <h5>Basic</h5>
                 <p:fileUpload listener="#{fileUploadView.handleFileUpload}" mode="advanced" dragDropSupport="true"
                               update="messages" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
 
-                <p:growl id="messages" showDetail="true"/>
+                <h5>Drop Zone</h5>
+                <div class="ui-fluid">
+                    <div class="p-field">
+                        <p:inputTextarea id="customDropZone" widgetVar="textarea"
+                                         rows="5" value="#{fileUploadView.dropZoneText}"/>
+                        <small>
+                            Drop on the text area to upload, or
+                            <p:link value="choose" onclick="PF('uploadDnd').show();return false" style="font-size:inherit"/>.
+                        </small>
+                    </div>
+                </div>
+                <p:fileUpload widgetVar="uploadDnd" listener="#{fileUploadView.handleFileUploadTextarea}"
+                              sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" dropZone="customDropZone"
+                              style="display: none"/>
             </h:form>
         </div>
     </ui:define>
