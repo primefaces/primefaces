@@ -180,7 +180,7 @@ public class DataView extends DataViewBase {
     }
 
     @Override
-    public void restoreMultiViewState() {
+    public void restoreMultiViewState(boolean runDataIndepententRestore, boolean runDataDependentRestore) {
         DataViewState viewState = getMultiViewState(false);
         if (viewState != null) {
             if (LangUtils.isNotEmpty(viewState.getLayout())) {

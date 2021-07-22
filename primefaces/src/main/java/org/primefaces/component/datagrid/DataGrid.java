@@ -138,7 +138,7 @@ public class DataGrid extends DataGridBase {
     }
 
     @Override
-    public void restoreMultiViewState() {
+    public void restoreMultiViewState(boolean runDataIndepententRestore, boolean runDataDependentRestore) {
         DataGridState ls = getMultiViewState(false);
         if (ls != null && isPaginator()) {
             setFirst(ls.getFirst());

@@ -111,15 +111,15 @@ public class DataTableRenderer extends DataRenderer {
     protected void preRender(FacesContext context, DataTable table) {
         table.initFilterBy(context);
 
-        if (table.isMultiViewState()) {
-            table.restoreMultiViewState();
-        }
-
         if (table.isLiveScroll()) {
             table.setScrollOffset(0);
         }
 
         if (table.isLazy()) {
+            if (table.isMultiViewState()) {
+                table.restoreMultiViewState(true, false);
+            }
+
             if (table.isLiveScroll()) {
                 table.loadLazyScrollData(0, table.getScrollRows());
             }
@@ -134,8 +134,16 @@ public class DataTableRenderer extends DataRenderer {
             else {
                 table.loadLazyData();
             }
+
+            if (table.isMultiViewState()) {
+                table.restoreMultiViewState(false, true);
+            }
         }
         else {
+            if (table.isMultiViewState()) {
+                table.restoreMultiViewState();
+            }
+
             if (table.isDefaultSort()) {
                 SortFeature sortFeature = (SortFeature) table.getFeature(DataTableFeatureKey.SORT);
                 sortFeature.sort(context, table);

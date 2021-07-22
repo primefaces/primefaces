@@ -530,26 +530,30 @@ public class TreeTable extends TreeTableBase {
     }
 
     @Override
-    public void restoreMultiViewState() {
+    public void restoreMultiViewState(boolean runDataIndepententRestore, boolean runDataDependentRestore) {
         TreeTableState ts = getMultiViewState(false);
         if (ts != null) {
-            if (isPaginator()) {
-                setFirst(ts.getFirst());
-                int rows = (ts.getRows() == 0) ? getRows() : ts.getRows();
-                setRows(rows);
+            if (runDataIndepententRestore) {
+                if (isPaginator()) {
+                    setFirst(ts.getFirst());
+                    int rows = (ts.getRows() == 0) ? getRows() : ts.getRows();
+                    setRows(rows);
+                }
+
+                if (ts.getSortBy() != null) {
+                    updateSortByWithMVS(ts.getSortBy());
+                }
+
+                if (ts.getFilterBy() != null) {
+                    updateFilterByWithMVS(getFacesContext(), ts.getFilterBy());
+                }
+
+                setColumnMeta(ts.getColumnMeta());
             }
 
-            if (ts.getSortBy() != null) {
-                updateSortByWithMVS(ts.getSortBy());
-            }
-
-            if (ts.getFilterBy() != null) {
-                updateFilterByWithMVS(getFacesContext(), ts.getFilterBy());
-            }
-
-            // TODO selection
-
-            setColumnMeta(ts.getColumnMeta());
+//          if (runDataIndepententRestore) {
+//              // TODO selection
+//          }
         }
     }
 

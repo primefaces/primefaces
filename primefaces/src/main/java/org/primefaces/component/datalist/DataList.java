@@ -266,7 +266,7 @@ public class DataList extends DataListBase {
     }
 
     @Override
-    public void restoreMultiViewState() {
+    public void restoreMultiViewState(boolean runDataIndepententRestore, boolean runDataDependentRestore) {
         DataListState ls = getMultiViewState(false);
         if (ls != null && isPaginator()) {
             setFirst(ls.getFirst());

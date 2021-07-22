@@ -27,7 +27,11 @@ public interface MultiViewStateAware<T> {
 
     boolean isMultiViewState();
 
-    void restoreMultiViewState();
+    void restoreMultiViewState(boolean runDataIndepententRestore, boolean runDataDependentRestore);
+
+    default void restoreMultiViewState() {
+        restoreMultiViewState(true, true);
+    }
 
     T getMultiViewState(boolean create);
 

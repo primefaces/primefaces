@@ -990,32 +990,36 @@ public class DataTable extends DataTableBase {
     }
 
     @Override
-    public void restoreMultiViewState() {
+    public void restoreMultiViewState(boolean runDataIndepententRestore, boolean runDataDependentRestore) {
         DataTableState ts = getMultiViewState(false);
         if (ts != null) {
-            if (isPaginator()) {
-                setFirst(ts.getFirst());
-                int rows = (ts.getRows() == 0) ? getRows() : ts.getRows();
-                setRows(rows);
+            if (runDataIndepententRestore) {
+                if (isPaginator()) {
+                    setFirst(ts.getFirst());
+                    int rows = (ts.getRows() == 0) ? getRows() : ts.getRows();
+                    setRows(rows);
+                }
+
+                if (ts.getSortBy() != null) {
+                    updateSortByWithMVS(ts.getSortBy());
+                }
+
+                if (ts.getFilterBy() != null) {
+                    updateFilterByWithMVS(getFacesContext(), ts.getFilterBy());
+                }
+
+                if (ts.getExpandedRowKeys() != null) {
+                    updateExpansionWithMVS(ts.getExpandedRowKeys());
+                }
+
+                setColumnMeta(ts.getColumnMeta());
             }
 
-            if (ts.getSortBy() != null) {
-                updateSortByWithMVS(ts.getSortBy());
+            if (runDataDependentRestore) {
+                if (isSelectionEnabled()) {
+                    updateSelectionWithMVS(ts.getSelectedRowKeys());
+                }
             }
-
-            if (ts.getFilterBy() != null) {
-                updateFilterByWithMVS(getFacesContext(), ts.getFilterBy());
-            }
-
-            if (isSelectionEnabled()) {
-                updateSelectionWithMVS(ts.getSelectedRowKeys());
-            }
-
-            if (ts.getExpandedRowKeys() != null) {
-                updateExpansionWithMVS(ts.getExpandedRowKeys());
-            }
-
-            setColumnMeta(ts.getColumnMeta());
         }
     }
 

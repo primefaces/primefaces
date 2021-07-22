@@ -224,7 +224,7 @@ public class TabView extends TabViewBase {
     }
 
     @Override
-    public void restoreMultiViewState() {
+    public void restoreMultiViewState(boolean runDataIndepententRestore, boolean runDataDependentRestore) {
         TabViewState ts = getMultiViewState(false);
         if (ts != null) {
             setActiveIndex(ts.getActiveIndex());

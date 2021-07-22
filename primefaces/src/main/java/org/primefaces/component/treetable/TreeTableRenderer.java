@@ -237,7 +237,7 @@ public class TreeTableRenderer extends DataRenderer {
         tt.resetDynamicColumns();
 
         if (tt.isMultiViewState()) {
-            tt.restoreMultiViewState();
+            tt.restoreMultiViewState(); // TODO use #restoreMutliViewState(boolean, boolean) once selection is implemented in MVS
         }
     }
 
