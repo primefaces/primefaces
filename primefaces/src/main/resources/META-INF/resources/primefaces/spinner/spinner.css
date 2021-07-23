@@ -14,13 +14,13 @@ input.ui-spinner-input {
     box-sizing: border-box;
     width: 100%;
 }
-.ui-spinner.p-text-left .ui-spinner-input {
+.ui-spinner.text-left .ui-spinner-input {
     text-align: left;
 }
-.ui-spinner.p-text-center .ui-spinner-input {
+.ui-spinner.text-center .ui-spinner-input {
     text-align: center;
 }
-.ui-spinner.p-text-right .ui-spinner-input {
+.ui-spinner.text-right .ui-spinner-input {
     text-align: right;
 }
 .ui-spinner-button {
