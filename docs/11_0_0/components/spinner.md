@@ -185,8 +185,7 @@ structural style classes:
 .ui-spinner-button-up | Increment button
 .ui-spinner-button-down | Decrement button
 
-### PrimeFlex
-The PrimeFlex classes `p-text-left`, `p-text-center` and `p-text-right` are supported to align the text of the Spinner input field.
+### Text alignment
+The PrimeFlex classes `text-left`, `text-center` and `text-right` are supported to align the text of the Spinner input field.
 
 As skinning style classes are global, see the main theming section for more information.
-

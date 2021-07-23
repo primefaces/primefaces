@@ -10,7 +10,7 @@ This page contains a list of big features. Please check the GitHub issues for al
   * InputText, InputTextarea: counter can count bytes instead of characters.
   * Spinner
     * Added buttons modes: `horizontal`, `horizontal-after` and `vertical`.
-    * Added support for PrimeFlex to align input text: `p-text-left`, `p-text-center`, `p-text-right`.
+    * Added support to align input text using classes: `text-left`, `text-center`, `text-right`.
 
 Look into [migration guide](https://primefaces.github.io/primefaces/11_0_0/#/../migrationguide/11_0_0) for more enhancements and changes.
 Or check the list of TODO+ issues closed for [11.0.0](https://github.com/primefaces/primefaces/issues?q=is%3Aclosed+milestone%3A11.0.0).
