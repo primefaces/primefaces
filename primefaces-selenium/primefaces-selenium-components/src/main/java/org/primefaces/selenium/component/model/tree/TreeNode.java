@@ -23,13 +23,13 @@
  */
 package org.primefaces.selenium.component.model.tree;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.Tree;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class TreeNode {
 
@@ -83,6 +83,7 @@ public class TreeNode {
     }
 
     public void select() {
+        // TODO: we are only allowed to guardAjax if select/unselect is ajaxified!
         PrimeSelenium.guardAjax(getLabel()).click();
     }
 

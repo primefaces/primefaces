@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true">
+                <p:autoUpdate />
+            </p:messages>
+
+            <p:tree id="tree" value="#{tree004.root}" var="document" widgetVar="tree" selectionMode="multiple"
+                selection="#{tree004.selectedNodes}">
+                <p:ajax event="select" />
+                <p:ajax event="unselect" />
+
+                <p:treeNode>
+                    <h:outputText value="#{document}" />
+                </p:treeNode>
+            </p:tree>
+
+            <p:commandButton id="buttonShowSelectedNodes" value="Show selected nodes" action="#{tree004.showSelectedNodes}" />
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>
