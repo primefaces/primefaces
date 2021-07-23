@@ -23,28 +23,30 @@
  */
 package org.primefaces.integrationtests.tree;
 
-import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.component.Messages;
-import org.primefaces.selenium.component.model.Msg;
+import java.io.Serializable;
 
-public abstract class AbstractTreeTest extends AbstractPrimePageTest {
+import javax.annotation.PostConstruct;
+import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 
-    protected void assertConfiguration(JSONObject cfg) {
-        assertConfiguration(cfg, "tree");
-    }
+import org.primefaces.model.TreeNode;
 
-    protected void assertConfiguration(JSONObject cfg, String widgetVar) {
-        assertNoJavascriptErrors();
-        System.out.println("Tree Config = " + cfg);
-        Assertions.assertEquals(widgetVar, cfg.getString("widgetVar"));
-    }
+import lombok.Data;
 
-    protected void assertMessage(Messages messages, int index, String summary, String detail) {
-        Msg message = messages.getMessage(index);
-        Assertions.assertEquals(summary, message.getSummary());
-        Assertions.assertEquals(detail, message.getDetail());
+@Named
+@ViewScoped
+@Data
+public class Tree003 implements Serializable {
+
+    @Inject
+    private TreeNodeService treeNodeService;
+
+    private TreeNode<String> root;
+
+    @PostConstruct
+    public void init() {
+        root = treeNodeService.createNodes();
     }
 
 }

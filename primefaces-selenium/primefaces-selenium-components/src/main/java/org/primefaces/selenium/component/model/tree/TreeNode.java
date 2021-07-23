@@ -42,14 +42,14 @@ public class TreeNode {
     public TreeNode(WebElement webElement, String selector, Tree tree) {
         this.webElement = webElement;
         this.selector = selector;
-        this.childSelector = selector + ">.ui-treenode-children>li";
+        this.childSelector = selector + ">.ui-treenode-children>.ui-treenode";
         this.tree = tree;
     }
 
     public TreeNode(WebElement webElement, String selector, TreeNode parent) {
         this.webElement = webElement;
         this.selector = selector;
-        this.childSelector = selector + ">.ui-treenode-children>li";
+        this.childSelector = selector + ">.ui-treenode-children>.ui-treenode";
         this.parent = parent;
         this.tree = parent.getTree();
     }
