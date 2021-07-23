@@ -52,7 +52,7 @@ public class Tree004 implements Serializable {
     }
 
     public void showSelectedNodes() {
-        if (selectedNodes != null && selectedNodes.length>0) {
+        if (selectedNodes != null && selectedNodes.length > 0) {
             TestUtils.addMessage("Selected nodes", Arrays.stream(selectedNodes).map(n -> n.getData()).collect(Collectors.joining(",")));
         }
         else {
