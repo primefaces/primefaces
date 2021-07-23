@@ -47,16 +47,16 @@ public class Tree003Test extends AbstractTreeTest {
     @DisplayName("Tree: Drag and drop still allows tab and arrow keys to select")
     public void testTabbing(Page page) {
         // Arrange
-        Tree tree1 = page.tree1;
-        Assertions.assertNotNull(tree1);
+        Tree tree = page.tree;
+        Assertions.assertNotNull(tree);
 
         // Act
         Actions actions = new Actions(page.getWebDriver());
         Action actionUnselect = actions.sendKeys(Keys.TAB, Keys.ARROW_DOWN, Keys.ARROW_RIGHT).build();
-        PrimeSelenium.guardAjax(actionUnselect).perform();
+        actionUnselect.perform();
 
         // Assert
-        List<TreeNode> children = tree1.getChildren();
+        List<TreeNode> children = tree.getChildren();
         Assertions.assertNotNull(children);
         Assertions.assertEquals(3, children.size());
 
@@ -72,15 +72,12 @@ public class Tree003Test extends AbstractTreeTest {
         Assertions.assertTrue(secondChildren.get(1).getWebElement().isDisplayed());
         Assertions.assertTrue(secondChildren.get(2).getWebElement().isDisplayed());
 
-        assertConfiguration(tree1.getWidgetConfiguration());
+        assertConfiguration(tree.getWidgetConfiguration());
     }
 
     public static class Page extends AbstractPrimePage {
-        @FindBy(id = "form:pnlDnd:tree1")
-        Tree tree1;
-
-        @FindBy(id = "form:pnlDnd:tree2")
-        Tree tree2;
+        @FindBy(id = "form:tree")
+        Tree tree;
 
         @FindBy(id = "form:msgs")
         Messages messages;

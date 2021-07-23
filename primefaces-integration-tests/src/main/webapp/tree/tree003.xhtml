@@ -13,25 +13,11 @@
                 <p:autoUpdate />
             </p:messages>
 
-            <h:panelGrid id="pnlDnd" columns="3">
-                <p:tree id="tree1" value="#{tree003.root2}" var="document1" widgetVar="tree1" draggable="true"
-                    droppable="true" dragdropScope="tree003" style="width:16rem">
-                    <p:treeNode>
-                        <h:outputText value="#{document1}" />
-                    </p:treeNode>
-                </p:tree>
-
-                <h:outputText styleClass="pi pi-sort-alt p-mx-5 text-secondary"
-                    style="transform: rotate(90deg); font-size: 3rem" />
-
-                <p:tree id="tree2" value="#{tree003.root2}" var="document2" widgetVar="tree2" draggable="true"
-                    droppable="true" dragdropScope="tree003" style="width:16rem">
-                    <p:treeNode>
-                        <h:outputText value="#{document2}" />
-                    </p:treeNode>
-                </p:tree>
-
-            </h:panelGrid>
+            <p:tree id="tree" value="#{tree003.root}" var="document" widgetVar="tree" draggable="true" droppable="true">
+                <p:treeNode>
+                    <h:outputText value="#{document}" />
+                </p:treeNode>
+            </p:tree>
 
         </h:form>
 

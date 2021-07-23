@@ -42,13 +42,11 @@ public class Tree003 implements Serializable {
     @Inject
     private TreeNodeService treeNodeService;
 
-    private TreeNode<String> root1;
-    private TreeNode<String> root2;
+    private TreeNode<String> root;
 
     @PostConstruct
     public void init() {
-        root1 = treeNodeService.createNodes();
-        root2 = treeNodeService.createNodes();
+        root = treeNodeService.createNodes();
     }
 
 }

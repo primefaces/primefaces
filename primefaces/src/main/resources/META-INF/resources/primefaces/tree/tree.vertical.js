@@ -217,10 +217,10 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
                 case keyCode.UP:
                     var nodeToFocus = null,
-                    prevNode = $this.focusedNode.prev();
+                    prevNode = $this.previousNode($this.focusedNode);
 
                     if(prevNode.length) {
-                        nodeToFocus = prevNode.find('li.ui-treenode:visible:last');
+                        nodeToFocus = prevNode.find('li.ui-treenode:visible:not(.ui-tree-droppoint)').last();
                         if(!nodeToFocus.length) {
                             nodeToFocus = prevNode;
                         }
@@ -238,13 +238,13 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
                 case keyCode.DOWN:
                     var nodeToFocus = null,
-                    firstVisibleChildNode = $this.focusedNode.find("> ul > li:visible:first");
+                    firstVisibleChildNode = $this.focusedNode.find("> ul > li:visible:not(.ui-tree-droppoint)").first();
 
                     if(firstVisibleChildNode.length) {
                         nodeToFocus = firstVisibleChildNode;
                     }
-                    else if($this.focusedNode.next().length) {
-                        nodeToFocus = $this.focusedNode.next();
+                    else if($this.nextNode($this.focusedNode).length) {
+                        nodeToFocus = $this.nextNode($this.focusedNode);
                     }
                     else {
                         var rowkey = $this.focusedNode.data('rowkey').toString();
@@ -325,13 +325,41 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
     },
 
     /**
+     * Returns the previous node, skipping droppoints (if present), starting at the given node.
+     * @private
+     * @param {JQuery} node Node where to start the search.
+     * @return {JQuery} The previous node.
+     */
+    previousNode: function(node) {
+        var prevNode = node.prev();
+        if (prevNode.length && prevNode.hasClass("ui-tree-droppoint")) {
+            prevNode = prevNode.prev();
+        }
+        return prevNode;
+    },
+
+    /**
+     * Returns the next node, skipping droppoints (if present), starting at the given node.
+     * @private
+     * @param {JQuery} node Node where to start the search.
+     * @return {JQuery} The next node.
+     */
+    nextNode: function(node) {
+        var nextNode = node.next();
+        if (nextNode.length && nextNode.hasClass("ui-tree-droppoint")) {
+            nextNode = nextNode.next();
+        }
+        return nextNode;
+    },
+
+    /**
      * Searches for a node to focus, starting at the given node.
      * @private
      * @param {JQuery} node Node where to start the search.
      * @return {JQuery} A node to focus.
      */
     searchDown: function(node) {
-        var nextOfParent = node.closest('ul').parent('li').next(),
+        var nextOfParent = $this.nextNode(node.closest('ul').parent('li')),
         nodeToFocus = null;
 
         if(nextOfParent.length) {
