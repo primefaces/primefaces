@@ -73,6 +73,8 @@ public final class ComponentUtils {
         return PrimeSelenium.executeScript("return JSON.stringify(" + getWidgetByIdScript(id) + ".cfg, function(key, value) {\n" +
                     "  if (typeof value === 'function') {\n" +
                     "    return value.toString();\n" +
+                    "  } else if (value && value.constructor && value.constructor.name === 'RegExp') {\n" +
+                    "    return value.toString();\n" +
                     "  } else {\n" +
                     "    return value;\n" +
                     "  }\n" +
