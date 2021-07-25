@@ -24,6 +24,7 @@
 package org.primefaces.cli.primeflexmigration;
 
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.nio.file.*;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -179,23 +180,7 @@ public class PrimeFlexMigration {
                         }
 
                         if (migrateFile) {
-                            List<String> contentV2 = Files.readAllLines(f);
-                            List<String> contentV3 = contentV2.stream().map(l -> migrateV2ToV3(l)).collect(Collectors.toList());
-                            Path tmpFile = Paths.get(f.toString() + "v3");
-                            try (BufferedWriter writer = Files.newBufferedWriter(tmpFile, StandardOpenOption.CREATE)) {
-                                for (String l : contentV3) {
-                                    writer.write(l);
-                                }
-                            }
-
-                            if (replaceExisting) {
-                                Files.delete(f);
-                                Files.move(tmpFile, f);
-                                System.out.println("migrated " + f.toString());
-                            }
-                            else {
-                                System.out.println("migrated " + f.toString() + " to " + tmpFile.toString());
-                            }
+                            migrateFile(f, replaceExisting);
                         }
                     }
                     catch (Exception ex) {
@@ -207,5 +192,31 @@ public class PrimeFlexMigration {
                 throw new RuntimeException(ex);
             }
         });
+    }
+
+    private void migrateFile(Path f, boolean replaceExisting) throws IOException {
+        List<String> contentV2 = Files.readAllLines(f);
+        List<String> contentV3 = contentV2.stream().map(l -> migrateV2ToV3(l)).collect(Collectors.toList());
+        Path tmpFile = Paths.get(f.toString() + "v3");
+        try (BufferedWriter writer = Files.newBufferedWriter(tmpFile, StandardOpenOption.CREATE)) {
+            int line = 0;
+            for (String l : contentV3) {
+                if (line > 0) {
+                    writer.newLine();
+                }
+                writer.write(l);
+                line++;
+            }
+            writer.newLine(); // newline at the end of the file (that´s what git expects usually)
+        }
+
+        if (replaceExisting) {
+            Files.delete(f);
+            Files.move(tmpFile, f);
+            System.out.println("migrated " + f.toString());
+        }
+        else {
+            System.out.println("migrated " + f.toString() + " to " + tmpFile.toString());
+        }
     }
 }
