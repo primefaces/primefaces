@@ -31,9 +31,13 @@ import org.primefaces.webapp.MultipartRequest;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletRequestWrapper;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class CommonsFileUploadDecoder extends AbstractFileUploadDecoder<MultipartRequest> {
+
+    private static final Logger LOGGER = Logger.getLogger(CommonsFileUploadDecoder.class.getName());
 
     @Override
     public String getName() {
@@ -44,6 +48,7 @@ public class CommonsFileUploadDecoder extends AbstractFileUploadDecoder<Multipar
     protected List<UploadedFile> createUploadedFiles(MultipartRequest request, FileUpload fileUpload, String inputToDecodeId) {
         Long sizeLimit = fileUpload.getSizeLimit();
         return request.getFileItems(inputToDecodeId).stream()
+                .filter(p -> !p.getName().isEmpty())
                 .map(p -> new CommonsUploadedFile(p, sizeLimit))
                 .collect(Collectors.toList());
     }
@@ -51,11 +56,11 @@ public class CommonsFileUploadDecoder extends AbstractFileUploadDecoder<Multipar
     @Override
     protected UploadedFile createUploadedFile(MultipartRequest request, FileUpload fileUpload, String inputToDecodeId) {
         FileItem file = request.getFileItem(inputToDecodeId);
-        if (file != null && !file.getName().isEmpty()) {
-            return new CommonsUploadedFile(file, fileUpload.getSizeLimit());
+        if (file == null || file.getName().isEmpty()) {
+            return null;
         }
 
-        return null;
+        return new CommonsUploadedFile(file, fileUpload.getSizeLimit());
     }
 
     @Override
@@ -71,7 +76,11 @@ public class CommonsFileUploadDecoder extends AbstractFileUploadDecoder<Multipar
                 request = ((ServletRequestWrapper) request).getRequest();
             }
         }
-
+        if (multipartRequest == null) {
+            if (LOGGER.isLoggable(Level.WARNING)) {
+                LOGGER.log(Level.WARNING, "commons UPLOADER requires configuration of servlet filter 'org.primefaces.webapp.filter.FileUploadFilter'");
+            }
+        }
         return multipartRequest;
     }
 

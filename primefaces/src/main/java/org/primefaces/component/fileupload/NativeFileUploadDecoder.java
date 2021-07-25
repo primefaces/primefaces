@@ -50,7 +50,8 @@ public class NativeFileUploadDecoder extends AbstractFileUploadDecoder<HttpServl
         Long sizeLimit = fileUpload.getSizeLimit();
         Iterable<Part> parts = request.getParts();
         return StreamSupport.stream(parts.spliterator(), false)
-                .filter(p -> p.getName().equals(inputToDecodeId))
+                .filter(p -> p != null && p.getName().equals(inputToDecodeId))
+                .filter(p -> !p.getSubmittedFileName().isEmpty())
                 .map(p -> new NativeUploadedFile(p, sizeLimit))
                 .collect(Collectors.toList());
     }
@@ -59,6 +60,10 @@ public class NativeFileUploadDecoder extends AbstractFileUploadDecoder<HttpServl
     protected UploadedFile createUploadedFile(HttpServletRequest request, FileUpload fileUpload, String inputToDecodeId)
             throws IOException, ServletException {
         Part part = request.getPart(inputToDecodeId);
+        if (part == null || part.getSubmittedFileName().isEmpty()) {
+            return null;
+        }
+
         return new NativeUploadedFile(part, fileUpload.getSizeLimit());
     }
 

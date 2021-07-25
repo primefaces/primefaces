@@ -87,7 +87,7 @@ public class FileUpload extends FileUploadBase {
                 else if (newValue instanceof UploadedFiles) {
                     FileUploadUtils.tryValidateFiles(context, this, ((UploadedFiles) newValue).getFiles());
                 }
-                else {
+                else if (newValue != null) {
                     throw new IllegalArgumentException("Argument of type '" + newValue.getClass().getName() + "' not supported");
                 }
 
