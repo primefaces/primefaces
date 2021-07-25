@@ -24,6 +24,7 @@
         <webdriver.headless>false</webdriver.headless>
         <primefaces.CSP>false</primefaces.CSP>
         <primefaces.THEME>saga</primefaces.THEME>
+        <primefaces.UPLOADER>auto</primefaces.UPLOADER>
         <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
 
         <!-- dependency versions -->
@@ -94,6 +95,11 @@
                     <artifactId>myfaces-impl</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -188,6 +194,7 @@
                             <systemPropertyVariables>
                                 <webdriver.headless>${webdriver.headless}</webdriver.headless>
                                 <primefaces.CSP>${primefaces.CSP}</primefaces.CSP>
+                                <primefaces.UPLOADER>${primefaces.UPLOADER}</primefaces.UPLOADER>
                                 <primefaces.THEME>${primefaces.THEME}</primefaces.THEME>
                                 <junit.jupiter.execution.parallel.enabled>${junit.jupiter.execution.parallel.enabled}</junit.jupiter.execution.parallel.enabled>
                                 <junit.jupiter.execution.parallel.mode.default>same_thread</junit.jupiter.execution.parallel.mode.default>
@@ -233,6 +240,18 @@
             <id>csp</id>
             <properties>
                 <primefaces.CSP>true</primefaces.CSP>
+            </properties>
+        </profile>
+        <profile>
+            <id>uploader-native</id>
+            <properties>
+                <primefaces.UPLOADER>native</primefaces.UPLOADER>
+            </properties>
+        </profile>
+        <profile>
+            <id>uploader-commons</id>
+            <properties>
+                <primefaces.UPLOADER>commons</primefaces.UPLOADER>
             </properties>
         </profile>
         <profile>
