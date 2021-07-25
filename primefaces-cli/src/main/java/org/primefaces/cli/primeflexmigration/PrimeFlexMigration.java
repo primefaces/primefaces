@@ -30,7 +30,7 @@ public class PrimeFlexMigration {
 
     private final Map<String, String> replaceRegex = new HashMap<>();
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         System.out.println("PrimeFlex V2 --> V3 migration tool");
         System.out.println("Supported parameters:");
         System.out.println("-directory=c:\\users\\myuser\\javadev\\myproject");
