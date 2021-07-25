@@ -38,12 +38,15 @@ public class PrimeFlexMigration {
 
         PrimeFlexMigration migration = new PrimeFlexMigration();
         migration.initReplaceRegEx();
+
+        // TODO: scan directory recursive and migration all files matching filexextensions
     }
 
     void initReplaceRegEx() {
         replaceRegex.put("p-grid", "grid");
         replaceRegex.put("p-col-([0-9]+?)", "col-$1");
         replaceRegex.put("p-col", "col");
+        replaceRegex.put("p-(xl|lg|md|sm)-([0-9]+?)", "$1:col-$2");
     }
 
     String migrateV2ToV3(String source) {
