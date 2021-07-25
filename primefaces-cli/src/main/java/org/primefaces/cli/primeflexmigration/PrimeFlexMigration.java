@@ -34,10 +34,12 @@ public class PrimeFlexMigration {
 
     public static void main(String[] args) {
         System.out.println("PrimeFlex V2 --> V3 migration tool");
+        System.out.println("");
         System.out.println("Supported parameters:");
         System.out.println("-directory=c:\\temp\\myapp");
         System.out.println("-fileextensions=xhtml");
         System.out.println("-replaceexisting=true");
+        System.out.println("");
 
         PrimeFlexMigration migration = new PrimeFlexMigration();
         migration.initReplaceRegEx();
@@ -66,7 +68,9 @@ public class PrimeFlexMigration {
         Set<String> fileextensions = new HashSet<String>(Arrays.asList(aFileextensions));
 
         try {
+            System.out.println("start migrating " + directory + " and subfolders; fileextension: " + fileextensions.stream().collect(Collectors.joining(",")) + ", replaceExisting: " + replaceExisting);
             migration.migrateDirectory(Paths.get(directory), fileextensions, replaceExisting);
+            System.out.println("finished migration");
         }
         catch (Exception ex) {
             System.out.println("Error during migration: " + ex.getMessage());
@@ -162,33 +166,37 @@ public class PrimeFlexMigration {
                     migrateDirectory(f, fileextensions, replaceExisting);
                 }
                 else if (Files.isRegularFile(f) && Files.isWritable(f)) {
-                    boolean migrateFile = false;
-                    String filenameLC = f.toString().toLowerCase();
+                    try {
+                        boolean migrateFile = false;
+                        String filenameLC = f.toString().toLowerCase();
 
-                    for (String fileextension : fileextensions) {
-                        if (filenameLC.endsWith("." + fileextension)) {
-                            migrateFile = true;
-                        }
-                    }
-
-                    if (migrateFile) {
-                        List<String> contentV2 = Files.readAllLines(f);
-                        List<String> contentV3 = contentV2.stream().map(l -> migrateV2ToV3(l)).collect(Collectors.toList());
-                        Path tmpFile = Paths.get(f.toString() + "v3");
-                        try (BufferedWriter writer = Files.newBufferedWriter(tmpFile, StandardOpenOption.CREATE)) {
-                            for (String l : contentV3) {
-                                writer.write(l);
+                        for (String fileextension : fileextensions) {
+                            if (filenameLC.endsWith("." + fileextension)) {
+                                migrateFile = true;
                             }
                         }
 
-                        if (replaceExisting) {
-                            Files.delete(f);
-                            Files.move(tmpFile, f);
-                            System.out.println("migrated " + f.toString());
+                        if (migrateFile) {
+                            List<String> contentV2 = Files.readAllLines(f);
+                            List<String> contentV3 = contentV2.stream().map(l -> migrateV2ToV3(l)).collect(Collectors.toList());
+                            Path tmpFile = Paths.get(f.toString() + "v3");
+                            try (BufferedWriter writer = Files.newBufferedWriter(tmpFile, StandardOpenOption.CREATE)) {
+                                for (String l : contentV3) {
+                                    writer.write(l);
+                                }
+                            }
+
+                            if (replaceExisting) {
+                                Files.delete(f);
+                                Files.move(tmpFile, f);
+                                System.out.println("migrated " + f.toString());
+                            } else {
+                                System.out.println("migrated " + f.toString() + " to " + tmpFile.toString());
+                            }
                         }
-                        else {
-                            System.out.println("migrated " + f.toString() + " to " + tmpFile.toString());
-                        }
+                    }
+                    catch (Exception ex) {
+                        System.out.println("error during migration " + f.toString());
                     }
                 }
             }
