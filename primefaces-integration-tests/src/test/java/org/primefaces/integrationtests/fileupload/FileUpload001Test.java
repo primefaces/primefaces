@@ -55,8 +55,7 @@ public class FileUpload001Test extends AbstractFileUploadTest {
         // Assert
         assertNoJavascriptErrors();
         assertUploadedFiles(page.uploadedFiles, file);
-        assertConfiguration(fileUpload.getWidgetConfiguration());
-        Assertions.assertNull(fileUpload.getInput().getAttribute("multiple"));
+        assertConfiguration(fileUpload);
     }
 
     @Test
@@ -85,14 +84,67 @@ public class FileUpload001Test extends AbstractFileUploadTest {
         // Assert
         assertNoJavascriptErrors();
         assertUploadedFiles(page.uploadedFiles, file1, file2);
-        assertConfiguration(fileUpload.getWidgetConfiguration());
-        Assertions.assertNull(fileUpload.getInput().getAttribute("multiple"));
+        assertConfiguration(fileUpload);
     }
 
-    private void assertConfiguration(JSONObject cfg) {
+    @Test
+    @Order(3)
+    public void testBasicSingleUploadSizeLimit(Page page) {
+        // Arrange
+        FileUpload fileUpload = page.fileupload;
+        Assertions.assertEquals("", fileUpload.getValue());
+        String invalidSizeMsg = fileUpload.getWidgetConfiguration().getString("invalidSizeMessage");
+        Assertions.assertNotNull(invalidSizeMsg);
+        Assertions.assertFalse(invalidSizeMsg.isEmpty());
+
+        // Act
+        File file = locateClientSideFile("file3.csv");
+        fileUpload.setValue(file);
+        Assertions.assertTrue(fileUpload.getWidgetValue().contains(invalidSizeMsg));
+        Assertions.assertTrue(fileUpload.getWidgetValue().contains(file.getName()));
+        page.button.click();
+
+        // Assert
+        assertNoJavascriptErrors();
+        // Primefaces sends "empty" request if mode=simple skinSimple=true
+        assertUploadedFiles(page.uploadedFiles);
+        assertConfiguration(fileUpload);
+    }
+
+    @Test
+    @Order(4)
+    public void testBasicSingleUploadAllowTypes(Page page) {
+        // Arrange
+        FileUpload fileUpload = page.fileupload;
+        Assertions.assertEquals("", fileUpload.getValue());
+        String invalidTypeMsg = fileUpload.getWidgetConfiguration().getString("invalidFileMessage");
+        Assertions.assertNotNull(invalidTypeMsg);
+        Assertions.assertFalse(invalidTypeMsg.isEmpty());
+
+        // Act
+        File file = locateClientSideFile("file1.png");
+        fileUpload.setValue(file);
+        Assertions.assertTrue(fileUpload.getWidgetValue().contains(invalidTypeMsg));
+        Assertions.assertTrue(fileUpload.getWidgetValue().contains(file.getName()));
+        page.button.click();
+
+        // Assert
+        assertNoJavascriptErrors();
+        // Primefaces sends "empty" request if mode=simple skinSimple=true
+        assertUploadedFiles(page.uploadedFiles);
+        assertConfiguration(fileUpload);
+    }
+
+    private void assertConfiguration(FileUpload fileUpload) {
+        JSONObject cfg = fileUpload.getWidgetConfiguration();
         System.out.println("FileInput Config = " + cfg);
+        Assertions.assertEquals("{name} {size}", cfg.getString("messageTemplate"));
         Assertions.assertTrue(cfg.getBoolean("skinSimple"));
         Assertions.assertFalse(cfg.has("auto"));
+        Assertions.assertEquals(1, cfg.getInt("fileLimit"));
+        Assertions.assertEquals(100, cfg.getInt("maxFileSize"));
+        Assertions.assertEquals("/(\\.|\\/)(csv)$/", cfg.getString("allowTypes"));
+        Assertions.assertNull(fileUpload.getInput().getAttribute("multiple"));
     }
 
     public static class Page extends AbstractPrimePage {
