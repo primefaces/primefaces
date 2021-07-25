@@ -23,8 +23,10 @@
  */
 package org.primefaces.cli.primeflexmigration;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.BufferedWriter;
+import java.nio.file.*;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class PrimeFlexMigration {
 
@@ -33,13 +35,43 @@ public class PrimeFlexMigration {
     public static void main(String[] args) {
         System.out.println("PrimeFlex V2 --> V3 migration tool");
         System.out.println("Supported parameters:");
-        System.out.println("-directory=c:\\users\\myuser\\javadev\\myproject");
+        System.out.println("-directory=c:\\temp\\myapp");
         System.out.println("-fileextensions=xhtml");
+        System.out.println("-replaceexisting=true");
 
         PrimeFlexMigration migration = new PrimeFlexMigration();
         migration.initReplaceRegEx();
 
-        // TODO: scan directory recursive and migration all files matching filexextensions
+        String directory = "c:\\temp\\myapp2";
+        String[] aFileextensions = {"xhtml"};
+        Boolean replaceExisting = true;
+
+        for (String arg : args) {
+            if (arg.startsWith("-")) {
+                String[] argSplitted = arg.substring(1).split("=");
+                if (argSplitted.length == 2) {
+                    if ("directory".equals(argSplitted)) {
+                        directory = argSplitted[1];
+                    }
+                    else if ("fileextensions".equals(argSplitted)) {
+                        aFileextensions = argSplitted[1].toLowerCase().split(",");
+                    }
+                    else if ("replaceExisting".equals(argSplitted)) {
+                        replaceExisting = Boolean.parseBoolean(argSplitted[1]);
+                    }
+                }
+            }
+        }
+
+        Set<String> fileextensions = new HashSet<String>(Arrays.asList(aFileextensions));
+
+        try {
+            migration.migrateDirectory(Paths.get(directory), fileextensions, replaceExisting);
+        }
+        catch (Exception ex) {
+            System.out.println("Error during migration: " + ex.getMessage());
+            ex.printStackTrace();
+        }
     }
 
     void initReplaceRegEx() {
@@ -121,5 +153,48 @@ public class PrimeFlexMigration {
         }
 
         return result;
+    }
+
+    void migrateDirectory(Path directory, Set<String> fileextensions, boolean replaceExisting) throws Exception {
+        Files.list(directory).forEach(f -> {
+            try {
+                if (Files.isDirectory(f)) {
+                    migrateDirectory(f, fileextensions, replaceExisting);
+                }
+                else if (Files.isRegularFile(f) && Files.isWritable(f)) {
+                    boolean migrateFile = false;
+                    String filenameLC = f.toString().toLowerCase();
+
+                    for (String fileextension : fileextensions) {
+                        if (filenameLC.endsWith("." + fileextension)) {
+                            migrateFile = true;
+                        }
+                    }
+
+                    if (migrateFile) {
+                        List<String> contentV2 = Files.readAllLines(f);
+                        List<String> contentV3 = contentV2.stream().map(l -> migrateV2ToV3(l)).collect(Collectors.toList());
+                        Path tmpFile = Paths.get(f.toString() + "v3");
+                        try (BufferedWriter writer = Files.newBufferedWriter(tmpFile, StandardOpenOption.CREATE)) {
+                            for (String l : contentV3) {
+                                writer.write(l);
+                            }
+                        }
+
+                        if (replaceExisting) {
+                            Files.delete(f);
+                            Files.move(tmpFile, f);
+                            System.out.println("migrated " + f.toString());
+                        }
+                        else {
+                            System.out.println("migrated " + f.toString() + " to " + tmpFile.toString());
+                        }
+                    }
+                }
+            }
+            catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
     }
 }
