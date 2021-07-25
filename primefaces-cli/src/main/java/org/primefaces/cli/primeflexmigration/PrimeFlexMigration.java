@@ -43,10 +43,72 @@ public class PrimeFlexMigration {
     }
 
     void initReplaceRegEx() {
+        // see https://www.primefaces.org/primeflex/migration
+
+        // grid
         replaceRegex.put("p-grid", "grid");
         replaceRegex.put("p-col-([0-9]+?)", "col-$1");
         replaceRegex.put("p-col", "col");
         replaceRegex.put("p-(xl|lg|md|sm)-([0-9]+?)", "$1:col-$2");
+
+        // display
+        replaceRegex.put("p-d-none", "hidden");
+        replaceRegex.put("p-d-inline", "inline");
+        replaceRegex.put("p-d-inline-block", "inline-block");
+        replaceRegex.put("p-d-block", "block");
+        replaceRegex.put("p-d-flex", "flex");
+        replaceRegex.put("p-d-inline-flex", "inline-flex");
+
+        // flexbox
+        replaceRegex.put("p-flex-row", "flex-row");
+        replaceRegex.put("p-flex-column", "flex-column");
+        replaceRegex.put("p-flex-row-reverse", "flex-row-reverse");
+        replaceRegex.put("p-flex-column-reverse", "flex-column-reverse");
+        replaceRegex.put("p-order-1", "flex-order-2"); // correct ???
+        replaceRegex.put("p-order-([0-9])", "flex-order-$1");
+        replaceRegex.put("p-flex-nowrap", "flex-nowrap");
+        replaceRegex.put("p-flex-wrap", "flex-wrap");
+        replaceRegex.put("p-flex-wrap-reverse", "flex-wrap-reverse");
+        replaceRegex.put("p-jc-start", "justify-content-start");
+        replaceRegex.put("p-jc-end", "justify-content-end");
+        replaceRegex.put("p-jc-center", "justify-content-center");
+        replaceRegex.put("p-jc-between", "justify-content-between");
+        replaceRegex.put("p-jc-around", "justify-content-around");
+        replaceRegex.put("p-jc-evenly", "justify-content-evenly");
+        replaceRegex.put("p-ai-start", "align-items-start");
+        replaceRegex.put("p-ai-end", "align-items-end");
+        replaceRegex.put("p-ai-center", "align-items-center");
+        replaceRegex.put("p-ai-baseline", "align-items-baseline");
+        replaceRegex.put("p-ai-stretch", "align-items-stretch");
+        replaceRegex.put("p-as-start", "align-self-start");
+        replaceRegex.put("p-as-end", "align-self-start");
+        replaceRegex.put("p-as-center", "align-self-start");
+        replaceRegex.put("p-as-baseline", "align-self-start");
+        replaceRegex.put("p-as-stretch", "align-self-stretch");
+        replaceRegex.put("p-ac-start", "align-content-start");
+        replaceRegex.put("p-ac-end", "align-content-end");
+        replaceRegex.put("p-ac-center", "align-content-center");
+        replaceRegex.put("p-ac-around", "align-content-around");
+        replaceRegex.put("p-ac-between", "align-content-between");
+
+        // text
+        replaceRegex.put("p-text-right", "text-right");
+        replaceRegex.put("p-text-center", "text-center");
+        replaceRegex.put("p-text-justify", "text-justify");
+        replaceRegex.put("p-text-lowercase", "text-lowercase");
+        replaceRegex.put("p-text-uppercase", "text-uppercase");
+        replaceRegex.put("p-text-capitalize", "text-capitalize");
+        replaceRegex.put("p-text-bold", "font-bold");
+        replaceRegex.put("p-text-normal", "font-normal");
+        replaceRegex.put("p-text-light", "font-light");
+        replaceRegex.put("p-text-italic", "font-italic");
+
+        // TODO: 2 be continued
+//        replaceRegex.put("", "");
+//        replaceRegex.put("", "");
+//        replaceRegex.put("", "");
+//        replaceRegex.put("", "");
+//        replaceRegex.put("", "");
     }
 
     String migrateV2ToV3(String source) {
