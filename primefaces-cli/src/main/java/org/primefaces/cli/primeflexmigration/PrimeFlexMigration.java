@@ -68,7 +68,9 @@ public class PrimeFlexMigration {
         Set<String> fileextensions = new HashSet<String>(Arrays.asList(aFileextensions));
 
         try {
-            System.out.println("start migrating " + directory + " and subfolders; fileextension: " + fileextensions.stream().collect(Collectors.joining(",")) + ", replaceExisting: " + replaceExisting);
+            System.out.println("start migrating " + directory + " and subfolders; " +
+                    "fileextension: " + fileextensions.stream().collect(Collectors.joining(",")) + "; " +
+                    "replaceExisting: " + replaceExisting);
             migration.migrateDirectory(Paths.get(directory), fileextensions, replaceExisting);
             System.out.println("finished migration");
         }
@@ -190,7 +192,8 @@ public class PrimeFlexMigration {
                                 Files.delete(f);
                                 Files.move(tmpFile, f);
                                 System.out.println("migrated " + f.toString());
-                            } else {
+                            }
+                            else {
                                 System.out.println("migrated " + f.toString() + " to " + tmpFile.toString());
                             }
                         }
