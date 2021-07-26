@@ -47,7 +47,7 @@ public class ResourceUtils {
     }
 
     public static String getResourceURL(FacesContext context, String value) {
-        if (LangUtils.isValueBlank(value)) {
+        if (LangUtils.isBlank(value)) {
             return Constants.EMPTY_STRING;
         }
         else if (value.contains(ResourceHandler.RESOURCE_IDENTIFIER)) {
@@ -165,7 +165,7 @@ public class ResourceUtils {
 
     public static boolean isInline(ResourceInfo resourceInfo) {
         if (resourceInfo != null) {
-            return LangUtils.isValueBlank(resourceInfo.getLibrary()) && LangUtils.isValueBlank(resourceInfo.getName());
+            return LangUtils.isBlank(resourceInfo.getLibrary()) && LangUtils.isBlank(resourceInfo.getName());
         }
 
         return false;

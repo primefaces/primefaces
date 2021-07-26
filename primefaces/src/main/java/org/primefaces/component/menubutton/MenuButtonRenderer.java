@@ -124,7 +124,7 @@ public class MenuButtonRenderer extends TieredMenuRenderer {
         menuStyleClass = (menuStyleClass == null) ? Menu.DYNAMIC_CONTAINER_CLASS : Menu.DYNAMIC_CONTAINER_CLASS + " " + menuStyleClass;
 
         writer.startElement("div", null);
-        if (!LangUtils.isValueEmpty(button.getMaxHeight())) {
+        if (!LangUtils.isEmpty(button.getMaxHeight())) {
             menuStyleClass = menuStyleClass + " " + Menu.CONTAINER_MAXHEIGHT_CLASS;
             // If maxHeight is a number, add the unit "px", otherwise use it as is
             char lastChar = button.getMaxHeight().charAt(button.getMaxHeight().length() - 1);

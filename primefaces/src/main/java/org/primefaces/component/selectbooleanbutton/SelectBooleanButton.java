@@ -43,7 +43,7 @@ public class SelectBooleanButton extends SelectBooleanButtonBase {
         String icon = checked ? getOnIcon() : getOffIcon();
         String styleClass = null;
 
-        if (LangUtils.isValueBlank(getOnLabel()) && LangUtils.isValueBlank(getOffLabel())) {
+        if (LangUtils.isBlank(getOnLabel()) && LangUtils.isBlank(getOffLabel())) {
             styleClass = HTML.BUTTON_ICON_ONLY_BUTTON_CLASS;
         }
         else {

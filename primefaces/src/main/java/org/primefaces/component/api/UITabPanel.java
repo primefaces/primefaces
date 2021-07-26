@@ -1318,7 +1318,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String paramValue = params.get(Constants.RequestParams.SKIP_CHILDREN_PARAM);
 
-        if (LangUtils.isValueBlank(paramValue)) {
+        if (LangUtils.isBlank(paramValue)) {
             return true;
         }
 

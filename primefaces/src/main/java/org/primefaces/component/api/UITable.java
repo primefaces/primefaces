@@ -158,7 +158,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         // #globalFilter sets the default value, which will be assigned to the "globalFilter" input
         String globalFilterDefaultValue = getGlobalFilter();
         // if #globalFilter is set, the "globalFilter" is mandatory
-        Set<SearchExpressionHint> hint = LangUtils.isValueBlank(globalFilterDefaultValue)
+        Set<SearchExpressionHint> hint = LangUtils.isBlank(globalFilterDefaultValue)
                 ? SearchExpressionUtils.SET_IGNORE_NO_RESULT
                 : SearchExpressionUtils.SET_NONE;
         UIComponent globalFilterComponent = SearchExpressionFacade
@@ -214,7 +214,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
             // returns null if empty string/array/object
             if (filterValue != null
-                    && (filterValue instanceof String && LangUtils.isValueBlank((String) filterValue)
+                    && (filterValue instanceof String && LangUtils.isBlank((String) filterValue)
                     || filterValue.getClass().isArray() && Array.getLength(filterValue) == 0)) {
                 filterValue = null;
             }
@@ -426,7 +426,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         if (LangUtils.isNotBlank(columnTogglerStateParam)) {
             String[] columnStates = columnTogglerStateParam.split(",");
             for (String columnState : columnStates) {
-                if (LangUtils.isValueBlank(columnState)) {
+                if (LangUtils.isBlank(columnState)) {
                     continue;
                 }
                 int seperatorIndex = columnState.lastIndexOf('_');
@@ -459,7 +459,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         if (LangUtils.isNotBlank(columnResizeStateParam)) {
             String[] columnStates = columnResizeStateParam.split(",");
             for (String columnState : columnStates) {
-                if (LangUtils.isValueBlank(columnState)) {
+                if (LangUtils.isBlank(columnState)) {
                     continue;
                 }
 
@@ -492,7 +492,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     default void decodeColumnDisplayOrderState(FacesContext context) {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String columnOrderParam = params.get(getClientId(context) + "_columnOrder");
-        if (LangUtils.isValueBlank(columnOrderParam)) {
+        if (LangUtils.isBlank(columnOrderParam)) {
             return;
         }
 
@@ -502,7 +502,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         String[] columnKeys = columnOrderParam.split(",");
         for (int i = 0; i < columnKeys.length; i++) {
             String columnKey = columnKeys[i];
-            if (LangUtils.isValueBlank(columnKey)) {
+            if (LangUtils.isBlank(columnKey)) {
                 continue;
             }
 

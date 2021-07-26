@@ -68,7 +68,7 @@ public class KnobRenderer extends CoreRenderer {
 
         Knob knob = (Knob) component;
 
-        if (!LangUtils.isValueEmpty(submittedValue)) {
+        if (!LangUtils.isEmpty(submittedValue)) {
             int submittedInt = Integer.parseInt(submittedValue);
             if (submittedInt < knob.getMin() || submittedInt > knob.getMax()) {
                 return;

@@ -409,7 +409,7 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     public boolean isValueBlank(String value) {
-        return LangUtils.isValueBlank(value);
+        return LangUtils.isBlank(value);
     }
 
     protected <T extends UIComponent & AjaxSource> AjaxRequestBuilder preConfiguredAjaxRequestBuilder(FacesContext context, T source) {

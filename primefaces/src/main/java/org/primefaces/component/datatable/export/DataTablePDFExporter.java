@@ -392,7 +392,7 @@ public class DataTablePDFExporter extends DataTableExporter {
 
     protected void applyFont(String fontName, String encoding) {
         String newFont = fontName;
-        if (LangUtils.isValueBlank(newFont)) {
+        if (LangUtils.isBlank(newFont)) {
             newFont = FontFactory.TIMES;
         }
         cellFont = FontFactory.getFont(newFont, encoding);

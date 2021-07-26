@@ -130,7 +130,7 @@ public class PrimeConfiguration {
         }
 
         value = externalContext.getInitParameter(Constants.ContextParams.EXCEPTION_TYPES_TO_IGNORE_IN_LOGGING);
-        if (LangUtils.isValueBlank(value)) {
+        if (LangUtils.isBlank(value)) {
             exceptionTypesToIgnoreInLogging = new String[0];
         }
         else {

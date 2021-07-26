@@ -83,7 +83,7 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String handlerType = params.get(Constants.DYNAMIC_CONTENT_TYPE_PARAM);
 
-        if (LangUtils.isValueBlank(handlerType)) {
+        if (LangUtils.isBlank(handlerType)) {
             super.handleResourceRequest(context);
         }
         else {

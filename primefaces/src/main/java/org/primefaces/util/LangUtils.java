@@ -47,15 +47,25 @@ public class LangUtils {
     private LangUtils() {
     }
 
+    @Deprecated
     public static boolean isValueEmpty(String value) {
+        return isEmpty(value);
+    }
+
+    public static boolean isEmpty(String value) {
         return value == null || value.isEmpty();
     }
 
     public static boolean isNotEmpty(String value) {
-        return !isValueEmpty(value);
+        return !isEmpty(value);
     }
 
+    @Deprecated
     public static boolean isValueBlank(String str) {
+        return isBlank(str);
+    }
+
+    public static boolean isBlank(String str) {
         if (str == null) {
             return true;
         }
@@ -74,7 +84,7 @@ public class LangUtils {
     }
 
     public static boolean isNotBlank(String value) {
-        return !isValueBlank(value);
+        return !isBlank(value);
     }
 
     /**
@@ -97,7 +107,7 @@ public class LangUtils {
      * @since 3.4
      */
     public static int countMatches(final String str, final char ch) {
-        if (isValueEmpty(str)) {
+        if (isEmpty(str)) {
             return 0;
         }
         int count = 0;
@@ -436,7 +446,7 @@ public class LangUtils {
      * @return the returned value in capital case or empty string if blank
      */
     public static String toCapitalCase(String value) {
-        if (LangUtils.isValueBlank(value)) {
+        if (LangUtils.isBlank(value)) {
             return Constants.EMPTY_STRING;
         }
 
@@ -466,7 +476,7 @@ public class LangUtils {
      * @since 3.4
      */
     public static boolean isNumeric(final String str) {
-        if (isValueEmpty(str)) {
+        if (isEmpty(str)) {
             return false;
         }
         if (str.charAt(str.length() - 1) == '.') {

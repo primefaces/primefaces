@@ -580,7 +580,7 @@ public class TreeTableExcelExporter extends TreeTableExporter {
         Font font = wb.createFont();
 
         if (options != null) {
-            String fontName = LangUtils.isValueBlank(options.getFontName()) ? DEFAULT_FONT : options.getFontName();
+            String fontName = LangUtils.isBlank(options.getFontName()) ? DEFAULT_FONT : options.getFontName();
             font.setFontName(fontName);
         }
         else {

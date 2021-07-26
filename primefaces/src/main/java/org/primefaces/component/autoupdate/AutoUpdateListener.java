@@ -101,7 +101,7 @@ public class AutoUpdateListener implements ComponentSystemEventListener {
     }
 
     public static void subscribe(UIComponent component, String on) {
-        if (LangUtils.isValueBlank(on)) {
+        if (LangUtils.isBlank(on)) {
             subscribe(component, INSTANCE);
         }
         else {

@@ -208,7 +208,7 @@ public class WebXmlParser {
         if (!errorPages.containsKey(null)) {
             String defaultLocation = xpath.compile(ERROR_CODE_500_LOCATION_EXPRESSION).evaluate(webXml).trim();
 
-            if (LangUtils.isValueBlank(defaultLocation)) {
+            if (LangUtils.isBlank(defaultLocation)) {
                 defaultLocation = xpath.compile(ERROR_PAGE_NO_CODE_AND_TYPE_EXPRESSION).evaluate(webXml).trim();
             }
 

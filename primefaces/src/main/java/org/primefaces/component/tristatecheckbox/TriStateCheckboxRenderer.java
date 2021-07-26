@@ -65,7 +65,7 @@ public class TriStateCheckboxRenderer extends InputRenderer {
         String clientId = checkbox.getClientId(context);
         String valueToRenderer = ComponentUtils.getValueToRender(context, checkbox);
 
-        int valCheck = LangUtils.isValueBlank(valueToRenderer) ? 0 : Integer.parseInt(valueToRenderer);
+        int valCheck = LangUtils.isBlank(valueToRenderer) ? 0 : Integer.parseInt(valueToRenderer);
 
         if (valCheck > 2 || valCheck < 0) {
             valCheck = 0;

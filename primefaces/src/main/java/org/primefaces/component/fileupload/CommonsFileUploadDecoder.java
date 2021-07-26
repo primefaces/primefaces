@@ -57,7 +57,7 @@ public class CommonsFileUploadDecoder extends AbstractFileUploadDecoder<Multipar
     @Override
     protected UploadedFile createUploadedFile(MultipartRequest request, FileUpload fileUpload, String inputToDecodeId) {
         FileItem file = request.getFileItem(inputToDecodeId);
-        if (file == null || LangUtils.isValueBlank(file.getName())) {
+        if (file == null || LangUtils.isBlank(file.getName())) {
             return null;
         }
 

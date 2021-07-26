@@ -69,7 +69,7 @@ public class MenuRenderer extends BaseMenuRenderer {
         styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
 
         writer.startElement("div", menu);
-        if (!LangUtils.isValueEmpty(menu.getMaxHeight())) {
+        if (!LangUtils.isEmpty(menu.getMaxHeight())) {
             styleClass = styleClass + " "  + Menu.CONTAINER_MAXHEIGHT_CLASS;
             style = style != null ? style : "";
             style += ";max-height:" + menu.getMaxHeight();

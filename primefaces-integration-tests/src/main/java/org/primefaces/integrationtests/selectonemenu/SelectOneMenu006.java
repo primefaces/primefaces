@@ -67,7 +67,7 @@ public class SelectOneMenu006 implements Serializable {
     }
 
     public void submit() {
-        if (!LangUtils.isValueBlank(console)) {
+        if (!LangUtils.isBlank(console)) {
             TestUtils.addMessage("Console", console);
         }
     }

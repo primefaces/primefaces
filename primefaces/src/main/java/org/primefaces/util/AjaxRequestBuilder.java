@@ -98,7 +98,7 @@ public class AjaxRequestBuilder {
         String result = null;
 
         String form = source.getForm();
-        if (LangUtils.isValueBlank(form)) {
+        if (LangUtils.isBlank(form)) {
             if (formComponent == null) {
                 formComponent = ComponentTraversalUtils.closestForm(context, component);
             }

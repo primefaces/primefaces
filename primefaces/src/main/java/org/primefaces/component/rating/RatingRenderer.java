@@ -46,7 +46,7 @@ public class RatingRenderer extends InputRenderer {
         String clientId = rating.getClientId(context);
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
 
-        if (!LangUtils.isValueEmpty(submittedValue)) {
+        if (!LangUtils.isEmpty(submittedValue)) {
             int submittedStars = Integer.parseInt(submittedValue);
             if (submittedStars < 1 || submittedStars > rating.getStars()) {
                 return;

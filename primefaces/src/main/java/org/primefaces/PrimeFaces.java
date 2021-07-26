@@ -159,7 +159,7 @@ public class PrimeFaces {
      * @param base the base component from which we will start to resolve the search expression.
      */
     public void focus(String expression, UIComponent base) {
-        if (LangUtils.isValueBlank(expression)) {
+        if (LangUtils.isBlank(expression)) {
             return;
         }
 
@@ -331,7 +331,7 @@ public class PrimeFaces {
 
             for (String expression : expressions) {
 
-                if (LangUtils.isValueBlank(expression)) {
+                if (LangUtils.isBlank(expression)) {
                     continue;
                 }
 

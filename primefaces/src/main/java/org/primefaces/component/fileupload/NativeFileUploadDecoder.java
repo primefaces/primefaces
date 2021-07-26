@@ -61,7 +61,7 @@ public class NativeFileUploadDecoder extends AbstractFileUploadDecoder<HttpServl
     protected UploadedFile createUploadedFile(HttpServletRequest request, FileUpload fileUpload, String inputToDecodeId)
             throws IOException, ServletException {
         Part part = request.getPart(inputToDecodeId);
-        if (part == null || LangUtils.isValueBlank(part.getSubmittedFileName())) {
+        if (part == null || LangUtils.isBlank(part.getSubmittedFileName())) {
             return null;
         }
 

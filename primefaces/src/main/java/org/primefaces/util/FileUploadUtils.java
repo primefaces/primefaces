@@ -65,7 +65,7 @@ public class FileUploadUtils {
     }
 
     public static String getValidFilename(String filename) {
-        if (LangUtils.isValueBlank(filename)) {
+        if (LangUtils.isBlank(filename)) {
             return null;
         }
 
@@ -93,7 +93,7 @@ public class FileUploadUtils {
     }
 
     public static String getValidFilePath(String filePath) throws ValidationException {
-        if (LangUtils.isValueBlank(filePath)) {
+        if (LangUtils.isBlank(filePath)) {
             throw new FacesException("Path can not be the empty string or null");
         }
 
@@ -159,12 +159,12 @@ public class FileUploadUtils {
 
     private static boolean isValidFileName(FileUpload fileUpload, UploadedFile uploadedFile) {
         String javascriptRegex = fileUpload.getAllowTypes();
-        if (LangUtils.isValueBlank(javascriptRegex)) {
+        if (LangUtils.isBlank(javascriptRegex)) {
             return true;
         }
 
         String javaRegex = convertJavaScriptRegex(javascriptRegex);
-        if (LangUtils.isValueBlank(javaRegex)) {
+        if (LangUtils.isBlank(javaRegex)) {
             return true;
         }
 
@@ -211,7 +211,7 @@ public class FileUploadUtils {
             }
             return true;
         }
-        if (LangUtils.isValueBlank(fileUpload.getAccept())) {
+        if (LangUtils.isBlank(fileUpload.getAccept())) {
             //Short circuit
             return true;
         }

@@ -96,7 +96,7 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
         String monitorKeyCookieName = ResourceUtils.getMonitorKeyCookieName(context, monitorKey);
 
         Map<String, Object> cookieOptions = new HashMap<>(4);
-        cookieOptions.put("path", LangUtils.isValueBlank(externalContext.getRequestContextPath())
+        cookieOptions.put("path", LangUtils.isBlank(externalContext.getRequestContextPath())
                 ? "/"
                 : externalContext.getRequestContextPath()); // Always add cookies to context root; see #3108
         ResourceUtils.addResponseCookie(context, monitorKeyCookieName, "true", cookieOptions);

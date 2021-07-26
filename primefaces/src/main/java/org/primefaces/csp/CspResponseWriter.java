@@ -181,7 +181,7 @@ public class CspResponseWriter extends ResponseWriterWrapper {
         }
 
         // no nonce written -> do it
-        if ("script".equalsIgnoreCase(lastElement) && LangUtils.isValueBlank(lastNonce)) {
+        if ("script".equalsIgnoreCase(lastElement) && LangUtils.isBlank(lastNonce)) {
             getWrapped().writeAttribute("nonce", cspState.getNonce(), null);
         }
 
@@ -190,7 +190,7 @@ public class CspResponseWriter extends ResponseWriterWrapper {
 
             // no id written -> generate a new one and write it
             // otherwise we can't identify the element for our scripts
-            if (LangUtils.isValueBlank(id)) {
+            if (LangUtils.isBlank(id)) {
                 id = lastElement.toLowerCase() + "-" + UUID.randomUUID().toString();
                 getWrapped().writeAttribute("id", id, null);
             }

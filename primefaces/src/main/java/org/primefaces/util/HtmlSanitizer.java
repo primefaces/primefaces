@@ -61,7 +61,7 @@ public class HtmlSanitizer {
     public static String sanitizeHtml(String value,
             boolean allowBlocks, boolean allowFormatting, boolean allowLinks, boolean allowStyles, boolean allowImages) {
 
-        if (LangUtils.isValueBlank(value)) {
+        if (LangUtils.isBlank(value)) {
             return value;
         }
 

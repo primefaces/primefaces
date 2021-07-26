@@ -124,7 +124,7 @@ public class Wizard extends WizardBase {
 
     public Tab getStepToProcess() {
         String currentStepId = getStep();
-        if (LangUtils.isValueBlank(currentStepId)) {
+        if (LangUtils.isBlank(currentStepId)) {
             return null;
         }
 

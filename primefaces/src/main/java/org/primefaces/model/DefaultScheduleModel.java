@@ -47,7 +47,7 @@ public class DefaultScheduleModel implements ScheduleModel, Serializable {
 
     @Override
     public void addEvent(ScheduleEvent<?> event) {
-        if (LangUtils.isValueEmpty(event.getId())) {
+        if (LangUtils.isEmpty(event.getId())) {
             event.setId(UUID.randomUUID().toString());
         }
 

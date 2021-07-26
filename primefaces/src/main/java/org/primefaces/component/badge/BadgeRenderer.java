@@ -38,7 +38,7 @@ public class BadgeRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String value = badge.getValue();
         boolean hasChild = badge.getChildCount() > 0;
-        boolean valueEmpty = LangUtils.isValueEmpty(value);
+        boolean valueEmpty = LangUtils.isEmpty(value);
         String severity = badge.getSeverity();
         String size = badge.getSize();
         String styleClass = getStyleClassBuilder(context)

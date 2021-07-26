@@ -55,7 +55,7 @@ public class AjaxExceptionHandlerVisitCallback implements VisitCallback {
         if (target instanceof AjaxExceptionHandler) {
             AjaxExceptionHandler currentHandler = (AjaxExceptionHandler) target;
 
-            if (LangUtils.isValueBlank(currentHandler.getType())) {
+            if (LangUtils.isBlank(currentHandler.getType())) {
                 handlers.put(null, currentHandler);
             }
             else {

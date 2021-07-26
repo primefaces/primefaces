@@ -195,7 +195,7 @@ public class MessageFactory {
     }
 
     public static String getFormattedText(Locale locale, String message, Object... params) {
-        if ((params == null || params.length == 0) || LangUtils.isValueBlank(message)) {
+        if ((params == null || params.length == 0) || LangUtils.isBlank(message)) {
             return message;
         }
 

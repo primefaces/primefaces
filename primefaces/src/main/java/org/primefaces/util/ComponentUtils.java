@@ -160,7 +160,7 @@ public class ComponentUtils {
 
     public static Object getConvertedValue(FacesContext context, UIComponent component, Object value) {
         String submittedValue = Objects.toString(value, null);
-        if (LangUtils.isValueBlank(submittedValue)) {
+        if (LangUtils.isBlank(submittedValue)) {
             submittedValue = null;
         }
 
