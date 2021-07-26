@@ -30,10 +30,13 @@ import javax.el.ValueExpression;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
+import javax.faces.event.ComponentSystemEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
+import javax.faces.event.PostRestoreStateEvent;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.UIColumn;
@@ -288,6 +291,21 @@ public class TreeTable extends TreeTableBase {
     }
 
     @Override
+    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
+        super.processEvent(event);
+
+        // restore "value" from "filteredValue"
+        if (event instanceof PostRestoreStateEvent
+                && isFilteringEnabled()
+                && this == event.getComponent()) {
+            TreeNode<?> filteredValue = getFilteredValue();
+            if (filteredValue != null) {
+                setValue(filteredValue);
+            }
+        }
+    }
+
+    @Override
     public void processDecodes(FacesContext context) {
         if (isToggleRequest(context)) {
             decode(context);
@@ -382,6 +400,12 @@ public class TreeTable extends TreeTableBase {
     @Override
     public Object saveState(FacesContext context) {
         resetDynamicColumns();
+
+        // reset value when filtering is enabled
+        // filtering stores the filtered values the value property, so it needs to be resetted; see #7336
+        if (isFilteringEnabled()) {
+            setValue(null);
+        }
 
         // reset component for MyFaces view pooling
         columns = null;

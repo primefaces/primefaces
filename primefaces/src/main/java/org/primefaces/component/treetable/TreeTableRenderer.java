@@ -219,8 +219,12 @@ public class TreeTableRenderer extends DataRenderer {
             encodeNodeChildren(context, tt, root, root, tt.getFirst(), tt.getRows());
         }
         else {
-            filter(context, tt, tt.getValue());
-            sort(tt);
+            if (tt.isDefaultFilter()) {
+                filter(context, tt, tt.getValue());
+            }
+            if (tt.isDefaultSort()) {
+                sort(tt);
+            }
 
             encodeMarkup(context, tt);
             encodeScript(context, tt);
