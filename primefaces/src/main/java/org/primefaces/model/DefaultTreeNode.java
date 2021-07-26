@@ -107,9 +107,8 @@ public class DefaultTreeNode<T> implements TreeNode<T>, Serializable {
             this.children = children;
         }
         else {
-            TreeNodeChildren nodeChildren = new TreeNodeChildren(this);
-            nodeChildren.addAll(children);
-            this.children = nodeChildren;
+            this.children = new TreeNodeChildren(this);
+            this.children.addAll(children);
         }
     }
 

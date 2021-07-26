@@ -78,7 +78,8 @@ public class TreeNodeChildren<T> extends TreeNodeList<T> {
     @Override
     public boolean addAll(Collection<? extends TreeNode<T>> collection) {
         Iterator<TreeNode<T>> elements = (new ArrayList<TreeNode<T>>(collection)).iterator();
-        int index = collection.size();
+        int index = this.size();
+
         boolean changed = false;
         while (elements.hasNext()) {
             TreeNode node = elements.next();
