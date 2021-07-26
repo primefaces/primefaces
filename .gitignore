@@ -11,6 +11,7 @@ nbactions.xml
 .vscode/
 .checkstyle
 nb-configuration.xml
+faces-config.NavData
 /primefaces/src/main/type-definitions/src/PrimeFaces-modules.d.ts
 /primefaces/src/main/type-definitions/src/PrimeFaces.d.ts
 
