@@ -133,7 +133,9 @@ public class FileUploadUtils {
      * Check if an uploaded file meets all specifications regarding its filename and content type. It evaluates {@link FileUpload#getAllowTypes}
      * as well as {@link FileUpload#getAccept} and uses the installed {@link java.nio.file.spi.FileTypeDetector} implementation.
      * For most reliable content type checking it's recommended to plug in Apache Tika as an implementation.
-     * @param fileUpload the fileUpload component
+     *
+     * @param context the {@link PrimeApplicationContext}
+     * @param fileUpload the {@link FileUpload} component
      * @param uploadedFile the details of the uploaded file
      * @return <code>true</code>, if all validations regarding filename and content type passed, <code>false</code> else
      */
