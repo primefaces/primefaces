@@ -23,12 +23,17 @@
  */
 package org.primefaces.component.api;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
 import java.time.format.ResolverStyle;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -370,12 +375,43 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
     }
 
     public void validateMinMax(FacesContext context) {
-        LocalDate minDate = CalendarUtils.getObjectAsLocalDate(context, this, getMindate());
-        LocalDate maxDate = CalendarUtils.getObjectAsLocalDate(context, this, getMaxdate());
+        Instant minDate = toInstant(context, getMindate(), "minimum");
+        Instant maxDate = toInstant(context, getMaxdate(), "maximum");
         if (minDate != null && maxDate != null && maxDate.compareTo(minDate) < 0) {
             String id = getClientId(context);
             String component = this.getClass().getSimpleName();
             throw new FacesException(component + " : \"" + id + "\" minimum date must be less than maximum date.");
         }
+    }
+
+    private Instant toInstant(FacesContext context, Object date, String attr) {
+        if (date == null) {
+            return null;
+        }
+        if (date instanceof LocalDateTime) {
+            return ((LocalDateTime) date).toInstant(ZoneOffset.UTC);
+        }
+        if (date instanceof LocalDate) {
+            return ((LocalDate) date).atStartOfDay().toInstant(ZoneOffset.UTC);
+        }
+        if (date instanceof LocalTime) {
+            LocalDate now = LocalDate.now();
+            return now.atTime(((LocalTime) date)).toInstant(ZoneOffset.UTC);
+        }
+        if (date instanceof Date) {
+            if (date instanceof java.sql.Date) {
+                // java.sql.Date does not support toInstant
+                return new Date(((java.sql.Date) date).getTime()).toInstant();
+            }
+            return ((Date) date).toInstant(); // implied UTC
+        }
+        if (date instanceof String) {
+            return CalendarUtils.getObjectAsLocalDate(context, this, date).atStartOfDay().toInstant(ZoneOffset.UTC);
+        }
+
+        String id = getClientId(context);
+        String component = this.getClass().getSimpleName();
+        String type = date.getClass().getName();
+        throw new FacesException(component + " : \"" + id + "\"" + attr + " date unsupported type " + type);
     }
 }
