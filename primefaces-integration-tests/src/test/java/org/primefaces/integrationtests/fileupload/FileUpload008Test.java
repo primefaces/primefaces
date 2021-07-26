@@ -53,8 +53,7 @@ public class FileUpload008Test extends AbstractFileUploadTest {
         // Assert
         assertNoJavascriptErrors();
         assertUploadedFiles(page.uploadedFiles, file);
-        assertConfiguration(fileUpload.getWidgetConfiguration());
-        Assertions.assertNotNull(fileUpload.getInput().getAttribute("multiple"));
+        assertConfiguration(fileUpload);
     }
 
     @Test
@@ -73,8 +72,7 @@ public class FileUpload008Test extends AbstractFileUploadTest {
         // Assert
         assertNoJavascriptErrors();
         assertUploadedFiles(page.uploadedFiles, file1, file2);
-        assertConfiguration(fileUpload.getWidgetConfiguration());
-        Assertions.assertNotNull(fileUpload.getInput().getAttribute("multiple"));
+        assertConfiguration(fileUpload);
     }
 
     @Test
@@ -103,15 +101,108 @@ public class FileUpload008Test extends AbstractFileUploadTest {
         // Assert
         assertNoJavascriptErrors();
         assertUploadedFiles(page.uploadedFiles, file1, file2, file3, file4);
-        assertConfiguration(fileUpload.getWidgetConfiguration());
-        Assertions.assertNotNull(fileUpload.getInput().getAttribute("multiple"));
+        assertConfiguration(fileUpload);
     }
 
-    private void assertConfiguration(JSONObject cfg) {
+    @Test
+    @Order(4)
+    public void testAdvancedAutoMultipleUploadFileLimit(Page page) {
+        // Arrange
+        FileUpload fileUpload = page.fileupload;
+        Assertions.assertEquals("", fileUpload.getValue());
+        String fileLimitMsg = fileUpload.getWidgetConfiguration().getString("fileLimitMessage");
+        Assertions.assertNotNull(fileLimitMsg);
+        Assertions.assertFalse(fileLimitMsg.isEmpty());
+
+        // Act
+        File file1 = locateClientSideFile("file1.csv");
+        File file2 = locateClientSideFile("file2.csv");
+        fileUpload.setValue(file1, file2);
+        fileUpload.waitAdvancedUntilAllFilesAreUploaded(page.uploadedFiles);
+
+        // Assert
+        assertNoJavascriptErrors();
+        assertUploadedFiles(page.uploadedFiles, file1, file2);
+
+        // Act
+        File file3 = locateClientSideFile("file2.csv");
+        File file4 = locateClientSideFile("file1.csv");
+        fileUpload.setValue(file3, file4);
+        fileUpload.waitAdvancedUntilAllFilesAreUploaded(page.uploadedFiles);
+
+        // Assert
+        assertNoJavascriptErrors();
+        assertUploadedFiles(page.uploadedFiles, file1, file2, file3, file4);
+
+        // Act
+        File file5 = locateClientSideFile("file1.csv");
+        fileUpload.setValue(file5);
+        Assertions.assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
+        // upload button is not visible
+        Assertions.assertTrue(fileUpload.getWidgetErrorMessages().contains(fileLimitMsg), fileUpload.getWidgetErrorMessages().toString());
+
+        // Assert
+        assertNoJavascriptErrors();
+        assertUploadedFiles(page.uploadedFiles, file1, file2, file3, file4);
+        assertConfiguration(fileUpload);
+    }
+
+    @Test
+    @Order(5)
+    public void testAdvancedAutoMultipleUploadSizeLimit(Page page) {
+        // Arrange
+        FileUpload fileUpload = page.fileupload;
+        Assertions.assertEquals("", fileUpload.getValue());
+        String invalidSizeMsg = fileUpload.getWidgetConfiguration().getString("invalidSizeMessage");
+        Assertions.assertNotNull(invalidSizeMsg);
+        Assertions.assertFalse(invalidSizeMsg.isEmpty());
+
+        // Act
+        File file = locateClientSideFile("file3.csv");
+        fileUpload.setValue(file);
+        Assertions.assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
+        // upload button is not visible
+        Assertions.assertTrue(fileUpload.getWidgetErrorMessages().contains(invalidSizeMsg), fileUpload.getWidgetErrorMessages().toString());
+
+        // Assert
+        assertNoJavascriptErrors();
+        assertUploadedFiles(page.uploadedFiles);
+        assertConfiguration(fileUpload);
+    }
+
+    @Test
+    @Order(6)
+    public void testAdvancedAutoMultipleUploadAllowTypes(Page page) {
+        // Arrange
+        FileUpload fileUpload = page.fileupload;
+        Assertions.assertEquals("", fileUpload.getValue());
+        String invalidTypeMsg = fileUpload.getWidgetConfiguration().getString("invalidFileMessage");
+        Assertions.assertNotNull(invalidTypeMsg);
+        Assertions.assertFalse(invalidTypeMsg.isEmpty());
+
+        // Act
+        File file = locateClientSideFile("file1.png");
+        fileUpload.setValue(file);
+        Assertions.assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
+        // upload button is not visible
+        Assertions.assertTrue(fileUpload.getWidgetErrorMessages().contains(invalidTypeMsg), fileUpload.getWidgetErrorMessages().toString());
+
+        // Assert
+        assertNoJavascriptErrors();
+        assertUploadedFiles(page.uploadedFiles);
+        assertConfiguration(fileUpload);
+    }
+
+    private void assertConfiguration(FileUpload fileUpload) {
+        JSONObject cfg = fileUpload.getWidgetConfiguration();
         System.out.println("FileInput Config = " + cfg);
         Assertions.assertFalse(cfg.has("skinSimple"));
         Assertions.assertTrue(cfg.getBoolean("auto"));
         Assertions.assertFalse(cfg.getBoolean("dnd"));
+        Assertions.assertEquals(4, cfg.getInt("fileLimit"));
+        Assertions.assertEquals(100, cfg.getInt("maxFileSize"));
+        Assertions.assertEquals("/(\\.|\\/)(csv)$/", cfg.getString("allowTypes"));
+        Assertions.assertNotNull(fileUpload.getInput().getAttribute("multiple"));
     }
 
     public static class Page extends AbstractPrimePage {

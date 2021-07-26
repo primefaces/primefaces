@@ -13,8 +13,10 @@
 
         <h:form id="form" enctype="multipart/form-data">
 
-            <p:fileUpload id="fileupload" value="#{fileUploadHandler.file}"
-                          mode="simple"/>
+            <p:fileUpload id="fileupload"
+                          value="#{fileUploadHandler.file}"
+                          mode="simple"
+                          fileLimit="1" sizeLimit="100" virusScan="true" allowTypes="/(\.|\/)(csv)$/"/>
 
             <p:commandButton id="button" value="Submit" ajax="false" update="@form" action="#{fileUploadHandler.uploadFile}"/>
 

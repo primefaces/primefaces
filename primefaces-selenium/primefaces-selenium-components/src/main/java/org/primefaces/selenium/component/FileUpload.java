@@ -136,10 +136,20 @@ public abstract class FileUpload extends AbstractInputComponent {
     /**
      * Gets the values displayed by the widget.
      *
-     * @return the widget's value
+     * @return the widget's values
      */
     public List<String> getWidgetValues() {
         return findElements(By.className("ui-fileupload-filename")).stream()
+                .map(e -> e.getText()).collect(Collectors.toList());
+    }
+
+    /**
+     * Gets the values displayed by the widget.
+     *
+     * @return the widget's error messages
+     */
+    public List<String> getWidgetErrorMessages() {
+        return findElements(By.className("ui-messages-error-summary")).stream()
                 .map(e -> e.getText()).collect(Collectors.toList());
     }
 }

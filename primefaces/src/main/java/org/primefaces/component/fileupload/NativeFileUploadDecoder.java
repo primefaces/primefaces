@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+import org.primefaces.util.LangUtils;
 
 public class NativeFileUploadDecoder extends AbstractFileUploadDecoder<HttpServletRequest> {
 
@@ -50,7 +51,8 @@ public class NativeFileUploadDecoder extends AbstractFileUploadDecoder<HttpServl
         Long sizeLimit = fileUpload.getSizeLimit();
         Iterable<Part> parts = request.getParts();
         return StreamSupport.stream(parts.spliterator(), false)
-                .filter(p -> p.getName().equals(inputToDecodeId))
+                .filter(p -> p != null && p.getName().equals(inputToDecodeId))
+                .filter(p -> LangUtils.isNotBlank(p.getSubmittedFileName()))
                 .map(p -> new NativeUploadedFile(p, sizeLimit))
                 .collect(Collectors.toList());
     }
@@ -59,6 +61,10 @@ public class NativeFileUploadDecoder extends AbstractFileUploadDecoder<HttpServl
     protected UploadedFile createUploadedFile(HttpServletRequest request, FileUpload fileUpload, String inputToDecodeId)
             throws IOException, ServletException {
         Part part = request.getPart(inputToDecodeId);
+        if (part == null || LangUtils.isValueBlank(part.getSubmittedFileName())) {
+            return null;
+        }
+
         return new NativeUploadedFile(part, fileUpload.getSizeLimit());
     }
 
