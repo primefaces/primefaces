@@ -29,11 +29,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
-import javax.faces.component.visit.VisitCallback;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -47,6 +42,9 @@ import org.primefaces.model.file.UploadedFile;
 @Data
 public class FileUploadView implements Serializable {
     private static final long serialVersionUID = 1L;
+
+    // Assume the file upload component always has the same id in all views
+    private static final String FILE_UPLOAD_ID = "form:fileupload";
 
     private List<UploadFile> uploadedFiles = Collections.synchronizedList(new ArrayList<>());
     private String _allowTypes;
@@ -78,28 +76,17 @@ public class FileUploadView implements Serializable {
         String allowTypes = getAllowTypes();
         return allowTypes == null || allowTypes.length() < 3 || // JS RegExp has at least 3 chars
                 Pattern.compile(allowTypes.substring(1, allowTypes.length() - 1))
-                .matcher(fileName).find();
+                         .matcher(fileName).find();
     }
 
     private String getAllowTypes() {
         // some tests break in Mojarra when binding is used
-        // search for first FileUpload component in component tree (assuming this is the only one)
+        // search the FileUpload component by its ID
         if (_allowTypes == null) {
-            FileUpload[] upload = new FileUpload[1];
             FacesContext ctx = FacesContext.getCurrentInstance();
-            UIViewRoot viewRoot = ctx.getViewRoot();
-            viewRoot.visitTree(VisitContext.createVisitContext(ctx), new VisitCallback() {
-                @Override
-                public VisitResult visit(VisitContext visitContext, UIComponent component) {
-                    if (component instanceof FileUpload) {
-                        upload[0] = (FileUpload) component;
-                        return VisitResult.COMPLETE;
-                    }
-                    return VisitResult.ACCEPT;
-                }
-            });
-            if (upload[0] != null) {
-                _allowTypes = upload[0].getAllowTypes();
+            Object component = ctx.getViewRoot().findComponent(FILE_UPLOAD_ID);
+            if (component instanceof FileUpload) {
+                _allowTypes = ((FileUpload) component).getAllowTypes();
             }
         }
         return _allowTypes;

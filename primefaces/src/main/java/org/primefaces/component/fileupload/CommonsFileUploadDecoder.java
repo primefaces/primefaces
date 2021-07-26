@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import org.primefaces.util.LangUtils;
 
 public class CommonsFileUploadDecoder extends AbstractFileUploadDecoder<MultipartRequest> {
 
@@ -48,7 +49,7 @@ public class CommonsFileUploadDecoder extends AbstractFileUploadDecoder<Multipar
     protected List<UploadedFile> createUploadedFiles(MultipartRequest request, FileUpload fileUpload, String inputToDecodeId) {
         Long sizeLimit = fileUpload.getSizeLimit();
         return request.getFileItems(inputToDecodeId).stream()
-                .filter(p -> !p.getName().isEmpty())
+                .filter(p -> LangUtils.isNotBlank(p.getName()))
                 .map(p -> new CommonsUploadedFile(p, sizeLimit))
                 .collect(Collectors.toList());
     }
@@ -56,7 +57,7 @@ public class CommonsFileUploadDecoder extends AbstractFileUploadDecoder<Multipar
     @Override
     protected UploadedFile createUploadedFile(MultipartRequest request, FileUpload fileUpload, String inputToDecodeId) {
         FileItem file = request.getFileItem(inputToDecodeId);
-        if (file == null || file.getName().isEmpty()) {
+        if (file == null || LangUtils.isValueBlank(file.getName())) {
             return null;
         }
 
