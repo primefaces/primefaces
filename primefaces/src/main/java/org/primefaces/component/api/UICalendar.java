@@ -360,10 +360,15 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
      */
     public Class<?> getTypeFromValueByValueExpression(FacesContext context) {
         ValueExpression ve = getValueExpression("value");
-        if (ve != null) {
+        if (ve == null) {
+            return null;
+        }
+
+        try {
             return ve.getType(context.getELContext());
         }
-        else {
+        catch (Exception ex) {
+            // #7615 return null to make it behave same as Calendar
             return null;
         }
     }
