@@ -30,6 +30,8 @@ import org.primefaces.selenium.component.model.treetable.Row;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:treeTable}.
@@ -47,4 +49,15 @@ public abstract class TreeTable extends AbstractTable<Row> {
     public Row getRow(int index) {
         return getRows().get(index);
     }
+
+    public boolean isEmpty() {
+        try {
+            findElement(By.className("ui-treetable-empty-message"));
+            return true;
+        }
+        catch (NoSuchElementException | StaleElementReferenceException e) {
+            return false;
+        }
+    }
+
 }
