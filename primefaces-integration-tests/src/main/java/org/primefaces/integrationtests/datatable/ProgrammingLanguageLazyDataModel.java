@@ -37,17 +37,32 @@ import org.primefaces.model.SortMeta;
 public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingLanguage> {
 
     private static final long serialVersionUID = -3415081263308946252L;
-    private final List<ProgrammingLanguage> langs;
+    private List<ProgrammingLanguage> langs;
 
     public ProgrammingLanguageLazyDataModel() {
+        this(false);
+    }
+
+    public ProgrammingLanguageLazyDataModel(boolean initOnLoad) {
+        if (!initOnLoad) {
+            initLanguages();
+        }
+    }
+
+    private void initLanguages() {
         langs = new ArrayList<>();
         for (int i = 1; i <= 75; i++) {
             langs.add(new ProgrammingLanguage(i, "Language " + i, 1990 + (i % 10), ProgrammingLanguage.ProgrammingLanguageType.COMPILED));
         }
+        setRowCount(langs.size());
     }
 
     @Override
     public List<ProgrammingLanguage> load(int first, int pageSize, Map<String, SortMeta> sortMeta, Map<String, FilterMeta> filterMeta) {
+        if (langs == null) {
+            initLanguages();
+        }
+
         Stream<ProgrammingLanguage> langsStream = langs.stream();
 
         if (filterMeta != null && !filterMeta.isEmpty()) {
@@ -76,11 +91,6 @@ public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingL
         return langsStream
                     .skip(first).limit(pageSize)
                     .collect(Collectors.toList());
-    }
-
-    @Override
-    public int getRowCount() {
-        return langs.size();
     }
 
     @Override
