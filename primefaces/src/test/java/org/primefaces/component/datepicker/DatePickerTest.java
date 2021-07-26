@@ -26,14 +26,17 @@ package org.primefaces.component.datepicker;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -44,6 +47,7 @@ import java.util.*;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -1093,4 +1097,360 @@ public class DatePickerTest {
         assertEquals("yyyy-MM-dd HH:mm", datePicker.calculatePattern());
     }
 
+    @Test
+    public void validateMinMax_LocalDateTime_sameDay() {
+        when(datePicker.getMindate()).thenReturn(LocalDateTime.of(2019, 11, 12, 10, 0));
+        when(datePicker.getMaxdate()).thenReturn(LocalDateTime.of(2019, 11, 12, 11, 59));
+        doCallRealMethod().when(datePicker).validateMinMax(context);
+        datePicker.validateMinMax(context);
+        verify(datePicker, atLeastOnce()).getMindate();
+        verify(datePicker, atLeastOnce()).getMaxdate();
+    }
+
+    @Test
+    public void validateMinMax_LocalDateTime_differentDay() {
+        when(datePicker.getMindate()).thenReturn(LocalDateTime.of(2019, 11, 11, 10, 0));
+        when(datePicker.getMaxdate()).thenReturn(LocalDateTime.of(2019, 11, 12, 11, 59));
+        doCallRealMethod().when(datePicker).validateMinMax(context);
+        datePicker.validateMinMax(context);
+        verify(datePicker, atLeastOnce()).getMindate();
+        verify(datePicker, atLeastOnce()).getMaxdate();
+    }
+
+    @Test
+    public void validateMinMax_LocalDateTime_sameDateTime() {
+        when(datePicker.getMindate()).thenReturn(LocalDateTime.of(2019, 11, 12, 10, 0));
+        when(datePicker.getMaxdate()).thenReturn(LocalDateTime.of(2019, 11, 12, 10, 0));
+        doCallRealMethod().when(datePicker).validateMinMax(context);
+        datePicker.validateMinMax(context);
+        verify(datePicker, atLeastOnce()).getMindate();
+        verify(datePicker, atLeastOnce()).getMaxdate();
+    }
+
+    @Test
+    public void validateMinMax_LocalDateTime_wrongTime() {
+        when(datePicker.getMindate()).thenReturn(LocalDateTime.of(2019, 11, 12, 11, 59));
+        when(datePicker.getMaxdate()).thenReturn(LocalDateTime.of(2019, 11, 12, 10, 00));
+        doCallRealMethod().when(datePicker).validateMinMax(context);
+        assertThrows(FacesException.class, () -> datePicker.validateMinMax(context));
+        verify(datePicker, atLeastOnce()).getMindate();
+        verify(datePicker, atLeastOnce()).getMaxdate();
+    }
+
+    @Test
+    public void validateMinMax_LocalDateTime_wrongDate() {
+        when(datePicker.getMindate()).thenReturn(LocalDateTime.of(2019, 11, 12, 10, 0));
+        when(datePicker.getMaxdate()).thenReturn(LocalDateTime.of(2019, 11, 11, 11, 59));
+        doCallRealMethod().when(datePicker).validateMinMax(context);
+        assertThrows(FacesException.class, () -> datePicker.validateMinMax(context));
+        verify(datePicker, atLeastOnce()).getMindate();
+        verify(datePicker, atLeastOnce()).getMaxdate();
+    }
+
+    @Test
+    public void validateMinMax_LocalDate() {
+        when(datePicker.getMindate()).thenReturn(LocalDate.of(2019, 11, 11));
+        when(datePicker.getMaxdate()).thenReturn(LocalDate.of(2019, 11, 12));
+        doCallRealMethod().when(datePicker).validateMinMax(context);
+        datePicker.validateMinMax(context);
+        verify(datePicker, atLeastOnce()).getMindate();
+        verify(datePicker, atLeastOnce()).getMaxdate();
+    }
+
+    @Test
+    public void validateMinMax_LocalDate_sameDate() {
+        when(datePicker.getMindate()).thenReturn(LocalDate.of(2019, 11, 12));
+        when(datePicker.getMaxdate()).thenReturn(LocalDate.of(2019, 11, 12));
+        doCallRealMethod().when(datePicker).validateMinMax(context);
+        datePicker.validateMinMax(context);
+        verify(datePicker, atLeastOnce()).getMindate();
+        verify(datePicker, atLeastOnce()).getMaxdate();
+    }
+
+    @Test
+    public void validateMinMax_LocalDate_wrongDate() {
+        when(datePicker.getMindate()).thenReturn(LocalDate.of(2019, 11, 12));
+        when(datePicker.getMaxdate()).thenReturn(LocalDate.of(2019, 11, 11));
+        doCallRealMethod().when(datePicker).validateMinMax(context);
+        assertThrows(FacesException.class, () -> datePicker.validateMinMax(context));
+        verify(datePicker, atLeastOnce()).getMindate();
+        verify(datePicker, atLeastOnce()).getMaxdate();
+    }
+
+    @Test
+    public void validateMinMax_LocalTime() {
+        when(datePicker.getMindate()).thenReturn(LocalTime.of(10, 00));
+        when(datePicker.getMaxdate()).thenReturn(LocalTime.of(11, 59));
+        doCallRealMethod().when(datePicker).validateMinMax(context);
+        datePicker.validateMinMax(context);
+        verify(datePicker, atLeastOnce()).getMindate();
+        verify(datePicker, atLeastOnce()).getMaxdate();
+    }
+
+    @Test
+    public void validateMinMax_LocalTime_sameTime() {
+        when(datePicker.getMindate()).thenReturn(LocalTime.of(10, 00));
+        when(datePicker.getMaxdate()).thenReturn(LocalTime.of(10, 00));
+        doCallRealMethod().when(datePicker).validateMinMax(context);
+        datePicker.validateMinMax(context);
+        verify(datePicker, atLeastOnce()).getMindate();
+        verify(datePicker, atLeastOnce()).getMaxdate();
+    }
+
+    @Test
+    public void validateMinMax_LocalTime_wrongTime() {
+        when(datePicker.getMindate()).thenReturn(LocalTime.of(11, 59));
+        when(datePicker.getMaxdate()).thenReturn(LocalTime.of(10, 00));
+        doCallRealMethod().when(datePicker).validateMinMax(context);
+        assertThrows(FacesException.class, () -> datePicker.validateMinMax(context));
+        verify(datePicker, atLeastOnce()).getMindate();
+        verify(datePicker, atLeastOnce()).getMaxdate();
+    }
+
+    @Test
+    public void validateMinMax_Date_sameDay() {
+        java.util.Calendar minDate = GregorianCalendar.getInstance();
+        minDate.set(2019, 10, 12);
+        minDate.set(Calendar.HOUR_OF_DAY, 10);
+        minDate.set(Calendar.MINUTE, 00);
+        minDate.set(Calendar.SECOND, 00);
+        minDate.set(Calendar.MILLISECOND, 0);
+        java.util.Calendar maxDate = GregorianCalendar.getInstance();
+        maxDate.set(2019, 10, 12);
+        maxDate.set(Calendar.HOUR_OF_DAY, 11);
+        maxDate.set(Calendar.MINUTE, 59);
+        maxDate.set(Calendar.SECOND, 00);
+        maxDate.set(Calendar.MILLISECOND, 0);
+
+        when(datePicker.getMindate()).thenReturn(minDate.getTime());
+        when(datePicker.getMaxdate()).thenReturn(maxDate.getTime());
+        doCallRealMethod().when(datePicker).validateMinMax(context);
+        datePicker.validateMinMax(context);
+        verify(datePicker, atLeastOnce()).getMindate();
+        verify(datePicker, atLeastOnce()).getMaxdate();
+    }
+
+    @Test
+    public void validateMinMax_Date_differentDay() {
+        java.util.Calendar minDate = GregorianCalendar.getInstance();
+        minDate.set(2019, 10, 11);
+        minDate.set(Calendar.HOUR_OF_DAY, 10);
+        minDate.set(Calendar.MINUTE, 00);
+        minDate.set(Calendar.SECOND, 00);
+        minDate.set(Calendar.MILLISECOND, 0);
+        java.util.Calendar maxDate = GregorianCalendar.getInstance();
+        maxDate.set(2019, 10, 12);
+        maxDate.set(Calendar.HOUR_OF_DAY, 11);
+        maxDate.set(Calendar.MINUTE, 59);
+        maxDate.set(Calendar.SECOND, 00);
+        maxDate.set(Calendar.MILLISECOND, 0);
+
+        when(datePicker.getMindate()).thenReturn(minDate.getTime());
+        when(datePicker.getMaxdate()).thenReturn(maxDate.getTime());
+        doCallRealMethod().when(datePicker).validateMinMax(context);
+        datePicker.validateMinMax(context);
+        verify(datePicker, atLeastOnce()).getMindate();
+        verify(datePicker, atLeastOnce()).getMaxdate();
+    }
+
+    @Test
+    public void validateMinMax_Date_sameDateTime() {
+        java.util.Calendar date = GregorianCalendar.getInstance();
+        date.set(2019, 10, 12);
+        date.set(Calendar.HOUR_OF_DAY, 10);
+        date.set(Calendar.MINUTE, 00);
+        date.set(Calendar.SECOND, 00);
+        date.set(Calendar.MILLISECOND, 0);
+
+        when(datePicker.getMindate()).thenReturn(date.getTime());
+        when(datePicker.getMaxdate()).thenReturn(date.getTime());
+        doCallRealMethod().when(datePicker).validateMinMax(context);
+        datePicker.validateMinMax(context);
+        verify(datePicker, atLeastOnce()).getMindate();
+        verify(datePicker, atLeastOnce()).getMaxdate();
+    }
+
+    @Test
+    public void validateMinMax_Date_wrongTime() {
+        java.util.Calendar minDate = GregorianCalendar.getInstance();
+        minDate.set(2019, 10, 12);
+        minDate.set(Calendar.HOUR_OF_DAY, 11);
+        minDate.set(Calendar.MINUTE, 59);
+        minDate.set(Calendar.SECOND, 00);
+        minDate.set(Calendar.MILLISECOND, 0);
+        java.util.Calendar maxDate = GregorianCalendar.getInstance();
+        maxDate.set(2019, 10, 12);
+        maxDate.set(Calendar.HOUR_OF_DAY, 10);
+        maxDate.set(Calendar.MINUTE, 00);
+        maxDate.set(Calendar.SECOND, 00);
+        maxDate.set(Calendar.MILLISECOND, 0);
+
+        when(datePicker.getMindate()).thenReturn(minDate.getTime());
+        when(datePicker.getMaxdate()).thenReturn(maxDate.getTime());
+        doCallRealMethod().when(datePicker).validateMinMax(context);
+        assertThrows(FacesException.class, () -> datePicker.validateMinMax(context));
+        verify(datePicker, atLeastOnce()).getMindate();
+        verify(datePicker, atLeastOnce()).getMaxdate();
+    }
+
+    @Test
+    public void validateMinMax_Date_wrongDate() {
+        java.util.Calendar minDate = GregorianCalendar.getInstance();
+        minDate.set(2019, 10, 12);
+        minDate.set(Calendar.HOUR_OF_DAY, 10);
+        minDate.set(Calendar.MINUTE, 00);
+        minDate.set(Calendar.SECOND, 00);
+        minDate.set(Calendar.MILLISECOND, 0);
+        java.util.Calendar maxDate = GregorianCalendar.getInstance();
+        maxDate.set(2019, 10, 11);
+        maxDate.set(Calendar.HOUR_OF_DAY, 11);
+        maxDate.set(Calendar.MINUTE, 59);
+        maxDate.set(Calendar.SECOND, 00);
+        maxDate.set(Calendar.MILLISECOND, 0);
+
+        when(datePicker.getMindate()).thenReturn(minDate.getTime());
+        when(datePicker.getMaxdate()).thenReturn(maxDate.getTime());
+        doCallRealMethod().when(datePicker).validateMinMax(context);
+        assertThrows(FacesException.class, () -> datePicker.validateMinMax(context));
+        verify(datePicker, atLeastOnce()).getMindate();
+        verify(datePicker, atLeastOnce()).getMaxdate();
+    }
+
+    @Test
+    public void validateMinMax_String() {
+        setupValues(String.class, Locale.ENGLISH);
+        when(datePicker.getMindate()).thenReturn("11/11/2019");
+        when(datePicker.getMaxdate()).thenReturn("11/12/2019");
+        doCallRealMethod().when(datePicker).validateMinMax(context);
+        datePicker.validateMinMax(context);
+        verify(datePicker, atLeastOnce()).getMindate();
+        verify(datePicker, atLeastOnce()).getMaxdate();
+    }
+
+    @Test
+    public void validateMinMax_String_sameDate() {
+        setupValues(String.class, Locale.ENGLISH);
+        when(datePicker.getMindate()).thenReturn("11/11/2019");
+        when(datePicker.getMaxdate()).thenReturn("11/11/2019");
+        doCallRealMethod().when(datePicker).validateMinMax(context);
+        datePicker.validateMinMax(context);
+        verify(datePicker, atLeastOnce()).getMindate();
+        verify(datePicker, atLeastOnce()).getMaxdate();
+    }
+
+    @Test
+    public void validateMinMax_String_wrongDate() {
+        setupValues(String.class, Locale.ENGLISH);
+        when(datePicker.getMindate()).thenReturn("11/12/2019");
+        when(datePicker.getMaxdate()).thenReturn("11/11/2019");
+        doCallRealMethod().when(datePicker).validateMinMax(context);
+        assertThrows(FacesException.class, () -> datePicker.validateMinMax(context));
+        verify(datePicker, atLeastOnce()).getMindate();
+        verify(datePicker, atLeastOnce()).getMaxdate();
+    }
+
+    @Test
+    public void validateMinMax_String_explicitPattern() {
+        setupValues(String.class, Locale.ENGLISH);
+        when(datePicker.getMindate()).thenReturn("11/11/2019");
+        when(datePicker.getMaxdate()).thenReturn("11/12/2019");
+        when(datePicker.getPattern()).thenReturn("MM/dd/yyyy");
+        doCallRealMethod().when(datePicker).validateMinMax(context);
+        datePicker.validateMinMax(context);
+        verify(datePicker, atLeastOnce()).getMindate();
+        verify(datePicker, atLeastOnce()).getMaxdate();
+    }
+
+    @Test
+    public void validateMinMax_String_explicitPattern_sameDate() {
+        setupValues(String.class, Locale.ENGLISH);
+        when(datePicker.getMindate()).thenReturn("11/11/2019");
+        when(datePicker.getMaxdate()).thenReturn("11/11/2019");
+        when(datePicker.getPattern()).thenReturn("MM/dd/yyyy");
+        doCallRealMethod().when(datePicker).validateMinMax(context);
+        datePicker.validateMinMax(context);
+        verify(datePicker, atLeastOnce()).getMindate();
+        verify(datePicker, atLeastOnce()).getMaxdate();
+    }
+
+    @Test
+    public void validateMinMax_String_explicitPattern_wrongDate() {
+        setupValues(String.class, Locale.ENGLISH);
+        when(datePicker.getMindate()).thenReturn("11/12/2019");
+        when(datePicker.getMaxdate()).thenReturn("11/11/2019");
+        when(datePicker.getPattern()).thenReturn("MM/dd/yyyy");
+        doCallRealMethod().when(datePicker).validateMinMax(context);
+        assertThrows(FacesException.class, () -> datePicker.validateMinMax(context));
+        verify(datePicker, atLeastOnce()).getMindate();
+        verify(datePicker, atLeastOnce()).getMaxdate();
+    }
+
+    @Test
+    public void validateMinMax_String_German() {
+        setupValues(String.class, Locale.GERMAN);
+        when(datePicker.getMindate()).thenReturn("11.11.2019");
+        when(datePicker.getMaxdate()).thenReturn("12.11.2019");
+        doCallRealMethod().when(datePicker).validateMinMax(context);
+        datePicker.validateMinMax(context);
+        verify(datePicker, atLeastOnce()).getMindate();
+        verify(datePicker, atLeastOnce()).getMaxdate();
+    }
+
+    @Test
+    public void validateMinMax_String_German_sameDate() {
+        setupValues(String.class, Locale.GERMAN);
+        when(datePicker.getMindate()).thenReturn("11.11.2019");
+        when(datePicker.getMaxdate()).thenReturn("11.11.2019");
+        doCallRealMethod().when(datePicker).validateMinMax(context);
+        datePicker.validateMinMax(context);
+        verify(datePicker, atLeastOnce()).getMindate();
+        verify(datePicker, atLeastOnce()).getMaxdate();
+    }
+
+    @Test
+    public void validateMinMax_String_German_wrongDate() {
+        setupValues(String.class, Locale.GERMAN);
+        when(datePicker.getMindate()).thenReturn("12.11.2019");
+        when(datePicker.getMaxdate()).thenReturn("11.11.2019");
+        doCallRealMethod().when(datePicker).validateMinMax(context);
+        assertThrows(FacesException.class, () -> datePicker.validateMinMax(context));
+        verify(datePicker, atLeastOnce()).getMindate();
+        verify(datePicker, atLeastOnce()).getMaxdate();
+    }
+
+    @Test
+    public void validateMinMax_String_German_explicitPattern() {
+        setupValues(String.class, Locale.GERMAN);
+        when(datePicker.getMindate()).thenReturn("11.11.2019");
+        when(datePicker.getMaxdate()).thenReturn("12.11.2019");
+        when(datePicker.getPattern()).thenReturn("dd.MM.yyyy");
+        doCallRealMethod().when(datePicker).validateMinMax(context);
+        datePicker.validateMinMax(context);
+        verify(datePicker, atLeastOnce()).getMindate();
+        verify(datePicker, atLeastOnce()).getMaxdate();
+    }
+
+    @Test
+    public void validateMinMax_String_German_explicitPattern_sameDate() {
+        setupValues(String.class, Locale.GERMAN);
+        when(datePicker.getMindate()).thenReturn("11.11.2019");
+        when(datePicker.getMaxdate()).thenReturn("11.11.2019");
+        when(datePicker.getPattern()).thenReturn("dd.MM.yyyy");
+        doCallRealMethod().when(datePicker).validateMinMax(context);
+        datePicker.validateMinMax(context);
+        verify(datePicker, atLeastOnce()).getMindate();
+        verify(datePicker, atLeastOnce()).getMaxdate();
+    }
+
+    @Test
+    public void validateMinMax_String_German_explicitPattern_wrongDate() {
+        setupValues(String.class, Locale.GERMAN);
+        when(datePicker.getMindate()).thenReturn("12.11.2019");
+        when(datePicker.getMaxdate()).thenReturn("11.11.2019");
+        when(datePicker.getPattern()).thenReturn("dd.MM.yyyy");
+        doCallRealMethod().when(datePicker).validateMinMax(context);
+        assertThrows(FacesException.class, () -> datePicker.validateMinMax(context));
+        verify(datePicker, atLeastOnce()).getMindate();
+        verify(datePicker, atLeastOnce()).getMaxdate();
+    }
 }
