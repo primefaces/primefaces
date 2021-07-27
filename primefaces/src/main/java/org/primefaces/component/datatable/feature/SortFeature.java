@@ -200,7 +200,7 @@ public class SortFeature implements DataTableFeature {
         }
     }
 
-    protected int compare(FacesContext context, String var, SortMeta sortMeta, Object o1, Object o2,
+    public static int compare(FacesContext context, String var, SortMeta sortMeta, Object o1, Object o2,
             Collator collator, Locale locale) {
 
         try {

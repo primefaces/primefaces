@@ -54,13 +54,16 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.Collator;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
+import org.primefaces.component.datatable.feature.SortFeature;
 
 public class TreeTableRenderer extends DataRenderer {
 
@@ -191,7 +194,7 @@ public class TreeTableRenderer extends DataRenderer {
             }
 
             filter(context, tt, tt.getValue());
-            sort(tt);
+            sort(tt, context);
 
             encodeTbody(context, tt, tt.getValue(), true);
 
@@ -223,7 +226,7 @@ public class TreeTableRenderer extends DataRenderer {
                 filter(context, tt, tt.getValue());
             }
             if (tt.isDefaultSort()) {
-                sort(tt);
+                sort(tt, context);
             }
 
             encodeMarkup(context, tt);
@@ -325,11 +328,6 @@ public class TreeTableRenderer extends DataRenderer {
             root.setRowKey(ROOT_ROW_KEY);
             tt.buildRowKeys(root);
             tt.initPreselection();
-        }
-
-        //default sort
-        if (tt.isDefaultSort()) {
-            sort(tt);
         }
 
         String containerClass = tt.isResizableColumns() ? TreeTable.RESIZABLE_CONTAINER_CLASS : TreeTable.CONTAINER_CLASS;
@@ -1155,7 +1153,7 @@ public class TreeTableRenderer extends DataRenderer {
     }
 
     protected void encodeSort(FacesContext context, TreeTable tt, TreeNode root) throws IOException {
-        sort(tt);
+        sort(tt, context);
 
         encodeTbody(context, tt, root, true);
 
@@ -1170,44 +1168,77 @@ public class TreeTableRenderer extends DataRenderer {
         }
     }
 
-    public void sort(TreeTable tt) {
+    public void sort(TreeTable tt, FacesContext context) {
         TreeNode root = tt.getValue();
         if (root == null) {
             return;
         }
 
-        Map<String, SortMeta> sortBy = tt.getSortByAsMap();
+        Map<String, SortMeta> sortBy = tt.getActiveSortMeta();
         if (sortBy.isEmpty()) {
             return;
         }
 
-        Locale dataLocale = tt.resolveDataLocale();
+        AtomicInteger comparisonResult = new AtomicInteger();
 
-        tt.forEachColumn(column -> {
-            SortMeta meta = sortBy.get(column.getColumnKey());
-            if (meta == null || !meta.isActive()) {
-                return true;
-            }
+        String var = tt.getVar();
+        Locale locale = tt.resolveDataLocale();
+        Collator collator = Collator.getInstance(locale);
 
-            if (column instanceof DynamicColumn) {
-                ((DynamicColumn) column).applyStatelessModel();
-            }
+        Object varBackup = context.getExternalContext().getRequestMap().get(var);
 
-            TreeUtils.sortNode(root, new TreeNodeComparator(
-                    meta.getSortBy(),
-                    tt.getVar(),
-                    meta.getOrder(),
-                    meta.getFunction(),
-                    meta.isCaseSensitiveSort(),
-                    dataLocale));
-            tt.updateRowKeys(root);
+        sortNode(tt, sortBy, comparisonResult, root, context, var, locale, collator);
 
-            return true;
-        });
+        if (varBackup == null) {
+            context.getExternalContext().getRequestMap().remove(var);
+        }
+        else {
+            context.getExternalContext().getRequestMap().put(var, varBackup);
+        }
 
         String selectedRowKeys = tt.getSelectedRowKeysAsString();
         if (selectedRowKeys != null) {
             PrimeFaces.current().ajax().addCallbackParam("selection", selectedRowKeys);
+        }
+    }
+
+    protected void sortNode(TreeTable tt, Map<String, SortMeta> sortBy, AtomicInteger comparisonResult,
+            TreeNode<?> node, FacesContext context, String var, Locale locale, Collator collator) {
+        TreeNodeList<?> children = (TreeNodeList) node.getChildren();
+
+        if (children != null && !children.isEmpty()) {
+            Object[] childrenArray = children.toArray();
+
+            Arrays.sort(childrenArray, (o1, o2) -> {
+                for (SortMeta sortMeta : sortBy.values()) {
+                    comparisonResult.set(0);
+
+                    tt.invokeOnColumn(sortMeta.getColumnKey(), column -> {
+                        if (column instanceof DynamicColumn) {
+                            ((DynamicColumn) column).applyStatelessModel();
+                        }
+
+                        int result = SortFeature.compare(context, var, sortMeta,
+                                ((TreeNode) o1).getData(),
+                                ((TreeNode) o2).getData(),
+                                collator, locale);
+                        comparisonResult.set(result);
+                    });
+
+                    if (comparisonResult.get() != 0) {
+                        return comparisonResult.get();
+                    }
+                }
+
+                return 0;
+            });
+
+            for (int i = 0; i < childrenArray.length; i++) {
+                children.setSibling(i, (TreeNode) childrenArray[i]);
+            }
+            for (int i = 0; i < children.size(); i++) {
+                sortNode(tt, sortBy, comparisonResult, children.get(i), context, var, locale, collator);
+            }
         }
     }
 
