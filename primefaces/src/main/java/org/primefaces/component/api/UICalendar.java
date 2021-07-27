@@ -42,6 +42,7 @@ import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.component.datepicker.DatePicker;
 import org.primefaces.util.*;
 
 public abstract class UICalendar extends AbstractPrimeHtmlInputText implements InputHolder, TouchAware {
@@ -406,7 +407,17 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
             return ((Date) date).toInstant(); // implied UTC
         }
         if (date instanceof String) {
-            return CalendarUtils.getObjectAsLocalDate(context, this, date).atStartOfDay().toInstant(ZoneOffset.UTC);
+            boolean hasTime = isTimeOnly() || hasTime() ||
+                    (this instanceof DatePicker && ((DatePicker) this).isShowTime());
+            LocalDate datePart = isTimeOnly() ? null : CalendarUtils.getObjectAsLocalDate(context, this, date);
+            LocalTime timePart = hasTime ? CalendarUtils.getObjectAsLocalTime(context, this, date) : null;
+            if (datePart == null) {
+                datePart = LocalDate.now();
+            }
+            if (timePart == null) {
+                return datePart.atStartOfDay().toInstant(ZoneOffset.UTC);
+            }
+            return datePart.atTime(timePart).toInstant(ZoneOffset.UTC);
         }
 
         String id = getClientId(context);
