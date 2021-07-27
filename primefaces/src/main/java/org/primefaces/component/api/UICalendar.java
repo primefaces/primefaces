@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.api;
 
+import java.time.Instant;
 import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
@@ -373,10 +374,9 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
         }
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     public void validateMinMax(FacesContext context) {
-        Comparable minDate = (Comparable) getMindate();
-        Comparable maxDate = (Comparable) getMaxdate();
+        Instant minDate = CalendarUtils.getObjectAsInstant(context, this, getMindate(), PropertyKeys.mindate.name());
+        Instant maxDate = CalendarUtils.getObjectAsInstant(context, this, getMaxdate(), PropertyKeys.maxdate.name());
         if (minDate != null && maxDate != null && maxDate.compareTo(minDate) < 0) {
             String id = getClientId(context);
             String component = this.getClass().getSimpleName();
