@@ -66,8 +66,8 @@ public class TreeNodeTest {
         level1.setChildren(level2);
         
         Assertions.assertNotNull(level1.getRowKey());
-        Assertions.assertSame(level1.getChildCount(), 1);
-        Assertions.assertSame(level1.getChildren().size(), 1);
+        Assertions.assertSame(1, level1.getChildCount());
+        Assertions.assertSame(1, level1.getChildren().size());
         Assertions.assertNotNull(((TreeNode) level1.getChildren().get(0)).getRowKey());
     }
 
