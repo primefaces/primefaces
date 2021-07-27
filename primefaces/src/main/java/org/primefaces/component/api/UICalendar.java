@@ -24,16 +24,11 @@
 package org.primefaces.component.api;
 
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneOffset;
 import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
 import java.time.format.ResolverStyle;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -42,7 +37,6 @@ import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.component.datepicker.DatePicker;
 import org.primefaces.util.*;
 
 public abstract class UICalendar extends AbstractPrimeHtmlInputText implements InputHolder, TouchAware {
@@ -376,53 +370,12 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
     }
 
     public void validateMinMax(FacesContext context) {
-        Instant minDate = toInstant(context, getMindate(), "minimum");
-        Instant maxDate = toInstant(context, getMaxdate(), "maximum");
+        Instant minDate = CalendarUtils.getObjectAsInstant(context, this, getMindate(), PropertyKeys.mindate.name());
+        Instant maxDate = CalendarUtils.getObjectAsInstant(context, this, getMaxdate(), PropertyKeys.maxdate.name());
         if (minDate != null && maxDate != null && maxDate.compareTo(minDate) < 0) {
             String id = getClientId(context);
             String component = this.getClass().getSimpleName();
             throw new FacesException(component + " : \"" + id + "\" minimum date must be less than maximum date.");
         }
-    }
-
-    private Instant toInstant(FacesContext context, Object date, String attr) {
-        if (date == null) {
-            return null;
-        }
-        if (date instanceof LocalDateTime) {
-            return ((LocalDateTime) date).toInstant(ZoneOffset.UTC);
-        }
-        if (date instanceof LocalDate) {
-            return ((LocalDate) date).atStartOfDay().toInstant(ZoneOffset.UTC);
-        }
-        if (date instanceof LocalTime) {
-            LocalDate now = LocalDate.now();
-            return now.atTime(((LocalTime) date)).toInstant(ZoneOffset.UTC);
-        }
-        if (date instanceof Date) {
-            if (date instanceof java.sql.Date) {
-                // java.sql.Date does not support toInstant
-                return new Date(((java.sql.Date) date).getTime()).toInstant();
-            }
-            return ((Date) date).toInstant(); // implied UTC
-        }
-        if (date instanceof String) {
-            boolean hasTime = isTimeOnly() || hasTime() ||
-                    (this instanceof DatePicker && ((DatePicker) this).isShowTime());
-            LocalDate datePart = isTimeOnly() ? null : CalendarUtils.getObjectAsLocalDate(context, this, date);
-            LocalTime timePart = hasTime ? CalendarUtils.getObjectAsLocalTime(context, this, date) : null;
-            if (datePart == null) {
-                datePart = LocalDate.now();
-            }
-            if (timePart == null) {
-                return datePart.atStartOfDay().toInstant(ZoneOffset.UTC);
-            }
-            return datePart.atTime(timePart).toInstant(ZoneOffset.UTC);
-        }
-
-        String id = getClientId(context);
-        String component = this.getClass().getSimpleName();
-        String type = date.getClass().getName();
-        throw new FacesException(component + " : \"" + id + "\"" + attr + " date unsupported type " + type);
     }
 }

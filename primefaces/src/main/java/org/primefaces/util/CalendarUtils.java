@@ -43,6 +43,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
 import org.primefaces.component.api.UICalendar;
+import org.primefaces.component.datepicker.DatePicker;
 import org.primefaces.convert.DateTimePatternConverter;
 import org.primefaces.convert.PatternConverter;
 
@@ -190,6 +191,58 @@ public class CalendarUtils {
         // See http://api.jqueryui.com/datepicker/#option-maxDate, https://github.com/primefaces/primefaces/issues/4621
 
         return null;
+    }
+
+    /**
+     * Try to convert the given value to an {@link Instant} or return <code>null</code> if there is no appropriate converter for doing so.
+     * The type of the value must be one of {@link LocalDateTime}, {@link LocalDate}, {@link LocalTime}, {@link Date} (deprecated),
+     * or a parsable date or time {@link String}. For any other this method throws a {@link FacesException}.
+     * @param context the faces context
+     * @param calendar the calendar component
+     * @param value the value to convert
+     * @param attributeName the attribute name of the value (e.g. mindate, or maxdate)
+     * @return the {@link Instant} object or <code>null</code>
+     * @throws FacesException if value type is not supported
+     */
+    public static Instant getObjectAsInstant(FacesContext context, UICalendar calendar, Object value, String attributeName) {
+        if (value == null) {
+            return null;
+        }
+        if (value instanceof LocalDateTime) {
+            return ((LocalDateTime) value).toInstant(ZoneOffset.UTC);
+        }
+        if (value instanceof LocalDate) {
+            return ((LocalDate) value).atStartOfDay().toInstant(ZoneOffset.UTC);
+        }
+        if (value instanceof LocalTime) {
+            LocalDate now = LocalDate.now();
+            return now.atTime(((LocalTime) value)).toInstant(ZoneOffset.UTC);
+        }
+        if (value instanceof Date) {
+            if (value instanceof java.sql.Date) {
+                // java.sql.Date does not support toInstant
+                return new Date(((java.sql.Date) value).getTime()).toInstant();
+            }
+            return ((Date) value).toInstant(); // implied UTC
+        }
+        if (value instanceof String) {
+            boolean hasTime = calendar.isTimeOnly() || calendar.hasTime() ||
+                    (calendar instanceof DatePicker && ((DatePicker) calendar).isShowTime());
+            LocalDate datePart = calendar.isTimeOnly() ? null : getObjectAsLocalDate(context, calendar, value);
+            LocalTime timePart = hasTime ? getObjectAsLocalTime(context, calendar, value) : null;
+            if (datePart == null) {
+                datePart = LocalDate.now();
+            }
+            if (timePart == null) {
+                return datePart.atStartOfDay().toInstant(ZoneOffset.UTC);
+            }
+            return datePart.atTime(timePart).toInstant(ZoneOffset.UTC);
+        }
+
+        String id = calendar.getClientId(context);
+        String component = calendar.getClass().getSimpleName();
+        String type = value.getClass().getName();
+        throw new FacesException(component + " : \"" + id + "\"@\"" + attributeName + "\" has unsupported type " + type);
     }
 
     public static final String getValueAsString(FacesContext context, UICalendar calendar, Object value) {
