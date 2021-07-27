@@ -99,7 +99,6 @@
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -165,6 +164,24 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <webResources>
+                        <resource>
+                            <filtering>true</filtering>
+                            <directory>src/main/webapp</directory>
+                            <includes>
+                                <include>**/WEB-INF/**/*.xml</include>
+                                <include>**/WEB-INF/**/*.properties</include>
+                                <include>**/META-INF/**/*.xml</include>
+                                <include>**/META-INF/**/*.properties</include>
+                            </includes>
+                        </resource>
+                    </webResources>
                 </configuration>
             </plugin>
         </plugins>
