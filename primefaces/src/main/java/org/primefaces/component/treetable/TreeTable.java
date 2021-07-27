@@ -41,6 +41,7 @@ import javax.faces.event.PostRestoreStateEvent;
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
+import org.primefaces.component.treetable.feature.FilterFeature;
 import org.primefaces.event.*;
 import org.primefaces.event.data.FilterEvent;
 import org.primefaces.event.data.PageEvent;
@@ -159,10 +160,6 @@ public class TreeTable extends TreeTableBase {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_instantSelection");
     }
 
-    public boolean isSortRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_sorting");
-    }
-
     public boolean isPaginationRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_pagination");
     }
@@ -181,10 +178,6 @@ public class TreeTable extends TreeTableBase {
 
     public boolean isCellEditInitRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_cellEditInit");
-    }
-
-    public boolean isFilterRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_filtering");
     }
 
     @Override
@@ -319,10 +312,11 @@ public class TreeTable extends TreeTableBase {
     public void processValidators(FacesContext context) {
         super.processValidators(context);
 
-        if (isFilterRequest(context)) {
-            Map<String, FilterMeta> filterBy = initFilterBy(context);
-            updateFilterByValuesWithFilterRequest(context, filterBy);
-            setFilterByAsMap(filterBy);
+        //filters need to be decoded during PROCESS_VALIDATIONS phase,
+        //so that local values of each filters are properly converted and validated
+        FilterFeature feature = FilterFeature.getInstance();
+        if (feature.shouldDecode(context, this)) {
+            feature.decode(context, this);
 
             AjaxBehaviorEvent event = deferredEvents.get("filter");
             if (event != null) {
@@ -618,8 +612,8 @@ public class TreeTable extends TreeTableBase {
     }
 
     @Override
-    public void setFilterByAsMap(Map<String, FilterMeta> sortBy) {
-        getStateHelper().put(InternalPropertyKeys.filterByAsMap.name(), sortBy);
+    public void setFilterByAsMap(Map<String, FilterMeta> filterBy) {
+        getStateHelper().put(InternalPropertyKeys.filterByAsMap.name(), filterBy);
     }
 
     @Override

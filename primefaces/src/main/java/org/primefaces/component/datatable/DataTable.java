@@ -314,14 +314,14 @@ public class DataTable extends DataTableBase {
 
         //filters need to be decoded during PROCESS_VALIDATIONS phase,
         //so that local values of each filters are properly converted and validated
-        DataTableFeature feature = FEATURES.get(DataTableFeatureKey.FILTER);
+        FilterFeature feature = (FilterFeature) FEATURES.get(DataTableFeatureKey.FILTER);
         if (feature.shouldDecode(context, this)) {
             feature.decode(context, this);
-            AjaxBehaviorEvent ajaxEvt = deferredEvents.get("filter");
-            if (ajaxEvt != null) {
-                FilterEvent evt = new FilterEvent(this, ajaxEvt.getBehavior(), getFilterByAsMap());
-                evt.setPhaseId(PhaseId.PROCESS_VALIDATIONS);
-                super.queueEvent(evt);
+            AjaxBehaviorEvent event = deferredEvents.get("filter");
+            if (event != null) {
+                FilterEvent wrappedEvent = new FilterEvent(this, event.getBehavior(), getFilterByAsMap());
+                wrappedEvent.setPhaseId(PhaseId.PROCESS_VALIDATIONS);
+                super.queueEvent(wrappedEvent);
             }
         }
     }

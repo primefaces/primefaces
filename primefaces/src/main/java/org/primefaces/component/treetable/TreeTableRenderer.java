@@ -34,14 +34,11 @@ import org.primefaces.component.columns.Columns;
 import org.primefaces.component.row.Row;
 import org.primefaces.component.tree.Tree;
 import org.primefaces.model.*;
-import org.primefaces.model.filter.FilterConstraint;
-import org.primefaces.model.filter.FunctionFilterConstraint;
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.*;
 import org.primefaces.visit.ResetInputVisitCallback;
 
-import javax.el.ELContext;
 import javax.faces.FacesException;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
@@ -51,19 +48,12 @@ import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.text.Collator;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
-import org.primefaces.component.datatable.feature.SortFeature;
+import org.primefaces.component.treetable.feature.FilterFeature;
+import org.primefaces.component.treetable.feature.SortFeature;
 
 public class TreeTableRenderer extends DataRenderer {
 
@@ -79,8 +69,11 @@ public class TreeTableRenderer extends DataRenderer {
             decodeSelection(context, tt, root);
         }
 
-        if (tt.isSortRequest(context)) {
-            decodeSort(context, tt);
+        if (SortFeature.getInstance().shouldDecode(context, tt)) {
+            SortFeature.getInstance().decode(context, tt);
+        }
+        if (FilterFeature.getInstance().shouldDecode(context, tt)) {
+            FilterFeature.getInstance().decode(context, tt);
         }
 
         tt.decodeColumnResizeState(context);
@@ -161,8 +154,6 @@ public class TreeTableRenderer extends DataRenderer {
         String clientId = tt.getClientId(context);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-        preRender(context, tt);
-
         if (tt.isExpandRequest(context)) {
             String nodeKey = params.get(clientId + "_expand");
             tt.setRowKey(root, nodeKey);
@@ -182,34 +173,11 @@ public class TreeTableRenderer extends DataRenderer {
             TreeNode node = tt.getRowNode();
             node.setExpanded(false);
         }
-        else if (tt.isFilterRequest(context)) {
-            tt.updateFilteredValue(context, null);
-            tt.setValue(null);
-            tt.setFirst(0);
-
-            //update rows with rpp value
-            String rppValue = params.get(clientId + "_rppDD");
-            if (rppValue != null && !"*".equals(rppValue)) {
-                tt.setRows(Integer.parseInt(rppValue));
-            }
-
-            filter(context, tt, tt.getValue());
-            sort(tt, context);
-
-            encodeTbody(context, tt, tt.getValue(), true);
-
-            if (tt.isMultiViewState()) {
-                Map<String, FilterMeta> filterBy = tt.getFilterByAsMap();
-                TreeTableState ts = tt.getMultiViewState(true);
-                ts.setFilterBy(filterBy);
-                if (tt.isPaginator()) {
-                    ts.setFirst(tt.getFirst());
-                    ts.setRows(tt.getRows());
-                }
-            }
+        else if (FilterFeature.getInstance().shouldEncode(context, tt)) {
+            FilterFeature.getInstance().encode(context, this, tt);
         }
-        else if (tt.isSortRequest(context)) {
-            encodeSort(context, tt, root);
+        else if (SortFeature.getInstance().shouldEncode(context, tt)) {
+            SortFeature.getInstance().encode(context, this, tt);
         }
         else if (tt.isRowEditRequest(context)) {
             encodeRowEdit(context, tt, root);
@@ -229,23 +197,25 @@ public class TreeTableRenderer extends DataRenderer {
                 sort(tt, context);
             }
 
-            encodeMarkup(context, tt);
-            encodeScript(context, tt);
+            render(context, tt);
         }
     }
 
-    protected void preRender(FacesContext context, TreeTable tt) {
-        Map<String, FilterMeta> filterBy = tt.initFilterBy(context);
-        // required a second time here as preRender is only called in DT when the request is not "_encodeFeature"
-        if (tt.isFilterRequest(context)) {
-            tt.updateFilterByValuesWithFilterRequest(context, filterBy);
+    protected void render(FacesContext context, TreeTable table) throws IOException {
+        preRender(context, table);
+
+        encodeMarkup(context, table);
+        encodeScript(context, table);
+    }
+
+    protected void preRender(FacesContext context, TreeTable table) {
+        table.initFilterBy(context);
+
+        if (table.isMultiViewState()) {
+            table.restoreMultiViewState();
         }
 
-        tt.resetDynamicColumns();
-
-        if (tt.isMultiViewState()) {
-            tt.restoreMultiViewState();
-        }
+        table.resetDynamicColumns();
     }
 
     protected void encodeScript(FacesContext context, TreeTable tt) throws IOException {
@@ -564,7 +534,7 @@ public class TreeTableRenderer extends DataRenderer {
         writer.endElement("thead");
     }
 
-    protected void encodeTbody(FacesContext context, TreeTable tt, TreeNode root, boolean dataOnly) throws IOException {
+    public void encodeTbody(FacesContext context, TreeTable tt, TreeNode root, boolean dataOnly) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = tt.getClientId(context);
         boolean empty = (root == null || root.getChildCount() == 0);
@@ -1117,129 +1087,10 @@ public class TreeTableRenderer extends DataRenderer {
         return null;
     }
 
-    protected void decodeSort(FacesContext context, TreeTable tt) {
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String clientId = tt.getClientId(context);
-        String sortKey = params.get(clientId + "_sortKey");
-        String sortDir = params.get(clientId + "_sortDir");
-
-        String[] sortKeys = sortKey.split(",");
-        String[] sortOrders = sortDir.split(",");
-
-        if (sortKeys.length != sortOrders.length) {
-            throw new FacesException("sortKeys != sortDirs");
-        }
-
-        Map<String, SortMeta> sortByMap = tt.getSortByAsMap();
-        Map<String, Integer> sortKeysIndexes = IntStream.range(0, sortKeys.length).boxed()
-                .collect(Collectors.toMap(i -> sortKeys[i], i -> i));
-
-        for (Map.Entry<String, SortMeta> entry : sortByMap.entrySet()) {
-            SortMeta sortMeta = entry.getValue();
-            if (sortMeta.isHeaderRow()) {
-                continue;
-            }
-
-            Integer index = sortKeysIndexes.get(entry.getKey());
-            if (index != null) {
-                sortMeta.setOrder(SortOrder.of(sortOrders[index]));
-                sortMeta.setPriority(index);
-            }
-            else {
-                sortMeta.setOrder(SortOrder.UNSORTED);
-                sortMeta.setPriority(SortMeta.MIN_PRIORITY);
-            }
-        }
-    }
-
-    protected void encodeSort(FacesContext context, TreeTable tt, TreeNode root) throws IOException {
-        sort(tt, context);
-
-        encodeTbody(context, tt, root, true);
-
-        if (tt.isMultiViewState()) {
-            Map<String, SortMeta> sortMeta = tt.getSortByAsMap();
-            TreeTableState ts = tt.getMultiViewState(true);
-            ts.setSortBy(sortMeta);
-            if (tt.isPaginator()) {
-                ts.setFirst(tt.getFirst());
-                ts.setRows(tt.getRows());
-            }
-        }
-    }
-
     public void sort(TreeTable tt, FacesContext context) {
-        TreeNode root = tt.getValue();
-        if (root == null) {
-            return;
-        }
+        SortFeature.getInstance().sort(context, tt);
 
-        Map<String, SortMeta> sortBy = tt.getActiveSortMeta();
-        if (sortBy.isEmpty()) {
-            return;
-        }
 
-        AtomicInteger comparisonResult = new AtomicInteger();
-
-        String var = tt.getVar();
-        Locale locale = tt.resolveDataLocale();
-        Collator collator = Collator.getInstance(locale);
-
-        Object varBackup = context.getExternalContext().getRequestMap().get(var);
-
-        sortNode(tt, sortBy, comparisonResult, root, context, var, locale, collator);
-
-        if (varBackup == null) {
-            context.getExternalContext().getRequestMap().remove(var);
-        }
-        else {
-            context.getExternalContext().getRequestMap().put(var, varBackup);
-        }
-
-        String selectedRowKeys = tt.getSelectedRowKeysAsString();
-        if (selectedRowKeys != null) {
-            PrimeFaces.current().ajax().addCallbackParam("selection", selectedRowKeys);
-        }
-    }
-
-    protected void sortNode(TreeTable tt, Map<String, SortMeta> sortBy, AtomicInteger comparisonResult,
-            TreeNode<?> node, FacesContext context, String var, Locale locale, Collator collator) {
-        TreeNodeList<?> children = (TreeNodeList) node.getChildren();
-
-        if (children != null && !children.isEmpty()) {
-            Object[] childrenArray = children.toArray();
-
-            Arrays.sort(childrenArray, (o1, o2) -> {
-                for (SortMeta sortMeta : sortBy.values()) {
-                    comparisonResult.set(0);
-
-                    tt.invokeOnColumn(sortMeta.getColumnKey(), column -> {
-                        if (column instanceof DynamicColumn) {
-                            ((DynamicColumn) column).applyStatelessModel();
-                        }
-
-                        int result = SortFeature.compare(context, var, sortMeta,
-                                ((TreeNode) o1).getData(),
-                                ((TreeNode) o2).getData(),
-                                collator, locale);
-                        comparisonResult.set(result);
-                    });
-
-                    if (comparisonResult.get() != 0) {
-                        return comparisonResult.get();
-                    }
-                }
-
-                return 0;
-            });
-
-            for (int i = 0; i < childrenArray.length; i++) {
-                children.setSibling(i, (TreeNode) childrenArray[i]);
-            }
-            for (int i = 0; i < children.size(); i++) {
-                sortNode(tt, sortBy, comparisonResult, children.get(i), context, var, locale, collator);
-            }
-        }
     }
 
     protected void renderNativeCheckbox(FacesContext context, TreeTable tt, boolean checked, boolean partialSelected) throws IOException {
@@ -1337,187 +1188,6 @@ public class TreeTableRenderer extends DataRenderer {
     }
 
     public void filter(FacesContext context, TreeTable tt, TreeNode root) throws IOException {
-        Map<String, FilterMeta> filterBy = tt.getFilterByAsMap();
-        if (filterBy.isEmpty()) {
-            return;
-        }
-
-        Locale filterLocale = LocaleUtils.getCurrentLocale(context);
-
-        // collect filtered / valid node rowKeys
-        List<String> filteredRowKeys = tt.getFilteredRowKeys();
-        filteredRowKeys.clear();
-        collectFilteredRowKeys(context, tt, root, root, filterBy, filterLocale, filteredRowKeys);
-
-        // recreate tree node
-        TreeNode filteredValue = cloneTreeNode(tt, root, root.getParent());
-        createFilteredValueFromRowKeys(tt, root, filteredValue, filteredRowKeys);
-
-        tt.updateFilteredValue(context, filteredValue);
-        tt.setValue(filteredValue);
-        tt.setRowKey(root, null);
-
-        //Metadata for callback
-        if (tt.isPaginator()) {
-            PrimeFaces.current().ajax().addCallbackParam("totalRecords", filteredValue.getChildCount());
-        }
-        if (tt.getSelectedRowKeysAsString() != null) {
-            PrimeFaces.current().ajax().addCallbackParam("selection", tt.getSelectedRowKeysAsString());
-        }
-    }
-
-    protected void collectFilteredRowKeys(FacesContext context, TreeTable tt, TreeNode<?> root, TreeNode<?> node,  Map<String, FilterMeta> filterBy,
-            Locale filterLocale, List<String> filteredRowKeys) throws IOException {
-
-        ELContext elContext = context.getELContext();
-
-        FilterMeta globalFilter = filterBy.get(FilterMeta.GLOBAL_FILTER_KEY);
-        boolean hasGlobalFilterFunction = globalFilter != null && globalFilter.getConstraint() instanceof FunctionFilterConstraint;
-
-        int childCount = node.getChildCount();
-
-        AtomicBoolean localMatch = new AtomicBoolean();
-        AtomicBoolean globalMatch = new AtomicBoolean();
-
-        for (int i = 0; i < childCount; i++) {
-            TreeNode childNode = node.getChildren().get(i);
-            String rowKey = childNode.getRowKey();
-            tt.setRowKey(root, rowKey);
-            localMatch.set(true);
-            globalMatch.set(false);
-
-            if (hasGlobalFilterFunction) {
-                globalMatch.set(globalFilter.getConstraint().isMatching(context, childNode, globalFilter.getFilterValue(), filterLocale));
-            }
-
-            tt.forEachColumn(column -> {
-                FilterMeta filter = filterBy.get(column.getColumnKey(tt, rowKey));
-                if (filter == null || filter.isGlobalFilter()) {
-                    return true;
-                }
-                Object columnValue = filter.getLocalValue(elContext, column);
-
-                if (globalFilter != null && globalFilter.isActive() && !globalMatch.get() && !hasGlobalFilterFunction) {
-                    FilterConstraint constraint = globalFilter.getConstraint();
-                    Object filterValue = globalFilter.getFilterValue();
-                    globalMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
-                }
-
-                if (!filter.isActive()) {
-                    return true;
-                }
-
-                FilterConstraint constraint = filter.getConstraint();
-                Object filterValue = filter.getFilterValue();
-
-                localMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
-
-                return localMatch.get();
-            });
-
-            boolean matches = localMatch.get();
-            if (globalFilter != null && globalFilter.isActive()) {
-                matches = matches && globalMatch.get();
-            }
-
-            if (matches) {
-                filteredRowKeys.add(rowKey);
-            }
-
-            collectFilteredRowKeys(context, tt, root, childNode, filterBy, filterLocale, filteredRowKeys);
-        }
-    }
-
-    private void createFilteredValueFromRowKeys(TreeTable tt, TreeNode<?> node, TreeNode<?> filteredNode, List<String> filteredRowKeys) {
-        int childCount = node.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            TreeNode childNode = node.getChildren().get(i);
-            String rowKeyOfChildNode = childNode.getRowKey();
-
-            for (String rk : filteredRowKeys) {
-                if (rk.equals(rowKeyOfChildNode) || rk.startsWith(rowKeyOfChildNode + "_") || rowKeyOfChildNode.startsWith(rk + "_")) {
-                    TreeNode newNode = cloneTreeNode(tt, childNode, filteredNode);
-                    if (rk.startsWith(rowKeyOfChildNode + "_")) {
-                        newNode.setExpanded(true);
-                    }
-
-                    createFilteredValueFromRowKeys(tt, childNode, newNode, filteredRowKeys);
-                    break;
-                }
-            }
-        }
-    }
-
-    protected TreeNode cloneTreeNode(TreeTable tt, TreeNode<?> node, TreeNode<?> parent) {
-        TreeNode clone = null;
-
-        // equals check instead of instanceof to allow subclassing
-        if (CheckboxTreeNode.class.equals(node.getClass())) {
-            clone = new CheckboxTreeNode(node.getType(), node.getData(), parent);
-        }
-        // equals check instead of instanceof to allow subclassing
-        else if (DefaultTreeNode.class.equals(node.getClass())) {
-            clone = new DefaultTreeNode(node.getType(), node.getData(), parent);
-        }
-
-        if (clone == null && tt.isCloneOnFilter()) {
-            if (node instanceof Cloneable) {
-                try {
-                    Method cloneMethod = node.getClass().getMethod("clone");
-                    if (cloneMethod != null) {
-                        cloneMethod.setAccessible(true);
-                        clone = (TreeNode) cloneMethod.invoke(node);
-                    }
-                }
-                catch (NoSuchMethodException e) {
-                    LOGGER.warning(node.getClass().getName() + " declares Cloneable but no clone() method found!");
-                }
-                catch (InvocationTargetException | IllegalAccessException e) {
-                    LOGGER.warning(node.getClass().getName() + "#clone() not accessible!");
-                }
-            }
-            else {
-                try {
-                    Constructor<? extends TreeNode> ctor = node.getClass().getConstructor(node.getClass());
-                    clone = ctor.newInstance(node);
-                }
-                catch (NoSuchMethodException e) {
-                    // ignore
-                }
-                catch (InvocationTargetException | IllegalAccessException | InstantiationException e) {
-                    LOGGER.warning("Could not clone " + node.getClass().getName()
-                            + " via public " + node.getClass().getSimpleName() + "() constructor!");
-                }
-
-                if (clone == null) {
-                    try {
-                        Constructor<? extends TreeNode> ctor = node.getClass().getConstructor(String.class, Object.class, TreeNode.class);
-                        clone = ctor.newInstance(node.getType(), node.getData(), parent);
-                    }
-                    catch (NoSuchMethodException e) {
-                        // ignore
-                    }
-                    catch (InvocationTargetException | IllegalAccessException | InstantiationException e) {
-                        LOGGER.warning("Could not clone " + node.getClass().getName()
-                                + " via public " + node.getClass().getSimpleName() + "(String type, Object data, TreeNode parent) constructor!");
-                    }
-                }
-            }
-        }
-
-        if (clone == null) {
-            if (node instanceof CheckboxTreeNode) {
-                clone = new CheckboxTreeNode(node.getType(), node.getData(), parent);
-            }
-            else {
-                clone = new DefaultTreeNode(node.getType(), node.getData(), parent);
-            }
-        }
-
-        clone.setSelectable(node.isSelectable());
-        clone.setSelected(node.isSelected());
-        clone.setExpanded(node.isExpanded());
-
-        return clone;
+        FilterFeature.getInstance().filter(context, tt, root);
     }
 }
