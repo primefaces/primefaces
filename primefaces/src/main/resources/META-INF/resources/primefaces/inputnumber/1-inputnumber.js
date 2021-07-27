@@ -179,7 +179,6 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
      */
     setValueToHiddenInput: function(value) {
         this.hiddenInput.val(value);
-        this.hiddenInput.trigger('change');
     },
 
     /**
