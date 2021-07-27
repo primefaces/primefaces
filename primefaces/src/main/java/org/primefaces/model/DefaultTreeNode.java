@@ -51,7 +51,7 @@ public class DefaultTreeNode<T> implements TreeNode<T>, Serializable {
 
     public DefaultTreeNode() {
         this.type = DEFAULT_TYPE;
-        this.children = new TreeNodeChildren<T>(this);
+        this.children = new TreeNodeChildren(this);
     }
 
     public DefaultTreeNode(T data) {
