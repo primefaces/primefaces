@@ -29,6 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 
 import org.openqa.selenium.WebElement;
@@ -93,7 +94,7 @@ public abstract class FileUpload extends AbstractInputComponent {
      * @return the widget's upload button
      */
     public WebElement getAdvancedUploadButton() {
-        return findElement(By.cssSelector("button.ui-fileupload-upload"));
+        return findElement(By.cssSelector(".ui-fileupload-buttonbar button.ui-fileupload-upload"));
     }
 
     /**
@@ -102,7 +103,23 @@ public abstract class FileUpload extends AbstractInputComponent {
      * @return the widget's cancel button
      */
     public WebElement getAdvancedCancelButton() {
-        return findElement(By.cssSelector("button.ui-fileupload-cancel"));
+        return findElement(By.cssSelector(".ui-fileupload-buttonbar button.ui-fileupload-cancel"));
+    }
+
+    /**
+     * Gets the file Cancel button of the widget.
+     * The button is only rendered in advanced mode.
+     * @param fileName the file name for which to return the cancel button
+     * @return the widget's cancel button
+     */
+    public WebElement getAdvancedCancelButton(String fileName) {
+        for (WebElement row : findElements(By.cssSelector(".ui-fileupload-files .ui-fileupload-row"))) {
+            WebElement fn = row.findElement(By.cssSelector(".ui-fileupload-filename"));
+            if (fn.getText().contains(fileName)) {
+                return row.findElement(By.cssSelector("button.ui-fileupload-cancel"));
+            }
+        }
+        throw new NoSuchElementException("cancel button for " + fileName + " not found");
     }
 
     /**
