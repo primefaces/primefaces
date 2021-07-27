@@ -24,10 +24,8 @@
 package org.primefaces.component.treetable;
 
 import org.primefaces.component.api.UITableState;
-import org.primefaces.model.SortMeta;
 
 import java.util.List;
-import java.util.Map;
 
 public class TreeTableState extends UITableState {
 
@@ -37,9 +35,7 @@ public class TreeTableState extends UITableState {
 
     private int rows;
 
-    private Map<String, SortMeta> sortBy;
-
-    private List<Object> selectedRowKeys;
+    private List<String> selectedRowKeys;
 
     public int getFirst() {
         return first;
@@ -57,19 +53,11 @@ public class TreeTableState extends UITableState {
         this.rows = rows;
     }
 
-    public Map<String, SortMeta> getSortBy() {
-        return sortBy;
-    }
-
-    public void setSortBy(Map<String, SortMeta> sortBy) {
-        this.sortBy = sortBy;
-    }
-
-    public List<Object> getSelectedRowKeys() {
+    public List<String> getSelectedRowKeys() {
         return selectedRowKeys;
     }
 
-    public void setSelectedRowKeys(List<Object> selectedRowKeys) {
+    public void setSelectedRowKeys(List<String> selectedRowKeys) {
         this.selectedRowKeys = selectedRowKeys;
     }
 }
