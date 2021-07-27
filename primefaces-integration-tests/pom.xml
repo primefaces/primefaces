@@ -175,10 +175,7 @@
                             <filtering>true</filtering>
                             <directory>src/main/webapp</directory>
                             <includes>
-                                <include>**/WEB-INF/**/*.xml</include>
-                                <include>**/WEB-INF/**/*.properties</include>
-                                <include>**/META-INF/**/*.xml</include>
-                                <include>**/META-INF/**/*.properties</include>
+                                <include>**/WEB-INF/*.xml</include>
                             </includes>
                         </resource>
                     </webResources>
