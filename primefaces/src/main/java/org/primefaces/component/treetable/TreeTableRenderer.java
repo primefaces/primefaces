@@ -191,10 +191,10 @@ public class TreeTableRenderer extends DataRenderer {
         }
         else {
             if (tt.isDefaultFilter()) {
-                filter(context, tt, tt.getValue());
+                FilterFeature.getInstance().filter(context, tt, root);
             }
             if (tt.isDefaultSort()) {
-                sort(tt, context);
+                SortFeature.getInstance().sort(context, tt);
             }
 
             render(context, tt);
@@ -1087,12 +1087,6 @@ public class TreeTableRenderer extends DataRenderer {
         return null;
     }
 
-    public void sort(TreeTable tt, FacesContext context) {
-        SortFeature.getInstance().sort(context, tt);
-
-
-    }
-
     protected void renderNativeCheckbox(FacesContext context, TreeTable tt, boolean checked, boolean partialSelected) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
@@ -1187,7 +1181,4 @@ public class TreeTableRenderer extends DataRenderer {
         }
     }
 
-    public void filter(FacesContext context, TreeTable tt, TreeNode root) throws IOException {
-        FilterFeature.getInstance().filter(context, tt, root);
-    }
 }

@@ -33,6 +33,15 @@ import org.primefaces.component.datatable.DataTableRenderer;
 
 public class ResizableColumnsFeature implements DataTableFeature {
 
+    private static final ResizableColumnsFeature INSTANCE = new ResizableColumnsFeature();
+
+    private ResizableColumnsFeature() {
+    }
+
+    public static ResizableColumnsFeature getInstance() {
+        return INSTANCE;
+    }
+
     @Override
     public void decode(FacesContext context, DataTable table) {
         table.decodeColumnResizeState(context);

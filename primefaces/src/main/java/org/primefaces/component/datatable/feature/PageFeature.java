@@ -35,6 +35,15 @@ import org.primefaces.event.data.PostPageEvent;
 
 public class PageFeature implements DataTableFeature {
 
+    private static final PageFeature INSTANCE = new PageFeature();
+
+    private PageFeature() {
+    }
+
+    public static PageFeature getInstance() {
+        return INSTANCE;
+    }
+
     @Override
     public void decode(FacesContext context, DataTable table) {
         throw new FacesException("PageFeature should not encode.");

@@ -66,9 +66,7 @@ public class DataTableRenderer extends DataRenderer {
     public void decode(FacesContext context, UIComponent component) {
         DataTable table = (DataTable) component;
 
-        for (Iterator<DataTableFeature> it = DataTable.FEATURES.values().iterator(); it.hasNext(); ) {
-            DataTableFeature feature = it.next();
-
+        for (DataTableFeature feature : DataTable.FEATURES) {
             if (feature.shouldDecode(context, table)) {
                 feature.decode(context, table);
             }
@@ -82,9 +80,7 @@ public class DataTableRenderer extends DataRenderer {
         DataTable table = (DataTable) component;
 
         if (table.shouldEncodeFeature(context)) {
-            for (Iterator<DataTableFeature> it = DataTable.FEATURES.values().iterator(); it.hasNext(); ) {
-                DataTableFeature feature = it.next();
-
+            for (DataTableFeature feature : DataTable.FEATURES) {
                 if (feature.shouldEncode(context, table)) {
                     feature.encode(context, this, table);
                 }
@@ -137,20 +133,17 @@ public class DataTableRenderer extends DataRenderer {
         }
         else {
             if (table.isDefaultSort()) {
-                SortFeature sortFeature = (SortFeature) table.getFeature(DataTableFeatureKey.SORT);
-                sortFeature.sort(context, table);
+                SortFeature.getInstance().sort(context, table);
                 table.setRowIndex(-1);
             }
 
             if (table.isDefaultFilter()) {
-                FilterFeature filterFeature = (FilterFeature) table.getFeature(DataTableFeatureKey.FILTER);
-                filterFeature.filter(context, table);
+                FilterFeature.getInstance().filter(context, table);
             }
         }
 
         if (table.isSelectionEnabled()) {
-            SelectionFeature selectionFeature = (SelectionFeature) table.getFeature(DataTableFeatureKey.SELECT);
-            selectionFeature.decodeSelectionRowKeys(context, table);
+            SelectionFeature.getInstance().decodeSelectionRowKeys(context, table);
         }
 
         if (table.isPaginator()) {
@@ -1284,7 +1277,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("tr");
 
         if (expanded) {
-            ((RowExpandFeature) table.getFeature(DataTableFeatureKey.ROW_EXPAND)).encodeExpansion(context, this, table, rowIndex);
+            RowExpandFeature.getInstance().encodeExpansion(context, this, table, rowIndex);
         }
 
         return true;

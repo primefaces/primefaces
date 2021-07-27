@@ -145,20 +145,19 @@ public class DataTable extends DataTableBase {
     public static final String SMALL_SIZE_CLASS = "ui-datatable-sm";
     public static final String LARGE_SIZE_CLASS = "ui-datatable-lg";
 
-    public static final Map<DataTableFeatureKey, DataTableFeature> FEATURES = MapBuilder.<DataTableFeatureKey, DataTableFeature>builder()
-            .put(DataTableFeatureKey.DRAGGABLE_COLUMNS, new DraggableColumnsFeature())
-            .put(DataTableFeatureKey.FILTER, new FilterFeature())
-            .put(DataTableFeatureKey.PAGE, new PageFeature())
-            .put(DataTableFeatureKey.SORT, new SortFeature())
-            .put(DataTableFeatureKey.RESIZABLE_COLUMNS, new ResizableColumnsFeature())
-            .put(DataTableFeatureKey.SELECT, new SelectionFeature())
-            .put(DataTableFeatureKey.ROW_EDIT, new RowEditFeature())
-            .put(DataTableFeatureKey.CELL_EDIT, new CellEditFeature())
-            .put(DataTableFeatureKey.ROW_EXPAND, new RowExpandFeature())
-            .put(DataTableFeatureKey.SCROLL, new ScrollFeature())
-            .put(DataTableFeatureKey.DRAGGABLE_ROWS, new DraggableRowsFeature())
-            .put(DataTableFeatureKey.ADD_ROW, new AddRowFeature())
-            .build();
+    public static final List<DataTableFeature> FEATURES = Collections.unmodifiableList(Arrays.asList(
+            DraggableColumnsFeature.getInstance(),
+            FilterFeature.getInstance(),
+            PageFeature.getInstance(),
+            SortFeature.getInstance(),
+            ResizableColumnsFeature.getInstance(),
+            SelectionFeature.getInstance(),
+            RowEditFeature.getInstance(),
+            CellEditFeature.getInstance(),
+            RowExpandFeature.getInstance(),
+            ScrollFeature.getInstance(),
+            DraggableRowsFeature.getInstance(),
+            AddRowFeature.getInstance()));
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("page", PageEvent.class)
@@ -205,10 +204,6 @@ public class DataTable extends DataTableBase {
         expandedRowKeys,
         columnMeta,
         width;
-    }
-
-    public DataTableFeature getFeature(DataTableFeatureKey key) {
-        return FEATURES.get(key);
     }
 
     public boolean shouldEncodeFeature(FacesContext context) {
@@ -314,7 +309,7 @@ public class DataTable extends DataTableBase {
 
         //filters need to be decoded during PROCESS_VALIDATIONS phase,
         //so that local values of each filters are properly converted and validated
-        FilterFeature feature = (FilterFeature) FEATURES.get(DataTableFeatureKey.FILTER);
+        FilterFeature feature = FilterFeature.getInstance();
         if (feature.shouldDecode(context, this)) {
             feature.decode(context, this);
             AjaxBehaviorEvent event = deferredEvents.get("filter");
@@ -1020,8 +1015,7 @@ public class DataTable extends DataTableBase {
     }
 
     public void updateSelectionWithMVS(Set<String> rowKeys) {
-        SelectionFeature feature = (SelectionFeature) FEATURES.get(DataTableFeatureKey.SELECT);
-        feature.decodeSelection(getFacesContext(), this, rowKeys);
+        SelectionFeature.getInstance().decodeSelection(getFacesContext(), this, rowKeys);
     }
 
     public void updateExpansionWithMVS(Set<String> rowKeys) {
@@ -1114,9 +1108,7 @@ public class DataTable extends DataTableBase {
             return;
         }
 
-        FilterFeature filterFeature = (FilterFeature) getFeature(DataTableFeatureKey.FILTER);
-        filterFeature.filter(FacesContext.getCurrentInstance(), this);
-        SortFeature sortFeature = (SortFeature) getFeature(DataTableFeatureKey.SORT);
-        sortFeature.sort(FacesContext.getCurrentInstance(), this);
+        FilterFeature.getInstance().filter(FacesContext.getCurrentInstance(), this);
+        SortFeature.getInstance().sort(FacesContext.getCurrentInstance(), this);
     }
 }

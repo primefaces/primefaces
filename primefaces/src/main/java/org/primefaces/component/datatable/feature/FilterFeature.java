@@ -56,6 +56,15 @@ public class FilterFeature implements DataTableFeature {
         .put(MatchMode.RANGE, new RangeFilterConstraint())
         .build();
 
+    private static final FilterFeature INSTANCE = new FilterFeature();
+
+    private FilterFeature() {
+    }
+
+    public static FilterFeature getInstance() {
+        return INSTANCE;
+    }
+
     private boolean isFilterRequest(FacesContext context, DataTable table) {
         return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_filtering");
     }
@@ -121,8 +130,7 @@ public class FilterFeature implements DataTableFeature {
 
             // update filtered value accordingly to take account sorting
             if (table.isSortingCurrentlyActive()) {
-                SortFeature sortFeature = (SortFeature) table.getFeature(DataTableFeatureKey.SORT);
-                sortFeature.sort(context, table);
+                SortFeature.getInstance().sort(context, table);
             }
         }
 

@@ -39,6 +39,14 @@ import org.primefaces.component.datatable.DataTableRenderer;
 public class DraggableRowsFeature implements DataTableFeature {
 
     private static final Logger LOGGER = Logger.getLogger(DraggableRowsFeature.class.getName());
+    private static final DraggableRowsFeature INSTANCE = new DraggableRowsFeature();
+
+    private DraggableRowsFeature() {
+    }
+
+    public static DraggableRowsFeature getInstance() {
+        return INSTANCE;
+    }
 
     @Override
     public boolean shouldDecode(FacesContext context, DataTable table) {
