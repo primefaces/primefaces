@@ -93,7 +93,7 @@ public interface ColumnAware {
             else if (child instanceof ColumnGroup && visitColumnGroups) {
                 // columnGroup must contain p:row(s) as child
                 for (int j = 0; j < child.getChildCount(); j++) {
-                    UIComponent row = ((UIComponent) child).getChildren().get(j);
+                    UIComponent row = child.getChildren().get(j);
                     if (skipUnrendered && !row.isRendered()) {
                         continue;
                     }
