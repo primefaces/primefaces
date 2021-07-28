@@ -21,6 +21,8 @@
  * 
  * @prop {boolean} cfg.multiple Whether multiple accordion menu items are allowed to be expanded at the same time.
  * @prop {boolean} cfg.stateful Whether the UI state (expanded menu items) should be persisted in an HTML5 Local Store.
+ * @prop {boolean} cfg.statefulGlobal When enabled, menu state is saved globally across pages. If disabled then state 
+ * is stored per view/page.
  */
 PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
 
@@ -48,6 +50,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         this.bindEvents();
 
         if(this.cfg.stateful) {
+            this.cfg.statefulGlobal = this.cfg.statefulGlobal === false ? false : true;
             this.createStorageKey();
         }
 
@@ -275,7 +278,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
      * remembered between page navigations.
      */
     createStorageKey: function() {
-        this.stateKey = PrimeFaces.createStorageKey(this.id, 'PanelMenu', true);
+        this.stateKey = PrimeFaces.createStorageKey(this.id, 'PanelMenu', this.cfg.statefulGlobal);
     },
 
     /**

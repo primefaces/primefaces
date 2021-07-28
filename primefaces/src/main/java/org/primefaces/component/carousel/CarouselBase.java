@@ -58,6 +58,7 @@ public abstract class CarouselBase extends UITabPanel implements Widget, TouchAw
         toggleSpeed,
         collapsed,
         stateful,
+        statefulGlobal,
         touchable
     }
 
@@ -252,6 +253,14 @@ public abstract class CarouselBase extends UITabPanel implements Widget, TouchAw
 
     public void setStateful(boolean stateful) {
         getStateHelper().put(PropertyKeys.stateful, stateful);
+    }
+
+    public boolean isStatefulGlobal() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.statefulGlobal, false);
+    }
+
+    public void setStatefulGlobal(boolean statefulGlobal) {
+        getStateHelper().put(PropertyKeys.statefulGlobal, statefulGlobal);
     }
 
     @Override

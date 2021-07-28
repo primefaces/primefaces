@@ -45,7 +45,8 @@ public class MenuRenderer extends BaseMenuRenderer {
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("PlainMenu", menu)
-                .attr("toggleable", menu.isToggleable(), false);
+                .attr("toggleable", menu.isToggleable(), false)
+                .attr("statefulGlobal", menu.isStatefulGlobal(), false);
 
         if (menu.isOverlay()) {
             encodeOverlayConfig(context, menu, wb);

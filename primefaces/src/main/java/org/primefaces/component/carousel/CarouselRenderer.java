@@ -77,6 +77,7 @@ public class CarouselRenderer extends CoreRenderer {
                 .attr("responsive", carousel.isResponsive(), false)
                 .attr("breakpoint", carousel.getBreakpoint(), 560)
                 .attr("stateful", carousel.isStateful(), false)
+                .attr("statefulGlobal", carousel.isStatefulGlobal(), false)
                 .attr("touchable", ComponentUtils.isTouchable(context, carousel),  true);
 
         if (carousel.isToggleable()) {

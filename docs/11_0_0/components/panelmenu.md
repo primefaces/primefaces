@@ -26,7 +26,8 @@ model | null | MenuModel | MenuModel instance to build menu dynamically.
 style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the component.
 widgetVar | null | String | Name of the client side widget.
-stateful | true | Boolean | Menu state is saved in LocalStorage.
+stateful | true | Boolean | Menu state is saved in HTML5 LocalStorage.
+statefulGlobal | true | Boolean | When enabled, menu state is saved globally across pages. If disabled then state is stored per view/page..
 
 ## Getting started with PanelMenu
 PanelMenu consists of submenus and menuitems. First level of submenus are rendered as accordion
@@ -60,16 +61,8 @@ submenu as expanded.
 
 ## Stateful
 If you use `stateful="true"` to keep the state of the menu by default it is global.  This means the state is
-remembered across page navigations.  If you would like it not to be global but only stored per page you have to override
-the `createStorageKey` method and set the global flag to false.
-
-```javascript
-if (PrimeFaces.widget.PanelMenu) {
-    PrimeFaces.widget.PanelMenu.prototype.createStorageKey = function() {
-        this.stateKey = PrimeFaces.createStorageKey(this.id, 'PanelMenu', false);
-    }
-}
-```
+remembered across page navigations.  If you would like it not to be global but only stored per page you can set
+the `statefulGlobal="false"` method and set the global flag to false.
 
 ## Skinning
 PanelMenu resides in a main container which _style_ and _styleClass_ attributes apply. Following is the

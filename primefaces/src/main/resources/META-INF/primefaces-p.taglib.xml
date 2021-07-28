@@ -3980,9 +3980,17 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[When enabled, carousel state is saved in a cookie for the session. Default is false.]]>
+                <![CDATA[When enabled, carousel state is saved in a HTML5 Local Storage for the session. Default is false.]]>
             </description>
             <name>stateful</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[When enabled, carousel state is saved globally across pages. If disabled then state is stored per view/page. Default is false.]]>
+            </description>
+            <name>statefulGlobal</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -16859,6 +16867,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[When enabled, menu toggle state is saved globally across pages. If disabled then state is stored per view/page. Default is false.]]>
+            </description>
+            <name>statefulGlobal</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Applied only when overlay is set to true. When the overlay menu overflows the window in some direction, move it to an alternative position. Supported values are flip, fit, flipfit and none. See https://api.jqueryui.com/position/ for more details. Defaults to flip. When you the body of your layout does not scroll, you may also want to set the option maxHeight.]]>
             </description>
             <name>collision</name>
@@ -19284,9 +19300,17 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[When enabled, menu state is saved in a cookie for the session. Default is true.]]>
+                <![CDATA[When enabled, menu state is saved in HTML5 Local Storage. Default is true.]]>
             </description>
             <name>stateful</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[When enabled, menu state is saved globally across pages. If disabled then state is stored per view/page. Default is true.]]>
+            </description>
+            <name>statefulGlobal</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
