@@ -24,6 +24,14 @@
 package org.primefaces.integrationtests.fileupload;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.util.Comparator;
+import java.util.Random;
+import java.util.UUID;
 import org.json.JSONObject;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.support.FindBy;
@@ -39,6 +47,61 @@ import org.primefaces.selenium.component.FileUpload;
 @Tag("SafariExclude") // Selenium SafariDriver does not support file uploads
 public class FileUpload011Test extends AbstractFileUploadTest {
 
+    // must be equal to p:fileUpload components sizeLimit
+    private static final int SIZE_LIMIT = 2097152;
+    private static Path bigFilesFolder;
+    // holds 3 files to upload (last one exeeds sizeLimit)
+    private static final Path[] BIG_FILES = new Path[3];
+
+    @BeforeAll
+    public static void setupFiles() {
+        // resolves to the projects `target´ folder
+        Path dir = new File(Thread.currentThread().getContextClassLoader().getResource(".")
+                .getPath()).getParentFile().toPath();
+        // setup a fresh folder with fresh random files
+        bigFilesFolder = dir.resolve("test-fileupload");
+        if (bigFilesFolder.toFile().exists()) {
+            deleteFolder(bigFilesFolder);
+        }
+        bigFilesFolder.toFile().mkdirs();
+
+        Random rnd = new Random();
+        byte[] buf = new byte[64 * 1024];
+        for (int i = 0; i < BIG_FILES.length; ++i) {
+            BIG_FILES[i] = bigFilesFolder.resolve(UUID.randomUUID().toString() + ".xar");
+            int size = i == BIG_FILES.length - 1 ? SIZE_LIMIT + 1024 : SIZE_LIMIT / 2 + rnd.nextInt(SIZE_LIMIT / 2);
+            try {
+                for (int l = 0; l < size; l += buf.length) {
+                    rnd.nextBytes(buf);
+                    Files.write(BIG_FILES[i], buf, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+                }
+            } catch(IOException ioe) {
+                throw new UncheckedIOException(ioe);
+            }
+        }
+    }
+
+    @AfterAll
+    public static void teardownFiles() {
+        if (bigFilesFolder != null) {
+            deleteFolder(bigFilesFolder);
+        }
+    }
+
+    private static void deleteFolder(Path path) {
+        try {
+            Files.walk(path)
+              .sorted(Comparator.reverseOrder())
+              .map(Path::toFile)
+              .forEach(File::delete);
+        } catch (IOException ignore) {
+        }
+    }
+
+    private static File chooseBigFile(int i) {
+        return BIG_FILES[i].toFile();
+    }
+
     @Test
     @Order(1)
     public void testAdvancedSingleChunkedUpload(Page page) {
@@ -47,7 +110,7 @@ public class FileUpload011Test extends AbstractFileUploadTest {
         Assertions.assertEquals("", fileUpload.getValue());
 
         // Act
-        File file = locateClientSideBigFile("primefaces-integration-tests-sources.jar");
+        File file = chooseBigFile(0);
         fileUpload.setValue(file);
         Assertions.assertTrue(fileUpload.getWidgetValue().startsWith(file.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedUploadButton().click();
@@ -67,7 +130,7 @@ public class FileUpload011Test extends AbstractFileUploadTest {
         Assertions.assertEquals("", fileUpload.getValue());
 
         // Act
-        File file1 = locateClientSideBigFile("primefaces-integration-tests-sources.jar");
+        File file1 = chooseBigFile(0);
         fileUpload.setValue(file1);
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file1.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedUploadButton().click();
@@ -78,7 +141,7 @@ public class FileUpload011Test extends AbstractFileUploadTest {
         assertUploadedFiles(page.uploadedFiles, file1);
 
         // Act
-        File file2 = locateClientSideBigFile("primefaces-integration-tests-javadoc.jar");
+        File file2 = chooseBigFile(1);
         fileUpload.setValue(file2);
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file2.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedUploadButton().click();
@@ -98,7 +161,7 @@ public class FileUpload011Test extends AbstractFileUploadTest {
         Assertions.assertEquals("", fileUpload.getValue());
 
         // Act
-        File file = locateClientSideBigFile("primefaces-integration-tests-sources.jar");
+        File file = chooseBigFile(0);
         fileUpload.setValue(file);
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedCancelButton().click();
@@ -118,7 +181,7 @@ public class FileUpload011Test extends AbstractFileUploadTest {
         Assertions.assertEquals("", fileUpload.getValue());
 
         // Act
-        File file = locateClientSideBigFile("primefaces-integration-tests-javadoc.jar");
+        File file = chooseBigFile(1);
         fileUpload.setValue(file);
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedUploadButton().click();
@@ -143,7 +206,7 @@ public class FileUpload011Test extends AbstractFileUploadTest {
         Assertions.assertFalse(fileLimitMsg.isEmpty());
 
         // Act
-        File file1 = locateClientSideBigFile("primefaces-integration-tests-sources.jar");
+        File file1 = chooseBigFile(0);
         fileUpload.setValue(file1);
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file1.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedUploadButton().click();
@@ -154,7 +217,7 @@ public class FileUpload011Test extends AbstractFileUploadTest {
         assertUploadedFiles(page.uploadedFiles, file1);
 
         // Act
-        File file2 = locateClientSideBigFile("primefaces-integration-tests-javadoc.jar");
+        File file2 = chooseBigFile(1);
         fileUpload.setValue(file2);
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file2.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedUploadButton().click();
@@ -165,7 +228,7 @@ public class FileUpload011Test extends AbstractFileUploadTest {
         assertUploadedFiles(page.uploadedFiles, file1, file2);
 
         // Act
-        File file3 = locateClientSideBigFile("primefaces-integration-tests.war");
+        File file3 = chooseBigFile(2);
         fileUpload.setValue(file3);
         Assertions.assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
         // upload button is not visible
@@ -188,7 +251,7 @@ public class FileUpload011Test extends AbstractFileUploadTest {
         Assertions.assertFalse(invalidSizeMsg.isEmpty());
 
         // Act
-        File file = locateClientSideBigFile("primefaces-integration-tests.war");
+        File file = chooseBigFile(2);
         fileUpload.setValue(file);
         Assertions.assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
         // upload button is not visible
