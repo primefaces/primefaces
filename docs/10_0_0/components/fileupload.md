@@ -36,7 +36,7 @@ powered rich solution with graceful degradation for legacy browsers.
 | dragDropSupport | true | Boolean | Specifies dragdrop based file selection from filesystem, default is true and works only on supported browsers.
 | fileLimit | null | Integer | Maximum number of files allowed to upload.
 | fileLimitMessage | Maximum number of files exceeded | String | Message to display when file limit exceeds.
-| global | true | Boolean | Global AJAX requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus. Default is false.
+| global | true | Boolean | Global AJAX requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus. Default is true.
 | immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
 | invalidFileMessage | Invalid file type | String | Message to display when file is not accepted.
 | invalidSizeMessage | Invalid file size | String | Message to display when size limit exceeds.
