@@ -27,7 +27,7 @@ style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the component.
 widgetVar | null | String | Name of the client side widget.
 stateful | true | Boolean | Menu state is saved in HTML5 LocalStorage.
-statefulGlobal | true | Boolean | When enabled, menu state is saved globally across pages. If disabled then state is stored per view/page..
+statefulGlobal | true | Boolean | When enabled, menu state is saved globally across pages. If disabled then state is stored per view/page.
 
 ## Getting started with PanelMenu
 PanelMenu consists of submenus and menuitems. First level of submenus are rendered as accordion

@@ -33,6 +33,7 @@ styleClass | null | String | Style class of the main container element.
 triggerEvent | click | String | Event to show the dynamic positioned menu.
 tabindex | 0 | String | Position of the element in the tabbing order. Default is 0.
 toggleable | false | Boolean | Defines whether clicking the header of a submenu toggles the visibility of children menuitems.
+statefulGlobal | false | Boolean | When enabled, menu toggleable state is saved globally across pages. If disabled then state is stored per view/page.
 collision | flip | String | Applied only when overlay is set to true. When the overlay menu overflows the window in some direction, move it to an alternative position. Supported values are flip, fit, flipfit and none. See https://api.jqueryui.com/position/ for more details. Defaults to flip. When you the body of your layout does not scroll, you may also want to set the option maxHeight.
 maxHeight | null | String | The maximum height of the menu. May be either a number (such as 200), which is interpreted as a height in pixels. Alternatively, may also be a CSS length such as 90vh or 10em. Often used when overlay is set to true, but also works when it is set to false. Useful in case the body of your layout does not scroll, especially in combination with the collision property.
 
