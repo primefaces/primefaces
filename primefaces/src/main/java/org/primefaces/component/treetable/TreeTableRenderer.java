@@ -51,6 +51,7 @@ import java.util.*;
 
 import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
 import org.primefaces.component.treetable.feature.FilterFeature;
+import org.primefaces.component.treetable.feature.ResizableColumnsFeature;
 import org.primefaces.component.treetable.feature.SelectionFeature;
 import org.primefaces.component.treetable.feature.SortFeature;
 
@@ -69,8 +70,9 @@ public class TreeTableRenderer extends DataRenderer {
         if (FilterFeature.getInstance().shouldDecode(context, tt)) {
             FilterFeature.getInstance().decode(context, tt);
         }
-
-        tt.decodeColumnResizeState(context);
+        if (ResizableColumnsFeature.getInstance().shouldDecode(context, tt)) {
+            ResizableColumnsFeature.getInstance().decode(context, tt);
+        }
 
         decodeBehaviors(context, component);
     }
