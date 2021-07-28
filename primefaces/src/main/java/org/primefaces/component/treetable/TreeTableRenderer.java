@@ -23,7 +23,6 @@
  */
 package org.primefaces.component.treetable;
 
-import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.UITree;
@@ -49,26 +48,21 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.*;
-import java.util.logging.Logger;
 
 import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
 import org.primefaces.component.treetable.feature.FilterFeature;
+import org.primefaces.component.treetable.feature.SelectionFeature;
 import org.primefaces.component.treetable.feature.SortFeature;
 
 public class TreeTableRenderer extends DataRenderer {
-
-    private static final Logger LOGGER = Logger.getLogger(TreeTableRenderer.class.getName());
-    private static final String SB_DECODE_SELECTION = TreeTableRenderer.class.getName() + "#decodeSelection";
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
         TreeTable tt = (TreeTable) component;
 
-        if (tt.getSelectionMode() != null) {
-            TreeNode root = tt.getValue();
-            decodeSelection(context, tt, root);
+        if (SelectionFeature.getInstance().shouldDecode(context, tt)) {
+            SelectionFeature.getInstance().decode(context, tt);
         }
-
         if (SortFeature.getInstance().shouldDecode(context, tt)) {
             SortFeature.getInstance().decode(context, tt);
         }
@@ -79,72 +73,6 @@ public class TreeTableRenderer extends DataRenderer {
         tt.decodeColumnResizeState(context);
 
         decodeBehaviors(context, component);
-    }
-
-    protected void decodeSelection(FacesContext context, TreeTable tt, TreeNode root) {
-        boolean multiple = tt.isMultipleSelectionMode();
-        Class<?> selectionType = tt.getSelectionType();
-
-        if (multiple && !selectionType.isArray() && !List.class.isAssignableFrom(selectionType)) {
-            throw new FacesException("Multiple selection reference must be an Array or a List for TreeTable " + tt.getClientId());
-        }
-
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String clientId = tt.getClientId(context);
-
-        //decode selection
-        String selectionValue = params.get(tt.getClientId(context) + "_selection");
-        if (isValueBlank(selectionValue)) {
-            if (multiple) {
-                tt.setSelection(selectionType.isArray() ? new TreeNode[0] : Collections.emptyList());
-            }
-            else {
-                tt.setSelection(null);
-            }
-        }
-        else {
-            String[] selectedRowKeys = selectionValue.split(",");
-            if (multiple) {
-                List<TreeNode> selectedNodes = new ArrayList<>();
-
-                for (int i = 0; i < selectedRowKeys.length; i++) {
-                    tt.setRowKey(root, selectedRowKeys[i]);
-                    TreeNode rowNode = tt.getRowNode();
-                    if (rowNode != null) {
-                        selectedNodes.add(rowNode);
-                    }
-                }
-
-                tt.setSelection(selectionType.isArray() ? selectedNodes.toArray(new TreeNode[selectedNodes.size()]) : selectedNodes);
-            }
-            else {
-                tt.setRowKey(root, selectedRowKeys[0]);
-                tt.setSelection(tt.getRowNode());
-            }
-
-            tt.setRowKey(root, null);     //cleanup
-        }
-
-        if (tt.isCheckboxSelectionMode() && tt.isSelectionRequest(context)) {
-            String selectedNodeRowKey = params.get(clientId + "_instantSelection");
-            tt.setRowKey(root, selectedNodeRowKey);
-            TreeNode selectedNode = tt.getRowNode();
-            List<String> descendantRowKeys = new ArrayList<>();
-            tt.populateRowKeys(selectedNode, descendantRowKeys);
-            int size = descendantRowKeys.size();
-            StringBuilder sb = SharedStringBuilder.get(context, SB_DECODE_SELECTION);
-
-            for (int i = 0; i < size; i++) {
-                sb.append(descendantRowKeys.get(i));
-                if (i != (size - 1)) {
-                    sb.append(",");
-                }
-            }
-
-            PrimeFaces.current().ajax().addCallbackParam("descendantRowKeys", sb.toString());
-            sb.setLength(0);
-            descendantRowKeys = null;
-        }
     }
 
     @Override
