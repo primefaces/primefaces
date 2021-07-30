@@ -50,5 +50,19 @@ class PrimeFlexMigrationTest {
         Assertions.assertEquals("<div class=\"grid\"><div class=\"col-3 sm:col-12 md:col-6 lg:col-3 xl:col-2\"></div></div>", result);
     }
 
+    @Test
+    void migrateV2ToV3Spacing() {
+        String source = "<div class=\"p-m-1 p-p-1 p-m-lg-3 p-m-lg-3\"></div>";
+        String result = migration.migrateV2ToV3(source);
+        Assertions.assertEquals("<div class=\"m-1 p-1 lg:m-3 lg:m-3\"></div>", result);
+    }
+
+    @Test
+    void migrateV2ToV3SpacingCornerCase() {
+        String source = "<div class=\"p-p-lg-3\"></div>";
+        String result = migration.migrateV2ToV3(source);
+        Assertions.assertEquals("<div class=\"lg:p-3\"></div>", result);
+    }
+
 
 }
