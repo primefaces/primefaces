@@ -175,28 +175,6 @@ public class FileUpload011Test extends AbstractFileUploadTest {
 
     @Test
     @Order(4)
-    public void testAdvancedSingleChunkedUploadCancelFile(Page page) {
-        // Arrange
-        FileUpload fileUpload = page.fileupload;
-        Assertions.assertEquals("", fileUpload.getValue());
-
-        // Act
-        File file = chooseBigFile(1);
-        fileUpload.setValue(file);
-        Assertions.assertTrue(fileUpload.getWidgetValues().contains(file.getName()), fileUpload.getWidgetValues().toString());
-        fileUpload.getAdvancedUploadButton().click();
-        PrimeSelenium.wait(75);
-        fileUpload.getAdvancedCancelButton(file.getName()).click();
-        Assertions.assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
-
-        // Assert
-        assertNoJavascriptErrors();
-        assertUploadedFiles(page.uploadedFiles);
-        assertConfiguration(fileUpload);
-    }
-
-    @Test
-    @Order(5)
     public void testAdvancedSingleChunkedUploadFileLimit(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
@@ -241,7 +219,7 @@ public class FileUpload011Test extends AbstractFileUploadTest {
     }
 
     @Test
-    @Order(6)
+    @Order(5)
     public void testAdvancedSingleChunkedUploadSizeLimit(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
@@ -264,7 +242,7 @@ public class FileUpload011Test extends AbstractFileUploadTest {
     }
 
     @Test
-    @Order(7)
+    @Order(6)
     public void testAdvancedSingleChunkedUploadAllowTypes(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
