@@ -162,6 +162,20 @@ In `advanced` mode, it does not send all files in one request, but always uses a
 <p:fileUpload listener="#{fileBean.handleFileUpload}" multiple="true" />
 ```
 
+**Attention**: Since the files are send asynchronously in parallel to the server, the backing bean has to be **@RequestScoped**!<br/>
+Each file upload request is processed in a separate thread on server side. Special care has to be taken on thread safty.<br/>
+Be aware each file upload runs through the entire JSF lifecycle which implies that several attributes of the component
+(such as `process`, `update`, `oncomplete` and others) are processed or updated for each file. Consider to use `p:remoteCommand`
+which is called from client side after _all_ files are uploaded by checking the widgets `files` property. E.g.
+
+```xhtml
+<p:remoteCommand name="updateAfterAllFilesUploaded"
+    update="..." actionListener="..."/>
+<p:fileUpload listener="#{fileBean.handleFileUpload}" multiple="true"
+    widgetVar="fileUpload"
+    oncomplete="if (!PF('fileUpload').files.length) updateAfterAllFilesUploaded();"/>
+```
+
 However, in `simple` mode, it is possible to get all updated files at once via the `UploadedFiles` model:
 ```xhtml
 <p:fileUpload value="#{fileUploadView.files}" multiple="true" mode="simple" />

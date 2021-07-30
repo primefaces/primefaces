@@ -224,6 +224,20 @@ public class FileUploadView {
 }
 ```
 
+**Attention**: Since the files are send asynchronously in parallel to the server, the backing bean has to be **@RequestScoped**!<br/>
+Each file upload request is processed in a separate thread on server side. Special care has to be taken on thread safty.<br/>
+Be aware each file upload runs through the entire JSF lifecycle which implies that several attributes of the component
+(such as `process`, `update`, `oncomplete` and others) are processed or updated for each file. Consider to use `p:remoteCommand`
+which is called from client side after _all_ files are uploaded by checking the widgets `files` property. E.g.
+
+```xhtml
+<p:remoteCommand name="updateAfterAllFilesUploaded"
+    update="..." actionListener="..."/>
+<p:fileUpload listener="#{fileBean.handleFileUpload}" multiple="true"
+    widgetVar="fileUpload"
+    oncomplete="if (!PF('fileUpload').files.length) updateAfterAllFilesUploaded();"/>
+```
+
 #### Partial Page Update
 After the upload process completes, you can use the PrimeFaces PPR to update any component on the page.
 FileUpload is equipped with the `update` attribute for this purpose.
