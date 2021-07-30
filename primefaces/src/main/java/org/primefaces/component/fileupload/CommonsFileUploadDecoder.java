@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.fileupload;
 
+import java.io.File;
 import org.apache.commons.fileupload.FileItem;
 import org.primefaces.model.file.CommonsUploadedFile;
 import org.primefaces.model.file.UploadedFile;
@@ -87,6 +88,10 @@ public class CommonsFileUploadDecoder extends AbstractFileUploadDecoder<Multipar
 
     @Override
     public String getUploadDirectory(MultipartRequest request) {
-        return request.getUploadDirectory().getAbsolutePath();
+        File uploadDir = request.getUploadDirectory();
+        if (uploadDir == null) {
+            return super.getUploadDirectory(request);
+        }
+        return uploadDir.getAbsolutePath();
     }
 }

@@ -45,7 +45,7 @@ public abstract class AbstractFileUploadTest extends AbstractPrimePageTest {
 
     /**
      * Uploaded files are displayed in a data table with columns name, size and errorMessage.
-     * @param uploadedFiles the data table to check against
+     * @param uploadedFiles the data tble to check against
      * @param files the (client side) files uploaded
      */
     protected void assertUploadedFiles(DataTable uploadedFiles, File... files) {

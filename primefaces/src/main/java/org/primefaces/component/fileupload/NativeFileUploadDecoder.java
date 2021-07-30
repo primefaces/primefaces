@@ -32,9 +32,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import org.primefaces.util.LangUtils;
 
@@ -75,8 +78,21 @@ public class NativeFileUploadDecoder extends AbstractFileUploadDecoder<HttpServl
 
     @Override
     public String getUploadDirectory(HttpServletRequest request) {
-        return  Stream.of(request.getAttributeNames())
-                .map(o -> request.getAttribute(o.nextElement()))
+        Enumeration<String> e = request.getAttributeNames();
+        return StreamSupport.stream(
+                Spliterators.spliteratorUnknownSize(
+                    new Iterator<String>() {
+                        @Override
+                        public String next() {
+                            return e.nextElement();
+                        }
+                        @Override
+                        public boolean hasNext() {
+                            return e.hasMoreElements();
+                        }
+                    },
+                    Spliterator.DISTINCT), false)
+                .map(a -> request.getAttribute(a))
                 .filter(MultipartConfigElement.class::isInstance)
                 .map(MultipartConfigElement.class::cast)
                 .findFirst()
