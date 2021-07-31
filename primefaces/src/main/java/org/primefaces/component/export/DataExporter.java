@@ -162,7 +162,6 @@ public class DataExporter implements ActionListener, StateHolder {
                 ajaxDownload(filenameWithExtension, ((ByteArrayOutputStream) outputStream).toByteArray(), contentType, context);
             }
             else {
-                externalContext.responseFlushBuffer();
                 context.responseComplete();
             }
         }
