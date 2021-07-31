@@ -43,7 +43,8 @@ import java.util.stream.Collectors;
 public class PrimeFlexMigration implements Runnable {
 
     @CommandLine.Parameters(
-            description = "Directory (including subdirectories) where files with specified fileextension(s) should be converted from PrimeFlex 2 to PrimeFlex 3.")
+            description = "Directory (including subdirectories) where files with specified fileextension(s) " +
+                    "should be converted from PrimeFlex 2 to PrimeFlex 3.")
     private String directory;
 
     @CommandLine.Option(names = { "-e", "--fileextension" }, defaultValue = "xhtml", split = ",",
