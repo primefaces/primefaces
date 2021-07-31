@@ -216,7 +216,6 @@ public class PrimeFlexMigration implements Runnable {
 
         // form layout
         replaceRegex.put("p-field", "field");
-        replaceRegex.put("ui-fluid", "");
         replaceRegex.put("p-formgrid", "formgrid");
         replaceRegex.put("p-formgroup-inline", "formgroup-inline");
         replaceRegex.put("p-sr-only", "sr-only");
