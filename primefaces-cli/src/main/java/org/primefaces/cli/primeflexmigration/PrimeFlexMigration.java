@@ -37,14 +37,15 @@ import java.util.stream.Collectors;
 @CommandLine.Command(name = "PrimeFlexMigration", mixinStandardHelpOptions = true, version = "early WIP")
 public class PrimeFlexMigration implements Runnable {
 
-    @CommandLine.Parameters(defaultValue = "c:\\temp\\myapp", description = "Directory (including subdirectories) which should be converted from PrimeFlex 2 to PrimeFlex 3.")
+    @CommandLine.Parameters(defaultValue = "c:\\temp\\myapp",
+            description = "Directory (including subdirectories) which should be converted from PrimeFlex 2 to PrimeFlex 3.")
     private String directory = "c:\\temp\\myapp";
 
     @CommandLine.Option(names = { "-e", "--fileextensions" }, defaultValue = "xhtml", description = "Whitelist of fileextensions which should be converted.")
     private String[] fileextensions = {"xhtml"};
 
     @CommandLine.Option(names = { "-r", "--replaceexisting" }, defaultValue = "true",
-            description = "Replace existing files with converted ones? False means the converted files are written with v3 - extension.")
+            description = "Replace existing files with converted ones? False means the converted files are written with additional v3 - suffix.")
     private Boolean replaceExisting = true;
 
     private final Map<String, String> replaceRegex = new LinkedHashMap<>();
