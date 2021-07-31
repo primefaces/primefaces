@@ -34,14 +34,20 @@ import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@CommandLine.Command(name = "PrimeFlexMigration", mixinStandardHelpOptions = true, version = "early WIP")
+@CommandLine.Command(name = "PrimeFlexMigration", mixinStandardHelpOptions = true, version = "early WIP",
+    description = "CLI-tool for migrating HTML, XHTML, ... - files from PrimeFlex 2 to PrimeFlex 3.",
+    headerHeading = "@|bold,underline Usage|@:%n%n",
+    descriptionHeading = "%n@|bold,underline Description|@:%n",
+    parameterListHeading = "%n@|bold,underline Parameters|@:%n",
+    optionListHeading = "%n@|bold,underline Options|@:%n")
 public class PrimeFlexMigration implements Runnable {
 
-    @CommandLine.Parameters(defaultValue = "c:\\temp\\myapp",
-            description = "Directory (including subdirectories) which should be converted from PrimeFlex 2 to PrimeFlex 3.")
-    private String directory = "c:\\temp\\myapp";
+    @CommandLine.Parameters(
+            description = "Directory (including subdirectories) where files with specified fileextension(s) should be converted from PrimeFlex 2 to PrimeFlex 3.")
+    private String directory;
 
-    @CommandLine.Option(names = { "-e", "--fileextensions" }, defaultValue = "xhtml", description = "Whitelist of fileextensions which should be converted.")
+    @CommandLine.Option(names = { "-e", "--fileextension" }, defaultValue = "xhtml", split = ",",
+            description = "Whitelist of fileextensions of files in the specified directory which should be converted.")
     private String[] fileextensions = {"xhtml"};
 
     @CommandLine.Option(names = { "-r", "--replaceexisting" }, defaultValue = "true",
@@ -54,8 +60,10 @@ public class PrimeFlexMigration implements Runnable {
     public void run() {
         Set<String> fileextensionsSet = new HashSet<String>(Arrays.asList(fileextensions));
 
+        initReplaceRegEx();
+
         try {
-            System.out.println("start migrating " + directory + " and subfolders; " +
+            System.out.println("start migrating " + directory + " and subdirectories; " +
                     "fileextension: " + fileextensionsSet.stream().collect(Collectors.joining(",")) + "; " +
                     "replaceExisting: " + replaceExisting);
             migrateDirectory(Paths.get(directory), fileextensionsSet, replaceExisting);
@@ -222,14 +230,10 @@ public class PrimeFlexMigration implements Runnable {
     String migrateV2ToV3(String source) {
         String result = source;
 
-        System.out.println(result);
-
         for (Map.Entry<String, String> entry : replaceRegex.entrySet()) {
             String rv2 = entry.getKey();
             String rv3 = entry.getValue();
             result = result.replaceAll(rv2, rv3);
-
-//            System.out.println(result + " - after " + entry.getKey());
         }
 
         return result;
@@ -286,10 +290,10 @@ public class PrimeFlexMigration implements Runnable {
         if (replaceExisting) {
             Files.delete(f);
             Files.move(tmpFile, f);
-            System.out.println("migrated " + f.toString());
+            System.out.println("...migrated " + f.toString());
         }
         else {
-            System.out.println("migrated " + f.toString() + " to " + tmpFile.toString());
+            System.out.println("...migrated " + f.toString() + " to " + tmpFile.toString());
         }
     }
 }
