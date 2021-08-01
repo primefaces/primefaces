@@ -50,7 +50,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         this.bindEvents();
 
         if(this.cfg.stateful) {
-            this.cfg.statefulGlobal = this.cfg.statefulGlobal === false ? false : true;
+            this.cfg.statefulGlobal = this.cfg.statefulGlobal === true ? true : false;
             this.createStorageKey();
         }
 

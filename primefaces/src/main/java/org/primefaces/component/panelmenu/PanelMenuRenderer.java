@@ -46,7 +46,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("PanelMenu", menu)
                 .attr("stateful", menu.isStateful())
-                .attr("statefulGlobal", menu.isStatefulGlobal(), true)
+                .attr("statefulGlobal", menu.isStatefulGlobal(), false)
                 .attr("multiple", menu.isMultiple());
         wb.finish();
     }

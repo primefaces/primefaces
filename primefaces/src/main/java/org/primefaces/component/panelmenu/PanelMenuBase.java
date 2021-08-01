@@ -102,7 +102,7 @@ public abstract class PanelMenuBase extends AbstractMenu implements Widget {
     }
 
     public boolean isStatefulGlobal() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.statefulGlobal, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.statefulGlobal, false);
     }
 
     public void setStatefulGlobal(boolean statefulGlobal) {

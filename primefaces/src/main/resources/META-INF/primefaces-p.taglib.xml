@@ -19308,7 +19308,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[When enabled, menu state is saved globally across pages. If disabled then state is stored per view/page. Default is true.]]>
+                <![CDATA[When enabled, menu state is saved globally across pages. If disabled then state is stored per view/page. Default is false.]]>
             </description>
             <name>statefulGlobal</name>
             <required>false</required>
