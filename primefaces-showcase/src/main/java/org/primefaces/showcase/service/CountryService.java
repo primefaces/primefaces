@@ -63,6 +63,7 @@ public class CountryService {
         locales.add(new Country(i++, Locale.FRANCE));
         locales.add(new Country(i++, Locale.GERMANY));
         locales.add(new Country(i++, Locale.ITALY));
+        locales.add(new Country(i++, Locale.KOREA));
         locales.add(new Country(i++, new Locale("es", "ES")));
         locales.add(new Country(i++, new Locale("ca", "ES")));
         locales.add(new Country(i++, new Locale("nl", "NL")));

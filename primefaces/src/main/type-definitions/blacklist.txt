@@ -23,6 +23,7 @@ locales/locale-in.js
 locales/locale-it.js
 locales/locale-iw.js
 locales/locale-ka.js
+locales/locale-ko.js
 locales/locale-lv.js
 locales/locale-nl.js
 locales/locale-no.js

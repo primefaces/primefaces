@@ -1,5 +1,5 @@
 /** Korean */
-PrimeFaces.locales['kr'] = {
+PrimeFaces.locales['ko'] = {
     closeText: "닫기",
     prevText: "이전의",
     nextText: "다음",
