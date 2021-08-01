@@ -1,12 +1,12 @@
 name: IT FileUpload
 
 on: [push, pull_request]
-  #schedule:
-  #  - cron: '0 8 * * *'
+  schedule:
+    - cron: '0 8 * * *'
 
 jobs:
   nightly:
-    #if: github.repository == 'primefaces/primefaces' && github.ref == 'refs/heads/master'
+    if: github.repository == 'primefaces/primefaces' && github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     name: Java ${{ matrix.java }}, Profile ${{ matrix.profile }}
     strategy:
