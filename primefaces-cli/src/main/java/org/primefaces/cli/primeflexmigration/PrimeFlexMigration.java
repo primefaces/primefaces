@@ -64,15 +64,14 @@ public class PrimeFlexMigration implements Runnable {
         initReplaceRegEx();
 
         try {
-            System.out.println("start migrating " + directory + " and subdirectories; " +
+            System.out.println("Start migrating " + directory + " and subdirectories; " +
                     "fileextension: " + fileextensionsSet.stream().collect(Collectors.joining(",")) + "; " +
                     "replaceExisting: " + replaceExisting);
             migrateDirectory(Paths.get(directory), fileextensionsSet, replaceExisting);
-            System.out.println("finished migration");
+            System.out.println("Finished migration!");
         }
         catch (Exception ex) {
-            System.out.println("Error during migration: " + ex.getMessage());
-            ex.printStackTrace();
+            System.err.println("Error during migration: " + ex.toString());
         }
     }
 
@@ -223,8 +222,6 @@ public class PrimeFlexMigration implements Runnable {
         replaceRegex.put("p-field-radiobutton", "field-radiobutton");
 
         // complete?
-
-        // TODO: compile Regex
     }
 
     String migrateV2ToV3(String source) {
@@ -261,7 +258,7 @@ public class PrimeFlexMigration implements Runnable {
                         }
                     }
                     catch (Exception ex) {
-                        System.out.println("error during migration " + f.toString());
+                        System.err.println("...error during migrating " + f.toString() + ":" + ex.toString());
                     }
                 }
             }
