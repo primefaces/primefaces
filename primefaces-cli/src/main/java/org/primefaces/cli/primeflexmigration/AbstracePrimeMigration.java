@@ -23,21 +23,53 @@
  */
 package org.primefaces.cli.primeflexmigration;
 
+import picocli.CommandLine;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class AbstracePrimeMigration implements Runnable {
 
+    @CommandLine.Parameters(
+            description = "Directory (including subdirectories) where files with specified fileextension(s) " +
+                    "should be migrated.")
+    protected String directory;
+
+    @CommandLine.Option(names = { "-e", "--fileextension" }, defaultValue = "xhtml", split = ",",
+            description = "Whitelist of fileextensions of files in the specified directory which should be converted.")
+    protected String[] fileextensions = {"xhtml"};
+
+    @CommandLine.Option(names = { "-r", "--replaceexisting" }, defaultValue = "true",
+            description = "Replace existing files with converted ones? False means the migrated files are written with additional migrated-suffix.")
+    protected Boolean replaceExisting = true;
+
     final Map<String, String> replaceRegex = new LinkedHashMap<>();
+
+    @Override
+    public void run() {
+        Set<String> fileextensionsSet = new HashSet<String>(Arrays.asList(fileextensions));
+
+        initReplaceRegEx();
+
+        try {
+            System.out.println("Start migrating " + directory + " and subdirectories; " +
+                    "fileextension: " + fileextensionsSet.stream().collect(Collectors.joining(",")) + "; " +
+                    "replaceExisting: " + replaceExisting);
+            migrateDirectory(Paths.get(directory), fileextensionsSet, replaceExisting);
+            System.out.println("Finished migration!");
+        }
+        catch (Exception ex) {
+            System.err.println("Error during migration: " + ex.toString());
+        }
+    }
+
+    abstract void initReplaceRegEx();
 
     String migrateSource(String source) {
         String result = source;
@@ -86,7 +118,7 @@ public abstract class AbstracePrimeMigration implements Runnable {
     private void migrateFile(Path f, boolean replaceExisting) throws IOException {
         List<String> contentV2 = Files.readAllLines(f);
         List<String> contentV3 = contentV2.stream().map(l -> migrateSource(l)).collect(Collectors.toList());
-        Path tmpFile = Paths.get(f.toString() + "v3");
+        Path tmpFile = Paths.get(f.toString() + ".migrated");
         try (BufferedWriter writer = Files.newBufferedWriter(tmpFile, StandardOpenOption.CREATE)) {
             int line = 0;
             for (String l : contentV3) {

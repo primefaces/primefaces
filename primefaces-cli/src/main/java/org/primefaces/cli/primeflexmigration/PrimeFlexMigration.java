@@ -25,10 +25,6 @@ package org.primefaces.cli.primeflexmigration;
 
 import picocli.CommandLine;
 
-import java.nio.file.Paths;
-import java.util.*;
-import java.util.stream.Collectors;
-
 @CommandLine.Command(name = "PrimeFlexMigration", mixinStandardHelpOptions = true, version = "early WIP",
     description = "This CLI-Tool replaces PrimeFlex 2 - CSS - classes in  your HTML, XHTML, ... - files with PrimeFlex 3 - CSS - classes.",
     headerHeading = "@|bold,underline Usage|@:%n%n",
@@ -37,42 +33,12 @@ import java.util.stream.Collectors;
     optionListHeading = "%n@|bold,underline Options|@:%n")
 public class PrimeFlexMigration extends AbstracePrimeMigration implements Runnable {
 
-    @CommandLine.Parameters(
-            description = "Directory (including subdirectories) where files with specified fileextension(s) " +
-                    "should be converted from PrimeFlex 2 to PrimeFlex 3.")
-    private String directory;
-
-    @CommandLine.Option(names = { "-e", "--fileextension" }, defaultValue = "xhtml", split = ",",
-            description = "Whitelist of fileextensions of files in the specified directory which should be converted.")
-    private String[] fileextensions = {"xhtml"};
-
-    @CommandLine.Option(names = { "-r", "--replaceexisting" }, defaultValue = "true",
-            description = "Replace existing files with converted ones? False means the converted files are written with additional v3 - suffix.")
-    private Boolean replaceExisting = true;
-
-    @Override
-    public void run() {
-        Set<String> fileextensionsSet = new HashSet<String>(Arrays.asList(fileextensions));
-
-        initReplaceRegEx();
-
-        try {
-            System.out.println("Start migrating " + directory + " and subdirectories; " +
-                    "fileextension: " + fileextensionsSet.stream().collect(Collectors.joining(",")) + "; " +
-                    "replaceExisting: " + replaceExisting);
-            migrateDirectory(Paths.get(directory), fileextensionsSet, replaceExisting);
-            System.out.println("Finished migration!");
-        }
-        catch (Exception ex) {
-            System.err.println("Error during migration: " + ex.toString());
-        }
-    }
-
     public static void main(String[] args) {
         int exitCode = new CommandLine(new PrimeFlexMigration()).execute(args);
         System.exit(exitCode);
     }
 
+    @Override
     void initReplaceRegEx() {
         // see https://www.primefaces.org/primeflex/migration
 

@@ -17,3 +17,12 @@ It´s suggested to have no uncommited changes before running this CLI-tool. So y
 There always may be corner-cases which need some additional manual work. So it´s suggest to do a visual check of your application afterwards.
 
 Look at https://www.primefaces.org/primeflex/ for additional information.
+
+
+## Grid CSS --> PrimeFlex 2 migration
+
+```java -cp "primefaces-cli-11.0.0-SNAPSHOT.jar" org.primefaces.cli.primeflexmigration.GridCssMigration c:\projects\myapp -e=html,xhtml```
+
+It´s suggested to have no uncommited changes before running this CLI-tool. So you should get a good overview of what this migration-tool changed afterward it´s run. You also manually have to add PrimeFlex 2 - CSS - file to your project.
+
+There always may be corner-cases which need some additional manual work. So it´s suggest to do a visual check of your application afterwards.
