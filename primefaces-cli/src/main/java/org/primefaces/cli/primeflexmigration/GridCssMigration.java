@@ -26,20 +26,22 @@ package org.primefaces.cli.primeflexmigration;
 import picocli.CommandLine;
 
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @CommandLine.Command(name = "PrimeFlexMigration", mixinStandardHelpOptions = true, version = "early WIP",
-    description = "This CLI-Tool replaces PrimeFlex 2 - CSS - classes in  your HTML, XHTML, ... - files with PrimeFlex 3 - CSS - classes.",
+    description = "This CLI-Tool replaces Grid CSS - classes in  your HTML, XHTML, ... - files with PrimeFlex 2 - CSS - classes.",
     headerHeading = "@|bold,underline Usage|@:%n%n",
     descriptionHeading = "%n@|bold,underline Description|@:%n",
     parameterListHeading = "%n@|bold,underline Parameters|@:%n",
     optionListHeading = "%n@|bold,underline Options|@:%n")
-public class PrimeFlexMigration extends AbstracePrimeMigration implements Runnable {
+public class GridCssMigration extends AbstracePrimeMigration implements Runnable {
 
     @CommandLine.Parameters(
             description = "Directory (including subdirectories) where files with specified fileextension(s) " +
-                    "should be converted from PrimeFlex 2 to PrimeFlex 3.")
+                    "should be converted from Grid CSS to PrimeFlex 2.")
     private String directory;
 
     @CommandLine.Option(names = { "-e", "--fileextension" }, defaultValue = "xhtml", split = ",",
@@ -69,7 +71,7 @@ public class PrimeFlexMigration extends AbstracePrimeMigration implements Runnab
     }
 
     public static void main(String[] args) {
-        int exitCode = new CommandLine(new PrimeFlexMigration()).execute(args);
+        int exitCode = new CommandLine(new GridCssMigration()).execute(args);
         System.exit(exitCode);
     }
 
