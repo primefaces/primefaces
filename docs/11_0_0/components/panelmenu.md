@@ -60,9 +60,9 @@ By default, all submenus are collapsed, set expanded on a submenu to true to ini
 submenu as expanded.
 
 ## Stateful
-If you use `stateful="true"` to keep the state of the menu by default it is global.  This means the state is
-remembered across page navigations.  If you would like it not to be global but only stored per page you can set
-the `statefulGlobal="false"` method and set the global flag to false.
+If you use `stateful="true"` to keep the state of the menu by default it is per page.  This means the state is
+not remembered across page navigations.  If you would like it to be global and remembered across pages then set
+the `statefulGlobal="true"` attribute to enable it..
 
 ## Skinning
 PanelMenu resides in a main container which _style_ and _styleClass_ attributes apply. Following is the
