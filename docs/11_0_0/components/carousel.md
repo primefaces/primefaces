@@ -45,6 +45,7 @@ Carousel is a multi purpose component to display a set of data or general conten
 | breakpoint | 560 | Integer | Breakpoint value in pixels to switch between small and large viewport.
 | touchable | true | Boolean | Enable touch support if browser detection supports it.
 | stateful | false | Boolean | When enabled, carousel state is saved in a LocalStorage.
+| statefulGlobal | false | Boolean | When enabled, carousel state is saved globally across pages. If disabled then state is stored per view/page.
 
 ## Getting Started with Carousel
 Carousel has two main use-cases; data and general content display. To begin with data iteration let’s

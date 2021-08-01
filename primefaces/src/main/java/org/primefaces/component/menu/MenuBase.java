@@ -43,6 +43,7 @@ public abstract class MenuBase extends AbstractMenu implements Widget, OverlayMe
         styleClass,
         triggerEvent,
         toggleable,
+        statefulGlobal,
         collision,
         maxHeight
     }
@@ -155,5 +156,13 @@ public abstract class MenuBase extends AbstractMenu implements Widget, OverlayMe
 
     public void setMaxHeight(String maxHeight) {
         getStateHelper().put(PropertyKeys.maxHeight, maxHeight);
+    }
+
+    public boolean isStatefulGlobal() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.statefulGlobal, false);
+    }
+
+    public void setStatefulGlobal(boolean statefulGlobal) {
+        getStateHelper().put(PropertyKeys.statefulGlobal, statefulGlobal);
     }
 }

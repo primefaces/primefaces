@@ -43,6 +43,8 @@
  * @prop {number} cfg.pageLinks Defines the number of page links of paginator.
  * @prop {boolean} cfg.responsive In responsive mode, carousel adjusts its content based on screen size.
  * @prop {boolean} cfg.stateful Whether the state of the carousel is saved between page loads.
+ * @prop {boolean} cfg.statefulGlobal When enabled, menu state is saved globally across pages. If disabled then state 
+ * is stored per view/page.
  * @prop {number} cfg.toggleSpeed The speed at which the carousel toggles.
  * @prop {boolean} cfg.toggleable Whether the carousel is toggleable.
  * @prop {boolean} cfg.vertical Sets vertical scrolling
@@ -86,7 +88,8 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.totalPages = Math.ceil(this.itemsCount / this.cfg.numVisible);
 
         if(this.cfg.stateful) {
-            this.stateKey = PrimeFaces.createStorageKey(this.id, 'Carousel');
+            this.cfg.statefulGlobal = this.cfg.statefulGlobal === true ? true : false;
+            this.createStorageKey();
 
             this.restoreState();
         }
@@ -130,6 +133,14 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.collapsed) {
             this.toggleableContent.hide();
         }
+    },
+
+    /**
+     * Create the key where the state for this component is stored.  By default it is stored per view. Override this 
+     * method to change the behavior to be global.
+     */
+    createStorageKey: function() {
+        this.stateKey = PrimeFaces.createStorageKey(this.id, 'Carousel', this.cfg.statefulGlobal);
     },
 
     /**

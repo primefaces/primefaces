@@ -15,6 +15,8 @@
  * @extends {PrimeFaces.widget.MenuCfg} cfg
  * 
  * @prop {boolean} cfg.toggleable `true` if grouped items can be toggled (expanded / collapsed), or `false` otherwise.
+ * @prop {boolean} cfg.statefulGlobal When enabled, menu state is saved globally across pages. If disabled then state 
+ * is stored per view/page.
  */
 PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
 
@@ -32,8 +34,9 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
         this.bindEvents();
 
         if(this.cfg.toggleable) {
+            this.cfg.statefulGlobal = this.cfg.statefulGlobal === true ? true : false;
             this.collapsedIds = [];
-            this.stateKey = PrimeFaces.createStorageKey(this.id, 'PlainMenu');
+            this.createStorageKey();
             this.restoreState();
         }
     },
@@ -146,6 +149,14 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
 
             }
         });
+    },
+    
+    /**
+     * Create the key where the state for this component is stored.  By default it is stored per view. Override this 
+     * method to change the behavior to be global.
+     */
+    createStorageKey: function() {
+        this.stateKey = PrimeFaces.createStorageKey(this.id, 'PlainMenu', this.cfg.statefulGlobal);
     },
 
     /**

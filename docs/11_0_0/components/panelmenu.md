@@ -26,7 +26,8 @@ model | null | MenuModel | MenuModel instance to build menu dynamically.
 style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the component.
 widgetVar | null | String | Name of the client side widget.
-stateful | true | Boolean | Menu state is saved in LocalStorage.
+stateful | true | Boolean | Menu state is saved in HTML5 LocalStorage.
+statefulGlobal | false | Boolean | When enabled, menu state is saved globally across pages. If disabled then state is stored per view/page.
 
 ## Getting started with PanelMenu
 PanelMenu consists of submenus and menuitems. First level of submenus are rendered as accordion
@@ -57,6 +58,11 @@ menuitems can be utilized to do ajax requests, non-ajax requests and simple GET 
 ## Default State
 By default, all submenus are collapsed, set expanded on a submenu to true to initially display a
 submenu as expanded.
+
+## Stateful
+If you use `stateful="true"` to keep the state of the menu by default it is per page.  This means the state is
+not remembered across page navigations.  If you would like it to be global and remembered across pages then set
+the `statefulGlobal="true"` attribute to enable it..
 
 ## Skinning
 PanelMenu resides in a main container which _style_ and _styleClass_ attributes apply. Following is the

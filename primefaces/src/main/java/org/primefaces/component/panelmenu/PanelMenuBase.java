@@ -39,7 +39,8 @@ public abstract class PanelMenuBase extends AbstractMenu implements Widget {
         style,
         styleClass,
         multiple,
-        stateful
+        stateful,
+        statefulGlobal
     }
 
     public PanelMenuBase() {
@@ -98,5 +99,13 @@ public abstract class PanelMenuBase extends AbstractMenu implements Widget {
 
     public void setStateful(boolean stateful) {
         getStateHelper().put(PropertyKeys.stateful, stateful);
+    }
+
+    public boolean isStatefulGlobal() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.statefulGlobal, false);
+    }
+
+    public void setStatefulGlobal(boolean statefulGlobal) {
+        getStateHelper().put(PropertyKeys.statefulGlobal, statefulGlobal);
     }
 }
