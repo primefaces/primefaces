@@ -35,7 +35,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @CommandLine.Command(name = "PrimeFlexMigration", mixinStandardHelpOptions = true, version = "early WIP",
-    description = "CLI-tool for migrating HTML, XHTML, ... - files from PrimeFlex 2 to PrimeFlex 3.",
+    description = "This CLI-Tool replaces PrimeFlex 2 - CSS - classes in  your HTML, XHTML, ... - files with PrimeFlex 3 - CSS - classes.",
     headerHeading = "@|bold,underline Usage|@:%n%n",
     descriptionHeading = "%n@|bold,underline Description|@:%n",
     parameterListHeading = "%n@|bold,underline Parameters|@:%n",
