@@ -2,7 +2,7 @@
 
 ## Getting Started
 
-Deployable version of **PrimeFaces Showcase** war file can be downloaded manually or build it from sources.
+Deployable version of **PrimeFaces Showcase** WAR file can be downloaded manually or build it from sources.
 
 #### Prebuilt WAR
 
