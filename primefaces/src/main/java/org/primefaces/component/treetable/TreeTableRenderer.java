@@ -139,7 +139,9 @@ public class TreeTableRenderer extends DataRenderer {
     }
 
     protected void preRender(FacesContext context, TreeTable table) {
-        table.initFilterBy(context);
+        // trigger init, otherwise column state might be confused when rendering and init at the same time
+        table.getSortByAsMap();
+        table.getFilterByAsMap();
 
         if (table.isMultiViewState()) {
             table.restoreMultiViewState();

@@ -105,7 +105,9 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void preRender(FacesContext context, DataTable table) {
-        table.initFilterBy(context);
+        // trigger init, otherwise column state might be confused when rendering and init at the same time
+        table.getSortByAsMap();
+        table.getFilterByAsMap();
 
         if (table.isMultiViewState()) {
             table.restoreMultiViewState();
@@ -1045,16 +1047,10 @@ public class DataTableRenderer extends DataRenderer {
 
             for (int i = columnStart; i < columnEnd; i++) {
                 UIColumn column = columns.get(i);
-
-                if (column instanceof Column) {
-                    encodeColumnHeader(context, table, column);
+                if (column instanceof DynamicColumn) {
+                    ((DynamicColumn) column).applyModel();
                 }
-                else if (column instanceof DynamicColumn) {
-                    DynamicColumn dynamicColumn = (DynamicColumn) column;
-                    dynamicColumn.applyModel();
-
-                    encodeColumnHeader(context, table, dynamicColumn);
-                }
+                encodeColumnHeader(context, table, column);
             }
 
             writer.endElement("tr");

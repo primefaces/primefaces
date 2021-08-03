@@ -76,7 +76,7 @@ public class FilterFeature implements TreeTableFeature {
     public void decode(FacesContext context, TreeTable table) {
         // FilterMeta#column must be updated since local value
         // (from column) must be decoded by FilterFeature#decodeFilterValue
-        Map<String, FilterMeta> filterBy = table.initFilterBy(context);
+        Map<String, FilterMeta> filterBy = table.getFilterByAsMap();
         table.updateFilterByValuesWithFilterRequest(context, filterBy);
 
         // reset state

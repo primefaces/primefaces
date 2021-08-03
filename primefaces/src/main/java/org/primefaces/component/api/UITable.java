@@ -61,31 +61,24 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
 
     default Map<String, FilterMeta> initFilterBy(FacesContext context) {
-        boolean invalidate = !isFilterByAsMapDefined();
-        Map<String, FilterMeta> filterBy = invalidate ? new HashMap<>() : getFilterByAsMap();
-        AtomicBoolean filtered = invalidate ? new AtomicBoolean() : new AtomicBoolean(isDefaultFilter());
+        Map<String, FilterMeta> filterBy = new HashMap<>();
+        AtomicBoolean filtered = new AtomicBoolean();
 
         // build columns filterBy
         forEachColumn(c -> {
-            FilterMeta f = filterBy.get(c.getColumnKey());
-            if (f != null && !invalidate) {
-
-            }
-            else {
-                f = FilterMeta.of(context, getVar(), c);
-                if (f != null) {
-                    filterBy.put(f.getColumnKey(), f);
-                    filtered.set(filtered.get() || f.isActive());
-                }
+            FilterMeta meta = FilterMeta.of(context, getVar(), c);
+            if (meta != null) {
+                filterBy.put(meta.getColumnKey(), meta);
+                filtered.set(filtered.get() || meta.isActive());
             }
 
             return true;
         });
 
         // merge internal filterBy with user filterBy
-        Object userfilterBy = getFilterBy();
-        if (userfilterBy != null) {
-            updateFilterByWithUserFilterBy(context, filterBy, userfilterBy, filtered);
+        Object userFilterBy = getFilterBy();
+        if (userFilterBy != null) {
+            updateFilterByWithUserFilterBy(context, filterBy, userFilterBy, filtered);
         }
 
         // build global filterBy
@@ -267,21 +260,21 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     void setGlobalFilterOnly(boolean globalFilterOnly);
 
     default Map<String, SortMeta> initSortBy(FacesContext context) {
-        Map<String, SortMeta> sortMeta = new HashMap<>();
+        Map<String, SortMeta> sortBy = new HashMap<>();
         AtomicBoolean sorted = new AtomicBoolean();
 
         HeaderRow headerRow = getHeaderRow();
         if (headerRow != null) {
-            SortMeta s = SortMeta.of(context, getVar(), headerRow);
-            sortMeta.put(s.getColumnKey(), s);
+            SortMeta meta = SortMeta.of(context, getVar(), headerRow);
+            sortBy.put(meta.getColumnKey(), meta);
             sorted.set(true);
         }
 
         forEachColumn(c -> {
-            SortMeta s = SortMeta.of(context, getVar(), c);
-            if (s != null) {
-                sorted.set(sorted.get() || s.isActive());
-                sortMeta.put(s.getColumnKey(), s);
+            SortMeta meta = SortMeta.of(context, getVar(), c);
+            if (meta != null) {
+                sorted.set(sorted.get() || meta.isActive());
+                sortBy.put(meta.getColumnKey(), meta);
             }
 
             return true;
@@ -290,12 +283,14 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         // merge internal sortBy with user sortBy
         Object userSortBy = getSortBy();
         if (userSortBy != null) {
-            updateSortByWithUserSortBy(context, sortMeta, userSortBy, sorted);
+            updateSortByWithUserSortBy(context, sortBy, userSortBy, sorted);
         }
 
         setDefaultSort(sorted.get());
 
-        return sortMeta;
+        setSortByAsMap(sortBy);
+
+        return sortBy;
     }
 
     default void updateSortByWithMVS(Map<String, SortMeta> tsSortBy) {
@@ -380,7 +375,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
         // unlikely to happen, in case columns change between two ajax requests
         sortBy.put(s.getColumnKey(), s);
-        setSortByAsMap(sortBy);
+
         return true;
     }
 
@@ -403,7 +398,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     void setSortByAsMap(Map<String, SortMeta> sortBy);
 
     default boolean isFilteringEnabled() {
-        return !getFilterByAsMap().isEmpty();
+        return isFilterByAsMapDefined() && !getFilterByAsMap().isEmpty();
     }
 
     Object getSortBy();

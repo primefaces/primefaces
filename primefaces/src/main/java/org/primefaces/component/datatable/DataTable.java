@@ -1055,7 +1055,7 @@ public class DataTable extends DataTableBase {
 
     @Override
     public Map<String, FilterMeta> getFilterByAsMap() {
-        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.filterByAsMap, Collections::emptyMap);
+        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.filterByAsMap, () -> initFilterBy(getFacesContext()));
     }
 
     @Override
