@@ -8,7 +8,7 @@ Deployable version of **PrimeFaces Showcase** WAR file can be downloaded manuall
 
 For a full list of the available downloads, please visit the [download page](http://www.primefaces.org/downloads). Scroll down to showcase for WAR file link.
 
-#### Build from sources (for a EE Application Server)
+####Build from sources (for a EE Application Server)
 
 ```
 git clone https://github.com/primefaces/primefaces.git
@@ -19,7 +19,7 @@ mvn clean                    -- clean temp files from target folder
 mvn package -Pee             -- create war file (under target directory)
 ```
 
-##### Build from sources (for a Servlet Container like Tomcat / Jetty)
+#### Build from sources (for a Servlet Container like Tomcat / Jetty)
 
 ###### Mojarra 2.3.x
 
