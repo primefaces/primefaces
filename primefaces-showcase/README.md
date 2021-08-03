@@ -43,7 +43,7 @@ mvn clean                                                         -- clean temp 
 mvn package -Pjsf-myfaces,cdi-owb,bv-hibernate,jaxrs-resteasy     -- create war file (under target directory)
 ```
 
-##### Run from local sources on [http://localhost:8080/showcase/](http://localhost:8080/showcase)
+#### Run from local sources on [http://localhost:8080/showcase/](http://localhost:8080/showcase)
 
 ###### Mojarra 2.3.x
 
