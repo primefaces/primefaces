@@ -37,6 +37,7 @@ PrimeFaces.locales ['de'] = {
         'calendar.BUTTON': 'Kalender anzeigen',
         'datatable.sort.ASC': 'Spalten aufsteigend sortieren',
         'datatable.sort.DESC': 'Spalten absteigend sortieren',
+        'datatable.sort.NONE': 'Spaltensortierung entfernen',
         'columntoggler.CLOSE': 'Schließen',
         'overlaypanel.CLOSE': 'Schließen'
     },

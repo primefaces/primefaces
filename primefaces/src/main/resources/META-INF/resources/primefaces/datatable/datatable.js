@@ -465,9 +465,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.sortableColumns.attr('tabindex', this.cfg.tabindex);
 
         //aria messages
-        this.ascMessage = PrimeFaces.getAriaLabel('datatable.sort.SORT_ASC');
-        this.descMessage = PrimeFaces.getAriaLabel('datatable.sort.SORT_DESC');
-        this.otherMessage = PrimeFaces.getAriaLabel('datatable.sort.SORT_LABEL');
+        this.ascMessage = PrimeFaces.getAriaLabel('datatable.sort.ASC');
+        this.descMessage = PrimeFaces.getAriaLabel('datatable.sort.DESC');
+        if (this.cfg.allowUnsorting) {
+            this.otherMessage = PrimeFaces.getAriaLabel('datatable.sort.NONE');
+        }
+        else {
+            this.otherMessage = PrimeFaces.getAriaLabel('datatable.sort.ASC');
+        }
 
         //reflow dropdown
         this.reflowDD = $(this.jqId + '_reflowDD');

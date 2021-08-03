@@ -475,11 +475,22 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     bindSortEvents: function() {
-        var $this = this;
+        var $this = this,
+            hasAriaSort = false;
 
         this.cfg.multiSort = this.cfg.multiSort||false;
         this.cfg.allowUnsorting = this.cfg.allowUnsorting||false;
         this.sortMeta = [];
+
+        //aria messages
+        this.ascMessage = PrimeFaces.getAriaLabel('datatable.sort.ASC');
+        this.descMessage = PrimeFaces.getAriaLabel('datatable.sort.DESC');
+        if (this.cfg.allowUnsorting) {
+            this.otherMessage = PrimeFaces.getAriaLabel('datatable.sort.NONE');
+        }
+        else {
+            this.otherMessage = PrimeFaces.getAriaLabel('datatable.sort.ASC');
+        }
 
         this.sortableColumns = this.thead.find('> tr > th.ui-sortable-column');
 
@@ -487,19 +498,32 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             var columnHeader = $(this),
             columnHeaderId = columnHeader.attr('id'),
             sortIcon = columnHeader.children('span.ui-sortable-column-icon'),
-            sortOrder = null;
+            sortOrder = null,
+            ariaLabel = columnHeader.attr('aria-label');
 
             if (sortIcon.hasClass('ui-icon-triangle-1-n')) {
                 sortOrder = $this.SORT_ORDER.ASCENDING;
-                columnHeader.attr('aria-sort', 'ascending');
+                columnHeader.attr('aria-label', $this.getSortMessage(ariaLabel, this.descMessage));
+                if (!hasAriaSort) {
+                    columnHeader.attr('aria-sort', 'ascending');
+                    hasAriaSort = true;
+                }
             }
             else if (sortIcon.hasClass('ui-icon-triangle-1-s')) {
                 sortOrder = $this.SORT_ORDER.DESCENDING;
-                columnHeader.attr('aria-sort', 'descending');
+                columnHeader.attr('aria-label', $this.getSortMessage(ariaLabel, this.otherMessage));
+                if (!hasAriaSort) {
+                    columnHeader.attr('aria-sort', 'descending');
+                    hasAriaSort = true;
+                }
             }
             else {
                 sortOrder = $this.SORT_ORDER.UNSORTED;
-                columnHeader.attr('aria-sort', 'other');
+                columnHeader.attr('aria-label', $this.getSortMessage(ariaLabel, this.ascMessage));
+                if (!hasAriaSort) {
+                    columnHeader.attr('aria-sort', 'other');
+                    hasAriaSort = true;
+                }
             }
 
             columnHeader.data('sortorder', sortOrder);
