@@ -26,7 +26,7 @@ package org.primefaces.cli.primeflexmigration;
 import picocli.CommandLine;
 
 @CommandLine.Command(name = "GridCssMigration", mixinStandardHelpOptions = true, version = "early WIP",
-    description = "This CLI-Tool replaces Grid CSS - classes in  your HTML, XHTML, ... - files with PrimeFlex 2 - CSS - classes.",
+    description = "This CLI-Tool replaces Grid CSS - classes in your HTML, XHTML, ... - files with PrimeFlex 2 - CSS - classes.",
     headerHeading = "@|bold,underline Usage|@:%n%n",
     descriptionHeading = "%n@|bold,underline Description|@:%n",
     parameterListHeading = "%n@|bold,underline Parameters|@:%n",

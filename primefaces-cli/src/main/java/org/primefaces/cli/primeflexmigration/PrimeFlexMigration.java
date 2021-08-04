@@ -26,7 +26,7 @@ package org.primefaces.cli.primeflexmigration;
 import picocli.CommandLine;
 
 @CommandLine.Command(name = "PrimeFlexMigration", mixinStandardHelpOptions = true, version = "early WIP",
-    description = "This CLI-Tool replaces PrimeFlex 2 - CSS - classes in  your HTML, XHTML, ... - files with PrimeFlex 3 - CSS - classes.",
+    description = "This CLI-Tool replaces PrimeFlex 2 - CSS - classes in your HTML, XHTML, ... - files with PrimeFlex 3 - CSS - classes.",
     headerHeading = "@|bold,underline Usage|@:%n%n",
     descriptionHeading = "%n@|bold,underline Description|@:%n",
     parameterListHeading = "%n@|bold,underline Parameters|@:%n",
