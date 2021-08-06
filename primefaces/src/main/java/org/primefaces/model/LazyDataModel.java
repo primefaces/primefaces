@@ -30,17 +30,34 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import javax.faces.convert.Converter;
 
 /**
- * Lazy loading DataModel to deal with huge datasets
+ * DataModel to deal with huge datasets with by lazy loading, page by page.
  */
 public abstract class LazyDataModel<T> extends ListDataModel<T> implements SelectableDataModel<T>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private Converter<T> converter;
+
     private int rowCount;
 
     private int pageSize;
+
+    public LazyDataModel() {
+
+    }
+
+    /**
+     * This constructor allows to skip the implementation of {@link #getRowData(java.lang.String)} and
+     * {@link #getRowKey(java.lang.Object)}, when selection is used.
+     *
+     * @param converter The converter used to convert rowKey to rowData and vice versa.
+     */
+    public LazyDataModel(Converter<T> converter) {
+        this.converter = converter;
+    }
 
     /**
      * Loads the data for the given parameters.
@@ -55,22 +72,36 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
 
     @Override
     public T getRowData(String rowKey) {
+        if (converter != null) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            return (T) converter.getAsObject(context, UIComponent.getCurrentComponent(context), rowKey);
+        }
+
         throw new UnsupportedOperationException(
-                getMessage("getRowData(String rowKey) must be implemented by %s when basic rowKey algorithm is not used [component=%s,view=%s]."));
+                getMessage("Provide a Converter via constructor or implement getRowData(String rowKey) in "
+                        + this.getClass().getName()
+                        + ", when basic rowKey algorithm is not used [component=%s,view=%s]."));
     }
 
     @Override
     public String getRowKey(T object) {
+        if (converter != null) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            return converter.getAsString(context, UIComponent.getCurrentComponent(context), object);
+        }
+
         throw new UnsupportedOperationException(
-                getMessage("getRowKey(T object) must be implemented by %s when basic rowKey algorithm is not used [component=%s,view=%s]."));
+                getMessage("Provide a Converter via constructor or implement getRowKey(T object) in "
+                        + this.getClass().getName()
+                        + ", when basic rowKey algorithm is not used [component=%s,view=%s]."));
     }
 
-    private String getMessage(String format) {
+    protected String getMessage(String msg) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         String viewId = facesContext.getViewRoot().getViewId();
         UIComponent component = UIComponent.getCurrentComponent(facesContext);
         String clientId = component == null ? "<unknown>" : component.getClientId(facesContext);
-        return String.format(format, getClass().getName(), clientId, viewId);
+        return String.format(msg, clientId, viewId);
     }
 
     @Override
