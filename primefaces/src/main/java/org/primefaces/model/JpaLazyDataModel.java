@@ -243,10 +243,8 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> {
             return (V) FacesContext.getCurrentInstance().getELContext().convertToType(value, valueType);
         }
 
-        throw new RuntimeException("Can not convert " + value
-            + " to type "
-            + valueType
-            + " currently not supported; please overwrite Object convertToType(String value, Class<?> valueType)!");
+        throw new RuntimeException("Can not convert " + value + " to type " + valueType
+            + "; please create a JSF Converter for it or overwrite Object convertToType(String value, Class<?> valueType)!");
     }
 
 }
