@@ -7,19 +7,19 @@
  * element (`TR`) itself.
  *
  * @typedef {"ASCENDING" | "DESCENDING" | "UNSORTED"} PrimeFaces.widget.DataTable.SortOrder The available sort order
- * types for the data table.
+ * types for the DataTable.
  *
  * @typedef {"single" | "multiple"} PrimeFaces.widget.DataTable.CmSelectionMode Indicates whether multiple rows or only
- * a single row of a data table can be selected.
+ * a single row of a DataTable can be selected.
  *
  * @typedef {"radio" | "checkbox"} PrimeFaces.widget.DataTable.SelectionMode Indicates whether rows are selected via
  * radio buttons or via checkboxes.
  *
- * @typedef {"single" | "multiple"} PrimeFaces.widget.DataTable.SortMode Indicates whether a data table can be sorted
+ * @typedef {"single" | "multiple"} PrimeFaces.widget.DataTable.SortMode Indicates whether a DataTable can be sorted
  * by multiple columns or only by a single column.
  *
  * @typedef {"single" | "multiple"} PrimeFaces.widget.DataTable.RowExpandMode Indicates whether multiple columns of a
- * data table can be expanded at the same time, or whether other expaned rows should be collapsed when a new row is
+ * DataTable can be expanded at the same time, or whether other expaned rows should be collapsed when a new row is
  * expanded.
  *
  * @typedef {"eager" | "lazy"} PrimeFaces.widget.DataTable.RowEditMode Indicates whether row editors are loaded eagerly
@@ -30,7 +30,7 @@
  *
  * @typedef {"expand" | "fit"} PrimeFaces.widget.DataTable.ResizeMode Indicates the resize behavior of columns.
  *
- * @typedef {"new" | "add" | "checkbox"} PrimeFaces.widget.DataTable.RowSelectMode Indicates how rows of a data table
+ * @typedef {"new" | "add" | "checkbox"} PrimeFaces.widget.DataTable.RowSelectMode Indicates how rows of a DataTable
  * may be selected. `new` always unselects other rows, `add` preserves the currently selected rows, and `checkbox` adds
  * a checkbox next to each row.
  *
@@ -38,18 +38,18 @@
  * current contents of the row or `cancel` the row edit and discard all changes.
  *
  * @typedef PrimeFaces.widget.DataTable.OnRowClickCallback Callback that is invoked when the user clicks on a row of the
- * data table.
+ * DataTable.
  * @param {JQuery.TriggeredEvent} PrimeFaces.widget.DataTable.OnRowClickCallback.event The click event that occurred.
  * @param {JQuery} PrimeFaces.widget.DataTable.OnRowClickCallback.row The TR row that was clicked.
  *
  * @interface {PrimeFaces.widget.DataTable.RowMeta} RowMeta Describes the meta information of row, such as its index and
  * its row key.
  * @prop {string | undefined} RowMeta.key The unique key of the row. `undefined` when no key was defined for the rows.
- * @prop {number} RowMeta.index The 0-based index of the row in the data table.
+ * @prop {number} RowMeta.index The 0-based index of the row in the DataTable.
  *
  *
- * @interface {PrimeFaces.widget.DataTable.SortMeta} SortMeta Describes a sorting operation of the data table. The
- * items of the data table may be sorted by multiple column, in which case the sorting operation is describes by a list
+ * @interface {PrimeFaces.widget.DataTable.SortMeta} SortMeta Describes a sorting operation of the DataTable. The
+ * items of the DataTable may be sorted by multiple column, in which case the sorting operation is describes by a list
  * of these objects.
  * @prop {string} SortMeta.col ID of the column to sort by.
  * @prop {-1 | 1} SortMeta.order Whether to sort the items by the column value in an ascending or descending order.
@@ -67,7 +67,7 @@
  * @prop {JQuery} clone Clone of the table header.
  * @prop {boolean} columnWidthsFixed Whether column widths are fixed or may be resized.
  * @prop {boolean} contextMenuClick Whether the context menu was clicked.
- * @prop {PrimeFaces.widget.ContextMenu} contextMenuWidget Widget with the context menu for the data table.
+ * @prop {PrimeFaces.widget.ContextMenu} contextMenuWidget Widget with the context menu for the DataTable.
  * @prop {JQuery} currentCell Current cell to be edited.
  * @prop {number | null} cursorIndex 0-based index of row where the the cursor is located.
  * @prop {string} descMessage Localized message for sorting a column in descending order.
@@ -82,7 +82,7 @@
  * @prop {JQuery} groupResizers The DOM elements for the resizer button of each group.
  * @prop {boolean} hasColumnGroup Whether the table has any column groups.
  * @prop {JQuery} headerTable The DOM elements for the header table.
- * @prop {JQuery} headers DOM elements for the `TH` headers of this data table.
+ * @prop {JQuery} headers DOM elements for the `TH` headers of this DataTable.
  * @prop {boolean} incellClick Whether a click occurred inside a table cell.
  * @prop {boolean} isRTL Whether the writing direction is set to right-to-left.
  * @prop {boolean} isRowTogglerClicked Whether a row toggler was clicked.
@@ -120,9 +120,9 @@
  * Key is the column key.
  * @prop {JQuery} sortableColumns DOM elements for the columns that are sortable.
  * @prop {JQuery} stickyContainer The DOM element for the sticky container of the table.
- * @prop {JQuery} tbody DOM element of the `TBODY` element of this data table, if it exists.
- * @prop {JQuery} tfoot DOM element of the `TFOOT` element of this data table, if it exists.
- * @prop {JQuery} thead DOM element of the `THEAD` element of this data table, if it exists.
+ * @prop {JQuery} tbody DOM element of the `TBODY` element of this DataTable, if it exists.
+ * @prop {JQuery} tfoot DOM element of the `TFOOT` element of this DataTable, if it exists.
+ * @prop {JQuery} thead DOM element of the `THEAD` element of this DataTable, if it exists.
  * @prop {JQuery} theadClone The DOM element for the cloned table head.
  * @prop {boolean} virtualScrollActive Whether virtual scrolling is currently active.
  *
@@ -136,7 +136,7 @@
  * @prop {string} cfg.cellEditMode Defines the cell edit behavior.
  * @prop {string} cfg.cellSeparator Separator text to use in output mode of editable cells with multiple components.
  * @prop {boolean} cfg.clientCache Caches the next page asynchronously.
- * @prop {boolean} cfg.disableContextMenuIfEmpty `true` to disable the context menu when the data table has got on
+ * @prop {boolean} cfg.disableContextMenuIfEmpty `true` to disable the context menu when the DataTable has got on
  * data row, or `false` otherwise.
  * @prop {boolean} cfg.disabledTextSelection Disables text selection on row click.
  * @prop {boolean} cfg.draggableColumns Columns can be reordered with drag & drop when enabled.
@@ -158,7 +158,7 @@
  * @prop {boolean} cfg.multiViewState Whether multiple resize mode is enabled.
  * @prop {boolean} cfg.nativeElements `true` to use native radio button and checkbox elements, or `false` otherwise.
  * @prop {PrimeFaces.widget.DataTable.OnRowClickCallback} cfg.onRowClick Callback that is invoked when the user clicked on
- * a row of the data table.
+ * a row of the DataTable.
  * @prop {boolean} cfg.reflow Reflow mode is a responsive mode to display columns as stacked depending on screen size.
  * @prop {boolean} cfg.resizableColumns Enables column resizing.
  * @prop {PrimeFaces.widget.DataTable.ResizeMode} cfg.resizeMode Defines the resize behavior.
@@ -168,7 +168,7 @@
  * @prop {boolean} cfg.rowHover Adds hover effect to rows. Hover is always on when selection is enabled.
  * @prop {PrimeFaces.widget.DataTable.RowSelectMode} cfg.rowSelectMode Defines row selection mode for multiple
  * selection.
- * @prop {string} cfg.rowSelector CSS selector find finding the rows of this data table.
+ * @prop {string} cfg.rowSelector CSS selector find finding the rows of this DataTable.
  * @prop {boolean} cfg.saveOnCellBlur Saves the changes in cell editing on blur, when set to false changes are
  * discarded.
  * @prop {string} cfg.scrollHeight Scroll viewport height.
@@ -180,13 +180,13 @@
  * @prop {boolean} cfg.selectionPageOnly When using a paginator and selection mode is `checkbox`, the select all
  * checkbox in the header will select all rows on the current page if `true`, or all rows on all pages if `false`.
  * Default is `true`.
- * @prop {boolean} cfg.sorting `true` if sorting is enabled on the data table, `false` otherwise.
+ * @prop {boolean} cfg.sorting `true` if sorting is enabled on the DataTable, `false` otherwise.
  * @prop {string[]} cfg.sortMetaOrder IDs of the columns by which to order. Order by the first column, then by the
  * second, etc.
  * @prop {boolean} cfg.stickyHeader Sticky header stays in window viewport during scrolling.
  * @prop {string} cfg.stickyTopAt Selector to position on the page according to other fixing elements on the top of the
  * table.
- * @prop {string} cfg.tabindex The value of the `tabindex` attribute for this data table.
+ * @prop {string} cfg.tabindex The value of the `tabindex` attribute for this DataTable.
  * @prop {boolean} cfg.virtualScroll Loads data on demand as the scrollbar gets close to the bottom.
  *
  * @interface {PrimeFaces.widget.DataTable.WidthInfo} WidthInfo Describes the width information of a DOM element.
@@ -315,7 +315,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Retrieves the table header of this data table.
+     * Retrieves the table header of this DataTable.
      * @return {JQuery} DOM element of the table header.
      */
     getThead: function() {
@@ -323,7 +323,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Retrieves the table body of this data table.
+     * Retrieves the table body of this DataTable.
      * @return {JQuery} DOM element of the table body.
      */
     getTbody: function() {
@@ -331,7 +331,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Retrieves the table footer of this data table.
+     * Retrieves the table footer of this DataTable.
      * @return {JQuery} DOM element of the table footer.
      */
     getTfoot: function() {
@@ -339,7 +339,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Sets the given HTML string as the content of the body of this data table. Afterwards, sets up all required event
+     * Sets the given HTML string as the content of the body of this DataTable. Afterwards, sets up all required event
      * listeners etc.
      * @protected
      * @param {string} data HTML string to set on the body.
@@ -613,11 +613,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Called in response to a click. Checks whether this data table should now be sorted. Returns `false` when there
+     * Called in response to a click. Checks whether this DataTable should now be sorted. Returns `false` when there
      * are no items to be sorted, or when no sorting button was clicked.
      * @private
      * @param {JQuery.TriggeredEvent} event (Click) event that occurred.
-     * @param {JQuery} column Column Column of this data table on which the event occurred.
+     * @param {JQuery} column Column Column of this DataTable on which the event occurred.
      * @return {boolean} `true` to perform a sorting operation, `false` otherwise.
      */
     shouldSort: function(event, column) {
@@ -634,7 +634,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Adds the given sorting to the list of sortings. Each sorting describes a column by which to sort. This data table
+     * Adds the given sorting to the list of sortings. Each sorting describes a column by which to sort. This DataTable
      * may be sorted by multiple columns.
      * @param {PrimeFaces.widget.DataTable.SortMeta} meta Sorting to add.
      * @private
@@ -775,7 +775,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Sets up the data table and adds all event listeners required for hovering over rows.
+     * Sets up the DataTable and adds all event listeners required for hovering over rows.
      * @private
      */
     setupRowHover: function() {
@@ -786,7 +786,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Sets up the data table and adds all event listener required for selecting rows.
+     * Sets up the DataTable and adds all event listener required for selecting rows.
      * @private
      */
     setupSelection: function() {
@@ -830,7 +830,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Sets up all event listeners for event triggered on a row of this data table.
+     * Sets up all event listeners for event triggered on a row of this DataTable.
      * @private
      */
      bindRowEvents: function() {
@@ -965,7 +965,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Sets up the event listeners for hovering over a data table row.
+     * Sets up the event listeners for hovering over a DataTable row.
      * @protected
      * @param {string} rowSelector Selector for the row elements. Any hover event that does not reach an element that
      * matches this selector will be ignored.
@@ -1006,7 +1006,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Sets up the event listeners for radio buttons contained in this data table.
+     * Sets up the event listeners for radio buttons contained in this DataTable.
      * @protected
      */
     bindRadioEvents: function() {
@@ -1072,7 +1072,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Sets up the event listeners for radio buttons contained in this data table.
+     * Sets up the event listeners for radio buttons contained in this DataTable.
      * @protected
      */
     bindCheckboxEvents: function() {
@@ -1342,7 +1342,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Prepares this data table for the current scrolling settings and sets up all related event handlers.
+     * Prepares this DataTable for the current scrolling settings and sets up all related event handlers.
      * @protected
      */
     setupScrolling: function() {
@@ -1514,7 +1514,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Creates and stores a cloned copy of the table head(er) of this data table, and sets up some event handers.
+     * Creates and stores a cloned copy of the table head(er) of this DataTable, and sets up some event handers.
      * @protected
      */
     cloneHead: function() {
@@ -1560,7 +1560,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Adjusts the height of the body of this data table for the current scrolling settings.
+     * Adjusts the height of the body of this DataTable for the current scrolling settings.
      * @protected
      */
     adjustScrollHeight: function() {
@@ -1582,7 +1582,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Adjusts the width of the header, body, and footer of this data table to fit the current settings.
+     * Adjusts the width of the header, body, and footer of this DataTable to fit the current settings.
      * @protected
      */
     adjustScrollWidth: function() {
@@ -1591,9 +1591,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Applies the given width to this data table.
+     * Applies the given width to this DataTable.
      * @private
-     * @param {JQuery} element Element of the data table.
+     * @param {JQuery} element Element of the DataTable.
      * @param {number} width New width in pixels to set.
      */
     setOuterWidth: function(element, width) {
@@ -1654,7 +1654,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Applies the given scroll width to this data table.
+     * Applies the given scroll width to this DataTable.
      * @protected
      * @param {number} width Scroll width in pixels to set.
      */
@@ -1680,9 +1680,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Finds the width of the current scrollbar used for this data table.
+     * Finds the width of the current scrollbar used for this DataTable.
      * @private
-     * @return {number} The width in pixels of the scrollbar of this data table.
+     * @return {number} The width in pixels of the scrollbar of this DataTable.
      */
     getScrollbarWidth: function() {
         if(!this.scrollbarWidth) {
@@ -1693,7 +1693,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Checks whether the body of this data table overflow vertically.
+     * Checks whether the body of this DataTable overflow vertically.
      * @protected
      * @return {boolean} `true` if any content overflow vertically, `false` otherwise.
      */
@@ -2057,7 +2057,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Performs a sorting operation on the rows of this data table via AJAX
+     * Performs a sorting operation on the rows of this DataTable via AJAX
      * @param {JQuery} columnHeader Header of the column by which to sort.
      * @param {-1 | 0 | 1} order Whether to "unsort" or to sort by the column value in an ascending or descending order.
      * @param {boolean} multi `true` if sorting by multiple columns is enabled, or `false` otherwise.
@@ -2249,7 +2249,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Filters this data table. Uses the current values of the filter inputs. This will result in an AJAX request being
+     * Filters this DataTable. Uses the current values of the filter inputs. This will result in an AJAX request being
      * sent.
      */
     filter: function() {
@@ -2461,7 +2461,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Converts a row specifier to the row element. The row specifier is either a row index or the row element itself.
      *
-     * __In case this data table has got expandable rows, please not that a new table row is created for each expanded row.__
+     * __In case this DataTable has got expandable rows, please not that a new table row is created for each expanded row.__
      * This may result in the given index not pointing to the intended row.
      * @param {PrimeFaces.widget.DataTable.RowSpecifier} r The row to convert.
      * @return {JQuery} The row, or an empty JQuery instance of no row was found.
@@ -2479,7 +2479,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Select the rows between the cursor and the given row.
      * @private
-     * @param {JQuery} row A row of this data table.
+     * @param {JQuery} row A row of this DataTable.
      */
     selectRowsInRange: function(row) {
         var rows = this.tbody.children(),
@@ -2510,7 +2510,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Selects the given row, according to the current selection mode.
-     * @param {PrimeFaces.widget.DataTable.RowSpecifier} r A row of this data table to select.
+     * @param {PrimeFaces.widget.DataTable.RowSpecifier} r A row of this DataTable to select.
      * @param {boolean} [silent] `true` to prevent behaviors and event listeners from being invoked, or `false`
      * otherwise.
      */
@@ -2556,7 +2556,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Unselects the given row.
-     * @param {PrimeFaces.widget.DataTable.RowSpecifier} r A row of this data table to unselect.
+     * @param {PrimeFaces.widget.DataTable.RowSpecifier} r A row of this DataTable to unselect.
      * @param {boolean} [silent] `true` to prevent behaviors and event listeners from being invoked, or `false`
      * otherwise.
      */
@@ -2747,7 +2747,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Unselects all rows of this data table so that no rows are selected. This includes all rows on all pages,
+     * Unselects all rows of this DataTable so that no rows are selected. This includes all rows on all pages,
      * irrespective of whether they are on the currently shown page.
      */
     unselectAllRows: function() {
@@ -2808,7 +2808,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
      /**
-     * Selects all rows of this data table so that no rows are selected. This includes all rows on all pages,
+     * Selects all rows of this DataTable so that no rows are selected. This includes all rows on all pages,
      * irrespective of whether they are on the currently shown page.
      */
     selectAllRows: function() {
@@ -2818,7 +2818,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Toggles the `selected all` checkbox in the header of this data table. When no rows are selected, this will select
+     * Toggles the `selected all` checkbox in the header of this DataTable. When no rows are selected, this will select
      * all rows. When some rows are selected, this will unselect all rows.
      */
     toggleCheckAll: function() {
@@ -3061,7 +3061,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Calls the behaviors and event listeners when a row is collapsed.
      * @private
-     * @param {JQuery} row A row of this data table.
+     * @param {JQuery} row A row of this DataTable.
      */
     fireRowCollapseEvent: function(row) {
         var rowMeta = this.getRowMeta(row);
@@ -3247,7 +3247,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Switch all editable columns of the given row to their editing mode, if editing is enabled on this data table.
+     * Switch all editable columns of the given row to their editing mode, if editing is enabled on this DataTable.
      * Use `findRow` to get a row by its index.
      * @param {JQuery} row A row (`TR`) to switch to edit mode.
      */
@@ -3321,7 +3321,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Initializes the given cell so that its content can be edited (when row editing is enabled)
      * @private
-     * @param {JQuery} cell A cell of this data table to set up.
+     * @param {JQuery} cell A cell of this DataTable to set up.
      */
     cellEditInit: function(cell) {
         var cellInfo = this.getCellMeta(cell),
@@ -3362,7 +3362,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * When cell editing is enabled, shows the cell editor for the given cell that lets the user edit the cell content.
-     * @param {JQuery} c A cell (`TD`) of this data table to edit.
+     * @param {JQuery} c A cell (`TD`) of this DataTable to edit.
      */
     showCellEditor: function(c) {
         this.incellClick = true;
@@ -3404,7 +3404,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Shows the cell editors for the given cell.
      * @private
-     * @param {JQuery} cell A cell of this data table.
+     * @param {JQuery} cell A cell of this DataTable.
      */
     showCurrentCell: function(cell) {
         var $this = this;
@@ -3585,7 +3585,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Switches the given cell to its view mode (not editable).
      * @private
-     * @param {JQuery} cell A cell of this data table.
+     * @param {JQuery} cell A cell of this DataTable.
      */
     viewMode: function(cell) {
         var cellEditor = cell.children('div.ui-cell-editor'),
@@ -3819,7 +3819,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * Performs the required initialization for making a row editable. Only called on-demand when the row actually needs
      * to be edited.
      * @private
-     * @param {JQuery} row A row of this data table.
+     * @param {JQuery} row A row of this DataTable.
      */
     lazyRowEditInit: function(row) {
         var rowIndex = this.getRowMeta(row).index,
@@ -3932,7 +3932,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Checks whether the user may select the rows of this data table.
+     * Checks whether the user may select the rows of this DataTable.
      * @return {boolean} `true` is rows may be selected, or `false` otherwise.
      */
     isSelectionEnabled: function() {
@@ -3940,7 +3940,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Checks whether the rows of this data table are selected via checkboxes.
+     * Checks whether the rows of this DataTable are selected via checkboxes.
      * @return {boolean} `true` if selection mode is set to `checkbox`, or `false` otherwise.
      */
     isCheckboxSelectionEnabled: function() {
@@ -3948,7 +3948,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Checks whether the rows of this data table are selected via radio buttons.
+     * Checks whether the rows of this DataTable are selected via radio buttons.
      * @return {boolean} `true` if selection mode is set to `radio`, or `false` otherwise.
      */
     isRadioSelectionEnabled: function() {
@@ -4073,9 +4073,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Checks whether this data table has got any column groups.
+     * Checks whether this DataTable has got any column groups.
      * @protected
-     * @return {boolean} `true` if this data table has got any column groups, or `false` otherwise.
+     * @return {boolean} `true` if this DataTable has got any column groups, or `false` otherwise.
      */
     hasColGroup: function() {
         return this.thead.children('tr').length > 1;
@@ -4132,7 +4132,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Adds the resizers for change the width of a column of this data table.
+     * Adds the resizers for change the width of a column of this DataTable.
      * @protected
      */
     addResizers: function() {
@@ -4149,7 +4149,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Resizes this data table, row, or columns in response to a drag event of a resizer element.
+     * Resizes this DataTable, row, or columns in response to a drag event of a resizer element.
      * @protected
      * @param {JQuery.TriggeredEvent} event Event triggered for the drag.
      * @param {JQueryUI.DraggableEventUIParams} ui Data for the drag event.
@@ -4299,7 +4299,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Checks whether the given row is currently selected.
-     * @param {string} rowKey The key of a row from this data table.
+     * @param {string} rowKey The key of a row from this DataTable.
      * @return {boolean} `true` if the given row is currently selected, or `false` otherwise.
      */
     isSelected: function(rowKey) {
@@ -4308,7 +4308,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Finds the index and the row key for the given row.
-     * @param {JQuery} row The element (`TR`) of a row of this data table.
+     * @param {JQuery} row The element (`TR`) of a row of this DataTable.
      * @return {PrimeFaces.widget.DataTable.RowMeta} The meta for the row with the index and the row key.
      */
     getRowMeta: function(row) {
@@ -4512,7 +4512,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Makes the rows of this data table draggable via JQueryUI.
+     * Makes the rows of this DataTable draggable via JQueryUI.
      * @private
      */
     makeRowsDraggable: function() {
@@ -4620,9 +4620,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Checks whether this data table has got any rows. When there are no rows, usually the message `no items found` is
+     * Checks whether this DataTable has got any rows. When there are no rows, usually the message `no items found` is
      * shown.
-     * @return {boolean} `true` if this data table has got no rows, `false` otherwise.
+     * @return {boolean} `true` if this DataTable has got no rows, `false` otherwise.
      */
     isEmpty: function() {
         return this.tbody.children('tr.ui-datatable-empty-message').length === 1;
@@ -4637,7 +4637,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Updates the `check all` checkbox in the header of this data table.
+     * Updates the `check all` checkbox in the header of this DataTable.
      * @private
      */
     updateHeaderCheckbox: function() {
@@ -4680,7 +4680,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Checks the `select all` checkbox in the header of this data table.
+     * Checks the `select all` checkbox in the header of this DataTable.
      * @private
      */
     checkHeaderCheckbox: function() {
@@ -4694,7 +4694,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Unchecks the `select all` checkbox in the header of this data table.
+     * Unchecks the `select all` checkbox in the header of this DataTable.
      * @private
      */
     uncheckHeaderCheckbox: function() {
@@ -4708,7 +4708,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Disables the `select all` checkbox in the header of this data table.
+     * Disables the `select all` checkbox in the header of this DataTable.
      * @private
      */
     disableHeaderCheckbox: function() {
@@ -4719,7 +4719,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Enables the `select all` checkbox in the header of this data table.
+     * Enables the `select all` checkbox in the header of this DataTable.
      * @private
      */
     enableHeaderCheckbox: function() {
@@ -4852,9 +4852,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Finds the body of this data table with the property that the user can focus it.
+     * Finds the body of this DataTable with the property that the user can focus it.
      * @protected
-     * @return {JQuery} The body of this data table.
+     * @return {JQuery} The body of this DataTable.
      */
     getFocusableTbody: function() {
         return this.tbody;
@@ -5132,12 +5132,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Computes and saves the resizable state of this data table, ie. which columns have got which width. May be used
+     * Computes and saves the resizable state of this DataTable, ie. which columns have got which width. May be used
      * later to restore the current column width after an AJAX update.
      * @private
-     * @param {JQuery} columnHeader Element of a column header of this data table.
+     * @param {JQuery} columnHeader Element of a column header of this DataTable.
      * @param {JQuery} nextColumnHeader Element of the column header next to the given column header.
-     * @param {JQuery} table The element for this data table.
+     * @param {JQuery} table The element for this DataTable.
      * @param {number} newWidth New width to be applied.
      * @param {number | null} nextColumnWidth Width of the column next to the given column header.
      */
