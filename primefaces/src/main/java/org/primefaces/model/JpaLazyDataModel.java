@@ -122,12 +122,8 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         Root<T> root = cq.from(entityClass);
         cq = cq.select(root);
 
-        if (filterBy != null && !filterBy.isEmpty()) {
-            applyFilters(cb, cq, root, filterBy);
-        }
-        if (sortBy != null && !sortBy.isEmpty()) {
-            applySort(cb, cq, root, sortBy);
-        }
+        applyFilters(cb, cq, root, filterBy);
+        applySort(cb, cq, root, sortBy);
 
         TypedQuery<T> query = entityManager.createQuery(cq);
         query.setFirstResult(first);
@@ -149,16 +145,18 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
         applyGlobalFilters(cb, cq, root, predicates);
 
-        for (FilterMeta filter : filterBy.values()) {
-            if (filter.getField() == null || filter.getFilterValue() == null) {
-                continue;
-            }
+        if (filterBy != null) {
+            for (FilterMeta filter : filterBy.values()) {
+                if (filter.getField() == null || filter.getFilterValue() == null) {
+                    continue;
+                }
 
-            String filterValue = filter.getFilterValue().toString();
-            Field filterField = LangUtils.getField(entityClass, filter.getField());
-            Object convertedFilterValue = convertToType(filterValue, filterField.getType());
-            Predicate predicate = createPredicate(filter, filterField, root, cb, (Comparable) convertedFilterValue);
-            predicates.add(predicate);
+                String filterValue = filter.getFilterValue().toString();
+                Field filterField = LangUtils.getField(entityClass, filter.getField());
+                Object convertedFilterValue = convertToType(filterValue, filterField.getType());
+                Predicate predicate = createPredicate(filter, filterField, root, cb, (Comparable) convertedFilterValue);
+                predicates.add(predicate);
+            }
         }
 
         if (predicates.size() > 0) {
@@ -210,13 +208,15 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                              Root<T> root,
                              Map<String, SortMeta> sortBy) {
 
-        for (SortMeta sort : sortBy.values()) {
-            if (sort.getField() == null || sort.getOrder() == SortOrder.UNSORTED) {
-                continue;
-            }
+        if (sortBy != null) {
+            for (SortMeta sort : sortBy.values()) {
+                if (sort.getField() == null || sort.getOrder() == SortOrder.UNSORTED) {
+                    continue;
+                }
 
-            Expression<?> field = root.get(sort.getField());
-            cq.orderBy(sort.getOrder() == SortOrder.ASCENDING ? cb.asc(field) : cb.desc(field));
+                Expression<?> field = root.get(sort.getField());
+                cq.orderBy(sort.getOrder() == SortOrder.ASCENDING ? cb.asc(field) : cb.desc(field));
+            }
         }
     }
 
