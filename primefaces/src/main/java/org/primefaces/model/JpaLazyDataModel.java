@@ -146,6 +146,9 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                                 Map<String, FilterMeta> filterBy) {
 
         List<Predicate> predicates = new ArrayList<>();
+
+        applyGlobalFilters(cb, cq, root, predicates);
+
         for (FilterMeta filter : filterBy.values()) {
             if (filter.getField() == null || filter.getFilterValue() == null) {
                 continue;
@@ -162,6 +165,10 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             cq.where(
                 cb.and(predicates.toArray(new Predicate[predicates.size()])));
         }
+    }
+
+    protected void applyGlobalFilters(CriteriaBuilder cb, CriteriaQuery<T> cq, Root<T> root, List<Predicate> predicates) {
+
     }
 
     protected <F extends Comparable> Predicate createPredicate(FilterMeta filter, Field filterField, Root<T> root, CriteriaBuilder cb, F filterValue) {
@@ -208,7 +215,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                 continue;
             }
 
-            Expression<String> field = root.get(sort.getField()).as(String.class);
+            Expression<?> field = root.get(sort.getField());
             cq.orderBy(sort.getOrder() == SortOrder.ASCENDING ? cb.asc(field) : cb.desc(field));
         }
     }
