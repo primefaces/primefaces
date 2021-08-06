@@ -49,10 +49,15 @@ import org.primefaces.util.Lazy;
 
 public class JpaLazyDataModel<T> extends LazyDataModel<T> {
 
-    private final Class<T> entityClass;
-    private final Supplier<EntityManager> entityManager;
+    private Class<T> entityClass;
+    private Supplier<EntityManager> entityManager;
     private Lazy<Field> rowKeyField;
     private Lazy<Method> rowKeyGetter;
+
+    // for serialization only
+    public JpaLazyDataModel() {
+
+    }
 
     public JpaLazyDataModel(Class<T> entityClass, Supplier<EntityManager> entityManager) {
         this.entityClass = entityClass;
