@@ -35,6 +35,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -47,23 +48,43 @@ import javax.faces.convert.Converter;
 import org.primefaces.util.BeanUtils;
 import org.primefaces.util.Lazy;
 
-public class JpaLazyDataModel<T> extends LazyDataModel<T> {
+/**
+ * Basic {@link LazyDataModel} implementation with JPA and Criteria API.
+ *
+ * @param <T> The model class.
+ */
+public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializable {
 
     private Class<T> entityClass;
     private Supplier<EntityManager> entityManager;
     private Lazy<Field> rowKeyField;
     private Lazy<Method> rowKeyGetter;
 
-    // for serialization only
+    /**
+     * For serialization only
+     */
     public JpaLazyDataModel() {
 
     }
 
+    /**
+     * Constructs a JpaLazyDataModel for usage without enabled selection.
+     *
+     * @param entityClass The entity class
+     * @param entityManager The {@link EntityManager}
+     */
     public JpaLazyDataModel(Class<T> entityClass, Supplier<EntityManager> entityManager) {
         this.entityClass = entityClass;
         this.entityManager = entityManager;
     }
 
+    /**
+     * Constructs a JpaLazyDataModel with selection support.
+     *
+     * @param entityClass The entity class
+     * @param entityManager The {@link EntityManager}
+     * @param rowKeyField The name of the rowKey property (e.g. "id")
+     */
     public JpaLazyDataModel(Class<T> entityClass, Supplier<EntityManager> entityManager, String rowKeyField) {
         this(entityClass, entityManager);
         this.rowKeyField = new Lazy<>(() -> LangUtils.getField(entityClass, rowKeyField));
@@ -77,6 +98,13 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> {
         });
     }
 
+    /**
+     * Constructs a JpaLazyDataModel with selection support, with an already existing {@link Converter}.
+     *
+     * @param entityClass The entity class
+     * @param entityManager The {@link EntityManager}
+     * @param converter The converter, which will be used for converting the entity to a rowKey and vice versa
+     */
     public JpaLazyDataModel(Class<T> entityClass, Supplier<EntityManager> entityManager, Converter<T> converter) {
         super(converter);
         this.entityClass = entityClass;

@@ -34,6 +34,8 @@ import javax.faces.convert.Converter;
 
 /**
  * DataModel to deal with huge datasets with by lazy loading, page by page.
+ *
+ * @param <T> The model class.
  */
 public abstract class LazyDataModel<T> extends ListDataModel<T> implements SelectableDataModel<T>, Serializable {
 
@@ -45,6 +47,9 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
 
     private int pageSize;
 
+    /**
+     * For serialization only
+     */
     public LazyDataModel() {
 
     }
@@ -64,7 +69,7 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
      *
      * @param first the first entry
      * @param pageSize the page size
-     * @param sortBy a list with all sort information (only relevant for DataTable, not for eg DataView)
+     * @param sortBy a map with all sort information (only relevant for DataTable, not for eg DataView)
      * @param filterBy a map with all filter information (only relevant for DataTable, not for eg DataView)
      * @return the data
      */
