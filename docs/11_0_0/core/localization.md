@@ -134,6 +134,7 @@ Side Validation, messages property is used as the bundle for the locale.
          'calendar.BUTTON': 'Show Calendar',
          'datatable.sort.ASC': 'activate to sort column ascending',
          'datatable.sort.DESC': 'activate to sort column descending',
+         'datatable.sort.NONE': 'activate to remove sorting on column',
          'columntoggler.CLOSE': 'Close',
          'overlaypanel.CLOSE': 'Close'
      },
