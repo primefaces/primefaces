@@ -27,6 +27,7 @@ import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -506,5 +507,23 @@ public class LangUtils {
             }
         }
         return true;
+    }
+
+    public static Field getField(Class<?> clazz, String name) {
+        for (Class<?> currentClazz = clazz; currentClazz != null; currentClazz = currentClazz.getSuperclass()) {
+            try {
+                Field field = currentClazz.getDeclaredField(name);
+                field.setAccessible(true);
+                return field;
+            }
+            catch (NoSuchFieldException e) {
+                // Try parent
+            }
+            catch (Exception e) {
+                throw new IllegalArgumentException("Cannot access field " + name + " in " + clazz.getName(), e);
+            }
+        }
+
+        throw new IllegalArgumentException("Cannot find field " + name + " in " + clazz.getName());
     }
 }

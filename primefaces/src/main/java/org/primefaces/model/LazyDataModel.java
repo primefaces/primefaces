@@ -78,8 +78,7 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
         }
 
         throw new UnsupportedOperationException(
-                getMessage("Provide a Converter via constructor or implement getRowData(String rowKey) in "
-                        + this.getClass().getName()
+                getMessage("Provide a Converter via constructor or implement getRowData(String rowKey) in %s"
                         + ", when basic rowKey algorithm is not used [component=%s,view=%s]."));
     }
 
@@ -91,8 +90,7 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
         }
 
         throw new UnsupportedOperationException(
-                getMessage("Provide a Converter via constructor or implement getRowKey(T object) in "
-                        + this.getClass().getName()
+                getMessage("Provide a Converter via constructor or implement getRowKey(T object) in %s"
                         + ", when basic rowKey algorithm is not used [component=%s,view=%s]."));
     }
 
@@ -101,7 +99,7 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
         String viewId = facesContext.getViewRoot().getViewId();
         UIComponent component = UIComponent.getCurrentComponent(facesContext);
         String clientId = component == null ? "<unknown>" : component.getClientId(facesContext);
-        return String.format(msg, clientId, viewId);
+        return String.format(msg, getClass().getName(), clientId, viewId);
     }
 
     @Override
@@ -147,5 +145,13 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
 
     public void setRowCount(int rowCount) {
         this.rowCount = rowCount;
+    }
+
+    public Converter<T> getConverter() {
+        return converter;
+    }
+
+    public void setConverter(Converter<T> converter) {
+        this.converter = converter;
     }
 }
