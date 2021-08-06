@@ -137,7 +137,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> {
 
         switch (filter.getMatchMode()) {
             case STARTS_WITH:
-                return cb.like(fieldAsString.get(), filterValue.toString() + "%");
+                return cb.like(fieldAsString.get(), filterValue + "%");
             case ENDS_WITH:
                 return cb.like(fieldAsString.get(), "%" + filterValue);
             case CONTAINS:
@@ -155,11 +155,11 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> {
             case EQUALS:
                 return cb.equal(cb.lower(field), filterValue);
             case IN:
-                break;
+                throw new UnsupportedOperationException("MatchMode.IN currently not supported!");
             case RANGE:
-                break;
+                throw new UnsupportedOperationException("MatchMode.RANGE currently not supported!");
             case GLOBAL:
-                break;
+                throw new UnsupportedOperationException("MatchMode.GLOBAL currently not supported!");
         }
 
         return null;
