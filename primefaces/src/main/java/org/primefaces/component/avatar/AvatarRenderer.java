@@ -55,6 +55,9 @@ public class AvatarRenderer extends CoreRenderer {
                 .add("circle".equals(avatar.getShape()), Avatar.CIRCLE_CLASS)
                 .add("large".equals(avatar.getSize()), Avatar.SIZE_LARGE_CLASS)
                 .add("xlarge".equals(avatar.getSize()), Avatar.SIZE_XLARGE_CLASS)
+                .add(avatar.isDynamicColor(), Avatar.DYNAMIC_COLOR_CLASS)
+                .add(avatar.isDynamicColor(), avatar.getLightness() > 50
+                        ? Avatar.DYNAMIC_COLOR_LIGHT_CLASS : Avatar.DYNAMIC_COLOR_DARK_CLASS)
                 .build();
 
         writer.startElement("div", null);
@@ -63,7 +66,7 @@ public class AvatarRenderer extends CoreRenderer {
         String label = calculateLabel(context, avatar);
         String style = avatar.getStyle();
         if (avatar.isDynamicColor() && label != null) {
-            String colorCss = generateBackgroundColor(avatar.getLabel());
+            String colorCss = generateBackgroundColor(avatar);
             style = style == null ? colorCss : colorCss + style;
         }
 
@@ -86,11 +89,7 @@ public class AvatarRenderer extends CoreRenderer {
 
         if (LangUtils.isNotBlank(label)) {
             writer.startElement("span", null);
-            String textClass = getStyleClassBuilder(context)
-                        .add(Avatar.SIZE_TEXT_CLASS)
-                        .add(avatar.isDynamicColor(), Avatar.DYNAMIC_COLOR_CLASS)
-                        .build();
-            writer.writeAttribute("class", textClass, "styleClass");
+            writer.writeAttribute("class", Avatar.SIZE_TEXT_CLASS, "styleClass");
             writer.write(label);
             writer.endElement("span");
         }
@@ -145,11 +144,17 @@ public class AvatarRenderer extends CoreRenderer {
     /**
      * Generates a dynamic color based on the hash of the label.
      *
-     * @param label the label to generate the color for
+     * @param avatar to generate the color for
      * @return the new color and background color styles
      */
-    protected String generateBackgroundColor(String label) {
-        return "color:#fff;background-color: hsl(" + Math.abs((label.hashCode() % 40) * 9) + ", 100%, 50%);";
+    protected String generateBackgroundColor(Avatar avatar) {
+        return String.format(
+                "background-color:hsla(%d,%d%%,%d%%,%d%%)",
+                Math.abs((avatar.getLabel().hashCode() % 40) * 9),
+                avatar.getSaturation(),
+                avatar.getLightness(),
+                avatar.getAlpha()
+        );
     }
 
     /**
