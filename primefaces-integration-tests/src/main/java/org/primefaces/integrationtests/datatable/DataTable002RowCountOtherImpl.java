@@ -24,38 +24,21 @@
 package org.primefaces.integrationtests.datatable;
 
 import lombok.Data;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.integrationtests.general.utilities.TestUtils;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import java.io.Serializable;
-import java.util.List;
 
 @Named
 @ViewScoped
 @Data
-public class DataTable002 implements Serializable {
+public class DataTable002RowCountOtherImpl extends DataTable002 {
 
-    private static final long serialVersionUID = -7518459955779385834L;
-
-    protected ProgrammingLanguageLazyDataModel lazyDataModel;
-    private List<ProgrammingLanguage> filteredProgLanguages;
-
-    private ProgrammingLanguage selectedProgrammingLanguage;
+    private static final long serialVersionUID = 4266502895860698885L;
 
     @PostConstruct
     public void init() {
-        lazyDataModel = new ProgrammingLanguageLazyDataModel();
+        lazyDataModel = new ProgrammingLanguageLazyDataModelRowCountOtherImpl();
     }
 
-    public void onRowSelect(SelectEvent<ProgrammingLanguage> event) {
-        TestUtils.addMessage("ProgrammingLanguage Selected", event.getObject().getId() + " - " + event.getObject().getName());
-    }
-
-    public void delete(ProgrammingLanguage language) {
-        lazyDataModel.delete(language);
-        TestUtils.addMessage("ProgrammingLanguage Deleted", language.getId() + " - " + language.getName());
-    }
 }

@@ -37,6 +37,7 @@ import java.util.stream.Stream;
 public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingLanguage> {
 
     private static final long serialVersionUID = -3415081263308946252L;
+
     private final List<ProgrammingLanguage> langs;
 
     public ProgrammingLanguageLazyDataModel() {
@@ -48,6 +49,15 @@ public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingL
 
     @Override
     public List<ProgrammingLanguage> load(int first, int pageSize, Map<String, SortMeta> sortMeta, Map<String, FilterMeta> filterMeta) {
+        List<ProgrammingLanguage> langsFiltered = sortAndFilterInternal(sortMeta, filterMeta);
+        setRowCount(langsFiltered.size());
+
+        return langsFiltered.stream()
+                    .skip(first).limit(pageSize)
+                    .collect(Collectors.toList());
+    }
+
+    protected List<ProgrammingLanguage> sortAndFilterInternal(Map<String, SortMeta> sortMeta, Map<String, FilterMeta> filterMeta) {
         Stream<ProgrammingLanguage> langsStream = langs.stream();
 
         if (filterMeta != null && !filterMeta.isEmpty()) {
@@ -73,12 +83,7 @@ public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingL
             }
         }
 
-        List<ProgrammingLanguage> langsFiltered = langsStream.collect(Collectors.toList());
-        setRowCount(langsFiltered.size());
-
-        return langsFiltered.stream()
-                    .skip(first).limit(pageSize)
-                    .collect(Collectors.toList());
+        return langsStream.collect(Collectors.toList());
     }
 
     @Override
