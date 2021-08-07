@@ -24,6 +24,10 @@
     height: 100%;
 }
 
-.ui-avatar .ui-avatar-dynamic {
-    mix-blend-mode: difference;
+.ui-avatar.ui-avatar-dark {
+    color: #fff;
+}
+
+.ui-avatar.ui-avatar-light {
+    color: #000;
 }
