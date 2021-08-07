@@ -183,17 +183,32 @@ public class DataTable002Test extends AbstractDataTableTest {
         Assertions.assertNotNull(dataTable);
         dataTable.selectPage(dataTable.getPaginator().getPages().size());
 
-        // Act
+        // Act & Assert
         for (int row=5; row>1; row--) {
             Assertions.assertEquals(row, dataTable.getRows().size());
             PrimeSelenium.guardAjax(dataTable.getCell(0, 3).getWebElement().findElement(By.className("ui-button"))).click();
             Assertions.assertEquals(8, dataTable.getPaginator().getActivePage().getNumber());
         }
 
-        // Act - delete last row on page 8
+        // Act & Assert - delete last row on page 8
         PrimeSelenium.guardAjax(dataTable.getCell(0, 3).getWebElement().findElement(By.className("ui-button"))).click();
         Assertions.assertEquals(7, dataTable.getPaginator().getActivePage().getNumber());
         Assertions.assertEquals(10, dataTable.getRows().size());
+
+        // Act & Assert - select first row on page 7
+        PrimeSelenium.guardAjax(dataTable.getCell(0, 0).getWebElement()).click();
+        Assertions.assertEquals(1, page.messages.getAllMessages().size());
+        Assertions.assertEquals("ProgrammingLanguage Selected", page.messages.getMessage(0).getSummary());
+        String row0ProgLang = dataTable.getRow(0).getCell(0).getText() + " - " + dataTable.getCell(0, 1).getText();
+        Assertions.assertEquals(row0ProgLang, page.messages.getMessage(0).getDetail());
+
+        // Act & Assert - delete first row on page 7
+        PrimeSelenium.guardAjax(dataTable.getCell(0, 3).getWebElement().findElement(By.className("ui-button"))).click();
+        Assertions.assertEquals(1, page.messages.getAllMessages().size());
+        Assertions.assertEquals("ProgrammingLanguage Deleted", page.messages.getMessage(0).getSummary());
+        Assertions.assertEquals(row0ProgLang, page.messages.getMessage(0).getDetail());
+        Assertions.assertEquals(7, dataTable.getPaginator().getActivePage().getNumber());
+        Assertions.assertEquals(9, dataTable.getRows().size());
 
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
