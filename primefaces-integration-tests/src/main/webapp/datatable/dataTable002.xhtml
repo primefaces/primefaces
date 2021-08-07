@@ -26,6 +26,10 @@
                 <p:column field="name" filterMatchMode="contains"/>
 
                 <p:column field="firstAppeared" filterMatchMode="gte"/>
+
+                <p:column>
+                    <p:commandButton value="Delete" action="#{dataTable002.delete(lang)}" update="datatable" />
+                </p:column>
             </p:dataTable>
 
             <p:commandButton id="button" value="Submit" update="@form"/>

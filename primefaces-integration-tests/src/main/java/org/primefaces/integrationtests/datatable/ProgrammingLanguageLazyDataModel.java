@@ -23,16 +23,16 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.MatchMode;
+import org.primefaces.model.SortMeta;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import org.primefaces.model.FilterMeta;
-import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.MatchMode;
-import org.primefaces.model.SortMeta;
 
 public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingLanguage> {
 
@@ -96,5 +96,9 @@ public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingL
 
     public List<ProgrammingLanguage> getLangs() {
         return langs;
+    }
+
+    public void delete(ProgrammingLanguage language) {
+        langs.remove(language);
     }
 }

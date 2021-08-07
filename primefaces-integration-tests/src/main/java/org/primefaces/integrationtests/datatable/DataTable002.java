@@ -25,10 +25,9 @@ package org.primefaces.integrationtests.datatable;
 
 import lombok.Data;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.integrationtests.general.utilities.TestUtils;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -52,7 +51,11 @@ public class DataTable002 implements Serializable {
     }
 
     public void onRowSelect(SelectEvent<ProgrammingLanguage> event) {
-        FacesMessage msg = new FacesMessage("ProgrammingLanguage Selected", event.getObject().getId() + " - " + event.getObject().getName());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+        TestUtils.addMessage("ProgrammingLanguage Selected", event.getObject().getId() + " - " + event.getObject().getName());
+    }
+
+    public void delete(ProgrammingLanguage language) {
+        lazyDataModel.delete(language);
+        TestUtils.addMessage("ProgrammingLanguage Deleted", language.getId() + " - " + language.getName());
     }
 }

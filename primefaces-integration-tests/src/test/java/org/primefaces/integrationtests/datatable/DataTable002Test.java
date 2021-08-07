@@ -23,21 +23,22 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.model.datatable.Row;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class DataTable002Test extends AbstractDataTableTest {
 
@@ -169,6 +170,30 @@ public class DataTable002Test extends AbstractDataTableTest {
         Assertions.assertEquals("ProgrammingLanguage Selected", page.messages.getMessage(0).getSummary());
         String row3ProgLang = dataTable.getRow(3).getCell(0).getText() + " - " + dataTable.getCell(3, 1).getText();
         Assertions.assertEquals(row3ProgLang, page.messages.getMessage(0).getDetail());
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(5)
+    @DisplayName("DataTable: Lazy: delete rows from last page - https://github.com/primefaces/primefaces/issues/1921")
+    public void testLazyRowDeleteFromLastPage(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        Assertions.assertNotNull(dataTable);
+        dataTable.selectPage(dataTable.getPaginator().getPages().size());
+
+        // Act
+        for (int row=5; row>1; row--) {
+            Assertions.assertEquals(row, dataTable.getRows().size());
+            PrimeSelenium.guardAjax(dataTable.getCell(0, 3).getWebElement().findElement(By.className("ui-button"))).click();
+            Assertions.assertEquals(8, dataTable.getPaginator().getActivePage().getNumber());
+        }
+
+        // Act - delete last row on page 8
+        PrimeSelenium.guardAjax(dataTable.getCell(0, 3).getWebElement().findElement(By.className("ui-button"))).click();
+        Assertions.assertEquals(7, dataTable.getPaginator().getActivePage().getNumber());
+        Assertions.assertEquals(10, dataTable.getRows().size());
 
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
