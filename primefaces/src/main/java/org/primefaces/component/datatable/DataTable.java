@@ -23,25 +23,6 @@
  */
 package org.primefaces.component.datatable;
 
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.ComponentSystemEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.PhaseId;
-import javax.faces.event.PostRestoreStateEvent;
-import javax.faces.model.DataModel;
-
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
@@ -60,6 +41,18 @@ import org.primefaces.event.data.PageEvent;
 import org.primefaces.event.data.SortEvent;
 import org.primefaces.model.*;
 import org.primefaces.util.*;
+
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.application.ResourceDependency;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
+import javax.faces.context.FacesContext;
+import javax.faces.event.*;
+import javax.faces.model.DataModel;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -476,6 +469,18 @@ public class DataTable extends DataTableBase {
             }
 
             List<?> data = lazyModel.load(first, rows, getActiveSortMeta(), getActiveFilterMeta());
+            if (data.isEmpty() && first > 0 && getRowCount() > 0) {
+                /*
+                 * https://github.com/primefaces/primefaces/issues/1921
+                 * DataTable point´s to a page which does not exist anymore. After lazyModel.load was called we know the
+                 * actual rowCount and can calculate the last page.
+                 * We prefer this corner-case hack due to runtime-performance-considerations for
+                 * maybe 99,8% of calls where this isn´t an issue.
+                 */
+                first = Math.max((getPageCount() - 1) * getRows(), 0);
+                setFirst(first);
+                data = lazyModel.load(first, rows, getActiveSortMeta(), getActiveFilterMeta());
+            }
             lazyModel.setPageSize(getRows());
             lazyModel.setWrappedData(data);
 
