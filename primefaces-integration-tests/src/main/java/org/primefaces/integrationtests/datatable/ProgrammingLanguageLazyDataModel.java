@@ -73,14 +73,12 @@ public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingL
             }
         }
 
-        return langsStream
+        List<ProgrammingLanguage> langsFiltered = langsStream.collect(Collectors.toList());
+        setRowCount(langsFiltered.size());
+
+        return langsFiltered.stream()
                     .skip(first).limit(pageSize)
                     .collect(Collectors.toList());
-    }
-
-    @Override
-    public int getRowCount() {
-        return langs.size();
     }
 
     @Override
