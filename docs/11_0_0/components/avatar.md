@@ -29,7 +29,7 @@ Avatar represents people using icons, labels and images.
 | dynamicColor | false | Boolean | Dynamically assign contrasting foreground and background colors based on the label.
 | saturation | 100 | Integer | Saturation of dynamicColor (0 .. 100).
 | lightness | 40 | Integer | Lightness of dynamicColor (0 .. 100).
-| alpha | null | Integer | Alpha of dynamicColor (0 .. 100).
+| alpha | 100 | Integer | Alpha of dynamicColor (0 .. 100).
 | gravatar | null | String | Gravatar e-mail address for the profile to be displayed.
 | gravatarConfig | null | String | Optional Gravatar configuration for any other Gravatar API URL parameters.
 

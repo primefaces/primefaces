@@ -38,7 +38,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.primefaces.util.Constants;
 
 public class AvatarRenderer extends CoreRenderer {
 
@@ -149,12 +148,13 @@ public class AvatarRenderer extends CoreRenderer {
      * @return the new color and background color styles
      */
     protected String generateBackgroundColor(Avatar avatar) {
-        boolean withAlpha = avatar.getAlpha() != null;
-        return "background-color:hsl" + (withAlpha ? "a" : Constants.EMPTY_STRING) + "(" +
-                Math.abs((avatar.getLabel().hashCode() % 40) * 9) +
-                "," + avatar.getSaturation() + "%" +
-                "," + avatar.getLightness() + "%" +
-                (withAlpha ? "," + avatar.getAlpha() + "%" : Constants.EMPTY_STRING) + ");";
+        return String.format(
+                "background-color:hsla(%d,%d%%,%d%%,%d%%)",
+                Math.abs((avatar.getLabel().hashCode() % 40) * 9),
+                avatar.getSaturation(),
+                avatar.getLightness(),
+                avatar.getAlpha()
+        );
     }
 
     /**

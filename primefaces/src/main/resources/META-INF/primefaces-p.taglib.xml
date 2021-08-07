@@ -32174,7 +32174,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Alpha of dynamicColor (0 .. 100). Default is null.]]>
+                <![CDATA[Alpha of dynamicColor (0 .. 100). Default is 100.]]>
             </description>
             <name>alpha</name>
             <required>false</required>

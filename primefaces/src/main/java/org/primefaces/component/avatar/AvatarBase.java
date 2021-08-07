@@ -144,7 +144,7 @@ public abstract class AvatarBase extends UIComponentBase {
     }
 
     public Integer getAlpha() {
-        return (Integer) getStateHelper().eval(PropertyKeys.alpha, null);
+        return (Integer) getStateHelper().eval(PropertyKeys.alpha, 100);
     }
 
     public void setAlpha(Integer size) {
