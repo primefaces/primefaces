@@ -164,12 +164,17 @@ public class AvatarRenderer extends CoreRenderer {
     protected String generateGravatar(FacesContext context, Avatar avatar) {
         String email = avatar.getGravatar();
         String config = avatar.getGravatarConfig();
+        if (LangUtils.isBlank(config) && avatar.canFallback()) {
+            config = "d=blank";
+        }
         String url;
         try {
             StringBuilder sb = SharedStringBuilder.get(context, SB_AVATAR);
             sb.append(GRAVATAR_URL);
             generateMailHash(sb, email);
-            sb.append('?').append(config);
+            if (LangUtils.isNotBlank(config)) {
+                sb.append('?').append(config);
+            }
             url = sb.toString();
         }
         catch (NoSuchAlgorithmException e) {

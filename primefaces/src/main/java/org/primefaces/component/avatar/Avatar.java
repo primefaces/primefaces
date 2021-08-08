@@ -24,6 +24,7 @@
 package org.primefaces.component.avatar;
 
 import javax.faces.application.ResourceDependency;
+import org.primefaces.util.LangUtils;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class Avatar extends AvatarBase {
@@ -38,4 +39,9 @@ public class Avatar extends AvatarBase {
     public static final String DYNAMIC_COLOR_DARK_CLASS = "ui-avatar-dark";
     public static final String DYNAMIC_COLOR_LIGHT_CLASS = "ui-avatar-light";
     public static final String ICON_CLASS = "ui-avatar-icon";
+
+    public boolean canFallback() {
+        return LangUtils.isNotBlank(getLabel()) || LangUtils.isNotBlank(getIcon());
+    }
+
 }

@@ -31,7 +31,7 @@ Avatar represents people using icons, labels and images.
 | lightness | 40 | Integer | Lightness of dynamicColor (0 .. 100).
 | alpha | 100 | Integer | Alpha of dynamicColor (0 .. 100).
 | gravatar | null | String | Gravatar e-mail address for the profile to be displayed.
-| gravatarConfig | d=blank | String | Optional Gravatar configuration for any other Gravatar API URL parameters.
+| gravatarConfig | null | String | Optional Gravatar configuration for any other Gravatar API URL parameters.
 
 ## Getting Started
 Avatar has three built-in display modes; "label", "icon" and custom content.
@@ -101,6 +101,14 @@ follow you there. For configuration options please see API docs: https://en.grav
 
 ```xhtml
 <p:avatar gravatar="contact@primetek.com.tr" gravatarConfig="d=mp" />
+```
+
+### Fallback
+
+If you provide a label or icon, and don't set `gravatarConfig` (or use `d=blank`), the label or icon will be shown if no Gravatar is found.
+
+```xhtml
+<p:avatar gravatar="fallback@primetek.com.tr" label="Fallback" />
 ```
 
 ## Skinning of Avatar
