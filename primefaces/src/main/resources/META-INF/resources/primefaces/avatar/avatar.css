@@ -30,9 +30,9 @@
 }
 
 .ui-avatar.ui-avatar-dark {
-    color: var(--primary-color-text, #fff);
+    color: #fff;
 }
 
 .ui-avatar.ui-avatar-light {
-    color: var(--text-color, #000);
+    color: #495057;
 }
