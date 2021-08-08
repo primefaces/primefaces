@@ -6,6 +6,7 @@ This page contains a list of big features. Please check the GitHub issues for al
 
   * AutoComplete: added `footer` facet which will be added to the suggestion list.
   * Avatar: added `saturation`, `lightness`, `alpha` to control dynamic colors.
+  * Badge: added `hidden` attribute to hide the badge but render the children.
   * Hotkey: added `bindMac` to use alternative binding on macOS.
   * Inplace: added `tabindex` for keyboard focus and toggle support.
   * InputText, InputTextarea: counter can count bytes instead of characters.

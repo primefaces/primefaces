@@ -32,3 +32,7 @@
     padding: 0;
     border-radius: 50%;
 }
+
+.ui-badge.ui-state-hidden {
+    display: none;
+}

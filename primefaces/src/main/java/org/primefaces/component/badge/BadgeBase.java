@@ -38,7 +38,8 @@ public abstract class BadgeBase extends UIComponentBase implements Widget {
         severity,
         size,
         style,
-        styleClass
+        styleClass,
+        hidden
     }
 
     public BadgeBase() {
@@ -88,5 +89,13 @@ public abstract class BadgeBase extends UIComponentBase implements Widget {
 
     public void setStyleClass(String styleClass) {
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+    public boolean isHidden() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.hidden, false);
+    }
+
+    public void setHidden(boolean hidden) {
+        getStateHelper().put(PropertyKeys.hidden, hidden);
     }
 }
