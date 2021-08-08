@@ -25,7 +25,7 @@ Badge is a small status indicator for another element.
 | size | null | String | Size of the badge, valid options are "large" and "xlarge".
 | style | null | String | Style of the badge.
 | styleClass | null | String | StyleClass of the badge.
-| hidden | false | Boolean | Whether to hide the badge (but render the children).
+| visible | true | Boolean | Whether to hide the badge (but render the children).
 
 ## Getting Started
 Badge can either be used as a standalone component, or it may contain components.

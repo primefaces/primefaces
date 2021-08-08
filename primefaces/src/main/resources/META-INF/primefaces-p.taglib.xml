@@ -32308,7 +32308,7 @@
             <description>
                 <![CDATA[Whether to hide the badge (but render the children).]]>
             </description>
-            <name>hidden</name>
+            <name>visible</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>

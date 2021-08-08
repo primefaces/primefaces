@@ -46,7 +46,7 @@ public class BadgeRenderer extends CoreRenderer {
                     .add(badge.getStyleClass())
                     .add(!valueEmpty && value.length() == 1, Badge.NO_GUTTER_CLASS)
                     .add(valueEmpty, Badge.DOT_CLASS)
-                    .add(badge.isHidden(), "ui-state-hidden")
+                    .add(!badge.isVisible(), "ui-state-hidden")
                     .add("large".equals(size), Badge.SIZE_LARGE_CLASS)
                     .add("xlarge".equals(size), Badge.SIZE_XLARGE_CLASS)
                     .add("info".equals(severity), Badge.SEVERITY_INFO_CLASS)
@@ -70,7 +70,7 @@ public class BadgeRenderer extends CoreRenderer {
             writer.writeAttribute("style", badge.getStyle(), "style");
         }
 
-        if (!valueEmpty && !badge.isHidden()) {
+        if (!valueEmpty && badge.isVisible()) {
             writer.write(value);
         }
         writer.endElement("span");
