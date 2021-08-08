@@ -74,8 +74,8 @@ public class AvatarRenderer extends CoreRenderer {
             writer.writeAttribute("style", style, "style");
         }
 
-        renderChildren(context, avatar);
         encodeDefaultContent(context, avatar, label);
+        renderChildren(context, avatar);
 
         writer.endElement("div");
     }
