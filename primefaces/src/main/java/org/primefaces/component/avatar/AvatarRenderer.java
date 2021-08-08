@@ -74,12 +74,8 @@ public class AvatarRenderer extends CoreRenderer {
             writer.writeAttribute("style", style, "style");
         }
 
-        if (avatar.getChildCount() > 0) {
-            renderChildren(context, avatar);
-        }
-        else {
-            encodeDefaultContent(context, avatar, label);
-        }
+        renderChildren(context, avatar);
+        encodeDefaultContent(context, avatar, label);
 
         writer.endElement("div");
     }
@@ -87,6 +83,11 @@ public class AvatarRenderer extends CoreRenderer {
     protected void encodeDefaultContent(FacesContext context, Avatar avatar, String label) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
+        if (avatar.getGravatar() != null) {
+            writer.startElement("img", null);
+            writer.writeAttribute("src", generateGravatar(context, avatar), "src");
+            writer.endElement("img");
+        }
         if (LangUtils.isNotBlank(label)) {
             writer.startElement("span", null);
             writer.writeAttribute("class", Avatar.SIZE_TEXT_CLASS, "styleClass");
@@ -102,11 +103,6 @@ public class AvatarRenderer extends CoreRenderer {
             writer.startElement("span", null);
             writer.writeAttribute("class", iconStyleClass, "styleClass");
             writer.endElement("span");
-        }
-        else if (avatar.getGravatar() != null) {
-            writer.startElement("img", null);
-            writer.writeAttribute("src", generateGravatar(context, avatar), "src");
-            writer.endElement("img");
         }
     }
 
@@ -173,9 +169,7 @@ public class AvatarRenderer extends CoreRenderer {
             StringBuilder sb = SharedStringBuilder.get(context, SB_AVATAR);
             sb.append(GRAVATAR_URL);
             generateMailHash(sb, email);
-            if (LangUtils.isNotBlank(config)) {
-                sb.append('?').append(config);
-            }
+            sb.append('?').append(config);
             url = sb.toString();
         }
         catch (NoSuchAlgorithmException e) {

@@ -31,7 +31,7 @@ Avatar represents people using icons, labels and images.
 | lightness | 40 | Integer | Lightness of dynamicColor (0 .. 100).
 | alpha | 100 | Integer | Alpha of dynamicColor (0 .. 100).
 | gravatar | null | String | Gravatar e-mail address for the profile to be displayed.
-| gravatarConfig | null | String | Optional Gravatar configuration for any other Gravatar API URL parameters.
+| gravatarConfig | d=blank | String | Optional Gravatar configuration for any other Gravatar API URL parameters.
 
 ## Getting Started
 Avatar has three built-in display modes; "label", "icon" and custom content.

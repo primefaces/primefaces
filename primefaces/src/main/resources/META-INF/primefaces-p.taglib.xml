@@ -32150,7 +32150,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Optional Gravatar configuration for any other Gravatar URL parameters.]]>
+                <![CDATA[Optional Gravatar configuration for any other Gravatar URL parameters. Default is 'd=blank'.]]>
             </description>
             <name>gravatarConfig</name>
             <required>false</required>

@@ -120,7 +120,7 @@ public abstract class AvatarBase extends UIComponentBase {
     }
 
     public String getGravatarConfig() {
-        return (String) getStateHelper().eval(AvatarBase.PropertyKeys.gravatarConfig, null);
+        return (String) getStateHelper().eval(AvatarBase.PropertyKeys.gravatarConfig, "d=blank");
     }
 
     public void setGravatarConfig(String gravatarConfig) {

@@ -1,10 +1,15 @@
 .ui-avatar {
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 2rem;
     height: 2rem;
     font-size: 1rem;
+}
+
+.ui-avatar > * {
+    position: absolute;
 }
 
 .ui-avatar.ui-avatar-circle {
