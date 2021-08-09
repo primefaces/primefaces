@@ -88,7 +88,7 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
     public T getRowData(String rowKey) {
         if (converter != null) {
             FacesContext context = FacesContext.getCurrentInstance();
-            return (T) converter.getAsObject(context, UIComponent.getCurrentComponent(context), rowKey);
+            return converter.getAsObject(context, UIComponent.getCurrentComponent(context), rowKey);
         }
 
         throw new UnsupportedOperationException(
