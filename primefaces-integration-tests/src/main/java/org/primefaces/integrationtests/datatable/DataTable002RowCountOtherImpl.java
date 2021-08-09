@@ -23,15 +23,16 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import lombok.Data;
-
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import lombok.Getter;
+import lombok.Setter;
 
 @Named
 @ViewScoped
-@Data
+@Getter
+@Setter
 public class DataTable002RowCountOtherImpl extends DataTable002 {
 
     private static final long serialVersionUID = 4266502895860698885L;
