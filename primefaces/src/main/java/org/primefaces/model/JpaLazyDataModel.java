@@ -143,8 +143,6 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
         List<T> result = query.getResultList();
 
-        setRowCount(result.size());
-
         return result;
     }
 
