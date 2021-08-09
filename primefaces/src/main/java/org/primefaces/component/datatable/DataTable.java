@@ -457,6 +457,9 @@ public class DataTable extends DataTableBase {
         if (model instanceof LazyDataModel) {
             LazyDataModel lazyModel = (LazyDataModel) model;
 
+            Map<String, FilterMeta> filterBy = getActiveFilterMeta();
+            lazyModel.setRowCount(lazyModel.count(filterBy));
+
             calculateFirst();
 
             FacesContext context = getFacesContext();
@@ -468,20 +471,8 @@ public class DataTable extends DataTableBase {
                 first = Integer.parseInt(params.get(getClientId(context) + "_first")) + getRows();
             }
 
-            List<?> data = lazyModel.load(first, rows, getActiveSortMeta(), getActiveFilterMeta());
-            if (data.isEmpty() && first > 0 && getRowCount() > 0) {
-                /*
-                 * https://github.com/primefaces/primefaces/issues/1921
-                 * DataTable point´s to a page which does not exist anymore. After lazyModel.load was called we know the
-                 * actual rowCount and can calculate the last page.
-                 * We prefer this corner-case hack due to runtime-performance-considerations for
-                 * maybe 99,8% of calls where this isn´t an issue.
-                 */
-                first = Math.max((getPageCount() - 1) * getRows(), 0);
-                setFirst(first);
-                data = lazyModel.load(first, rows, getActiveSortMeta(), getActiveFilterMeta());
-            }
-            lazyModel.setPageSize(getRows());
+            List<?> data = lazyModel.load(first, rows, getActiveSortMeta(), filterBy);
+            lazyModel.setPageSize(rows);
             lazyModel.setWrappedData(data);
 
             //Update paginator/livescroller for callback

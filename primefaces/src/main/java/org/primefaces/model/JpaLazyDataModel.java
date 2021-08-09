@@ -112,9 +112,21 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
     }
 
     @Override
-    public List<T> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
-        setPageSize(pageSize);
+    public int count(Map<String, FilterMeta> filterBy) {
+        EntityManager entityManager = this.entityManager.get();
 
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        Root<T> root = cq.from(entityClass);
+        cq = cq.select(cb.count(root));
+
+        applyFilters(cb, cq, root, filterBy);
+
+        return entityManager.createQuery(cq).getSingleResult().intValue();
+    }
+
+    @Override
+    public List<T> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
         EntityManager entityManager = this.entityManager.get();
 
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
@@ -137,7 +149,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
     }
 
     protected void applyFilters(CriteriaBuilder cb,
-                                CriteriaQuery<T> cq,
+                                CriteriaQuery<?> cq,
                                 Root<T> root,
                                 Map<String, FilterMeta> filterBy) {
 
@@ -165,7 +177,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         }
     }
 
-    protected void applyGlobalFilters(CriteriaBuilder cb, CriteriaQuery<T> cq, Root<T> root, List<Predicate> predicates) {
+    protected void applyGlobalFilters(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<T> root, List<Predicate> predicates) {
 
     }
 

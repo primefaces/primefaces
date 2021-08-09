@@ -65,6 +65,15 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
     }
 
     /**
+     * Counts the all available data for the given filters.
+     * In case of SQL, this would execute a "SELECT COUNT ... WHERE ...".
+     *
+     * @param filterBy a map with all filter information (only relevant for DataTable, not for eg DataView)
+     * @return the data count
+     */
+    public abstract int count(Map<String, FilterMeta> filterBy);
+
+    /**
      * Loads the data for the given parameters.
      *
      * @param first the first entry

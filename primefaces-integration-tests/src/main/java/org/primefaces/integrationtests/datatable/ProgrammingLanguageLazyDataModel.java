@@ -48,8 +48,14 @@ public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingL
     }
 
     @Override
-    public List<ProgrammingLanguage> load(int first, int pageSize, Map<String, SortMeta> sortMeta, Map<String, FilterMeta> filterMeta) {
-        List<ProgrammingLanguage> langsFiltered = sortAndFilterInternal(sortMeta, filterMeta);
+    public int count(Map<String, FilterMeta> filterBy) {
+        List<ProgrammingLanguage> langsFiltered = sortAndFilterInternal(null, filterBy);
+        return (int) langsFiltered.size();
+    }
+
+    @Override
+    public List<ProgrammingLanguage> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
+        List<ProgrammingLanguage> langsFiltered = sortAndFilterInternal(sortBy, filterBy);
         setRowCount(langsFiltered.size());
 
         return langsFiltered.stream()
@@ -57,11 +63,11 @@ public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingL
                     .collect(Collectors.toList());
     }
 
-    protected List<ProgrammingLanguage> sortAndFilterInternal(Map<String, SortMeta> sortMeta, Map<String, FilterMeta> filterMeta) {
+    protected List<ProgrammingLanguage> sortAndFilterInternal(Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
         Stream<ProgrammingLanguage> langsStream = langs.stream();
 
-        if (filterMeta != null && !filterMeta.isEmpty()) {
-            for (FilterMeta meta : filterMeta.values()) {
+        if (filterBy != null && !filterBy.isEmpty()) {
+            for (FilterMeta meta : filterBy.values()) {
                 if (meta.getFilterValue() != null) {
                     langsStream = langsStream.filter(lang -> {
                         if (meta.getField().equals("firstAppeared") && meta.getMatchMode() == MatchMode.GREATER_THAN_EQUALS) {
@@ -77,8 +83,8 @@ public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingL
             }
         }
 
-        if (sortMeta != null && !sortMeta.isEmpty()) {
-            for (SortMeta meta : sortMeta.values()) {
+        if (sortBy != null && !sortBy.isEmpty()) {
+            for (SortMeta meta : sortBy.values()) {
                 langsStream = langsStream.sorted(new ProgrammingLanguageLazySorter(meta));
             }
         }
