@@ -16,10 +16,10 @@
                 <p:autoUpdate/>
             </p:messages>
 
-            <p:dataTable id="datatable" value="#{dataTable002.lazyDataModel}" var="lang" paginator="true" rows="10"
-                         filteredValue="#{dataTable002.filteredProgLanguages}" filterEvent="enter" lazy="true"
-                         selectionMode="single" selection="#{dataTable002.selectedProgrammingLanguage}">
-                <p:ajax event="rowSelect" listener="#{dataTable002.onRowSelect}"/>
+            <p:dataTable id="datatable" value="#{dataTable002RowCountOtherImpl.lazyDataModel}" var="lang" paginator="true" rows="10"
+                         filteredValue="#{dataTable002RowCountOtherImpl.filteredProgLanguages}" filterEvent="enter" lazy="true"
+                         selectionMode="single" selection="#{dataTable002RowCountOtherImpl.selectedProgrammingLanguage}">
+                <p:ajax event="rowSelect" listener="#{dataTable002RowCountOtherImpl.onRowSelect}"/>
 
                 <p:column field="id" headerText="ID"/>
 
@@ -28,7 +28,7 @@
                 <p:column field="firstAppeared" filterMatchMode="gte"/>
 
                 <p:column>
-                    <p:commandButton value="Delete" action="#{dataTable002.delete(lang)}" update="datatable" />
+                    <p:commandButton value="Delete" action="#{dataTable002RowCountOtherImpl.delete(lang)}" update="datatable" />
                 </p:column>
             </p:dataTable>
 

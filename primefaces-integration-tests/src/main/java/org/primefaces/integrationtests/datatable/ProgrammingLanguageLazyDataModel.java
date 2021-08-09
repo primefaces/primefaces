@@ -23,20 +23,21 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.MatchMode;
+import org.primefaces.model.SortMeta;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.primefaces.model.FilterMeta;
-import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.MatchMode;
-import org.primefaces.model.SortMeta;
-
 public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingLanguage> {
 
     private static final long serialVersionUID = -3415081263308946252L;
+
     private final List<ProgrammingLanguage> langs;
 
     public ProgrammingLanguageLazyDataModel() {
@@ -48,6 +49,15 @@ public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingL
 
     @Override
     public List<ProgrammingLanguage> load(int first, int pageSize, Map<String, SortMeta> sortMeta, Map<String, FilterMeta> filterMeta) {
+        List<ProgrammingLanguage> langsFiltered = sortAndFilterInternal(sortMeta, filterMeta);
+        setRowCount(langsFiltered.size());
+
+        return langsFiltered.stream()
+                    .skip(first).limit(pageSize)
+                    .collect(Collectors.toList());
+    }
+
+    protected List<ProgrammingLanguage> sortAndFilterInternal(Map<String, SortMeta> sortMeta, Map<String, FilterMeta> filterMeta) {
         Stream<ProgrammingLanguage> langsStream = langs.stream();
 
         if (filterMeta != null && !filterMeta.isEmpty()) {
@@ -73,14 +83,7 @@ public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingL
             }
         }
 
-        return langsStream
-                    .skip(first).limit(pageSize)
-                    .collect(Collectors.toList());
-    }
-
-    @Override
-    public int getRowCount() {
-        return langs.size();
+        return langsStream.collect(Collectors.toList());
     }
 
     @Override
@@ -96,5 +99,9 @@ public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingL
 
     public List<ProgrammingLanguage> getLangs() {
         return langs;
+    }
+
+    public void delete(ProgrammingLanguage language) {
+        langs.remove(language);
     }
 }

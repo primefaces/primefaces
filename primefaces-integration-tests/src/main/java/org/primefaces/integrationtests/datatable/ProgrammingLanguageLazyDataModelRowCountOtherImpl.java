@@ -23,39 +23,38 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import lombok.Data;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.integrationtests.general.utilities.TestUtils;
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.SortMeta;
 
-import javax.annotation.PostConstruct;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
-import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-@Named
-@ViewScoped
-@Data
-public class DataTable002 implements Serializable {
+public class ProgrammingLanguageLazyDataModelRowCountOtherImpl extends ProgrammingLanguageLazyDataModel {
 
-    private static final long serialVersionUID = -7518459955779385834L;
+    private List<ProgrammingLanguage> langsFiltered;
 
-    protected ProgrammingLanguageLazyDataModel lazyDataModel;
-    private List<ProgrammingLanguage> filteredProgLanguages;
+    @Override
+    public List<ProgrammingLanguage> load(int first, int pageSize, Map<String, SortMeta> sortMeta, Map<String, FilterMeta> filterMeta) {
+        langsFiltered = sortAndFilterInternal(sortMeta, filterMeta);
 
-    private ProgrammingLanguage selectedProgrammingLanguage;
-
-    @PostConstruct
-    public void init() {
-        lazyDataModel = new ProgrammingLanguageLazyDataModel();
+        return langsFiltered.stream()
+                .skip(first).limit(pageSize)
+                .collect(Collectors.toList());
     }
 
-    public void onRowSelect(SelectEvent<ProgrammingLanguage> event) {
-        TestUtils.addMessage("ProgrammingLanguage Selected", event.getObject().getId() + " - " + event.getObject().getName());
+    @Override
+    public int getRowCount() {
+        if (langsFiltered == null) {
+            return getLangs().size();
+        }
+
+        return langsFiltered.size();
     }
 
+    @Override
     public void delete(ProgrammingLanguage language) {
-        lazyDataModel.delete(language);
-        TestUtils.addMessage("ProgrammingLanguage Deleted", language.getId() + " - " + language.getName());
+        super.delete(language);
+        langsFiltered.remove(language);
     }
 }
