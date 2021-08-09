@@ -55,8 +55,8 @@ public interface UIColumn {
     /**
      * Used to extract UIColumn#field if not defined. Supports strictly two kind of expressions:
      *
-     * #{car.name} -> name (for static columns)
-     * #{car[column.property]} -> name (for dynamic columns)
+     * #{car.name}: name (for static columns)
+     * #{car[column.property]}: name (for dynamic columns)
      *
      * @param context the {@link FacesContext}
      * @param expression the {@link ValueExpression} like "filterBy" or "sortBy"
