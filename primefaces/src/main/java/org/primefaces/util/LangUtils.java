@@ -510,8 +510,12 @@ public class LangUtils {
     }
 
     public static Field getField(Class<?> clazz, String name) {
+        if (clazz == null) {
+            throw new IllegalArgumentException("clazz must not be null!");
+        }
+
         Class<?> current = clazz;
-        while (current != null) {
+        while (current != null && current != Object.class) {
             try {
                 Field field = current.getDeclaredField(name);
                 field.setAccessible(true);
