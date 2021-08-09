@@ -780,12 +780,12 @@ Another option for incell editing is cell editing, in this mode a cell switches 
 clicked, losing focus triggers an ajax event to save the change value.
 
 ## Lazy Loading
-Lazy Loading is an approach to deal with huge datasets efficiently, regular ajax based pagination
-works by rendering only a particular page but still requires all data to be loaded into memory. Lazy
-loading datatable renders a particular page similarly but also only loads the page data into memory
-not the whole dataset. In order to implement this, you’d need to bind a
-_org.primefaces.model.LazyDataModel_ as the value and implement _load_ method and enable _lazy_
-option. Also it is required to implement _getRowData_ and _getRowKey_ if you have selection enabled.
+Lazy Loading is an approach to deal with huge datasets efficiently, regular AJAX based pagination
+works by rendering only a particular page but still requires all data to be loaded into memory.
+Lazy loading DataTable renders a particular page similarly but also only loads the page data into memory not the whole dataset.
+In order to implement this, you’d need to bind a _org.primefaces.model.LazyDataModel_ as the value and
+implement _load_ and _count_ method.
+If you have selection enabled, you either need to implement _getRowData_ and _getRowKey_, or pass a existing JSF `Converter` to the constructor.
 
 
 ```xhtml
@@ -800,12 +800,15 @@ public class CarBean {
     public CarBean() {
         model = new LazyDataModel() {
             @Override
+            public int count(Map<String, FilterMeta> filterBy) {
+                //logical row count based on a count query
+            }
+
+            @Override
             public List<Car> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
                 //load physical data
             }
         };
-        int totalRowCount = //logical row count based on a count query
-        model.setRowCount(totalRowCount);
     }
     public LazyDataModel getModel() {
         return model;
@@ -820,12 +823,32 @@ following parameters:
 - **sortBy**: Active sorters map (field as key)
 - **filterBy**: Active filters map (field as key).
 
-In addition to load method, totalRowCount needs to be provided so that paginator can display itself
+In addition to _load_ method, _count_ method needs to be implemented, so that paginator can display itself
 according to the logical number of rows to display.
 
 It is suggested to use _field_ attribute of column component to define the field names passed as
 sortBy and filterBy, otherwise these fields would be tried to get extracted from the value
 expression which is not possible in cases like composite components.
+
+### JpaLazyDataModel
+
+PrimeFaces provides a OOTB implementation for JPA users, which supports basic features.
+
+```
+new JpaLazyDataModel<>(MyEntity.class, () -> entityManager);
+```
+
+If you have selection enabled, you can either pass the rowKey field name in the constructor:
+
+```
+new JpaLazyDataModel<>(MyEntity.class, () -> entityManager, "id");
+```
+
+or provide a existing JSF `Converter`:
+
+```
+new JpaLazyDataModel<>(MyEntity.class, () -> entityManager, myConverter);
+```
 
 ## Sticky Header
 Sticky Header feature makes the datatable header visible on page scrolling.
