@@ -42,11 +42,12 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.convert.Converter;
 import org.primefaces.util.BeanUtils;
 import org.primefaces.util.Lazy;
+import org.primefaces.util.SerializableSupplier;
 
 /**
  * Basic {@link LazyDataModel} implementation with JPA and Criteria API.
@@ -56,7 +57,7 @@ import org.primefaces.util.Lazy;
 public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializable {
 
     private Class<T> entityClass;
-    private Supplier<EntityManager> entityManager;
+    private SerializableSupplier<EntityManager> entityManager;
     private Lazy<Field> rowKeyField;
     private Lazy<Method> rowKeyGetter;
 
@@ -73,7 +74,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
      * @param entityClass The entity class
      * @param entityManager The {@link EntityManager}
      */
-    public JpaLazyDataModel(Class<T> entityClass, Supplier<EntityManager> entityManager) {
+    public JpaLazyDataModel(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager) {
         this.entityClass = entityClass;
         this.entityManager = entityManager;
     }
@@ -85,7 +86,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
      * @param entityManager The {@link EntityManager}
      * @param rowKeyField The name of the rowKey property (e.g. "id")
      */
-    public JpaLazyDataModel(Class<T> entityClass, Supplier<EntityManager> entityManager, String rowKeyField) {
+    public JpaLazyDataModel(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager, String rowKeyField) {
         this(entityClass, entityManager);
         this.rowKeyField = new Lazy<>(() -> LangUtils.getField(entityClass, rowKeyField));
         this.rowKeyGetter = new Lazy<>(() -> {
@@ -93,7 +94,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                 return new PropertyDescriptor(rowKeyField, entityClass).getReadMethod();
             }
             catch (IntrospectionException e) {
-                throw new RuntimeException("Could not access " + rowKeyField + " on " + entityClass.getName(), e);
+                throw new FacesException("Could not access " + rowKeyField + " on " + entityClass.getName(), e);
             }
         });
     }
@@ -105,7 +106,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
      * @param entityManager The {@link EntityManager}
      * @param converter The converter, which will be used for converting the entity to a rowKey and vice versa
      */
-    public JpaLazyDataModel(Class<T> entityClass, Supplier<EntityManager> entityManager, Converter<T> converter) {
+    public JpaLazyDataModel(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager, Converter<T> converter) {
         super(converter);
         this.entityClass = entityClass;
         this.entityManager = entityManager;
@@ -113,23 +114,23 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
     @Override
     public int count(Map<String, FilterMeta> filterBy) {
-        EntityManager entityManager = this.entityManager.get();
+        EntityManager em = this.entityManager.get();
 
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
         Root<T> root = cq.from(entityClass);
         cq = cq.select(cb.count(root));
 
         applyFilters(cb, cq, root, filterBy);
 
-        return entityManager.createQuery(cq).getSingleResult().intValue();
+        return em.createQuery(cq).getSingleResult().intValue();
     }
 
     @Override
     public List<T> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
-        EntityManager entityManager = this.entityManager.get();
+        EntityManager em = this.entityManager.get();
 
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(entityClass);
         Root<T> root = cq.from(entityClass);
         cq = cq.select(root);
@@ -137,7 +138,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         applyFilters(cb, cq, root, filterBy);
         applySort(cb, cq, root, sortBy);
 
-        TypedQuery<T> query = entityManager.createQuery(cq);
+        TypedQuery<T> query = em.createQuery(cq);
         query.setFirstResult(first);
         query.setMaxResults(pageSize);
 
@@ -169,7 +170,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             }
         }
 
-        if (predicates.size() > 0) {
+        if (!predicates.isEmpty()) {
             cq.where(
                 cb.and(predicates.toArray(new Predicate[predicates.size()])));
         }
@@ -240,14 +241,14 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         if (rowKeyField != null) {
             Object convertedRowKey = convertToType(rowKey, rowKeyField.get().getType());
 
-            EntityManager entityManager = this.entityManager.get();
+            EntityManager em = this.entityManager.get();
 
-            CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+            CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
             CriteriaQuery<T> cq = criteriaBuilder.createQuery(entityClass);
             Root<T> root = cq.from(entityClass);
             cq.select(root).where(criteriaBuilder.equal(root.get(rowKeyField.get().getName()), convertedRowKey));
 
-            TypedQuery<T> query = entityManager.createQuery(cq);
+            TypedQuery<T> query = em.createQuery(cq);
             return query.getSingleResult();
         }
 
@@ -269,7 +270,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                 return rowKey == null ? null : rowKey.toString();
             }
             catch (InvocationTargetException | IllegalAccessException e) {
-                throw new RuntimeException("Could not invoke getter for " + rowKeyField.get().getName() + " on " + entityClass.getName(), e);
+                throw new FacesException("Could not invoke getter for " + rowKeyField.get().getName() + " on " + entityClass.getName(), e);
             }
         }
 
@@ -293,7 +294,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             return (V) FacesContext.getCurrentInstance().getELContext().convertToType(value, valueType);
         }
 
-        throw new RuntimeException("Can not convert " + value + " to type " + valueType
+        throw new FacesException("Can not convert " + value + " to type " + valueType
             + "; please create a JSF Converter for it or overwrite Object convertToType(String value, Class<?> valueType)!");
     }
 
