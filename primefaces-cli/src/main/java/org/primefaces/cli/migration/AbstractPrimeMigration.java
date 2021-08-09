@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.cli.primeflexmigration;
+package org.primefaces.cli.migration;
 
 import picocli.CommandLine;
 
@@ -34,7 +34,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public abstract class AbstracePrimeMigration implements Runnable {
+public abstract class AbstractPrimeMigration implements Runnable {
 
     @CommandLine.Parameters(
             description = "Directory (including subdirectories) where files with specified fileextension(s) " +
@@ -49,11 +49,11 @@ public abstract class AbstracePrimeMigration implements Runnable {
             description = "Replace existing files with converted ones? False means the migrated files are written with additional migrated-suffix.")
     protected Boolean replaceExisting = true;
 
-    final Map<String, String> replaceRegex = new LinkedHashMap<>();
+    protected final Map<String, String> replaceRegex = new LinkedHashMap<>();
 
     @Override
     public void run() {
-        Set<String> fileextensionsSet = new HashSet<String>(Arrays.asList(fileextensions));
+        Set<String> fileextensionsSet = new HashSet<>(Arrays.asList(fileextensions));
 
         initReplaceRegEx();
 
@@ -69,9 +69,9 @@ public abstract class AbstracePrimeMigration implements Runnable {
         }
     }
 
-    abstract void initReplaceRegEx();
+    protected abstract void initReplaceRegEx();
 
-    String migrateSource(String source) {
+    public String migrateSource(String source) {
         String result = source;
 
         for (Map.Entry<String, String> entry : replaceRegex.entrySet()) {
@@ -83,7 +83,7 @@ public abstract class AbstracePrimeMigration implements Runnable {
         return result;
     }
 
-    void migrateDirectory(Path directory, Set<String> fileextensions, boolean replaceExisting) throws Exception {
+    protected void migrateDirectory(Path directory, Set<String> fileextensions, boolean replaceExisting) throws Exception {
         Files.list(directory).forEach(f -> {
             try {
                 if (Files.isDirectory(f)) {
@@ -115,7 +115,7 @@ public abstract class AbstracePrimeMigration implements Runnable {
         });
     }
 
-    private void migrateFile(Path f, boolean replaceExisting) throws IOException {
+    protected void migrateFile(Path f, boolean replaceExisting) throws IOException {
         List<String> contentV2 = Files.readAllLines(f);
         List<String> contentV3 = contentV2.stream().map(l -> migrateSource(l)).collect(Collectors.toList());
         Path tmpFile = Paths.get(f.toString() + ".migrated");

@@ -21,8 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.cli.primeflexmigration;
+package org.primefaces.cli.migration.primeflex;
 
+import org.primefaces.cli.migration.AbstractPrimeMigration;
 import picocli.CommandLine;
 
 @CommandLine.Command(name = "GridCssMigration", mixinStandardHelpOptions = true, version = "early WIP",
@@ -31,7 +32,7 @@ import picocli.CommandLine;
     descriptionHeading = "%n@|bold,underline Description|@:%n",
     parameterListHeading = "%n@|bold,underline Parameters|@:%n",
     optionListHeading = "%n@|bold,underline Options|@:%n")
-public class GridCssMigration extends AbstracePrimeMigration implements Runnable {
+public class GridCssMigration extends AbstractPrimeMigration implements Runnable {
 
     public static void main(String[] args) {
         int exitCode = new CommandLine(new GridCssMigration()).execute(args);
@@ -39,7 +40,7 @@ public class GridCssMigration extends AbstracePrimeMigration implements Runnable
     }
 
     @Override
-    void initReplaceRegEx() {
+    protected void initReplaceRegEx() {
         // see https://www.primefaces.org/primeflex/migration
 
         // grid
