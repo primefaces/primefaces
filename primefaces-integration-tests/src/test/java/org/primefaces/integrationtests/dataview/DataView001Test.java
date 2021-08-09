@@ -62,8 +62,8 @@ public class DataView001Test extends AbstractDataTableTest {
         Assertions.assertEquals(3, rowElts.size());
 
         WebElement firstRowElt = dataView.getRowWebElement(0);
-        Assertions.assertTrue(firstRowElt.getText().contains("1"));
-        Assertions.assertTrue(firstRowElt.getText().contains("Java"));
+        Assertions.assertTrue(firstRowElt.getText().contains(langs.get(0).getId().toString()));
+        Assertions.assertTrue(firstRowElt.getText().contains(langs.get(0).getName()));
 
         Paginator paginator = dataView.getPaginator();
         Assertions.assertNotNull(paginator);
@@ -81,6 +81,10 @@ public class DataView001Test extends AbstractDataTableTest {
         rowElts = dataView.getRowsWebElement();
         Assertions.assertNotNull(rowElts);
         Assertions.assertEquals(2, rowElts.size());
+
+        firstRowElt = dataView.getRowWebElement(0);
+        Assertions.assertTrue(firstRowElt.getText().contains(langs.get(3).getId().toString()));
+        Assertions.assertTrue(firstRowElt.getText().contains(langs.get(3).getName()));
 
         assertConfiguration(dataView.getWidgetConfiguration());
     }
