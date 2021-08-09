@@ -103,6 +103,14 @@ follow you there. For configuration options please see API docs: https://en.grav
 <p:avatar gravatar="contact@primetek.com.tr" gravatarConfig="d=mp" />
 ```
 
+### Fallback
+
+If you provide a label or icon, and don't set `gravatarConfig` (or use `d=blank`), the label or icon will be shown if no Gravatar is found.
+
+```xhtml
+<p:avatar gravatar="fallback@primetek.com.tr" label="Fallback" />
+```
+
 ## Skinning of Avatar
 Avatar resides in a main container element which `style` and `styleClass` options apply. As skinning
 style classes are global, see the main theming section for more information. Following is the list of

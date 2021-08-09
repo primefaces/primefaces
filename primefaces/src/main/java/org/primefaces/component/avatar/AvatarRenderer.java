@@ -74,12 +74,8 @@ public class AvatarRenderer extends CoreRenderer {
             writer.writeAttribute("style", style, "style");
         }
 
-        if (avatar.getChildCount() > 0) {
-            renderChildren(context, avatar);
-        }
-        else {
-            encodeDefaultContent(context, avatar, label);
-        }
+        encodeDefaultContent(context, avatar, label);
+        renderChildren(context, avatar);
 
         writer.endElement("div");
     }
@@ -87,6 +83,11 @@ public class AvatarRenderer extends CoreRenderer {
     protected void encodeDefaultContent(FacesContext context, Avatar avatar, String label) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
+        if (avatar.getGravatar() != null) {
+            writer.startElement("img", null);
+            writer.writeAttribute("src", generateGravatar(context, avatar), "src");
+            writer.endElement("img");
+        }
         if (LangUtils.isNotBlank(label)) {
             writer.startElement("span", null);
             writer.writeAttribute("class", Avatar.SIZE_TEXT_CLASS, "styleClass");
@@ -102,11 +103,6 @@ public class AvatarRenderer extends CoreRenderer {
             writer.startElement("span", null);
             writer.writeAttribute("class", iconStyleClass, "styleClass");
             writer.endElement("span");
-        }
-        else if (avatar.getGravatar() != null) {
-            writer.startElement("img", null);
-            writer.writeAttribute("src", generateGravatar(context, avatar), "src");
-            writer.endElement("img");
         }
     }
 
@@ -168,6 +164,9 @@ public class AvatarRenderer extends CoreRenderer {
     protected String generateGravatar(FacesContext context, Avatar avatar) {
         String email = avatar.getGravatar();
         String config = avatar.getGravatarConfig();
+        if (LangUtils.isBlank(config) && avatar.canFallback()) {
+            config = "d=blank";
+        }
         String url;
         try {
             StringBuilder sb = SharedStringBuilder.get(context, SB_AVATAR);
