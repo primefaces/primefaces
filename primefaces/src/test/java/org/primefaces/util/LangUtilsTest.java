@@ -29,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+import org.junit.jupiter.api.Assertions;
 
 import org.junit.jupiter.api.Test;
 
@@ -122,6 +123,18 @@ public class LangUtilsTest {
         assertEquals("This Is A Test", LangUtils.toCapitalCase("thisIsATest"));
         assertEquals("Uppercase First Char", LangUtils.toCapitalCase("UppercaseFirstChar"));
         assertEquals("My Über String", LangUtils.toCapitalCase("myÜberString"));
+    }
+
+    @Test
+    public void getField() {
+        Assertions.assertNotNull(LangUtils.getField(SimpleClass.class, "strings"));
+        Assertions.assertNotNull(LangUtils.getField(AbstractClass.class, "ints"));
+        Assertions.assertNotNull(LangUtils.getField(ConcreteClass.class, "ints"));
+        Assertions.assertNotNull(LangUtils.getField(AbstractGenericClass.class, "values"));
+        Assertions.assertNotNull(LangUtils.getField(ConcreteGenericClass.class, "values"));
+        Assertions.assertNotNull(LangUtils.getField(DetailedConcreteGenericClass.class, "values"));
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> LangUtils.getField(DetailedConcreteGenericClass.class, "rasdasd"));
     }
 
     class SimpleClass {

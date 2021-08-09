@@ -510,9 +510,10 @@ public class LangUtils {
     }
 
     public static Field getField(Class<?> clazz, String name) {
-        for (Class<?> currentClazz = clazz; currentClazz != null; currentClazz = currentClazz.getSuperclass()) {
+        Class<?> current = clazz;
+        while (current != null) {
             try {
-                Field field = currentClazz.getDeclaredField(name);
+                Field field = current.getDeclaredField(name);
                 field.setAccessible(true);
                 return field;
             }
@@ -522,6 +523,8 @@ public class LangUtils {
             catch (Exception e) {
                 throw new IllegalArgumentException("Cannot access field " + name + " in " + clazz.getName(), e);
             }
+
+            current = current.getSuperclass();
         }
 
         throw new IllegalArgumentException("Cannot find field " + name + " in " + clazz.getName());
