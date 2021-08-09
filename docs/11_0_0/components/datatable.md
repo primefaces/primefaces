@@ -854,7 +854,7 @@ Also you can add global filters via:
 ```
 new JpaLazyDataModel<>(MyEntity.class, () -> entityManager) {
     @Override
-    protected void applyGlobalFilters(CriteriaBuilder cb, CriteriaQuery<MyEntity> cq, Root<MyEntity> root, List<Predicate> predicates) {
+    protected void applyGlobalFilters(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<MyEntity> root, List<Predicate> predicates) {
         predicates.add(cb.isNull(root.get("id")));
     }
 };
