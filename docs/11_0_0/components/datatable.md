@@ -850,6 +850,16 @@ or provide a existing JSF `Converter`:
 new JpaLazyDataModel<>(MyEntity.class, () -> entityManager, myConverter);
 ```
 
+Also you can add global filters via:
+```
+new JpaLazyDataModel<>(MyEntity.class, () -> entityManager) {
+    @Override
+    protected void applyGlobalFilters(CriteriaBuilder cb, CriteriaQuery<MyEntity> cq, Root<MyEntity> root, List<Predicate> predicates) {
+        predicates.add(cb.isNull(root.get("id")));
+    }
+};
+```
+
 ## Sticky Header
 Sticky Header feature makes the datatable header visible on page scrolling.
 
