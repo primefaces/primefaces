@@ -340,6 +340,7 @@ FileUpload is able to resume uploads that have been canceled (e.g user abort, lo
 ```
 
 > You're free to choose `url-pattern` mapping, as long it doesn't conflict with an existing page
+**Note** that resuming chunked file uploads is not supported with commons uploader.
 
 ### Deleting aborted chunked uploads
 For Servlet 3.0 and later versions, uploaded files are automatically removed from the internal
