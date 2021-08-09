@@ -26,6 +26,7 @@ package org.primefaces.selenium.component;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractPageableData;
 
 import java.util.List;
@@ -35,20 +36,63 @@ import java.util.List;
  */
 public abstract class DataView extends AbstractPageableData {
 
+    public enum Layout { LIST, GRID };
+
+    @FindBy(className = "ui-dataview")
+    private WebElement webElement;
+
+    @FindBy(className = "ui-dataview-header")
+    private WebElement header;
+
     @FindBy(className = "ui-dataview-content")
     private WebElement content;
 
     @Override
     public List<WebElement> getRowsWebElement() {
-        return content.findElements(By.className("ui-dataview-row"));
+        if (getActiveLayout() == Layout.LIST) {
+            return content.findElements(By.className("ui-dataview-row"));
+        }
+        else {
+            return content.findElements(By.className("ui-dataview-column"));
+        }
     }
 
     public WebElement getRowWebElement(int index) {
         return getRowsWebElement().get(index);
     }
 
-    public WebElement getLayoutOptions() {
-        return content.findElement(By.className("ui-dataview-layout-options"));
+    public WebElement getLayoutOptionsWebElement() {
+        return header.findElement(By.className("ui-dataview-layout-options"));
+    }
+
+    public Layout getActiveLayout() {
+        List<WebElement> layoutButtons = getLayoutOptionsWebElement().findElements(By.className("ui-button"));
+        for (WebElement layoutButton: layoutButtons) {
+            WebElement layoutButtonInputHidden = layoutButton.findElement(By.tagName("input"));
+            if ("true".equals(layoutButtonInputHidden.getAttribute("checked"))) {
+                if ("list".equals(layoutButtonInputHidden.getAttribute("value"))) {
+                    return Layout.LIST;
+                }
+                else {
+                    return Layout.GRID;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public void setActiveLayout(Layout layout) {
+        List<WebElement> layoutButtons = getLayoutOptionsWebElement().findElements(By.className("ui-button"));
+        for (WebElement layoutButton: layoutButtons) {
+            WebElement layoutButtonInputHidden = layoutButton.findElement(By.tagName("input"));
+            if (layout == Layout.LIST && "list".equals(layoutButtonInputHidden.getAttribute("value"))) {
+                PrimeSelenium.guardAjax(layoutButton).click();
+            }
+            else if (layout == Layout.GRID && "grid".equals(layoutButtonInputHidden.getAttribute("value"))) {
+                PrimeSelenium.guardAjax(layoutButton).click();
+            }
+        }
     }
 
 }

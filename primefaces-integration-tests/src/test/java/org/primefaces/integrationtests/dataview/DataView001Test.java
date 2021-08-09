@@ -34,6 +34,7 @@ import org.primefaces.integrationtests.datatable.AbstractDataTableTest;
 import org.primefaces.integrationtests.datatable.ProgrammingLanguage;
 import org.primefaces.integrationtests.datatable.ProgrammingLanguageService;
 import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataView;
 import org.primefaces.selenium.component.model.data.Paginator;
@@ -55,7 +56,9 @@ public class DataView001Test extends AbstractDataTableTest {
         //page.button.click();
 
         // Assert
+        Assertions.assertNotNull(dataView.getLayoutOptionsWebElement());
         Assertions.assertNotNull(dataView.getPaginatorWebElement());
+        Assertions.assertEquals(DataView.Layout.LIST, dataView.getActiveLayout());
 
         List<WebElement> rowElts = dataView.getRowsWebElement();
         Assertions.assertNotNull(rowElts);
@@ -64,6 +67,7 @@ public class DataView001Test extends AbstractDataTableTest {
         WebElement firstRowElt = dataView.getRowWebElement(0);
         Assertions.assertTrue(firstRowElt.getText().contains(langs.get(0).getId().toString()));
         Assertions.assertTrue(firstRowElt.getText().contains(langs.get(0).getName()));
+        Assertions.assertTrue(PrimeSelenium.hasCssClass(firstRowElt, "ui-dataview-row"));
 
         Paginator paginator = dataView.getPaginator();
         Assertions.assertNotNull(paginator);
@@ -85,6 +89,37 @@ public class DataView001Test extends AbstractDataTableTest {
         firstRowElt = dataView.getRowWebElement(0);
         Assertions.assertTrue(firstRowElt.getText().contains(langs.get(3).getId().toString()));
         Assertions.assertTrue(firstRowElt.getText().contains(langs.get(3).getName()));
+
+        assertConfiguration(dataView.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(2)
+    @DisplayName("DataView: Switch layouts")
+    public void testSwitchLayout(Page page) {
+        // Arrange
+        DataView dataView = page.dataView;
+
+        // Assert
+        Assertions.assertEquals(DataView.Layout.LIST, dataView.getActiveLayout());
+        WebElement firstRowElt = dataView.getRowWebElement(0);
+        Assertions.assertTrue(PrimeSelenium.hasCssClass(firstRowElt, "ui-dataview-row"));
+
+        // Act
+        dataView.setActiveLayout(DataView.Layout.GRID);
+
+        // Assert
+        Assertions.assertEquals(DataView.Layout.GRID, dataView.getActiveLayout());
+        firstRowElt = dataView.getRowWebElement(0);
+        Assertions.assertTrue(PrimeSelenium.hasCssClass(firstRowElt, "ui-dataview-column"));
+
+        // Act
+        dataView.setActiveLayout(DataView.Layout.LIST);
+
+        // Assert
+        Assertions.assertEquals(DataView.Layout.LIST, dataView.getActiveLayout());
+        firstRowElt = dataView.getRowWebElement(0);
+        Assertions.assertTrue(PrimeSelenium.hasCssClass(firstRowElt, "ui-dataview-row"));
 
         assertConfiguration(dataView.getWidgetConfiguration());
     }
