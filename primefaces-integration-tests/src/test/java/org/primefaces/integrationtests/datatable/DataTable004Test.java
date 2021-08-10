@@ -28,7 +28,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Action;
@@ -134,9 +133,16 @@ public class DataTable004Test extends AbstractDataTableTest {
         page.buttonUnselect.click();
 
         // Assert (no row selected)
-        assertMessage(page, "NO ProgrammingLanguage selected", "");
+        assertMessage(page, "ProgrammingLanguage unselected via backing bean", "");
         dataTable.getRows().forEach(r -> Assertions.assertEquals("false", r.getWebElement().getAttribute("aria-selected"), "Found a selected row!"));
         Assertions.assertTrue(card.getText().contains("NO ProgrammingLanguage selected"));
+
+        // Act (submit button)
+        page.button.click();
+
+        // Assert (still no row selected)
+        assertMessage(page, "NO ProgrammingLanguage selected", "");
+
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
 

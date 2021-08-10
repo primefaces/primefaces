@@ -55,6 +55,18 @@ public class DataTable006Test extends AbstractDataTableTest {
         assertSelectAllCheckbox(dataTable, false);
         assertSelections(page.messages, "1,3");
         assertConfiguration(dataTable.getWidgetConfiguration(), true);
+
+        // Act - https://github.com/primefaces/primefaces/issues/7128
+        page.buttonUnselect.click();
+
+        // Assert
+        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("ProgrammingLanguages unselected via backing bean"));
+
+        // Act
+        page.submit.click();
+
+        // Assert
+        assertSelections(page.messages, "");
     }
 
     @Test
@@ -289,6 +301,9 @@ public class DataTable006Test extends AbstractDataTableTest {
 
         @FindBy(id = "form:button")
         CommandButton submit;
+
+        @FindBy(id = "form:buttonUnselect")
+        CommandButton buttonUnselect;
 
         @FindBy(id = "form:toggleSelectPageOnly")
         CommandButton toggleSelectPageOnly;
