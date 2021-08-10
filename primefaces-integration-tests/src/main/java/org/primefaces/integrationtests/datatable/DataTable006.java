@@ -23,10 +23,8 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import java.io.Serializable;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
+import lombok.Data;
+import org.primefaces.integrationtests.general.utilities.TestUtils;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -34,8 +32,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-
-import lombok.Data;
+import java.io.Serializable;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Named
 @ViewScoped
@@ -76,5 +76,10 @@ public class DataTable006 implements Serializable {
 
     public void toggleLazyMode() {
         setLazy(!isLazy());
+    }
+
+    public void unselectRows() {
+        selectedProgLanguages.clear();
+        TestUtils.addMessage("ProgrammingLanguages unselected via backing bean", "");
     }
 }

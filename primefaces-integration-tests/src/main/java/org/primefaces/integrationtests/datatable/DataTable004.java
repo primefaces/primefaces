@@ -63,7 +63,7 @@ public class DataTable004 implements Serializable {
 
     public void unselectRow() {
         selectedProgLanguage = null;
-        TestUtils.addMessage("NO ProgrammingLanguage selected", "");
+        TestUtils.addMessage("ProgrammingLanguage unselected via backing bean", "");
     }
 
     public void submit() {
