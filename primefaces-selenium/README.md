@@ -46,6 +46,7 @@ Currently, only the following components are implemented (partially):
 - ConfirmPopup
 - ~~DataList~~ (use DataView)
 - DataTable
+- DataView
 - DatePicker
 - Dialog
 - FileUpload  
