@@ -28,6 +28,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.integrationtests.datatable.AbstractDataTableTest;
@@ -96,6 +97,32 @@ public class DataView002Test extends AbstractDataTableTest {
 
         assertConfiguration(dataView.getWidgetConfiguration());
     }
+
+    @Test
+    @Order(2)
+    @DisplayName("DataView: Lazy: delete rows from last page - similar to https://github.com/primefaces/primefaces/issues/1921")
+    public void testLazyRowDeleteFromLastPage(Page page) {
+        // Arrange
+        DataView dataView = page.dataView;
+        Assertions.assertNotNull(dataView);
+        dataView.selectPage(dataView.getPaginator().getPages().size());
+
+        // Act & Assert
+        for (int row=3; row>1; row--) {
+            Assertions.assertEquals(row, dataView.getRowsWebElement().size());
+            PrimeSelenium.guardAjax(dataView.getRowWebElement(0).findElement(By.className("ui-button"))).click();
+            Assertions.assertEquals(9, dataView.getPaginator().getActivePage().getNumber());
+        }
+
+        // Act - delete last row on page 9
+        PrimeSelenium.guardAjax(dataView.getRowWebElement(0).findElement(By.className("ui-button"))).click();
+
+        // Assert
+        Assertions.assertEquals(8, dataView.getPaginator().getActivePage().getNumber());
+        Assertions.assertEquals(9, dataView.getRowsWebElement().size());
+
+        assertConfiguration(dataView.getWidgetConfiguration());
+    }    
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();

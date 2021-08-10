@@ -24,8 +24,10 @@
 package org.primefaces.integrationtests.dataview;
 
 import lombok.Data;
+import org.primefaces.integrationtests.datatable.ProgrammingLanguage;
 import org.primefaces.integrationtests.datatable.ProgrammingLanguageLazyDataModel;
 import org.primefaces.integrationtests.datatable.ProgrammingLanguageService;
+import org.primefaces.integrationtests.general.utilities.TestUtils;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
@@ -48,5 +50,10 @@ public class DataView002 implements Serializable {
     @PostConstruct
     public void init() {
         lazyDataModel = new ProgrammingLanguageLazyDataModel();
+    }
+
+    public void delete(ProgrammingLanguage language) {
+        lazyDataModel.delete(language);
+        TestUtils.addMessage("ProgrammingLanguage Deleted", language.getId() + " - " + language.getName());
     }
 }
