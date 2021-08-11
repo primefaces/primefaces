@@ -145,6 +145,7 @@ public class DataView extends DataViewBase {
 
     public void loadLazyData() {
         DataModel model = getDataModel();
+
         if (model instanceof LazyDataModel) {
             LazyDataModel lazyModel = (LazyDataModel) model;
 
