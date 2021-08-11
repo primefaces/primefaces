@@ -2108,6 +2108,9 @@
                         if ($this.options.onBeforeShow) {
                             $this.options.onBeforeShow.call($this);
                         }
+                        if ($this.options.onViewDateChange && $this.options.refreshLazyModel) {
+                            $this.options.onViewDateChange.call(this, null, $this.viewDate);
+                        }
 
                         $this.alignPanel();
                     },
@@ -2735,7 +2738,7 @@
         },
 
         updateViewDate: function (event, value) {
-            if (this.options.onViewDateChange) {
+            if (this.options.onViewDateChange && event) {
                 this.options.onViewDateChange.call(this, event, value);
             }
 

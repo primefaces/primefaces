@@ -205,7 +205,8 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("fractionSeparator", datePicker.getFractionSeparator(), ".")
             .attr("timeInput", datePicker.isTimeInput())
             .attr("touchable", ComponentUtils.isTouchable(context, datePicker), true)
-            .attr("lazyModel", datePicker.getModel() instanceof LazyDateMetadataModel, false);
+            .attr("lazyModel", datePicker.getModel() instanceof LazyDateMetadataModel, false)
+            .attr("refreshLazyModel", datePicker.getModel() instanceof LazyDateMetadataModel && datePicker.isRefreshLazyModel(), false);
 
         List<Integer> disabledDays = datePicker.getDisabledDays();
         if (disabledDays != null) {

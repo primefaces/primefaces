@@ -32050,6 +32050,14 @@
             <required>false</required>
             <type>org.primefaces.model.datepicker.DateMetadataModel</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether lazy meta data model should be refreshed before date panel is opened.]]>
+            </description>
+            <name>refreshLazyModel</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>

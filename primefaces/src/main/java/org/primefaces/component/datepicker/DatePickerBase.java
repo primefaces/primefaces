@@ -90,7 +90,8 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         timeInput,
         showWeek,
         weekCalculator,
-        model
+        model,
+        refreshLazyModel
     }
 
     public DatePickerBase() {
@@ -457,6 +458,14 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     public void setModel(DateMetadataModel model) {
         getStateHelper().put(PropertyKeys.model, model);
+    }
+
+    public boolean isRefreshLazyModel() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.refreshLazyModel, false);
+    }
+
+    public void setRefreshLazyModel(boolean refreshLazyModel) {
+        getStateHelper().put(PropertyKeys.refreshLazyModel, refreshLazyModel);
     }
 
     @Override
