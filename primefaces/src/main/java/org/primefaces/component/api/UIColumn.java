@@ -90,7 +90,7 @@ public interface UIColumn {
      * Used to build a valid {@link ValueExpression} using {@link UIData#getVar()} and {@link UIColumn#getField()}
      * Mostly used if sortBy and/or filterBy are not defined.
      *
-     * var="car" and field="name" -> #{car.name}
+     * var="car" and field="name" -&gt; #{car.name}
      *
      * @param context the {@link FacesContext}
      * @param var the "var" attribute of the parent table
