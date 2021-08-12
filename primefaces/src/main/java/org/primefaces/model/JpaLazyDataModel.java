@@ -106,7 +106,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
      * @param entityManager The {@link EntityManager}
      * @param converter The converter, which will be used for converting the entity to a rowKey and vice versa
      */
-    public JpaLazyDataModel(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager, Converter<T> converter) {
+    public JpaLazyDataModel(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager, Converter converter) {
         super(converter);
         this.entityClass = entityClass;
         this.entityManager = entityManager;

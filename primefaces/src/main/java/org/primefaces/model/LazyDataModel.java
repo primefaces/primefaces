@@ -41,7 +41,7 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
 
     private static final long serialVersionUID = 1L;
 
-    private Converter<T> converter;
+    private Converter converter;
 
     private int rowCount;
 
@@ -60,7 +60,7 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
      *
      * @param converter The converter used to convert rowKey to rowData and vice versa.
      */
-    public LazyDataModel(Converter<T> converter) {
+    public LazyDataModel(Converter converter) {
         this.converter = converter;
     }
 
@@ -88,7 +88,7 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
     public T getRowData(String rowKey) {
         if (converter != null) {
             FacesContext context = FacesContext.getCurrentInstance();
-            return converter.getAsObject(context, UIComponent.getCurrentComponent(context), rowKey);
+            return (T) converter.getAsObject(context, UIComponent.getCurrentComponent(context), rowKey);
         }
 
         throw new UnsupportedOperationException(
@@ -161,11 +161,11 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
         this.rowCount = rowCount;
     }
 
-    public Converter<T> getConverter() {
+    public Converter getConverter() {
         return converter;
     }
 
-    public void setConverter(Converter<T> converter) {
+    public void setConverter(Converter converter) {
         this.converter = converter;
     }
 }
