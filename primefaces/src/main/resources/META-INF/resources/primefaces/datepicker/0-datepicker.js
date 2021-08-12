@@ -1851,8 +1851,6 @@
             else {
                 this.hideOverlay();
             }
-
-            this.datepickerClick = true;
         },
 
         onPanelClick: function (event) {
