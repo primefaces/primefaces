@@ -135,7 +135,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         });
 
         $(document).off(containerEvent, this.jqTargetId).on(containerEvent, this.jqTargetId, null, function(e) {
-            if(targetWidget.isEmpty()) {
+            if(e.target.id == targetWidget.id && targetWidget.isEmpty()) {
                 menuWidget.show(e);
             }
         });
