@@ -31,7 +31,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.List;
 
 @Named
 @ViewScoped
@@ -41,7 +40,6 @@ public class DataTable002 implements Serializable {
     private static final long serialVersionUID = -7518459955779385834L;
 
     protected ProgrammingLanguageLazyDataModel lazyDataModel;
-    private List<ProgrammingLanguage> filteredProgLanguages;
 
     private ProgrammingLanguage selectedProgrammingLanguage;
 
