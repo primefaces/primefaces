@@ -31,6 +31,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.faces.convert.Converter;
+import javax.faces.model.DataModelEvent;
+import javax.faces.model.DataModelListener;
 
 /**
  * DataModel to deal with huge datasets with by lazy loading, page by page.
@@ -42,16 +44,18 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
     private static final long serialVersionUID = 1L;
 
     private Converter converter;
-
     private int rowCount;
-
     private int pageSize;
+
+    // overwrite to restore serialization support; see #7699
+    private int rowIndex = -1;
+    private List<T> data;
 
     /**
      * For serialization only
      */
     public LazyDataModel() {
-
+        super();
     }
 
     /**
@@ -61,6 +65,7 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
      * @param converter The converter used to convert rowKey to rowData and vice versa.
      */
     public LazyDataModel(Converter converter) {
+        super();
         this.converter = converter;
     }
 
@@ -116,6 +121,65 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
         return String.format(msg, getClass().getName(), clientId, viewId);
     }
 
+
+    @Override
+    public boolean isRowAvailable() {
+        if (data == null) {
+            return false;
+        }
+
+        return rowIndex >= 0 && rowIndex < data.size();
+    }
+
+    @Override
+    public T getRowData() {
+        return data.get(rowIndex);
+    }
+
+    @Override
+    public List<T> getWrappedData() {
+        return data;
+    }
+
+    @Override
+    public void setWrappedData(Object list) {
+        this.data = (List) list;
+    }
+
+    @Override
+    public int getRowIndex() {
+        return this.rowIndex;
+    }
+
+    @Override
+    public void setRowIndex(int rowIndex) {
+        int oldIndex = this.rowIndex;
+
+        if (rowIndex == -1 || pageSize == 0) {
+            this.rowIndex = -1;
+        }
+        else {
+            this.rowIndex = (rowIndex % pageSize);
+        }
+
+        if (data == null) {
+            return;
+        }
+
+        DataModelListener[] listeners = getDataModelListeners();
+        if (listeners != null && oldIndex != this.rowIndex) {
+            Object rowData = null;
+            if (isRowAvailable()) {
+                rowData = getRowData();
+            }
+
+            DataModelEvent dataModelEvent = new DataModelEvent(this, rowIndex, rowData);
+            for (int i = 0; i < listeners.length; i++) {
+                listeners[i].rowSelected(dataModelEvent);
+            }
+        }
+    }
+
     @Override
     public Iterator<T> iterator() {
         return new LazyDataModelIterator<>(this);
@@ -128,25 +192,6 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
     @Override
     public int getRowCount() {
         return rowCount;
-    }
-
-    @Override
-    public void setRowIndex(int rowIndex) {
-        if (rowIndex != -1) {
-            if (pageSize == 0) {
-                rowIndex = -1;
-            }
-            else {
-                rowIndex = rowIndex % pageSize;
-            }
-        }
-
-        super.setRowIndex(rowIndex);
-    }
-
-    @Override
-    public List<T> getWrappedData() {
-        return (List<T>) super.getWrappedData();
     }
 
     public int getPageSize() {
