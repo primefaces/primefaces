@@ -53,10 +53,6 @@
             <artifactId>poi-ooxml</artifactId>
             <exclusions>
                 <exclusion>
-                    <groupId>org.apache.commons</groupId>
-                    <artifactId>commons-compress</artifactId>
-                </exclusion>
-                <exclusion>
                     <groupId>com.github.virtuald</groupId>
                     <artifactId>curvesapi</artifactId>
                 </exclusion>
