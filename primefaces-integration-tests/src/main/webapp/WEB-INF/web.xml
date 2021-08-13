@@ -15,6 +15,10 @@
         <param-value>true</param-value>
     </context-param>
     <context-param>
+        <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+        <param-value>${javax.faces.STATE_SAVING_METHOD}</param-value>
+    </context-param>
+    <context-param>
         <param-name>primefaces.THEME</param-name>
         <param-value>${primefaces.THEME}</param-value>
     </context-param>

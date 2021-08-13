@@ -26,6 +26,7 @@
         <primefaces.THEME>saga</primefaces.THEME>
         <primefaces.UPLOADER>auto</primefaces.UPLOADER>
         <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
+        <javax.faces.STATE_SAVING_METHOD>server</javax.faces.STATE_SAVING_METHOD>
 
         <!-- dependency versions -->
         <hibernate-validator.version>6.2.0.Final</hibernate-validator.version>
@@ -248,6 +249,12 @@
                 -->
                 <excludedGroups>SafariExclude</excludedGroups>
                 <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
+            </properties>
+        </profile>
+        <profile>
+            <id>client-state-saving</id>
+            <properties>
+                <javax.faces.STATE_SAVING_METHOD>client</javax.faces.STATE_SAVING_METHOD>
             </properties>
         </profile>
         <profile>
