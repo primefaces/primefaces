@@ -33,24 +33,22 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.List;
 
 @Named
 @ViewScoped
 @Data
-public class DataTable007 implements Serializable {
+public class DataTable007Lazy implements Serializable {
 
-    private static final long serialVersionUID = -7518459955779385834L;
+    private static final long serialVersionUID = 2990776186773208159L;
 
-    private List<ProgrammingLanguage> progLanguages;
-    private List<ProgrammingLanguage> filteredProgLanguages;
+    protected ProgrammingLanguageLazyDataModel lazyDataModel;
 
     @Inject
     private ProgrammingLanguageService service;
 
     @PostConstruct
     public void init() {
-        progLanguages = service.getLangs();
+        lazyDataModel = new ProgrammingLanguageLazyDataModel();
     }
 
     public void onRowEdit(RowEditEvent<ProgrammingLanguage> event) {
@@ -64,8 +62,8 @@ public class DataTable007 implements Serializable {
     }
 
     public void onAddNew() {
-        ProgrammingLanguage entity2Add = service.create(6, "Smalltalk");
-        progLanguages.add(entity2Add);
+        ProgrammingLanguage entity2Add = service.create(99, "Smalltalk");
+        lazyDataModel.getLangs().add(entity2Add);
         FacesMessage msg = new FacesMessage("New Language added", entity2Add.getName());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }

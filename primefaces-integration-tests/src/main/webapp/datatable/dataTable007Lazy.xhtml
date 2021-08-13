@@ -14,10 +14,10 @@
         <h:form id="form">
             <p:messages id="msgs" showDetail="true"/>
 
-            <p:dataTable id="datatable" widgetVar="wgtTable" value="#{dataTable007.progLanguages}" var="lang" editable="true"
-                         filteredValue="#{dataTable007.filteredProgLanguages}">
-                <p:ajax event="rowEdit" listener="#{dataTable007.onRowEdit}" update="form:msgs"/>
-                <p:ajax event="rowEditCancel" listener="#{dataTable007.onRowCancel}" update="form:msgs"/>
+            <p:dataTable id="datatable" widgetVar="wgtTable" value="#{dataTable007Lazy.lazyDataModel}" var="lang" editable="true"
+                         paginator="true" rows="10">
+                <p:ajax event="rowEdit" listener="#{dataTable007Lazy.onRowEdit}" update="form:msgs"/>
+                <p:ajax event="rowEditCancel" listener="#{dataTable007Lazy.onRowCancel}" update="form:msgs"/>
 
                 <p:column headerText="ID" sortBy="#{lang.id}">
                     <h:outputText value="#{lang.id}"/>
@@ -44,11 +44,10 @@
             </p:dataTable>
 
             <br/>
-            <p:commandButton id="btnSubmit" value="Submit" update="@form" action="#{dataTable007.submit}"/>
+            <p:commandButton id="btnSubmit" value="Submit" update="@form" action="#{dataTable007Lazy.submit}"/>
             <p:commandButton id="btnAddRow" value="Add new row"
-                             action="#{dataTable007.onAddNew()}"
-                             oncomplete="PF('wgtTable').addRow();"
-                             process="@this" update="form:msgs" ignoreAutoUpdate="true"/>
+                             action="#{dataTable007Lazy.onAddNew()}"
+                             process="@this" update="form:msgs form:datatable" ignoreAutoUpdate="true"/>
         </h:form>
 
     </h:body>
