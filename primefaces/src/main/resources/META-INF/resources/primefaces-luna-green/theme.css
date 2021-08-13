@@ -382,12 +382,12 @@ body .ui-button.ui-button-success.ui-button-outlined, body .ui-splitbutton.ui-bu
   color: #AED581;
   border: 1px solid;
 }
-body .ui-button.ui-button-success.ui-button-outlined:enabled:hover, body .ui-splitbutton.ui-button-success > .ui-button.ui-button-outlined:enabled:hover {
+body .ui-button.ui-button-success.ui-button-outlined.ui-state-hover, body .ui-splitbutton.ui-button-success > .ui-button.ui-button-outlined.ui-state-hover {
   background: rgba(174, 213, 129, 0.04);
   color: #AED581;
   border: 1px solid;
 }
-body .ui-button.ui-button-success.ui-button-outlined:enabled:active, body .ui-splitbutton.ui-button-success > .ui-button.ui-button-outlined:enabled:active {
+body .ui-button.ui-button-success.ui-button-outlined.ui-state-active, body .ui-splitbutton.ui-button-success > .ui-button.ui-button-outlined.ui-state-active {
   background: rgba(174, 213, 129, 0.16);
   color: #AED581;
   border: 1px solid;
@@ -397,12 +397,12 @@ body .ui-button.ui-button-success.ui-button-flat, body .ui-splitbutton.ui-button
   color: #AED581;
   border-color: transparent;
 }
-body .ui-button.ui-button-success.ui-button-flat:enabled:hover, body .ui-splitbutton.ui-button-success > .ui-button.ui-button-flat:enabled:hover {
+body .ui-button.ui-button-success.ui-button-flat.ui-state-hover, body .ui-splitbutton.ui-button-success > .ui-button.ui-button-flat.ui-state-hover {
   background: rgba(174, 213, 129, 0.04);
   border-color: transparent;
   color: #AED581;
 }
-body .ui-button.ui-button-success.ui-button-flat:enabled:active, body .ui-splitbutton.ui-button-success > .ui-button.ui-button-flat:enabled:active {
+body .ui-button.ui-button-success.ui-button-flat.ui-state-active, body .ui-splitbutton.ui-button-success > .ui-button.ui-button-flat.ui-state-active {
   background: rgba(174, 213, 129, 0.16);
   border-color: transparent;
   color: #AED581;
@@ -430,12 +430,12 @@ body .ui-button.ui-button-warning.ui-button-outlined, body .ui-splitbutton.ui-bu
   color: #FFB74D;
   border: 1px solid;
 }
-body .ui-button.ui-button-warning.ui-button-outlined:enabled:hover, body .ui-splitbutton.ui-button-warning > .ui-button.ui-button-outlined:enabled:hover {
+body .ui-button.ui-button-warning.ui-button-outlined.ui-state-hover, body .ui-splitbutton.ui-button-warning > .ui-button.ui-button-outlined.ui-state-hover {
   background: rgba(255, 183, 77, 0.04);
   color: #FFB74D;
   border: 1px solid;
 }
-body .ui-button.ui-button-warning.ui-button-outlined:enabled:active, body .ui-splitbutton.ui-button-warning > .ui-button.ui-button-outlined:enabled:active {
+body .ui-button.ui-button-warning.ui-button-outlined.ui-state-active, body .ui-splitbutton.ui-button-warning > .ui-button.ui-button-outlined.ui-state-active {
   background: rgba(255, 183, 77, 0.16);
   color: #FFB74D;
   border: 1px solid;
@@ -445,12 +445,12 @@ body .ui-button.ui-button-warning.ui-button-flat, body .ui-splitbutton.ui-button
   color: #FFB74D;
   border-color: transparent;
 }
-body .ui-button.ui-button-warning.ui-button-flat:enabled:hover, body .ui-splitbutton.ui-button-warning > .ui-button.ui-button-flat:enabled:hover {
+body .ui-button.ui-button-warning.ui-button-flat.ui-state-hover, body .ui-splitbutton.ui-button-warning > .ui-button.ui-button-flat.ui-state-hover {
   background: rgba(255, 183, 77, 0.04);
   border-color: transparent;
   color: #FFB74D;
 }
-body .ui-button.ui-button-warning.ui-button-flat:enabled:active, body .ui-splitbutton.ui-button-warning > .ui-button.ui-button-flat:enabled:active {
+body .ui-button.ui-button-warning.ui-button-flat.ui-state-active, body .ui-splitbutton.ui-button-warning > .ui-button.ui-button-flat.ui-state-active {
   background: rgba(255, 183, 77, 0.16);
   border-color: transparent;
   color: #FFB74D;
@@ -478,12 +478,12 @@ body .ui-button.ui-button-help.ui-button-outlined, body .ui-splitbutton.ui-butto
   color: #CE93D8;
   border: 1px solid;
 }
-body .ui-button.ui-button-help.ui-button-outlined:enabled:hover, body .ui-splitbutton.ui-button-help > .ui-button.ui-button-outlined:enabled:hover {
+body .ui-button.ui-button-help.ui-button-outlined.ui-state-hover, body .ui-splitbutton.ui-button-help > .ui-button.ui-button-outlined.ui-state-hover {
   background: rgba(206, 147, 216, 0.04);
   color: #CE93D8;
   border: 1px solid;
 }
-body .ui-button.ui-button-help.ui-button-outlined:enabled:active, body .ui-splitbutton.ui-button-help > .ui-button.ui-button-outlined:enabled:active {
+body .ui-button.ui-button-help.ui-button-outlined.ui-state-active, body .ui-splitbutton.ui-button-help > .ui-button.ui-button-outlined.ui-state-active {
   background: rgba(206, 147, 216, 0.16);
   color: #CE93D8;
   border: 1px solid;
@@ -493,12 +493,12 @@ body .ui-button.ui-button-help.ui-button-flat, body .ui-splitbutton.ui-button-he
   color: #CE93D8;
   border-color: transparent;
 }
-body .ui-button.ui-button-help.ui-button-flat:enabled:hover, body .ui-splitbutton.ui-button-help > .ui-button.ui-button-flat:enabled:hover {
+body .ui-button.ui-button-help.ui-button-flat.ui-state-hover, body .ui-splitbutton.ui-button-help > .ui-button.ui-button-flat.ui-state-hover {
   background: rgba(206, 147, 216, 0.04);
   border-color: transparent;
   color: #CE93D8;
 }
-body .ui-button.ui-button-help.ui-button-flat:enabled:active, body .ui-splitbutton.ui-button-help > .ui-button.ui-button-flat:enabled:active {
+body .ui-button.ui-button-help.ui-button-flat.ui-state-active, body .ui-splitbutton.ui-button-help > .ui-button.ui-button-flat.ui-state-active {
   background: rgba(206, 147, 216, 0.16);
   border-color: transparent;
   color: #CE93D8;
@@ -526,12 +526,12 @@ body .ui-button.ui-button-info.ui-button-outlined, body .ui-splitbutton.ui-butto
   color: #4FC3F7;
   border: 1px solid;
 }
-body .ui-button.ui-button-info.ui-button-outlined:enabled:hover, body .ui-splitbutton.ui-button-info > .ui-button.ui-button-outlined:enabled:hover {
+body .ui-button.ui-button-info.ui-button-outlined.ui-state-hover, body .ui-splitbutton.ui-button-info > .ui-button.ui-button-outlined.ui-state-hover {
   background: rgba(79, 195, 247, 0.04);
   color: #4FC3F7;
   border: 1px solid;
 }
-body .ui-button.ui-button-info.ui-button-outlined:enabled:active, body .ui-splitbutton.ui-button-info > .ui-button.ui-button-outlined:enabled:active {
+body .ui-button.ui-button-info.ui-button-outlined.ui-state-active, body .ui-splitbutton.ui-button-info > .ui-button.ui-button-outlined.ui-state-active {
   background: rgba(79, 195, 247, 0.16);
   color: #4FC3F7;
   border: 1px solid;
@@ -541,12 +541,12 @@ body .ui-button.ui-button-info.ui-button-flat, body .ui-splitbutton.ui-button-in
   color: #4FC3F7;
   border-color: transparent;
 }
-body .ui-button.ui-button-info.ui-button-flat:enabled:hover, body .ui-splitbutton.ui-button-info > .ui-button.ui-button-flat:enabled:hover {
+body .ui-button.ui-button-info.ui-button-flat.ui-state-hover, body .ui-splitbutton.ui-button-info > .ui-button.ui-button-flat.ui-state-hover {
   background: rgba(79, 195, 247, 0.04);
   border-color: transparent;
   color: #4FC3F7;
 }
-body .ui-button.ui-button-info.ui-button-flat:enabled:active, body .ui-splitbutton.ui-button-info > .ui-button.ui-button-flat:enabled:active {
+body .ui-button.ui-button-info.ui-button-flat.ui-state-active, body .ui-splitbutton.ui-button-info > .ui-button.ui-button-flat.ui-state-active {
   background: rgba(79, 195, 247, 0.16);
   border-color: transparent;
   color: #4FC3F7;
@@ -574,12 +574,12 @@ body .ui-button.ui-button-danger.ui-button-outlined, body .ui-splitbutton.ui-but
   color: #E57373;
   border: 1px solid;
 }
-body .ui-button.ui-button-danger.ui-button-outlined:enabled:hover, body .ui-splitbutton.ui-button-danger > .ui-button.ui-button-outlined:enabled:hover {
+body .ui-button.ui-button-danger.ui-button-outlined.ui-state-hover, body .ui-splitbutton.ui-button-danger > .ui-button.ui-button-outlined.ui-state-hover {
   background: rgba(229, 115, 115, 0.04);
   color: #E57373;
   border: 1px solid;
 }
-body .ui-button.ui-button-danger.ui-button-outlined:enabled:active, body .ui-splitbutton.ui-button-danger > .ui-button.ui-button-outlined:enabled:active {
+body .ui-button.ui-button-danger.ui-button-outlined.ui-state-active, body .ui-splitbutton.ui-button-danger > .ui-button.ui-button-outlined.ui-state-active {
   background: rgba(229, 115, 115, 0.16);
   color: #E57373;
   border: 1px solid;
@@ -589,12 +589,12 @@ body .ui-button.ui-button-danger.ui-button-flat, body .ui-splitbutton.ui-button-
   color: #E57373;
   border-color: transparent;
 }
-body .ui-button.ui-button-danger.ui-button-flat:enabled:hover, body .ui-splitbutton.ui-button-danger > .ui-button.ui-button-flat:enabled:hover {
+body .ui-button.ui-button-danger.ui-button-flat.ui-state-hover, body .ui-splitbutton.ui-button-danger > .ui-button.ui-button-flat.ui-state-hover {
   background: rgba(229, 115, 115, 0.04);
   border-color: transparent;
   color: #E57373;
 }
-body .ui-button.ui-button-danger.ui-button-flat:enabled:active, body .ui-splitbutton.ui-button-danger > .ui-button.ui-button-flat:enabled:active {
+body .ui-button.ui-button-danger.ui-button-flat.ui-state-active, body .ui-splitbutton.ui-button-danger > .ui-button.ui-button-flat.ui-state-active {
   background: rgba(229, 115, 115, 0.16);
   border-color: transparent;
   color: #E57373;
@@ -2931,6 +2931,7 @@ body .ui-colorpicker .ui-button {
 }
 body .ui-fluid .ui-colorpicker .ui-button {
   width: auto;
+  min-width: auto;
 }
 
 body .ui-datepicker {
@@ -3276,6 +3277,11 @@ body .ui-inplace .ui-inplace-display.ui-state-highlight {
   color: #dedede;
   transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
+body .ui-inplace .ui-inplace-display.ui-state-focus {
+  border-color: #C5E1A5;
+  outline: 0 none;
+  box-shadow: 0 0 0.1rem white;
+}
 body .ui-inplace .ui-inplace-save .ui-icon {
   font-family: "primeicons" !important;
   font-style: normal;
@@ -3422,29 +3428,27 @@ body .ui-inputgroup .ui-inputgroup-addon-checkbox:last-child {
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px;
 }
-body .ui-inputgroup button:first-child, body .ui-inputgroup input:first-child {
+body .ui-inputgroup button:first-child, body .ui-inputgroup input:first-child, body .ui-inputgroup textarea:first-child {
   border-top-left-radius: 3px;
   border-bottom-left-radius: 3px;
 }
-body .ui-inputgroup .ui-float-label:first-child input {
+body .ui-inputgroup .ui-float-label:first-child input,
+body .ui-inputgroup .ui-float-label:first-child textarea {
   border-top-left-radius: 3px;
   border-bottom-left-radius: 3px;
 }
-body .ui-inputgroup button:last-child, body .ui-inputgroup input:last-child {
+body .ui-inputgroup button:last-child, body .ui-inputgroup input:last-child, body .ui-inputgroup textarea:last-child {
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px;
 }
-body .ui-inputgroup .ui-float-label:last-child input {
+body .ui-inputgroup .ui-float-label:last-child input,
+body .ui-inputgroup .ui-float-label:last-child textarea {
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px;
 }
 body .ui-inputgroup > .ui-widget,
 body .ui-inputgroup > .ui-float-label > .ui-widget {
   border-radius: 0;
-}
-body .ui-inputgroup > .ui-widget + .ui-inputgroup-addon,
-body .ui-inputgroup > .ui-float-label > .ui-widget + .ui-inputgroup-addon {
-  border-left: 0 none;
 }
 body .ui-inputgroup .ui-inputgroup-addon-checkbox {
   padding: 0;
@@ -3614,6 +3618,7 @@ body .ui-password-panel {
   width: auto;
   min-width: 150px;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+  border-radius: 3px;
 }
 
 body .ui-radiobutton {
@@ -3818,16 +3823,16 @@ body .ui-selectcheckboxmenu .ui-selectcheckboxmenu-trigger .ui-icon {
 body .ui-selectcheckboxmenu .ui-selectcheckboxmenu-trigger .ui-icon:before {
   content: "";
 }
-body .ui-selectcheckboxmenu.ui-state-hover:not(.ui-state-error) {
+body .ui-selectcheckboxmenu.ui-state-error {
+  border-color: #e57373;
+}
+body .ui-selectcheckboxmenu.ui-state-hover {
   border-color: #C5E1A5;
 }
-body .ui-selectcheckboxmenu.ui-state-focus:not(.ui-state-error) {
+body .ui-selectcheckboxmenu.ui-state-focus {
   border-color: #C5E1A5;
   outline: 0 none;
   box-shadow: 0 0 0.1rem white;
-}
-body .ui-selectcheckboxmenu.ui-state-error {
-  border-color: #e57373;
 }
 body .ui-selectcheckboxmenu .ui-selectcheckboxmenu-multiple-container.ui-inputfield {
   padding: 0.429rem 0.429rem;
@@ -4089,7 +4094,7 @@ body.ui-input-filled .ui-selectmanymenu.ui-inputfield {
 }
 
 body .ui-selectonemenu {
-  vertical-align: baseline;
+  vertical-align: middle;
   border: 1px solid #4b4b4b;
   position: relative;
   transform: none;
@@ -4133,16 +4138,16 @@ body .ui-selectonemenu .ui-selectonemenu-trigger .ui-icon {
 body .ui-selectonemenu .ui-selectonemenu-trigger .ui-icon:before {
   content: "";
 }
-body .ui-selectonemenu.ui-state-hover:not(.ui-state-error) {
+body .ui-selectonemenu.ui-state-error {
+  border-color: #e57373;
+}
+body .ui-selectonemenu.ui-state-hover {
   border-color: #C5E1A5;
 }
-body .ui-selectonemenu.ui-state-focus:not(.ui-state-error) {
+body .ui-selectonemenu.ui-state-focus {
   border-color: #C5E1A5;
   outline: 0 none;
   box-shadow: 0 0 0.1rem white;
-}
-body .ui-selectonemenu.ui-state-error {
-  border-color: #e57373;
 }
 body .ui-fluid .ui-selectonemenu-label {
   width: calc(100% - 2.357rem);
@@ -4235,6 +4240,7 @@ body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-s
 body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-state-highlight {
   background: #C5E1A5;
   color: #212529;
+  overflow: auto;
 }
 body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item-group {
   background: #191919;
@@ -4286,8 +4292,10 @@ body .ui-spinner .ui-spinner-input {
   padding-right: 2.857rem;
 }
 body .ui-spinner .ui-spinner-button.ui-button {
+  position: absolute;
   border-radius: 0;
   width: 2.357rem;
+  z-index: 1;
 }
 body .ui-spinner .ui-spinner-button.ui-button .ui-icon {
   position: absolute;
@@ -4667,7 +4675,10 @@ body .ui-menu .ui-menu-list .ui-menuitem.ui-state-hover > .ui-menuitem-link .ui-
 body .ui-menu .ui-menu-list .ui-menuitem.ui-menuitem-active > .ui-menuitem-link {
   background: #4c4c4c;
 }
-body .ui-menu .ui-menu-list .ui-menuitem.ui-menuitem-active > .ui-menuitem-link .ui-menuitem-text, body .ui-menu .ui-menu-list .ui-menuitem.ui-menuitem-active > .ui-menuitem-link .ui-menuitem-icon, body .ui-menu .ui-menu-list .ui-menuitem.ui-menuitem-active > .ui-menuitem-link .ui-icon {
+body .ui-menu .ui-menu-list .ui-menuitem.ui-menuitem-active > .ui-menuitem-link .ui-menuitem-text {
+  color: #dedede;
+}
+body .ui-menu .ui-menu-list .ui-menuitem.ui-menuitem-active > .ui-menuitem-link .ui-menuitem-icon, body .ui-menu .ui-menu-list .ui-menuitem.ui-menuitem-active > .ui-menuitem-link .ui-icon {
   color: #dedede;
 }
 body .ui-menu .ui-menu-list .ui-menu-child {
