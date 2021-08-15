@@ -31,6 +31,7 @@ import java.time.ZoneId;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractInputComponent;
@@ -129,6 +130,26 @@ public abstract class DatePicker extends AbstractInputComponent {
         }
         link.click();
         return link;
+    }
+
+    public void toggleMonthDropdown() {
+        WebElement monthDropDown = showPanel().findElement(By.cssSelector("select.ui-datepicker-month"));
+        monthDropDown.click();
+    }
+
+    public void selectMonthDropdown(int month) {
+        Select monthDropDown = new Select(showPanel().findElement(By.cssSelector("select.ui-datepicker-month")));
+        monthDropDown.selectByValue(Integer.toString(month));
+    }
+
+    public void toggleYearDropdown() {
+        WebElement yearDropDown = showPanel().findElement(By.cssSelector("select.ui-datepicker-year"));
+        yearDropDown.click();
+    }
+
+    public void selectYearDropdown(int year) {
+        Select yearDropDown = new Select(showPanel().findElement(By.cssSelector("select.ui-datepicker-year")));
+        yearDropDown.selectByValue(Integer.toString(year));
     }
 
     /**
