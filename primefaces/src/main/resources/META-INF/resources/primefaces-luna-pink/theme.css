@@ -3386,9 +3386,6 @@ body .ui-inputfield {
   -webkit-appearance: none;
   appearance: none;
 }
-body .ui-inputfield.ui-state-error {
-  border-color: #e57373;
-}
 body .ui-inputfield.ui-state-hover {
   border-color: #F48FB1;
 }
@@ -3396,6 +3393,9 @@ body .ui-inputfield.ui-state-focus {
   border-color: #F48FB1;
   outline: 0 none;
   box-shadow: 0 0 0.1rem white;
+}
+body .ui-inputfield.ui-state-error {
+  border-color: #e57373;
 }
 body .ui-input-filled .ui-inputfield, body.ui-input-filled .ui-inputfield {
   background-color: #4b4b4b;
@@ -3449,6 +3449,14 @@ body .ui-inputgroup .ui-float-label:last-child textarea {
 body .ui-inputgroup > .ui-widget,
 body .ui-inputgroup > .ui-float-label > .ui-widget {
   border-radius: 0;
+}
+body .ui-inputgroup > .ui-widget.ui-state-focus,
+body .ui-inputgroup > .ui-float-label > .ui-widget.ui-state-focus {
+  z-index: 1;
+}
+body .ui-inputgroup > .ui-widget.ui-state-focus ~ label,
+body .ui-inputgroup > .ui-float-label > .ui-widget.ui-state-focus ~ label {
+  z-index: 1;
 }
 body .ui-inputgroup .ui-inputgroup-addon-checkbox {
   padding: 0;
@@ -3823,9 +3831,6 @@ body .ui-selectcheckboxmenu .ui-selectcheckboxmenu-trigger .ui-icon {
 body .ui-selectcheckboxmenu .ui-selectcheckboxmenu-trigger .ui-icon:before {
   content: "";
 }
-body .ui-selectcheckboxmenu.ui-state-error {
-  border-color: #e57373;
-}
 body .ui-selectcheckboxmenu.ui-state-hover {
   border-color: #F48FB1;
 }
@@ -3833,6 +3838,9 @@ body .ui-selectcheckboxmenu.ui-state-focus {
   border-color: #F48FB1;
   outline: 0 none;
   box-shadow: 0 0 0.1rem white;
+}
+body .ui-selectcheckboxmenu.ui-state-error {
+  border-color: #e57373;
 }
 body .ui-selectcheckboxmenu .ui-selectcheckboxmenu-multiple-container.ui-inputfield {
   padding: 0.429rem 0.429rem;
@@ -4138,9 +4146,6 @@ body .ui-selectonemenu .ui-selectonemenu-trigger .ui-icon {
 body .ui-selectonemenu .ui-selectonemenu-trigger .ui-icon:before {
   content: "";
 }
-body .ui-selectonemenu.ui-state-error {
-  border-color: #e57373;
-}
 body .ui-selectonemenu.ui-state-hover {
   border-color: #F48FB1;
 }
@@ -4148,6 +4153,9 @@ body .ui-selectonemenu.ui-state-focus {
   border-color: #F48FB1;
   outline: 0 none;
   box-shadow: 0 0 0.1rem white;
+}
+body .ui-selectonemenu.ui-state-error {
+  border-color: #e57373;
 }
 body .ui-fluid .ui-selectonemenu-label {
   width: calc(100% - 2.357rem);

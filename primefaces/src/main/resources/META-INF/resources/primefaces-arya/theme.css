@@ -3383,9 +3383,6 @@ body .ui-inputfield {
   -webkit-appearance: none;
   appearance: none;
 }
-body .ui-inputfield.ui-state-error {
-  border-color: #ef9a9a;
-}
 body .ui-inputfield.ui-state-hover {
   border-color: #90CAF9;
 }
@@ -3393,6 +3390,9 @@ body .ui-inputfield.ui-state-focus {
   border-color: #90CAF9;
   outline: 0 none;
   box-shadow: 0 0 0 1px #b1dafb;
+}
+body .ui-inputfield.ui-state-error {
+  border-color: #ef9a9a;
 }
 body .ui-input-filled .ui-inputfield, body.ui-input-filled .ui-inputfield {
   background-color: #383838;
@@ -3446,6 +3446,14 @@ body .ui-inputgroup .ui-float-label:last-child textarea {
 body .ui-inputgroup > .ui-widget,
 body .ui-inputgroup > .ui-float-label > .ui-widget {
   border-radius: 0;
+}
+body .ui-inputgroup > .ui-widget.ui-state-focus,
+body .ui-inputgroup > .ui-float-label > .ui-widget.ui-state-focus {
+  z-index: 1;
+}
+body .ui-inputgroup > .ui-widget.ui-state-focus ~ label,
+body .ui-inputgroup > .ui-float-label > .ui-widget.ui-state-focus ~ label {
+  z-index: 1;
 }
 body .ui-inputgroup .ui-inputgroup-addon-checkbox {
   padding: 0;
@@ -3817,9 +3825,6 @@ body .ui-selectcheckboxmenu .ui-selectcheckboxmenu-trigger .ui-icon {
 body .ui-selectcheckboxmenu .ui-selectcheckboxmenu-trigger .ui-icon:before {
   content: "";
 }
-body .ui-selectcheckboxmenu.ui-state-error {
-  border-color: #ef9a9a;
-}
 body .ui-selectcheckboxmenu.ui-state-hover {
   border-color: #90CAF9;
 }
@@ -3827,6 +3832,9 @@ body .ui-selectcheckboxmenu.ui-state-focus {
   border-color: #90CAF9;
   outline: 0 none;
   box-shadow: 0 0 0 1px #b1dafb;
+}
+body .ui-selectcheckboxmenu.ui-state-error {
+  border-color: #ef9a9a;
 }
 body .ui-selectcheckboxmenu .ui-selectcheckboxmenu-multiple-container.ui-inputfield {
   padding: 0.5rem 0.5rem;
@@ -4132,9 +4140,6 @@ body .ui-selectonemenu .ui-selectonemenu-trigger .ui-icon {
 body .ui-selectonemenu .ui-selectonemenu-trigger .ui-icon:before {
   content: "";
 }
-body .ui-selectonemenu.ui-state-error {
-  border-color: #ef9a9a;
-}
 body .ui-selectonemenu.ui-state-hover {
   border-color: #90CAF9;
 }
@@ -4142,6 +4147,9 @@ body .ui-selectonemenu.ui-state-focus {
   border-color: #90CAF9;
   outline: 0 none;
   box-shadow: 0 0 0 1px #b1dafb;
+}
+body .ui-selectonemenu.ui-state-error {
+  border-color: #ef9a9a;
 }
 body .ui-fluid .ui-selectonemenu-label {
   width: calc(100% - 2.357rem);
