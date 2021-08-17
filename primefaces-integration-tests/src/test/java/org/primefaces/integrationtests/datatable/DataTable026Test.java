@@ -109,6 +109,119 @@ public class DataTable026Test extends AbstractDataTableTest {
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
+    @Test
+    @Order(5)
+    @DisplayName("DataTable: filter: equals")
+    public void testFilterEquals(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+
+        // Act
+        dataTable.filter("ID equals", "5");
+
+        // Assert
+        List<Employee> employeesFiltered = employees.stream().filter(e -> e.getId()==5).collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(6)
+    @DisplayName("DataTable: filter: startsWith")
+    public void testFilterStartsWith(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+
+        // Act
+        dataTable.filter("last name startsWith", "Ma");
+
+        // Assert
+        List<Employee> employeesFiltered = employees.stream().filter(e -> e.getLastName().startsWith("Ma")).collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act
+        dataTable.filter("last name startsWith", "Mas");
+
+        // Assert
+        employeesFiltered = employees.stream().filter(e -> e.getLastName().startsWith("Mas")).collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(7)
+    @DisplayName("DataTable: filter: endsWith")
+    public void testFilterEndsWith(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+
+        // Act
+        dataTable.filter("last name endsWith", "er");
+
+        // Assert
+        List<Employee> employeesFiltered = employees.stream().filter(e -> e.getLastName().endsWith("er")).collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act
+        dataTable.filter("last name endsWith", "yer");
+
+        // Assert
+        employeesFiltered = employees.stream().filter(e -> e.getLastName().endsWith("yer")).collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(8)
+    @DisplayName("DataTable: filter: contains")
+    public void testFilterContains(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+
+        // Act
+        dataTable.filter("last name contains", "s");
+
+        // Assert
+        List<Employee> employeesFiltered = employees.stream().filter(e -> e.getLastName().contains("s")).collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act
+        dataTable.filter("last name contains", "sh");
+
+        // Assert
+        employeesFiltered = employees.stream().filter(e -> e.getLastName().contains("sh")).collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(9)
+    @DisplayName("DataTable: filter: exact")
+    public void testFilterExact(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+
+        // Act
+        dataTable.filter("last name exact", "Mayer");
+
+        // Assert
+        List<Employee> employeesFiltered = employees.stream().filter(e -> e.getLastName().equalsIgnoreCase("Mayer")).collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act
+        dataTable.filter("last name exact", "Mayr");
+
+        // Assert
+        employeesFiltered = employees.stream().filter(e -> e.getLastName().equalsIgnoreCase("Mayr")).collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
