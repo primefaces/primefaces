@@ -35,6 +35,7 @@ import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.DatePicker;
+import org.primefaces.selenium.component.SelectManyMenu;
 import org.primefaces.selenium.component.model.datatable.Row;
 
 import java.time.LocalDate;
@@ -226,11 +227,42 @@ public class DataTable026Test extends AbstractDataTableTest {
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
-
     @Test
     @Order(10)
-    @DisplayName("DataTable: filter: range")
-    public void testFilterRange(Page page) {
+    @DisplayName("DataTable: filter: in")
+    public void testFilterIn(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+
+        // Act
+        page.roleFilter.deselect(Employee.Role.MANAGER.toString());
+        page.roleFilter.deselect(Employee.Role.SALES.toString());
+        page.roleFilter.deselect(Employee.Role.FINANCE.toString());
+        page.roleFilter.deselect(Employee.Role.HR.toString());
+        page.roleFilter.deselect(Employee.Role.QS.toString());
+
+        // Assert
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> e.getRole()==Employee.Role.DEVELOPER)
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act
+        page.roleFilter.select(Employee.Role.QS.toString(), true);
+
+        // Assert
+        employeesFiltered = employees.stream()
+                .filter(e -> e.getRole()==Employee.Role.DEVELOPER || e.getRole()==Employee.Role.QS)
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(98) //must be executed after all other tests because this one causes JS-errors
+    @DisplayName("DataTable: filter: range (part 1)")
+    public void testFilterRange1(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
 
@@ -244,24 +276,29 @@ public class DataTable026Test extends AbstractDataTableTest {
                 .collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 
-        // Act
-        page.birthdateRangeFilter.getInput().sendKeys("12/25/1969 - 1/3/1970");
-        PrimeSelenium.guardAjax(page.birthdateRangeFilter.getInput()).sendKeys(Keys.TAB);
-
-        // Assert
-        employeesFiltered = employees.stream()
-                .filter(e -> e.getBirthDate().isAfter(LocalDate.of(1969, 12, 24)) && e.getBirthDate().isBefore(LocalDate.of(1970,1, 4)))
-                .collect(Collectors.toList());
-
         // Setting range via Selenium (sendKeys) causes JS-errors. So we don´t check for them.
 //        assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     @Test
-    @Order(11)
-    @DisplayName("DataTable: filter: in")
-    public void testFilterIn(Page page) {
-        //
+    @Order(99) //must be executed after all other tests because this one causes JS-errors
+    @DisplayName("DataTable: filter: range (part 2)")
+    public void testFilterRange2(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+
+        // Act
+        page.birthdateRangeFilter.getInput().sendKeys("12/25/1969 - 1/3/1970");
+        PrimeSelenium.guardAjax(page.birthdateRangeFilter.getInput()).sendKeys(Keys.TAB);
+
+        // Assert
+        List<Employee> employeesFiltered = employeesFiltered = employees.stream()
+                .filter(e -> e.getBirthDate().isAfter(LocalDate.of(1969, 12, 24)) && e.getBirthDate().isBefore(LocalDate.of(1970,1, 4)))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Setting range via Selenium (sendKeys) causes JS-errors. So we don´t check for them.
+//        assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
@@ -283,6 +320,9 @@ public class DataTable026Test extends AbstractDataTableTest {
 
         @FindBy(id = "form:datatable:birthdateRangeFilter")
         DatePicker birthdateRangeFilter;
+
+        @FindBy(id = "form:datatable:roleFilter")
+        SelectManyMenu roleFilter;
 
         @Override
         public String getLocation() {

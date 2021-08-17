@@ -44,12 +44,17 @@ public class DataTable026 implements Serializable {
     private List<Employee> employees;
     private List<Employee> filteredEmployees;
 
+    private Employee.Role[] roles;
+    private Employee.Role[] selectedRoles;
+
     @Inject
     private EmployeeService service;
 
     @PostConstruct
     public void init() {
         employees = service.getEmployees();
+        roles = Employee.Role.values();
+        selectedRoles = Employee.Role.values();
     }
 
     public void resetTable() {

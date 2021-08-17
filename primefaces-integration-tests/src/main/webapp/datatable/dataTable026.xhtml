@@ -33,7 +33,13 @@
                     </f:facet>
                 </p:column>
                 <p:column field="salary" filterMatchMode="gt"/>
-                <p:column field="role" filterMatchMode="in"/>
+                <p:column field="role" filterMatchMode="in">
+                    <f:facet name="filter">
+                        <p:selectManyMenu onchange="PF('wgtTable').filter()" id="roleFilter" value="#{dataTable026.selectedRoles}">
+                            <f:selectItems value="#{dataTable026.roles}" />
+                        </p:selectManyMenu>
+                    </f:facet>
+                </p:column>
 
             </p:dataTable>
 
