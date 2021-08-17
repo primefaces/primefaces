@@ -28,12 +28,16 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
+import org.primefaces.selenium.component.DatePicker;
 import org.primefaces.selenium.component.model.datatable.Row;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -222,6 +226,44 @@ public class DataTable026Test extends AbstractDataTableTest {
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
+
+    @Test
+    @Order(10)
+    @DisplayName("DataTable: filter: range")
+    public void testFilterRange(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+
+        // Act
+        page.birthdateRangeFilter.getInput().sendKeys("1/1/1970 - 1/5/1970");
+        PrimeSelenium.guardAjax(page.birthdateRangeFilter.getInput()).sendKeys(Keys.TAB);
+
+        // Assert
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> e.getBirthDate().isAfter(LocalDate.of(1969, 12, 31)) && e.getBirthDate().isBefore(LocalDate.of(1970,1, 6)))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act
+        page.birthdateRangeFilter.getInput().sendKeys("12/25/1969 - 1/3/1970");
+        PrimeSelenium.guardAjax(page.birthdateRangeFilter.getInput()).sendKeys(Keys.TAB);
+
+        // Assert
+        employeesFiltered = employees.stream()
+                .filter(e -> e.getBirthDate().isAfter(LocalDate.of(1969, 12, 24)) && e.getBirthDate().isBefore(LocalDate.of(1970,1, 4)))
+                .collect(Collectors.toList());
+
+        // Setting range via Selenium (sendKeys) causes JS-errors. So we don´t check for them.
+//        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(11)
+    @DisplayName("DataTable: filter: in")
+    public void testFilterIn(Page page) {
+        //
+    }
+
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
@@ -238,6 +280,9 @@ public class DataTable026Test extends AbstractDataTableTest {
 
         @FindBy(id = "form:buttonResetTable")
         CommandButton buttonResetTable;
+
+        @FindBy(id = "form:datatable:birthdateRangeFilter")
+        DatePicker birthdateRangeFilter;
 
         @Override
         public String getLocation() {
