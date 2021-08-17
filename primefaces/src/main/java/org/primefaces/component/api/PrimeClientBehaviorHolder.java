@@ -27,7 +27,9 @@ import java.util.Map;
 
 import javax.faces.event.BehaviorEvent;
 
-public interface PrimeClientBehaviorHolder {
+import java.io.Serializable;
+
+public interface PrimeClientBehaviorHolder extends Serializable {
 
     Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping();
 }
