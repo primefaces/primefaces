@@ -29,6 +29,6 @@ public class GreaterThanEqualsFilterConstraint extends ComparableFilterConstrain
 
     @Override
     protected BiPredicate<String, String> getPredicate() {
-        return (o1, o2) -> o1.compareTo(o2) == 0;
+        return (o1, o2) -> o1.compareTo(o2) >= 0;
     }
 }
