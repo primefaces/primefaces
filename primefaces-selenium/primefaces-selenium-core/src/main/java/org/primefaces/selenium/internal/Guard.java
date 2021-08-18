@@ -141,7 +141,7 @@ public class Guard {
     }
 
     private static void waitUntilAjaxCompletes(WebDriver driver) {
-        WebDriverWait wait = new WebDriverWait(driver, ConfigProvider.getInstance().getAjaxTimeout(), 100);
+        WebDriverWait wait = new WebDriverWait(driver, ConfigProvider.getInstance().getAjaxTimeout(), 50);
         wait.until(d -> {
             return (Boolean) ((JavascriptExecutor) driver)
                         .executeScript("return document.readyState === 'complete'"
