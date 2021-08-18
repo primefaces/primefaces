@@ -21,14 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model.filter;
+package org.primefaces.integrationtests.datatable;
 
-import java.util.function.BiPredicate;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-public class GreaterThanEqualsFilterConstraint extends ComparableFilterConstraint {
+import java.io.Serializable;
+import java.time.LocalDate;
 
-    @Override
-    protected BiPredicate<String, String> getPredicate() {
-        return (o1, o2) -> o1.compareTo(o2) >= 0;
-    }
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Employee implements Serializable {
+    private static final long serialVersionUID = 4840835873002977452L;
+    private Integer id;
+    private String firstName;
+    private String lastName;
+    private LocalDate birthDate;
+    private Integer salary;
+    private Role role;
+
+    public enum Role { MANAGER, HR, DEVELOPER, QS, SALES, FINANCE };
 }

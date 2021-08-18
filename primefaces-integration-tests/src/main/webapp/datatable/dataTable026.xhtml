@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:dataTable id="datatable" widgetVar="wgtTable" value="#{dataTable026.employees}" var="employee"
+                         filteredValue="#{dataTable026.filteredEmployees}" filterEvent="enter">
+
+                <p:column headerText="ID lt" field="id" filterMatchMode="lt"/>
+                <p:column headerText="ID lte" field="id" filterMatchMode="lte"/>
+                <p:column headerText="ID gt" field="id" filterMatchMode="gt"/>
+                <p:column headerText="ID gte" field="id" filterMatchMode="gte"/>
+                <p:column headerText="ID equals" field="id" filterMatchMode="equals"/>
+                <p:column headerText="first name" field="firstName" filterMatchMode="contains"/>
+                <p:column headerText="last name startsWith" field="lastName" filterMatchMode="startsWith"/>
+                <p:column headerText="last name endsWith" field="lastName" filterMatchMode="endsWith"/>
+                <p:column headerText="last name contains" field="lastName" filterMatchMode="contains"/>
+                <p:column headerText="last name exact" field="lastName" filterMatchMode="exact"/>
+                <p:column headerText="birthdate" field="birthDate" filterMatchMode="range">
+                    <f:facet name="filter">
+                        <p:datePicker selectionMode="range" onchange="PF('wgtTable').filter()" id="birthdateRangeFilter"
+                                      yearNavigator="true" yearRange="1950:2030"
+                                      monthNavigator="true" />
+                    </f:facet>
+                </p:column>
+                <p:column field="salary" filterMatchMode="gt"/>
+                <p:column field="role" filterMatchMode="in">
+                    <f:facet name="filter">
+                        <p:selectManyMenu onchange="PF('wgtTable').filter()" id="roleFilter" value="#{dataTable026.selectedRoles}">
+                            <f:selectItems value="#{dataTable026.roles}" />
+                        </p:selectManyMenu>
+                    </f:facet>
+                </p:column>
+
+            </p:dataTable>
+
+            <p:commandButton id="button" value="Submit" update="@form"/>
+            <p:commandButton id="buttonUpdate" value="Update" update="datatable"/>
+            <p:commandButton id="buttonResetTable" value="Reset" update="@form" action="#{dataTable026.resetTable()}"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

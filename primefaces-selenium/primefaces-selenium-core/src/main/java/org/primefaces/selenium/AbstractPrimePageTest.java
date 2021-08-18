@@ -23,19 +23,10 @@
  */
 package org.primefaces.selenium;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.logging.LogEntries;
@@ -47,12 +38,24 @@ import org.primefaces.selenium.internal.junit.PageInjectionExtension;
 import org.primefaces.selenium.internal.junit.WebDriverExtension;
 import org.primefaces.selenium.spi.WebDriverProvider;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(BootstrapExtension.class)
 @ExtendWith(WebDriverExtension.class)
 @ExtendWith(PageInjectionExtension.class)
 public abstract class AbstractPrimePageTest {
+
+    @BeforeEach
+    public void beforeEach() {
+        clearConsole();
+    }
 
     protected void assertPresent(WebElement element) {
         if (!PrimeSelenium.isElementPresent(element)) {
@@ -193,6 +196,17 @@ public abstract class AbstractPrimePageTest {
     }
 
     /**
+     * Clears the browser console.
+     */
+    protected void clearConsole() {
+        // https://stackoverflow.com/questions/51404360/how-to-clear-console-errors-using-selenium
+        JavascriptExecutor js = (JavascriptExecutor) getWebDriver();
+        String script = "console.clear();";
+        js.executeScript(script);
+        getLogsForType(LogType.BROWSER);
+    }
+
+    /**
      * Dumps to System.out or System.err any messages found in the browser console.
      */
     protected void printConsole() {
@@ -217,9 +231,7 @@ public abstract class AbstractPrimePageTest {
      * @return either NULL if not available or the {@link LogEntries}
      */
     protected LogEntries getLogsForType(String type) {
-        // Firefox does not support https://github.com/mozilla/geckodriver/issues/284
-        // Safari does not support https://github.com/SeleniumHQ/selenium/issues/7580
-        if (PrimeSelenium.isFirefox() || PrimeSelenium.isSafari()) {
+        if (!isConsoleSupported()) {
             return null;
         }
 
@@ -232,6 +244,12 @@ public abstract class AbstractPrimePageTest {
             return null;
         }
         return logs.get(type);
+    }
+
+    private boolean isConsoleSupported() {
+        // Firefox does not support https://github.com/mozilla/geckodriver/issues/284
+        // Safari does not support https://github.com/SeleniumHQ/selenium/issues/7580
+        return !PrimeSelenium.isFirefox() && !PrimeSelenium.isSafari();
     }
 
     protected void assertIsAt(String relativePath) {
