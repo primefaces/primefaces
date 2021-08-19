@@ -83,18 +83,13 @@ public abstract class AbstractDataTableTest extends AbstractTableTest {
     protected void assertRows(List<Row> rows, List<ProgrammingLanguage> langs) {
         int expectedSize = langs.size();
         Assertions.assertNotNull(rows);
-        if (expectedSize == 0) {
-            expectedSize = 1; // No records found.
-        }
         Assertions.assertEquals(expectedSize, rows.size());
 
         int row = 0;
         for (ProgrammingLanguage programmingLanguage : langs) {
             String rowText = rows.get(row).getCell(0).getText();
-            if (!rowText.equalsIgnoreCase("No records found.")) {
-                Assertions.assertEquals(programmingLanguage.getId(), Integer.parseInt(rowText.trim()));
-                row++;
-            }
+            Assertions.assertEquals(programmingLanguage.getId(), Integer.parseInt(rowText.trim()));
+            row++;
         }
     }
 

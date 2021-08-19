@@ -338,18 +338,13 @@ public class DataTable026Test extends AbstractDataTableTest {
     private void assertEmployeeRows(List<Row> rows, List<Employee> employees) {
         int expectedSize = employees.size();
         Assertions.assertNotNull(rows);
-        if (expectedSize == 0) {
-            expectedSize = 1; // No records found.
-        }
         Assertions.assertEquals(expectedSize, rows.size());
 
         int row = 0;
         for (Employee employee : employees) {
             String rowText = rows.get(row).getCell(0).getText();
-            if (!rowText.equalsIgnoreCase("No records found.")) {
-                Assertions.assertEquals(employee.getId(), Integer.parseInt(rowText.trim()));
-                row++;
-            }
+            Assertions.assertEquals(employee.getId(), Integer.parseInt(rowText.trim()));
+            row++;
         }
     }
 }

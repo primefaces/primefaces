@@ -23,16 +23,22 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import java.util.List;
-
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
+import org.primefaces.selenium.component.InputText;
+import org.primefaces.selenium.component.base.ComponentUtils;
+
+import java.util.List;
 
 /**
  * Add and remove rows from filtered DataTable
@@ -145,9 +151,61 @@ public class DataTable021Test extends AbstractDataTableTest {
         assertNoJavascriptErrors();
     }
 
+    @Test
+    @Order(6)
+    @DisplayName("DataTable: globalfilter and remove row")
+    public void testGlobalFilterAndRemoveRow(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        dataTable.sort("Name");
+
+        // Act
+        WebElement globalFilterInput = page.globalFilter.getInput();
+        globalFilterInput.clear();
+        ComponentUtils.sendKeys(globalFilterInput, "C#");
+        PrimeSelenium.guardAjax(globalFilterInput).sendKeys(Keys.TAB);
+
+        // Assert
+        List<ProgrammingLanguage> langsFiltered = filterByName("C#");
+        assertRows(dataTable, langsFiltered);
+        int rows = dataTable.getRows().size();
+
+        // Act
+        WebElement removeButton = dataTable.getRow(0).getCell(3).getWebElement().findElement(By.className("ui-button"));
+        PrimeSelenium.guardAjax(removeButton).click();
+
+        // Assert - one row less than before
+        Assertions.assertEquals(rows - 1, dataTable.getRows().size());
+
+        // Act
+        globalFilterInput = page.globalFilter.getInput();
+        globalFilterInput.clear();
+        ComponentUtils.sendKeys(globalFilterInput, "Java");
+        PrimeSelenium.guardAjax(globalFilterInput).sendKeys(Keys.TAB);
+
+        // Assert
+        langsFiltered = filterByName("Java");
+        assertRows(dataTable, langsFiltered);
+        rows = dataTable.getRows().size();
+
+        // Act
+        page.buttonDeleteRow.click();
+
+        // Assert - one row less than before
+        Assertions.assertEquals(rows - 1, dataTable.getRows().size());
+
+        assertNoJavascriptErrors();
+    }
+
     public static class Page extends AbstractPrimePage {
         @FindBy(id = "form:datatable")
         DataTable dataTable;
+
+        @FindBy(id = "form:datatable:globalFilter")
+        InputText globalFilter;
+
+        @FindBy(id = "form:datatable:buttonDeleteRow")
+        InputText buttonDeleteRow;
 
         @FindBy(id = "form:buttonUpdate")
         CommandButton buttonUpdate;
