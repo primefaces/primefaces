@@ -39,7 +39,6 @@ public abstract class DataTable extends AbstractTable<Row> {
 
     public List<Row> getRows() {
         return getRowsWebElement().stream()
-                //.filter(rowElt -> !rowElt.getText().equalsIgnoreCase("No records found."))
                 .filter(rowElt -> !PrimeSelenium.hasCssClass(rowElt, "ui-datatable-empty-message"))
                 .map(rowElt -> {
                     List<Cell> cells = rowElt.findElements(By.tagName("td")).stream().map(cellElt -> new Cell(cellElt)).collect(Collectors.toList());
