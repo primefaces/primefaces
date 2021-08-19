@@ -26,7 +26,6 @@ package org.primefaces.selenium;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.logging.LogEntries;
@@ -200,9 +199,7 @@ public abstract class AbstractPrimePageTest {
      */
     protected void clearConsole() {
         // https://stackoverflow.com/questions/51404360/how-to-clear-console-errors-using-selenium
-        JavascriptExecutor js = (JavascriptExecutor) getWebDriver();
-        String script = "console.clear();";
-        js.executeScript(script);
+        PrimeSelenium.executeScript("console.clear();");
         getLogsForType(LogType.BROWSER);
     }
 
