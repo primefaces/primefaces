@@ -1,107 +1,98 @@
 .ui-carousel {
-    position: relative;
-    padding: 1px;
+    display: flex;
+    flex-direction: column;
 }
 
-.ui-carousel .ui-carousel-viewport .ui-carousel-items {
-    list-style: none outside none;
+.ui-carousel-content {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.ui-carousel-prev,
+.ui-carousel-next {
+    align-self: center;
+    flex-grow: 0;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.ui-carousel-prev.ui-link,
+.ui-carousel-next.ui-link {
+    text-align: left;
     margin: 0;
-    padding:0;
-    position: relative;
-    width: 32000px;
-    left: 0;
-}
-
-.ui-carousel .ui-carousel-viewport .ui-carousel-items .ui-carousel-item {
-    margin: 1px;
     padding: 0;
-    float: left;
-}
-
-.ui-carousel .ui-carousel-viewport {
-    overflow: hidden;
-    position: relative;
-    border: 0;
-}
-
-.ui-carousel .ui-carousel-footer {
-    margin: 1px 1px 0px 1px;
-    padding-top: 9px;
-    padding-bottom: 6px;
-    padding-right: 10px;
-    padding-left: 10px;
-    overflow: hidden;
-}
-
-.ui-carousel .ui-carousel-header {
-    margin: 0 1px;
-    overflow: hidden;
-    padding-top: 7px;
-    padding-bottom: 8px;
-    padding-right: 10px;
-    padding-left: 10px;
-}
-
-.ui-carousel .ui-carousel-header .ui-carousel-header-title {
-    display: inline-block;
-    width: 30%;
-    padding-top: 2px;
-    overflow: hidden;
-}
-
-.ui-carousel .ui-carousel-dropdown,
-.ui-carousel .ui-carousel-dropdown-responsive {
-    float: right;
-    margin: 0px 10px;
-    background-image: none;
-}
-
-.ui-carousel .ui-carousel-dropdown option,
-.ui-carousel .ui-carousel-dropdown-responsive option{
-    background-image: none;
-    border:0 none;
-    box-shadow:none;
-    -moz-box-shadow: none;
-    -webkit-box-shadow: none;
-}
-
-.ui-carousel .ui-carousel-button {
-    float: right;
-    margin: 2px;
-}
-
-.ui-carousel .ui-carousel-page-link {
-    float: left;
-    margin: 0 2px;
-}
-
-.ui-carousel .ui-carousel-page-link, 
-.ui-carousel .ui-carousel-button {
+    border: none;
     cursor: pointer;
+    user-select: none;
 }
 
-.ui-carousel .ui-carousel-page-links {
-    margin: 0px 9px;
-    margin-top: 1px;
-    display: inline-table;
-    float: right;
+.ui-carousel-prev.ui-link:hover,
+.ui-carousel-next.ui-link:hover {
+    text-decoration: none;
 }
 
-.ui-carousel .ui-carousel-dropdown-responsive {
-    display: none;
+.ui-carousel-prev.ui-state-disabled,
+.ui-carousel-next.ui-state-disabled {
+    pointer-events: none;
 }
 
-.ui-carousel .ui-carousel-titlebar-icon {
-    margin-left: 0.5em;
+.ui-carousel-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.ui-carousel-items-content {
+    overflow: hidden;
+    width: 100%;
+}
+
+.ui-carousel-items-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.ui-carousel-indicators {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.ui-carousel-indicator > button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ui-carousel-indicator > button.ui-link {
+    text-align: left;
+    margin: 0;
+    padding: 0;
+    border: none;
     cursor: pointer;
-    float: right;
+    user-select: none;
 }
 
 /* Vertical */
-.ui-carousel .ui-carousel-vertical-viewport .ui-carousel-items li.ui-carousel-item {
-  float: none;
+.ui-carousel-vertical .ui-carousel-container {
+    flex-direction: column;
 }
 
-.ui-carousel .ui-carousel-vertical-viewport ul.ui-carousel-items {
-  width: auto;
+.ui-carousel-vertical .ui-carousel-items-container {
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Keyboard Support */
+.ui-items-hidden .ui-carousel-item {
+    visibility: hidden;
+}
+
+.ui-items-hidden .ui-carousel-item.ui-carousel-item-active {
+    visibility: visible;
 }

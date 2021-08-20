@@ -1,53 +1,20 @@
 /**
  * __PrimeFaces Carousel Widget__
- *
  * Carousel is a multi purpose component to display a set of data or general content with slide effects.
- *
- * @typedef {"fade" | "slide"} PrimeFaces.widget.Carousel.Effect Name of the animation for the carousel widget.
- *
- * @prop {number} columns The number of simultaneously visible items.
- * @prop {JQuery} dropdown The DOM element for the dropdown for selecting the item to show.
- * @prop {number} first 0-based index of the the first items that is shown currently.
- * @prop {JQuery} header The DOM element for the header of the carousel.
- * @prop {JQuery} items The DOM elements for the carousel items.
- * @prop {JQuery} itemsContainer The DOM element for the container of the carousel items.
- * @prop {number} itemsCount The total number of carousel items.
- * @prop {JQuery} nextNav The DOM element for the button to switch to the next carousel item.
- * @prop {number} page The currently displayed page of carousel items.
- * @prop {JQuery} pageLinks The DOM elements for the links to other carousel pages.
- * @prop {JQuery} prevNav The DOM element for the button to switch to the previous carousel item.
- * @prop {JQuery} responsiveDropdown The DOM element for the responsive dropdown for selecting the item show.
- * @prop {JQuery} stateholder The DOM element for the hidden input storing the currently visible carousel items.
- * @prop {string} stateKey The key of the HTML5 Local Storage that stores the current carousel state.
- * @prop {JQuery} toggler The DOM element for the carousel toggler.
- * @prop {JQuery} toggleableContent The DOM element for the toggleable content of the carousel.
- * @prop {JQuery} toggleStateHolder The DOM element for the hidden input with the current toggle state.
- * @prop {number} totalPages The total number of available carousel pages.
- * @prop {JQuery} viewport The DOM element for the viewport of the carousel that shows the carousel items.
  *
  * @interface {PrimeFaces.widget.CarouselCfg} cfg The configuration for the {@link  Carousel| Carousel widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.DeferredWidgetCfg} cfg
  *
+ * @prop {number} cfg.page Index of the first item.
+ * @prop {boolean} cfg.circular Sets continuous scrolling
  * @prop {number} cfg.autoplayInterval Sets the time in milliseconds to have Carousel start scrolling automatically
  * after being initialized.
- * @prop {number} cfg.breakpoint Breakpoint value in pixels to switch between small and large viewport.
- * @prop {boolean} cfg.circular Sets continuous scrolling
- * @prop {boolean} cfg.collapsed Whether the carousel is initially collapsed.
- * @prop {string} cfg.easing Name of the easing animation.
- * @prop {PrimeFaces.widget.Carousel.Effect} cfg.effect Name of the animation for transitioning between pages.
- * @prop {number} cfg.effectDuration Duration of the animation in milliseconds.
- * @prop {number} cfg.firstVisible 0-based index of the first element to be displayed
  * @prop {number} cfg.numVisible Number of visible items per page
- * @prop {number} cfg.pageLinks Defines the number of page links of paginator.
- * @prop {boolean} cfg.responsive In responsive mode, carousel adjusts its content based on screen size.
- * @prop {boolean} cfg.stateful Whether the state of the carousel is saved between page loads.
- * @prop {boolean} cfg.statefulGlobal When enabled, menu state is saved globally across pages. If disabled then state 
- * is stored per view/page.
- * @prop {number} cfg.toggleSpeed The speed at which the carousel toggles.
- * @prop {boolean} cfg.toggleable Whether the carousel is toggleable.
- * @prop {boolean} cfg.vertical Sets vertical scrolling
+ * @prop {number} cfg.numScroll Number of items to scroll
+ * @prop {Array.<{breakpoint:string, numVisible:number, numScroll:number}>} an array of options for responsive design
+ * @prop {string} cfg.orientation Specifies the layout of the component, valid layouts are horizontal or vertical
  *
  */
 PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
@@ -59,53 +26,135 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
      */
     init: function(cfg) {
         this._super(cfg);
-        this.viewport = this.jq.children('.ui-carousel-viewport');
-        this.itemsContainer = this.viewport.children('.ui-carousel-items');
-        this.items = this.itemsContainer.children('li');
+        this.content = this.jq.children('.ui-carousel-content');
+        this.container = this.content.children('.ui-carousel-container');
+        this.itemsContent = this.container.children('.ui-carousel-items-content');
+        this.itemsContainer = this.itemsContent.children('.ui-carousel-items-container');
+        this.items = this.itemsContainer.children('div');
         this.itemsCount = this.items.length;
-        this.header = this.jq.children('.ui-carousel-header');
-        this.prevNav = this.header.children('.ui-carousel-prev-button');
-        this.nextNav = this.header.children('.ui-carousel-next-button');
-        this.pageLinks = this.header.find('> .ui-carousel-page-links > .ui-carousel-page-link');
-        this.dropdown = this.header.children('.ui-carousel-dropdown');
-        this.responsiveDropdown = this.header.children('.ui-carousel-dropdown-responsive');
-        this.stateholder = $(this.jqId + '_page');
+        this.prevNav = this.container.children('.ui-carousel-prev');
+        this.nextNav = this.container.children('.ui-carousel-next');
+        this.indicatorsContainer = this.content.children('.ui-carousel-indicators');
+        this.indicators = this.content.find('li');
+        this.indicatorCount = this.indicators.length;
 
-        if(this.cfg.toggleable) {
-            this.toggler = $(this.jqId + '_toggler');
-            this.toggleStateHolder = $(this.jqId + '_collapsed');
-            this.toggleableContent = this.jq.find(' > .ui-carousel-viewport > .ui-carousel-items, > .ui-carousel-footer');
-        }
+        debugger;
 
-        this.cfg.numVisible = this.cfg.numVisible || 3;
-        this.cfg.firstVisible = this.cfg.firstVisible || 0;
-        this.columns = this.cfg.numVisible;
-        this.first = this.cfg.firstVisible;
-        this.cfg.effectDuration = this.cfg.effectDuration || 500;
+        this.cfg.page = this.cfg.page || 0;
+        this.cfg.numVisible = this.cfg.numVisible || 1;
+        this.cfg.numScroll = this.cfg.numScroll || 1;
+        this.cfg.responsiveOptions = this.cfg.responsiveOptions || [];
+        this.cfg.orientation = this.cfg.orientation || 'horizontal';
         this.cfg.circular = this.cfg.circular || false;
-        this.cfg.breakpoint = this.cfg.breakpoint || 640;
-        this.page = parseInt(this.first / this.columns);
-        this.totalPages = Math.ceil(this.itemsCount / this.cfg.numVisible);
+        this.cfg.autoplayInterval = this.cfg.autoplayInterval || 0;
 
-        if(this.cfg.stateful) {
-            this.cfg.statefulGlobal = this.cfg.statefulGlobal === true ? true : false;
-            this.createStorageKey();
-
-            this.restoreState();
-        }
+        this.remainingItems = 0;
+        this.isRemainingItemsAdded = false;
+        this.d_numVisible = this.cfg.numVisible;
+        this.d_numScroll = this.cfg.numScroll;
+        this.d_oldNumScroll = 0;
+        this.d_oldNumVisible = 0;
+        this.d_page = this.cfg.page;
+        this.totalShiftedItems = this.cfg.page * this.cfg.numScroll * -1;
+        this.allowAutoplay = !!this.cfg.autoplayInterval;
+        this.d_circular = this.cfg.circular || this.allowAutoplay;
+        this.swipeThreshold = 20;
+        this.totalIndicators = this.totalIndicators();
+        this.isCircular = this.itemsCount !== 0 && this.d_circular && this.itemsCount >= this.d_numVisible;
+        this.isVertical = this.cfg.orientation === 'vertical';
+        this.isAutoplay = this.cfg.autoplayInterval && this.allowAutoplay;
 
         this.renderDeferred();
     },
 
-    /**
-     * @override
-     * @inheritdoc
-     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
-     */
-    refresh: function(cfg) {
-        this.stopAutoplay();
+    update: function() {
+        var stateChanged = false;
+        var totalShiftedItems = this.totalShiftedItems;
 
-        this._super(cfg);
+        if (this.autoplayInterval) {
+            this.stopAutoplay();
+        }
+
+        if(this.d_oldNumScroll !== this.d_numScroll || this.d_oldNumVisible !== this.d_numVisible ) {
+            this.remainingItems = (this.itemsCount - this.d_numVisible) % this.d_numScroll;
+
+            var page = this.d_page;
+            if (this.totalIndicators !== 0 && page >= this.totalIndicators) {
+                page = this.totalIndicators - 1;
+
+                this.d_page = page;
+
+                stateChanged = true;
+            }
+
+            totalShiftedItems = (page * this.d_numScroll) * -1;
+            if (this.isCircular) {
+                totalShiftedItems -= this.d_numVisible;
+            }
+
+            if (page === (this.totalIndicators - 1) && this.remainingItems > 0) {
+                totalShiftedItems += (-1 * this.remainingItems) + this.d_numScroll;
+                this.isRemainingItemsAdded = true;
+            }
+            else {
+                this.isRemainingItemsAdded = false;
+            }
+
+            if (totalShiftedItems !== this.totalShiftedItems) {
+                this.totalShiftedItems = totalShiftedItems;
+
+                stateChanged = true;
+            }
+
+            this.d_oldNumScroll = this.d_numScroll;
+            this.d_oldNumVisible = this.d_numVisible;
+
+            this.changePosition(totalShiftedItems);
+        }
+
+        if (this.isCircular) {
+            if (this.d_page === 0) {
+                totalShiftedItems = -1 * this.d_numVisible;
+            }
+            else if (totalShiftedItems === 0) {
+                totalShiftedItems = -1 * this.value.length;
+                if (this.remainingItems > 0) {
+                    this.isRemainingItemsAdded = true;
+                }
+            }
+
+            if (totalShiftedItems !== this.totalShiftedItems) {
+                this.totalShiftedItems = totalShiftedItems;
+
+                stateChanged = true;
+            }
+        }
+
+        if (!stateChanged && this.isAutoplay) {
+            this.startAutoplay();
+        }
+
+        this.updateIndicators();
+
+        var items = this.itemsContainer.children(':not(.ui-carousel-item-cloned)');
+        items.removeClass('ui-carousel-item-active ui-carousel-item-start ui-carousel-item-end');
+
+        var firstIndex = this.firstIndex(),
+            lastIndex = this.lastIndex();
+
+        for (var i = 0; i < items.length; i++) {
+            if (firstIndex <= i && lastIndex >= i) {
+                items.eq(i).addClass('ui-carousel-item-active');
+            }
+
+            if (firstIndex === i) {
+                items.eq(i).addClass('ui-carousel-item-start');
+            }
+
+            if (lastIndex === i) {
+                items.eq(i).addClass('ui-carousel-item-end');
+            }
+        }
     },
 
     /**
@@ -115,379 +164,368 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
      * @protected
      */
     _render: function() {
-        this.updateNavigators();
+        this.createStyle();
+        this.calculatePosition();
+        this.update();
+        this.changePosition();
         this.bindEvents();
 
-        if(this.cfg.vertical) {
-            this.calculateItemHeights();
+        if (this.cfg.responsiveOptions) {
+            this.bindDocumentListeners();
         }
-        else if(this.cfg.responsive) {
-            this.refreshDimensions();
-        }
-        else {
-            this.calculateItemWidths(this.columns);
-            this.jq.width(this.jq.width());
-            this.updateNavigators();
-        }
-
-        if(this.cfg.collapsed) {
-            this.toggleableContent.hide();
-        }
-    },
-
-    /**
-     * Create the key where the state for this component is stored.  By default it is stored per view. Override this 
-     * method to change the behavior to be global.
-     */
-    createStorageKey: function() {
-        this.stateKey = PrimeFaces.createStorageKey(this.id, 'Carousel', this.cfg.statefulGlobal);
-    },
-
-    /**
-     * Calculates the required width of each item, and applies that width.
-     * @private
-     */
-    calculateItemWidths: function() {
-        var firstItem = this.items.eq(0);
-        if(firstItem.length) {
-            var itemFrameWidth = firstItem.outerWidth(true) - firstItem.width();    //sum of margin, border and padding
-            this.items.width((this.viewport.innerWidth() - itemFrameWidth * this.columns) / this.columns);
-        }
-    },
-
-    /**
-     * Calculates the required height of each item, and applies that height.
-     * @private
-     */
-    calculateItemHeights: function() {
-        var firstItem = this.items.eq(0);
-        if(firstItem.length) {
-            if(!this.cfg.responsive) {
-                this.items.width(firstItem.width());
-                this.jq.width(this.jq.width());
-                var maxHeight = 0;
-                for(var i = 0; i < this.items.length; i++) {
-                    var item = this.items.eq(i),
-                    height = item.height();
-
-                    if(maxHeight < height) {
-                        maxHeight = height;
-                    }
-                }
-                this.items.height(maxHeight);
-            }
-            var totalMargins = ((firstItem.outerHeight(true) - firstItem.outerHeight()) / 2) * (this.cfg.numVisible);
-            this.viewport.height((firstItem.outerHeight() * this.cfg.numVisible) + totalMargins);
-            this.updateNavigators();
-            this.itemsContainer.css('top', (-1 * (this.viewport.innerHeight() * this.page))+ 'px');
-        }
-    },
-
-    /**
-     * Calculates the proper size for this widget and applies it.
-     * @private
-     */
-    refreshDimensions: function() {
-        var win = $(window);
-        if(win.width() <= this.cfg.breakpoint) {
-            this.columns = 1;
-            this.calculateItemWidths(this.columns);
-            this.totalPages = this.itemsCount;
-            this.responsiveDropdown.show();
-            this.pageLinks.hide();
-        }
-        else {
-            this.columns = this.cfg.numVisible;
-            this.calculateItemWidths();
-            this.totalPages = Math.ceil(this.itemsCount / this.cfg.numVisible);
-            this.responsiveDropdown.hide();
-            this.pageLinks.show();
-        }
-
-        this.page = parseInt(this.first / this.columns);
-        this.updateNavigators();
-        this.itemsContainer.css('left', (-1 * (this.viewport.innerWidth() * this.page))+ 'px');
     },
 
     /**
      * Sets up all event listeners required by this widget.
      * @private
      */
-    bindEvents: function() {
+    bindEvents: function () {
         var $this = this;
 
-        this.prevNav.on('click', function() {
-            if($this.page !== 0) {
-                $this.setPage($this.page - 1);
-            }
-            else if($this.cfg.circular) {
-                $this.setPage($this.totalPages - 1);
-            }
+        this.indicators.on('click', function(e) {
+            var index = $(this).data('index');
+            $this.onIndicatorClick(e, index);
         });
-
-        this.nextNav.on('click', function() {
-            var lastPage = ($this.page === ($this.totalPages - 1));
-
-            if(!lastPage) {
-                $this.setPage($this.page + 1);
-            }
-            else if($this.cfg.circular) {
-                $this.setPage(0);
-            }
+        this.prevNav.on('click', function(e) {
+            $this.navBackward(e);
         });
-
+        this.nextNav.on('click', function(e) {
+            $this.navForward(e);
+        });
+        this.itemsContainer.on('transitionend', function() {
+            $this.onTransitionEnd();
+        });
         if (PrimeFaces.env.isTouchable(this.cfg)) {
             this.itemsContainer.swipe({
-                swipeLeft:function(event) {
-                    if($this.page === ($this.totalPages - 1)) {
-                        if($this.cfg.circular)
-                            $this.setPage(0);
-                    }
-                    else {
-                        $this.setPage($this.page + 1);
-                    }
+                swipeLeft:function(e) {
+                    $this.navBackward(e);
                 },
-                swipeRight: function(event) {
-                    if($this.page === 0) {
-                        if($this.cfg.circular)
-                            $this.setPage($this.totalPages - 1);
-                    }
-                    else {
-                        $this.setPage($this.page - 1);
-                    }
+                swipeRight: function(e) {
+                    $this.navForward(e);
                 },
                 excludedElements: PrimeFaces.utils.excludedSwipeElements()
             });
         }
+    },
 
-        if(this.pageLinks.length) {
-            this.pageLinks.on('click', function(e) {
-                $this.setPage($(this).index());
-                e.preventDefault();
-            });
+    changePosition: function(totalShiftedItems) {
+        if (this.itemsContainer) {
+            this.itemsContainer.get(0).style.transform = this.isVertical ? `translate3d(0, ${totalShiftedItems * (100/ this.d_numVisible)}%, 0)` : `translate3d(${totalShiftedItems * (100/ this.d_numVisible)}%, 0, 0)`;
+        }
+    },
+
+    step: function(dir, page) {
+        var totalShiftedItems = this.totalShiftedItems;
+        var isCircular = this.isCircular;
+
+        if (page != null) {
+            totalShiftedItems = (this.d_numScroll * page) * -1;
+
+            if (isCircular) {
+                totalShiftedItems -= this.d_numVisible;
+            }
+
+            this.isRemainingItemsAdded = false;
+        }
+        else {
+            totalShiftedItems += (this.d_numScroll * dir);
+
+            if (this.isRemainingItemsAdded) {
+                totalShiftedItems += this.remainingItems - (this.d_numScroll * dir);
+                this.isRemainingItemsAdded = false;
+            }
+
+            var originalShiftedItems = isCircular ? (totalShiftedItems + this.d_numVisible) : totalShiftedItems;
+            page = Math.abs(Math.floor(originalShiftedItems / this.d_numScroll));
         }
 
-        this.header.children('select').on('change', function() {
-            $this.setPage(parseInt($(this).val()) - 1);
-        });
-
-        if(this.cfg.autoplayInterval) {
-            this.cfg.circular = true;
-            this.startAutoplay();
+        if (isCircular && this.d_page === (this.totalIndicators - 1) && dir === -1) {
+            totalShiftedItems = -1 * (this.itemsCount + this.d_numVisible);
+            page = 0;
+        }
+        else if (isCircular && this.d_page === 0 && dir === 1) {
+            totalShiftedItems = 0;
+            page = (this.totalIndicators - 1);
+        }
+        else if (page === (this.totalIndicators - 1) && this.remainingItems > 0) {
+            totalShiftedItems += ((this.remainingItems * -1) - (this.d_numScroll * dir));
+            this.isRemainingItemsAdded = true;
         }
 
-        if(this.cfg.responsive) {
-            PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', null, function() {
-                if($this.cfg.vertical) {
-                    $this.calculateItemHeights();
+        if (this.itemsContainer) {
+            this.itemsContainer.removeClass('ui-items-hidden');
+            this.changePosition(this.totalShiftedItems);
+            this.itemsContainer.get(0).style.transition = 'transform 500ms ease 0s';
+        }
+
+        this.totalShiftedItems = totalShiftedItems;
+        this.d_page = page;
+
+        this.update();
+    },
+
+    calculatePosition: function() {
+        var $this = this;
+
+        if (this.itemsContainer && this.cfg.responsiveOptions) {
+            var windowWidth = window.innerWidth;
+            var matchedResponsiveOptionsData = {
+                numVisible: $this.cfg.numVisible,
+                numScroll: $this.cfg.numScroll
+            };
+
+            for (var i = 0; i < this.cfg.responsiveOptions.length; i++) {
+                var res = this.cfg.responsiveOptions[i];
+
+                if (parseInt(res.breakpoint, 10) >= windowWidth) {
+                    matchedResponsiveOptionsData = res;
                 }
-                else {
-                    $this.refreshDimensions();
+            }
+
+            if (this.d_numScroll !== matchedResponsiveOptionsData.numScroll) {
+                var page = this.d_page;
+                page = parseInt((page * this.d_numScroll) / matchedResponsiveOptionsData.numScroll);
+
+                this.totalShiftedItems = (matchedResponsiveOptionsData.numScroll * page) * -1;
+
+                if (this.isCircular) {
+                    this.totalShiftedItems -= matchedResponsiveOptionsData.numVisible;
                 }
-            });
+
+                this.d_numScroll = matchedResponsiveOptionsData.numScroll;
+
+                this.d_page = page;
+            }
+
+            if (this.d_numVisible !== matchedResponsiveOptionsData.numVisible) {
+                this.d_numVisible = matchedResponsiveOptionsData.numVisible;
+            }
+        }
+    },
+
+    navBackward: function(e, index){
+        if (this.d_circular || this.d_page !== 0) {
+            this.step(1, index);
         }
 
-        if(this.cfg.toggleable) {
-            this.toggler.on('mouseover.carouselToggler',function() {
-                $(this).addClass('ui-state-hover');
-            }).on('mouseout.carouselToggler',function() {
-                $(this).removeClass('ui-state-hover');
-            }).on('click.carouselToggler', function(e) {
-                $this.toggle();
-                e.preventDefault();
-            });
+        if (this.cfg.autoplayInterval) {
+            this.stopAutoplay();
+        }
+
+        this.updateNavigators();
+
+        if (e.cancelable) {
+            e.preventDefault();
+        }
+    },
+
+    navForward: function(e, index){
+        if (this.d_circular || this.d_page < (this.totalIndicators - 1)) {
+            this.step(-1, index);
+        }
+
+        if (this.cfg.autoplayInterval) {
+            this.stopAutoplay();
+        }
+
+        this.updateNavigators();
+
+        if (e.cancelable) {
+            e.preventDefault();
         }
     },
 
     /**
-     * Updates the navigator icons to reflect the current page.
+     * Updates the navigators to reflect the current page.
      * @private
      */
     updateNavigators: function() {
-        if(!this.cfg.circular) {
-            if(this.page === 0) {
-                this.prevNav.addClass('ui-state-disabled');
-                this.nextNav.removeClass('ui-state-disabled');
-            }
-            else if(this.page === (this.totalPages - 1)) {
-                this.prevNav.removeClass('ui-state-disabled');
-                this.nextNav.addClass('ui-state-disabled');
-            }
-            else {
-                this.prevNav.removeClass('ui-state-disabled');
-                this.nextNav.removeClass('ui-state-disabled');
-            }
-        }
+        var backwardIsDisabled = this.backwardIsDisabled();
+        var forwardIsDisabled = this.forwardIsDisabled();
 
-        if(this.pageLinks.length) {
-            this.pageLinks.filter('.ui-icon-radio-on').removeClass('ui-icon-radio-on');
-            this.pageLinks.eq(this.page).addClass('ui-icon-radio-on');
-        }
-
-        if(this.dropdown.length) {
-            this.dropdown.val(this.page + 1);
-        }
-
-        if(this.responsiveDropdown.length) {
-            this.responsiveDropdown.val(this.page + 1);
-        }
-    },
-
-    /**
-     * Moves this carousel to the given page.
-     * @param {number} p 0-based index of the page to display.
-     */
-    setPage: function(p) {
-        if(p !== this.page && !this.itemsContainer.is(':animated')) {
-            var $this = this,
-            animationProps = this.cfg.vertical ? {top: -1 * (this.viewport.innerHeight() * p)} : {left: -1 * (this.viewport.innerWidth() * p)};
-            animationProps.easing = this.cfg.easing;
-
-            this.itemsContainer.animate(animationProps,
-            {
-                duration: this.cfg.effectDuration,
-                easing: this.cfg.easing,
-                complete: function() {
-                    $this.page = p;
-                    $this.first = $this.page * $this.columns;
-                    $this.updateNavigators();
-                    $this.stateholder.val($this.page);
-                    if($this.cfg.stateful) {
-                        $this.saveState();
-                    }
-                }
-            });
-        }
-    },
-
-    /**
-     * Enables autoplay and starts the slideshow.
-     */
-    startAutoplay: function() {
-        var $this = this;
-
-        this.interval = setInterval(function() {
-            if($this.page === ($this.totalPages - 1))
-                $this.setPage(0);
-            else
-                $this.setPage($this.page + 1);
-        }, this.cfg.autoplayInterval);
-    },
-
-    /**
-     * Disables autoplay and stops the slideshow.
-     */
-    stopAutoplay: function() {
-        clearInterval(this.interval);
-    },
-
-    /**
-     * Expands or collapses the content this carousel, depending on whether it is currently collapsed or expanded,
-     * respectively.
-     */
-    toggle: function() {
-        if(this.cfg.collapsed) {
-            this.expand();
+        if (backwardIsDisabled) {
+            this.prevNav.addClass('ui-state-disabled');
+            this.prevNav.prop('disabled', true);
         }
         else {
-            this.collapse();
+            this.prevNav.removeClass('ui-state-disabled');
+            this.prevNav.prop('disabled', false);
         }
 
-        PrimeFaces.invokeDeferredRenders(this.id);
-    },
-
-    /**
-     * If enabled, expands the content of this carousel.
-     */
-    expand: function() {
-        this.toggleState(false, 'ui-icon-plusthick', 'ui-icon-minusthick');
-
-        this.slideDown();
-    },
-
-    /**
-     * If enabled, collapses the content of this carousel.
-     */
-    collapse: function() {
-        this.toggleState(true, 'ui-icon-minusthick', 'ui-icon-plusthick');
-
-        this.slideUp();
-    },
-
-    /**
-     * Slides up the toggleable content.
-     * @private
-     */
-    slideUp: function() {
-        this.toggleableContent.slideUp(this.cfg.toggleSpeed, 'easeInOutCirc');
-    },
-
-    /**
-     * Slides down the toggleable content.
-     * @private
-     */
-    slideDown: function() {
-        this.toggleableContent.slideDown(this.cfg.toggleSpeed, 'easeInOutCirc');
-    },
-
-    /**
-     * Expands or collapses this carousel as indicated by the given arguments.
-     * @private
-     * @param {boolean} collapsed `false` to expand, `true` to collapse.
-     * @param {string} removeIcon Class of the remove icon
-     * @param {string} addIcon Class of the add icon.
-     */
-    toggleState: function(collapsed, removeIcon, addIcon) {
-        this.toggler.children('span.ui-icon').removeClass(removeIcon).addClass(addIcon);
-        this.cfg.collapsed = collapsed;
-        this.toggleStateHolder.val(collapsed);
-
-        if(this.cfg.stateful) {
-            this.saveState();
+        if (forwardIsDisabled) {
+            this.nextNav.addClass('ui-state-disabled');
+            this.nextNav.prop('disabled', true);
+        }
+        else {
+            this.nextNav.removeClass('ui-state-disabled');
+            this.nextNav.prop('disabled', false);
         }
     },
 
-    /**
-     * Restores the state as saved by `saveState` to this carousel.
-     * @private
-     */
-    restoreState: function() {
-        var carouselStateAsString = localStorage.getItem(this.stateKey) || "first: null, collapsed: null";
-        this.carouselState = PrimeFaces.csp.evalResult('({' + carouselStateAsString + '})');
+    updateIndicators: function() {
+        this.indicators.removeClass('ui-highlight');
+        this.indicators.eq(this.d_page).addClass('ui-highlight');
+    },
 
-        this.first = this.carouselState.first||this.first;
-        this.page = parseInt(this.first/this.columns);
+    onIndicatorClick: function(e, index) {
+        var page = this.d_page;
 
-        this.stateholder.val(this.page);
-
-        if(this.cfg.toggleable && (this.carouselState.collapsed === false || this.carouselState.collapsed === true)) {
-            this.cfg.collapsed = !this.carouselState.collapsed;
-            this.toggle();
+        if (index > page) {
+            this.navForward(e, index);
+        }
+        else if (index < page) {
+            this.navBackward(e, index);
         }
     },
 
-    /**
-     * Saves the current state of this carousel (current page etc.) in HTML5 Local Store.
-     * @private
-     */
-    saveState: function() {
-        var carouselStateAsString = "first:" + this.first;
+    onTransitionEnd: function() {
+        if (this.itemsContainer) {
+            this.itemsContainer.addClass('ui-items-hidden');
+            this.itemsContainer.get(0).style.transition = '';
 
-        if(this.cfg.toggleable) {
-            carouselStateAsString += ", collapsed: " + this.toggleStateHolder.val();
+            if ((this.d_page === 0 || this.d_page === (this.totalIndicators - 1)) && this.isCircular) {
+                this.changePosition(this.totalShiftedItems)
+            }
         }
-
-        localStorage.setItem(this.stateKey, carouselStateAsString);
     },
 
-    /**
-     * Clears the state as saved by `saveState`.
-     * @private
-     */
-    clearState: function() {
-        if(this.cfg.stateful) {
-            localStorage.removeItem(this.stateKey);
+    bindDocumentListeners: function() {
+        if (!this.documentResizeListener) {
+            this.documentResizeListener = (e) => {
+                this.calculatePosition(e);
+            };
+
+            window.addEventListener('resize', this.documentResizeListener);
         }
+    },
+
+    startAutoplay: function() {
+        var $this = this;
+        this.interval = setInterval(() => {
+                if($this.d_page === ($this.totalIndicators - 1)) {
+                    $this.step(-1, 0);
+                }
+                else {
+                    $this.step(-1, this.d_page + 1);
+                }
+            },
+            this.cfg.autoplayInterval);
+    },
+
+    stopAutoplay: function() {
+        if (this.interval) {
+            clearInterval(this.interval);
+        }
+    },
+
+    createStyle: function() {
+        if (!this.carouselStyle) {
+            this.carouselStyle = document.createElement('style');
+            this.carouselStyle.type = 'text/css';
+            document.body.appendChild(this.carouselStyle);
+        }
+
+        var innerHTML = `
+            div[id*="${this.id}"] .ui-carousel-item {
+                flex: 1 0 ${ (100/ this.d_numVisible) }%
+            }
+        `;
+
+        if (this.cfg.responsiveOptions) {
+            var _responsiveOptions = this.cfg.responsiveOptions;
+            _responsiveOptions.sort((data1, data2) => {
+                var value1 = data1.breakpoint;
+                var value2 = data2.breakpoint;
+                var result = null;
+
+                if (value1 == null && value2 != null)
+                    result = -1;
+                else if (value1 != null && value2 == null)
+                    result = 1;
+                else if (value1 == null && value2 == null)
+                    result = 0;
+                else if (typeof value1 === 'string' && typeof value2 === 'string')
+                    result = value1.localeCompare(value2, undefined, { numeric: true });
+                else
+                    result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
+
+                return -1 * result;
+            });
+
+            for (var i = 0; i < _responsiveOptions.length; i++) {
+                var res = _responsiveOptions[i];
+
+                innerHTML += `
+                    @media screen and (max-width: ${res.breakpoint}) {
+                        div[id*="${this.id}"] .ui-carousel-item {
+                            flex: 1 0 ${ (100/ res.numVisible) }%
+                        }
+                    }
+                `
+            }
+        }
+
+        if (this.cfg.circular) {
+            this.cloneItems();
+            this.startAutoplay();
+        }
+
+        this.carouselStyle.innerHTML = innerHTML;
+    },
+
+    cloneItems: function () {
+        this.items.find('ui-carousel-item-cloned').remove();
+        var cloned = this.items.slice(-1 * this.d_numVisible).clone();
+        var cloneSize = cloned.length;
+        var i;
+        for (i = 0; i < cloneSize; i++) {
+            this.styleClone(cloned.eq(i), i, cloneSize);
+        }
+        this.itemsContainer.prepend(cloned);
+
+        cloned = this.items.slice(0, this.d_numVisible).clone();
+        cloneSize = cloned.length;
+        for (i = 0; i < cloned.length; i++) {
+            this.styleClone(cloned.eq(i), i, cloneSize);
+        }
+        this.itemsContainer.append(cloned);
+    },
+
+    styleClone: function (elem, index, length) {
+        elem.removeClass('ui-carousel-item-start ui-carousel-item-end');
+        elem.addClass('ui-carousel-item-cloned ui-carousel-item-active');
+        if (index === 0) {
+            elem.addClass('ui-carousel-item-start');
+        }
+        if (index + 1 === length) {
+            elem.addClass('ui-carousel-item-end');
+        }
+        //elem.find("*").removeAttr("id")
+        elem.find("[id]").add(elem).each(function() {
+            if (this.id) {
+                this.id = this.id + '_clone';
+            }
+        });
+    },
+
+    totalIndicators: function() {
+        return this.itemsCount !== 0 ? Math.ceil((this.itemsCount - this.d_numVisible) / this.d_numScroll) + 1 : 0;
+    },
+
+    backwardIsDisabled: function() {
+        return (this.itemsCount !== 0 && (!this.cfg.circular || this.itemsCount < this.d_numVisible) && this.d_page === 0);
+    },
+
+    forwardIsDisabled: function() {
+        return (this.itemsCount !== 0 && (!this.cfg.circular || this.itemsCount < this.d_numVisible) && (this.d_page === (this.totalIndicators - 1) || this.totalIndicators === 0));
+    },
+
+    firstIndex: function() {
+        return this.isCircular ? (-1 * (this.totalShiftedItems + this.d_numVisible)) : (this.totalShiftedItems * -1);
+    },
+
+    lastIndex: function() {
+        return (this.firstIndex() + this.d_numVisible - 1);
     }
 
 });

@@ -3804,81 +3804,25 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Index of the first visible item.]]>
+                <![CDATA[Index of the first item.]]>
             </description>
-            <name>firstVisible</name>
+            <name>page</name>
             <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Number of visible items per page. Default is 3.]]>
+                <![CDATA[Shortcut for header facet.]]>
             </description>
-            <name>numVisible</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Sets continuous scrolling. Default is false.]]>
-            </description>
-            <name>circular</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Sets vertical scrolling. Default is false]]>
-            </description>
-            <name>vertical</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Sets the time in milliseconds to have Carousel start scrolling automatically after being initialized. Default is 0.]]>
-            </description>
-            <name>autoPlayInterval</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Defines number of pageLinks of paginator.]]>
-            </description>
-            <name>pageLinks</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Name of the animation effect slide or fade. Default is slide.]]>
-            </description>
-            <name>effect</name>
+            <name>headerText</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Name of the animation effect. Default is easeInOutCirc.]]>
+                <![CDATA[Shortcut for footer facet.]]>
             </description>
-            <name>easing</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Sets the speed of the scrolling animation in milliseconds. Default is 500.]]>
-            </description>
-            <name>effectDuration</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Text format of the pager dropdown elements. Default is "{page}".]]>
-            </description>
-            <name>dropdownTemplate</name>
+            <name>footerText</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -3900,97 +3844,89 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Inline style of each item container.]]>
+                <![CDATA[Defines if scrolling would be infinite. Default is false.]]>
             </description>
-            <name>itemStyle</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Style class of each item container.]]>
-            </description>
-            <name>itemStyleClass</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Shortcut for header facet.]]>
-            </description>
-            <name>headerText</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Shortcut for footer facet.]]>
-            </description>
-            <name>footerText</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[In responsive mode, carousel adjusts its content based on screen size.]]>
-            </description>
-            <name>responsive</name>
+            <name>circular</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Sets the time in milliseconds to have Carousel start scrolling automatically after being initialized. Default is 0.]]>
+            </description>
+            <name>autoplayInterval</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Number of visible items per page. Default is 1.]]>
+            </description>
+            <name>numVisible</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Number of items to scroll. Default is 1.]]>
+            </description>
+            <name>numScroll</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[A list of options for responsive design.]]>
+            </description>
+            <name>responsiveOptions</name>
+            <required>false</required>
+            <type>org.primefaces.model.carousel.CarouselResponsiveOptions</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Specifies the layout of the component, valid values are "horizontal" and "vertical". Default is vertical.]]>
+            </description>
+            <name>orientation</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Height of the viewport in vertical layout. Default is 300px.]]>
+            </description>
+            <name>verticalViewPortHeight</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of main content.]]>
+            </description>
+            <name>contentStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the viewport container.]]>
+            </description>
+            <name>containerStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the paginator items.]]>
+            </description>
+            <name>indicatorsContentStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
                 <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
             </description>
             <name>touchable</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Breakpoint value in pixels to switch between small and large viewport. Default is 640]]>
-            </description>
-            <name>breakpoint</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Makes panel toggleable. Default is false.]]>
-            </description>
-            <name>toggleable</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Speed of toggling in milliseconds. Default is 500]]>
-            </description>
-            <name>toggleSpeed</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Renders a toggleable panel as collapsed. Default is false.]]>
-            </description>
-            <name>collapsed</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[When enabled, carousel state is saved in a HTML5 Local Storage for the session. Default is false.]]>
-            </description>
-            <name>stateful</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[When enabled, carousel state is saved globally across pages. If disabled then state is stored per view/page. Default is false.]]>
-            </description>
-            <name>statefulGlobal</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>

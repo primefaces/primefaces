@@ -24,34 +24,18 @@
 package org.primefaces.component.carousel;
 
 import java.io.IOException;
-import java.util.Map;
+import java.util.List;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
+import org.primefaces.model.carousel.CarouselResponsiveOption;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class CarouselRenderer extends CoreRenderer {
-
-    @Override
-    public void decode(FacesContext context, UIComponent component) {
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        Carousel carousel = (Carousel) component;
-        String clientId = carousel.getClientId(context);
-        String pageParam = clientId + "_page";
-        String collapsedParam = clientId + "_collapsed";
-
-        if (params.containsKey(pageParam)) {
-            carousel.setFirstVisible(Integer.parseInt(params.get(pageParam)) * carousel.getNumVisible());
-        }
-
-        if (params.containsKey(collapsedParam)) {
-            carousel.setCollapsed(Boolean.parseBoolean(params.get(collapsedParam)));
-        }
-    }
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -62,28 +46,29 @@ public class CarouselRenderer extends CoreRenderer {
     }
 
     private void encodeScript(FacesContext context, Carousel carousel) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         WidgetBuilder wb = getWidgetBuilder(context);
+        List<CarouselResponsiveOption> responsiveOptions = carousel.getResponsiveOptions();
+
         wb.init("Carousel", carousel);
 
-        wb.attr("firstVisible", carousel.getFirstVisible(), 0)
+        wb.attr("page", carousel.getPage(), 0)
                 .attr("circular", carousel.isCircular(), false)
-                .attr("vertical", carousel.isVertical(), false)
-                .attr("numVisible", carousel.getNumVisible(), 3)
-                .attr("autoplayInterval", carousel.getAutoPlayInterval(), 0)
-                .attr("pageLinks", carousel.getPageLinks(), 3)
-                .attr("effect", carousel.getEffect(), null)
-                .attr("effectDuration", carousel.getEffectDuration(), Integer.MIN_VALUE)
-                .attr("easing", carousel.getEasing(), null)
-                .attr("responsive", carousel.isResponsive(), false)
-                .attr("breakpoint", carousel.getBreakpoint(), 560)
-                .attr("stateful", carousel.isStateful(), false)
-                .attr("statefulGlobal", carousel.isStatefulGlobal(), false)
+                .attr("autoplayInterval", carousel.getAutoplayInterval(), 0)
+                .attr("numVisible", carousel.getNumVisible(), 1)
+                .attr("numScroll", carousel.getNumScroll(), 1)
+                .attr("orientation", carousel.getOrientation(), "horizontal")
                 .attr("touchable", ComponentUtils.isTouchable(context, carousel),  true);
 
-        if (carousel.isToggleable()) {
-            wb.attr("toggleable", true)
-                    .attr("toggleSpeed", carousel.getToggleSpeed())
-                    .attr("collapsed", carousel.isCollapsed());
+        if (responsiveOptions != null) {
+            writer.write(",responsiveOptions:[");
+            for (int i = 0; i < responsiveOptions.size(); i++) {
+                if (i != 0) {
+                    writer.write(",");
+                }
+                responsiveOptions.get(i).encode(writer);
+            }
+            writer.write("]");
         }
 
         wb.finish();
@@ -92,10 +77,13 @@ public class CarouselRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, Carousel carousel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = carousel.getClientId(context);
-        boolean collapsed = carousel.isCollapsed();
         String style = carousel.getStyle();
-        String styleClass = carousel.getStyleClass();
-        styleClass = (styleClass == null) ? Carousel.CONTAINER_CLASS : Carousel.CONTAINER_CLASS + " " + styleClass;
+        String styleClass = getStyleClassBuilder(context)
+                .add(Carousel.STYLE_CLASS)
+                .add(carousel.getStyleClass())
+                .add("horizontal".equals(carousel.getOrientation()), Carousel.HORIZONTAL_CLASS)
+                .add("vertical".equals(carousel.getOrientation()), Carousel.VERTICAL_CLASS)
+                .build();
 
         //container
         writer.startElement("div", null);
@@ -109,216 +97,225 @@ public class CarouselRenderer extends CoreRenderer {
         encodeContent(context, carousel);
         encodeFooter(context, carousel);
 
-        int pageCount = calculatePageCount(carousel);
-        encodeStateField(context, carousel, clientId + "_page", pageCount);
-
-        if (carousel.isToggleable()) {
-            encodeStateField(context, carousel, clientId + "_collapsed", String.valueOf(collapsed));
-        }
-
         writer.endElement("div");
     }
 
     protected void encodeContent(FacesContext context, Carousel carousel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        int totalIndicators = this.calculateIndicatorCount(carousel);
+        boolean isCircular = carousel.isCircular();
+        int rowCount = carousel.getRowCount();
+        int numVisible = carousel.getNumVisible();
+        int page = carousel.getPage();
+        boolean backwardIsDisabled = (!isCircular || rowCount < numVisible) && page == 0;
+        boolean forwardIsDisabled = (!isCircular || rowCount < numVisible) && (page == (totalIndicators - 1) || totalIndicators == 0);
+        boolean isVertical = "vertical".equals(carousel.getOrientation());
 
-        String itemStyleClass = carousel.getItemStyleClass();
-        itemStyleClass = itemStyleClass == null ? Carousel.ITEM_CLASS : Carousel.ITEM_CLASS + " " + itemStyleClass;
+        String contentStyleClass = getStyleClassBuilder(context)
+                .add(Carousel.CONTENT_CLASS)
+                .add(carousel.getContentStyleClass())
+                .build();
+        String containerStyleClass = getStyleClassBuilder(context)
+                .add(Carousel.CONTAINER_CLASS)
+                .add(carousel.getContainerStyleClass())
+                .build();
+        String itemContentHeight = isVertical ? carousel.getVerticalViewPortHeight() : "auto";
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", carousel.isVertical() ? Carousel.VERTICAL_VIEWPORT_CLASS : Carousel.VIEWPORT_CLASS, null);
+        writer.writeAttribute("class", contentStyleClass, null);
 
-        writer.startElement("ul", null);
-        writer.writeAttribute("class", Carousel.ITEMS_CLASS, null);
-        if (carousel.isCollapsed()) {
-            writer.writeAttribute("style", "display:none", null);
-        }
+        writer.startElement("div", null);
+        writer.writeAttribute("class", containerStyleClass, null);
+
+        encodePrevButton(context, carousel, backwardIsDisabled, isVertical);
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", Carousel.ITEMS_CONTENT_CLASS, null);
+        writer.writeAttribute("style", "height:" + itemContentHeight, null);
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", Carousel.ITEMS_CONTAINER_CLASS, null);
+
+        encodeItem(context, carousel, rowCount, numVisible);
+
+        writer.endElement("div");
+
+        writer.endElement("div");
+
+        encodeNextButton(context, carousel, forwardIsDisabled, isVertical);
+
+        writer.endElement("div");
+
+        encodeIndicators(context, carousel, totalIndicators, page);
+
+        writer.endElement("div");
+    }
+
+    protected void encodeItem(FacesContext context, Carousel carousel, int rowCount, int numVisible) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        int firstIndex = 0;
+        int lastIndex = firstIndex + numVisible - 1;
 
         if (carousel.getVar() != null) {
-            for (int i = 0; i < carousel.getRowCount(); i++) {
+            for (int i = 0; i < rowCount; i++) {
                 carousel.setIndex(i);
+                String itemStyleClass = getStyleClassBuilder(context)
+                        .add(Carousel.ITEM_CLASS)
+                        .add(lastIndex >= i, "ui-carousel-item-active")
+                        .add(firstIndex == i, "ui-carousel-item-start")
+                        .add(lastIndex == i, "ui-carousel-item-end")
+                        .build();
 
-                writer.startElement("li", null);
+                writer.startElement("div", null);
                 writer.writeAttribute("class", itemStyleClass, "itemStyleClass");
-                if (carousel.getItemStyle() != null) {
-                    writer.writeAttribute("style", carousel.getItemStyle(), "itemStyle");
-                }
 
                 renderChildren(context, carousel);
+
+                writer.endElement("div");
+            }
+
+            carousel.setIndex(-1);
+        }
+    }
+
+    protected void encodePrevButton(FacesContext context, Carousel carousel, boolean backwardIsDisabled, boolean isVertical) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String prevButtonStyleClass =  getStyleClassBuilder(context)
+                .add(Carousel.PREV_BUTTON_CLASS)
+                .add(backwardIsDisabled, "ui-state-disabled")
+                .build();
+        String prevButtonIconStyleClass =  getStyleClassBuilder(context)
+                .add(Carousel.PREV_BUTTON_ICON_CLASS)
+                .add(!isVertical, "pi-chevron-left")
+                .add(isVertical, "pi-chevron-up")
+                .build();
+
+        writer.startElement("button", null);
+        writer.writeAttribute("class", prevButtonStyleClass, null);
+        writer.writeAttribute("type", "button", null);
+
+        if (backwardIsDisabled) {
+            writer.writeAttribute("disabled", true, null);
+        }
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", prevButtonIconStyleClass, null);
+        writer.endElement("span");
+
+        writer.endElement("button");
+    }
+
+    protected void encodeNextButton(FacesContext context, Carousel carousel, boolean forwardIsDisabled, boolean isVertical) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String nextButtonStyleClass =  getStyleClassBuilder(context)
+                .add(Carousel.NEXT_BUTTON_CLASS)
+                .add(forwardIsDisabled, "ui-state-disabled")
+                .build();
+        String nextButtonIconStyleClass =  getStyleClassBuilder(context)
+                .add(Carousel.NEXT_BUTTON_ICON_CLASS)
+                .add(!isVertical, "pi-chevron-right")
+                .add(isVertical, "pi-chevron-down")
+                .build();
+
+        writer.startElement("button", null);
+        writer.writeAttribute("class", nextButtonStyleClass, null);
+        writer.writeAttribute("type", "button", null);
+
+        if (forwardIsDisabled) {
+            writer.writeAttribute("disabled", "disabled", "disabled");
+        }
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", nextButtonIconStyleClass, null);
+        writer.endElement("span");
+
+        writer.endElement("button");
+    }
+
+    protected void encodeIndicators(FacesContext context, Carousel carousel, int totalIndicators, int page) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String indicatorsContentStyleClass = getStyleClassBuilder(context)
+                .add(Carousel.INDICATORS_CONTENT_CLASS)
+                .add(carousel.getIndicatorsContentStyleClass())
+                .build();
+
+        if (totalIndicators >= 0) {
+            writer.startElement("ul", null);
+            writer.writeAttribute("class", indicatorsContentStyleClass, null);
+            for (int i = 0; i < totalIndicators; i++) {
+                String indicatorStyleClass = getStyleClassBuilder(context)
+                        .add(Carousel.INDICATOR_CLASS)
+                        .add(page == i, "ui-highlight")
+                        .build();
+
+                writer.startElement("li", null);
+                writer.writeAttribute("class", indicatorStyleClass, null);
+                writer.writeAttribute("data-index", i, null);
+
+                writer.startElement("button", null);
+                writer.writeAttribute("class", "ui-link", null);
+                writer.writeAttribute("type", "button", null);
+                writer.endElement("button");
 
                 writer.endElement("li");
             }
 
-            carousel.setIndex(-1); //clear
+            writer.endElement("ul");
         }
-        else {
-            for (UIComponent kid : carousel.getChildren()) {
-                if (kid.isRendered()) {
-                    writer.startElement("li", null);
-                    writer.writeAttribute("class", itemStyleClass, "itemStyleClass");
-                    if (carousel.getItemStyle() != null) {
-                        writer.writeAttribute("style", carousel.getItemStyle(), "itemStyle");
-                    }
-
-                    renderChild(context, kid);
-
-                    writer.endElement("li");
-                }
-            }
-        }
-
-        writer.endElement("ul");
-
-        writer.endElement("div");
     }
 
     protected void encodeHeader(FacesContext context, Carousel carousel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        boolean vertical = carousel.isVertical();
-        String clientId = carousel.getClientId(context);
-        String var = carousel.getVar();
-        int rowCount = carousel.getRowCount();
-        int renderedChildCount = carousel.getRenderedChildCount();
-        int pageCount = calculatePageCount(carousel);
-        int itemCount = var != null ? rowCount : renderedChildCount;
+        String headerText = carousel.getHeaderText();
+        UIComponent facet = carousel.getFacet("header");
+        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(facet);
+
+        if (headerText == null && !shouldRenderFacet) {
+            return;
+        }
 
         writer.startElement("div", null);
         writer.writeAttribute("class", Carousel.HEADER_CLASS, null);
 
-        //title
-        writer.startElement("div", null);
-        writer.writeAttribute("class", Carousel.HEADER_TITLE_CLASS, null);
-
-        UIComponent facet = carousel.getFacet("header");
-        String text = carousel.getHeaderText();
-        if (ComponentUtils.shouldRenderFacet(facet)) {
+        if (shouldRenderFacet) {
             facet.encodeAll(context);
         }
-        else if (text != null) {
-            writer.writeText(text, "headerText");
-        }
-
-        writer.endElement("div");
-
-        //toggle icon
-        if (carousel.isToggleable()) {
-            String icon = carousel.isCollapsed() ? "ui-icon-plusthick" : "ui-icon-minusthick";
-            encodeIcon(context, carousel, icon, clientId + "_toggler");
-        }
-
-        //next button
-        writer.startElement("span", null);
-        writer.writeAttribute("class", vertical ? Carousel.VERTICAL_NEXT_BUTTON : Carousel.HORIZONTAL_NEXT_BUTTON, null);
-        writer.endElement("span");
-
-        //prev button
-        writer.startElement("span", null);
-        writer.writeAttribute("class", vertical ? Carousel.VERTICAL_PREV_BUTTON : Carousel.HORIZONTAL_PREV_BUTTON, null);
-        writer.endElement("span");
-
-        //pageLinks
-        if (pageCount <= carousel.getPageLinks()) {
-            encodePageLinks(context, carousel, pageCount);
-        }
         else {
-            encodeDropDown(context, carousel, clientId + "_dropdown", Carousel.DROPDOWN_CLASS, pageCount);
-        }
-
-        if (carousel.isResponsive()) {
-            encodeDropDown(context, carousel, clientId + "_responsivedropdown", Carousel.RESPONSIVE_DROPDOWN_CLASS, itemCount);
+            writer.writeText(headerText, "headerText");
         }
 
         writer.endElement("div");
-    }
-
-    protected void encodePageLinks(FacesContext context, Carousel carousel, int pageCount) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
-        writer.startElement("div", null);
-        writer.writeAttribute("class", Carousel.PAGE_LINKS_CONTAINER_CLASS, null);
-
-        for (int i = 0; i < pageCount; i++) {
-            writer.startElement("a", null);
-            writer.writeAttribute("href", "#", null);
-            writer.writeAttribute("class", Carousel.PAGE_LINK_CLASS, null);
-            writer.endElement("a");
-        }
-
-        writer.endElement("div");
-    }
-
-    protected void encodeDropDown(FacesContext context, Carousel carousel, String name, String styleClass, int pageCount) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String template = carousel.getDropdownTemplate();
-
-        writer.startElement("select", null);
-        writer.writeAttribute("name", name, null);
-        writer.writeAttribute("class", styleClass, null);
-
-        for (int i = 0; i < pageCount; i++) {
-            writer.startElement("option", null);
-            writer.writeAttribute("value", i + 1, null);
-            writer.write(template.replaceAll("\\{page\\}", String.valueOf(i + 1)));
-            writer.endElement("option");
-        }
-
-        writer.endElement("select");
     }
 
     protected void encodeFooter(FacesContext context, Carousel carousel) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String footerText = carousel.getFooterText();
         UIComponent facet = carousel.getFacet("footer");
-        String text = carousel.getFooterText();
-        boolean renderFacet = ComponentUtils.shouldRenderFacet(facet);
+        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(facet);
 
-        if (!renderFacet && text == null) {
+        if (footerText == null && !shouldRenderFacet) {
             return;
         }
 
-        ResponseWriter writer = context.getResponseWriter();
-
         writer.startElement("div", null);
         writer.writeAttribute("class", Carousel.FOOTER_CLASS, null);
-        if (carousel.isCollapsed()) {
-            writer.writeAttribute("style", "display:none", null);
-        }
 
-        if (renderFacet) {
+        if (shouldRenderFacet) {
             facet.encodeAll(context);
         }
         else {
-            writer.writeText(text, "footerText");
+            writer.writeText(footerText, "footerText");
         }
 
         writer.endElement("div");
     }
 
-    protected void encodeStateField(FacesContext context, Carousel carousel, String id, Object value) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
-        writer.startElement("input", null);
-        writer.writeAttribute("id", id, null);
-        writer.writeAttribute("name", id, null);
-        writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("autocomplete", "off", null);
-        writer.writeAttribute("value", value, null);
-        writer.endElement("input");
-    }
-
-    protected void encodeIcon(FacesContext context, Carousel carousel, String iconClass, String id) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
-        writer.startElement("a", null);
-        if (id != null) {
-            writer.writeAttribute("id", id, null);
-        }
-        writer.writeAttribute("href", "#", null);
-        writer.writeAttribute("class", Carousel.TOGGLER_LINK_CLASS, null);
-
-        writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-icon " + iconClass, null);
-        writer.endElement("span");
-
-        writer.endElement("a");
+    protected int calculateIndicatorCount(Carousel carousel) {
+        String var = carousel.getVar();
+        int childCount = carousel.getRowCount();
+        int numScroll = carousel.getNumScroll();
+        int numVisible = carousel.getNumVisible();
+        return var != null ? (int) ((Math.ceil(childCount - numVisible)) / numScroll) + 1 : 0;
     }
 
     @Override
@@ -329,13 +326,5 @@ public class CarouselRenderer extends CoreRenderer {
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         //Rendering happens on encodeEnd
-    }
-
-    protected int calculatePageCount(Carousel carousel) {
-        String var = carousel.getVar();
-        int rowCount = carousel.getRowCount();
-        int numVisible = carousel.getNumVisible();
-        int renderedChildCount = carousel.getRenderedChildCount();
-        return var != null ? (int) (Math.ceil(rowCount / (1d * numVisible))) : renderedChildCount;
     }
 }

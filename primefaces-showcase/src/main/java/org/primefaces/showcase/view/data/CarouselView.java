@@ -25,6 +25,7 @@ package org.primefaces.showcase.view.data;
 
 import javax.faces.view.ViewScoped;
 
+import org.primefaces.model.carousel.CarouselResponsiveOption;
 import org.primefaces.showcase.domain.Product;
 import org.primefaces.showcase.service.ProductService;
 
@@ -32,6 +33,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Named
@@ -42,12 +44,18 @@ public class CarouselView implements Serializable {
 
     private Product selectedProduct;
 
+    private List<CarouselResponsiveOption> responsiveOptions;
+
     @Inject
     private ProductService service;
 
     @PostConstruct
     public void init() {
         products = service.getProducts(9);
+        responsiveOptions = new ArrayList<>();
+        responsiveOptions.add(new CarouselResponsiveOption("1024px", 3, 3));
+        responsiveOptions.add(new CarouselResponsiveOption("768px", 2, 2));
+        responsiveOptions.add(new CarouselResponsiveOption("560px", 1, 1));
     }
 
     public List<Product> getProducts() {
@@ -64,5 +72,13 @@ public class CarouselView implements Serializable {
 
     public void setSelectedProduct(Product selectedProduct) {
         this.selectedProduct = selectedProduct;
+    }
+
+    public List<CarouselResponsiveOption> getResponsiveOptions() {
+        return responsiveOptions;
+    }
+
+    public void setResponsiveOptions(List<CarouselResponsiveOption> responsiveOptions) {
+        this.responsiveOptions = responsiveOptions;
     }
 }

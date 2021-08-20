@@ -31,28 +31,26 @@ import javax.faces.component.UIComponent;
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-@ResourceDependency(library = "primefaces", name = "touch/touchswipe.js")
 public class Carousel extends CarouselBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Carousel";
 
-    public static final String CONTAINER_CLASS = "ui-carousel ui-widget ui-widget-content ui-corner-all ui-hidden-container";
-    public static final String ITEM_CLASS = "ui-carousel-item ui-widget-content ui-corner-all";
-    public static final String HEADER_CLASS = "ui-carousel-header ui-widget-header ui-corner-all";
-    public static final String HEADER_TITLE_CLASS = "ui-carousel-header-title";
-    public static final String FOOTER_CLASS = "ui-carousel-footer ui-widget-header ui-corner-all";
-    public static final String HORIZONTAL_NEXT_BUTTON = "ui-carousel-button ui-carousel-next-button ui-icon ui-icon-circle-triangle-e";
-    public static final String HORIZONTAL_PREV_BUTTON = "ui-carousel-button ui-carousel-prev-button ui-icon ui-icon-circle-triangle-w";
-    public static final String VERTICAL_NEXT_BUTTON = "ui-carousel-button ui-carousel-next-button ui-icon ui-icon-circle-triangle-s";
-    public static final String VERTICAL_PREV_BUTTON = "ui-carousel-button ui-carousel-prev-button ui-icon ui-icon-circle-triangle-n";
-    public static final String VIEWPORT_CLASS = "ui-carousel-viewport";
-    public static final String ITEMS_CLASS = "ui-carousel-items";
-    public static final String VERTICAL_VIEWPORT_CLASS = "ui-carousel-viewport ui-carousel-vertical-viewport";
-    public static final String PAGE_LINKS_CONTAINER_CLASS = "ui-carousel-page-links";
-    public static final String PAGE_LINK_CLASS = "ui-icon ui-carousel-page-link ui-icon-radio-off";
-    public static final String DROPDOWN_CLASS = "ui-carousel-dropdown ui-widget ui-state-default ui-corner-left";
-    public static final String RESPONSIVE_DROPDOWN_CLASS = "ui-carousel-dropdown-responsive ui-widget ui-state-default ui-corner-left";
-    public static final String TOGGLER_LINK_CLASS = "ui-carousel-titlebar-icon ui-corner-all ui-state-default";
+    public static final String STYLE_CLASS = "ui-carousel ui-widget";
+    public static final String CONTENT_CLASS = "ui-carousel-content";
+    public static final String CONTAINER_CLASS = "ui-carousel-container";
+    public static final String INDICATORS_CONTENT_CLASS = "ui-carousel-indicators ui-reset";
+    public static final String INDICATOR_CLASS = "ui-carousel-indicator";
+    public static final String HORIZONTAL_CLASS = "ui-carousel-horizontal";
+    public static final String VERTICAL_CLASS = "ui-carousel-vertical";
+    public static final String HEADER_CLASS = "ui-carousel-header";
+    public static final String FOOTER_CLASS = "ui-carousel-footer";
+    public static final String PREV_BUTTON_CLASS = "ui-carousel-prev ui-link";
+    public static final String PREV_BUTTON_ICON_CLASS = "ui-carousel-prev-icon pi";
+    public static final String NEXT_BUTTON_CLASS = "ui-carousel-next ui-link";
+    public static final String NEXT_BUTTON_ICON_CLASS = "ui-carousel-next-icon pi";
+    public static final String ITEMS_CONTENT_CLASS = "ui-carousel-items-content";
+    public static final String ITEMS_CONTAINER_CLASS = "ui-carousel-items-container ui-items-hidden";
+    public static final String ITEM_CLASS = "ui-carousel-item";
 
     public int getRenderedChildCount() {
         int i = 0;
