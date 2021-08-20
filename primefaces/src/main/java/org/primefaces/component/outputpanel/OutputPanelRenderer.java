@@ -40,7 +40,7 @@ public class OutputPanelRenderer extends CoreRenderer {
     private static final String INLINE = "span";
 
     @Override
-    public void decode(final FacesContext context, final UIComponent component) {
+    public void decode(FacesContext context, UIComponent component) {
         OutputPanel panel = (OutputPanel) component;
 
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
@@ -87,7 +87,7 @@ public class OutputPanelRenderer extends CoreRenderer {
                 skeletonFacet.encodeAll(context);
             }
             else {
-                renderLoading(context);
+                renderLoading(context, panel);
             }
         }
         else {
@@ -109,7 +109,7 @@ public class OutputPanelRenderer extends CoreRenderer {
         wb.finish();
     }
 
-    protected void renderLoading(FacesContext context) throws IOException {
+    protected void renderLoading(FacesContext context, OutputPanel panel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("i", null);
