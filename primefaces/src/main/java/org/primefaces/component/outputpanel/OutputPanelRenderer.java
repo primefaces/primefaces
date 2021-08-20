@@ -24,18 +24,32 @@
 package org.primefaces.component.outputpanel;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class OutputPanelRenderer extends CoreRenderer {
 
     private static final String BLOCK = "div";
     private static final String INLINE = "span";
+
+    @Override
+    public void decode(final FacesContext context, final UIComponent component) {
+        OutputPanel panel = (OutputPanel) component;
+
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String clientId = panel.getClientId();
+
+        if (params.containsKey(clientId + "_load")) {
+            decodeBehaviors(context, component);
+        }
+    }
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -68,7 +82,13 @@ public class OutputPanelRenderer extends CoreRenderer {
         }
 
         if (isDeferredNecessary(context, panel)) {
-            renderLoading(context, panel);
+            UIComponent skeletonsFacet = panel.getFacet("skeletons");
+            if (ComponentUtils.shouldRenderFacet(skeletonsFacet)) {
+                skeletonsFacet.encodeAll(context);
+            }
+            else {
+                renderLoading(context);
+            }
         }
         else {
             renderChildren(context, panel);
@@ -89,7 +109,7 @@ public class OutputPanelRenderer extends CoreRenderer {
         wb.finish();
     }
 
-    protected void renderLoading(FacesContext context, OutputPanel panel) throws IOException {
+    protected void renderLoading(FacesContext context) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("i", null);

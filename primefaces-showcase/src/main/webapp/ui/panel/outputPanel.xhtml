@@ -19,18 +19,32 @@
     <ui:param name="widgetLink" value="outputpanel-1"/>
 
     <ui:define name="implementation">
-        <div class="card">
-            <h:form>
+        <h:form>
+            <div class="card" style="min-height: 175px">
                 <p:outputPanel deferred="true">
-                    <h5>Loaded after page load.</h5>
+                    <h5>Loaded after page load</h5>
                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                         Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                         Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
                         Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                 </p:outputPanel>
+            </div>
 
-                <div style="height:1000px"></div>
+            <div class="card" style="min-height: 175px">
+                <p:outputPanel deferred="true">
+                    <p:ajax event="load" listener="#{outputPanelView.loadData}"/>
+                    <f:facet name="skeletons">
+                        <p:skeleton width="100px" height="21px" class="p-mb-4"/>
+                        <p:skeleton width="100%" height="63px"/>
+                    </f:facet>
+                    <h5>#{outputPanelView.data.title}</h5>
+                    <p>#{outputPanelView.data.body}</p>
+                </p:outputPanel>
+            </div>
 
+            <div style="height:1000px"></div>
+
+            <div class="card">
                 <p:outputPanel deferred="true" deferredMode="visible">
                     <h5>Loaded after the panel becomes visible on page scroll</h5>
                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -38,8 +52,8 @@
                         Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
                         Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                 </p:outputPanel>
-            </h:form>
-        </div>
+            </div>
+        </h:form>
     </ui:define>
 
 </ui:composition>
