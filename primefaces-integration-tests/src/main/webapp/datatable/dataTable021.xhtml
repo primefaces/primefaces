@@ -12,8 +12,17 @@
     <h:body>
 
         <h:form id="form">
-            <p:dataTable id="datatable" value="#{dataTable021.progLanguages}" var="lang"
-                         filteredValue="#{dataTable021.filteredProgLanguages}">
+            <p:dataTable id="datatable" value="#{dataTable021.progLanguages}" var="lang" widgetVar="datatable"
+                         filteredValue="#{dataTable021.filteredProgLanguages}"
+                         globalFilterFunction="#{dataTable021.globalFilterFunction}">
+
+                <f:facet name="header">
+                    <div class="products-table-header">
+                        <span style="font-weight: bold; text-transform: capitalize;">programming languages</span>
+                        <p:inputText id="globalFilter" onchange="PF('datatable').filter()" placeholder="Search" />
+                    </div>
+                </f:facet>
+
                 <p:column headerText="ID" sortBy="#{lang.id}">
                     <h:outputText value="#{lang.id}"/>
                 </p:column>
@@ -33,6 +42,10 @@
                                      value="remove row">
                     </p:commandButton>
                 </p:column>
+
+                <f:facet name="footer">
+                    <p:commandButton process="@this form:datatable" update="datatable" value="Delete row" action="#{dataTable021.deleteJavaProgrammingLanguage}" id="buttonDeleteRow" />
+                </f:facet>
             </p:dataTable>
 
             <p:commandButton id="button" value="Submit" update="@form"/>
