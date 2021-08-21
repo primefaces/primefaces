@@ -75,11 +75,12 @@ public class MenuButtonRenderer extends TieredMenuRenderer {
         ResponseWriter writer = context.getResponseWriter();
         boolean isIconLeft = button.getIconPos().equals("left");
         String value = button.getValue();
-        String buttonTextClass = isIconLeft ? HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS : HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS;
-        if (isValueBlank(value)) {
-            buttonTextClass = HTML.BUTTON_ICON_ONLY_BUTTON_CLASS;
-        }
-        String buttonClass = disabled ? buttonTextClass + " ui-state-disabled" : buttonTextClass;
+        String buttonClass = getStyleClassBuilder(context)
+                .add(button.getButtonStyleClass())
+                .add(isIconLeft, HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS, HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS)
+                .add(isValueBlank(value), HTML.BUTTON_ICON_ONLY_BUTTON_CLASS)
+                .add(disabled, "ui-state-disabled")
+                .build();
 
         writer.startElement("button", null);
         writer.writeAttribute("id", buttonId, null);

@@ -50,7 +50,8 @@ public abstract class MenuButtonBase extends AbstractMenu implements Widget {
         maxHeight,
         autoDisplay,
         toggleEvent,
-        delay
+        delay,
+        buttonStyleClass
     }
 
     public MenuButtonBase() {
@@ -197,5 +198,13 @@ public abstract class MenuButtonBase extends AbstractMenu implements Widget {
 
     public void setDelay(int delay) {
         getStateHelper().put(PropertyKeys.delay, delay);
+    }
+
+    public String getButtonStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.buttonStyleClass, null);
+    }
+
+    public void setButtonStyleClass(String buttonStyleClass) {
+        getStateHelper().put(PropertyKeys.buttonStyleClass, buttonStyleClass);
     }
 }
