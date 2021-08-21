@@ -15,7 +15,7 @@ Skeleton is a placeholder to display instead of the actual content.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 | id | null | String | Unique identifier of the component
 | rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -37,14 +37,14 @@ Skeleton displays a rectangle in its simplest form.
 ```
 
 ## Circle
-The other option is the circle by setting ```shape``` property as "circle".
+The other option is the circle by setting `shape` property as "circle".
 
 ```xhtml
 <p:skeleton shape="circle"/>
 ```
 
 ## Size
-In order to customize the size, use ```width``` and ```height``` properties for rectangles and ```size``` for Circle 
+In order to customize the size, use `width` and `height` properties for rectangles and `size` for Circle
 and Square shapes.
 
 ```xhtml
@@ -53,7 +53,7 @@ and Square shapes.
 ```
 
 ## Border Radius
-The default border radius of a rectangle is specified by the theme and can be overriden using the ```borderRadius``` 
+The default border radius of a rectangle is specified by the theme and can be overriden using the `borderRadius`
 property.
 
 ```xhtml
@@ -61,10 +61,27 @@ property.
 ```
 
 ## Animation
-Animation can be turned of by setting ```animation``` to "none".
+Animation can be turned of by setting `animation` to "none".
 
 ```xhtml
 <p:skeleton animation="none" />
+```
+
+## Deferred loading
+Skeletons are especially useful with the deferred loading option of the `p:outputPanel`. You can use the `skeleton`
+facet to show UI while the data is being loaded. This is normally combined with the load ajax event with a listener
+which loads the data you want to show in your panel. For example:
+
+```xhtml
+<p:outputPanel deferred="true">
+    <p:ajax event="load" listener="#{bean.loadData}"/>
+    <f:facet name="skeleton">
+        <p:skeleton width="200px" height="21px" class="p-mb-4"/>
+        <p:skeleton width="100%" height="63px"/>
+    </f:facet>
+    <h5>#{bean.data.title}</h5>
+    <p>#{bean.data.body}</p>
+</p:outputPanel>
 ```
 
 ## Skinning of Skeleton

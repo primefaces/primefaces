@@ -74,6 +74,23 @@ page scroll as well. This feature is very useful to increase page load performan
 one part of the page that has components dealing with backend and taking time, with deferred mode
 on, rest of the page is loaded instantly and time taking process is loaded afterwards with ajax.
 
+### Skeletons
+Deferred loading can be used with the `skeleton` facet to show UI while the data is being loaded. This
+is normally combined with the load ajax event with a listener which loads the data you want to show
+in your panel. For example:
+
+```xhtml
+<p:outputPanel deferred="true">
+    <p:ajax event="load" listener="#{bean.loadData}"/>
+    <f:facet name="skeleton">
+        <p:skeleton width="200px" height="21px" class="p-mb-4"/>
+        <p:skeleton width="100%" height="63px"/>
+    </f:facet>
+    <h5>#{bean.data.title}</h5>
+    <p>#{bean.data.body}</p>
+</p:outputPanel>
+```
+
 ## Layout
 OutputPanel has two layout modes;
 
