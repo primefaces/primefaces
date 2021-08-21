@@ -37,14 +37,14 @@ Skeleton displays a rectangle in its simplest form.
 ```
 
 ## Circle
-The other option is the circle by setting ```shape``` property as "circle".
+The other option is the circle by setting `shape` property as "circle".
 
 ```xhtml
 <p:skeleton shape="circle"/>
 ```
 
 ## Size
-In order to customize the size, use ```width``` and ```height``` properties for rectangles and ```size``` for Circle
+In order to customize the size, use `width` and `height` properties for rectangles and `size` for Circle
 and Square shapes.
 
 ```xhtml
@@ -53,7 +53,7 @@ and Square shapes.
 ```
 
 ## Border Radius
-The default border radius of a rectangle is specified by the theme and can be overriden using the ```borderRadius```
+The default border radius of a rectangle is specified by the theme and can be overriden using the `borderRadius`
 property.
 
 ```xhtml
@@ -61,7 +61,7 @@ property.
 ```
 
 ## Animation
-Animation can be turned of by setting ```animation``` to "none".
+Animation can be turned of by setting `animation` to "none".
 
 ```xhtml
 <p:skeleton animation="none" />
