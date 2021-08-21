@@ -75,8 +75,8 @@ one part of the page that has components dealing with backend and taking time, w
 on, rest of the page is loaded instantly and time taking process is loaded afterwards with ajax.
 
 ### Skeletons
-Deferred loading can be used with the `skeleton` facet to show UI while the data is loaded. This
-is normally combined with the load ajax event and a listener which loads the data you want to show
+Deferred loading can be used with the `skeleton` facet to show UI while the data is being loaded. This
+is normally combined with the load ajax event with a listener which loads the data you want to show
 in your panel. For example:
 
 ```xhtml
