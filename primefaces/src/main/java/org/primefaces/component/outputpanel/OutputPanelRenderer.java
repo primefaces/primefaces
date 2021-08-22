@@ -118,7 +118,13 @@ public class OutputPanelRenderer extends CoreRenderer {
     }
 
     protected boolean isDeferredNecessary(FacesContext context, OutputPanel panel) {
-        return !context.getPartialViewContext().isAjaxRequest() && panel.isDeferred();
+        if (!panel.isDeferred()) {
+            return false;
+        }
+        if (panel.getValueExpression(OutputPanel.PropertyKeys.loadNeeded.name()) != null) {
+            return panel.isLoadNeeded();
+        }
+        return !context.getPartialViewContext().isAjaxRequest();
     }
 
     @Override

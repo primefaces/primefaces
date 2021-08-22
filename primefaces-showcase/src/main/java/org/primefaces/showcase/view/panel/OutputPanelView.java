@@ -35,23 +35,30 @@ import javax.inject.Named;
 public class OutputPanelView implements Serializable {
 
     private Map<String, String> data = new HashMap<>();
+    private Map<String, String> data2 = new HashMap<>();
 
     public void loadData() throws InterruptedException {
         Thread.sleep(2000); // Sleep a bit to show the skeletons
-        data.put("title", "With skeletons facet");
-        data.put("body", "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut "
-                + "labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris "
-                + "nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit "
-                + "esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in "
-                + "culpa qui officia deserunt mollit anim id est laborum.");
+        data.put("title", "OutputPanel skeleton facet");
+        data.put("body", "Deferred loading can be used with the \"skeleton\" facet to show UI while the data is being "
+                + "loaded. This is normally combined with the load ajax event with a listener which loads the data you "
+                + "want to show in your panel. See xhtml and OutputPanelView.java");
     }
 
-    public void resetData() {
-        data.clear();
+    public void loadData2() throws InterruptedException {
+        Thread.sleep(2000); // Sleep a bit to show the skeletons
+        data2.put("title", "Deferred loading in Ajax requests");
+        data2.put("body", "By default deferred loading does not work with Ajax requests. As a solution you can use the "
+                + "\"loadNeeded\" boolean attribute to enforce loading (even in Ajax requests). Normally you would use "
+                + "an expression here checking if your data is empty. See xhtml and OutputPanelView.java");
     }
 
     public Map<String, String> getData() {
         return data;
+    }
+
+    public Map<String, String> getData2() {
+        return data2;
     }
 
 }

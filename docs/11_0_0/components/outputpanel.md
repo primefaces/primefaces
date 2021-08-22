@@ -33,6 +33,7 @@ styleClass | null | String | StyleClass of the HTML container element
 layout | block | String | Shortcut for the css display property, valid values are block(default) and inline.
 deferred | false | Boolean | Deferred mode loads the contents after page load to speed up page load.
 deferredMode | load | String | Defines deferred loading mode, valid values are "load" (after page load) and "visible" (once the panel is visible on scroll).
+loadNeeded | false | Boolean | Indicates deferred load is needed.
 
 OutputPanel has various uses cases such as placeholder, deferred loading and auto update.
 
@@ -88,6 +89,18 @@ in your panel. For example:
     </f:facet>
     <h5>#{bean.data.title}</h5>
     <p>#{bean.data.body}</p>
+</p:outputPanel>
+```
+
+### Ajax requests
+By default deferred loading does not work with Ajax requests. As a solution you can use the `loadNeeded` boolean
+attribute to enforce loading (even in Ajax requests). Normally you would use an expression here checking if your data
+is empty. For example:
+
+```xhtml
+<p:outputPanel deferred="true" loadNeeded="#{empty bean.data}">
+    <p:ajax event="load" listener="#{bean.loadData}"/>
+    ...
 </p:outputPanel>
 ```
 
