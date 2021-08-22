@@ -82,9 +82,9 @@ public class OutputPanelRenderer extends CoreRenderer {
         }
 
         if (isDeferredNecessary(context, panel)) {
-            UIComponent skeletonFacet = panel.getFacet("skeleton");
-            if (ComponentUtils.shouldRenderFacet(skeletonFacet)) {
-                skeletonFacet.encodeAll(context);
+            UIComponent loadingFacet = panel.getFacet("loading");
+            if (ComponentUtils.shouldRenderFacet(loadingFacet)) {
+                loadingFacet.encodeAll(context);
             }
             else {
                 renderLoading(context, panel);
@@ -121,10 +121,11 @@ public class OutputPanelRenderer extends CoreRenderer {
         if (!panel.isDeferred()) {
             return false;
         }
-        if (panel.getValueExpression(OutputPanel.PropertyKeys.loaded.name()) != null) {
+        boolean isAjaxRequest = context.getPartialViewContext().isAjaxRequest();
+        if (isAjaxRequest && panel.getValueExpression(OutputPanel.PropertyKeys.loaded.name()) != null) {
             return !panel.isLoaded();
         }
-        return !context.getPartialViewContext().isAjaxRequest();
+        return !isAjaxRequest;
     }
 
     @Override
