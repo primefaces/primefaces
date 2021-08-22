@@ -121,11 +121,10 @@ public class OutputPanelRenderer extends CoreRenderer {
         if (!panel.isDeferred()) {
             return false;
         }
-        boolean isAjaxRequest = context.getPartialViewContext().isAjaxRequest();
-        if (isAjaxRequest && panel.getValueExpression(OutputPanel.PropertyKeys.loaded.name()) != null) {
+        if (panel.getValueExpression(OutputPanel.PropertyKeys.loaded.name()) != null) {
             return !panel.isLoaded();
         }
-        return !isAjaxRequest;
+        return !context.getPartialViewContext().isAjaxRequest();
     }
 
     @Override
