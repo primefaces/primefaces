@@ -33,7 +33,7 @@ styleClass | null | String | StyleClass of the HTML container element
 layout | block | String | Shortcut for the css display property, valid values are block(default) and inline.
 deferred | false | Boolean | Deferred mode loads the contents after page load to speed up page load.
 deferredMode | load | String | Defines deferred loading mode, valid values are "load" (after page load) and "visible" (once the panel is visible on scroll).
-loaded | false | Boolean | Indicates that deferred loaded is not needed.
+loaded | false | Boolean | Indicates that deferred loading is not needed.
 
 OutputPanel has various uses cases such as placeholder, deferred loading and auto update.
 
