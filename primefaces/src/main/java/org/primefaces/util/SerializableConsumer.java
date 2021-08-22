@@ -21,35 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model;
+package org.primefaces.util;
 
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.Serializable;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
-public interface StreamedContent {
+@FunctionalInterface
+public interface SerializableConsumer<T> extends Consumer<T>, Serializable {
 
-    String getName();
-
-    String getContentType();
-
-    String getContentEncoding();
-
-    Integer getContentLength();
-
-    /**
-     * {@link InputStream} which will be buffered and written to the response.
-     *
-     * @return the {@link InputStream}
-     */
-    Supplier<InputStream> getStream();
-
-    /**
-     * {@link Consumer} to write directly to the response.
-     * This method doesn't require buffering and should be preffered over {@link #getStream()} from performance perspective.
-     *
-     * @return The {@link Consumer}
-     */
-    Consumer<OutputStream> getWriter();
 }

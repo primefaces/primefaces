@@ -100,7 +100,7 @@ public class DynamicContentSrcBuilder {
                 if (streamedContent.getWriter() != null) {
                     return buildBase64(context, streamedContent.getWriter(), streamedContent.getContentType());
                 }
-                return buildBase64(context, streamedContent.getStream(), streamedContent.getContentType());
+                return buildBase64(context, streamedContent.getStream().get(), streamedContent.getContentType());
             }
         }
         else if (byte[].class.isAssignableFrom(type)) {
