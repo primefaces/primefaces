@@ -121,8 +121,8 @@ public class OutputPanelRenderer extends CoreRenderer {
         if (!panel.isDeferred()) {
             return false;
         }
-        if (panel.getValueExpression(OutputPanel.PropertyKeys.loadNeeded.name()) != null) {
-            return panel.isLoadNeeded();
+        if (panel.getValueExpression(OutputPanel.PropertyKeys.loaded.name()) != null) {
+            return !panel.isLoaded();
         }
         return !context.getPartialViewContext().isAjaxRequest();
     }

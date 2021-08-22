@@ -38,7 +38,7 @@ public class OutputPanelView implements Serializable {
     private Map<String, String> data2 = new HashMap<>();
 
     public void loadData() throws InterruptedException {
-        Thread.sleep(2000); // Sleep a bit to show the skeletons
+        Thread.sleep(1000); // Sleep a bit to show the skeletons
         data.put("title", "OutputPanel skeleton facet");
         data.put("body", "Deferred loading can be used with the \"skeleton\" facet to show UI while the data is being "
                 + "loaded. This is normally combined with the load ajax event with a listener which loads the data you "
@@ -46,10 +46,10 @@ public class OutputPanelView implements Serializable {
     }
 
     public void loadData2() throws InterruptedException {
-        Thread.sleep(2000); // Sleep a bit to show the skeletons
+        Thread.sleep(1000); // Sleep a bit to show the skeletons
         data2.put("title", "Deferred loading in Ajax requests");
         data2.put("body", "By default deferred loading does not work with Ajax requests. As a solution you can use the "
-                + "\"loadNeeded\" boolean attribute to enforce loading (even in Ajax requests). Normally you would use "
+                + "\"loaded\" boolean attribute to enforce loading (even in Ajax requests). Normally you would use "
                 + "an expression here checking if your data is empty. See xhtml and OutputPanelView.java");
     }
 

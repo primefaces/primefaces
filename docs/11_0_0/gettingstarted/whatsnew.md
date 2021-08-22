@@ -12,7 +12,7 @@ This page contains a list of big features. Please check the GitHub issues for al
   * InputText, InputTextarea: counter can count bytes instead of characters.
   * OutputPanel
     * Added `skeleton` facet to show while deferred loading is in progress.
-    * Added `loadNeeded` attribute to enforce deferred loading.
+    * Added `loaded` attribute to indicate that deferred loaded is not needed, making deferred possible in Ajax requests.
   * Spinner
     * Added buttons modes: `horizontal`, `horizontal-after` and `vertical`.
     * Added support to align input text using classes: `text-left`, `text-center`, `text-right`.

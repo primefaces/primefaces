@@ -18787,9 +18787,9 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Indicates deferred load is needed.]]>
+                <![CDATA[Indicates that deferred loaded is not needed. Default is false.]]>
             </description>
-            <name>loadNeeded</name>
+            <name>loaded</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
