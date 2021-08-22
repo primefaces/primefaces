@@ -11,7 +11,7 @@ This page contains a list of big features. Please check the GitHub issues for al
   * Inplace: added `tabindex` for keyboard focus and toggle support.
   * InputText, InputTextarea: counter can count bytes instead of characters.
   * OutputPanel
-    * Added `skeleton` facet to show while deferred loading is in progress.
+    * Added `loading` facet to show while deferred loading is in progress.
     * Added `loaded` attribute to indicate that deferred loading is not needed, making deferred possible in Ajax requests.
   * Spinner
     * Added buttons modes: `horizontal`, `horizontal-after` and `vertical`.

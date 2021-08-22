@@ -39,8 +39,8 @@ public class OutputPanelView implements Serializable {
 
     public void loadData() throws InterruptedException {
         Thread.sleep(1000); // Sleep a bit to show the skeletons
-        data.put("title", "OutputPanel skeleton facet");
-        data.put("body", "Deferred loading can be used with the \"skeleton\" facet to show UI while the data is being "
+        data.put("title", "OutputPanel loading facet");
+        data.put("body", "Deferred loading can be used with the \"loading\" facet to show UI while the data is being "
                 + "loaded. This is normally combined with the load ajax event with a listener which loads the data you "
                 + "want to show in your panel. See xhtml and OutputPanelView.java");
     }

@@ -82,9 +82,9 @@ public class OutputPanelRenderer extends CoreRenderer {
         }
 
         if (isDeferredNecessary(context, panel)) {
-            UIComponent skeletonFacet = panel.getFacet("skeleton");
-            if (ComponentUtils.shouldRenderFacet(skeletonFacet)) {
-                skeletonFacet.encodeAll(context);
+            UIComponent loadingFacet = panel.getFacet("loading");
+            if (ComponentUtils.shouldRenderFacet(loadingFacet)) {
+                loadingFacet.encodeAll(context);
             }
             else {
                 renderLoading(context, panel);
