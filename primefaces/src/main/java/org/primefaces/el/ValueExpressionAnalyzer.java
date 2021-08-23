@@ -24,6 +24,7 @@
 package org.primefaces.el;
 
 import javax.el.ELContext;
+import javax.el.PropertyNotFoundException;
 import javax.el.ValueExpression;
 import javax.el.ValueReference;
 import javax.faces.context.FacesContext;
@@ -36,44 +37,17 @@ public class ValueExpressionAnalyzer {
     }
 
     public static ValueReference getReference(ELContext elContext, ValueExpression expression) {
-
-        if (expression == null) {
-            return null;
-        }
-
-        ValueReference reference = toValueReference(expression, elContext);
-
-        // check for a CC expression
-        if (reference != null && isCompositeComponentReference(reference)) {
-            ValueExpression unwrapped = unwrapCompositeComponentReference(reference);
-
-            // check for nested CC expressions
-            if (unwrapped != null) {
-                ValueReference unwrappedRef = toValueReference(unwrapped, elContext);
-                if (isCompositeComponentReference(unwrappedRef)) {
-                    return getReference(elContext, unwrapped);
-                }
-                else {
-                    return unwrappedRef;
-                }
-            }
-
-            // return null if it cant be further unwrapped
-            return null;
-        }
-
-        return reference;
+        return getReference(elContext, expression, false);
     }
 
-    public static ValueExpression getExpression(ELContext elContext, ValueExpression expression) {
+    public static ValueReference getReference(ELContext elContext, ValueExpression expression,
+            boolean returnNullWhenUnresolvable) {
 
         if (expression == null) {
             return null;
         }
 
-        // Unwrapping is required e.g. for p:graphicImage to support nested expressions in composites
-        // The unwrapping requires EL 2.2
-        if (PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getEnvironment().isAtLeastEl22()) {
+        try {
             ValueReference reference = toValueReference(expression, elContext);
 
             // check for a CC expression
@@ -81,16 +55,69 @@ public class ValueExpressionAnalyzer {
                 ValueExpression unwrapped = unwrapCompositeComponentReference(reference);
 
                 // check for nested CC expressions
-                if (unwrapped != null && isCompositeComponentReference(toValueReference(unwrapped, elContext))) {
-                    return getExpression(elContext, unwrapped);
+                if (unwrapped != null) {
+                    ValueReference unwrappedRef = toValueReference(unwrapped, elContext);
+                    if (isCompositeComponentReference(unwrappedRef)) {
+                        return getReference(elContext, unwrapped);
+                    }
+                    else {
+                        return unwrappedRef;
+                    }
                 }
 
-                // also return null if it cant be further unwrapped
-                return unwrapped;
+                // return null if it cant be further unwrapped
+                return null;
             }
+
+            return reference;
+        }
+        catch (PropertyNotFoundException e) {
+            if (returnNullWhenUnresolvable) {
+                return null;
+            }
+            throw e;
+        }
+    }
+
+    public static ValueExpression getExpression(ELContext elContext, ValueExpression expression) {
+        return getExpression(elContext, expression, false);
+    }
+
+    public static ValueExpression getExpression(ELContext elContext, ValueExpression expression,
+            boolean returnNullWhenUnresolvable) {
+
+        if (expression == null) {
+            return null;
         }
 
-        return expression;
+        try {
+            // Unwrapping is required e.g. for p:graphicImage to support nested expressions in composites
+            // The unwrapping requires EL 2.2
+            if (PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getEnvironment().isAtLeastEl22()) {
+                ValueReference reference = toValueReference(expression, elContext);
+
+                // check for a CC expression
+                if (reference != null && isCompositeComponentReference(reference)) {
+                    ValueExpression unwrapped = unwrapCompositeComponentReference(reference);
+
+                    // check for nested CC expressions
+                    if (unwrapped != null && isCompositeComponentReference(toValueReference(unwrapped, elContext))) {
+                        return getExpression(elContext, unwrapped);
+                    }
+
+                    // also return null if it cant be further unwrapped
+                    return unwrapped;
+                }
+            }
+
+            return expression;
+        }
+        catch (PropertyNotFoundException e) {
+            if (returnNullWhenUnresolvable) {
+                return null;
+            }
+            throw e;
+        }
     }
 
     public static boolean isCompositeComponentReference(ValueReference vr) {

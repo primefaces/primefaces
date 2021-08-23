@@ -115,7 +115,7 @@ public class Wizard extends WizardBase {
 
         ELContext elContext = getFacesContext().getELContext();
         ValueExpression expr = ValueExpressionAnalyzer.getExpression(elContext,
-                getValueExpression(PropertyKeys.step.toString()));
+                getValueExpression(PropertyKeys.step.toString()), true);
         if (expr != null && !expr.isReadOnly(elContext)) {
             expr.setValue(elContext, getStep());
             resetStep();
