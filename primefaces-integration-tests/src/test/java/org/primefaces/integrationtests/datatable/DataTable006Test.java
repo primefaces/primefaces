@@ -255,7 +255,7 @@ public class DataTable006Test extends AbstractDataTableTest {
 
     @Test
     @Order(7)
-    @DisplayName("DataTable: GitHub #7368 selection - with filtering")
+    @DisplayName("DataTable: GitHub #7368, #7737 selection - with filtering")
     public void testLazySelectionWithFiltering(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
