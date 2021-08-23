@@ -183,9 +183,35 @@ public class DataTable002Test extends AbstractDataTableTest {
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
+
     @ParameterizedTest
     @MethodSource("provideXhtmls")
     @Order(5)
+    @DisplayName("DataTable: Lazy: rowSelect with filter applied before")
+    public void testLazyRowSelectWithFilterApplied(String xhtml) {
+        // Arrange
+        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        DataTable dataTable = getDataTable();
+        Assertions.assertNotNull(dataTable);
+        dataTable.selectPage(1);
+        dataTable.sort("First Appeared");
+        dataTable.filter("First Appeared", "1998");
+
+        // Act
+        PrimeSelenium.guardAjax(dataTable.getCell(3, 0).getWebElement()).click();
+
+        // Assert
+        Assertions.assertEquals(1, getMessages().getAllMessages().size());
+        Assertions.assertEquals("ProgrammingLanguage Selected", getMessages().getMessage(0).getSummary());
+        String row3ProgLang = dataTable.getRow(3).getCell(0).getText() + " - " + dataTable.getCell(3, 1).getText();
+        Assertions.assertEquals(row3ProgLang, getMessages().getMessage(0).getDetail());
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideXhtmls")
+    @Order(6)
     @DisplayName("DataTable: Lazy: delete rows from last page - https://github.com/primefaces/primefaces/issues/1921")
     public void testLazyRowDeleteFromLastPage(String xhtml) {
         // Arrange
