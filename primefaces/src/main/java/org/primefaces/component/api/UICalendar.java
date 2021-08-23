@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
+import javax.el.PropertyNotFoundException;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
@@ -368,7 +369,7 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
         try {
             return ve.getType(context.getELContext());
         }
-        catch (Exception ex) {
+        catch (PropertyNotFoundException ex) {
             // #7615 return null to make it behave same as Calendar
             return null;
         }
