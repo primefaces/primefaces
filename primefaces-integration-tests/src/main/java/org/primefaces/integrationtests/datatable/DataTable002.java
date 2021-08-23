@@ -41,7 +41,7 @@ public class DataTable002 implements Serializable {
 
     protected ProgrammingLanguageLazyDataModel lazyDataModel;
 
-    private ProgrammingLanguage selectedProgrammingLanguage;
+    protected ProgrammingLanguage selectedProgrammingLanguage;
 
     @PostConstruct
     public void init() {
@@ -55,5 +55,11 @@ public class DataTable002 implements Serializable {
     public void delete(ProgrammingLanguage language) {
         lazyDataModel.delete(language);
         TestUtils.addMessage("ProgrammingLanguage Deleted", language.getId() + " - " + language.getName());
+    }
+
+    public void submit() {
+        if (selectedProgrammingLanguage != null) {
+            TestUtils.addMessage("Selected ProgrammingLanguage", selectedProgrammingLanguage.getId().toString());
+        }
     }
 }

@@ -17,7 +17,7 @@
             </p:messages>
 
             <p:dataTable id="datatable" value="#{dataTable002RowCountOtherImpl.lazyDataModel}" var="lang" paginator="true" rows="10"
-                         filteredValue="#{dataTable002RowCountOtherImpl.filteredProgLanguages}" filterEvent="enter" lazy="true"
+                         filterEvent="enter"
                          selectionMode="single" selection="#{dataTable002RowCountOtherImpl.selectedProgrammingLanguage}">
                 <p:ajax event="rowSelect" listener="#{dataTable002RowCountOtherImpl.onRowSelect}"/>
 
@@ -32,7 +32,7 @@
                 </p:column>
             </p:dataTable>
 
-            <p:commandButton id="button" value="Submit" update="@form"/>
+            <p:commandButton id="buttonSubmit" value="Submit" update="@form" action="#{dataTable002RowCountOtherImpl.submit}"/>
         </h:form>
 
     </h:body>
