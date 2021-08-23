@@ -334,8 +334,8 @@ if (window.PrimeFaces) {
         }
     };
 
-    PrimeFaces.validation.ValidationContext.getMessageBV = function(element, defaultKey, msg) {
-        return PrimeFaces.validation.Utils.getMessageBV(element, defaultKey, msg);
+    PrimeFaces.validation.ValidationContext.getMessageBV = function() {
+        return PrimeFaces.validation.Utils.getMessageBV.apply(null, arguments);
     };
 
     /**
@@ -398,8 +398,8 @@ if (window.PrimeFaces) {
      */
     PrimeFaces.validation.Utils.formatBV = function(str, params) {
         var s = str;
-        for(var i = 3; i < params.length; i++) {       
-            var reg = new RegExp('\\{' + (i - 3) + '\\}', 'gm');             
+        for(var i = 3; i < params.length; i++) {
+            var reg = new RegExp('\\{' + (i - 3) + '\\}', 'gm');
             s = s.replace(reg, params[i]);
         }
 
