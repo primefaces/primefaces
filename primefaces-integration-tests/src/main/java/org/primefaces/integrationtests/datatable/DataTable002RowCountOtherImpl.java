@@ -23,11 +23,13 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.primefaces.integrationtests.general.utilities.TestUtils;
+
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import lombok.Getter;
-import lombok.Setter;
 
 @Named
 @ViewScoped
@@ -40,6 +42,12 @@ public class DataTable002RowCountOtherImpl extends DataTable002 {
     @PostConstruct
     public void init() {
         lazyDataModel = new ProgrammingLanguageLazyDataModelRowCountOtherImpl();
+    }
+
+    public void submit() {
+        if (selectedProgrammingLanguage != null) {
+            TestUtils.addMessage("Selected ProgrammingLanguage", selectedProgrammingLanguage.getId().toString());
+        }
     }
 
 }
