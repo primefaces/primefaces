@@ -21,35 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model;
+package org.primefaces.integrationtests.datatable;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-public interface StreamedContent {
+import java.io.Serializable;
+import java.time.LocalDate;
 
-    String getName();
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Employee implements Serializable {
+    private static final long serialVersionUID = 4840835873002977452L;
+    private Integer id;
+    private String firstName;
+    private String lastName;
+    private LocalDate birthDate;
+    private Integer salary;
+    private Role role;
 
-    String getContentType();
-
-    String getContentEncoding();
-
-    Integer getContentLength();
-
-    /**
-     * {@link InputStream} which will be buffered and written to the response.
-     *
-     * @return the {@link InputStream}
-     */
-    Supplier<InputStream> getStream();
-
-    /**
-     * {@link Consumer} to write directly to the response.
-     * This method doesn't require buffering and should be preffered over {@link #getStream()} from performance perspective.
-     *
-     * @return The {@link Consumer}
-     */
-    Consumer<OutputStream> getWriter();
+    public enum Role { MANAGER, HR, DEVELOPER, QS, SALES, FINANCE };
 }

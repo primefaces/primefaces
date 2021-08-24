@@ -86,7 +86,17 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
                                 stream(externalContext, streamedContent.getWriter(), cache);
                             }
                             else {
-                                try (InputStream inputStream = streamedContent.getStream()) {
+                                if (streamedContent.getStream() == null) {
+                                    if (context.isProjectStage(ProjectStage.Development)) {
+                                        LOGGER.log(Level.WARNING,
+                                                "Stream of StreamedContent resolved to null - skip streaming resource for ValueExpression: {0}",
+                                                dynamicContentEL);
+                                    }
+                                    sendNotFound(externalContext);
+                                    return;
+                                }
+
+                                try (InputStream inputStream = streamedContent.getStream().get()) {
                                     if (inputStream == null) {
                                         if (context.isProjectStage(ProjectStage.Development)) {
                                             LOGGER.log(Level.WARNING,

@@ -23,31 +23,44 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.primefaces.integrationtests.general.utilities.TestUtils;
+import lombok.Data;
+import org.primefaces.component.datatable.DataTable;
 
 import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.Serializable;
+import java.util.List;
 
 @Named
 @ViewScoped
-@Getter
-@Setter
-public class DataTable002RowCountOtherImpl extends DataTable002 {
+@Data
+public class DataTable026 implements Serializable {
 
-    private static final long serialVersionUID = 4266502895860698885L;
+    private static final long serialVersionUID = -7625281492286718727L;
+
+    private List<Employee> employees;
+    private List<Employee> filteredEmployees;
+
+    private Employee.Role[] roles;
+    private Employee.Role[] selectedRoles;
+
+    @Inject
+    private EmployeeService service;
 
     @PostConstruct
     public void init() {
-        lazyDataModel = new ProgrammingLanguageLazyDataModelRowCountOtherImpl();
+        employees = service.getEmployees();
+        roles = Employee.Role.values();
+        selectedRoles = Employee.Role.values();
     }
 
-    public void submit() {
-        if (selectedProgrammingLanguage != null) {
-            TestUtils.addMessage("Selected ProgrammingLanguage", selectedProgrammingLanguage.getId().toString());
-        }
-    }
+    public void resetTable() {
+        DataTable dataTable = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datatable");
+        dataTable.reset();
 
+        employees = service.getEmployees(); //employees may have been sorted from DataTable
+    }
 }

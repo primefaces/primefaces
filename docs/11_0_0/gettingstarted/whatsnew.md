@@ -11,6 +11,9 @@ This page contains a list of big features. Please check the GitHub issues for al
   * Inplace: added `tabindex` for keyboard focus and toggle support.
   * InputText, InputTextarea: counter can count bytes instead of characters.
   * MenuButton: added `buttonStyle` and `buttonStyleClass` attributes.
+  * OutputPanel
+    * Added `loading` facet to show while deferred loading is in progress.
+    * Added `loaded` attribute to indicate that deferred loading is not needed, making deferred possible in Ajax requests.
   * Spinner
     * Added buttons modes: `horizontal`, `horizontal-after` and `vertical`.
     * Added support to align input text using classes: `text-left`, `text-center`, `text-right`.

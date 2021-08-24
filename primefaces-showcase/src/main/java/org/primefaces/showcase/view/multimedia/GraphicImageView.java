@@ -119,7 +119,7 @@ public class GraphicImageView {
     }
 
     public InputStream getChartAsStream() {
-        return getChart().getStream();
+        return getChart().getStream().get();
     }
 
     public byte[] getChartAsByteArray() throws IOException {
