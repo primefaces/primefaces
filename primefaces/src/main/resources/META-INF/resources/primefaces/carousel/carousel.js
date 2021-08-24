@@ -38,8 +38,6 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.indicators = this.content.find('li');
         this.indicatorCount = this.indicators.length;
 
-        debugger;
-
         this.cfg.page = this.cfg.page || 0;
         this.cfg.numVisible = this.cfg.numVisible || 1;
         this.cfg.numScroll = this.cfg.numScroll || 1;
@@ -68,10 +66,34 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     update: function() {
+        this.updateIndicators();
+
+        var items = this.itemsContainer.children(':not(.ui-carousel-item-cloned)');
+        items.removeClass('ui-carousel-item-active ui-carousel-item-start ui-carousel-item-end');
+
+        var firstIndex = this.firstIndex(),
+            lastIndex = this.lastIndex();
+
+        for (var i = 0; i < items.length; i++) {
+            if (firstIndex <= i && lastIndex >= i) {
+                items.eq(i).addClass('ui-carousel-item-active');
+            }
+
+            if (firstIndex === i) {
+                items.eq(i).addClass('ui-carousel-item-start');
+            }
+
+            if (lastIndex === i) {
+                items.eq(i).addClass('ui-carousel-item-end');
+            }
+        }
+    },
+
+    initState: function () {
         var stateChanged = false;
         var totalShiftedItems = this.totalShiftedItems;
 
-        if (this.autoplayInterval) {
+        if (this.cfg.autoplayInterval) {
             this.stopAutoplay();
         }
 
@@ -117,7 +139,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
                 totalShiftedItems = -1 * this.d_numVisible;
             }
             else if (totalShiftedItems === 0) {
-                totalShiftedItems = -1 * this.value.length;
+                totalShiftedItems = -1 * this.itemsCount;
                 if (this.remainingItems > 0) {
                     this.isRemainingItemsAdded = true;
                 }
@@ -134,27 +156,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             this.startAutoplay();
         }
 
-        this.updateIndicators();
-
-        var items = this.itemsContainer.children(':not(.ui-carousel-item-cloned)');
-        items.removeClass('ui-carousel-item-active ui-carousel-item-start ui-carousel-item-end');
-
-        var firstIndex = this.firstIndex(),
-            lastIndex = this.lastIndex();
-
-        for (var i = 0; i < items.length; i++) {
-            if (firstIndex <= i && lastIndex >= i) {
-                items.eq(i).addClass('ui-carousel-item-active');
-            }
-
-            if (firstIndex === i) {
-                items.eq(i).addClass('ui-carousel-item-start');
-            }
-
-            if (lastIndex === i) {
-                items.eq(i).addClass('ui-carousel-item-end');
-            }
-        }
+        this.update();
     },
 
     /**
@@ -166,12 +168,15 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
     _render: function() {
         this.createStyle();
         this.calculatePosition();
-        this.update();
-        this.changePosition();
+        this.initState();
         this.bindEvents();
 
         if (this.cfg.responsiveOptions) {
             this.bindDocumentListeners();
+        }
+
+        if (this.isCircular) {
+            this.startAutoplay();
         }
     },
 
@@ -254,7 +259,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
 
         if (this.itemsContainer) {
             this.itemsContainer.removeClass('ui-items-hidden');
-            this.changePosition(this.totalShiftedItems);
+            this.changePosition(totalShiftedItems);
             this.itemsContainer.get(0).style.transition = 'transform 500ms ease 0s';
         }
 
@@ -384,7 +389,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             this.itemsContainer.get(0).style.transition = '';
 
             if ((this.d_page === 0 || this.d_page === (this.totalIndicators - 1)) && this.isCircular) {
-                this.changePosition(this.totalShiftedItems)
+                this.changePosition(this.totalShiftedItems);
             }
         }
     },
