@@ -89,7 +89,7 @@
 
         <h:form id="form">
 
-            <!--<div class="card">
+            <div class="card">
                 <h5>Basic</h5>
                 <p:carousel value="#{carouselView.products}" var="product"
                             responsiveOptions="#{carouselView.responsiveOptions}"
@@ -116,11 +116,11 @@
                         </div>
                     </div>
                 </p:carousel>
-            </div>-->
+            </div>
 
             <div class="card">
                 <h5>Circular, AutoPlay, 3 Items per Page and Scroll by 1</h5>
-                <p:carousel value="#{carouselView.products}" var="product" circular="true" autoplayInterval="3000"
+                <p:carousel value="#{carouselView.products}" var="product" circular="true" autoplayInterval="1000"
                             responsiveOptions="#{carouselView.responsiveOptions}"
                             numVisible="3" numScroll="1">
                     <div class="product-item">
@@ -147,7 +147,7 @@
                 </p:carousel>
             </div>
 
-            <!--<div class="card">
+            <div class="card">
                 <p:carousel value="#{carouselView.products}" var="product" orientation="vertical"
                             verticalViewPortHeight="352px" style="max-width: 400px;margin-top: 2em;">
                     <f:facet name="header">
@@ -175,7 +175,7 @@
                         </div>
                     </div>
                 </p:carousel>
-            </div>-->
+            </div>
         </h:form>
 
     </ui:define>

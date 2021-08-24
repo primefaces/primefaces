@@ -242,23 +242,6 @@ public class CarouselRenderer extends CoreRenderer {
         if (totalIndicators >= 0) {
             writer.startElement("ul", null);
             writer.writeAttribute("class", indicatorsContentStyleClass, null);
-            for (int i = 0; i < totalIndicators; i++) {
-                String indicatorStyleClass = getStyleClassBuilder(context)
-                        .add(Carousel.INDICATOR_CLASS)
-                        .add(page == i, "ui-highlight")
-                        .build();
-
-                writer.startElement("li", null);
-                writer.writeAttribute("class", indicatorStyleClass, null);
-                writer.writeAttribute("data-index", i, null);
-
-                writer.startElement("button", null);
-                writer.writeAttribute("class", "ui-link", null);
-                writer.writeAttribute("type", "button", null);
-                writer.endElement("button");
-
-                writer.endElement("li");
-            }
 
             writer.endElement("ul");
         }

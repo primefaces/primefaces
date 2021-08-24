@@ -35,8 +35,6 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.prevNav = this.container.children('.ui-carousel-prev');
         this.nextNav = this.container.children('.ui-carousel-next');
         this.indicatorsContainer = this.content.children('.ui-carousel-indicators');
-        this.indicators = this.content.find('li');
-        this.indicatorCount = this.indicators.length;
 
         this.cfg.page = this.cfg.page || 0;
         this.cfg.numVisible = this.cfg.numVisible || 1;
@@ -57,7 +55,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.allowAutoplay = !!this.cfg.autoplayInterval;
         this.d_circular = this.cfg.circular || this.allowAutoplay;
         this.swipeThreshold = 20;
-        this.totalIndicators = this.totalIndicators();
+        this.totalIndicators = this.getTotalIndicators();
         this.isCircular = this.itemsCount !== 0 && this.d_circular && this.itemsCount >= this.d_numVisible;
         this.isVertical = this.cfg.orientation === 'vertical';
         this.isAutoplay = this.cfg.autoplayInterval && this.allowAutoplay;
@@ -66,30 +64,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     update: function() {
-        this.updateIndicators();
-
-        var items = this.itemsContainer.children(':not(.ui-carousel-item-cloned)');
-        items.removeClass('ui-carousel-item-active ui-carousel-item-start ui-carousel-item-end');
-
-        var firstIndex = this.firstIndex(),
-            lastIndex = this.lastIndex();
-
-        for (var i = 0; i < items.length; i++) {
-            if (firstIndex <= i && lastIndex >= i) {
-                items.eq(i).addClass('ui-carousel-item-active');
-            }
-
-            if (firstIndex === i) {
-                items.eq(i).addClass('ui-carousel-item-start');
-            }
-
-            if (lastIndex === i) {
-                items.eq(i).addClass('ui-carousel-item-end');
-            }
-        }
-    },
-
-    initState: function () {
+        this.totalIndicators = this.getTotalIndicators();
         var stateChanged = false;
         var totalShiftedItems = this.totalShiftedItems;
 
@@ -156,7 +131,33 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             this.startAutoplay();
         }
 
-        this.update();
+        if (stateChanged) {
+            this.update();
+        }
+
+        this.indicatorsContainer.get(0).innerHTML = this.renderIndicators();
+        this.indicators = this.indicatorsContainer.children('li');
+        this.updateIndicators();
+
+        var items = this.itemsContainer.children(':not(.ui-carousel-item-cloned)');
+        items.removeClass('ui-carousel-item-active ui-carousel-item-start ui-carousel-item-end');
+
+        var firstIndex = this.firstIndex(),
+            lastIndex = this.lastIndex();
+
+        for (var i = 0; i < items.length; i++) {
+            if (firstIndex <= i && lastIndex >= i) {
+                items.eq(i).addClass('ui-carousel-item-active');
+            }
+
+            if (firstIndex === i) {
+                items.eq(i).addClass('ui-carousel-item-start');
+            }
+
+            if (lastIndex === i) {
+                items.eq(i).addClass('ui-carousel-item-end');
+            }
+        }
     },
 
     /**
@@ -167,15 +168,20 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
      */
     _render: function() {
         this.createStyle();
+
+        if (this.cfg.circular) {
+            this.cloneItems();
+        }
+
         this.calculatePosition();
-        this.initState();
+        this.update();
         this.bindEvents();
 
         if (this.cfg.responsiveOptions) {
             this.bindDocumentListeners();
         }
 
-        if (this.isCircular) {
+        if (this.isAutoplay) {
             this.startAutoplay();
         }
     },
@@ -187,8 +193,9 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
     bindEvents: function () {
         var $this = this;
 
-        this.indicators.on('click', function(e) {
-            var index = $(this).data('index');
+        var indicatorSelector = '.ui-carousel-indicator';
+        this.indicatorsContainer.off('click.indicator', indicatorSelector).on('click.indicator', indicatorSelector, null, function (event) {
+            var index = $(this).index();
             $this.onIndicatorClick(e, index);
         });
         this.prevNav.on('click', function(e) {
@@ -215,7 +222,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
 
     changePosition: function(totalShiftedItems) {
         if (this.itemsContainer) {
-            this.itemsContainer.get(0).style.transform = this.isVertical ? `translate3d(0, ${totalShiftedItems * (100/ this.d_numVisible)}%, 0)` : `translate3d(${totalShiftedItems * (100/ this.d_numVisible)}%, 0, 0)`;
+            this.itemsContainer.get(0).style.transform = this.isVertical ? 'translate3d(0,' + totalShiftedItems * (100/ this.d_numVisible) + '%, 0)' : 'translate3d(' + totalShiftedItems * (100/ this.d_numVisible) + '%, 0, 0)';
         }
     },
 
@@ -287,6 +294,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
                 }
             }
 
+            var stateChanged = false;
             if (this.d_numScroll !== matchedResponsiveOptionsData.numScroll) {
                 var page = this.d_page;
                 page = parseInt((page * this.d_numScroll) / matchedResponsiveOptionsData.numScroll);
@@ -300,10 +308,20 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
                 this.d_numScroll = matchedResponsiveOptionsData.numScroll;
 
                 this.d_page = page;
+                stateChanged = true;
             }
 
             if (this.d_numVisible !== matchedResponsiveOptionsData.numVisible) {
                 this.d_numVisible = matchedResponsiveOptionsData.numVisible;
+                stateChanged = true;
+            }
+
+            if (stateChanged) {
+                this.update();
+
+                if (this.cfg.circular) {
+                    this.cloneItems();
+                }
             }
         }
     },
@@ -430,11 +448,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             document.body.appendChild(this.carouselStyle);
         }
 
-        var innerHTML = `
-            div[id*="${this.id}"] .ui-carousel-item {
-                flex: 1 0 ${ (100/ this.d_numVisible) }%
-            }
-        `;
+        var innerHTML = 'div[id*="' + this.id + '"] .ui-carousel-item {flex: 1 0 ' + (100/ this.d_numVisible) + '%}';
 
         if (this.cfg.responsiveOptions) {
             var _responsiveOptions = this.cfg.responsiveOptions;
@@ -460,26 +474,17 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             for (var i = 0; i < _responsiveOptions.length; i++) {
                 var res = _responsiveOptions[i];
 
-                innerHTML += `
-                    @media screen and (max-width: ${res.breakpoint}) {
-                        div[id*="${this.id}"] .ui-carousel-item {
-                            flex: 1 0 ${ (100/ res.numVisible) }%
-                        }
-                    }
-                `
+                innerHTML += '@media screen and (max-width: ' + res.breakpoint + ') '
+                    + '{div[id*="' + this.id + '"] .ui-carousel-item '
+                    + '{flex: 1 0 ' + (100/ res.numVisible) + '%}}'
             }
-        }
-
-        if (this.cfg.circular) {
-            this.cloneItems();
-            this.startAutoplay();
         }
 
         this.carouselStyle.innerHTML = innerHTML;
     },
 
     cloneItems: function () {
-        this.items.find('ui-carousel-item-cloned').remove();
+        this.itemsContainer.find('.ui-carousel-item-cloned').remove();
         var cloned = this.items.slice(-1 * this.d_numVisible).clone();
         var cloneSize = cloned.length;
         var i;
@@ -513,7 +518,17 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         });
     },
 
-    totalIndicators: function() {
+    renderIndicators: function () {
+        var indicatorsHtml = '';
+
+        for (var i = 0; i < this.totalIndicators; i++) {
+            indicatorsHtml += '<li class="ui-carousel-indicator ' + (this.d_page === i  ? 'ui-highlight' : '') + '"><button class="ui-link" type="button"></button></li>';
+        }
+
+        return indicatorsHtml;
+    },
+
+    getTotalIndicators: function() {
         return this.itemsCount !== 0 ? Math.ceil((this.itemsCount - this.d_numVisible) / this.d_numScroll) + 1 : 0;
     },
 
