@@ -347,7 +347,9 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
             }
         }
 
-        this.cfg.options.views = this.cfg.views||{};
+        // Using this.cfg.views was a bug, but fall back to that for backwards compatibility
+        // Can be removed in the next major release
+        this.cfg.options.views = this.cfg.options.views || this.cfg.views || {};
         $.extend(true, this.cfg.options.views, views);
     }
 
