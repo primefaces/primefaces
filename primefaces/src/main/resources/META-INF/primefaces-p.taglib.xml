@@ -17128,6 +17128,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Style of the button.]]>
+            </description>
+            <name>buttonStyle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Style class for the button.]]>
             </description>
             <name>buttonStyleClass</name>

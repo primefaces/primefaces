@@ -51,6 +51,7 @@ public abstract class MenuButtonBase extends AbstractMenu implements Widget {
         autoDisplay,
         toggleEvent,
         delay,
+        buttonStyle,
         buttonStyleClass
     }
 
@@ -198,6 +199,14 @@ public abstract class MenuButtonBase extends AbstractMenu implements Widget {
 
     public void setDelay(int delay) {
         getStateHelper().put(PropertyKeys.delay, delay);
+    }
+
+    public String getButtonStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.buttonStyle, null);
+    }
+
+    public void setButtonStyle(String buttonStyle) {
+        getStateHelper().put(PropertyKeys.buttonStyle, buttonStyle);
     }
 
     public String getButtonStyleClass() {

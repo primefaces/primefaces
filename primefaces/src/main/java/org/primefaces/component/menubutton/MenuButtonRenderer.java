@@ -87,6 +87,9 @@ public class MenuButtonRenderer extends TieredMenuRenderer {
         writer.writeAttribute("name", buttonId, null);
         writer.writeAttribute("type", "button", null);
         writer.writeAttribute("class", buttonClass, null);
+        if (LangUtils.isNotEmpty(button.getButtonStyle())) {
+            writer.writeAttribute("style", button.getButtonStyle(), null);
+        }
         writer.writeAttribute(HTML.ARIA_LABEL, button.getAriaLabel(), "ariaLabel");
         if (button.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);
