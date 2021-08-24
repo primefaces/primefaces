@@ -17,7 +17,7 @@ MenuButton displays different commands in a popup menu.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component.
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -39,6 +39,8 @@ maxHeight | null | String | The maximum height of the overlay menu that shows up
 autoDisplay | true | Boolean | Defines whether the first level of submenus will be displayed on mouseover or not. When set to false, click event is required to display.
 delay | 0 | int | Delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.
 toggleEvent | hover | String | Event to toggle the submenus, valid values are "hover" and "click".
+buttonStyle | null | String | Style of the button
+buttonStyleClass | null | String | Style class of the button
 
 ## Getting started with the MenuButton
 MenuButton consists of one ore more menuitems. Following menubutton example has three
@@ -58,7 +60,7 @@ section for more information and an example.
 
 ## Accessibility
 
-When the menu contains more than a few items, the height of the overlay may grow taller than the available height of the browser's viewport. Even when the height is smaller, part of the overlay may still end up outside the viewport, as by default the overlay is rendered at the current position of the menu button. 
+When the menu contains more than a few items, the height of the overlay may grow taller than the available height of the browser's viewport. Even when the height is smaller, part of the overlay may still end up outside the viewport, as by default the overlay is rendered at the current position of the menu button.
 
 If the body of your web page is scrollable, this is not an issue, users can scroll down to see the remaining entries. However, it is also common to use a layout where the body of the web page takes up 100% of the available height and is not scrollable. Then users may end up with no way of accessing some entries of the overlay menu. In this case, please consider using the `collision` and `maxHeight` options to ensure the overlay menu is always within the bounds of the viewport:
 
@@ -73,8 +75,8 @@ MenuButton resides in a main container which _style_ and _styleClass_ attributes
 style classes are global, see the main theming section for more information. Following is the list of
 structural style classes;
 
-| Class | Applies | 
-| --- | --- | 
+| Class | Applies |
+| --- | --- |
 .ui-menu | Container element of menu.
 .ui-menu-list | List container
 .ui-menuitem | Each menu item
