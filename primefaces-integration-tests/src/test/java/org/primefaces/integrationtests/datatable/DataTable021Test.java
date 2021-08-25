@@ -38,7 +38,9 @@ import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.InputText;
 import org.primefaces.selenium.component.base.ComponentUtils;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Add and remove rows from filtered DataTable
@@ -153,8 +155,8 @@ public class DataTable021Test extends AbstractDataTableTest {
 
     @Test
     @Order(6)
-    @DisplayName("DataTable: globalfilter and remove row")
-    public void testGlobalFilterAndRemoveRow(Page page) {
+    @DisplayName("DataTable: globalfilter and remove row (manually remove from filteredValue)")
+    public void testGlobalFilterAndRemoveRowV1(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
         dataTable.sort("Name");
@@ -162,20 +164,31 @@ public class DataTable021Test extends AbstractDataTableTest {
         // Act
         WebElement globalFilterInput = page.globalFilter.getInput();
         globalFilterInput.clear();
-        ComponentUtils.sendKeys(globalFilterInput, "C#");
+        ComponentUtils.sendKeys(globalFilterInput, "Script");
         PrimeSelenium.guardAjax(globalFilterInput).sendKeys(Keys.TAB);
 
         // Assert
-        List<ProgrammingLanguage> langsFiltered = filterByName("C#");
+        List<ProgrammingLanguage> langsFiltered = filterByNameContains("Script");
         assertRows(dataTable, langsFiltered);
         int rows = dataTable.getRows().size();
 
-        // Act
+        // Act - remove one row
         WebElement removeButton = dataTable.getRow(0).getCell(3).getWebElement().findElement(By.className("ui-button"));
         PrimeSelenium.guardAjax(removeButton).click();
 
         // Assert - one row less than before
         Assertions.assertEquals(rows - 1, dataTable.getRows().size());
+
+        // Act - remove another row
+        rows = dataTable.getRows().size();
+        removeButton = dataTable.getRow(0).getCell(3).getWebElement().findElement(By.className("ui-button"));
+        PrimeSelenium.guardAjax(removeButton).click();
+
+        // Assert - one row less than before
+        Assertions.assertEquals(rows - 1, dataTable.getRows().size());
+
+        // Arrange (remove both removed script-languages from language-list)
+        List<ProgrammingLanguage> languagesWithoutScriptLangs = languages.stream().filter(l -> !l.getName().contains("Script")).collect(Collectors.toList());
 
         // Act
         globalFilterInput = page.globalFilter.getInput();
@@ -184,7 +197,7 @@ public class DataTable021Test extends AbstractDataTableTest {
         PrimeSelenium.guardAjax(globalFilterInput).sendKeys(Keys.TAB);
 
         // Assert
-        langsFiltered = filterByName("Java");
+        langsFiltered = languagesWithoutScriptLangs.stream().filter(l -> l.getName().contains("Java")).collect(Collectors.toList());
         assertRows(dataTable, langsFiltered);
         rows = dataTable.getRows().size();
 
@@ -195,6 +208,108 @@ public class DataTable021Test extends AbstractDataTableTest {
         Assertions.assertEquals(rows - 1, dataTable.getRows().size());
 
         assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(7)
+    @DisplayName("DataTable: globalfilter and remove row (DataTable#filterAndSort)")
+    public void testGlobalFilterAndRemoveRowV2(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        dataTable.sort("Name");
+
+        // Act
+        WebElement globalFilterInput = page.globalFilter.getInput();
+        globalFilterInput.clear();
+        ComponentUtils.sendKeys(globalFilterInput, "Script");
+        PrimeSelenium.guardAjax(globalFilterInput).sendKeys(Keys.TAB);
+
+        // Assert
+        List<ProgrammingLanguage> langsFiltered = filterByNameContains("Script");
+        assertRows(dataTable, langsFiltered);
+        int rows = dataTable.getRows().size();
+
+        // Act - remove one row
+        WebElement removeButton = dataTable.getRow(0).getCell(4).getWebElement().findElement(By.className("ui-button"));
+        PrimeSelenium.guardAjax(removeButton).click();
+
+        // Assert - one row less than before
+        Assertions.assertEquals(rows - 1, dataTable.getRows().size());
+
+        // Act - remove another row
+        rows = dataTable.getRows().size();
+        removeButton = dataTable.getRow(0).getCell(4).getWebElement().findElement(By.className("ui-button"));
+        PrimeSelenium.guardAjax(removeButton).click();
+
+        // Assert - one row less than before
+        Assertions.assertEquals(rows - 1, dataTable.getRows().size());
+
+        // Arrange (remove both removed script-languages from language-list)
+        List<ProgrammingLanguage> languagesWithoutScriptLangs = languages.stream().filter(l -> !l.getName().contains("Script")).collect(Collectors.toList());
+
+        // Act
+        globalFilterInput = page.globalFilter.getInput();
+        globalFilterInput.clear();
+        ComponentUtils.sendKeys(globalFilterInput, "Java");
+        PrimeSelenium.guardAjax(globalFilterInput).sendKeys(Keys.TAB);
+
+        // Assert
+        langsFiltered = languagesWithoutScriptLangs.stream().filter(l -> l.getName().contains("Java")).collect(Collectors.toList());
+        assertRows(dataTable, langsFiltered);
+        rows = dataTable.getRows().size();
+
+        // Act
+        page.buttonDeleteRow.click();
+
+        // Assert - one row less than before
+        Assertions.assertEquals(rows - 1, dataTable.getRows().size());
+
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(8)
+    @DisplayName("DataTable: remove row (DataTable#filterAndSort) without filter applied")
+    public void testGlobalRemoveRowV2WithoutFilter(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        dataTable.sort("Name");
+
+        // Act
+        WebElement globalFilterInput = page.globalFilter.getInput();
+        globalFilterInput.clear();
+        ComponentUtils.sendKeys(globalFilterInput, "Script");
+        PrimeSelenium.guardAjax(globalFilterInput).sendKeys(Keys.TAB);
+
+        // Assert
+        List<ProgrammingLanguage> langsFiltered = filterByNameContains("Script");
+        assertRows(dataTable, langsFiltered);
+        int rows = dataTable.getRows().size();
+
+        // Act - remove one row
+        WebElement removeButton = dataTable.getRow(0).getCell(4).getWebElement().findElement(By.className("ui-button"));
+        PrimeSelenium.guardAjax(removeButton).click();
+
+        // Assert - one row less than before
+        Assertions.assertEquals(rows - 1, dataTable.getRows().size());
+
+        // Act - remove another row
+        rows = dataTable.getRows().size();
+        removeButton = dataTable.getRow(0).getCell(4).getWebElement().findElement(By.className("ui-button"));
+        PrimeSelenium.guardAjax(removeButton).click();
+
+        // Assert - one row less than before
+        Assertions.assertEquals(rows - 1, dataTable.getRows().size());
+
+        assertNoJavascriptErrors();
+    }
+
+    public List<ProgrammingLanguage> filterByNameContains(final String name) {
+        return languages.stream()
+                .sorted(Comparator.comparing(ProgrammingLanguage::getName))
+                .filter(l -> l.getName().contains(name))
+                .limit(3)
+                .collect(Collectors.toList());
     }
 
     public static class Page extends AbstractPrimePage {
