@@ -45,6 +45,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * @override
+     * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
     init: function(cfg) {
@@ -89,6 +90,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
      * @include
      * @override
      * @protected
+     * @inheritdoc
      */
     _render: function() {
         this.createStyle();
