@@ -263,6 +263,30 @@ Another use case of carousel is tab based content display.
 </p:carousel>
 ```
 
+## Ajax Behavior Events
+The following AJAX behavior event are available for this component. If no event is specified the default event is called.
+
+**Default Event:** `pageChange`
+
+| Event | Listener Parameter | Fired |
+| --- | --- | --- |
+| pageChange | org.primefaces.event.PageChangeEvent | Is fired after the page changed. |
+
+## Client Side Callbacks
+`onPageChange` is called to invoke when the page changes.
+
+```html
+<p:carousel onPageChange="pageChange(pageValue);">
+    //...content
+</p:carousel>
+
+<script type="text/javascript">
+    function pageChange(pageValue) {
+        //pageValue: index of the current page
+    }
+</script>
+```
+
 ## Skinning
 Carousel resides in a container element which _style_ and _styleClass_ options apply. _contentStyleClass_ attribute 
 apply style classes to the main content container, _containerStyleClass_ attribute apply style classes to the container 

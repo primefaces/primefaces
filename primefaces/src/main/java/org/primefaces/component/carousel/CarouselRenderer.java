@@ -38,6 +38,11 @@ import org.primefaces.util.WidgetBuilder;
 public class CarouselRenderer extends CoreRenderer {
 
     @Override
+    public void decode(FacesContext context, UIComponent component) {
+        decodeBehaviors(context, component);
+    }
+
+    @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Carousel carousel = (Carousel) component;
 
@@ -58,7 +63,8 @@ public class CarouselRenderer extends CoreRenderer {
                 .attr("numVisible", carousel.getNumVisible(), 1)
                 .attr("numScroll", carousel.getNumScroll(), 1)
                 .attr("orientation", carousel.getOrientation(), "horizontal")
-                .attr("touchable", ComponentUtils.isTouchable(context, carousel),  true);
+                .attr("touchable", ComponentUtils.isTouchable(context, carousel),  true)
+                .callback("onPageChange", "function(pageValue)", carousel.getOnPageChange());
 
         if (responsiveOptions != null) {
             writer.write(",responsiveOptions:[");
@@ -70,6 +76,8 @@ public class CarouselRenderer extends CoreRenderer {
             }
             writer.write("]");
         }
+
+        encodeClientBehaviors(context, carousel);
 
         wb.finish();
     }

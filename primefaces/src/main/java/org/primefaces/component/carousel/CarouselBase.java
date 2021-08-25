@@ -23,14 +23,16 @@
  */
 package org.primefaces.component.carousel;
 
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.TouchAware;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.component.api.Widget;
 import org.primefaces.model.carousel.CarouselResponsiveOption;
 
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import java.util.List;
 
-public abstract class CarouselBase extends UITabPanel implements Widget, TouchAware {
+public abstract class CarouselBase extends UITabPanel implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, TouchAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -53,7 +55,8 @@ public abstract class CarouselBase extends UITabPanel implements Widget, TouchAw
         indicatorsContentStyleClass,
         headerText,
         footerText,
-        touchable
+        touchable,
+        onPageChange
     }
 
     public CarouselBase() {
@@ -201,5 +204,13 @@ public abstract class CarouselBase extends UITabPanel implements Widget, TouchAw
     @Override
     public void setTouchable(boolean touchable) {
         getStateHelper().put(PropertyKeys.touchable, touchable);
+    }
+
+    public String getOnPageChange() {
+        return (String) getStateHelper().eval(PropertyKeys.onPageChange, null);
+    }
+
+    public void setOnPageChange(String onPageChange) {
+        getStateHelper().put(PropertyKeys.onPageChange, onPageChange);
     }
 }

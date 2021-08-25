@@ -3892,6 +3892,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Client side callback to invoke after scroll.]]>
+            </description>
+            <name>onPageChange</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Height of the viewport in vertical layout. Default is 300px.]]>
             </description>
             <name>verticalViewPortHeight</name>

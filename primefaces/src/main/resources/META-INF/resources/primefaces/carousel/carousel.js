@@ -266,6 +266,22 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.totalShiftedItems = totalShiftedItems;
         this.page = page;
 
+        //Call user onPageChange callback
+        if(this.cfg.onPageChange) {
+            this.cfg.onPageChange.call(this, page);
+        }
+
+        //Call ajax pageChange behaviour
+        if(this.hasBehavior('pageChange')) {
+            var ext = {
+                params: [
+                    {name: this.id + '_pageValue', value: page},
+                ]
+            };
+
+            this.callBehavior('pageChange', ext);
+        }
+
         this.updatePage();
     },
 
