@@ -180,12 +180,22 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         switch (filter.getMatchMode()) {
             case STARTS_WITH:
                 return cb.like(fieldAsString.get(), filterValue + "%");
+            case NOT_STARTS_WITH:
+                return cb.notLike(fieldAsString.get(), filterValue + "%");
             case ENDS_WITH:
                 return cb.like(fieldAsString.get(), "%" + filterValue);
+            case NOT_ENDS_WITH:
+                return cb.notLike(fieldAsString.get(), "%" + filterValue);
             case CONTAINS:
                 return cb.like(fieldAsString.get(), "%" + filterValue + "%");
+            case NOT_CONTAINS:
+                return cb.notLike(fieldAsString.get(), "%" + filterValue + "%");
             case EXACT:
+            case EQUALS:
                 return cb.equal(field, filterValue);
+            case NOT_EXACT:
+            case NOT_EQUALS:
+                return cb.notEqual(field, filterValue);
             case LESS_THAN:
                 return cb.lessThan(field, filterValue);
             case LESS_THAN_EQUALS:
@@ -194,12 +204,16 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                 return cb.greaterThan(field, filterValue);
             case GREATER_THAN_EQUALS:
                 return cb.greaterThanOrEqualTo(field, filterValue);
-            case EQUALS:
-                return cb.equal(cb.lower(field), filterValue);
             case IN:
                 throw new UnsupportedOperationException("MatchMode.IN currently not supported!");
+            case NOT_IN:
+                throw new UnsupportedOperationException("MatchMode.NOT_IN currently not supported!");
             case RANGE:
                 throw new UnsupportedOperationException("MatchMode.RANGE currently not supported!");
+            case BETWEEN:
+                throw new UnsupportedOperationException("MatchMode.BETWEEN currently not supported!");
+            case NOT_BETWEEN:
+                throw new UnsupportedOperationException("MatchMode.NOT_BETWEEN currently not supported!");
             case GLOBAL:
                 throw new UnsupportedOperationException("MatchMode.GLOBAL currently not supported!");
         }

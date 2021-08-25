@@ -21,65 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model;
+package org.primefaces.model.filter;
 
-/**
- * Built-in filter operators
- */
-public enum MatchMode {
+import java.util.Locale;
+import javax.faces.context.FacesContext;
 
-    STARTS_WITH("startsWith"),
-    NOT_STARTS_WITH("notStartsWith"),
+public class NegationFilterConstraintWrapper implements FilterConstraint {
 
-    ENDS_WITH("endsWith"),
-    NOT_ENDS_WITH("notEndsWith"),
+    private FilterConstraint wrapped;
 
-    CONTAINS("contains"),
-    NOT_CONTAINS("notContains"),
-
-    EXACT("exact"),
-    NOT_EXACT("notExact"),
-
-    LESS_THAN("lt"),
-    LESS_THAN_EQUALS("lte"),
-
-    GREATER_THAN("gt"),
-    GREATER_THAN_EQUALS("gte"),
-
-    EQUALS("equals"),
-    NOT_EQUALS("notEquals"),
-
-    IN("in"),
-    NOT_IN("notIn"),
-
-    BETWEEN("between"),
-    NOT_BETWEEN("notBetween"),
-
-    GLOBAL("global"),
-
-    /**
-     * Please use {@link MatchMode#BETWEEN}
-     * @deprecated
-     */
-    @Deprecated
-    RANGE("range");
-
-    private final String operator;
-
-    MatchMode(String operator) {
-        this.operator = operator;
+    public NegationFilterConstraintWrapper(FilterConstraint wrapped) {
+        this.wrapped = wrapped;
     }
 
-    public String operator() {
-        return operator;
-    }
-
-    public static MatchMode of(String operator) {
-        for (MatchMode mode : MatchMode.values()) {
-            if (mode.operator().equals(operator)) {
-                return mode;
-            }
-        }
-        return null;
+    @Override
+    public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
+        return !wrapped.isMatching(ctxt, value, filter, locale);
     }
 }
