@@ -29,12 +29,12 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.content = this.jq.children('.ui-carousel-content');
         this.container = this.content.children('.ui-carousel-container');
         this.itemsContent = this.container.children('.ui-carousel-items-content');
+        this.indicatorsContainer = this.content.children('.ui-carousel-indicators');
         this.itemsContainer = this.itemsContent.children('.ui-carousel-items-container');
-        this.items = this.itemsContainer.children('div');
+        this.items = this.itemsContainer.children('.ui-carousel-item');
         this.itemsCount = this.items.length;
         this.prevNav = this.container.children('.ui-carousel-prev');
         this.nextNav = this.container.children('.ui-carousel-next');
-        this.indicatorsContainer = this.content.children('.ui-carousel-indicators');
 
         this.cfg.page = this.cfg.page || 0;
         this.cfg.numVisible = this.cfg.numVisible || 1;
@@ -46,17 +46,17 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
 
         this.remainingItems = 0;
         this.isRemainingItemsAdded = false;
-        this.d_numVisible = this.cfg.numVisible;
-        this.d_numScroll = this.cfg.numScroll;
-        this.d_oldNumScroll = 0;
-        this.d_oldNumVisible = 0;
-        this.d_page = this.cfg.page;
+        this.numVisible = this.cfg.numVisible;
+        this.numScroll = this.cfg.numScroll;
+        this.oldNumScroll = 0;
+        this.oldNumVisible = 0;
+        this.page = this.cfg.page;
         this.totalShiftedItems = this.cfg.page * this.cfg.numScroll * -1;
         this.allowAutoplay = !!this.cfg.autoplayInterval;
-        this.d_circular = this.cfg.circular || this.allowAutoplay;
+        this.circular = this.cfg.circular || this.allowAutoplay;
         this.swipeThreshold = 20;
         this.totalIndicators = this.getTotalIndicators();
-        this.isCircular = this.itemsCount !== 0 && this.d_circular && this.itemsCount >= this.d_numVisible;
+        this.isCircular = this.itemsCount !== 0 && this.circular && this.itemsCount >= this.numVisible;
         this.isVertical = this.cfg.orientation === 'vertical';
         this.isAutoplay = this.cfg.autoplayInterval && this.allowAutoplay;
 
@@ -72,25 +72,25 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             this.stopAutoplay();
         }
 
-        if(this.d_oldNumScroll !== this.d_numScroll || this.d_oldNumVisible !== this.d_numVisible ) {
-            this.remainingItems = (this.itemsCount - this.d_numVisible) % this.d_numScroll;
+        if(this.oldNumScroll !== this.numScroll || this.oldNumVisible !== this.numVisible ) {
+            this.remainingItems = (this.itemsCount - this.numVisible) % this.numScroll;
 
-            var page = this.d_page;
+            var page = this.page;
             if (this.totalIndicators !== 0 && page >= this.totalIndicators) {
                 page = this.totalIndicators - 1;
 
-                this.d_page = page;
+                this.page = page;
 
                 stateChanged = true;
             }
 
-            totalShiftedItems = (page * this.d_numScroll) * -1;
+            totalShiftedItems = (page * this.numScroll) * -1;
             if (this.isCircular) {
-                totalShiftedItems -= this.d_numVisible;
+                totalShiftedItems -= this.numVisible;
             }
 
             if (page === (this.totalIndicators - 1) && this.remainingItems > 0) {
-                totalShiftedItems += (-1 * this.remainingItems) + this.d_numScroll;
+                totalShiftedItems += (-1 * this.remainingItems) + this.numScroll;
                 this.isRemainingItemsAdded = true;
             }
             else {
@@ -103,15 +103,15 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
                 stateChanged = true;
             }
 
-            this.d_oldNumScroll = this.d_numScroll;
-            this.d_oldNumVisible = this.d_numVisible;
+            this.oldNumScroll = this.numScroll;
+            this.oldNumVisible = this.numVisible;
 
             this.changePosition(totalShiftedItems);
         }
 
         if (this.isCircular) {
-            if (this.d_page === 0) {
-                totalShiftedItems = -1 * this.d_numVisible;
+            if (this.page === 0) {
+                totalShiftedItems = -1 * this.numVisible;
             }
             else if (totalShiftedItems === 0) {
                 totalShiftedItems = -1 * this.itemsCount;
@@ -135,8 +135,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             this.update();
         }
 
-        this.indicatorsContainer.get(0).innerHTML = this.renderIndicators();
-        this.indicators = this.indicatorsContainer.children('li');
+
         this.updateIndicators();
 
         var items = this.itemsContainer.children(':not(.ui-carousel-item-cloned)');
@@ -168,6 +167,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
      */
     _render: function() {
         this.createStyle();
+        this.updateNavigators();
 
         if (this.cfg.circular) {
             this.cloneItems();
@@ -222,7 +222,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
 
     changePosition: function(totalShiftedItems) {
         if (this.itemsContainer) {
-            this.itemsContainer.get(0).style.transform = this.isVertical ? 'translate3d(0,' + totalShiftedItems * (100/ this.d_numVisible) + '%, 0)' : 'translate3d(' + totalShiftedItems * (100/ this.d_numVisible) + '%, 0, 0)';
+            this.itemsContainer.get(0).style.transform = this.isVertical ? 'translate3d(0,' + totalShiftedItems * (100/ this.numVisible) + '%, 0)' : 'translate3d(' + totalShiftedItems * (100/ this.numVisible) + '%, 0, 0)';
         }
     },
 
@@ -231,36 +231,36 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         var isCircular = this.isCircular;
 
         if (page != null) {
-            totalShiftedItems = (this.d_numScroll * page) * -1;
+            totalShiftedItems = (this.numScroll * page) * -1;
 
             if (isCircular) {
-                totalShiftedItems -= this.d_numVisible;
+                totalShiftedItems -= this.numVisible;
             }
 
             this.isRemainingItemsAdded = false;
         }
         else {
-            totalShiftedItems += (this.d_numScroll * dir);
+            totalShiftedItems += (this.numScroll * dir);
 
             if (this.isRemainingItemsAdded) {
-                totalShiftedItems += this.remainingItems - (this.d_numScroll * dir);
+                totalShiftedItems += this.remainingItems - (this.numScroll * dir);
                 this.isRemainingItemsAdded = false;
             }
 
-            var originalShiftedItems = isCircular ? (totalShiftedItems + this.d_numVisible) : totalShiftedItems;
-            page = Math.abs(Math.floor(originalShiftedItems / this.d_numScroll));
+            var originalShiftedItems = isCircular ? (totalShiftedItems + this.numVisible) : totalShiftedItems;
+            page = Math.abs(Math.floor(originalShiftedItems / this.numScroll));
         }
 
-        if (isCircular && this.d_page === (this.totalIndicators - 1) && dir === -1) {
-            totalShiftedItems = -1 * (this.itemsCount + this.d_numVisible);
+        if (isCircular && this.page === (this.totalIndicators - 1) && dir === -1) {
+            totalShiftedItems = -1 * (this.itemsCount + this.numVisible);
             page = 0;
         }
-        else if (isCircular && this.d_page === 0 && dir === 1) {
+        else if (isCircular && this.page === 0 && dir === 1) {
             totalShiftedItems = 0;
             page = (this.totalIndicators - 1);
         }
         else if (page === (this.totalIndicators - 1) && this.remainingItems > 0) {
-            totalShiftedItems += ((this.remainingItems * -1) - (this.d_numScroll * dir));
+            totalShiftedItems += ((this.remainingItems * -1) - (this.numScroll * dir));
             this.isRemainingItemsAdded = true;
         }
 
@@ -271,7 +271,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         this.totalShiftedItems = totalShiftedItems;
-        this.d_page = page;
+        this.page = page;
 
         this.update();
     },
@@ -295,9 +295,9 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             }
 
             var stateChanged = false;
-            if (this.d_numScroll !== matchedResponsiveOptionsData.numScroll) {
-                var page = this.d_page;
-                page = parseInt((page * this.d_numScroll) / matchedResponsiveOptionsData.numScroll);
+            if (this.numScroll !== matchedResponsiveOptionsData.numScroll) {
+                var page = this.page;
+                page = parseInt((page * this.numScroll) / matchedResponsiveOptionsData.numScroll);
 
                 this.totalShiftedItems = (matchedResponsiveOptionsData.numScroll * page) * -1;
 
@@ -305,14 +305,14 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
                     this.totalShiftedItems -= matchedResponsiveOptionsData.numVisible;
                 }
 
-                this.d_numScroll = matchedResponsiveOptionsData.numScroll;
+                this.numScroll = matchedResponsiveOptionsData.numScroll;
 
-                this.d_page = page;
+                this.page = page;
                 stateChanged = true;
             }
 
-            if (this.d_numVisible !== matchedResponsiveOptionsData.numVisible) {
-                this.d_numVisible = matchedResponsiveOptionsData.numVisible;
+            if (this.numVisible !== matchedResponsiveOptionsData.numVisible) {
+                this.numVisible = matchedResponsiveOptionsData.numVisible;
                 stateChanged = true;
             }
 
@@ -327,7 +327,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     navBackward: function(e, index){
-        if (this.d_circular || this.d_page !== 0) {
+        if (this.circular || this.page !== 0) {
             this.step(1, index);
         }
 
@@ -343,7 +343,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     navForward: function(e, index){
-        if (this.d_circular || this.d_page < (this.totalIndicators - 1)) {
+        if (this.circular || this.page < (this.totalIndicators - 1)) {
             this.step(-1, index);
         }
 
@@ -386,12 +386,12 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     updateIndicators: function() {
-        this.indicators.removeClass('ui-highlight');
-        this.indicators.eq(this.d_page).addClass('ui-highlight');
+        this.indicatorsContainer.get(0).innerHTML = this.renderIndicators();
+        this.indicators = this.indicatorsContainer.children('li');
     },
 
     onIndicatorClick: function(e, index) {
-        var page = this.d_page;
+        var page = this.page;
 
         if (index > page) {
             this.navForward(e, index);
@@ -406,7 +406,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             this.itemsContainer.addClass('ui-items-hidden');
             this.itemsContainer.get(0).style.transition = '';
 
-            if ((this.d_page === 0 || this.d_page === (this.totalIndicators - 1)) && this.isCircular) {
+            if ((this.page === 0 || this.page === (this.totalIndicators - 1)) && this.isCircular) {
                 this.changePosition(this.totalShiftedItems);
             }
         }
@@ -425,11 +425,11 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
     startAutoplay: function() {
         var $this = this;
         this.interval = setInterval(() => {
-                if($this.d_page === ($this.totalIndicators - 1)) {
+                if($this.page === ($this.totalIndicators - 1)) {
                     $this.step(-1, 0);
                 }
                 else {
-                    $this.step(-1, this.d_page + 1);
+                    $this.step(-1, this.page + 1);
                 }
             },
             this.cfg.autoplayInterval);
@@ -448,7 +448,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             document.body.appendChild(this.carouselStyle);
         }
 
-        var innerHTML = 'div[id*="' + this.id + '"] .ui-carousel-item {flex: 1 0 ' + (100/ this.d_numVisible) + '%}';
+        var innerHTML = 'div[id*="' + this.id + '"] .ui-carousel-item {flex: 1 0 ' + (100/ this.numVisible) + '%}';
 
         if (this.cfg.responsiveOptions) {
             var _responsiveOptions = this.cfg.responsiveOptions;
@@ -485,7 +485,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
 
     cloneItems: function () {
         this.itemsContainer.find('.ui-carousel-item-cloned').remove();
-        var cloned = this.items.slice(-1 * this.d_numVisible).clone();
+        var cloned = this.items.slice(-1 * this.numVisible).clone();
         var cloneSize = cloned.length;
         var i;
         for (i = 0; i < cloneSize; i++) {
@@ -493,7 +493,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         }
         this.itemsContainer.prepend(cloned);
 
-        cloned = this.items.slice(0, this.d_numVisible).clone();
+        cloned = this.items.slice(0, this.numVisible).clone();
         cloneSize = cloned.length;
         for (i = 0; i < cloned.length; i++) {
             this.styleClone(cloned.eq(i), i, cloneSize);
@@ -522,30 +522,30 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         var indicatorsHtml = '';
 
         for (var i = 0; i < this.totalIndicators; i++) {
-            indicatorsHtml += '<li class="ui-carousel-indicator ' + (this.d_page === i  ? 'ui-highlight' : '') + '"><button class="ui-link" type="button"></button></li>';
+            indicatorsHtml += '<li class="ui-carousel-indicator ' + (this.page === i  ? 'ui-highlight' : '') + '"><button class="ui-link" type="button"></button></li>';
         }
 
         return indicatorsHtml;
     },
 
     getTotalIndicators: function() {
-        return this.itemsCount !== 0 ? Math.ceil((this.itemsCount - this.d_numVisible) / this.d_numScroll) + 1 : 0;
+        return this.itemsCount !== 0 ? Math.ceil((this.itemsCount - this.numVisible) / this.numScroll) + 1 : 0;
     },
 
     backwardIsDisabled: function() {
-        return (this.itemsCount !== 0 && (!this.cfg.circular || this.itemsCount < this.d_numVisible) && this.d_page === 0);
+        return (this.itemsCount !== 0 && (!this.cfg.circular || this.itemsCount < this.numVisible) && this.page === 0);
     },
 
     forwardIsDisabled: function() {
-        return (this.itemsCount !== 0 && (!this.cfg.circular || this.itemsCount < this.d_numVisible) && (this.d_page === (this.totalIndicators - 1) || this.totalIndicators === 0));
+        return (this.itemsCount !== 0 && (!this.cfg.circular || this.itemsCount < this.numVisible) && (this.page === (this.totalIndicators - 1) || this.totalIndicators === 0));
     },
 
     firstIndex: function() {
-        return this.isCircular ? (-1 * (this.totalShiftedItems + this.d_numVisible)) : (this.totalShiftedItems * -1);
+        return this.isCircular ? (-1 * (this.totalShiftedItems + this.numVisible)) : (this.totalShiftedItems * -1);
     },
 
     lastIndex: function() {
-        return (this.firstIndex() + this.d_numVisible - 1);
+        return (this.firstIndex() + this.numVisible - 1);
     }
 
 });

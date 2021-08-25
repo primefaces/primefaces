@@ -24,7 +24,6 @@
 package org.primefaces.component.carousel;
 
 import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -39,7 +38,6 @@ public class Carousel extends CarouselBase {
     public static final String CONTENT_CLASS = "ui-carousel-content";
     public static final String CONTAINER_CLASS = "ui-carousel-container";
     public static final String INDICATORS_CONTENT_CLASS = "ui-carousel-indicators ui-reset";
-    public static final String INDICATOR_CLASS = "ui-carousel-indicator";
     public static final String HORIZONTAL_CLASS = "ui-carousel-horizontal";
     public static final String VERTICAL_CLASS = "ui-carousel-vertical";
     public static final String HEADER_CLASS = "ui-carousel-header";
@@ -52,15 +50,4 @@ public class Carousel extends CarouselBase {
     public static final String ITEMS_CONTAINER_CLASS = "ui-carousel-items-container ui-items-hidden";
     public static final String ITEM_CLASS = "ui-carousel-item";
 
-    public int getRenderedChildCount() {
-        int i = 0;
-
-        for (UIComponent child : getChildren()) {
-            if (child.isRendered()) {
-                i++;
-            }
-        }
-
-        return i;
-    }
 }

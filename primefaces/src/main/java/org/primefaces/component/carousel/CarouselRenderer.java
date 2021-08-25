@@ -102,13 +102,8 @@ public class CarouselRenderer extends CoreRenderer {
 
     protected void encodeContent(FacesContext context, Carousel carousel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        int totalIndicators = this.calculateIndicatorCount(carousel);
-        boolean isCircular = carousel.isCircular();
         int rowCount = carousel.getRowCount();
         int numVisible = carousel.getNumVisible();
-        int page = carousel.getPage();
-        boolean backwardIsDisabled = (!isCircular || rowCount < numVisible) && page == 0;
-        boolean forwardIsDisabled = (!isCircular || rowCount < numVisible) && (page == (totalIndicators - 1) || totalIndicators == 0);
         boolean isVertical = "vertical".equals(carousel.getOrientation());
 
         String contentStyleClass = getStyleClassBuilder(context)
@@ -127,7 +122,7 @@ public class CarouselRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", containerStyleClass, null);
 
-        encodePrevButton(context, carousel, backwardIsDisabled, isVertical);
+        encodePrevButton(context, carousel, isVertical);
 
         writer.startElement("div", null);
         writer.writeAttribute("class", Carousel.ITEMS_CONTENT_CLASS, null);
@@ -142,11 +137,11 @@ public class CarouselRenderer extends CoreRenderer {
 
         writer.endElement("div");
 
-        encodeNextButton(context, carousel, forwardIsDisabled, isVertical);
+        encodeNextButton(context, carousel, isVertical);
 
         writer.endElement("div");
 
-        encodeIndicators(context, carousel, totalIndicators, page);
+        encodeIndicators(context, carousel);
 
         writer.endElement("div");
     }
@@ -178,12 +173,8 @@ public class CarouselRenderer extends CoreRenderer {
         }
     }
 
-    protected void encodePrevButton(FacesContext context, Carousel carousel, boolean backwardIsDisabled, boolean isVertical) throws IOException {
+    protected void encodePrevButton(FacesContext context, Carousel carousel, boolean isVertical) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String prevButtonStyleClass =  getStyleClassBuilder(context)
-                .add(Carousel.PREV_BUTTON_CLASS)
-                .add(backwardIsDisabled, "ui-state-disabled")
-                .build();
         String prevButtonIconStyleClass =  getStyleClassBuilder(context)
                 .add(Carousel.PREV_BUTTON_ICON_CLASS)
                 .add(!isVertical, "pi-chevron-left")
@@ -191,12 +182,8 @@ public class CarouselRenderer extends CoreRenderer {
                 .build();
 
         writer.startElement("button", null);
-        writer.writeAttribute("class", prevButtonStyleClass, null);
+        writer.writeAttribute("class", Carousel.PREV_BUTTON_CLASS, null);
         writer.writeAttribute("type", "button", null);
-
-        if (backwardIsDisabled) {
-            writer.writeAttribute("disabled", true, null);
-        }
 
         writer.startElement("span", null);
         writer.writeAttribute("class", prevButtonIconStyleClass, null);
@@ -205,12 +192,8 @@ public class CarouselRenderer extends CoreRenderer {
         writer.endElement("button");
     }
 
-    protected void encodeNextButton(FacesContext context, Carousel carousel, boolean forwardIsDisabled, boolean isVertical) throws IOException {
+    protected void encodeNextButton(FacesContext context, Carousel carousel, boolean isVertical) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String nextButtonStyleClass =  getStyleClassBuilder(context)
-                .add(Carousel.NEXT_BUTTON_CLASS)
-                .add(forwardIsDisabled, "ui-state-disabled")
-                .build();
         String nextButtonIconStyleClass =  getStyleClassBuilder(context)
                 .add(Carousel.NEXT_BUTTON_ICON_CLASS)
                 .add(!isVertical, "pi-chevron-right")
@@ -218,12 +201,8 @@ public class CarouselRenderer extends CoreRenderer {
                 .build();
 
         writer.startElement("button", null);
-        writer.writeAttribute("class", nextButtonStyleClass, null);
+        writer.writeAttribute("class", Carousel.NEXT_BUTTON_CLASS, null);
         writer.writeAttribute("type", "button", null);
-
-        if (forwardIsDisabled) {
-            writer.writeAttribute("disabled", "disabled", "disabled");
-        }
 
         writer.startElement("span", null);
         writer.writeAttribute("class", nextButtonIconStyleClass, null);
@@ -232,19 +211,17 @@ public class CarouselRenderer extends CoreRenderer {
         writer.endElement("button");
     }
 
-    protected void encodeIndicators(FacesContext context, Carousel carousel, int totalIndicators, int page) throws IOException {
+    protected void encodeIndicators(FacesContext context, Carousel carousel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String indicatorsContentStyleClass = getStyleClassBuilder(context)
                 .add(Carousel.INDICATORS_CONTENT_CLASS)
                 .add(carousel.getIndicatorsContentStyleClass())
                 .build();
 
-        if (totalIndicators >= 0) {
-            writer.startElement("ul", null);
-            writer.writeAttribute("class", indicatorsContentStyleClass, null);
+        writer.startElement("ul", null);
+        writer.writeAttribute("class", indicatorsContentStyleClass, null);
 
-            writer.endElement("ul");
-        }
+        writer.endElement("ul");
     }
 
     protected void encodeHeader(FacesContext context, Carousel carousel) throws IOException {
@@ -291,14 +268,6 @@ public class CarouselRenderer extends CoreRenderer {
         }
 
         writer.endElement("div");
-    }
-
-    protected int calculateIndicatorCount(Carousel carousel) {
-        String var = carousel.getVar();
-        int childCount = carousel.getRowCount();
-        int numScroll = carousel.getNumScroll();
-        int numVisible = carousel.getNumVisible();
-        return var != null ? (int) ((Math.ceil(childCount - numVisible)) / numScroll) + 1 : 0;
     }
 
     @Override
