@@ -27,6 +27,7 @@ jobs:
       - name: Log github.ref
         run: echo "${{ github.ref }}"
       - name: Build
+        if: matrix.profile == 'chrome,theme-saga,myfaces-2.3.x'
         run: mvn clean install -Psecurity-checks,jsdoc,minify -Dmaven.javadoc.skip=true -Djsdoc.skip.typedoc=true --batch-mode --show-version
       - name: SonarCloud
         if: github.repository == 'primefaces/primefaces' && github.ref == 'refs/heads/master' && matrix.java == 11 && matrix.profile == 'chrome,theme-saga,myfaces-2.3.x'
