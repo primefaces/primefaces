@@ -163,10 +163,6 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         if (this.cfg.responsiveOptions) {
             this.bindDocumentListeners();
         }
-
-        if (this.isAutoplay) {
-            this.startAutoplay();
-        }
     },
 
     /**
@@ -325,6 +321,8 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     navBackward: function(e, index){
+        this.isAutoplay = false;
+
         if (this.circular || this.page !== 0) {
             this.step(1, index);
         }
@@ -335,6 +333,8 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     navForward: function(e, index){
+        this.isAutoplay = false;
+
         if (this.circular || this.page < (this.totalIndicators - 1)) {
             this.step(-1, index);
         }
@@ -508,7 +508,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
-    renderIndicators: function () {
+    renderIndicators: function() {
         var indicatorsHtml = '';
 
         for (var i = 0; i < this.totalIndicators; i++) {
