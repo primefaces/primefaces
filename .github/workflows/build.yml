@@ -5,11 +5,11 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Java ${{ matrix.java }}
+    name: Java ${{ matrix.java }} - ${{ matrix.jsfimpl }}
     strategy:
       matrix:
         java: [8, 11, 16]
-        profile: [ 'chrome,theme-saga,myfaces-2.3.x', 'chrome,csp,theme-nova,mojarra-2.3.x' ]
+        jsfimpl: [ 'myfaces-2.3.x', 'mojarra-2.3.x' ]
 
     steps:
       - uses: actions/checkout@v2
@@ -37,4 +37,4 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Integration Tests
         if: matrix.java == 11
-        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,headless,${{ matrix.profile }}
+        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,headless,chrome,theme-saga,csp,${{ matrix.jsfimpl }}
