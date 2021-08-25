@@ -109,6 +109,17 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
+    refresh: function(cfg) {
+        this.stopAutoplay();
+
+        this._super(cfg);
+    },
+
+    /**
      * Sets up all event listeners required by this widget.
      * @private
      */
