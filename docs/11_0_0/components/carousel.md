@@ -287,6 +287,17 @@ The following AJAX behavior event are available for this component. If no event 
 </script>
 ```
 
+## Client Side API
+Widget: _PrimeFaces.widget.Carousel_
+
+| Method | Params | Return Type | Description | 
+| --- | --- | --- | --- | 
+| navForward() | - | void | Moves this carousel to the next page. If autoplay is active, it will stop.
+| navBackward() | - | void | Moves this carousel to the previous page. If autoplay is active, it will stop.
+| step(dir, page) | index | void | Moves this carousel to the given page. _dir_ is a direction of the move and takes a value of -1 or 1.
+| startAutoplay() | - | void | Enables autoplay and starts the slideshow.
+| stopAutoplay() | - | void | Disables autoplay and stops the slideshow.
+
 ## Skinning
 Carousel resides in a container element which _style_ and _styleClass_ options apply. _contentStyleClass_ attribute 
 apply style classes to the main content container, _containerStyleClass_ attribute apply style classes to the container 

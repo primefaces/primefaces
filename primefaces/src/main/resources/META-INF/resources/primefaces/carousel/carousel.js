@@ -1,6 +1,30 @@
 /**
  * __PrimeFaces Carousel Widget__
- * Carousel is a multi purpose component to display a set of data or general content with slide effects.
+ * Carousel is a content slider featuring various customization options.
+ *
+ * @prop {JQuery} content The DOM element for the content of the carousel that shows the carousel.
+ * @prop {JQuery} container The DOM element for the container of the carousel that contains items container and buttons.
+ * @prop {JQuery} itemsContent The DOM element for the item container of the carousel.
+ * @prop {JQuery} indicatorsContainer The DOM element for the indicators container of the carousel.
+ * @prop {JQuery} itemsContainer The DOM element for the item container of the carousel.
+ * @prop {JQuery} items The DOM elements for the carousel items.
+ * @prop {number} itemsCount The number of simultaneously visible items.
+ * @prop {JQuery} prevNav The DOM element for the button to switch to the next carousel item.
+ * @prop {JQuery} nextNav The DOM element for the button to switch to the previous carousel item.
+ * @prop {number} remainingItems how many items remaining for the show.
+ * @prop {boolean} isRemainingItemsAdded whether the remaining items have been added or not.
+ * @prop {number} numVisible instant number of items visible on the carousel viewport.
+ * @prop {number} numScroll instant number of how many items will scroll when scrolled.
+ * @prop {number} oldNumScroll old number of items visible on the carousel viewport.
+ * @prop {number} oldNumVisible old number of how many items will scroll when scrolled.
+ * @prop {number} page the currently displayed page of carousel items.
+ * @prop {number} totalShiftedItems the number of how many items shifted.
+ * @prop {boolean} allowAutoplay whether autoplay is allowed or not.
+ * @prop {boolean} circular whether the viewport is circular or not.
+ * @prop {number} totalIndicators the number of indicators currently in the viewport.
+ * @prop {boolean} isCircular whether the circular mode is on or not.
+ * @prop {boolean} isVertical whether the viewport is vertical or not.
+ * @prop {boolean} isAutoplay whether autoplay is allowed or not.
  *
  * @interface {PrimeFaces.widget.CarouselCfg} cfg The configuration for the {@link  Carousel| Carousel widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -8,13 +32,13 @@
  * @extends {PrimeFaces.widget.DeferredWidgetCfg} cfg
  *
  * @prop {number} cfg.page Index of the first item.
- * @prop {boolean} cfg.circular Sets continuous scrolling
- * @prop {number} cfg.autoplayInterval Sets the time in milliseconds to have Carousel start scrolling automatically
- * after being initialized.
  * @prop {number} cfg.numVisible Number of visible items per page
  * @prop {number} cfg.numScroll Number of items to scroll
  * @prop {Array.<{breakpoint:string, numVisible:number, numScroll:number}>} an array of options for responsive design
  * @prop {string} cfg.orientation Specifies the layout of the component, valid layouts are horizontal or vertical
+ * @prop {boolean} cfg.circular Sets continuous scrolling
+ * @prop {number} cfg.autoplayInterval Sets the time in milliseconds to have Carousel start scrolling automatically
+ * after being initialized.
  *
  */
 PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
@@ -54,7 +78,6 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.totalShiftedItems = this.cfg.page * this.cfg.numScroll * -1;
         this.allowAutoplay = !!this.cfg.autoplayInterval;
         this.circular = this.cfg.circular || this.allowAutoplay;
-        this.swipeThreshold = 20;
         this.totalIndicators = this.getTotalIndicators();
         this.isCircular = this.itemsCount !== 0 && this.circular && this.itemsCount >= this.numVisible;
         this.isVertical = this.cfg.orientation === 'vertical';
@@ -63,6 +86,80 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.renderDeferred();
     },
 
+    /**
+     * @include
+     * @override
+     * @inheritdoc
+     * @protected
+     */
+    _render: function() {
+        this.createStyle();
+
+        if (this.cfg.circular) {
+            this.cloneItems();
+        }
+
+        this.calculatePosition();
+        this.updatePage();
+        this.bindEvents();
+
+        if (this.cfg.responsiveOptions) {
+            this.bindDocumentListeners();
+        }
+    },
+
+    /**
+     * Sets up all event listeners required by this widget.
+     * @private
+     */
+    bindEvents: function () {
+        var $this = this;
+
+        var indicatorSelector = '.ui-carousel-indicator';
+        this.indicatorsContainer.off('click.indicator', indicatorSelector).on('click.indicator', indicatorSelector, null, function (e) {
+            var index = $(this).index();
+            $this.onIndicatorClick(e, index);
+        });
+        this.prevNav.on('click', function(e) {
+            $this.navBackward(e);
+        });
+        this.nextNav.on('click', function(e) {
+            $this.navForward(e);
+        });
+        this.itemsContainer.on('transitionend', function() {
+            $this.onTransitionEnd();
+        });
+        if (PrimeFaces.env.isTouchable(this.cfg)) {
+            if (this.isVertical) {
+                this.itemsContainer.swipe({
+                    swipeUp:function(e) {
+                        $this.navBackward(e);
+                    },
+                    swipeDown: function(e) {
+                        $this.navForward(e);
+                    },
+                    excludedElements: PrimeFaces.utils.excludedSwipeElements()
+                });
+            }
+
+            else {
+                this.itemsContainer.swipe({
+                    swipeLeft:function(e) {
+                        $this.navBackward(e);
+                    },
+                    swipeRight: function(e) {
+                        $this.navForward(e);
+                    },
+                    excludedElements: PrimeFaces.utils.excludedSwipeElements()
+                });
+            }
+        }
+    },
+
+    /**
+     * Updates the current page of the carousel.
+     * @private
+     */
     updatePage: function() {
         this.initPageState();
         this.updateNavigators();
@@ -70,6 +167,10 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.styleActiveItems();
     },
 
+    /**
+     * Initialize current page and variables.
+     * @private
+     */
     initPageState: function() {
         this.totalIndicators = this.getTotalIndicators();
         var stateChanged = false;
@@ -144,81 +245,10 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * @include
-     * @override
-     * @inheritdoc
-     * @protected
+     * Moves this carousel to the given page.
+     * @param {number} dir direction of the move and takes a value of -1 or 1.
+     * @param {number} page 0-based index of the page to display.
      */
-    _render: function() {
-        this.createStyle();
-
-        if (this.cfg.circular) {
-            this.cloneItems();
-        }
-
-        this.calculatePosition();
-        this.updatePage();
-        this.bindEvents();
-
-        if (this.cfg.responsiveOptions) {
-            this.bindDocumentListeners();
-        }
-    },
-
-    /**
-     * Sets up all event listeners required by this widget.
-     * @private
-     */
-    bindEvents: function () {
-        var $this = this;
-
-        var indicatorSelector = '.ui-carousel-indicator';
-        this.indicatorsContainer.off('click.indicator', indicatorSelector).on('click.indicator', indicatorSelector, null, function (e) {
-            var index = $(this).index();
-            $this.onIndicatorClick(e, index);
-        });
-        this.prevNav.on('click', function(e) {
-            $this.navBackward(e);
-        });
-        this.nextNav.on('click', function(e) {
-            $this.navForward(e);
-        });
-        this.itemsContainer.on('transitionend', function() {
-            $this.onTransitionEnd();
-        });
-        if (PrimeFaces.env.isTouchable(this.cfg)) {
-            if (this.isVertical) {
-                this.itemsContainer.swipe({
-                    swipeUp:function(e) {
-                        $this.navBackward(e);
-                    },
-                    swipeDown: function(e) {
-                        $this.navForward(e);
-                    },
-                    excludedElements: PrimeFaces.utils.excludedSwipeElements()
-                });
-            }
-
-            else {
-                this.itemsContainer.swipe({
-                    swipeLeft:function(e) {
-                        $this.navBackward(e);
-                    },
-                    swipeRight: function(e) {
-                        $this.navForward(e);
-                    },
-                    excludedElements: PrimeFaces.utils.excludedSwipeElements()
-                });
-            }
-        }
-    },
-
-    changePosition: function(totalShiftedItems) {
-        if (this.itemsContainer) {
-            this.itemsContainer.get(0).style.transform = this.isVertical ? 'translate3d(0,' + totalShiftedItems * (100/ this.numVisible) + '%, 0)' : 'translate3d(' + totalShiftedItems * (100/ this.numVisible) + '%, 0, 0)';
-        }
-    },
-
     step: function(dir, page) {
         var totalShiftedItems = this.totalShiftedItems;
         var isCircular = this.isCircular;
@@ -285,6 +315,22 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.updatePage();
     },
 
+    /**
+     * Scrolls the item container based on the total number of shifted items
+     * @param {number} totalShiftedItems total number of shifted items.
+     * @private
+     */
+    changePosition: function(totalShiftedItems) {
+        if (this.itemsContainer) {
+            this.itemsContainer.get(0).style.transform = this.isVertical ? 'translate3d(0,' + totalShiftedItems * (100/ this.numVisible) + '%, 0)' : 'translate3d(' + totalShiftedItems * (100/ this.numVisible) + '%, 0, 0)';
+        }
+    },
+
+    /**
+     * Calculates position and visible items and the number of how many items will be scrolled when screen aspect ratio
+     * changes then updates current page of the current Carousel widget.
+     * @private
+     */
     calculatePosition: function() {
         var $this = this;
 
@@ -336,6 +382,9 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Moves this carousel to the previous page. If autoplay is active, it will stop.
+     */
     navBackward: function(e, index){
         this.isAutoplay = false;
 
@@ -348,6 +397,9 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Moves this carousel to the next page. If autoplay is active, it will stop.
+     */
     navForward: function(e, index){
         this.isAutoplay = false;
 
@@ -360,6 +412,10 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Update styles of the navigator buttons.
+     * @private
+     */
     updateNavigators: function() {
         var prevButton = this.prevNav,
             nextButton = this.nextNav;
@@ -373,22 +429,36 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             : PrimeFaces.utils.enableButton(nextButton);
     },
 
+    /**
+     * Render the indicators based on the current page state.
+     * @private
+     */
     updateIndicators: function() {
         this.indicatorsContainer.get(0).innerHTML = this.renderIndicators();
         this.indicators = this.indicatorsContainer.children('li');
     },
 
-    onIndicatorClick: function(e, index) {
+    /**
+     * It moves the current Carousel to the index of the clicked indicator on that Carousel viewport.
+     * @private
+     * @param {Event} event Event that occurred.
+     * @param {number} index index of the indicator.
+     */
+    onIndicatorClick: function(event, index) {
         var page = this.page;
 
         if (index > page) {
-            this.navForward(e, index);
+            this.navForward(event, index);
         }
         else if (index < page) {
-            this.navBackward(e, index);
+            this.navBackward(event, index);
         }
     },
 
+    /**
+     * Changes current page according to the state of the page when the transition ends.
+     * @private
+     */
     onTransitionEnd: function() {
         if (this.itemsContainer) {
             this.itemsContainer.addClass('ui-items-hidden');
@@ -400,6 +470,10 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Adds the resize event listener to the window.
+     * @private
+     */
     bindDocumentListeners: function() {
         if (!this.documentResizeListener) {
             this.documentResizeListener = (e) => {
@@ -410,6 +484,9 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Enables autoplay and starts the slideshow.
+     */
     startAutoplay: function() {
         var $this = this;
         this.interval = setInterval(() => {
@@ -423,12 +500,19 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             this.cfg.autoplayInterval);
     },
 
+    /**
+     * Disables autoplay and stops the slideshow.
+     */
     stopAutoplay: function() {
         if (this.interval) {
             clearInterval(this.interval);
         }
     },
 
+    /**
+     * Creates responsive styles of the carousel container.
+     * @private
+     */
     createStyle: function() {
         if (!this.carouselStyle) {
             this.carouselStyle = document.createElement('style');
@@ -471,6 +555,10 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.carouselStyle.innerHTML = innerHTML;
     },
 
+    /**
+     * Clones items if the carousel widget is circular
+     * @private
+     */
     cloneItems: function () {
         this.itemsContainer.children('.ui-carousel-item-cloned').remove();
 
@@ -490,18 +578,29 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.itemsContainer.append(clonedElements);
     },
 
-    styleClone: function (elem, index, length) {
-        elem.removeClass('ui-carousel-item-start ui-carousel-item-end');
-        elem.addClass('ui-carousel-item-cloned ui-carousel-item-active');
+    /**
+     * Applies styles to the clones
+     * @private
+     * @param {JQuery} element cloned dom element of the item
+     * @param {number} index index of the element
+     * @param {number} length length of the clones
+     */
+    styleClone: function (element, index, length) {
+        element.removeClass('ui-carousel-item-start ui-carousel-item-end');
+        element.addClass('ui-carousel-item-cloned ui-carousel-item-active');
         if (index === 0) {
-            elem.addClass('ui-carousel-item-start');
+            element.addClass('ui-carousel-item-start');
         }
         if (index + 1 === length) {
-            elem.addClass('ui-carousel-item-end');
+            element.addClass('ui-carousel-item-end');
         }
-        elem.find('*').removeAttr('id');
+        element.find('*').removeAttr('id');
     },
 
+    /**
+     * Styles visible items
+     * @private
+     */
     styleActiveItems: function () {
         var items = this.itemsContainer.children(':not(.ui-carousel-item-cloned)');
         items.removeClass('ui-carousel-item-active ui-carousel-item-start ui-carousel-item-end');
@@ -524,6 +623,11 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Retrieves the indicators html of the carousel.
+     * @return {string} html of the indicators container.
+     * @private
+     */
     renderIndicators: function() {
         var indicatorsHtml = '';
 
@@ -534,22 +638,47 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         return indicatorsHtml;
     },
 
+    /**
+     * Retrieves the total number of the indicators.
+     * @private
+     * @return {number} total number of the indicators.
+     */
     getTotalIndicators: function() {
         return this.itemsCount !== 0 ? Math.ceil((this.itemsCount - this.numVisible) / this.numScroll) + 1 : 0;
     },
 
+    /**
+     * Retrieves whether the backward button is disabled.
+     * @private
+     * @return {boolean} backward button is disabled.
+     */
     backwardIsDisabled: function() {
         return (this.itemsCount !== 0 && (!this.cfg.circular || this.itemsCount < this.numVisible) && this.page === 0);
     },
 
+    /**
+     * Retrieves whether the forward button is disabled.
+     * @private
+     * @return {boolean} forward button is disabled.
+     */
     forwardIsDisabled: function() {
         return (this.itemsCount !== 0 && (!this.cfg.circular || this.itemsCount < this.numVisible) && (this.page === (this.totalIndicators - 1) || this.totalIndicators === 0));
     },
 
+    /**
+     * Retrieves the first index of visible items.
+     * @private
+     * @return {number} first index of the visible items.
+     */
     firstIndex: function() {
         return this.isCircular ? (-1 * (this.totalShiftedItems + this.numVisible)) : (this.totalShiftedItems * -1);
     },
 
+    /**
+     * Retrieves the last index of visible items.
+     * @private
+     * @return {number} last index of the visible items.
+     */
     lastIndex: function() {
         return (this.firstIndex() + this.numVisible - 1);
     }
