@@ -332,7 +332,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      */
     previousNode: function(node) {
         var prevNode = node.prev();
-        if (prevNode.length && prevNode.hasClass("ui-tree-droppoint")) {
+        if (prevNode.length && (prevNode.hasClass("ui-tree-droppoint") || prevNode.hasClass("ui-treenode-hidden"))) {
             prevNode = prevNode.prev();
         }
         return prevNode;
@@ -346,7 +346,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      */
     nextNode: function(node) {
         var nextNode = node.next();
-        if (nextNode.length && nextNode.hasClass("ui-tree-droppoint")) {
+        if (nextNode.length && (nextNode.hasClass("ui-tree-droppoint") || nextNode.hasClass("ui-treenode-hidden"))) {
             nextNode = nextNode.next();
         }
         return nextNode;

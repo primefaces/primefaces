@@ -71,6 +71,10 @@
     display: inline-block;
 }
 
+.ui-tree .ui-treenode-hidden {
+    display: none;
+}
+
 /** Horizontal Tree **/
 .ui-tree-horizontal {
     width:auto;
