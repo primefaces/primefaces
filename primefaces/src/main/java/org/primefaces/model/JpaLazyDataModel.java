@@ -58,8 +58,9 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
     private Class<T> entityClass;
     private SerializableSupplier<EntityManager> entityManager;
-    private Lazy<Field> rowKeyField;
-    private Lazy<Method> rowKeyGetter;
+    private String rowKeyField;
+
+    private transient Lazy<Method> rowKeyGetter;
 
     /**
      * For serialization only
@@ -88,15 +89,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
      */
     public JpaLazyDataModel(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager, String rowKeyField) {
         this(entityClass, entityManager);
-        this.rowKeyField = new Lazy<>(() -> LangUtils.getField(entityClass, rowKeyField));
-        this.rowKeyGetter = new Lazy<>(() -> {
-            try {
-                return new PropertyDescriptor(rowKeyField, entityClass).getReadMethod();
-            }
-            catch (IntrospectionException e) {
-                throw new FacesException("Could not access " + rowKeyField + " on " + entityClass.getName(), e);
-            }
-        });
+        this.rowKeyField = rowKeyField;
     }
 
     /**
@@ -239,14 +232,14 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         }
 
         if (rowKeyField != null) {
-            Object convertedRowKey = convertToType(rowKey, rowKeyField.get().getType());
+            Object convertedRowKey = convertToType(rowKey, getRowKeyGetter().getReturnType());
 
             EntityManager em = this.entityManager.get();
 
             CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
             CriteriaQuery<T> cq = criteriaBuilder.createQuery(entityClass);
             Root<T> root = cq.from(entityClass);
-            cq.select(root).where(criteriaBuilder.equal(root.get(rowKeyField.get().getName()), convertedRowKey));
+            cq.select(root).where(criteriaBuilder.equal(root.get(rowKeyField), convertedRowKey));
 
             TypedQuery<T> query = em.createQuery(cq);
             return query.getSingleResult();
@@ -264,13 +257,13 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             return super.getRowKey(object);
         }
 
-        if (rowKeyGetter != null) {
+        if (rowKeyField != null) {
             try {
-                Object rowKey = rowKeyGetter.get().invoke(object);
+                Object rowKey = getRowKeyGetter().invoke(object);
                 return rowKey == null ? null : rowKey.toString();
             }
             catch (InvocationTargetException | IllegalAccessException e) {
-                throw new FacesException("Could not invoke getter for " + rowKeyField.get().getName() + " on " + entityClass.getName(), e);
+                throw new FacesException("Could not invoke getter for " + rowKeyField + " on " + entityClass.getName(), e);
             }
         }
 
@@ -298,4 +291,17 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             + "; please create a JSF Converter for it or overwrite Object convertToType(String value, Class<?> valueType)!");
     }
 
+    protected Method getRowKeyGetter() {
+        if (rowKeyGetter == null) {
+            rowKeyGetter = new Lazy<>(() -> {
+                try {
+                    return new PropertyDescriptor(rowKeyField, entityClass).getReadMethod();
+                }
+                catch (IntrospectionException e) {
+                    throw new FacesException("Could not access " + rowKeyField + " on " + entityClass.getName(), e);
+                }
+            });
+        }
+        return rowKeyGetter.get();
+    }
 }
