@@ -42,8 +42,6 @@ public class CarouselView implements Serializable {
 
     private List<Product> products;
 
-    private Product selectedProduct;
-
     private List<CarouselResponsiveOption> responsiveOptions;
 
     @Inject
@@ -64,14 +62,6 @@ public class CarouselView implements Serializable {
 
     public void setService(ProductService service) {
         this.service = service;
-    }
-
-    public Product getSelectedProduct() {
-        return selectedProduct;
-    }
-
-    public void setSelectedProduct(Product selectedProduct) {
-        this.selectedProduct = selectedProduct;
     }
 
     public List<CarouselResponsiveOption> getResponsiveOptions() {
