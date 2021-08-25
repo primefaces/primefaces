@@ -11,20 +11,20 @@
  * @prop {number} itemsCount The number of simultaneously visible items.
  * @prop {JQuery} prevNav The DOM element for the button to switch to the next carousel item.
  * @prop {JQuery} nextNav The DOM element for the button to switch to the previous carousel item.
- * @prop {number} remainingItems how many items remaining for the show.
- * @prop {boolean} isRemainingItemsAdded whether the remaining items have been added or not.
- * @prop {number} numVisible instant number of items visible on the carousel viewport.
- * @prop {number} numScroll instant number of how many items will scroll when scrolled.
- * @prop {number} oldNumScroll old number of items visible on the carousel viewport.
- * @prop {number} oldNumVisible old number of how many items will scroll when scrolled.
- * @prop {number} page the currently displayed page of carousel items.
- * @prop {number} totalShiftedItems the number of how many items shifted.
- * @prop {boolean} allowAutoplay whether autoplay is allowed or not.
- * @prop {boolean} circular whether the viewport is circular or not.
- * @prop {number} totalIndicators the number of indicators currently in the viewport.
- * @prop {boolean} isCircular whether the circular mode is on or not.
- * @prop {boolean} isVertical whether the viewport is vertical or not.
- * @prop {boolean} isAutoplay whether autoplay is allowed or not.
+ * @prop {number} remainingItems How many items remaining for the show.
+ * @prop {boolean} isRemainingItemsAdded Whether the remaining items have been added or not.
+ * @prop {number} numVisible Instant number of items visible on the carousel viewport.
+ * @prop {number} numScroll Instant number of how many items will scroll when scrolled.
+ * @prop {number} oldNumScroll Old number of items visible on the carousel viewport.
+ * @prop {number} oldNumVisible Old number of how many items will scroll when scrolled.
+ * @prop {number} page The currently displayed page of carousel items.
+ * @prop {number} totalShiftedItems The number of how many items shifted.
+ * @prop {boolean} allowAutoplay Whether autoplay is allowed or not.
+ * @prop {boolean} circular Whether the viewport is circular or not.
+ * @prop {number} totalIndicators The number of indicators currently in the viewport.
+ * @prop {boolean} isCircular Whether the circular mode is on or not.
+ * @prop {boolean} isVertical Whether the viewport is vertical or not.
+ * @prop {boolean} isAutoplay Whether autoplay is allowed or not.
  *
  * @interface {PrimeFaces.widget.CarouselCfg} cfg The configuration for the {@link  Carousel| Carousel widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -34,7 +34,7 @@
  * @prop {number} cfg.page Index of the first item.
  * @prop {number} cfg.numVisible Number of visible items per page
  * @prop {number} cfg.numScroll Number of items to scroll
- * @prop {Object[]} an array of options for responsive design
+ * @prop {{breakpoint:string, numVisible:number, numScroll:number}[]} cfg.responsiveOptions An array of options for responsive design
  * @prop {string} cfg.orientation Specifies the layout of the component, valid layouts are horizontal or vertical
  * @prop {boolean} cfg.circular Sets continuous scrolling
  * @prop {number} cfg.autoplayInterval Sets the time in milliseconds to have Carousel start scrolling automatically
