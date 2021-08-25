@@ -10,6 +10,7 @@ jobs:
     runs-on: macos-latest
     name: Java ${{ matrix.java }}, Profile ${{ matrix.profile }}
     strategy:
+      fail-fast: false
       matrix:
         java: [8, 11]
         profile: [ 'firefox,theme-saga,myfaces-2.3.x', 'firefox,csp,theme-saga,myfaces-2.3.x', 'chrome,theme-saga,myfaces-2.3.x', 'chrome,csp,theme-nova,myfaces-2.3.x', 'chrome,csp,theme-nova,mojarra-2.3.x', 'chrome,client-state-saving,theme-nova,mojarra-2.3.x' ]

@@ -7,6 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Java ${{ matrix.java }} - ${{ matrix.jsfimpl }}
     strategy:
+      fail-fast: false
       matrix:
         java: [8, 11, 16]
         jsfimpl: [ 'myfaces-2.3.x', 'mojarra-2.3.x' ]
