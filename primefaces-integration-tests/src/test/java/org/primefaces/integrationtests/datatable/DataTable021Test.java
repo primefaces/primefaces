@@ -62,68 +62,81 @@ public class DataTable021Test extends AbstractDataTableTest {
         // Assert
         List<ProgrammingLanguage> langsFiltered = filterByName("Java");
         assertRows(dataTable, langsFiltered);
-        int rows = dataTable.getRows().size();
 
-        // Act
-        page.buttonAdd.click();
+        for (int cnt=0; cnt<3; cnt++) {
+            // Act
+            int rows = dataTable.getRows().size();
+            page.buttonAdd.click();
 
-        // Assert - one row more than before
-        Assertions.assertEquals(rows + 1, dataTable.getRows().size());
+            // Assert - one row more than before
+            Assertions.assertEquals(rows + 1, dataTable.getRows().size());
+        }
 
         assertNoJavascriptErrors();
     }
 
     @Test
     @Order(2)
-    @DisplayName("DataTable: filter and remove row")
-    public void testFilterAndRemoveRow(Page page) {
+    @DisplayName("DataTable: filter and remove row (manually remove from filteredValue)")
+    public void testFilterAndRemoveRowV1(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
         dataTable.sort("Name");
 
         // Act
-        dataTable.filter("Name", "Java");
+        dataTable.filter("Name", "Script");
 
         // Assert
-        List<ProgrammingLanguage> langsFiltered = filterByName("Java");
+        List<ProgrammingLanguage> langsFiltered = filterByNameContains("Script");
         assertRows(dataTable, langsFiltered);
-        int rows = dataTable.getRows().size();
 
-        // Act
-        WebElement removeButton = dataTable.getRow(0).getCell(3).getWebElement().findElement(By.className("ui-button"));
-        PrimeSelenium.guardAjax(removeButton).click();
+        for (int cnt=0; cnt<2; cnt++) {
+            // Act
+            int rows = dataTable.getRows().size();
+            WebElement removeButton = dataTable.getRow(0).getCell(3).getWebElement().findElement(By.className("ui-button"));
+            PrimeSelenium.guardAjax(removeButton).click();
 
-        // Assert - one row less than before
-        Assertions.assertEquals(rows - 1, dataTable.getRows().size());
+            // Assert - one row less than before
+            Assertions.assertEquals(rows - 1, dataTable.getRows().size());
+        }
 
         assertNoJavascriptErrors();
     }
 
     @Test
     @Order(3)
-    @DisplayName("DataTable: remove row without filter or sort applied")
-    public void testRemoveRowWithoutFilterOrSortApplied(Page page) {
+    @DisplayName("DataTable: filter and remove row (DataTable#filterAndSort)")
+    public void testFilterAndRemoveRowV2(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        int rows = dataTable.getRows().size();
+        dataTable.sort("Name");
 
         // Act
-        WebElement removeButton = dataTable.getRow(0).getCell(3).getWebElement().findElement(By.className("ui-button"));
-        PrimeSelenium.guardAjax(removeButton).click();
+        dataTable.filter("Name", "Script");
 
-        // Assert - one row less than before
-        Assertions.assertEquals(rows - 1, dataTable.getRows().size());
+        // Assert
+        List<ProgrammingLanguage> langsFiltered = filterByNameContains("Script");
+        assertRows(dataTable, langsFiltered);
+
+        for (int cnt=0; cnt<2; cnt++) {
+            // Act
+            int rows = dataTable.getRows().size();
+            WebElement removeButton = dataTable.getRow(0).getCell(4).getWebElement().findElement(By.className("ui-button"));
+            PrimeSelenium.guardAjax(removeButton).click();
+
+            // Assert - one row less than before
+            Assertions.assertEquals(rows - 1, dataTable.getRows().size());
+        }
 
         assertNoJavascriptErrors();
     }
 
     @Test
     @Order(4)
-    @DisplayName("DataTable: remove row with sort but not filter applied")
-    public void testRemoveRowWithoutFilterApplied(Page page) {
+    @DisplayName("DataTable: remove row without filter or sort applied (manually remove from filteredValue)")
+    public void testRemoveRowWithoutFilterOrSortAppliedV1(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        dataTable.sort("Name");
         int rows = dataTable.getRows().size();
 
         // Act
@@ -138,6 +151,63 @@ public class DataTable021Test extends AbstractDataTableTest {
 
     @Test
     @Order(5)
+    @DisplayName("DataTable: remove row without filter or sort applied (DataTable#filterAndSort)")
+    public void testRemoveRowWithoutFilterOrSortAppliedV2(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        int rows = dataTable.getRows().size();
+
+        // Act
+        WebElement removeButton = dataTable.getRow(0).getCell(4).getWebElement().findElement(By.className("ui-button"));
+        PrimeSelenium.guardAjax(removeButton).click();
+
+        // Assert - one row less than before
+        Assertions.assertEquals(rows - 1, dataTable.getRows().size());
+
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(6)
+    @DisplayName("DataTable: remove row with sort but not filter applied (manually remove from filteredValue)")
+    public void testRemoveRowWithoutFilterAppliedV1(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        dataTable.sort("Name");
+        int rows = dataTable.getRows().size();
+
+        // Act
+        WebElement removeButton = dataTable.getRow(0).getCell(3).getWebElement().findElement(By.className("ui-button"));
+        PrimeSelenium.guardAjax(removeButton).click();
+
+        // Assert - one row less than before
+        Assertions.assertEquals(rows - 1, dataTable.getRows().size());
+
+        assertNoJavascriptErrors();
+    }
+
+
+    @Test
+    @Order(7)
+    @DisplayName("DataTable: remove row with sort but not filter applied (DataTable#filterAndSort)")
+    public void testRemoveRowWithoutFilterAppliedV2(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        dataTable.sort("Name");
+        int rows = dataTable.getRows().size();
+
+        // Act
+        WebElement removeButton = dataTable.getRow(0).getCell(4).getWebElement().findElement(By.className("ui-button"));
+        PrimeSelenium.guardAjax(removeButton).click();
+
+        // Assert - one row less than before
+        Assertions.assertEquals(rows - 1, dataTable.getRows().size());
+
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(8)
     @DisplayName("DataTable: add row without filter or sort applied")
     public void testAddRowWithoutFilterOrSortApplied(Page page) {
         // Arrange
@@ -154,7 +224,7 @@ public class DataTable021Test extends AbstractDataTableTest {
     }
 
     @Test
-    @Order(6)
+    @Order(9)
     @DisplayName("DataTable: globalfilter and remove row (manually remove from filteredValue)")
     public void testGlobalFilterAndRemoveRowV1(Page page) {
         // Arrange
@@ -211,7 +281,7 @@ public class DataTable021Test extends AbstractDataTableTest {
     }
 
     @Test
-    @Order(7)
+    @Order(10)
     @DisplayName("DataTable: globalfilter and remove row (DataTable#filterAndSort)")
     public void testGlobalFilterAndRemoveRowV2(Page page) {
         // Arrange
@@ -260,33 +330,6 @@ public class DataTable021Test extends AbstractDataTableTest {
 
         // Act
         page.buttonDeleteRow.click();
-
-        // Assert - one row less than before
-        Assertions.assertEquals(rows - 1, dataTable.getRows().size());
-
-        assertNoJavascriptErrors();
-    }
-
-    @Test
-    @Order(8)
-    @DisplayName("DataTable: remove row (DataTable#filterAndSort) without filter applied")
-    public void testGlobalRemoveRowV2WithoutFilter(Page page) {
-        // Arrange
-        DataTable dataTable = page.dataTable;
-        dataTable.sort("Name");
-        int rows = dataTable.getRows().size();
-
-        // Act - remove one row
-        WebElement removeButton = dataTable.getRow(0).getCell(4).getWebElement().findElement(By.className("ui-button"));
-        PrimeSelenium.guardAjax(removeButton).click();
-
-        // Assert - one row less than before
-        Assertions.assertEquals(rows - 1, dataTable.getRows().size());
-
-        // Act - remove another row
-        rows = dataTable.getRows().size();
-        removeButton = dataTable.getRow(0).getCell(4).getWebElement().findElement(By.className("ui-button"));
-        PrimeSelenium.guardAjax(removeButton).click();
 
         // Assert - one row less than before
         Assertions.assertEquals(rows - 1, dataTable.getRows().size());
