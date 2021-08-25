@@ -1100,7 +1100,7 @@ public class DataTable extends DataTableBase {
      * NOTE: this is only supported for non-lazy DataTables, eg bound to a java.util.List.
      */
     public void filterAndSort() {
-        if (isLazy()) {
+        if (isLazy() || getFilteredValue() == null) {
             return;
         }
 
