@@ -63,7 +63,14 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.renderDeferred();
     },
 
-    update: function() {
+    updatePage: function() {
+        this.initPageState();
+        this.updateNavigators();
+        this.updateIndicators();
+        this.styleActiveItems();
+    },
+
+    initPageState: function() {
         this.totalIndicators = this.getTotalIndicators();
         var stateChanged = false;
         var totalShiftedItems = this.totalShiftedItems;
@@ -72,7 +79,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             this.stopAutoplay();
         }
 
-        if(this.oldNumScroll !== this.numScroll || this.oldNumVisible !== this.numVisible ) {
+        if(this.oldNumScroll !== this.numScroll || this.oldNumVisible !== this.numVisible) {
             this.remainingItems = (this.itemsCount - this.numVisible) % this.numScroll;
 
             var page = this.page;
@@ -132,30 +139,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         if (stateChanged) {
-            this.update();
-        }
-
-
-        this.updateIndicators();
-
-        var items = this.itemsContainer.children(':not(.ui-carousel-item-cloned)');
-        items.removeClass('ui-carousel-item-active ui-carousel-item-start ui-carousel-item-end');
-
-        var firstIndex = this.firstIndex(),
-            lastIndex = this.lastIndex();
-
-        for (var i = 0; i < items.length; i++) {
-            if (firstIndex <= i && lastIndex >= i) {
-                items.eq(i).addClass('ui-carousel-item-active');
-            }
-
-            if (firstIndex === i) {
-                items.eq(i).addClass('ui-carousel-item-start');
-            }
-
-            if (lastIndex === i) {
-                items.eq(i).addClass('ui-carousel-item-end');
-            }
+            this.initPageState();
         }
     },
 
@@ -167,14 +151,13 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
      */
     _render: function() {
         this.createStyle();
-        this.updateNavigators();
 
         if (this.cfg.circular) {
             this.cloneItems();
         }
 
         this.calculatePosition();
-        this.update();
+        this.updatePage();
         this.bindEvents();
 
         if (this.cfg.responsiveOptions) {
@@ -287,7 +270,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.totalShiftedItems = totalShiftedItems;
         this.page = page;
 
-        this.update();
+        this.updatePage();
     },
 
     calculatePosition: function() {
@@ -309,6 +292,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             }
 
             var stateChanged = false;
+
             if (this.numScroll !== matchedResponsiveOptionsData.numScroll) {
                 var page = this.page;
                 page = parseInt((page * this.numScroll) / matchedResponsiveOptionsData.numScroll);
@@ -331,7 +315,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             }
 
             if (stateChanged) {
-                this.update();
+                this.updatePage();
 
                 if (this.cfg.circular) {
                     this.cloneItems();
@@ -345,12 +329,6 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             this.step(1, index);
         }
 
-        if (this.cfg.autoplayInterval) {
-            this.stopAutoplay();
-        }
-
-        this.updateNavigators();
-
         if (e.cancelable) {
             e.preventDefault();
         }
@@ -361,42 +339,22 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             this.step(-1, index);
         }
 
-        if (this.cfg.autoplayInterval) {
-            this.stopAutoplay();
-        }
-
-        this.updateNavigators();
-
         if (e.cancelable) {
             e.preventDefault();
         }
     },
 
-    /**
-     * Updates the navigators to reflect the current page.
-     * @private
-     */
     updateNavigators: function() {
-        var backwardIsDisabled = this.backwardIsDisabled();
-        var forwardIsDisabled = this.forwardIsDisabled();
+        var prevButton = this.prevNav,
+            nextButton = this.nextNav;
 
-        if (backwardIsDisabled) {
-            this.prevNav.addClass('ui-state-disabled');
-            this.prevNav.prop('disabled', true);
-        }
-        else {
-            this.prevNav.removeClass('ui-state-disabled');
-            this.prevNav.prop('disabled', false);
-        }
+        this.backwardIsDisabled()
+            ? PrimeFaces.utils.disableButton(prevButton)
+            : PrimeFaces.utils.enableButton(prevButton);
 
-        if (forwardIsDisabled) {
-            this.nextNav.addClass('ui-state-disabled');
-            this.nextNav.prop('disabled', true);
-        }
-        else {
-            this.nextNav.removeClass('ui-state-disabled');
-            this.nextNav.prop('disabled', false);
-        }
+        this.forwardIsDisabled()
+            ? PrimeFaces.utils.disableButton(nextButton)
+            : PrimeFaces.utils.enableButton(nextButton);
     },
 
     updateIndicators: function() {
@@ -498,21 +456,22 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     cloneItems: function () {
-        this.itemsContainer.find('.ui-carousel-item-cloned').remove();
-        var cloned = this.items.slice(-1 * this.numVisible).clone();
-        var cloneSize = cloned.length;
+        this.itemsContainer.children('.ui-carousel-item-cloned').remove();
+
+        var clonedElements = this.items.slice(-1 * this.numVisible).clone();
+        var cloneSize = clonedElements.length;
         var i;
         for (i = 0; i < cloneSize; i++) {
-            this.styleClone(cloned.eq(i), i, cloneSize);
+            this.styleClone(clonedElements.eq(i), i, cloneSize);
         }
-        this.itemsContainer.prepend(cloned);
+        this.itemsContainer.prepend(clonedElements);
 
-        cloned = this.items.slice(0, this.numVisible).clone();
-        cloneSize = cloned.length;
-        for (i = 0; i < cloned.length; i++) {
-            this.styleClone(cloned.eq(i), i, cloneSize);
+        clonedElements = this.items.slice(0, this.numVisible).clone();
+        cloneSize = clonedElements.length;
+        for (i = 0; i < cloneSize; i++) {
+            this.styleClone(clonedElements.eq(i), i, cloneSize);
         }
-        this.itemsContainer.append(cloned);
+        this.itemsContainer.append(clonedElements);
     },
 
     styleClone: function (elem, index, length) {
@@ -524,12 +483,29 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         if (index + 1 === length) {
             elem.addClass('ui-carousel-item-end');
         }
-        //elem.find("*").removeAttr("id")
-        elem.find("[id]").add(elem).each(function() {
-            if (this.id) {
-                this.id = this.id + '_clone';
+        elem.find('*').removeAttr('id');
+    },
+
+    styleActiveItems: function () {
+        var items = this.itemsContainer.children(':not(.ui-carousel-item-cloned)');
+        items.removeClass('ui-carousel-item-active ui-carousel-item-start ui-carousel-item-end');
+
+        var firstIndex = this.firstIndex(),
+            lastIndex = this.lastIndex();
+
+        for (var i = 0; i < items.length; i++) {
+            if (firstIndex <= i && lastIndex >= i) {
+                items.eq(i).addClass('ui-carousel-item-active');
             }
-        });
+
+            if (firstIndex === i) {
+                items.eq(i).addClass('ui-carousel-item-start');
+            }
+
+            if (lastIndex === i) {
+                items.eq(i).addClass('ui-carousel-item-end');
+            }
+        }
     },
 
     renderIndicators: function () {
