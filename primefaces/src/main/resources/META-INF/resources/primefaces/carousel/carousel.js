@@ -34,7 +34,7 @@
  * @prop {number} cfg.page Index of the first item.
  * @prop {number} cfg.numVisible Number of visible items per page
  * @prop {number} cfg.numScroll Number of items to scroll
- * @prop {Array.<{breakpoint:string, numVisible:number, numScroll:number}>} an array of options for responsive design
+ * @prop {Object[]} an array of options for responsive design
  * @prop {string} cfg.orientation Specifies the layout of the component, valid layouts are horizontal or vertical
  * @prop {boolean} cfg.circular Sets continuous scrolling
  * @prop {number} cfg.autoplayInterval Sets the time in milliseconds to have Carousel start scrolling automatically
