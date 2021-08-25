@@ -102,8 +102,6 @@ public class CarouselRenderer extends CoreRenderer {
 
     protected void encodeContent(FacesContext context, Carousel carousel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        int rowCount = carousel.getRowCount();
-        int numVisible = carousel.getNumVisible();
         boolean isVertical = "vertical".equals(carousel.getOrientation());
 
         String contentStyleClass = getStyleClassBuilder(context)
@@ -131,7 +129,7 @@ public class CarouselRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", Carousel.ITEMS_CONTAINER_CLASS, null);
 
-        encodeItem(context, carousel, rowCount, numVisible);
+        encodeItem(context, carousel);
 
         writer.endElement("div");
 
@@ -146,23 +144,16 @@ public class CarouselRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeItem(FacesContext context, Carousel carousel, int rowCount, int numVisible) throws IOException {
+    protected void encodeItem(FacesContext context, Carousel carousel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        int firstIndex = 0;
-        int lastIndex = firstIndex + numVisible - 1;
+        int rowCount = carousel.getRowCount();
 
         if (carousel.getVar() != null) {
             for (int i = 0; i < rowCount; i++) {
                 carousel.setIndex(i);
-                String itemStyleClass = getStyleClassBuilder(context)
-                        .add(Carousel.ITEM_CLASS)
-                        .add(lastIndex >= i, "ui-carousel-item-active")
-                        .add(firstIndex == i, "ui-carousel-item-start")
-                        .add(lastIndex == i, "ui-carousel-item-end")
-                        .build();
 
                 writer.startElement("div", null);
-                writer.writeAttribute("class", itemStyleClass, "itemStyleClass");
+                writer.writeAttribute("class", Carousel.ITEM_CLASS, "itemStyleClass");
 
                 renderChildren(context, carousel);
 
@@ -170,6 +161,18 @@ public class CarouselRenderer extends CoreRenderer {
             }
 
             carousel.setIndex(-1);
+        }
+        else {
+            for (UIComponent kid : carousel.getChildren()) {
+                if (kid.isRendered()) {
+                    writer.startElement("div", null);
+                    writer.writeAttribute("class", Carousel.ITEM_CLASS, "itemStyleClass");
+
+                    renderChild(context, kid);
+
+                    writer.endElement("div");
+                }
+            }
         }
     }
 
