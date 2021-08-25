@@ -6792,3 +6792,6 @@ body .ui-wizard .ui-icon-arrowthick-1-e:before {
 }
 
 /* Add your customizations of theme here */
+body .ui-carousel .ui-carousel-indicators .ui-carousel-indicator.ui-highlight button {
+  background-color: #2196F3;
+}
