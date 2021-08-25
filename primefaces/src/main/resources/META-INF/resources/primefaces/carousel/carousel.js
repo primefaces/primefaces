@@ -196,7 +196,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         var indicatorSelector = '.ui-carousel-indicator';
         this.indicatorsContainer.off('click.indicator', indicatorSelector).on('click.indicator', indicatorSelector, null, function (event) {
             var index = $(this).index();
-            $this.onIndicatorClick(e, index);
+            $this.onIndicatorClick(event, index);
         });
         this.prevNav.on('click', function(e) {
             $this.navBackward(e);
