@@ -650,6 +650,49 @@ body .ui-splitbutton .ui-button.ui-splitbutton-menubutton .ui-icon.ui-icon-trian
   content: "";
 }
 
+body .ui-carousel .ui-carousel-content .ui-carousel-prev,
+body .ui-carousel .ui-carousel-content .ui-carousel-next {
+  width: 2rem;
+  height: 2rem;
+  background: transparent;
+  color: #6c757d;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  border-radius: 50%;
+  border: 0 none;
+  text-align: center;
+  line-height: 2rem;
+  padding: 0;
+  user-select: none;
+  margin: 0.5rem;
+}
+body .ui-carousel .ui-carousel-content .ui-carousel-prev:hover,
+body .ui-carousel .ui-carousel-content .ui-carousel-next:hover {
+  background: #e9ecef;
+  color: #495057;
+  border-color: transparent;
+}
+body .ui-carousel .ui-carousel-indicators {
+  padding: 1rem;
+}
+body .ui-carousel .ui-carousel-indicators .ui-carousel-indicator {
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+body .ui-carousel .ui-carousel-indicators .ui-carousel-indicator button {
+  background-color: #e9ecef;
+  width: 2rem;
+  height: 0.5rem;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  border-radius: 0;
+}
+body .ui-carousel .ui-carousel-indicators .ui-carousel-indicator button:hover {
+  background: #dee2e6;
+}
+body .ui-carousel .ui-carousel-indicators .ui-carousel-indicator.ui-highlight button {
+  background: #E3F2FD;
+  color: #495057;
+}
+
 body .ui-chronoline .ui-chronoline-event-marker {
   border: 2px solid #2196F3;
   border-radius: 50%;

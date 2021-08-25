@@ -650,41 +650,8 @@ body .ui-splitbutton .ui-button.ui-splitbutton-menubutton .ui-icon.ui-icon-trian
   content: "";
 }
 
-body .ui-carousel {
-  padding: 0;
-}
-body .ui-carousel .ui-carousel-header {
-  background: #333333;
-  color: #ffffff;
-  padding: 0.857rem 1rem;
-  border: 1px solid #333333;
-  margin: 0;
-  font-weight: 700;
-}
-body .ui-carousel .ui-carousel-header .ui-carousel-header-title {
-  padding: 0;
-  width: auto;
-}
-body .ui-carousel .ui-carousel-footer {
-  background: #333333;
-  color: #ffffff;
-  padding: 0.857rem 1rem;
-  border: 1px solid #333333;
-  margin: 0;
-}
-body .ui-carousel .ui-carousel-viewport {
-  border: 1px solid #c8c8c8;
-  background: #ffffff;
-  color: #333333;
-  padding: 0;
-}
-body .ui-carousel .ui-carousel-viewport .ui-carousel-item {
-  border: 1px solid #c8c8c8;
-}
-body .ui-carousel .ui-carousel-button {
-  margin: 0 0 0 0.5rem;
-  position: relative;
-  top: 0.143em;
+body .ui-carousel .ui-carousel-content .ui-carousel-prev,
+body .ui-carousel .ui-carousel-content .ui-carousel-next {
   width: 2rem;
   height: 2rem;
   background: transparent;
@@ -696,79 +663,34 @@ body .ui-carousel .ui-carousel-button {
   line-height: 2rem;
   padding: 0;
   user-select: none;
+  margin: 0.5rem;
 }
-body .ui-carousel .ui-carousel-button:hover {
+body .ui-carousel .ui-carousel-content .ui-carousel-prev:hover,
+body .ui-carousel .ui-carousel-content .ui-carousel-next:hover {
   background: transparent;
   color: #007ad9;
   border-color: transparent;
 }
-body .ui-carousel .ui-carousel-button.ui-carousel-next-button {
-  font-family: "primeicons" !important;
-  font-style: normal;
-  font-weight: normal;
-  display: inline-block;
-  background: none;
+body .ui-carousel .ui-carousel-indicators {
+  padding: 1rem;
 }
-body .ui-carousel .ui-carousel-button.ui-carousel-next-button:before {
-  content: "";
+body .ui-carousel .ui-carousel-indicators .ui-carousel-indicator {
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
 }
-body .ui-carousel .ui-carousel-button.ui-carousel-prev-button {
-  font-family: "primeicons" !important;
-  font-style: normal;
-  font-weight: normal;
-  display: inline-block;
-  background: none;
-}
-body .ui-carousel .ui-carousel-button.ui-carousel-prev-button:before {
-  content: "";
-}
-body .ui-carousel .ui-carousel-dropdown, body .ui-carousel .ui-carousel-mobiledropdown {
-  margin: 0 0.5rem 0 0;
-}
-body .ui-carousel .ui-carousel-page-links {
-  margin: 0 0.5rem;
-  position: relative;
-  top: 0.143em;
-}
-body .ui-carousel .ui-carousel-page-links .ui-carousel-page-link {
+body .ui-carousel .ui-carousel-indicators .ui-carousel-indicator button {
+  background-color: #f4f4f4;
   width: 2rem;
-  height: 2rem;
-  background: transparent;
-  color: #a6a6a6;
+  height: 0.5rem;
   transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
-  border-radius: 50%;
-  border: 0 none;
-  text-align: center;
-  line-height: 2rem;
-  padding: 0;
-  user-select: none;
-  text-decoration: none;
+  border-radius: 0;
 }
-body .ui-carousel .ui-carousel-page-links .ui-carousel-page-link:hover {
-  background: transparent;
-  color: #007ad9;
-  border-color: transparent;
+body .ui-carousel .ui-carousel-indicators .ui-carousel-indicator button:hover {
+  background: #eaeaea;
 }
-body .ui-carousel .ui-carousel-page-links .ui-carousel-page-link.ui-icon-radio-off {
-  font-family: "primeicons" !important;
-  font-style: normal;
-  font-weight: normal;
-  display: inline-block;
-  background: none;
-}
-body .ui-carousel .ui-carousel-page-links .ui-carousel-page-link.ui-icon-radio-off:before {
-  content: "";
-}
-body .ui-carousel .ui-carousel-page-links .ui-carousel-page-link.ui-icon-radio-on {
-  font-family: "primeicons" !important;
-  font-style: normal;
-  font-weight: normal;
-  display: inline-block;
-  background: none;
-  color: #007ad9;
-}
-body .ui-carousel .ui-carousel-page-links .ui-carousel-page-link.ui-icon-radio-on:before {
-  content: "";
+body .ui-carousel .ui-carousel-indicators .ui-carousel-indicator.ui-highlight button {
+  background: #007ad9;
+  color: #ffffff;
 }
 
 body .ui-chronoline .ui-chronoline-event-marker {
