@@ -475,9 +475,11 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     bindDocumentListeners: function() {
+        var $this = this;
+
         if (!this.documentResizeListener) {
-            this.documentResizeListener = (e) => {
-                this.calculatePosition(e);
+            this.documentResizeListener = function (e) {
+                $this.calculatePosition(e);
             };
 
             window.addEventListener('resize', this.documentResizeListener);
@@ -489,12 +491,12 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
      */
     startAutoplay: function() {
         var $this = this;
-        this.interval = setInterval(() => {
-                if($this.page === ($this.totalIndicators - 1)) {
+        this.interval = setInterval(function () {
+                if ($this.page === ($this.totalIndicators - 1)) {
                     $this.step(-1, 0);
                 }
                 else {
-                    $this.step(-1, this.page + 1);
+                    $this.step(-1, $this.page + 1);
                 }
             },
             this.cfg.autoplayInterval);
@@ -524,7 +526,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
 
         if (this.cfg.responsiveOptions) {
             var _responsiveOptions = this.cfg.responsiveOptions;
-            _responsiveOptions.sort((data1, data2) => {
+            _responsiveOptions.sort(function (data1, data2) {
                 var value1 = data1.breakpoint;
                 var value2 = data2.breakpoint;
                 var result = null;
