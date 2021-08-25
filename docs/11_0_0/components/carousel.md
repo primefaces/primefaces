@@ -1,6 +1,6 @@
 # Carousel
 
-Carousel is a multi purpose component to display a set of data or general content with slide effects.
+Carousel is a content slider featuring various customization options.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.carousel-1.html)
 
@@ -19,159 +19,147 @@ Carousel is a multi purpose component to display a set of data or general conten
 
 | Name | Default | Type | Description | 
 | --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component
+| id | null | String | Unique identifier of the component.
 | rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| value | null | Object | A value expression that refers to a collection
-| var | null | String | Name of the request scoped iterator
-| numVisible | 3 | Integer | Number of visible items per page
-| firstVisible | 0 | Integer | Index of the first element to be displayed
+| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
+| value | null | Object | A value expression that refers to a collection.
+| var | null | String | Name of the request scoped iterator.
+| page | null | Integer | Index of the first item.
+| numVisible | 1 | Integer | Number of items per page.
+| numScroll | 1 | Integer | Number of items to scroll.
 | widgetVar | null | String | Name of the client side widget.
-| circular | false | Boolean | Sets continuous scrolling
-| vertical | false | Boolean | Sets vertical scrolling
-| autoPlayInterval | 0 | Integer | Sets the time in milliseconds to have Carousel start scrolling automatically after being initialized
-| pageLinks | 3 | Integer | Defines the number of page links of paginator.
-| effect | slide | String | Name of the animation, could be “fade” or “slide”.
-| easing | easeInOutCirc | String | Name of the easing animation.
-| effectDuration | 500 | Integer | Duration of the animation in milliseconds.
-| dropdownTemplate | {page} | String | Template string for dropdown of paginator.
-| style | null | String | Inline style of the component.
+| circular | false | Boolean | Defines if scrolling would be infinite.
+| autoplayInterval | null | Integer | Time in milliseconds to scroll items automatically.
+| responsiveOptions | null | List<CarouselResponsiveOption> | A list of options for responsive design.
+| orientation | 0 | Integer | Specifies the layout of the component, valid values are "horizontal" and "vertical".
+| verticalViewPortHeight | "300px" | String | Height of the viewport in vertical layout.
+| style | "horizontal" | String | Inline style of the component.
 | styleClass | null | String | Style class of the component.
-| itemStyle | null | String | Inline style of each item.
-| itemStyleClass | null | String | Style class of each item.
+| contentStyleClass | null | String | Style class of main content.
+| containerStyleClass | null | String | Style class of the viewport container.
+| indicatorsContentStyleClass | null | String | Style class of the paginator items.
 | headerText | null | String | Label for header.
 | footerText | null | String | Label for footer.
-| responsive | false | Boolean | In responsive mode, carousel adjusts its content based on screen size.
-| breakpoint | 560 | Integer | Breakpoint value in pixels to switch between small and large viewport.
 | touchable | true | Boolean | Enable touch support if browser detection supports it.
-| stateful | false | Boolean | When enabled, carousel state is saved in a LocalStorage.
-| statefulGlobal | false | Boolean | When enabled, carousel state is saved globally across pages. If disabled then state is stored per view/page.
 
-## Getting Started with Carousel
-Carousel has two main use-cases; data and general content display. To begin with data iteration let’s
-use a list of cars to display with carousel.
+## Getting Started
+Carousel requires a collection of items as its `value` along with a visual template to render each item.
 
-``` java
-public class Car {
-    private String model;
-    private int year;
-    private String manufacturer;
-    private String color;
-    ...
-}
+```xhtml
+<p:carousel value="#{carouselView.products}" var="product">
+    #{product.name}
+</p:carousel>
 ```
 
 ```java
-public class CarBean {
-    private List<Car> cars;
+public class CarouselView implements Serializable {
 
-    public CarListController() {
-        cars = new ArrayList<Car>();
-        cars.add(new Car("myModel", 2005, "ManufacturerX", "blue"));
-        //add more cars
+    private List<Product> products;
+
+    @Inject
+    private ProductService service;
+
+    @PostConstruct
+    public void init() {
+        products = service.getProducts(9);
     }
+
     //getter setter
 }
 ```
-```xhtml
-<p:carousel value="#{carBean.cars}" var="car">
-    <p:graphicImage value="/images/cars/#{car.manufacturer}.jpg"/>
-    <h:outputText value="Model: #{car.model}" />
-    <h:outputText value="Year: #{car.year}" />
-    <h:outputText value="Color: #{car.color}" />
-</p:carousel>
-```
-Carousel iterates through the cars collection and renders it’s children for each car.
 
-## Limiting Visible Items
-Bu default carousel lists its items in pages with size 3. This is customizable with the rows attribute.
-
-```xhtml
-<p:carousel value="#{carBean.cars}" var="car" numVisible="1" itemStyle="width:200px" >
-    ...
-</p:carousel>
-```
-## Effects
-
-Paging happens with a slider effect by default and following easing options are supported.
-
-- backBoth
-- backIn
-- backOut
-- bounceBoth
-- bounceIn
-- bounceOut
-- easeBoth
-- easeBothStrong
-- easeIn
-- easeInStrong
-- easeNone
-- easeOut
-- easeInOutCirc
-- easeOutStrong
-- elasticBoth
-- elasticIn
-- elasticOut
-
-## SlideShow
-Carousel can display the contents in a slideshow, for this purpose _autoPlayInterval_ and _circular_
-attributes are used. Following carousel displays a collection of images as a slideshow.
-
-```xhtml
-<p:carousel autoPlayInterval="2000" rows="1" effect="easeInStrong" circular="true" itemStyle="width:200px" >
-    <p:graphicImage value="/images/nature1.jpg"/>
-    <p:graphicImage value="/images/nature2.jpg"/>
-    <p:graphicImage value="/images/nature3.jpg"/>
-    <p:graphicImage value="/images/nature4.jpg"/>
-</p:carousel>
-```
-## Content Display
-Another use case of carousel is tab based content display.
-
-```xhtml
-<p:carousel rows="1" itemStyle="height:200px;width:600px;">
-    <p:tab title="Godfather Part I">
-        <h:panelGrid columns="2" cellpadding="10">
-            <p:graphicImage value="/images/godfather/godfather1.jpg" />
-            <h:outputText value="The story begins as Don Vito ..." />
-        </h:panelGrid>
-    </p:tab>
-    <p:tab title="Godfather Part II">
-        <h:panelGrid columns="2" cellpadding="10">
-            <p:graphicImage value="/images/godfather/godfather2.jpg" />
-            <h:outputText value="Francis Ford Coppola's ..."/>
-        </h:panelGrid>
-    </p:tab>
-    <p:tab title="Godfather Part III">
-        <h:panelGrid columns="2" cellpadding="10">
-            <p:graphicImage value="/images/godfather/godfather3.jpg" />
-            <h:outputText value="After a break of ..." />
-        </h:panelGrid>
-    </p:tab>
-</p:carousel>
-```
-## Item Selection
-Sample below selects an item from the carousel and displays details within a dialog.
-
-```xhtml
-<h:form id="form">
-    <p:carousel value="#{carBean.cars}" var="car" itemStyle="width:200px" >
-        <p:graphicImage value="/images/cars/#{car.manufacturer}.jpg"/>
-        <p:commandLink update=":form:detail" oncomplete="PF('dlg').show()">
-            <h:outputText value="Model: #{car.model}" />
-            <f:setPropertyActionListener value="#{car}" target="#{carBean.selected}" />
-        </p:commandLink>
-    </p:carousel>
-    <p:dialog widgetVar="dlg">
-        <h:outputText id="detail" value="#{carBean.selected}" />
-    </p:dialog>
-</h:form>
-```
 ```java
-public class CarBean {
-    private List<Car> cars;
-    private Car selected;
-    //getters and setters
+public class Product implements Serializable {
+
+    private int id;
+    private String name;
+    ...
+}
+```
+Carousel iterates through the products collection and renders it’s children for each product.
+
+## Items per page and Scroll Items
+Number of items per page is defined using the `numVisible` attribute whereas number of items to scroll is defined with 
+the `numScroll` attribute.
+
+```xhtml
+<p:carousel value="#{carouselView.products}" var="product" numVisible="3" numScroll="1">
+    Content
+</p:carousel>
+```
+
+## Responsive
+For responsive design, `numVisible` and `numScroll` can be defined using the `responsiveOptions` attribute that should be 
+a list of CarouselResponsiveOption objects whose breakpoint defines the max-width to apply the settings.
+
+```xhtml
+<p:carousel value="#{carouselView.products}" var="product" numVisible="3" numScroll="3"
+            responsiveOptions="#{carouselView.responsiveOptions}">
+    <f:facet name="header">
+        <h5>Basic</h5>
+    </f:facet>
+    <div class="product-item">
+        <div class="product-item-content">
+            <div class="p-mb-3">
+                <p:graphicImage name="demo/images/product/#{product.image}" styleClass="product-image"/>
+            </div>
+            <div>
+                <h4 class="p-mb-1">#{product.name}</h4>
+                <h6 class="p-mt-0 p-mb-3">
+                    <h:outputText value="#{product.price}">
+                        <f:convertNumber type="currency" pattern="¤#0" currencySymbol="$" />
+                    </h:outputText>
+                </h6>
+                <span class="product-badge status-#{product.inventoryStatus.name().toLowerCase()}">#{product.inventoryStatus.text}</span>
+                <div class="p-mt-5">
+                    <p:commandButton type="button" icon="pi pi-search" styleClass="rounded-button p-mr-2" />
+                    <p:commandButton type="button" icon="pi pi-star" styleClass="ui-button-success rounded-button p-mr-2" />
+                    <p:commandButton type="button" icon="pi pi-cog" styleClass="ui-button-help rounded-button" />
+                </div>
+            </div>
+        </div>
+    </div>
+</p:carousel>
+```
+
+```java
+public class CarouselView implements Serializable {
+
+    private List<Product> products;
+
+    private List<CarouselResponsiveOption> responsiveOptions;
+
+    @Inject
+    private ProductService service;
+
+    @PostConstruct
+    public void init() {
+        products = service.getProducts(9);
+        responsiveOptions = new ArrayList<>();
+        responsiveOptions.add(new CarouselResponsiveOption("1024px", 3, 3));
+        responsiveOptions.add(new CarouselResponsiveOption("768px", 2, 2));
+        responsiveOptions.add(new CarouselResponsiveOption("560px", 1, 1));
+    }
+
+    //getter setter
+}
+```
+
+```java
+public class Product implements Serializable {
+
+    private int id;
+    private String code;
+    private String name;
+    private String description;
+    private String image;
+    private double price;
+    private String category;
+    private int quantity;
+    private InventoryStatus inventoryStatus;
+    private int rating;
+    private List<Order> orders;
+    ...
 }
 ```
 
@@ -180,37 +168,86 @@ Header and Footer of carousel can be defined in two ways either, using _headerTe
 options that take simple strings as labels or by _header_ and _footer_ facets that can take any custom
 content.
 
-## Responsive
-When responsive mode is enabled via setting responsive option to true, carousel switches between
-small and large viewport depending on the breakpoint value which is 560 by default.
+```xhtml
+<p:carousel value="#{carouselView.products}" var="product" numVisible="3" numScroll="3"
+            responsiveOptions="#{carouselView.responsiveOptions}">
+    <f:facet name="header">
+        <h2>Custom Header</h2>
+    </f:facet>
 
-## Client Side API
-Widget: _PrimeFaces.widget.Carousel_
+    Content
+    
+    <f:facet name="footer">
+        <h2>Custom Footer</h2>
+    </f:facet>
+</p:carousel>
+```
 
-| Method | Params | Return Type | Description | 
-| --- | --- | --- | --- | 
-| next() | - | void | Displays next page.
-| prev() | - | void | Displays previous page.
-| setPage(index) | index | void | Displays page with given index.
-| startAutoplay() | - | void | Starts slideshow.
-| stopAutoplay() | - | void | Stops slideshow.
+## Orientation
+Default layout of the Carousel is horizontal, other possible option is the vertical mode that is configured with the
+`orientation` attribute.
+
+```xhtml
+<p:carousel value="#{carouselView.products}" var="product" orientation="vertical"
+            verticalViewPortHeight="352px" style="max-width: 400px;margin-top: 2em;">
+    <f:facet name="header">
+        <h5>Vertical</h5>
+    </f:facet>
+    <div class="product-item">
+        <div class="product-item-content">
+            <div class="p-mb-3">
+                <p:graphicImage name="demo/images/product/#{product.image}" styleClass="product-image"/>
+            </div>
+            <div>
+                <h4 class="p-mb-1">#{product.name}</h4>
+                <h6 class="p-mt-0 p-mb-3">
+                    <h:outputText value="#{product.price}">
+                        <f:convertNumber type="currency" pattern="¤#0" currencySymbol="$" />
+                    </h:outputText>
+                </h6>
+                <span class="product-badge status-#{product.inventoryStatus.name().toLowerCase()}">#{product.inventoryStatus.text}</span>
+                <div class="p-mt-5">
+                    <p:commandButton type="button" icon="pi pi-search" styleClass="rounded-button p-mr-2" />
+                    <p:commandButton type="button" icon="pi pi-star" styleClass="ui-button-success rounded-button p-mr-2" />
+                    <p:commandButton type="button" icon="pi pi-cog" styleClass="ui-button-help rounded-button" />
+                </div>
+            </div>
+        </div>
+    </div>
+</p:carousel>
+```
+
+## AutoPlay and Circular
+When `autoplayInterval` is defined in milliseconds, items are scrolled automatically. In addition, for infinite scrolling
+`circular` attribute needs to be enabled. Note that in autoplay mode, circular is enabled by default.
+```xhtml
+<p:carousel value="#{carouselView.products}" var="product" circular="true" autoplayInterval="3000" numVisible="3" 
+            numScroll="1">
+    <f:facet name="header">
+        <h5>Circular, AutoPlay</h5>
+    </f:facet>
+    
+    Content
+    
+</p:carousel>
+```
 
 ## Skinning
-Carousel resides in a container element which _style_ and _styleClass_ options apply. _itemStyle_ and
-_itemStyleClass_ attributes apply to each item displayed by carousel. Following is the list of structural
-style classes;
+Carousel resides in a container element which _style_ and _styleClass_ options apply. _contentStyleClass_ attribute 
+apply style classes to the main content container, _containerStyleClass_ attribute apply style classes to the container 
+of the viewport and _indicatorsContentStyleClass_ attribute apply style classes to the container of the indicators. 
+Following is the list of structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-| .ui-carousel | Main container
-| .ui-carousel-header | Header container
-| .ui-carousel-header-title | Header content
-| .ui-carousel-viewport | Content container
-| .ui-carousel-button | Navigation buttons
-| .ui-carousel-next-button | Next navigation button of paginator
-| .ui-carousel-prev-button | Prev navigation button of paginator
-| .ui-carousel-page-links | Page links of paginator.
-| .ui-carousel-page-link | Each page link of paginator.
-| .ui-carousel-item | Each item.
+| .ui-carousel | Main container.
+| .ui-carousel-header | Header container.
+| .ui-carousel-footer | Footer container.
+| .ui-carousel-content | Main content container. It contains the container of the viewport.
+| .ui-carousel-container | Container of the viewport. It contains navigation buttons and viewport.
+| .ui-carousel-items-content | Viewport.
+| .ui-carousel-item | Content items in the item container.
+| .ui-carousel-indicators | Container of the indicators.
+| .ui-carousel-indicator | Indicator element.
 
 As skinning style classes are global, see the main theming section for more information.
