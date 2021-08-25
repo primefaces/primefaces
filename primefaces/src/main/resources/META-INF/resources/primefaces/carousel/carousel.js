@@ -384,31 +384,35 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Moves this carousel to the previous page. If autoplay is active, it will stop.
+     * @param {Event} event Event that occurred.
+     * @param {number} index 0-based index of the page to display.
      */
-    navBackward: function(e, index){
+    navBackward: function(event, index){
         this.isAutoplay = false;
 
         if (this.circular || this.page !== 0) {
             this.step(1, index);
         }
 
-        if (e.cancelable) {
-            e.preventDefault();
+        if (event.cancelable) {
+            event.preventDefault();
         }
     },
 
     /**
      * Moves this carousel to the next page. If autoplay is active, it will stop.
+     * @param {Event} event Event that occurred.
+     * @param {number} index 0-based index of the page to display.
      */
-    navForward: function(e, index){
+    navForward: function(event, index){
         this.isAutoplay = false;
 
         if (this.circular || this.page < (this.totalIndicators - 1)) {
             this.step(-1, index);
         }
 
-        if (e.cancelable) {
-            e.preventDefault();
+        if (event.cancelable) {
+            event.preventDefault();
         }
     },
 
@@ -442,7 +446,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
      * It moves the current Carousel to the index of the clicked indicator on that Carousel viewport.
      * @private
      * @param {Event} event Event that occurred.
-     * @param {number} index index of the indicator.
+     * @param {number} index 0-based index of the indicator.
      */
     onIndicatorClick: function(event, index) {
         var page = this.page;
