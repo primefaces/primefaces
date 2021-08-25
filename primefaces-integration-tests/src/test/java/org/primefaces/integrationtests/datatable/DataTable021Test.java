@@ -274,16 +274,6 @@ public class DataTable021Test extends AbstractDataTableTest {
         // Arrange
         DataTable dataTable = page.dataTable;
         dataTable.sort("Name");
-
-        // Act
-        WebElement globalFilterInput = page.globalFilter.getInput();
-        globalFilterInput.clear();
-        ComponentUtils.sendKeys(globalFilterInput, "Script");
-        PrimeSelenium.guardAjax(globalFilterInput).sendKeys(Keys.TAB);
-
-        // Assert
-        List<ProgrammingLanguage> langsFiltered = filterByNameContains("Script");
-        assertRows(dataTable, langsFiltered);
         int rows = dataTable.getRows().size();
 
         // Act - remove one row
