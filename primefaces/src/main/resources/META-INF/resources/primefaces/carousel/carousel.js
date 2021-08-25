@@ -194,9 +194,9 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
 
         var indicatorSelector = '.ui-carousel-indicator';
-        this.indicatorsContainer.off('click.indicator', indicatorSelector).on('click.indicator', indicatorSelector, null, function (event) {
+        this.indicatorsContainer.off('click.indicator', indicatorSelector).on('click.indicator', indicatorSelector, null, function (e) {
             var index = $(this).index();
-            $this.onIndicatorClick(event, index);
+            $this.onIndicatorClick(e, index);
         });
         this.prevNav.on('click', function(e) {
             $this.navBackward(e);
@@ -208,15 +208,29 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             $this.onTransitionEnd();
         });
         if (PrimeFaces.env.isTouchable(this.cfg)) {
-            this.itemsContainer.swipe({
-                swipeLeft:function(e) {
-                    $this.navBackward(e);
-                },
-                swipeRight: function(e) {
-                    $this.navForward(e);
-                },
-                excludedElements: PrimeFaces.utils.excludedSwipeElements()
-            });
+            if (this.isVertical) {
+                this.itemsContainer.swipe({
+                    swipeUp:function(e) {
+                        $this.navBackward(e);
+                    },
+                    swipeDown: function(e) {
+                        $this.navForward(e);
+                    },
+                    excludedElements: PrimeFaces.utils.excludedSwipeElements()
+                });
+            }
+
+            else {
+                this.itemsContainer.swipe({
+                    swipeLeft:function(e) {
+                        $this.navBackward(e);
+                    },
+                    swipeRight: function(e) {
+                        $this.navForward(e);
+                    },
+                    excludedElements: PrimeFaces.utils.excludedSwipeElements()
+                });
+            }
         }
     },
 
