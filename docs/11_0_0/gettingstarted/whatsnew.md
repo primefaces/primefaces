@@ -8,7 +8,7 @@ This page contains a list of big features. Please check the GitHub issues for al
   * Avatar: added `saturation`, `lightness`, `alpha` to control dynamic colors.
   * Badge: added `visible` attribute to hide the badge but render the children.
   * Carousel: completely overhauled by PrimeTek to be in line with PrimeReact/Vue/NG carousel.
-  * DataTable: new build in `JpaLazyDataModel`, which provides basic functionality for JPA users and lazy loading
+  * DataTable: new built-in `JpaLazyDataModel`, which provides basic functionality for JPA users and lazy loading
   * Hotkey: added `bindMac` to use alternative binding on macOS.
   * Inplace: added `tabindex` for keyboard focus and toggle support.
   * InputText, InputTextarea: counter can count bytes instead of characters.
