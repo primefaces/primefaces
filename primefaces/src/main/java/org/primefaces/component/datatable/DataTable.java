@@ -1104,6 +1104,13 @@ public class DataTable extends DataTableBase {
             return;
         }
 
+        /*
+         * setDataModel is defined by UIData. So different implementations for Mojarra and MyFaces.
+         * But PrimeFaces comes with it´s own UIData which extends/modifies UIData provided by JSF-impl.
+         * But PrimeFaces UIData does not know all impl-specifics, so ....
+         */
+        setDataModel(null); // for MyFaces 2.3 - compatibility
+
         FilterFeature.getInstance().filter(FacesContext.getCurrentInstance(), this);
         SortFeature.getInstance().sort(FacesContext.getCurrentInstance(), this);
     }
