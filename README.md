@@ -28,6 +28,7 @@ This is an overview page, please visit [PrimeFaces.org](https://www.primefaces.o
 
 Version | Binary | Source | JSF version | Java version | Documentation
 ------------ | -------------  | ------------- | ------------- | ------------- | ------------- |
+11.0.0| | | 2.0 - 3.0 | 1.8 - ? | [11.0.0 Documentation](https://primefaces.github.io/primefaces/11_0_0/#/)
 10.0.0| [primefaces-10.0.0.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/10.0.0/primefaces-10.0.0.jar)  | [primefaces-10.0.0-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/10.0.0/primefaces-10.0.0-sources.jar) | 2.0 - 3.0 | 1.8 - ? | [10.0.0 Documentation](https://primefaces.github.io/primefaces/10_0_0/#/)
 8.0| [primefaces-8.0.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/8.0/primefaces-8.0.jar)  | [primefaces-8.0-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/8.0/primefaces-8.0-sources.jar) | 2.0 - 2.3 | 1.8 - ? | [8.0 Documentation](https://primefaces.github.io/primefaces/8_0/#/)
 7.0| [primefaces-7.0.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/7.0/primefaces-7.0.jar)  | [primefaces-7.0-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/7.0/primefaces-7.0-sources.jar) | 2.0 - 2.3 | 1.7 - ? | [7.0 Documentation](https://primefaces.github.io/primefaces/7_0/#/)
