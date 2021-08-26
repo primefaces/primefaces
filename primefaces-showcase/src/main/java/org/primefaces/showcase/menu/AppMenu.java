@@ -87,7 +87,7 @@ public class AppMenu {
         primeFlexMenuItems.add(new MenuItem("Grid System", "/primeflex/grid"));
         primeFlexMenuItems.add(new MenuItem("Spacing", "/primeflex/spacing"));
         primeFlexMenuItems.add(new MenuItem("Text", "/primeflex/text"));
-        menuCategories.add(new MenuCategory("PrimeFlex", primeFlexMenuItems));
+        menuCategories.add(new MenuCategory("PrimeFlex 2.0.0", primeFlexMenuItems));
         //PRIMEFLEX CATEGORY END
 
         //PRIMEICONS CATEGORY START
