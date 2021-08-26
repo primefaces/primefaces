@@ -160,25 +160,9 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                 String filterValue = filter.getFilterValue().toString();
                 Field filterField = LangUtils.getFieldRecursive(entityClass, filter.getField());
                 Object convertedFilterValue = convertToType(filterValue, filterField.getType());
+                Expression fieldExpression = resolveFieldExpression(root, filter.getField());
 
-                // join if required; e.g. company.name -> join to company and get "name" field from the joined table
-                String fieldName = filter.getField();
-                Join<?, ?> join = null;
-                while (fieldName.contains(".")) {
-                    String currentName = fieldName.substring(0, fieldName.indexOf("."));
-                    fieldName = fieldName.substring(currentName.length() + 1);
-
-                    if (join == null) {
-                        join = root.join(currentName, JoinType.INNER);
-                    }
-                    else {
-                        join = join.join(currentName, JoinType.INNER);
-                    }
-                }
-
-                Expression expression = join == null ? root.get(fieldName) : join.get(fieldName);
-
-                Predicate predicate = createPredicate(filter, filterField, root, cb, expression, (Comparable) convertedFilterValue);
+                Predicate predicate = createPredicate(filter, filterField, root, cb, fieldExpression, (Comparable) convertedFilterValue);
                 predicates.add(predicate);
             }
         }
@@ -194,37 +178,37 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
     }
 
     protected <F extends Comparable> Predicate createPredicate(FilterMeta filter, Field filterField,
-            Root<T> root, CriteriaBuilder cb, Expression field, F filterValue) {
+            Root<T> root, CriteriaBuilder cb, Expression fieldExpression, F filterValue) {
 
-        Lazy<Expression<String>> fieldAsString = new Lazy(() -> field.as(String.class));
+        Lazy<Expression<String>> fieldExpressionAsString = new Lazy(() -> fieldExpression.as(String.class));
 
         switch (filter.getMatchMode()) {
             case STARTS_WITH:
-                return cb.like(fieldAsString.get(), filterValue + "%");
+                return cb.like(fieldExpressionAsString.get(), filterValue + "%");
             case NOT_STARTS_WITH:
-                return cb.notLike(fieldAsString.get(), filterValue + "%");
+                return cb.notLike(fieldExpressionAsString.get(), filterValue + "%");
             case ENDS_WITH:
-                return cb.like(fieldAsString.get(), "%" + filterValue);
+                return cb.like(fieldExpressionAsString.get(), "%" + filterValue);
             case NOT_ENDS_WITH:
-                return cb.notLike(fieldAsString.get(), "%" + filterValue);
+                return cb.notLike(fieldExpressionAsString.get(), "%" + filterValue);
             case CONTAINS:
-                return cb.like(fieldAsString.get(), "%" + filterValue + "%");
+                return cb.like(fieldExpressionAsString.get(), "%" + filterValue + "%");
             case NOT_CONTAINS:
-                return cb.notLike(fieldAsString.get(), "%" + filterValue + "%");
+                return cb.notLike(fieldExpressionAsString.get(), "%" + filterValue + "%");
             case EXACT:
             case EQUALS:
-                return cb.equal(field, filterValue);
+                return cb.equal(fieldExpression, filterValue);
             case NOT_EXACT:
             case NOT_EQUALS:
-                return cb.notEqual(field, filterValue);
+                return cb.notEqual(fieldExpression, filterValue);
             case LESS_THAN:
-                return cb.lessThan(field, filterValue);
+                return cb.lessThan(fieldExpression, filterValue);
             case LESS_THAN_EQUALS:
-                return cb.lessThanOrEqualTo(field, filterValue);
+                return cb.lessThanOrEqualTo(fieldExpression, filterValue);
             case GREATER_THAN:
-                return cb.greaterThan(field, filterValue);
+                return cb.greaterThan(fieldExpression, filterValue);
             case GREATER_THAN_EQUALS:
-                return cb.greaterThanOrEqualTo(field, filterValue);
+                return cb.greaterThanOrEqualTo(fieldExpression, filterValue);
             case IN:
                 throw new UnsupportedOperationException("MatchMode.IN currently not supported!");
             case NOT_IN:
@@ -253,10 +237,29 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                     continue;
                 }
 
-                Expression<?> field = root.get(sort.getField());
-                cq.orderBy(sort.getOrder() == SortOrder.ASCENDING ? cb.asc(field) : cb.desc(field));
+                Expression<?> fieldExpression = resolveFieldExpression(root, sort.getField());
+                cq.orderBy(sort.getOrder() == SortOrder.ASCENDING ? cb.asc(fieldExpression) : cb.desc(fieldExpression));
             }
         }
+    }
+
+    protected Expression resolveFieldExpression(Root<T> root, String fieldName) {
+        Join<?, ?> join = null;
+
+        // join if required; e.g. company.name -> join to company and get "name" field from the joined table
+        while (fieldName.contains(".")) {
+            String currentName = fieldName.substring(0, fieldName.indexOf("."));
+            fieldName = fieldName.substring(currentName.length() + 1);
+
+            if (join == null) {
+                join = root.join(currentName, JoinType.INNER);
+            }
+            else {
+                join = join.join(currentName, JoinType.INNER);
+            }
+        }
+
+        return join == null ? root.get(fieldName) : join.get(fieldName);
     }
 
     @Override
