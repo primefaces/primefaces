@@ -509,9 +509,32 @@ public class LangUtils {
         return true;
     }
 
+    public static Field getFieldRecursive(Class<?> clazz, String name) {
+        if (clazz == null) {
+            throw new IllegalArgumentException("clazz must not be null!");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("name must not be null!");
+        }
+
+        Class<?> nextClazz = clazz;
+        String nextName = name;
+        while (nextName.contains(".")) {
+            String currentName = nextName.substring(0, nextName.indexOf("."));
+            nextName = nextName.substring(currentName.length() + 1, nextName.length());
+            Field field = getField(nextClazz, currentName);
+            nextClazz = field.getType();
+        }
+
+        return getField(nextClazz, nextName);
+    }
+
     public static Field getField(Class<?> clazz, String name) {
         if (clazz == null) {
             throw new IllegalArgumentException("clazz must not be null!");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("name must not be null!");
         }
 
         Class<?> current = clazz;

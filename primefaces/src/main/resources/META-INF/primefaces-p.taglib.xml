@@ -3880,7 +3880,7 @@
             </description>
             <name>responsiveOptions</name>
             <required>false</required>
-            <type>org.primefaces.model.carousel.CarouselResponsiveOptions</type>
+            <type>java.util.List</type>
         </attribute>
         <attribute>
             <description>

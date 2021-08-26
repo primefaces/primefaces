@@ -45,6 +45,8 @@ import java.util.Map;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.convert.Converter;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import org.primefaces.util.BeanUtils;
 import org.primefaces.util.Lazy;
 import org.primefaces.util.SerializableSupplier;
@@ -56,9 +58,9 @@ import org.primefaces.util.SerializableSupplier;
  */
 public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializable {
 
-    private Class<T> entityClass;
-    private SerializableSupplier<EntityManager> entityManager;
-    private String rowKeyField;
+    protected Class<T> entityClass;
+    protected SerializableSupplier<EntityManager> entityManager;
+    protected String rowKeyField;
 
     private transient Lazy<Method> rowKeyGetter;
 
@@ -156,9 +158,27 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                 }
 
                 String filterValue = filter.getFilterValue().toString();
-                Field filterField = LangUtils.getField(entityClass, filter.getField());
+                Field filterField = LangUtils.getFieldRecursive(entityClass, filter.getField());
                 Object convertedFilterValue = convertToType(filterValue, filterField.getType());
-                Predicate predicate = createPredicate(filter, filterField, root, cb, (Comparable) convertedFilterValue);
+
+                // join if required; e.g. company.name -> join to company and get "name" field from the joined table
+                String fieldName = filter.getField();
+                Join<?, ?> join = null;
+                while (fieldName.contains(".")) {
+                    String currentName = fieldName.substring(0, fieldName.indexOf("."));
+                    fieldName = fieldName.substring(currentName.length() + 1);
+
+                    if (join == null) {
+                        join = root.join(currentName, JoinType.INNER);
+                    }
+                    else {
+                        join = join.join(currentName, JoinType.INNER);
+                    }
+                }
+
+                Expression expression = join == null ? root.get(fieldName) : join.get(fieldName);
+
+                Predicate predicate = createPredicate(filter, filterField, root, cb, expression, (Comparable) convertedFilterValue);
                 predicates.add(predicate);
             }
         }
@@ -173,8 +193,9 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
     }
 
-    protected <F extends Comparable> Predicate createPredicate(FilterMeta filter, Field filterField, Root<T> root, CriteriaBuilder cb, F filterValue) {
-        Expression field = root.get(filter.getField());
+    protected <F extends Comparable> Predicate createPredicate(FilterMeta filter, Field filterField,
+            Root<T> root, CriteriaBuilder cb, Expression field, F filterValue) {
+
         Lazy<Expression<String>> fieldAsString = new Lazy(() -> field.as(String.class));
 
         switch (filter.getMatchMode()) {
