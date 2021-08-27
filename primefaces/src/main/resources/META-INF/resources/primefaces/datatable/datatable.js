@@ -1510,8 +1510,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         clone.find('th').each(function() {
             var header = $(this);
             header.attr('id', header.attr('id') + '_clone');
-            $(this).children().not('.ui-column-title').remove();
-            $(this).children('.ui-column-title').children().remove();
+            header.children().not('.ui-column-title').remove();
+            header.children('.ui-column-title').children().remove();
         });
         clone.removeAttr('id').addClass('ui-datatable-scrollable-theadclone').height(0).prependTo(table);
 
@@ -1519,7 +1519,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Creates and stores a cloned copy of the table head(er) of this DataTable, and sets up some event handers.
+     * Creates and stores a cloned copy of the table head(er) of this DataTable, and sets up some event handlers.
      * @protected
      */
     cloneHead: function() {
