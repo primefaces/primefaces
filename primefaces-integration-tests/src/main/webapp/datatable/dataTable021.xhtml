@@ -36,10 +36,17 @@
                 </p:column>
 
                 <p:column>
-                    <p:commandButton id="remove"
+                    <p:commandButton id="removeV1"
                                      update="form:datatable"
-                                     actionListener="#{dataTable021.remove(lang)}"
-                                     value="remove row">
+                                     actionListener="#{dataTable021.removeV1(lang)}"
+                                     value="remove row V1">
+                    </p:commandButton>
+                </p:column>
+                <p:column>
+                    <p:commandButton id="removeV2"
+                                     update="form:datatable"
+                                     actionListener="#{dataTable021.removeV2(lang)}"
+                                     value="remove row V2">
                     </p:commandButton>
                 </p:column>
 

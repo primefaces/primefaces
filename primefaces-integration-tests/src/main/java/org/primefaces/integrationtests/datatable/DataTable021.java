@@ -62,11 +62,19 @@ public class DataTable021 implements Serializable {
         progLanguages = service.getLangs(); //progLanguages may have been sorted from DataTable
     }
 
-    public void remove(ProgrammingLanguage programmingLanguage) {
+    public void removeV1(ProgrammingLanguage programmingLanguage) {
         this.progLanguages.remove(programmingLanguage);
         if (this.filteredProgLanguages != null) {
             this.filteredProgLanguages.remove(programmingLanguage); // see https://github.com/primefaces/primefaces/issues/7336
         }
+
+//        updateDataTableFilterWorkaround(); // work-around for PF 10.0.0
+    }
+
+    public void removeV2(ProgrammingLanguage programmingLanguage) {
+        this.progLanguages.remove(programmingLanguage);
+        DataTable dataTable = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datatable");
+        dataTable.filterAndSort();
 
 //        updateDataTableFilterWorkaround(); // work-around for PF 10.0.0
     }

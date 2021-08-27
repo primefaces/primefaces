@@ -10,9 +10,10 @@ jobs:
     runs-on: macos-latest
     name: Java ${{ matrix.java }}, Profile ${{ matrix.profile }}
     strategy:
+      fail-fast: false
       matrix:
         java: [8, 11]
-        profile: [ 'headless,firefox,theme-saga,myfaces-2.3.x', 'headless,firefox,csp,theme-saga,myfaces-2.3.x', 'headless,chrome,theme-saga,myfaces-2.3.x', 'headless,chrome,csp,theme-nova,myfaces-2.3.x', 'headless,chrome,csp,theme-nova,mojarra-2.3.x', 'headless,chrome,client-state-saving,theme-nova,mojarra-2.3.x' ]
+        profile: [ 'firefox,theme-saga,myfaces-2.3.x', 'firefox,csp,theme-saga,myfaces-2.3.x', 'chrome,theme-saga,myfaces-2.3.x', 'chrome,csp,theme-nova,myfaces-2.3.x', 'chrome,csp,theme-nova,mojarra-2.3.x', 'chrome,client-state-saving,theme-nova,mojarra-2.3.x' ]
 
     steps:
       - uses: actions/checkout@v2
@@ -32,4 +33,4 @@ jobs:
       - name: Build
         run: mvn clean install --batch-mode --show-version
       - name: Integration Tests
-        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,${{ matrix.profile }}
+        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,headless,${{ matrix.profile }}
