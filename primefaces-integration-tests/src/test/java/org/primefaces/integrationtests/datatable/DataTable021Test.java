@@ -353,7 +353,7 @@ public class DataTable021Test extends AbstractDataTableTest {
         InputText globalFilter;
 
         @FindBy(id = "form:datatable:buttonDeleteRow")
-        InputText buttonDeleteRow;
+        CommandButton buttonDeleteRow;
 
         @FindBy(id = "form:buttonUpdate")
         CommandButton buttonUpdate;
