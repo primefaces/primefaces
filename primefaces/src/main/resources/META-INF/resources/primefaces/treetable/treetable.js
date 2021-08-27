@@ -1458,18 +1458,36 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             }
         });
     },
+    
+    /**
+     * Clones a table header and removes duplicate IDs.
+     * @private
+     * @param {JQuery} thead The head (`THEAD`) of the table to clone.
+     * @param {JQuery} table The table to which the head belongs.
+     * @return {JQuery} The cloned table head.
+     */
+    cloneTableHeader: function(thead, table) {
+        var clone = thead.clone();
+        clone.find('th').each(function() {
+            var header = $(this);
+            header.attr('id', header.attr('id') + '_clone');
+            header.children().not('.ui-column-title').remove();
+            header.children('.ui-column-title').children().remove();
+        });
+        clone.removeAttr('id').addClass('ui-treetable-scrollable-theadclone').height(0).prependTo(table);
+
+        return clone;
+    },
 
     /**
-     * Makes a clone of the table header and adds it to the DOM.
+     * Creates and stores a cloned copy of the table head(er), and sets up some event handlers.
      * @private
      */
     cloneHead: function() {
-        this.theadClone = this.headerTable.children('thead').clone();
-        this.theadClone.find('th').each(function() {
-            var header = $(this);
-            header.attr('id', header.attr('id') + '_clone');
-        });
-        this.theadClone.removeAttr('id').addClass('ui-treetable-scrollable-theadclone').height(0).prependTo(this.bodyTable);
+        if (this.theadClone) {
+            this.theadClone.remove();
+        }
+        this.theadClone = this.cloneTableHeader(this.headerTable.children('thead'), this.bodyTable);
     },
 
     /**
