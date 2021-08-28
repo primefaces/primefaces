@@ -7,8 +7,8 @@ on:
 jobs:
   nightly:
     if: github.repository == 'primefaces/primefaces' && github.ref == 'refs/heads/master'
-    runs-on: macos-latest
-    name: Java ${{ matrix.java }}, Profile ${{ matrix.profile }}
+    runs-on: ubuntu-latest
+    name: Java ${{ matrix.java }}, ${{ matrix.profile }}
     strategy:
       fail-fast: false
       matrix:
