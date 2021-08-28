@@ -133,7 +133,7 @@ xmlns:p="http://primefaces.org/ui"
 
 ### Demo
 ***
-Please refer to the [showcase](https://www.primefaces.org/showcase) in order to see the full usage of the components. Sources of PrimeFaces showcase are available as a separate [project]( https://github.com/primefaces/showcase-facelift).
+Please refer to the [showcase](https://www.primefaces.org/showcase) in order to see the full usage of the components. Sources of PrimeFaces showcase are available within module primefaces-showcase](https://github.com/primefaces/primefaces/tree/master/primefaces-showcase).
 
 ### Documentation
 ***
