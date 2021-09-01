@@ -24,7 +24,10 @@
 package org.primefaces.component.datatable;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -530,8 +533,14 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.SCROLLABLE_BODY_CLASS, null);
         writer.writeAttribute("tabindex", "-1", null);
-        if (LangUtils.isNotBlank(scrollHeight) && scrollHeight.indexOf('%') == -1) {
-            writer.writeAttribute("style", "max-height:" + scrollHeight + "px", null);
+        if (LangUtils.isNotBlank(scrollHeight)) {
+            if (!endsWithLenghtUnit(scrollHeight)) {
+                scrollHeight = scrollHeight + "px";
+            }
+            // % handle specially in the JS code
+            if (scrollHeight.indexOf('%') == -1) {
+                writer.writeAttribute("style", "max-height:" + scrollHeight, null);
+            }
         }
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
