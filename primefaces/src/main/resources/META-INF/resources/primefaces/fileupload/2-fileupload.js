@@ -775,6 +775,12 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
      */
     enableButton: function(btn) {
         btn.prop('disabled', false).attr('aria-disabled', false).removeClass('ui-state-disabled');
-    }
+    },
 
+    /**
+     * Brings up the native file selection dialog.
+     */
+    show: function() {
+        this.chooseButton.children('input').trigger("click");
+    }
 });
