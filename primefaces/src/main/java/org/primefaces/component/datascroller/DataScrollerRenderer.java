@@ -36,6 +36,7 @@ import org.primefaces.PrimeFaces;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FastStringWriter;
 import org.primefaces.util.WidgetBuilder;
 
 public class DataScrollerRenderer extends CoreRenderer {
@@ -175,11 +176,26 @@ public class DataScrollerRenderer extends CoreRenderer {
                 .attr("mode", ds.getMode(), "document")
                 .attr("buffer", ds.getBuffer())
                 .attr("virtualScroll", ds.isVirtualScroll())
-                .attr("startAtBottom", ds.isStartAtBottom());
+                .attr("startAtBottom", ds.isStartAtBottom())
+                .attr("loading", getLoadingHtml(context, ds));
 
         encodeClientBehaviors(context, ds);
 
         wb.finish();
+    }
+
+    protected String getLoadingHtml(FacesContext context, DataScroller ds) throws IOException {
+        UIComponent loadingFacet = ds.getFacet("loading");
+        if (!ComponentUtils.shouldRenderFacet(loadingFacet)) {
+            return null;
+        }
+        ResponseWriter writer = context.getResponseWriter();
+        FastStringWriter stringWriter = new FastStringWriter();
+        ResponseWriter loadingWriter = writer.cloneWithWriter(stringWriter);
+        context.setResponseWriter(loadingWriter);
+        loadingFacet.encodeAll(context);
+        context.setResponseWriter(writer);
+        return stringWriter.toString();
     }
 
     protected void loadChunk(FacesContext context, DataScroller ds, int start, int size) throws IOException {
