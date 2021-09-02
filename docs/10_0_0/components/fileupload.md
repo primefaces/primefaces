@@ -408,3 +408,16 @@ Here are some measures that can be taken into account when using PrimeFaces's `f
         ```
 
    * **Multiple implementations**: If more than one service provider is available in classpath, all of them will be consulted and must give the green light.
+
+## Client Side API
+Widget: _PrimeFaces.widget.SimpleFileUpload_
+
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
+show() | - | void | Shows file chooser dialog.
+
+Widget: _PrimeFaces.widget.FileUpload_
+
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
+show() | - | void | Shows file(s) chooser dialog.

@@ -197,6 +197,18 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
+     * Brings up the native file selection dialog.
+     */
+    show: function() {
+        if (this.cfg.skinSimple) {
+            this.input.trigger("click");
+        }
+        else {
+            this.jq.trigger("click");
+        }
+    },
+
+    /**
      * Uploads all selected files via AJAX.
      * @private
      */
