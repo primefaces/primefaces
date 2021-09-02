@@ -124,9 +124,10 @@ public class TriStateCheckboxRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = createStyleClass(checkbox, null, HTML.CHECKBOX_BOX_CLASS) ;
         styleClass = (valCheck == 1 || valCheck == 2) ? styleClass + " ui-state-active" : styleClass;
+        styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
         styleClass = readonly ? styleClass + " ui-chkbox-readonly" : styleClass;
 
-        //if stateIcon is defined use it insted of default icons.
+        //if stateIcon is defined use it instead of default icons.
         String stateOneIconClass
                 = checkbox.getStateOneIcon() != null ? TriStateCheckbox.UI_ICON + checkbox.getStateOneIcon() : "";
         String stateTwoIconClass
