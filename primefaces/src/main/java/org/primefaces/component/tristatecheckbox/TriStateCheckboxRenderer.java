@@ -72,6 +72,7 @@ public class TriStateCheckboxRenderer extends InputRenderer {
         }
 
         boolean disabled = checkbox.isDisabled();
+        boolean readonly = checkbox.isReadonly();
 
         String style = checkbox.getStyle();
         String styleClass = checkbox.getStyleClass();
@@ -85,8 +86,8 @@ public class TriStateCheckboxRenderer extends InputRenderer {
         }
 
         encodeInput(context, checkbox, clientId, valCheck);
-        encodeOutput(context, checkbox, valCheck, disabled);
-        encodeItemLabel(context, checkbox, disabled);
+        encodeOutput(context, checkbox, valCheck, disabled, readonly);
+        encodeItemLabel(context, checkbox, disabled, readonly);
 
         writer.endElement("div");
     }
@@ -119,11 +120,11 @@ public class TriStateCheckboxRenderer extends InputRenderer {
     }
 
     protected void encodeOutput(final FacesContext context, final TriStateCheckbox checkbox, final int valCheck,
-                                final boolean disabled) throws IOException {
+                                final boolean disabled, boolean readonly) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = createStyleClass(checkbox, null, HTML.CHECKBOX_BOX_CLASS) ;
         styleClass = (valCheck == 1 || valCheck == 2) ? styleClass + " ui-state-active" : styleClass;
-        styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
+        styleClass = readonly ? styleClass + " ui-chkbox-readonly" : styleClass;
 
         //if stateIcon is defined use it insted of default icons.
         String stateOneIconClass
@@ -177,7 +178,7 @@ public class TriStateCheckboxRenderer extends InputRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeItemLabel(final FacesContext context, final TriStateCheckbox checkbox, final boolean disabled) throws IOException {
+    protected void encodeItemLabel(final FacesContext context, final TriStateCheckbox checkbox, final boolean disabled, boolean readonly) throws IOException {
         String label = checkbox.getItemLabel();
 
         if (label != null) {
@@ -186,6 +187,7 @@ public class TriStateCheckboxRenderer extends InputRenderer {
             writer.startElement("span", null);
             String styleClass = HTML.CHECKBOX_LABEL_CLASS;
             styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
+            styleClass = readonly ? styleClass + " ui-chkbox-readonly" : styleClass;
             writer.writeAttribute("class", styleClass, null);
 
             if (checkbox.isEscape()) {
