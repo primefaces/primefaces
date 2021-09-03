@@ -459,3 +459,23 @@ Widget: _PrimeFaces.widget.FileUpload_
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |
 show() | - | void | Shows file(s) chooser dialog.
+
+### `show` and user activation
+
+Note that `show()` can only be triggered from a user event in some browsers. For example, in Firefox the following
+code will **not** work due to a lack of user activation:
+
+```xhtml
+<p:fileUpload widgetVar="upload"/>
+<script>$(function(){PF('upload').show()})</script>
+```
+
+The following code **will** work in Firefox, because it is triggered from a click event triggered by the user:
+
+```xhtml
+<p:fileUpload widgetVar="upload"/>
+<p:button value="Choose"
+          onclick="PF('upload').show();return false"/>
+```
+
+Which browsers require user activation may change over time.
