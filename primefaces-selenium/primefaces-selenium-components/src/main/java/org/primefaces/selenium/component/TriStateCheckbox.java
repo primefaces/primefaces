@@ -23,6 +23,7 @@
  */
 package org.primefaces.selenium.component;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
@@ -40,6 +41,10 @@ public abstract class TriStateCheckbox extends AbstractInputComponent {
     @Override
     public WebElement getInput() {
         return input;
+    }
+
+    public WebElement getBox() {
+        return findElement(By.className("ui-chkbox-box"));
     }
 
     @Override
