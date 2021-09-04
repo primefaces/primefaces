@@ -7,6 +7,7 @@ This page contains a list of big features. Please check the GitHub issues for al
   * AutoComplete: added `footer` facet which will be added to the suggestion list.
   * Avatar: added `saturation`, `lightness`, `alpha` to control dynamic colors.
   * Badge: added `visible` attribute to hide the badge but render the children.
+  * DataScroller: added `loading` facet to show UI while loading is in progress.
   * Carousel: completely overhauled by PrimeTek to be in line with PrimeReact/Vue/NG carousel.
   * DataTable: new built-in `JpaLazyDataModel`, which provides basic functionality for JPA users and lazy loading
   * Hotkey: added `bindMac` to use alternative binding on macOS.
@@ -14,7 +15,7 @@ This page contains a list of big features. Please check the GitHub issues for al
   * InputText, InputTextarea: counter can count bytes instead of characters.
   * MenuButton: added `buttonStyle` and `buttonStyleClass` attributes.
   * OutputPanel
-    * Added `loading` facet to show while deferred loading is in progress.
+    * Added `loading` facet to show UI while deferred loading is in progress.
     * Added `loaded` attribute to indicate that deferred loading is not needed, making deferred possible in Ajax requests.
   * Spinner
     * Added buttons modes: `horizontal`, `horizontal-after` and `vertical`.

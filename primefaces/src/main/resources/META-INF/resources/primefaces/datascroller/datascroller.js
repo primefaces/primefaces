@@ -1,16 +1,16 @@
 /**
  * __PrimeFaces DataScroller Widget__
- * 
+ *
  * DataScroller displays a collection of data with on demand loading using scrolling.
- * 
+ *
  * @typedef {"document" | "inline"} PrimeFaces.widget.DataScroller.Mode Target to listen to for the scroll event.
  * `document` registers a delegated listener on the document element, `inline` registers it on an element of the data
  * scroller.
- * 
+ *
  * @typedef {"scroll" | "manual"} PrimeFaces.widget.DataScroller.LoadEvent Defines when more items are loaded by the
  * data scroller. `scroll` loads more items as the user scrolls down the page, `manual` loads more items only when the
- * user click the `more` button. 
- * 
+ * user click the `more` button.
+ *
  * @prop {boolean} allLoaded `true` if all items were loaded and there are no more items to be loaded, or `false`
  * otherwise.
  * @prop {JQuery} content DOM element of the container for the content with the data scroller.
@@ -19,12 +19,12 @@
  * @prop {JQuery} loaderContainer DOM element of the container with the `more` button for loading more items.
  * @prop {JQuery} loadStatus DOM element of the status text or icon shown while loading.
  * @prop {JQuery} loadTrigger DOM element of the `more` button for loading more item manually.
- * 
+ *
  * @interface {PrimeFaces.widget.DataScrollerCfg} cfg The configuration for the {@link  DataScroller| DataScroller widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
- * 
+ *
  * @prop {number} cfg.buffer Percentage height of the buffer between the bottom of the page and the scroll position to
  * initiate the load for the new chunk. For example, a value of `10` means that loading happens after the user has
  * scrolled down to at least `90%` of the viewport height.
@@ -49,7 +49,7 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
         this.content = this.jq.children('div.ui-datascroller-content');
         this.list = this.cfg.virtualScroll ? this.content.children('div').children('ul') : this.content.children('ul');
         this.loaderContainer = this.content.children('div.ui-datascroller-loader');
-        this.loadStatus = $('<div class="ui-datascroller-loading"></div>');
+        this.loadStatus = $(this.cfg.loading || '<div class="ui-datascroller-loading"></div>');
         this.loading = false;
         this.allLoaded = false;
         this.cfg.offset = 0;
@@ -105,22 +105,22 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
                     this.content.scrollTop(this.content[0].scrollHeight);
                 }
             }
-            else if (this.cfg.startAtBottom) {                
+            else if (this.cfg.startAtBottom) {
                 this.content.scrollTop(this.content[0].scrollHeight);
                 this.cfg.offset = this.cfg.totalSize > this.cfg.chunkSize ? this.cfg.totalSize - this.cfg.chunkSize : this.cfg.totalSize;
-                
+
                 var paddingTop = '0';
                 if (this.content.height() > this.list.height()) {
                     paddingTop = (this.getInnerContentHeight() - this.list.outerHeight() - this.loaderContainer.outerHeight());
                 }
-                
+
                 this.list.css('padding-top', paddingTop + 'px');
             }
-            
+
             this.content.on('scroll', function () {
-                if($this.cfg.virtualScroll) {                    
+                if($this.cfg.virtualScroll) {
                     var virtualScrollContent = this;
-                    
+
                     clearTimeout($this.scrollTimeout);
                     $this.scrollTimeout = setTimeout(function() {
                         var viewportHeight = $this.content.outerHeight(),
@@ -137,7 +137,7 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
                         }
                     }, 200);
                 }
-                else {                    
+                else {
                     var scrollTop = this.scrollTop,
                     scrollHeight = this.scrollHeight,
                     viewportHeight = this.clientHeight,
@@ -157,7 +157,7 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
      * Loads more items and inserts them into the DOM so that the user can see them.
      * @private
      * @param {number} page The page of the items to load. The items are grouped into pages, each page containts
-     * `chunkSize` items. 
+     * `chunkSize` items.
      * @param {() => void} callback Callback that is invoked when the new items have been loaded and inserted into the
      * DOM.
      */
@@ -199,11 +199,11 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
 
         PrimeFaces.ajax.Request.handle(options);
     },
-    
+
     /**
      * Inserts newly loaded items into the DOM.
      * @private
-     * @param {string} data New HTML content of the items to insert. 
+     * @param {string} data New HTML content of the items to insert.
      * @param {boolean} [clear] `true` to clear all currently existing items, or `false` otherwise.
      * @param {boolean} [pre] `true` to prepend the items, or `false` or `undefined` to append the items to the list of
      * items.
@@ -218,7 +218,7 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
         else
             this.list.append(data);
     },
-    
+
     /**
      * Sets up the event listeners for the click on the `more` button.
      * @private
@@ -294,7 +294,7 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
     shouldLoad: function() {
         return (!this.loading && !this.allLoaded);
     },
-            
+
     /**
      * Finds the height of the content, excluding the padding.
      * @private
@@ -303,5 +303,5 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
     getInnerContentHeight: function() {
         return (this.content.innerHeight() - parseFloat(this.content.css('padding-top')) - parseFloat(this.content.css('padding-bottom')));
     }
-    
+
 });
