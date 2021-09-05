@@ -116,7 +116,7 @@ if (window.PrimeFaces) {
         EMAIL_ADDRESS_REGEX: /^([!#-'*+\/-9=?A-Z^-~-]+(\.[!#-'*+\/-9=?A-Z^-~-]+)*|"([]!#-[^-~ \t]|(\\[\t -~]))+")@([!#-'*+\/-9=?A-Z^-~-]+(\.[!#-'*+\/-9=?A-Z^-~-]+)*|\[[\t -Z^-~]*\])$/,
 
         validate: function(element, value) {
-            if(value !== null && !EMAIL_ADDRESS_REGEX.test(value)) {
+            if(value !== null && !this.EMAIL_ADDRESS_REGEX.test(value)) {
                 var vc = PrimeFaces.validation.ValidationContext;
                 return vc.getMessageBV(element, this.MESSAGE_ID, element.data('p-email-msg'));
             }
