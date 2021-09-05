@@ -332,7 +332,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      */
     previousNode: function(node) {
         var prevNode = node.prev();
-        if (prevNode.length && prevNode.hasClass("ui-tree-droppoint")) {
+        if (prevNode.length && (prevNode.hasClass("ui-tree-droppoint") || prevNode.hasClass("ui-treenode-hidden"))) {
             prevNode = prevNode.prev();
         }
         return prevNode;
@@ -346,7 +346,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      */
     nextNode: function(node) {
         var nextNode = node.next();
-        if (nextNode.length && nextNode.hasClass("ui-tree-droppoint")) {
+        if (nextNode.length && (nextNode.hasClass("ui-tree-droppoint") || nextNode.hasClass("ui-treenode-hidden"))) {
             nextNode = nextNode.next();
         }
         return nextNode;
@@ -528,16 +528,29 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         checkbox = node.find('> .ui-treenode-content > .ui-chkbox'),
         checked = checkbox.find('> .ui-chkbox-box > .ui-chkbox-icon').hasClass('ui-icon-check');
 
-        this.toggleCheckboxState(checkbox, checked);
-
         if(this.cfg.propagateDown) {
-            node.children('.ui-treenode-children').find('.ui-chkbox').each(function() {
+            node.children('.ui-treenode-children').find('.ui-treenode:visible').find('.ui-chkbox').each(function() {
                 $this.toggleCheckboxState($(this), checked);
             });
+            children = node.find('> .ui-treenode-children > .ui-treenode');
+            if(checked) {
+                if(children.filter('.ui-treenode-unselected').length === children.length)
+                    $this.uncheck(checkbox);
+                else
+                    $this.partialCheck(checkbox);
+            }
+            else {
+                if(children.filter('.ui-treenode-selected').length === children.length)
+                    $this.check(checkbox);
+                else
+                    $this.partialCheck(checkbox);
+            }
 
             if(this.cfg.dynamic) {
                 this.removeDescendantsFromSelection(node.data('rowkey'));
             }
+        } else {
+            this.toggleCheckboxState(checkbox, checked);
         }
 
         if(this.cfg.propagateUp) {
