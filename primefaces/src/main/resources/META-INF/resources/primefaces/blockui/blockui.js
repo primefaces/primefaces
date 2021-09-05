@@ -69,7 +69,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             if(!settings || !settings.source) {
                 return;
             }
-            var sourceId = $.type(settings.source) === 'string' ? settings.source : settings.source.name;
+            var sourceId = typeof settings.source === 'string' ? settings.source : settings.source.name;
             // we must evaluate it each time as the DOM might has been changed
             var triggers = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents($this.cfg.triggers);
             
@@ -82,7 +82,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             if(!settings || !settings.source) {
                 return;
             }
-            var sourceId = $.type(settings.source) === 'string' ? settings.source : settings.source.name;
+            var sourceId = typeof settings.source === 'string' ? settings.source : settings.source.name;
             // we must evaluate it each time as the DOM might has been changed
             var triggers = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents($this.cfg.triggers);
             
