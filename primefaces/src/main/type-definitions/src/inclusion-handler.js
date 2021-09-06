@@ -1,7 +1,6 @@
 //@ts-check
 
-const { Tags } = require("./constants");
-const { hasTag, hasTagSet } = require("./doc-comments");
+const { hasTagSet } = require("./doc-comments");
 
 /**
  * @param {import("comment-parser").Comment} jsdoc Associated doc comment for the property or method
@@ -10,9 +9,8 @@ const { hasTag, hasTagSet } = require("./doc-comments");
  * @return {boolean} Whether the property should be excluded in the type declaration file.
  */
 function excludeSymbol(jsdoc, name, exclusionTagsSet) {
-    const hasPrivate = hasTagSet(jsdoc, exclusionTagsSet);
-    const hasInclude = hasTag(jsdoc, Tags.Include);
-    if (hasPrivate || (name.startsWith("_") && !hasInclude)) {
+    const hasExclude = hasTagSet(jsdoc, exclusionTagsSet);
+    if (hasExclude) {
         return true;
     }
     return false;

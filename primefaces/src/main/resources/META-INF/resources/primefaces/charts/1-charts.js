@@ -236,10 +236,13 @@ PrimeFaces.widget.ChartUtils = {
  * 
  * The chart component is a generic graph component to create various types of charts using jqplot library.
  * 
+ * @deprecated . This widget will be removed soon, use one of the {@link BaseChart} implementations.
+ *
  * @typedef {"pie" | "line" | "bar" | "donut" | "bubble" | "ohlc" | "metergauge"} PrimeFaces.widget.Chart.Type The
  * chart component supports several different types, this is a list of available diagram types.
  * 
- * @prop {any} plot The jqplot instance of this chart.
+ * @prop {string} jqpid The client ID of this widget, escaped as a CSS literal.
+ * @prop {unknown} plot The jqplot instance of this chart.
  * 
  * @interface {PrimeFaces.widget.ChartCfg} cfg The configuration for the {@link  Chart| Chart widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this

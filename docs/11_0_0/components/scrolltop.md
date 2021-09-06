@@ -2,7 +2,7 @@
 
 ScrollTop gets displayed after a certain scroll position and used to navigates to the top of the page quickly.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.scrolltop.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.ScrollTop.html)
 
 ## Info
 

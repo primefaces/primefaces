@@ -12,10 +12,26 @@
  * - `local`: Use the browser's local storage which keeps data between sessions.
  * - `session`: Use the browser's session storage which is cleared when the session ends.
  *
- * @prop {JQuery} panels DOM elements of the splitter panels in splitter.
+ * @prop {boolean} [dragging] Whether the splitter is currently being dragged, i.e. whether an element is
+ * being resized.
  * @prop {JQuery} gutters DOM elements of the gutter elements in splitter.
+ * @prop {JQuery | null} [gutterElement] When resizing, the DOM elements of the gutter used for resizing .
  * @prop {boolean} horizontal Whether splitter element is horizontal or vertical.
+ * @prop {JQuery | null} [nextPanelElement] When resizing, the DOM element of the panel after the panel being
+ * resized.  
+ * @prop {number  | null} [nextPanelSize] When resizing, the width or height (depending on the resize
+ * direction) of the panel after the panel being resized.  
  * @prop {number[]} panelSizes Array of the panels size for save and restore state.
+ * @prop {JQuery} panels DOM elements of the splitter panels in splitter.
+ * @prop {JQuery | null} [prevPanelElement] When resizing, the DOM element of the panel before the panel being
+ * resized.  
+ * @prop {number | null} [prevPanelSize] When resizing, the width or height (depending on the resize
+ * direction) of the panel before the panel being resized.  
+ * @prop {number | null} [prevPanelIndex] When resizing, the index of the panel before the panel being
+ * resized.  
+ * @prop {number | null} [size] Initial width or height of the splitter (depending on the resize direction)
+ * when resizing started.
+ * @prop {number | null} [startPos] Start position in pixels when resizing.
  *
  * @interface {PrimeFaces.widget.SplitterCfg} cfg The configuration for the {@link  Splitter| Splitter widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this

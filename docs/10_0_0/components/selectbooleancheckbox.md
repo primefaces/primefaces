@@ -2,7 +2,7 @@
 
 SelectBooleanCheckbox is an extended version of the standard checkbox with theme integration.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.selectbooleancheckbox.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.SelectBooleanCheckbox.html)
 
 ## Info
 

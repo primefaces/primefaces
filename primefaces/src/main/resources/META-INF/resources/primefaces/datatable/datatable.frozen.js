@@ -5,22 +5,22 @@
  * @prop {JQuery} frozenBodyTable The DOM element for the frozen body TABLE.
  * @prop {JQuery} frozenContainer The DOM element for the container of the frozen table.
  * @prop {JQuery} frozenFooter The DOM element for the frozen footer.
+ * @prop {undefined} frozenColgroup Always `undefined` and not used.
  * @prop {JQuery} frozenFooterCols The DOM elements for the frozen columns of the footer.
  * @prop {JQuery} frozenFooterTable The DOM element for the frozen data table footer TABLE.
  * @prop {JQuery} frozenGroupResizers The DOM element for the frozen group resizers of the footer.
  * @prop {JQuery} frozenHeader The DOM element for the frozen header.
  * @prop {JQuery} frozenLayout The DOM element for the frozen layout container.
  * @prop {JQuery} frozenTbody The DOM element for the header TBODY.
- * @prop {JQuery} frozenThead The DOM element for the header THEAD.
  * @prop {JQuery} frozenTheadClone The DOM element for the clone of the frozen THEAD.
  * @prop {JQuery} scrollBodyTable The DOM element for the TABLE of the scrollable body.
  * @prop {JQuery} scrollContainer The DOM element for the container of the scrollable body.
+ * @prop {undefined} scrollColgroup Always `undefined` and not used.
  * @prop {JQuery} scrollFooterCols The DOM element for the scrollable columns of the footer.
  * @prop {JQuery} scrollFooterTable The DOM element for the TABLE of the scrollable footer.
  * @prop {JQuery} scrollGroupResizers The DOM element for the group resizers of the scrollable body.
  * @prop {JQuery} scrollHeaderTable The DOM element for the TABLE of the scrollable header.
  * @prop {JQuery} scrollLayout The DOM element for the scrollable layout container.
- * @prop {JQuery} scrollTbody The DOM element for the scrollable TBODY.
  * @prop {JQuery} scrollThead The DOM element for the scrollable THEAD.
  * @prop {JQuery} scrollTheadClone The DOM element for the clone of the scrollable THEAD.
  *

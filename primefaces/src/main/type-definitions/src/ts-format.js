@@ -28,15 +28,15 @@ function createLanguageHost() {
             return Object.keys(files);
         },
 
-        getScriptVersion (_fileName){
+        getScriptVersion(_fileName) {
             return "0";
         },
 
         getScriptSnapshot(fileName) {
             return files[fileName];
         },
-        
-        getCurrentDirectory(){
+
+        getCurrentDirectory() {
             return process.cwd();
         },
 

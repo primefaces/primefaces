@@ -4,11 +4,13 @@
  * InputTextarea is an extension to standard inputTextarea with autoComplete, autoResize, remaining characters counter
  * and theming features.
  *
- * @prop {JQuery} counter The DOM element for the counter that informs the user about the number of characters they can
- * still enter before they reach the limit.
- * @prop {JQuery} panel The DOM element for the overlay panel with the autocomplete suggestions.
- * @prop {JQuery} items The DOM elements in the autocomplete panel that the user can select.
- * @prop {number} timeout The internal timeout ID of the most recent timeout that was started.
+ * @prop {JQuery | null} [counter] The DOM element for the counter that informs the user about the number of
+ * characters they can still enter before they reach the limit.
+ * @prop {JQuery} [panel] The DOM element for the overlay panel with the autocomplete suggestions, when
+ * autocomplete is enabled.
+ * @prop {JQuery} [items] The DOM elements in the autocomplete panel that the user can select.
+ * @prop {string} [query] The keyword or search term the autocomplete method receives as input.
+ * @prop {number | null} [timeout] The internal timeout ID of the most recent timeout that was started.
  *
  * @interface {PrimeFaces.widget.InputTextareaCfg} cfg The configuration for the {@link  InputTextarea| InputTextarea widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this

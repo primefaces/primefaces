@@ -16,6 +16,10 @@
  * 
  * @prop {JQuery} allItems All available items, including disabled options. These are not form elements, but the DOM
  * elements presented to the user.
+ * @prop {boolean} [disabled] `true` if this many select element is disabled, `false` if enabled, `undefined`
+ * if the state is not known.
+ * @prop {JQuery} [filterInput] DOM element of the input element used for entering a filter text, if filtering
+ * is enabled.
  * @prop {PrimeFaces.widget.SelectListbox.FilterFunction} filterMatcher The filter that was selected and is currently
  * used.
  * @prop {Record<PrimeFaces.widget.SelectListbox.FilterMatchMode, PrimeFaces.widget.SelectListbox.FilterFunction>} filterMatchers

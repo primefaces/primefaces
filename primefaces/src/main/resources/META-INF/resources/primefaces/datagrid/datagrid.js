@@ -94,7 +94,7 @@ PrimeFaces.widget.DataGrid = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Retrieves the paginator widget used by this data grid for pagination. You can use this widget to switch to a
-     * different page programatically.
+     * different page programmatically.
      * @return {PrimeFaces.widget.Paginator | undefined} The paginator widget, or `undefined` when pagination is not
      * enabled.
      */

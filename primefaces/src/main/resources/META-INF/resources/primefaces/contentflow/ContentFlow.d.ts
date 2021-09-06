@@ -237,16 +237,16 @@ declare namespace ContentFlowGlobal {
     /**
      * A callback function that is invoked when a keydown event is triggered within the content flow gallery.
      */
-    export type KeydownHandler = (this: ContentFlowGlobal.ContentFlow) => void; 
+    export type KeydownHandler = (this: ContentFlowGlobal.ContentFlow) => void;
 
     /**
      * A generic event handler that is invoked when an event occured.
      */
     export type EventHandler =
-    /**
-     * @param event The event that was triggered.
-     */
-    (event: Event) => void;
+        /**
+         * @param event The event that was triggered.
+         */
+        (event: Event) => void;
 
     /**
      * Describes a recangular size with a width and height.
@@ -442,14 +442,14 @@ declare namespace ContentFlowGlobal {
          * Called if the `pre` button item is clicked.
          * @param item The event that triggered the action.
          */
-        onclickPreButton(this: ContentFlowGlobal.ContentFlow, event: Event) : void;
+        onclickPreButton(this: ContentFlowGlobal.ContentFlow, event: Event): void;
         /**
          * Called if the `next` button item is clicked.
          * @param item The event that triggered the action.
          */
         onclickNextButton(this: ContentFlowGlobal.ContentFlow, event: Event): void;
         /**
-         * Called when ever an item is redrawn. Use with caution, because this method is easily called many thousend
+         * Called when ever an item is redrawn. Use with caution, because this method is easily called many thousand
          * times.
          * @param item An item to process.
          */
@@ -501,6 +501,10 @@ declare namespace ContentFlowGlobal {
         calcOpacity(this: ContentFlowGlobal.ContentFlow, item: ContentFlowItem): number;
     }
 
+    /**
+     * Properties that can be provided by plugins and methods that can be implemented by plugins to provide additional
+     * features to content flow instances.
+     */
     export interface AddOnMethods<TCfg = Record<string, unknown>> {
         /**
          * Defaults for the configuration of the add-on.
@@ -516,6 +520,11 @@ declare namespace ContentFlowGlobal {
          * @param flow The content flow gallery for which this add-on was created.
          */
         afterContentFlowInit(flow: ContentFlowGlobal.ContentFlow): void;
+        /**
+         * Initializes the content flow add-on.
+         * @param this The add-on to be initialized.
+         * @param addOn The add-on to be initialized.
+         */
         init(this: ContentFlowAddOn, addOn: ContentFlowAddOn): void;
         /**
          * This method will be executed for each ContentFlow on the page after the HTML document is loaded (when the whole
@@ -635,14 +644,14 @@ declare namespace ContentFlowGlobal {
      * @param addOnName Name of an add-on.
      * @return The configuration of the given add-on.
      */
-    export function getAddOnConf(addOnName: string): any;
+    export function getAddOnConf(addOnName: string): unknown;
 
     /**
      * Sets the configuration of an add-on to a given value.
      * @param addOnName Name of an add-on.
      * @param addOnConf New configuration to set.
      */
-    export function setAddOnConf(addOnName: string, addOnConf: any): void;
+    export function setAddOnConf(addOnName: string, addOnConf: unknown): void;
 
     /**
      * Loads and executes the given JavaScript file.
@@ -760,7 +769,7 @@ declare class ContentFlow implements ContentFlowGlobal.ContentFlow {
  * class and pass its implementation as the `methods` argument to the constructor. It will be registered automatically.
  * @typeparam TCfg Type of the configuration for the add-on.
  */
-declare class ContentFlowAddOn<TCfg = any> {
+declare class ContentFlowAddOn<TCfg = unknown> {
     /**
      * Current configuration of this add-on.
      */
@@ -777,9 +786,27 @@ declare class ContentFlowAddOn<TCfg = any> {
      * @param register Whether to register as an add-on to the content flow library automatically.
      */
     constructor(name: string, methods?: Partial<ContentFlowGlobal.AddOnMethods>, register?: boolean);
+    /**
+     * Loads and executes the given JavaScript file.
+     * @param path URL to a JavaScript file.
+     */
     addScript: typeof ContentFlowGlobal.addScript;
+    /**
+     * Loads and executes the given JavaScript files.
+     * @param basePath Base URL to use
+     * @param fileNames List of JavaScript files, relative to the given `basePath`.
+     */
     addScripts: typeof ContentFlowGlobal.addScripts;
+    /**
+     * Loads and applies the given CSS file.
+     * @param path URL to a CSS file.
+     */
     addStylesheet: typeof ContentFlowGlobal.addStylesheet;
+    /**
+     * Loads and applies the given CSS files.
+     * @param basePath Base URL to use
+     * @param fileNames List of CSS files, relative to the given `basePath`.
+     */
     addStylesheets: typeof ContentFlowGlobal.addStylesheets;
     /**
      * Sets the configuration of this add-on to the given confugration.
@@ -826,6 +853,9 @@ declare class ContentFlowGUIElement extends HTMLElement {
     makeDraggable(onDrag: ContentFlowGlobal.EventHandler, beforeDrag: ContentFlowGlobal.EventHandler, afterDrag: ContentFlowGlobal.EventHandler): void;
 }
 
+/**
+ * Represents an element of the configured content flow.
+ */
 declare class ContentFlowItem {
     /**
      * Creates a new content flow item.

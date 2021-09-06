@@ -29,10 +29,14 @@
 
  * @implements {PrimeFaces.widget.ContextMenu.ContextMenuProvider<PrimeFaces.widget.TreeTable>}
  *
+ * @prop {string} [ascMessage] Localized message for sorting items in ascending order. 
+ * @prop {string} [descMessage] Localized message for sorting items in descending order. 
  * @prop {JQuery} bodyTable The DOM element for the main TABLE element.
  * @prop {JQuery} clone The DOM element for the  clone of the table head.
  * @prop {boolean} columnWidthsFixed Whether the width of all columns needs to stay fixed.
  * @prop {boolean} contextMenuClick Whether a click was performed on the context menu.
+ * @prop {JQuery} [contextMenuCell] DOM element of the table cell for which the context menu was opened, set
+ * by the data table.
  * @prop {JQuery} currentCell The DOM element for the currently selected cell, when using inline editing.
  * @prop {JQuery} cursorNode The DOM element for the row at the cursor position, used for selecting multiple rows when
  * holding the shift key.
@@ -44,11 +48,13 @@
  * @prop {boolean} incellClick Whether a click was performed inside a cell.
  * @prop {JQuery} jqSelection The DOM element for the hidden input storing the selected rows.
  * @prop {string} marginRight CSS unit for the right margin of this tree table, determined from the scrollbar width.
+ * @prop {string} [otherMessage] Localized message for displaying the rows unsorted. 
  * @prop {PrimeFaces.widget.Paginator} paginator The paginator widget instance used for filtering.
  * @prop {boolean} percentageScrollHeight Whether the scroll height was specified in percent.
  * @prop {boolean} percentageScrollWidth Whether the scroll width was specified in percent.
  * @prop {number} relativeHeight The height of the visible scroll area relative to the total height of this tree table.
- * @prop {JQuery} resizableStateHolder INPUT element storing the current widths for each resizable column.
+ * @prop {string[]} [resizableState] Array storing the current widths for each resizable column.
+ * @prop {JQuery} [resizableStateHolder] INPUT element storing the current widths for each resizable column.
  * @prop {JQuery} resizerHelper The DOM element for the draggable handle for resizing columns.
  * @prop {JQuery} scrollBody The DOM element for the scrollable DIV with the body table.
  * @prop {JQuery} scrollFooter The DOM element for the scrollable DIV with the footer table.

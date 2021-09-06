@@ -2,7 +2,7 @@
 
 Dashboard provides a portal like layout with drag&drop based reorder capabilities.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.dashboard.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Dashboard.html)
 
 ## Info
 

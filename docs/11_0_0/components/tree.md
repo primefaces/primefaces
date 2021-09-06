@@ -2,7 +2,7 @@
 
 Tree is used for displaying hierarchical data and creating site navigations.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.basetree-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.BaseTree-1.html)
 
 ## Info
 

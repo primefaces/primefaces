@@ -2,29 +2,34 @@
  * __PrimeFaces Carousel Widget__
  * Carousel is a content slider featuring various customization options.
  *
+ * @prop {boolean} allowAutoplay Whether autoplay is allowed or not.
+ * @prop {HTMLStyleElement} carouselStyle Style element with the custom CSS for the carousel. 
+ * @prop {boolean} circular Whether the viewport is circular or not.
  * @prop {JQuery} content The DOM element for the content of the carousel that shows the carousel.
  * @prop {JQuery} container The DOM element for the container of the carousel that contains items container and buttons.
- * @prop {JQuery} itemsContent The DOM element for the item container of the carousel.
+ * @prop {((event: UIEvent) => void) | undefined} documentResizeListener Callback used to listen to resize events and
+ * adjust the carousel accordingly.
+ * @prop {JQuery} [indicators] DOM elements of the `LI` indicator of the carousel.
  * @prop {JQuery} indicatorsContainer The DOM element for the indicators container of the carousel.
- * @prop {JQuery} itemsContainer The DOM element for the item container of the carousel.
- * @prop {JQuery} items The DOM elements for the carousel items.
- * @prop {number} itemsCount The number of simultaneously visible items.
- * @prop {JQuery} prevNav The DOM element for the button to switch to the next carousel item.
- * @prop {JQuery} nextNav The DOM element for the button to switch to the previous carousel item.
- * @prop {number} remainingItems How many items remaining for the show.
+ * @prop {number} [interval] Timeout ID of the timer used for autoplay.
+ * @prop {boolean} isAutoplay Whether autoplay is allowed or not.
+ * @prop {boolean} isCircular Whether the circular mode is on or not.
  * @prop {boolean} isRemainingItemsAdded Whether the remaining items have been added or not.
- * @prop {number} numVisible Instant number of items visible on the carousel viewport.
+ * @prop {boolean} isVertical Whether the viewport is vertical or not.
+ * @prop {JQuery} items The DOM elements for the carousel items.
+ * @prop {JQuery} itemsContainer The DOM element for the item container of the carousel.
+ * @prop {JQuery} itemsContent The DOM element for the item container of the carousel.
+ * @prop {number} itemsCount The number of simultaneously visible items.
+ * @prop {JQuery} nextNav The DOM element for the button to switch to the previous carousel item.
  * @prop {number} numScroll Instant number of how many items will scroll when scrolled.
+ * @prop {number} numVisible Instant number of items visible on the carousel viewport.
  * @prop {number} oldNumScroll Old number of items visible on the carousel viewport.
  * @prop {number} oldNumVisible Old number of how many items will scroll when scrolled.
  * @prop {number} page The currently displayed page of carousel items.
- * @prop {number} totalShiftedItems The number of how many items shifted.
- * @prop {boolean} allowAutoplay Whether autoplay is allowed or not.
- * @prop {boolean} circular Whether the viewport is circular or not.
+ * @prop {JQuery} prevNav The DOM element for the button to switch to the next carousel item.
+ * @prop {number} remainingItems How many items remaining for the show.
  * @prop {number} totalIndicators The number of indicators currently in the viewport.
- * @prop {boolean} isCircular Whether the circular mode is on or not.
- * @prop {boolean} isVertical Whether the viewport is vertical or not.
- * @prop {boolean} isAutoplay Whether autoplay is allowed or not.
+ * @prop {number} totalShiftedItems The number of how many items shifted.
  *
  * @interface {PrimeFaces.widget.CarouselCfg} cfg The configuration for the {@link  Carousel| Carousel widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this

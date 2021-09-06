@@ -1069,6 +1069,8 @@ else {
  * @this {PrimeFaces.widget.PhotoCam} PrimeFaces.widget.PhotoCam.onCameraError
  * @param {Error} PrimeFaces.widget.PhotoCam.onCameraError.errorObj The error object containing the error information.
  * 
+ * @prop {string} device The ID of device to retrieve images.
+ * 
  * @interface {PrimeFaces.widget.PhotoCamCfg} cfg The configuration for the {@link  PhotoCam| PhotoCam widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
@@ -1076,6 +1078,7 @@ else {
  * 
  * @prop {boolean} cfg.autoStart Whether access to the camera should be requested automatically upon page load.
  * @prop {Webcam.ImageFormat} cfg.format Format of the image file.
+ * @prop {string} cfg.device The ID of device to retrieve images
  * @prop {number} cfg.height Height of the camera viewport in pixels.
  * @prop {number} cfg.jpegQuality Quality of the image between `0` and `100` when the format is `jpeg`, default value is `90`.
  * @prop {number} cfg.photoHeight Height of the captured photo in pixels, defaults to height.
@@ -1083,7 +1086,6 @@ else {
  * @prop {string} cfg.process Identifiers of components to process during capture.
  * @prop {string} cfg.update Identifiers of components to update during capture.
  * @prop {number} cfg.width Width of the camera viewport in pixels.
- * @prop {string} cfg.device The id of device to retrieve images
  * @prop {PrimeFaces.widget.PhotoCam.onCameraError} cfg.onCameraError Custom Webcam.js error handler
  */
 PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
@@ -1209,8 +1211,9 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
-     *  Retrieves the available video input device list 
-     *  @return {Promise<InputDeviceInfo[]> | null} Returns a promise to resolve the enumeration or `null` if the browser doesn't support media devices enumeration.
+     * Retrieves the available video input device list.
+     * @return {Promise<MediaDeviceInfo[]> | null} The available video input device list, or `null` if the browser does
+	 * not support media devices enumeration.
      */
     getAvailableDevices: function() {
         var result = null;

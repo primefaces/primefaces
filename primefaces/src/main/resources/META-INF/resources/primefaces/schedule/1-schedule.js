@@ -8,9 +8,14 @@
  * configuration stored in `this.cfg`. See also {@link ScheduleCfg.extender}.
  * @this {PrimeFaces.widget.Schedule} PrimeFaces.widget.Schedule.ScheduleExtender 
  * 
- * @prop {import("@fullcalendar/core").Calendar} calendar The current full calendar instance.
- * @prop {JQuery} tip The DOM element for the tooltip.
- * @prop {number} tipTimeout The set-time   out timer ID for displaying a delayed tooltip.
+ * @prop {import("@fullcalendar/core").Calendar} [calendar] The current full calendar instance. May be `undefined` when
+ * the widget exists, but was not yet rendered, such as when inside a non-active tab.
+ * @prop {string | null} [doubleClick] The clicked date, used internally when an event was clicked to detect
+ * a double click.
+ * @prop {number | null} [clickTimer] Timeout ID, used internally when an event was clicked to detect a double
+ * click.
+ * @prop {JQuery} [tip] The DOM element for the tooltip.
+ * @prop {number} [tipTimeout] The set-time   out timer ID for displaying a delayed tooltip.
  * @prop {JQuery} viewNameState The DOM element for the hidden input storing the current view state.
  * 
  * @interface {PrimeFaces.widget.ScheduleCfg} cfg The configuration for the {@link  Schedule| Schedule widget}.
@@ -22,7 +27,7 @@
  * the underlying FullCalendar plugin. Access the this schedule widget via the this context, and change the FullCalendar
  * configuration stored in `this.cfg`.
  * @prop {import("@fullcalendar/core").CalendarOptions} cfg.options The configuration object that is passed to the
- * FullCalendar upon initialization, see {@link CalendarOptions|CalendarOptions}.
+ * FullCalendar upon initialization.
  * @prop {string} cfg.locale Locale code of the locale for the FullCalendar, such as `de` or `en`.
  * @prop {boolean} cfg.noOpener Whether for URL events access to the opener window from the target site should be
  * prevented (phishing protection), default value is `true`.

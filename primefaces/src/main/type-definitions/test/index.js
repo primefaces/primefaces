@@ -30,7 +30,7 @@ function loadTest(testName) {
         };
     }
     catch (e) {
-        throw new Error("Cannot find test " + testName + ":\n" + e.stack);
+        throw new Error("Cannot find test " + testName + ":\n" + (/** @type {Error}*/(e)).stack);
     }
 }
 
@@ -50,7 +50,7 @@ async function runTest(cliArgs, test) {
     catch (e) {
         return {
             name: test.name,
-            error: e instanceof Error ? e : new Error(e),
+            error: e instanceof Error ? e : new Error(String(e)),
         };
     }
 }

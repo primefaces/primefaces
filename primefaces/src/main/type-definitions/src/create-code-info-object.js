@@ -6,9 +6,11 @@ const { getArgVariableInfo, getArgumentInfo } = require("./create-code-info-para
 const { checkTagHasType } = require("./doc-comment-check-tags");
 const { handleError, newNodeErrorMessage } = require("./error");
 const { NativeInsertionOrderMap } = require("./InsertionOrderMap");
-const { countNonEmptyArraySlots } = require("./lang");
+const { countNonEmptyArraySlots, isRecordEmpty } = require("./lang");
 const { createType, createNamespace, getEmptyNamespaceSpec, typeToNamespacedName } = require("./ts-export");
 const { hasRestSpecifier, removeRestFromType } = require("./ts-types");
+const { createTag } = require("./doc-comments");
+const { Tags } = require("./constants");
 
 /**
  * @param {import("comment-parser").Tag[]} templates 
@@ -139,6 +141,7 @@ function createMethodCodeInfoFromTags(severitySettings, method, additionalTempla
             isGenerator: method.generator,
             name: method.name,
             next: nextInfo,
+            override: method.override,
             return: returnInfo,
             thisTypedef: method.thisTypedef,
             variables: variableInfo,
@@ -171,6 +174,7 @@ function createMethodDocInfoFromTags(method, additionalTemplates, additionalTags
                 hasNext: method.next !== undefined,
                 typedef: method.next !== undefined ? method.next.type : "",
             },
+            override: method.override,
             patterns: new Map(Array.from(method.destructuring, ([index, info]) => [index, {
                 index: index,
                 typedef: info.pattern ? info.pattern.type || "" : "",
@@ -210,8 +214,6 @@ function createMethodDocInfoFromTags(method, additionalTemplates, additionalTags
  * @return {{description: string, tags: import("comment-parser").Tag[]}}
  */
 function createTopLevelDocData(objectDefinition, objectDocInfo) {
-    // @template
-
     /** @type {Set<string>} */
     const processedTypeParams = new Set();
     /** @type {import("comment-parser").Tag[]} */
@@ -244,6 +246,28 @@ function createTopLevelDocData(objectDefinition, objectDocInfo) {
             ...objectDocInfo.shape.additionalTags
         ],
     }
+}
+
+/**
+ * @param {ObjectDocPropertyInfo} properties 
+ * @param {string[]} forcedProps
+ * @returns {import("comment-parser").Tag[]}
+ */
+function createObjectCodePropTags(properties, forcedProps) {
+    return [
+        ...isRecordEmpty(properties.definitive) ? [] : [
+            createTag(Tags.ValidateDefinitiveProps, {
+                name: "json",
+                description: JSON.stringify(properties.definitive),
+            }),
+        ],
+        ...forcedProps.length === 0 ? [] : [
+            createTag(Tags.ValidateForcedProps, {
+                name: "json",
+                description: JSON.stringify(forcedProps),
+            })
+        ],
+    ];
 }
 
 /**
@@ -283,9 +307,11 @@ function makeNamespacedTypeForObject(objectDefinition, docInfo, indent) {
 
     // Create interface or class
     if (name && exportType !== "namespace") {
+        const forcedProps = [...docInfo.shape.props.values()].filter(x => x.forced).map(x => x.name).sort();
+        const propTags = createObjectCodePropTags(docInfo.codeProperties, forcedProps);
         const ifaceSpec = {
             abstract: shape.abstract || objectDefinition.spec.abstract,
-            additionalTags: docData.tags,
+            additionalTags: [...docData.tags, ...propTags],
             description: docData.description,
             extends: shape.extends.size > 0 ? shape.extends : objectDefinition.spec.extends,
             implements: shape.implements.size > 0 ? shape.implements : objectDefinition.spec.implements,
