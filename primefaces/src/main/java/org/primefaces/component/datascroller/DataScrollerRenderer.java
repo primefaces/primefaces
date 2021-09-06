@@ -36,7 +36,6 @@ import org.primefaces.PrimeFaces;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.FastStringWriter;
 import org.primefaces.util.WidgetBuilder;
 
 public class DataScrollerRenderer extends CoreRenderer {
@@ -78,6 +77,7 @@ public class DataScrollerRenderer extends CoreRenderer {
         boolean isLazy = ds.isLazy();
         UIComponent header = ds.getFacet("header");
         UIComponent loader = ds.getFacet("loader");
+        UIComponent loading = ds.getFacet("loading");
         String contentCornerClass = null;
         String containerClass = inline ? DataScroller.INLINE_CONTAINER_CLASS : DataScroller.CONTAINER_CLASS;
 
@@ -139,6 +139,13 @@ public class DataScrollerRenderer extends CoreRenderer {
             writer.endElement("div");
         }
 
+        if (ComponentUtils.shouldRenderFacet(loading)) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", DataScroller.LOADING_CLASS, null);
+            loading.encodeAll(context);
+            writer.endElement("div");
+        }
+
         writer.endElement("div");
 
         writer.endElement("div");
@@ -176,26 +183,11 @@ public class DataScrollerRenderer extends CoreRenderer {
                 .attr("mode", ds.getMode(), "document")
                 .attr("buffer", ds.getBuffer())
                 .attr("virtualScroll", ds.isVirtualScroll())
-                .attr("startAtBottom", ds.isStartAtBottom())
-                .attr("loading", getLoadingHtml(context, ds));
+                .attr("startAtBottom", ds.isStartAtBottom());
 
         encodeClientBehaviors(context, ds);
 
         wb.finish();
-    }
-
-    protected String getLoadingHtml(FacesContext context, DataScroller ds) throws IOException {
-        UIComponent loadingFacet = ds.getFacet("loading");
-        if (!ComponentUtils.shouldRenderFacet(loadingFacet)) {
-            return null;
-        }
-        ResponseWriter writer = context.getResponseWriter();
-        FastStringWriter stringWriter = new FastStringWriter();
-        ResponseWriter loadingWriter = writer.cloneWithWriter(stringWriter);
-        context.setResponseWriter(loadingWriter);
-        loadingFacet.encodeAll(context);
-        context.setResponseWriter(writer);
-        return stringWriter.toString();
     }
 
     protected void loadChunk(FacesContext context, DataScroller ds, int start, int size) throws IOException {
