@@ -49,11 +49,8 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
         this.content = this.jq.children('div.ui-datascroller-content');
         this.list = this.cfg.virtualScroll ? this.content.children('div').children('ul') : this.content.children('ul');
         this.loaderContainer = this.content.children('div.ui-datascroller-loader');
-        this.loadStatus = this.content.children('div.ui-datascroller-loading-facet');
+        this.loadStatus = this.content.children('div.ui-datascroller-loading');
         this.loadStatus.remove();
-        if (this.loadStatus.length == 0) {
-            this.loadStatus = $('<div class="ui-datascroller-loading"></div>');
-        }
         this.loading = false;
         this.allLoaded = false;
         this.cfg.offset = 0;

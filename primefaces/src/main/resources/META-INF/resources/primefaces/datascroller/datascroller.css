@@ -25,7 +25,7 @@
     border: 0 none;
 }
 
-.ui-datascroller .ui-datascroller-loading {
+.ui-datascroller .ui-datascroller-loading .ui-datascroller-loading-default {
     background: url("#{resource['primefaces:datascroller/images/loading.gif']}") center center no-repeat;
     width: 220px;
     height: 19px;
