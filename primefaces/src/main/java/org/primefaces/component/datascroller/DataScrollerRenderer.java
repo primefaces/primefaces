@@ -110,6 +110,18 @@ public class DataScrollerRenderer extends CoreRenderer {
             writer.writeAttribute("style", "height:" + ds.getScrollHeight() + "px", null);
         }
 
+        writer.startElement("div", null);
+        writer.writeAttribute("class", DataScroller.LOADING_CLASS, null);
+        if (ComponentUtils.shouldRenderFacet(loading)) {
+            loading.encodeAll(context);
+        }
+        else {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", DataScroller.LOADING_CLASS + "-default", null);
+            writer.endElement("div");
+        }
+        writer.endElement("div");
+
         int rowCount = ds.getRowCount();
         int start = 0;
 
@@ -136,13 +148,6 @@ public class DataScrollerRenderer extends CoreRenderer {
             if (ComponentUtils.shouldRenderFacet(loader)) {
                 loader.encodeAll(context);
             }
-            writer.endElement("div");
-        }
-
-        if (ComponentUtils.shouldRenderFacet(loading)) {
-            writer.startElement("div", null);
-            writer.writeAttribute("class", DataScroller.LOADING_CLASS, null);
-            loading.encodeAll(context);
             writer.endElement("div");
         }
 
