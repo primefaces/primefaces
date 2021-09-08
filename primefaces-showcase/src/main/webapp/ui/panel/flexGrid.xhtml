@@ -79,9 +79,19 @@
     <ui:define name="implementation">
         <h3 style="margin-top:0">Getting Started</h3>
         <p>To use PrimeFlex you must include the CSS on your page after you download it into your /css folder or wherever you keep your CSS files.</p>
-        <pre name="code" class="brush:xml">
+        <pre class="language-xml"><code>
         &lt;h:outputStylesheet name="css/primeflex.css" /&gt;
-        </pre>
+        </code></pre>
+        <p>Or use WebJars...</p>
+        <pre class="language-xml"><code>
+        &lt;dependency&gt;
+           &lt;groupId>org.webjars.npm&lt;/groupId&gt;
+           &lt;artifactId>primeflex&lt;/artifactId&gt;
+           &lt;version>2.0.0&lt;/version&gt;
+        &lt;/dependency&gt;
+        
+        &lt;h:outputStylesheet library="webjars" name="primeflex/2.0.0/primeflex.min.css" /&gt;
+        </code></pre>
 
         <div class="card">
             <h5>Basic</h5>
