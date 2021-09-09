@@ -38,17 +38,7 @@ import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.PrintSetup;
-import org.apache.poi.ss.usermodel.RichTextString;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.VerticalAlignment;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.WorkbookUtil;
 import org.primefaces.component.api.DynamicColumn;
@@ -205,12 +195,14 @@ public class TreeTableExcelExporter extends TreeTableExporter {
             int rowIndex = sheet.getLastRowNum() + 1;
             Row rowHeader = sheet.createRow(rowIndex);
 
-            sheet.addMergedRegion(new CellRangeAddress(
-                        rowIndex, // first row (0-based)
-                        rowIndex, // last row (0-based)
-                        0, // first column (0-based)
-                        colspan - 1 // last column (0-based)
-            ));
+            if (colspan > 1) {
+                sheet.addMergedRegion(new CellRangeAddress(
+                            rowIndex, // first row (0-based)
+                            rowIndex, // last row (0-based)
+                            0, // first column (0-based)
+                            colspan - 1 // last column (0-based)
+                ));
+            }
             addColumnValue(rowHeader, 0, facetText);
         }
     }
