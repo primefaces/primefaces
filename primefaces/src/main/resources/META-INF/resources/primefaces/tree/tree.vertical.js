@@ -529,7 +529,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         checked = checkbox.find('> .ui-chkbox-box > .ui-chkbox-icon').hasClass('ui-icon-check');
 
         if(this.cfg.propagateDown) {
-            node.children('.ui-treenode-children').find('.ui-treenode:visible').find('.ui-chkbox').each(function() {
+            node.children('.ui-treenode-children').find('.ui-treenode:not(.ui-treenode-hidden)').find('.ui-chkbox').each(function() {
                 $this.toggleCheckboxState($(this), checked);
             });
             children = node.find('> .ui-treenode-children > .ui-treenode');
