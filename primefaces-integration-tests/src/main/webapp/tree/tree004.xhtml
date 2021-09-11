@@ -13,8 +13,9 @@
                 <p:autoUpdate />
             </p:messages>
 
-            <p:tree id="tree" value="#{tree004.root}" var="document" widgetVar="tree" selectionMode="multiple"
-                selection="#{tree004.selectedNodes}">
+            <p:tree id="tree" value="#{tree004.root}" var="document" widgetVar="tree"
+                    selectionMode="multiple" selection="#{tree004.selectedNodes}"
+                    filterBy="#{document}">
                 <p:ajax event="select" />
                 <p:ajax event="unselect" />
 
