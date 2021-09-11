@@ -1130,7 +1130,7 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
     destroy: function() {
         this._super();
 
-        this.dettach();
+        this.detach();
     },
 
     /**
