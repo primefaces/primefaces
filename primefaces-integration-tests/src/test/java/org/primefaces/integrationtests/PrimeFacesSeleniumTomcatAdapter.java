@@ -23,46 +23,30 @@
  */
 package org.primefaces.integrationtests;
 
+import org.apache.catalina.LifecycleException;
+import org.apache.catalina.startup.Tomcat;
+import org.primefaces.selenium.spi.PrimeSeleniumAdapter;
+
 import java.io.File;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Properties;
 import java.util.Random;
 
-import org.apache.tomee.embedded.Configuration;
-import org.apache.tomee.embedded.Container;
-import org.primefaces.selenium.spi.PrimeSeleniumAdapter;
 
-public class PrimeFacesSeleniumTomEEAdapter extends PrimeSeleniumAdapter {
+public class PrimeFacesSeleniumTomcatAdapter extends PrimeSeleniumAdapter {
 
-    private Container container;
+    private Tomcat tomcat;
 
     @Override
     public void startup() throws Exception {
-        Configuration config = new Configuration();
-        config.setHttpPort(createRandomPort());
-        config.setQuickSession(true);
-        config.setStopPort(createRandomPort());
-        config.setDir("target/tomee");
 
-        Properties properties = new Properties();
-        properties.put("org.apache.tomee.loader.TomEEJarScanner.scanClassPath", "false");
-        properties.put("org.apache.tomee.loader.TomEEJarScanner.scanBootstrapClassPath", "false");
-        config.setProperties(properties);
+        tomcat = new Tomcat();
+        tomcat.setPort(createRandomPort());
 
-        File targetDir = new File("target/");
-        String[] warFiles = targetDir.list((dir, name) -> name.endsWith(".war"));
-        if (warFiles == null || warFiles.length == 0) {
-            throw new RuntimeException("No WAR found in target; please build before ;)");
-        }
-        String warName = warFiles[0];
-        File warFile = new File(targetDir, warName);
-
-        container = new Container(config);
-        container.deploy(
-                    "ROOT",
-                    warFile,
-                    true);
+        String contextPath = "";
+        tomcat.getHost().setAppBase(".");
+        tomcat.addWebapp(contextPath, new File("target/primefaces-integration-tests/").getAbsolutePath());
+        tomcat.start();
 
         Thread.sleep(1000);
 
@@ -77,12 +61,13 @@ public class PrimeFacesSeleniumTomEEAdapter extends PrimeSeleniumAdapter {
 
     @Override
     public String getBaseUrl() {
-        return "http://localhost:" + container.getConfiguration().getHttpPort() + "/";
+        return "http://localhost:" + tomcat.getConnector().getPort() + "/";
     }
 
     @Override
-    public void shutdown() {
-        container.close();
+    public void shutdown() throws LifecycleException {
+        tomcat.getServer().stop();
+        tomcat.getServer().destroy();
     }
 
     private static int createRandomPort() {
@@ -90,8 +75,8 @@ public class PrimeFacesSeleniumTomEEAdapter extends PrimeSeleniumAdapter {
         return random.nextInt((9000 - 8000) + 1) + 8000;
     }
 
-    public Container getContainer() {
-        return container;
+    public Tomcat getTomcat() {
+        return tomcat;
     }
 
 }

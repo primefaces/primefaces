@@ -12,8 +12,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: [8, 11]
-        profile: [ 'firefox,theme-saga,myfaces-2.3.x', 'firefox,csp,theme-saga,myfaces-2.3.x', 'chrome,theme-saga,myfaces-2.3.x', 'chrome,csp,theme-nova,myfaces-2.3.x', 'chrome,csp,theme-nova,mojarra-2.3.x', 'chrome,client-state-saving,theme-nova,mojarra-2.3.x' ]
+        java: [8, 11, 17-ea]
+        profile: [ 'firefox,theme-saga,myfaces-2.3.x', 'firefox,csp,theme-saga,myfaces-2.3.x', 'chrome,theme-saga,myfaces-2.3.x', 'chrome,theme-saga,myfaces-next-2.3.x','chrome,csp,theme-nova,myfaces-2.3.x', 'chrome,csp,theme-nova,mojarra-2.3.x', 'chrome,client-state-saving,theme-nova,mojarra-2.3.x' ]
 
     steps:
       - uses: actions/checkout@v2

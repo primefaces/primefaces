@@ -103,7 +103,7 @@ public class ConfirmPopup001Test extends AbstractPrimePageTest {
         page.confirm.click();
 
         // Act
-        popup.getYesButton().click();
+        PrimeSelenium.guardAjax(popup.getYesButton()).click();
 
         // Assert
         Assertions.assertFalse(popup.isVisible());
@@ -139,7 +139,7 @@ public class ConfirmPopup001Test extends AbstractPrimePageTest {
         page.delete.click();
 
         // Act
-        popup.getYesButton().click();
+        PrimeSelenium.guardAjax(popup.getYesButton()).click();
 
         // Assert
         Assertions.assertFalse(popup.isVisible());

@@ -22,6 +22,7 @@
     <modules>
         <module>primefaces-selenium-core</module>
         <module>primefaces-selenium-components</module>
+        <module>primefaces-selenium-runtime</module>
     </modules>
 
     <build>
