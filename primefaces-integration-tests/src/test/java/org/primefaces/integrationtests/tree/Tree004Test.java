@@ -210,13 +210,14 @@ public class Tree004Test extends AbstractTreeTest {
         ComponentUtils.sendKeys(filter, "Pro");
         PrimeSelenium.wait(300 + 100); // 300ms are hardcoded as filterDelay in tree.vertical.js
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(tree.findElement(By.id("form:tree:1_1"))));
+        children = tree.getChildren();
         tree.getChildren().get(1).getChildren().get(1).select();
 
         // Assert
         page.buttonShowSelectedNodes.click();
         assertMessage(page.messages, 0, "Selected nodes", "Product Launch");
-        Assertions.assertTrue(PrimeSelenium.hasCssClass(tree.getChildren().get(1).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-minus"));
-        Assertions.assertTrue(PrimeSelenium.hasCssClass(tree.getChildren().get(1).getChildren().get(1).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-check"));
+        Assertions.assertTrue(PrimeSelenium.hasCssClass(children.get(1).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-minus"));
+        Assertions.assertTrue(PrimeSelenium.hasCssClass(children.get(1).getChildren().get(1).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-check"));
 
         // Act Pt. 2
         filter.clear();
@@ -227,25 +228,26 @@ public class Tree004Test extends AbstractTreeTest {
         // Assert Pt. 2
         page.buttonShowSelectedNodes.click();
         assertMessage(page.messages, 0, "Selected nodes", "Product Launch");
-        Assertions.assertTrue(PrimeSelenium.hasCssClass(tree.getChildren().get(0).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-blank"));
+        children = tree.getChildren();
+        Assertions.assertTrue(PrimeSelenium.hasCssClass(children.get(0).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-blank"));
         // TODO: currently broken (2021-09-12)
-        // Assertions.assertTrue(PrimeSelenium.hasCssClass(tree.getChildren().get(1).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-minus"));
-        Assertions.assertTrue(PrimeSelenium.hasCssClass(tree.getChildren().get(1).getChildren().get(1).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-check"));
-        Assertions.assertTrue(PrimeSelenium.hasCssClass(tree.getChildren().get(2).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-blank"));
+        // Assertions.assertTrue(PrimeSelenium.hasCssClass(children.get(1).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-minus"));
+        Assertions.assertTrue(PrimeSelenium.hasCssClass(children.get(1).getChildren().get(1).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-check"));
+        Assertions.assertTrue(PrimeSelenium.hasCssClass(children.get(2).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-blank"));
 
         // Act Pt. 3
-        tree.getChildren().get(1).getChildren().get(0).select();
-        tree.getChildren().get(1).getChildren().get(2).select();
+        children.get(1).getChildren().get(0).select();
+        children.get(1).getChildren().get(2).select();
 
         // Assert Pt. 3
         page.buttonShowSelectedNodes.click();
         assertMessage(page.messages, 0, "Selected nodes", "Product Launch,Meeting,Report Review,Events");
-        Assertions.assertTrue(PrimeSelenium.hasCssClass(tree.getChildren().get(0).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-blank"));
-        Assertions.assertTrue(PrimeSelenium.hasCssClass(tree.getChildren().get(1).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-check"));
-        Assertions.assertTrue(PrimeSelenium.hasCssClass(tree.getChildren().get(1).getChildren().get(0).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-check"));
-        Assertions.assertTrue(PrimeSelenium.hasCssClass(tree.getChildren().get(1).getChildren().get(1).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-check"));
-        Assertions.assertTrue(PrimeSelenium.hasCssClass(tree.getChildren().get(1).getChildren().get(2).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-check"));
-        Assertions.assertTrue(PrimeSelenium.hasCssClass(tree.getChildren().get(2).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-blank"));
+        Assertions.assertTrue(PrimeSelenium.hasCssClass(children.get(0).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-blank"));
+        Assertions.assertTrue(PrimeSelenium.hasCssClass(children.get(1).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-check"));
+        Assertions.assertTrue(PrimeSelenium.hasCssClass(children.get(1).getChildren().get(0).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-check"));
+        Assertions.assertTrue(PrimeSelenium.hasCssClass(children.get(1).getChildren().get(1).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-check"));
+        Assertions.assertTrue(PrimeSelenium.hasCssClass(children.get(1).getChildren().get(2).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-check"));
+        Assertions.assertTrue(PrimeSelenium.hasCssClass(children.get(2).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-blank"));
 
         assertConfiguration(tree.getWidgetConfiguration());
     }
