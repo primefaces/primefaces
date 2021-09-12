@@ -46,9 +46,12 @@ public class Tree004 implements Serializable {
     private TreeNode<String> root;
     private TreeNode<String>[] selectedNodes;
 
+    private String selection;
+
     @PostConstruct
     public void init() {
         root = treeNodeService.createNodes();
+        selection = "multiple";
     }
 
     public void showSelectedNodes() {

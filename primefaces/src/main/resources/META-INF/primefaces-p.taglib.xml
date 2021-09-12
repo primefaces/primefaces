@@ -29145,7 +29145,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines the selectionMode.]]>
+                <![CDATA[Defines the selectionMode, valid values are "single", "multiple" and "checkbox".]]>
             </description>
             <name>selectionMode</name>
             <required>false</required>
@@ -29517,7 +29517,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines the selectionMode, valid values are "single" and "multiple".]]>
+                <![CDATA[Defines the selectionMode, valid values are "single", "multiple" and "checkbox".]]>
             </description>
             <name>selectionMode</name>
             <required>false</required>

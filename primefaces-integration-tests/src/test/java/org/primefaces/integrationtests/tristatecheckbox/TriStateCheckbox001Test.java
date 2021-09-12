@@ -159,7 +159,7 @@ public class TriStateCheckbox001Test extends AbstractPrimePageTest {
     @Test
     @Order(6)
     @DisplayName("TriStateCheckbox: readonly")
-    public void testRedonly(Page page) {
+    public void testReadonly(Page page) {
         // Arrange
         TriStateCheckbox triStateCheckbox = page.readonly;
         Assertions.assertEquals("0", triStateCheckbox.getValue());
