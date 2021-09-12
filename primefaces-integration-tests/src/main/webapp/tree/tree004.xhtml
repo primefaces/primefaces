@@ -13,8 +13,16 @@
                 <p:autoUpdate />
             </p:messages>
 
+            <p:outputLabel value="Selection" for="@next" />
+            <p:selectOneRadio id="selection" value="#{tree004.selection}">
+                <f:selectItem itemLabel="single" itemValue="single"/>
+                <f:selectItem itemLabel="multiple" itemValue="multiple"/>
+                <f:selectItem itemLabel="checkbox" itemValue="checkbox"/>
+                <p:ajax update="form:tree" />
+            </p:selectOneRadio>
+
             <p:tree id="tree" value="#{tree004.root}" var="document" widgetVar="tree"
-                    selectionMode="multiple" selection="#{tree004.selectedNodes}"
+                    selectionMode="#{tree004.selection}" selection="#{tree004.selectedNodes}"
                     filterBy="#{document}">
                 <p:ajax event="select" />
                 <p:ajax event="unselect" />

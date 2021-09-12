@@ -38,6 +38,7 @@ import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
+import org.primefaces.selenium.component.SelectOneRadio;
 import org.primefaces.selenium.component.Tree;
 import org.primefaces.selenium.component.base.ComponentUtils;
 import org.primefaces.selenium.component.model.tree.TreeNode;
@@ -153,7 +154,7 @@ public class Tree004Test extends AbstractTreeTest {
         // Act
         WebElement filter = tree.findElement(By.cssSelector("input.ui-tree-filter"));
         ComponentUtils.sendKeys(filter, "Pro");
-        PrimeSelenium.wait(300 + 100); // 300ms are hardcoded as filterDelay to tree.vertical.js
+        PrimeSelenium.wait(300 + 100); // 300ms are hardcoded as filterDelay in tree.vertical.js
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(tree.findElement(By.id("form:tree:1_1"))));
 
         // Assert
@@ -174,7 +175,7 @@ public class Tree004Test extends AbstractTreeTest {
         // Act
         filter.clear();
         ComponentUtils.sendKeys(filter, Keys.BACK_SPACE); // null filter press backspace to trigger the re-filtering
-        PrimeSelenium.wait(300 + 100); // 300ms are hardcoded as filterDelay to tree.vertical.js
+        PrimeSelenium.wait(300 + 100); // 300ms are hardcoded as filterDelay in tree.vertical.js
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(tree.findElement(By.id("form:tree:0"))));
 
         // Assert
@@ -183,16 +184,17 @@ public class Tree004Test extends AbstractTreeTest {
         Assertions.assertEquals(true, children.get(0).getWebElement().isDisplayed());
         Assertions.assertEquals(true, children.get(1).getWebElement().isDisplayed());
         Assertions.assertEquals(true, children.get(2).getWebElement().isDisplayed());
+
+        assertConfiguration(tree.getWidgetConfiguration());
     }
 
     @Test
     @Order(4)
     @DisplayName("Tree: Multiple selection + Filter, https://github.com/primefaces/primefaces/issues/3926")
     public void testFilterWithMultipleSelection(Page page) {
-        // TODO: implement
-
         // Arrange
         Tree tree = page.tree;
+        page.selection.select("checkbox");
         Assertions.assertNotNull(tree);
 
         List<TreeNode> children = tree.getChildren();
@@ -204,36 +206,46 @@ public class Tree004Test extends AbstractTreeTest {
         Assertions.assertEquals("Documents", first.getLabelText());
 
         // Act
-        first.select();
+        WebElement filter = tree.findElement(By.cssSelector("input.ui-tree-filter"));
+        ComponentUtils.sendKeys(filter, "Pro");
+        PrimeSelenium.wait(300 + 100); // 300ms are hardcoded as filterDelay in tree.vertical.js
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(tree.findElement(By.id("form:tree:1_1"))));
+        tree.getChildren().get(1).getChildren().get(1).select();
 
         // Assert
-        PrimeSelenium.guardAjax(page.buttonShowSelectedNodes).click();
-        assertMessage(page.messages, 0, "Selected nodes", "Documents");
+        page.buttonShowSelectedNodes.click();
+        assertMessage(page.messages, 0, "Selected nodes", "Product Launch");
+        Assertions.assertTrue(PrimeSelenium.hasCssClass(tree.getChildren().get(1).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-minus"));
+        Assertions.assertTrue(PrimeSelenium.hasCssClass(tree.getChildren().get(1).getChildren().get(1).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-check"));
 
         // Act Pt. 2
-        Actions actions = new Actions(page.getWebDriver());
-        Action actionSelect = actions.keyDown(Keys.META).click(children.get(2).getLabel()).keyUp(Keys.META).build();
-        PrimeSelenium.guardAjax(actionSelect).perform();
+        filter.clear();
+        ComponentUtils.sendKeys(filter, Keys.BACK_SPACE); // null filter press backspace to trigger the re-filtering
+        PrimeSelenium.wait(300 + 100); // 300ms are hardcoded as filterDelay in tree.vertical.js
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(tree.findElement(By.id("form:tree:0"))));
 
         // Assert Pt. 2
-        PrimeSelenium.guardAjax(page.buttonShowSelectedNodes).click();
-        assertMessage(page.messages, 0, "Selected nodes", "Documents,Movies");
+        page.buttonShowSelectedNodes.click();
+        assertMessage(page.messages, 0, "Selected nodes", "Product Launch");
+        Assertions.assertTrue(PrimeSelenium.hasCssClass(tree.getChildren().get(0).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-blank"));
+        // TODO: currently broken (2021-09-12)
+        // Assertions.assertTrue(PrimeSelenium.hasCssClass(tree.getChildren().get(1).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-minus"));
+        Assertions.assertTrue(PrimeSelenium.hasCssClass(tree.getChildren().get(1).getChildren().get(1).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-check"));
+        Assertions.assertTrue(PrimeSelenium.hasCssClass(tree.getChildren().get(2).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-blank"));
 
         // Act Pt. 3
-        Action actionUnselect = actions.keyDown(Keys.META).click(first.getLabel()).keyUp(Keys.META).build();
-        PrimeSelenium.guardAjax(actionUnselect).perform();
+        tree.getChildren().get(1).getChildren().get(0).select();
+        tree.getChildren().get(1).getChildren().get(2).select();
 
         // Assert Pt. 3
-        PrimeSelenium.guardAjax(page.buttonShowSelectedNodes).click();
-        assertMessage(page.messages, 0, "Selected nodes", "Movies");
-
-        // Act Pt. 4
-        actionUnselect = actions.keyDown(Keys.META).click(children.get(2).getLabel()).keyUp(Keys.META).build();
-        PrimeSelenium.guardAjax(actionUnselect).perform();
-
-        // Assert Pt. 4
-        PrimeSelenium.guardAjax(page.buttonShowSelectedNodes).click();
-        assertMessage(page.messages, 0, "No node selected!", "");
+        page.buttonShowSelectedNodes.click();
+        assertMessage(page.messages, 0, "Selected nodes", "Product Launch,Meeting,Report Review,Events");
+        Assertions.assertTrue(PrimeSelenium.hasCssClass(tree.getChildren().get(0).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-blank"));
+        Assertions.assertTrue(PrimeSelenium.hasCssClass(tree.getChildren().get(1).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-check"));
+        Assertions.assertTrue(PrimeSelenium.hasCssClass(tree.getChildren().get(1).getChildren().get(0).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-check"));
+        Assertions.assertTrue(PrimeSelenium.hasCssClass(tree.getChildren().get(1).getChildren().get(1).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-check"));
+        Assertions.assertTrue(PrimeSelenium.hasCssClass(tree.getChildren().get(1).getChildren().get(2).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-check"));
+        Assertions.assertTrue(PrimeSelenium.hasCssClass(tree.getChildren().get(2).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-blank"));
 
         assertConfiguration(tree.getWidgetConfiguration());
     }
@@ -241,6 +253,9 @@ public class Tree004Test extends AbstractTreeTest {
     public static class Page extends AbstractPrimePage {
         @FindBy(id = "form:tree")
         Tree tree;
+
+        @FindBy(id = "form:selection")
+        SelectOneRadio selection;
 
         @FindBy(id = "form:msgs")
         Messages messages;
