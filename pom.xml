@@ -400,7 +400,7 @@
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-engine</artifactId>
-                <version>5.7.2</version>
+                <version>5.8.0</version>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
