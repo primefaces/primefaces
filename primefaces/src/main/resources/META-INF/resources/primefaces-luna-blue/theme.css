@@ -611,6 +611,63 @@ body .ui-commandlink:active, body .ui-link:active {
   color: #29B6F6;
 }
 
+body .ui-speeddial-button.ui-button.ui-button-icon-only {
+  width: 4rem;
+  height: 4rem;
+}
+body .ui-speeddial-button.ui-button.ui-button-icon-only .ui-button-icon {
+  font-size: 1.3rem;
+}
+body .ui-speeddial-action {
+  width: 3rem;
+  height: 3rem;
+  background: #474747;
+  color: #fff;
+}
+body .ui-speeddial-action:hover {
+  background: #4d4d4d;
+  color: #fff;
+}
+body .ui-speeddial-direction-up .ui-speeddial-item {
+  margin: 0.25rem 0;
+}
+body .ui-speeddial-direction-up .ui-speeddial-item:first-child {
+  margin-bottom: 0.5rem;
+}
+body .ui-speeddial-direction-down .ui-speeddial-item {
+  margin: 0.25rem 0;
+}
+body .ui-speeddial-direction-down .ui-speeddial-item:first-child {
+  margin-top: 0.5rem;
+}
+body .ui-speeddial-direction-left .ui-speeddial-item {
+  margin: 0 0.25rem;
+}
+body .ui-speeddial-direction-left .ui-speeddial-item:first-child {
+  margin-right: 0.5rem;
+}
+body .ui-speeddial-direction-right .ui-speeddial-item {
+  margin: 0 0.25rem;
+}
+body .ui-speeddial-direction-right .ui-speeddial-item:first-child {
+  margin-left: 0.5rem;
+}
+body .ui-speeddial-circle .ui-speeddial-item,
+body .ui-speeddial-semi-circle .ui-speeddial-item,
+body .ui-speeddial-quarter-circle .ui-speeddial-item {
+  margin: 0;
+}
+body .ui-speeddial-circle .ui-speeddial-item:first-child, body .ui-speeddial-circle .ui-speeddial-item:last-child,
+body .ui-speeddial-semi-circle .ui-speeddial-item:first-child,
+body .ui-speeddial-semi-circle .ui-speeddial-item:last-child,
+body .ui-speeddial-quarter-circle .ui-speeddial-item:first-child,
+body .ui-speeddial-quarter-circle .ui-speeddial-item:last-child {
+  margin: 0;
+}
+body .ui-speeddial-mask {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
 body .ui-splitbutton {
   padding: 0;
 }
