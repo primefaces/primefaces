@@ -8,7 +8,7 @@ When pressed, a floating action button can display multiple primary actions that
 
 | Name | Value |
 | --- | --- |
-| Tag | spinner
+| Tag | speedDial
 | Component Class | org.primefaces.component.speeddial.SpeedDial
 | Component Type | org.primefaces.component.SpeedDial
 | Component Family | org.primefaces.component |
