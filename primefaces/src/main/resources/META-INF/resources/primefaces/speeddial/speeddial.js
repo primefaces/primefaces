@@ -226,6 +226,7 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Returns whether outside is clicked or not.
      * @private
+     * @param {Event} event Event that occurred.
      * @return {boolean} outside is clicked.
      */
     isOutsideClicked: function(event) {
@@ -317,11 +318,9 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
     getItemStyle: function(index) {
         var transitionDelay = this.calculateTransitionDelay(index);
         var pointStyle = this.calculatePointStyle(index);
+        pointStyle["transitionDelay"] = transitionDelay + 'ms';
 
-        return {
-            transitionDelay: transitionDelay + 'ms',
-            ...pointStyle
-        };
+        return pointStyle;
     },
 
 });
