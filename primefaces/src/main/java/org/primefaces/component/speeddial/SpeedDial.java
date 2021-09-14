@@ -24,7 +24,6 @@
 package org.primefaces.component.speeddial;
 
 import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -42,13 +41,5 @@ public class SpeedDial extends SpeedDialBase {
     public static final String ITEM_CLASS = "ui-speeddial-item";
     public static final String ITEM_BUTTON_CLASS = "ui-speeddial-action";
     public static final String ITEM_ICON_CLASS = "ui-speeddial-action-icon";
-
-    @Override
-    public void processDecodes(FacesContext context) {
-        if (!isRendered() || isDisabled()) {
-            return;
-        }
-        super.processDecodes(context);
-    }
 
 }

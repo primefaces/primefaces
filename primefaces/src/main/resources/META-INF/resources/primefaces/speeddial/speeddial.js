@@ -112,6 +112,14 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
         this.container.addClass('ui-speeddial-opened');
         this.visible = true;
         this.updateItemStyles();
+
+        if(this.cfg.onVisibleChange) {
+            this.cfg.onVisibleChange.call(this, true);
+        }
+
+        if(this.cfg.onShow) {
+            this.cfg.onShow.call(this);
+        }
     },
 
     hide: function() {
@@ -127,11 +135,23 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
         this.container.removeClass('ui-speeddial-opened');
         this.visible = false;
         this.updateItemStyles();
+
+        if(this.cfg.onVisibleChange) {
+            this.cfg.onVisibleChange.call(this, false);
+        }
+
+        if(this.cfg.onHide) {
+            this.cfg.onHide.call(this);
+        }
     },
 
-    onClick: function() {
+    onClick: function(e) {
         this.container.css('z-index', PrimeFaces.nextZindex());
         this.isVisible() ? this.hide() : this.show();
+
+        if(this.cfg.onClick) {
+            this.cfg.onClick.call(this, e);
+        }
 
         this.isItemClicked = true;
     },

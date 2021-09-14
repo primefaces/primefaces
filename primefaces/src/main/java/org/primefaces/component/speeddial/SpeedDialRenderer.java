@@ -250,7 +250,11 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
                 .attr("showIcon", speedDial.getShowIcon(), "pi pi-plus")
                 .attr("hideIcon", speedDial.getHideIcon(), null)
                 .attr("hideOnClickOutside", speedDial.isHideOnClickOutside(), true)
-                .attr("rotateAnimation", speedDial.isRotateAnimation(), true);
+                .attr("rotateAnimation", speedDial.isRotateAnimation(), true)
+                .callback("onVisibleChange", "function(visible)", speedDial.getOnVisibleChange())
+                .callback("onClick", "function(event)", speedDial.getOnClick())
+                .callback("onShow", "function()", speedDial.getOnShow())
+                .callback("onHide", "function()", speedDial.getOnHide());
         wb.finish();
     }
 }

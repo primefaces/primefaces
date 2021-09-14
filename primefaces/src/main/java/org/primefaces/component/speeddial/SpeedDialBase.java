@@ -51,7 +51,11 @@ public abstract class SpeedDialBase extends AbstractMenu implements Widget {
         maskStyle,
         showIcon,
         hideIcon,
-        rotateAnimation
+        rotateAnimation,
+        onVisibleChange,
+        onClick,
+        onShow,
+        onHide
     }
 
     public SpeedDialBase() {
@@ -215,4 +219,37 @@ public abstract class SpeedDialBase extends AbstractMenu implements Widget {
     public void setRotateAnimation(boolean rotateAnimation) {
         getStateHelper().put(PropertyKeys.rotateAnimation, rotateAnimation);
     }
+
+    public String getOnVisibleChange() {
+        return (String) getStateHelper().eval(PropertyKeys.onVisibleChange, null);
+    }
+
+    public void setOnVisibleChange(String onVisibleChange) {
+        getStateHelper().put(PropertyKeys.onVisibleChange, onVisibleChange);
+    }
+
+    public String getOnClick() {
+        return (String) getStateHelper().eval(PropertyKeys.onClick, null);
+    }
+
+    public void setOnClick(String onClick) {
+        getStateHelper().put(PropertyKeys.onClick, onClick);
+    }
+
+    public String getOnShow() {
+        return (String) getStateHelper().eval(PropertyKeys.onShow, null);
+    }
+
+    public void setOnShow(String onShow) {
+        getStateHelper().put(PropertyKeys.onShow, onShow);
+    }
+
+    public String getOnHide() {
+        return (String) getStateHelper().eval(PropertyKeys.onHide, null);
+    }
+
+    public void setOnHide(String onHide) {
+        getStateHelper().put(PropertyKeys.onHide, onHide);
+    }
+
 }
