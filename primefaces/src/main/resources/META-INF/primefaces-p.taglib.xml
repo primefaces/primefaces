@@ -33521,7 +33521,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Fired when the visibility of element changed.]]>
+                <![CDATA[Client side callback to execute when the visibility of element changed.]]>
             </description>
             <name>onVisibleChange</name>
             <required>false</required>
@@ -33529,7 +33529,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Fired when the button element clicked.]]>
+                <![CDATA[Client side callback to execute when the button element clicked.]]>
             </description>
             <name>onClick</name>
             <required>false</required>
@@ -33537,7 +33537,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Fired when the actions are visible.]]>
+                <![CDATA[Client side callback to execute when the actions are visible.]]>
             </description>
             <name>onShow</name>
             <required>false</required>
@@ -33545,7 +33545,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Fired when the actions are hidden.]]>
+                <![CDATA[Client side callback to execute when the actions are hidden.]]>
             </description>
             <name>onHide</name>
             <required>false</required>
