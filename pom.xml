@@ -67,6 +67,10 @@
             <id>melloware</id>
             <name>Emil Lefkof</name>
         </developer>
+        <developer>
+            <id>sqores</id>
+            <name>Burak Unsal</name>
+        </developer>
     </developers>
 
     <properties>
