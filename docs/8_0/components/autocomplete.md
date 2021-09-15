@@ -152,7 +152,7 @@ public class PlayerBean {
 ```
 ``` java
 public class Player {
-    private | String | name;
+    private String name;
     //getter setter
 }
 ```
