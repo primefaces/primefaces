@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.MethodNotFoundException;
+import javax.el.PropertyNotFoundException;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.AjaxBehaviorEvent;
@@ -75,6 +76,10 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
         }
         // JBoss hack, see #1375
         catch (ArrayIndexOutOfBoundsException e) {
+            processArgListener(context, elContext, event);
+        }
+        // Mojarra hack for Composite Components, see #7819
+        catch (PropertyNotFoundException e) {
             processArgListener(context, elContext, event);
         }
     }
