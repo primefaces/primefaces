@@ -117,11 +117,11 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
     bindEvents: function () {
         var $this = this;
 
-        this.button.on('click', function(e) {
+        this.button.on('click.speeddial', function(e) {
             $this.onClick(e);
         });
 
-        this.items.on('click', function(e) {
+        this.items.on('click.speeddial', function(e) {
             $this.onItemClick(e);
         });
     },
@@ -320,6 +320,6 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
         pointStyle["transitionDelay"] = transitionDelay + 'ms';
 
         return pointStyle;
-    },
+    }
 
 });
