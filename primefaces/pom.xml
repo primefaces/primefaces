@@ -590,6 +590,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/scrolltop/scrolltop.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/spinner/spinner.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/splitter/splitter.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/speeddial/speeddial.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tabview/tabview.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tagcloud/tagcloud.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/toolbar/toolbar.css</include>
@@ -698,6 +699,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/spinner/spinner.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/splitter/splitter.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/spotlight/spotlight.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/speeddial/speeddial.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/sticky/sticky.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tabview/tabview.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tagcloud/tagcloud.js</include>
