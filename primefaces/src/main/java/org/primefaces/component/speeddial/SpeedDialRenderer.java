@@ -25,6 +25,7 @@ package org.primefaces.component.speeddial;
 
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
+import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.HTML;
@@ -36,6 +37,7 @@ import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import java.util.List;
 
 public class SpeedDialRenderer extends BaseMenuRenderer {
 
@@ -82,6 +84,11 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
     }
 
     protected void encodeList(FacesContext context, SpeedDial speedDial) throws IOException {
+        if (speedDial.getElementsCount() <= 0) {
+            return;
+        }
+        List<MenuElement> elements = speedDial.getElements();
+
         ResponseWriter writer = context.getResponseWriter();
         String listClass = getStyleClassBuilder(context)
                 .add(SpeedDial.LIST_CLASS)
@@ -92,9 +99,9 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
         writer.writeAttribute("class", listClass, "class");
         writer.writeAttribute("role", "menu", "role");
 
-        for (UIComponent kid : speedDial.getChildren()) {
-            if (kid.isRendered() && kid instanceof MenuItem) {
-                MenuItem menuItem = (MenuItem) kid;
+        for (MenuElement element : elements) {
+            if (element.isRendered() && element instanceof MenuItem) {
+                MenuItem menuItem = (MenuItem) element;
                 String icon = menuItem.getIcon();
                 Object value = menuItem.getValue();
                 boolean disabled = menuItem.isDisabled();

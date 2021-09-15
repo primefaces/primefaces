@@ -61,7 +61,6 @@
                  top: calc(50% - 2rem);
             }
 
-
             .speeddial-circle-demo .ui-speeddial-quarter-circle.ui-speeddial-direction-up-left {
                  right: 0;
                  bottom: 0;
@@ -100,6 +99,11 @@
             .speeddial-mask-demo .ui-speeddial-direction-up {
                 right: 0;
                 bottom: 0;
+            }
+
+            .speeddial-dynamicitem-demo .ui-speeddial-direction-down {
+                left: calc(50% - 2rem);
+                top: 0;
             }
         </style>
     </ui:define>
@@ -269,6 +273,13 @@
                         <p:menuitem icon="pi pi-upload" outcome="/ui/file/upload/basic"/>
                         <p:menuitem icon="pi pi-external-link" url="https://www.primefaces.org"/>
                     </p:speedDial>
+                </div>
+            </div>
+
+            <div class="card">
+                <h5>Dynamic Items</h5>
+                <div class="speeddial-dynamicitem-demo" style="position: relative; height: 350px">
+                    <p:speedDial direction="down" model="#{speedDialView.model}" />
                 </div>
             </div>
         </h:form>

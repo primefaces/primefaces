@@ -33551,5 +33551,13 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[MenuModel instance to create action items dynamically.]]>
+            </description>
+            <name>model</name>
+            <required>false</required>
+            <type>org.primefaces.model.menu.MenuModel</type>
+        </attribute>
     </tag>
 </facelet-taglib>
