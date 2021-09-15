@@ -184,7 +184,6 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
      * @param {Event} event Event that occurred.
      */
     onClick: function(event) {
-        this.container.css('z-index', PrimeFaces.nextZindex());
         this.visible ? this.hide() : this.show();
 
         if(this.cfg.onClick) {
