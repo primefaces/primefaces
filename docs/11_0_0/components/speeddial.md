@@ -88,16 +88,12 @@ public class SpeedDialView {
 </h:form>
 ```
 
-## Ajax Behavior Events
+## Type
+SpeedDial has 4 types; `linear`, `circle`, `semi-circle` and `quarter-circle`.
 
-The following AJAX behavior events are available for this component. If no event is specified the default event is called.
-
-**Default Event:** `valueChange`
-**Available Events:** `blur, change, click, contextmenu, copy, cut, dblclick, drag, dragend, dragenter, dragleave, dragover, dragstart, drop, focus, input, invalid, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, paste, reset, scroll, search, select, valueChange, wheel`
-
-```xhtml
-<p:ajax event="valueChange" listener="#{bean.handlevalueChange}" update="msgs" />
-```
+## Direction
+Specifies the opening direction of actions. For the **linear** and **semi-circle** types; `up`, `down`, `left` and `right`. 
+For the **quarter-circle** type; `up-left`, `up-right`, `down-left` and `down-right`.
 
 ## Client Side API
 Widget: _PrimeFaces.widget.SpeedDial_
