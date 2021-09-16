@@ -107,9 +107,9 @@ node test/index.js -- "TsValidateTest#ValidationError" --verbose
 # Writes output to the given directory.
 # For local development, use some path outside this project.
 npm run generate-d-ts -- \
+  --packagejson src/main/type-definitions/package.json \
   --declarationoutputdir /path/to/temporary/output/directory \
-  --typedocoutputdir /path/to/temporary/output/directory \
-  --packagejson ./package.json
+  --typedocoutputdir /path/to/temporary/output/directory
 ```
 
 To see a list of all available options, run 
