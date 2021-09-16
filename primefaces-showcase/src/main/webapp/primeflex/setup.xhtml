@@ -13,8 +13,18 @@
 
 <pre class="language-xml"><code>
 &lt;h:outputStylesheet name="%YOUR_PATH%/primeflex.min.css" /&gt;
-
 </code></pre>
+
+        <p>Or use WebJars...</p>
+       <pre class="language-xml"><code>
+        &lt;dependency&gt;
+           &lt;groupId>org.webjars.npm&lt;/groupId&gt;
+           &lt;artifactId>primeflex&lt;/artifactId&gt;
+           &lt;version>2.0.0&lt;/version&gt;
+        &lt;/dependency&gt;
+        
+        &lt;h:outputStylesheet library="webjars" name="primeflex/2.0.0/primeflex.min.css" /&gt;
+        </code></pre>
 
             <p>PrimeFlex is a lightweight library, still it is possible to pick the utilities you need to make the file even smaller. For this, you need to remove the include paths and
                 create your own build by compiling it with SASS. For example, if you do not need to use the elevation utilities, comment it out and build your own file. Note that sass cli

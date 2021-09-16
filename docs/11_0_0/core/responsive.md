@@ -22,8 +22,20 @@ tablets and desktops. Flex Grid CSS is not included in PrimeFaces as it is provi
 a shared grid library between PrimeFaces, PrimeNG and PrimeReact projects. To use [PrimeFlex](https://github.com/primefaces/primeflex) you must
 download and include a separate CSS file.
 
+**pom.xml**
+
 ```xml
-<h:outputStylesheet name="css/primeflex.css" />
+<dependency>
+  <groupId>org.webjars.npm</groupId>
+  <artifactId>primeflex</artifactId>
+  <version>3.0.1</version>
+</dependency>
+```
+
+**XHTML**
+
+```xml
+<h:outputStylesheet library="webjars" name="primeflex/3.0.1/primeflex.min.css" />
 ```
 
 Showcase Example: https://www.primefaces.org/showcase/ui/panel/flexGrid.xhtml

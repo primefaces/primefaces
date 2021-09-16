@@ -174,12 +174,13 @@ public class AppMenu {
         buttonMenuItems.add(new MenuItem("Link", "/ui/button/link"));
         buttonMenuItems.add(new MenuItem("LinkButton", "/ui/button/linkButton"));
         buttonMenuItems.add(new MenuItem("SplitButton", "/ui/button/splitButton"));
+        buttonMenuItems.add(new MenuItem("Speed Dial", "/ui/button/speedDial", "New"));
         menuCategories.add(new MenuCategory("Button", buttonMenuItems));
         //BUTTON CATEGORY END
 
         //DATA CATEGORY START
         List<MenuItem> dataMenuItems = new ArrayList<>();
-        dataMenuItems.add(new MenuItem("Carousel", "/ui/data/carousel"));
+        dataMenuItems.add(new MenuItem("Carousel", "/ui/data/carousel", "New"));
         dataMenuItems.add(new MenuItem("Chronoline", "/ui/data/chronoline", "New"));
 
         //DataExporter Nested MenuItem
@@ -609,7 +610,7 @@ public class AppMenu {
                     || item.getParentLabel().toLowerCase().contains(queryLowerCase))) {
                 filteredItems.add(item);
             }
-            if (item.getBadge() != null) {
+            else if (item.getBadge() != null) {
                 if (item.getBadge().toLowerCase().contains(queryLowerCase)) {
                     filteredItems.add(item);
                 }

@@ -193,12 +193,15 @@ public class DataTableExcelExporter extends DataTableExporter {
             int rowIndex = sheet.getLastRowNum() + 1;
             Row rowHeader = sheet.createRow(rowIndex);
 
-            sheet.addMergedRegion(new CellRangeAddress(
-                        rowIndex, // first row (0-based)
-                        rowIndex, // last row (0-based)
-                        0, // first column (0-based)
-                        colspan - 1 // last column (0-based)
-            ));
+            if (colspan > 1) {
+                sheet.addMergedRegion(new CellRangeAddress(
+                            rowIndex, // first row (0-based)
+                            rowIndex, // last row (0-based)
+                            0, // first column (0-based)
+                            colspan - 1 // last column (0-based)
+                ));
+            }
+
             addColumnValue(rowHeader, 0, facetText);
         }
     }
