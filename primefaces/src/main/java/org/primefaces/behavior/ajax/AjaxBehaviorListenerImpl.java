@@ -74,12 +74,8 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
         catch (MethodNotFoundException | IllegalArgumentException e) {
             processArgListener(context, elContext, event);
         }
-        // JBoss hack, see #1375
-        catch (ArrayIndexOutOfBoundsException e) {
-            processArgListener(context, elContext, event);
-        }
-        // Mojarra hack for Composite Components, see #7819
-        catch (PropertyNotFoundException e) {
+        // hacks, see #1375 and #7819
+        catch (ArrayIndexOutOfBoundsException | PropertyNotFoundException e) {
             processArgListener(context, elContext, event);
         }
     }
