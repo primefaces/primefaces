@@ -218,14 +218,14 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
 
                 $this.isItemClicked = false;
             };
-            document.addEventListener('click', this.documentClickListener);
+            $(document).on('click', this.documentClickListener);
         }
     },
 
     /**
      * Returns whether outside is clicked or not.
      * @private
-     * @param {Event} event Event that occurred.
+     * @param {JQuery.TriggeredEvent} event Event that occurred.
      * @return {boolean} outside is clicked.
      */
     isOutsideClicked: function(event) {
