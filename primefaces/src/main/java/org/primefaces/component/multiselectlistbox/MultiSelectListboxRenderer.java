@@ -176,7 +176,7 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
         if (valueToRender != null) {
             writer.writeAttribute("value", valueToRender, null);
         }
-        renderAccessibilityAttributes(context, listbox);
+        renderAccessibilityAttributesHidden(context, listbox);
         writer.endElement("input");
     }
 

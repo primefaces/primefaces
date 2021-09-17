@@ -116,7 +116,7 @@ public class SignatureRenderer extends InputRenderer {
         if (value != null) {
             writer.writeAttribute("value", value, null);
         }
-        renderAccessibilityAttributes(context, signature);
+        renderAccessibilityAttributesHidden(context, signature);
         writer.endElement("input");
     }
 }
