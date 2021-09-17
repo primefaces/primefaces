@@ -66,7 +66,6 @@
  * @prop {JQuery} checkAllTogglerInput DOM element of the `check all` checkbox in the header.
  * @prop {JQuery} clone Clone of the table header.
  * @prop {boolean} columnWidthsFixed Whether column widths are fixed or may be resized.
- * @prop {boolean} contextMenuClick Whether the context menu was clicked.
  * @prop {PrimeFaces.widget.ContextMenu} contextMenuWidget Widget with the context menu for the DataTable.
  * @prop {JQuery} currentCell Current cell to be edited.
  * @prop {number | null} cursorIndex 0-based index of row where the the cursor is located.
@@ -83,7 +82,6 @@
  * @prop {boolean} hasColumnGroup Whether the table has any column groups.
  * @prop {JQuery} headerTable The DOM elements for the header table.
  * @prop {JQuery} headers DOM elements for the `TH` headers of this DataTable.
- * @prop {boolean} incellClick Whether a click occurred inside a table cell.
  * @prop {boolean} isRTL Whether the writing direction is set to right-to-left.
  * @prop {boolean} isRowTogglerClicked Whether a row toggler was clicked.
  * @prop {boolean} liveScrollActive Whether live scrolling is currently active.
@@ -1310,7 +1308,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             targetWidget.contextMenuCell.removeClass('ui-state-highlight');
         }
 
-        targetWidget.contextMenuClick = true;
         targetWidget.contextMenuCell = cell;
         targetWidget.contextMenuCell.addClass('ui-state-highlight');
     },
@@ -3200,53 +3197,50 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             });
         }
         else if(this.cfg.editMode === 'cell') {
-            var originalCellSelector = '> tr > td.ui-editable-column'
+            var originalCellSelector = '> tr > td.ui-editable-column',
             cellSelector = this.cfg.cellSeparator || originalCellSelector,
             editEvent = (this.cfg.editInitEvent !== 'click') ? this.cfg.editInitEvent + '.datatable-cell click.datatable-cell' : 'click.datatable-cell';
 
-            if (this.cfg.cellSeparator) {
-                this.tbody.off(editEvent, originalCellSelector)
-                    .on(editEvent, originalCellSelector, null, function (e) {
-                        $this.incellClick = true;
-
-                        if (!$(this).hasClass('ui-cell-editing') && e.type === $this.cfg.editInitEvent && $this.cfg.editInitEvent === "dblclick") {
-                            $this.incellClick = false;
-                        }
-                    });
-            }
-
             this.tbody.off(editEvent, cellSelector)
                         .on(editEvent, cellSelector, null, function(e) {
-                            $this.incellClick = true;
-
                             var item = $(this),
                             cell = item.hasClass('ui-editable-column') ? item : item.closest('.ui-editable-column');
 
                             if(!cell.hasClass('ui-cell-editing') && e.type === $this.cfg.editInitEvent) {
                                 $this.showCellEditor(cell);
-
-                                if($this.cfg.editInitEvent === "dblclick") {
-                                    $this.incellClick = false;
-                                }
                             }
                         });
 
-            $(document).off('click.datatable-cell-blur' + this.id)
-                        .on('click.datatable-cell-blur' + this.id, function(e) {
+            // save/cancel on mouseup to que the event request before whatever was clicked reacts
+            $(document).off('mouseup.datatable-cell-blur' + this.id)
+                        .on('mouseup.datatable-cell-blur' + this.id, function(e) {
+                            // ignore if not editing
+                            if(!$this.currentCell)
+                                return;
+
+                            var currentCell = $($this.currentCell);
                             var target = $(e.target);
-                            if(!$this.incellClick && (target.is('.ui-input-overlay') || target.closest('.ui-input-overlay').length || target.closest('.ui-datepicker-buttonpane').length)) {
-                                $this.incellClick = true;
-                            }
 
-                            if(!$this.incellClick && $this.currentCell && !$this.contextMenuClick && !$.datepicker._datepickerShowing && $('.p-datepicker-panel:visible').length === 0) {
-                                if($this.cfg.saveOnCellBlur)
-                                    $this.saveCell($this.currentCell);
-                                else
-                                    $this.doCellEditCancelRequest($this.currentCell);
-                            }
+                            // ignore clicks inside edited cell
+                            if(currentCell.is(target) || currentCell.has(target).length)
+                                return;
 
-                            $this.incellClick = false;
-                            $this.contextMenuClick = false;
+                            // ignore clicks inside input overlays like calendar popups etc
+                            var ignoredOverlay = '.ui-input-overlay, .ui-editor-popup, #keypad-div, .ui-colorpicker-container';
+                            // and menus - in case smth like menubutton is inside the table
+                            ignoredOverlay += ', .ui-datepicker-buttonpane, .ui-menuitem, .ui-menuitem-link';
+                            // and blockers
+                            ignoredOverlay += ', .ui-blockui, .blockUI';
+                            if(target.is(ignoredOverlay) || target.closest(ignoredOverlay).length)
+                                return;
+
+                            if($.datepicker._datepickerShowing || $('.p-datepicker-panel:visible').length)
+                                return;
+
+                            if($this.cfg.saveOnCellBlur)
+                                $this.saveCell($this.currentCell);
+                            else
+                                $this.doCellEditCancelRequest($this.currentCell);
                         });
         }
     },
@@ -3370,8 +3364,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @param {JQuery} c A cell (`TD`) of this DataTable to edit.
      */
     showCellEditor: function(c) {
-        this.incellClick = true;
-
         var cell = null;
 
         if(c) {
