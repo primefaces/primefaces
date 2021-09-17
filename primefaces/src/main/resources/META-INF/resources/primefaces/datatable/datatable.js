@@ -3211,7 +3211,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                             }
                         });
 
-            // save/cancel on mouseup to que the event request before whatever was clicked reacts
+            // save/cancel on mouseup to queue the event request before whatever was clicked reacts
             $(document).off('mouseup.datatable-cell-blur' + this.id)
                         .on('mouseup.datatable-cell-blur' + this.id, function(e) {
                             // ignore if not editing
