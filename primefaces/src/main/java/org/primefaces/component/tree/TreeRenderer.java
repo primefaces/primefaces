@@ -669,6 +669,7 @@ public class TreeRenderer extends CoreRenderer {
 
         List<String> filteredRowKeys = tree.getFilteredRowKeys();
         boolean match = false;
+        boolean hidden = false;
         if (filter && !filteredRowKeys.isEmpty()) {
             for (String filteredRowKey : filteredRowKeys) {
                 String rowKeyExt = rowKey + "_";
@@ -688,7 +689,7 @@ public class TreeRenderer extends CoreRenderer {
             }
 
             if (!match) {
-                return;
+                hidden = true;
             }
         }
 
@@ -715,6 +716,10 @@ public class TreeRenderer extends CoreRenderer {
         }
         else {
             containerClass += " ui-treenode-unselected";
+        }
+
+        if (hidden) {
+            containerClass += " ui-treenode-hidden";
         }
 
         containerClass = uiTreeNode.getStyleClass() == null ? containerClass : containerClass + " " + uiTreeNode.getStyleClass();

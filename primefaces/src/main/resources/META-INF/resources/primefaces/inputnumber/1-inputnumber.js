@@ -178,7 +178,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} value A value to set on the hidden input.
      */
     setValueToHiddenInput: function(value) {
-        this.hiddenInput.val(value);
+        this.hiddenInput.val(value).trigger('input.slider');
     },
 
     /**

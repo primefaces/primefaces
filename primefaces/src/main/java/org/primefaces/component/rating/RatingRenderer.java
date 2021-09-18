@@ -138,7 +138,7 @@ public class RatingRenderer extends InputRenderer {
         if (value != null) {
             writer.writeAttribute("value", value, null);
         }
-        renderAccessibilityAttributes(context, rating);
+        renderAccessibilityAttributesHidden(context, rating);
         writer.endElement("input");
     }
 }

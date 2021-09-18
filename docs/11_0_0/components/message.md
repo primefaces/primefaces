@@ -22,6 +22,7 @@ Message is a pre-skinned extended version of the standard JSF message component.
 id | null | String | Unique identifier of the component.
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
+widgetVar | null | String | Name of the client side widget.
 showSummary | false | Boolean | Specifies if the summary of the FacesMessage should be displayed.
 showDetail | true | Boolean | Specifies if the detail of the FacesMessage should be displayed.
 for | null | String | The clientId or name of associated key of whose messages to display.

@@ -36,14 +36,14 @@ PrimeFaces.widget.TriStateCheckbox = PrimeFaces.widget.BaseWidget.extend({
         this.box = this.jq.find('.ui-chkbox-box');
         this.icon = this.box.children('.ui-chkbox-icon');
         this.itemLabel = this.jq.find('.ui-chkbox-label');
-        this.disabled = this.input.is(':disabled');
+        this.updateStatus();
         this.fixedMod = function(number, mod){
             return ((number % mod) + mod) % mod;
         };
 
         var $this = this;
 
-        //bind events if not disabled
+        //bind events if not disabled/readonly
         if (!this.disabled) {
             this.box.on('mouseenter.triStateCheckbox', function () {
                 $this.box.addClass('ui-state-hover');
@@ -143,12 +143,22 @@ PrimeFaces.widget.TriStateCheckbox = PrimeFaces.widget.BaseWidget.extend({
             this.input.trigger('change');
         }
     },
+    
+    /**
+     * Updates the disabled/readonly status of the component.
+     * @private
+     */
+    updateStatus: function() {
+        this.readonly = this.box.hasClass('ui-chkbox-readonly');
+        this.disabled = this.input.is(':disabled') || this.readonly;
+    },
 
     /**
      * Disables this input so that the user cannot enter a value anymore.
      */
     disable: function() {
         PrimeFaces.utils.disableInputWidget(this.jq, this.input);
+        this.updateStatus();
     },
 
     /**
@@ -156,6 +166,7 @@ PrimeFaces.widget.TriStateCheckbox = PrimeFaces.widget.BaseWidget.extend({
      */
     enable: function() {
         PrimeFaces.utils.enableInputWidget(this.jq, this.input);
+        this.updateStatus();
     }
 });
 

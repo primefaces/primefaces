@@ -33,6 +33,7 @@ converterMessage | null | String | Message to be displayed when conversion fails
 validatorMessage | null | String | Message to be displayed when validation fields.
 widgetVar | null | String | Name of the client side widget.
 disabled | false | Boolean | Disables the component.
+readonly | false | Boolean | Flag indicating that this component will prevent changes by the user.
 stateOneIcon | null | String | Icon of the state one.
 stateTwoIcon | null | String | Icon of the state two.
 stateThreeIcon | null | String | Icon of the state three.

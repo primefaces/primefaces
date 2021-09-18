@@ -153,6 +153,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
         // clean up memory
         if (this.instance) {
             this.instance.destroy();
+            this.instance = null;
         }
 
         this._super(cfg);
@@ -168,6 +169,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
         // clean up memory
         if (this.instance) {
             this.instance.destroy();
+            this.instance = null;
         }
     },
 

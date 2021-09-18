@@ -186,21 +186,21 @@ public class PanelGridRenderer extends CoreRenderer {
         int i = 0;
 
         for (UIComponent child : grid.getChildren()) {
+            if (child instanceof Row || child.getClass().getName().endsWith("UIRepeat")) {
+                // #6829 count row even though its not rendered
+                // #7780 count row if a UIRepeat and assume the user knows what they are doing
+                i++;
+            }
             if (child.isRendered()) {
                 if (child instanceof Row) {
                     String rowStyleClass = i % 2 == 0
                                            ? PanelGrid.TABLE_ROW_CLASS + " " + PanelGrid.EVEN_ROW_CLASS
                                            : PanelGrid.TABLE_ROW_CLASS + " " + PanelGrid.ODD_ROW_CLASS;
                     encodeRow(context, (Row) child, "gridcell", rowStyleClass, PanelGrid.CELL_CLASS);
-                    i++;
                 }
                 else {
                     child.encodeAll(context);
                 }
-            }
-            else if (child instanceof Row) {
-                // #6829 count row even though its not rendered
-                i++;
             }
         }
 

@@ -109,7 +109,7 @@ calling a server side completeMethod that takes a single string parameter which 
 
 ```java
 public class Bean {
-    private | String | text;
+    private String text;
     
     public List<String> complete(String query) {
         List<String> results = new ArrayList<String>();
@@ -150,7 +150,7 @@ public class PlayerBean {
 ```
 ``` java
 public class Player {
-    private | String | name;
+    private String name;
     //getter setter
 }
 ```

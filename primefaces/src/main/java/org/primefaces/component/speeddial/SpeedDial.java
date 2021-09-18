@@ -21,46 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.integrationtests.tree;
+package org.primefaces.component.speeddial;
 
-import lombok.Data;
-import org.primefaces.integrationtests.general.utilities.TestUtils;
-import org.primefaces.model.TreeNode;
+import javax.faces.application.ResourceDependency;
 
-import javax.annotation.PostConstruct;
-import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.stream.Collectors;
+@ResourceDependency(library = "primefaces", name = "components.css")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
+@ResourceDependency(library = "primefaces", name = "core.js")
+@ResourceDependency(library = "primefaces", name = "components.js")
+public class SpeedDial extends SpeedDialBase {
 
-@Named
-@ViewScoped
-@Data
-public class Tree004 implements Serializable {
+    public static final String COMPONENT_TYPE = "org.primefaces.component.SpeedDial";
 
-    @Inject
-    private TreeNodeService treeNodeService;
-
-    private TreeNode<String> root;
-    private TreeNode<String>[] selectedNodes;
-
-    private String selection;
-
-    @PostConstruct
-    public void init() {
-        root = treeNodeService.createNodes();
-        selection = "multiple";
-    }
-
-    public void showSelectedNodes() {
-        if (selectedNodes != null && selectedNodes.length > 0) {
-            TestUtils.addMessage("Selected nodes", Arrays.stream(selectedNodes).map(n -> n.getData()).collect(Collectors.joining(",")));
-        }
-        else {
-            TestUtils.addMessage("No node selected!", "");
-        }
-    }
+    public static final String CONTAINER_CLASS = "ui-speeddial ui-widget";
+    public static final String MASK_CLASS = "ui-speeddial-mask";
+    public static final String BUTTON_CLASS = "ui-speeddial-button rounded-button";
+    public static final String LIST_CLASS = "ui-speeddial-list";
+    public static final String ITEM_CLASS = "ui-speeddial-item";
+    public static final String ITEM_BUTTON_CLASS = "ui-speeddial-action";
+    public static final String ITEM_ICON_CLASS = "ui-speeddial-action-icon";
 
 }

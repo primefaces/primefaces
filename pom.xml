@@ -67,12 +67,17 @@
             <id>melloware</id>
             <name>Emil Lefkof</name>
         </developer>
+        <developer>
+            <id>sqores</id>
+            <name>Burak Unsal</name>
+        </developer>
     </developers>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
+        <junit.version>5.8.0</junit.version>
 
         <npm.token/>
         <npm.username/>
@@ -164,7 +169,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.3.1</version>
                 <configuration>
                     <sourcepath>${basedir}/src/main/java;</sourcepath>
                     <doclint>none</doclint>
@@ -210,7 +215,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>3.3.1</version>
+                <version>3.3.2</version>
             </plugin>
 
             <plugin>
@@ -270,7 +275,7 @@
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>8.45.1</version>
+                        <version>9.0</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -400,12 +405,12 @@
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-engine</artifactId>
-                <version>5.7.2</version>
+                <version>${junit.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-params</artifactId>
-                <version>5.7.2</version>
+                <version>${junit.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
