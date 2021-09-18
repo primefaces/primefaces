@@ -498,11 +498,11 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
 
         if (!this.documentResizeListener) {
-            this.documentResizeListener = function (e) {
-                $this.calculatePosition(e);
+            this.documentResizeListener = function () {
+                $this.calculatePosition();
             };
 
-            window.addEventListener('resize', this.documentResizeListener);
+            $(window).on('resize', this.documentResizeListener);
         }
     },
 
